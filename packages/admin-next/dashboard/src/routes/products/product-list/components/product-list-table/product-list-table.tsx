@@ -1,3 +1,4 @@
+import { EllipsisHorizontal, Trash } from "@medusajs/icons"
 import type { Product } from "@medusajs/medusa"
 import {
   Button,
@@ -5,6 +6,7 @@ import {
   CommandBar,
   Container,
   DropdownMenu,
+  Heading,
   IconButton,
   Table,
   clx,
@@ -19,25 +21,22 @@ import {
 } from "@tanstack/react-table"
 import { useAdminDeleteProduct, useAdminProducts } from "medusa-react"
 import { useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useLoaderData, useNavigate } from "react-router-dom"
 
-import { productsLoader } from "./loader"
-
-import { EllipsisHorizontal, Trash } from "@medusajs/icons"
-import after from "medusa-admin:widgets/product/list/after"
-import before from "medusa-admin:widgets/product/list/before"
-import { useTranslation } from "react-i18next"
 import {
   ProductAvailabilityCell,
   ProductCollectionCell,
   ProductInventoryCell,
   ProductStatusCell,
   ProductTitleCell,
-} from "../../../../components/common/product-table-cells"
+} from "../../../../../components/common/product-table-cells"
+
+import { productsLoader } from "../../loader"
 
 const PAGE_SIZE = 50
 
-export const ProductList = () => {
+export const ProductListTable = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
@@ -87,98 +86,87 @@ export const ProductList = () => {
   })
 
   return (
-    <div className="flex flex-col gap-y-2">
-      {before.widgets.map((w, i) => (
-        <w.Component key={i} />
-      ))}
-      <Container className="overflow-hidden p-0">
-        <div className="flex items-center justify-between px-6 py-4">
-          <div></div>
-          <div className="flex items-center gap-x-2">
-            <Button variant="secondary">{t("general.create")}</Button>
-          </div>
-        </div>
-        <div>
-          <Table>
-            <Table.Header>
-              {table.getHeaderGroups().map((headerGroup) => {
-                return (
-                  <Table.Row
-                    key={headerGroup.id}
-                    className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap"
-                  >
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <Table.HeaderCell key={header.id}>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                        </Table.HeaderCell>
-                      )
-                    })}
-                  </Table.Row>
-                )
-              })}
-            </Table.Header>
-            <Table.Body className="border-b-0">
-              {table.getRowModel().rows.map((row) => (
+    <Container className="overflow-hidden p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">{t("products.domain")}</Heading>
+        <Button size="small" variant="secondary">
+          {t("general.create")}
+        </Button>
+      </div>
+      <div>
+        <Table>
+          <Table.Header>
+            {table.getHeaderGroups().map((headerGroup) => {
+              return (
                 <Table.Row
-                  key={row.id}
-                  className={clx(
-                    "transition-fg cursor-pointer [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
-                    {
-                      "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                        row.getIsSelected(),
-                    }
-                  )}
-                  onClick={() => navigate(`/products/${row.original.id}`)}
+                  key={headerGroup.id}
+                  className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap"
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <Table.Cell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </Table.Cell>
-                  ))}
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <Table.HeaderCell key={header.id}>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </Table.HeaderCell>
+                    )
+                  })}
                 </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-          <Table.Pagination
-            canNextPage={table.getCanNextPage()}
-            canPreviousPage={table.getCanPreviousPage()}
-            nextPage={table.nextPage}
-            previousPage={table.previousPage}
-            count={count ?? 0}
-            pageIndex={pageIndex}
-            pageCount={table.getPageCount()}
-            pageSize={PAGE_SIZE}
+              )
+            })}
+          </Table.Header>
+          <Table.Body className="border-b-0">
+            {table.getRowModel().rows.map((row) => (
+              <Table.Row
+                key={row.id}
+                className={clx(
+                  "transition-fg cursor-pointer [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
+                  {
+                    "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
+                      row.getIsSelected(),
+                  }
+                )}
+                onClick={() => navigate(`/products/${row.original.id}`)}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <Table.Cell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Table.Cell>
+                ))}
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+        <Table.Pagination
+          canNextPage={table.getCanNextPage()}
+          canPreviousPage={table.getCanPreviousPage()}
+          nextPage={table.nextPage}
+          previousPage={table.previousPage}
+          count={count ?? 0}
+          pageIndex={pageIndex}
+          pageCount={table.getPageCount()}
+          pageSize={PAGE_SIZE}
+        />
+      </div>
+      <CommandBar open={!!Object.keys(rowSelection).length}>
+        <CommandBar.Bar>
+          <CommandBar.Value>
+            {t("general.countSelected", {
+              count: Object.keys(rowSelection).length,
+            })}
+          </CommandBar.Value>
+          <CommandBar.Seperator />
+          <CommandBar.Command
+            action={() => {
+              console.log("Delete")
+            }}
+            shortcut="d"
+            label={t("general.delete")}
           />
-        </div>
-        <CommandBar open={!!Object.keys(rowSelection).length}>
-          <CommandBar.Bar>
-            <CommandBar.Value>
-              {t("general.countSelected", {
-                count: Object.keys(rowSelection).length,
-              })}
-            </CommandBar.Value>
-            <CommandBar.Seperator />
-            <CommandBar.Command
-              action={() => {
-                console.log("Delete")
-              }}
-              shortcut="d"
-              label={t("general.delete")}
-            />
-          </CommandBar.Bar>
-        </CommandBar>
-      </Container>
-      {after.widgets.map((w, i) => (
-        <w.Component key={i} />
-      ))}
-    </div>
+        </CommandBar.Bar>
+      </CommandBar>
+    </Container>
   )
 }
 
@@ -192,14 +180,14 @@ const ProductActions = ({ id }: { id: string }) => {
   return (
     <DropdownMenu>
       <DropdownMenu.Trigger asChild>
-        <IconButton variant="transparent">
+        <IconButton size="small" variant="transparent">
           <EllipsisHorizontal />
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
         <DropdownMenu.Item onClick={handleDelete}>
           <div className="flex items-center gap-x-2">
-            <Trash />
+            <Trash className="text-ui-fg-subtle" />
             <span>Delete</span>
           </div>
         </DropdownMenu.Item>

@@ -97,12 +97,11 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                lazy: () => import("../../routes/products/views/product-list"),
+                lazy: () => import("../../routes/products/product-list"),
               },
               {
                 path: ":id",
-                lazy: () =>
-                  import("../../routes/products/views/product-details"),
+                lazy: () => import("../../routes/products/product-detail"),
                 handle: {
                   crumb: (data: AdminProductsRes) => data.product.title,
                 },

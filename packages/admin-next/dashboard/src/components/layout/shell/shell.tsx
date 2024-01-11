@@ -117,7 +117,7 @@ const UserBadge = () => {
       <button
         disabled={!user}
         className={clx(
-          "shadow-borders-base flex max-w-[140px] items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5"
+          "shadow-borders-base flex max-w-[192px] items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5"
         )}
       >
         {fallback ? (

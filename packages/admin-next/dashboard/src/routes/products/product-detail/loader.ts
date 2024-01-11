@@ -3,7 +3,7 @@ import { Response } from "@medusajs/medusa-js"
 import { adminProductKeys } from "medusa-react"
 import { LoaderFunctionArgs } from "react-router-dom"
 
-import { medusa, queryClient } from "../../../../lib/medusa"
+import { medusa, queryClient } from "../../../lib/medusa"
 
 const productDetailQuery = (id: string) => ({
   queryKey: adminProductKeys.detail(id),
