@@ -7,6 +7,7 @@ import {
   Enum,
   Index,
   ManyToMany,
+  ManyToOne,
   OnInit,
   OneToOne,
   OptionalProps,
@@ -15,6 +16,7 @@ import {
   Unique,
 } from "@mikro-orm/core"
 import ApplicationMethod from "./application-method"
+import Campaign from "./campaign"
 import PromotionRule from "./promotion-rule"
 
 type OptionalFields =
@@ -22,7 +24,9 @@ type OptionalFields =
   | "created_at"
   | "updated_at"
   | "deleted_at"
-type OptionalRelations = "application_method"
+
+type OptionalRelations = "application_method" | "campaign"
+
 @Entity()
 export default class Promotion {
   [OptionalProps]?: OptionalFields | OptionalRelations
@@ -37,6 +41,13 @@ export default class Promotion {
     properties: ["code"],
   })
   code: string
+
+  @ManyToOne(() => Campaign, {
+    joinColumn: "campaign",
+    fieldName: "campaign_id",
+    nullable: true,
+  })
+  campaign: Campaign
 
   @Property({ columnType: "boolean", default: false })
   is_automatic?: boolean = false

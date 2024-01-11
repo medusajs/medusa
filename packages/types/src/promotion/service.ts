@@ -2,11 +2,15 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
+  CampaignDTO,
+  CreateCampaignDTO,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
+  FilterableCampaignProps,
   FilterablePromotionProps,
   PromotionDTO,
   RemovePromotionRuleDTO,
+  UpdateCampaignDTO,
   UpdatePromotionDTO,
 } from "./common"
 
@@ -64,4 +68,28 @@ export interface IPromotionModuleService extends IModuleService {
     rulesData: RemovePromotionRuleDTO[],
     sharedContext?: Context
   ): Promise<PromotionDTO>
+
+  createCampaigns(
+    data: CreateCampaignDTO[],
+    sharedContext?: Context
+  ): Promise<CampaignDTO[]>
+
+  updateCampaigns(
+    data: UpdateCampaignDTO[],
+    sharedContext?: Context
+  ): Promise<CampaignDTO[]>
+
+  listCampaigns(
+    filters?: FilterableCampaignProps,
+    config?: FindConfig<CampaignDTO>,
+    sharedContext?: Context
+  ): Promise<CampaignDTO[]>
+
+  retrieveCampaign(
+    id: string,
+    config?: FindConfig<CampaignDTO>,
+    sharedContext?: Context
+  ): Promise<CampaignDTO>
+
+  deleteCampaigns(ids: string[], sharedContext?: Context): Promise<void>
 }
