@@ -6,7 +6,6 @@ import {
   CogSixTooth,
   MagnifyingGlass,
   Sidebar,
-  TriangleRightMini,
   User as UserIcon,
 } from "@medusajs/icons"
 import { Avatar, DropdownMenu, IconButton, Kbd, Text, clx } from "@medusajs/ui"
@@ -73,21 +72,29 @@ const Breadcrumbs = () => {
     })
 
   return (
-    <ol className={clx("text-ui-fg-muted flex items-center gap-x-0.5")}>
+    <ol className={clx("text-ui-fg-muted flex items-center select-none")}>
       {crumbs.map((crumb, index) => {
         const isLast = index === crumbs.length - 1
 
         return (
           <li
             key={index}
-            className="txt-compact-small-plus flex items-center gap-x-0.5"
+            className={clx("txt-compact-small-plus flex items-center", {
+              "text-ui-fg-subtle": isLast,
+            })}
           >
             {!isLast ? (
-              <Link to={crumb.path}>{crumb.label}</Link>
+              <Link
+                className="transition-fg hover:text-ui-fg-subtle"
+                to={crumb.path}
+              >
+                {crumb.label}
+              </Link>
             ) : (
               <span key={index}>{crumb.label}</span>
             )}
-            {!isLast && <TriangleRightMini />}
+            {/* {!isLast && <TriangleRightMini className="-mt-0.5 mx-2" />} */}
+            {!isLast && <span className="-mt-0.5 mx-2">›</span>}
           </li>
         )
       })}
@@ -117,7 +124,7 @@ const UserBadge = () => {
       <button
         disabled={!user}
         className={clx(
-          "shadow-borders-base flex max-w-[192px] items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5"
+          "shadow-borders-base flex max-w-[192px] items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5 select-none"
         )}
       >
         {fallback ? (
@@ -191,8 +198,10 @@ const Logout = () => {
 
   return (
     <DropdownMenu.Item onClick={handleLayout}>
-      <ArrowRightOnRectangle className="text-ui-fg-subtle" />
-      Logout
+      <div className="flex items-center gap-x-2">
+        <ArrowRightOnRectangle className="text-ui-fg-subtle" />
+        <span>Logout</span>
+      </div>
     </DropdownMenu.Item>
   )
 }
@@ -242,9 +251,17 @@ const SettingsLink = () => {
   const location = useLocation()
 
   return (
-    <Link to="/settings" state={{ from: location.pathname }}>
-      <IconButton variant="transparent">
-        <CogSixTooth className="text-ui-fg-subtle" />
+    <Link
+      to="/settings"
+      className="flex items-center justify-center"
+      state={{ from: location.pathname }}
+    >
+      <IconButton
+        size="small"
+        variant="transparent"
+        className="text-ui-fg-muted transition-fg hover:text-ui-fg-subtle"
+      >
+        <CogSixTooth />
       </IconButton>
     </Link>
   )
@@ -303,10 +320,10 @@ const Topbar = () => {
         <Searchbar />
       </div>
       <div className="flex items-center justify-end gap-x-3">
-        <LoggedInUser />
         <div className="text-ui-fg-muted flex items-center gap-x-1">
           <SettingsLink />
         </div>
+        <LoggedInUser />
       </div>
     </div>
   )

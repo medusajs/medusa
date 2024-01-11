@@ -91,7 +91,7 @@ const DrawerHeader = React.forwardRef<
   return (
     <div
       ref={ref}
-      className="border-ui-border-base flex items-start justify-between gap-x-4 border-b px-8 py-6"
+      className="border-ui-border-base flex items-start justify-between gap-x-4 border-b px-6 py-4"
       {...props}
     >
       <div className={clx("flex flex-col gap-y-1", className)}>{children}</div>
@@ -113,11 +113,7 @@ const DrawerBody = React.forwardRef<
   React.ComponentPropsWithoutRef<"div">
 >(({ className, ...props }, ref) => {
   return (
-    <div
-      ref={ref}
-      className={clx("flex-1 px-8 pb-16 pt-6", className)}
-      {...props}
-    />
+    <div ref={ref} className={clx("flex-1 px-6 py-4", className)} {...props} />
   )
 })
 DrawerBody.displayName = "Drawer.Body"
@@ -129,7 +125,7 @@ const DrawerFooter = ({
   return (
     <div
       className={clx(
-        "border-ui-border-base flex items-center justify-end space-x-2 overflow-y-scroll border-t px-8 pb-6 pt-4",
+        "border-ui-border-base flex items-center justify-end space-x-2 overflow-y-scroll border-t px-6 py-4",
         className
       )}
       {...props}

@@ -115,7 +115,7 @@ export const EditProfileForm = ({
               render={({ field: { ref, ...field } }) => (
                 <Form.Item className="gap-y-4">
                   <div>
-                    <Form.Label>Language</Form.Label>
+                    <Form.Label>{t("profile.language")}</Form.Label>
                     <Form.Hint>{t("profile.languageHint")}</Form.Hint>
                   </div>
                   <div>
@@ -160,7 +160,7 @@ export const EditProfileForm = ({
               render={({ field: { value, onChange, ...rest } }) => (
                 <Form.Item>
                   <div className="flex items-center justify-between">
-                    <Form.Label>User Insights</Form.Label>
+                    <Form.Label>{t("profile.usageInsights")}</Form.Label>
                     <Form.Control>
                       <Switch
                         {...rest}

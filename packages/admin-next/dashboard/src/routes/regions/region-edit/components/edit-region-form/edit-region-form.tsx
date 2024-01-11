@@ -41,7 +41,7 @@ export const EditRegionForm = ({ region }: EditRegionFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
         <Drawer.Body>
           <div className="flex flex-col gap-y-4">
             <Form.Field

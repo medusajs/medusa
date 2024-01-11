@@ -123,7 +123,7 @@ const RegionActions = ({ region }: { region: Region }) => {
         <Link to="edit" relative="route">
           <DropdownMenu.Item>
             <div className="flex items-center gap-x-2">
-              <PencilSquare />
+              <PencilSquare className="text-ui-fg-subtle" />
               <span>{t("general.edit")}</span>
             </div>
           </DropdownMenu.Item>

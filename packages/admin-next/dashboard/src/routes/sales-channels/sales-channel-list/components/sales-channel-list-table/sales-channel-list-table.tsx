@@ -71,18 +71,22 @@ export const SalesChannelListTable = () => {
   }
 
   return (
-    <Container className="p-0">
+    <Container className="p-0 divide-y">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("salesChannels.domain")}</Heading>
         <Link to="/settings/sales-channels/create">
-          <Button variant="secondary">
-            {t("salesChannels.createSalesChannel")}
+          <Button size="small" variant="secondary">
+            {t("general.create")}
           </Button>
         </Link>
       </div>
+      <div className="px-6 py-4 flex items-center justify-between">
+        <div></div>
+        <div></div>
+      </div>
       <div>
         <Table>
-          <Table.Header>
+          <Table.Header className="border-t-0">
             {table.getHeaderGroups().map((headerGroup) => {
               return (
                 <Table.Row
