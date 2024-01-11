@@ -3,4 +3,4 @@ if (typeof process.env.DB_TEMP_NAME === "undefined") {
   process.env.DB_TEMP_NAME = `medusa-payment-integration-${tempName}`
 }
 
-process.env.MEDUSA_CART_DB_SCHEMA = "public"
+process.env.MEDUSA_PAYMENT_DB_SCHEMA = "public"
