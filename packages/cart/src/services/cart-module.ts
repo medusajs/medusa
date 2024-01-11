@@ -88,20 +88,30 @@ export default class CartModuleService implements ICartModuleService {
     ]
   }
 
-  @InjectManager("baseRepository_")
   async create(
     data: CreateCartDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartDTO[]> {
-    const carts = await this.create_(data, sharedContext)
+    sharedContext: Context
+  ): Promise<CartDTO[]>
 
-    return await this.list(
+  async create(data: CreateCartDTO, sharedContext: Context): Promise<CartDTO>
+
+  async create(
+    data: CreateCartDTO[] | CreateCartDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<CartDTO[] | CartDTO> {
+    const input = Array.isArray(data) ? data : [data]
+
+    const carts = await this.create_(input, sharedContext)
+
+    const result = await this.list(
       { id: carts.map((p) => p!.id) },
       {
         relations: ["shipping_address", "billing_address"],
       },
       sharedContext
     )
+
+    return (Array.isArray(data) ? result : result[0]) as CartDTO | CartDTO[]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -112,20 +122,30 @@ export default class CartModuleService implements ICartModuleService {
     return await this.cartService_.create(data, sharedContext)
   }
 
-  @InjectManager("baseRepository_")
   async update(
     data: UpdateCartDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartDTO[]> {
-    const carts = await this.update_(data, sharedContext)
+    sharedContext: Context
+  ): Promise<CartDTO[]>
 
-    return await this.list(
+  async update(data: UpdateCartDTO, sharedContext: Context): Promise<CartDTO>
+
+  @InjectManager("baseRepository_")
+  async update(
+    data: UpdateCartDTO[] | UpdateCartDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<CartDTO[] | CartDTO> {
+    const input = Array.isArray(data) ? data : [data]
+    const carts = await this.update_(input, sharedContext)
+
+    const result = await this.list(
       { id: carts.map((p) => p!.id) },
       {
         relations: ["shipping_address", "billing_address"],
       },
       sharedContext
     )
+
+    return (Array.isArray(data) ? result : result[0]) as CartDTO | CartDTO[]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -138,9 +158,10 @@ export default class CartModuleService implements ICartModuleService {
 
   @InjectTransactionManager("baseRepository_")
   async delete(
-    ids: string[],
+    ids: string[] | string,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await this.cartService_.delete(ids, sharedContext)
+    const cartIds = Array.isArray(ids) ? ids : [ids]
+    await this.cartService_.delete(cartIds, sharedContext)
   }
 }
