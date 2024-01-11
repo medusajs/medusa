@@ -253,21 +253,44 @@ export function mikroOrmBaseRepositoryFactory<
         ? primaryKey
         : [primaryKey]
 
-      const findCriteria = data.map((dt) => ({
-        $and: primaryKeyFields.map((key) => ({ [key]: dt[key] })),
-      }))
-
-      const existingEntities = await Promise.all(
-        findCriteria.map((criteria) =>
-          this.find({ where: criteria } as DAL.FindOptions<T>, context)
+      let existingEntities: T[]
+      if (primaryKeyFields.length === 1) {
+        const pk = primaryKeyFields[0]
+        const primaryKeyValues = data.map((d) => d[pk])
+        existingEntities = await this.find(
+          {
+            where: {
+              [pk]: {
+                $in: primaryKeyValues,
+              },
+            },
+          } as DAL.FindOptions<T>,
+          context
         )
-      )
+      } else {
+        // Composite primary keys
+        const findCriteria = data.map((d) => ({
+          $and: primaryKeyFields.map((key) => ({ [key]: d[key] })),
+        }))
+
+        const allEntities = await Promise.all(
+          findCriteria.map(
+            async (criteria) =>
+              await this.find(
+                { where: criteria } as DAL.FindOptions<T>,
+                context
+              )
+          )
+        )
+
+        existingEntities = allEntities.flat()
+      }
 
       const existingEntitiesMap = new Map<string, T>()
       existingEntities.forEach((entity) => {
         if (entity) {
           const key = primaryKeyFields.map((k) => entity[k]).join("_")
-          existingEntitiesMap.set(key, entity[0])
+          existingEntitiesMap.set(key, entity)
         }
       })
 
