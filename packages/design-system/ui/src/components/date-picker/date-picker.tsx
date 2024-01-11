@@ -25,8 +25,8 @@ const displayVariants = cva({
   ),
   variants: {
     size: {
-      base: "txt-compact-medium h-10 px-3 py-2.5",
-      small: "txt-compact-small h-8 px-2 py-1.5",
+      base: "txt-compact-small h-8 px-2 py-1.5",
+      small: "txt-compact-small h-7 px-2 py-1",
     },
   },
   defaultVariants: {
@@ -39,41 +39,43 @@ interface DisplayProps extends React.ComponentProps<"button"> {
   size?: "small" | "base"
 }
 
-const Display = React.forwardRef<
-  HTMLButtonElement,
-  DisplayProps
->(({ 
-    className, 
-    children, 
-    /**
-     * Placeholder of the date picker's input.
-     */
-    placeholder, 
-    /**
-     * The size of the date picker's input.
-     */
-    size = "base", 
-    ...props 
-  }: DisplayProps, ref) => {
-  return (
-    <Primitives.Trigger asChild>
-      <button
-        ref={ref}
-        className={clx(displayVariants({ size }), className)}
-        {...props}
-      >
-        <CalendarIcon className="text-ui-fg-muted" />
-        <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-left">
-          {children ? (
-            children
-          ) : placeholder ? (
-            <span className="text-ui-fg-muted">{placeholder}</span>
-          ) : null}
-        </span>
-      </button>
-    </Primitives.Trigger>
-  )
-})
+const Display = React.forwardRef<HTMLButtonElement, DisplayProps>(
+  (
+    {
+      className,
+      children,
+      /**
+       * Placeholder of the date picker's input.
+       */
+      placeholder,
+      /**
+       * The size of the date picker's input.
+       */
+      size = "base",
+      ...props
+    }: DisplayProps,
+    ref
+  ) => {
+    return (
+      <Primitives.Trigger asChild>
+        <button
+          ref={ref}
+          className={clx(displayVariants({ size }), className)}
+          {...props}
+        >
+          <CalendarIcon className="text-ui-fg-muted" />
+          <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-left">
+            {children ? (
+              children
+            ) : placeholder ? (
+              <span className="text-ui-fg-muted">{placeholder}</span>
+            ) : null}
+          </span>
+        </button>
+      </Primitives.Trigger>
+    )
+  }
+)
 Display.displayName = "DatePicker.Display"
 
 const Flyout = React.forwardRef<
@@ -507,6 +509,7 @@ const SingleDatePicker = ({
               <div className="border-ui-border-base flex items-center gap-x-2 border-t p-3">
                 <Button
                   variant="secondary"
+                  size="small"
                   className="w-full"
                   type="button"
                   onClick={onCancel}
@@ -515,6 +518,7 @@ const SingleDatePicker = ({
                 </Button>
                 <Button
                   variant="primary"
+                  size="small"
                   className="w-full"
                   type="button"
                   onClick={onApply}
@@ -818,7 +822,7 @@ const RangeDatePicker = ({
 
 /**
  * @interface
- * 
+ *
  * @prop presets - Provide selectable preset configurations.
  * @prop defaultValue - The date selected by default.
  * @prop value - The selected date.
@@ -987,11 +991,11 @@ const validatePresets = (
  * This component is based on the [Calendar](https://docs.medusajs.com/ui/components/calendar)
  * component and [Radix UI Popover](https://www.radix-ui.com/primitives/docs/components/popover).
  */
-const DatePicker = ({ 
+const DatePicker = ({
   /**
    * The date picker's mode.
    */
-  mode = "single", 
+  mode = "single",
   ...props
 }: DatePickerProps) => {
   if (props.presets) {

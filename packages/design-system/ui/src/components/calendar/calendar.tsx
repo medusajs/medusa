@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronLeftMini, ChevronRightMini } from "@medusajs/icons"
+import { TriangleRightMini } from "@medusajs/icons"
 import * as React from "react"
 import {
   DayPicker,
@@ -38,7 +38,7 @@ type CalendarProps =
 
 /**
  * This component is based on the [react-date-picker](https://www.npmjs.com/package/react-date-picker) package.
- * 
+ *
  * @excludeExternal
  */
 const Calendar = ({
@@ -56,7 +56,7 @@ const Calendar = ({
   mode = "single",
   /**
    * Whether to show days of previous and next months.
-   * 
+   *
    * @keep
    */
   showOutsideDays = true,
@@ -75,7 +75,7 @@ const Calendar = ({
           "txt-compact-small-plus absolute bottom-0 left-0 right-0 top-1 flex items-center justify-center text-ui-fg-base",
         nav: "space-x-1 flex items-center bg-ui-bg-base-pressed rounded-md w-full h-full justify-between p-0.5",
         nav_button: clx(
-          iconButtonVariants({ variant: "primary", size: "base" })
+          iconButtonVariants({ variant: "transparent", size: "small" })
         ),
         nav_button_previous: "!absolute left-0.5",
         nav_button_next: "!absolute right-0.5",
@@ -97,8 +97,8 @@ const Calendar = ({
         ...classNames,
       }}
       components={{
-        IconLeft: () => <ChevronLeftMini />,
-        IconRight: () => <ChevronRightMini />,
+        IconLeft: () => <TriangleRightMini />,
+        IconRight: () => <TriangleRightMini />,
         Day: Day,
       }}
       {...(props as SingleProps & RangeProps)}
