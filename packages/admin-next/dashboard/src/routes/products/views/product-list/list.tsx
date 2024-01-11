@@ -1,13 +1,12 @@
 import type { Product } from "@medusajs/medusa"
 import {
+  Button,
   Checkbox,
   CommandBar,
   Container,
   DropdownMenu,
-  Heading,
   IconButton,
   Table,
-  Text,
   clx,
 } from "@medusajs/ui"
 import {
@@ -22,13 +21,19 @@ import { useAdminDeleteProduct, useAdminProducts } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useLoaderData, useNavigate } from "react-router-dom"
 
-import { Thumbnail } from "../../../../components/common/thumbnail"
 import { productsLoader } from "./loader"
 
-import { EllipsisVertical, Trash } from "@medusajs/icons"
+import { EllipsisHorizontal, Trash } from "@medusajs/icons"
 import after from "medusa-admin:widgets/product/list/after"
 import before from "medusa-admin:widgets/product/list/before"
 import { useTranslation } from "react-i18next"
+import {
+  ProductAvailabilityCell,
+  ProductCollectionCell,
+  ProductInventoryCell,
+  ProductStatusCell,
+  ProductTitleCell,
+} from "../../../../components/common/product-table-cells"
 
 const PAGE_SIZE = 50
 
@@ -87,8 +92,11 @@ export const ProductList = () => {
         <w.Component key={i} />
       ))}
       <Container className="overflow-hidden p-0">
-        <div className="px-8 pb-4 pt-6">
-          <Heading>{t("products.domain")}</Heading>
+        <div className="flex items-center justify-between px-6 py-4">
+          <div></div>
+          <div className="flex items-center gap-x-2">
+            <Button variant="secondary">{t("general.create")}</Button>
+          </div>
         </div>
         <div>
           <Table>
@@ -97,7 +105,7 @@ export const ProductList = () => {
                 return (
                   <Table.Row
                     key={headerGroup.id}
-                    className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th]:w-1/3"
+                    className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap"
                   >
                     {headerGroup.headers.map((header) => {
                       return (
@@ -183,9 +191,9 @@ const ProductActions = ({ id }: { id: string }) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenu.Trigger>
+      <DropdownMenu.Trigger asChild>
         <IconButton variant="transparent">
-          <EllipsisVertical />
+          <EllipsisHorizontal />
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
@@ -237,30 +245,40 @@ const useColumns = () => {
       }),
       columnHelper.accessor("title", {
         header: t("fields.title"),
+        cell: ({ row }) => {
+          return <ProductTitleCell product={row.original} />
+        },
+      }),
+      columnHelper.accessor("collection", {
+        header: t("fields.collection"),
         cell: (cell) => {
-          const title = cell.getValue()
-          const thumbnail = cell.row.original.thumbnail
+          const collection = cell.getValue()
 
-          return (
-            <div className="flex items-center gap-x-3">
-              <Thumbnail src={thumbnail} alt={`Thumbnail image of ${title}`} />
-              <Text size="small" className="text-ui-fg-base">
-                {title}
-              </Text>
-            </div>
-          )
+          return <ProductCollectionCell collection={collection} />
+        },
+      }),
+      columnHelper.accessor("sales_channels", {
+        header: t("fields.availability"),
+        cell: (cell) => {
+          const salesChannels = cell.getValue()
+
+          return <ProductAvailabilityCell salesChannels={salesChannels ?? []} />
         },
       }),
       columnHelper.accessor("variants", {
-        header: t("products.variants"),
+        header: t("fields.inventory"),
         cell: (cell) => {
           const variants = cell.getValue()
 
-          return (
-            <Text size="small" className="text-ui-fg-base">
-              {variants.length}
-            </Text>
-          )
+          return <ProductInventoryCell variants={variants} />
+        },
+      }),
+      columnHelper.accessor("status", {
+        header: t("fields.status"),
+        cell: (cell) => {
+          const value = cell.getValue()
+
+          return <ProductStatusCell status={value} />
         },
       }),
       columnHelper.display({

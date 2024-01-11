@@ -33,11 +33,11 @@ const useSelectContext = () => {
  * It also accepts all props of the HTML `select` component.
  */
 const Root = ({
-  children, 
+  children,
   /**
    * The select's size.
    */
-  size = "base", 
+  size = "base",
   ...props
 }: SelectProps) => {
   return (
@@ -63,7 +63,7 @@ Value.displayName = "Select.Value"
 
 const triggerVariants = cva({
   base: clx(
-    "bg-ui-bg-field txt-compact-medium shadow-buttons-neutral transition-fg flex w-full select-none items-center justify-between rounded-md outline-none",
+    "bg-ui-bg-field shadow-buttons-neutral transition-fg flex w-full select-none items-center justify-between rounded-md outline-none",
     "data-[placeholder]:text-ui-fg-muted text-ui-fg-base",
     "hover:bg-ui-bg-field-hover",
     "focus:shadow-borders-interactive-with-active data-[state=open]:!shadow-borders-interactive-with-active",
@@ -74,8 +74,8 @@ const triggerVariants = cva({
   ),
   variants: {
     size: {
-      base: "h-10 px-3 py-[9px]",
-      small: "h-8 px-2 py-[5px]",
+      base: "h-10 px-3 py-[9px] txt-compact-medium",
+      small: "h-8 px-2 py-[5px] txt-compact-small",
     },
   },
 })

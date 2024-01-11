@@ -14,10 +14,16 @@
     "enabled": "Enabled",
     "disabled": "Disabled",
     "remove": "Remove",
+    "admin": "Admin",
+    "store": "Store",
     "countSelected": "{{count}} selected",
     "plusCountMore": "+ {{count}} more",
     "areYouSure": "Are you sure?",
-    "noRecordsFound": "No records found"
+    "noRecordsFound": "No records found",
+    "typeToConfirm": "Please type {val} to confirm:",
+    "noResultsMessage": "Try changing the filters or search query",
+    "noRecordsTitle": "No records",
+    "noRecordsMessage": "There are no records to show"
   },
   "products": {
     "domain": "Products",
@@ -67,7 +73,9 @@
     "manageYourProfileDetails": "Manage your profile details",
     "editProfile": "Edit profile",
     "languageHint": "The language you want to use in the admin dashboard. This will not change the language of your store.",
-    "userInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>."
+    "userInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>.",
+    "language": "Language",
+    "usageInsights": "Usage insights"
   },
   "users": {
     "domain": "Users",
@@ -81,38 +89,48 @@
   "store": {
     "domain": "Store",
     "manageYourStoresDetails": "Manage your store's details",
-    "editStoreDetails": "Edit Store Details",
-    "storeName": "Store name",
+    "editStore": "Edit store",
+    "defaultCurrency": "Default currency",
     "swapLinkTemplate": "Swap link template",
     "paymentLinkTemplate": "Payment link template",
-    "inviteLinkTemplate": "Invite link template"
+    "inviteLinkTemplate": "Invite link template",
+    "currencies": "Currencies",
+    "addCurrencies": "Add currencies",
+    "removeCurrencyWarning_one": "You are about to remove {{count}} currency from your store. Ensure that you have removed all prices using the currency before proceeding.",
+    "removeCurrencyWarning_other": "You are about to remove {{count}} currencies from your store. Ensure that you have removed all prices using the currencies before proceeding.",
+    "currencyAlreadyAdded": "The currency has already been added to your store."
   },
   "regions": {
-    "domain": "Regions"
+    "domain": "Regions",
+    "createRegion": "Create Region",
+    "editRegion": "Edit Region",
+    "deleteRegionWarning": "You are about to delete the region {{name}}. This action cannot be undone.",
+    "taxInclusiveHint": "When enabled all prices in the region will be tax inclusive.",
+    "providersHint": "The providers that are available in the region."
+  },
+  "locations": {
+    "domain": "Locations",
+    "createLocation": "Create location",
+    "editLocation": "Edit location",
+    "addSalesChannels": "Add sales channels",
+    "detailsHint": "Specify the details of the location.",
+    "noLocationsFound": "No locations found",
+    "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone."
   },
   "salesChannels": {
     "domain": "Sales Channels",
+    "createSalesChannel": "Create sales channel",
     "removeProductsWarning_one": "You are about to remove {{count}} product from {{sales_channel}}.",
     "removeProductsWarning_other": "You are about to remove {{count}} products from {{sales_channel}}.",
     "addProducts": "Add Products",
-    "editSalesChannel": "Edit Sales Channel",
+    "editSalesChannel": "Edit sales channel",
     "isEnabledHint": "Specify if the sales channel is enabled or disabled.",
-    "productAlreadyAdded": "The product has already been added to the sales channel."
-  },
-  "currencies": {
-    "domain": "Currencies",
-    "manageTheCurrencies": "Manage the currencies you want to use in your store",
-    "editCurrencyDetails": "Edit Currency Details",
-    "defaultCurrency": "Default Currency",
-    "defaultCurrencyHint": "The default currency of your store.",
-    "removeCurrenciesWarning_one": "You are about to remove {{count}} currency from your store. Ensure that you have removed all prices using the currency before proceeding.",
-    "removeCurrenciesWarning_other": "You are about to remove {{count}} currencies from your store. Ensure that you have removed all prices using the currencies before proceeding.",
-    "currencyAlreadyAdded": "The currency has already been added to your store."
+    "productAlreadyAdded": "The product has already been added to the sales channel.",
+    "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone."
   },
   "apiKeyManagement": {
     "domain": "API Key Management",
-    "createAPublishableApiKey": "Create a publishable API key",
-    "createKey": "Create Key"
+    "createKey": "Create key"
   },
   "fields": {
     "name": "Name",
@@ -133,8 +151,27 @@
     "sales_channels": "Sales Channels",
     "status": "Status",
     "code": "Code",
+    "countries": "Countries",
+    "paymentProviders": "Payment Providers",
+    "fulfillmentProviders": "Fulfillment Providers",
+    "providers": "Providers",
     "availability": "Availability",
     "inventory": "Inventory",
-    "optional": "Optional"
+    "optional": "Optional",
+    "taxInclusivePricing": "Tax Inclusive Pricing",
+    "taxRate": "Tax Rate",
+    "taxCode": "Tax Code",
+    "currency": "Currency",
+    "address": "Address",
+    "address2": "Apartment, suite, etc.",
+    "city": "City",
+    "postalCode": "Postal Code",
+    "country": "Country",
+    "state": "State",
+    "province": "Province",
+    "company": "Company",
+    "phone": "Phone",
+    "metadata": "Metadata",
+    "selectCountry": "Select country"
   }
 }
