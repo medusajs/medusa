@@ -64,7 +64,7 @@ export default class Campaign {
     cascade: ["soft-remove"] as any,
     nullable: true,
   })
-  campaign_budget?: CampaignBudget
+budget?: CampaignBudget
 
   @OneToMany(() => Promotion, (promotion) => promotion.campaign, {
     orphanRemoval: true,
@@ -91,7 +91,7 @@ export default class Campaign {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "promocamp")
+    this.id = generateEntityId(this.id, "procamp")
   }
 
   @OnInit()

@@ -25,7 +25,7 @@ export default class CampaignBudgetService<
 
   @InjectManager("campaignBudgetRepository_")
   async retrieve(
-    campaignId: string,
+    campaignBudgetId: string,
     config: FindConfig<PromotionTypes.CampaignBudgetDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {

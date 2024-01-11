@@ -66,7 +66,7 @@ export default class CampaignBudget {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "promocabud")
+    this.id = generateEntityId(this.id, "probudg")
   }
 
   @OnInit()
