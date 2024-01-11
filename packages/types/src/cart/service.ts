@@ -90,5 +90,6 @@ export interface ICartModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<CartLineItemDTO[]>
 
-  // removeLineItems(lineItemIds: string[], sharedContext?: Context): Promise<void>
+  removeLineItems(itemIds: string[], sharedContext?: Context): Promise<void>
+  removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
 }

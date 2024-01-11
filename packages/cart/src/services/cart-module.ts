@@ -395,9 +395,18 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
   }
+  async removeLineItems(
+    itemIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  async removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
 
-  // @InjectTransactionManager("baseRepository_")
-  // async removeLineItems(lineItemIds: string[], sharedContext?: Context): Promise<void> {
-
-  // }
+  @InjectTransactionManager("baseRepository_")
+  async removeLineItems(
+    itemIds: string | string[],
+    sharedContext?: Context
+  ): Promise<void> {
+    const toDelete = Array.isArray(itemIds) ? itemIds : [itemIds]
+    await this.lineItemService_.delete(toDelete, sharedContext)
+  }
 }
