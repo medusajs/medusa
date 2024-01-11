@@ -8,7 +8,8 @@ import { areRulesValidForContext } from "../validations"
 
 export function getComputedActionsForShippingMethods(
   promotion: PromotionTypes.PromotionDTO,
-  shippingMethodApplicationContext: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS]
+  shippingMethodApplicationContext: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS],
+  itemIdPromoValueMap: Map<string, number>
 ): PromotionTypes.ComputeActions[] {
   const applicableShippingItems: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS] =
     []
@@ -33,12 +34,17 @@ export function getComputedActionsForShippingMethods(
     applicableShippingItems.push(shippingMethodContext)
   }
 
-  return applyPromotionToShippingMethods(promotion, applicableShippingItems)
+  return applyPromotionToShippingMethods(
+    promotion,
+    applicableShippingItems,
+    itemIdPromoValueMap
+  )
 }
 
 export function applyPromotionToShippingMethods(
   promotion: PromotionTypes.PromotionDTO,
-  shippingMethods: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS]
+  shippingMethods: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS],
+  itemIdPromoValueMap: Map<string, number>
 ): PromotionTypes.ComputeActions[] {
   const { application_method: applicationMethod } = promotion
   const allocation = applicationMethod?.allocation!
@@ -46,9 +52,10 @@ export function applyPromotionToShippingMethods(
 
   if (allocation === ApplicationMethodAllocation.EACH) {
     for (const item of shippingMethods!) {
+      const appliedPromoValue = itemIdPromoValueMap.get(item.id) || 0
       const promotionValue = parseFloat(applicationMethod!.value!)
       let amount = promotionValue
-      const applicableTotal = item.unit_price
+      const applicableTotal = item.unit_price - appliedPromoValue
 
       if (promotionValue > applicableTotal) {
         amount = applicableTotal
@@ -57,6 +64,8 @@ export function applyPromotionToShippingMethods(
       if (amount <= 0) {
         continue
       }
+
+      itemIdPromoValueMap.set(item.id, appliedPromoValue + amount)
 
       computedActions.push({
         action: "addShippingMethodAdjustment",

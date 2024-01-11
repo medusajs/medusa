@@ -12,6 +12,7 @@ import { areRulesValidForContext } from "../validations"
 export function getComputedActionsForItems(
   promotion: PromotionTypes.PromotionDTO,
   itemApplicationContext: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.ITEMS],
+  itemIdPromoValueMap: Map<string, number>,
   allocationOverride?: ApplicationMethodAllocationValues
 ): PromotionTypes.ComputeActions[] {
   const applicableItems: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.ITEMS] =
@@ -37,12 +38,18 @@ export function getComputedActionsForItems(
     applicableItems.push(itemContext)
   }
 
-  return applyPromotionToItems(promotion, applicableItems, allocationOverride)
+  return applyPromotionToItems(
+    promotion,
+    applicableItems,
+    itemIdPromoValueMap,
+    allocationOverride
+  )
 }
 
 export function applyPromotionToItems(
   promotion: PromotionTypes.PromotionDTO,
   items: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.ITEMS],
+  itemIdPromoValueMap: Map<string, number>,
   allocationOverride?: ApplicationMethodAllocationValues
 ): PromotionTypes.ComputeActions[] {
   const { application_method: applicationMethod } = promotion
@@ -53,12 +60,14 @@ export function applyPromotionToItems(
     [allocation, allocationOverride].includes(ApplicationMethodAllocation.EACH)
   ) {
     for (const item of items!) {
+      const appliedPromoValue = itemIdPromoValueMap.get(item.id) || 0
       const promotionValue = parseFloat(applicationMethod!.value!)
-      let amount = promotionValue
-
       const applicableTotal =
         item.unit_price *
-        Math.min(item.quantity, applicationMethod?.max_quantity!)
+          Math.min(item.quantity, applicationMethod?.max_quantity!) -
+        appliedPromoValue
+
+      let amount = promotionValue
 
       if (promotionValue > applicableTotal) {
         amount = applicableTotal
@@ -67,6 +76,8 @@ export function applyPromotionToItems(
       if (amount <= 0) {
         continue
       }
+
+      itemIdPromoValueMap.set(item.id, appliedPromoValue + amount)
 
       computedActions.push({
         action: "addItemAdjustment",

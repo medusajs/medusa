@@ -92,6 +92,7 @@ export default class PromotionModuleService<
       string,
       PromotionTypes.ComputeActionAdjustmentLine
     >()
+    const itemIdPromoValueMap = new Map<string, number>()
 
     items.forEach((item) => {
       item.adjustments?.forEach((adjustment) => {
@@ -195,7 +196,8 @@ export default class PromotionModuleService<
         const computedActionsForItems =
           ComputeActionUtils.getComputedActionsForOrder(
             promotion,
-            applicationContext
+            applicationContext,
+            itemIdPromoValueMap
           )
 
         computedActions.push(...computedActionsForItems)
@@ -205,7 +207,8 @@ export default class PromotionModuleService<
         const computedActionsForItems =
           ComputeActionUtils.getComputedActionsForItems(
             promotion,
-            applicationContext[ApplicationMethodTargetType.ITEMS]
+            applicationContext[ApplicationMethodTargetType.ITEMS],
+            itemIdPromoValueMap
           )
 
         computedActions.push(...computedActionsForItems)
@@ -218,7 +221,8 @@ export default class PromotionModuleService<
         const computedActionsForShippingMethods =
           ComputeActionUtils.getComputedActionsForShippingMethods(
             promotion,
-            applicationContext[ApplicationMethodTargetType.SHIPPING_METHODS]
+            applicationContext[ApplicationMethodTargetType.SHIPPING_METHODS],
+            itemIdPromoValueMap
           )
 
         computedActions.push(...computedActionsForShippingMethods)
