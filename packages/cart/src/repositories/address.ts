@@ -20,6 +20,8 @@ export class AddressRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
       return manager.assign(address, update)
     })
 
-    return await super.update(entities, context)
+    manager.persist(entities)
+
+    return entities
   }
 }
