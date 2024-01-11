@@ -2,11 +2,14 @@ import { Context } from "@medusajs/types"
 import { DALUtils } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Address } from "@models"
-import { UpdateAddressDTO } from "../types"
+import { CreateAddressDTO, UpdateAddressDTO } from "../types"
 
-export class AddressRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Address>(
-  Address
-) {
+export class AddressRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
+  Address,
+  {
+    create: CreateAddressDTO
+  }
+>(Address) {
   async update(
     data: { address: Address; update: UpdateAddressDTO }[],
     context: Context = {}
@@ -17,8 +20,6 @@ export class AddressRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Ad
       return manager.assign(address, update)
     })
 
-    manager.persist(entities)
-
-    return entities
+    return await super.update(entities, context)
   }
 }

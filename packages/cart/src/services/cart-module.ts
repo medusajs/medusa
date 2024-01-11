@@ -90,11 +90,12 @@ export default class CartModuleService implements ICartModuleService {
 
   async create(
     data: CreateCartDTO[],
-    sharedContext: Context
+    sharedContext?: Context
   ): Promise<CartDTO[]>
 
-  async create(data: CreateCartDTO, sharedContext: Context): Promise<CartDTO>
+  async create(data: CreateCartDTO, sharedContext?: Context): Promise<CartDTO>
 
+  @InjectManager("baseRepository_")
   async create(
     data: CreateCartDTO[] | CreateCartDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -124,10 +125,10 @@ export default class CartModuleService implements ICartModuleService {
 
   async update(
     data: UpdateCartDTO[],
-    sharedContext: Context
+    sharedContext?: Context
   ): Promise<CartDTO[]>
 
-  async update(data: UpdateCartDTO, sharedContext: Context): Promise<CartDTO>
+  async update(data: UpdateCartDTO, sharedContext?: Context): Promise<CartDTO>
 
   @InjectManager("baseRepository_")
   async update(
