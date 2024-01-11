@@ -31,9 +31,10 @@ export default class Payment {
 
   @Property({
     columnType: "numeric",
+    nullable: true,
     serializer: Number,
   })
-  authorized_amount: number
+  authorized_amount: number | null
 
   @Property()
   provider_id: string
