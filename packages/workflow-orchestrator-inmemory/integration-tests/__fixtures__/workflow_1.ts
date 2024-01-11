@@ -24,8 +24,10 @@ const step_1 = createStep(
 
 const step_2 = createStep(
   "step_2",
-  jest.fn((a, context) => {
+  jest.fn((input, context) => {
     console.log("triggered async request", context.metadata.idempotency_key)
+
+    return new StepResponse({ notAsyncResponse: input.hey })
   }),
   jest.fn((_, context) => {
     return new StepResponse({
@@ -41,7 +43,7 @@ const step_3 = createStep(
   jest.fn((res) => {
     return new StepResponse({
       done: {
-        ...res,
+        inputFromSyncStep: res.notAsyncResponse,
       },
     })
   })
@@ -50,12 +52,12 @@ const step_3 = createStep(
 createWorkflow("worflow_1", function (input) {
   step_1(input)
 
-  step_2(undefined)
+  const ret2 = step_2({ hey: "oh" })
 
-  const ret2 = step_2(undefined).config({
-    action: "newName",
+  step_2({ hi: "hello" }).config({
+    action: "new_step_name",
     async: true,
   })
 
-  step_3(ret2)
+  return step_3(ret2)
 })

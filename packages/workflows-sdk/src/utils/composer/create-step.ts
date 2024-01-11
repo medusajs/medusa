@@ -174,7 +174,10 @@ function applyStep<
     stepConfig.noCompensation = !compensateFn
 
     this.flow.addAction(stepName, stepConfig)
-    this.handlers.set(stepName, handler)
+
+    if (!this.handlers.has(stepName)) {
+      this.handlers.set(stepName, handler)
+    }
 
     const ret = {
       __type: OrchestrationUtils.SymbolWorkflowStep,
