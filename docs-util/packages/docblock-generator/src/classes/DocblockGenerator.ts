@@ -21,7 +21,6 @@ class DocblockGenerator {
   }
 
   async run() {
-    console.log("Running...")
     this.program = ts.createProgram(this.options.paths, {})
 
     this.checker = this.program.getTypeChecker()
@@ -38,6 +37,8 @@ class DocblockGenerator {
         if (file.isDeclarationFile || !this.isFileIncluded(file.fileName)) {
           return
         }
+
+        console.log(`Generating for ${file.fileName}...`)
 
         let fileContent = file.getFullText()
 
@@ -81,12 +82,11 @@ class DocblockGenerator {
           )
         }
 
-        console.log(`Finished generating docblock for ${file.fileName}`)
+        console.log(`Finished generating docblock for ${file.fileName}.`)
       })
     )
 
     this.reset()
-    console.log(`Finishing running.`)
   }
 
   isFileIncluded(fileName: string): boolean {

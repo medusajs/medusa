@@ -28,22 +28,24 @@ class Formatter {
     config: Linter.ConfigOverride<Linter.RulesRecord>,
     fileName?: string
   ): Linter.ConfigOverride<Linter.RulesRecord> {
-    if (config.parserOptions && config.parserOptions.project?.length) {
+    // clone config
+    const newConfig = structuredClone(config)
+    if (newConfig.parserOptions && newConfig.parserOptions.project?.length) {
       // fix parser projects paths to be relative to this script
-      config.parserOptions.project = (
-        config.parserOptions.project as string[]
+      newConfig.parserOptions.project = (
+        newConfig.parserOptions.project as string[]
       ).map((projectPath) => path.resolve(this.cwd, projectPath))
 
       if (fileName) {
-        config.parserOptions.project = (
-          config.parserOptions.project as string[]
+        newConfig.parserOptions.project = (
+          newConfig.parserOptions.project as string[]
         ).filter((projectPath) =>
           fileName.startsWith(path.dirname(projectPath))
         )
       }
     }
 
-    return config
+    return newConfig
   }
 
   async getESLintConfig() {
@@ -62,7 +64,9 @@ class Formatter {
     )
 
     if (this.generalESLintConfig) {
-      this.normalizeConfigObject(this.generalESLintConfig)
+      this.generalESLintConfig = this.normalizeConfigObject(
+        this.generalESLintConfig
+      )
     }
   }
 
@@ -87,8 +91,9 @@ class Formatter {
       return undefined
     }
 
-    relevantConfig =
-      relevantConfig || Object.assign({}, this.generalESLintConfig!)
+    relevantConfig = structuredClone(
+      relevantConfig || this.generalESLintConfig!
+    )
 
     relevantConfig!.files = [path.relative(this.cwd, filePath)]
 
