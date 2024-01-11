@@ -64,11 +64,11 @@ export default class WorkflowExecution {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "wo")
+    this.id = generateEntityId(this.id, "wf_exec")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "wo")
+    this.id = generateEntityId(this.id, "wf_exec")
   }
 }

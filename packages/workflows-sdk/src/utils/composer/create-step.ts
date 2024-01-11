@@ -175,7 +175,7 @@ function applyStep<
       __type: OrchestrationUtils.SymbolWorkflowStep,
       __step__: stepName,
       config: (config: Omit<TransactionStepsDefinition, "next">) => {
-        this.flow.replaceAction(stepName, stepName, {
+        this.flow.replaceAction(stepName, stepConfig.action ?? stepName, {
           ...stepConfig,
           ...config,
         })

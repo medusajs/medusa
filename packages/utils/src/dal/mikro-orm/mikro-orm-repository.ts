@@ -4,27 +4,26 @@ import {
   FilterQuery as InternalFilerQuery,
   RepositoryTransformOptions,
 } from "@medusajs/types"
-import { arrayDifference, isString, MedusaError } from "../../common"
-import { MedusaContext } from "../../decorators"
-import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
-import {
-  getSoftDeletedCascadedEntitiesIdsMappedBy,
-  transactionWrapper,
-} from "../utils"
-import { mikroOrmSerializer, mikroOrmUpdateDeletedAtRecursively } from "./utils"
 import {
   EntityManager,
   EntitySchema,
-  FilterQuery,
   LoadStrategy,
   RequiredEntityData,
 } from "@mikro-orm/core"
+import { FindOptions as MikroOptions } from "@mikro-orm/core/drivers/IDatabaseDriver"
 import {
   EntityClass,
   EntityName,
   FilterQuery as MikroFilterQuery,
 } from "@mikro-orm/core/typings"
-import { FindOptions as MikroOptions } from "@mikro-orm/core/drivers/IDatabaseDriver"
+import { MedusaError, isString } from "../../common"
+import { MedusaContext } from "../../decorators"
+import { InjectTransactionManager, buildQuery } from "../../modules-sdk"
+import {
+  getSoftDeletedCascadedEntitiesIdsMappedBy,
+  transactionWrapper,
+} from "../utils"
+import { mikroOrmSerializer, mikroOrmUpdateDeletedAtRecursively } from "./utils"
 
 export class MikroOrmBase<T = any> {
   readonly manager_: any
@@ -89,7 +88,7 @@ export class MikroOrmBaseRepository<
     throw new Error("Method not implemented.")
   }
 
-  delete(ids: string[], context?: Context): Promise<void> {
+  delete(ids: string[] | object[], context?: Context): Promise<void> {
     throw new Error("Method not implemented.")
   }
 
@@ -229,7 +228,7 @@ export function mikroOrmBaseRepositoryFactory<
   }
 >(
   entity: EntityClass<T> | EntitySchema<T> | string,
-  primaryKey: string = "id"
+  primaryKey: string | string[] = "id"
 ) {
   class MikroOrmAbstractBaseRepository_ extends MikroOrmBaseRepository<T> {
     async create(data: TDTos["create"][], context?: Context): Promise<T[]> {
@@ -250,22 +249,32 @@ export function mikroOrmBaseRepositoryFactory<
     async update(data: TDTos["update"][], context?: Context): Promise<T[]> {
       const manager = this.getActiveManager<EntityManager>(context)
 
-      const primaryKeyValues: string[] = data.map((data_) => data_[primaryKey])
-      const existingEntities = await this.find(
-        {
-          where: {
-            [primaryKey]: {
-              $in: primaryKeyValues,
-            },
-          },
-        } as DAL.FindOptions<T>,
-        context
+      const primaryKeyFields = Array.isArray(primaryKey)
+        ? primaryKey
+        : [primaryKey]
+
+      const findCriteria = data.map((dt) => ({
+        $and: primaryKeyFields.map((key) => ({ [key]: dt[key] })),
+      }))
+
+      const existingEntities = await Promise.all(
+        findCriteria.map((criteria) =>
+          this.find({ where: criteria } as DAL.FindOptions<T>, context)
+        )
       )
 
-      const missingEntities = arrayDifference(
-        data.map((d) => d[primaryKey]),
-        existingEntities.map((d: any) => d[primaryKey])
-      )
+      const existingEntitiesMap = new Map<string, T>()
+      existingEntities.forEach((entity) => {
+        if (entity) {
+          const key = primaryKeyFields.map((k) => entity[k]).join("_")
+          existingEntitiesMap.set(key, entity[0])
+        }
+      })
+
+      const missingEntities = data.filter((d) => {
+        const key = primaryKeyFields.map((k) => d[k]).join("_")
+        return !existingEntitiesMap.has(key)
+      })
 
       if (missingEntities.length) {
         const entityName = (entity as EntityClass<T>).name ?? entity
@@ -277,15 +286,10 @@ export function mikroOrmBaseRepositoryFactory<
         )
       }
 
-      const existingEntitiesMap = new Map(
-        existingEntities.map<[string, T]>((entity_: any) => [
-          entity_[primaryKey],
-          entity_,
-        ])
-      )
-
       const entities = data.map((data_) => {
-        const existingEntity = existingEntitiesMap.get(data_[primaryKey])!
+        const key = primaryKeyFields.map((k) => data_[k]).join("_")
+        const existingEntity = existingEntitiesMap.get(key)!
+
         return manager.assign(existingEntity, data_ as RequiredEntityData<T>)
       })
 
@@ -294,13 +298,38 @@ export function mikroOrmBaseRepositoryFactory<
       return entities
     }
 
-    async delete(primaryKeyValues: string[], context?: Context): Promise<void> {
+    async delete(
+      primaryKeyValues: string[] | object[],
+      context?: Context
+    ): Promise<void> {
       const manager = this.getActiveManager<EntityManager>(context)
 
-      await manager.nativeDelete<T>(
-        entity as EntityName<T>,
-        { [primaryKey]: { $in: primaryKeyValues } } as unknown as FilterQuery<T>
-      )
+      const isCompositeKey = Array.isArray(primaryKey)
+
+      let deletionCriteria
+      if (isCompositeKey) {
+        deletionCriteria = {
+          $or: primaryKeyValues.map((compositeKeyValue) => {
+            const keys = Object.keys(compositeKeyValue)
+            if (!primaryKey.every((k) => keys.includes(k))) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                `Composite key must contain all primary key fields: ${primaryKey}. Found: ${keys}`
+              )
+            }
+
+            const criteria: { [key: string]: any } = {}
+            for (const key of primaryKey) {
+              criteria[key] = compositeKeyValue[key]
+            }
+            return criteria
+          }),
+        }
+      } else {
+        deletionCriteria = { [primaryKey]: { $in: primaryKeyValues } }
+      }
+
+      await manager.nativeDelete<T>(entity as EntityName<T>, deletionCriteria)
     }
 
     async find(options?: DAL.FindOptions<T>, context?: Context): Promise<T[]> {

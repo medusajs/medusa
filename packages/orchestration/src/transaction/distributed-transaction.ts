@@ -226,20 +226,6 @@ export class DistributedTransaction extends EventEmitter {
     return null
   }
 
-  public async deleteCheckpoint(): Promise<void> {
-    const options = this.getFlow().options
-    if (!options?.storeExecution) {
-      return
-    }
-
-    const key = TransactionOrchestrator.getKeyName(
-      DistributedTransaction.keyPrefix,
-      this.modelId,
-      this.transactionId
-    )
-    await DistributedTransaction.keyValueStore.delete(key)
-  }
-
   public async scheduleRetry(
     step: TransactionStep,
     interval: number

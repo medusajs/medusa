@@ -1,3 +1,4 @@
+import { TransactionState } from "@medusajs/utils"
 import { TransactionCheckpoint } from "../distributed-transaction"
 import { DistributedTransactionStorage } from "./abstract-storage"
 
@@ -23,10 +24,16 @@ export class BaseInMemoryDistributedTransactionStorage extends DistributedTransa
     data: TransactionCheckpoint,
     ttl?: number
   ): Promise<void> {
-    this.storage.set(key, data)
-  }
+    const hasFinished = [
+      TransactionState.DONE,
+      TransactionState.REVERTED,
+      TransactionState.FAILED,
+    ].includes(data.flow.state)
 
-  async delete(key: string): Promise<void> {
-    this.storage.delete(key)
+    if (hasFinished) {
+      this.storage.delete(key)
+    } else {
+      this.storage.set(key, data)
+    }
   }
 }

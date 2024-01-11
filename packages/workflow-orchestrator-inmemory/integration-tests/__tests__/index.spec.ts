@@ -3,6 +3,7 @@ import {
   IWorkflowOrchestratorModuleService,
   RemoteJoinerQuery,
 } from "@medusajs/types"
+import { TransactionHandlerType } from "@medusajs/utils"
 import { knex } from "knex"
 import "../__fixtures__/"
 import { DB_URL, TestDatabase } from "../utils"
@@ -46,7 +47,7 @@ describe("Workflow Orchestrator module", function () {
               database: {
                 clientUrl: DB_URL,
                 schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-                debug: true,
+                // debug: true,
               },
             },
           },
@@ -71,14 +72,31 @@ describe("Workflow Orchestrator module", function () {
         throwOnError: true,
       })
 
-      const executions = await query({
+      let executionsList = await query({
         workflow_executions: {
           fields: ["workflow_id", "transaction_id", "state"],
         },
       })
 
-      console.log(executions)
-      expect(executions).toHaveLength(1)
+      expect(executionsList).toHaveLength(1)
+
+      await workflowOrcModule.setStepSuccess({
+        idempotencyKey: {
+          action: TransactionHandlerType.INVOKE,
+          stepId: "step_2",
+          workflowId: "worflow_1",
+          transactionId: executionsList[0].transaction_id,
+        },
+        stepResponse: { uhuuuu: "yeaah!" },
+      })
+
+      executionsList = await query({
+        workflow_executions: {
+          fields: ["workflow_id", "transaction_id", "state"],
+        },
+      })
+
+      expect(executionsList).toHaveLength(0)
     })
   })
 })

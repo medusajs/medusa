@@ -48,6 +48,15 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
     ])
   }
 
+  private async deleteFromDb(data: TransactionCheckpoint) {
+    await this.workflowExecutionService_.delete([
+      {
+        workflow_id: data.flow.modelId,
+        transaction_id: data.flow.transactionId,
+      },
+    ])
+  }
+
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
     return this.storage.get(key)
   }
@@ -69,29 +78,28 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
      * Store the retention time only if the transaction is done, failed or reverted.
      * From that moment, this tuple can be later on archived or deleted after the retention time.
      */
-    const finalStatus = [
+    const hasFinished = [
       TransactionState.DONE,
       TransactionState.FAILED,
       TransactionState.REVERTED,
-    ]
-    const isFinalStatus = finalStatus.includes(data.flow.state)
+    ].includes(data.flow.state)
 
-    if (isFinalStatus) {
+    if (hasFinished) {
       retentionTime = data.flow.options?.retentionTime
       Object.assign(data, {
         retention_time: retentionTime,
       })
     }
 
-    await this.saveToDb(data)
+    if (hasFinished && !retentionTime) {
+      await this.deleteFromDb(data)
+    } else {
+      await this.saveToDb(data)
+    }
 
-    if (isFinalStatus) {
+    if (hasFinished) {
       this.storage.delete(key)
     }
-  }
-
-  async delete(key: string): Promise<void> {
-    this.storage.delete(key)
   }
 
   async scheduleRetry(

@@ -468,11 +468,7 @@ export class TransactionOrchestrator extends EventEmitter {
           await transaction.clearTransactionTimeout()
         }
 
-        if (flow.options?.retentionTime == undefined) {
-          await transaction.deleteCheckpoint()
-        } else {
-          await transaction.saveCheckpoint()
-        }
+        await transaction.saveCheckpoint()
 
         this.emit(DistributedTransactionEvent.FINISH, { transaction })
       }

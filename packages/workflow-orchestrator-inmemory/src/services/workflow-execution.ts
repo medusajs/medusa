@@ -91,9 +91,9 @@ export class WorkflowExecutionService<
 
   @InjectTransactionManager("workflowExecutionRepository_")
   async delete(
-    ids: string[],
+    idsOrPKs: string[] | object[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await this.workflowExecutionRepository_.delete(ids, sharedContext)
+    await this.workflowExecutionRepository_.delete(idsOrPKs, sharedContext)
   }
 }

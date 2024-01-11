@@ -7,6 +7,13 @@ import {
   WorkflowOrchestratorRunDTO,
 } from "./common"
 
+export type IdempotencyKeyParts = {
+  workflowId: string
+  transactionId: string
+  stepId: string
+  action: "invoke" | "compensate"
+}
+
 export interface IWorkflowOrchestratorModuleService extends IModuleService {
   listWorkflowExecution(
     filters?: FilterableWorkflowExecutionProps,
@@ -44,7 +51,7 @@ export interface IWorkflowOrchestratorModuleService extends IModuleService {
       stepResponse,
       options,
     }: {
-      idempotencyKey: string | object
+      idempotencyKey: string | IdempotencyKeyParts
       stepResponse: unknown
       options?: Record<string, any>
     },

@@ -51,7 +51,7 @@ createWorkflow("worflow_1", function (input) {
   step_1(input)
 
   const ret2 = step_2(undefined).config({
-    //action: "newName",
+    action: "newName",
     async: true,
   })
 
