@@ -34,10 +34,10 @@ export default class Campaign {
   name: string
 
   @Property({ columnType: "text", nullable: true })
-  description?: string
+  description: string | null
 
   @Property({ columnType: "text", nullable: true })
-  currency?: string
+  currency: string | null
 
   @Property({ columnType: "text" })
   @Unique({
@@ -64,7 +64,7 @@ export default class Campaign {
     cascade: ["soft-remove"] as any,
     nullable: true,
   })
-  budget?: CampaignBudget
+  budget: CampaignBudget | null
 
   @OneToMany(() => Promotion, (promotion) => promotion.campaign, {
     orphanRemoval: true,
