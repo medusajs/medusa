@@ -2,16 +2,7 @@ export default async function handler({ data: { id }, container }) {
   const orderService = container.resolve("orderService")
   const cartService = container.resolve("cartService")
   const segmentService = container.resolve("segmentService")
-  const order = await orderService.retrieve(id, {
-    select: [
-      "shipping_total",
-      "discount_total",
-      "tax_total",
-      "refunded_total",
-      "gift_card_total",
-      "subtotal",
-      "total",
-    ],
+  const order = await orderService.retrieveWithTotals(id, {
     relations: [
       "customer",
       "billing_address",
