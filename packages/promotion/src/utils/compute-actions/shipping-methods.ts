@@ -17,7 +17,7 @@ export function getComputedActionsForShippingMethods(
   if (!shippingMethodApplicationContext) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `"shipping_method" should be present as an array in the context for computeActions`
+      `"shipping_methods" should be present as an array in the context for computeActions`
     )
   }
 
