@@ -1,3 +1,4 @@
+import { DAL } from "@medusajs/types"
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -17,9 +18,10 @@ import Promotion from "./promotion"
 type OptionalFields =
   | "description"
   | "currency"
-  | "created_at"
-  | "updated_at"
+  | "starts_at"
+  | "ends_at"
   | "deleted_at"
+  | DAL.EntityDateColumns
 
 type OptionalRelations = "budget"
 
@@ -96,6 +98,6 @@ export default class Campaign {
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "promocamp")
+    this.id = generateEntityId(this.id, "procamp")
   }
 }

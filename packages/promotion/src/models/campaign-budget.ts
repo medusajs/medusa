@@ -1,4 +1,4 @@
-import { CampaignBudgetTypeValues } from "@medusajs/types"
+import { CampaignBudgetTypeValues, DAL } from "@medusajs/types"
 import { PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -13,7 +13,7 @@ import {
 } from "@mikro-orm/core"
 import Campaign from "./campaign"
 
-type OptionalFields = "description" | "created_at" | "updated_at" | "deleted_at"
+type OptionalFields = "description" | "deleted_at" | DAL.EntityDateColumns
 
 @Entity()
 export default class CampaignBudget {
@@ -71,6 +71,6 @@ export default class CampaignBudget {
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "promocabud")
+    this.id = generateEntityId(this.id, "probudg")
   }
 }
