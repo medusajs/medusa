@@ -77,12 +77,11 @@ export default class PromotionModuleService<
   }
 
   async computeActions(
-    promotionsToApply: Pick<PromotionTypes.PromotionDTO, "code">[],
+    promotionCodesToApply: string[],
     applicationContext: PromotionTypes.ComputeActionContext,
     // TODO: specify correct type with options
     options: Record<string, any> = {}
   ): Promise<PromotionTypes.ComputeActions[]> {
-    const promotionCodesToApply = promotionsToApply.map((p) => p.code!)
     const computedActions: PromotionTypes.ComputeActions[] = []
     const { items = [], shipping_methods: shippingMethods = [] } =
       applicationContext
@@ -92,7 +91,7 @@ export default class PromotionModuleService<
       string,
       PromotionTypes.ComputeActionAdjustmentLine
     >()
-    const itemIdPromoValueMap = new Map<string, number>()
+    const methodIdPromoValueMap = new Map<string, number>()
 
     items.forEach((item) => {
       item.adjustments?.forEach((adjustment) => {
@@ -197,7 +196,7 @@ export default class PromotionModuleService<
           ComputeActionUtils.getComputedActionsForOrder(
             promotion,
             applicationContext,
-            itemIdPromoValueMap
+            methodIdPromoValueMap
           )
 
         computedActions.push(...computedActionsForItems)
@@ -208,7 +207,7 @@ export default class PromotionModuleService<
           ComputeActionUtils.getComputedActionsForItems(
             promotion,
             applicationContext[ApplicationMethodTargetType.ITEMS],
-            itemIdPromoValueMap
+            methodIdPromoValueMap
           )
 
         computedActions.push(...computedActionsForItems)
@@ -222,7 +221,7 @@ export default class PromotionModuleService<
           ComputeActionUtils.getComputedActionsForShippingMethods(
             promotion,
             applicationContext[ApplicationMethodTargetType.SHIPPING_METHODS],
-            itemIdPromoValueMap
+            methodIdPromoValueMap
           )
 
         computedActions.push(...computedActionsForShippingMethods)
@@ -362,7 +361,7 @@ export default class PromotionModuleService<
         ) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `application_method.target_rules for target_type (${ApplicationMethodTargetType.ORDER}) is not allowed`
+            `Target rules for application method with target type (${ApplicationMethodTargetType.ORDER}) is not allowed`
           )
         }
 

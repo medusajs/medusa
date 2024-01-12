@@ -1,6 +1,6 @@
-import { pickFromObject } from "../pick-from-object"
+import { pickValueFromObject } from "../pick-value-from-object"
 
-describe("pickFromObject", function () {
+describe("pickValueFromObject", function () {
   it("should return true or false for different types of data", function () {
     const expectations = [
       {
@@ -104,7 +104,7 @@ describe("pickFromObject", function () {
 
     expectations.forEach((expectation) => {
       expect(
-        pickFromObject(expectation.input["1"], expectation.input["2"])
+        pickValueFromObject(expectation.input["1"], expectation.input["2"])
       ).toEqual(expectation.output)
     })
   })

@@ -163,7 +163,7 @@ describe("Promotion Service", () => {
         .catch((e) => e)
 
       expect(error.message).toContain(
-        "application_method.target_rules for target_type (order) is not allowed"
+        "Target rules for application method with target type (order) is not allowed"
       )
     })
 

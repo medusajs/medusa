@@ -14,7 +14,7 @@ import {
 
 export interface IPromotionModuleService extends IModuleService {
   computeActions(
-    promotionsToApply: Pick<PromotionDTO, "code">[],
+    promotionCodesToApply: string[],
     applicationContext: ComputeActionContext,
     options?: Record<string, any>
   ): Promise<ComputeActions[]>

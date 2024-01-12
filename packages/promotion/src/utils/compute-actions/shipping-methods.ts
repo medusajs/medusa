@@ -9,7 +9,7 @@ import { areRulesValidForContext } from "../validations"
 export function getComputedActionsForShippingMethods(
   promotion: PromotionTypes.PromotionDTO,
   shippingMethodApplicationContext: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS],
-  itemIdPromoValueMap: Map<string, number>
+  methodIdPromoValueMap: Map<string, number>
 ): PromotionTypes.ComputeActions[] {
   const applicableShippingItems: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS] =
     []
@@ -17,7 +17,7 @@ export function getComputedActionsForShippingMethods(
   if (!shippingMethodApplicationContext) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `"items" not found in context`
+      `"shipping_method" should be present as an array in the context for computeActions`
     )
   }
 
@@ -37,39 +37,35 @@ export function getComputedActionsForShippingMethods(
   return applyPromotionToShippingMethods(
     promotion,
     applicableShippingItems,
-    itemIdPromoValueMap
+    methodIdPromoValueMap
   )
 }
 
 export function applyPromotionToShippingMethods(
   promotion: PromotionTypes.PromotionDTO,
   shippingMethods: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS],
-  itemIdPromoValueMap: Map<string, number>
+  methodIdPromoValueMap: Map<string, number>
 ): PromotionTypes.ComputeActions[] {
   const { application_method: applicationMethod } = promotion
   const allocation = applicationMethod?.allocation!
   const computedActions: PromotionTypes.ComputeActions[] = []
 
   if (allocation === ApplicationMethodAllocation.EACH) {
-    for (const item of shippingMethods!) {
-      const appliedPromoValue = itemIdPromoValueMap.get(item.id) || 0
+    for (const method of shippingMethods!) {
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
       const promotionValue = parseFloat(applicationMethod!.value!)
-      let amount = promotionValue
-      const applicableTotal = item.unit_price - appliedPromoValue
-
-      if (promotionValue > applicableTotal) {
-        amount = applicableTotal
-      }
+      const applicableTotal = method.unit_price - appliedPromoValue
+      const amount = Math.min(promotionValue, applicableTotal)
 
       if (amount <= 0) {
         continue
       }
 
-      itemIdPromoValueMap.set(item.id, appliedPromoValue + amount)
+      methodIdPromoValueMap.set(method.id, appliedPromoValue + amount)
 
       computedActions.push({
         action: "addShippingMethodAdjustment",
-        shipping_method_id: item.id,
+        shipping_method_id: method.id,
         amount,
         code: promotion.code!,
       })
@@ -77,41 +73,37 @@ export function applyPromotionToShippingMethods(
   }
 
   if (allocation === ApplicationMethodAllocation.ACROSS) {
-    const totalApplicableValue = shippingMethods!.reduce((acc, item) => {
-      const appliedPromoValue = itemIdPromoValueMap.get(item.id) || 0
+    const totalApplicableValue = shippingMethods!.reduce((acc, method) => {
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
 
-      return acc + item.unit_price - appliedPromoValue
+      return acc + method.unit_price - appliedPromoValue
     }, 0)
 
     if (totalApplicableValue <= 0) {
       return computedActions
     }
 
-    for (const item of shippingMethods!) {
+    for (const method of shippingMethods!) {
       const promotionValue = parseFloat(applicationMethod!.value!)
-      const applicableTotal = item.unit_price
-      const appliedPromoValue = itemIdPromoValueMap.get(item.id) || 0
+      const applicableTotal = method.unit_price
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
 
       // TODO: should we worry about precision here?
       const applicablePromotionValue =
         (applicableTotal / totalApplicableValue) * promotionValue -
         appliedPromoValue
 
-      let amount = applicablePromotionValue
-
-      if (applicablePromotionValue > applicableTotal) {
-        amount = applicableTotal
-      }
+      const amount = Math.min(applicablePromotionValue, applicableTotal)
 
       if (amount <= 0) {
         continue
       }
 
-      itemIdPromoValueMap.set(item.id, appliedPromoValue + amount)
+      methodIdPromoValueMap.set(method.id, appliedPromoValue + amount)
 
       computedActions.push({
         action: "addShippingMethodAdjustment",
-        shipping_method_id: item.id,
+        shipping_method_id: method.id,
         amount,
         code: promotion.code!,
       })

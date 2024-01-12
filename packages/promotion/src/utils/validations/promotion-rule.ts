@@ -3,7 +3,8 @@ import {
   MedusaError,
   PromotionRuleOperator,
   isPresent,
-  pickFromObject,
+  isString,
+  pickValueFromObject,
 } from "@medusajs/utils"
 import { CreatePromotionRuleDTO } from "../../types"
 
@@ -54,10 +55,10 @@ export function areRulesValidForContext(
       return false
     }
 
-    const valuesToCheck = pickFromObject(rule.attribute, context)
+    const valuesToCheck = pickValueFromObject(rule.attribute, context)
 
     return evaluateRuleValueCondition(
-      validRuleValues,
+      validRuleValues.filter(isString),
       rule.operator!,
       valuesToCheck
     )

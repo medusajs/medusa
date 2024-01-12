@@ -29,7 +29,7 @@ describe("Promotion Service: computeActions", () => {
   describe("when code is not present in database", () => {
     it("should throw error when code in promotions array does not exist", async () => {
       const error = await service
-        .computeActions([{ code: "DOES_NOT_EXIST" }], {
+        .computeActions(["DOES_NOT_EXIST"], {
           customer: {
             customer_group: {
               id: "VIP",
@@ -83,7 +83,7 @@ describe("Promotion Service: computeActions", () => {
       ])
 
       const error = await service
-        .computeActions([{ code: "PROMOTION_TEST" }], {
+        .computeActions(["PROMOTION_TEST"], {
           items: [
             {
               id: "item_cotton_tshirt",
@@ -126,7 +126,7 @@ describe("Promotion Service: computeActions", () => {
       ])
 
       const error = await service
-        .computeActions([{ code: "PROMOTION_TEST" }], {
+        .computeActions(["PROMOTION_TEST"], {
           items: [
             {
               id: "item_cotton_tshirt",
@@ -184,40 +184,37 @@ describe("Promotion Service: computeActions", () => {
         },
       ])
 
-      const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }],
-        {
-          customer: {
-            customer_group: {
-              id: "VIP",
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        items: [
+          {
+            id: "item_cotton_tshirt",
+            quantity: 1,
+            unit_price: 100,
+            product_category: {
+              id: "catg_cotton",
+            },
+            product: {
+              id: "prod_tshirt",
             },
           },
-          items: [
-            {
-              id: "item_cotton_tshirt",
-              quantity: 1,
-              unit_price: 100,
-              product_category: {
-                id: "catg_cotton",
-              },
-              product: {
-                id: "prod_tshirt",
-              },
+          {
+            id: "item_cotton_sweater",
+            quantity: 5,
+            unit_price: 150,
+            product_category: {
+              id: "catg_cotton",
             },
-            {
-              id: "item_cotton_sweater",
-              quantity: 5,
-              unit_price: 150,
-              product_category: {
-                id: "catg_cotton",
-              },
-              product: {
-                id: "prod_sweater",
-              },
+            product: {
+              id: "prod_sweater",
             },
-          ],
-        }
-      )
+          },
+        ],
+      })
 
       expect(result).toEqual([
         {
@@ -293,7 +290,7 @@ describe("Promotion Service: computeActions", () => {
       ])
 
       const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }, { code: "PROMOTION_TEST_2" }],
+        ["PROMOTION_TEST", "PROMOTION_TEST_2"],
         {
           customer: {
             customer_group: {
@@ -413,7 +410,7 @@ describe("Promotion Service: computeActions", () => {
       ])
 
       const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }, { code: "PROMOTION_TEST_2" }],
+        ["PROMOTION_TEST", "PROMOTION_TEST_2"],
         {
           customer: {
             customer_group: {
@@ -494,40 +491,37 @@ describe("Promotion Service: computeActions", () => {
         },
       ])
 
-      const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }],
-        {
-          customer: {
-            customer_group: {
-              id: "VIP",
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        items: [
+          {
+            id: "item_cotton_tshirt",
+            quantity: 1,
+            unit_price: 100,
+            product_category: {
+              id: "catg_cotton",
+            },
+            product: {
+              id: "prod_tshirt",
             },
           },
-          items: [
-            {
-              id: "item_cotton_tshirt",
-              quantity: 1,
-              unit_price: 100,
-              product_category: {
-                id: "catg_cotton",
-              },
-              product: {
-                id: "prod_tshirt",
-              },
+          {
+            id: "item_cotton_sweater",
+            quantity: 2,
+            unit_price: 150,
+            product_category: {
+              id: "catg_cotton",
             },
-            {
-              id: "item_cotton_sweater",
-              quantity: 2,
-              unit_price: 150,
-              product_category: {
-                id: "catg_cotton",
-              },
-              product: {
-                id: "prod_sweater",
-              },
+            product: {
+              id: "prod_sweater",
             },
-          ],
-        }
-      )
+          },
+        ],
+      })
 
       expect(result).toEqual([
         {
@@ -603,7 +597,7 @@ describe("Promotion Service: computeActions", () => {
       ])
 
       const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }, { code: "PROMOTION_TEST_2" }],
+        ["PROMOTION_TEST", "PROMOTION_TEST_2"],
         {
           customer: {
             customer_group: {
@@ -723,7 +717,7 @@ describe("Promotion Service: computeActions", () => {
       ])
 
       const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }, { code: "PROMOTION_TEST_2" }],
+        ["PROMOTION_TEST", "PROMOTION_TEST_2"],
         {
           customer: {
             customer_group: {
@@ -816,39 +810,36 @@ describe("Promotion Service: computeActions", () => {
         },
       ])
 
-      const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }],
-        {
-          customer: {
-            customer_group: {
-              id: "VIP",
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        shipping_methods: [
+          {
+            id: "shipping_method_express",
+            unit_price: 250,
+            shipping_option: {
+              id: "express",
             },
           },
-          shipping_methods: [
-            {
-              id: "shipping_method_express",
-              unit_price: 250,
-              shipping_option: {
-                id: "express",
-              },
+          {
+            id: "shipping_method_standard",
+            unit_price: 150,
+            shipping_option: {
+              id: "standard",
             },
-            {
-              id: "shipping_method_standard",
-              unit_price: 150,
-              shipping_option: {
-                id: "standard",
-              },
+          },
+          {
+            id: "shipping_method_snail",
+            unit_price: 200,
+            shipping_option: {
+              id: "snail",
             },
-            {
-              id: "shipping_method_snail",
-              unit_price: 200,
-              shipping_option: {
-                id: "snail",
-              },
-            },
-          ],
-        }
-      )
+          },
+        ],
+      })
 
       expect(result).toEqual([
         {
@@ -924,7 +915,7 @@ describe("Promotion Service: computeActions", () => {
       ])
 
       const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }, { code: "PROMOTION_TEST_2" }],
+        ["PROMOTION_TEST", "PROMOTION_TEST_2"],
         {
           customer: {
             customer_group: {
@@ -1037,7 +1028,7 @@ describe("Promotion Service: computeActions", () => {
       ])
 
       const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }, { code: "PROMOTION_TEST_2" }],
+        ["PROMOTION_TEST", "PROMOTION_TEST_2"],
         {
           customer: {
             customer_group: {
@@ -1117,39 +1108,36 @@ describe("Promotion Service: computeActions", () => {
         },
       ])
 
-      const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }],
-        {
-          customer: {
-            customer_group: {
-              id: "VIP",
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        shipping_methods: [
+          {
+            id: "shipping_method_express",
+            unit_price: 500,
+            shipping_option: {
+              id: "express",
             },
           },
-          shipping_methods: [
-            {
-              id: "shipping_method_express",
-              unit_price: 500,
-              shipping_option: {
-                id: "express",
-              },
+          {
+            id: "shipping_method_standard",
+            unit_price: 100,
+            shipping_option: {
+              id: "standard",
             },
-            {
-              id: "shipping_method_standard",
-              unit_price: 100,
-              shipping_option: {
-                id: "standard",
-              },
+          },
+          {
+            id: "shipping_method_snail",
+            unit_price: 200,
+            shipping_option: {
+              id: "snail",
             },
-            {
-              id: "shipping_method_snail",
-              unit_price: 200,
-              shipping_option: {
-                id: "snail",
-              },
-            },
-          ],
-        }
-      )
+          },
+        ],
+      })
 
       expect(result).toEqual([
         {
@@ -1225,7 +1213,7 @@ describe("Promotion Service: computeActions", () => {
       ])
 
       const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }, { code: "PROMOTION_TEST_2" }],
+        ["PROMOTION_TEST", "PROMOTION_TEST_2"],
         {
           customer: {
             customer_group: {
@@ -1344,7 +1332,7 @@ describe("Promotion Service: computeActions", () => {
       ])
 
       const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }, { code: "PROMOTION_TEST_2" }],
+        ["PROMOTION_TEST", "PROMOTION_TEST_2"],
         {
           customer: {
             customer_group: {
@@ -1416,40 +1404,37 @@ describe("Promotion Service: computeActions", () => {
         },
       ])
 
-      const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }],
-        {
-          customer: {
-            customer_group: {
-              id: "VIP",
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        items: [
+          {
+            id: "item_cotton_tshirt",
+            quantity: 1,
+            unit_price: 100,
+            product_category: {
+              id: "catg_cotton",
+            },
+            product: {
+              id: "prod_tshirt",
             },
           },
-          items: [
-            {
-              id: "item_cotton_tshirt",
-              quantity: 1,
-              unit_price: 100,
-              product_category: {
-                id: "catg_cotton",
-              },
-              product: {
-                id: "prod_tshirt",
-              },
+          {
+            id: "item_cotton_sweater",
+            quantity: 2,
+            unit_price: 150,
+            product_category: {
+              id: "catg_cotton",
             },
-            {
-              id: "item_cotton_sweater",
-              quantity: 2,
-              unit_price: 150,
-              product_category: {
-                id: "catg_cotton",
-              },
-              product: {
-                id: "prod_sweater",
-              },
+            product: {
+              id: "prod_sweater",
             },
-          ],
-        }
-      )
+          },
+        ],
+      })
 
       expect(result).toEqual([
         {
@@ -1509,7 +1494,7 @@ describe("Promotion Service: computeActions", () => {
       ])
 
       const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }, { code: "PROMOTION_TEST_2" }],
+        ["PROMOTION_TEST", "PROMOTION_TEST_2"],
         {
           customer: {
             customer_group: {
@@ -1613,7 +1598,7 @@ describe("Promotion Service: computeActions", () => {
       ])
 
       const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }, { code: "PROMOTION_TEST_2" }],
+        ["PROMOTION_TEST", "PROMOTION_TEST_2"],
         {
           customer: {
             customer_group: {
@@ -1713,46 +1698,43 @@ describe("Promotion Service: computeActions", () => {
         },
       ])
 
-      const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }],
-        {
-          customer: {
-            customer_group: {
-              id: "VIP",
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        items: [
+          {
+            id: "item_cotton_tshirt",
+            quantity: 1,
+            unit_price: 100,
+            product_category: {
+              id: "catg_cotton",
+            },
+            product: {
+              id: "prod_tshirt",
+            },
+            adjustments: [
+              {
+                id: "test-adjustment",
+                code: "ADJUSTMENT_CODE",
+              },
+            ],
+          },
+          {
+            id: "item_cotton_sweater",
+            quantity: 5,
+            unit_price: 150,
+            product_category: {
+              id: "catg_cotton",
+            },
+            product: {
+              id: "prod_sweater",
             },
           },
-          items: [
-            {
-              id: "item_cotton_tshirt",
-              quantity: 1,
-              unit_price: 100,
-              product_category: {
-                id: "catg_cotton",
-              },
-              product: {
-                id: "prod_tshirt",
-              },
-              adjustments: [
-                {
-                  id: "test-adjustment",
-                  code: "ADJUSTMENT_CODE",
-                },
-              ],
-            },
-            {
-              id: "item_cotton_sweater",
-              quantity: 5,
-              unit_price: 150,
-              product_category: {
-                id: "catg_cotton",
-              },
-              product: {
-                id: "prod_sweater",
-              },
-            },
-          ],
-        }
-      )
+        ],
+      })
 
       expect(result).toEqual([
         {
@@ -1810,45 +1792,42 @@ describe("Promotion Service: computeActions", () => {
         },
       ])
 
-      const result = await service.computeActions(
-        [{ code: "PROMOTION_TEST" }],
-        {
-          customer: {
-            customer_group: {
-              id: "VIP",
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        shipping_methods: [
+          {
+            id: "shipping_method_express",
+            unit_price: 500,
+            shipping_option: {
+              id: "express",
+            },
+            adjustments: [
+              {
+                id: "test-adjustment",
+                code: "ADJUSTMENT_CODE",
+              },
+            ],
+          },
+          {
+            id: "shipping_method_standard",
+            unit_price: 100,
+            shipping_option: {
+              id: "standard",
             },
           },
-          shipping_methods: [
-            {
-              id: "shipping_method_express",
-              unit_price: 500,
-              shipping_option: {
-                id: "express",
-              },
-              adjustments: [
-                {
-                  id: "test-adjustment",
-                  code: "ADJUSTMENT_CODE",
-                },
-              ],
+          {
+            id: "shipping_method_snail",
+            unit_price: 200,
+            shipping_option: {
+              id: "snail",
             },
-            {
-              id: "shipping_method_standard",
-              unit_price: 100,
-              shipping_option: {
-                id: "standard",
-              },
-            },
-            {
-              id: "shipping_method_snail",
-              unit_price: 200,
-              shipping_option: {
-                id: "snail",
-              },
-            },
-          ],
-        }
-      )
+          },
+        ],
+      })
 
       expect(result).toEqual([
         {
