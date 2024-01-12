@@ -14,7 +14,7 @@ export const defaultCartsData = [
       first_name: "Tony",
       last_name: "Stark",
     },
-    billing_address_id: {
+    billing_address: {
       address_1: "Stark Industries",
       city: "New York",
     },
