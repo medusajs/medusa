@@ -2,6 +2,8 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
+  ComputeActionContext,
+  ComputeActions,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
   FilterablePromotionProps,
@@ -13,9 +15,9 @@ import {
 export interface IPromotionModuleService extends IModuleService {
   computeActions(
     promotionsToApply: Pick<PromotionDTO, "code">[],
-    applicationContext: Record<string, any>,
+    applicationContext: ComputeActionContext,
     options?: Record<string, any>
-  ): Promise<Record<string, any>[]>
+  ): Promise<ComputeActions[]>
 
   create(
     data: CreatePromotionDTO[],
