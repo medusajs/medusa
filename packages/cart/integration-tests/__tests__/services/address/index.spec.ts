@@ -68,7 +68,7 @@ describe("Address Service", () => {
         .catch((e) => e)
 
       expect(error.message).toContain(
-        "Address with id \"none-existing\" not found"
+        'Address with id "none-existing" not found'
       )
     })
 
