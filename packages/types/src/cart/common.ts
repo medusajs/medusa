@@ -169,6 +169,11 @@ export interface CartShippingMethodDTO {
   id: string
 
   /**
+   * The ID of the associated cart
+   */
+  cart_id: string
+
+  /**
    * The name of the shipping method
    */
   name: string

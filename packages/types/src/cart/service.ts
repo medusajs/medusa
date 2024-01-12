@@ -99,17 +99,26 @@ export interface ICartModuleService extends IModuleService {
   removeLineItems(itemIds: string[], sharedContext?: Context): Promise<void>
   removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
 
-  addShippingMethod(
+  addShippingMethods(
     data: AddShippingMethodsDTO,
     sharedContext?: Context
   ): Promise<CartShippingMethodDTO[]>
-  addShippingMethod(
+  addShippingMethods(
     data: AddShippingMethodsDTO[],
     sharedContext?: Context
   ): Promise<CartShippingMethodDTO[]>
-  addShippingMethod(
+  addShippingMethods(
     cartId: string,
     items: CreateShippingMethodDTO[],
     sharedContext?: Context
   ): Promise<CartShippingMethodDTO[]>
+
+  removeShippingMethods(
+    methodIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  removeShippingMethods(
+    methodIds: string,
+    sharedContext?: Context
+  ): Promise<void>
 }

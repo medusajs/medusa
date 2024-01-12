@@ -475,6 +475,7 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
   }
+
   async removeLineItems(
     itemIds: string[],
     sharedContext?: Context
@@ -490,22 +491,22 @@ export default class CartModuleService implements ICartModuleService {
     await this.lineItemService_.delete(toDelete, sharedContext)
   }
 
-  addShippingMethod(
+  addShippingMethods(
     data: CartTypes.AddShippingMethodsDTO,
     sharedContext?: Context
   ): Promise<CartTypes.CartShippingMethodDTO[]>
-  addShippingMethod(
+  addShippingMethods(
     data: CartTypes.AddShippingMethodsDTO[],
     sharedContext?: Context
   ): Promise<CartTypes.CartShippingMethodDTO[]>
-  addShippingMethod(
+  addShippingMethods(
     cartId: string,
     items: CartTypes.CreateShippingMethodDTO[],
     sharedContext?: Context
   ): Promise<CartTypes.CartShippingMethodDTO[]>
 
   @InjectManager("baseRepository_")
-  async addShippingMethod(
+  async addShippingMethods(
     cartIdOrData:
       | string
       | CartTypes.AddShippingMethodsDTO[]
@@ -572,5 +573,23 @@ export default class CartModuleService implements ICartModuleService {
       {},
       sharedContext
     )
+  }
+
+  async removeShippingMethods(
+    methodIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  async removeShippingMethods(
+    methodIds: string,
+    sharedContext?: Context
+  ): Promise<void>
+
+  @InjectTransactionManager("baseRepository_")
+  async removeShippingMethods(
+    methodIds: string | string[],
+    sharedContext?: Context
+  ): Promise<void> {
+    const toDelete = Array.isArray(methodIds) ? methodIds : [methodIds]
+    await this.shippingMethodService_.delete(toDelete, sharedContext)
   }
 }

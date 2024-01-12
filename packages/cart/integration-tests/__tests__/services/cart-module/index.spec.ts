@@ -601,4 +601,106 @@ describe("Cart Module Service", () => {
       )
     })
   })
+
+  describe("addLineItems", () => {
+    it("should add a shipping method to cart succesfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [method] = await service.addShippingMethods(createdCart.id, [
+        {
+          amount: 100,
+          name: "Test",
+        },
+      ])
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["shipping_methods"],
+      })
+
+      expect(method.id).toBe(cart.shipping_methods![0].id)
+    })
+
+    it("should add multiple shipping methods to multiple carts succesfully", async () => {
+      let [eurCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      let [usdCart] = await service.create([
+        {
+          currency_code: "usd",
+        },
+      ])
+
+      const methods = await service.addShippingMethods([
+        {
+          cart_id: eurCart.id,
+          shipping_methods: [
+            {
+              amount: 100,
+              name: "Test One",
+            },
+          ],
+        },
+        {
+          cart_id: usdCart.id,
+          shipping_methods: [
+            {
+              amount: 100,
+              name: "Test One",
+            },
+          ],
+        },
+      ])
+
+      const carts = await service.list(
+        { id: [eurCart.id, usdCart.id] },
+        { relations: ["shipping_methods"] }
+      )
+
+      eurCart = carts.find((c) => c.currency_code === "eur")!
+      usdCart = carts.find((c) => c.currency_code === "usd")!
+
+      const eurMethods = methods.filter((m) => m.cart_id === eurCart.id)
+      const usdMethods = methods.filter((m) => m.cart_id === usdCart.id)
+
+      expect(eurCart.shipping_methods![0].id).toBe(eurMethods[0].id)
+      expect(usdCart.shipping_methods![0].id).toBe(usdMethods[0].id)
+
+      expect(eurCart.shipping_methods?.length).toBe(1)
+      expect(usdCart.shipping_methods?.length).toBe(1)
+    })
+  })
+
+  describe("removeShippingMethods", () => {
+    it("should remove a line item succesfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [method] = await service.addShippingMethods(createdCart.id, [
+        {
+          amount: 100,
+          name: "test",
+        },
+      ])
+
+      expect(method.id).not.toBe(null)
+
+      await service.removeShippingMethods(method.id)
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["shipping_methods"],
+      })
+
+      expect(cart.shipping_methods?.length).toBe(0)
+    })
+  })
 })
