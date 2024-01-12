@@ -8661,7 +8661,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflow-orchestrator-inmemory@workspace:^, @medusajs/workflow-orchestrator-inmemory@workspace:packages/workflow-orchestrator-inmemory":
+"@medusajs/workflow-orchestrator-inmemory@workspace:packages/workflow-orchestrator-inmemory":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-orchestrator-inmemory@workspace:packages/workflow-orchestrator-inmemory"
   dependencies:
@@ -31349,7 +31349,6 @@ __metadata:
     "@medusajs/modules-sdk": "workspace:^"
     "@medusajs/pricing": "workspace:^"
     "@medusajs/product": "workspace:^"
-    "@medusajs/workflow-orchestrator-inmemory": "workspace:^"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
