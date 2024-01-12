@@ -2,6 +2,7 @@ import { IPromotionModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { initialize } from "../../../../src"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
+import { createPromotions } from "../../../__fixtures__/promotion"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
@@ -98,6 +99,43 @@ describe("Promotion Module Service: Campaigns", () => {
             type: "usage",
             used: 10,
           }),
+        })
+      )
+    })
+
+    it("should create a basic campaign with promotions successfully", async () => {
+      await createPromotions(repositoryManager)
+
+      const startsAt = new Date("01/01/2024")
+      const endsAt = new Date("01/01/2025")
+      const [createdCampaign] = await service.createCampaigns([
+        {
+          name: "test",
+          campaign_identifier: "test",
+          starts_at: startsAt,
+          ends_at: endsAt,
+          promotions: [{ id: "promotion-id-1" }, { id: "promotion-id-2" }],
+        },
+      ])
+
+      const campaign = await service.retrieveCampaign(createdCampaign.id, {
+        relations: ["promotions"],
+      })
+
+      expect(campaign).toEqual(
+        expect.objectContaining({
+          name: "test",
+          campaign_identifier: "test",
+          starts_at: startsAt,
+          ends_at: endsAt,
+          promotions: [
+            expect.objectContaining({
+              id: "promotion-id-1",
+            }),
+            expect.objectContaining({
+              id: "promotion-id-2",
+            }),
+          ],
         })
       )
     })

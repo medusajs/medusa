@@ -314,6 +314,7 @@ export default class PromotionModuleService<
           "application_method.target_rules.values",
           "rules",
           "rules.values",
+          "campaign",
         ],
       },
       sharedContext
@@ -329,12 +330,12 @@ export default class PromotionModuleService<
   ) {
     const promotionsData: CreatePromotionDTO[] = []
     const applicationMethodsData: CreateApplicationMethodDTO[] = []
+    const campaignsData: CreateCampaignDTO[] = []
 
     const promotionCodeApplicationMethodDataMap = new Map<
       string,
       PromotionTypes.CreateApplicationMethodDTO
     >()
-
     const promotionCodeRulesDataMap = new Map<
       string,
       PromotionTypes.CreatePromotionRuleDTO[]
@@ -343,10 +344,16 @@ export default class PromotionModuleService<
       string,
       PromotionTypes.CreatePromotionRuleDTO[]
     >()
+    const promotionCodeCampaignMap = new Map<
+      string,
+      PromotionTypes.CreateCampaignDTO
+    >()
 
     for (const {
       application_method: applicationMethodData,
       rules: rulesData,
+      campaign: campaignData,
+      campaign_id: campaignId,
       ...promotionData
     } of data) {
       if (applicationMethodData) {
@@ -360,7 +367,14 @@ export default class PromotionModuleService<
         promotionCodeRulesDataMap.set(promotionData.code, rulesData)
       }
 
-      promotionsData.push(promotionData)
+      if (campaignData) {
+        promotionCodeCampaignMap.set(promotionData.code, campaignData)
+      }
+
+      promotionsData.push({
+        ...promotionData,
+        campaign: campaignId,
+      })
     }
 
     const createdPromotions = await this.promotionService_.create(
@@ -372,6 +386,15 @@ export default class PromotionModuleService<
       const applMethodData = promotionCodeApplicationMethodDataMap.get(
         promotion.code
       )
+
+      const campaignData = promotionCodeCampaignMap.get(promotion.code)
+
+      if (campaignData) {
+        campaignsData.push({
+          ...campaignData,
+          promotions: [promotion],
+        })
+      }
 
       if (applMethodData) {
         const {
@@ -415,6 +438,10 @@ export default class PromotionModuleService<
         applicationMethodsData,
         sharedContext
       )
+
+    if (campaignsData.length) {
+      await this.createCampaigns(campaignsData, sharedContext)
+    }
 
     for (const applicationMethod of createdApplicationMethods) {
       await this.createPromotionRulesAndValues(
@@ -471,13 +498,10 @@ export default class PromotionModuleService<
   ) {
     const promotionIds = data.map((d) => d.id)
     const existingPromotions = await this.promotionService_.list(
-      {
-        id: promotionIds,
-      },
-      {
-        relations: ["application_method"],
-      }
+      { id: promotionIds },
+      { relations: ["application_method"] }
     )
+
     const existingPromotionsMap = new Map<string, Promotion>(
       existingPromotions.map((promotion) => [promotion.id, promotion])
     )
@@ -820,7 +844,21 @@ export default class PromotionModuleService<
     >()
 
     for (const createCampaignData of data) {
-      const { budget: campaignBudgetData, ...campaignData } = createCampaignData
+      const {
+        budget: campaignBudgetData,
+        promotions,
+        ...campaignData
+      } = createCampaignData
+
+      const promotionsToAdd = promotions
+        ? await this.list(
+            {
+              id: promotions.map((p) => p.id),
+            },
+            {},
+            sharedContext
+          )
+        : []
 
       if (campaignBudgetData) {
         campaignIdentifierBudgetMap.set(
@@ -829,7 +867,10 @@ export default class PromotionModuleService<
         )
       }
 
-      campaignsData.push(campaignData)
+      campaignsData.push({
+        ...campaignData,
+        promotions: promotionsToAdd,
+      })
     }
 
     const createdCampaigns = await this.campaignService_.create(

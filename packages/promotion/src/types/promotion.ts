@@ -4,6 +4,7 @@ export interface CreatePromotionDTO {
   code: string
   type: PromotionType
   is_automatic?: boolean
+  campaign?: string
 }
 
 export interface UpdatePromotionDTO {

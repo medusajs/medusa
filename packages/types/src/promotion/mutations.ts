@@ -21,6 +21,9 @@ export interface CreateCampaignDTO {
   starts_at: Date
   ends_at: Date
   budget?: CreateCampaignBudgetDTO
+  promotions?: {
+    id: string
+  }[]
 }
 
 export interface UpdateCampaignDTO {
