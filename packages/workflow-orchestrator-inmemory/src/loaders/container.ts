@@ -10,10 +10,15 @@ import { InMemoryDistributedTransactionStorage } from "../utils"
 export default async ({
   container,
   options,
+  logger,
 }: LoaderOptions<
   | ModulesSdkTypes.ModuleServiceInitializeOptions
   | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
 >): Promise<void> => {
+  logger?.warn(
+    "Workflow Orchestrator In Memory installed. This is not recommended for production."
+  )
+
   const customRepositories = (
     options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   )?.repositories

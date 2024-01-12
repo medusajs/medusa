@@ -66,5 +66,10 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/pricing",
     },
+    [Modules.WORKFLOW_ORCHESTRATOR]: {
+      resolve: "@medusajs/workflow-orchestrator-inmemory",
+      scope: "internal",
+      resources: "shared",
+    },
   },
 }
