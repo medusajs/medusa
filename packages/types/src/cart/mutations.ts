@@ -57,8 +57,9 @@ export interface CreateLineItemTaxLineDTO {
 }
 
 export interface CreateLineItemAdjustmentDTO {
-  code: string
+  item_id: string
   amount: number
+  code?: string
   description?: string
   promotion_id?: string
   provider_id?: string

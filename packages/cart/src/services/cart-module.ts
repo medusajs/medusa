@@ -2,11 +2,13 @@ import {
   CartDTO,
   Context,
   CreateCartDTO,
+  CreateLineItemAdjustmentDTO,
   DAL,
   FilterableCartProps,
   FindConfig,
   ICartModuleService,
   InternalModuleDeclaration,
+  LineItemAdjustmentLineDTO,
   ModuleJoinerConfig,
   UpdateCartDTO,
 } from "@medusajs/types"
@@ -157,15 +159,9 @@ export default class CartModuleService implements ICartModuleService {
     return await this.cartService_.update(data, sharedContext)
   }
 
-  async delete(
-    ids: string[],
-    sharedContext?: Context
-  ): Promise<void>
+  async delete(ids: string[], sharedContext?: Context): Promise<void>
 
-  async delete(
-    ids: string,
-    sharedContext?: Context
-  ): Promise<void>
+  async delete(ids: string, sharedContext?: Context): Promise<void>
 
   @InjectTransactionManager("baseRepository_")
   async delete(
@@ -174,5 +170,22 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<void> {
     const cartIds = Array.isArray(ids) ? ids : [ids]
     await this.cartService_.delete(cartIds, sharedContext)
+  }
+
+  addLineItemAdjustments(
+    data: CreateLineItemAdjustmentDTO[],
+    sharedContext?: Context | undefined
+  ): Promise<LineItemAdjustmentLineDTO[]>
+  addLineItemAdjustments(
+    data: CreateLineItemAdjustmentDTO,
+    sharedContext?: Context | undefined
+  ): Promise<LineItemAdjustmentLineDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  addLineItemAdjustments(
+    data: CreateLineItemAdjustmentDTO | CreateLineItemAdjustmentDTO[],
+    sharedContext?: unknown
+  ): Promise<LineItemAdjustmentLineDTO[] | LineItemAdjustmentLineDTO | void> {
+    // noop
   }
 }

@@ -9,7 +9,7 @@ export interface AdjustmentLineDTO {
   /**
    * The code of the adjustment line
    */
-  code: string
+  code?: string
   /**
    * The amount of the adjustment line
    */

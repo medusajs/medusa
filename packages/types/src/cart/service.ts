@@ -1,8 +1,16 @@
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
-import { CartDTO, FilterableCartProps } from "./common"
-import { CreateCartDTO, UpdateCartDTO } from "./mutations"
+import {
+  CartDTO,
+  FilterableCartProps,
+  LineItemAdjustmentLineDTO,
+} from "./common"
+import {
+  CreateCartDTO,
+  CreateLineItemAdjustmentDTO,
+  UpdateCartDTO,
+} from "./mutations"
 
 export interface ICartModuleService extends IModuleService {
   retrieve(
@@ -48,4 +56,31 @@ export interface ICartModuleService extends IModuleService {
   // ): Promise<CartDTO[]>
 
   // removeLineItems(lineItemIds: string[], sharedContext?: Context): Promise<void>
+
+  addLineItemAdjustments(
+    data: CreateLineItemAdjustmentDTO[],
+    sharedContext?: Context
+  ): Promise<LineItemAdjustmentLineDTO[]>
+  addLineItemAdjustments(
+    data: CreateLineItemAdjustmentDTO,
+    sharedContext?: Context
+  ): Promise<LineItemAdjustmentLineDTO>
+
+  setLineItemAdjustments(
+    data: CreateLineItemAdjustmentDTO[],
+    sharedContext?: Context
+  ): Promise<LineItemAdjustmentLineDTO[]>
+  setLineItemAdjustments(
+    data: CreateLineItemAdjustmentDTO,
+    sharedContext?: Context
+  ): Promise<LineItemAdjustmentLineDTO>
+
+  removeLineItemAdjustments(
+    adjustmentIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  removeLineItemAdjustments(
+    adjustmentIds: string,
+    sharedContext?: Context
+  ): Promise<void>
 }
