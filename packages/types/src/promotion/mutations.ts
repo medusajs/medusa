@@ -1,4 +1,4 @@
-import { CampaignBudgetTypeValues } from "./common"
+import { CampaignBudgetTypeValues, PromotionDTO } from "./common"
 
 export interface CreateCampaignBudgetDTO {
   type: CampaignBudgetTypeValues
@@ -21,9 +21,7 @@ export interface CreateCampaignDTO {
   starts_at: Date
   ends_at: Date
   budget?: CreateCampaignBudgetDTO
-  promotions?: {
-    id: string
-  }[]
+  promotions?: Pick<PromotionDTO, "id">[]
 }
 
 export interface UpdateCampaignDTO {
