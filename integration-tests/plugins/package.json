@@ -16,7 +16,6 @@
     "@medusajs/modules-sdk": "workspace:^",
     "@medusajs/pricing": "workspace:^",
     "@medusajs/product": "workspace:^",
-    "@medusajs/workflow-orchestrator-inmemory": "workspace:^",
     "faker": "^5.5.3",
     "medusa-fulfillment-webshipper": "workspace:*",
     "medusa-interfaces": "workspace:*",
