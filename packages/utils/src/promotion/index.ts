@@ -28,3 +28,8 @@ export enum PromotionRuleOperator {
   NE = "ne",
   IN = "in",
 }
+
+export enum CampaignBudgetType {
+  SPEND = "spend",
+  USAGE = "usage",
+}

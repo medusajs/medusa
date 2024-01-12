@@ -1,4 +1,4 @@
-import { PromotionType } from "@medusajs/types"
+import { DAL, PromotionType } from "@medusajs/types"
 import { PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -7,6 +7,7 @@ import {
   Enum,
   Index,
   ManyToMany,
+  ManyToOne,
   OnInit,
   OneToOne,
   OptionalProps,
@@ -15,14 +16,12 @@ import {
   Unique,
 } from "@mikro-orm/core"
 import ApplicationMethod from "./application-method"
+import Campaign from "./campaign"
 import PromotionRule from "./promotion-rule"
 
-type OptionalFields =
-  | "is_automatic"
-  | "created_at"
-  | "updated_at"
-  | "deleted_at"
-type OptionalRelations = "application_method"
+type OptionalFields = "is_automatic" | "deleted_at" | DAL.EntityDateColumns
+type OptionalRelations = "application_method" | "campaign"
+
 @Entity()
 export default class Promotion {
   [OptionalProps]?: OptionalFields | OptionalRelations
@@ -37,6 +36,13 @@ export default class Promotion {
     properties: ["code"],
   })
   code: string
+
+  @ManyToOne(() => Campaign, {
+    joinColumn: "campaign",
+    fieldName: "campaign_id",
+    nullable: true,
+  })
+  campaign: Campaign
 
   @Property({ columnType: "boolean", default: false })
   is_automatic?: boolean = false
