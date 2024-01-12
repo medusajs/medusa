@@ -25,6 +25,5 @@ module.exports = {
       resolve: "@medusajs/cache-inmemory",
       options: { ttl: cacheTTL },
     },
-    workflowOrchestrator: true,
   },
 }
