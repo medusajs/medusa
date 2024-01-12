@@ -13,7 +13,12 @@ import {
 } from "@mikro-orm/core"
 import Campaign from "./campaign"
 
-type OptionalFields = "description" | "deleted_at" | DAL.EntityDateColumns
+type OptionalFields =
+  | "description"
+  | "limit"
+  | "used"
+  | "deleted_at"
+  | DAL.EntityDateColumns
 
 @Entity()
 export default class CampaignBudget {
