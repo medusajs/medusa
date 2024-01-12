@@ -27,7 +27,7 @@ export default class Refund {
   amount: number
 
   @ManyToOne(() => Payment, {
-    onDelete: "cascade",
+    index: "IDX_refund_payment_id",
     fieldName: "payment_id",
   })
   payment: Payment
