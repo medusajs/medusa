@@ -2,14 +2,21 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
-  CartAddressDTO, CartDTO, CartLineItemDTO,
-  FilterableAddressProps, FilterableCartProps
+  CartAddressDTO,
+  CartDTO,
+  CartLineItemDTO,
+  FilterableAddressProps,
+  FilterableCartProps,
 } from "./common"
 import {
   AddLineItemsDTO,
-  CreateAddressDTO, CreateCartDTO, CreateLineItemDTO,
-  UpdateAddressDTO, UpdateCartDTO, UpdateLineItemDTO,
-  UpdateLineItemsDTO
+  CreateAddressDTO,
+  CreateCartDTO,
+  CreateLineItemDTO,
+  UpdateAddressDTO,
+  UpdateCartDTO,
+  UpdateLineItemDTO,
+  UpdateLineItemsDTO,
 } from "./mutations"
 
 export interface ICartModuleService extends IModuleService {
@@ -50,13 +57,22 @@ export interface ICartModuleService extends IModuleService {
     data: CreateAddressDTO[],
     sharedContext?: Context
   ): Promise<CartAddressDTO[]>
+  createAddresses(
+    data: CreateAddressDTO,
+    sharedContext?: Context
+  ): Promise<CartAddressDTO>
 
   updateAddresses(
     data: UpdateAddressDTO[],
     sharedContext?: Context
   ): Promise<CartAddressDTO[]>
+  updateAddresses(
+    data: UpdateAddressDTO,
+    sharedContext?: Context
+  ): Promise<CartAddressDTO>
 
   deleteAddresses(ids: string[], sharedContext?: Context): Promise<void>
+  deleteAddresses(ids: string, sharedContext?: Context): Promise<void>
 
   addLineItems(
     data: AddLineItemsDTO,

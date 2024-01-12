@@ -1,14 +1,11 @@
 import {
-  CartDTO,
   Context,
-  CreateCartDTO,
   DAL,
   FilterableCartProps,
   FindConfig,
   ICartModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
-  UpdateCartDTO
 } from "@medusajs/types"
 
 import { CartTypes } from "@medusajs/types"
@@ -20,7 +17,6 @@ import {
   isString,
   promiseAll,
 } from "@medusajs/utils"
-
 import { joinerConfig } from "../joiner-config"
 import * as services from "../services"
 
@@ -102,19 +98,21 @@ export default class CartModuleService implements ICartModuleService {
     ]
   }
 
+  async create(
+    data: CartTypes.CreateCartDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.CartDTO[]>
 
   async create(
-    data: CreateCartDTO[],
+    data: CartTypes.CreateCartDTO,
     sharedContext?: Context
-  ): Promise<CartDTO[]>
-
-  async create(data: CreateCartDTO, sharedContext?: Context): Promise<CartDTO>
+  ): Promise<CartTypes.CartDTO>
 
   @InjectManager("baseRepository_")
   async create(
-    data: CreateCartDTO[] | CreateCartDTO,
+    data: CartTypes.CreateCartDTO[] | CartTypes.CreateCartDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartDTO[] | CartDTO> {
+  ): Promise<CartTypes.CartDTO[] | CartTypes.CartDTO> {
     const input = Array.isArray(data) ? data : [data]
 
     const carts = await this.create_(input, sharedContext)
@@ -127,7 +125,9 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
 
-    return (Array.isArray(data) ? result : result[0]) as CartDTO | CartDTO[]
+    return (Array.isArray(data) ? result : result[0]) as
+      | CartTypes.CartDTO
+      | CartTypes.CartDTO[]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -139,17 +139,20 @@ export default class CartModuleService implements ICartModuleService {
   }
 
   async update(
-    data: UpdateCartDTO[],
+    data: CartTypes.UpdateCartDTO[],
     sharedContext?: Context
-  ): Promise<CartDTO[]>
+  ): Promise<CartTypes.CartDTO[]>
 
-  async update(data: UpdateCartDTO, sharedContext?: Context): Promise<CartDTO>
+  async update(
+    data: CartTypes.UpdateCartDTO,
+    sharedContext?: Context
+  ): Promise<CartTypes.CartDTO>
 
   @InjectManager("baseRepository_")
   async update(
-    data: UpdateCartDTO[] | UpdateCartDTO,
+    data: CartTypes.UpdateCartDTO[] | CartTypes.UpdateCartDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartDTO[] | CartDTO> {
+  ): Promise<CartTypes.CartDTO[] | CartTypes.CartDTO> {
     const input = Array.isArray(data) ? data : [data]
     const carts = await this.update_(input, sharedContext)
 
@@ -161,7 +164,9 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
 
-    return (Array.isArray(data) ? result : result[0]) as CartDTO | CartDTO[]
+    return (Array.isArray(data) ? result : result[0]) as
+      | CartTypes.CartDTO
+      | CartTypes.CartDTO[]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -172,15 +177,9 @@ export default class CartModuleService implements ICartModuleService {
     return await this.cartService_.update(data, sharedContext)
   }
 
-  async delete(
-    ids: string[],
-    sharedContext?: Context
-  ): Promise<void>
+  async delete(ids: string[], sharedContext?: Context): Promise<void>
 
-  async delete(
-    ids: string,
-    sharedContext?: Context
-  ): Promise<void>
+  async delete(ids: string, sharedContext?: Context): Promise<void>
 
   @InjectTransactionManager("baseRepository_")
   async delete(
@@ -209,42 +208,6 @@ export default class CartModuleService implements ICartModuleService {
         populate: true,
       }
     )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async createAddresses(
-    data: CartTypes.CreateAddressDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    const addresses = await this.addressService_.create(data, sharedContext)
-
-    return await this.listAddresses(
-      { id: addresses.map((p) => p!.id) },
-      {},
-      sharedContext
-    )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async updateAddresses(
-    data: CartTypes.UpdateAddressDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    const addresses = await this.addressService_.update(data, sharedContext)
-
-    return await this.listAddresses(
-      { id: addresses.map((p) => p!.id) },
-      {},
-      sharedContext
-    )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async deleteAddresses(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    await this.addressService_.delete(ids, sharedContext)
   }
 
   @InjectManager("baseRepository_")
@@ -444,5 +407,89 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<void> {
     const toDelete = Array.isArray(itemIds) ? itemIds : [itemIds]
     await this.lineItemService_.delete(toDelete, sharedContext)
+  }
+
+  async createAddresses(
+    data: CartTypes.CreateAddressDTO,
+    sharedContext?: Context
+  )
+  async createAddresses(
+    data: CartTypes.CreateAddressDTO[],
+    sharedContext?: Context
+  )
+
+  @InjectManager("baseRepository_")
+  async createAddresses(
+    data: CartTypes.CreateAddressDTO[] | CartTypes.CreateAddressDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const input = Array.isArray(data) ? data : [data]
+    const addresses = await this.createAddresses_(input, sharedContext)
+
+    const result = await this.listAddresses(
+      { id: addresses.map((p) => p.id) },
+      {},
+      sharedContext
+    )
+
+    return (Array.isArray(data) ? result : result[0]) as
+      | CartTypes.CartAddressDTO
+      | CartTypes.CartAddressDTO[]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async createAddresses_(
+    data: CartTypes.CreateAddressDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    return await this.addressService_.create(data, sharedContext)
+  }
+
+  async updateAddresses(
+    data: CartTypes.UpdateAddressDTO,
+    sharedContext?: Context
+  )
+  async updateAddresses(
+    data: CartTypes.UpdateAddressDTO[],
+    sharedContext?: Context
+  )
+
+  @InjectManager("baseRepository_")
+  async updateAddresses(
+    data: CartTypes.UpdateAddressDTO[] | CartTypes.UpdateAddressDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const input = Array.isArray(data) ? data : [data]
+    const addresses = await this.updateAddresses_(input, sharedContext)
+
+    const result = await this.listAddresses(
+      { id: addresses.map((p) => p.id) },
+      {},
+      sharedContext
+    )
+
+    return (Array.isArray(data) ? result : result[0]) as
+      | CartTypes.CartAddressDTO
+      | CartTypes.CartAddressDTO[]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async updateAddresses_(
+    data: CartTypes.UpdateAddressDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    return await this.addressService_.update(data, sharedContext)
+  }
+
+  async deleteAddresses(ids: string[], sharedContext?: Context)
+  async deleteAddresses(ids: string, sharedContext?: Context)
+
+  @InjectTransactionManager("baseRepository_")
+  async deleteAddresses(
+    ids: string[] | string,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const addressIds = Array.isArray(ids) ? ids : [ids]
+    await this.addressService_.delete(addressIds, sharedContext)
   }
 }

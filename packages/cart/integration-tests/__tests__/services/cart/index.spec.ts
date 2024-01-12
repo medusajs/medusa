@@ -17,7 +17,7 @@ describe("Cart Service", () => {
     testManager = await MikroOrmWrapper.forkManager()
 
     const cartRepository = new CartRepository({
-      manager: repositoryManager,
+      manager: repositoryManager
     })
 
     service = new CartService({
@@ -74,9 +74,7 @@ describe("Cart Service", () => {
         ])
         .catch((e) => e)
 
-      expect(error.message).toContain(
-        "Cart with id \"none-existing\" not found"
-      )
+      expect(error.message).toContain('Cart with id "none-existing" not found')
     })
 
     it("should update a cart successfully", async () => {
