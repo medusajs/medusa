@@ -5,11 +5,14 @@ import {
   ManyToOne,
   OneToOne,
   OnInit,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import PaymentCollection from "./payment-collection"
+import { DAL } from "@medusajs/types"
 import { generateEntityId } from "@medusajs/utils"
+
+import PaymentCollection from "./payment-collection"
 import Payment from "./payment"
 
 /**
@@ -40,8 +43,17 @@ export enum PaymentSessionStatus {
   CANCELED = "canceled",
 }
 
+type OptionalPaymentSessionProps =
+  | "currency_code"
+  | "data"
+  | "is_selected"
+  | "authorised_at"
+  | DAL.EntityDateColumns
+
 @Entity({ tableName: "payment-session" })
 export default class PaymentSession {
+  [OptionalProps]?: OptionalPaymentSessionProps
+
   @PrimaryKey({ columnType: "text" })
   id: string
 
@@ -65,7 +77,7 @@ export default class PaymentSession {
   })
   status: PaymentSessionStatus
 
-  @Property({ nullable: true })
+  @Property({ columnType: "boolean", nullable: true })
   is_selected: boolean | null
 
   @Property({
@@ -84,7 +96,7 @@ export default class PaymentSession {
     mappedBy: (payment) => payment.session,
     cascade: ["soft-remove"] as any,
   })
-  payment: Payment
+  payment!: Payment
 
   @BeforeCreate()
   onCreate() {

@@ -3,6 +3,7 @@ import {
   Entity,
   ManyToOne,
   OnInit,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -10,8 +11,12 @@ import {
 import { generateEntityId } from "@medusajs/utils"
 import Payment from "./payment"
 
+type OptionalCaptureProps = "created_by" | "created_at" | "completed_at"
+
 @Entity({ tableName: "capture" })
 export default class Capture {
+  [OptionalProps]?: OptionalCaptureProps
+
   @PrimaryKey({ columnType: "text" })
   id: string
 
@@ -34,16 +39,16 @@ export default class Capture {
   })
   created_at: Date
 
-  @Property({ nullable: true })
+  @Property({ columnType: "text", nullable: true })
   created_by: string | null
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "capture")
+    this.id = generateEntityId(this.id, "cap")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "capture")
+    this.id = generateEntityId(this.id, "cap")
   }
 }

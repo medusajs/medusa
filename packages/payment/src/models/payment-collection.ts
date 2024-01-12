@@ -7,9 +7,11 @@ import {
   ManyToMany,
   OneToMany,
   OnInit,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { DAL } from "@medusajs/types"
 
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 import PaymentProvider from "./payment-provider"
@@ -44,9 +46,19 @@ export enum PaymentCollectionStatus {
   CANCELED = "canceled",
 }
 
+type OptionalPaymentCollectionProps =
+  | "currency_code"
+  | "authorized_amount"
+  | "refunded_amount"
+  | "region_id"
+  | "completed_at"
+  | DAL.SoftDeletableEntityDateColumns
+
 @Entity({ tableName: "payment-collection" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class PaymentCollection {
+  [OptionalProps]?: OptionalPaymentCollectionProps
+
   @PrimaryKey({ columnType: "text" })
   id: string
 

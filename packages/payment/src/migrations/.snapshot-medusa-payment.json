@@ -156,6 +156,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "provider_id": {
+          "name": "provider_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "data": {
           "name": "data",
           "type": "jsonb",
@@ -167,30 +176,30 @@
         },
         "name": {
           "name": "name",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "type_detail": {
           "name": "type_detail",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
-          "mappedType": "string"
+          "nullable": true,
+          "mappedType": "text"
         },
         "description_detail": {
           "name": "description_detail",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
-          "mappedType": "string"
+          "nullable": true,
+          "mappedType": "text"
         },
         "metadata": {
           "name": "metadata",
@@ -200,15 +209,6 @@
           "primary": false,
           "nullable": true,
           "mappedType": "json"
-        },
-        "provider_id": {
-          "name": "provider_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
         }
       },
       "name": "payment-method-token",
@@ -395,12 +395,12 @@
         },
         "is_selected": {
           "name": "is_selected",
-          "type": "varchar(255)",
+          "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "string"
+          "mappedType": "boolean"
         },
         "authorised_at": {
           "name": "authorised_at",
@@ -480,50 +480,50 @@
           "nullable": true,
           "mappedType": "decimal"
         },
-        "provider_id": {
-          "name": "provider_id",
-          "type": "varchar(255)",
+        "currency_code": {
+          "name": "currency_code",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "mappedType": "text"
         },
-        "currency_code": {
-          "name": "currency_code",
-          "type": "varchar(255)",
+        "provider_id": {
+          "name": "provider_id",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
-          "mappedType": "string"
+          "nullable": false,
+          "mappedType": "text"
         },
         "cart_id": {
           "name": "cart_id",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "order_id": {
           "name": "order_id",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "customer_id": {
           "name": "customer_id",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "data": {
           "name": "data",
@@ -706,12 +706,12 @@
         },
         "created_by": {
           "name": "created_by",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "string"
+          "mappedType": "text"
         }
       },
       "name": "capture",
@@ -786,12 +786,12 @@
         },
         "created_by": {
           "name": "created_by",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "string"
+          "mappedType": "text"
         }
       },
       "name": "refund",

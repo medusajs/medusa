@@ -3,6 +3,7 @@ import {
   Entity,
   ManyToOne,
   OnInit,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -10,8 +11,12 @@ import {
 import { generateEntityId } from "@medusajs/utils"
 import Payment from "./payment"
 
+type OptionalRefundProps = "created_by" | "completed_at"
+
 @Entity({ tableName: "refund" })
 export default class Refund {
+  [OptionalProps]?: OptionalRefundProps
+
   @PrimaryKey({ columnType: "text" })
   id: string
 
@@ -34,16 +39,16 @@ export default class Refund {
   })
   created_at: Date
 
-  @Property({ nullable: true })
+  @Property({ columnType: "text", nullable: true })
   created_by: string | null
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "refund")
+    this.id = generateEntityId(this.id, "ref")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "refund")
+    this.id = generateEntityId(this.id, "ref")
   }
 }

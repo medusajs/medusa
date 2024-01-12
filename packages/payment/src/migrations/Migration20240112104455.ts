@@ -1,6 +1,6 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20240111173302 extends Migration {
+export class Migration20240112104455 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table if not exists "payment-collection" ("id" text not null, "currency_code" text null, "amount" numeric not null, "authorized_amount" numeric null, "refunded_amount" numeric null, "region_id" text null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, "completed_at" timestamptz null, "status" text check ("status" in (\'not_paid\', \'awaiting\', \'authorized\', \'partially_authorized\', \'canceled\')) not null default \'not_paid\', constraint "payment-collection_pkey" primary key ("id"));'
@@ -10,7 +10,7 @@ export class Migration20240111173302 extends Migration {
     )
 
     this.addSql(
-      'create table if not exists "payment-method-token" ("id" text not null, "data" jsonb null, "name" varchar(255) not null, "type_detail" varchar(255) not null, "description_detail" varchar(255) not null, "metadata" jsonb null, "provider_id" text not null, constraint "payment-method-token_pkey" primary key ("id"));'
+      'create table if not exists "payment-method-token" ("id" text not null, "provider_id" text not null, "data" jsonb null, "name" text not null, "type_detail" text null, "description_detail" text null, "metadata" jsonb null, constraint "payment-method-token_pkey" primary key ("id"));'
     )
 
     this.addSql(
@@ -22,11 +22,11 @@ export class Migration20240111173302 extends Migration {
     )
 
     this.addSql(
-      'create table if not exists "payment-session" ("id" text not null, "currency_code" text null, "amount" numeric not null, "provider_id" text not null, "data" jsonb null, "status" text check ("status" in (\'authorized\', \'pending\', \'requires_more\', \'error\', \'canceled\')) not null, "is_selected" varchar(255) null, "authorised_at" timestamptz null, "payment_collection_id" text not null, constraint "payment-session_pkey" primary key ("id"));'
+      'create table if not exists "payment-session" ("id" text not null, "currency_code" text null, "amount" numeric not null, "provider_id" text not null, "data" jsonb null, "status" text check ("status" in (\'authorized\', \'pending\', \'requires_more\', \'error\', \'canceled\')) not null, "is_selected" boolean null, "authorised_at" timestamptz null, "payment_collection_id" text not null, constraint "payment-session_pkey" primary key ("id"));'
     )
 
     this.addSql(
-      'create table if not exists "payment" ("id" text not null, "amount" numeric not null, "authorized_amount" numeric null, "provider_id" varchar(255) not null, "currency_code" varchar(255) null, "cart_id" varchar(255) null, "order_id" varchar(255) null, "customer_id" varchar(255) null, "data" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, "captured_at" timestamptz null, "canceled_at" timestamptz null, "payment_collection_id" text not null, "session_id" text not null, constraint "payment_pkey" primary key ("id"));'
+      'create table if not exists "payment" ("id" text not null, "amount" numeric not null, "authorized_amount" numeric null, "currency_code" text not null, "provider_id" text not null, "cart_id" text null, "order_id" text null, "customer_id" text null, "data" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, "captured_at" timestamptz null, "canceled_at" timestamptz null, "payment_collection_id" text not null, "session_id" text not null, constraint "payment_pkey" primary key ("id"));'
     )
     this.addSql(
       'create index "IDX_payment_deleted_at" on "payment" ("deleted_at");'
@@ -36,11 +36,11 @@ export class Migration20240111173302 extends Migration {
     )
 
     this.addSql(
-      'create table if not exists "capture" ("id" text not null, "amount" numeric not null, "payment_id" text not null, "created_at" timestamptz not null default now(), "created_by" varchar(255) null, constraint "capture_pkey" primary key ("id"));'
+      'create table if not exists "capture" ("id" text not null, "amount" numeric not null, "payment_id" text not null, "created_at" timestamptz not null default now(), "created_by" text null, constraint "capture_pkey" primary key ("id"));'
     )
 
     this.addSql(
-      'create table if not exists "refund" ("id" text not null, "amount" numeric not null, "payment_id" text not null, "created_at" timestamptz not null default now(), "created_by" varchar(255) null, constraint "refund_pkey" primary key ("id"));'
+      'create table if not exists "refund" ("id" text not null, "amount" numeric not null, "payment_id" text not null, "created_at" timestamptz not null default now(), "created_by" text null, constraint "refund_pkey" primary key ("id"));'
     )
 
     this.addSql(

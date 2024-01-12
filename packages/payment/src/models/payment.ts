@@ -7,9 +7,11 @@ import {
   OneToMany,
   OneToOne,
   OnInit,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { DAL } from "@medusajs/types"
 
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 import Refund from "./refund"
@@ -17,9 +19,21 @@ import Capture from "./capture"
 import PaymentSession from "./payment-session"
 import PaymentCollection from "./payment-collection"
 
+type OptionalPaymentProps =
+  | "authorized_amount"
+  | "cart_id"
+  | "order_id"
+  | "customer_id"
+  | "data"
+  | "captured_at"
+  | "canceled_at"
+  | DAL.SoftDeletableEntityDateColumns
+
 @Entity({ tableName: "payment" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Payment {
+  [OptionalProps]?: OptionalPaymentProps
+
   @PrimaryKey({ columnType: "text" })
   id: string
 
@@ -36,19 +50,19 @@ export default class Payment {
   })
   authorized_amount: number | null
 
-  @Property()
+  @Property({ columnType: "text" })
+  currency_code: string
+
+  @Property({ columnType: "text" })
   provider_id: string
 
-  @Property({ nullable: true })
-  currency_code: string | null
-
-  @Property({ nullable: true })
+  @Property({ columnType: "text", nullable: true })
   cart_id: string | null
 
-  @Property({ nullable: true })
+  @Property({ columnType: "text", nullable: true })
   order_id: string | null
 
-  @Property({ nullable: true })
+  @Property({ columnType: "text", nullable: true })
   customer_id: string | null
 
   @Property({ columnType: "jsonb", nullable: true })
