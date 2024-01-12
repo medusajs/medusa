@@ -192,7 +192,7 @@ class SendGridService extends NotificationService {
         `${normalizedEvent}_template` === template
       )
     })
-    return key ? this.options_[key] : key
+    return this.options_[key] ?? key
   }
 
   async sendNotification(event, eventData, attachmentGenerator) {
