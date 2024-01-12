@@ -7,10 +7,12 @@ import {
   PromotionTypes,
 } from "@medusajs/types"
 import {
+  ApplicationMethodTargetType,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
+  isString,
 } from "@medusajs/utils"
 import { ApplicationMethod, Promotion } from "@models"
 import {
@@ -23,11 +25,14 @@ import { joinerConfig } from "../joiner-config"
 import {
   CreateApplicationMethodDTO,
   CreatePromotionDTO,
+  CreatePromotionRuleDTO,
   UpdateApplicationMethodDTO,
   UpdatePromotionDTO,
 } from "../types"
 import {
+  ComputeActionUtils,
   allowedAllocationForQuantity,
+  areRulesValidForContext,
   validateApplicationMethodAttributes,
   validatePromotionRuleAttributes,
 } from "../utils"
@@ -69,6 +74,161 @@ export default class PromotionModuleService<
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  async computeActions(
+    promotionCodesToApply: string[],
+    applicationContext: PromotionTypes.ComputeActionContext,
+    // TODO: specify correct type with options
+    options: Record<string, any> = {}
+  ): Promise<PromotionTypes.ComputeActions[]> {
+    const computedActions: PromotionTypes.ComputeActions[] = []
+    const { items = [], shipping_methods: shippingMethods = [] } =
+      applicationContext
+    const appliedItemCodes: string[] = []
+    const appliedShippingCodes: string[] = []
+    const codeAdjustmentMap = new Map<
+      string,
+      PromotionTypes.ComputeActionAdjustmentLine
+    >()
+    const methodIdPromoValueMap = new Map<string, number>()
+
+    items.forEach((item) => {
+      item.adjustments?.forEach((adjustment) => {
+        if (isString(adjustment.code)) {
+          codeAdjustmentMap.set(adjustment.code, adjustment)
+          appliedItemCodes.push(adjustment.code)
+        }
+      })
+    })
+
+    shippingMethods.forEach((shippingMethod) => {
+      shippingMethod.adjustments?.forEach((adjustment) => {
+        if (isString(adjustment.code)) {
+          codeAdjustmentMap.set(adjustment.code, adjustment)
+          appliedShippingCodes.push(adjustment.code)
+        }
+      })
+    })
+
+    const promotions = await this.list(
+      {
+        code: [
+          ...promotionCodesToApply,
+          ...appliedItemCodes,
+          ...appliedShippingCodes,
+        ],
+      },
+      {
+        relations: [
+          "application_method",
+          "application_method.target_rules",
+          "application_method.target_rules.values",
+          "rules",
+          "rules.values",
+        ],
+      }
+    )
+
+    const existingPromotionsMap = new Map<string, PromotionTypes.PromotionDTO>(
+      promotions.map((promotion) => [promotion.code!, promotion])
+    )
+
+    for (const appliedCode of [...appliedShippingCodes, ...appliedItemCodes]) {
+      const promotion = existingPromotionsMap.get(appliedCode)
+
+      if (!promotion) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Applied Promotion for code (${appliedCode}) not found`
+        )
+      }
+
+      if (promotionCodesToApply.includes(appliedCode)) {
+        continue
+      }
+
+      if (appliedItemCodes.includes(appliedCode)) {
+        computedActions.push({
+          action: "removeItemAdjustment",
+          adjustment_id: codeAdjustmentMap.get(appliedCode)!.id,
+        })
+      }
+
+      if (appliedShippingCodes.includes(appliedCode)) {
+        computedActions.push({
+          action: "removeShippingMethodAdjustment",
+          adjustment_id: codeAdjustmentMap.get(appliedCode)!.id,
+        })
+      }
+    }
+
+    for (const promotionCode of promotionCodesToApply) {
+      const promotion = existingPromotionsMap.get(promotionCode)
+
+      if (!promotion) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Promotion for code (${promotionCode}) not found`
+        )
+      }
+
+      const {
+        application_method: applicationMethod,
+        rules: promotionRules = [],
+      } = promotion
+
+      if (!applicationMethod) {
+        continue
+      }
+
+      const isPromotionApplicable = areRulesValidForContext(
+        promotionRules,
+        applicationContext
+      )
+
+      if (!isPromotionApplicable) {
+        continue
+      }
+
+      if (applicationMethod.target_type === ApplicationMethodTargetType.ORDER) {
+        const computedActionsForItems =
+          ComputeActionUtils.getComputedActionsForOrder(
+            promotion,
+            applicationContext,
+            methodIdPromoValueMap
+          )
+
+        computedActions.push(...computedActionsForItems)
+      }
+
+      if (applicationMethod.target_type === ApplicationMethodTargetType.ITEMS) {
+        const computedActionsForItems =
+          ComputeActionUtils.getComputedActionsForItems(
+            promotion,
+            applicationContext[ApplicationMethodTargetType.ITEMS],
+            methodIdPromoValueMap
+          )
+
+        computedActions.push(...computedActionsForItems)
+      }
+
+      if (
+        applicationMethod.target_type ===
+        ApplicationMethodTargetType.SHIPPING_METHODS
+      ) {
+        const computedActionsForShippingMethods =
+          ComputeActionUtils.getComputedActionsForShippingMethods(
+            promotion,
+            applicationContext[ApplicationMethodTargetType.SHIPPING_METHODS],
+            methodIdPromoValueMap
+          )
+
+        computedActions.push(...computedActionsForShippingMethods)
+      }
+    }
+
+    return computedActions
   }
 
   @InjectManager("baseRepository_")
@@ -192,6 +352,17 @@ export default class PromotionModuleService<
         const applicationMethodData = {
           ...applicationMethodWithoutRules,
           promotion,
+        }
+
+        if (
+          applicationMethodData.target_type ===
+            ApplicationMethodTargetType.ORDER &&
+          targetRulesData.length
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Target rules for application method with target type (${ApplicationMethodTargetType.ORDER}) is not allowed`
+          )
         }
 
         validateApplicationMethodAttributes(applicationMethodData)
@@ -394,7 +565,7 @@ export default class PromotionModuleService<
 
     for (const ruleData of rulesData) {
       const { values, ...rest } = ruleData
-      const promotionRuleData = {
+      const promotionRuleData: CreatePromotionRuleDTO = {
         ...rest,
         [relationName]: [relation],
       }
