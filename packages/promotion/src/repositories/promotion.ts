@@ -8,4 +8,10 @@ export class PromotionRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     create: CreatePromotionDTO
     Update: UpdatePromotionDTO
   }
->(Promotion) {}
+>(Promotion) {
+  // @ts-ignore
+  constructor(...arguments: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+}

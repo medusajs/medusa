@@ -11,6 +11,12 @@ export class AuthProviderRepository extends DALUtils.mikroOrmBaseRepositoryFacto
     create: RepositoryTypes.CreateAuthProviderDTO
   }
 >(AuthProvider) {
+  // @ts-ignore
+  constructor(...arguments: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+
   async update(
     data: RepositoryTypes.UpdateAuthProviderDTO[],
     context: Context = {}

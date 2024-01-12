@@ -8,6 +8,12 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 export class AuthUserRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
   AuthUser
 ) {
+  // @ts-ignore
+  constructor(...arguments: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+
   async create(
     data: RepositoryTypes.CreateAuthUserDTO[],
     context: Context = {}

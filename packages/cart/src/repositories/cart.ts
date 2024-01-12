@@ -10,6 +10,12 @@ export class CartRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     create: CreateCartDTO
   }
 >(Cart) {
+  // @ts-ignore
+  constructor(...arguments: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+
   async update(
     data: { cart: Cart; update: UpdateCartDTO }[],
     context: Context = {}

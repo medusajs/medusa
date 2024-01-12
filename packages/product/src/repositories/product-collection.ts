@@ -14,6 +14,12 @@ type CreateProductCollection = ProductTypes.CreateProductCollectionDTO & {
 export class ProductCollectionRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
   ProductCollection
 ) {
+  // @ts-ignore
+  constructor(...arguments: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+
   async create(
     data: CreateProductCollection[],
     context: Context = {}

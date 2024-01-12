@@ -8,4 +8,10 @@ export class PromotionRuleRepository extends DALUtils.mikroOrmBaseRepositoryFact
     create: CreatePromotionRuleDTO
     update: UpdatePromotionRuleDTO
   }
->(PromotionRule) {}
+>(PromotionRule) {
+  // @ts-ignore
+  constructor(...arguments: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+}

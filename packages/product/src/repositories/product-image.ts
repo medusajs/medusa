@@ -7,6 +7,12 @@ import { DALUtils } from "@medusajs/utils"
 export class ProductImageRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
   Image
 ) {
+  // @ts-ignore
+  constructor(...arguments: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+
   async upsert(urls: string[], context: Context = {}): Promise<Image[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
