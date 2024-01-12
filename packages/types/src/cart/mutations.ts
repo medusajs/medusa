@@ -27,6 +27,9 @@ export interface CreateCartDTO {
   email?: string
   currency_code: string
 
+  shipping_address_id?: string
+  billing_address_id?: string
+
   shipping_address?: CreateAddressDTO | UpdateAddressDTO
   billing_address?: CreateAddressDTO | UpdateAddressDTO
 
@@ -41,6 +44,9 @@ export interface UpdateCartDTO {
 
   email?: string
   currency_code?: string
+
+  shipping_address_id?: string
+  billing_address_id?: string
 
   billing_address?: CreateAddressDTO | UpdateAddressDTO
   shipping_address?: CreateAddressDTO | UpdateAddressDTO
