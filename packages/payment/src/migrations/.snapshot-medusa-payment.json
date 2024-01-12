@@ -426,6 +426,15 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": [
+            "payment_collection_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_payment_session_payment_collection_id",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "payment-session_pkey",
           "columnNames": [
             "id"
@@ -614,6 +623,15 @@
           ],
           "composite": false,
           "keyName": "IDX_payment_deleted_at",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "payment_collection_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_payment_payment_collection_id",
           "primary": false,
           "unique": false
         },

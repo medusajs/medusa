@@ -1,6 +1,6 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20240112130209 extends Migration {
+export class Migration20240112131027 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table if not exists "payment-collection" ("id" text not null, "currency_code" text null, "amount" numeric not null, "authorized_amount" numeric null, "refunded_amount" numeric null, "region_id" text null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, "completed_at" timestamptz null, "status" text check ("status" in (\'not_paid\', \'awaiting\', \'authorized\', \'partially_authorized\', \'canceled\')) not null default \'not_paid\', constraint "payment-collection_pkey" primary key ("id"));'
@@ -24,12 +24,18 @@ export class Migration20240112130209 extends Migration {
     this.addSql(
       'create table if not exists "payment-session" ("id" text not null, "currency_code" text null, "amount" numeric not null, "provider_id" text not null, "data" jsonb null, "status" text check ("status" in (\'authorized\', \'pending\', \'requires_more\', \'error\', \'canceled\')) not null, "is_selected" boolean null, "authorised_at" timestamptz null, "payment_collection_id" text not null, constraint "payment-session_pkey" primary key ("id"));'
     )
+    this.addSql(
+      'create index "IDX_payment_session_payment_collection_id" on "payment-session" ("payment_collection_id");'
+    )
 
     this.addSql(
       'create table if not exists "payment" ("id" text not null, "amount" numeric not null, "authorized_amount" numeric null, "currency_code" text not null, "provider_id" text not null, "cart_id" text null, "order_id" text null, "customer_id" text null, "data" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, "captured_at" timestamptz null, "canceled_at" timestamptz null, "payment_collection_id" text not null, "session_id" text not null, constraint "payment_pkey" primary key ("id"));'
     )
     this.addSql(
       'create index "IDX_payment_deleted_at" on "payment" ("deleted_at");'
+    )
+    this.addSql(
+      'create index "IDX_payment_payment_collection_id" on "payment" ("payment_collection_id");'
     )
     this.addSql(
       'alter table "payment" add constraint "payment_session_id_unique" unique ("session_id");'

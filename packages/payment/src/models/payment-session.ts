@@ -87,6 +87,7 @@ export default class PaymentSession {
   authorised_at: Date | null
 
   @ManyToOne({
+    index: "IDX_payment_session_payment_collection_id",
     fieldName: "payment_collection_id",
   })
   payment_collection!: PaymentCollection

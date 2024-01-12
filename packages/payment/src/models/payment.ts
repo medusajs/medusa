@@ -113,6 +113,7 @@ export default class Payment {
   captures = new Collection<Capture>(this)
 
   @ManyToOne({
+    index: "IDX_payment_payment_collection_id",
     fieldName: "payment_collection_id",
   })
   payment_collection!: PaymentCollection
