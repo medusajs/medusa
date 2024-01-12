@@ -4,7 +4,7 @@
   import Plus from "../plus"
 
   describe("Plus", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Plus data-testid="icon" />)
 
 

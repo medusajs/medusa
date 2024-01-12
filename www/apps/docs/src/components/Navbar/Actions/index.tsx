@@ -3,6 +3,7 @@ import { NavbarAction } from "@medusajs/docs"
 import Icon from "../../../theme/Icon"
 import clsx from "clsx"
 import { Button, Tooltip } from "docs-ui"
+import Link from "@docusaurus/Link"
 
 type NavbarActionsProps = {
   items: NavbarAction[]
@@ -28,7 +29,7 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
                 key={index}
                 tooltipClassName="!text-compact-x-small-plus"
               >
-                <a
+                <Link
                   href={item.href}
                   title={item.title}
                   className={clsx(
@@ -39,7 +40,7 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
                   {item.label}
                   {ItemIconElm}
                   {ItemIcon && <ItemIcon />}
-                </a>
+                </Link>
               </Tooltip>
             )
           case "button":
@@ -60,7 +61,7 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
                   {ItemIconElm}
                   {ItemIcon && <ItemIcon />}
                   {item.href && (
-                    <a
+                    <Link
                       href={item.href}
                       className="absolute top-0 left-0 w-full h-full"
                     />

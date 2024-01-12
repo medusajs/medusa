@@ -3,9 +3,12 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the prices to delete.
+ */
 export interface AdminDeletePriceListPricesPricesReq {
   /**
-   * The price IDs of the Money Amounts to delete.
+   * The IDs of the prices to delete.
    */
   price_ids?: Array<string>
 }

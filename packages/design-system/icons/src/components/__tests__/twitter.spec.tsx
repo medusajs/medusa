@@ -4,7 +4,7 @@
   import Twitter from "../twitter"
 
   describe("Twitter", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Twitter data-testid="icon" />)
 
 

@@ -10,7 +10,11 @@ import { moduleDefinition } from "../module-definition"
 import { InitializeModuleInjectableDependencies } from "../types"
 
 export const initialize = async (
-  options?: ModulesSdkTypes.ModuleBootstrapDeclaration,
+  options?:
+    | ModulesSdkTypes.ModuleServiceInitializeOptions
+    | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
+    | ExternalModuleDeclaration
+    | InternalModuleDeclaration,
   injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<ICartModuleService> => {
   const loaded = await MedusaModule.bootstrap<ICartModuleService>({

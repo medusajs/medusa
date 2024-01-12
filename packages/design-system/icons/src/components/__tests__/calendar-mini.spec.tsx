@@ -4,7 +4,7 @@
   import CalendarMini from "../calendar-mini"
 
   describe("CalendarMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CalendarMini data-testid="icon" />)
 
 

@@ -1,4 +1,5 @@
 type: object
+description: The details of the dynamic discount to create.
 required:
   - code
 properties:

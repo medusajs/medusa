@@ -4,7 +4,7 @@
   import FolderOpen from "../folder-open"
 
   describe("FolderOpen", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<FolderOpen data-testid="icon" />)
 
 

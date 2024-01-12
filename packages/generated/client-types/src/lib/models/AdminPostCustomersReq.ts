@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the customer to create.
+ */
 export interface AdminPostCustomersReq {
   /**
    * The customer's email.

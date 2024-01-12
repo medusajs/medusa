@@ -4,7 +4,7 @@
   import Sun from "../sun"
 
   describe("Sun", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Sun data-testid="icon" />)
 
 

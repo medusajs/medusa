@@ -31,6 +31,36 @@ import { EntityManager } from "typeorm"
  *       .then(({ note }) => {
  *         console.log(note.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateNote } from "medusa-react"
+ *
+ *       type Props = {
+ *         noteId: string
+ *       }
+ *
+ *       const Note = ({ noteId }: Props) => {
+ *         const updateNote = useAdminUpdateNote(noteId)
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           value: string
+ *         ) => {
+ *           updateNote.mutate({
+ *             value
+ *           }, {
+ *             onSuccess: ({ note }) => {
+ *               console.log(note.value)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Note
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -85,6 +115,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostNotesNoteReq
  * type: object
+ * description: "The details to update of the note."
  * required:
  *   - value
  * properties:

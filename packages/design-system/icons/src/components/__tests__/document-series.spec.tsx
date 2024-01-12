@@ -4,7 +4,7 @@
   import DocumentSeries from "../document-series"
 
   describe("DocumentSeries", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<DocumentSeries data-testid="icon" />)
 
 

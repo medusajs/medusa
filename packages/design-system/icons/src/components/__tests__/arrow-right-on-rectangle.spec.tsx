@@ -4,7 +4,7 @@
   import ArrowRightOnRectangle from "../arrow-right-on-rectangle"
 
   describe("ArrowRightOnRectangle", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ArrowRightOnRectangle data-testid="icon" />)
 
 

@@ -158,22 +158,32 @@ You can create the return by sending a request to the [Create Return API Route](
     ```tsx
     import { useCreateReturn } from "medusa-react"
 
-    const CreateReturn = () => {
+    type CreateReturnData = {
+      items: {
+        item_id: string,
+        quantity: number
+      }[]
+      return_shipping: {
+        option_id: string
+      }
+    }
+
+    type Props = {
+      orderId: string
+    }
+
+    const CreateReturn = ({ orderId }: Props) => {
       const createReturn = useCreateReturn()
       // ...
 
-      const handleCreate = () => {
+      const handleCreate = (data: CreateReturnData) => {
         createReturn.mutate({
-          order_id,
-          items: [
-            {
-              item_id,
-              quantity: 1,
-            },
-          ],
-          return_shipping: {
-            option_id,
-          },
+          ...data,
+          order_id: orderId
+        }, {
+          onSuccess: ({ return: returnData }) => {
+            console.log(returnData.id)
+          }
         })
       }
 

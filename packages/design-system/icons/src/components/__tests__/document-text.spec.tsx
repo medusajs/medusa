@@ -4,7 +4,7 @@
   import DocumentText from "../document-text"
 
   describe("DocumentText", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<DocumentText data-testid="icon" />)
 
 

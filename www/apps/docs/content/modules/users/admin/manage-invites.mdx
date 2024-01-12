@@ -78,7 +78,9 @@ You can list invites by sending a request to the [List Invite API Route](https:/
       return (
         <div>
           {isLoading && <span>Loading...</span>}
-          {invites && !invites.length && <span>No Invites</span>}
+          {invites && !invites.length && (
+            <span>No Invites</span>
+          )}
           {invites && invites.length > 0 && (
             <ul>
               {invites.map((invite) => (
@@ -242,13 +244,18 @@ You can accept an invite by sending a request to the [Accept Invite API Route](h
       const acceptInvite = useAdminAcceptInvite()
       // ...
 
-      const handleAccept = () => {
+      const handleAccept = (
+        token: string,
+        firstName: string,
+        lastName: string,
+        password: string
+      ) => {
         acceptInvite.mutate({
           token,
           user: {
-            first_name: "Brigitte",
-            last_name: "Collier",
-            password: "supersecret",
+            first_name: firstName,
+            last_name: lastName,
+            password,
           },
         })
       }
@@ -335,7 +342,11 @@ You can resend an invite if it’s not accepted yet. To resend an invite, send a
     ```tsx
     import { useAdminResendInvite } from "medusa-react"
 
-    const ResendInvite = () => {
+    type Props = {
+      inviteId: string
+    }
+
+    const ResendInvite = ({ inviteId }: Props) => {
       const resendInvite = useAdminResendInvite(inviteId)
       // ...
 
@@ -400,18 +411,26 @@ You can delete an invite by sending a request to the [Delete Invite API Route](h
     ```tsx
     import { useAdminDeleteInvite } from "medusa-react"
 
-    const DeleteInvite = () => {
+    type Props = {
+      inviteId: string
+    }
+
+    const DeleteInvite = ({ inviteId }: Props) => {
       const deleteInvite = useAdminDeleteInvite(inviteId)
       // ...
 
       const handleDelete = () => {
-        deleteInvite.mutate()
+        deleteInvite.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...
     }
 
-    export default DeleteInvite
+    export default Invite
     ```
 
   </TabItem>

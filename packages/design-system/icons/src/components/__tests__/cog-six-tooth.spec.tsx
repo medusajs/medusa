@@ -4,7 +4,7 @@
   import CogSixTooth from "../cog-six-tooth"
 
   describe("CogSixTooth", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CogSixTooth data-testid="icon" />)
 
 

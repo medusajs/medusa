@@ -5,22 +5,33 @@ import {
 } from "./distributed-transaction"
 import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 import {
+  DistributedTransactionEvent,
   TransactionHandlerType,
+  TransactionModelOptions,
   TransactionState,
   TransactionStepsDefinition,
   TransactionStepStatus,
 } from "./types"
 
+import { MedusaError, promiseAll } from "@medusajs/utils"
 import { EventEmitter } from "events"
-import { promiseAll } from "@medusajs/utils"
-import { PermanentStepFailureError } from "./errors"
+import {
+  PermanentStepFailureError,
+  StepTimeoutError,
+  TransactionTimeoutError,
+} from "./errors"
 
 export type TransactionFlow = {
   modelId: string
+  options?: TransactionModelOptions
   definition: TransactionStepsDefinition
   transactionId: string
+  hasAsyncSteps: boolean
   hasFailedSteps: boolean
+  hasWaitingSteps: boolean
   hasSkippedSteps: boolean
+  timedOutAt: number | null
+  startedAt?: number
   state: TransactionState
   steps: {
     [key: string]: TransactionStep
@@ -33,13 +44,15 @@ export type TransactionFlow = {
  */
 export class TransactionOrchestrator extends EventEmitter {
   private static ROOT_STEP = "_root"
+  public static DEFAULT_TTL = 30
   private invokeSteps: string[] = []
   private compensateSteps: string[] = []
 
   public static DEFAULT_RETRIES = 0
   constructor(
     public id: string,
-    private definition: TransactionStepsDefinition
+    private definition: TransactionStepsDefinition,
+    private options?: TransactionModelOptions
   ) {
     super()
   }
@@ -48,6 +61,11 @@ export class TransactionOrchestrator extends EventEmitter {
   public static getKeyName(...params: string[]): string {
     return params.join(this.SEPARATOR)
   }
+
+  public getOptions(): TransactionModelOptions {
+    return this.options ?? {}
+  }
+
   private getPreviousStep(flow: TransactionFlow, step: TransactionStep) {
     const id = step.id.split(".")
     id.pop()
@@ -126,12 +144,34 @@ export class TransactionOrchestrator extends EventEmitter {
     }
   }
 
-  private checkAllSteps(transaction: DistributedTransaction): {
+  private async checkStepTimeout(transaction, step) {
+    let hasTimedOut = false
+    if (
+      step.hasTimeout() &&
+      !step.timedOutAt &&
+      step.canCancel() &&
+      step.startedAt! + step.getTimeoutInterval()! * 1e3 < Date.now()
+    ) {
+      step.timedOutAt = Date.now()
+      await transaction.saveCheckpoint()
+      this.emit(DistributedTransactionEvent.TIMEOUT, { transaction })
+      await TransactionOrchestrator.setStepFailure(
+        transaction,
+        step,
+        new StepTimeoutError(),
+        0
+      )
+      hasTimedOut = true
+    }
+    return hasTimedOut
+  }
+
+  private async checkAllSteps(transaction: DistributedTransaction): Promise<{
     next: TransactionStep[]
     total: number
     remaining: number
     completed: number
-  } {
+  }> {
     let hasSkipped = false
     let hasIgnoredFailure = false
     let hasFailed = false
@@ -158,12 +198,44 @@ export class TransactionOrchestrator extends EventEmitter {
       const stepDef = flow.steps[step]
       const curState = stepDef.getStates()
 
+      const hasTimedOut = await this.checkStepTimeout(transaction, stepDef)
+      if (hasTimedOut) {
+        continue
+      }
+
       if (curState.status === TransactionStepStatus.WAITING) {
         hasWaiting = true
-        if (stepDef.canRetry()) {
-          nextSteps.push(stepDef)
+
+        if (stepDef.hasAwaitingRetry()) {
+          if (stepDef.canRetryAwaiting()) {
+            stepDef.retryRescheduledAt = null
+            nextSteps.push(stepDef)
+          } else if (!stepDef.retryRescheduledAt) {
+            stepDef.hasScheduledRetry = true
+            stepDef.retryRescheduledAt = Date.now()
+
+            await transaction.scheduleRetry(
+              stepDef,
+              stepDef.definition.retryIntervalAwaiting!
+            )
+          }
         }
+
         continue
+      } else if (curState.status === TransactionStepStatus.TEMPORARY_FAILURE) {
+        if (!stepDef.canRetry()) {
+          if (stepDef.hasRetryInterval() && !stepDef.retryRescheduledAt) {
+            stepDef.hasScheduledRetry = true
+            stepDef.retryRescheduledAt = Date.now()
+
+            await transaction.scheduleRetry(
+              stepDef,
+              stepDef.definition.retryInterval!
+            )
+          }
+          continue
+        }
+        stepDef.retryRescheduledAt = null
       }
 
       if (stepDef.canInvoke(flow.state) || stepDef.canCompensate(flow.state)) {
@@ -185,6 +257,8 @@ export class TransactionOrchestrator extends EventEmitter {
       }
     }
 
+    flow.hasWaitingSteps = hasWaiting
+
     const totalSteps = allSteps.length - 1
     if (
       flow.state === TransactionState.WAITING_TO_COMPENSATE &&
@@ -194,9 +268,9 @@ export class TransactionOrchestrator extends EventEmitter {
       flow.state = TransactionState.COMPENSATING
       this.flagStepsToRevert(flow)
 
-      this.emit("compensate", transaction)
+      this.emit(DistributedTransactionEvent.COMPENSATE_BEGIN, { transaction })
 
-      return this.checkAllSteps(transaction)
+      return await this.checkAllSteps(transaction)
     } else if (completedSteps === totalSteps) {
       if (hasSkipped) {
         flow.hasSkippedSteps = true
@@ -211,11 +285,6 @@ export class TransactionOrchestrator extends EventEmitter {
           ? TransactionState.REVERTED
           : TransactionState.DONE
       }
-
-      this.emit("finish", transaction)
-
-      // TODO: check TransactionModel if it should delete the checkpoint when the transaction is done
-      void transaction.deleteCheckpoint()
     }
 
     return {
@@ -267,9 +336,25 @@ export class TransactionOrchestrator extends EventEmitter {
       step.changeState(TransactionState.DONE)
     }
 
-    if (step.definition.async) {
+    const flow = transaction.getFlow()
+    if (step.definition.async || flow.options?.strictCheckpoints) {
       await transaction.saveCheckpoint()
     }
+
+    const cleaningUp: Promise<unknown>[] = []
+    if (step.hasRetryScheduled()) {
+      cleaningUp.push(transaction.clearRetry(step))
+    }
+    if (step.hasTimeout()) {
+      cleaningUp.push(transaction.clearStepTimeout(step))
+    }
+
+    await promiseAll(cleaningUp)
+
+    const eventName = step.isCompensating()
+      ? DistributedTransactionEvent.COMPENSATE_STEP_SUCCESS
+      : DistributedTransactionEvent.STEP_SUCCESS
+    transaction.emit(eventName, { step, transaction })
   }
 
   private static async setStepFailure(
@@ -282,6 +367,8 @@ export class TransactionOrchestrator extends EventEmitter {
 
     step.changeStatus(TransactionStepStatus.TEMPORARY_FAILURE)
 
+    const flow = transaction.getFlow()
+    const cleaningUp: Promise<unknown>[] = []
     if (step.failures > maxRetries) {
       step.changeState(TransactionState.FAILED)
       step.changeStatus(TransactionStepStatus.PERMANENT_FAILURE)
@@ -295,7 +382,6 @@ export class TransactionOrchestrator extends EventEmitter {
       )
 
       if (!step.isCompensating()) {
-        const flow = transaction.getFlow()
         if (step.definition.continueOnPermanentFailure) {
           for (const childStep of step.next) {
             const child = flow.steps[childStep]
@@ -305,107 +391,175 @@ export class TransactionOrchestrator extends EventEmitter {
           flow.state = TransactionState.WAITING_TO_COMPENSATE
         }
       }
+
+      if (step.hasTimeout()) {
+        cleaningUp.push(transaction.clearStepTimeout(step))
+      }
     }
 
-    if (step.definition.async) {
+    if (step.definition.async || flow.options?.strictCheckpoints) {
       await transaction.saveCheckpoint()
     }
+
+    if (step.hasRetryScheduled()) {
+      cleaningUp.push(transaction.clearRetry(step))
+    }
+
+    await promiseAll(cleaningUp)
+
+    const eventName = step.isCompensating()
+      ? DistributedTransactionEvent.COMPENSATE_STEP_FAILURE
+      : DistributedTransactionEvent.STEP_FAILURE
+    transaction.emit(eventName, { step, transaction })
+  }
+
+  private async checkTransactionTimeout(transaction, currentSteps) {
+    let hasTimedOut = false
+    const flow = transaction.getFlow()
+    if (
+      transaction.hasTimeout() &&
+      !flow.timedOutAt &&
+      flow.startedAt! + transaction.getTimeoutInterval()! * 1e3 < Date.now()
+    ) {
+      flow.timedOutAt = Date.now()
+      this.emit(DistributedTransactionEvent.TIMEOUT, { transaction })
+
+      for (const step of currentSteps) {
+        await TransactionOrchestrator.setStepFailure(
+          transaction,
+          step,
+          new TransactionTimeoutError(),
+          0
+        )
+      }
+
+      await transaction.saveCheckpoint()
+
+      hasTimedOut = true
+    }
+    return hasTimedOut
   }
 
   private async executeNext(
     transaction: DistributedTransaction
   ): Promise<void> {
-    if (transaction.hasFinished()) {
-      return
-    }
+    let continueExecution = true
 
-    const flow = transaction.getFlow()
-    const nextSteps = this.checkAllSteps(transaction)
-    const execution: Promise<void | unknown>[] = []
-
-    for (const step of nextSteps.next) {
-      const curState = step.getStates()
-      const type = step.isCompensating()
-        ? TransactionHandlerType.COMPENSATE
-        : TransactionHandlerType.INVOKE
-
-      step.lastAttempt = Date.now()
-      step.attempts++
-
-      if (curState.state === TransactionState.NOT_STARTED) {
-        if (step.isCompensating()) {
-          step.changeState(TransactionState.COMPENSATING)
-
-          if (step.definition.noCompensation) {
-            step.changeState(TransactionState.REVERTED)
-            continue
-          }
-        } else if (flow.state === TransactionState.INVOKING) {
-          step.changeState(TransactionState.INVOKING)
-        }
+    while (continueExecution) {
+      if (transaction.hasFinished()) {
+        return
       }
 
-      step.changeStatus(TransactionStepStatus.WAITING)
+      const flow = transaction.getFlow()
+      const nextSteps = await this.checkAllSteps(transaction)
+      const execution: Promise<void | unknown>[] = []
 
-      const payload = new TransactionPayload(
-        {
-          model_id: flow.modelId,
-          reply_to_topic: TransactionOrchestrator.getKeyName(
-            "trans",
-            flow.modelId
-          ),
-          idempotency_key: TransactionOrchestrator.getKeyName(
-            flow.transactionId,
-            step.definition.action!,
-            type
-          ),
-          action: step.definition.action + "",
-          action_type: type,
-          attempt: step.attempts,
-          timestamp: Date.now(),
-        },
-        transaction.payload,
-        transaction.getContext()
+      const hasTimedOut = await this.checkTransactionTimeout(
+        transaction,
+        nextSteps.next
       )
-
-      const setStepFailure = async (
-        error: Error | any,
-        { endRetry }: { endRetry?: boolean } = {}
-      ) => {
-        return TransactionOrchestrator.setStepFailure(
-          transaction,
-          step,
-          error,
-          endRetry ? 0 : step.definition.maxRetries
-        )
+      if (hasTimedOut) {
+        continue
       }
 
-      if (!step.definition.async) {
-        execution.push(
-          transaction
-            .handler(step.definition.action + "", type, payload, transaction)
-            .then(async (response: any) => {
-              await TransactionOrchestrator.setStepSuccess(
-                transaction,
-                step,
-                response
-              )
-            })
-            .catch(async (error) => {
-              if (
-                PermanentStepFailureError.isPermanentStepFailureError(error)
-              ) {
-                await setStepFailure(error, { endRetry: true })
-                return
-              }
-              await setStepFailure(error)
-            })
+      if (nextSteps.remaining === 0) {
+        if (transaction.hasTimeout()) {
+          await transaction.clearTransactionTimeout()
+        }
+
+        if (flow.options?.retentionTime == undefined) {
+          await transaction.deleteCheckpoint()
+        } else {
+          await transaction.saveCheckpoint()
+        }
+
+        this.emit(DistributedTransactionEvent.FINISH, { transaction })
+      }
+
+      let hasSyncSteps = false
+      for (const step of nextSteps.next) {
+        const curState = step.getStates()
+        const type = step.isCompensating()
+          ? TransactionHandlerType.COMPENSATE
+          : TransactionHandlerType.INVOKE
+
+        step.lastAttempt = Date.now()
+        step.attempts++
+
+        if (curState.state === TransactionState.NOT_STARTED) {
+          if (!step.startedAt) {
+            step.startedAt = Date.now()
+          }
+
+          if (step.isCompensating()) {
+            step.changeState(TransactionState.COMPENSATING)
+
+            if (step.definition.noCompensation) {
+              step.changeState(TransactionState.REVERTED)
+              continue
+            }
+          } else if (flow.state === TransactionState.INVOKING) {
+            step.changeState(TransactionState.INVOKING)
+          }
+        }
+
+        step.changeStatus(TransactionStepStatus.WAITING)
+
+        const payload = new TransactionPayload(
+          {
+            model_id: flow.modelId,
+            idempotency_key: TransactionOrchestrator.getKeyName(
+              flow.modelId,
+              flow.transactionId,
+              step.definition.action!,
+              type
+            ),
+            action: step.definition.action + "",
+            action_type: type,
+            attempt: step.attempts,
+            timestamp: Date.now(),
+          },
+          transaction.payload,
+          transaction.getContext()
         )
-      } else {
-        execution.push(
-          transaction.saveCheckpoint().then(async () =>
+
+        if (step.hasTimeout() && !step.timedOutAt && step.attempts === 1) {
+          await transaction.scheduleStepTimeout(step, step.definition.timeout!)
+        }
+
+        transaction.emit(DistributedTransactionEvent.STEP_BEGIN, {
+          step,
+          transaction,
+        })
+
+        const setStepFailure = async (
+          error: Error | any,
+          { endRetry }: { endRetry?: boolean } = {}
+        ) => {
+          return TransactionOrchestrator.setStepFailure(
+            transaction,
+            step,
+            error,
+            endRetry ? 0 : step.definition.maxRetries
+          )
+        }
+
+        const isAsync = step.isCompensating()
+          ? step.definition.compensateAsync
+          : step.definition.async
+
+        if (!isAsync) {
+          hasSyncSteps = true
+          execution.push(
             transaction
               .handler(step.definition.action + "", type, payload, transaction)
+              .then(async (response: any) => {
+                await TransactionOrchestrator.setStepSuccess(
+                  transaction,
+                  step,
+                  response
+                )
+              })
               .catch(async (error) => {
                 if (
                   PermanentStepFailureError.isPermanentStepFailureError(error)
@@ -413,17 +567,44 @@ export class TransactionOrchestrator extends EventEmitter {
                   await setStepFailure(error, { endRetry: true })
                   return
                 }
+
                 await setStepFailure(error)
               })
           )
-        )
+        } else {
+          execution.push(
+            transaction.saveCheckpoint().then(async () =>
+              transaction
+                .handler(
+                  step.definition.action + "",
+                  type,
+                  payload,
+                  transaction
+                )
+                .catch(async (error) => {
+                  if (
+                    PermanentStepFailureError.isPermanentStepFailureError(error)
+                  ) {
+                    await setStepFailure(error, { endRetry: true })
+                    return
+                  }
+
+                  await setStepFailure(error)
+                })
+            )
+          )
+        }
       }
-    }
 
-    await promiseAll(execution)
+      if (hasSyncSteps && flow.options?.strictCheckpoints) {
+        await transaction.saveCheckpoint()
+      }
 
-    if (nextSteps.next.length > 0) {
-      await this.executeNext(transaction)
+      await promiseAll(execution)
+
+      if (nextSteps.next.length === 0) {
+        continueExecution = false
+      }
     }
   }
 
@@ -433,7 +614,8 @@ export class TransactionOrchestrator extends EventEmitter {
    */
   public async resume(transaction: DistributedTransaction): Promise<void> {
     if (transaction.modelId !== this.id) {
-      throw new Error(
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
         `TransactionModel "${transaction.modelId}" cannot be orchestrated by "${this.id}" model.`
       )
     }
@@ -446,9 +628,23 @@ export class TransactionOrchestrator extends EventEmitter {
 
     if (flow.state === TransactionState.NOT_STARTED) {
       flow.state = TransactionState.INVOKING
-      this.emit("begin", transaction)
+      flow.startedAt = Date.now()
+
+      if (this.options?.storeExecution) {
+        await transaction.saveCheckpoint(
+          flow.hasAsyncSteps ? 0 : TransactionOrchestrator.DEFAULT_TTL
+        )
+      }
+
+      if (transaction.hasTimeout()) {
+        await transaction.scheduleTransactionTimeout(
+          transaction.getTimeoutInterval()!
+        )
+      }
+
+      this.emit(DistributedTransactionEvent.BEGIN, { transaction })
     } else {
-      this.emit("resume", transaction)
+      this.emit(DistributedTransactionEvent.RESUME, { transaction })
     }
 
     await this.executeNext(transaction)
@@ -462,14 +658,18 @@ export class TransactionOrchestrator extends EventEmitter {
     transaction: DistributedTransaction
   ): Promise<void> {
     if (transaction.modelId !== this.id) {
-      throw new Error(
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
         `TransactionModel "${transaction.modelId}" cannot be orchestrated by "${this.id}" model.`
       )
     }
 
     const flow = transaction.getFlow()
     if (flow.state === TransactionState.FAILED) {
-      throw new Error(`Cannot revert a perment failed transaction.`)
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Cannot revert a perment failed transaction.`
+      )
     }
 
     flow.state = TransactionState.WAITING_TO_COMPENSATE
@@ -477,33 +677,54 @@ export class TransactionOrchestrator extends EventEmitter {
     await this.executeNext(transaction)
   }
 
-  private async createTransactionFlow(
-    transactionId: string
-  ): Promise<TransactionFlow> {
-    return {
+  private createTransactionFlow(transactionId: string): TransactionFlow {
+    const [steps, features] = TransactionOrchestrator.buildSteps(
+      this.definition
+    )
+
+    const hasAsyncSteps = features.hasAsyncSteps
+    const hasStepTimeouts = features.hasStepTimeouts
+    const hasRetriesTimeout = features.hasRetriesTimeout
+
+    this.options ??= {}
+    if (hasAsyncSteps || hasStepTimeouts || hasRetriesTimeout) {
+      this.options.storeExecution = true
+    }
+
+    const flow: TransactionFlow = {
       modelId: this.id,
+      options: this.options,
       transactionId: transactionId,
+      hasAsyncSteps,
       hasFailedSteps: false,
       hasSkippedSteps: false,
+      hasWaitingSteps: false,
+      timedOutAt: null,
       state: TransactionState.NOT_STARTED,
       definition: this.definition,
-      steps: TransactionOrchestrator.buildSteps(this.definition),
+      steps,
     }
+
+    return flow
   }
 
   private static async loadTransactionById(
+    modelId: string,
     transactionId: string
   ): Promise<TransactionCheckpoint | null> {
     const transaction = await DistributedTransaction.loadTransaction(
+      modelId,
       transactionId
     )
 
     if (transaction !== null) {
       const flow = transaction.flow
-      transaction.flow.steps = TransactionOrchestrator.buildSteps(
+      const [steps] = TransactionOrchestrator.buildSteps(
         flow.definition,
         flow.steps
       )
+
+      transaction.flow.steps = steps
       return transaction
     }
 
@@ -513,7 +734,14 @@ export class TransactionOrchestrator extends EventEmitter {
   private static buildSteps(
     flow: TransactionStepsDefinition,
     existingSteps?: { [key: string]: TransactionStep }
-  ): { [key: string]: TransactionStep } {
+  ): [
+    { [key: string]: TransactionStep },
+    {
+      hasAsyncSteps: boolean
+      hasStepTimeouts: boolean
+      hasRetriesTimeout: boolean
+    }
+  ] {
     const states: { [key: string]: TransactionStep } = {
       [TransactionOrchestrator.ROOT_STEP]: {
         id: TransactionOrchestrator.ROOT_STEP,
@@ -525,6 +753,12 @@ export class TransactionOrchestrator extends EventEmitter {
     const queue: any[] = [
       { obj: flow, level: [TransactionOrchestrator.ROOT_STEP] },
     ]
+
+    const features = {
+      hasAsyncSteps: false,
+      hasStepTimeouts: false,
+      hasRetriesTimeout: false,
+    }
 
     while (queue.length > 0) {
       const { obj, level } = queue.shift()
@@ -547,10 +781,27 @@ export class TransactionOrchestrator extends EventEmitter {
           const id = level.join(".")
           const parent = level.slice(0, level.length - 1).join(".")
 
-          states[parent].next?.push(id)
+          if (!existingSteps || parent === TransactionOrchestrator.ROOT_STEP) {
+            states[parent].next?.push(id)
+          }
 
           const definitionCopy = { ...obj }
           delete definitionCopy.next
+
+          if (definitionCopy.async) {
+            features.hasAsyncSteps = true
+          }
+
+          if (definitionCopy.timeout) {
+            features.hasStepTimeouts = true
+          }
+
+          if (
+            definitionCopy.retryInterval ||
+            definitionCopy.retryIntervalAwaiting
+          ) {
+            features.hasRetriesTimeout = true
+          }
 
           states[id] = Object.assign(
             new TransactionStep(),
@@ -577,7 +828,7 @@ export class TransactionOrchestrator extends EventEmitter {
       }
     }
 
-    return states
+    return [states, features]
   }
 
   /** Create a new transaction
@@ -591,12 +842,12 @@ export class TransactionOrchestrator extends EventEmitter {
     payload?: unknown
   ): Promise<DistributedTransaction> {
     const existingTransaction =
-      await TransactionOrchestrator.loadTransactionById(transactionId)
+      await TransactionOrchestrator.loadTransactionById(this.id, transactionId)
 
     let newTransaction = false
-    let modelFlow
+    let modelFlow: TransactionFlow
     if (!existingTransaction) {
-      modelFlow = await this.createTransactionFlow(transactionId)
+      modelFlow = this.createTransactionFlow(transactionId)
       newTransaction = true
     } else {
       modelFlow = existingTransaction.flow
@@ -609,9 +860,45 @@ export class TransactionOrchestrator extends EventEmitter {
       existingTransaction?.errors,
       existingTransaction?.context
     )
-    if (newTransaction) {
-      await transaction.saveCheckpoint()
+
+    if (
+      newTransaction &&
+      this.options?.storeExecution &&
+      this.options?.strictCheckpoints
+    ) {
+      await transaction.saveCheckpoint(
+        modelFlow.hasAsyncSteps ? 0 : TransactionOrchestrator.DEFAULT_TTL
+      )
     }
+
+    return transaction
+  }
+
+  /** Returns an existing transaction
+   * @param transactionId - unique identifier of the transaction
+   * @param handler - function to handle action of the transaction
+   */
+  public async retrieveExistingTransaction(
+    transactionId: string,
+    handler: TransactionStepHandler
+  ): Promise<DistributedTransaction> {
+    const existingTransaction =
+      await TransactionOrchestrator.loadTransactionById(this.id, transactionId)
+
+    if (!existingTransaction) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Transaction ${transactionId} could not be found.`
+      )
+    }
+
+    const transaction = new DistributedTransaction(
+      existingTransaction.flow,
+      handler,
+      undefined,
+      existingTransaction?.errors,
+      existingTransaction?.context
+    )
 
     return transaction
   }
@@ -633,9 +920,8 @@ export class TransactionOrchestrator extends EventEmitter {
     handler?: TransactionStepHandler,
     transaction?: DistributedTransaction
   ): Promise<[DistributedTransaction, TransactionStep]> {
-    const [transactionId, action, actionType] = responseIdempotencyKey.split(
-      TransactionOrchestrator.SEPARATOR
-    )
+    const [modelId, transactionId, action, actionType] =
+      responseIdempotencyKey.split(TransactionOrchestrator.SEPARATOR)
 
     if (!transaction && !handler) {
       throw new Error(
@@ -645,10 +931,16 @@ export class TransactionOrchestrator extends EventEmitter {
 
     if (!transaction) {
       const existingTransaction =
-        await TransactionOrchestrator.loadTransactionById(transactionId)
+        await TransactionOrchestrator.loadTransactionById(
+          modelId,
+          transactionId
+        )
 
       if (existingTransaction === null) {
-        throw new Error(`Transaction ${transactionId} could not be found.`)
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Transaction ${transactionId} could not be found.`
+        )
       }
 
       transaction = new DistributedTransaction(
@@ -697,16 +989,20 @@ export class TransactionOrchestrator extends EventEmitter {
       )
 
     if (step.getStates().status === TransactionStepStatus.WAITING) {
+      this.emit(DistributedTransactionEvent.RESUME, {
+        transaction: curTransaction,
+      })
+
       await TransactionOrchestrator.setStepSuccess(
         curTransaction,
         step,
         response
       )
 
-      this.emit("resume", curTransaction)
       await this.executeNext(curTransaction)
     } else {
-      throw new Error(
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
         `Cannot set step success when status is ${step.getStates().status}`
       )
     }
@@ -736,16 +1032,21 @@ export class TransactionOrchestrator extends EventEmitter {
       )
 
     if (step.getStates().status === TransactionStepStatus.WAITING) {
+      this.emit(DistributedTransactionEvent.RESUME, {
+        transaction: curTransaction,
+      })
+
       await TransactionOrchestrator.setStepFailure(
         curTransaction,
         step,
         error,
         0
       )
-      this.emit("resume", curTransaction)
+
       await this.executeNext(curTransaction)
     } else {
-      throw new Error(
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
         `Cannot set step failure when status is ${step.getStates().status}`
       )
     }

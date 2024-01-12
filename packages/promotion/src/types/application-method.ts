@@ -1,19 +1,27 @@
 import {
-  ApplicationMethodAllocation,
-  ApplicationMethodTargetType,
-  ApplicationMethodType,
+  ApplicationMethodAllocationValues,
+  ApplicationMethodTargetTypeValues,
+  ApplicationMethodTypeValues,
   PromotionDTO,
 } from "@medusajs/types"
 
+import { Promotion } from "@models"
+
 export interface CreateApplicationMethodDTO {
-  type: ApplicationMethodType
-  target_type: ApplicationMethodTargetType
-  allocation?: ApplicationMethodAllocation
-  value?: number
-  promotion: PromotionDTO | string
-  max_quantity?: number
+  type: ApplicationMethodTypeValues
+  target_type: ApplicationMethodTargetTypeValues
+  allocation?: ApplicationMethodAllocationValues
+  value?: string | null
+  promotion: Promotion | string | PromotionDTO
+  max_quantity?: number | null
 }
 
 export interface UpdateApplicationMethodDTO {
   id: string
+  type?: ApplicationMethodTypeValues
+  target_type?: ApplicationMethodTargetTypeValues
+  allocation?: ApplicationMethodAllocationValues
+  value?: string | null
+  promotion?: Promotion | string | PromotionDTO
+  max_quantity?: number | null
 }

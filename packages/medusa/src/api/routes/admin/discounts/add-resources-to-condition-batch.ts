@@ -42,6 +42,47 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ discount }) => {
  *         console.log(discount.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminAddDiscountConditionResourceBatch
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *         conditionId: string
+ *       }
+ *
+ *       const DiscountCondition = ({
+ *         discountId,
+ *         conditionId
+ *       }: Props) => {
+ *         const addConditionResources = useAdminAddDiscountConditionResourceBatch(
+ *           discountId,
+ *           conditionId
+ *         )
+ *         // ...
+ *
+ *         const handleAdd = (itemId: string) => {
+ *           addConditionResources.mutate({
+ *             resources: [
+ *               {
+ *                 id: itemId
+ *               }
+ *             ]
+ *           }, {
+ *             onSuccess: ({ discount }) => {
+ *               console.log(discount.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DiscountCondition
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -116,6 +157,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostDiscountsDiscountConditionsConditionBatchReq
  * type: object
+ * description: "The details of the resources to add."
  * required:
  *   - resources
  * properties:
