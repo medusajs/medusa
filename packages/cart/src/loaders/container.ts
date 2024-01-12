@@ -1,10 +1,9 @@
-import * as defaultRepositories from "@repositories"
-
 import { LoaderOptions } from "@medusajs/modules-sdk"
 import { ModulesSdkTypes } from "@medusajs/types"
 import { loadCustomRepositories } from "@medusajs/utils"
-import * as defaultServices from "@services"
 import { asClass } from "awilix"
+import * as defaultRepositories from "../repositories"
+import * as defaultServices from "../services"
 
 export default async ({
   container,
@@ -20,6 +19,9 @@ export default async ({
   container.register({
     cartService: asClass(defaultServices.CartService).singleton(),
     addressService: asClass(defaultServices.AddressService).singleton(),
+    lineItemAdjustmentService: asClass(
+      defaultServices.LineItemAdjustmentService
+    ).singleton(),
   })
 
   if (customRepositories) {
@@ -37,6 +39,11 @@ function loadDefaultRepositories({ container }) {
   container.register({
     baseRepository: asClass(defaultRepositories.BaseRepository).singleton(),
     cartRepository: asClass(defaultRepositories.CartRepository).singleton(),
-    addressRepository: asClass(defaultRepositories.AddressRepository).singleton(),
+    addressRepository: asClass(
+      defaultRepositories.AddressRepository
+    ).singleton(),
+    lineItemAdjustmentRepository: asClass(
+      defaultRepositories.LineItemAdjustmentRepository
+    ).singleton(),
   })
 }

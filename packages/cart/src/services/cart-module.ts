@@ -11,10 +11,8 @@ import {
   ICartModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
-  UpdateCartDTO
+  UpdateCartDTO,
 } from "@medusajs/types"
-
-import { FilterableAddressProps } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
@@ -185,7 +183,7 @@ export default class CartModuleService implements ICartModuleService {
 
   @InjectManager("baseRepository_")
   async listAddresses(
-    filters: FilterableAddressProps = {},
+    filters: CartTypes.FilterableAddressProps = {},
     config: FindConfig<AddressDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ) {
