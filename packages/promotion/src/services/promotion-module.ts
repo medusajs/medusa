@@ -17,25 +17,31 @@ import {
 import { ApplicationMethod, Promotion } from "@models"
 import {
   ApplicationMethodService,
+  CampaignBudgetService,
+  CampaignService,
   PromotionRuleService,
   PromotionRuleValueService,
   PromotionService,
 } from "@services"
-import { joinerConfig } from "../joiner-config"
 import {
   CreateApplicationMethodDTO,
+  CreateCampaignBudgetDTO,
+  CreateCampaignDTO,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
   UpdateApplicationMethodDTO,
+  UpdateCampaignBudgetDTO,
+  UpdateCampaignDTO,
   UpdatePromotionDTO,
-} from "../types"
+} from "@types"
 import {
   ComputeActionUtils,
   allowedAllocationForQuantity,
   areRulesValidForContext,
   validateApplicationMethodAttributes,
   validatePromotionRuleAttributes,
-} from "../utils"
+} from "@utils"
+import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -43,6 +49,8 @@ type InjectedDependencies = {
   applicationMethodService: ApplicationMethodService
   promotionRuleService: PromotionRuleService
   promotionRuleValueService: PromotionRuleValueService
+  campaignService: CampaignService
+  campaignBudgetService: CampaignBudgetService
 }
 
 export default class PromotionModuleService<
@@ -54,6 +62,8 @@ export default class PromotionModuleService<
   protected applicationMethodService_: ApplicationMethodService
   protected promotionRuleService_: PromotionRuleService
   protected promotionRuleValueService_: PromotionRuleValueService
+  protected campaignService_: CampaignService
+  protected campaignBudgetService_: CampaignBudgetService
 
   constructor(
     {
@@ -62,6 +72,8 @@ export default class PromotionModuleService<
       applicationMethodService,
       promotionRuleService,
       promotionRuleValueService,
+      campaignService,
+      campaignBudgetService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -70,6 +82,8 @@ export default class PromotionModuleService<
     this.applicationMethodService_ = applicationMethodService
     this.promotionRuleService_ = promotionRuleService
     this.promotionRuleValueService_ = promotionRuleValueService
+    this.campaignService_ = campaignService
+    this.campaignBudgetService_ = campaignBudgetService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -271,15 +285,28 @@ export default class PromotionModuleService<
     )
   }
 
-  @InjectManager("baseRepository_")
+  async create(
+    data: PromotionTypes.CreatePromotionDTO,
+    sharedContext?: Context
+  ): Promise<PromotionTypes.PromotionDTO>
+
   async create(
     data: PromotionTypes.CreatePromotionDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PromotionTypes.PromotionDTO[]> {
-    const promotions = await this.create_(data, sharedContext)
+    sharedContext?: Context
+  ): Promise<PromotionTypes.PromotionDTO[]>
 
-    return await this.list(
-      { id: promotions.map((p) => p!.id) },
+  @InjectManager("baseRepository_")
+  async create(
+    data:
+      | PromotionTypes.CreatePromotionDTO
+      | PromotionTypes.CreatePromotionDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.PromotionDTO | PromotionTypes.PromotionDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+    const createdPromotions = await this.create_(input, sharedContext)
+
+    const promotions = await this.list(
+      { id: createdPromotions.map((p) => p!.id) },
       {
         relations: [
           "application_method",
@@ -291,6 +318,8 @@ export default class PromotionModuleService<
       },
       sharedContext
     )
+
+    return Array.isArray(data) ? promotions : promotions[0]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -399,15 +428,28 @@ export default class PromotionModuleService<
     return createdPromotions
   }
 
-  @InjectManager("baseRepository_")
+  async update(
+    data: PromotionTypes.UpdatePromotionDTO,
+    sharedContext?: Context
+  ): Promise<PromotionTypes.PromotionDTO>
+
   async update(
     data: PromotionTypes.UpdatePromotionDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PromotionTypes.PromotionDTO[]> {
-    const promotions = await this.update_(data, sharedContext)
+    sharedContext?: Context
+  ): Promise<PromotionTypes.PromotionDTO[]>
 
-    return await this.list(
-      { id: promotions.map((p) => p!.id) },
+  @InjectManager("baseRepository_")
+  async update(
+    data:
+      | PromotionTypes.UpdatePromotionDTO
+      | PromotionTypes.UpdatePromotionDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.PromotionDTO | PromotionTypes.PromotionDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+    const updatedPromotions = await this.update_(input, sharedContext)
+
+    const promotions = await this.list(
+      { id: updatedPromotions.map((p) => p!.id) },
       {
         relations: [
           "application_method",
@@ -418,6 +460,8 @@ export default class PromotionModuleService<
       },
       sharedContext
     )
+
+    return Array.isArray(data) ? promotions : promotions[0]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -587,10 +631,12 @@ export default class PromotionModuleService<
 
   @InjectTransactionManager("baseRepository_")
   async delete(
-    ids: string[],
+    ids: string | string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await this.promotionService_.delete(ids, sharedContext)
+    const promotionIds = Array.isArray(ids) ? ids : [ids]
+
+    await this.promotionService_.delete(promotionIds, sharedContext)
   }
 
   @InjectManager("baseRepository_")
@@ -690,5 +736,215 @@ export default class PromotionModuleService<
       targetRuleIdsToRemove,
       sharedContext
     )
+  }
+
+  @InjectManager("baseRepository_")
+  async retrieveCampaign(
+    id: string,
+    config: FindConfig<PromotionTypes.CampaignDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.CampaignDTO> {
+    const campaign = await this.campaignService_.retrieve(
+      id,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<PromotionTypes.CampaignDTO>(
+      campaign,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectManager("baseRepository_")
+  async listCampaigns(
+    filters: PromotionTypes.FilterableCampaignProps = {},
+    config: FindConfig<PromotionTypes.CampaignDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.CampaignDTO[]> {
+    const campaigns = await this.campaignService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<PromotionTypes.CampaignDTO[]>(
+      campaigns,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  async createCampaigns(
+    data: PromotionTypes.CreateCampaignDTO,
+    sharedContext?: Context
+  ): Promise<PromotionTypes.CampaignDTO>
+
+  async createCampaigns(
+    data: PromotionTypes.CreateCampaignDTO[],
+    sharedContext?: Context
+  ): Promise<PromotionTypes.CampaignDTO[]>
+
+  @InjectManager("baseRepository_")
+  async createCampaigns(
+    data: PromotionTypes.CreateCampaignDTO | PromotionTypes.CreateCampaignDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.CampaignDTO | PromotionTypes.CampaignDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+    const createdCampaigns = await this.createCampaigns_(input, sharedContext)
+
+    const campaigns = await this.listCampaigns(
+      { id: createdCampaigns.map((p) => p!.id) },
+      {
+        relations: ["budget"],
+      },
+      sharedContext
+    )
+
+    return Array.isArray(data) ? campaigns : campaigns[0]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async createCampaigns_(
+    data: PromotionTypes.CreateCampaignDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const campaignsData: CreateCampaignDTO[] = []
+    const campaignBudgetsData: CreateCampaignBudgetDTO[] = []
+    const campaignIdentifierBudgetMap = new Map<
+      string,
+      CreateCampaignBudgetDTO
+    >()
+
+    for (const createCampaignData of data) {
+      const { budget: campaignBudgetData, ...campaignData } = createCampaignData
+
+      if (campaignBudgetData) {
+        campaignIdentifierBudgetMap.set(
+          campaignData.campaign_identifier,
+          campaignBudgetData
+        )
+      }
+
+      campaignsData.push(campaignData)
+    }
+
+    const createdCampaigns = await this.campaignService_.create(
+      campaignsData,
+      sharedContext
+    )
+
+    for (const createdCampaign of createdCampaigns) {
+      const campaignBudgetData = campaignIdentifierBudgetMap.get(
+        createdCampaign.campaign_identifier
+      )
+
+      if (campaignBudgetData) {
+        campaignBudgetsData.push({
+          ...campaignBudgetData,
+          campaign: createdCampaign.id,
+        })
+      }
+    }
+
+    if (campaignBudgetsData.length) {
+      await this.campaignBudgetService_.create(
+        campaignBudgetsData,
+        sharedContext
+      )
+    }
+
+    return createdCampaigns
+  }
+
+  async updateCampaigns(
+    data: PromotionTypes.UpdateCampaignDTO,
+    sharedContext?: Context
+  ): Promise<PromotionTypes.CampaignDTO>
+
+  async updateCampaigns(
+    data: PromotionTypes.UpdateCampaignDTO[],
+    sharedContext?: Context
+  ): Promise<PromotionTypes.CampaignDTO[]>
+
+  @InjectManager("baseRepository_")
+  async updateCampaigns(
+    data: PromotionTypes.UpdateCampaignDTO | PromotionTypes.UpdateCampaignDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.CampaignDTO | PromotionTypes.CampaignDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+
+    const updatedCampaigns = await this.updateCampaigns_(input, sharedContext)
+
+    const campaigns = await this.listCampaigns(
+      { id: updatedCampaigns.map((p) => p!.id) },
+      {
+        relations: ["budget"],
+      },
+      sharedContext
+    )
+
+    return Array.isArray(data) ? campaigns : campaigns[0]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async updateCampaigns_(
+    data: PromotionTypes.UpdateCampaignDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const campaignIds = data.map((d) => d.id)
+    const campaignsData: UpdateCampaignDTO[] = []
+    const campaignBudgetsData: UpdateCampaignBudgetDTO[] = []
+
+    const existingCampaigns = await this.listCampaigns(
+      {
+        id: campaignIds,
+      },
+      {
+        relations: ["budget"],
+      },
+      sharedContext
+    )
+
+    const existingCampaignsMap = new Map<string, PromotionTypes.CampaignDTO>(
+      existingCampaigns.map((campaign) => [campaign.id, campaign])
+    )
+
+    for (const updateCampaignData of data) {
+      const { budget: campaignBudgetData, ...campaignData } = updateCampaignData
+
+      const existingCampaign = existingCampaignsMap.get(campaignData.id)
+      const existingCampaignBudget = existingCampaign?.budget
+
+      campaignsData.push(campaignData)
+
+      if (existingCampaignBudget && campaignBudgetData) {
+        campaignBudgetsData.push({
+          id: existingCampaignBudget.id,
+          ...campaignBudgetData,
+        })
+      }
+    }
+
+    const updatedCampaigns = await this.campaignService_.update(campaignsData)
+
+    if (campaignBudgetsData.length) {
+      await this.campaignBudgetService_.update(campaignBudgetsData)
+    }
+
+    return updatedCampaigns
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async deleteCampaigns(
+    ids: string | string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const campaignIds = Array.isArray(ids) ? ids : [ids]
+
+    await this.promotionService_.delete(campaignIds, sharedContext)
   }
 }
