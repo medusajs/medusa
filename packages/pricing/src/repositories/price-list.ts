@@ -7,8 +7,7 @@ import { RepositoryTypes } from "@types"
 export class PriceListRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
   PriceList
 ) {
-  // @ts-ignore
-  constructor(...arguments: any[]) {
+  constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
   }

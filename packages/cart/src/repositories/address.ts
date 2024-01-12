@@ -10,8 +10,7 @@ export class AddressRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     create: CreateAddressDTO
   }
 >(Address) {
-  // @ts-ignore
-  constructor(...arguments: any[]) {
+  constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
   }

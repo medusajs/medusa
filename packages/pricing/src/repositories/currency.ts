@@ -10,8 +10,7 @@ export class CurrencyRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     update: RepositoryTypes.UpdateCurrencyDTO
   }
 >(Currency) {
-  // @ts-ignore
-  constructor(...arguments: any[]) {
+  constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
   }

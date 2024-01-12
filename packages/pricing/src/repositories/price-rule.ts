@@ -10,8 +10,7 @@ export class PriceRuleRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     update: RepositoryTypes.UpdatePriceRuleDTO
   }
 >(PriceRule) {
-  // @ts-ignore
-  constructor(...arguments: any[]) {
+  constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
   }

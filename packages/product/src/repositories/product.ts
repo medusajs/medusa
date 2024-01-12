@@ -24,8 +24,7 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     create: WithRequiredProperty<ProductTypes.CreateProductOnlyDTO, "status">
   }
 >(Product) {
-  // @ts-ignore
-  constructor(...arguments: any[]) {
+  constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
   }

@@ -15,8 +15,7 @@ export class ProductVariantRepository extends DALUtils.mikroOrmBaseRepositoryFac
     >
   }
 >(ProductVariant) {
-  // @ts-ignore
-  constructor(...arguments: any[]) {
+  constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
   }

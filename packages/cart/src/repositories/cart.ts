@@ -10,8 +10,7 @@ export class CartRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     create: CreateCartDTO
   }
 >(Cart) {
-  // @ts-ignore
-  constructor(...arguments: any[]) {
+  constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
   }

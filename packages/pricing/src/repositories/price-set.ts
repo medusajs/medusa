@@ -10,8 +10,7 @@ export class PriceSetRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     update: RepositoryTypes.UpdatePriceSetDTO
   }
 >(PriceSet) {
-  // @ts-ignore
-  constructor(...arguments: any[]) {
+  constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
   }

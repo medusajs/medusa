@@ -7,8 +7,7 @@ import { DALUtils } from "@medusajs/utils"
 export class ProductImageRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
   Image
 ) {
-  // @ts-ignore
-  constructor(...arguments: any[]) {
+  constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
   }

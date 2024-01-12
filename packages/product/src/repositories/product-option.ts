@@ -10,8 +10,7 @@ export class ProductOptionRepository extends DALUtils.mikroOrmBaseRepositoryFact
     update: ProductTypes.UpdateProductOptionDTO
   }
 >(ProductOption) {
-  // @ts-ignore
-  constructor(...arguments: any[]) {
+  constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
   }

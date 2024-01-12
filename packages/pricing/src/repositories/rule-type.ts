@@ -9,8 +9,7 @@ export class RuleTypeRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     update: RepositoryTypes.UpdateRuleTypeDTO
   }
 >(RuleType) {
-  // @ts-ignore
-  constructor(...arguments: any[]) {
+  constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
   }

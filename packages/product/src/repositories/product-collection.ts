@@ -14,8 +14,7 @@ type CreateProductCollection = ProductTypes.CreateProductCollectionDTO & {
 export class ProductCollectionRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
   ProductCollection
 ) {
-  // @ts-ignore
-  constructor(...arguments: any[]) {
+  constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
   }

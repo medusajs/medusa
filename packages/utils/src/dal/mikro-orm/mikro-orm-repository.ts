@@ -76,8 +76,7 @@ export class MikroOrmBase<T = any> {
 export class MikroOrmBaseRepository<
   T extends object = object
 > extends MikroOrmBase<T> {
-  // @ts-ignore
-  constructor(...arguments: any[]) {
+  constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
   }
@@ -231,7 +230,7 @@ export function mikroOrmBaseRepositoryFactory<
 >(entity: EntityClass<T> | EntitySchema<T>) {
   class MikroOrmAbstractBaseRepository_ extends MikroOrmBaseRepository<T> {
     // @ts-ignore
-    constructor(...arguments: any[]) {
+    constructor(...args: any[]) {
       // @ts-ignore
       super(...arguments)
     }

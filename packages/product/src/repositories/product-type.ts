@@ -14,8 +14,7 @@ export class ProductTypeRepository extends DALUtils.mikroOrmBaseRepositoryFactor
     update: UpdateProductTypeDTO
   }
 >(ProductType) {
-  // @ts-ignore
-  constructor(...arguments: any[]) {
+  constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
   }
