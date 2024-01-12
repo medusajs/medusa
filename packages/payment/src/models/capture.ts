@@ -27,6 +27,7 @@ export default class Capture {
   amount: number
 
   @ManyToOne(() => Payment, {
+    onDelete: "cascade",
     index: "IDX_capture_payment_id",
     fieldName: "payment_id",
   })

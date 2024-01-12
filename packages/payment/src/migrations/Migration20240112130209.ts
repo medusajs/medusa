@@ -1,6 +1,6 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20240112104455 extends Migration {
+export class Migration20240112130209 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table if not exists "payment-collection" ("id" text not null, "currency_code" text null, "amount" numeric not null, "authorized_amount" numeric null, "refunded_amount" numeric null, "region_id" text null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, "completed_at" timestamptz null, "status" text check ("status" in (\'not_paid\', \'awaiting\', \'authorized\', \'partially_authorized\', \'canceled\')) not null default \'not_paid\', constraint "payment-collection_pkey" primary key ("id"));'
@@ -38,9 +38,15 @@ export class Migration20240112104455 extends Migration {
     this.addSql(
       'create table if not exists "capture" ("id" text not null, "amount" numeric not null, "payment_id" text not null, "created_at" timestamptz not null default now(), "created_by" text null, constraint "capture_pkey" primary key ("id"));'
     )
+    this.addSql(
+      'create index "IDX_capture_payment_id" on "capture" ("payment_id");'
+    )
 
     this.addSql(
       'create table if not exists "refund" ("id" text not null, "amount" numeric not null, "payment_id" text not null, "created_at" timestamptz not null default now(), "created_by" text null, constraint "refund_pkey" primary key ("id"));'
+    )
+    this.addSql(
+      'create index "IDX_refund_payment_id" on "refund" ("payment_id");'
     )
 
     this.addSql(

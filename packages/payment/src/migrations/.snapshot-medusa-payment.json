@@ -718,6 +718,15 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": [
+            "payment_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_capture_payment_id",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "capture_pkey",
           "columnNames": [
             "id"
@@ -797,6 +806,15 @@
       "name": "refund",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "payment_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_refund_payment_id",
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "refund_pkey",
           "columnNames": [
