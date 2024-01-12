@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
 import ts from "typescript"
-import Formatter from "./Formatter.js"
+import Formatter from "./formatter.js"
 import KindsRegistry from "./kinds/registry.js"
 import nodeHasComments from "../utils/node-has-comments.js"
 

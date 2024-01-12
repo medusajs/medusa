@@ -1,4 +1,4 @@
-import DocblockGenerator, { Options } from "../classes/DocblockGenerator.js"
+import DocblockGenerator, { Options } from "../classes/docblock-generator.js"
 
 export default async function run(
   paths: string[],

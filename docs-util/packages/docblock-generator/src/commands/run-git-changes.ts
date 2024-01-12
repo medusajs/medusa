@@ -1,5 +1,5 @@
 import path from "path"
-import DocblockGenerator from "../classes/DocblockGenerator.js"
+import DocblockGenerator from "../classes/docblock-generator.js"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
 import promiseExec from "../utils/promise-exec.js"
 

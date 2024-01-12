@@ -1,8 +1,7 @@
 import ts from "typescript"
-import DefaultKind from "./default.js"
+import DefaultKindGenerator, { GetDocBlockOptions } from "./default.js"
 import { DOCBLOCK_NEW_LINE, DOCBLOCK_END_LINE } from "../../constants.js"
 import getSymbol from "../../utils/get-symbol.js"
-import { GetDocBlockOptions } from "../../interface/KindDocGenerator.js"
 
 export type FunctionNode =
   | ts.MethodDeclaration
@@ -14,7 +13,8 @@ type VariableNode = ts.VariableDeclaration | ts.VariableStatement
 
 export type FunctionOrVariableNode = FunctionNode | ts.VariableStatement
 
-class FunctionKind extends DefaultKind<FunctionOrVariableNode> {
+// eslint-disable-next-line max-len
+class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode> {
   protected methodKinds: ts.SyntaxKind[] = [
     ts.SyntaxKind.MethodDeclaration,
     ts.SyntaxKind.MethodSignature,
@@ -77,6 +77,29 @@ class FunctionKind extends DefaultKind<FunctionOrVariableNode> {
     )
   }
 
+  getReturnType(node: FunctionNode): ts.Type {
+    return node.type
+      ? this.checker.getTypeFromTypeNode(node.type)
+      : this.checker.getTypeAtLocation(node)
+  }
+
+  getFunctionSummary(node: FunctionNode, symbol?: ts.Symbol): string {
+    return symbol
+      ? this.knowledgeBaseFactory.tryToGetFunctionSummary(symbol) ||
+          this.getNodeSummary(node)
+      : this.getNodeSummary(node)
+  }
+
+  getFunctionExample(symbol?: ts.Symbol): string {
+    const str = `${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}@example${DOCBLOCK_NEW_LINE}`
+    return `${str}${
+      symbol
+        ? this.knowledgeBaseFactory.tryToGetFunctionExamples(symbol) ||
+          `{example-code}`
+        : `{example-code}`
+    }`
+  }
+
   getDocBlock(
     node: FunctionOrVariableNode | ts.Node,
     options: GetDocBlockOptions = { addEnd: true }
@@ -93,13 +116,17 @@ class FunctionKind extends DefaultKind<FunctionOrVariableNode> {
       return super.getDocBlock(node, options)
     }
 
+    const nodeSymbol = this.checker.getSymbolAtLocation(
+      "name" in node && node.name ? node.name : node
+    )
+
     let str = this.getDocBlockStart(actualNode)
 
     // add summary
     str += `${
       options.summaryPrefix ||
       (this.isMethod(actualNode) ? `This method` : `This function`)
-    } {summary}${DOCBLOCK_NEW_LINE}`
+    } ${this.getFunctionSummary(actualNode, nodeSymbol)}${DOCBLOCK_NEW_LINE}`
 
     // add params
     actualNode.forEachChild((childNode) => {
@@ -122,19 +149,21 @@ class FunctionKind extends DefaultKind<FunctionOrVariableNode> {
     })
 
     // add returns
-    const nodeType = actualNode.type
-      ? this.checker.getTypeFromTypeNode(actualNode.type)
-      : this.checker.getTypeAtLocation(actualNode)
+    const nodeType = this.getReturnType(actualNode)
     const returnTypeStr = this.checker.typeToString(nodeType)
+    const possibleReturnSummary = !this.hasReturnData(returnTypeStr)
+      ? `Resolves when ${this.defaultSummary}`
+      : this.getSymbolTypeDocBlock(nodeType)
 
     str += `${DOCBLOCK_NEW_LINE}@returns {${returnTypeStr}} ${
-      !this.hasReturnData(returnTypeStr)
-        ? `Resolves when {return summary}`
-        : this.getSymbolTypeDocBlock(nodeType)
+      nodeSymbol
+        ? this.knowledgeBaseFactory.tryToGetFunctionReturns(nodeSymbol) ||
+          possibleReturnSummary
+        : possibleReturnSummary
     }`
 
     // add example
-    str += `${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}@example${DOCBLOCK_NEW_LINE}{example-code}`
+    str += this.getFunctionExample(nodeSymbol)
 
     if (options.addEnd) {
       str += DOCBLOCK_END_LINE
@@ -144,4 +173,4 @@ class FunctionKind extends DefaultKind<FunctionOrVariableNode> {
   }
 }
 
-export default FunctionKind
+export default FunctionKindGenerator

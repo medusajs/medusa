@@ -1,5 +1,5 @@
 import ts from "typescript"
-import FunctionKind, {
+import FunctionKindGenerator, {
   FunctionNode,
   FunctionOrVariableNode,
 } from "./function.js"
@@ -8,7 +8,7 @@ import path from "path"
 import getMonorepoRoot from "../../utils/get-monorepo-root.js"
 import nodeHasComments from "../../utils/node-has-comments.js"
 
-class MedusaReactKind extends FunctionKind {
+class MedusaReactKindGenerator extends FunctionKindGenerator {
   isAllowed(node: ts.Node): node is FunctionOrVariableNode {
     if (!super.isAllowed(node)) {
       return false
@@ -25,9 +25,7 @@ class MedusaReactKind extends FunctionKind {
   }
 
   isMutation(node: FunctionNode): boolean {
-    const nodeType = node.type
-      ? this.checker.getTypeFromTypeNode(node.type)
-      : this.checker.getTypeAtLocation(node)
+    const nodeType = this.getReturnType(node)
 
     const callSignatures = nodeType.getCallSignatures()
 
@@ -61,10 +59,10 @@ class MedusaReactKind extends FunctionKind {
 
     let str = `${this.getDocBlockStart(
       actualNode
-    )}This hook {summary}${DOCBLOCK_NEW_LINE}`
+    )}This hook ${this.getFunctionSummary(actualNode)}${DOCBLOCK_NEW_LINE}`
 
     // add example
-    str += `${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}@example${DOCBLOCK_NEW_LINE}{example-code}`
+    str += this.getFunctionExample()
 
     // TODO add the namespace
     str += `${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}@customNamespace ${this.getNamespacePath(
@@ -128,4 +126,4 @@ class MedusaReactKind extends FunctionKind {
   }
 }
 
-export default MedusaReactKind
+export default MedusaReactKindGenerator

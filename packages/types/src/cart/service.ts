@@ -2,7 +2,12 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import { CartDTO, FilterableCartProps } from "./common"
-import { AddLineItemsDTO, CreateCartDTO, UpdateCartDTO, UpdateLineItemsDTO } from "./mutations"
+import {
+  AddLineItemsDTO,
+  CreateCartDTO,
+  UpdateCartDTO,
+  UpdateLineItemsDTO,
+} from "./mutations"
 
 export interface ICartModuleService extends IModuleService {
   retrieve(

@@ -1,22 +1,21 @@
 import ts from "typescript"
-import KindDocGenerator from "../../interface/KindDocGenerator.js"
-import FunctionKind from "./function.js"
-import DefaultKind from "./default.js"
-import MedusaReactKind from "./medusa-react.js"
+import FunctionKindGenerator from "./function.js"
+import DefaultKindGenerator from "./default.js"
+import MedusaReactKindGenerator from "./medusa-react.js"
 
 class KindsRegistry {
-  protected kindInstances: KindDocGenerator[]
-  protected defaultKindGenerator: DefaultKind
+  protected kindInstances: DefaultKindGenerator[]
+  protected defaultKindGenerator: DefaultKindGenerator
 
   constructor(checker: ts.TypeChecker) {
     this.kindInstances = [
-      new MedusaReactKind({ checker }),
-      new FunctionKind({ checker }),
+      new MedusaReactKindGenerator({ checker }),
+      new FunctionKindGenerator({ checker }),
     ]
-    this.defaultKindGenerator = new DefaultKind({ checker })
+    this.defaultKindGenerator = new DefaultKindGenerator({ checker })
   }
 
-  getKindGenerator(node: ts.Node): KindDocGenerator | undefined {
+  getKindGenerator(node: ts.Node): DefaultKindGenerator | undefined {
     return (
       this.kindInstances.find((generator) => generator.isAllowed(node)) ||
       (this.defaultKindGenerator.isAllowed(node)

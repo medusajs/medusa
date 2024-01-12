@@ -1,20 +1,23 @@
 import ts from "typescript"
-import KindDocGenerator, {
-  GetDocBlockOptions,
-} from "../../interface/KindDocGenerator.js"
 import {
   DOCBLOCK_NEW_LINE,
   DOCBLOCK_START,
   DOCBLOCK_END_LINE,
 } from "../../constants.js"
 import getSymbol from "../../utils/get-symbol.js"
+import KnowledgeBaseFactory from "../knowledge-base-factory.js"
 
 export type GeneratorOptions = {
   checker: ts.TypeChecker
   kinds?: ts.SyntaxKind[]
 }
 
-class DefaultKind<T extends ts.Node = ts.Node> implements KindDocGenerator<T> {
+export type GetDocBlockOptions = {
+  addEnd?: boolean
+  summaryPrefix?: string
+}
+
+class DefaultKindGenerator<T extends ts.Node = ts.Node> {
   static DEFAULT_ALLOWED_NODE_KINDS = [
     ts.SyntaxKind.ClassDeclaration,
     ts.SyntaxKind.EnumDeclaration,
@@ -27,10 +30,13 @@ class DefaultKind<T extends ts.Node = ts.Node> implements KindDocGenerator<T> {
   ]
   protected allowedKinds: ts.SyntaxKind[]
   protected checker: ts.TypeChecker
+  protected defaultSummary = "{summary}"
+  protected knowledgeBaseFactory: KnowledgeBaseFactory
 
   constructor({ checker, kinds }: GeneratorOptions) {
-    this.allowedKinds = kinds || DefaultKind.DEFAULT_ALLOWED_NODE_KINDS
+    this.allowedKinds = kinds || DefaultKindGenerator.DEFAULT_ALLOWED_NODE_KINDS
     this.checker = checker
+    this.knowledgeBaseFactory = new KnowledgeBaseFactory()
   }
 
   getAllowedKinds(): ts.SyntaxKind[] {
@@ -56,21 +62,30 @@ class DefaultKind<T extends ts.Node = ts.Node> implements KindDocGenerator<T> {
     node: T | ts.Node,
     options: GetDocBlockOptions = { addEnd: true }
   ): string {
-    // const { addEnd = true } = options
     let str = this.getDocBlockStart(node)
+    const summary = this.getNodeSummary(node)
 
     switch (node.kind) {
       case ts.SyntaxKind.EnumDeclaration:
-        str += `@enum${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}{summary}`
+        str += `@enum${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}${summary}`
         break
       case ts.SyntaxKind.TypeAliasDeclaration:
-        str += `@interface${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}{summary}`
+        str += `@interface${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}${summary}`
         break
       default:
-        str += `{summary}`
+        str += summary
     }
 
     return `${str}${options.addEnd ? DOCBLOCK_END_LINE : ""}`
+  }
+
+  getNodeSummary(node: T | ts.Node): string {
+    const nodeType =
+      "type" in node && node.type && ts.isTypeNode(node.type as ts.Node)
+        ? this.checker.getTypeFromTypeNode(node.type as ts.TypeNode)
+        : this.checker.getTypeAtLocation(node)
+
+    return this.getSymbolTypeDocBlock(nodeType)
   }
 
   getSymbolTypeDocBlock(symbolType: ts.Type): string {
@@ -86,16 +101,31 @@ class DefaultKind<T extends ts.Node = ts.Node> implements KindDocGenerator<T> {
       // take only the first type argument to account
       const typeArgumentDoc = this.getSymbolTypeDocBlock(typeArguments[0])
 
+      if (typeArgumentDoc === this.defaultSummary) {
+        const tryKnowledgeSummary = this.knowledgeBaseFactory.tryToGetSummary(
+          this.checker.typeToString(symbolType)
+        )
+
+        if (tryKnowledgeSummary) {
+          return tryKnowledgeSummary
+        }
+      }
+
       // do some formatting if the encapsulating type is an array
-      if (!typeArgumentDoc.length || !this.checker.isArrayType(symbolType)) {
+      if (!this.checker.isArrayType(symbolType)) {
         return typeArgumentDoc
       }
+
       return `The list of ${typeArgumentDoc
         .charAt(0)
         .toLowerCase()}${typeArgumentDoc.substring(1)}`
     }
 
-    return symbolType.symbol ? this.getSymbolDocBlock(symbolType.symbol) : ""
+    return symbolType.symbol
+      ? this.getSymbolDocBlock(symbolType.symbol)
+      : this.knowledgeBaseFactory.tryToGetSummary(
+          this.checker.typeToString(symbolType)
+        ) || this.defaultSummary
   }
 
   getSymbolDocBlock(symbol: ts.Symbol): string {
@@ -112,6 +142,17 @@ class DefaultKind<T extends ts.Node = ts.Node> implements KindDocGenerator<T> {
           })
       }
     }
+
+    if (!commentDisplayParts.length) {
+      return (
+        this.knowledgeBaseFactory.tryToGetSummary(
+          this.checker.typeToString(this.checker.getTypeOfSymbol(symbol))
+        ) ||
+        this.knowledgeBaseFactory.tryToGetSummary(symbol.name) ||
+        this.defaultSummary
+      )
+    }
+
     return ts.displayPartsToString(commentDisplayParts)
   }
 
@@ -265,4 +306,4 @@ class DefaultKind<T extends ts.Node = ts.Node> implements KindDocGenerator<T> {
   }
 }
 
-export default DefaultKind
+export default DefaultKindGenerator
