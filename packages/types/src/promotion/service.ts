@@ -3,6 +3,8 @@ import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   CampaignDTO,
+  ComputeActionContext,
+  ComputeActions,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
   FilterableCampaignProps,
@@ -16,10 +18,10 @@ import { CreateCampaignDTO, UpdateCampaignDTO } from "./mutations"
 
 export interface IPromotionModuleService extends IModuleService {
   computeActions(
-    promotionsToApply: Pick<PromotionDTO, "code">[],
-    applicationContext: Record<string, any>,
+    promotionCodesToApply: string[],
+    applicationContext: ComputeActionContext,
     options?: Record<string, any>
-  ): Promise<Record<string, any>[]>
+  ): Promise<ComputeActions[]>
 
   create(
     data: CreatePromotionDTO[],

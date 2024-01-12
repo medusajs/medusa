@@ -12,7 +12,7 @@ import { areRulesValidForContext } from "../validations"
 export function getComputedActionsForItems(
   promotion: PromotionTypes.PromotionDTO,
   itemApplicationContext: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.ITEMS],
-  itemIdPromoValueMap: Map<string, number>,
+  methodIdPromoValueMap: Map<string, number>,
   allocationOverride?: ApplicationMethodAllocationValues
 ): PromotionTypes.ComputeActions[] {
   const applicableItems: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.ITEMS] =
@@ -21,7 +21,7 @@ export function getComputedActionsForItems(
   if (!itemApplicationContext) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `"items" not found in context`
+      `"items" should be present as an array in the context for computeActions`
     )
   }
 
@@ -41,7 +41,7 @@ export function getComputedActionsForItems(
   return applyPromotionToItems(
     promotion,
     applicableItems,
-    itemIdPromoValueMap,
+    methodIdPromoValueMap,
     allocationOverride
   )
 }
@@ -49,7 +49,7 @@ export function getComputedActionsForItems(
 export function applyPromotionToItems(
   promotion: PromotionTypes.PromotionDTO,
   items: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.ITEMS],
-  itemIdPromoValueMap: Map<string, number>,
+  methodIdPromoValueMap: Map<string, number>,
   allocationOverride?: ApplicationMethodAllocationValues
 ): PromotionTypes.ComputeActions[] {
   const { application_method: applicationMethod } = promotion
@@ -59,29 +59,25 @@ export function applyPromotionToItems(
   if (
     [allocation, allocationOverride].includes(ApplicationMethodAllocation.EACH)
   ) {
-    for (const item of items!) {
-      const appliedPromoValue = itemIdPromoValueMap.get(item.id) || 0
+    for (const method of items!) {
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
       const promotionValue = parseFloat(applicationMethod!.value!)
       const applicableTotal =
-        item.unit_price *
-          Math.min(item.quantity, applicationMethod?.max_quantity!) -
+        method.unit_price *
+          Math.min(method.quantity, applicationMethod?.max_quantity!) -
         appliedPromoValue
 
-      let amount = promotionValue
-
-      if (promotionValue > applicableTotal) {
-        amount = applicableTotal
-      }
+      const amount = Math.min(promotionValue, applicableTotal)
 
       if (amount <= 0) {
         continue
       }
 
-      itemIdPromoValueMap.set(item.id, appliedPromoValue + amount)
+      methodIdPromoValueMap.set(method.id, appliedPromoValue + amount)
 
       computedActions.push({
         action: "addItemAdjustment",
-        item_id: item.id,
+        item_id: method.id,
         amount,
         code: promotion.code!,
       })
@@ -93,34 +89,30 @@ export function applyPromotionToItems(
       ApplicationMethodAllocation.ACROSS
     )
   ) {
-    const totalApplicableValue = items!.reduce((acc, item) => {
-      const appliedPromoValue = itemIdPromoValueMap.get(item.id) || 0
+    const totalApplicableValue = items!.reduce((acc, method) => {
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
       return (
         acc +
-        item.unit_price *
-          Math.min(item.quantity, applicationMethod?.max_quantity!) -
+        method.unit_price *
+          Math.min(method.quantity, applicationMethod?.max_quantity!) -
         appliedPromoValue
       )
     }, 0)
 
-    for (const item of items!) {
+    for (const method of items!) {
       const promotionValue = parseFloat(applicationMethod!.value!)
-      const appliedPromoValue = itemIdPromoValueMap.get(item.id) || 0
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
 
       const applicableTotal =
-        item.unit_price *
-          Math.min(item.quantity, applicationMethod?.max_quantity!) -
+        method.unit_price *
+          Math.min(method.quantity, applicationMethod?.max_quantity!) -
         appliedPromoValue
 
       // TODO: should we worry about precision here?
       const applicablePromotionValue =
         (applicableTotal / totalApplicableValue) * promotionValue
 
-      let amount = applicablePromotionValue
-
-      if (applicablePromotionValue > applicableTotal) {
-        amount = applicableTotal
-      }
+      const amount = Math.min(applicablePromotionValue, applicableTotal)
 
       if (amount <= 0) {
         continue
@@ -128,7 +120,7 @@ export function applyPromotionToItems(
 
       computedActions.push({
         action: "addItemAdjustment",
-        item_id: item.id,
+        item_id: method.id,
         amount,
         code: promotion.code!,
       })
