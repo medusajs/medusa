@@ -602,7 +602,7 @@ describe("Cart Module Service", () => {
     })
   })
 
-  describe("addLineItems", () => {
+  describe("addShippingMethods", () => {
     it("should add a shipping method to cart succesfully", async () => {
       const [createdCart] = await service.create([
         {

@@ -60,13 +60,22 @@ export interface ICartModuleService extends IModuleService {
     data: CreateAddressDTO[],
     sharedContext?: Context
   ): Promise<CartAddressDTO[]>
+  createAddresses(
+    data: CreateAddressDTO,
+    sharedContext?: Context
+  ): Promise<CartAddressDTO>
 
   updateAddresses(
     data: UpdateAddressDTO[],
     sharedContext?: Context
   ): Promise<CartAddressDTO[]>
+  updateAddresses(
+    data: UpdateAddressDTO,
+    sharedContext?: Context
+  ): Promise<CartAddressDTO>
 
   deleteAddresses(ids: string[], sharedContext?: Context): Promise<void>
+  deleteAddresses(ids: string, sharedContext?: Context): Promise<void>
 
   addLineItems(
     data: AddLineItemsDTO,

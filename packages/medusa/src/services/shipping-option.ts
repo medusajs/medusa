@@ -1,3 +1,5 @@
+import { FlagRouter, promiseAll } from "@medusajs/utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import {
   Cart,
   Order,
@@ -6,6 +8,7 @@ import {
   ShippingOptionPriceType,
   ShippingOptionRequirement,
 } from "../models"
+import { FindConfig, Selector } from "../types/common"
 import {
   CreateShippingMethodDto,
   CreateShippingOptionInput,
@@ -14,19 +17,16 @@ import {
   ValidatePriceTypeAndAmountInput,
   ValidateRequirementTypeInput,
 } from "../types/shipping-options"
-import { FindConfig, Selector } from "../types/common"
-import { FlagRouter, promiseAll } from "@medusajs/utils"
-import { MedusaError, isDefined } from "medusa-core-utils"
 import { buildQuery, isString, setMetadata } from "../utils"
 
 import { EntityManager } from "typeorm"
-import FulfillmentProviderService from "./fulfillment-provider"
-import RegionService from "./region"
+import { TransactionBaseService } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { ShippingOptionRepository } from "../repositories/shipping-option"
 import { ShippingOptionRequirementRepository } from "../repositories/shipping-option-requirement"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { TransactionBaseService } from "../interfaces"
+import FulfillmentProviderService from "./fulfillment-provider"
+import RegionService from "./region"
 
 type InjectedDependencies = {
   manager: EntityManager

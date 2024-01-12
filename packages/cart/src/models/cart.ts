@@ -20,7 +20,7 @@ import ShippingMethod from "./shipping-method"
 type OptionalCartProps =
   | "shipping_address"
   | "billing_address"
-  | DAL.EntityDateColumns // TODO: To be revisited when more clear
+  | DAL.EntityDateColumns
 
 @Entity({ tableName: "cart" })
 export default class Cart {
@@ -120,7 +120,7 @@ export default class Cart {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at: Date
+  created_at?: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -128,7 +128,10 @@ export default class Cart {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at: Date
+  updated_at?: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at?: Date
 
   @BeforeCreate()
   onCreate() {
