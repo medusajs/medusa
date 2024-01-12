@@ -1,7 +1,8 @@
 import ts from "typescript"
 import FunctionKindGenerator from "./function.js"
 import DefaultKindGenerator from "./default.js"
-import MedusaReactKindGenerator from "./medusa-react.js"
+import MedusaReactHooksKindGenerator from "./medusa-react-hooks.js"
+import SourceFileKindGenerator from "./source-file.js"
 
 class KindsRegistry {
   protected kindInstances: DefaultKindGenerator[]
@@ -9,8 +10,9 @@ class KindsRegistry {
 
   constructor(checker: ts.TypeChecker) {
     this.kindInstances = [
-      new MedusaReactKindGenerator({ checker }),
+      new MedusaReactHooksKindGenerator({ checker }),
       new FunctionKindGenerator({ checker }),
+      new SourceFileKindGenerator({ checker }),
     ]
     this.defaultKindGenerator = new DefaultKindGenerator({ checker })
   }

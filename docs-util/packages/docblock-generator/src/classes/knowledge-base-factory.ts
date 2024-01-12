@@ -1,5 +1,5 @@
 import ts from "typescript"
-import { DOCBLOCK_NEW_LINE } from "../constants.js"
+import { DOCBLOCK_DOUBLE_LINES, DOCBLOCK_NEW_LINE } from "../constants.js"
 
 type KnowledgeBase = {
   startsWith: string
@@ -68,7 +68,7 @@ class KnowledgeBaseFactory {
       value: "restores soft deleted {type name} by their IDs.",
     },
   ]
-  private exampleCodeBlockLine = `${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}\`\`\`ts${DOCBLOCK_NEW_LINE}{example-code}${DOCBLOCK_NEW_LINE}\`\`\`${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}`
+  private exampleCodeBlockLine = `${DOCBLOCK_DOUBLE_LINES}\`\`\`ts${DOCBLOCK_NEW_LINE}{example-code}${DOCBLOCK_NEW_LINE}\`\`\`${DOCBLOCK_DOUBLE_LINES}`
   private examplesKnowledgeBase: KnowledgeBase[] = [
     {
       startsWith: "list",

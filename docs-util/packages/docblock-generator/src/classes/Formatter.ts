@@ -184,7 +184,7 @@ class Formatter {
     return newContent
   }
 
-  async formatStr(content: string, fileName: string) {
+  async formatStr(content: string, fileName: string): Promise<string> {
     const newContent = await this.formatStrWithEslint(content, fileName)
 
     let normalizedContent = this.normalizeCommentNewLine(newContent)
@@ -197,6 +197,10 @@ class Formatter {
     }
 
     return normalizedContent
+  }
+
+  formatFileComments(comment: string, content: string): string {
+    return comment.length ? `/**\n ${comment}*/\n\n${content}` : content
   }
 }
 

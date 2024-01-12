@@ -1,6 +1,11 @@
 import ts from "typescript"
 import DefaultKindGenerator, { GetDocBlockOptions } from "./default.js"
-import { DOCBLOCK_NEW_LINE, DOCBLOCK_END_LINE } from "../../constants.js"
+import {
+  DOCBLOCK_NEW_LINE,
+  DOCBLOCK_END_LINE,
+  DOCBLOCK_START,
+  DOCBLOCK_DOUBLE_LINES,
+} from "../../constants.js"
 import getSymbol from "../../utils/get-symbol.js"
 
 export type FunctionNode =
@@ -91,7 +96,7 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
   }
 
   getFunctionExample(symbol?: ts.Symbol): string {
-    const str = `${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}@example${DOCBLOCK_NEW_LINE}`
+    const str = `${DOCBLOCK_DOUBLE_LINES}@example${DOCBLOCK_NEW_LINE}`
     return `${str}${
       symbol
         ? this.knowledgeBaseFactory.tryToGetFunctionExamples(symbol) ||
@@ -116,11 +121,9 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
       return super.getDocBlock(node, options)
     }
 
-    const nodeSymbol = this.checker.getSymbolAtLocation(
-      "name" in node && node.name ? node.name : node
-    )
+    const nodeSymbol = getSymbol(node, this.checker)
 
-    let str = this.getDocBlockStart(actualNode)
+    let str = DOCBLOCK_START
 
     // add summary
     str += `${
@@ -164,6 +167,11 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
 
     // add example
     str += this.getFunctionExample(nodeSymbol)
+
+    // add common docs
+    str += this.getCommonDocs(node, {
+      prefixWithLineBreaks: true,
+    })
 
     if (options.addEnd) {
       str += DOCBLOCK_END_LINE

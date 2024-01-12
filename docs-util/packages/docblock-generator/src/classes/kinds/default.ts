@@ -1,11 +1,15 @@
 import ts from "typescript"
 import {
-  DOCBLOCK_NEW_LINE,
   DOCBLOCK_START,
   DOCBLOCK_END_LINE,
+  DOCBLOCK_DOUBLE_LINES,
 } from "../../constants.js"
 import getSymbol from "../../utils/get-symbol.js"
 import KnowledgeBaseFactory from "../knowledge-base-factory.js"
+import {
+  getCustomNamespaceTag,
+  shouldHaveNamespace,
+} from "../../utils/medusa-react-utils.js"
 
 export type GeneratorOptions = {
   checker: ts.TypeChecker
@@ -17,8 +21,14 @@ export type GetDocBlockOptions = {
   summaryPrefix?: string
 }
 
+type CommonDocsOptions = {
+  addDefaultSummary?: boolean
+  prefixWithLineBreaks?: boolean
+}
+
 class DefaultKindGenerator<T extends ts.Node = ts.Node> {
   static DEFAULT_ALLOWED_NODE_KINDS = [
+    ts.SyntaxKind.SourceFile,
     ts.SyntaxKind.ClassDeclaration,
     ts.SyntaxKind.EnumDeclaration,
     ts.SyntaxKind.EnumMember,
@@ -47,34 +57,28 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     return this.allowedKinds.includes(node.kind)
   }
 
-  getDocBlockStart(node: T | ts.Node): string {
-    const commonTags = this.getCommonDocs(node)
-
-    return `${DOCBLOCK_START}${
-      commonTags.length
-        ? `${commonTags}${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}`
-        : ``
-    }`
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getDocBlock(
     node: T | ts.Node,
     options: GetDocBlockOptions = { addEnd: true }
   ): string {
-    let str = this.getDocBlockStart(node)
+    let str = DOCBLOCK_START
     const summary = this.getNodeSummary(node)
 
     switch (node.kind) {
       case ts.SyntaxKind.EnumDeclaration:
-        str += `@enum${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}${summary}`
+        str += `@enum${DOCBLOCK_DOUBLE_LINES}${summary}`
         break
       case ts.SyntaxKind.TypeAliasDeclaration:
-        str += `@interface${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}${summary}`
+        str += `@interface${DOCBLOCK_DOUBLE_LINES}${summary}`
         break
       default:
         str += summary
     }
+
+    str += this.getCommonDocs(node, {
+      prefixWithLineBreaks: true,
+    })
 
     return `${str}${options.addEnd ? DOCBLOCK_END_LINE : ""}`
   }
@@ -179,13 +183,13 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
               switch (childNodeExpression.escapedText) {
                 case "FeatureFlagEntity":
                   // add the `@featureFlag` tag.
-                  str += `${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}@featureFlag [flag_name]`
+                  str += `${DOCBLOCK_DOUBLE_LINES}@featureFlag [flag_name]`
                   break
                 case "BeforeInsert":
                 case "BeforeLoad":
                 case "AfterLoad":
                   // add `@apiIgnore` tag
-                  str += `${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}@apiIgnore`
+                  str += `${DOCBLOCK_DOUBLE_LINES}@apiIgnore`
               }
             }
           }
@@ -196,13 +200,25 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     return str
   }
 
-  getCommonDocs(node: T | ts.Node): string {
+  getCommonDocs(
+    node: T | ts.Node,
+    options: CommonDocsOptions = { addDefaultSummary: false }
+  ): string {
     const tags = new Set<string>()
 
     const symbol = getSymbol(node, this.checker)
 
     if (!symbol) {
       return ""
+    }
+
+    if (ts.isSourceFile(node)) {
+      // comments for source files must start with this tag
+      tags.add(`@packageDocumentation`)
+    }
+
+    if (options.addDefaultSummary) {
+      tags.add(this.defaultSummary)
     }
 
     // check for private or protected modifiers
@@ -235,7 +251,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     // check if any docs can be added for the symbol's
     // decorators
     this.getDecoratorDocs(symbol)
-      .split(`${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}`)
+      .split(`${DOCBLOCK_DOUBLE_LINES}`)
       .filter((docItem) => docItem.length > 0)
       .forEach((docItem) => tags.add(docItem))
 
@@ -256,13 +272,23 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
       }
     }
 
+    // check if custom namespace should be added
+    if (shouldHaveNamespace(node)) {
+      tags.add(getCustomNamespaceTag(node))
+    }
+
     let str = ""
     tags.forEach((tag) => {
       if (str.length > 0) {
-        str += `${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}`
+        str += `${DOCBLOCK_DOUBLE_LINES}`
       }
       str += `${tag}`
     })
+
+    if (str.length && options.prefixWithLineBreaks) {
+      str = `${DOCBLOCK_DOUBLE_LINES}${str}`
+    }
+
     return str
   }
 

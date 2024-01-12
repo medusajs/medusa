@@ -42,26 +42,35 @@ class DocblockGenerator {
         console.log(`Generating for ${file.fileName}...`)
 
         let fileContent = file.getFullText()
+        let fileComments: string = ""
 
         const documentChild = (node: ts.Node, topLevel = false) => {
+          const isSourceFile = ts.isSourceFile(node)
           const origNodeText = node.getFullText().trim()
           const nodeKindGenerator = this.kindsRegistry?.getKindGenerator(node)
+          let docComment: string | undefined
 
           if (nodeKindGenerator && this.canDocumentNode(node)) {
-            const docComment = nodeKindGenerator.getDocBlock(node)
+            docComment = nodeKindGenerator.getDocBlock(node)
             if (docComment.length) {
-              ts.addSyntheticLeadingComment(
-                node,
-                ts.SyntaxKind.MultiLineCommentTrivia,
-                docComment,
-                true
-              )
+              if (isSourceFile) {
+                fileComments = docComment
+              } else {
+                ts.addSyntheticLeadingComment(
+                  node,
+                  ts.SyntaxKind.MultiLineCommentTrivia,
+                  docComment,
+                  true
+                )
+              }
             }
           }
 
-          ts.forEachChild(node, documentChild)
+          ts.forEachChild(node, (childNode) =>
+            documentChild(childNode, isSourceFile)
+          )
 
-          if (topLevel) {
+          if (!isSourceFile && topLevel) {
             const newNodeText = printer.printNode(
               ts.EmitHint.Unspecified,
               node,
@@ -74,12 +83,15 @@ class DocblockGenerator {
           }
         }
 
-        ts.forEachChild(file, (node) => documentChild(node, true))
+        documentChild(file, true)
 
         if (!this.options.dryRun) {
           ts.sys.writeFile(
             file.fileName,
-            await this.formatter.formatStr(fileContent, file.fileName)
+            this.formatter.formatFileComments(
+              fileComments,
+              await this.formatter.formatStr(fileContent, file.fileName)
+            )
           )
         }
 

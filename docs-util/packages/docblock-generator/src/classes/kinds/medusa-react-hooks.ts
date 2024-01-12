@@ -3,12 +3,19 @@ import FunctionKindGenerator, {
   FunctionNode,
   FunctionOrVariableNode,
 } from "./function.js"
-import { DOCBLOCK_NEW_LINE, DOCBLOCK_END_LINE } from "../../constants.js"
-import path from "path"
-import getMonorepoRoot from "../../utils/get-monorepo-root.js"
+import {
+  DOCBLOCK_NEW_LINE,
+  DOCBLOCK_END_LINE,
+  DOCBLOCK_START,
+  DOCBLOCK_DOUBLE_LINES,
+} from "../../constants.js"
 import nodeHasComments from "../../utils/node-has-comments.js"
+import {
+  CUSTOM_NAMESPACE_TAG,
+  getCustomNamespaceTag,
+} from "../../utils/medusa-react-utils.js"
 
-class MedusaReactKindGenerator extends FunctionKindGenerator {
+class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
   isAllowed(node: ts.Node): node is FunctionOrVariableNode {
     if (!super.isAllowed(node)) {
       return false
@@ -57,22 +64,10 @@ class MedusaReactKindGenerator extends FunctionKindGenerator {
       return super.getDocBlock(node)
     }
 
-    let str = `${this.getDocBlockStart(
-      actualNode
-    )}This hook ${this.getFunctionSummary(actualNode)}${DOCBLOCK_NEW_LINE}`
+    let str = `${DOCBLOCK_START}This hook ${this.getFunctionSummary(node)}`
 
     // add example
     str += this.getFunctionExample()
-
-    // TODO add the namespace
-    str += `${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}@customNamespace ${this.getNamespacePath(
-      actualNode
-    )}`
-
-    // add the category
-    str += `${DOCBLOCK_NEW_LINE}@category ${
-      this.isMutation(actualNode) ? "Mutations" : "Queries"
-    }`
 
     // loop over parameters that aren't query/mutation parameters
     // and add docblock to them
@@ -85,33 +80,22 @@ class MedusaReactKindGenerator extends FunctionKindGenerator {
       )
     })
 
+    // add common docs
+    str += this.getCommonDocs(node, {
+      prefixWithLineBreaks: true,
+    })
+
+    // add namespace in case it's not added
+    if (!str.includes(CUSTOM_NAMESPACE_TAG)) {
+      str += `${DOCBLOCK_DOUBLE_LINES}${getCustomNamespaceTag(actualNode)}`
+    }
+
+    // add the category
+    str += `${DOCBLOCK_NEW_LINE}@category ${
+      this.isMutation(actualNode) ? "Mutations" : "Queries"
+    }`
+
     return `${str}${DOCBLOCK_END_LINE}`
-  }
-
-  getNamespacePath(node: FunctionNode): string {
-    const packagePathPrefix = `${path.resolve(
-      getMonorepoRoot(),
-      "packages/medusa-react/src"
-    )}/`
-
-    const hookPath = path
-      .dirname(node.getSourceFile().fileName)
-      .replace(packagePathPrefix, "")
-
-    return hookPath
-      .split("/")
-      .map((pathItem) =>
-        pathItem
-          .split("-")
-          .map(
-            (item) =>
-              `${item.charAt(0).toUpperCase()}${
-                item.length > 1 ? item.substring(1) : ""
-              }`
-          )
-          .join(" ")
-      )
-      .join(".")
   }
 
   getActualParameters(node: FunctionNode): ts.ParameterDeclaration[] {
@@ -126,4 +110,4 @@ class MedusaReactKindGenerator extends FunctionKindGenerator {
   }
 }
 
-export default MedusaReactKindGenerator
+export default MedusaReactHooksKindGenerator
