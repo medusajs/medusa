@@ -1,8 +1,8 @@
-import { BaseFilterable } from "../../dal"
-import { MoneyAmountDTO } from "./money-amount"
-import { PriceListDTO } from "./price-list"
-import { PriceRuleDTO } from "./price-rule"
-import { PriceSetDTO } from "./price-set"
+import { BaseFilterable } from "../../dal";
+import { MoneyAmountDTO } from "./money-amount";
+import { PriceListDTO } from "./price-list";
+import { PriceRuleDTO } from "./price-rule";
+import { PriceSetDTO } from "./price-set";
 
 /**
  * @interface
@@ -46,6 +46,18 @@ export interface PriceSetMoneyAmountDTO {
    * @expandable
    */
   money_amount?: MoneyAmountDTO
+  /**
+   * When the price_set_money_amount was created.
+   */
+  created_at: Date
+  /**
+   * When the price_set_money_amount was updated.
+   */
+  updated_at: Date
+  /**
+   * When the price_set_money_amount was deleted.
+   */
+  deleted_at: null | Date
 }
 
 export interface UpdatePriceSetMoneyAmountDTO {

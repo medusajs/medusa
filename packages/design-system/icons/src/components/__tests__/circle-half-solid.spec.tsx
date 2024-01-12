@@ -4,7 +4,7 @@
   import CircleHalfSolid from "../circle-half-solid"
 
   describe("CircleHalfSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CircleHalfSolid data-testid="icon" />)
 
 

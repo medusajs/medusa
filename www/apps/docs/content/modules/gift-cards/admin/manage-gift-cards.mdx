@@ -373,20 +373,30 @@ You can update a gift card product’s details by sending a request to the [Upda
     ```tsx
     import { useAdminUpdateProduct } from "medusa-react"
 
-    const UpdateGiftCard = () => {
-      const createGiftCard = useAdminUpdateProduct(giftCardId)
+    type Props = {
+      giftCardId: string
+    }
+
+    const GiftCard = ({
+      giftCardId
+    }: Props) => {
+      const updateGiftCard = useAdminUpdateProduct(giftCardId)
       // ...
 
       const handleUpdate = () => {
-        createGiftCard.mutate({
+        updateGiftCard.mutate({
           description: "The best gift card",
+        }, {
+          onSuccess: ({ product }) => {
+            console.log(product.description)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateGiftCard
+    export default GiftCard
     ```
 
   </TabItem>
@@ -450,12 +460,20 @@ You can delete a gift card product by sending a request to the [Delete a Product
     ```tsx
     import { useAdminDeleteProduct } from "medusa-react"
 
-    const GiftCard = () => {
+    type Props = {
+      giftCardId: string
+    }
+
+    const GiftCard = ({ giftCardId }: Props) => {
       const deleteGiftCard = useAdminDeleteProduct(giftCardId)
       // ...
 
       const handleDelete = () => {
-        deleteGiftCard.mutate()
+        deleteGiftCard.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...
@@ -521,7 +539,6 @@ You can retrieve all custom gift cards by sending a request to the [List Gift Ca
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { GiftCard } from "@medusajs/medusa"
     import { useAdminGiftCards } from "medusa-react"
 
     const CustomGiftCards = () => {
@@ -535,7 +552,7 @@ You can retrieve all custom gift cards by sending a request to the [List Gift Ca
           )}
           {gift_cards && gift_cards.length > 0 && (
             <ul>
-              {gift_cards.map((giftCard: GiftCard) => (
+              {gift_cards.map((giftCard) => (
                 <li key={giftCard.id}>{giftCard.code}</li>
               ))}
             </ul>
@@ -604,10 +621,17 @@ You can create a custom gift card by sending a request to the [Create a Gift Car
       const createGiftCard = useAdminCreateGiftCard()
       // ...
       
-      const handleCreate = (regionId: string, value: number) => {
+      const handleCreate = (
+        regionId: string, 
+        value: number
+      ) => {
         createGiftCard.mutate({
           region_id: regionId,
           value,
+        }, {
+          onSuccess: ({ gift_card }) => {
+            console.log(gift_card.id)
+          }
         })
       }
 
@@ -684,7 +708,11 @@ You can update a gift card by sending a request to the [Update a Gift Card API R
     ```tsx
     import { useAdminUpdateGiftCard } from "medusa-react"
 
-    const UpdateCustomGiftCards = () => {
+    type Props = {
+      customGiftCardId: string
+    }
+
+    const CustomGiftCard = ({ customGiftCardId }: Props) => {
       const updateGiftCard = useAdminUpdateGiftCard(
         customGiftCardId
       )
@@ -699,7 +727,7 @@ You can update a gift card by sending a request to the [Update a Gift Card API R
       // ...
     }
 
-    export default UpdateCustomGiftCards
+    export default CustomGiftCard
     ```
 
   </TabItem>
@@ -763,14 +791,22 @@ You can delete a custom gift card by sending a request to the [Delete a Gift Car
     ```tsx
     import { useAdminDeleteGiftCard } from "medusa-react"
 
-    const CustomGiftCard = () => {
+    type Props = {
+      customGiftCardId: string
+    }
+
+    const CustomGiftCard = ({ customGiftCardId }: Props) => {
       const deleteGiftCard = useAdminDeleteGiftCard(
         customGiftCardId
       )
       // ...
       
       const handleDelete = () => {
-        deleteGiftCard.mutate()
+        deleteGiftCard.mutate(void 0, {
+          onSuccess: ({ id, object, deleted}) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...

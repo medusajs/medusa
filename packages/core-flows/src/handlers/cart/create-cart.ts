@@ -1,4 +1,4 @@
-import { AddressDTO, CartDTO, CustomerDTO, RegionDTO } from "@medusajs/types"
+import { AddressDTO, CustomerDTO, RegionDTO, legacy__CartDTO } from "@medusajs/types"
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 enum Aliases {
@@ -34,7 +34,7 @@ type HandlerInputData = {
 }
 
 type HandlerOutputData = {
-  cart: CartDTO
+  cart: legacy__CartDTO
 }
 
 export async function createCart({
@@ -47,15 +47,13 @@ export async function createCart({
   const cartService = container.resolve("cartService")
   const cartServiceTx = cartService.withTransaction(manager)
 
-  const cart = await cartServiceTx.create({
+  return await cartServiceTx.create({
     ...data[Aliases.SalesChannel],
     ...data[Aliases.Addresses],
     ...data[Aliases.Customer],
     ...data[Aliases.Region],
     ...data[Aliases.Context],
   })
-
-  return cart
 }
 
 createCart.aliases = Aliases

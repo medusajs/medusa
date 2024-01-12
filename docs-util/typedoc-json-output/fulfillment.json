@@ -6,120 +6,16 @@
 	"flags": {},
 	"children": [
 		{
-			"id": 47,
+			"id": 78,
 			"name": "AbstractFulfillmentService",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {
 				"isAbstract": true
 			},
-			"comment": {
-				"summary": [
-					{
-						"kind": "text",
-						"text": "## Overview\n\nA fulfillment provider is the shipping provider used to fulfill orders and deliver them to customers. An example of a fulfillment provider is FedEx.\n\nBy default, a Medusa Backend has a "
-					},
-					{
-						"kind": "code",
-						"text": "`manual`"
-					},
-					{
-						"kind": "text",
-						"text": " fulfillment provider which has minimal implementation. It allows you to accept orders and fulfill them manually. However, you can integrate any fulfillment provider into Medusa, and your fulfillment provider can interact with third-party shipping providers.\n\nA fulfillment provider is a service that extends the "
-					},
-					{
-						"kind": "code",
-						"text": "`AbstractFulfillmentService`"
-					},
-					{
-						"kind": "text",
-						"text": " and implements its methods. So, adding a fulfillment provider is as simple as creating a service file in "
-					},
-					{
-						"kind": "code",
-						"text": "`src/services`"
-					},
-					{
-						"kind": "text",
-						"text": ".\nThe file's name is the fulfillment provider's class name as a slug and without the word "
-					},
-					{
-						"kind": "code",
-						"text": "`Service`"
-					},
-					{
-						"kind": "text",
-						"text": ". For example, if you're creating a "
-					},
-					{
-						"kind": "code",
-						"text": "`MyFulfillmentService`"
-					},
-					{
-						"kind": "text",
-						"text": " class, the file name is "
-					},
-					{
-						"kind": "code",
-						"text": "`src/services/my-fulfillment.ts`"
-					},
-					{
-						"kind": "text",
-						"text": ".\n\n"
-					},
-					{
-						"kind": "code",
-						"text": "```ts title=src/services/my-fulfillment.ts\nimport { AbstractFulfillmentService } from \"@medusajs/medusa\"\n\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // methods here...\n}\n```"
-					},
-					{
-						"kind": "text",
-						"text": "\n\n---\n\n## Identifier Property\n\nThe "
-					},
-					{
-						"kind": "code",
-						"text": "`FulfillmentProvider`"
-					},
-					{
-						"kind": "text",
-						"text": " entity has 2 properties: "
-					},
-					{
-						"kind": "code",
-						"text": "`identifier`"
-					},
-					{
-						"kind": "text",
-						"text": " and "
-					},
-					{
-						"kind": "code",
-						"text": "`is_installed`"
-					},
-					{
-						"kind": "text",
-						"text": ". The "
-					},
-					{
-						"kind": "code",
-						"text": "`identifier`"
-					},
-					{
-						"kind": "text",
-						"text": " property in the class is used when the fulfillment provider is created in the database.\n\nThe value of this property is also used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) to a region.\n\n"
-					},
-					{
-						"kind": "code",
-						"text": "```ts\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  static identifier = \"my-fulfillment\"\n\n  // ...\n}\n```"
-					},
-					{
-						"kind": "text",
-						"text": "\n\n---"
-					}
-				]
-			},
 			"children": [
 				{
-					"id": 49,
+					"id": 84,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
@@ -128,7 +24,7 @@
 					},
 					"signatures": [
 						{
-							"id": 50,
+							"id": 85,
 							"name": "new AbstractFulfillmentService",
 							"variant": "signature",
 							"kind": 16384,
@@ -154,7 +50,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  static identifier = \"my-fulfillment\"\n\n  // ...\n}\n```"
+												"text": "```ts\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // ...\n  constructor(container, options) {\n    super(container)\n    // you can access options here\n\n    // you can also initialize a client that\n    // communicates with a third-party service.\n    this.client = new Client(options)\n  }\n  // ...\n}\n```"
 											}
 										]
 									}
@@ -162,7 +58,7 @@
 							},
 							"parameters": [
 								{
-									"id": 51,
+									"id": 86,
 									"name": "container",
 									"variant": "param",
 									"kind": 32768,
@@ -186,7 +82,7 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../packages/types/dist/common/medusa-container.d.ts",
+											"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
 											"qualifiedName": "MedusaContainer"
 										},
 										"name": "MedusaContainer",
@@ -194,7 +90,7 @@
 									}
 								},
 								{
-									"id": 52,
+									"id": 87,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -232,15 +128,129 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 47,
+								"target": 78,
 								"name": "AbstractFulfillmentService",
 								"package": "@medusajs/medusa"
+							},
+							"overwrites": {
+								"type": "reference",
+								"target": -1,
+								"name": "TransactionBaseService.constructor"
 							}
 						}
-					]
+					],
+					"overwrites": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.constructor"
+					}
 				},
 				{
-					"id": 54,
+					"id": 140,
+					"name": "__configModule__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__configModule__"
+					},
+					"implementationOf": {
+						"type": "reference",
+						"target": 52,
+						"name": "FulfillmentService.__configModule__"
+					}
+				},
+				{
+					"id": 139,
+					"name": "__container__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "any"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__container__"
+					},
+					"implementationOf": {
+						"type": "reference",
+						"target": 51,
+						"name": "FulfillmentService.__container__"
+					}
+				},
+				{
+					"id": 141,
+					"name": "__moduleDeclaration__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__moduleDeclaration__"
+					},
+					"implementationOf": {
+						"type": "reference",
+						"target": 53,
+						"name": "FulfillmentService.__moduleDeclaration__"
+					}
+				},
+				{
+					"id": 89,
 					"name": "config",
 					"variant": "declaration",
 					"kind": 1024,
@@ -278,7 +288,7 @@
 					}
 				},
 				{
-					"id": 53,
+					"id": 88,
 					"name": "container",
 					"variant": "declaration",
 					"kind": 1024,
@@ -305,7 +315,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../packages/types/dist/common/medusa-container.d.ts",
+							"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
 							"qualifiedName": "MedusaContainer"
 						},
 						"name": "MedusaContainer",
@@ -313,7 +323,72 @@
 					}
 				},
 				{
-					"id": 48,
+					"id": 135,
+					"name": "manager_",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+							"qualifiedName": "EntityManager"
+						},
+						"name": "EntityManager",
+						"package": "typeorm"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.manager_"
+					},
+					"implementationOf": {
+						"type": "reference",
+						"target": 47,
+						"name": "FulfillmentService.manager_"
+					}
+				},
+				{
+					"id": 136,
+					"name": "transactionManager_",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "undefined"
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+									"qualifiedName": "EntityManager"
+								},
+								"name": "EntityManager",
+								"package": "typeorm"
+							}
+						]
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.transactionManager_"
+					},
+					"implementationOf": {
+						"type": "reference",
+						"target": 48,
+						"name": "FulfillmentService.transactionManager_"
+					}
+				},
+				{
+					"id": 83,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -378,7 +453,7 @@
 					}
 				},
 				{
-					"id": 70,
+					"id": 105,
 					"name": "calculatePrice",
 					"variant": "declaration",
 					"kind": 2048,
@@ -387,7 +462,7 @@
 					},
 					"signatures": [
 						{
-							"id": 71,
+							"id": 106,
 							"name": "calculatePrice",
 							"variant": "signature",
 							"kind": 4096,
@@ -466,7 +541,7 @@
 							},
 							"parameters": [
 								{
-									"id": 72,
+									"id": 107,
 									"name": "optionData",
 									"variant": "param",
 									"kind": 32768,
@@ -498,7 +573,7 @@
 									}
 								},
 								{
-									"id": 73,
+									"id": 108,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -549,7 +624,7 @@
 									}
 								},
 								{
-									"id": 74,
+									"id": 109,
 									"name": "cart",
 									"variant": "param",
 									"kind": 32768,
@@ -602,7 +677,7 @@
 					}
 				},
 				{
-					"id": 67,
+					"id": 102,
 					"name": "canCalculate",
 					"variant": "declaration",
 					"kind": 2048,
@@ -611,7 +686,7 @@
 					},
 					"signatures": [
 						{
-							"id": 68,
+							"id": 103,
 							"name": "canCalculate",
 							"variant": "signature",
 							"kind": 4096,
@@ -697,7 +772,7 @@
 							},
 							"parameters": [
 								{
-									"id": 69,
+									"id": 104,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -758,7 +833,7 @@
 					}
 				},
 				{
-					"id": 81,
+					"id": 116,
 					"name": "cancelFulfillment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -767,7 +842,7 @@
 					},
 					"signatures": [
 						{
-							"id": 82,
+							"id": 117,
 							"name": "cancelFulfillment",
 							"variant": "signature",
 							"kind": 4096,
@@ -806,7 +881,7 @@
 							},
 							"parameters": [
 								{
-									"id": 83,
+									"id": 118,
 									"name": "fulfillment",
 									"variant": "param",
 									"kind": 32768,
@@ -867,7 +942,7 @@
 					}
 				},
 				{
-					"id": 75,
+					"id": 110,
 					"name": "createFulfillment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -876,7 +951,7 @@
 					},
 					"signatures": [
 						{
-							"id": 76,
+							"id": 111,
 							"name": "createFulfillment",
 							"variant": "signature",
 							"kind": 4096,
@@ -931,7 +1006,7 @@
 							},
 							"parameters": [
 								{
-									"id": 77,
+									"id": 112,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -963,7 +1038,7 @@
 									}
 								},
 								{
-									"id": 78,
+									"id": 113,
 									"name": "items",
 									"variant": "param",
 									"kind": 32768,
@@ -990,7 +1065,7 @@
 									}
 								},
 								{
-									"id": 79,
+									"id": 114,
 									"name": "order",
 									"variant": "param",
 									"kind": 32768,
@@ -1046,7 +1121,7 @@
 									}
 								},
 								{
-									"id": 80,
+									"id": 115,
 									"name": "fulfillment",
 									"variant": "param",
 									"kind": 32768,
@@ -1104,7 +1179,7 @@
 					}
 				},
 				{
-					"id": 84,
+					"id": 119,
 					"name": "createReturn",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1113,7 +1188,7 @@
 					},
 					"signatures": [
 						{
-							"id": 85,
+							"id": 120,
 							"name": "createReturn",
 							"variant": "signature",
 							"kind": 4096,
@@ -1168,7 +1243,7 @@
 							},
 							"parameters": [
 								{
-									"id": 86,
+									"id": 121,
 									"name": "returnOrder",
 									"variant": "param",
 									"kind": 32768,
@@ -1236,7 +1311,7 @@
 					}
 				},
 				{
-					"id": 87,
+					"id": 122,
 					"name": "getFulfillmentDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1245,7 +1320,7 @@
 					},
 					"signatures": [
 						{
-							"id": 88,
+							"id": 123,
 							"name": "getFulfillmentDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1280,7 +1355,7 @@
 							},
 							"parameters": [
 								{
-									"id": 89,
+									"id": 124,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1341,7 +1416,7 @@
 					}
 				},
 				{
-					"id": 57,
+					"id": 92,
 					"name": "getFulfillmentOptions",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1350,7 +1425,7 @@
 					},
 					"signatures": [
 						{
-							"id": 58,
+							"id": 93,
 							"name": "getFulfillmentOptions",
 							"variant": "signature",
 							"kind": 4096,
@@ -1423,7 +1498,7 @@
 					}
 				},
 				{
-					"id": 90,
+					"id": 125,
 					"name": "getReturnDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1432,7 +1507,7 @@
 					},
 					"signatures": [
 						{
-							"id": 91,
+							"id": 126,
 							"name": "getReturnDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1467,7 +1542,7 @@
 							},
 							"parameters": [
 								{
-									"id": 92,
+									"id": 127,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1530,7 +1605,7 @@
 					}
 				},
 				{
-					"id": 93,
+					"id": 128,
 					"name": "getShipmentDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1539,7 +1614,7 @@
 					},
 					"signatures": [
 						{
-							"id": 94,
+							"id": 129,
 							"name": "getShipmentDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1574,7 +1649,7 @@
 							},
 							"parameters": [
 								{
-									"id": 95,
+									"id": 130,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1645,7 +1720,7 @@
 					}
 				},
 				{
-					"id": 96,
+					"id": 131,
 					"name": "retrieveDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1654,7 +1729,7 @@
 					},
 					"signatures": [
 						{
-							"id": 97,
+							"id": 132,
 							"name": "retrieveDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1689,7 +1764,7 @@
 							},
 							"parameters": [
 								{
-									"id": 98,
+									"id": 133,
 									"name": "fulfillmentData",
 									"variant": "param",
 									"kind": 32768,
@@ -1731,7 +1806,7 @@
 									}
 								},
 								{
-									"id": 99,
+									"id": 134,
 									"name": "documentType",
 									"variant": "param",
 									"kind": 32768,
@@ -1788,7 +1863,7 @@
 					}
 				},
 				{
-					"id": 59,
+					"id": 94,
 					"name": "validateFulfillmentData",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1797,7 +1872,7 @@
 					},
 					"signatures": [
 						{
-							"id": 60,
+							"id": 95,
 							"name": "validateFulfillmentData",
 							"variant": "signature",
 							"kind": 4096,
@@ -1859,7 +1934,7 @@
 							},
 							"parameters": [
 								{
-									"id": 61,
+									"id": 96,
 									"name": "optionData",
 									"variant": "param",
 									"kind": 32768,
@@ -1883,7 +1958,7 @@
 									}
 								},
 								{
-									"id": 62,
+									"id": 97,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1915,7 +1990,7 @@
 									}
 								},
 								{
-									"id": 63,
+									"id": 98,
 									"name": "cart",
 									"variant": "param",
 									"kind": 32768,
@@ -1983,7 +2058,7 @@
 					}
 				},
 				{
-					"id": 64,
+					"id": 99,
 					"name": "validateOption",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1992,7 +2067,7 @@
 					},
 					"signatures": [
 						{
-							"id": 65,
+							"id": 100,
 							"name": "validateOption",
 							"variant": "signature",
 							"kind": 4096,
@@ -2047,7 +2122,7 @@
 							},
 							"parameters": [
 								{
-									"id": 66,
+									"id": 101,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -2104,33 +2179,49 @@
 				{
 					"title": "Constructors",
 					"children": [
-						49
+						84
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						54,
-						53,
-						48
+						140,
+						139,
+						141,
+						89,
+						88,
+						135,
+						136,
+						83
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						70,
-						67,
-						81,
-						75,
-						84,
-						87,
-						57,
-						90,
-						93,
-						96,
-						59,
-						64
+						105,
+						102,
+						116,
+						110,
+						119,
+						122,
+						92,
+						125,
+						128,
+						131,
+						94,
+						99
 					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+						"qualifiedName": "TransactionBaseService"
+					},
+					"name": "TransactionBaseService",
+					"package": "@medusajs/medusa"
 				}
 			],
 			"implementedTypes": [
@@ -2204,7 +2295,7 @@
 					},
 					{
 						"kind": "code",
-						"text": "```ts title=src/services/my-fulfillment.ts\nimport { AbstractFulfillmentService } from \"@medusajs/medusa\"\n\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // methods here...\n}\n```"
+						"text": "```ts title=src/services/my-fulfillment.ts\nimport { AbstractFulfillmentService } from \"@medusajs/medusa\"\n\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // methods here...\n}\n\nexport default MyFulfillmentService\n```"
 					},
 					{
 						"kind": "text",
@@ -2240,7 +2331,7 @@
 					},
 					{
 						"kind": "text",
-						"text": " property in the class is used when the fulfillment provider is created in the database.\n\nThe value of this property is also used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) to a region.\n\n"
+						"text": " property in the fulfillment provider service is used when the fulfillment provider is added to the database.\n\nThe value of this property is also used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) to a region.\n\n"
 					},
 					{
 						"kind": "code",
@@ -2253,6 +2344,510 @@
 				]
 			},
 			"children": [
+				{
+					"id": 52,
+					"name": "__configModule__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__configModule__"
+					}
+				},
+				{
+					"id": 51,
+					"name": "__container__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "any"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__container__"
+					}
+				},
+				{
+					"id": 53,
+					"name": "__moduleDeclaration__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__moduleDeclaration__"
+					}
+				},
+				{
+					"id": 47,
+					"name": "manager_",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+							"qualifiedName": "EntityManager"
+						},
+						"name": "EntityManager",
+						"package": "typeorm"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.manager_"
+					}
+				},
+				{
+					"id": 48,
+					"name": "transactionManager_",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "undefined"
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+									"qualifiedName": "EntityManager"
+								},
+								"name": "EntityManager",
+								"package": "typeorm"
+							}
+						]
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.transactionManager_"
+					}
+				},
+				{
+					"id": 49,
+					"name": "activeManager_",
+					"variant": "declaration",
+					"kind": 262144,
+					"flags": {
+						"isProtected": true
+					},
+					"getSignature": {
+						"id": 50,
+						"name": "activeManager_",
+						"variant": "signature",
+						"kind": 524288,
+						"flags": {},
+						"type": {
+							"type": "reference",
+							"target": {
+								"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+								"qualifiedName": "EntityManager"
+							},
+							"name": "EntityManager",
+							"package": "typeorm"
+						},
+						"inheritedFrom": {
+							"type": "reference",
+							"target": -1,
+							"name": "TransactionBaseService.activeManager_"
+						}
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.activeManager_"
+					}
+				},
+				{
+					"id": 62,
+					"name": "atomicPhase_",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isProtected": true
+					},
+					"signatures": [
+						{
+							"id": 63,
+							"name": "atomicPhase_",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Wraps some work within a transactional block. If the service already has\na transaction manager attached this will be reused, otherwise a new\ntransaction manager is created."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "the result of the transactional work"
+											}
+										]
+									}
+								]
+							},
+							"typeParameter": [
+								{
+									"id": 64,
+									"name": "TResult",
+									"variant": "typeParam",
+									"kind": 131072,
+									"flags": {}
+								},
+								{
+									"id": 65,
+									"name": "TError",
+									"variant": "typeParam",
+									"kind": 131072,
+									"flags": {}
+								}
+							],
+							"parameters": [
+								{
+									"id": 66,
+									"name": "work",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "the transactional work to be done"
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 67,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"signatures": [
+												{
+													"id": 68,
+													"name": "__type",
+													"variant": "signature",
+													"kind": 4096,
+													"flags": {},
+													"parameters": [
+														{
+															"id": 69,
+															"name": "transactionManager",
+															"variant": "param",
+															"kind": 32768,
+															"flags": {},
+															"type": {
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+																	"qualifiedName": "EntityManager"
+																},
+																"name": "EntityManager",
+																"package": "typeorm"
+															}
+														}
+													],
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "Promise"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": 64,
+																"name": "TResult",
+																"package": "@medusajs/medusa",
+																"refersToTypeParameter": true
+															}
+														],
+														"name": "Promise",
+														"package": "typescript"
+													}
+												}
+											]
+										}
+									}
+								},
+								{
+									"id": 70,
+									"name": "isolationOrErrorHandler",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "the isolation level to be used for the work."
+											}
+										]
+									},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../node_modules/typeorm/driver/types/IsolationLevel.d.ts",
+													"qualifiedName": "IsolationLevel"
+												},
+												"name": "IsolationLevel",
+												"package": "typeorm"
+											},
+											{
+												"type": "reflection",
+												"declaration": {
+													"id": 71,
+													"name": "__type",
+													"variant": "declaration",
+													"kind": 65536,
+													"flags": {},
+													"signatures": [
+														{
+															"id": 72,
+															"name": "__type",
+															"variant": "signature",
+															"kind": 4096,
+															"flags": {},
+															"parameters": [
+																{
+																	"id": 73,
+																	"name": "error",
+																	"variant": "param",
+																	"kind": 32768,
+																	"flags": {},
+																	"type": {
+																		"type": "reference",
+																		"target": 65,
+																		"name": "TError",
+																		"package": "@medusajs/medusa",
+																		"refersToTypeParameter": true
+																	}
+																}
+															],
+															"type": {
+																"type": "reference",
+																"target": {
+																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"qualifiedName": "Promise"
+																},
+																"typeArguments": [
+																	{
+																		"type": "union",
+																		"types": [
+																			{
+																				"type": "intrinsic",
+																				"name": "void"
+																			},
+																			{
+																				"type": "reference",
+																				"target": 64,
+																				"name": "TResult",
+																				"package": "@medusajs/medusa",
+																				"refersToTypeParameter": true
+																			}
+																		]
+																	}
+																],
+																"name": "Promise",
+																"package": "typescript"
+															}
+														}
+													]
+												}
+											}
+										]
+									}
+								},
+								{
+									"id": 74,
+									"name": "maybeErrorHandlerOrDontFail",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Potential error handler"
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 75,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"signatures": [
+												{
+													"id": 76,
+													"name": "__type",
+													"variant": "signature",
+													"kind": 4096,
+													"flags": {},
+													"parameters": [
+														{
+															"id": 77,
+															"name": "error",
+															"variant": "param",
+															"kind": 32768,
+															"flags": {},
+															"type": {
+																"type": "reference",
+																"target": 65,
+																"name": "TError",
+																"package": "@medusajs/medusa",
+																"refersToTypeParameter": true
+															}
+														}
+													],
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "Promise"
+														},
+														"typeArguments": [
+															{
+																"type": "union",
+																"types": [
+																	{
+																		"type": "intrinsic",
+																		"name": "void"
+																	},
+																	{
+																		"type": "reference",
+																		"target": 64,
+																		"name": "TResult",
+																		"package": "@medusajs/medusa",
+																		"refersToTypeParameter": true
+																	}
+																]
+															}
+														],
+														"name": "Promise",
+														"package": "typescript"
+													}
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 64,
+										"name": "TResult",
+										"package": "@medusajs/medusa",
+										"refersToTypeParameter": true
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"target": -1,
+								"name": "TransactionBaseService.atomicPhase_"
+							}
+						}
+					],
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.atomicPhase_"
+					}
+				},
 				{
 					"id": 17,
 					"name": "calculatePrice",
@@ -3534,6 +4129,102 @@
 					]
 				},
 				{
+					"id": 57,
+					"name": "shouldRetryTransaction_",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isProtected": true
+					},
+					"signatures": [
+						{
+							"id": 58,
+							"name": "shouldRetryTransaction_",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 59,
+									"name": "err",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+													"qualifiedName": "Record"
+												},
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "string"
+													},
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												],
+												"name": "Record",
+												"package": "typescript"
+											},
+											{
+												"type": "reflection",
+												"declaration": {
+													"id": 60,
+													"name": "__type",
+													"variant": "declaration",
+													"kind": 65536,
+													"flags": {},
+													"children": [
+														{
+															"id": 61,
+															"name": "code",
+															"variant": "declaration",
+															"kind": 1024,
+															"flags": {},
+															"type": {
+																"type": "intrinsic",
+																"name": "string"
+															}
+														}
+													],
+													"groups": [
+														{
+															"title": "Properties",
+															"children": [
+																61
+															]
+														}
+													]
+												}
+											}
+										]
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"target": -1,
+								"name": "TransactionBaseService.shouldRetryTransaction_"
+							}
+						}
+					],
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.shouldRetryTransaction_"
+					}
+				},
+				{
 					"id": 6,
 					"name": "validateFulfillmentData",
 					"variant": "declaration",
@@ -3820,12 +4511,79 @@
 							}
 						}
 					]
+				},
+				{
+					"id": 54,
+					"name": "withTransaction",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 55,
+							"name": "withTransaction",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 56,
+									"name": "transactionManager",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+											"qualifiedName": "EntityManager"
+										},
+										"name": "EntityManager",
+										"package": "typeorm"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "this"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"target": -1,
+								"name": "TransactionBaseService.withTransaction"
+							}
+						}
+					],
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.withTransaction"
+					}
 				}
 			],
 			"groups": [
 				{
+					"title": "Properties",
+					"children": [
+						52,
+						51,
+						53,
+						47,
+						48
+					]
+				},
+				{
+					"title": "Accessors",
+					"children": [
+						49
+					]
+				},
+				{
 					"title": "Methods",
 					"children": [
+						62,
 						17,
 						14,
 						28,
@@ -3836,15 +4594,28 @@
 						37,
 						40,
 						43,
+						57,
 						6,
-						11
+						11,
+						54
 					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+						"qualifiedName": "TransactionBaseService"
+					},
+					"name": "TransactionBaseService",
+					"package": "@medusajs/medusa"
 				}
 			],
 			"implementedBy": [
 				{
 					"type": "reference",
-					"target": 47,
+					"target": 78,
 					"name": "AbstractFulfillmentService"
 				}
 			]
@@ -3854,7 +4625,7 @@
 		{
 			"title": "Classes",
 			"children": [
-				47
+				78
 			]
 		},
 		{
@@ -4047,208 +4818,456 @@
 			"qualifiedName": "documentType"
 		},
 		"47": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.manager_"
 		},
 		"48": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.identifier"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.transactionManager_"
 		},
 		"49": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.__constructor"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
 		"50": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
 		"51": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "container"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.__container__"
 		},
 		"52": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "config"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.__configModule__"
 		},
 		"53": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.container"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.__moduleDeclaration__"
 		},
 		"54": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.config"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.withTransaction"
+		},
+		"55": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.withTransaction"
+		},
+		"56": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "transactionManager"
 		},
 		"57": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.getFulfillmentOptions"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
 		"58": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.getFulfillmentOptions"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
 		"59": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.validateFulfillmentData"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "err"
 		},
 		"60": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.validateFulfillmentData"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
 		},
 		"61": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "optionData"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type.code"
 		},
 		"62": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "data"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
 		"63": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "cart"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
 		"64": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.validateOption"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TResult"
 		},
 		"65": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.validateOption"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TError"
 		},
 		"66": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "data"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "work"
 		},
 		"67": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.canCalculate"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
 		},
 		"68": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.canCalculate"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
 		},
 		"69": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "data"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "transactionManager"
 		},
 		"70": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.calculatePrice"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "isolationOrErrorHandler"
 		},
 		"71": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.calculatePrice"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
 		},
 		"72": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "optionData"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
 		},
 		"73": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "data"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "error"
 		},
 		"74": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "cart"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "maybeErrorHandlerOrDontFail"
 		},
 		"75": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.createFulfillment"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
 		},
 		"76": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.createFulfillment"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
 		},
 		"77": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "data"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "error"
 		},
 		"78": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "items"
-		},
-		"79": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "order"
-		},
-		"80": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "fulfillment"
-		},
-		"81": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.cancelFulfillment"
-		},
-		"82": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.cancelFulfillment"
+			"qualifiedName": "AbstractFulfillmentService"
 		},
 		"83": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "fulfillment"
+			"qualifiedName": "AbstractFulfillmentService.identifier"
 		},
 		"84": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.createReturn"
+			"qualifiedName": "AbstractFulfillmentService.__constructor"
 		},
 		"85": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.createReturn"
+			"qualifiedName": "AbstractFulfillmentService"
 		},
 		"86": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "returnOrder"
+			"qualifiedName": "container"
 		},
 		"87": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.getFulfillmentDocuments"
+			"qualifiedName": "config"
 		},
 		"88": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.getFulfillmentDocuments"
+			"qualifiedName": "AbstractFulfillmentService.container"
 		},
 		"89": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "data"
-		},
-		"90": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.getReturnDocuments"
-		},
-		"91": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.getReturnDocuments"
+			"qualifiedName": "AbstractFulfillmentService.config"
 		},
 		"92": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "data"
+			"qualifiedName": "AbstractFulfillmentService.getFulfillmentOptions"
 		},
 		"93": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.getShipmentDocuments"
+			"qualifiedName": "AbstractFulfillmentService.getFulfillmentOptions"
 		},
 		"94": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.getShipmentDocuments"
+			"qualifiedName": "AbstractFulfillmentService.validateFulfillmentData"
 		},
 		"95": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "data"
+			"qualifiedName": "AbstractFulfillmentService.validateFulfillmentData"
 		},
 		"96": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.retrieveDocuments"
+			"qualifiedName": "optionData"
 		},
 		"97": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "AbstractFulfillmentService.retrieveDocuments"
+			"qualifiedName": "data"
 		},
 		"98": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "fulfillmentData"
+			"qualifiedName": "cart"
 		},
 		"99": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.validateOption"
+		},
+		"100": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.validateOption"
+		},
+		"101": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "data"
+		},
+		"102": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.canCalculate"
+		},
+		"103": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.canCalculate"
+		},
+		"104": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "data"
+		},
+		"105": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.calculatePrice"
+		},
+		"106": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.calculatePrice"
+		},
+		"107": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "optionData"
+		},
+		"108": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "data"
+		},
+		"109": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "cart"
+		},
+		"110": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.createFulfillment"
+		},
+		"111": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.createFulfillment"
+		},
+		"112": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "data"
+		},
+		"113": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "items"
+		},
+		"114": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "order"
+		},
+		"115": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "fulfillment"
+		},
+		"116": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.cancelFulfillment"
+		},
+		"117": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.cancelFulfillment"
+		},
+		"118": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "fulfillment"
+		},
+		"119": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.createReturn"
+		},
+		"120": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.createReturn"
+		},
+		"121": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "returnOrder"
+		},
+		"122": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.getFulfillmentDocuments"
+		},
+		"123": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.getFulfillmentDocuments"
+		},
+		"124": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "data"
+		},
+		"125": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.getReturnDocuments"
+		},
+		"126": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.getReturnDocuments"
+		},
+		"127": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "data"
+		},
+		"128": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.getShipmentDocuments"
+		},
+		"129": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.getShipmentDocuments"
+		},
+		"130": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "data"
+		},
+		"131": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.retrieveDocuments"
+		},
+		"132": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "AbstractFulfillmentService.retrieveDocuments"
+		},
+		"133": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
+			"qualifiedName": "fulfillmentData"
+		},
+		"134": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
 			"qualifiedName": "documentType"
+		},
+		"135": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.manager_"
+		},
+		"136": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.transactionManager_"
+		},
+		"137": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.activeManager_"
+		},
+		"138": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.activeManager_"
+		},
+		"139": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.__container__"
+		},
+		"140": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.__configModule__"
+		},
+		"141": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.__moduleDeclaration__"
+		},
+		"142": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.withTransaction"
+		},
+		"143": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.withTransaction"
+		},
+		"144": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "transactionManager"
+		},
+		"145": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
+		},
+		"146": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
+		},
+		"147": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "err"
+		},
+		"148": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
+		},
+		"149": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type.code"
+		},
+		"150": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.atomicPhase_"
+		},
+		"151": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TransactionBaseService.atomicPhase_"
+		},
+		"152": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TResult"
+		},
+		"153": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "TError"
+		},
+		"154": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "work"
+		},
+		"155": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
+		},
+		"156": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
+		},
+		"157": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "transactionManager"
+		},
+		"158": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "isolationOrErrorHandler"
+		},
+		"159": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
+		},
+		"160": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
+		},
+		"161": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "error"
+		},
+		"162": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "maybeErrorHandlerOrDontFail"
+		},
+		"163": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
+		},
+		"164": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "__type"
+		},
+		"165": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "error"
 		}
 	}
 }

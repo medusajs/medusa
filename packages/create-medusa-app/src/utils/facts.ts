@@ -1,11 +1,11 @@
 import boxen from "boxen"
 import chalk from "chalk"
-import { Ora } from "ora"
 import { emojify } from "node-emoji"
+import { Ora } from "ora"
 import ProcessManager from "./process-manager.js"
 
 export type FactBoxOptions = {
-  interval: NodeJS.Timer | null
+  interval: NodeJS.Timeout | null
   spinner: Ora
   processManager: ProcessManager
   message?: string
@@ -53,7 +53,7 @@ export const createFactBox = (
   spinner: Ora,
   title: string,
   processManager: ProcessManager
-): NodeJS.Timer => {
+): NodeJS.Timeout => {
   showFact(spinner, title)
   const interval = setInterval(() => {
     showFact(spinner, title)
@@ -65,12 +65,12 @@ export const createFactBox = (
 }
 
 export const resetFactBox = (
-  interval: NodeJS.Timer | null,
+  interval: NodeJS.Timeout | null,
   spinner: Ora,
   successMessage: string,
   processManager: ProcessManager,
   newTitle?: string
-): NodeJS.Timer | null => {
+): NodeJS.Timeout | null => {
   if (interval) {
     clearInterval(interval)
   }
@@ -90,7 +90,7 @@ export function displayFactBox({
   processManager,
   title = "",
   message = "",
-}: FactBoxOptions): NodeJS.Timer | null {
+}: FactBoxOptions): NodeJS.Timeout | null {
   if (!message) {
     return createFactBox(spinner, title, processManager)
   }

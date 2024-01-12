@@ -11,7 +11,7 @@ import {
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 
 import { updatePriceLists } from "@medusajs/core-flows"
-import { Type } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import { PriceList } from "../../../.."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
@@ -20,6 +20,7 @@ import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
 import { getPriceListPricingModule } from "./modules-queries"
+import { transformOptionalDate } from "../../../../utils/validators/date-transform"
 
 /**
  * @oas [post] /admin/price-lists/{id}
@@ -49,6 +50,38 @@ import { getPriceListPricingModule } from "./modules-queries"
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdatePriceList } from "medusa-react"
+ *
+ *       type Props = {
+ *         priceListId: string
+ *       }
+ *
+ *       const PriceList = ({
+ *         priceListId
+ *       }: Props) => {
+ *         const updatePriceList = useAdminUpdatePriceList(priceListId)
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           endsAt: Date
+ *         ) => {
+ *           updatePriceList.mutate({
+ *             ends_at: endsAt,
+ *           }, {
+ *             onSuccess: ({ price_list }) => {
+ *               console.log(price_list.ends_at)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -151,6 +184,7 @@ class CustomerGroup {
 /**
  * @schema AdminPostPriceListsPriceListPriceListReq
  * type: object
+ * description: "The details to update of the payment collection."
  * properties:
  *   name:
  *     description: "The name of the Price List"
@@ -238,9 +272,11 @@ export class AdminPostPriceListsPriceListPriceListReq {
   description?: string
 
   @IsOptional()
+  @Transform(transformOptionalDate)
   starts_at?: Date | null
 
   @IsOptional()
+  @Transform(transformOptionalDate)
   ends_at?: Date | null
 
   @IsOptional()

@@ -1,15 +1,16 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 
+import { Cart } from "../models"
+
 export default {
   serviceName: "cartService",
   primaryKeys: ["id"],
   linkableKeys: { cart_id: "Cart" },
-  alias: [
-    {
-      name: "cart",
-    },
-  ],
+  alias: {
+    name: ["cart", "carts"],
+    args: { entity: Cart.name },
+  },
   relationships: [
     {
       serviceName: Modules.PRODUCT,

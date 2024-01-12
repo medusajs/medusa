@@ -84,7 +84,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       switch (idempotencyKey.recovery_point) {
         case "started": {
           await this.activeManager_
-            .transaction("SERIALIZABLE", async (transactionManager) => {
+            .transaction(async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
                 .workStage(
@@ -101,7 +101,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         }
         case "tax_lines_created": {
           await this.activeManager_
-            .transaction("SERIALIZABLE", async (transactionManager) => {
+            .transaction(async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
                 .workStage(
@@ -122,7 +122,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
         case "payment_authorized": {
           await this.activeManager_
-            .transaction("SERIALIZABLE", async (transactionManager) => {
+            .transaction(async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
                 .workStage(
@@ -246,17 +246,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
     const txCartService = this.cartService_.withTransaction(manager)
 
-    let cart = await txCartService.retrieve(id, {
-      relations: ["payment_sessions"],
-    })
-
-    if (cart.payment_sessions?.length) {
-      await txCartService.setPaymentSessions(id)
-    }
-
-    cart = await txCartService.authorizePayment(id, {
+    const cart = await txCartService.authorizePayment(id, {
       ...context,
-      cart_id: id,
       idempotency_key: idempotencyKey,
     })
 

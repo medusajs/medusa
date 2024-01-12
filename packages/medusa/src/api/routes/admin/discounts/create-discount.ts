@@ -64,6 +64,46 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ discount }) => {
  *         console.log(discount.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminCreateDiscount,
+ *       } from "medusa-react"
+ *       import {
+ *         AllocationType,
+ *         DiscountRuleType,
+ *       } from "@medusajs/medusa"
+ *
+ *       const CreateDiscount = () => {
+ *         const createDiscount = useAdminCreateDiscount()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           currencyCode: string,
+ *           regionId: string
+ *         ) => {
+ *           // ...
+ *           createDiscount.mutate({
+ *             code: currencyCode,
+ *             rule: {
+ *               type: DiscountRuleType.FIXED,
+ *               value: 10,
+ *               allocation: AllocationType.ITEM,
+ *             },
+ *             regions: [
+ *                 regionId,
+ *             ],
+ *             is_dynamic: false,
+ *             is_disabled: false,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateDiscount
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -127,6 +167,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostDiscountsReq
  * type: object
+ * description: "The details of the discount to create."
  * required:
  *   - code
  *   - rule

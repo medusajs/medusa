@@ -4,7 +4,7 @@
   import EyeMini from "../eye-mini"
 
   describe("EyeMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<EyeMini data-testid="icon" />)
 
 

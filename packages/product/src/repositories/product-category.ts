@@ -26,22 +26,13 @@ export type ReorderConditions = {
 export const tempReorderRank = 99999
 
 // eslint-disable-next-line max-len
-export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeRepository {
-  protected readonly manager_: SqlEntityManager
-
-  constructor({ manager }: { manager: SqlEntityManager }) {
-    // @ts-ignore
-    // eslint-disable-next-line prefer-rest-params
-    super(...arguments)
-    this.manager_ = manager
-  }
-
+export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeRepository<ProductCategory> {
   async find(
     findOptions: DAL.FindOptions<ProductCategory> = { where: {} },
     transformOptions: ProductCategoryTransformOptions = {},
     context: Context = {}
   ): Promise<ProductCategory[]> {
-    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const manager = super.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     const { includeDescendantsTree } = transformOptions
@@ -81,7 +72,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     findOptions: DAL.FindOptions<ProductCategory> = { where: {} },
     context: Context = {}
   ): Promise<ProductCategory[]> {
-    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const manager = super.getActiveManager<SqlEntityManager>(context)
 
     for (let productCategory of productCategories) {
       const whereOptions = {
@@ -132,7 +123,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     transformOptions: ProductCategoryTransformOptions = {},
     context: Context = {}
   ): Promise<[ProductCategory[], number]> {
-    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const manager = super.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     const { includeDescendantsTree } = transformOptions
@@ -171,7 +162,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
   }
 
   async delete(id: string, context: Context = {}): Promise<void> {
-    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const manager = super.getActiveManager<SqlEntityManager>(context)
     const productCategory = await manager.findOneOrFail(
       ProductCategory,
       { id },
@@ -197,11 +188,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     )
 
     await this.performReordering(manager, conditions)
-    await (manager as SqlEntityManager).nativeDelete(
-      ProductCategory,
-      { id: id },
-      {}
-    )
+    await manager.nativeDelete(ProductCategory, { id: id }, {})
   }
 
   async create(
@@ -209,7 +196,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     context: Context = {}
   ): Promise<ProductCategory> {
     const categoryData = { ...data }
-    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const manager = super.getActiveManager<SqlEntityManager>(context)
     const siblings = await manager.find(ProductCategory, {
       parent_category_id: categoryData?.parent_category_id || null,
     })
@@ -231,7 +218,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     context: Context = {}
   ): Promise<ProductCategory> {
     const categoryData = { ...data }
-    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const manager = super.getActiveManager<SqlEntityManager>(context)
     const productCategory = await manager.findOneOrFail(ProductCategory, { id })
 
     const conditions = this.fetchReorderConditions(
@@ -403,7 +390,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
         throw new Error("sibling rank is not defined")
       }
 
-      const rank = shouldIncrementRank ? ++sibling.rank : --sibling.rank
+      const rank = shouldIncrementRank ? ++sibling.rank! : --sibling.rank!
 
       manager.assign(sibling, { rank })
       manager.persist(sibling)

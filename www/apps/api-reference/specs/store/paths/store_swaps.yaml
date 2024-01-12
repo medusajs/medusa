@@ -33,6 +33,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/store_swaps/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/store_swaps/postundefined
     - lang: Shell
       label: cURL
       source:

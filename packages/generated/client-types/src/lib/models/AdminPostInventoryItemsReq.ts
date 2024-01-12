@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the inventory item to create.
+ */
 export interface AdminPostInventoryItemsReq {
   /**
    * The ID of the variant to create the inventory item for.

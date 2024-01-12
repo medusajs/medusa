@@ -16,6 +16,7 @@ import { StorePostCartsCartShippingMethodReq } from "./add-shipping-method"
 import { StorePostCartsCartPaymentSessionReq } from "./set-payment-session"
 import { StorePostCartsCartLineItemsItemReq } from "./update-line-item"
 import { StorePostCartsCartPaymentSessionUpdateReq } from "./update-payment-session"
+import { MedusaV2Flag } from "@medusajs/utils"
 
 const route = Router()
 
@@ -26,7 +27,11 @@ export default (app, container) => {
   app.use("/carts", route)
 
   if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
-    defaultStoreCartRelations.push("sales_channel")
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+      defaultStoreCartRelations.push("sales_channels")
+    } else {
+      defaultStoreCartRelations.push("sales_channel")
+    }
   }
 
   // Inject plugin routes

@@ -47,6 +47,40 @@ import { updateInventoryAndReservations } from "./create-fulfillment"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminFulfillSwap } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string,
+ *         swapId: string
+ *       }
+ *
+ *       const Swap = ({
+ *         orderId,
+ *         swapId
+ *       }: Props) => {
+ *         const fulfillSwap = useAdminFulfillSwap(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleFulfill = () => {
+ *           fulfillSwap.mutate({
+ *             swap_id: swapId,
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.swaps)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Swap
  *   - lang: Shell
  *     label: cURL
  *     source: |

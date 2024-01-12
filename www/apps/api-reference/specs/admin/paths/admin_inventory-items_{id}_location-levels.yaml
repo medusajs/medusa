@@ -44,6 +44,11 @@ get:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_inventory-items_{id}_location-levels/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_inventory-items_{id}_location-levels/getundefined
     - lang: Shell
       label: cURL
       source:
@@ -115,6 +120,11 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_inventory-items_{id}_location-levels/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_inventory-items_{id}_location-levels/postundefined
     - lang: Shell
       label: cURL
       source:

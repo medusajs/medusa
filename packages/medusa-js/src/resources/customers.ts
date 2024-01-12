@@ -35,7 +35,6 @@ class CustomerResource extends BaseResource {
    * Register a new customer. This will also automatically authenticate the customer and set their login session in the response Cookie header.
    * Subsequent requests sent with the JS client are sent with the Cookie session automatically.
    * @param {StorePostCustomersReq} payload - The details of the customer to be created.
-   * @param {string} query - Filters and pagination configurations to apply on the retrieved product collections.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns { ResponsePromise<StoreCustomersRes>} Resolves to the created customer's details.
    * 

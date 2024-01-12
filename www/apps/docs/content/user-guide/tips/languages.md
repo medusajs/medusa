@@ -29,9 +29,14 @@ Languages listed in this section are contributed by the Medusa community. So, th
 - Hrvatski
 - Italiano
 - 한국어
+- 日本語
 - Polski
 - Русский
+- Slovenščina
 - Tamil
 - Tiếng Việt
 - Українська
 - العربية
+- Čeština
+- 简体中文
+- Български

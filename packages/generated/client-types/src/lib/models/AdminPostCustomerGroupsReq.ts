@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the customer group to create.
+ */
 export interface AdminPostCustomerGroupsReq {
   /**
    * Name of the customer group

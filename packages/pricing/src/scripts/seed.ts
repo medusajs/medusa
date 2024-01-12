@@ -1,7 +1,7 @@
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
 import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { EntitySchema, RequiredEntityData } from "@mikro-orm/core"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { PostgreSqlDriver, SqlEntityManager } from "@mikro-orm/postgresql"
 import * as PricingModels from "@models"
 import { EOL } from "os"
 import { resolve } from "path"
@@ -49,10 +49,10 @@ export async function run({
   try {
     logger.info("Inserting price_sets, currencies & money_amounts")
 
-    await createCurrencies(manager, currenciesData)
-    await createMoneyAmounts(manager, moneyAmountsData)
-    await createPriceSets(manager, priceSetsData)
-    await createPriceSetMoneyAmounts(manager, priceSetMoneyAmountsData)
+    await createCurrencies(manager as any, currenciesData)
+    await createMoneyAmounts(manager as any, moneyAmountsData)
+    await createPriceSets(manager as any, priceSetsData)
+    await createPriceSetMoneyAmounts(manager as any, priceSetMoneyAmountsData)
   } catch (e) {
     logger.error(
       `Failed to insert the seed data in the PostgreSQL database ${dbData.clientUrl}.${EOL}${e}`
@@ -63,7 +63,7 @@ export async function run({
 }
 
 async function createCurrencies(
-  manager: SqlEntityManager,
+  manager: SqlEntityManager<PostgreSqlDriver>,
   data: RequiredEntityData<PricingModels.Currency>[]
 ) {
   const currencies = data.map((currencyData) => {
@@ -76,7 +76,7 @@ async function createCurrencies(
 }
 
 async function createMoneyAmounts(
-  manager: SqlEntityManager,
+  manager: SqlEntityManager<PostgreSqlDriver>,
   data: RequiredEntityData<PricingModels.MoneyAmount>[]
 ) {
   const moneyAmounts = data.map((moneyAmountData) => {
@@ -89,7 +89,7 @@ async function createMoneyAmounts(
 }
 
 async function createPriceSets(
-  manager: SqlEntityManager,
+  manager: SqlEntityManager<PostgreSqlDriver>,
   data: RequiredEntityData<PricingModels.PriceSet>[]
 ) {
   const priceSets = data.map((priceSetData) => {
@@ -102,7 +102,7 @@ async function createPriceSets(
 }
 
 async function createPriceSetMoneyAmounts(
-  manager: SqlEntityManager,
+  manager: SqlEntityManager<PostgreSqlDriver>,
   data: RequiredEntityData<PricingModels.PriceSetMoneyAmount>[]
 ) {
   const priceSetMoneyAmounts = data.map((priceSetMoneyAmountData) => {

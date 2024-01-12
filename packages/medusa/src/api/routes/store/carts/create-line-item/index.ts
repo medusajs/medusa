@@ -4,7 +4,7 @@ import { validator } from "../../../../../utils/validator"
 import {
   addOrUpdateLineItem,
   CreateLineItemSteps,
-  setPaymentSession,
+  setPaymentSessions,
   setVariantAvailability,
 } from "./utils/handler-steps"
 import { IdempotencyKey } from "../../../../../models"
@@ -13,7 +13,6 @@ import { cleanResponseData } from "../../../../../utils/clean-response-data"
 import IdempotencyKeyService from "../../../../../services/idempotency-key"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "../index"
 import { CartService } from "../../../../../services"
-import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [post] /store/carts/{id}/line-items
@@ -43,6 +42,37 @@ import { promiseAll } from "@medusajs/utils"
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCreateLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const createLineItem = useCreateLineItem(cartId)
+ *
+ *         const handleAddItem = (
+ *           variantId: string,
+ *           quantity: number
+ *         ) => {
+ *           createLineItem.mutate({
+ *             variant_id: variantId,
+ *             quantity,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.items)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -130,37 +160,42 @@ export default async (req, res) => {
       case CreateLineItemSteps.SET_PAYMENT_SESSIONS: {
         try {
           const cartService: CartService = req.scope.resolve("cartService")
-
-          const cart = await cartService
-            .withTransaction(manager)
-            .retrieveWithTotals(id, {
-              select: defaultStoreCartFields,
-              relations: [
-                ...defaultStoreCartRelations,
-                "billing_address",
-                "region.payment_providers",
-                "payment_sessions",
-                "customer",
-              ],
-            })
-
-          const args = {
-            cart,
-            container: req.scope,
-            manager,
+          const getCart = async () => {
+            return await cartService
+              .withTransaction(manager)
+              .retrieveWithTotals(id, {
+                select: defaultStoreCartFields,
+                relations: [
+                  ...defaultStoreCartRelations,
+                  "region.tax_rates",
+                  "customer",
+                ],
+              })
           }
 
-          await promiseAll([
-            setVariantAvailability(args),
-            setPaymentSession(args),
-          ])
+          const cart = await getCart()
+
+          await manager.transaction(async (transactionManager) => {
+            await setPaymentSessions({
+              cart,
+              container: req.scope,
+              manager: transactionManager,
+            })
+          })
+
+          const freshCart = await getCart()
+          await setVariantAvailability({
+            cart: freshCart,
+            container: req.scope,
+            manager,
+          })
 
           idempotencyKey = await idempotencyKeyService
             .withTransaction(manager)
             .update(idempotencyKey.idempotency_key, {
               recovery_point: CreateLineItemSteps.FINISHED,
               response_code: 200,
-              response_body: { cart },
+              response_body: { cart: freshCart },
             })
         } catch (e) {
           inProgress = false
@@ -194,6 +229,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCartsCartLineItemsReq
  * type: object
+ * description: "The details of the line item to create."
  * required:
  *   - variant_id
  *   - quantity

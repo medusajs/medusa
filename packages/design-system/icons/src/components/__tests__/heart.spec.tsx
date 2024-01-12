@@ -4,7 +4,7 @@
   import Heart from "../heart"
 
   describe("Heart", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Heart data-testid="icon" />)
 
 

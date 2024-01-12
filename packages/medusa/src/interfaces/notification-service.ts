@@ -1,5 +1,4 @@
 import { TransactionBaseService } from "./transaction-base-service"
-import BaseNotificationService from "medusa-interfaces/dist/notification-service"
 
 type ReturnedData = {
   to: string
@@ -25,7 +24,12 @@ export abstract class AbstractNotificationService
   extends TransactionBaseService
   implements INotificationService
 {
+  static _isNotificationService = true
   static identifier: string
+
+  static isNotificationService(object): boolean {
+    return object?.constructor?._isNotificationService
+  }
 
   getIdentifier(): string {
     return (this.constructor as any).identifier
@@ -42,11 +46,4 @@ export abstract class AbstractNotificationService
     config: unknown,
     attachmentGenerator: unknown
   ): Promise<ReturnedData>
-}
-
-export const isNotificationService = (obj: unknown): boolean => {
-  return (
-    obj instanceof AbstractNotificationService ||
-    obj instanceof BaseNotificationService
-  )
 }

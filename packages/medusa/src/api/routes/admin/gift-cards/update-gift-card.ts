@@ -34,6 +34,36 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ gift_card }) => {
  *         console.log(gift_card.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateGiftCard } from "medusa-react"
+ *
+ *       type Props = {
+ *         customGiftCardId: string
+ *       }
+ *
+ *       const CustomGiftCard = ({ customGiftCardId }: Props) => {
+ *         const updateGiftCard = useAdminUpdateGiftCard(
+ *           customGiftCardId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (regionId: string) => {
+ *           updateGiftCard.mutate({
+ *             region_id: regionId,
+ *           }, {
+ *             onSuccess: ({ gift_card }) => {
+ *               console.log(gift_card.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CustomGiftCard
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -94,6 +124,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostGiftCardsGiftCardReq
  * type: object
+ * description: "The details to update of the gift card."
  * properties:
  *   balance:
  *     type: integer

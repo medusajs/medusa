@@ -174,11 +174,19 @@ You can create a reservation by sending a request to the [Create Reservation API
       const createReservation = useAdminCreateReservation()
       // ...
 
-      const handleCreate = () => {
+      const handleCreate = (
+        locationId: string,
+        inventoryItemId: string,
+        quantity: number
+      ) => {
         createReservation.mutate({
-          location_id,
-          inventory_item_id,
+          location_id: locationId,
+          inventory_item_id: inventoryItemId,
           quantity,
+        }, {
+          onSuccess: ({ reservation }) => {
+            console.log(reservation.id)
+          }
         })
       }
 
@@ -259,13 +267,19 @@ You can update a reservation by sending a request to the [Update Reservation API
     ```tsx
     import { useAdminUpdateReservation } from "medusa-react"
 
-    const UpdateReservation = () => {
+    type Props = {
+      reservationId: string
+    }
+
+    const Reservation = ({ reservationId }: Props) => {
       const updateReservation = useAdminUpdateReservation(
         reservationId
       )
       // ...
 
-      const handleCreate = () => {
+      const handleUpdate = (
+        quantity: number
+      ) => {
         updateReservation.mutate({
           quantity,
         })
@@ -274,7 +288,7 @@ You can update a reservation by sending a request to the [Update Reservation API
       // ...
     }
 
-    export default UpdateReservation
+    export default Reservation
     ```
 
   </TabItem>
@@ -344,20 +358,28 @@ You can delete a reservation by sending a request to the [Delete Reservation API
     ```tsx
     import { useAdminDeleteReservation } from "medusa-react"
 
-    const DeleteReservation = () => {
+    type Props = {
+      reservationId: string
+    }
+
+    const Reservation = ({ reservationId }: Props) => {
       const deleteReservation = useAdminDeleteReservation(
         reservationId
       )
       // ...
 
       const handleDelete = () => {
-        deleteReservation.mutate()
+        deleteReservation.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...
     }
 
-    export default DeleteReservation
+    export default Reservation
     ```
 
   </TabItem>

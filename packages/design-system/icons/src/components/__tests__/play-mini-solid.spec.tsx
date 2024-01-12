@@ -4,7 +4,7 @@
   import PlayMiniSolid from "../play-mini-solid"
 
   describe("PlayMiniSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<PlayMiniSolid data-testid="icon" />)
 
 

@@ -4,7 +4,7 @@
   import QuestionMarkCircle from "../question-mark-circle"
 
   describe("QuestionMarkCircle", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<QuestionMarkCircle data-testid="icon" />)
 
 
