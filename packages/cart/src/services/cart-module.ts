@@ -2,17 +2,16 @@ import {
   AddressDTO,
   CartAddressDTO,
   CartDTO,
+  CartTypes,
   Context,
   CreateCartDTO,
-  CreateLineItemAdjustmentDTO,
   DAL,
   FilterableCartProps,
   FindConfig,
   ICartModuleService,
   InternalModuleDeclaration,
-  LineItemAdjustmentLineDTO,
   ModuleJoinerConfig,
-  UpdateCartDTO,
+  UpdateCartDTO
 } from "@medusajs/types"
 
 import { FilterableAddressProps } from "@medusajs/types"
@@ -20,30 +19,40 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  promiseAll,
 } from "@medusajs/utils"
 import { CreateAddressDTO, UpdateAddressDTO } from "@types"
 import { joinerConfig } from "../joiner-config"
 import AddressService from "./address"
 import CartService from "./cart"
+import LineItemAdjustmentService from "./line-item-adjustment-service"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   cartService: CartService
   addressService: AddressService
+  lineItemAdjustmentService: LineItemAdjustmentService
 }
 
 export default class CartModuleService implements ICartModuleService {
   protected baseRepository_: DAL.RepositoryService
   protected cartService_: CartService
   protected addressService_: AddressService
+  protected lineItemAdjustmentService_: LineItemAdjustmentService
 
   constructor(
-    { baseRepository, cartService, addressService }: InjectedDependencies,
+    {
+      baseRepository,
+      cartService,
+      addressService,
+      lineItemAdjustmentService,
+    }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
     this.cartService_ = cartService
     this.addressService_ = addressService
+    this.lineItemAdjustmentService_ = lineItemAdjustmentService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -263,19 +272,77 @@ export default class CartModuleService implements ICartModuleService {
     await this.addressService_.delete(addressIds, sharedContext)
   }
 
-  addLineItemAdjustments(
-    data: CreateLineItemAdjustmentDTO[],
+  @InjectManager("baseRepository_")
+  async listLineItemAdjustments(
+    filters = {},
+    config: FindConfig<CartTypes.LineItemAdjustmentLineDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const lines = await this.lineItemAdjustmentService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      CartTypes.LineItemAdjustmentLineDTO[]
+    >(lines, {
+      populate: true,
+    })
+  }
+
+  async addLineItemAdjustments(
+    data: CartTypes.AddLineItemAdjustmentsDTO[],
     sharedContext?: Context | undefined
-  ): Promise<LineItemAdjustmentLineDTO[]>
-  addLineItemAdjustments(
-    data: CreateLineItemAdjustmentDTO,
+  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]>
+  async addLineItemAdjustments(
+    data: CartTypes.AddLineItemAdjustmentsDTO,
     sharedContext?: Context | undefined
-  ): Promise<LineItemAdjustmentLineDTO>
+  ): Promise<CartTypes.LineItemAdjustmentLineDTO>
   @InjectTransactionManager("baseRepository_")
-  addLineItemAdjustments(
-    data: CreateLineItemAdjustmentDTO | CreateLineItemAdjustmentDTO[],
+  async addLineItemAdjustments(
+    data:
+      | CartTypes.AddLineItemAdjustmentsDTO
+      | CartTypes.AddLineItemAdjustmentsDTO[],
     sharedContext?: unknown
-  ): Promise<LineItemAdjustmentLineDTO[] | LineItemAdjustmentLineDTO | void> {
-    
+  ): Promise<
+    | CartTypes.LineItemAdjustmentLineDTO[]
+    | CartTypes.LineItemAdjustmentLineDTO
+    | void
+  > {
+    const input = Array.isArray(data) ? data : [data]
+
+    return await this.addLineItemAdjustments_(input, sharedContext as Context)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async addLineItemAdjustments_(
+    data: CartTypes.AddLineItemAdjustmentsDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]> {
+    const adjustmentsMap = new Map<
+      string,
+      CartTypes.CreateLineItemAdjustmentDTO[]
+    >()
+
+    for (const d of data) {
+      adjustmentsMap.set(d.cart_id, d.adjustments)
+    }
+
+    const items = await promiseAll(
+      [...adjustmentsMap].map(async ([cartId, lineItems]) => {
+        return await this.lineItemAdjustmentService_.create(
+          cartId,
+          lineItems,
+          sharedContext
+        )
+      })
+    )
+
+    return await this.listLineItemAdjustments(
+      { id: items.flat().map((c) => c.id) },
+      {},
+      sharedContext
+    )
   }
 }

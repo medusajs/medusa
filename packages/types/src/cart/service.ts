@@ -10,6 +10,7 @@ import {
   LineItemAdjustmentLineDTO
 } from "./common"
 import {
+  AddLineItemAdjustmentsDTO,
   CreateAddressDTO,
   CreateCartDTO,
   CreateLineItemAdjustmentDTO,
@@ -90,11 +91,11 @@ export interface ICartModuleService extends IModuleService {
   // removeLineItems(lineItemIds: string[], sharedContext?: Context): Promise<void>
 
   addLineItemAdjustments(
-    data: CreateLineItemAdjustmentDTO[],
+    data: AddLineItemAdjustmentsDTO[],
     sharedContext?: Context
   ): Promise<LineItemAdjustmentLineDTO[]>
   addLineItemAdjustments(
-    data: CreateLineItemAdjustmentDTO,
+    data: AddLineItemAdjustmentsDTO,
     sharedContext?: Context
   ): Promise<LineItemAdjustmentLineDTO>
 
