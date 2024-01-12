@@ -5,9 +5,11 @@ import {
   Cascade,
   Collection,
   Entity,
+  Index,
+  ManyToOne,
   OnInit,
   OneToMany,
-  OneToOne,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -18,10 +20,12 @@ import ShippingMethod from "./shipping-method"
 type OptionalCartProps =
   | "shipping_address"
   | "billing_address"
-  | DAL.EntityDateColumns // TODO: To be revisited when more clear
+  | DAL.EntityDateColumns
 
 @Entity({ tableName: "cart" })
 export default class Cart {
+  [OptionalProps]?: OptionalCartProps
+
   @PrimaryKey({ columnType: "text" })
   id: string
 
@@ -44,18 +48,22 @@ export default class Cart {
   @Property({ columnType: "text" })
   currency_code: string
 
-  @OneToOne({
-    entity: () => Address,
-    joinColumn: "shipping_address_id",
-    cascade: [Cascade.REMOVE],
+  @Index({ name: "IDX_cart_shipping_address_id" })
+  @Property({ columnType: "text", nullable: true })
+  shipping_address_id?: string | null
+
+  @ManyToOne(() => Address, {
+    fieldName: "shipping_address_id",
     nullable: true,
   })
   shipping_address?: Address | null
 
-  @OneToOne({
-    entity: () => Address,
-    joinColumn: "billing_address_id",
-    cascade: [Cascade.REMOVE],
+  @Index({ name: "IDX_cart_billing_address_id" })
+  @Property({ columnType: "text", nullable: true })
+  billing_address_id?: string | null
+
+  @ManyToOne(() => Address, {
+    fieldName: "billing_address_id",
     nullable: true,
   })
   billing_address?: Address | null
@@ -64,12 +72,13 @@ export default class Cart {
   metadata?: Record<string, unknown> | null
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.cart, {
-    orphanRemoval: true,
+    cascade: [Cascade.REMOVE],
   })
   items = new Collection<LineItem>(this)
 
   @OneToMany(() => ShippingMethod, (shippingMethod) => shippingMethod.cart, {
-    orphanRemoval: true,
+    cascade: [Cascade.REMOVE],
+    
   })
   shipping_methods = new Collection<ShippingMethod>(this)
 
@@ -112,7 +121,7 @@ export default class Cart {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at: Date
+  created_at?: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -120,7 +129,10 @@ export default class Cart {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at: Date
+  updated_at?: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at?: Date
 
   @BeforeCreate()
   onCreate() {

@@ -213,7 +213,7 @@ describe("PriceListRule Service", () => {
       }
 
       expect(error.message).toEqual(
-        'PriceListRule with id(s) "does-not-exist" not found'
+        'PriceListRule with id "does-not-exist" not found'
       )
     })
   })
