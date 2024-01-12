@@ -1,5 +1,4 @@
 export * from "./cart"
-export * from "./product"
 export * from "./inventory"
 export * from "./price-list"
-export * from "./_test-async"
+export * from "./product"
