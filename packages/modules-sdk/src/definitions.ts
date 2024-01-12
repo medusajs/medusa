@@ -166,7 +166,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
     [Modules.WORKFLOW_ORCHESTRATOR]: {
       key: Modules.WORKFLOW_ORCHESTRATOR,
       registrationName: ModuleRegistrationName.WORKFLOW_ORCHESTRATOR,
-      defaultPackage: MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ORCHESTRATOR],
+      defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.WORKFLOW_ORCHESTRATOR),
       isRequired: false,
       canOverride: true,
