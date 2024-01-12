@@ -220,13 +220,7 @@ export default class CartModuleService implements ICartModuleService {
     data: CreateAddressDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const addresses = await this.addressService_.create(data, sharedContext)
-
-    return await this.listAddresses(
-      { id: addresses.map((p) => p!.id) },
-      {},
-      sharedContext
-    )
+    return await this.addressService_.create(data, sharedContext)
   }
 
   async updateAddresses(data: UpdateAddressDTO, sharedContext?: Context)
@@ -256,13 +250,7 @@ export default class CartModuleService implements ICartModuleService {
     data: UpdateAddressDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const addresses = await this.addressService_.update(data, sharedContext)
-
-    return await this.listAddresses(
-      { id: addresses.map((p) => p!.id) },
-      {},
-      sharedContext
-    )
+    return await this.addressService_.update(data, sharedContext)
   }
 
   async deleteAddresses(ids: string[], sharedContext?: Context)
