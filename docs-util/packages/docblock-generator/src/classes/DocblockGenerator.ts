@@ -2,6 +2,7 @@
 import ts from "typescript"
 import Formatter from "./Formatter.js"
 import KindsRegistry from "./kinds/registry.js"
+import nodeHasComments from "../utils/node-has-comments.js"
 
 export type Options = {
   paths: string[]
@@ -96,13 +97,8 @@ class DocblockGenerator {
   canDocumentNode(node: ts.Node): boolean {
     // check if node already has docblock
     // const symbol = getSymbol(node, this.checker!)
-    const hasComments =
-      ts.getLeadingCommentRanges(
-        node.getSourceFile().getFullText(),
-        node.getFullStart()
-      ) !== undefined
 
-    return !hasComments
+    return !nodeHasComments(node)
   }
 
   reset() {

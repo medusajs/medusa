@@ -1,22 +1,25 @@
 import ts from "typescript"
-import KindDocGenerator from "../../interface/KindDocGenerator.js"
+import KindDocGenerator, {
+  GetDocBlockOptions,
+} from "../../interface/KindDocGenerator.js"
 import {
   DOCBLOCK_NEW_LINE,
   DOCBLOCK_START,
-  DOCKBLOCK_END_LINE,
+  DOCBLOCK_END_LINE,
 } from "../../constants.js"
 import getSymbol from "../../utils/get-symbol.js"
 
-class DefaultKind implements KindDocGenerator {
+export type GeneratorOptions = {
+  checker: ts.TypeChecker
+  kinds?: ts.SyntaxKind[]
+}
+
+class DefaultKind<T extends ts.Node = ts.Node> implements KindDocGenerator<T> {
   static DEFAULT_ALLOWED_NODE_KINDS = [
     ts.SyntaxKind.ClassDeclaration,
     ts.SyntaxKind.EnumDeclaration,
     ts.SyntaxKind.EnumMember,
-    ts.SyntaxKind.MethodDeclaration,
-    ts.SyntaxKind.MethodSignature,
     ts.SyntaxKind.ModuleDeclaration,
-    ts.SyntaxKind.FunctionDeclaration,
-    ts.SyntaxKind.ArrowFunction,
     ts.SyntaxKind.PropertyDeclaration,
     ts.SyntaxKind.InterfaceDeclaration,
     ts.SyntaxKind.TypeAliasDeclaration,
@@ -25,13 +28,7 @@ class DefaultKind implements KindDocGenerator {
   protected allowedKinds: ts.SyntaxKind[]
   protected checker: ts.TypeChecker
 
-  constructor({
-    checker,
-    kinds,
-  }: {
-    checker: ts.TypeChecker
-    kinds?: ts.SyntaxKind[]
-  }) {
+  constructor({ checker, kinds }: GeneratorOptions) {
     this.allowedKinds = kinds || DefaultKind.DEFAULT_ALLOWED_NODE_KINDS
     this.checker = checker
   }
@@ -40,11 +37,11 @@ class DefaultKind implements KindDocGenerator {
     return this.allowedKinds
   }
 
-  isAllowed(node: ts.Node): boolean {
+  isAllowed(node: ts.Node): node is T {
     return this.allowedKinds.includes(node.kind)
   }
 
-  getDocBlockStart(node: ts.Node): string {
+  getDocBlockStart(node: T | ts.Node): string {
     const commonTags = this.getCommonDocs(node)
 
     return `${DOCBLOCK_START}${
@@ -55,7 +52,10 @@ class DefaultKind implements KindDocGenerator {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getDocBlock(node: ts.Node, options = { addEnd: true }): string {
+  getDocBlock(
+    node: T | ts.Node,
+    options: GetDocBlockOptions = { addEnd: true }
+  ): string {
     // const { addEnd = true } = options
     let str = this.getDocBlockStart(node)
 
@@ -70,7 +70,7 @@ class DefaultKind implements KindDocGenerator {
         str += `{summary}`
     }
 
-    return `${str}${options.addEnd ? DOCKBLOCK_END_LINE : ""}`
+    return `${str}${options.addEnd ? DOCBLOCK_END_LINE : ""}`
   }
 
   getSymbolTypeDocBlock(symbolType: ts.Type): string {
@@ -155,7 +155,7 @@ class DefaultKind implements KindDocGenerator {
     return str
   }
 
-  getCommonDocs(node: ts.Node): string {
+  getCommonDocs(node: T | ts.Node): string {
     const tags = new Set<string>()
 
     const symbol = getSymbol(node, this.checker)

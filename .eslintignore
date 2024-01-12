@@ -25,6 +25,7 @@ packages/*
 !packages/workflows-sdk
 !packages/core-flows
 !packages/types
+!packages/medusa-react/src/hooks
 
 
 **/models/*

@@ -5,6 +5,8 @@ import { ESLint, Linter } from "eslint"
 import path from "path"
 import dirname from "../utils/dirname.js"
 import { minimatch } from "minimatch"
+import { existsSync } from "fs"
+import getRelativePaths from "../utils/get-relative-paths.js"
 
 class Formatter {
   protected cwd: string
@@ -30,19 +32,44 @@ class Formatter {
   ): Linter.ConfigOverride<Linter.RulesRecord> {
     // clone config
     const newConfig = structuredClone(config)
-    if (newConfig.parserOptions && newConfig.parserOptions.project?.length) {
-      // fix parser projects paths to be relative to this script
-      newConfig.parserOptions.project = (
-        newConfig.parserOptions.project as string[]
-      ).map((projectPath) => path.resolve(this.cwd, projectPath))
+    if (!newConfig.parserOptions) {
+      return newConfig
+    }
 
-      if (fileName) {
-        newConfig.parserOptions.project = (
-          newConfig.parserOptions.project as string[]
-        ).filter((projectPath) =>
-          fileName.startsWith(path.dirname(projectPath))
+    if (fileName) {
+      const packagePattern = /^(?<packagePath>.*\/packages\/[^/]*).*$/
+      // try to manually set the project of the parser options
+      const matchFilePackage = packagePattern.exec(fileName)
+
+      if (matchFilePackage?.groups?.packagePath) {
+        const tsConfigPath = path.join(
+          matchFilePackage.groups.packagePath,
+          "tsconfig.json"
         )
+        const tsConfigSpecPath = path.join(
+          matchFilePackage.groups.packagePath,
+          "tsconfig.spec.json"
+        )
+
+        newConfig.parserOptions.project = [
+          existsSync(tsConfigSpecPath)
+            ? tsConfigSpecPath
+            : existsSync(tsConfigPath)
+              ? tsConfigPath
+              : [
+                  ...getRelativePaths(
+                    newConfig.parserOptions.project || [],
+                    this.cwd
+                  ),
+                ],
+        ]
       }
+    } else if (newConfig.parserOptions.project?.length) {
+      // fix parser projects paths to be relative to this script
+      newConfig.parserOptions.project = getRelativePaths(
+        newConfig.parserOptions.project as string[],
+        this.cwd
+      )
     }
 
     return newConfig
@@ -91,15 +118,16 @@ class Formatter {
       return undefined
     }
 
-    relevantConfig = structuredClone(
-      relevantConfig || this.generalESLintConfig!
+    relevantConfig = this.normalizeConfigObject(
+      structuredClone(relevantConfig || this.generalESLintConfig!),
+      filePath
     )
 
     relevantConfig!.files = [path.relative(this.cwd, filePath)]
 
     this.configForFile.set(filePath, relevantConfig)
 
-    return this.normalizeConfigObject(relevantConfig!, filePath)
+    return relevantConfig
   }
 
   async formatFileWithEslint(filePath: string) {

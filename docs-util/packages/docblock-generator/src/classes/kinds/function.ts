@@ -1,29 +1,70 @@
 import ts from "typescript"
 import DefaultKind from "./default.js"
-import { DOCBLOCK_NEW_LINE, DOCKBLOCK_END_LINE } from "../../constants.js"
+import { DOCBLOCK_NEW_LINE, DOCBLOCK_END_LINE } from "../../constants.js"
 import getSymbol from "../../utils/get-symbol.js"
+import { GetDocBlockOptions } from "../../interface/KindDocGenerator.js"
 
-type NodeType =
+export type FunctionNode =
   | ts.MethodDeclaration
   | ts.MethodSignature
   | ts.FunctionDeclaration
   | ts.ArrowFunction
 
-class FunctionKind extends DefaultKind {
+type VariableNode = ts.VariableDeclaration | ts.VariableStatement
+
+export type FunctionOrVariableNode = FunctionNode | ts.VariableStatement
+
+class FunctionKind extends DefaultKind<FunctionOrVariableNode> {
   protected methodKinds: ts.SyntaxKind[] = [
     ts.SyntaxKind.MethodDeclaration,
     ts.SyntaxKind.MethodSignature,
   ]
-  protected functionKinds: ts.SyntaxKind[] = [
-    ts.SyntaxKind.FunctionDeclaration,
-    ts.SyntaxKind.ArrowFunction,
-  ]
+  protected functionKinds: ts.SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
   protected allowedKinds: ts.SyntaxKind[] = [
     ...this.methodKinds,
     ...this.functionKinds,
   ]
 
-  isMethod(node: ts.Node): node is ts.MethodDeclaration | ts.MethodSignature {
+  isAllowed(node: ts.Node): node is FunctionOrVariableNode {
+    if (!super.isAllowed(node)) {
+      return ts.isVariableStatement(node) && this.isFunctionVariable(node)
+    }
+
+    return true
+  }
+
+  isFunctionVariable(node: ts.Node): node is VariableNode {
+    if (ts.isVariableStatement(node)) {
+      return node.declarationList.declarations.some((declaration) => {
+        return this.isFunctionVariable(declaration)
+      })
+    } else if (ts.isVariableDeclaration(node)) {
+      return this.extractFunctionNode(node) !== undefined
+    }
+
+    return false
+  }
+
+  extractFunctionNode(node: VariableNode): FunctionNode | undefined {
+    if (ts.isVariableStatement(node)) {
+      const variableDeclaration = node.declarationList.declarations.find(
+        (declaration) => ts.isVariableDeclaration(declaration)
+      )
+
+      return variableDeclaration
+        ? this.extractFunctionNode(variableDeclaration)
+        : undefined
+    } else if (
+      node.initializer &&
+      (this.isAllowed(node.initializer) || ts.isArrowFunction(node.initializer))
+    ) {
+      return node.initializer
+    }
+  }
+
+  isMethod(
+    node: FunctionNode
+  ): node is ts.MethodDeclaration | ts.MethodSignature {
     return this.methodKinds.includes(node.kind)
   }
 
@@ -36,20 +77,32 @@ class FunctionKind extends DefaultKind {
     )
   }
 
-  getDocBlock(node: NodeType): string {
+  getDocBlock(
+    node: FunctionOrVariableNode | ts.Node,
+    options: GetDocBlockOptions = { addEnd: true }
+  ): string {
     if (!this.isAllowed(node)) {
-      return super.getDocBlock(node)
+      return super.getDocBlock(node, options)
     }
 
-    let str = this.getDocBlockStart(node)
+    const actualNode = ts.isVariableStatement(node)
+      ? this.extractFunctionNode(node)
+      : node
+
+    if (!actualNode) {
+      return super.getDocBlock(node, options)
+    }
+
+    let str = this.getDocBlockStart(actualNode)
 
     // add summary
     str += `${
-      this.isMethod(node) ? `This method ` : `This function`
-    }{summary}${DOCBLOCK_NEW_LINE}`
+      options.summaryPrefix ||
+      (this.isMethod(actualNode) ? `This method` : `This function`)
+    } {summary}${DOCBLOCK_NEW_LINE}`
 
     // add params
-    node.forEachChild((childNode) => {
+    actualNode.forEachChild((childNode) => {
       if (!ts.isParameter(childNode)) {
         return
       }
@@ -69,9 +122,9 @@ class FunctionKind extends DefaultKind {
     })
 
     // add returns
-    const nodeType = node.type
-      ? this.checker.getTypeFromTypeNode(node.type)
-      : this.checker.getTypeAtLocation(node)
+    const nodeType = actualNode.type
+      ? this.checker.getTypeFromTypeNode(actualNode.type)
+      : this.checker.getTypeAtLocation(actualNode)
     const returnTypeStr = this.checker.typeToString(nodeType)
 
     str += `${DOCBLOCK_NEW_LINE}@returns {${returnTypeStr}} ${
@@ -80,7 +133,14 @@ class FunctionKind extends DefaultKind {
         : this.getSymbolTypeDocBlock(nodeType)
     }`
 
-    return `${str}${DOCKBLOCK_END_LINE}`
+    // add example
+    str += `${DOCBLOCK_NEW_LINE}${DOCBLOCK_NEW_LINE}@example${DOCBLOCK_NEW_LINE}{example-code}`
+
+    if (options.addEnd) {
+      str += DOCBLOCK_END_LINE
+    }
+
+    return str
   }
 }
 

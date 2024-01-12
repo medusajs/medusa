@@ -1,15 +1,16 @@
 import ts from "typescript"
 
-type GetDocBlockOptions = {
+export type GetDocBlockOptions = {
   addEnd?: boolean
+  summaryPrefix?: string
 }
 
-interface KindDocGenerator {
+interface KindDocGenerator<T extends ts.Node = ts.Node> {
   getAllowedKinds(): ts.SyntaxKind[]
 
-  isAllowed(node: ts.Node): boolean
+  isAllowed(node: T): boolean
 
-  getDocBlock(node: ts.Node, options?: GetDocBlockOptions): string
+  getDocBlock(node: T, options?: GetDocBlockOptions): string
 }
 
 export default KindDocGenerator
