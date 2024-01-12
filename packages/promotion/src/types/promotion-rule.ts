@@ -1,7 +1,7 @@
 import { PromotionRuleOperatorValues } from "@medusajs/types"
 
 export interface CreatePromotionRuleDTO {
-  description?: string
+  description?: string | null
   attribute: string
   operator: PromotionRuleOperatorValues
 }

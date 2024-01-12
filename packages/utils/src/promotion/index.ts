@@ -10,8 +10,8 @@ export enum ApplicationMethodType {
 
 export enum ApplicationMethodTargetType {
   ORDER = "order",
-  SHIPPING = "shipping",
-  ITEM = "item",
+  SHIPPING_METHODS = "shipping_methods",
+  ITEMS = "items",
 }
 
 export enum ApplicationMethodAllocation {
