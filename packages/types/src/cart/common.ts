@@ -15,6 +15,10 @@ export interface AdjustmentLineDTO {
    */
   amount: number
   /**
+   * The ID of the associated cart
+   */
+  cart_id: string
+  /**
    * The description of the adjustment line
    */
   description?: string

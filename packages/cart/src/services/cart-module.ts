@@ -329,8 +329,10 @@ export default class CartModuleService implements ICartModuleService {
 
     const items = await promiseAll(
       [...adjustmentsMap].map(async ([cartId, lineItems]) => {
+
+      await this.cartService_.retrieve(cartId, {}, sharedContext)
+
         return await this.lineItemAdjustmentService_.create(
-          cartId,
           lineItems,
           sharedContext
         )
@@ -342,5 +344,124 @@ export default class CartModuleService implements ICartModuleService {
       {},
       sharedContext
     )
+  }
+
+  async setLineItemAdjustments(
+    data: CartTypes.AddLineItemAdjustmentsDTO[],
+    sharedContext?: Context | undefined
+  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]>
+  async setLineItemAdjustments(
+    data: CartTypes.AddLineItemAdjustmentsDTO,
+    sharedContext?: Context | undefined
+  ): Promise<CartTypes.LineItemAdjustmentLineDTO>
+  @InjectTransactionManager("baseRepository_")
+  async setLineItemAdjustments(
+    data:
+      | CartTypes.AddLineItemAdjustmentsDTO
+      | CartTypes.AddLineItemAdjustmentsDTO[],
+    sharedContext?: unknown
+  ): Promise<
+    | CartTypes.LineItemAdjustmentLineDTO[]
+    | CartTypes.LineItemAdjustmentLineDTO
+    | void
+  > {
+    const input = Array.isArray(data) ? data : [data]
+
+    return await this.setLineItemAdjustments_(input, sharedContext as Context)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async setLineItemAdjustments_(
+    data: CartTypes.SetLineItemAdjustmentsDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]> {
+    const cartToAdjustmentsMap = new Map<
+      string,
+      (CartTypes.CreateLineItemAdjustmentDTO | CartTypes.UpdateLineItemAdjustmentDTO)[]
+    >()
+
+    for (const d of data) {
+      cartToAdjustmentsMap.set(d.cart_id, d.adjustments)
+    }
+
+    const existingAdjustments = await this.listLineItemAdjustments(
+      { cart_id: [...cartToAdjustmentsMap.keys()] },
+      { select: ["id"] },
+      sharedContext
+    )
+
+    // From the existing adjustments, find the ones that are not passed in data
+    const toDelete = existingAdjustments.filter((adj) => {
+      const adjustments = !cartToAdjustmentsMap.has(adj.cart_id)
+      if (adjustments) {
+        return !adjustments.find((a) => a.id === adj.id)
+      }
+      return true
+    })
+    
+
+    const allAdjustments = data.map((d) => d.adjustments).flat()
+
+    const existingAdjustmentsMap = new Map(
+      existingAdjustments.map((adj) => [adj.id, adj])
+    )
+
+    const toDelete = allAdjustments.filter((adj) => {
+      if (adj.id) {
+        
+      }
+      adj?.id && !existingAdjustmentsMap.has(adj.id)
+    })
+
+    const adjustmentsToDelete = existingAdjustments.filter(
+      (adj) => !adjustmentsMap.has(adj.id)
+    )
+
+    await this.lineItemAdjustmentService_.delete(
+      adjustmentsToDelete.map((adj) => adj.id)
+    )
+
+    let toDelete: string[] = []
+    let toUpdate = []
+
+    for (const update of data) {
+      if (adj.) {
+        const existing = existingAdjustmentsMap.get(adj.id)
+      }
+
+      
+    }
+
+    const items = await promiseAll(
+      [...adjustmentsMap].map(async ([cartId, adjustments]) => {
+
+        return await this.lineItemAdjustmentService_.create(
+          adjustments,
+          sharedContext
+        )
+      })
+    )
+
+    return await this.listLineItemAdjustments(
+      { id: items.flat().map((c) => c.id) },
+      {},
+      sharedContext
+    )
+  }
+
+  async removeLineItemAdjustments(
+    adjustmentIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  async removeLineItemAdjustments(
+    adjustmentIds: string,
+    sharedContext?: Context
+  ): Promise<void>
+  async removeLineItemAdjustments(
+    adjustmentIds: string,
+    sharedContext?: Context
+  ): Promise<void> {
+    const ids = Array.isArray(adjustmentIds) ? adjustmentIds : [adjustmentIds]
+    await this.lineItemAdjustmentService_.delete(ids, sharedContext)
   }
 }

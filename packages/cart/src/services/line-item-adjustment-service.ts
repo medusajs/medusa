@@ -10,10 +10,9 @@ import {
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  isString,
   retrieveEntity,
 } from "@medusajs/utils"
-import { Address, Cart, LineItemAdjustmentLine } from "@models"
+import { Address, LineItemAdjustmentLine } from "@models"
 import { LineItemAdjustmentRepository } from "@repositories"
 import CartService from "./cart"
 
@@ -90,23 +89,9 @@ export default class LineItemAdjustmentService<
 
   @InjectTransactionManager("lineItemAdjustmentRepository_")
   async create(
-    cartOrId: string | Cart,
     data: CreateLineItemAdjustmentDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    let cart = cartOrId as unknown as Cart
-
-    if (isString(cart)) {
-      cart = await this.cartService_.retrieve(cart, {}, sharedContext)
-    }
-
-    const data_ = [...data]
-    data_.forEach((lineItem) => {
-      Object.assign(lineItem, {
-        cart_id: cart.id,
-      })
-    })
-
     return (await (
       this.lineItemAdjustmentRepository_ as LineItemAdjustmentRepository
     ).create(data, sharedContext)) as TEntity[]
