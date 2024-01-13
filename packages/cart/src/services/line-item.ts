@@ -11,29 +11,21 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  isString,
   retrieveEntity,
 } from "@medusajs/utils"
-import { Cart, LineItem } from "@models"
+import { LineItem } from "@models"
 import { LineItemRepository } from "@repositories"
 import { CreateLineItemDTO, UpdateLineItemDTO } from "../types"
-import CartService from "./cart"
 
 type InjectedDependencies = {
   lineItemRepository: DAL.RepositoryService
-  cartService: CartService<any>
 }
 
-export default class LineItemService<
-  TEntity extends LineItem = LineItem,
-  TCart extends Cart = Cart
-> {
+export default class LineItemService<TEntity extends LineItem = LineItem> {
   protected readonly lineItemRepository_: DAL.RepositoryService<LineItem>
-  protected readonly cartService_: CartService<TCart>
 
-  constructor({ lineItemRepository, cartService }: InjectedDependencies) {
+  constructor({ lineItemRepository }: InjectedDependencies) {
     this.lineItemRepository_ = lineItemRepository
-    this.cartService_ = cartService
   }
 
   @InjectManager("lineItemRepository_")
@@ -81,24 +73,9 @@ export default class LineItemService<
 
   @InjectTransactionManager("lineItemRepository_")
   async create(
-    cartOrId: Cart | string,
     data: CreateLineItemDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    let cart = cartOrId as unknown as Cart
-
-    if (isString(cart)) {
-      cart = await this.cartService_.retrieve(cart, {}, sharedContext)
-    }
-
-    const data_ = [...data]
-    data_.forEach((lineItem) => {
-
-      Object.assign(lineItem, {
-        cart_id: cart.id,
-      })
-    })
-
     return (await (this.lineItemRepository_ as LineItemRepository).create(
       data,
       sharedContext
@@ -107,22 +84,17 @@ export default class LineItemService<
 
   @InjectTransactionManager("lineItemRepository_")
   async update(
-    cartOrId: Cart | string,
     data: UpdateLineItemDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    let cart = cartOrId as unknown as Cart
-
-    if (isString(cart)) {
-      cart = await this.cartService_.retrieve(
-        cart,
-        { relations: ["items"] },
-        sharedContext
-      )
-    }
+    const existingLines = await this.list(
+      { id: [...data.map((d) => d.id)] },
+      {},
+      sharedContext
+    )
 
     const existingLinesMap = new Map(
-      cart.items.map<[string, LineItem]>((li) => [li.id, li])
+      existingLines.map<[string, LineItem]>((li) => [li.id, li])
     )
 
     const updates: { lineItem: LineItem; update: UpdateLineItemDTO }[] = []

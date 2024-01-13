@@ -9,14 +9,13 @@ import {
   FilterableCartProps,
 } from "./common"
 import {
-  AddLineItemsDTO,
   CreateAddressDTO,
   CreateCartDTO,
   CreateLineItemDTO,
+  CreateLineItemForCartDTO,
   UpdateAddressDTO,
   UpdateCartDTO,
   UpdateLineItemDTO,
-  UpdateLineItemsDTO,
 } from "./mutations"
 
 export interface ICartModuleService extends IModuleService {
@@ -75,11 +74,11 @@ export interface ICartModuleService extends IModuleService {
   deleteAddresses(ids: string, sharedContext?: Context): Promise<void>
 
   addLineItems(
-    data: AddLineItemsDTO,
+    data: CreateLineItemForCartDTO,
     sharedContext?: Context
   ): Promise<CartLineItemDTO[]>
   addLineItems(
-    data: AddLineItemsDTO[],
+    data: CreateLineItemForCartDTO[],
     sharedContext?: Context
   ): Promise<CartLineItemDTO[]>
   addLineItems(
@@ -89,19 +88,24 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<CartLineItemDTO[]>
 
   updateLineItems(
-    data: UpdateLineItemsDTO,
+    data: UpdateLineItemDTO[],
     sharedContext?: Context
   ): Promise<CartLineItemDTO[]>
   updateLineItems(
-    data: UpdateLineItemsDTO[],
+    selector: Partial<CartLineItemDTO>,
+    data: Partial<UpdateLineItemDTO>,
     sharedContext?: Context
   ): Promise<CartLineItemDTO[]>
   updateLineItems(
     cartId: string,
-    data: UpdateLineItemDTO[],
+    data: Partial<UpdateLineItemDTO>,
     sharedContext?: Context
   ): Promise<CartLineItemDTO[]>
 
   removeLineItems(itemIds: string[], sharedContext?: Context): Promise<void>
   removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
+  removeLineItems(
+    selector: Partial<CartLineItemDTO>,
+    sharedContext?: Context
+  ): Promise<void>
 }

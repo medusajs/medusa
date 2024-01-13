@@ -122,6 +122,10 @@ export interface CreateLineItemDTO {
   adjustments?: CreateLineItemAdjustmentDTO[]
 }
 
+export interface CreateLineItemForCartDTO extends CreateLineItemDTO {
+  cart_id: string
+}
+
 export interface UpdateLineItemDTO
   extends Omit<
     CreateLineItemDTO,
@@ -137,12 +141,12 @@ export interface UpdateLineItemDTO
   adjustments?: UpdateLineItemAdjustmentDTO[] | CreateLineItemAdjustmentDTO[]
 }
 
-export interface AddLineItemsDTO {
-  cart_id: string
-  items: CreateLineItemDTO[]
-}
+// export interface AddLineItemsDTO {
+//   cart_id: string
+//   items: CreateLineItemDTO[]
+// }
 
-export interface UpdateLineItemsDTO {
-  cart_id: string
-  items: UpdateLineItemDTO[]
-}
+// export interface UpdateLineItemsDTO {
+//   cart_id: string
+//   items: UpdateLineItemDTO[]
+// }

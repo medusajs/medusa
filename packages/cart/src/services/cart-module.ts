@@ -14,8 +14,9 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
+  isObject,
   isString,
-  promiseAll,
 } from "@medusajs/utils"
 import { joinerConfig } from "../joiner-config"
 import * as services from "../services"
@@ -250,12 +251,26 @@ export default class CartModuleService implements ICartModuleService {
     )
   }
 
+  addLineItems(
+    data: CartTypes.CreateLineItemForCartDTO,
+    sharedContext?: Context
+  ): Promise<CartTypes.CartLineItemDTO[]>
+  addLineItems(
+    data: CartTypes.CreateLineItemForCartDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.CartLineItemDTO[]>
+  addLineItems(
+    cartId: string,
+    items: CartTypes.CreateLineItemDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.CartLineItemDTO[]>
+
   @InjectManager("baseRepository_")
   async addLineItems(
     cartIdOrData:
       | string
-      | CartTypes.AddLineItemsDTO[]
-      | CartTypes.AddLineItemsDTO,
+      | CartTypes.CreateLineItemForCartDTO[]
+      | CartTypes.CreateLineItemForCartDTO,
     dataOrSharedContext?: CartTypes.CreateLineItemDTO[] | Context,
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO[]> {
@@ -286,32 +301,29 @@ export default class CartModuleService implements ICartModuleService {
     data: CartTypes.CreateLineItemDTO[],
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO[]> {
-    return await this.addLineItemsBulk_(
-      [{ cart_id: cartId, items: data }],
-      sharedContext
-    )
+    const items = data.map((item) => {
+      return {
+        ...item,
+        cart_id: cartId,
+      }
+    })
+
+    return await this.addLineItemsBulk_(items, sharedContext)
   }
 
   @InjectTransactionManager("baseRepository_")
   protected async addLineItemsBulk_(
-    data: CartTypes.AddLineItemsDTO[],
+    data: CartTypes.CreateLineItemForCartDTO[],
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO[]> {
-    const lineItemsMap = new Map<string, CartTypes.CreateLineItemDTO[]>()
-
-    for (const lineItemData of data) {
-      lineItemsMap.set(lineItemData.cart_id, lineItemData.items)
-    }
-
-    const items = await promiseAll(
-      [...lineItemsMap].map(async ([cartId, lineItems]) => {
-        return await this.lineItemService_.create(
-          cartId,
-          lineItems,
-          sharedContext
+    const items = await this.lineItemService_
+      .create(data, sharedContext)
+      .catch((e) => {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Failed to create line items. Ensure you are passing valid data, including valid cart id(s)"
         )
       })
-    )
 
     return await this.listLineItems(
       { id: items.flat().map((c) => c.id) },
@@ -320,77 +332,112 @@ export default class CartModuleService implements ICartModuleService {
     )
   }
 
+  updateLineItems(
+    data: CartTypes.UpdateLineItemDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.CartLineItemDTO[]>
+  updateLineItems(
+    selector: Partial<CartTypes.CartLineItemDTO>,
+    data: CartTypes.UpdateLineItemDTO,
+    sharedContext?: Context
+  ): Promise<CartTypes.CartLineItemDTO[]>
+  updateLineItems(
+    cartId: string,
+    data: Partial<CartTypes.UpdateLineItemDTO>,
+    sharedContext?: Context
+  ): Promise<CartTypes.CartLineItemDTO[]>
+
   @InjectManager("baseRepository_")
   async updateLineItems(
-    cartIdOrData:
+    cartIdOrDataOrSelector:
       | string
-      | CartTypes.UpdateLineItemsDTO[]
-      | CartTypes.UpdateLineItemsDTO,
-    dataOrSharedContext?: CartTypes.UpdateLineItemDTO[] | Context,
+      | Partial<CartTypes.CartLineItemDTO>
+      | CartTypes.UpdateLineItemDTO[],
+    dataOrSharedContext?:
+      | CartTypes.UpdateLineItemDTO[]
+      | Partial<CartTypes.UpdateLineItemDTO>
+      | Context,
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO[]> {
-    if (isString(cartIdOrData)) {
-      return await this.updateLineItems_(
-        cartIdOrData,
-        dataOrSharedContext as CartTypes.UpdateLineItemDTO[],
+    // Case: Single cart update
+    if (isString(cartIdOrDataOrSelector)) {
+      return await this.updateCartLineItems_(
+        cartIdOrDataOrSelector,
+        dataOrSharedContext as Partial<CartTypes.UpdateLineItemDTO>,
         sharedContext
       )
     }
 
-    if (Array.isArray(cartIdOrData)) {
+    // Case: Bulk update
+    if (Array.isArray(cartIdOrDataOrSelector)) {
       return await this.updateLineItemsBulk_(
-        cartIdOrData,
+        cartIdOrDataOrSelector,
         dataOrSharedContext as Context
       )
     }
 
-    return await this.updateLineItemsBulk_(
-      [cartIdOrData],
-      dataOrSharedContext as Context
+    // Case: Selector update
+    return await this.updateSelectorLineItems_(
+      cartIdOrDataOrSelector,
+      dataOrSharedContext as CartTypes.UpdateLineItemDTO,
+      sharedContext
     )
   }
 
-  @InjectManager("baseRepository_")
-  protected async updateLineItems_(
-    cartId: string,
-    data: CartTypes.UpdateLineItemDTO[],
+  /**
+   * Example "Update thumbnail for all line items with variant_id 123"
+   *   await updateLineItems({ variant_id: "123" }, { thubmnail: "https://..." })
+   */
+  @InjectTransactionManager("baseRepository_")
+  protected async updateSelectorLineItems_(
+    selector: Partial<CartTypes.CartLineItemDTO>,
+    data: Partial<CartTypes.UpdateLineItemDTO>,
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO[]> {
-    return await this.updateLineItemsBulk_(
-      [
-        {
-          cart_id: cartId,
-          items: data,
-        },
-      ],
+    const items = await this.listLineItems({ ...selector }, {})
+
+    const updates = items.map((item) => {
+      return {
+        ...data,
+        id: item.id,
+      }
+    })
+
+    await this.lineItemService_.update(updates, sharedContext)
+
+    return this.listLineItems({ ...selector }, {})
+  }
+
+  @InjectManager("baseRepository_")
+  protected async updateCartLineItems_(
+    cartId: string, //
+    data: Partial<CartTypes.UpdateLineItemDTO>,
+    sharedContext?: Context
+  ): Promise<CartTypes.CartLineItemDTO[]> {
+    return this.updateSelectorLineItems_(
+      { cart_id: cartId },
+      data,
       sharedContext
     )
   }
 
   @InjectTransactionManager("baseRepository_")
   protected async updateLineItemsBulk_(
-    data: CartTypes.UpdateLineItemsDTO[],
+    data: CartTypes.UpdateLineItemDTO[],
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO[]> {
-    const lineItemsMap = new Map<string, CartTypes.UpdateLineItemDTO[]>()
-
-    for (const lineItemData of data) {
-      lineItemsMap.set(lineItemData.cart_id, lineItemData.items)
-    }
-
-    const items = await promiseAll(
-      [...lineItemsMap].map(async ([cartId, lineItems]) => {
-        return await this.lineItemService_.update(
-          cartId,
-          lineItems,
-          sharedContext
+    const items = await this.lineItemService_
+      .update(data, sharedContext)
+      .catch((e) => {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Failed to update line items"
         )
       })
-    )
 
     return await this.listLineItems(
       { id: items.flat().map((c) => c.id) },
-      { relations: ["cart"] },
+      {},
       sharedContext
     )
   }
@@ -399,13 +446,27 @@ export default class CartModuleService implements ICartModuleService {
     sharedContext?: Context
   ): Promise<void>
   async removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
+  async removeLineItems(
+    selector: Partial<CartTypes.CartLineItemDTO>,
+    sharedContext?: Context
+  ): Promise<void>
 
   @InjectTransactionManager("baseRepository_")
   async removeLineItems(
-    itemIds: string | string[],
+    itemIdsOrSelector: string | string[] | Partial<CartTypes.CartLineItemDTO>,
     sharedContext?: Context
   ): Promise<void> {
-    const toDelete = Array.isArray(itemIds) ? itemIds : [itemIds]
+    let toDelete: string[] = []
+    if (isObject(itemIdsOrSelector)) {
+      const items = await this.listLineItems({ ...itemIdsOrSelector }, {})
+
+      toDelete = items.map((item) => item.id)
+    } else {
+      toDelete = Array.isArray(itemIdsOrSelector)
+        ? itemIdsOrSelector
+        : [itemIdsOrSelector]
+    }
+
     await this.lineItemService_.delete(toDelete, sharedContext)
   }
 

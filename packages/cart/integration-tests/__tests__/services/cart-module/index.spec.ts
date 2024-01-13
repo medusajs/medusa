@@ -253,7 +253,6 @@ describe("Cart Module Service", () => {
           quantity: 1,
           unit_price: 100,
           title: "test",
-          tax_lines: [],
         },
       ])
 
@@ -261,7 +260,14 @@ describe("Cart Module Service", () => {
         relations: ["items"],
       })
 
-      expect(items[0].id).toBe(cart.items![0].id)
+      expect(items[0]).toEqual(
+        expect.objectContaining({
+          title: "test",
+          quantity: 1,
+          unit_price: 100,
+        })
+      )
+      expect(cart.items?.length).toBe(1)
     })
 
     it("should add multiple line items to cart succesfully", async () => {
@@ -271,24 +277,41 @@ describe("Cart Module Service", () => {
         },
       ])
 
-      const items = await service.addLineItems({
-        cart_id: createdCart.id,
-        items: [
-          {
-            quantity: 1,
-            unit_price: 100,
-            title: "test",
-            tax_lines: [],
-          },
-        ],
-      })
+      await service.addLineItems([
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+          cart_id: createdCart.id,
+        },
+        {
+          quantity: 2,
+          unit_price: 200,
+          title: "test-2",
+          cart_id: createdCart.id,
+        },
+      ])
 
       const cart = await service.retrieve(createdCart.id, {
         relations: ["items"],
       })
 
-      expect(items[0].id).toBe(cart.items![0].id)
-      expect(cart.items?.length).toBe(1)
+      expect(cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            title: "test",
+            quantity: 1,
+            unit_price: 100,
+          }),
+          expect.objectContaining({
+            title: "test-2",
+            quantity: 2,
+            unit_price: 200,
+          }),
+        ])
+      )
+
+      expect(cart.items?.length).toBe(2)
     })
 
     it("should add multiple line items to multiple carts succesfully", async () => {
@@ -307,25 +330,15 @@ describe("Cart Module Service", () => {
       const items = await service.addLineItems([
         {
           cart_id: eurCart.id,
-          items: [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-              tax_lines: [],
-            },
-          ],
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
         },
         {
           cart_id: usdCart.id,
-          items: [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-              tax_lines: [],
-            },
-          ],
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
         },
       ])
 
@@ -359,7 +372,7 @@ describe("Cart Module Service", () => {
         ])
         .catch((e) => e)
 
-      expect(error.message).toContain("Cart with id: foo was not found")
+      expect(error.message).toContain("Failed to create line items. Ensure you are passing valid data, including valid cart id(s)")
     })
 
     it("should throw an error when required params are not passed", async () => {
@@ -379,7 +392,7 @@ describe("Cart Module Service", () => {
         .catch((e) => e)
 
       expect(error.message).toContain(
-        "Value for LineItem.unit_price is required, 'undefined' found"
+        "Failed to create line items. Ensure you are passing valid data, including valid cart id(s)"
       )
     })
   })
@@ -403,12 +416,12 @@ describe("Cart Module Service", () => {
 
       expect(item.title).toBe("test")
 
-      const [updatedItem] = await service.updateLineItems(createdCart.id, [
+      const [updatedItem] = await service.updateLineItems(
+        { cart_id: createdCart.id },
         {
-          id: item.id,
           title: "test2",
-        },
-      ])
+        }
+      )
 
       expect(updatedItem.title).toBe("test2")
     })
@@ -451,12 +464,14 @@ describe("Cart Module Service", () => {
       const itemOne = items.find((i) => i.title === "test")
       const itemTwo = items.find((i) => i.title === "other-test")
 
-      const updatedItems = await service.updateLineItems(createdCart.id, [
+      const updatedItems = await service.updateLineItems([
         {
+          cart_id: createdCart.id,
           id: itemOne!.id,
           title: "changed-test",
         },
         {
+          cart_id: createdCart.id,
           id: itemTwo!.id,
           title: "changed-other-test",
         },
@@ -534,71 +549,6 @@ describe("Cart Module Service", () => {
       })
 
       expect(cart.items?.length).toBe(0)
-    })
-
-    it("should update multiples line items in cart succesfully", async () => {
-      const [createdCart] = await service.create([
-        {
-          currency_code: "eur",
-        },
-      ])
-
-      const items = await service.addLineItems(createdCart.id, [
-        {
-          quantity: 1,
-          unit_price: 100,
-          title: "test",
-        },
-        {
-          quantity: 2,
-          unit_price: 200,
-          title: "other-test",
-        },
-      ])
-
-      expect(items).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            title: "test",
-            quantity: 1,
-            unit_price: 100,
-          }),
-          expect.objectContaining({
-            title: "other-test",
-            quantity: 2,
-            unit_price: 200,
-          }),
-        ])
-      )
-
-      const itemOne = items.find((i) => i.title === "test")
-      const itemTwo = items.find((i) => i.title === "other-test")
-
-      const updatedItems = await service.updateLineItems(createdCart.id, [
-        {
-          id: itemOne!.id,
-          title: "changed-test",
-        },
-        {
-          id: itemTwo!.id,
-          title: "changed-other-test",
-        },
-      ])
-
-      expect(updatedItems).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            title: "changed-test",
-            quantity: 1,
-            unit_price: 100,
-          }),
-          expect.objectContaining({
-            title: "changed-other-test",
-            quantity: 2,
-            unit_price: 200,
-          }),
-        ])
-      )
     })
   })
 })
