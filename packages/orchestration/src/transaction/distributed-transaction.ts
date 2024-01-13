@@ -177,11 +177,11 @@ export class DistributedTransaction extends EventEmitter {
   }
 
   public hasTimeout(): boolean {
-    return !!this.getFlow().definition.timeout
+    return !!this.getFlow().options?.timeout
   }
 
   public getTimeoutInterval(): number | undefined {
-    return this.getFlow().definition.timeout
+    return this.getFlow().options?.timeout
   }
 
   public async saveCheckpoint(

@@ -139,5 +139,31 @@ describe("Workflow Orchestrator module", function () {
 
       expect(executionsList).toHaveLength(1)
     })
+
+    it("should revert the entire transaction when a step timeout expires", async () => {
+      const { transaction } = await workflowOrcModule.run(
+        "workflow_step_timeout",
+        {
+          input: {},
+          throwOnError: false,
+        }
+      )
+
+      expect(transaction.flow.state).toEqual("reverted")
+    })
+
+    it("should revert the entire transaction when the transaction timeout expires", async () => {
+      const { transaction } = await workflowOrcModule.run(
+        "workflow_transaction_timeout",
+        {
+          input: {},
+          throwOnError: false,
+        }
+      )
+
+      await new Promise((resolve) => setTimeout(resolve, 200))
+
+      expect(transaction.flow.state).toEqual("reverted")
+    })
   })
 })
