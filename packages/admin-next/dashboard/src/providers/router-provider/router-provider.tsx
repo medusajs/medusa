@@ -1,39 +1,35 @@
+import type { AdminProductsRes, AdminRegionsRes } from "@medusajs/medusa"
 import {
   Outlet,
   RouterProvider as Provider,
-  RouteObject,
   createBrowserRouter,
 } from "react-router-dom"
 
 import { ProtectedRoute } from "../../components/authentication/require-auth"
+import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout/main-layout"
 import { PublicLayout } from "../../components/layout/public-layout"
-
-import { AdminProductsRes, AdminRegionsRes } from "@medusajs/medusa"
-import routes from "medusa-admin:routes/pages"
-import settings from "medusa-admin:settings/pages"
-import { ErrorBoundary } from "../../components/error/error-boundary"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 
-const routeExtensions: RouteObject[] = routes.pages.map((ext) => {
-  return {
-    path: ext.path,
-    async lazy() {
-      const { default: Component } = await import(/* @vite-ignore */ ext.file)
-      return { Component }
-    },
-  }
-})
+// const routeExtensions: RouteObject[] = routes.pages.map((ext) => {
+//   return {
+//     path: ext.path,
+//     async lazy() {
+//       const { default: Component } = await import(/* @vite-ignore */ ext.file)
+//       return { Component }
+//     },
+//   }
+// })
 
-const settingsExtensions: RouteObject[] = settings.pages.map((ext) => {
-  return {
-    path: `/settings${ext.path}`,
-    async lazy() {
-      const { default: Component } = await import(/* @vite-ignore */ ext.file)
-      return { Component }
-    },
-  }
-})
+// const settingsExtensions: RouteObject[] = settings.pages.map((ext) => {
+//   return {
+//     path: `/settings${ext.path}`,
+//     async lazy() {
+//       const { default: Component } = await import(/* @vite-ignore */ ext.file)
+//       return { Component }
+//     },
+//   }
+// })
 
 const router = createBrowserRouter([
   {
@@ -415,6 +411,13 @@ const router = createBrowserRouter([
                     lazy: () =>
                       import("../../routes/sales-channels/sales-channel-edit"),
                   },
+                  {
+                    path: "add-products",
+                    lazy: () =>
+                      import(
+                        "../../routes/sales-channels/sales-channel-add-products"
+                      ),
+                  },
                 ],
               },
             ],
@@ -460,10 +463,10 @@ const router = createBrowserRouter([
               },
             ],
           },
-          ...settingsExtensions,
+          // ...settingsExtensions,
         ],
       },
-      ...routeExtensions,
+      // ...routeExtensions,
     ],
   },
   {

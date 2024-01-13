@@ -43,8 +43,6 @@
     "@medusajs/vite-plugin-extension": "workspace:^",
     "@types/react": "18.2.43",
     "@types/react-dom": "18.2.17",
-    "@typescript-eslint/eslint-plugin": "6.14.0",
-    "@typescript-eslint/parser": "6.14.0",
     "@vitejs/plugin-react": "4.2.1",
     "autoprefixer": "10.4.16",
     "postcss": "8.4.32",

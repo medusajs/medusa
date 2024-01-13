@@ -1,7 +1,6 @@
 import { Toaster } from "@medusajs/ui"
 import { MedusaProvider } from "medusa-react"
 
-import { AuthProvider } from "./providers/auth-provider"
 import { RouterProvider } from "./providers/router-provider"
 import { ThemeProvider } from "./providers/theme-provider"
 
@@ -16,10 +15,8 @@ function App() {
       }}
     >
       <ThemeProvider>
-        <AuthProvider>
-          <RouterProvider />
-          <Toaster />
-        </AuthProvider>
+        <RouterProvider />
+        <Toaster />
       </ThemeProvider>
     </MedusaProvider>
   )

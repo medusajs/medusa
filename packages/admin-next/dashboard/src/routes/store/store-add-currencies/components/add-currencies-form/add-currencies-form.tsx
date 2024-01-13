@@ -1,9 +1,11 @@
 import { Currency, type Store } from "@medusajs/medusa"
 import {
+  Badge,
   Button,
   Checkbox,
   FocusModal,
   Hint,
+  StatusBadge,
   Table,
   Tooltip,
   clx,
@@ -20,7 +22,9 @@ import { useAdminCurrencies, useAdminUpdateStore } from "medusa-react"
 import { FormEvent, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+import { OrderBy } from "../../../../../components/filtering/order-by"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
+import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 type AddCurrenciesFormProps = {
   store: Store
@@ -51,9 +55,11 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
+  const params = useQueryParams(["order"])
   const { currencies, count, isLoading, isError, error } = useAdminCurrencies({
     limit: PAGE_SIZE,
     offset: pageIndex * PAGE_SIZE,
+    ...params,
   })
 
   const preSelectedRows = store.currencies.map((c) => c.code)
@@ -156,6 +162,12 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
         </div>
       </FocusModal.Header>
       <FocusModal.Body className="flex flex-1 flex-col overflow-hidden">
+        <div className="px-6 py-4 flex items-center justify-between border-b">
+          <div></div>
+          <div className="flex items-center gap-x-2">
+            <OrderBy keys={["code"]} />
+          </div>
+        </div>
         <div
           className="flex-1 overflow-y-auto"
           ref={tableContainerRef}
@@ -166,7 +178,7 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
               className={clx(
                 "bg-ui-bg-base transition-fg sticky inset-x-0 top-0 z-10 border-t-0",
                 {
-                  "shadow-md": isScrolled,
+                  "shadow-elevation-card-hover": isScrolled,
                 }
               )}
             >
@@ -285,13 +297,27 @@ const useColumns = () => {
           return Component
         },
       }),
-      columnHelper.accessor("code", {
-        header: t("fields.code"),
-        cell: ({ getValue }) => getValue().toUpperCase(),
-      }),
       columnHelper.accessor("name", {
         header: t("fields.name"),
         cell: ({ getValue }) => getValue(),
+      }),
+      columnHelper.accessor("code", {
+        header: t("fields.code"),
+        cell: ({ getValue }) => (
+          <Badge size="small">{getValue().toUpperCase()}</Badge>
+        ),
+      }),
+      columnHelper.accessor("includes_tax", {
+        header: t("fields.taxInclusivePricing"),
+        cell: ({ getValue }) => {
+          const value = getValue()
+
+          return (
+            <StatusBadge color={value ? "green" : "red"}>
+              {value ? t("general.enabled") : t("general.disabled")}
+            </StatusBadge>
+          )
+        },
       }),
     ],
     [t]

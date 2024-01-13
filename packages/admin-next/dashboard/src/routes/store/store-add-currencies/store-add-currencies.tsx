@@ -1,7 +1,6 @@
 import { FocusModal } from "@medusajs/ui"
 import { useAdminStore } from "medusa-react"
 import { useEffect, useState } from "react"
-import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { AddCurrenciesForm } from "./components/add-currencies-form/add-currencies-form"
 
@@ -24,8 +23,6 @@ export const StoreAddCurrencies = () => {
 
     setOpen(open)
   }
-
-  const { t } = useTranslation()
 
   if (isError) {
     throw error

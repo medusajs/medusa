@@ -1,13 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Input, Text } from "@medusajs/ui"
+import { useAdminLogin } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import * as z from "zod"
 
 import { Form } from "../../components/common/form"
-import { useAuth } from "../../providers/auth-provider"
+import { isAxiosError } from "../../lib/is-axios-error"
 
-const schema = z.object({
+const LoginSchema = z.object({
   email: z.string().email(),
   password: z.string(),
 })
@@ -15,38 +16,50 @@ const schema = z.object({
 export const Login = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const { login } = useAuth()
 
   const from = location.state?.from?.pathname || "/"
 
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   })
 
+  const { mutateAsync } = useAdminLogin({
+    retry: false,
+  })
+
   const onSubmit = form.handleSubmit(async ({ email, password }) => {
-    await login(email, password)
-      .then(() => {
-        navigate(from)
-      })
-      .catch((e) => {
-        switch (e?.response?.status) {
-          case 401:
-            form.setError("password", {
-              type: "manual",
-              message: "Invalid email or password",
-            })
-            break
-          default:
-            form.setError("password", {
-              type: "manual",
-              message: "Something went wrong",
-            })
-        }
-      })
+    await mutateAsync(
+      {
+        email,
+        password,
+      },
+      {
+        onSuccess: () => {
+          navigate(from)
+        },
+        onError: (e) => {
+          if (isAxiosError(e)) {
+            if (e.response?.status === 401) {
+              form.setError("password", {
+                type: "manual",
+                message: "Invalid email or password",
+              })
+
+              return
+            }
+          }
+
+          form.setError("password", {
+            type: "manual",
+            message: "Something went wrong",
+          })
+        },
+      }
+    )
   })
 
   return (

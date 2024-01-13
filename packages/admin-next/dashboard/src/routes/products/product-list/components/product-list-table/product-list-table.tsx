@@ -27,9 +27,9 @@ import { useLoaderData, useNavigate } from "react-router-dom"
 import {
   ProductAvailabilityCell,
   ProductCollectionCell,
-  ProductInventoryCell,
   ProductStatusCell,
   ProductTitleCell,
+  ProductVariantCell,
 } from "../../../../../components/common/product-table-cells"
 
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
@@ -259,7 +259,7 @@ const useColumns = () => {
         cell: (cell) => {
           const variants = cell.getValue()
 
-          return <ProductInventoryCell variants={variants} />
+          return <ProductVariantCell variants={variants} />
         },
       }),
       columnHelper.accessor("status", {

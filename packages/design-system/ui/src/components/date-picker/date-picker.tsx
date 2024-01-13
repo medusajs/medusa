@@ -19,7 +19,7 @@ const displayVariants = cva({
   base: clx(
     "text-ui-fg-base bg-ui-bg-field transition-fg shadow-buttons-neutral flex w-full items-center gap-x-2 rounded-md outline-none",
     "hover:bg-ui-bg-field-hover",
-    "focus:shadow-borders-interactive-with-active data-[state=open]:shadow-borders-interactive-with-active",
+    "focus-visible:shadow-borders-interactive-with-active data-[state=open]:shadow-borders-interactive-with-active",
     "disabled:bg-ui-bg-disabled disabled:text-ui-fg-disabled disabled:shadow-buttons-neutral",
     "aria-[invalid=true]:!shadow-borders-error"
   ),
@@ -221,7 +221,7 @@ const PresetContainer = <TPreset extends Preset, TValue>({
               className={clx(
                 "txt-compact-small-plus w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md p-2 text-left",
                 "text-ui-fg-subtle hover:bg-ui-bg-base-hover outline-none transition-all",
-                "focus:bg-ui-bg-base-hover",
+                "focus-visible:bg-ui-bg-base-hover",
                 {
                   "!bg-ui-bg-base-pressed": matchesCurrent(preset),
                 }

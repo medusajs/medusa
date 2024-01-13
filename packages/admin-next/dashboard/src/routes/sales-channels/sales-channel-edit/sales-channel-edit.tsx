@@ -1,34 +1,19 @@
 import { Drawer, Heading } from "@medusajs/ui"
 import { useAdminSalesChannel } from "medusa-react"
-import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 
+import { useRouteModalState } from "../../../hooks/use-route-modal-state"
 import { EditSalesChannelForm } from "./components/edit-sales-channel-form"
 
 export const SalesChannelEdit = () => {
-  const [open, setOpen] = useState(false)
   const { id } = useParams()
-  const navigate = useNavigate()
-
+  const { t } = useTranslation()
+  const [open, onOpenChange, subscribe] = useRouteModalState()
   const { sales_channel, isLoading, isError, error } = useAdminSalesChannel(id!)
 
-  const { t } = useTranslation()
-
-  useEffect(() => {
-    setOpen(true)
-  }, [])
-
-  const onOpenChange = (open: boolean) => {
-    if (!open) {
-      setTimeout(() => {
-        navigate("..", {
-          replace: true,
-        })
-      }, 200)
-    }
-
-    setOpen(open)
+  const onSuccess = () => {
+    onOpenChange(false, true)
   }
 
   if (isError) {
@@ -46,7 +31,8 @@ export const SalesChannelEdit = () => {
         {!isLoading && sales_channel && (
           <EditSalesChannelForm
             salesChannel={sales_channel}
-            onSuccess={() => onOpenChange(false)}
+            subscribe={subscribe}
+            onSuccess={onSuccess}
           />
         )}
       </Drawer.Content>

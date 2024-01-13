@@ -1,15 +1,16 @@
-import { useForm } from "react-hook-form"
-import * as zod from "zod"
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SalesChannel } from "@medusajs/medusa"
 import { Button, Drawer, Input, Switch, Textarea } from "@medusajs/ui"
 import { useAdminUpdateSalesChannel } from "medusa-react"
+import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+import * as zod from "zod"
+
 import { Form } from "../../../../../components/common/form"
 
 type EditSalesChannelFormProps = {
   salesChannel: SalesChannel
+  subscribe: (state: boolean) => void
   onSuccess: () => void
 }
 
@@ -21,6 +22,7 @@ const EditSalesChannelSchema = zod.object({
 
 export const EditSalesChannelForm = ({
   salesChannel,
+  subscribe,
   onSuccess,
 }: EditSalesChannelFormProps) => {
   const form = useForm<zod.infer<typeof EditSalesChannelSchema>>({
@@ -31,6 +33,11 @@ export const EditSalesChannelForm = ({
     },
     resolver: zodResolver(EditSalesChannelSchema),
   })
+
+  const {
+    formState: { isDirty },
+  } = form
+  subscribe(isDirty)
 
   const { t } = useTranslation()
 
@@ -53,8 +60,11 @@ export const EditSalesChannelForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit}>
-        <Drawer.Body className="flex flex-col gap-y-8">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col overflow-hidden flex-1"
+      >
+        <Drawer.Body className="flex flex-col gap-y-8 overflow-y-auto flex-1 max-w-full">
           <Form.Field
             control={form.control}
             name="name"
@@ -101,7 +111,7 @@ export const EditSalesChannelForm = ({
                       />
                     </Form.Control>
                   </div>
-                  <Form.Hint>{t("salesChannels.isEnabledHint")}</Form.Hint>
+                  <Form.Hint>{t("salesChannels.enabledHint")}</Form.Hint>
                   <Form.ErrorMessage />
                 </Form.Item>
               )

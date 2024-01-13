@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { useNavigate } from "react-router-dom"
 import { Form } from "../../../components/common/form"
 import { useRouteModalState } from "../../../hooks/use-route-modal-state"
 
@@ -21,6 +22,7 @@ const CreateRegionFormSchema = zod.object({
 
 export const RegionCreate = () => {
   const [open, onOpenChange] = useRouteModalState()
+  const navigate = useNavigate()
 
   const { t } = useTranslation()
 
@@ -52,8 +54,8 @@ export const RegionCreate = () => {
         includes_tax: values.includes_tax,
       },
       {
-        onSuccess: () => {
-          onOpenChange(false)
+        onSuccess: ({ region }) => {
+          navigate(`../${region.id}`)
         },
       }
     )
@@ -77,117 +79,116 @@ export const RegionCreate = () => {
               </div>
             </FocusModal.Header>
             <FocusModal.Body className="flex flex-col items-center pt-[72px]">
-              <div className="w-full max-w-[720px]">
+              <div className="w-full max-w-[720px] flex flex-col gap-y-10">
                 <Heading></Heading>
-                <div>
-                  <div className="flex flex-col gap-y-10">
-                    <div className="flex flex-col gap-y-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <Form.Field
-                          control={form.control}
-                          name="name"
-                          render={({ field }) => {
-                            return (
-                              <Form.Item>
-                                <Form.Label>{t("fields.name")}</Form.Label>
-                                <Form.Control>
-                                  <Input size="small" {...field} />
-                                </Form.Control>
-                                <Form.ErrorMessage />
-                              </Form.Item>
-                            )
-                          }}
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <Form.Field
-                          control={form.control}
-                          name="tax_rate"
-                          render={({ field }) => {
-                            return (
-                              <Form.Item>
-                                <Form.Label>{t("fields.taxRate")}</Form.Label>
-                                <Form.Control>
-                                  <Input
-                                    type="number"
-                                    size="small"
-                                    {...field}
-                                  />
-                                </Form.Control>
-                                <Form.ErrorMessage />
-                              </Form.Item>
-                            )
-                          }}
-                        />
-                        <Form.Field
-                          control={form.control}
-                          name="tax_code"
-                          render={({ field }) => {
-                            return (
-                              <Form.Item>
-                                <Form.Label optional>
-                                  {t("fields.taxCode")}
-                                </Form.Label>
-                                <Form.Control>
-                                  <Input
-                                    type="number"
-                                    size="small"
-                                    {...field}
-                                  />
-                                </Form.Control>
-                                <Form.ErrorMessage />
-                              </Form.Item>
-                            )
-                          }}
-                        />
-                      </div>
-                    </div>
+                <div className="flex flex-col gap-y-4">
+                  <div className="grid grid-cols-2 gap-4">
                     <Form.Field
                       control={form.control}
-                      name="includes_tax"
-                      render={({ field: { value, onChange, ...field } }) => {
+                      name="name"
+                      render={({ field }) => {
                         return (
                           <Form.Item>
-                            <div>
-                              <div className="flex items-start justify-between">
-                                <Form.Label>
-                                  {t("fields.taxInclusivePricing")}
-                                </Form.Label>
-                                <Form.Control>
-                                  <Switch
-                                    {...field}
-                                    checked={value}
-                                    onCheckedChange={onChange}
-                                  />
-                                </Form.Control>
-                              </div>
-                              <Form.Hint>
-                                {t("regions.taxInclusiveHint")}
-                              </Form.Hint>
-                              <Form.ErrorMessage />
-                            </div>
+                            <Form.Label>{t("fields.name")}</Form.Label>
+                            <Form.Control>
+                              <Input size="small" {...field} />
+                            </Form.Control>
+                            <Form.ErrorMessage />
                           </Form.Item>
                         )
                       }}
                     />
-                    <div className="flex flex-col gap-y-4">
-                      <div>
-                        <Text size="small" leading="compact" weight="plus">
-                          {t("fields.providers")}
-                        </Text>
-                        <Text size="small" className="text-ui-fg-subtle">
-                          {t("regions.providersHint")}
-                        </Text>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4"></div>
-                    </div>
-                    <div className="flex flex-col gap-y-4">
-                      <div>
-                        <Text size="small" leading="compact" weight="plus">
-                          {t("fields.metadata")}
-                        </Text>
-                      </div>
-                    </div>
+                    <Form.Field
+                      control={form.control}
+                      name="currency_code"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label>{t("fields.currency")}</Form.Label>
+                            <Form.Control></Form.Control>
+                            <Form.ErrorMessage />
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <Form.Field
+                      control={form.control}
+                      name="tax_rate"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label>{t("fields.taxRate")}</Form.Label>
+                            <Form.Control>
+                              <Input type="number" size="small" {...field} />
+                            </Form.Control>
+                            <Form.ErrorMessage />
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                    <Form.Field
+                      control={form.control}
+                      name="tax_code"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label optional>
+                              {t("fields.taxCode")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Input type="number" size="small" {...field} />
+                            </Form.Control>
+                            <Form.ErrorMessage />
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                  </div>
+                </div>
+                <Form.Field
+                  control={form.control}
+                  name="includes_tax"
+                  render={({ field: { value, onChange, ...field } }) => {
+                    return (
+                      <Form.Item>
+                        <div>
+                          <div className="flex items-start justify-between">
+                            <Form.Label>
+                              {t("fields.taxInclusivePricing")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Switch
+                                {...field}
+                                checked={value}
+                                onCheckedChange={onChange}
+                              />
+                            </Form.Control>
+                          </div>
+                          <Form.Hint>{t("regions.taxInclusiveHint")}</Form.Hint>
+                          <Form.ErrorMessage />
+                        </div>
+                      </Form.Item>
+                    )
+                  }}
+                />
+                <div className="flex flex-col gap-y-4">
+                  <div>
+                    <Text size="small" leading="compact" weight="plus">
+                      {t("fields.providers")}
+                    </Text>
+                    <Text size="small" className="text-ui-fg-subtle">
+                      {t("regions.providersHint")}
+                    </Text>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4"></div>
+                </div>
+                <div className="flex flex-col gap-y-4">
+                  <div>
+                    <Text size="small" leading="compact" weight="plus">
+                      {t("fields.metadata")}
+                    </Text>
                   </div>
                 </div>
               </div>

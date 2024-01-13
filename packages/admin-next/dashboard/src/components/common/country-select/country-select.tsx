@@ -1,6 +1,6 @@
 import { forwardRef } from "react"
 
-import { ChevronUpDown } from "@medusajs/icons"
+import { TrianglesMini } from "@medusajs/icons"
 import { clx } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { countries } from "../../../lib/countries"
@@ -13,7 +13,7 @@ export const CountrySelect = forwardRef<
 
   return (
     <div className="relative">
-      <ChevronUpDown
+      <TrianglesMini
         className={clx(
           "absolute right-2 top-1/2 -translate-y-1/2 text-ui-fg-muted transition-fg pointer-events-none",
           {
@@ -24,7 +24,7 @@ export const CountrySelect = forwardRef<
       <select
         disabled={disabled}
         className={clx(
-          "appearance-none bg-ui-bg-field shadow-buttons-neutral transition-fg flex w-full select-none items-center justify-between rounded-md outline-none h-8 px-2 py-[5px] txt-compact-small",
+          "appearance-none bg-ui-bg-field shadow-buttons-neutral transition-fg flex w-full select-none items-center justify-between rounded-md outline-none px-2 py-1 txt-compact-small",
           "placeholder:text-ui-fg-muted text-ui-fg-base",
           "hover:bg-ui-bg-field-hover",
           "focus:shadow-borders-interactive-with-active data-[state=open]:!shadow-borders-interactive-with-active",

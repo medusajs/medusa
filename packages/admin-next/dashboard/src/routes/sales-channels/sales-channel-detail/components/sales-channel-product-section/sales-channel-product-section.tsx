@@ -6,11 +6,9 @@ import {
   CommandBar,
   Container,
   DropdownMenu,
-  FocusModal,
   Heading,
   IconButton,
   Table,
-  Tooltip,
   clx,
   usePrompt,
 } from "@medusajs/ui"
@@ -24,34 +22,35 @@ import {
 } from "@tanstack/react-table"
 import {
   adminProductKeys,
-  useAdminAddProductsToSalesChannel,
   useAdminDeleteProductsFromSalesChannel,
   useAdminProducts,
 } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
-import * as zod from "zod"
 
-import { DebouncedSearch } from "../../../../../components/common/debounced-search"
 import {
-  ProductAvailabilityCell,
-  ProductCollectionCell,
-  ProductInventoryCell,
   ProductStatusCell,
   ProductTitleCell,
+  ProductVariantCell,
 } from "../../../../../components/common/product-table-cells"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 
+import { FilterGroup } from "../../../../../components/filtering/filter-group"
+import { OrderBy } from "../../../../../components/filtering/order-by"
+import { Query } from "../../../../../components/filtering/query"
+import { useQueryParams } from "../../../../../hooks/use-query-params"
 import { queryClient } from "../../../../../lib/medusa"
 
 const PAGE_SIZE = 10
 
-type Props = {
+type SalesChannelProductSection = {
   salesChannel: SalesChannel
 }
 
-export const SalesChannelProductSection = ({ salesChannel }: Props) => {
+export const SalesChannelProductSection = ({
+  salesChannel,
+}: SalesChannelProductSection) => {
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: PAGE_SIZE,
@@ -67,13 +66,13 @@ export const SalesChannelProductSection = ({ salesChannel }: Props) => {
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
-  const [query, setQuery] = useState("")
+  const params = useQueryParams(["q", "order"])
   const { products, count, isLoading, isError, error } = useAdminProducts(
     {
       sales_channel_id: [salesChannel.id],
       limit: PAGE_SIZE,
       offset: pageIndex * PAGE_SIZE,
-      q: query,
+      ...params,
     },
     {
       keepPreviousData: true,
@@ -139,17 +138,29 @@ export const SalesChannelProductSection = ({ salesChannel }: Props) => {
   }
 
   return (
-    <Container className="p-0">
+    <Container className="p-0 divide-y">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.domain")}</Heading>
+        <Link to={`/settings/sales-channels/${salesChannel.id}/add-products`}>
+          <Button size="small" variant="secondary">
+            {t("general.add")}
+          </Button>
+        </Link>
+      </div>
+      <div className="flex items-center justify-between px-6 py-4">
+        <FilterGroup
+          filters={{
+            collection: "Collection",
+          }}
+        />
         <div className="flex items-center gap-x-2">
-          <DebouncedSearch size="small" value={query} onChange={setQuery} />
-          <AddProductsModal salesChannelId={salesChannel.id} />
+          <Query />
+          <OrderBy keys={["title", "status", "created_at", "updated_at"]} />
         </div>
       </div>
       <div>
         <Table>
-          <Table.Header>
+          <Table.Header className="border-t-0">
             {table.getHeaderGroups().map((headerGroup) => {
               return (
                 <Table.Row
@@ -269,7 +280,7 @@ const useListColumns = (id: string) => {
         cell: (cell) => {
           const variants = cell.getValue()
 
-          return <ProductInventoryCell variants={variants} />
+          return <ProductVariantCell variants={variants} />
         },
       }),
       listColumnHelper.accessor("status", {
@@ -333,301 +344,5 @@ const ProductListCellActions = ({
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu>
-  )
-}
-
-const AddProductsToSalesChannelSchema = zod.object({
-  product_ids: zod.array(zod.string()).min(1),
-})
-
-const PRODUCT_PAGE_SIZE = 50
-
-type AddProductsModalProps = {
-  salesChannelId: string
-}
-
-const AddProductsModal = ({ salesChannelId }: AddProductsModalProps) => {
-  const [open, setOpen] = useState(false)
-  const [query, setQuery] = useState("")
-
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: PRODUCT_PAGE_SIZE,
-  })
-
-  const pagination = useMemo(
-    () => ({
-      pageIndex,
-      pageSize,
-    }),
-    [pageIndex, pageSize]
-  )
-
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
-
-  const { products, count, isLoading } = useAdminProducts({
-    expand: "variants,sales_channels",
-    q: query,
-  })
-
-  const columns = useAddProductsColumns(salesChannelId)
-
-  const table = useReactTable({
-    data: (products ?? []) as Product[],
-    columns,
-    pageCount: Math.ceil((count ?? 0) / PRODUCT_PAGE_SIZE),
-    state: {
-      pagination,
-      rowSelection,
-    },
-    onPaginationChange: setPagination,
-    onRowSelectionChange: setRowSelection,
-    getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
-    getRowId: (row) => row.id,
-    enableRowSelection(row) {
-      return !row.original.sales_channels
-        ?.map((sc) => sc.id)
-        .includes(salesChannelId)
-    },
-    meta: {
-      salesChannelId,
-    },
-  })
-
-  const { t } = useTranslation()
-
-  const { mutateAsync } = useAdminAddProductsToSalesChannel(salesChannelId)
-
-  const onOpenChange = (value: boolean) => {
-    if (!value) {
-      setRowSelection({})
-      setPagination({
-        pageIndex: 0,
-        pageSize: PRODUCT_PAGE_SIZE,
-      })
-    }
-
-    setOpen(value)
-  }
-
-  const onSubmit = async () => {
-    const ids = Object.keys(rowSelection)
-
-    try {
-      AddProductsToSalesChannelSchema.parse({ product_ids: ids })
-    } catch (error) {
-      // TODO: Ask Ludvig where we should display errors in FocusModal forms
-      console.error(error)
-      return
-    }
-
-    await mutateAsync(
-      {
-        product_ids: ids.map((id) => ({ id })),
-      },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries(adminProductKeys.lists())
-          onOpenChange(false)
-        },
-      }
-    )
-  }
-
-  return (
-    <FocusModal open={open} onOpenChange={onOpenChange}>
-      <FocusModal.Trigger asChild>
-        <Button variant="secondary">{t("salesChannels.addProducts")}</Button>
-      </FocusModal.Trigger>
-      <FocusModal.Content>
-        <FocusModal.Header>
-          <div className="flex items-center justify-end gap-x-2">
-            <FocusModal.Close asChild>
-              <Button size="small" variant="secondary">
-                {t("general.cancel")}
-              </Button>
-            </FocusModal.Close>
-            <Button size="small" onClick={onSubmit}>
-              {t("general.save")}
-            </Button>
-          </div>
-        </FocusModal.Header>
-        <FocusModal.Body className="flex h-full w-full flex-col items-center overflow-y-auto">
-          <div className="flex w-full items-center justify-between px-8 pb-4 pt-6">
-            <Heading>{t("salesChannels.addProducts")}</Heading>
-            <div>
-              <DebouncedSearch size="small" value={query} onChange={setQuery} />
-            </div>
-          </div>
-          <div className="w-full flex-1 overflow-y-auto">
-            <Table>
-              <Table.Header>
-                {table.getHeaderGroups().map((headerGroup) => {
-                  return (
-                    <Table.Row
-                      key={headerGroup.id}
-                      className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap"
-                    >
-                      {headerGroup.headers.map((header) => {
-                        return (
-                          <Table.HeaderCell key={header.id}>
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                          </Table.HeaderCell>
-                        )
-                      })}
-                    </Table.Row>
-                  )
-                })}
-              </Table.Header>
-              <Table.Body className="border-b-0">
-                {table.getRowModel().rows.map((row) => (
-                  <Table.Row
-                    key={row.id}
-                    className={clx(
-                      "transition-fg",
-                      {
-                        "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                          row.getIsSelected(),
-                      },
-                      {
-                        "bg-ui-bg-disabled hover:bg-ui-bg-disabled":
-                          row.original.sales_channels
-                            ?.map((sc) => sc.id)
-                            .includes(salesChannelId),
-                      }
-                    )}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <Table.Cell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </Table.Cell>
-                    ))}
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
-          </div>
-          <div className="w-full border-t">
-            <LocalizedTablePagination
-              canNextPage={table.getCanNextPage()}
-              canPreviousPage={table.getCanPreviousPage()}
-              nextPage={table.nextPage}
-              previousPage={table.previousPage}
-              count={count ?? 0}
-              pageIndex={pageIndex}
-              pageCount={table.getPageCount()}
-              pageSize={PRODUCT_PAGE_SIZE}
-            />
-          </div>
-        </FocusModal.Body>
-      </FocusModal.Content>
-    </FocusModal>
-  )
-}
-
-const addProductsColumnHelper = createColumnHelper<Product>()
-
-const useAddProductsColumns = (salesChannelId: string) => {
-  const { t } = useTranslation()
-
-  return useMemo(
-    () => [
-      addProductsColumnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          const isAdded = row.original.sales_channels
-            ?.map((sc) => sc.id)
-            .includes(salesChannelId)
-
-          const isSelected = row.getIsSelected() || isAdded
-
-          const Component = (
-            <Checkbox
-              checked={isSelected}
-              disabled={isAdded}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-
-          if (isAdded) {
-            return (
-              <Tooltip
-                content={t("salesChannels.productAlreadyAdded")}
-                side="right"
-              >
-                {Component}
-              </Tooltip>
-            )
-          }
-
-          return Component
-        },
-      }),
-      addProductsColumnHelper.accessor("title", {
-        header: t("fields.title"),
-        cell: ({ row }) => {
-          const product = row.original
-
-          return <ProductTitleCell product={product} />
-        },
-      }),
-      addProductsColumnHelper.accessor("collection", {
-        header: t("fields.collection"),
-        cell: ({ getValue }) => {
-          const collection = getValue()
-
-          return <ProductCollectionCell collection={collection} />
-        },
-      }),
-      addProductsColumnHelper.accessor("sales_channels", {
-        header: t("fields.availability"),
-        cell: ({ getValue }) => {
-          const salesChannels = getValue()
-
-          return <ProductAvailabilityCell salesChannels={salesChannels} />
-        },
-      }),
-      addProductsColumnHelper.accessor("variants", {
-        header: t("fields.inventory"),
-        cell: (cell) => {
-          const variants = cell.getValue()
-
-          return <ProductInventoryCell variants={variants} />
-        },
-      }),
-      addProductsColumnHelper.accessor("status", {
-        header: t("fields.status"),
-        cell: ({ getValue }) => {
-          const status = getValue()
-
-          return <ProductStatusCell status={status} />
-        },
-      }),
-    ],
-    [t]
   )
 }

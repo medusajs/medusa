@@ -22,7 +22,10 @@ import { useAdminDeleteSalesChannel, useAdminSalesChannels } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
+import { OrderBy } from "../../../../../components/filtering/order-by"
+import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
+import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 const PAGE_SIZE = 50
 
@@ -45,11 +48,20 @@ export const SalesChannelListTable = () => {
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
+  const { q, order } = useQueryParams(["q", "order"])
+
   const { sales_channels, count, isLoading, isError, error } =
-    useAdminSalesChannels({
-      limit: PAGE_SIZE,
-      offset: pageIndex * PAGE_SIZE,
-    })
+    useAdminSalesChannels(
+      {
+        limit: PAGE_SIZE,
+        offset: pageIndex * PAGE_SIZE,
+        q,
+        order,
+      },
+      {
+        keepPreviousData: true,
+      }
+    )
 
   const columns = useColumns()
 
@@ -83,7 +95,10 @@ export const SalesChannelListTable = () => {
       </div>
       <div className="px-6 py-4 flex items-center justify-between">
         <div></div>
-        <div></div>
+        <div className="flex items-center gap-x-2">
+          <Query />
+          <OrderBy keys={["name", "created_at", "updated_at"]} />
+        </div>
       </div>
       <div>
         <Table>
@@ -186,7 +201,11 @@ const useColumns = () => {
       }),
       columnHelper.accessor("description", {
         header: t("fields.description"),
-        cell: ({ getValue }) => getValue(),
+        cell: ({ getValue }) => (
+          <div className="w-[200px] truncate">
+            <span>{getValue()}</span>
+          </div>
+        ),
       }),
       columnHelper.accessor("is_disabled", {
         header: t("fields.status"),

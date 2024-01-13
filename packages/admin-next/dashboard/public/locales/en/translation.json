@@ -7,6 +7,7 @@
     "delete": "Delete",
     "edit": "Edit",
     "add": "Add",
+    "continue": "Continue",
     "start": "Start",
     "end": "End",
     "apply": "Apply",
@@ -33,14 +34,16 @@
     "typeToConfirm": "Please type {val} to confirm:",
     "noResultsMessage": "Try changing the filters or search query",
     "noRecordsTitle": "No records",
-    "noRecordsMessage": "There are no records to show"
+    "noRecordsMessage": "There are no records to show",
+    "unsavedChangesTitle": "Are you sure you want to leave this page?",
+    "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page."
   },
   "products": {
     "domain": "Products",
     "variants": "Variants",
     "availableInSalesChannels": "Available in <0>{{x}}</0> of <1>{{y}}</1> sales channels",
-    "inStockVariants_one": "{{inventory}} in stock for {{count}} variant",
-    "inStockVariants_other": "{{inventory}} in stock for {{count}} variants",
+    "variantCount_one": "{{count}} variant",
+    "variantCount_other": "{{count}} variants",
     "productStatus": {
       "draft": "Draft",
       "published": "Published",
@@ -129,12 +132,13 @@
   },
   "salesChannels": {
     "domain": "Sales Channels",
-    "createSalesChannel": "Create sales channel",
+    "createSalesChannel": "Create Sales Channel",
+    "createSalesChannelHint": "Create a new sales channel to sell your products on.",
+    "enabledHint": "Specify if the sales channel is enabled or disabled.",
     "removeProductsWarning_one": "You are about to remove {{count}} product from {{sales_channel}}.",
     "removeProductsWarning_other": "You are about to remove {{count}} products from {{sales_channel}}.",
     "addProducts": "Add Products",
     "editSalesChannel": "Edit sales channel",
-    "isEnabledHint": "Specify if the sales channel is enabled or disabled.",
     "productAlreadyAdded": "The product has already been added to the sales channel.",
     "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone."
   },

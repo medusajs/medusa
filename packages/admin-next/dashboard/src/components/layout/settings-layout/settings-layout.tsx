@@ -74,8 +74,8 @@ const SettingsSidebar = () => {
     <aside className="flex flex-1 flex-col justify-between overflow-y-auto">
       <div className="px-3 py-2">
         <div className="flex items-center gap-x-3 p-1">
-          <Link to={from} replace>
-            <IconButton variant="transparent">
+          <Link to={from} replace className="flex items-center justify-center">
+            <IconButton size="small" variant="transparent">
               <ArrowUturnLeft />
             </IconButton>
           </Link>

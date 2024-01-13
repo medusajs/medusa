@@ -1,5 +1,5 @@
 import { useAdminRegion } from "medusa-react"
-import { Outlet, useParams } from "react-router-dom"
+import { Outlet, useNavigate, useParams } from "react-router-dom"
 
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { RegionGeneralSection } from "./components/region-general-section"
@@ -8,6 +8,7 @@ import { RegionShippingOptionSection } from "./components/region-shipping-option
 export const RegionDetail = () => {
   const { id } = useParams()
   const { region, isLoading, isError, error } = useAdminRegion(id!)
+  const navigate = useNavigate()
 
   // TODO: Move to loading.tsx and set as Suspense fallback for the route
   if (isLoading) {
@@ -27,6 +28,8 @@ export const RegionDetail = () => {
       </div>
     )
   }
+
+  console.log("RegionDetail")
 
   return (
     <div className="flex flex-col gap-y-2">

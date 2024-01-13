@@ -1,5 +1,6 @@
 import {
   ArrowRightOnRectangle,
+  BellAlert,
   BookOpen,
   Calendar,
   CircleHalfSolid,
@@ -267,6 +268,18 @@ const SettingsLink = () => {
   )
 }
 
+const ToggleNotifications = () => {
+  return (
+    <IconButton
+      size="small"
+      variant="transparent"
+      className="text-ui-fg-muted transition-fg hover:text-ui-fg-subtle"
+    >
+      <BellAlert />
+    </IconButton>
+  )
+}
+
 const Searchbar = () => {
   const { toggleSearch } = useSearch()
 
@@ -321,6 +334,7 @@ const Topbar = () => {
       </div>
       <div className="flex items-center justify-end gap-x-3">
         <div className="text-ui-fg-muted flex items-center gap-x-1">
+          <ToggleNotifications />
           <SettingsLink />
         </div>
         <LoggedInUser />
