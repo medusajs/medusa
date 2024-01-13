@@ -1,4 +1,4 @@
-import { PromotionRuleOperatorValues } from "@medusajs/types"
+import { DAL, PromotionRuleOperatorValues } from "@medusajs/types"
 import { PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -18,7 +18,7 @@ import ApplicationMethod from "./application-method"
 import Promotion from "./promotion"
 import PromotionRuleValue from "./promotion-rule-value"
 
-type OptionalFields = "description" | "created_at" | "updated_at" | "deleted_at"
+type OptionalFields = "description" | "deleted_at" | DAL.EntityDateColumns
 type OptionalRelations = "values" | "promotions"
 
 @Entity()
