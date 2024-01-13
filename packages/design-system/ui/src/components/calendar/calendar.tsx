@@ -1,7 +1,6 @@
 "use client"
 
 import { TriangleLeftMini, TriangleRightMini } from "@medusajs/icons"
-import {} from "date-fns/locale"
 import * as React from "react"
 import {
   DayPicker,

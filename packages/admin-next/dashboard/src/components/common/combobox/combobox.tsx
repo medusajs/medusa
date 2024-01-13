@@ -1,8 +1,15 @@
 import { clx } from "@medusajs/ui"
 import * as Popover from "@radix-ui/react-popover"
 
+type ComboboxOption = {
+  value: string
+  label: string
+}
+
 type ComboboxProps = {
   size?: "base" | "small"
+  options: ComboboxOption[]
+  value: string
 }
 
 export const Combobox = ({ size = "base" }: ComboboxProps) => {
