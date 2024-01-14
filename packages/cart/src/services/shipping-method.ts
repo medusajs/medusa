@@ -11,8 +11,7 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  isString,
-  retrieveEntity,
+  retrieveEntity
 } from "@medusajs/utils"
 import { Cart, ShippingMethod } from "@models"
 import { ShippingMethodRepository } from "@repositories"
@@ -87,23 +86,9 @@ export default class ShippingMethodService<
 
   @InjectTransactionManager("shippingMethodRepository_")
   async create(
-    cartOrId: Cart | string,
     data: CreateShippingMethodDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    let cart = cartOrId as unknown as Cart
-
-    if (isString(cart)) {
-      cart = await this.cartService_.retrieve(cart, {}, sharedContext)
-    }
-
-    const data_ = [...data]
-    data_.forEach((lineItem) => {
-      Object.assign(lineItem, {
-        cart_id: cart.id,
-      })
-    })
-
     return (await (
       this.shippingMethodRepository_ as ShippingMethodRepository
     ).create(data, sharedContext)) as TEntity[]
@@ -111,22 +96,19 @@ export default class ShippingMethodService<
 
   @InjectTransactionManager("shippingMethodRepository_")
   async update(
-    cartOrId: Cart | string,
     data: UpdateShippingMethodDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    let cart = cartOrId as unknown as Cart
-
-    if (isString(cart)) {
-      cart = await this.cartService_.retrieve(
-        cart,
-        { relations: ["shipping_methods"] },
-        sharedContext
-      )
-    }
+    const existingMethods = await this.list(
+      {
+        id: data.map((d) => d.id),
+      },
+      {},
+      sharedContext
+    )
 
     const existingMethodsMap = new Map(
-      cart.shipping_methods.map<[string, ShippingMethod]>((sm) => [sm.id, sm])
+      existingMethods.map<[string, ShippingMethod]>((sm) => [sm.id, sm])
     )
 
     const updates: {

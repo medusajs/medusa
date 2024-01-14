@@ -11,7 +11,6 @@ import {
 } from "./common"
 import {
   AddLineItemsDTO,
-  AddShippingMethodsDTO,
   CreateAddressDTO,
   CreateCartDTO,
   CreateLineItemDTO,
@@ -109,16 +108,16 @@ export interface ICartModuleService extends IModuleService {
   removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
 
   addShippingMethods(
-    data: AddShippingMethodsDTO,
+    data: CreateShippingMethodDTO,
     sharedContext?: Context
-  ): Promise<CartShippingMethodDTO[]>
+  ): Promise<CartShippingMethodDTO>
   addShippingMethods(
-    data: AddShippingMethodsDTO[],
+    data: CreateShippingMethodDTO[],
     sharedContext?: Context
   ): Promise<CartShippingMethodDTO[]>
   addShippingMethods(
     cartId: string,
-    items: CreateShippingMethodDTO[],
+    methods: CreateShippingMethodDTO[],
     sharedContext?: Context
   ): Promise<CartShippingMethodDTO[]>
 
@@ -128,6 +127,10 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<void>
   removeShippingMethods(
     methodIds: string,
+    sharedContext?: Context
+  ): Promise<void>
+  removeShippingMethods(
+    selector: Partial<CartShippingMethodDTO>,
     sharedContext?: Context
   ): Promise<void>
 }

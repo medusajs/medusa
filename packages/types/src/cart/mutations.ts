@@ -169,13 +169,3 @@ export interface UpdateShippingMethodDTO {
   tax_lines?: UpdateTaxLineDTO[] | CreateTaxLineDTO[]
   adjustments?: UpdateAdjustmentDTO[] | CreateAdjustmentDTO[]
 }
-
-export interface AddShippingMethodsDTO {
-  cart_id: string
-  shipping_methods: CreateShippingMethodDTO[]
-}
-
-export interface UpdateShippingMethodsDTO {
-  cart_id: string
-  shipping_methods: UpdateShippingMethodDTO[]
-}

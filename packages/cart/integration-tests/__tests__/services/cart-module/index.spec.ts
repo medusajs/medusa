@@ -1,4 +1,5 @@
 import { ICartModuleService } from "@medusajs/types"
+import { CheckConstraintViolationException } from "@mikro-orm/core"
 import { initialize } from "../../../../src/initialize"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
@@ -624,6 +625,23 @@ describe("Cart Module Service", () => {
       expect(method.id).toBe(cart.shipping_methods![0].id)
     })
 
+    it("should throw when amount is negative", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const error = await service.addShippingMethods(createdCart.id, [
+        {
+          amount: -100,
+          name: "Test",
+        },
+      ]).catch(e => e)
+
+      expect(error.name).toBe(CheckConstraintViolationException.name)
+    })
+
     it("should add multiple shipping methods to multiple carts succesfully", async () => {
       let [eurCart] = await service.create([
         {
@@ -640,21 +658,13 @@ describe("Cart Module Service", () => {
       const methods = await service.addShippingMethods([
         {
           cart_id: eurCart.id,
-          shipping_methods: [
-            {
-              amount: 100,
-              name: "Test One",
-            },
-          ],
+          amount: 100,
+          name: "Test One",
         },
         {
           cart_id: usdCart.id,
-          shipping_methods: [
-            {
-              amount: 100,
-              name: "Test One",
-            },
-          ],
+          amount: 100,
+          name: "Test One",
         },
       ])
 
