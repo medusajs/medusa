@@ -26,6 +26,10 @@ export const supportedLanguages = [
     name: "Italiano",
   },
   {
+    locale: "tr",
+    name: "Türkçe",
+  },
+  {
     locale: "pt",
     name: "Português (Brasil)",
   },
