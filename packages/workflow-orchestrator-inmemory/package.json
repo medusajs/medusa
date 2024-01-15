@@ -10,11 +10,6 @@
   "engines": {
     "node": ">=16"
   },
-  "bin": {
-    "medusa-workflow-orchestrator-migrations-down": "dist/scripts/bin/run-migration-down.js",
-    "medusa-workflow-orchestrator-migrations-up": "dist/scripts/bin/run-migration-up.js",
-    "medusa-workflow-orchestrator-seed": "dist/scripts/bin/run-seed.js"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
