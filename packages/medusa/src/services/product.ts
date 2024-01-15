@@ -4,7 +4,8 @@ import {
   FlagRouter,
   MedusaV2Flag,
   objectToStringPath,
-  promiseAll, selectorConstraintsToString,
+  promiseAll,
+  selectorConstraintsToString,
 } from "@medusajs/utils"
 import { RemoteQueryFunction } from "@medusajs/types"
 import { isDefined, MedusaError } from "medusa-core-utils"
@@ -594,7 +595,7 @@ class ProductService extends TransactionBaseService {
           )
       }
 
-      const result = await this.retrieve(product.id, {
+      const result = await this.withTransaction(manager).retrieve(product.id, {
         relations: ["options"],
       })
 
