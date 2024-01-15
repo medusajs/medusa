@@ -10,6 +10,11 @@ export class AddressRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     create: CreateAddressDTO
   }
 >(Address) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+
   async update(
     data: { address: Address; update: UpdateAddressDTO }[],
     context: Context = {}

@@ -12,8 +12,8 @@ import {
 } from "@medusajs/utils"
 
 export const allowedAllocationTargetTypes: string[] = [
-  ApplicationMethodTargetType.SHIPPING,
-  ApplicationMethodTargetType.ITEM,
+  ApplicationMethodTargetType.SHIPPING_METHODS,
+  ApplicationMethodTargetType.ITEMS,
 ]
 
 export const allowedAllocationTypes: string[] = [

@@ -2,6 +2,7 @@ import {
   ApplicationMethodAllocationValues,
   ApplicationMethodTargetTypeValues,
   ApplicationMethodTypeValues,
+  DAL,
 } from "@medusajs/types"
 import { PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
@@ -24,9 +25,8 @@ type OptionalFields =
   | "value"
   | "max_quantity"
   | "allocation"
-  | "created_at"
-  | "updated_at"
   | "deleted_at"
+  | DAL.EntityDateColumns
 
 @Entity()
 export default class ApplicationMethod {

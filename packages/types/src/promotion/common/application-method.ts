@@ -3,7 +3,10 @@ import { PromotionDTO } from "./promotion"
 import { CreatePromotionRuleDTO, PromotionRuleDTO } from "./promotion-rule"
 
 export type ApplicationMethodTypeValues = "fixed" | "percentage"
-export type ApplicationMethodTargetTypeValues = "order" | "shipping" | "item"
+export type ApplicationMethodTargetTypeValues =
+  | "order"
+  | "shipping_methods"
+  | "items"
 export type ApplicationMethodAllocationValues = "each" | "across"
 
 export interface ApplicationMethodDTO {
