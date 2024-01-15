@@ -44,7 +44,6 @@ export enum PaymentSessionStatus {
 }
 
 type OptionalPaymentSessionProps =
-  | "currency_code"
   | "data"
   | "is_selected"
   | "authorized_at"
@@ -57,8 +56,8 @@ export default class PaymentSession {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text", nullable: true })
-  currency_code: string | null
+  @Property({ columnType: "text" })
+  currency_code: string
 
   @Property({
     columnType: "numeric",

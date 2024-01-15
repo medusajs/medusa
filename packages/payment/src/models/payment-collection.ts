@@ -48,7 +48,6 @@ export enum PaymentCollectionStatus {
 }
 
 type OptionalPaymentCollectionProps =
-  | "currency_code"
   | "authorized_amount"
   | "refunded_amount"
   | "region_id"
@@ -63,8 +62,8 @@ export default class PaymentCollection {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text", nullable: true })
-  currency_code: string | null
+  @Property({ columnType: "text" })
+  currency_code: string
 
   @Property({
     columnType: "numeric",
