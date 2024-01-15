@@ -5,7 +5,10 @@ import {
   FilterableWorkflowExecutionProps,
   WorkflowExecutionDTO,
 } from "./common"
-import type { ReturnWorkflow } from "@medusajs/workflows-sdk"
+import type {
+  ReturnWorkflow,
+  UnwrapWorkflowInputDataType,
+} from "@medusajs/workflows-sdk"
 
 type FlowRunOptions<TData = unknown> = {
   input?: TData
@@ -43,9 +46,7 @@ export interface IWorkflowOrchestratorModuleService extends IModuleService {
 
   run<
     TWorkflow extends ReturnWorkflow<any, any, any>,
-    TData = TWorkflow extends ReturnWorkflow<infer T, infer R, infer X>
-      ? T
-      : never
+    TData = UnwrapWorkflowInputDataType<TWorkflow>
   >(
     workflowId: string,
     options?: WorkflowOrchestratorRunDTO,

@@ -82,6 +82,16 @@ export type ReturnWorkflow<
   }
 
 /**
+ * Extract the raw type of the expected input data of a workflow.
+ *
+ * @example
+ * type WorkflowInputData = UnwrapWorkflowInputDataType<typeof myWorkflow>
+ */
+export type UnwrapWorkflowInputDataType<
+  T extends ReturnWorkflow<any, any, any>
+> = T extends ReturnWorkflow<infer TData, infer R, infer THooks> ? TData : never
+
+/**
  * This function creates a workflow with the provided name and a constructor function.
  * The constructor function builds the workflow from steps created by the {@link createStep} function.
  * The returned workflow is an exported workflow of type {@link ReturnWorkflow}, meaning it's not executed right away. To execute it,
