@@ -5,7 +5,6 @@ import promiseExec from "../utils/promise-exec.js"
 
 export default async function runGitChanges() {
   const monorepoPath = getMonorepoRoot()
-  // TODO
   const childProcess = await promiseExec(
     `git diff --name-only -- "packages/**/**.ts" "packages/**/*.js" "packages/**/*.tsx" "packages/**/*.jsx"`,
     {

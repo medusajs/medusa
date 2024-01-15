@@ -1,6 +1,4 @@
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
-import promiseExec from "../utils/promise-exec.js"
-import ts from "typescript"
 import { ESLint, Linter } from "eslint"
 import path from "path"
 import dirname from "../utils/dirname.js"
@@ -8,6 +6,9 @@ import { minimatch } from "minimatch"
 import { existsSync } from "fs"
 import getRelativePaths from "../utils/get-relative-paths.js"
 
+/**
+ * A class used to apply formatting to files using ESLint and other formatting options.
+ */
 class Formatter {
   protected cwd: string
   protected eslintConfig?: Linter.Config
@@ -22,11 +23,26 @@ class Formatter {
     this.configForFile = new Map()
   }
 
-  normalizeCommentNewLine(content: string) {
+  /**
+   * Adds new lines after a comment if it's followed immediately by a word (not by a new line).
+   *
+   * @param {string} content - The content to format.
+   * @returns {string} The returned formatted content.
+   */
+  normalizeCommentNewLine(content: string): string {
     return content.replaceAll(/\*\/\s*(.)/g, "*/\n$1")
   }
 
-  normalizeConfigObject(
+  /**
+   * Normalizes an ESLint overrides configuration object. If a file name is specified, the configuration are normalized to
+   * include the `tsconfig` related to the file. If a file name isn't specified, the tsconfig file path names
+   * in the `parserConfig.project` array are normalized to have a full relative path (as that is required by ESLint).
+   *
+   * @param {Linter.ConfigOverride<Linter.RulesRecord>} config - The original configuration object.
+   * @param {string} fileName - The file name that
+   * @returns {Linter.ConfigOverride<Linter.RulesRecord>} The normalized and cloned configuration object.
+   */
+  normalizeOverridesConfigObject(
     config: Linter.ConfigOverride<Linter.RulesRecord>,
     fileName?: string
   ): Linter.ConfigOverride<Linter.RulesRecord> {
@@ -75,6 +91,11 @@ class Formatter {
     return newConfig
   }
 
+  /**
+   * Retrieves the general ESLint configuration and sets it to the `eslintConfig` class property, if it's not already set.
+   * It also tries to set the `generalESLintConfig` class property to the override configuration in the `eslintConfig`
+   * whose `files` array includes `*.ts`.
+   */
   async getESLintConfig() {
     if (this.eslintConfig) {
       return
@@ -91,13 +112,19 @@ class Formatter {
     )
 
     if (this.generalESLintConfig) {
-      this.generalESLintConfig = this.normalizeConfigObject(
+      this.generalESLintConfig = this.normalizeOverridesConfigObject(
         this.generalESLintConfig
       )
     }
   }
 
-  async getESLintConfigForFile(
+  /**
+   * Retrieves the normalized ESLint overrides configuration for a specific file.
+   *
+   * @param {string} filePath - The file's path.
+   * @returns {Promise<Linter.ConfigOverride<Linter.RulesRecord> | undefined>} The normalized configuration object or `undefined` if not found.
+   */
+  async getESLintOverridesConfigForFile(
     filePath: string
   ): Promise<Linter.ConfigOverride<Linter.RulesRecord> | undefined> {
     await this.getESLintConfig()
@@ -118,7 +145,7 @@ class Formatter {
       return undefined
     }
 
-    relevantConfig = this.normalizeConfigObject(
+    relevantConfig = this.normalizeOverridesConfigObject(
       structuredClone(relevantConfig || this.generalESLintConfig!),
       filePath
     )
@@ -130,36 +157,18 @@ class Formatter {
     return relevantConfig
   }
 
-  async formatFileWithEslint(filePath: string) {
-    const cwd = getMonorepoRoot()
-
-    try {
-      await promiseExec(`yarn lint:path ${filePath} --fix`, {
-        cwd,
-      })
-    } catch (e) {
-      console.error(`Error while formatting with ESLint: ${e}`)
-    }
-  }
-
-  async formatFile(path: string, content: string) {
-    await this.formatFileWithEslint(path)
-
-    const formattedContent = ts.sys.readFile(path)
-
-    const normalizedFileContent = this.normalizeCommentNewLine(
-      formattedContent || content
-    )
-
-    if (normalizedFileContent !== formattedContent) {
-      ts.sys.writeFile(path, normalizedFileContent)
-
-      await this.formatFileWithEslint(path)
-    }
-  }
-
-  async formatStrWithEslint(content: string, fileName: string) {
-    const relevantConfig = await this.getESLintConfigForFile(fileName)
+  /**
+   * Formats a string with ESLint.
+   *
+   * @param {string} content - The content to format.
+   * @param {string} fileName - The path to the file that the content belongs to.
+   * @returns {Promise<string>} The formatted content.
+   */
+  async formatStrWithEslint(
+    content: string,
+    fileName: string
+  ): Promise<string> {
+    const relevantConfig = await this.getESLintOverridesConfigForFile(fileName)
 
     const eslint = new ESLint({
       overrideConfig: {
@@ -184,12 +193,24 @@ class Formatter {
     return newContent
   }
 
+  /**
+   * Applies all formatting types to a string.
+   *
+   * @param {string} content - The content to format.
+   * @param {string} fileName - The path to the file that holds the content.
+   * @returns {Promise<string>} The formatted content.
+   */
   async formatStr(content: string, fileName: string): Promise<string> {
     const newContent = await this.formatStrWithEslint(content, fileName)
 
     let normalizedContent = this.normalizeCommentNewLine(newContent)
 
     if (normalizedContent !== newContent) {
+      /**
+       * Since adding the new lines after comments as done in {@link normalizeCommentNewLine} method may lead to linting errors,
+       * we have to rerun the {@link formatStrWithEslint}. It's not possible to run {@link normalizeCommentNewLine} the first time
+       * and provide the expected result.
+       */
       normalizedContent = await this.formatStrWithEslint(
         normalizedContent,
         fileName
@@ -199,7 +220,15 @@ class Formatter {
     return normalizedContent
   }
 
-  formatFileComments(comment: string, content: string): string {
+  /**
+   * Adds comments of a source file to the top of the file's content. It should have additional extra line after the comment.
+   * If the comment's length is 0, the `content` is returned as is.
+   *
+   * @param {string} comment - The comments of the source file.
+   * @param {string} content - The source file's comments.
+   * @returns {string} The full content with the comments.
+   */
+  addCommentsToSourceFile(comment: string, content: string): string {
     return comment.length ? `/**\n ${comment}*/\n\n${content}` : content
   }
 }

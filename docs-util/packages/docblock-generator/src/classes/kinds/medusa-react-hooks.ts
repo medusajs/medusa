@@ -15,7 +15,19 @@ import {
   getCustomNamespaceTag,
 } from "../../utils/medusa-react-utils.js"
 
+/**
+ * Docblock generate for medusa-react hooks. Since hooks are essentially functions,
+ * it extends the {@link FunctionKindGenerator} class.
+ */
 class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
+  /**
+   * Checks whether the generator can retrieve the docblock of the specified node. It uses the parent generator
+   * to check that the node is a function, then checks if the function is a mutation using the {@link isMutation} method,
+   * or a query using the {@link isQuery} method.
+   *
+   * @param {ts.Node} node - The node to check.
+   * @returns {boolean} Whether this generator can be used on this node.
+   */
   isAllowed(node: ts.Node): node is FunctionOrVariableNode {
     if (!super.isAllowed(node)) {
       return false
@@ -31,6 +43,12 @@ class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
     )
   }
 
+  /**
+   * Checks whether a function node is a mutation.
+   *
+   * @param {FunctionNode} node - The function node to check.
+   * @returns {boolean} Whether the node is a mutation.
+   */
   isMutation(node: FunctionNode): boolean {
     const nodeType = this.getReturnType(node)
 
@@ -44,6 +62,12 @@ class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
     )
   }
 
+  /**
+   * Checks whether a function node is a query.
+   *
+   * @param {FunctionNode} node - The function node to check.
+   * @returns {boolean} Whether the node is a query.
+   */
   isQuery(node: FunctionNode): boolean {
     return node.parameters.some(
       (parameter) =>
@@ -51,6 +75,12 @@ class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
     )
   }
 
+  /**
+   * Retrieves the docblock of the medusa-react hook or mutation.
+   *
+   * @param {FunctionNode & ts.VariableDeclaration} node - The node to retrieve its docblock.
+   * @returns {string} The node's docblock.
+   */
   getDocBlock(node: FunctionNode & ts.VariableDeclaration): string {
     if (!this.isAllowed(node)) {
       return super.getDocBlock(node)
@@ -110,6 +140,12 @@ class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
     return `${str}${DOCBLOCK_END_LINE}`
   }
 
+  /**
+   * Retrieves the parameters of a function node that aren't query/mutation options.
+   *
+   * @param {FunctionNode} node - The function node to retrieve its parameters.
+   * @returns {ts.ParameterDeclaration[]} - The function's actual parameters.
+   */
   getActualParameters(node: FunctionNode): ts.ParameterDeclaration[] {
     return node.parameters.filter((parameter) => {
       const parameterTypeStr = parameter.type?.getText()
@@ -121,6 +157,12 @@ class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
     })
   }
 
+  /**
+   * Retreives a mutation's intrinsic request type, if available, which is specified as the third type argument of `UseMutationOptions`.
+   *
+   * @param {FunctionNode} node - The function node to retrieve its request type.
+   * @returns {ts.Type | undefined} The mutation's request type, if available.
+   */
   getMutationRequestTypeArg(node: FunctionNode): ts.Type | undefined {
     const parameter = node.parameters.find(
       (parameter) => parameter.type?.getText().startsWith("UseMutationOptions")

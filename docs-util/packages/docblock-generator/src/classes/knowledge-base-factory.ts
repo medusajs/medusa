@@ -7,6 +7,9 @@ type KnowledgeBase = {
   value: string
 }
 
+/**
+ * A class that holds common Medusa patterns and acts as a knowledge base for possible summaries/examples/general templates.
+ */
 class KnowledgeBaseFactory {
   private summaryKnowledgeBase: KnowledgeBase[] = [
     {
@@ -106,6 +109,13 @@ class KnowledgeBaseFactory {
     },
   ]
 
+  /**
+   * Tries to find in a specified knowledge base a template relevant to the specified name.
+   *
+   * @param {string} str - A name that can be of a function, type, etc...
+   * @param {KnowledgeBase[]} knowledgeBase - A knowledge base to search in.
+   * @returns {string | undefined} The matching knowledge base template, if found.
+   */
   tryToFindInKnowledgeBase(
     str: string,
     knowledgeBase: KnowledgeBase[]
@@ -117,6 +127,12 @@ class KnowledgeBaseFactory {
     )?.value
   }
 
+  /**
+   * Tries to retrieve the summary template of a specified type from the {@link summaryKnowledgeBase}.
+   *
+   * @param {string} typeStr - The name of the type to retrieve its summary.
+   * @returns {string | undefined} The matching knowledge base template, if found.
+   */
   tryToGetSummary(typeStr: string): string | undefined {
     const normalizedTypeStr = typeStr.replaceAll("[]", "")
     return this.tryToFindInKnowledgeBase(
@@ -125,6 +141,12 @@ class KnowledgeBaseFactory {
     )
   }
 
+  /**
+   * Tries to retrieve the summary template of a function's symbol from the {@link functionSummaryKnowledgeBase}.
+   *
+   * @param {ts.Symbol} symbol - The symbol of the function to retrieve its summary template.
+   * @returns {string | undefined} The matching knowledge base template, if found.
+   */
   tryToGetFunctionSummary(symbol: ts.Symbol): string | undefined {
     return this.tryToFindInKnowledgeBase(
       symbol.getName(),
@@ -132,6 +154,12 @@ class KnowledgeBaseFactory {
     )
   }
 
+  /**
+   * Tries to retrieve the example template of a function's symbol from the {@link examplesKnowledgeBase}.
+   *
+   * @param {ts.Symbol} symbol - The symbol of the function to retrieve its example template.
+   * @returns {string | undefined} The matching knowledge base template, if found.
+   */
   tryToGetFunctionExamples(symbol: ts.Symbol): string | undefined {
     return this.tryToFindInKnowledgeBase(
       symbol.getName(),
@@ -139,6 +167,12 @@ class KnowledgeBaseFactory {
     )
   }
 
+  /**
+   * Tries to retrieve the return template of a function's symbol from the {@link functionReturnKnowledgeBase}.
+   *
+   * @param {ts.Symbol} symbol - The symbol of the function to retrieve its return template.
+   * @returns {string | undefined} The matching knowledge base template, if found.
+   */
   tryToGetFunctionReturns(symbol: ts.Symbol): string | undefined {
     return this.tryToFindInKnowledgeBase(
       symbol.getName(),

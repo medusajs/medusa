@@ -8,7 +8,7 @@ import getSymbol from "../../utils/get-symbol.js"
 import KnowledgeBaseFactory from "../knowledge-base-factory.js"
 import {
   getCustomNamespaceTag,
-  shouldHaveNamespace,
+  shouldHaveCustomNamespace,
 } from "../../utils/medusa-react-utils.js"
 
 export type GeneratorOptions = {
@@ -26,6 +26,10 @@ type CommonDocsOptions = {
   prefixWithLineBreaks?: boolean
 }
 
+/**
+ * Class used to generate docblocks for basic kinds. It can be
+ * extended for kinds requiring more elaborate TSDocs.
+ */
 class DefaultKindGenerator<T extends ts.Node = ts.Node> {
   static DEFAULT_ALLOWED_NODE_KINDS = [
     ts.SyntaxKind.SourceFile,
@@ -49,14 +53,30 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     this.knowledgeBaseFactory = new KnowledgeBaseFactory()
   }
 
+  /**
+   * @returns the kinds that are handled by this generator.
+   */
   getAllowedKinds(): ts.SyntaxKind[] {
     return this.allowedKinds
   }
 
+  /**
+   * Check whether this generator can be used for a node based on the node's kind.
+   *
+   * @param {ts.Node} node - The node to check for.
+   * @returns {boolean} Whether this generator can be used with the specified node.
+   */
   isAllowed(node: ts.Node): node is T {
     return this.allowedKinds.includes(node.kind)
   }
 
+  /**
+   * Retrieve the doc block for the passed node.
+   *
+   * @param {T | ts.Node} node - The node to retrieve the docblock for.
+   * @param {GetDocBlockOptions} options - Options useful for children classes of this class to specify the formatting of the docblock.
+   * @returns {string} The node's docblock.
+   */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getDocBlock(
     node: T | ts.Node,
@@ -83,31 +103,44 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     return `${str}${options.addEnd ? DOCBLOCK_END_LINE : ""}`
   }
 
+  /**
+   * Retrieves the summary comment of a node by retrieving the node's type then passing it to {@link getTypeDocBlock}.
+   *
+   * @param {T | ts.Node} node - The node to retrieve the summary comment for.
+   * @returns {string} The summary comment.
+   */
   getNodeSummary(node: T | ts.Node): string {
     const nodeType =
       "type" in node && node.type && ts.isTypeNode(node.type as ts.Node)
         ? this.checker.getTypeFromTypeNode(node.type as ts.TypeNode)
         : this.checker.getTypeAtLocation(node)
 
-    return this.getSymbolTypeDocBlock(nodeType)
+    return this.getTypeDocBlock(nodeType)
   }
 
-  getSymbolTypeDocBlock(symbolType: ts.Type): string {
-    if (symbolType.aliasSymbol) {
-      return this.getSymbolDocBlock(symbolType.aliasSymbol)
+  /**
+   * Retrieves the summary comment of a type. It tries to retrieve from the alias symbol, type arguments, or {@link KnowledgeBaseFactory}.
+   * If no summary comments are found, the {@link defaultSummary} is used.
+   *
+   * @param {ts.Type} nodeType - The type of a node.
+   * @returns {string} The summary comment.
+   */
+  getTypeDocBlock(nodeType: ts.Type): string {
+    if (nodeType.aliasSymbol) {
+      return this.getSymbolDocBlock(nodeType.aliasSymbol)
     }
 
     const typeArguments = this.checker.getTypeArguments(
-      symbolType as ts.TypeReference
+      nodeType as ts.TypeReference
     )
 
     if (typeArguments.length) {
       // take only the first type argument to account
-      const typeArgumentDoc = this.getSymbolTypeDocBlock(typeArguments[0])
+      const typeArgumentDoc = this.getTypeDocBlock(typeArguments[0])
 
       if (typeArgumentDoc === this.defaultSummary) {
         const tryKnowledgeSummary = this.knowledgeBaseFactory.tryToGetSummary(
-          this.checker.typeToString(symbolType)
+          this.checker.typeToString(nodeType)
         )
 
         if (tryKnowledgeSummary) {
@@ -116,7 +149,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
       }
 
       // do some formatting if the encapsulating type is an array
-      if (!this.checker.isArrayType(symbolType)) {
+      if (!this.checker.isArrayType(nodeType)) {
         return typeArgumentDoc
       }
 
@@ -125,13 +158,21 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
         .toLowerCase()}${typeArgumentDoc.substring(1)}`
     }
 
-    return symbolType.symbol
-      ? this.getSymbolDocBlock(symbolType.symbol)
+    return nodeType.symbol
+      ? this.getSymbolDocBlock(nodeType.symbol)
       : this.knowledgeBaseFactory.tryToGetSummary(
-          this.checker.typeToString(symbolType)
+          this.checker.typeToString(nodeType)
         ) || this.defaultSummary
   }
 
+  /**
+   * Retrieves the docblock of a symbol. It tries to retrieve it using the symbol's `getDocumentationComment` and `getJsDocTags`
+   * methods. If both methods don't return any comments, it tries to get the comments from the {@link KnowledgeBaseFactory}. It defaults
+   * to the {@link defaultSummary}
+   *
+   * @param {ts.Symbol} symbol - The symbol to retrieve its docblock.
+   * @returns {string} The symbol's docblock.
+   */
   getSymbolDocBlock(symbol: ts.Symbol): string {
     const commentDisplayParts = symbol.getDocumentationComment(this.checker)
     if (!commentDisplayParts.length) {
@@ -160,6 +201,12 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     return ts.displayPartsToString(commentDisplayParts)
   }
 
+  /**
+   * Retrieves docblocks based on decorators used on a symbol.
+   *
+   * @param {ts.Symbol} symbol - The symbol to retrieve its decorators docblock.
+   * @returns {string} The symbol's decorators docblock.
+   */
   getDecoratorDocs(symbol: ts.Symbol): string {
     let str = ""
 
@@ -200,6 +247,13 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     return str
   }
 
+  /**
+   * Retrieve docblocks that are common to all nodes, despite their kind.
+   *
+   * @param {T | ts.Node} node - The node to retrieve its common doc blocks.
+   * @param {CommonDocsOptions} options - Formatting options.
+   * @returns {string} The common docblocks.
+   */
   getCommonDocs(
     node: T | ts.Node,
     options: CommonDocsOptions = { addDefaultSummary: false }
@@ -222,6 +276,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     }
 
     // check for private or protected modifiers
+    // and if found, add the `@ignore` tag.
     symbol.declarations?.some((declaration) => {
       if (!("modifiers" in declaration) || !declaration.modifiers) {
         return false
@@ -273,7 +328,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     }
 
     // check if custom namespace should be added
-    if (shouldHaveNamespace(node)) {
+    if (shouldHaveCustomNamespace(node)) {
       tags.add(getCustomNamespaceTag(node))
     }
 
@@ -292,8 +347,18 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     return str
   }
 
+  /**
+   * Check if a node is a Medusa entity.
+   * @returns {boolean} Whether the node is a Medusa entity.
+   */
   isEntity({
+    /**
+     * The inherit/extend keywords of the node.
+     */
     heritageClauses,
+    /**
+     * Optionally provide the node to accurately retrieve its type name.
+     */
     node,
   }: {
     heritageClauses?: ts.NodeArray<ts.HeritageClause>

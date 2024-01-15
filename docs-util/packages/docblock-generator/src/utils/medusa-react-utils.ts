@@ -24,6 +24,12 @@ export const pathsHavingCustomNamespace = [
 
 export const CUSTOM_NAMESPACE_TAG = "@customNamespace"
 
+/**
+ * Get the path used with the {@link CUSTOM_NAMESPACE_TAG}.
+ *
+ * @param {ts.Node} node - The node to retrieve its custom namespace path.
+ * @returns {string} The namespace path.
+ */
 export function getNamespacePath(node: ts.Node): string {
   const packagePathPrefix = `${path.resolve(
     getMonorepoRoot(),
@@ -64,11 +70,23 @@ export function getNamespacePath(node: ts.Node): string {
     .join(".")
 }
 
+/**
+ * Retrieves the full tag of the custom namespace with its value.
+ *
+ * @param {ts.Node} node - The node to retrieve its custom namespace path.
+ * @returns {string} The custom namespace tag and value.
+ */
 export function getCustomNamespaceTag(node: ts.Node): string {
   return `${CUSTOM_NAMESPACE_TAG} ${getNamespacePath(node)}`
 }
 
-export function shouldHaveNamespace(node: ts.Node): boolean {
+/**
+ * Checks whether a node should have a custom namespace path.
+ *
+ * @param {ts.Node} node - The node to check.
+ * @returns {boolean} Whether the node should have a custom namespace.
+ */
+export function shouldHaveCustomNamespace(node: ts.Node): boolean {
   if (!kindsCanHaveNamespace.includes(node.kind)) {
     return false
   }

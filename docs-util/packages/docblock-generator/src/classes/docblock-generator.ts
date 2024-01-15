@@ -9,6 +9,9 @@ export type Options = {
   dryRun?: boolean
 }
 
+/**
+ * A class used to generate docblock for one or multiple file paths.
+ */
 class DocblockGenerator {
   protected options: Options
   protected program?: ts.Program
@@ -21,6 +24,9 @@ class DocblockGenerator {
     this.formatter = new Formatter()
   }
 
+  /**
+   * Generate the docblock for the paths specified in the {@link options} class property.
+   */
   async run() {
     this.program = ts.createProgram(this.options.paths, {})
 
@@ -88,7 +94,7 @@ class DocblockGenerator {
         if (!this.options.dryRun) {
           ts.sys.writeFile(
             file.fileName,
-            this.formatter.formatFileComments(
+            this.formatter.addCommentsToSourceFile(
               fileComments,
               await this.formatter.formatStr(fileContent, file.fileName)
             )
@@ -102,17 +108,34 @@ class DocblockGenerator {
     this.reset()
   }
 
+  /**
+   * Checks whether a file is included in the specified files.
+   *
+   * @param {string} fileName - The file to check for.
+   * @returns {boolean} Whether the file can have docblocks generated for it.
+   */
   isFileIncluded(fileName: string): boolean {
     return this.options.paths.some((path) => path.includes(fileName))
   }
 
+  /**
+   * Checks whether a node can be documented.
+   *
+   * @privateRemark
+   * I'm leaving this method in case other conditions arise for a node to be documented.
+   * Otherwise, we can directly use the {@link nodeHasComments} function.
+   *
+   * @param {ts.Node} node - The node to check for.
+   * @returns {boolean} Whether the node can be documented.
+   */
   canDocumentNode(node: ts.Node): boolean {
     // check if node already has docblock
-    // const symbol = getSymbol(node, this.checker!)
-
     return !nodeHasComments(node)
   }
 
+  /**
+   * Reset the generator's properties for new usage.
+   */
   reset() {
     this.program = undefined
     this.checker = undefined
