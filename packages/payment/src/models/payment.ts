@@ -64,6 +64,9 @@ export default class Payment {
   order_id: string | null
 
   @Property({ columnType: "text", nullable: true })
+  order_edit_id: string | null
+
+  @Property({ columnType: "text", nullable: true })
   customer_id: string | null
 
   @Property({ columnType: "jsonb", nullable: true })
