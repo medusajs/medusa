@@ -1,9 +1,9 @@
 import { ModuleExports } from "@medusajs/types"
-import { WorkflowOrchestratorModuleService } from "@services"
+import { WorkflowsModuleService } from "@services"
 import loadConnection from "./loaders/connection"
 import loadContainer from "./loaders/container"
 
-const service = WorkflowOrchestratorModuleService
+const service = WorkflowsModuleService
 const loaders = [loadContainer, loadConnection] as any
 
 export const moduleDefinition: ModuleExports = {

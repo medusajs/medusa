@@ -1,7 +1,7 @@
 import { MedusaApp } from "@medusajs/modules-sdk"
 import { RemoteJoinerQuery } from "@medusajs/types"
 import { TransactionHandlerType } from "@medusajs/utils"
-import { IWorkflowOrchestratorModuleService } from "@medusajs/workflows-sdk"
+import { IWorkflowsModuleService } from "@medusajs/workflows-sdk"
 import { knex } from "knex"
 import "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
@@ -20,7 +20,7 @@ const afterEach_ = async () => {
 
 describe("Workflow Orchestrator module", function () {
   describe("Testing basic workflow", function () {
-    let workflowOrcModule: IWorkflowOrchestratorModuleService
+    let workflowOrcModule: IWorkflowsModuleService
     let query: (
       query: string | RemoteJoinerQuery | object,
       variables?: Record<string, unknown>
@@ -57,7 +57,7 @@ describe("Workflow Orchestrator module", function () {
       await runMigrations()
 
       workflowOrcModule =
-        modules.workflows as unknown as IWorkflowOrchestratorModuleService
+        modules.workflows as unknown as IWorkflowsModuleService
     })
 
     afterEach(afterEach_)

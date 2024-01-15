@@ -28,8 +28,8 @@ type InjectedDependencies = {
   workflowOrchestratorService: WorkflowOrchestratorService
 }
 
-export class WorkflowOrchestratorModuleService
-  implements WorkflowOrchestratorTypes.IWorkflowOrchestratorModuleService
+export class WorkflowsModuleService
+  implements WorkflowOrchestratorTypes.IWorkflowsModuleService
 {
   protected baseRepository_: DAL.RepositoryService
   protected workflowExecutionService_: WorkflowExecutionService

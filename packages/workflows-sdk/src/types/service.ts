@@ -31,7 +31,7 @@ export type IdempotencyKeyParts = {
   action: "invoke" | "compensate"
 }
 
-export interface IWorkflowOrchestratorModuleService extends IModuleService {
+export interface IWorkflowsModuleService extends IModuleService {
   listWorkflowExecution(
     filters?: FilterableWorkflowExecutionProps,
     config?: FindConfig<WorkflowExecutionDTO>,

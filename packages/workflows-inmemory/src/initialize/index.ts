@@ -17,10 +17,10 @@ export const initialize = async (
     | ExternalModuleDeclaration
     | InternalModuleDeclaration,
   injectedDependencies?: InitializeModuleInjectableDependencies
-): Promise<WorkflowOrchestratorTypes.IWorkflowOrchestratorModuleService> => {
+): Promise<WorkflowOrchestratorTypes.IWorkflowsModuleService> => {
   const loaded =
     // eslint-disable-next-line max-len
-    await MedusaModule.bootstrap<WorkflowOrchestratorTypes.IWorkflowOrchestratorModuleService>(
+    await MedusaModule.bootstrap<WorkflowOrchestratorTypes.IWorkflowsModuleService>(
       {
         moduleKey: Modules.WORKFLOW,
         defaultPath: MODULE_PACKAGE_NAMES[Modules.WORKFLOW],
