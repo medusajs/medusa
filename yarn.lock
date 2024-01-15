@@ -8655,9 +8655,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflow-orchestrator-inmemory@workspace:packages/workflow-orchestrator-inmemory":
+"@medusajs/workflows-inmemory@workspace:packages/workflows-inmemory":
   version: 0.0.0-use.local
-  resolution: "@medusajs/workflow-orchestrator-inmemory@workspace:packages/workflow-orchestrator-inmemory"
+  resolution: "@medusajs/workflows-inmemory@workspace:packages/workflows-inmemory"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9

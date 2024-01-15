@@ -3,7 +3,7 @@ import { RemoteJoinerQuery } from "@medusajs/types"
 import { TransactionHandlerType } from "@medusajs/utils"
 import { IWorkflowOrchestratorModuleService } from "@medusajs/workflows-sdk"
 import { knex } from "knex"
-import "../__fixtures__/"
+import "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
 
 const sharedPgConnection = knex<any, any>({
