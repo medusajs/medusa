@@ -158,20 +158,20 @@ export function abstractServiceFactory<
 
     @InjectTransactionManager(propertyRepositoryName)
     async softDelete(
-      productIds: string[],
+      ids: string[],
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[TEntity[], Record<string, unknown[]>]> {
-      return await this[propertyRepositoryName].softDelete(productIds, {
+      return await this[propertyRepositoryName].softDelete(ids, {
         transactionManager: sharedContext.transactionManager,
       })
     }
 
     @InjectTransactionManager(propertyRepositoryName)
     async restore(
-      productIds: string[],
+      ids: string[],
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[TEntity[], Record<string, unknown[]>]> {
-      return await this[propertyRepositoryName].restore(productIds, {
+      return await this[propertyRepositoryName].restore(ids, {
         transactionManager: sharedContext.transactionManager,
       })
     }

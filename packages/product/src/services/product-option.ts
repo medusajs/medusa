@@ -6,7 +6,6 @@ import {
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  retrieveEntity,
 } from "@medusajs/utils"
 
 type InjectedDependencies = {
@@ -15,27 +14,21 @@ type InjectedDependencies = {
 
 export default class ProductOptionService<
   TEntity extends ProductOption = ProductOption
-> {
+> extends ModulesSdkUtils.abstractServiceFactory<
+  ProductOption,
+  InjectedDependencies,
+  {
+    retrieve: ProductTypes.ProductOptionDTO
+    create: ProductTypes.CreateProductOptionDTO
+    update: ProductTypes.UpdateProductOptionDTO
+  }
+>(ProductOption) {
   protected readonly productOptionRepository_: DAL.RepositoryService
 
-  constructor({ productOptionRepository }: InjectedDependencies) {
+  constructor(container: InjectedDependencies) {
+    super(container)
     this.productOptionRepository_ =
-      productOptionRepository as ProductOptionRepository
-  }
-
-  @InjectManager("productOptionRepository_")
-  async retrieve(
-    productOptionId: string,
-    config: FindConfig<ProductTypes.ProductOptionDTO> = {},
-    @MedusaContext() sharedContext?: Context
-  ): Promise<TEntity> {
-    return (await retrieveEntity<ProductOption, ProductTypes.ProductOptionDTO>({
-      id: productOptionId,
-      entityName: ProductOption.name,
-      repository: this.productOptionRepository_,
-      config,
-      sharedContext,
-    })) as TEntity
+      container.productOptionRepository as ProductOptionRepository
   }
 
   @InjectManager("productOptionRepository_")
@@ -76,36 +69,6 @@ export default class ProductOptionService<
     }
 
     return queryOptions
-  }
-
-  @InjectTransactionManager("productOptionRepository_")
-  async create(
-    data: ProductTypes.CreateProductOptionOnlyDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return (await (
-      this.productOptionRepository_ as ProductOptionRepository
-    ).create(data, {
-      transactionManager: sharedContext.transactionManager,
-    })) as TEntity[]
-  }
-
-  @InjectTransactionManager("productOptionRepository_")
-  async update(
-    data: ProductTypes.UpdateProductOptionDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return (await (
-      this.productOptionRepository_ as ProductOptionRepository
-    ).update(data, sharedContext)) as TEntity[]
-  }
-
-  @InjectTransactionManager("productOptionRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    return await this.productOptionRepository_.delete(ids, sharedContext)
   }
 
   @InjectTransactionManager("productOptionRepository_")

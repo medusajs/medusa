@@ -1,9 +1,5 @@
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import {
-  abstractServiceFactory,
-  InjectManager,
-  MedusaContext,
-} from "@medusajs/utils"
+import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
 import { Product } from "@models"
 
 type InjectedDependencies = {
@@ -12,11 +8,13 @@ type InjectedDependencies = {
 
 export default class ProductService<
   TEntity extends Product = Product
-> extends abstractServiceFactory<
+> extends ModulesSdkUtils.abstractServiceFactory<
   Product,
   InjectedDependencies,
   {
     retrieve: ProductTypes.ProductDTO
+    list: ProductTypes.ProductDTO
+    listAndCount: ProductTypes.ProductDTO
     create: ProductTypes.CreateProductOnlyDTO
     update: ProductTypes.UpdateProductDTO
   }
@@ -24,6 +22,7 @@ export default class ProductService<
   protected readonly productRepository_: DAL.RepositoryService
 
   constructor({ productRepository }: InjectedDependencies) {
+    // @ts-ignore
     // eslint-disable-next-line prefer-rest-params
     super(...arguments)
 
@@ -49,7 +48,7 @@ export default class ProductService<
       delete filters.category_id
     }
 
-    return super.list(filters, config, sharedContext)
+    return (await this.list(filters, config, sharedContext)) as TEntity[]
   }
 
   @InjectManager("productRepository_")
@@ -71,6 +70,9 @@ export default class ProductService<
       delete filters.category_id
     }
 
-    return super.listAndCount(filters, config, sharedContext)
+    return (await this.listAndCount(filters, config, sharedContext)) as [
+      TEntity[],
+      number
+    ]
   }
 }

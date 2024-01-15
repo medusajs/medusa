@@ -1,11 +1,9 @@
 import { ProductTag } from "@models"
 import {
   Context,
-  CreateProductTagDTO,
   DAL,
   FindConfig,
   ProductTypes,
-  UpdateProductTagDTO,
   UpsertProductTagDTO,
 } from "@medusajs/types"
 import {
@@ -13,11 +11,8 @@ import {
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  retrieveEntity,
 } from "@medusajs/utils"
 import { ProductTagRepository } from "@repositories"
-
-import { shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productTagRepository: DAL.RepositoryService
@@ -25,28 +20,21 @@ type InjectedDependencies = {
 
 export default class ProductTagService<
   TEntity extends ProductTag = ProductTag
-> {
+> extends ModulesSdkUtils.abstractServiceFactory<
+  ProductTag,
+  InjectedDependencies,
+  {
+    retrieve: ProductTypes.ProductTagDTO
+    create: ProductTypes.CreateProductTagDTO
+    update: ProductTypes.UpdateProductTagDTO
+  }
+>(ProductTag) {
   protected readonly productTagRepository_: DAL.RepositoryService
 
-  constructor({ productTagRepository }: InjectedDependencies) {
-    this.productTagRepository_ = productTagRepository
+  constructor(container: InjectedDependencies) {
+    super(container)
+    this.productTagRepository_ = container.productTagRepository
   }
-
-  @InjectManager("productTagRepository_")
-  async retrieve(
-    productTagId: string,
-    config: FindConfig<ProductTypes.ProductTagDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity> {
-    return (await retrieveEntity<ProductTag, ProductTypes.ProductTagDTO>({
-      id: productTagId,
-      entityName: ProductTag.name,
-      repository: this.productTagRepository_,
-      config,
-      sharedContext,
-    })) as TEntity
-  }
-
   @InjectManager("productTagRepository_")
   async list(
     filters: ProductTypes.FilterableProductTagProps = {},
@@ -82,36 +70,6 @@ export default class ProductTagService<
     }
 
     return queryOptions
-  }
-
-  @InjectTransactionManager("productTagRepository_")
-  async create(
-    data: CreateProductTagDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return (await (this.productTagRepository_ as ProductTagRepository).create(
-      data,
-      sharedContext
-    )) as TEntity[]
-  }
-
-  @InjectTransactionManager("productTagRepository_")
-  async update(
-    data: UpdateProductTagDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return (await (this.productTagRepository_ as ProductTagRepository).update(
-      data,
-      sharedContext
-    )) as TEntity[]
-  }
-
-  @InjectTransactionManager("productTagRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.productTagRepository_.delete(ids, sharedContext)
   }
 
   @InjectTransactionManager("productTagRepository_")
