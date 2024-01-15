@@ -865,9 +865,7 @@ export default class PromotionModuleService<
 
       const promotionsToAdd = promotions
         ? await this.list(
-            {
-              id: promotions.map((p) => p.id),
-            },
+            { id: promotions.map((p) => p.id) },
             {},
             sharedContext
           )
