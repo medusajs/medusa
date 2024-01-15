@@ -183,9 +183,14 @@ function applyStep<
       __type: OrchestrationUtils.SymbolWorkflowStep,
       __step__: stepName,
       config: (
-        localConfig: Omit<TransactionStepsDefinition, "next" | "uuid">
+        localConfig: { name?: string } & Omit<
+          TransactionStepsDefinition,
+          "next" | "uuid" | "action"
+        >
       ) => {
-        const newStepName = localConfig.action ?? stepName
+        const newStepName = localConfig.name ?? stepName
+
+        delete localConfig.name
 
         this.handlers.set(newStepName, handler)
 
@@ -260,7 +265,12 @@ export function createStep<
   /**
    * The name of the step or its configuration.
    */
-  nameOrConfig: string | Omit<TransactionStepsDefinition, "next" | "uuid">,
+  nameOrConfig:
+    | string
+    | ({ name: string } & Omit<
+        TransactionStepsDefinition,
+        "next" | "uuid" | "action"
+      >),
   /**
    * An invocation function that will be executed when the workflow is executed. The function must return an instance of {@link StepResponse}. The constructor of {@link StepResponse}
    * accepts the output of the step as a first argument, and optionally as a second argument the data to be passed to the compensation function as a parameter.
@@ -279,8 +289,7 @@ export function createStep<
   compensateFn?: CompensateFn<TInvokeResultCompensateInput>
 ): StepFunction<TInvokeInput, TInvokeResultOutput> {
   const stepName =
-    (isString(nameOrConfig) ? nameOrConfig : nameOrConfig.action) ??
-    invokeFn.name
+    (isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name) ?? invokeFn.name
   const config = isString(nameOrConfig) ? {} : nameOrConfig
 
   const returnFn = function (

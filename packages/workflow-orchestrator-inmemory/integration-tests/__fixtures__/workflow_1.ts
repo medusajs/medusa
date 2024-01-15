@@ -57,7 +57,7 @@ createWorkflow("workflow_1", function (input) {
   const ret2 = step_2({ hey: "oh" })
 
   step_2({ hey: "async hello" }).config({
-    action: "new_step_name",
+    name: "new_step_name",
     async: true,
   })
 
