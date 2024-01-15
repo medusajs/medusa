@@ -29,7 +29,7 @@ export const LINKS = {
     "sales_channel_id"
   ),
   CartSalesChannel: composeLinkName(
-    "cartService",
+    Modules.CART,
     "cart_id",
     Modules.SALES_CHANNEL,
     "sales_channel_id"
