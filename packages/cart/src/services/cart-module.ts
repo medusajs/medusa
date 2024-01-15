@@ -254,7 +254,7 @@ export default class CartModuleService implements ICartModuleService {
   addLineItems(
     data: CartTypes.CreateLineItemForCartDTO,
     sharedContext?: Context
-  ): Promise<CartTypes.CartLineItemDTO[]>
+  ): Promise<CartTypes.CartLineItemDTO>
   addLineItems(
     data: CartTypes.CreateLineItemForCartDTO[],
     sharedContext?: Context
@@ -264,6 +264,11 @@ export default class CartModuleService implements ICartModuleService {
     items: CartTypes.CreateLineItemDTO[],
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO[]>
+  addLineItems(
+    cartId: string,
+    items: CartTypes.CreateLineItemDTO,
+    sharedContext?: Context
+  ): Promise<CartTypes.CartLineItemDTO>
 
   @InjectManager("baseRepository_")
   async addLineItems(
@@ -271,14 +276,19 @@ export default class CartModuleService implements ICartModuleService {
       | string
       | CartTypes.CreateLineItemForCartDTO[]
       | CartTypes.CreateLineItemForCartDTO,
-    dataOrSharedContext?: CartTypes.CreateLineItemDTO[] | Context,
+    dataOrSharedContext?:
+      | CartTypes.CreateLineItemDTO[]
+      | CartTypes.CreateLineItemDTO
+      | Context,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartTypes.CartLineItemDTO[]> {
+  ): Promise<CartTypes.CartLineItemDTO[] | CartTypes.CartLineItemDTO> {
     let items: LineItem[] = []
     if (isString(cartIdOrData)) {
       items = await this.addLineItems_(
         cartIdOrData,
-        dataOrSharedContext as CartTypes.CreateLineItemDTO[],
+        dataOrSharedContext as
+          | CartTypes.CreateLineItemDTO[]
+          | CartTypes.CreateLineItemDTO,
         sharedContext
       )
     } else if (Array.isArray(cartIdOrData)) {
@@ -304,19 +314,21 @@ export default class CartModuleService implements ICartModuleService {
   @InjectTransactionManager("baseRepository_")
   protected async addLineItems_(
     cartId: string,
-    data: CartTypes.CreateLineItemDTO[],
+    data: CartTypes.CreateLineItemDTO[] | CartTypes.CreateLineItemDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<LineItem[]> {
     const cart = await this.retrieve(cartId, { select: ["id"] }, sharedContext)
 
-    const items = data.map((item) => {
+    const items = Array.isArray(data) ? data : [data]
+
+    const toUpdate = items.map((item) => {
       return {
         ...item,
         cart_id: cart.id,
       }
     })
 
-    return await this.addLineItemsBulk_(items, sharedContext)
+    return await this.addLineItemsBulk_(toUpdate, sharedContext)
   }
 
   @InjectTransactionManager("baseRepository_")

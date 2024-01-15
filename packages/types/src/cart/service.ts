@@ -76,7 +76,7 @@ export interface ICartModuleService extends IModuleService {
   addLineItems(
     data: CreateLineItemForCartDTO,
     sharedContext?: Context
-  ): Promise<CartLineItemDTO[]>
+  ): Promise<CartLineItemDTO>
   addLineItems(
     data: CreateLineItemForCartDTO[],
     sharedContext?: Context
@@ -86,6 +86,11 @@ export interface ICartModuleService extends IModuleService {
     items: CreateLineItemDTO[],
     sharedContext?: Context
   ): Promise<CartLineItemDTO[]>
+  addLineItems(
+    cartId: string,
+    items: CreateLineItemDTO,
+    sharedContext?: Context
+  ): Promise<CartLineItemDTO>
 
   updateLineItems(
     data: UpdateLineItemDTO[],
