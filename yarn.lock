@@ -8520,7 +8520,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
-    "@medusajs/workflows-sdk": ^0.1.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
     ioredis: ^5.2.5

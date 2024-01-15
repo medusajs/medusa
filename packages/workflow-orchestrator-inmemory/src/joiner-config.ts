@@ -20,7 +20,7 @@ Object.entries(LinkableKeys).forEach(([key, value]) => {
 export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
 
 export const joinerConfig: ModuleJoinerConfig = {
-  serviceName: Modules.WORKFLOW_ORCHESTRATOR,
+  serviceName: Modules.WORKFLOW,
   primaryKeys: ["id"],
   schema: moduleSchema,
   linkableKeys: LinkableKeys,

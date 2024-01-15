@@ -1,14 +1,14 @@
-import { ContainerLike, FindConfig } from "../common"
-import { IModuleService } from "../modules-sdk"
-import { Context } from "../shared-context"
+import {
+  ContainerLike,
+  Context,
+  FindConfig,
+  IModuleService,
+} from "@medusajs/types"
+import { ReturnWorkflow, UnwrapWorkflowInputDataType } from "../utils/composer"
 import {
   FilterableWorkflowExecutionProps,
   WorkflowExecutionDTO,
 } from "./common"
-import type {
-  ReturnWorkflow,
-  UnwrapWorkflowInputDataType,
-} from "@medusajs/workflows-sdk"
 
 type FlowRunOptions<TData = unknown> = {
   input?: TData

@@ -1,9 +1,4 @@
-import {
-  Context,
-  DAL,
-  FindConfig,
-  WorkflowOrchestratorTypes,
-} from "@medusajs/types"
+import { Context, DAL, FindConfig } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
@@ -11,6 +6,7 @@ import {
   ModulesSdkUtils,
   retrieveEntity,
 } from "@medusajs/utils"
+import { WorkflowOrchestratorTypes } from "@medusajs/workflows-sdk"
 import { WorkflowExecution } from "@models"
 import { WorkflowExecutionRepository } from "@repositories"
 

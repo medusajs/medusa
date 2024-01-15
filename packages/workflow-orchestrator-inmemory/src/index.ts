@@ -1,12 +1,12 @@
-import { moduleDefinition } from "./module-definition"
 import { Modules } from "@medusajs/modules-sdk"
-import * as models from "@models"
 import { ModulesSdkUtils } from "@medusajs/utils"
+import * as models from "@models"
+import { moduleDefinition } from "./module-definition"
 
 export default moduleDefinition
 
 const migrationScriptOptions = {
-  moduleName: Modules.WORKFLOW_ORCHESTRATOR,
+  moduleName: Modules.WORKFLOW,
   models: models,
   pathToMigrations: __dirname + "/migrations",
 }

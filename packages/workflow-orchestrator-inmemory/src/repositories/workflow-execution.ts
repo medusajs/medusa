@@ -1,5 +1,6 @@
-import { Context, WorkflowOrchestratorTypes } from "@medusajs/types"
+import { Context } from "@medusajs/types"
 import { DALUtils } from "@medusajs/utils"
+import { WorkflowOrchestratorTypes } from "@medusajs/workflows-sdk"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { WorkflowExecution } from "@models"
 

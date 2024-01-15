@@ -15,7 +15,7 @@ export enum Modules {
   PRICING = "pricingService",
   PROMOTION = "promotion",
   AUTHENTICATION = "authentication",
-  WORKFLOW_ORCHESTRATOR = "workflowOrchestrator",
+  WORKFLOW = "workflows",
   CART = "cart",
   PAYMENT = "payment",
 }
@@ -29,7 +29,7 @@ export enum ModuleRegistrationName {
   PRICING = "pricingModuleService",
   PROMOTION = "promotionModuleService",
   AUTHENTICATION = "authenticationModuleService",
-  WORKFLOW_ORCHESTRATOR = "workflowOrchestratorService",
+  WORKFLOW = "workflowsModuleService",
   CART = "cartModuleService",
   PAYMENT = "paymentModuleService",
 }
@@ -43,7 +43,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.PRICING]: "@medusajs/pricing",
   [Modules.PROMOTION]: "@medusajs/promotion",
   [Modules.AUTHENTICATION]: "@medusajs/authentication",
-  [Modules.WORKFLOW_ORCHESTRATOR]: "@medusajs/workflow-orchestrator-inmemory",
+  [Modules.WORKFLOW]: "@medusajs/workflow-orchestrator-inmemory",
   [Modules.CART]: "@medusajs/cart",
   [Modules.PAYMENT]: "@medusajs/payment",
 }
@@ -163,11 +163,11 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
         resources: MODULE_RESOURCE_TYPE.SHARED,
       },
     },
-    [Modules.WORKFLOW_ORCHESTRATOR]: {
-      key: Modules.WORKFLOW_ORCHESTRATOR,
-      registrationName: ModuleRegistrationName.WORKFLOW_ORCHESTRATOR,
+    [Modules.WORKFLOW]: {
+      key: Modules.WORKFLOW,
+      registrationName: ModuleRegistrationName.WORKFLOW,
       defaultPackage: false,
-      label: upperCaseFirst(ModuleRegistrationName.WORKFLOW_ORCHESTRATOR),
+      label: upperCaseFirst(ModuleRegistrationName.WORKFLOW),
       isRequired: false,
       canOverride: true,
       isQueryable: true,

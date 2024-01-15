@@ -1,28 +1,26 @@
 import {
   Context,
   DAL,
-  FilterableWorkflowExecutionProps,
   FindConfig,
   InternalModuleDeclaration,
-  IWorkflowOrchestratorModuleService,
   ModuleJoinerConfig,
-  WorkflowOrchestratorTypes,
 } from "@medusajs/types"
+import {} from "@medusajs/types/src"
 import {
   InjectManager,
   InjectSharedContext,
   MedusaContext,
 } from "@medusajs/utils"
+import type {
+  ReturnWorkflow,
+  UnwrapWorkflowInputDataType,
+  WorkflowOrchestratorTypes,
+} from "@medusajs/workflows-sdk"
 import {
   WorkflowExecutionService,
   WorkflowOrchestratorService,
 } from "@services"
 import { joinerConfig } from "../joiner-config"
-import { WorkflowOrchestratorRunDTO } from "@medusajs/types/src"
-import type {
-  ReturnWorkflow,
-  UnwrapWorkflowInputDataType,
-} from "@medusajs/workflows-sdk"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -31,7 +29,7 @@ type InjectedDependencies = {
 }
 
 export class WorkflowOrchestratorModuleService
-  implements IWorkflowOrchestratorModuleService
+  implements WorkflowOrchestratorTypes.IWorkflowOrchestratorModuleService
 {
   protected baseRepository_: DAL.RepositoryService
   protected workflowExecutionService_: WorkflowExecutionService
@@ -56,7 +54,7 @@ export class WorkflowOrchestratorModuleService
 
   @InjectManager("baseRepository_")
   async listWorkflowExecution(
-    filters: FilterableWorkflowExecutionProps = {},
+    filters: WorkflowOrchestratorTypes.FilterableWorkflowExecutionProps = {},
     config: FindConfig<WorkflowOrchestratorTypes.WorkflowExecutionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<WorkflowOrchestratorTypes.WorkflowExecutionDTO[]> {
@@ -75,7 +73,7 @@ export class WorkflowOrchestratorModuleService
 
   @InjectManager("baseRepository_")
   async listAndCountWorkflowExecution(
-    filters: FilterableWorkflowExecutionProps = {},
+    filters: WorkflowOrchestratorTypes.FilterableWorkflowExecutionProps = {},
     config: FindConfig<WorkflowOrchestratorTypes.WorkflowExecutionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[WorkflowOrchestratorTypes.WorkflowExecutionDTO[], number]> {
@@ -99,7 +97,7 @@ export class WorkflowOrchestratorModuleService
   @InjectSharedContext()
   async run<TWorkflow extends string | ReturnWorkflow<any, any, any>>(
     workflowIdOrWorkflow: TWorkflow,
-    options: WorkflowOrchestratorRunDTO<
+    options: WorkflowOrchestratorTypes.WorkflowOrchestratorRunDTO<
       TWorkflow extends ReturnWorkflow<any, any, any>
         ? UnwrapWorkflowInputDataType<TWorkflow>
         : unknown
