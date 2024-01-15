@@ -1,8 +1,7 @@
 import * as defaultProviders from "@providers"
 
-import { LoaderOptions, ModulesSdkTypes } from "@medusajs/types"
-
 import { AwilixContainer, ClassOrFunctionReturning, Resolver, asClass, asFunction, asValue } from "awilix"
+import { LoaderOptions, ModulesSdkTypes } from "@medusajs/types"
 
 export default async ({
   container,
