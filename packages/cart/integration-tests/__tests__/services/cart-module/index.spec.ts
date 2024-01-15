@@ -372,10 +372,10 @@ describe("Cart Module Service", () => {
         ])
         .catch((e) => e)
 
-      expect(error.message).toContain("Failed to create line items. Ensure you are passing valid data, including valid cart id(s)")
+      expect(error.message).toContain("Cart with id: foo was not found")
     })
 
-    it("should throw an error when required params are not passed", async () => {
+    it("should throw an error when required params are not passed adding to a single cart", async () => {
       const [createdCart] = await service.create([
         {
           currency_code: "eur",
@@ -392,7 +392,29 @@ describe("Cart Module Service", () => {
         .catch((e) => e)
 
       expect(error.message).toContain(
-        "Failed to create line items. Ensure you are passing valid data, including valid cart id(s)"
+        "Value for LineItem.unit_price is required, 'undefined' found"
+      )
+    })
+
+    it("should throw a generic error when required params are not passed using bulk add method", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const error = await service
+        .addLineItems([
+          {
+            cart_id: createdCart.id,
+            quantity: 1,
+            title: "test",
+          },
+        ] as any)
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "Value for LineItem.unit_price is required, 'undefined' found"
       )
     })
   })

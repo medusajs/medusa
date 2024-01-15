@@ -14,10 +14,10 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
-  MedusaError,
   isObject,
   isString,
 } from "@medusajs/utils"
+import { LineItem } from "@models"
 import { joinerConfig } from "../joiner-config"
 import * as services from "../services"
 
@@ -274,24 +274,30 @@ export default class CartModuleService implements ICartModuleService {
     dataOrSharedContext?: CartTypes.CreateLineItemDTO[] | Context,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[]> {
+    let items: LineItem[] = []
     if (isString(cartIdOrData)) {
-      return await this.addLineItems_(
+      items = await this.addLineItems_(
         cartIdOrData,
         dataOrSharedContext as CartTypes.CreateLineItemDTO[],
         sharedContext
       )
-    }
-
-    if (Array.isArray(cartIdOrData)) {
-      return await this.addLineItemsBulk_(
+    } else if (Array.isArray(cartIdOrData)) {
+      items = await this.addLineItemsBulk_(
         cartIdOrData,
+        dataOrSharedContext as Context
+      )
+    } else {
+      items = await this.addLineItemsBulk_(
+        [cartIdOrData],
         dataOrSharedContext as Context
       )
     }
 
-    return await this.addLineItemsBulk_(
-      [cartIdOrData],
-      dataOrSharedContext as Context
+    return await this.baseRepository_.serialize<CartTypes.CartLineItemDTO[]>(
+      items,
+      {
+        populate: true,
+      }
     )
   }
 
@@ -300,11 +306,13 @@ export default class CartModuleService implements ICartModuleService {
     cartId: string,
     data: CartTypes.CreateLineItemDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartTypes.CartLineItemDTO[]> {
+  ): Promise<LineItem[]> {
+    const cart = await this.retrieve(cartId, { select: ["id"] }, sharedContext)
+
     const items = data.map((item) => {
       return {
         ...item,
-        cart_id: cartId,
+        cart_id: cart.id,
       }
     })
 
@@ -315,21 +323,8 @@ export default class CartModuleService implements ICartModuleService {
   protected async addLineItemsBulk_(
     data: CartTypes.CreateLineItemForCartDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartTypes.CartLineItemDTO[]> {
-    const items = await this.lineItemService_
-      .create(data, sharedContext)
-      .catch((e) => {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Failed to create line items. Ensure you are passing valid data, including valid cart id(s)"
-        )
-      })
-
-    return await this.listLineItems(
-      { id: items.flat().map((c) => c.id) },
-      {},
-      sharedContext
-    )
+  ): Promise<LineItem[]> {
+    return await this.lineItemService_.create(data, sharedContext)
   }
 
   updateLineItems(
@@ -357,30 +352,36 @@ export default class CartModuleService implements ICartModuleService {
       | CartTypes.UpdateLineItemDTO[]
       | Partial<CartTypes.UpdateLineItemDTO>
       | Context,
-      @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[]> {
-    // Case: Single cart update
+    let items: LineItem[] = []
     if (isString(cartIdOrDataOrSelector)) {
-      return await this.updateCartLineItems_(
+      // Case: Single cart update
+      items = await this.updateCartLineItems_(
         cartIdOrDataOrSelector,
         dataOrSharedContext as Partial<CartTypes.UpdateLineItemDTO>,
         sharedContext
       )
-    }
-
-    // Case: Bulk update
-    if (Array.isArray(cartIdOrDataOrSelector)) {
-      return await this.updateLineItemsBulk_(
+    } else if (Array.isArray(cartIdOrDataOrSelector)) {
+      // Case: Bulk update
+      items = await this.updateLineItemsBulk_(
         cartIdOrDataOrSelector,
         dataOrSharedContext as Context
       )
+    } else {
+      // Case: Selector update
+      items = await this.updateSelectorLineItems_(
+        cartIdOrDataOrSelector as Partial<CartTypes.CartLineItemDTO>,
+        dataOrSharedContext as CartTypes.UpdateLineItemDTO,
+        sharedContext
+      )
     }
 
-    // Case: Selector update
-    return await this.updateSelectorLineItems_(
-      cartIdOrDataOrSelector,
-      dataOrSharedContext as CartTypes.UpdateLineItemDTO,
-      sharedContext
+    return await this.baseRepository_.serialize<CartTypes.CartLineItemDTO[]>(
+      items,
+      {
+        populate: true,
+      }
     )
   }
 
@@ -393,7 +394,7 @@ export default class CartModuleService implements ICartModuleService {
     selector: Partial<CartTypes.CartLineItemDTO>,
     data: Partial<CartTypes.UpdateLineItemDTO>,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartTypes.CartLineItemDTO[]> {
+  ): Promise<LineItem[]> {
     const items = await this.listLineItems({ ...selector }, {})
 
     const updates = items.map((item) => {
@@ -403,18 +404,16 @@ export default class CartModuleService implements ICartModuleService {
       }
     })
 
-    await this.lineItemService_.update(updates, sharedContext)
-
-    return this.listLineItems({ ...selector }, {})
+    return await this.lineItemService_.update(updates, sharedContext)
   }
 
   @InjectManager("baseRepository_")
   protected async updateCartLineItems_(
-    cartId: string, //
+    cartId: string,
     data: Partial<CartTypes.UpdateLineItemDTO>,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartTypes.CartLineItemDTO[]> {
-    return this.updateSelectorLineItems_(
+  ): Promise<LineItem[]> {
+    return await this.updateSelectorLineItems_(
       { cart_id: cartId },
       data,
       sharedContext
@@ -425,21 +424,8 @@ export default class CartModuleService implements ICartModuleService {
   protected async updateLineItemsBulk_(
     data: CartTypes.UpdateLineItemDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartTypes.CartLineItemDTO[]> {
-    const items = await this.lineItemService_
-      .update(data, sharedContext)
-      .catch((e) => {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Failed to update line items"
-        )
-      })
-
-    return await this.listLineItems(
-      { id: items.flat().map((c) => c.id) },
-      {},
-      sharedContext
-    )
+  ): Promise<LineItem[]> {
+    return await this.lineItemService_.update(data, sharedContext)
   }
   async removeLineItems(
     itemIds: string[],
