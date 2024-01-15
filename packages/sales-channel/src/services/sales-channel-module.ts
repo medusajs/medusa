@@ -167,18 +167,27 @@ export default class SalesChannelModuleService<
     return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
-  @InjectTransactionManager("baseRepository_")
   async update(
     data: UpdateSalesChannelDTO[],
+    sharedContext?: Context
+  ): Promise<SalesChannelDTO[]>
+
+  async update(
+    data: UpdateSalesChannelDTO,
+    sharedContext?: Context
+  ): Promise<SalesChannelDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async update(
+    data: UpdateSalesChannelDTO | UpdateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<SalesChannelDTO[]> {
-    const salesChannel = await this.salesChannelService_.update(
-      data,
-      sharedContext
-    )
+    const input = Array.isArray(data) ? data : [data]
+
+    const result = await this.salesChannelService_.update(input, sharedContext)
 
     return await this.baseRepository_.serialize<SalesChannelDTO[]>(
-      salesChannel,
+      Array.isArray(data) ? result : result[0],
       {
         populate: true,
       }
