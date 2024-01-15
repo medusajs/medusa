@@ -6,7 +6,11 @@ import {
 } from "@medusajs/orchestration"
 import { ContainerLike, Context, MedusaContainer } from "@medusajs/types"
 import { InjectSharedContext, isString, MedusaContext } from "@medusajs/utils"
-import { type FlowRunOptions, MedusaWorkflow } from "@medusajs/workflows-sdk"
+import {
+  type FlowRunOptions,
+  MedusaWorkflow,
+  ReturnWorkflow,
+} from "@medusajs/workflows-sdk"
 import { ulid } from "ulid"
 import { InMemoryDistributedTransactionStorage } from "../utils"
 
@@ -79,7 +83,7 @@ export class WorkflowOrchestratorService {
 
   @InjectSharedContext()
   async run<T = unknown>(
-    workflowId: string,
+    workflowIdOrWorkflow: string | ReturnWorkflow<any, any, any>,
     options?: WorkflowOrchestratorRunOptions<T>,
     @MedusaContext() sharedContext: Context = {}
   ) {
@@ -92,6 +96,10 @@ export class WorkflowOrchestratorService {
       events: eventHandlers,
       container,
     } = options ?? {}
+
+    const workflowId = isString(workflowIdOrWorkflow)
+      ? workflowIdOrWorkflow
+      : workflowIdOrWorkflow.getName()
 
     if (!workflowId) {
       throw new Error("Workflow ID is required")

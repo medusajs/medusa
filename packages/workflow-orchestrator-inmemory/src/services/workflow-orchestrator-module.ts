@@ -97,19 +97,20 @@ export class WorkflowOrchestratorModuleService
   }
 
   @InjectSharedContext()
-  async run<
-    TWorkflow extends ReturnWorkflow<any, any, any>,
-    TData = UnwrapWorkflowInputDataType<TWorkflow>
-  >(
-    workflowId: string,
-    options: WorkflowOrchestratorRunDTO<TData> = {},
+  async run<TWorkflow extends string | ReturnWorkflow<any, any, any>>(
+    workflowIdOrWorkflow: TWorkflow,
+    options: WorkflowOrchestratorRunDTO<
+      TWorkflow extends ReturnWorkflow<any, any, any>
+        ? UnwrapWorkflowInputDataType<TWorkflow>
+        : unknown
+    > = {},
     @MedusaContext() context: Context = {}
   ) {
-    const ret = await this.workflowOrchestratorService_.run<TData>(
-      workflowId,
-      options,
-      context
-    )
+    const ret = await this.workflowOrchestratorService_.run<
+      TWorkflow extends ReturnWorkflow<any, any, any>
+        ? UnwrapWorkflowInputDataType<TWorkflow>
+        : unknown
+    >(workflowIdOrWorkflow, options, context)
 
     return ret as any
   }
@@ -198,3 +199,8 @@ export class WorkflowOrchestratorModuleService
     return this.workflowOrchestratorService_.unsubscribe(args as any, context)
   }
 }
+
+const test_ = {} as ReturnWorkflow<number, string, {}>
+const test = WorkflowOrchestratorModuleService.prototype.run(test_, {
+  input: {},
+})

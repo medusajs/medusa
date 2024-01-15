@@ -45,7 +45,11 @@ export interface IWorkflowOrchestratorModuleService extends IModuleService {
   ): Promise<[WorkflowExecutionDTO[], number]>
 
   run<
-    TWorkflow extends ReturnWorkflow<any, any, any>,
+    TWorkflow extends ReturnWorkflow<any, any, any> = ReturnWorkflow<
+      any,
+      any,
+      any
+    >,
     TData = UnwrapWorkflowInputDataType<TWorkflow>
   >(
     workflowId: string,
