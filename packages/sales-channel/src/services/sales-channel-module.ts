@@ -78,12 +78,17 @@ export default class SalesChannelModuleService<
     )
   }
 
+  async delete(ids: string[], sharedContext?: Context): Promise<void>
+
+  async delete(id: string, sharedContext?: Context): Promise<void>
+
   @InjectTransactionManager("baseRepository_")
   async delete(
-    ids: string[],
+    ids: string | string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await this.salesChannelService_.delete(ids, sharedContext)
+    const salesChannelIds = Array.isArray(ids) ? ids : [ids]
+    await this.salesChannelService_.delete(salesChannelIds, sharedContext)
   }
 
   @InjectTransactionManager("baseRepository_")
