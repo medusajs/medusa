@@ -5,6 +5,7 @@ import {
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
+  ComputedActions,
   MedusaError,
 } from "@medusajs/utils"
 import { areRulesValidForContext } from "../validations"
@@ -76,7 +77,7 @@ export function applyPromotionToItems(
       methodIdPromoValueMap.set(method.id, appliedPromoValue + amount)
 
       computedActions.push({
-        action: "addItemAdjustment",
+        action: ComputedActions.ADD_ITEM_ADJUSTMENT,
         item_id: method.id,
         amount,
         code: promotion.code!,
@@ -119,7 +120,7 @@ export function applyPromotionToItems(
       }
 
       computedActions.push({
-        action: "addItemAdjustment",
+        action: ComputedActions.ADD_ITEM_ADJUSTMENT,
         item_id: method.id,
         amount,
         code: promotion.code!,

@@ -73,12 +73,14 @@ export class CampaignRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     const campaignPromotionIdsMap = new Map<string, string[]>()
 
     data.forEach((campaignData) => {
-      const campaignPromotionIds =
-        campaignData.promotions?.map((p) => p.id) || []
+      const campaignPromotionIds = campaignData.promotions?.map((p) => p.id)
 
       campaignIds.push(campaignData.id)
-      promotionIdsToUpsert.push(...campaignPromotionIds)
-      campaignPromotionIdsMap.set(campaignData.id, campaignPromotionIds)
+
+      if (campaignPromotionIds) {
+        promotionIdsToUpsert.push(...campaignPromotionIds)
+        campaignPromotionIdsMap.set(campaignData.id, campaignPromotionIds)
+      }
 
       delete campaignData.promotions
     })
@@ -109,8 +111,12 @@ export class CampaignRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     const updatedCampaigns = await super.update(data, context)
 
     for (const updatedCampaign of updatedCampaigns) {
-      const upsertPromotionIds =
-        campaignPromotionIdsMap.get(updatedCampaign.id) || []
+      const upsertPromotionIds = campaignPromotionIdsMap.get(updatedCampaign.id)
+
+      if (!upsertPromotionIds) {
+        continue
+      }
+
       const existingPromotionIds = (
         existingCampaignsMap.get(updatedCampaign.id)?.promotions || []
       ).map((p) => p.id)

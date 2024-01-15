@@ -8,6 +8,7 @@ import {
 } from "@medusajs/types"
 import {
   ApplicationMethodTargetType,
+  CampaignBudgetType,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
@@ -90,6 +91,120 @@ export default class PromotionModuleService<
     return joinerConfig
   }
 
+  @InjectManager("baseRepository_")
+  async registerUsage(
+    computedActions: PromotionTypes.ComputeActions[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const promotionCodes = computedActions
+      .map((computedAction) => computedAction.code)
+      .filter(Boolean)
+
+    const promotionCodeCampaignBudgetMap = new Map<
+      string,
+      UpdateCampaignBudgetDTO
+    >()
+    const promotionCodeUsageMap = new Map<string, boolean>()
+
+    const existingPromotions = await this.list(
+      { code: promotionCodes },
+      { relations: ["application_method", "campaign", "campaign.budget"] },
+      sharedContext
+    )
+
+    const existingPromotionsMap = new Map<string, PromotionTypes.PromotionDTO>(
+      existingPromotions.map((promotion) => [promotion.code!, promotion])
+    )
+
+    for (let computedAction of computedActions) {
+      if (!ComputeActionUtils.canRegisterUsage(computedAction)) {
+        continue
+      }
+
+      computedAction = computedAction as PromotionTypes.UsageComputedActions
+      const promotion = existingPromotionsMap.get(computedAction.code)
+
+      if (!promotion) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Promotion with code ${computedAction.code} not found`
+        )
+      }
+
+      const campaignBudget = promotion.campaign?.budget
+
+      if (!campaignBudget) {
+        continue
+      }
+
+      if (campaignBudget.type === CampaignBudgetType.SPEND) {
+        const campaignBudgetData = promotionCodeCampaignBudgetMap.get(
+          campaignBudget.id
+        ) || { id: campaignBudget.id, used: campaignBudget.used || 0 }
+
+        campaignBudgetData.used =
+          (campaignBudgetData.used || 0) + computedAction.amount
+
+        if (
+          campaignBudget.limit &&
+          campaignBudgetData.used > campaignBudget.limit
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Promotion with code ${computedAction.code} exceeded its campaign budget`
+          )
+        }
+
+        promotionCodeCampaignBudgetMap.set(
+          campaignBudget.id,
+          campaignBudgetData
+        )
+      }
+
+      if (campaignBudget.type === CampaignBudgetType.USAGE) {
+        const promotionAlreadyUsed =
+          promotionCodeUsageMap.get(promotion.code!) || false
+
+        if (promotionAlreadyUsed) {
+          continue
+        }
+
+        const campaignBudgetData = {
+          id: campaignBudget.id,
+          used: (campaignBudget.used || 0) + 1,
+        }
+
+        if (
+          campaignBudget.limit &&
+          campaignBudgetData.used > campaignBudget.limit
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Promotion with code ${computedAction.code} exceeded its campaign budget`
+          )
+        }
+
+        promotionCodeCampaignBudgetMap.set(
+          campaignBudget.id,
+          campaignBudgetData
+        )
+
+        promotionCodeUsageMap.set(promotion.code!, true)
+      }
+
+      const campaignBudgetsData: UpdateCampaignBudgetDTO[] = []
+
+      for (const [_, campaignBudgetData] of promotionCodeCampaignBudgetMap) {
+        campaignBudgetsData.push(campaignBudgetData)
+      }
+
+      await this.campaignBudgetService_.update(
+        campaignBudgetsData,
+        sharedContext
+      )
+    }
+  }
+
   async computeActions(
     promotionCodesToApply: string[],
     applicationContext: PromotionTypes.ComputeActionContext,
@@ -166,6 +281,7 @@ export default class PromotionModuleService<
         computedActions.push({
           action: "removeItemAdjustment",
           adjustment_id: codeAdjustmentMap.get(appliedCode)!.id,
+          code: appliedCode,
         })
       }
 
@@ -173,6 +289,7 @@ export default class PromotionModuleService<
         computedActions.push({
           action: "removeShippingMethodAdjustment",
           adjustment_id: codeAdjustmentMap.get(appliedCode)!.id,
+          code: appliedCode,
         })
       }
     }

@@ -4,6 +4,10 @@ export type ComputeActions =
   | AddShippingMethodAdjustment
   | RemoveShippingMethodAdjustment
 
+export type UsageComputedActions =
+  | AddShippingMethodAdjustment
+  | AddItemAdjustmentAction
+
 export interface AddItemAdjustmentAction {
   action: "addItemAdjustment"
   item_id: string
@@ -16,6 +20,7 @@ export interface RemoveItemAdjustmentAction {
   action: "removeItemAdjustment"
   adjustment_id: string
   description?: string
+  code: string
 }
 
 export interface AddShippingMethodAdjustment {
@@ -29,6 +34,7 @@ export interface AddShippingMethodAdjustment {
 export interface RemoveShippingMethodAdjustment {
   action: "removeShippingMethodAdjustment"
   adjustment_id: string
+  code: string
 }
 
 export interface ComputeActionAdjustmentLine extends Record<string, unknown> {
