@@ -367,11 +367,15 @@ export default class AuthenticationModuleService<
     provider: string,
     authenticationData: Record<string, unknown>,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthenticationResponse> {
-    await this.retrieveAuthProvider(provider, {})
+  ): Promise<AuthenticationResponse> {    
+    let registeredProvider 
+    try { 
+      await this.retrieveAuthProvider(provider, {})
 
-    const registeredProvider =
-      this.getRegisteredAuthenticationProvider(provider)
+      registeredProvider = this.getRegisteredAuthenticationProvider(provider)
+    } catch (error) { 
+      return { success: false, error: error.message }
+    }
 
     return await registeredProvider.authenticate(authenticationData)
   }

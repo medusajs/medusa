@@ -1,10 +1,10 @@
-import Scrypt from "scrypt-kdf"
-
-import { AuthUserService } from "@services"
 import {
   AbstractAuthenticationModuleProvider,
   AuthenticationResponse,
 } from "@medusajs/types"
+
+import { AuthUserService } from "@services"
+import Scrypt from "scrypt-kdf"
 
 class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
   public static PROVIDER = "usernamePassword"
@@ -19,9 +19,9 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
   }
 
   async authenticate(
-    userData: Record<string, unknown>
+    userData: Record<string, any>
   ): Promise<AuthenticationResponse> {
-    const { email, password } = userData
+    const { email, password } = userData.body
 
     if (typeof password !== "string") {
       return {
@@ -37,11 +37,10 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
       }
     }
 
-    const [authUser] = await this.authUserSerivce_.list({
-      provider_metadata: {
-        email,
-      },
-    })
+    const authUser = await this.authUserSerivce_.retrieveByProviderAndEntityId(
+      email,
+      UsernamePasswordProvider.PROVIDER
+    )
 
     const password_hash = authUser.provider_metadata?.password_hash
 

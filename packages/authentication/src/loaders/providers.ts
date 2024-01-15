@@ -1,8 +1,10 @@
-import { LoaderOptions, ModulesSdkTypes } from "@medusajs/types"
-import { asClass } from "awilix"
 import * as defaultProviders from "@providers"
+
+import { LoaderOptions, ModulesSdkTypes } from "@medusajs/types"
+
 import { AuthProviderService } from "@services"
 import { ServiceTypes } from "@types"
+import { asClass } from "awilix"
 
 export default async ({
   container,
@@ -20,10 +22,18 @@ export default async ({
   const authProviderService: AuthProviderService = container.resolve(
     "authProviderService"
   )
+  let providers
 
-  const providers = await authProviderService.list({
-    provider: providersToLoad.map((p) => p.PROVIDER),
-  })
+  try {
+    providers = await authProviderService.list({
+      provider: providersToLoad.map((p) => p.PROVIDER),
+    })
+  } catch (error) {
+    if (error.name === "TableNotFoundException") {
+      // we are running loaders in migrations (or fail at a later point)
+      return
+    }
+  }
 
   const loadedProviders = new Map(providers.map((p) => [p.provider, p]))
 

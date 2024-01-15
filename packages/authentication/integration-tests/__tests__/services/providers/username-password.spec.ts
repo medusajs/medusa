@@ -51,7 +51,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
           provider: "usernamePassword",
           provider_metadata: {
             email,
-            password_hash: passwordHash,
+            password: passwordHash,
           },
         },
       ])
