@@ -272,7 +272,7 @@ export default class CartModuleService implements ICartModuleService {
       | CartTypes.CreateLineItemForCartDTO[]
       | CartTypes.CreateLineItemForCartDTO,
     dataOrSharedContext?: CartTypes.CreateLineItemDTO[] | Context,
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[]> {
     if (isString(cartIdOrData)) {
       return await this.addLineItems_(
@@ -299,7 +299,7 @@ export default class CartModuleService implements ICartModuleService {
   protected async addLineItems_(
     cartId: string,
     data: CartTypes.CreateLineItemDTO[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[]> {
     const items = data.map((item) => {
       return {
@@ -314,7 +314,7 @@ export default class CartModuleService implements ICartModuleService {
   @InjectTransactionManager("baseRepository_")
   protected async addLineItemsBulk_(
     data: CartTypes.CreateLineItemForCartDTO[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[]> {
     const items = await this.lineItemService_
       .create(data, sharedContext)
@@ -357,7 +357,7 @@ export default class CartModuleService implements ICartModuleService {
       | CartTypes.UpdateLineItemDTO[]
       | Partial<CartTypes.UpdateLineItemDTO>
       | Context,
-    sharedContext?: Context
+      @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[]> {
     // Case: Single cart update
     if (isString(cartIdOrDataOrSelector)) {
@@ -392,7 +392,7 @@ export default class CartModuleService implements ICartModuleService {
   protected async updateSelectorLineItems_(
     selector: Partial<CartTypes.CartLineItemDTO>,
     data: Partial<CartTypes.UpdateLineItemDTO>,
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[]> {
     const items = await this.listLineItems({ ...selector }, {})
 
@@ -412,7 +412,7 @@ export default class CartModuleService implements ICartModuleService {
   protected async updateCartLineItems_(
     cartId: string, //
     data: Partial<CartTypes.UpdateLineItemDTO>,
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[]> {
     return this.updateSelectorLineItems_(
       { cart_id: cartId },
@@ -424,7 +424,7 @@ export default class CartModuleService implements ICartModuleService {
   @InjectTransactionManager("baseRepository_")
   protected async updateLineItemsBulk_(
     data: CartTypes.UpdateLineItemDTO[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[]> {
     const items = await this.lineItemService_
       .update(data, sharedContext)
@@ -454,7 +454,7 @@ export default class CartModuleService implements ICartModuleService {
   @InjectTransactionManager("baseRepository_")
   async removeLineItems(
     itemIdsOrSelector: string | string[] | Partial<CartTypes.CartLineItemDTO>,
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     let toDelete: string[] = []
     if (isObject(itemIdsOrSelector)) {
