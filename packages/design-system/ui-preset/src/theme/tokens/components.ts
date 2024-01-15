@@ -42,16 +42,8 @@ export const components = {
       "backgroundImage": "linear-gradient(180deg, var(--button-inverted-gradient-from), var(--button-inverted-gradient-to))",
       "opacity": "16%"
     },
-    ".button-neutral-pressed-gradient": {
-      "backgroundImage": "linear-gradient(180deg, var(--button-neutral-pressed-gradient-from), var(--button-neutral-pressed-gradient-to))",
-      "opacity": "3%"
-    },
     ".button-neutral-gradient": {
       "backgroundImage": "linear-gradient(180deg, var(--button-neutral-gradient-from), var(--button-neutral-gradient-to))",
-      "opacity": "3%"
-    },
-    ".button-neutral-hover-gradient": {
-      "backgroundImage": "linear-gradient(180deg, var(--button-neutral-hover-gradient-from), var(--button-neutral-hover-gradient-to))",
       "opacity": "3%"
     },
     ".button-danger-gradient": {
@@ -73,6 +65,14 @@ export const components = {
     ".button-danger-hover-gradient": {
       "backgroundImage": "linear-gradient(180deg, var(--button-danger-hover-gradient-from), var(--button-danger-hover-gradient-to))",
       "opacity": "16%"
+    },
+    ".button-neutral-pressed-gradient": {
+      "backgroundImage": "linear-gradient(180deg, var(--button-neutral-pressed-gradient-from), var(--button-neutral-pressed-gradient-to))",
+      "opacity": "3%"
+    },
+    ".button-neutral-hover-gradient": {
+      "backgroundImage": "linear-gradient(180deg, var(--button-neutral-hover-gradient-from), var(--button-neutral-hover-gradient-to))",
+      "opacity": "3%"
     }
   }
 }
