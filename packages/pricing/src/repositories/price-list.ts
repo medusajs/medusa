@@ -7,6 +7,11 @@ import { RepositoryTypes } from "@types"
 export class PriceListRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
   PriceList
 ) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+
   async create(
     data: RepositoryTypes.CreatePriceListDTO[],
     context: Context = {}

@@ -9,4 +9,9 @@ export class PriceSetRuleTypeRepository extends DALUtils.mikroOrmBaseRepositoryF
     create: RepositoryTypes.CreatePriceSetRuleTypeDTO
     update: RepositoryTypes.UpdatePriceSetRuleTypeDTO
   }
->(PriceSetRuleType) {}
+>(PriceSetRuleType) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+}

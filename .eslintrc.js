@@ -72,7 +72,9 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: [],
+  ignorePatterns: [
+    "packages/admin-next/dashboard/**/dist"
+  ],
   overrides: [
     {
       files: ["*.ts"],
@@ -232,7 +234,6 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "plugin:react-hooks/recommended",
       ],
-      ignorePatterns: ["dist"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
         project: "./packages/admin-next/dashboard/tsconfig.json",
