@@ -1,9 +1,10 @@
 import { TransactionState } from "@medusajs/orchestration"
-import { generateEntityId } from "@medusajs/utils"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
   Enum,
+  Filter,
   Index,
   OnInit,
   OptionalProps,
@@ -19,6 +20,7 @@ type OptionalFields = "deleted_at"
   name: "IDX_workflow_execution_workflow_id_transaction_id_unique",
   properties: ["workflow_id", "transaction_id"],
 })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class WorkflowExecution {
   [OptionalProps]?: OptionalFields
 
