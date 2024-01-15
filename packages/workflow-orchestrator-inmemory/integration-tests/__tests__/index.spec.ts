@@ -1,14 +1,12 @@
 import { MedusaApp } from "@medusajs/modules-sdk"
-import {
-  IWorkflowOrchestratorModuleService,
-  RemoteJoinerQuery,
-} from "@medusajs/types"
+import { RemoteJoinerQuery } from "@medusajs/types"
 import { TransactionHandlerType } from "@medusajs/utils"
+import { IWorkflowOrchestratorModuleService } from "@medusajs/workflows-sdk"
 import { knex } from "knex"
 import "../__fixtures__/"
 import { DB_URL, TestDatabase } from "../utils"
 
-let sharedPgConnection = knex<any, any>({
+const sharedPgConnection = knex<any, any>({
   client: "pg",
   searchPath: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
   connection: {
@@ -42,7 +40,7 @@ describe("Workflow Orchestrator module", function () {
           },
         },
         modulesConfig: {
-          workflowOrchestrator: {
+          workflows: {
             options: {
               database: {
                 clientUrl: DB_URL,
@@ -59,7 +57,7 @@ describe("Workflow Orchestrator module", function () {
       await runMigrations()
 
       workflowOrcModule =
-        modules.workflowOrchestrator as unknown as IWorkflowOrchestratorModuleService
+        modules.workflows as unknown as IWorkflowOrchestratorModuleService
     })
 
     afterEach(afterEach_)
