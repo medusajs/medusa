@@ -59,7 +59,7 @@ export type WorkflowData<T = unknown> = (T extends object
   : WorkflowDataProperties<T>) &
   WorkflowDataProperties<T> & {
     config(
-      config: { name: string } & Omit<
+      config: { name?: string } & Omit<
         TransactionStepsDefinition,
         "next" | "uuid" | "action"
       >
