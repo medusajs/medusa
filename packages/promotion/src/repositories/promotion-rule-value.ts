@@ -11,4 +11,9 @@ export class PromotionRuleValueRepository extends DALUtils.mikroOrmBaseRepositor
     create: CreatePromotionRuleValueDTO
     update: UpdatePromotionRuleValueDTO
   }
->(PromotionRuleValue) {}
+>(PromotionRuleValue) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+}

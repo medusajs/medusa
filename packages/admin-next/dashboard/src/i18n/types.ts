@@ -1,3 +1,4 @@
+import type { Locale } from "date-fns"
 import en from "../../public/locales/en/translation.json"
 
 const resources = {
@@ -10,4 +11,5 @@ export type Language = {
   code: string
   display_name: string
   ltr: boolean
+  date_locale: Locale
 }

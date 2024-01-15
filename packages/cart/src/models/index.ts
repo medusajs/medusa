@@ -6,3 +6,4 @@ export { default as LineItemTaxLine } from "./line-item-tax-line"
 export { default as ShippingMethod } from "./shipping-method"
 export { default as ShippingMethodAdjustmentLine } from "./shipping-method-adjustment-line"
 export { default as ShippingMethodTaxLine } from "./shipping-method-tax-line"
+
