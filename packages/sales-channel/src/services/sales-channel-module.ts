@@ -54,18 +54,18 @@ export default class SalesChannelModuleService<
   async create(
     data: CreateSalesChannelDTO[],
     sharedContext?: Context
-  ): Promise<CreateSalesChannelDTO[]>
+  ): Promise<SalesChannelDTO[]>
 
   async create(
     data: CreateSalesChannelDTO,
     sharedContext?: Context
-  ): Promise<CreateSalesChannelDTO>
+  ): Promise<SalesChannelDTO>
 
   @InjectTransactionManager("baseRepository_")
   async create(
     data: CreateSalesChannelDTO | CreateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<SalesChannelDTO[]> {
+  ): Promise<SalesChannelDTO | SalesChannelDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
     const result = await this.salesChannelService_.create(input, sharedContext)
@@ -181,7 +181,7 @@ export default class SalesChannelModuleService<
   async update(
     data: UpdateSalesChannelDTO | UpdateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<SalesChannelDTO[]> {
+  ): Promise<SalesChannelDTO | SalesChannelDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
     const result = await this.salesChannelService_.update(input, sharedContext)
