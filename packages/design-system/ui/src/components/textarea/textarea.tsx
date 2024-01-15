@@ -15,7 +15,7 @@ const Textarea = React.forwardRef<
       ref={ref}
       className={clx(
         inputBaseStyles,
-        "txt-medium min-h-[70px] w-full px-3 py-[7px]",
+        "txt-small min-h-[60px] w-full px-2 py-1.5",
         className
       )}
       {...props}

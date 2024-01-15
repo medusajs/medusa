@@ -1,5 +1,7 @@
 export { MikroOrmBaseRepository as BaseRepository } from "@medusajs/utils"
 export { ApplicationMethodRepository } from "./application-method"
+export { CampaignRepository } from "./campaign"
+export { CampaignBudgetRepository } from "./campaign-budget"
 export { PromotionRepository } from "./promotion"
 export { PromotionRuleRepository } from "./promotion-rule"
 export { PromotionRuleValueRepository } from "./promotion-rule-value"
