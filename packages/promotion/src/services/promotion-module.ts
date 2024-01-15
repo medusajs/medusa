@@ -367,6 +367,13 @@ export default class PromotionModuleService<
         promotionCodeRulesDataMap.set(promotionData.code, rulesData)
       }
 
+      if (campaignData && campaignId) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Provide either the 'campaign' or 'campaign_id' parameter; both cannot be used simultaneously.`
+        )
+      }
+
       if (campaignData) {
         promotionCodeCampaignMap.set(promotionData.code, campaignData)
       }

@@ -100,6 +100,34 @@ describe("Promotion Service", () => {
       )
     })
 
+    it("should throw an error when both campaign and campaign_id are provided", async () => {
+      const startsAt = new Date("01/01/2023")
+      const endsAt = new Date("01/01/2023")
+
+      const error = await service
+        .create({
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          campaign_id: "campaign-id-1",
+          campaign: {
+            name: "test",
+            campaign_identifier: "test-promotion-test",
+            starts_at: startsAt,
+            ends_at: endsAt,
+            budget: {
+              type: CampaignBudgetType.SPEND,
+              used: 100,
+              limit: 100,
+            },
+          },
+        })
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "Provide either the 'campaign' or 'campaign_id' parameter; both cannot be used simultaneously."
+      )
+    })
+
     it("should create a basic promotion with campaign successfully", async () => {
       const startsAt = new Date("01/01/2023")
       const endsAt = new Date("01/01/2023")
