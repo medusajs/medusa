@@ -63,6 +63,7 @@ class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
     if (!actualNode) {
       return super.getDocBlock(node)
     }
+    const isMutation = this.isMutation(actualNode)
 
     let str = `${DOCBLOCK_START}This hook ${this.getFunctionSummary(node)}`
 
@@ -80,6 +81,17 @@ class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
       )
     })
 
+    // check if mutation parameter is an intrinsic type and, if so, add the `@typeParamDefinition`
+    // tag to the hook
+    if (isMutation) {
+      const typeArg = this.getMutationRequestTypeArg(actualNode)
+      if (typeArg) {
+        str += `${DOCBLOCK_DOUBLE_LINES}@typeParamDefinition ${this.checker.typeToString(
+          typeArg
+        )} - {summary}`
+      }
+    }
+
     // add common docs
     str += this.getCommonDocs(node, {
       prefixWithLineBreaks: true,
@@ -92,7 +104,7 @@ class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
 
     // add the category
     str += `${DOCBLOCK_NEW_LINE}@category ${
-      this.isMutation(actualNode) ? "Mutations" : "Queries"
+      isMutation ? "Mutations" : "Queries"
     }`
 
     return `${str}${DOCBLOCK_END_LINE}`
@@ -107,6 +119,34 @@ class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
         !nodeHasComments(parameter)
       )
     })
+  }
+
+  getMutationRequestTypeArg(node: FunctionNode): ts.Type | undefined {
+    const parameter = node.parameters.find(
+      (parameter) => parameter.type?.getText().startsWith("UseMutationOptions")
+    )
+
+    if (!parameter) {
+      return
+    }
+
+    const parameterType = this.checker.getTypeFromTypeNode(parameter.type!)
+    const typeArgs =
+      parameterType.aliasTypeArguments ||
+      ("resolvedTypeArguments" in parameterType
+        ? (parameterType.resolvedTypeArguments as ts.Type[])
+        : [])
+    if (
+      !typeArgs ||
+      typeArgs.length < 3 ||
+      !("intrinsicName" in typeArgs[2]) ||
+      ["void", "unknown"].includes(typeArgs[2].intrinsicName as string)
+    ) {
+      return
+    }
+
+    // find request in third type argument
+    return typeArgs[2]
   }
 }
 
