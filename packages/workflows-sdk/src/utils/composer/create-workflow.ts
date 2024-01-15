@@ -5,7 +5,7 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import { OrchestrationUtils, isString } from "@medusajs/utils"
+import { isString, OrchestrationUtils } from "@medusajs/utils"
 import { ExportedWorkflow, exportWorkflow } from "../../helper"
 import { proxify } from "./helpers/proxy"
 import {
@@ -63,7 +63,11 @@ global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
  * }
  * ```
  */
-type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
+export type ReturnWorkflow<
+  TData,
+  TResult,
+  THooks extends Record<string, Function>
+> = {
   <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
   ): Omit<

@@ -19,6 +19,7 @@ import {
 } from "@services"
 import { joinerConfig } from "../joiner-config"
 import { WorkflowOrchestratorRunDTO } from "@medusajs/types/src"
+import type { ReturnWorkflow } from "@medusajs/workflows-sdk"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -93,12 +94,17 @@ export class WorkflowOrchestratorModuleService
   }
 
   @InjectSharedContext()
-  async run(
+  async run<
+    TWorkflow extends ReturnWorkflow<any, any, any>,
+    TData = TWorkflow extends ReturnWorkflow<infer T, infer R, infer X>
+      ? T
+      : never
+  >(
     workflowId: string,
-    options: WorkflowOrchestratorRunDTO = {},
+    options: WorkflowOrchestratorRunDTO<TData> = {},
     @MedusaContext() context: Context = {}
   ) {
-    const ret = await this.workflowOrchestratorService_.run(
+    const ret = await this.workflowOrchestratorService_.run<TData>(
       workflowId,
       options,
       context

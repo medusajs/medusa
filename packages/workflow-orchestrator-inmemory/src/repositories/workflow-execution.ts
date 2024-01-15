@@ -5,8 +5,7 @@ import { WorkflowExecution } from "@models"
 
 // eslint-disable-next-line max-len
 export class WorkflowExecutionRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
-  WorkflowExecution,
-  ["workflow_id", "transaction_id"]
+  WorkflowExecution
 ) {
   async upsert(
     data: WorkflowOrchestratorTypes.UpsertWorkflowExecutionDTO[],
