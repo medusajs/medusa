@@ -3,6 +3,7 @@ import { Context } from "../shared-context"
 import {
   CreatePaymentCollectionDTO,
   CreatePaymentDTO,
+  CreatePaymentSessionDTO,
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
 } from "./mutations"
@@ -69,6 +70,8 @@ export interface IPaymentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
 
+  /* ********** PAYMENTS ********** */
+
   createPayment(data: CreatePaymentDTO): Promise<PaymentDTO>
 
   capturePayment(paymentId: string, amount: number): Promise<PaymentDTO>
@@ -76,5 +79,22 @@ export interface IPaymentModuleService extends IModuleService {
 
   updatePayment(data: UpdatePaymentDTO): Promise<PaymentDTO>
 
-  // TODO: PaymentSession methods
+  /* ********** PAYMENT SESSIONS ********** */
+
+  createPaymentSession(
+    paymentCollectionId: string,
+    data: CreatePaymentSessionDTO
+  ): Promise<PaymentCollectionDTO>
+
+  authorizePaymentSessions(
+    paymentCollectionId: string,
+    sessionIds: string[]
+  ): Promise<PaymentCollectionDTO>
+
+  completePaymentSessions(
+    paymentCollectionId: string,
+    sessionIds: string[]
+  ): Promise<PaymentCollectionDTO>
+
+  // TODO: PaymentSession set session
 }
