@@ -9,16 +9,23 @@ import { MedusaContext } from "../decorators"
 import { retrieveEntity } from "./retrieve-entity"
 import { buildQuery } from "./build-query"
 
+/**
+ * Utility factory and interfaces for internal module services
+ */
+
 type FilterableMethods = "list" | "listAndCount"
 type Methods = FilterableMethods | "retrieve" | "create" | "update"
 
-interface AbstractService<
+export interface AbstractService<
   TEntity extends {},
+  TContainer extends object = object,
   TDTos extends { [K in Methods]?: any } = { [K in Methods]?: any },
   TFilters extends { [K in FilterableMethods]?: any } = {
     [K in FilterableMethods]?: any
   }
 > {
+  get __container__(): TContainer
+
   retrieve(
     id: string,
     config?: FindConfig<TDTos["retrieve"]>,
@@ -47,15 +54,6 @@ interface AbstractService<
   ): Promise<[TEntity[], Record<string, unknown[]>]>
 }
 
-type AbstractServiceClass<
-  TEntity extends {},
-  TContainer extends object = object,
-  TDTos extends { [K in Methods]?: any } = { [K in Methods]?: any },
-  TFilters extends { [K in FilterableMethods]?: any } = {
-    [K in FilterableMethods]?: any
-  }
-> = { new (...args: any[]): AbstractService<TEntity, TDTos, TFilters> }
-
 export function abstractServiceFactory<
   TEntity extends {},
   TContainer extends object = object,
@@ -65,13 +63,24 @@ export function abstractServiceFactory<
   }
 >(
   model: new () => any
-): AbstractServiceClass<TEntity, TContainer, TDTos, TFilters> {
+): new (container: TContainer) => AbstractService<
+  TEntity,
+  TContainer,
+  TDTos,
+  TFilters
+> {
   const injectedRepositoryName = `${lowerCaseFirst(model.name)}Repository`
   const propertyRepositoryName = `__${injectedRepositoryName}__`
 
-  class AbstractService_ implements AbstractService<TEntity, TDTos, TFilters> {
-    constructor(protected readonly __container__: TContainer) {
-      this[propertyRepositoryName] = this.__container__[injectedRepositoryName]
+  class AbstractService_
+    implements AbstractService<TEntity, TContainer, TDTos, TFilters>
+  {
+    readonly __container__: TContainer;
+    [key: string]: any
+
+    constructor(container: TContainer) {
+      this.__container__ = container
+      this[propertyRepositoryName] = container[injectedRepositoryName]
     }
 
     @InjectManager(propertyRepositoryName)
@@ -168,10 +177,7 @@ export function abstractServiceFactory<
     }
   }
 
-  return AbstractService_ as unknown as AbstractServiceClass<
-    TEntity,
-    TContainer,
-    TDTos,
-    TFilters
-  >
+  return AbstractService_ as unknown as new (
+    container: TContainer
+  ) => AbstractService<TEntity, TContainer, TDTos, TFilters>
 }
