@@ -24,13 +24,15 @@ class Formatter {
   }
 
   /**
-   * Adds new lines after a comment if it's followed immediately by a word (not by a new line).
+   * Adds new lines before and after a comment if it's preceeded/followed immediately by a word (not by an empty line).
    *
    * @param {string} content - The content to format.
    * @returns {string} The returned formatted content.
    */
   normalizeCommentNewLine(content: string): string {
-    return content.replaceAll(/\*\/\s*(.)/g, "*/\n$1")
+    return content
+      .replaceAll(/(.)\n(\s*)\/\*\*/g, "$1\n\n$2/**")
+      .replaceAll(/\*\/\s*(.)/g, "*/\n$1")
   }
 
   /**

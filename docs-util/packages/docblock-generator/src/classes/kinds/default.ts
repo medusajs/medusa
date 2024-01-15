@@ -3,6 +3,7 @@ import {
   DOCBLOCK_START,
   DOCBLOCK_END_LINE,
   DOCBLOCK_DOUBLE_LINES,
+  DOCBLOCK_NEW_LINE,
 } from "../../constants.js"
 import getSymbol from "../../utils/get-symbol.js"
 import KnowledgeBaseFactory from "../knowledge-base-factory.js"
@@ -10,6 +11,7 @@ import {
   getCustomNamespaceTag,
   shouldHaveCustomNamespace,
 } from "../../utils/medusa-react-utils.js"
+import capitalize from "../../utils/capitalize.js"
 
 export type GeneratorOptions = {
   checker: ts.TypeChecker
@@ -83,7 +85,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     options: GetDocBlockOptions = { addEnd: true }
   ): string {
     let str = DOCBLOCK_START
-    const summary = this.getNodeSummary(node)
+    const summary = this.getNodeSummary({ node })
 
     switch (node.kind) {
       case ts.SyntaxKind.EnumDeclaration:
@@ -104,18 +106,48 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
   }
 
   /**
-   * Retrieves the summary comment of a node by retrieving the node's type then passing it to {@link getTypeDocBlock}.
-   *
-   * @param {T | ts.Node} node - The node to retrieve the summary comment for.
+   * Retrieves the summary comment of a node. It gives precedense to the node's symbol if it's provided/retrieved and if it's available using the {@link getSymbolDocBlock}.
+   * Otherwise, it retrieves the comments of the type using the {@link getTypeDocBlock}
    * @returns {string} The summary comment.
    */
-  getNodeSummary(node: T | ts.Node): string {
-    const nodeType =
-      "type" in node && node.type && ts.isTypeNode(node.type as ts.Node)
-        ? this.checker.getTypeFromTypeNode(node.type as ts.TypeNode)
-        : this.checker.getTypeAtLocation(node)
+  getNodeSummary({
+    node,
+    symbol,
+    nodeType,
+  }: {
+    /**
+     * The node to retrieve the summary comment for.
+     */
+    node: T | ts.Node
+    /**
+     * Optionally provide the node's symbol. If not provided, the
+     * method will try to retrieve it.
+     */
+    symbol?: ts.Symbol
+    /**
+     * Optionally provide the node's type. If not provided, the method
+     * will try to retrieve it.
+     */
+    nodeType?: ts.Type
+  }): string {
+    if (!nodeType) {
+      nodeType =
+        "type" in node && node.type && ts.isTypeNode(node.type as ts.Node)
+          ? this.checker.getTypeFromTypeNode(node.type as ts.TypeNode)
+          : symbol
+            ? this.checker.getTypeOfSymbolAtLocation(symbol, node)
+            : this.checker.getTypeAtLocation(node)
+    }
 
-    return this.getTypeDocBlock(nodeType)
+    if (!symbol) {
+      symbol = getSymbol(node, this.checker)
+    }
+
+    const summary = symbol
+      ? this.getSymbolDocBlock(symbol)
+      : this.getTypeDocBlock(nodeType)
+
+    return summary.length > 0 ? summary : this.defaultSummary
   }
 
   /**
@@ -125,9 +157,15 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
    * @param {ts.Type} nodeType - The type of a node.
    * @returns {string} The summary comment.
    */
-  getTypeDocBlock(nodeType: ts.Type): string {
-    if (nodeType.aliasSymbol) {
-      return this.getSymbolDocBlock(nodeType.aliasSymbol)
+  private getTypeDocBlock(nodeType: ts.Type): string {
+    if (nodeType.aliasSymbol || nodeType.symbol) {
+      const symbolDoc = this.getSymbolDocBlock(
+        nodeType.aliasSymbol || nodeType.symbol
+      )
+
+      if (symbolDoc.length) {
+        return symbolDoc
+      }
     }
 
     const typeArguments = this.checker.getTypeArguments(
@@ -138,42 +176,39 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
       // take only the first type argument to account
       const typeArgumentDoc = this.getTypeDocBlock(typeArguments[0])
 
-      if (typeArgumentDoc === this.defaultSummary) {
+      if (!typeArgumentDoc.length) {
         const tryKnowledgeSummary = this.knowledgeBaseFactory.tryToGetSummary(
           this.checker.typeToString(nodeType)
         )
 
-        if (tryKnowledgeSummary) {
+        if (tryKnowledgeSummary?.length) {
           return tryKnowledgeSummary
         }
       }
 
-      // do some formatting if the encapsulating type is an array
       if (!this.checker.isArrayType(nodeType)) {
         return typeArgumentDoc
       }
 
-      return `The list of ${typeArgumentDoc
-        .charAt(0)
-        .toLowerCase()}${typeArgumentDoc.substring(1)}`
+      // do some formatting if the encapsulating type is an array
+      return `The list of ${capitalize(typeArgumentDoc)}`
     }
 
-    return nodeType.symbol
-      ? this.getSymbolDocBlock(nodeType.symbol)
-      : this.knowledgeBaseFactory.tryToGetSummary(
-          this.checker.typeToString(nodeType)
-        ) || this.defaultSummary
+    return (
+      this.knowledgeBaseFactory.tryToGetSummary(
+        this.checker.typeToString(nodeType)
+      ) || ""
+    )
   }
 
   /**
    * Retrieves the docblock of a symbol. It tries to retrieve it using the symbol's `getDocumentationComment` and `getJsDocTags`
-   * methods. If both methods don't return any comments, it tries to get the comments from the {@link KnowledgeBaseFactory}. It defaults
-   * to the {@link defaultSummary}
+   * methods. If both methods don't return any comments, it tries to get the comments from the {@link KnowledgeBaseFactory}.
    *
    * @param {ts.Symbol} symbol - The symbol to retrieve its docblock.
    * @returns {string} The symbol's docblock.
    */
-  getSymbolDocBlock(symbol: ts.Symbol): string {
+  private getSymbolDocBlock(symbol: ts.Symbol): string {
     const commentDisplayParts = symbol.getDocumentationComment(this.checker)
     if (!commentDisplayParts.length) {
       // try to get description from the first JSDoc comment
@@ -194,11 +229,13 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
           this.checker.typeToString(this.checker.getTypeOfSymbol(symbol))
         ) ||
         this.knowledgeBaseFactory.tryToGetSummary(symbol.name) ||
-        this.defaultSummary
+        ""
       )
     }
 
-    return ts.displayPartsToString(commentDisplayParts)
+    return ts
+      .displayPartsToString(commentDisplayParts)
+      .replaceAll("\n", DOCBLOCK_NEW_LINE)
   }
 
   /**

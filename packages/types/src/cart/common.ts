@@ -2,9 +2,6 @@ import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
 
 export interface AdjustmentLineDTO {
-  /**
-   * The ID of the adjustment line
-   */
   id: string
   /**
    * The code of the adjustment line
@@ -18,9 +15,6 @@ export interface AdjustmentLineDTO {
    * The description of the adjustment line
    */
   description?: string
-  /**
-   * The ID of the associated promotion
-   */
   promotion_id?: string
   /**
    * The ID of the associated provider
@@ -466,10 +460,10 @@ export interface FilterableCartProps
 }
 
 /**
- * TODO: Remove this in favor of new__CartDTO, when module is released 
+ * TODO: Remove this in favor of new__CartDTO, when module is released
  * @deprecated Use CartDTO instead
  */
- 
+
 export type legacy__CartDTO = {
   id?: string
   email?: string

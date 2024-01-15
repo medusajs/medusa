@@ -2,6 +2,7 @@ import path from "path"
 import getMonorepoRoot from "./get-monorepo-root.js"
 import ts from "typescript"
 import { minimatch } from "minimatch"
+import capitalize from "./capitalize.js"
 
 export const kindsCanHaveNamespace = [
   ts.SyntaxKind.SourceFile,
@@ -59,12 +60,7 @@ export function getNamespacePath(node: ts.Node): string {
 
       return pathItem
         .split("-")
-        .map(
-          (item) =>
-            `${item.charAt(0).toUpperCase()}${
-              item.length > 1 ? item.substring(1) : ""
-            }`
-        )
+        .map((item) => capitalize(item))
         .join(" ")
     })
     .join(".")

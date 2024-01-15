@@ -142,8 +142,8 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
   getFunctionSummary(node: FunctionNode, symbol?: ts.Symbol): string {
     return symbol
       ? this.knowledgeBaseFactory.tryToGetFunctionSummary(symbol) ||
-          this.getNodeSummary(node)
-      : this.getNodeSummary(node)
+          this.getNodeSummary({ node, symbol })
+      : this.getNodeSummary({ node, symbol })
   }
 
   /**
@@ -213,7 +213,11 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
 
       str += `${DOCBLOCK_NEW_LINE}@param {${this.checker.typeToString(
         symbolType
-      )}} ${symbol.getName()} - ${this.getTypeDocBlock(symbolType)}`
+      )}} ${symbol.getName()} - ${this.getNodeSummary({
+        node: childNode,
+        symbol,
+        nodeType: symbolType,
+      })}`
     })
 
     // add returns
@@ -221,7 +225,10 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
     const returnTypeStr = this.checker.typeToString(nodeType)
     const possibleReturnSummary = !this.hasReturnData(returnTypeStr)
       ? `Resolves when ${this.defaultSummary}`
-      : this.getTypeDocBlock(nodeType)
+      : this.getNodeSummary({
+          node: actualNode,
+          nodeType,
+        })
 
     str += `${DOCBLOCK_NEW_LINE}@returns {${returnTypeStr}} ${
       nodeSymbol
