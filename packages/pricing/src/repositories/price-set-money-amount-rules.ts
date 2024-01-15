@@ -9,4 +9,9 @@ export class PriceSetMoneyAmountRulesRepository extends DALUtils.mikroOrmBaseRep
     create: RepositoryTypes.CreatePriceSetMoneyAmountRulesDTO
     update: RepositoryTypes.UpdatePriceSetMoneyAmountRulesDTO
   }
->(PriceSetMoneyAmountRules) {}
+>(PriceSetMoneyAmountRules) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+}

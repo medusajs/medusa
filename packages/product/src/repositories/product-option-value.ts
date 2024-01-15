@@ -11,6 +11,11 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 export class ProductOptionValueRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
   ProductOptionValue
 ) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+
   async upsert(
     optionValues: (UpdateProductOptionValueDTO | CreateProductOptionValueDTO)[],
     context: Context = {}

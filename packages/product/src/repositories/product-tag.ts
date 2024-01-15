@@ -15,6 +15,11 @@ export class ProductTagRepository extends DALUtils.mikroOrmBaseRepositoryFactory
     update: UpdateProductTagDTO
   }
 >(ProductTag) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+
   async upsert(
     tags: UpsertProductTagDTO[],
     context: Context = {}
