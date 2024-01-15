@@ -228,7 +228,7 @@ module.exports = {
       },
     },
     {
-      files: ["packages/admin-next/dashboard/**/*"],
+      files: ["packages/admin-next/dashboard/src/**/*.{ts,tsx}"],
       env: { browser: true, es2020: true, node: true },
       extends: [
         "eslint:recommended",
@@ -237,7 +237,7 @@ module.exports = {
       ],
       parser: "@typescript-eslint/parser",
       parserOptions: {
-        project: "./packages/admin-next/dashboard/tsconfig.json",
+        project: "tsconfig.json",
       },
       plugins: ["react-refresh"],
       rules: {
