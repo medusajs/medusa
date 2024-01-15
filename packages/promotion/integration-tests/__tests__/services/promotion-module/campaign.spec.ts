@@ -236,6 +236,31 @@ describe("Promotion Module Service: Campaigns", () => {
         })
       )
     })
+
+    it("should remove promotions of the campaign successfully", async () => {
+      await createCampaigns(repositoryManager)
+      await createPromotions(repositoryManager)
+
+      await service.updateCampaigns({
+        id: "campaign-id-1",
+        promotions: [{ id: "promotion-id-1" }, { id: "promotion-id-2" }],
+      })
+
+      const updatedCampaign = await service.updateCampaigns({
+        id: "campaign-id-1",
+        promotions: [{ id: "promotion-id-1" }],
+      })
+
+      expect(updatedCampaign).toEqual(
+        expect.objectContaining({
+          promotions: [
+            expect.objectContaining({
+              id: "promotion-id-1",
+            }),
+          ],
+        })
+      )
+    })
   })
 
   describe("retrieveCampaign", () => {

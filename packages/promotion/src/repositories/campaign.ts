@@ -16,25 +16,25 @@ export class CampaignRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     context: Context = {}
   ): Promise<Campaign[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    const promotionIds: string[] = []
+    const promotionIdsToUpsert: string[] = []
     const campaignIdentifierPromotionsMap = new Map<string, string[]>()
 
     data.forEach((campaignData) => {
       const campaignPromotionIds =
         campaignData.promotions?.map((p) => p.id) || []
 
-      promotionIds.push(...campaignPromotionIds)
+      promotionIdsToUpsert.push(...campaignPromotionIds)
 
       campaignIdentifierPromotionsMap.set(
         campaignData.campaign_identifier,
-        promotionIds
+        campaignPromotionIds
       )
 
       delete campaignData.promotions
     })
 
     const existingPromotions = await manager.find(Promotion, {
-      id: promotionIds,
+      id: promotionIdsToUpsert,
     })
 
     const existingPromotionsMap = new Map<string, Promotion>(
@@ -48,10 +48,6 @@ export class CampaignRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
         campaignIdentifierPromotionsMap.get(
           createdCampaign.campaign_identifier
         ) || []
-
-      if (!campaignPromotionIds.length) {
-        continue
-      }
 
       for (const campaignPromotionId of campaignPromotionIds) {
         const promotion = existingPromotionsMap.get(campaignPromotionId)
@@ -72,7 +68,7 @@ export class CampaignRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     context: Context = {}
   ): Promise<Campaign[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    const promotionIds: string[] = []
+    const promotionIdsToUpsert: string[] = []
     const campaignIds: string[] = []
     const campaignPromotionIdsMap = new Map<string, string[]>()
 
@@ -81,7 +77,7 @@ export class CampaignRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
         campaignData.promotions?.map((p) => p.id) || []
 
       campaignIds.push(campaignData.id)
-      promotionIds.push(...campaignPromotionIds)
+      promotionIdsToUpsert.push(...campaignPromotionIds)
       campaignPromotionIdsMap.set(campaignData.id, campaignPromotionIds)
 
       delete campaignData.promotions
@@ -92,6 +88,11 @@ export class CampaignRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
       { id: campaignIds },
       { populate: ["promotions"] }
     )
+
+    const promotionIds = existingCampaigns
+      .map((campaign) => campaign.promotions?.map((p) => p.id))
+      .flat(1)
+      .concat(promotionIdsToUpsert)
 
     const existingPromotions = await manager.find(Promotion, {
       id: promotionIds,
@@ -108,7 +109,7 @@ export class CampaignRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     const updatedCampaigns = await super.update(data, context)
 
     for (const updatedCampaign of updatedCampaigns) {
-      const promotionIdsToAdd =
+      const upsertPromotionIds =
         campaignPromotionIdsMap.get(updatedCampaign.id) || []
       const existingPromotionIds = (
         existingCampaignsMap.get(updatedCampaign.id)?.promotions || []
@@ -121,12 +122,12 @@ export class CampaignRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
           continue
         }
 
-        if (!promotionIdsToAdd.includes(existingPromotionId)) {
+        if (!upsertPromotionIds.includes(existingPromotionId)) {
           updatedCampaign.promotions.remove(promotion)
         }
       }
 
-      for (const promotionIdToAdd of promotionIdsToAdd) {
+      for (const promotionIdToAdd of upsertPromotionIds) {
         const promotion = existingPromotionsMap.get(promotionIdToAdd)
 
         if (!promotion) {
