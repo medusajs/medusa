@@ -6,7 +6,7 @@ import {
   parallelize,
   StepResponse,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "../.."
 
 jest.setTimeout(30000)
 
