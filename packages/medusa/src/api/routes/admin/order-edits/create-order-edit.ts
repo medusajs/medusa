@@ -28,9 +28,32 @@ import {
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdits.create({ orderId })
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
- *         })
+ *       .then(({ order_edit }) => {
+ *         console.log(order_edit.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateOrderEdit } from "medusa-react"
+ *
+ *       const CreateOrderEdit = () => {
+ *         const createOrderEdit = useAdminCreateOrderEdit()
+ *
+ *         const handleCreateOrderEdit = (orderId: string) => {
+ *           createOrderEdit.mutate({
+ *             order_id: orderId,
+ *           }, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(order_edit.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateOrderEdit
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -93,6 +116,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostOrderEditsReq
  * type: object
+ * description: "The details of the order edit to create."
  * required:
  *   - order_id
  * properties:

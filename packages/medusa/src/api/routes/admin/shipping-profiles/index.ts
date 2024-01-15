@@ -71,6 +71,7 @@ export type AdminDeleteShippingProfileRes = DeleteResponse
 /**
  * @schema AdminShippingProfilesRes
  * type: object
+ * description: "The shipping profile's details."
  * x-expanded-relations:
  *   field: shipping_profile
  *   relations:
@@ -90,6 +91,7 @@ export type AdminShippingProfilesRes = {
 /**
  * @schema AdminShippingProfilesListRes
  * type: object
+ * description: "The list of shipping profiles."
  * required:
  *   - shipping_profiles
  * properties:

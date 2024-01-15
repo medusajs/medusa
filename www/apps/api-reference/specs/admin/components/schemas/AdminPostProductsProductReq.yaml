@@ -1,4 +1,5 @@
 type: object
+description: The details to update of the product.
 properties:
   title:
     description: The title of the Product
@@ -246,6 +247,9 @@ properties:
   width:
     description: The width of the Product.
     type: number
+  hs_code:
+    description: The Harmonized System code of the product variant.
+    type: string
   origin_country:
     description: The country of origin of the Product.
     type: string

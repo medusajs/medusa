@@ -9,6 +9,7 @@ import { IsOptional, IsString } from "class-validator"
 
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { validator } from "../../../../utils/validator"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/variants/{id}
@@ -42,6 +43,16 @@ import { validator } from "../../../../utils/validator"
  *   method: retrieve
  *   queryParams: StoreGetVariantsVariantParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.product.variants.retrieve(productVariantId)
+ *       .then(({ variant }) => {
+ *         console.log(variant.id);
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -122,7 +133,7 @@ export default async (req, res) => {
     )) as any
   )
 
-  await Promise.all(decoratePromises)
+  await promiseAll(decoratePromises)
 
   res.json({ variant })
 }

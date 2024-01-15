@@ -42,7 +42,41 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminRefundPayment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const refundPayment = useAdminRefundPayment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleRefund = (
+ *           amount: number,
+ *           reason: string
+ *         ) => {
+ *           refundPayment.mutate({
+ *             amount,
+ *             reason,
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.refunds)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -105,6 +139,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostOrdersOrderRefundsReq
  * type: object
+ * description: "The details of the order refund."
  * required:
  *   - amount
  *   - reason
@@ -119,7 +154,8 @@ export default async (req, res) => {
  *     description: A note with additional details about the Refund.
  *     type: string
  *   no_notification:
- *     description: If set to `true`, no notification will be sent to the customer related to this Refund.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this Refund.
  *     type: boolean
  */
 export class AdminPostOrdersOrderRefundsReq {

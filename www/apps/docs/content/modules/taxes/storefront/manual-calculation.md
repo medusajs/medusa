@@ -52,7 +52,7 @@ You can learn how to [retrieve and use services](../../../development/services/c
 
 Another way you can use the `CartService` to calculate taxes is using the method `decorateTotals`:
 
-```ts title=src/api/store/line-taxes/[cart_id]/route.ts
+```ts title="src/api/store/line-taxes/[cart_id]/route.ts"
 import { CartService } from "@medusajs/medusa"
 import type { 
   MedusaRequest, 

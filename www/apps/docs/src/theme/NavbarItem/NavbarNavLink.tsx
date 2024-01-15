@@ -13,7 +13,7 @@ export default function NavbarNavLink({
   html,
   prependBaseUrlToHref,
   ...props
-}: Props): JSX.Element {
+}: Omit<Props, "key">): JSX.Element {
   // TODO all this seems hacky
   // {to: 'version'} should probably be forbidden, in favor of {to: '/version'}
   const toUrl = useBaseUrl(to)

@@ -9,7 +9,7 @@ import { PaymentCollectionService } from "../../../../services"
  * description: "Authorize a Payment Session of a Payment Collection."
  * x-authenticated: false
  * parameters:
- *   - (path) id=* {string} The ID of the Payment Collections.
+ *   - (path) id=* {string} The ID of the Payment Collection.
  *   - (path) session_id=* {string} The ID of the Payment Session.
  * x-codegen:
  *   method: authorizePaymentSession
@@ -23,7 +23,37 @@ import { PaymentCollectionService } from "../../../../services"
  *       medusa.paymentCollections.authorize(paymentId, sessionId)
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAuthorizePaymentSession } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentCollectionId: string
+ *       }
+ *
+ *       const PaymentCollection = ({
+ *         paymentCollectionId
+ *       }: Props) => {
+ *         const authorizePaymentSession = useAuthorizePaymentSession(
+ *           paymentCollectionId
+ *         )
+ *         // ...
+ *
+ *         const handleAuthorizePayment = (paymentSessionId: string) => {
+ *           authorizePaymentSession.mutate(paymentSessionId, {
+ *             onSuccess: ({ payment_collection }) => {
+ *               console.log(payment_collection.payment_sessions)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PaymentCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |

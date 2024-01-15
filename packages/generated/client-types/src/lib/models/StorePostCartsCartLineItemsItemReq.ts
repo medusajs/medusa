@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the line item.
+ */
 export interface StorePostCartsCartLineItemsItemReq {
   /**
    * The quantity of the line item in the cart.

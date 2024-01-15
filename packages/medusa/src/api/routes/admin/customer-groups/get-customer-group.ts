@@ -26,7 +26,31 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.customerGroups.retrieve(customerGroupId)
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCustomerGroup } from "medusa-react"
+ *
+ *       type Props = {
+ *         customerGroupId: string
+ *       }
+ *
+ *       const CustomerGroup = ({ customerGroupId }: Props) => {
+ *         const { customer_group, isLoading } = useAdminCustomerGroup(
+ *           customerGroupId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {customer_group && <span>{customer_group.name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default CustomerGroup
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -1,0 +1,6 @@
+{
+  "label": "Stripe",
+  "customProps": {
+    "reverse": true
+  }
+}

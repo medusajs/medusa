@@ -4,6 +4,8 @@ import {
   ModuleDefinition,
 } from "@medusajs/types"
 
+import { upperCaseFirst } from "@medusajs/utils"
+
 export enum Modules {
   EVENT_BUS = "eventBus",
   STOCK_LOCATION = "stockLocationService",
@@ -11,6 +13,10 @@ export enum Modules {
   CACHE = "cacheService",
   PRODUCT = "productService",
   PRICING = "pricingService",
+  PROMOTION = "promotion",
+  AUTHENTICATION = "authentication",
+  CART = "cart",
+  PAYMENT = "payment",
 }
 
 export enum ModuleRegistrationName {
@@ -20,6 +26,10 @@ export enum ModuleRegistrationName {
   CACHE = "cacheService",
   PRODUCT = "productModuleService",
   PRICING = "pricingModuleService",
+  PROMOTION = "promotionModuleService",
+  AUTHENTICATION = "authenticationModuleService",
+  CART = "cartModuleService",
+  PAYMENT = "paymentModuleService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
@@ -29,6 +39,10 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.INVENTORY]: "@medusajs/inventory",
   [Modules.CACHE]: "@medusajs/cache-inmemory",
   [Modules.PRICING]: "@medusajs/pricing",
+  [Modules.PROMOTION]: "@medusajs/promotion",
+  [Modules.AUTHENTICATION]: "@medusajs/authentication",
+  [Modules.CART]: "@medusajs/cart",
+  [Modules.PAYMENT]: "@medusajs/payment",
 }
 
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
@@ -38,7 +52,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isLegacy: true,
       registrationName: ModuleRegistrationName.EVENT_BUS,
       defaultPackage: MODULE_PACKAGE_NAMES[Modules.EVENT_BUS],
-      label: "EventBusModuleService",
+      label: upperCaseFirst(ModuleRegistrationName.EVENT_BUS),
       canOverride: true,
       isRequired: true,
       dependencies: ["logger"],
@@ -52,7 +66,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isLegacy: true,
       registrationName: ModuleRegistrationName.STOCK_LOCATION,
       defaultPackage: false,
-      label: "StockLocationService",
+      label: upperCaseFirst(ModuleRegistrationName.STOCK_LOCATION),
       isRequired: false,
       canOverride: true,
       isQueryable: true,
@@ -67,7 +81,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isLegacy: true,
       registrationName: ModuleRegistrationName.INVENTORY,
       defaultPackage: false,
-      label: "InventoryService",
+      label: upperCaseFirst(ModuleRegistrationName.INVENTORY),
       isRequired: false,
       canOverride: true,
       isQueryable: true,
@@ -82,7 +96,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isLegacy: true,
       registrationName: ModuleRegistrationName.CACHE,
       defaultPackage: MODULE_PACKAGE_NAMES[Modules.CACHE],
-      label: "CacheService",
+      label: upperCaseFirst(ModuleRegistrationName.CACHE),
       isRequired: true,
       canOverride: true,
       defaultModuleDeclaration: {
@@ -94,7 +108,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       key: Modules.PRODUCT,
       registrationName: ModuleRegistrationName.PRODUCT,
       defaultPackage: false,
-      label: "ProductModuleService",
+      label: upperCaseFirst(ModuleRegistrationName.PRODUCT),
       isRequired: false,
       canOverride: true,
       isQueryable: true,
@@ -108,7 +122,63 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       key: Modules.PRICING,
       registrationName: ModuleRegistrationName.PRICING,
       defaultPackage: false,
-      label: "PricingModuleService",
+      label: upperCaseFirst(ModuleRegistrationName.PRICING),
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.PROMOTION]: {
+      key: Modules.PROMOTION,
+      registrationName: ModuleRegistrationName.PROMOTION,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.PROMOTION),
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.AUTHENTICATION]: {
+      key: Modules.AUTHENTICATION,
+      registrationName: ModuleRegistrationName.AUTHENTICATION,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.AUTHENTICATION),
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.CART]: {
+      key: Modules.CART,
+      registrationName: ModuleRegistrationName.CART,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.CART),
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.PAYMENT]: {
+      key: Modules.PAYMENT,
+      registrationName: ModuleRegistrationName.PAYMENT,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.PAYMENT),
       isRequired: false,
       canOverride: true,
       isQueryable: true,

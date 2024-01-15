@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator"
+import { IsNotEmpty, IsString, IsObject, IsOptional } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
@@ -36,7 +36,33 @@ import { FindParams } from "../../../../types/common"
  *       })
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateProductCategory } from "medusa-react"
+ *
+ *       const CreateCategory = () => {
+ *         const createCategory = useAdminCreateProductCategory()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           name: string
+ *         ) => {
+ *           createCategory.mutate({
+ *             name,
+ *           }, {
+ *             onSuccess: ({ product_category }) => {
+ *               console.log(product_category.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateCategory
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -99,6 +125,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostProductCategoriesReq
  * type: object
+ * description: "The details of the product category to create."
  * required:
  *   - name
  * properties:
@@ -113,19 +140,31 @@ export default async (req: Request, res: Response) => {
  *     description: The handle of the product category. If none is provided, the kebab-case version of the name will be used. This field can be used as a slug in URLs.
  *   is_internal:
  *     type: boolean
- *     description: If set to `true`, the product category will only be available to admins.
+ *     description: >-
+ *       If set to `true`, the product category will only be available to admins.
  *   is_active:
  *     type: boolean
- *     description: If set to `false`, the product category will not be available in the storefront.
+ *     description: >-
+ *       If set to `false`, the product category will not be available in the storefront.
  *   parent_category_id:
  *     type: string
  *     description: The ID of the parent product category
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 // eslint-disable-next-line max-len
 export class AdminPostProductCategoriesReq extends AdminProductCategoriesReqBase {
   @IsString()
   @IsNotEmpty()
   name: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
 }
 
 export class AdminPostProductCategoriesParams extends FindParams {}

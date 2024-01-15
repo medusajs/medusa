@@ -1,12 +1,14 @@
-import { setPort, useApi } from "../../../environment-helpers/use-api"
+import { useApi } from "../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../environment-helpers/use-db"
 import { simpleCartFactory, simpleRegionFactory } from "../../../factories"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { AxiosInstance } from "axios"
 import path from "path"
-import { bootstrapApp } from "../../../environment-helpers/bootstrap-app"
+import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
+import { getContainer } from "../../../environment-helpers/use-container"
 import adminSeeder from "../../../helpers/admin-seeder"
+import { createDefaultRuleTypes } from "../../helpers/create-default-rule-types"
 
 jest.setTimeout(5000000)
 
@@ -23,34 +25,29 @@ const adminHeaders = {
 }
 
 const env = {
-  MEDUSA_FF_ISOLATE_PRICING_DOMAIN: true,
-  MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
+  MEDUSA_FF_MEDUSA_V2: true,
 }
 
 describe("Link Modules", () => {
   let medusaContainer
   let dbConnection
-  let express
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-
-    const { container, app, port } = await bootstrapApp({ cwd, env })
-    medusaContainer = container
-    setPort(port)
-
-    express = app.listen(port)
+    shutdownServer = await startBootstrapApp({ cwd, env })
+    medusaContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-
-    express.close()
+    await shutdownServer()
   })
 
   beforeEach(async () => {
+    await createDefaultRuleTypes(medusaContainer)
     await adminSeeder(dbConnection)
     await simpleRegionFactory(dbConnection, {
       id: "region-1",

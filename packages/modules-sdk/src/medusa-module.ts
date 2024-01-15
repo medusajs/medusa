@@ -3,9 +3,10 @@ import {
   InternalModuleDeclaration,
   LinkModuleDefinition,
   LoadedModule,
-  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  MedusaContainer,
+  ModuleBootstrapDeclaration,
   ModuleDefinition,
   ModuleExports,
   ModuleJoinerConfig,
@@ -52,7 +53,7 @@ type ModuleAlias = {
 export type ModuleBootstrapOptions = {
   moduleKey: string
   defaultPath: string
-  declaration?: InternalModuleDeclaration | ExternalModuleDeclaration
+  declaration?: ModuleBootstrapDeclaration
   moduleExports?: ModuleExports
   sharedContainer?: MedusaContainer
   moduleDefinition?: ModuleDefinition

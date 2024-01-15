@@ -43,7 +43,41 @@ import { EntityManager } from "typeorm"
  *       })
  *       .catch(() => {
  *         // an error occurred
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminAcceptInvite } from "medusa-react"
+ *
+ *       const AcceptInvite = () => {
+ *         const acceptInvite = useAdminAcceptInvite()
+ *         // ...
+ *
+ *         const handleAccept = (
+ *           token: string,
+ *           firstName: string,
+ *           lastName: string,
+ *           password: string
+ *         ) => {
+ *           acceptInvite.mutate({
+ *             token,
+ *             user: {
+ *               first_name: firstName,
+ *               last_name: lastName,
+ *               password,
+ *             },
+ *           }, {
+ *             onSuccess: () => {
+ *               // invite accepted successfully.
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default AcceptInvite
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -95,15 +129,27 @@ export default async (req, res) => {
   res.sendStatus(200)
 }
 
+/**
+ * Details of the use accepting the invite.
+ */
 export class AdminPostInvitesInviteAcceptUserReq {
+  /**
+   * The invite's first name.
+   */
   @IsString()
   @IsOptional()
   first_name: string
 
+  /**
+   * The invite's last name.
+   */
   @IsString()
   @IsOptional()
   last_name: string
 
+  /**
+   * The invite's password
+   */
   @IsString()
   password: string
 }
@@ -111,6 +157,7 @@ export class AdminPostInvitesInviteAcceptUserReq {
 /**
  * @schema AdminPostInvitesInviteAcceptReq
  * type: object
+ * description: "The details of the invite to be accepted."
  * required:
  *   - token
  *   - user

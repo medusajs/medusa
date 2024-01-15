@@ -21,9 +21,39 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.publishableApiKeys.revoke(publishableApiKeyId)
- *         .then(({ publishable_api_key }) => {
- *           console.log(publishable_api_key.id)
- *         })
+ *       .then(({ publishable_api_key }) => {
+ *         console.log(publishable_api_key.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminRevokePublishableApiKey } from "medusa-react"
+ *
+ *       type Props = {
+ *         publishableApiKeyId: string
+ *       }
+ *
+ *       const PublishableApiKey = ({
+ *         publishableApiKeyId
+ *       }: Props) => {
+ *         const revokeKey = useAdminRevokePublishableApiKey(
+ *           publishableApiKeyId
+ *         )
+ *         // ...
+ *
+ *         const handleRevoke = () => {
+ *           revokeKey.mutate(void 0, {
+ *             onSuccess: ({ publishable_api_key }) => {
+ *               console.log(publishable_api_key.revoked_at)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PublishableApiKey
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -2,6 +2,7 @@ import { CreateProductVariantOptionDTO } from "@medusajs/types"
 
 export interface UpdateProductVariantDTO {
   id: string
+  product_id: string
   title?: string
   sku?: string
   barcode?: string
@@ -18,6 +19,6 @@ export interface UpdateProductVariantDTO {
   length?: number
   height?: number
   width?: number
-  options?: CreateProductVariantOptionDTO[]
+  options?: (CreateProductVariantOptionDTO & { id?: string })[]
   metadata?: Record<string, unknown>
 }

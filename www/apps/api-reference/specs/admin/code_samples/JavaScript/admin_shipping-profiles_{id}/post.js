@@ -6,4 +6,4 @@ medusa.admin.shippingProfiles.update(shippingProfileId, {
 })
 .then(({ shipping_profile }) => {
   console.log(shipping_profile.id);
-});
+})

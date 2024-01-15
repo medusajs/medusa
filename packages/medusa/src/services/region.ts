@@ -1,11 +1,11 @@
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
 import { Country, Currency, Region } from "../models"
 import { FindConfig, Selector } from "../types/common"
 import { CreateRegionInput, UpdateRegionInput } from "../types/region"
 import { buildQuery, setMetadata } from "../utils"
 
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { CountryRepository } from "../repositories/country"
@@ -260,7 +260,7 @@ class RegionService extends TransactionBaseService {
     }
 
     if (regionData.countries) {
-      region.countries = await Promise.all(
+      region.countries = await promiseAll(
         regionData.countries!.map(async (countryCode) =>
           this.validateCountry(countryCode, id!)
         )
@@ -282,7 +282,7 @@ class RegionService extends TransactionBaseService {
     }
 
     if (regionData.payment_providers) {
-      region.payment_providers = await Promise.all(
+      region.payment_providers = await promiseAll(
         regionData.payment_providers.map(async (pId) => {
           const pp = await ppRepository.findOne({ where: { id: pId } })
           if (!pp) {
@@ -298,7 +298,7 @@ class RegionService extends TransactionBaseService {
     }
 
     if (regionData.fulfillment_providers) {
-      region.fulfillment_providers = await Promise.all(
+      region.fulfillment_providers = await promiseAll(
         regionData.fulfillment_providers.map(async (fId) => {
           const fp = await fpRepository.findOne({ where: { id: fId } })
           if (!fp) {

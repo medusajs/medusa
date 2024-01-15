@@ -24,7 +24,40 @@ import RegionService from "../../../../services/region"
  *       medusa.admin.regions.deleteFulfillmentProvider(regionId, "manual")
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminRegionDeleteFulfillmentProvider
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const removeFulfillmentProvider =
+ *           useAdminRegionDeleteFulfillmentProvider(regionId)
+ *         // ...
+ *
+ *         const handleRemoveFulfillmentProvider = (
+ *           providerId: string
+ *         ) => {
+ *           removeFulfillmentProvider.mutate(providerId, {
+ *             onSuccess: ({ region }) => {
+ *               console.log(region.fulfillment_providers)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |

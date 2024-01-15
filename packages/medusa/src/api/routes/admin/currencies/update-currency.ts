@@ -33,7 +33,35 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ currency }) => {
  *         console.log(currency.code);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateCurrency } from "medusa-react"
+ *
+ *       type Props = {
+ *         currencyCode: string
+ *       }
+ *
+ *       const Currency = ({ currencyCode }: Props) => {
+ *         const updateCurrency = useAdminUpdateCurrency(currencyCode)
+ *         // ...
+ *
+ *         const handleUpdate = (includes_tax: boolean) => {
+ *           updateCurrency.mutate({
+ *             includes_tax,
+ *           }, {
+ *             onSuccess: ({ currency }) => {
+ *               console.log(currency)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Currency
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -50,12 +78,24 @@ import { EntityManager } from "typeorm"
  * tags:
  *   - Currencies
  * responses:
- *   200:
+ *   "200":
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
  *           $ref: "#/components/schemas/AdminCurrenciesRes"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req: ExtendedRequest<Currency>, res) => {
   const code = req.params.code as string
@@ -75,6 +115,7 @@ export default async (req: ExtendedRequest<Currency>, res) => {
 /**
  * @schema AdminPostCurrenciesCurrencyReq
  * type: object
+ * description: "The details to update in the currency"
  * properties:
  *   includes_tax:
  *     type: boolean

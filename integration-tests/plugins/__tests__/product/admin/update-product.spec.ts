@@ -1,4 +1,3 @@
-import setupServer from "../../../../environment-helpers/setup-server"
 import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
@@ -7,6 +6,7 @@ import { simpleProductFactory } from "../../../../factories"
 import { Region } from "@medusajs/medusa"
 import { AxiosInstance } from "axios"
 import path from "path"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
@@ -20,28 +20,27 @@ const adminHeaders = {
 }
 
 const env = {
-  MEDUSA_FF_ISOLATE_PRICING_DOMAIN: true,
-  MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
+  MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
+describe("POST /admin/products/:id", () => {
   let dbConnection
   let appContainer
-  let medusaProcess
+  let shutdownServer
   let product
   let variant
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    medusaProcess = await setupServer({ cwd, env, bootstrapApp: true } as any)
+    shutdownServer = await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    medusaProcess.kill()
+    await shutdownServer()
   })
 
   beforeEach(async () => {
@@ -80,7 +79,7 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
   })
 
   it("should update product variant price sets and prices", async () => {
-    const api = useApi()
+    const api = useApi() as any
     const data = {
       title: "test product update",
       variants: [
@@ -102,19 +101,19 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
       ],
     }
 
-    let response = await api.post(
+    await api.post(`/admin/products/${product.id}`, data, adminHeaders)
+
+    const response = await api.get(
       `/admin/products/${product.id}`,
-      data,
       adminHeaders
     )
 
-    response = await api.get(`/admin/products/${product.id}`, adminHeaders)
-
     expect(response.status).toEqual(200)
+    expect(response.data.product.variants).toHaveLength(1)
     expect(response.data.product).toEqual(
       expect.objectContaining({
         id: expect.any(String),
-        variants: expect.arrayContaining([
+        variants: [
           expect.objectContaining({
             id: variant.id,
             title: "test variant update",
@@ -130,7 +129,7 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
               }),
             ]),
           }),
-        ]),
+        ],
       })
     )
   })
@@ -143,14 +142,13 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
         {
           amount: 3000,
           currency_code: "usd",
-          rules: {},
         },
       ],
     })
 
     const moneyAmountToUpdate = priceSet.money_amounts?.[0]
 
-    const api = useApi()
+    const api = useApi() as any
     const data = {
       title: "test product update",
       variants: [
@@ -173,13 +171,12 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
       ],
     }
 
-    let response = await api.post(
+    await api.post(`/admin/products/${product.id}`, data, adminHeaders)
+
+    const response = await api.get(
       `/admin/products/${product.id}`,
-      data,
       adminHeaders
     )
-
-    response = await api.get(`/admin/products/${product.id}`, adminHeaders)
 
     expect(response.status).toEqual(200)
     expect(response.data.product).toEqual(
@@ -248,13 +245,12 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
       ],
     }
 
-    let response = await api.post(
+    await api.post(`/admin/products/${product.id}`, data, adminHeaders)
+
+    const response = await api.get(
       `/admin/products/${product.id}`,
-      data,
       adminHeaders
     )
-
-    response = await api.get(`/admin/products/${product.id}`, adminHeaders)
 
     expect(response.status).toEqual(200)
     expect(response.data.product).toEqual(

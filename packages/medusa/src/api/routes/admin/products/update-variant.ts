@@ -1,6 +1,6 @@
 import { WorkflowTypes } from "@medusajs/types"
-import { FlagRouter } from "@medusajs/utils"
-import { UpdateProductVariants } from "@medusajs/workflows"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { UpdateProductVariants } from "@medusajs/core-flows"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -12,9 +12,7 @@ import {
   ValidateNested,
 } from "class-validator"
 import { EntityManager } from "typeorm"
-
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
 import {
   PricingService,
   ProductService,
@@ -65,7 +63,42 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateVariant } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *         variantId: string
+ *       }
+ *
+ *       const ProductVariant = ({
+ *         productId,
+ *         variantId
+ *       }: Props) => {
+ *         const updateVariant = useAdminUpdateVariant(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (title: string) => {
+ *           updateVariant.mutate({
+ *             variant_id: variantId,
+ *             title,
+ *           }, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.variants)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ProductVariant
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -124,7 +157,7 @@ export default async (req, res) => {
 
   const validatedQueryParams = await validator(PriceSelectionParams, req.query)
 
-  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const updateVariantsWorkflow = UpdateProductVariants.updateProductVariants(
       req.scope
     )

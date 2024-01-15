@@ -18,9 +18,37 @@ import { PaymentCollectionService } from "../../../../services"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.paymentCollections.delete(paymentCollectionId)
- *         .then(({ id, object, deleted }) => {
- *           console.log(id)
- *         })
+ *       .then(({ id, object, deleted }) => {
+ *         console.log(id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeletePaymentCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentCollectionId: string
+ *       }
+ *
+ *       const PaymentCollection = ({ paymentCollectionId }: Props) => {
+ *         const deleteCollection = useAdminDeletePaymentCollection(
+ *           paymentCollectionId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteCollection.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PaymentCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |

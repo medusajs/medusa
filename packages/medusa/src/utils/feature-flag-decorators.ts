@@ -34,7 +34,7 @@ export function FeatureFlagColumn(
 }
 
 export function FeatureFlagDecorators(
-  featureFlag: string,
+  featureFlag: string | string[],
   decorators: PropertyDecorator[]
 ): PropertyDecorator {
   return function (target, propertyName) {
@@ -51,7 +51,7 @@ export function FeatureFlagDecorators(
 }
 
 export function FeatureFlagClassDecorators(
-  featureFlag: string,
+  featureFlag: string | string[],
   decorators: ClassDecorator[]
 ): ClassDecorator {
   return function (target) {
@@ -68,7 +68,7 @@ export function FeatureFlagClassDecorators(
 }
 
 export function FeatureFlagEntity(
-  featureFlag: string,
+  featureFlag: string | string[],
   name?: string,
   options?: EntityOptions
 ): ClassDecorator {

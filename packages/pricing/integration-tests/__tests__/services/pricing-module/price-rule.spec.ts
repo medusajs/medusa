@@ -1,7 +1,7 @@
 import { CreatePriceRuleDTO, IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { PriceSetMoneyAmount, initialize } from "../../../../src"
+import { initialize, PriceSetMoneyAmount } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
@@ -279,7 +279,7 @@ describe("PricingModule Service - PriceRule", () => {
           error = e
         }
 
-        expect(error.message).toEqual('PriceRule with id "undefined" not found')
+        expect(error.message).toEqual('PriceRule with id "" not found')
       })
 
       it("should create a PriceRule successfully", async () => {

@@ -15,6 +15,28 @@
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in
  *       medusa.admin.auth.deleteSession()
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteSession } from "medusa-react"
+ *
+ *       const Logout = () => {
+ *         const adminLogout = useAdminDeleteSession()
+ *         // ...
+ *
+ *         const handleLogout = () => {
+ *           adminLogout.mutate(undefined, {
+ *             onSuccess: () => {
+ *               // user logged out.
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Logout
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -20,9 +20,41 @@ import { OrderEditService } from "../../../../services"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdits.deleteItemChange(orderEdit_id, itemChangeId)
- *         .then(({ id, object, deleted }) => {
- *           console.log(id)
- *         })
+ *       .then(({ id, object, deleted }) => {
+ *         console.log(id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteOrderEditItemChange } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *         itemChangeId: string
+ *       }
+ *
+ *       const OrderEditItemChange = ({
+ *         orderEditId,
+ *         itemChangeId
+ *       }: Props) => {
+ *         const deleteItemChange = useAdminDeleteOrderEditItemChange(
+ *           orderEditId,
+ *           itemChangeId
+ *         )
+ *
+ *         const handleDeleteItemChange = () => {
+ *           deleteItemChange.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEditItemChange
  *   - lang: Shell
  *     label: cURL
  *     source: |

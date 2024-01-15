@@ -6,7 +6,7 @@ import { FindParams } from "../../../../types/common"
  * @oas [get] /admin/discounts/{id}
  * operationId: "GetDiscountsDiscount"
  * summary: "Get a Discount"
- * description: "Retrieves a Discount"
+ * description: "Retrieve a Discount."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Discount
@@ -25,7 +25,31 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.discounts.retrieve(discountId)
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDiscount } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *       }
+ *
+ *       const Discount = ({ discountId }: Props) => {
+ *         const { discount, isLoading } = useAdminDiscount(
+ *           discountId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {discount && <span>{discount.code}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |

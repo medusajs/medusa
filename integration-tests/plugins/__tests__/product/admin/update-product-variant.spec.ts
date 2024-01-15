@@ -1,17 +1,17 @@
-import setupServer from "../../../../environment-helpers/setup-server"
-import { useApi } from "../../../../environment-helpers/use-api"
-import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import {
   simpleProductFactory,
   simpleRegionFactory,
 } from "../../../../factories"
 
-import path from "path"
+import { AxiosInstance } from "axios"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
-import { AxiosInstance } from "axios"
+import { getContainer } from "../../../../environment-helpers/use-container"
+import path from "path"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { useApi } from "../../../../environment-helpers/use-api"
 
 jest.setTimeout(50000)
 
@@ -22,28 +22,27 @@ const adminHeaders = {
 }
 
 const env = {
-  MEDUSA_FF_ISOLATE_PRICING_DOMAIN: true,
-  MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
+  MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () => {
+describe("POST /admin/products/:id/variants/:id", () => {
   let dbConnection
   let appContainer
-  let medusaProcess
+  let shutdownServer
   let product
   let variant
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    medusaProcess = await setupServer({ cwd, env, bootstrapApp: true } as any)
+    shutdownServer = await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    medusaProcess.kill()
+    await shutdownServer()
   })
 
   beforeEach(async () => {
@@ -62,6 +61,9 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
       variants: [
         {
           options: [{ option_id: "test-product-option-1", value: "test" }],
+        },
+        {
+          options: [{ option_id: "test-product-option-1", value: "test 2" }],
         },
       ],
       options: [
@@ -138,7 +140,6 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
         {
           amount: 3000,
           currency_code: "usd",
-          rules: {},
         },
       ],
     })
@@ -248,6 +249,233 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
             ]),
           }),
         ]),
+      })
+    )
+  })
+
+  it("should update variant option value", async () => {
+    const api = useApi()! as AxiosInstance
+
+    const data = {
+      options: [
+        {
+          option_id: "test-product-option-1",
+          value: "updated",
+        },
+      ],
+    }
+
+    await api.post(
+      `/admin/products/${product.id}/variants/${variant.id}`,
+      data,
+      adminHeaders
+    )
+
+    const response = await api.get(
+      `/admin/products/${product.id}`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        variants: expect.arrayContaining([
+          expect.objectContaining({
+            id: variant.id,
+            options: [
+              expect.objectContaining({
+                option_id: "test-product-option-1",
+                value: "updated",
+              }),
+            ],
+          }),
+          expect.objectContaining({
+            id: product.variants[1].id,
+            options: [
+              expect.objectContaining({
+                option_id: "test-product-option-1",
+                value: "test 2",
+              }),
+            ],
+          }),
+        ]),
+      })
+    )
+  })
+
+  it("should update variant metadata", async () => {
+    const api = useApi()! as AxiosInstance
+
+    const data = {
+      metadata: {
+        test: "string",
+      },
+    }
+
+    await api.post(
+      `/admin/products/${product.id}/variants/${variant.id}`,
+      data,
+      adminHeaders
+    )
+
+    const response = await api.get(
+      `/admin/products/${product.id}`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        variants: expect.arrayContaining([
+          expect.objectContaining({
+            id: variant.id,
+            metadata: {
+              test: "string",
+            },
+          }),
+        ]),
+      })
+    )
+  })
+
+  it("should remove options not present in update", async () => {
+    const api = useApi()! as AxiosInstance
+
+    product = await simpleProductFactory(dbConnection, {
+      id: "test-product-with-multiple-options",
+      variants: [
+        {
+          options: [
+            { option_id: "test-product-multi-option-1", value: "test" },
+            { option_id: "test-product-multi-option-2", value: "test value" },
+          ],
+        },
+      ],
+      options: [
+        {
+          id: "test-product-multi-option-1",
+          title: "Test option 1",
+        },
+        {
+          id: "test-product-multi-option-2",
+          title: "Test option 2",
+        },
+      ],
+    })
+
+    variant = product.variants[0]
+
+    const data = {
+      options: [
+        {
+          option_id: "test-product-multi-option-1",
+          value: "updated",
+        },
+      ],
+    }
+
+    await api.post(
+      `/admin/products/${product.id}/variants/${variant.id}`,
+      data,
+      adminHeaders
+    )
+
+    const response = await api.get(
+      `/admin/products/${product.id}`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        variants: [
+          expect.objectContaining({
+            id: variant.id,
+            options: [
+              expect.objectContaining({
+                option_id: "test-product-multi-option-1",
+                value: "updated",
+              }),
+            ],
+          }),
+        ],
+      })
+    )
+  })
+
+  it("should update several options in the same api call", async () => {
+    const api = useApi()! as AxiosInstance
+
+    product = await simpleProductFactory(dbConnection, {
+      id: "test-product-with-multiple-options",
+      variants: [
+        {
+          options: [
+            { option_id: "test-product-multi-option-1", value: "test" },
+            { option_id: "test-product-multi-option-2", value: "test value" },
+          ],
+        },
+      ],
+      options: [
+        {
+          id: "test-product-multi-option-1",
+          title: "Test option 1",
+        },
+        {
+          id: "test-product-multi-option-2",
+          title: "Test option 2",
+        },
+      ],
+    })
+
+    variant = product.variants[0]
+
+    const data = {
+      options: [
+        {
+          option_id: "test-product-multi-option-1",
+          value: "updated",
+        },
+        {
+          option_id: "test-product-multi-option-2",
+          value: "updated 2",
+        },
+      ],
+    }
+
+    await api.post(
+      `/admin/products/${product.id}/variants/${variant.id}`,
+      data,
+      adminHeaders
+    )
+
+    const response = await api.get(
+      `/admin/products/${product.id}`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        variants: [
+          expect.objectContaining({
+            id: variant.id,
+            options: [
+              expect.objectContaining({
+                option_id: "test-product-multi-option-1",
+                value: "updated",
+              }),
+              expect.objectContaining({
+                option_id: "test-product-multi-option-2",
+                value: "updated 2",
+              }),
+            ],
+          }),
+        ],
       })
     )
   })

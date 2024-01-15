@@ -29,7 +29,35 @@ import { isDefined } from "medusa-core-utils"
  *       medusa.admin.giftCards.list()
  *       .then(({ gift_cards, limit, offset, count }) => {
  *         console.log(gift_cards.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { GiftCard } from "@medusajs/medusa"
+ *       import { useAdminGiftCards } from "medusa-react"
+ *
+ *       const CustomGiftCards = () => {
+ *         const { gift_cards, isLoading } = useAdminGiftCards()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {gift_cards && !gift_cards.length && (
+ *               <span>No custom gift cards...</span>
+ *             )}
+ *             {gift_cards && gift_cards.length > 0 && (
+ *               <ul>
+ *                 {gift_cards.map((giftCard: GiftCard) => (
+ *                   <li key={giftCard.id}>{giftCard.code}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default CustomGiftCards
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -79,17 +107,31 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved gift cards.
+ */
 export class AdminGetGiftCardsParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   limit = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * Search term to search gift cards by their code and display ID.
+   */
   @IsOptional()
   @IsString()
   q?: string

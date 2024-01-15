@@ -1,5 +1,5 @@
 const { Modules } = require("@medusajs/modules-sdk")
-const { Workflows } = require("@medusajs/workflows")
+const { Workflows } = require("@medusajs/core-flows")
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
@@ -7,8 +7,7 @@ const DB_NAME = process.env.DB_TEMP_NAME
 const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
 process.env.POSTGRES_URL = DB_URL
 
-const enablePricing = process.env.MEDUSA_FF_ISOLATE_PRICING_DOMAIN == "true"
-const enableProduct = process.env.MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN == "true"
+const enableMedusaV2 = process.env.MEDUSA_FF_MEDUSA_V2 == "true"
 
 module.exports = {
   plugins: [
@@ -37,11 +36,8 @@ module.exports = {
     database_extra: { idle_in_transaction_session_timeout: 0 },
   },
   featureFlags: {
-    isolate_product_domain: enableProduct,
-    isolate_pricing_domain: enablePricing,
+    medusa_v2: enableMedusaV2,
     workflows: {
-      [Workflows.CreateProducts]: true,
-      [Workflows.UpdateProducts]: true,
       [Workflows.CreateCart]: true,
     },
   },
@@ -58,7 +54,7 @@ module.exports = {
     },
     [Modules.CACHE]: {
       resolve: "@medusajs/cache-inmemory",
-      options: { ttl: 5 },
+      options: { ttl: 0 }, // Cache disabled
     },
     [Modules.PRODUCT]: {
       scope: "internal",

@@ -44,7 +44,36 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateCustomer } from "medusa-react"
+ *
+ *       type CustomerData = {
+ *         first_name: string
+ *         last_name: string
+ *         email: string
+ *         password: string
+ *       }
+ *
+ *       type Props = {
+ *         customerId: string
+ *       }
+ *
+ *       const Customer = ({ customerId }: Props) => {
+ *         const updateCustomer = useAdminUpdateCustomer(customerId)
+ *         // ...
+ *
+ *         const handleUpdate = (customerData: CustomerData) => {
+ *           updateCustomer.mutate(customerData)
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Customer
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -128,6 +157,7 @@ class Group {
 /**
  * @schema AdminPostCustomersCustomerReq
  * type: object
+ * description: "The details of the customer to update."
  * properties:
  *   email:
  *     type: string

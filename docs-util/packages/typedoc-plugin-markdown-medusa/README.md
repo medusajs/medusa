@@ -6,6 +6,7 @@ A plugin that forks and customizes the [typedoc-plugin-markdown](https://github.
 
 Aside from the options detailed in [typedoc-plugin-markdown](https://github.com/tgreyuk/typedoc-plugin-markdown/tree/master/packages/typedoc-plugin-markdown#options), the following options are accepted:
 
+- `allReflectionsHaveOwnDocumentInNamespace`: An array of namespace names whose child members should have their own documents.
 - `mdxImports`: A boolean value indicating whether the outputted files should be MDX files with the `.mdx` extension.
 - `formatting`: An object whose keys are string patterns used to target specific files. You can also use the string `*` to target all files. The values are objects having the following properties:
   - `sections`: (optional) an object whose keys are of type [`SectionKey`](./src/types.ts#L19) and values are boolean. This property is used to enable/disable certain sections in the outputted generated docs.
@@ -21,8 +22,11 @@ Aside from the options detailed in [typedoc-plugin-markdown](https://github.com/
   - `parameterStyle`: (optional) a string indicating how parameters are displayed. Its value can be `table` (default), `list`, or `component`.
   - `showReturnSignature`: (optional) a boolean indicating whether to show the signature for returned values.
   - `frontmatterData`: (optional) an object that will be injected as frontmatter to the pages matching specified pattern.
-  - `parameterComponent`: (optional) a string indicating the name of a React component to pass the parameters as an object to. This is only used if the `parameterStyle` option is set to `component`. This also must be used with the `mdxOutput` option enabled, and an import string for the component passed to the `mdxImports` option. The React component will receive a `parameters` prop, which is an array of type [Parameter](./src/types.ts#L95).
+  - `parameterComponent`: (optional) a string indicating the name of a React component to pass the parameters as an object to. This is only used if the 
+  - `parameterComponentExtraProps`: (optional) an object that specifies props to pass to the `parameterComponent`.
+  - `parameterStyle` option is set to `component`. This also must be used with the `mdxOutput` option enabled, and an import string for the component passed to the `mdxImports` option. The React component will receive a `parameters` prop, which is an array of type [Parameter](./src/types.ts#L95).
   - `mdxImports`: (optional) an array of strings, each holding an import statement that will be added to the beginning of each page. For example, `["import ParameterTypes from "@site/src/components/ParameterTypes""]`. Must be used along with the `mdxOutput` option enabled.
+  - `maxLevel`: (optional) a number indicating the maximum level parameters and return types are expanded. Default is `3`.
 
 ## Build Plugin
 

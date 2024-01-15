@@ -5,6 +5,8 @@ import {
   FlagRouter,
   isDefined,
   MedusaError,
+  MedusaV2Flag,
+  promiseAll, selectorConstraintsToString,
 } from "@medusajs/utils"
 import {
   EntityManager,
@@ -63,6 +65,7 @@ import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
 import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
+import { RemoteLink } from "@medusajs/modules-sdk"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
@@ -89,6 +92,7 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
   productVariantInventoryService: ProductVariantInventoryService
+  remoteLink: RemoteLink
 }
 
 class OrderService extends TransactionBaseService {
@@ -131,6 +135,7 @@ class OrderService extends TransactionBaseService {
   protected readonly inventoryService_: IInventoryService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
+  protected remoteLink_: RemoteLink
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
@@ -149,6 +154,7 @@ class OrderService extends TransactionBaseService {
     taxProviderService,
     regionService,
     cartService,
+    remoteLink,
     addressRepository,
     giftCardService,
     draftOrderService,
@@ -179,6 +185,7 @@ class OrderService extends TransactionBaseService {
     this.draftOrderService_ = draftOrderService
     this.featureFlagRouter_ = featureFlagRouter
     this.productVariantInventoryService_ = productVariantInventoryService
+    this.remoteLink_ = remoteLink
   }
 
   /**
@@ -302,7 +309,7 @@ class OrderService extends TransactionBaseService {
 
     const raw = await orderRepo.findWithRelations(rels, query)
     const count = await orderRepo.count(query)
-    const orders = await Promise.all(
+    const orders = await promiseAll(
       raw.map(async (r) => await this.decorateTotals(r, totalsToSelect))
     )
 
@@ -452,9 +459,8 @@ class OrderService extends TransactionBaseService {
     const raw = await orderRepo.findOneWithRelations(rels, query)
 
     if (!raw) {
-      const selectorConstraints = Object.entries(selector)
-        .map((key, value) => `${key}: ${value}`)
-        .join(", ")
+      const selectorConstraints = selectorConstraintsToString(selector)
+
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Order with ${selectorConstraints} was not found`
@@ -693,7 +699,8 @@ class OrderService extends TransactionBaseService {
 
       if (
         cart.sales_channel_id &&
-        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
+        !this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
       ) {
         toCreate.sales_channel_id = cart.sales_channel_id
       }
@@ -709,6 +716,22 @@ class OrderService extends TransactionBaseService {
 
       const rawOrder = orderRepo.create(toCreate)
       const order = await orderRepo.save(rawOrder)
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled([
+          SalesChannelFeatureFlag.key,
+          MedusaV2Flag.key,
+        ])
+      ) {
+        await this.remoteLink_.create({
+          orderService: {
+            order_id: order.id,
+          },
+          salesChannelService: {
+            sales_channel_id: cart.sales_channel_id as string,
+          },
+        })
+      }
 
       if (total !== 0 && payment) {
         await this.paymentProviderService_
@@ -768,22 +791,22 @@ class OrderService extends TransactionBaseService {
         this.shippingOptionService_.withTransaction(manager)
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
-      await Promise.all(
+      await promiseAll(
         [
-          cart.items.map((lineItem): unknown[] => {
-            const toReturn: unknown[] = [
+          cart.items.map((lineItem): Promise<unknown>[] => {
+            const toReturn: Promise<unknown>[] = [
               lineItemServiceTx.update(lineItem.id, { order_id: order.id }),
             ]
 
             if (lineItem.is_giftcard) {
               toReturn.push(
-                this.createGiftCardsFromLineItem_(order, lineItem, manager)
+                ...this.createGiftCardsFromLineItem_(order, lineItem, manager)
               )
             }
 
             return toReturn
           }),
-          cart.shipping_methods.map(async (method) => {
+          cart.shipping_methods.map(async (method): Promise<unknown> => {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
             // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
             // We normally should only pass what is needed?
@@ -1225,7 +1248,7 @@ class OrderService extends TransactionBaseService {
       const inventoryServiceTx =
         this.productVariantInventoryService_.withTransaction(manager)
 
-      await Promise.all(
+      await promiseAll(
         order.items.map(async (item) => {
           if (item.variant_id) {
             return await inventoryServiceTx.deleteReservationsByLineItem(
@@ -1544,7 +1567,7 @@ class OrderService extends TransactionBaseService {
     transformer: (item: LineItem | undefined, quantity: number) => unknown
   ): Promise<LineItem[]> {
     return (
-      await Promise.all(
+      await promiseAll(
         items.map(async ({ item_id, quantity }) => {
           const item = order.items.find((i) => i.id === item_id)
           return transformer(item, quantity)
@@ -1662,7 +1685,7 @@ class OrderService extends TransactionBaseService {
         await this.totalsService_.getCalculationContext(order, {
           exclude_shipping: true,
         })
-      order.items = await Promise.all(
+      order.items = await promiseAll(
         (order.items || []).map(async (item) => {
           const itemTotals = await this.totalsService_.getLineItemTotals(
             item,
@@ -2081,6 +2104,7 @@ class OrderService extends TransactionBaseService {
     relationSet.add("shipping_methods")
     relationSet.add("shipping_methods.tax_lines")
     relationSet.add("region")
+    relationSet.add("payments")
 
     return Array.from(relationSet.values())
   }

@@ -1,11 +1,13 @@
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
 import { Region } from "@medusajs/medusa"
+import { IPricingModuleService } from "@medusajs/types"
 import { AxiosInstance } from "axios"
 import path from "path"
-import setupServer from "../../../../environment-helpers/setup-server"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
+import { simpleSalesChannelFactory } from "../../../../factories"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 
@@ -18,26 +20,25 @@ const adminHeaders = {
 }
 
 const env = {
-  MEDUSA_FF_ISOLATE_PRICING_DOMAIN: true,
-  MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
+  MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe.skip("[Product & Pricing Module] POST /admin/products", () => {
+describe("POST /admin/products", () => {
   let dbConnection
   let appContainer
-  let medusaProcess
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    medusaProcess = await setupServer({ cwd, env, bootstrapApp: true } as any)
+    shutdownServer = await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    medusaProcess.kill()
+    await shutdownServer()
   })
 
   beforeEach(async () => {
@@ -51,6 +52,8 @@ describe.skip("[Product & Pricing Module] POST /admin/products", () => {
       currency_code: "usd",
       tax_rate: 0,
     })
+
+    await simpleSalesChannelFactory(dbConnection, { is_default: true })
   })
 
   afterEach(async () => {
@@ -111,5 +114,12 @@ describe.skip("[Product & Pricing Module] POST /admin/products", () => {
         ]),
       }),
     })
+
+    const pricingModuleService: IPricingModuleService = appContainer.resolve(
+      "pricingModuleService"
+    )
+
+    const [_, count] = await pricingModuleService.listAndCount()
+    expect(count).toEqual(1)
   })
 })

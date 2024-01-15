@@ -35,7 +35,37 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCreateCustomer } from "medusa-react"
+ *
+ *       const RegisterCustomer = () => {
+ *         const createCustomer = useCreateCustomer()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           customerData: {
+ *             first_name: string
+ *             last_name: string
+ *             email: string
+ *             password: string
+ *           }
+ *         ) => {
+ *           // ...
+ *           createCustomer.mutate(customerData, {
+ *             onSuccess: ({ customer }) => {
+ *               console.log(customer.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default RegisterCustomer
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -111,6 +141,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCustomersReq
  * type: object
+ * description: "The details of the customer to create."
  * required:
  *   - first_name
  *   - last_name

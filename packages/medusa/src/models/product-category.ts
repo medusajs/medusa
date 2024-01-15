@@ -1,6 +1,7 @@
 import { generateEntityId } from "../utils/generate-entity-id"
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { kebabCase } from "lodash"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { Product } from "."
 import {
   BeforeInsert,
@@ -19,7 +20,13 @@ import {
 @Tree("materialized-path")
 @Index(["parent_category_id", "rank"], { unique: true })
 export class ProductCategory extends BaseEntity {
+  /**
+   * @apiIgnore
+   */
   static productCategoryProductJoinTable = "product_category_product"
+  /**
+   * @apiIgnore
+   */
   static treeRelations = ["parent_category", "category_children"]
 
   @Column()
@@ -58,6 +65,9 @@ export class ProductCategory extends BaseEntity {
   @Column({ nullable: false, default: 0 })
   rank: number
 
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
+
   @ManyToMany(() => Product, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
     name: ProductCategory.productCategoryProductJoinTable,
@@ -72,6 +82,9 @@ export class ProductCategory extends BaseEntity {
   })
   products: Product[]
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "pcat")
@@ -96,6 +109,7 @@ export class ProductCategory extends BaseEntity {
  *   - id
  *   - is_active
  *   - is_internal
+ *   - metadata
  *   - mpath
  *   - name
  *   - parent_category_id
@@ -109,6 +123,10 @@ export class ProductCategory extends BaseEntity {
  *     description: The product category's name
  *     type: string
  *     example: Regular Fit
+ *   description:
+ *     description: The product category's description.
+ *     type: string
+ *     default: ""
  *   handle:
  *     description: A unique string that identifies the Product Category - can for example be used in slug structures.
  *     type: string
@@ -160,4 +178,12 @@ export class ProductCategory extends BaseEntity {
  *     description: The date with timezone at which the resource was updated.
  *     type: string
  *     format: date-time
+ *   metadata:
+ *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
+ *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

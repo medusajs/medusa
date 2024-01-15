@@ -1,9 +1,11 @@
-import { IsNumber, IsOptional, IsString } from "class-validator"
-
-import { FilterablePriceListProps } from "../../../../types/price-list"
-import PriceListService from "../../../../services/price-list"
-import { Request } from "express"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
+import { IsNumber, IsOptional, IsString } from "class-validator"
+import { Request } from "express"
+import PriceListService from "../../../../services/price-list"
+import { FilterablePriceListProps } from "../../../../types/price-list"
+import { MedusaContainer } from "@medusajs/types"
+import { listAndCountPriceListPricingModule } from "./modules-queries"
 
 /**
  * @oas [get] /admin/price-lists
@@ -128,7 +130,34 @@ import { Type } from "class-transformer"
  *       medusa.admin.priceLists.list()
  *       .then(({ price_lists, limit, offset, count }) => {
  *         console.log(price_lists.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminPriceLists } from "medusa-react"
+ *
+ *       const PriceLists = () => {
+ *         const { price_lists, isLoading } = useAdminPriceLists()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {price_lists && !price_lists.length && (
+ *               <span>No Price Lists</span>
+ *             )}
+ *             {price_lists && price_lists.length > 0 && (
+ *               <ul>
+ *                 {price_lists.map((price_list) => (
+ *                   <li key={price_list.id}>{price_list.name}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default PriceLists
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -161,40 +190,69 @@ import { Type } from "class-transformer"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res) => {
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+
   const validated = req.validatedQuery
+  let priceLists
+  let count
 
-  const priceListService: PriceListService =
-    req.scope.resolve("priceListService")
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    [priceLists, count] = await listAndCountPriceListPricingModule({
+      filters: req.filterableFields,
+      listConfig: req.listConfig,
+      container: req.scope as MedusaContainer,
+    })
+  } else {
+    const priceListService: PriceListService =
+      req.scope.resolve("priceListService")
 
-  const [price_lists, count] = await priceListService.listAndCount(
-    req.filterableFields,
-    req.listConfig
-  )
+    ;[priceLists, count] = await priceListService.listAndCount(
+      req.filterableFields,
+      req.listConfig
+    )
+  }
 
   res.json({
-    price_lists,
+    price_lists: priceLists,
     count,
     offset: validated.offset,
     limit: validated.limit,
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved price lists.
+ */
 // eslint-disable-next-line max-len
 export class AdminGetPriceListPaginationParams extends FilterablePriceListProps {
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 10
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit?: number = 10
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string

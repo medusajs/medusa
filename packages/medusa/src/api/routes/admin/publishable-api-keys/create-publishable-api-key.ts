@@ -8,7 +8,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * @oas [post] /admin/publishable-api-keys
  * operationId: "PostPublishableApiKeys"
  * summary: "Create Publishable API Key"
- * description: "Creates a Publishable API Key."
+ * description: "Create a Publishable API Key."
  * requestBody:
  *   content:
  *     application/json:
@@ -30,6 +30,30 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       .then(({ publishable_api_key }) => {
  *         console.log(publishable_api_key.id)
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreatePublishableApiKey } from "medusa-react"
+ *
+ *       const CreatePublishableApiKey = () => {
+ *         const createKey = useAdminCreatePublishableApiKey()
+ *         // ...
+ *
+ *         const handleCreate = (title: string) => {
+ *           createKey.mutate({
+ *             title,
+ *           }, {
+ *             onSuccess: ({ publishable_api_key }) => {
+ *               console.log(publishable_api_key.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreatePublishableApiKey
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -87,6 +111,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostPublishableApiKeysReq
  * type: object
+ * description: "The details of the publishable API key to create."
  * required:
  *   - title
  * properties:

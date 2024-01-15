@@ -31,7 +31,32 @@ import SalesChannelService from "../../../../services/sales-channel"
  *       })
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateSalesChannel } from "medusa-react"
+ *
+ *       const CreateSalesChannel = () => {
+ *         const createSalesChannel = useAdminCreateSalesChannel()
+ *         // ...
+ *
+ *         const handleCreate = (name: string, description: string) => {
+ *           createSalesChannel.mutate({
+ *             name,
+ *             description,
+ *           }, {
+ *             onSuccess: ({ sales_channel }) => {
+ *               console.log(sales_channel.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateSalesChannel
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -87,6 +112,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostSalesChannelsReq
  * type: object
+ * description: "The details of the sales channel to create."
  * required:
  *   - name
  * properties:

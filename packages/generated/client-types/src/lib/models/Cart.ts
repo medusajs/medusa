@@ -182,4 +182,8 @@ export interface Cart {
    * The total of gift cards with taxes
    */
   gift_card_tax_total?: number
+  /**
+   * The associated sales channels.
+   */
+  sales_channels?: Array<SalesChannel> | null
 }

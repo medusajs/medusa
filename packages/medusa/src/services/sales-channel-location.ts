@@ -19,19 +19,17 @@ type InjectedDependencies = {
 class SalesChannelLocationService extends TransactionBaseService {
   protected readonly salesChannelService_: SalesChannelService
   protected readonly eventBusService_: IEventBusService
-  protected readonly stockLocationService_: IStockLocationService
 
-  constructor({
-    salesChannelService,
-    stockLocationService,
-    eventBusService,
-  }: InjectedDependencies) {
+  protected get stockLocationService_(): IStockLocationService {
+    return this.__container__.stockLocationService
+  }
+
+  constructor({ salesChannelService, eventBusService }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.salesChannelService_ = salesChannelService
     this.eventBusService_ = eventBusService
-    this.stockLocationService_ = stockLocationService
   }
 
   /**
@@ -78,7 +76,7 @@ class SalesChannelLocationService extends TransactionBaseService {
       .retrieve(salesChannelId)
 
     if (this.stockLocationService_) {
-      // trhows error if not found
+      // throws error if not found
       await this.stockLocationService_.retrieve(locationId, undefined, {
         transactionManager: this.activeManager_,
       })
@@ -126,7 +124,7 @@ class SalesChannelLocationService extends TransactionBaseService {
 
   /**
    * Lists the sales channels associated with a stock location.
-   * @param {string} salesChannelId - The ID of the stock location.
+   * @param {string} locationId - The ID of the stock location.
    * @returns {Promise<string[]>} A promise that resolves with an array of sales channel IDs.
    */
   async listSalesChannelIds(locationId: string): Promise<string[]> {

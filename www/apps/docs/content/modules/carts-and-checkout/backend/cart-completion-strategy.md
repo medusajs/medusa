@@ -19,7 +19,7 @@ This guide only explains how to override the cart completion strategy. It’s hi
 
 Create a TypeScript or JavaScript file in `src/strategies` of your Medusa backend project with a class that extends the `AbstractCartCompletionStrategy` class:
 
-```ts title=src/strategies/cart-completion.ts
+```ts title="src/strategies/cart-completion.ts"
 import { 
   AbstractCartCompletionStrategy,
   CartCompletionResponse,
@@ -52,7 +52,7 @@ You can use a constructor to access services and resources registered in the dep
 
 <!-- eslint-disable prefer-rest-params -->
 
-```ts title=src/strategies/cart-completion.ts
+```ts title="src/strategies/cart-completion.ts"
 // ...
 import { IdempotencyKeyService } from "@medusajs/medusa"
 
@@ -98,7 +98,7 @@ The completion strategy is expected to return an object with the following prope
 - `response_code`: a number indicating the response code.
 - `response_body`: an object that will be returned to the client.
 
-You can refer to this guide to learn how the cart conceptual guide is implemented in the Medusa backend. This can help you understand how details such as inventory, taxes, and more are handled.
+You can refer to [this guide](../cart.md#cart-completion-process) to learn how the cart conceptual guide is implemented in the Medusa backend. This can help you understand how details such as inventory, taxes, and more are handled.
 
 ---
 

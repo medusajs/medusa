@@ -20,7 +20,31 @@ import UserService from "../../../../services/user"
  *       medusa.admin.users.retrieve(userId)
  *       .then(({ user }) => {
  *         console.log(user.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUser } from "medusa-react"
+ *
+ *       type Props = {
+ *         userId: string
+ *       }
+ *
+ *       const User = ({ userId }: Props) => {
+ *         const { user, isLoading } = useAdminUser(
+ *           userId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {user && <span>{user.first_name} {user.last_name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default User
  *   - lang: Shell
  *     label: cURL
  *     source: |

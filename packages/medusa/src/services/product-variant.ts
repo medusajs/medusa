@@ -30,7 +30,7 @@ import {
   PriceSelectionContext,
   TransactionBaseService,
 } from "../interfaces"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   MoneyAmount,
   Product,
@@ -52,7 +52,7 @@ import { ProductOptionValueRepository } from "../repositories/product-option-val
 import { ProductRepository } from "../repositories/product"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import RegionService from "./region"
-import { buildRelations } from "@medusajs/utils"
+import { buildRelations, promiseAll } from "@medusajs/utils"
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {
@@ -208,7 +208,7 @@ class ProductVariantService extends TransactionBaseService {
         prices: ProductVariantPrice[]
       }[] = []
 
-      const results = await Promise.all(
+      const results = await promiseAll(
         variants_.map(async (variant) => {
           const { prices, ...rest } = variant
 
@@ -354,7 +354,7 @@ class ProductVariantService extends TransactionBaseService {
       }
 
       const results: [ProductVariant, UpdateProductVariantInput, boolean][] =
-        await Promise.all(
+        await promiseAll(
           variantData.map(async ({ variant, updateData }) => {
             const { prices, options, ...rest } = updateData
 
@@ -533,7 +533,7 @@ class ProductVariantService extends TransactionBaseService {
         promises.push(this.upsertCurrencyPrices(dataCurrencyPrices))
       }
 
-      await Promise.all(promises)
+      await promiseAll(promises)
     })
   }
 
@@ -611,7 +611,7 @@ class ProductVariantService extends TransactionBaseService {
         )
       }
 
-      await Promise.all(promises)
+      await promiseAll(promises)
     })
   }
 
@@ -693,7 +693,7 @@ class ProductVariantService extends TransactionBaseService {
         )
       }
 
-      await Promise.all(promises)
+      await promiseAll(promises)
     })
   }
 

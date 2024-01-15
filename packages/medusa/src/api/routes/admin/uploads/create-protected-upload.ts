@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import fs from "fs"
 import { IFileService } from "../../../../interfaces"
 
@@ -26,7 +27,29 @@ import { IFileService } from "../../../../interfaces"
  *       medusa.admin.uploads.createProtected(file)
  *       .then(({ uploads }) => {
  *         console.log(uploads.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUploadProtectedFile } from "medusa-react"
+ *
+ *       const UploadFile = () => {
+ *         const uploadFile = useAdminUploadProtectedFile()
+ *         // ...
+ *
+ *         const handleFileUpload = (file: File) => {
+ *           uploadFile.mutate(file, {
+ *             onSuccess: ({ uploads }) => {
+ *               console.log(uploads[0].key)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default UploadFile
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -64,7 +87,7 @@ import { IFileService } from "../../../../interfaces"
 export default async (req, res) => {
   const fileService: IFileService = req.scope.resolve("fileService")
 
-  const result = await Promise.all(
+  const result = await promiseAll(
     req.files.map(async (f) => {
       return fileService.uploadProtected(f).then((result) => {
         fs.unlinkSync(f.path)

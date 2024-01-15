@@ -30,7 +30,7 @@ npm install medusa-plugin-discount-generator
 
 Finally, add the plugin to the `plugins` array in `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -65,7 +65,7 @@ The `DiscountGeneratorService` has one method `generateDiscount`. This method re
 
 Here's an example of using the service in an API Route:
 
-```ts title=src/api/store/generate-discount-code/route.ts
+```ts title="src/api/store/generate-discount-code/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,

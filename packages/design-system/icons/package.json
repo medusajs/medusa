@@ -1,0 +1,64 @@
+{
+  "name": "@medusajs/icons",
+  "version": "1.1.0",
+  "description": "Medusa UI React icon library",
+  "author": "Kasper Kristensen <kasper@medusajs.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa.git",
+    "directory": "packages/design-system/icons"
+  },
+  "main": "dist/cjs/medusa-icons.js",
+  "main:umd": "dist/umd/medusa-icons.js",
+  "module": "dist/esm/index.js",
+  "unpkg": "dist/umd/medusa-icons.min.js",
+  "typings": "dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "yarn build:bundles && yarn build:types",
+    "build:bundles": "rollup -c ./rollup.config.mjs",
+    "build:types": "tsc --emitDeclarationOnly",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest --run --coverage",
+    "generate": "rimraf ./src/components && toolbox icons -o './src/components'"
+  },
+  "devDependencies": {
+    "@atomico/rollup-plugin-sizes": "^1.1.4",
+    "@medusajs/toolbox": "^0.0.1",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-replace": "^5.0.2",
+    "@testing-library/dom": "^9.3.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@types/jsdom": "^21.1.1",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "esbuild": "^0.18.11",
+    "eslint": "^7.32.0",
+    "jsdom": "^22.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "resize-observer-polyfill": "^1.5.1",
+    "rimraf": "^5.0.1",
+    "rollup": "^3.26.0",
+    "rollup-plugin-esbuild": "^5.0.0",
+    "rollup-plugin-license": "^3.0.1",
+    "rollup-plugin-ts": "^3.2.0",
+    "rollup-plugin-visualizer": "^5.9.2",
+    "typescript": "^5.1.6",
+    "vite": "^4.3.9",
+    "vitest": "^0.32.2"
+  },
+  "peerDependencies": {
+    "react": "^16.x || ^17.x || ^18.x"
+  },
+  "packageManager": "yarn@3.5.0",
+  "publishConfig": {
+    "access": "public"
+  }
+}

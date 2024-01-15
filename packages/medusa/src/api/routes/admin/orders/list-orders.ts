@@ -165,7 +165,32 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.orders.list()
  *       .then(({ orders, limit, offset, count }) => {
  *         console.log(orders.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminOrders } from "medusa-react"
+ *
+ *       const Orders = () => {
+ *         const { orders, isLoading } = useAdminOrders()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {orders && !orders.length && <span>No Orders</span>}
+ *             {orders && orders.length > 0 && (
+ *               <ul>
+ *                 {orders.map((order) => (
+ *                   <li key={order.id}>{order.display_id}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Orders
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -217,21 +242,38 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved orders.
+ */
 export class AdminGetOrdersParams extends AdminListOrdersSelector {
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 50
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsString()
   @IsOptional()
   fields?: string

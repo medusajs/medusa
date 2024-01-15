@@ -5,4 +5,4 @@ medusa.carts.addShippingMethod(cartId, {
 })
 .then(({ cart }) => {
   console.log(cart.id);
-});
+})

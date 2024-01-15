@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import { IsNotEmpty, IsString } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { CustomerService, OrderService } from "../../../../services"
@@ -38,7 +39,35 @@ import { TokenEvents } from "../../../../types/token"
  *       })
  *       .catch(() => {
  *         // an error occurred
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useRequestOrderAccess } from "medusa-react"
+ *
+ *       const ClaimOrder = () => {
+ *         const claimOrder = useRequestOrderAccess()
+ *
+ *         const handleClaimOrder = (
+ *           orderIds: string[]
+ *         ) => {
+ *           claimOrder.mutate({
+ *             order_ids: orderIds
+ *           }, {
+ *             onSuccess: () => {
+ *               // successful
+ *             },
+ *             onError: () => {
+ *               // an error occurred.
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ClaimOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -102,7 +131,7 @@ export default async (req, res) => {
     {}
   )
 
-  await Promise.all(
+  await promiseAll(
     Object.entries(emailOrderMapping).map(async ([email, order_ids]) => {
       const token = tokenService.signToken(
         {
@@ -127,6 +156,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCustomersCustomerOrderClaimReq
  * type: object
+ * description: "The details of the orders to claim."
  * required:
  *   - order_ids
  * properties:

@@ -52,7 +52,34 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *       medusa.admin.discounts.list()
  *       .then(({ discounts, limit, offset, count }) => {
  *         console.log(discounts.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDiscounts } from "medusa-react"
+ *
+ *       const Discounts = () => {
+ *         const { discounts, isLoading } = useAdminDiscounts()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {discounts && !discounts.length && (
+ *               <span>No customers</span>
+ *             )}
+ *             {discounts && discounts.length > 0 && (
+ *               <ul>
+ *                 {discounts.map((discount) => (
+ *                   <li key={discount.id}>{discount.code}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Discounts
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -103,24 +130,39 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved discounts.
+ */
 export class AdminGetDiscountsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
+  /**
+   * Filter discounts by their associated rule.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => AdminGetDiscountsDiscountRuleParams)
   rule?: AdminGetDiscountsDiscountRuleParams
 
+  /**
+   * Search terms to search discounts' code fields.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Filter discounts by whether they're dynamic.
+   */
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value))
   is_dynamic?: boolean
 
+  /**
+   * Filter discounts by whether they're disabled.
+   */
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value))

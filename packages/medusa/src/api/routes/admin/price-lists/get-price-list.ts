@@ -1,7 +1,9 @@
+import { MedusaContainer } from "@medusajs/types"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
-
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
+import { getPriceListPricingModule } from "./modules-queries"
 
 /**
  * @oas [get] /admin/price-lists/{id}
@@ -23,7 +25,34 @@ import PriceListService from "../../../../services/price-list"
  *       medusa.admin.priceLists.retrieve(priceListId)
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminPriceList } from "medusa-react"
+ *
+ *       type Props = {
+ *         priceListId: string
+ *       }
+ *
+ *       const PriceList = ({
+ *         priceListId
+ *       }: Props) => {
+ *         const {
+ *           price_list,
+ *           isLoading,
+ *         } = useAdminPriceList(priceListId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {price_list && <span>{price_list.name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default PriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -58,13 +87,22 @@ import PriceListService from "../../../../services/price-list"
 export default async (req, res) => {
   const { id } = req.params
 
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  const priceList = await priceListService.retrieve(id, {
-    select: defaultAdminPriceListFields as (keyof PriceList)[],
-    relations: defaultAdminPriceListRelations,
-  })
+  let priceList
+
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    priceList = await getPriceListPricingModule(id, {
+      container: req.scope as MedusaContainer,
+    })
+  } else {
+    priceList = await priceListService.retrieve(id, {
+      select: defaultAdminPriceListFields as (keyof PriceList)[],
+      relations: defaultAdminPriceListRelations,
+    })
+  }
 
   res.status(200).json({ price_list: priceList })
 }

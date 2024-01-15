@@ -102,7 +102,39 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  *       medusa.admin.stockLocations.list()
  *       .then(({ stock_locations, limit, offset, count }) => {
  *         console.log(stock_locations.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminStockLocations } from "medusa-react"
+ *
+ *       function StockLocations() {
+ *         const {
+ *           stock_locations,
+ *           isLoading
+ *         } = useAdminStockLocations()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {stock_locations && !stock_locations.length && (
+ *               <span>No Locations</span>
+ *             )}
+ *             {stock_locations && stock_locations.length > 0 && (
+ *               <ul>
+ *                 {stock_locations.map(
+ *                   (location) => (
+ *                     <li key={location.id}>{location.name}</li>
+ *                   )
+ *                 )}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default StockLocations
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -192,22 +224,37 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved stock locations.
+ */
 export class AdminGetStockLocationsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
+  /**
+   * IDs to filter stock locations by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   id?: string | string[]
 
+  /**
+   * Names to filter stock locations by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   name?: string | string[]
 
+  /**
+   * Filter stock locations by the ID of their associated addresses.
+   */
   @IsOptional()
   @IsType([String, [String]])
   address_id?: string | string[]
 
+  /**
+   * Filter stock locations by the ID of their associated sales channels.
+   */
   @IsOptional()
   @IsType([String, [String]])
   sales_channel_id?: string | string[]

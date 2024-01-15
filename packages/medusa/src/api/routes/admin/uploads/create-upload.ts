@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import fs from "fs"
 
 /**
@@ -25,7 +26,29 @@ import fs from "fs"
  *       medusa.admin.uploads.create(file)
  *       .then(({ uploads }) => {
  *         console.log(uploads.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUploadFile } from "medusa-react"
+ *
+ *       const UploadFile = () => {
+ *         const uploadFile = useAdminUploadFile()
+ *         // ...
+ *
+ *         const handleFileUpload = (file: File) => {
+ *           uploadFile.mutate(file, {
+ *             onSuccess: ({ uploads }) => {
+ *               console.log(uploads[0].key)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default UploadFile
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -63,7 +86,7 @@ import fs from "fs"
 export default async (req, res) => {
   const fileService = req.scope.resolve("fileService")
 
-  const result = await Promise.all(
+  const result = await promiseAll(
     req.files.map(async (f) => {
       return fileService.upload(f).then((result) => {
         fs.unlinkSync(f.path)

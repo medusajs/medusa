@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [post] /admin/publishable-api-key/{id}
+ * @oas [post] /admin/publishable-api-keys/{id}
  * operationId: "PostPublishableApiKysPublishableApiKey"
  * summary: "Update Publishable API Key"
  * description: "Update a Publishable API Key's details."
@@ -32,6 +32,38 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       .then(({ publishable_api_key }) => {
  *         console.log(publishable_api_key.id)
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdatePublishableApiKey } from "medusa-react"
+ *
+ *       type Props = {
+ *         publishableApiKeyId: string
+ *       }
+ *
+ *       const PublishableApiKey = ({
+ *         publishableApiKeyId
+ *       }: Props) => {
+ *         const updateKey = useAdminUpdatePublishableApiKey(
+ *           publishableApiKeyId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (title: string) => {
+ *           updateKey.mutate({
+ *             title,
+ *           }, {
+ *             onSuccess: ({ publishable_api_key }) => {
+ *               console.log(publishable_api_key.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PublishableApiKey
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -91,6 +123,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostPublishableApiKeysPublishableApiKeyReq
  * type: object
+ * description: "The details to update of the publishable API key."
  * properties:
  *   title:
  *     description: The title of the Publishable API Key.

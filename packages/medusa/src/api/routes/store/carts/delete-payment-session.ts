@@ -26,7 +26,36 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.carts.deletePaymentSession(cartId, "manual")
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useDeletePaymentSession } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const deletePaymentSession = useDeletePaymentSession(cartId)
+ *
+ *         const handleDeletePaymentSession = (
+ *           providerId: string
+ *         ) => {
+ *           deletePaymentSession.mutate({
+ *             provider_id: providerId,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.payment_sessions)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |

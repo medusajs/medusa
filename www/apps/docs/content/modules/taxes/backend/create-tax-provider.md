@@ -19,7 +19,7 @@ A tax provider class should be defined in a TypeScript or JavaScript file under 
 
 For example, you can create the file `src/services/my-tax.ts` with the following content:
 
-```ts title=src/services/my-tax.ts
+```ts title="src/services/my-tax.ts"
 import { 
   AbstractTaxService,
   ItemTaxCalculationLine,
@@ -49,7 +49,7 @@ Since the class extends `AbstractTaxService`, it must implement its abstract met
 
 You can use a constructor to access services and resources registered in the dependency container using dependency injection. For example:
 
-```ts title=src/services/my-tax.ts
+```ts title="src/services/my-tax.ts"
 // ...
 import { LineItemService } from "@medusajs/medusa"
 
@@ -79,7 +79,7 @@ Every tax provider must have a unique identifier. The identifier is defined as a
 
 Add the static property `identifier` in your tax provider class:
 
-```ts title=src/services/my-tax.ts
+```ts title="src/services/my-tax.ts"
 class MyTaxService extends AbstractTaxService {
   static identifier = "my-tax"
   // ...
@@ -127,17 +127,29 @@ The line item tax line object has the following properties:
 
 - `rate`: a number indicating the tax rate.
 - `name`: a string indicating the name of the tax rate.
-- `code`: an optional string indicating the tax code.
+- `code`: a string indicating the tax code.
 - `item_id`: the ID of the line item.
 - `metadata`: an optional object that can hold any necessary additional data to be added to the line item tax lines.
+
+:::note
+
+Tax lines for line item must have a unique `code` and `item_id` combination. Otherwise, the tax lines will be applied multiple times.
+
+:::
 
 The shipping method tax line object has the following properties:
 
 - `rate`: a number indicating the tax rate.
 - `name`: a string indicating the name of the tax rate.
-- `code`: an optional string indicating the tax code.
+- `code`: a string indicating the tax code.
 - `shipping_method_id`: the ID of the shipping method.
 - `metadata`: an optional object that can hold any necessary additional data to be added to the shipping method tax lines.
+
+:::note
+
+Tax lines for a shipping method must have a unique `code` and `shipping_method_id` combination. Otherwise, the tax lines will be applied multiple times.
+
+:::
 
 The returned array would be a combination of both the line item tax lines and shipping method tax lines.
 
@@ -149,7 +161,7 @@ The Medusa backend determines whether an object in the returned array is a shipp
 
 For example, the `system` tax provider returns the tax calculation line items in the first parameter and the tax calculation shipping methods in the second parameter as is:
 
-```ts title=src/services/my-tax.ts
+```ts title="src/services/my-tax.ts"
 // ...
 
 class SystemTaxService extends AbstractTaxService {

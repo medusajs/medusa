@@ -12,7 +12,7 @@ In this document, you'll learn about the different ways you can configure the ad
 
 The `build` command in the admin CLI allows you to manually build the admin dashboard. If you intend to use it, you should typically add it to the `package.json` of the Medusa backend:
 
-```json title=package.json
+```json title="package.json"
 {
   "scripts": {
     // other scripts...
@@ -29,7 +29,7 @@ You can add the following option to the `medusa-admin build` command:
 
 The `develop` command in the admin CLI allows you to run the admin dashboard in development separately from the Medusa backend. If you intend to use it, you should typically add it to the `package.json` of the Medusa backend:
 
-```json title=package.json
+```json title="package.json"
 {
   "scripts": {
     // other scripts...
@@ -84,7 +84,7 @@ This is an advanced feature and requires knowledge of configuring webpack. If co
 
 For example:
 
-```js title=src/admin/webpack.config.js
+```js title="src/admin/webpack.config.js"
 import { withCustomWebpackConfig } from "@medusajs/admin"
 
 export default withCustomWebpackConfig((config, webpack) => {
