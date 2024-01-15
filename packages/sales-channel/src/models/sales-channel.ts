@@ -23,8 +23,8 @@ export default class SalesChannel {
   @Property({ columnType: "text", nullable: true })
   description?: string | null
 
-  @Property({ columnType: "boolean" })
-  is_disabled? = false
+  @Property({ columnType: "boolean", default: false })
+  is_disabled = false
 
   @Property({
     onCreate: () => new Date(),
@@ -47,6 +47,11 @@ export default class SalesChannel {
 
   @BeforeCreate()
   onCreate() {
+    this.id = generateEntityId(this.id, "sc")
+  }
+
+  @BeforeCreate()
+  onInit() {
     this.id = generateEntityId(this.id, "sc")
   }
 }

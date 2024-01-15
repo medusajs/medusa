@@ -15,19 +15,6 @@ export interface SalesChannelDTO {
   locations?: SalesChannelLocationDTO[]
 }
 
-export type CreateSalesChannelDTO = {
-  name: string
-  description?: string
-  is_disabled?: boolean
-}
-
-export type UpdateSalesChannelDTO = {
-  id: string
-  name?: string
-  description?: string
-  is_disabled?: boolean
-}
-
 export interface FilterableSalesChannelProps
   extends BaseFilterable<FilterableSalesChannelProps> {
   id?: string[]

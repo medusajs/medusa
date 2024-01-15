@@ -15,7 +15,7 @@ export enum Modules {
   PRICING = "pricingService",
   PROMOTION = "promotion",
   AUTHENTICATION = "authentication",
-  SALES_CHANNEL = "salesChannelService",
+  SALES_CHANNEL = "salesChannel",
   CART = "cart",
 }
 
