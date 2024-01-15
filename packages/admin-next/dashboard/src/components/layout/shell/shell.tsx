@@ -92,7 +92,12 @@ const Breadcrumbs = () => {
                 {crumb.label}
               </Link>
             ) : (
-              <span key={index}>{crumb.label}</span>
+              <div>
+                <span className="block md:hidden">...</span>
+                <span key={index} className="hidden md:block">
+                  {crumb.label}
+                </span>
+              </div>
             )}
             {/* {!isLast && <TriangleRightMini className="-mt-0.5 mx-2" />} */}
             {!isLast && <span className="-mt-0.5 mx-2">›</span>}
@@ -286,7 +291,7 @@ const Searchbar = () => {
   return (
     <button
       onClick={toggleSearch}
-      className="shadow-borders-base bg-ui-bg-subtle hover:bg-ui-bg-subtle-hover transition-fg focus:shadow-borders-focus text-ui-fg-muted flex w-full max-w-[280px] items-center gap-x-2 rounded-full py-1.5 pl-2 pr-1.5 outline-none select-none"
+      className="shadow-borders-base bg-ui-bg-subtle hover:bg-ui-bg-subtle-hover transition-fg focus-visible:shadow-borders-focus text-ui-fg-muted flex w-full max-w-[280px] items-center gap-x-2 rounded-full py-1.5 pl-2 pr-1.5 outline-none select-none"
     >
       <MagnifyingGlass />
       <div className="flex-1 text-left">

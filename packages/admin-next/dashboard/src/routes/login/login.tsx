@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Input, Text } from "@medusajs/ui"
-import { useAdminLogin } from "medusa-react"
+import { useAdminGetSession, useAdminLogin } from "medusa-react"
 import { useForm } from "react-hook-form"
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
 import * as z from "zod"
 
 import { Form } from "../../components/common/form"
@@ -27,6 +27,8 @@ export const Login = () => {
     },
   })
 
+  const { user, isLoading } = useAdminGetSession()
+
   const { mutateAsync } = useAdminLogin({
     retry: false,
   })
@@ -39,7 +41,7 @@ export const Login = () => {
       },
       {
         onSuccess: () => {
-          navigate(from)
+          navigate(from, { replace: true })
         },
         onError: (e) => {
           if (isAxiosError(e)) {
@@ -61,6 +63,10 @@ export const Login = () => {
       }
     )
   })
+
+  if (user && !isLoading) {
+    return <Navigate to={from} replace />
+  }
 
   return (
     <div className="flex flex-col gap-y-12">
@@ -92,7 +98,7 @@ export const Login = () => {
                   <Form.Label>Password</Form.Label>
                   <Link
                     to={"/forgot-password"}
-                    className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover focus:text-ui-fg-interactive-hover transition-fg outline-none"
+                    className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover transition-fg outline-none"
                   >
                     <Text leading="compact">Forgot password?</Text>
                   </Link>

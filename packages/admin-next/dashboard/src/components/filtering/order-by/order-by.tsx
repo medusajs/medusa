@@ -1,6 +1,7 @@
 import { ArrowUpDown } from "@medusajs/icons"
 import { DropdownMenu, IconButton } from "@medusajs/ui"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useSearchParams } from "react-router-dom"
 
 type OrderByProps = {
@@ -54,6 +55,8 @@ export const OrderBy = ({ keys }: OrderByProps) => {
     dir: SortDirection
   }>(initState(searchParams))
 
+  const { t } = useTranslation()
+
   const handleDirChange = (dir: string) => {
     setState((prev) => ({
       ...prev,
@@ -88,7 +91,7 @@ export const OrderBy = ({ keys }: OrderByProps) => {
     }
 
     const orderParam =
-      state.dir === SortDirection.ASC ? `-${state.key}` : state.key
+      state.dir === SortDirection.ASC ? state.key : `-${state.key}`
     setSearchParams((prev) => {
       prev.set("order", orderParam)
       return prev
@@ -123,16 +126,20 @@ export const OrderBy = ({ keys }: OrderByProps) => {
           onValueChange={handleDirChange}
         >
           <DropdownMenu.RadioItem
+            className="flex items-center justify-between"
             value="asc"
             onSelect={(event) => event.preventDefault()}
           >
-            ASC
+            {t("general.ascending")}
+            <DropdownMenu.Label>1 - 30</DropdownMenu.Label>
           </DropdownMenu.RadioItem>
           <DropdownMenu.RadioItem
+            className="flex items-center justify-between"
             value="desc"
             onSelect={(event) => event.preventDefault()}
           >
-            DESC
+            {t("general.descending")}
+            <DropdownMenu.Label>30 - 1</DropdownMenu.Label>
           </DropdownMenu.RadioItem>
         </DropdownMenu.RadioGroup>
       </DropdownMenu.Content>

@@ -1,6 +1,8 @@
 {
   "$schema": "../$schema.json",
   "general": {
+    "ascending": "Ascending",
+    "descending": "Descending",
     "cancel": "Cancel",
     "save": "Save",
     "create": "Create",
@@ -191,6 +193,7 @@
     "company": "Company",
     "phone": "Phone",
     "metadata": "Metadata",
-    "selectCountry": "Select country"
+    "selectCountry": "Select country",
+    "variants": "Variants"
   }
 }

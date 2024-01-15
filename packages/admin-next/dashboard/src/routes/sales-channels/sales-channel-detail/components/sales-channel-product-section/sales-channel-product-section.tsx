@@ -165,7 +165,7 @@ export const SalesChannelProductSection = ({
               return (
                 <Table.Row
                   key={headerGroup.id}
-                  className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap"
+                  className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th]:w-1/3"
                 >
                   {headerGroup.headers.map((header) => {
                     return (
@@ -276,7 +276,7 @@ const useListColumns = (id: string) => {
         },
       }),
       listColumnHelper.accessor("variants", {
-        header: t("fields.inventory"),
+        header: t("fields.variants"),
         cell: (cell) => {
           const variants = cell.getValue()
 

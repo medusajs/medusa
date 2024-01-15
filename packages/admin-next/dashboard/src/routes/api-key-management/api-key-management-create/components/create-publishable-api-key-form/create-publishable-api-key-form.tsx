@@ -5,13 +5,20 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { useEffect } from "react"
 import { Form } from "../../../../../components/common/form"
+
+type CreatePublishableApiKeyFormProps = {
+  subscribe: (state: boolean) => void
+}
 
 const CreatePublishableApiKeySchema = zod.object({
   title: zod.string().min(1),
 })
 
-export const CreatePublishableApiKeyForm = () => {
+export const CreatePublishableApiKeyForm = ({
+  subscribe,
+}: CreatePublishableApiKeyFormProps) => {
   const { mutateAsync, isLoading } = useAdminCreatePublishableApiKey()
 
   const form = useForm<zod.infer<typeof CreatePublishableApiKeySchema>>({
@@ -20,6 +27,14 @@ export const CreatePublishableApiKeyForm = () => {
     },
     resolver: zodResolver(CreatePublishableApiKeySchema),
   })
+
+  const {
+    formState: { isDirty },
+  } = form
+
+  useEffect(() => {
+    subscribe(isDirty)
+  }, [isDirty])
 
   const { t } = useTranslation()
 

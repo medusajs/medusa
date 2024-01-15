@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { useEffect } from "react"
 import { Form } from "../../../../../components/common/form"
 
 type EditSalesChannelFormProps = {
@@ -37,7 +38,10 @@ export const EditSalesChannelForm = ({
   const {
     formState: { isDirty },
   } = form
-  subscribe(isDirty)
+
+  useEffect(() => {
+    subscribe(isDirty)
+  }, [isDirty])
 
   const { t } = useTranslation()
 

@@ -46,7 +46,7 @@ const SubMenuTrigger = React.forwardRef<
   <Primitives.SubTrigger
     ref={ref}
     className={clx(
-      "focus-visible:bg-ui-bg-base-pressed data-[state=open]:bg-ui-bg-base-pressed txt-compact-small flex cursor-default select-none items-center rounded-sm px-3 py-2 outline-none",
+      "focus-visible:bg-ui-bg-base-pressed data-[state=open]:bg-ui-bg-base-pressed txt-compact-small flex cursor-default select-none items-center rounded-sm px-2 py-1.5 outline-none",
       className
     )}
     {...props}
@@ -124,7 +124,7 @@ const Item = React.forwardRef<
   <Primitives.Item
     ref={ref}
     className={clx(
-      "bg-ui-bg-base focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-3 py-2 outline-none transition-colors data-[disabled]:pointer-events-none",
+      "bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none",
       className
     )}
     {...props}
@@ -142,7 +142,7 @@ const CheckboxItem = React.forwardRef<
   <Primitives.CheckboxItem
     ref={ref}
     className={clx(
-      "focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled relative flex cursor-pointer select-none items-center rounded-md py-2 pl-10 pr-3 text-sm outline-none transition-colors data-[disabled]:pointer-events-none",
+      "focus-visible:bg-ui-bg-base-pressed hover:bg-ui-bg-base-hover text-ui-fg-base data-[disabled]:text-ui-fg-disabled relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-9 pr-2 text-sm outline-none transition-colors data-[disabled]:pointer-events-none",
       className
     )}
     checked={checked}
@@ -168,7 +168,7 @@ const RadioItem = React.forwardRef<
   <Primitives.RadioItem
     ref={ref}
     className={clx(
-      "focus-visible:bg-ui-bg-base-pressed hover:bg-ui-base-hover bg-ui-bg-base txt-compact-small relative flex cursor-pointer select-none items-center rounded-md py-2 pl-10 pr-3 text-sm outline-none transition-colors data-[disabled]:pointer-events-none data-[state=checked]:font-medium data-[disabled]:opacity-50",
+      "focus-visible:bg-ui-bg-base-pressed hover:bg-ui-base-hover bg-ui-bg-base txt-compact-small relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-9 pr-2 text-sm outline-none transition-colors data-[disabled]:pointer-events-none data-[state=checked]:font-medium data-[disabled]:opacity-50",
       className
     )}
     {...props}
@@ -192,10 +192,7 @@ const Label = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <Primitives.Label
     ref={ref}
-    className={clx(
-      "text-ui-fg-subtle txt-compact-xsmall-plus px-2 py-1.5",
-      className
-    )}
+    className={clx("text-ui-fg-subtle txt-compact-xsmall-plus", className)}
     {...props}
   />
 ))
