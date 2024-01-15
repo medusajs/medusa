@@ -66,4 +66,81 @@ export class CampaignRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
 
     return createdCampaigns
   }
+
+  async update(
+    data: UpdateCampaignDTO[],
+    context: Context = {}
+  ): Promise<Campaign[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const promotionIds: string[] = []
+    const campaignIds: string[] = []
+    const campaignPromotionIdsMap = new Map<string, string[]>()
+
+    data.forEach((campaignData) => {
+      const campaignPromotionIds =
+        campaignData.promotions?.map((p) => p.id) || []
+
+      campaignIds.push(campaignData.id)
+      promotionIds.push(...campaignPromotionIds)
+      campaignPromotionIdsMap.set(campaignData.id, campaignPromotionIds)
+
+      delete campaignData.promotions
+    })
+
+    const existingCampaigns = await manager.find(
+      Campaign,
+      { id: campaignIds },
+      { populate: ["promotions"] }
+    )
+
+    const existingPromotions = await manager.find(Promotion, {
+      id: promotionIds,
+    })
+
+    const existingCampaignsMap = new Map<string, Campaign>(
+      existingCampaigns.map((campaign) => [campaign.id, campaign])
+    )
+
+    const existingPromotionsMap = new Map<string, Promotion>(
+      existingPromotions.map((promotion) => [promotion.id, promotion])
+    )
+
+    const updatedCampaigns = await super.update(data, context)
+
+    for (const updatedCampaign of updatedCampaigns) {
+      const promotionIdsToAdd =
+        campaignPromotionIdsMap.get(updatedCampaign.id) || []
+      const existingPromotionIds = (
+        existingCampaignsMap.get(updatedCampaign.id)?.promotions || []
+      ).map((p) => p.id)
+
+      for (const existingPromotionId of existingPromotionIds) {
+        const promotion = existingPromotionsMap.get(existingPromotionId)
+
+        if (!promotion) {
+          continue
+        }
+
+        if (!promotionIdsToAdd.includes(existingPromotionId)) {
+          updatedCampaign.promotions.remove(promotion)
+        }
+      }
+
+      for (const promotionIdToAdd of promotionIdsToAdd) {
+        const promotion = existingPromotionsMap.get(promotionIdToAdd)
+
+        if (!promotion) {
+          continue
+        }
+
+        if (existingPromotionIds.includes(promotionIdToAdd)) {
+          continue
+        } else {
+          updatedCampaign.promotions.add(promotion)
+        }
+      }
+    }
+
+    return updatedCampaigns
+  }
 }

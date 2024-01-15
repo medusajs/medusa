@@ -930,7 +930,7 @@ export default class PromotionModuleService<
     const campaigns = await this.listCampaigns(
       { id: updatedCampaigns.map((p) => p!.id) },
       {
-        relations: ["budget"],
+        relations: ["budget", "promotions"],
       },
       sharedContext
     )

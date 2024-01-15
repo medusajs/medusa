@@ -19,4 +19,5 @@ export interface UpdateCampaignDTO {
   campaign_identifier?: string
   starts_at?: Date
   ends_at?: Date
+  promotions?: (PromotionDTO | Promotion)[]
 }

@@ -201,6 +201,41 @@ describe("Promotion Module Service: Campaigns", () => {
         })
       )
     })
+
+    it("should update promotions of a campaign successfully", async () => {
+      await createCampaigns(repositoryManager)
+      await createPromotions(repositoryManager)
+
+      const [updatedCampaign] = await service.updateCampaigns([
+        {
+          id: "campaign-id-1",
+          description: "test description 1",
+          currency: "EUR",
+          campaign_identifier: "new",
+          starts_at: new Date("01/01/2024"),
+          ends_at: new Date("01/01/2025"),
+          promotions: [{ id: "promotion-id-1" }, { id: "promotion-id-2" }],
+        },
+      ])
+
+      expect(updatedCampaign).toEqual(
+        expect.objectContaining({
+          description: "test description 1",
+          currency: "EUR",
+          campaign_identifier: "new",
+          starts_at: new Date("01/01/2024"),
+          ends_at: new Date("01/01/2025"),
+          promotions: [
+            expect.objectContaining({
+              id: "promotion-id-1",
+            }),
+            expect.objectContaining({
+              id: "promotion-id-2",
+            }),
+          ],
+        })
+      )
+    })
   })
 
   describe("retrieveCampaign", () => {

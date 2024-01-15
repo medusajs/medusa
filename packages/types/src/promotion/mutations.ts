@@ -33,4 +33,5 @@ export interface UpdateCampaignDTO {
   starts_at?: Date
   ends_at?: Date
   budget?: Omit<UpdateCampaignBudgetDTO, "id">
+  promotions?: Pick<PromotionDTO, "id">[]
 }
