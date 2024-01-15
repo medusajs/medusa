@@ -12,20 +12,11 @@ export const theme = {
               "DEFAULT": "var(--button-inverted-hover)"
             }
           },
-          "transparent": {
-            "DEFAULT": "var(--button-transparent)",
-            "hover": {
-              "DEFAULT": "var(--button-transparent-hover)"
-            },
-            "pressed": {
-              "DEFAULT": "var(--button-transparent-pressed)"
-            }
-          },
           "neutral": {
+            "DEFAULT": "var(--button-neutral)",
             "pressed": {
               "DEFAULT": "var(--button-neutral-pressed)"
             },
-            "DEFAULT": "var(--button-neutral)",
             "hover": {
               "DEFAULT": "var(--button-neutral-hover)"
             }
@@ -38,30 +29,39 @@ export const theme = {
             "hover": {
               "DEFAULT": "var(--button-danger-hover)"
             }
+          },
+          "transparent": {
+            "hover": {
+              "DEFAULT": "var(--button-transparent-hover)"
+            },
+            "pressed": {
+              "DEFAULT": "var(--button-transparent-pressed)"
+            },
+            "DEFAULT": "var(--button-transparent)"
           }
         },
         "code": {
-          "text": {
-            "base": {
-              "DEFAULT": "var(--code-text-base)"
-            },
+          "fg": {
             "subtle": {
-              "DEFAULT": "var(--code-text-subtle)"
+              "DEFAULT": "var(--code-fg-subtle)"
+            },
+            "muted": {
+              "DEFAULT": "var(--code-fg-muted)"
+            },
+            "base": {
+              "DEFAULT": "var(--code-fg-base)"
             }
           },
           "bg": {
+            "subtle": {
+              "DEFAULT": "var(--code-bg-subtle)"
+            },
             "base": {
               "DEFAULT": "var(--code-bg-base)"
-            },
-            "header": {
-              "DEFAULT": "var(--code-bg-header)"
             }
           },
           "border": {
             "DEFAULT": "var(--code-border)"
-          },
-          "icon": {
-            "DEFAULT": "var(--code-icon)"
           }
         },
         "tag": {
@@ -199,12 +199,12 @@ export const theme = {
             }
           },
           "base": {
-            "hover": {
-              "DEFAULT": "var(--bg-base-hover)"
-            },
             "DEFAULT": "var(--bg-base)",
             "pressed": {
               "DEFAULT": "var(--bg-base-pressed)"
+            },
+            "hover": {
+              "DEFAULT": "var(--bg-base-hover)"
             }
           },
           "subtle": {
