@@ -238,7 +238,7 @@ export interface FulfillmentService extends TransactionBaseService {
    *   // ...
    *   async createFulfillment(
    *     data: Record<string, unknown>,
-   *     items: LineItem,
+   *     items: LineItem[],
    *     order: Order,
    *     fulfillment: Fulfillment
    *   ) {

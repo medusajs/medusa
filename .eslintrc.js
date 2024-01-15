@@ -72,7 +72,9 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: [],
+  ignorePatterns: [
+    "packages/admin-next/dashboard/**/dist"
+  ],
   overrides: [
     {
       files: ["*.ts"],
