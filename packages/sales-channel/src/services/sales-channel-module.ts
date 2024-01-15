@@ -51,18 +51,27 @@ export default class SalesChannelModuleService<
     return joinerConfig
   }
 
-  @InjectTransactionManager("baseRepository_")
   async create(
     data: CreateSalesChannelDTO[],
+    sharedContext?: Context
+  ): Promise<CreateSalesChannelDTO[]>
+
+  async create(
+    data: CreateSalesChannelDTO,
+    sharedContext?: Context
+  ): Promise<CreateSalesChannelDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async create(
+    data: CreateSalesChannelDTO | CreateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<SalesChannelDTO[]> {
-    const salesChannel = await this.salesChannelService_.create(
-      data,
-      sharedContext
-    )
+    const input = Array.isArray(data) ? data : [data]
+
+    const result = await this.salesChannelService_.create(input, sharedContext)
 
     return await this.baseRepository_.serialize<SalesChannelDTO[]>(
-      salesChannel,
+      Array.isArray(data) ? result : result[0],
       {
         populate: true,
       }

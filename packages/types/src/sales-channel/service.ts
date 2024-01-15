@@ -10,13 +10,22 @@ export interface ISalesChannelModuleService extends IModuleService {
     data: CreateSalesChannelDTO[],
     sharedContext?: Context
   ): Promise<SalesChannelDTO[]>
+  create(
+    data: CreateSalesChannelDTO,
+    sharedContext?: Context
+  ): Promise<SalesChannelDTO>
 
   update(
     data: UpdateSalesChannelDTO[],
     sharedContext?: Context
   ): Promise<SalesChannelDTO[]>
+  update(
+    data: UpdateSalesChannelDTO,
+    sharedContext?: Context
+  ): Promise<SalesChannelDTO>
 
   delete(ids: string[], sharedContext?: Context): Promise<void>
+  delete(id: string, sharedContext?: Context): Promise<void>
 
   retrieve(
     id: string,
