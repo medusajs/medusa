@@ -199,8 +199,3 @@ export class WorkflowOrchestratorModuleService
     return this.workflowOrchestratorService_.unsubscribe(args as any, context)
   }
 }
-
-const test_ = {} as ReturnWorkflow<number, string, {}>
-const test = WorkflowOrchestratorModuleService.prototype.run(test_, {
-  input: {},
-})
