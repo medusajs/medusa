@@ -5,6 +5,7 @@ import promiseExec from "../utils/promise-exec.js"
 
 export default async function runGitChanges() {
   const monorepoPath = getMonorepoRoot()
+  // retrieve the changed files under `packages` in the monorepo root.
   const childProcess = await promiseExec(
     `git diff --name-only -- "packages/**/**.ts" "packages/**/*.js" "packages/**/*.tsx" "packages/**/*.jsx"`,
     {
@@ -21,6 +22,7 @@ export default async function runGitChanges() {
 
     files = files.map((filePath) => path.resolve(monorepoPath, filePath))
 
+    // generate docblocks for each of the files.
     const docblockGenerator = new DocblockGenerator({
       paths: files,
     })
