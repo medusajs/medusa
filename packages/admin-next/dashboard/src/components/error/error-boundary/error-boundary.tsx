@@ -1,5 +1,5 @@
-import type { AxiosError } from "axios"
 import { Navigate, useLocation, useRouteError } from "react-router-dom"
+import { isAxiosError } from "../../../lib/is-axios-error"
 
 export const ErrorBoundary = () => {
   const error = useRouteError()
@@ -19,8 +19,4 @@ export const ErrorBoundary = () => {
 
   // TODO: Actual catch-all error page
   return <div>Dang!</div>
-}
-
-const isAxiosError = (error: any): error is AxiosError => {
-  return error.isAxiosError
 }
