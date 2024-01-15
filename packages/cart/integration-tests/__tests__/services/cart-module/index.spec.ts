@@ -420,7 +420,7 @@ describe("Cart Module Service", () => {
   })
 
   describe("updateLineItems", () => {
-    it("should update a line item in cart succesfully", async () => {
+    it("should update a line item in cart succesfully with selector approach", async () => {
       const [createdCart] = await service.create([
         {
           currency_code: "eur",
@@ -448,7 +448,35 @@ describe("Cart Module Service", () => {
       expect(updatedItem.title).toBe("test2")
     })
 
-    it("should update multiples line items in cart succesfully", async () => {
+    it("should update a line item in cart succesfully with id approach", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [item] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+          tax_lines: [],
+        },
+      ])
+
+      expect(item.title).toBe("test")
+
+      const updatedItem = await service.updateLineItems(
+        item.id,
+        {
+          title: "test2",
+        }
+      )
+
+      expect(updatedItem.title).toBe("test2")
+    })
+
+    it("should update line items in carts succesfully with multi-selector approach", async () => {
       const [createdCart] = await service.create([
         {
           currency_code: "eur",
@@ -488,14 +516,16 @@ describe("Cart Module Service", () => {
 
       const updatedItems = await service.updateLineItems([
         {
-          cart_id: createdCart.id,
-          id: itemOne!.id,
-          title: "changed-test",
+          selector: { cart_id: createdCart.id },
+          data: {
+            title: "changed-test",
+          }
         },
         {
-          cart_id: createdCart.id,
-          id: itemTwo!.id,
-          title: "changed-other-test",
+          selector: { id: itemTwo!.id },
+          data: {
+            title: "changed-other-test",
+          }
         },
       ])
 

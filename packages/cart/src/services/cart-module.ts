@@ -18,6 +18,7 @@ import {
   isString,
 } from "@medusajs/utils"
 import { LineItem } from "@models"
+import { UpdateLineItemDTO } from "@types"
 import { joinerConfig } from "../joiner-config"
 import * as services from "../services"
 
@@ -264,11 +265,6 @@ export default class CartModuleService implements ICartModuleService {
     items: CartTypes.CreateLineItemDTO[],
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO[]>
-  addLineItems(
-    cartId: string,
-    items: CartTypes.CreateLineItemDTO,
-    sharedContext?: Context
-  ): Promise<CartTypes.CartLineItemDTO>
 
   @InjectManager("baseRepository_")
   async addLineItems(
@@ -340,7 +336,7 @@ export default class CartModuleService implements ICartModuleService {
   }
 
   updateLineItems(
-    data: CartTypes.UpdateLineItemDTO[],
+    data: CartTypes.UpdateLineItemWithSelectorDTO[],
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO[]>
   updateLineItems(
@@ -349,45 +345,54 @@ export default class CartModuleService implements ICartModuleService {
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO[]>
   updateLineItems(
-    cartId: string,
+    lineItemId: string,
     data: Partial<CartTypes.UpdateLineItemDTO>,
     sharedContext?: Context
-  ): Promise<CartTypes.CartLineItemDTO[]>
+  ): Promise<CartTypes.CartLineItemDTO>
 
   @InjectManager("baseRepository_")
   async updateLineItems(
-    cartIdOrDataOrSelector:
+    lineItemIdOrDataOrSelector:
       | string
-      | Partial<CartTypes.CartLineItemDTO>
-      | CartTypes.UpdateLineItemDTO[],
+      | CartTypes.UpdateLineItemWithSelectorDTO[]
+      | Partial<CartTypes.CartLineItemDTO>,
+    @MedusaContext()
     dataOrSharedContext?:
-      | CartTypes.UpdateLineItemDTO[]
+      | CartTypes.UpdateLineItemDTO
       | Partial<CartTypes.UpdateLineItemDTO>
       | Context,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartTypes.CartLineItemDTO[]> {
+    @MedusaContext()
+    sharedContext: Context = {}
+  ): Promise<CartTypes.CartLineItemDTO[] | CartTypes.CartLineItemDTO> {
     let items: LineItem[] = []
-    if (isString(cartIdOrDataOrSelector)) {
-      // Case: Single cart update
-      items = await this.updateCartLineItems_(
-        cartIdOrDataOrSelector,
+    if (isString(lineItemIdOrDataOrSelector)) {
+      const item = await this.updateSingleLineItem_(
+        lineItemIdOrDataOrSelector,
         dataOrSharedContext as Partial<CartTypes.UpdateLineItemDTO>,
         sharedContext
       )
-    } else if (Array.isArray(cartIdOrDataOrSelector)) {
-      // Case: Bulk update
-      items = await this.updateLineItemsBulk_(
-        cartIdOrDataOrSelector,
-        dataOrSharedContext as Context
-      )
-    } else {
-      // Case: Selector update
-      items = await this.updateSelectorLineItems_(
-        cartIdOrDataOrSelector as Partial<CartTypes.CartLineItemDTO>,
-        dataOrSharedContext as CartTypes.UpdateLineItemDTO,
-        sharedContext
+
+      return await this.baseRepository_.serialize<CartTypes.CartLineItemDTO>(
+        item,
+        {
+          populate: true,
+        }
       )
     }
+
+    const toUpdate = Array.isArray(lineItemIdOrDataOrSelector)
+      ? lineItemIdOrDataOrSelector
+      : [
+          {
+            selector: lineItemIdOrDataOrSelector,
+            data: dataOrSharedContext,
+          } as CartTypes.UpdateLineItemWithSelectorDTO,
+        ]
+
+    items = await this.updateLineItemsWithSelectorBulk_(
+      toUpdate,
+      dataOrSharedContext as Context
+    )
 
     return await this.baseRepository_.serialize<CartTypes.CartLineItemDTO[]>(
       items,
@@ -397,48 +402,40 @@ export default class CartModuleService implements ICartModuleService {
     )
   }
 
-  /**
-   * Example "Update thumbnail for all line items with variant_id 123"
-   *   await updateLineItems({ variant_id: "123" }, { thubmnail: "https://..." })
-   */
   @InjectTransactionManager("baseRepository_")
-  protected async updateSelectorLineItems_(
-    selector: Partial<CartTypes.CartLineItemDTO>,
+  protected async updateSingleLineItem_(
+    lineItemId: string,
     data: Partial<CartTypes.UpdateLineItemDTO>,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<LineItem[]> {
-    const items = await this.listLineItems({ ...selector }, {})
-
-    const updates = items.map((item) => {
-      return {
-        ...data,
-        id: item.id,
-      }
-    })
-
-    return await this.lineItemService_.update(updates, sharedContext)
-  }
-
-  @InjectManager("baseRepository_")
-  protected async updateCartLineItems_(
-    cartId: string,
-    data: Partial<CartTypes.UpdateLineItemDTO>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<LineItem[]> {
-    return await this.updateSelectorLineItems_(
-      { cart_id: cartId },
-      data,
+  ): Promise<LineItem> {
+    const [item] = await this.lineItemService_.update(
+      [{ id: lineItemId, ...data }],
       sharedContext
     )
+
+    return item
   }
 
   @InjectTransactionManager("baseRepository_")
-  protected async updateLineItemsBulk_(
-    data: CartTypes.UpdateLineItemDTO[],
+  protected async updateLineItemsWithSelectorBulk_(
+    updates: CartTypes.UpdateLineItemWithSelectorDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<LineItem[]> {
-    return await this.lineItemService_.update(data, sharedContext)
+    let toUpdate: UpdateLineItemDTO[] = []
+    for (const { selector, data } of updates) {
+      const items = await this.listLineItems({ ...selector }, {})
+
+      items.forEach((item) => {
+        toUpdate.push({
+          ...data,
+          id: item.id,
+        })
+      })
+    }
+
+    return await this.lineItemService_.update(toUpdate, sharedContext)
   }
+
   async removeLineItems(
     itemIds: string[],
     sharedContext?: Context

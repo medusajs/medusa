@@ -1,3 +1,5 @@
+import { CartLineItemDTO } from "./common"
+
 export interface UpsertAddressDTO {
   customer_id?: string
   company?: string
@@ -124,6 +126,11 @@ export interface CreateLineItemDTO {
 
 export interface CreateLineItemForCartDTO extends CreateLineItemDTO {
   cart_id: string
+}
+
+export interface UpdateLineItemWithSelectorDTO {
+  selector: Partial<CartLineItemDTO>
+  data: Partial<UpdateLineItemDTO>
 }
 
 export interface UpdateLineItemDTO
