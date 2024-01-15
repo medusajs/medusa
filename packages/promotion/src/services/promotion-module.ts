@@ -490,6 +490,7 @@ export default class PromotionModuleService<
           "application_method.target_rules",
           "rules",
           "rules.values",
+          "campaign",
         ],
       },
       sharedContext
@@ -518,9 +519,14 @@ export default class PromotionModuleService<
 
     for (const {
       application_method: applicationMethodData,
+      campaign_id: campaignId,
       ...promotionData
     } of data) {
-      promotionsData.push(promotionData)
+      if (campaignId) {
+        promotionsData.push({ ...promotionData, campaign: campaignId })
+      } else {
+        promotionsData.push(promotionData)
+      }
 
       if (!applicationMethodData) {
         continue

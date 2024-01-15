@@ -595,6 +595,33 @@ describe("Promotion Service", () => {
         `application_method.type should be one of fixed, percentage`
       )
     })
+
+    it("should update campaign of the promotion", async () => {
+      await createCampaigns(repositoryManager)
+      const [createdPromotion] = await createPromotions(repositoryManager, [
+        {
+          is_automatic: true,
+          code: "TEST",
+          type: PromotionType.BUYGET,
+          campaign_id: "campaign-id-1",
+        },
+      ])
+
+      const [updatedPromotion] = await service.update([
+        {
+          id: createdPromotion.id,
+          campaign_id: "campaign-id-2",
+        },
+      ])
+
+      expect(updatedPromotion).toEqual(
+        expect.objectContaining({
+          campaign: expect.objectContaining({
+            id: "campaign-id-2",
+          }),
+        })
+      )
+    })
   })
 
   describe("retrieve", () => {

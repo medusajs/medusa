@@ -13,4 +13,5 @@ export interface UpdatePromotionDTO {
   // TODO: add this when buyget is available
   // type: PromotionType
   is_automatic?: boolean
+  campaign?: string
 }
