@@ -2,7 +2,9 @@ import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   CreatePaymentCollectionDTO,
+  CreatePaymentDTO,
   UpdatePaymentCollectionDTO,
+  UpdatePaymentDTO,
 } from "./mutations"
 import {
   FilterablePaymentCollectionProps,
@@ -67,8 +69,12 @@ export interface IPaymentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
 
-  capturePayment(paymentId: string): Promise<PaymentDTO>
-  refundPayment(paymentId: string): Promise<PaymentDTO>
+  createPayment(data: CreatePaymentDTO): Promise<PaymentDTO>
 
-  createPayment()
+  capturePayment(paymentId: string, amount: number): Promise<PaymentDTO>
+  refundPayment(paymentId: string, amount: number): Promise<PaymentDTO>
+
+  updatePayment(data: UpdatePaymentDTO): Promise<PaymentDTO>
+
+  // TODO: PaymentSession methods
 }
