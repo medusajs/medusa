@@ -1,6 +1,6 @@
 import { Entity, PrimaryKey, Property } from "@mikro-orm/core"
 
-@Entity({ tableName: "payment-provider" })
+@Entity({ tableName: "payment_provider" })
 export default class PaymentProvider {
   @PrimaryKey({ columnType: "text" })
   id: string

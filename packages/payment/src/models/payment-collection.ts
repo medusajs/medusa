@@ -1,5 +1,6 @@
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   Enum,
@@ -54,7 +55,7 @@ type OptionalPaymentCollectionProps =
   | "completed_at"
   | DAL.SoftDeletableEntityDateColumns
 
-@Entity({ tableName: "payment-collection" })
+@Entity({ tableName: "payment_collection" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class PaymentCollection {
   [OptionalProps]?: OptionalPaymentCollectionProps
@@ -126,22 +127,22 @@ export default class PaymentCollection {
   payment_providers = new Collection<PaymentProvider>(this)
 
   @OneToMany(() => PaymentSession, (ps) => ps.payment_collection, {
-    orphanRemoval: true,
+    cascade: [Cascade.REMOVE],
   })
   payment_sessions = new Collection<PaymentSession>(this)
 
   @OneToMany(() => Payment, (payment) => payment.payment_collection, {
-    orphanRemoval: true,
+    cascade: [Cascade.REMOVE],
   })
   payments = new Collection<Payment>(this)
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "paycol")
+    this.id = generateEntityId(this.id, "pay_col")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "paycol")
+    this.id = generateEntityId(this.id, "pay_col")
   }
 }

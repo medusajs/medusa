@@ -45,11 +45,11 @@ export default class Capture {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "cap")
+    this.id = generateEntityId(this.id, "capt")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "cap")
+    this.id = generateEntityId(this.id, "capt")
   }
 }

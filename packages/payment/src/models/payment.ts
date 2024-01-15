@@ -1,5 +1,6 @@
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   Filter,
@@ -103,12 +104,12 @@ export default class Payment {
   canceled_at: Date | null
 
   @OneToMany(() => Refund, (refund) => refund.payment, {
-    orphanRemoval: true,
+    cascade: [Cascade.REMOVE],
   })
   refunds = new Collection<Refund>(this)
 
   @OneToMany(() => Capture, (capture) => capture.payment, {
-    orphanRemoval: true,
+    cascade: [Cascade.REMOVE],
   })
   captures = new Collection<Capture>(this)
 

@@ -47,10 +47,10 @@ type OptionalPaymentSessionProps =
   | "currency_code"
   | "data"
   | "is_selected"
-  | "authorised_at"
+  | "authorized_at"
   | DAL.EntityDateColumns
 
-@Entity({ tableName: "payment-session" })
+@Entity({ tableName: "payment_session" })
 export default class PaymentSession {
   [OptionalProps]?: OptionalPaymentSessionProps
 
@@ -84,7 +84,7 @@ export default class PaymentSession {
     columnType: "timestamptz",
     nullable: true,
   })
-  authorised_at: Date | null
+  authorized_at: Date | null
 
   @ManyToOne({
     index: "IDX_payment_session_payment_collection_id",
@@ -101,11 +101,11 @@ export default class PaymentSession {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "ps")
+    this.id = generateEntityId(this.id, "payses")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "ps")
+    this.id = generateEntityId(this.id, "payses")
   }
 }

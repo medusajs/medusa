@@ -15,7 +15,7 @@ type OptionalPaymentMethodTokenProps =
   | "description_detail"
   | "metadata"
 
-@Entity({ tableName: "payment-method-token" })
+@Entity({ tableName: "payment_method_token" })
 export default class PaymentMethodToken {
   [OptionalProps]?: OptionalPaymentMethodTokenProps
 
