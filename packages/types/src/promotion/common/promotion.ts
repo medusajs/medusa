@@ -1,4 +1,5 @@
 import { BaseFilterable } from "../../dal"
+import { CreateCampaignDTO } from "../mutations"
 import {
   ApplicationMethodDTO,
   CreateApplicationMethodDTO,
@@ -23,6 +24,8 @@ export interface CreatePromotionDTO {
   is_automatic?: boolean
   application_method?: CreateApplicationMethodDTO
   rules?: CreatePromotionRuleDTO[]
+  campaign?: CreateCampaignDTO
+  campaign_id?: string
 }
 
 export interface UpdatePromotionDTO {
@@ -31,6 +34,7 @@ export interface UpdatePromotionDTO {
   code?: string
   type?: PromotionType
   application_method?: UpdateApplicationMethodDTO
+  campaign_id?: string
 }
 
 export interface FilterablePromotionProps
@@ -39,4 +43,5 @@ export interface FilterablePromotionProps
   code?: string[]
   is_automatic?: boolean
   type?: PromotionType[]
+  budget_id?: string[]
 }
