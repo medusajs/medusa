@@ -1,5 +1,10 @@
+import Currency from "../../models/currency"
 import { CurrencyService } from "@services"
 import { asClass, asValue, createContainer } from "awilix"
+
+;(Currency as any).meta = {
+  primaryKeys: ["code"],
+}
 
 export const nonExistingCurrencyCode = "non-existing-code"
 export const mockContainer = createContainer()

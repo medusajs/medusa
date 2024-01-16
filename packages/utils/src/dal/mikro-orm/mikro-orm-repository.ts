@@ -242,7 +242,8 @@ export function mikroOrmBaseRepositoryFactory<
     static retrievePrimaryKeys(entity: EntityClass<T> | EntitySchema<T>) {
       return (
         (entity as EntitySchema<T>).meta?.primaryKeys ??
-        (entity as EntityClass<T>).prototype.__meta.primaryKeys
+        (entity as EntityClass<T>).prototype.__meta.primaryKeys ??
+        "id"
       )
     }
 
