@@ -37,7 +37,7 @@ export interface IPaymentModuleService extends IModuleService {
     filters?: FilterablePaymentCollectionProps,
     config?: FindConfig<PaymentCollectionDTO>,
     sharedContext?: Context
-  ): Promise<[PaymentCollectionDTO[], number]>
+  ): Promise<PaymentCollectionDTO[]>
 
   listAndCountPaymentCollections(
     filters?: FilterablePaymentCollectionProps,
