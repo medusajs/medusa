@@ -11,7 +11,7 @@ import {
 import { generateEntityId } from "@medusajs/utils"
 import Payment from "./payment"
 
-type OptionalCaptureProps = "created_by" | "created_at" | "completed_at"
+type OptionalCaptureProps = "created_by" | "created_at"
 
 @Entity({ tableName: "capture" })
 export default class Capture {

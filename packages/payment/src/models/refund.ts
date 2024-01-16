@@ -11,7 +11,7 @@ import {
 import { generateEntityId } from "@medusajs/utils"
 import Payment from "./payment"
 
-type OptionalRefundProps = "created_by" | "completed_at"
+type OptionalRefundProps = "created_by"
 
 @Entity({ tableName: "refund" })
 export default class Refund {
