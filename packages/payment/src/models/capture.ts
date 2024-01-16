@@ -11,7 +11,7 @@ import {
 import { generateEntityId } from "@medusajs/utils"
 import Payment from "./payment"
 
-type OptionalCaptureProps = "created_by" | "created_at" | "completed_at"
+type OptionalCaptureProps = "created_at"
 
 @Entity({ tableName: "capture" })
 export default class Capture {
@@ -41,7 +41,7 @@ export default class Capture {
   created_at: Date
 
   @Property({ columnType: "text", nullable: true })
-  created_by: string | null
+  created_by?: string | null
 
   @BeforeCreate()
   onCreate() {

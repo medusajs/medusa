@@ -14,45 +14,17 @@ import {
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
 
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  generateEntityId,
+  optionalNumericSerializer,
+  PaymentCollectionStatus,
+} from "@medusajs/utils"
 import PaymentProvider from "./payment-provider"
 import PaymentSession from "./payment-session"
 import Payment from "./payment"
 
-/**
- * @enum
- *
- * The payment collection's status.
- */
-export enum PaymentCollectionStatus {
-  /**
-   * The payment collection isn't paid.
-   */
-  NOT_PAID = "not_paid",
-  /**
-   * The payment collection is awaiting payment.
-   */
-  AWAITING = "awaiting",
-  /**
-   * The payment collection is authorized.
-   */
-  AUTHORIZED = "authorized",
-  /**
-   * Some of the payments in the payment collection are authorized.
-   */
-  PARTIALLY_AUTHORIZED = "partially_authorized",
-  /**
-   * The payment collection is canceled.
-   */
-  CANCELED = "canceled",
-}
-
-type OptionalPaymentCollectionProps =
-  | "authorized_amount"
-  | "refunded_amount"
-  | "region_id"
-  | "completed_at"
-  | DAL.SoftDeletableEntityDateColumns
+type OptionalPaymentCollectionProps = "status" | DAL.EntityDateColumns
 
 @Entity({ tableName: "payment_collection" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -74,16 +46,16 @@ export default class PaymentCollection {
   @Property({
     columnType: "numeric",
     nullable: true,
-    serializer: Number,
+    serializer: optionalNumericSerializer,
   })
-  authorized_amount: number | null
+  authorized_amount?: number | null
 
   @Property({
     columnType: "numeric",
     nullable: true,
-    serializer: Number,
+    serializer: optionalNumericSerializer,
   })
-  refunded_amount: number | null
+  refunded_amount?: number | null
 
   @Property({ columnType: "text", nullable: true })
   region_id?: string | null
@@ -108,13 +80,13 @@ export default class PaymentCollection {
     nullable: true,
     index: "IDX_payment_collection_deleted_at",
   })
-  deleted_at: Date | null
+  deleted_at?: Date | null
 
   @Property({
     columnType: "timestamptz",
     nullable: true,
   })
-  completed_at: Date | null
+  completed_at?: Date | null
 
   @Enum({
     items: () => PaymentCollectionStatus,
