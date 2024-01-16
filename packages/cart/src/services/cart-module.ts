@@ -345,7 +345,7 @@ export default class CartModuleService implements ICartModuleService {
       | string
       | CartTypes.UpdateLineItemWithSelectorDTO[]
       | Partial<CartTypes.CartLineItemDTO>,
-    @MedusaContext()
+      // @MedusaContext()
     dataOrSharedContext?:
       | CartTypes.UpdateLineItemDTO
       | Partial<CartTypes.UpdateLineItemDTO>
@@ -355,7 +355,7 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<CartTypes.CartLineItemDTO[] | CartTypes.CartLineItemDTO> {
     let items: LineItem[] = []
     if (isString(lineItemIdOrDataOrSelector)) {
-      const item = await this.updateSingleLineItem_(
+      const item = await this.updateLineItem_(
         lineItemIdOrDataOrSelector,
         dataOrSharedContext as Partial<CartTypes.UpdateLineItemDTO>,
         sharedContext
@@ -378,7 +378,7 @@ export default class CartModuleService implements ICartModuleService {
           } as CartTypes.UpdateLineItemWithSelectorDTO,
         ]
 
-    items = await this.updateLineItemsWithSelectorBulk_(
+    items = await this.updateLineItemsWithSelector(
       toUpdate,
       dataOrSharedContext as Context
     )
@@ -392,7 +392,7 @@ export default class CartModuleService implements ICartModuleService {
   }
 
   @InjectTransactionManager("baseRepository_")
-  protected async updateSingleLineItem_(
+  protected async updateLineItem_(
     lineItemId: string,
     data: Partial<CartTypes.UpdateLineItemDTO>,
     @MedusaContext() sharedContext: Context = {}
@@ -406,10 +406,11 @@ export default class CartModuleService implements ICartModuleService {
   }
 
   @InjectTransactionManager("baseRepository_")
-  protected async updateLineItemsWithSelectorBulk_(
+  protected async updateLineItemsWithSelector(
     updates: CartTypes.UpdateLineItemWithSelectorDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<LineItem[]> {
+    console.log("Context in method: ", sharedContext)
     let toUpdate: UpdateLineItemDTO[] = []
     for (const { selector, data } of updates) {
       const items = await this.listLineItems({ ...selector }, {}, sharedContext)
@@ -461,17 +462,17 @@ export default class CartModuleService implements ICartModuleService {
   async createAddresses(
     data: CartTypes.CreateAddressDTO,
     sharedContext?: Context
-  )
+  ): Promise<CartTypes.CartAddressDTO>
   async createAddresses(
     data: CartTypes.CreateAddressDTO[],
     sharedContext?: Context
-  )
+  ): Promise<CartTypes.CartAddressDTO[]>
 
   @InjectManager("baseRepository_")
   async createAddresses(
     data: CartTypes.CreateAddressDTO[] | CartTypes.CreateAddressDTO,
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<CartTypes.CartAddressDTO | CartTypes.CartAddressDTO[]> {
     const input = Array.isArray(data) ? data : [data]
     const addresses = await this.createAddresses_(input, sharedContext)
 
@@ -497,17 +498,17 @@ export default class CartModuleService implements ICartModuleService {
   async updateAddresses(
     data: CartTypes.UpdateAddressDTO,
     sharedContext?: Context
-  )
+  ): Promise<CartTypes.CartAddressDTO>
   async updateAddresses(
     data: CartTypes.UpdateAddressDTO[],
     sharedContext?: Context
-  )
+  ): Promise<CartTypes.CartAddressDTO[]>
 
   @InjectManager("baseRepository_")
   async updateAddresses(
     data: CartTypes.UpdateAddressDTO[] | CartTypes.UpdateAddressDTO,
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<CartTypes.CartAddressDTO | CartTypes.CartAddressDTO[]> {
     const input = Array.isArray(data) ? data : [data]
     const addresses = await this.updateAddresses_(input, sharedContext)
 
@@ -530,14 +531,14 @@ export default class CartModuleService implements ICartModuleService {
     return await this.addressService_.update(data, sharedContext)
   }
 
-  async deleteAddresses(ids: string[], sharedContext?: Context)
-  async deleteAddresses(ids: string, sharedContext?: Context)
+  async deleteAddresses(ids: string[], sharedContext?: Context): Promise<void>
+  async deleteAddresses(ids: string, sharedContext?: Context): Promise<void>
 
   @InjectTransactionManager("baseRepository_")
   async deleteAddresses(
     ids: string[] | string,
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<void> {
     const addressIds = Array.isArray(ids) ? ids : [ids]
     await this.addressService_.delete(addressIds, sharedContext)
   }

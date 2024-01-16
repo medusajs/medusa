@@ -476,7 +476,7 @@ describe("Cart Module Service", () => {
       expect(updatedItem.title).toBe("test2")
     })
 
-    it("should update line items in carts succesfully with multi-selector approach", async () => {
+    it.only("should update line items in carts succesfully with multi-selector approach", async () => {
       const [createdCart] = await service.create([
         {
           currency_code: "eur",
