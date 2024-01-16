@@ -345,11 +345,10 @@ export default class CartModuleService implements ICartModuleService {
       | string
       | CartTypes.UpdateLineItemWithSelectorDTO[]
       | Partial<CartTypes.CartLineItemDTO>,
-      // @MedusaContext()
-    dataOrSharedContext?:
+    dataOrSharedContext:
       | CartTypes.UpdateLineItemDTO
       | Partial<CartTypes.UpdateLineItemDTO>
-      | Context,
+      | Context = {},
     @MedusaContext()
     sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[] | CartTypes.CartLineItemDTO> {
@@ -410,7 +409,6 @@ export default class CartModuleService implements ICartModuleService {
     updates: CartTypes.UpdateLineItemWithSelectorDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<LineItem[]> {
-    console.log("Context in method: ", sharedContext)
     let toUpdate: UpdateLineItemDTO[] = []
     for (const { selector, data } of updates) {
       const items = await this.listLineItems({ ...selector }, {}, sharedContext)

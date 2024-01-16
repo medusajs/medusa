@@ -22,6 +22,7 @@ type OptionalLineItemProps =
   | "is_tax_inclusive"
   | "compare_at_unit_price"
   | "requires_shipping"
+  | "cart"
   | DAL.EntityDateColumns
 
 @Entity({ tableName: "cart_line_item" })
@@ -32,14 +33,14 @@ export default class LineItem {
   id: string
 
   @Property({ columnType: "text" })
-  cart_id!: string
+  cart_id: string
 
   @ManyToOne(() => Cart, {
     onDelete: "cascade",
     index: "IDX_line_item_cart_id",
     nullable: true,
   })
-  cart?: Cart
+  cart?: Cart | null
 
   @Property({ columnType: "text" })
   title: string

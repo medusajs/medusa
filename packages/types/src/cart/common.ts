@@ -341,7 +341,7 @@ export interface CartLineItemDTO {
    *
    * @expandable
    */
-  cart?: CartDTO
+  cart: CartDTO
   /**
    * The ID of the associated cart.
    */
