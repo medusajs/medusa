@@ -8,6 +8,8 @@ import { Context, FindConfig } from "@medusajs/types"
 import { MedusaContext } from "../decorators"
 import { retrieveEntity } from "./retrieve-entity"
 import { buildQuery } from "./build-query"
+import { EntityClass } from "@mikro-orm/core/typings"
+import { EntitySchema } from "@mikro-orm/core"
 
 /**
  * Utility factory and interfaces for internal module services
@@ -84,14 +86,23 @@ export function abstractServiceFactory<
       this[propertyRepositoryName] = container[injectedRepositoryName]
     }
 
+    static retrievePrimaryKeys(entity: EntityClass<any> | EntitySchema<any>) {
+      return (
+        (entity as EntitySchema<any>).meta?.primaryKeys ??
+        (entity as EntityClass<any>).prototype.__meta.primaryKeys
+      )
+    }
+
     @InjectManager(propertyRepositoryName)
     async retrieve<TEntityMethod = TEntity>(
       id: string,
       config: FindConfig<TEntityMethod> = {},
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity> {
+      // TODO: Add support for composite primary keys
       return (await retrieveEntity({
         id: id,
+        identifierColumn: AbstractService_.retrievePrimaryKeys(model)[0],
         entityName: model.name,
         repository: this[propertyRepositoryName],
         config,
