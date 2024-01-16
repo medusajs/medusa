@@ -24,6 +24,11 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     create: WithRequiredProperty<ProductTypes.CreateProductOnlyDTO, "status">
   }
 >(Product) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+
   async find(
     findOptions: DAL.FindOptions<Product & { q?: string }> = { where: {} },
     context: Context = {}

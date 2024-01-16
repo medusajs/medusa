@@ -47,12 +47,12 @@ interface StatusIndicatorProps extends React.ComponentPropsWithoutRef<"span"> {
   status: ProgressStatus
 }
 
-const ProgressIndicator = ({ 
+const ProgressIndicator = ({
   /**
    * The current status.
    */
-  status, 
-  ...props 
+  status,
+  ...props
 }: StatusIndicatorProps) => {
   const Icon = React.useMemo(() => {
     switch (status) {
@@ -81,21 +81,24 @@ ProgressIndicator.displayName = "ProgressAccordion.ProgressIndicator"
 const Header = React.forwardRef<
   React.ElementRef<typeof Primitves.Header>,
   HeaderProps
->((
-  { 
-    className, 
-    /**
-     * The current status.
-     */
-    status = "not-started", 
-    children, 
-    ...props 
-  }: HeaderProps, ref) => {
+>(
+  (
+    {
+      className,
+      /**
+       * The current status.
+       */
+      status = "not-started",
+      children,
+      ...props
+    }: HeaderProps,
+    ref
+  ) => {
     return (
       <Primitves.Header
         ref={ref}
         className={clx(
-          "h3-core text-ui-fg-base group flex w-full flex-1 items-center gap-4 px-8",
+          "h3-core text-ui-fg-base group flex w-full flex-1 items-center gap-4 px-6",
           className
         )}
         {...props}
@@ -109,7 +112,8 @@ const Header = React.forwardRef<
         </Primitves.Trigger>
       </Primitves.Header>
     )
-})
+  }
+)
 Header.displayName = "ProgressAccordion.Header"
 
 const Content = React.forwardRef<
@@ -121,7 +125,7 @@ const Content = React.forwardRef<
       ref={ref}
       className={clx(
         "overflow-hidden",
-        "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down pl-24 pr-8",
+        "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down pl-[88px] pr-6",
         className
       )}
       {...props}
