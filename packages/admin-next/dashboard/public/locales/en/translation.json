@@ -70,7 +70,12 @@
   },
   "customerGroups": {
     "domain": "Customer Groups",
-    "createGroup": "Create group"
+    "createGroup": "Create group",
+    "createCustomerGroup": "Create Customer Group",
+    "createCustomerGroupHint": "Create a new customer group to segment your customers.",
+    "customerAlreadyAdded": "The customer has already been added to the group.",
+    "editCustomerGroup": "Edit Customer Group",
+    "removeProductWarning": "You are about to remove {{email}} from the customer group. This action cannot be undone."
   },
   "orders": {
     "domain": "Orders"

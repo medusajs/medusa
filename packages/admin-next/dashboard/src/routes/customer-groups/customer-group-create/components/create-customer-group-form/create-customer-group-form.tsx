@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, FocusModal } from "@medusajs/ui"
+import { Button, FocusModal, Heading, Input, Text } from "@medusajs/ui"
 import { useAdminCreateCustomerGroup } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
@@ -72,7 +72,33 @@ export const CreateCustomerGroupForm = ({
             </Button>
           </div>
         </FocusModal.Header>
-        <FocusModal.Body></FocusModal.Body>
+        <FocusModal.Body className="flex flex-col items-center pt-[72px]">
+          <div className="w-full max-w-[720px] flex flex-col gap-y-8">
+            <div>
+              <Heading>{t("customerGroups.createCustomerGroup")}</Heading>
+              <Text size="small" className="text-ui-fg-subtle">
+                {t("customerGroups.createCustomerGroupHint")}
+              </Text>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <Form.Field
+                control={form.control}
+                name="name"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>{t("fields.name")}</Form.Label>
+                      <Form.Control>
+                        <Input {...field} />
+                      </Form.Control>
+                      <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
+            </div>
+          </div>
+        </FocusModal.Body>
       </form>
     </Form>
   )

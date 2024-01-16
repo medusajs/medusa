@@ -159,14 +159,39 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () =>
                   import("../../routes/customer-groups/customer-group-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-create"
+                      ),
+                  },
+                ],
               },
               {
                 path: ":id",
                 lazy: () =>
                   import("../../routes/customer-groups/customer-group-detail"),
+                children: [
+                  {
+                    path: "add-customers",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-add-customers"
+                      ),
+                  },
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-edit"
+                      ),
+                  },
+                ],
               },
             ],
           },

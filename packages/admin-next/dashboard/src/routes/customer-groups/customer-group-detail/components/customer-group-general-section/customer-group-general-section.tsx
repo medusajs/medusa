@@ -1,6 +1,6 @@
 import { EllipsisHorizontal, PencilSquare, Trash } from "@medusajs/icons"
 import type { CustomerGroup } from "@medusajs/medusa"
-import { Button, Container, DropdownMenu, Heading } from "@medusajs/ui"
+import { Container, DropdownMenu, Heading, IconButton } from "@medusajs/ui"
 import { useAdminDeleteCustomerGroup } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
@@ -30,9 +30,9 @@ export const CustomerGroupGeneralSection = ({
       <Heading>{group.name}</Heading>
       <DropdownMenu>
         <DropdownMenu.Trigger asChild>
-          <Button size="small" variant="secondary">
+          <IconButton size="small" variant="transparent">
             <EllipsisHorizontal />
-          </Button>
+          </IconButton>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
           <Link to={`/customer-groups/${group.id}/edit`}>

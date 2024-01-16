@@ -1,1 +1,1 @@
-export * from "./customer-group-create"
+export { CustomerGroupCreate as Component } from "./customer-group-create"
