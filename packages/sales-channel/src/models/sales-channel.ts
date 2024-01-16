@@ -11,9 +11,7 @@ import {
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
 
-type SalesChannelOptionalProps =
-  | "is_disabled"
-  | DAL.SoftDeletableEntityDateColumns
+type SalesChannelOptionalProps = "is_disabled" | DAL.EntityDateColumns
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
