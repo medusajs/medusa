@@ -21,12 +21,25 @@ type KnowledgeBase = {
 }
 
 export type RetrieveOptions = {
+  /**
+   * A name that can be of a function, type, etc...
+   */
   str: string
+  /**
+   * Options to pass to the `template` function of a
+   * knowledge base item.
+   */
   templateOptions?: TemplateOptions
+  /**
+   * The kind of the associated node.
+   */
   kind?: ts.SyntaxKind
 }
 
 type RetrieveSymbolOptions = Omit<RetrieveOptions, "str"> & {
+  /**
+   * The symbol to retrieve the item from the knowledge base.
+   */
   symbol: ts.Symbol
 }
 
@@ -204,16 +217,17 @@ class KnowledgeBaseFactory {
   /**
    * Tries to find in a specified knowledge base a template relevant to the specified name.
    *
-   * @param {string} str - A name that can be of a function, type, etc...
-   * @param {KnowledgeBase[]} knowledgeBase - A knowledge base to search in.
    * @returns {string | undefined} The matching knowledge base template, if found.
    */
-  tryToFindInKnowledgeBase({
+  private tryToFindInKnowledgeBase({
     str,
     knowledgeBase,
     templateOptions,
     kind,
   }: RetrieveOptions & {
+    /**
+     * A knowledge base to search in.
+     */
     knowledgeBase: KnowledgeBase[]
   }): string | undefined {
     const foundItem = knowledgeBase.find((item) => {
@@ -248,7 +262,6 @@ class KnowledgeBaseFactory {
   /**
    * Tries to retrieve the summary template of a specified type from the {@link summaryKnowledgeBase}.
    *
-   * @param {string} str - The name of the type to retrieve its summary.
    * @returns {string | undefined} The matching knowledge base template, if found.
    */
   tryToGetSummary({ str, ...options }: RetrieveOptions): string | undefined {
@@ -263,7 +276,6 @@ class KnowledgeBaseFactory {
   /**
    * Tries to retrieve the summary template of a function's symbol from the {@link functionSummaryKnowledgeBase}.
    *
-   * @param {ts.Symbol} symbol - The symbol of the function to retrieve its summary template.
    * @returns {string | undefined} The matching knowledge base template, if found.
    */
   tryToGetFunctionSummary({
@@ -280,7 +292,6 @@ class KnowledgeBaseFactory {
   /**
    * Tries to retrieve the example template of a function's symbol from the {@link examplesKnowledgeBase}.
    *
-   * @param {ts.Symbol} symbol - The symbol of the function to retrieve its example template.
    * @returns {string | undefined} The matching knowledge base template, if found.
    */
   tryToGetFunctionExamples({
@@ -297,7 +308,6 @@ class KnowledgeBaseFactory {
   /**
    * Tries to retrieve the return template of a function's symbol from the {@link functionReturnKnowledgeBase}.
    *
-   * @param {ts.Symbol} symbol - The symbol of the function to retrieve its return template.
    * @returns {string | undefined} The matching knowledge base template, if found.
    */
   tryToGetFunctionReturns({
