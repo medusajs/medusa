@@ -15,22 +15,23 @@ export default async function runGitChanges() {
 
   let files = childProcess.stdout.toString().split("\n").filter(Boolean)
 
-  if (files.length) {
-    console.log(
-      `${files.length} files have changed. Running generator on them...`
-    )
-
-    files = files.map((filePath) => path.resolve(monorepoPath, filePath))
-
-    // generate docblocks for each of the files.
-    const docblockGenerator = new DocblockGenerator({
-      paths: files,
-    })
-
-    await docblockGenerator.run()
-
-    console.log(`Finished generating docs for ${files.length} files.`)
-  } else {
+  if (!files.length) {
     console.log(`No file changes detected.`)
+    return
   }
+
+  console.log(
+    `${files.length} files have changed. Running generator on them...`
+  )
+
+  files = files.map((filePath) => path.resolve(monorepoPath, filePath))
+
+  // generate docblocks for each of the files.
+  const docblockGenerator = new DocblockGenerator({
+    paths: files,
+  })
+
+  await docblockGenerator.run()
+
+  console.log(`Finished generating docs for ${files.length} files.`)
 }

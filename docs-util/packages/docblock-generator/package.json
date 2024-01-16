@@ -17,6 +17,7 @@
     "workflow-diagrams-generator": "dist/index.js"
   },
   "dependencies": {
+    "@octokit/core": "^5.0.2",
     "commander": "^11.1.0",
     "dotenv": "^16.3.1",
     "eslint": "^8.56.0",

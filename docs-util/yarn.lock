@@ -849,6 +849,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@octokit/auth-token@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@octokit/auth-token@npm:4.0.0"
+  checksum: 57acaa6c394c5abab2f74e8e1dcf4e7a16b236f713c77a54b8f08e2d14114de94b37946259e33ec2aab0566b26f724c2b71d2602352b59e541a9854897618f3c
+  languageName: node
+  linkType: hard
+
 "@octokit/core@npm:^4.0.5":
   version: 4.2.4
   resolution: "@octokit/core@npm:4.2.4"
@@ -864,6 +871,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@octokit/core@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "@octokit/core@npm:5.0.2"
+  dependencies:
+    "@octokit/auth-token": ^4.0.0
+    "@octokit/graphql": ^7.0.0
+    "@octokit/request": ^8.0.2
+    "@octokit/request-error": ^5.0.0
+    "@octokit/types": ^12.0.0
+    before-after-hook: ^2.2.0
+    universal-user-agent: ^6.0.0
+  checksum: f3b3cb72f8f374e763e60922eacad56cb08fc05ee0be26f2a7b61937f89a377a8fd1b54f3d621a2b9627a9402c595d4b7e24900602e401b8a8edaffd995fa98f
+  languageName: node
+  linkType: hard
+
 "@octokit/endpoint@npm:^7.0.0":
   version: 7.0.6
   resolution: "@octokit/endpoint@npm:7.0.6"
@@ -872,6 +894,16 @@ __metadata:
     is-plain-object: ^5.0.0
     universal-user-agent: ^6.0.0
   checksum: fd147a55010b54af7567bf90791359f7096a1c9916a2b7c72f8afd0c53141338b3d78da3a4ab3e3bdfeb26218a1b73735432d8987ccc04996b1019219299f115
+  languageName: node
+  linkType: hard
+
+"@octokit/endpoint@npm:^9.0.0":
+  version: 9.0.4
+  resolution: "@octokit/endpoint@npm:9.0.4"
+  dependencies:
+    "@octokit/types": ^12.0.0
+    universal-user-agent: ^6.0.0
+  checksum: f1c857c5d85afa9d7e8857f7f97dbec28d3b6ab1dc21fe35172f1bc9e5512c8a3a26edabf6b2d83bb60d700f7ad290c96be960496aa83606095630edfad06db4
   languageName: node
   linkType: hard
 
@@ -886,10 +918,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@octokit/graphql@npm:^7.0.0":
+  version: 7.0.2
+  resolution: "@octokit/graphql@npm:7.0.2"
+  dependencies:
+    "@octokit/request": ^8.0.1
+    "@octokit/types": ^12.0.0
+    universal-user-agent: ^6.0.0
+  checksum: 96e5d6b970be60877134cc147b9249534f3a79d691b9932d731d453426fa1e1a0a36111a1b0a6ab43d61309c630903a65db5559b5c800300dc26cf588f50fea8
+  languageName: node
+  linkType: hard
+
 "@octokit/openapi-types@npm:^18.0.0":
   version: 18.1.1
   resolution: "@octokit/openapi-types@npm:18.1.1"
   checksum: 856d3bb9f8c666e837dd5e8b8c216ee4342b9ed63ff8da922ca4ce5883ed1dfbec73390eb13d69fbcb4703a4c8b8b6a586df3b0e675ff93bf3d46b5b4fe0968e
+  languageName: node
+  linkType: hard
+
+"@octokit/openapi-types@npm:^19.1.0":
+  version: 19.1.0
+  resolution: "@octokit/openapi-types@npm:19.1.0"
+  checksum: ae8081f52b797b91a12d4f6cddc475699c9d34b06645b337adc77d30b583d8fe8506597a45c42f8f1a96bfb2a9d092cee257d8a65d718bfeed23a0d153448eea
   languageName: node
   linkType: hard
 
@@ -904,6 +954,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@octokit/request-error@npm:^5.0.0":
+  version: 5.0.1
+  resolution: "@octokit/request-error@npm:5.0.1"
+  dependencies:
+    "@octokit/types": ^12.0.0
+    deprecation: ^2.0.0
+    once: ^1.4.0
+  checksum: e72a4627120de345b54876a1f007664095e5be9d624fce2e14fccf7668cd8f5e4929d444d8fc085d48e1fb5cd548538453974aab129a669101110d6679dce6c6
+  languageName: node
+  linkType: hard
+
 "@octokit/request@npm:^6.0.0":
   version: 6.2.8
   resolution: "@octokit/request@npm:6.2.8"
@@ -915,6 +976,27 @@ __metadata:
     node-fetch: ^2.6.7
     universal-user-agent: ^6.0.0
   checksum: 6b6079ed45bac44c4579b40990bfd1905b03d4bc4e5255f3d5a10cf5182171578ebe19abeab32ebb11a806f1131947f2a06b7a077bd7e77ade7b15fe2882174b
+  languageName: node
+  linkType: hard
+
+"@octokit/request@npm:^8.0.1, @octokit/request@npm:^8.0.2":
+  version: 8.1.6
+  resolution: "@octokit/request@npm:8.1.6"
+  dependencies:
+    "@octokit/endpoint": ^9.0.0
+    "@octokit/request-error": ^5.0.0
+    "@octokit/types": ^12.0.0
+    universal-user-agent: ^6.0.0
+  checksum: ef84418e0b1f28335c105bca2b1518b04797791761024d26f80f60a528cdcf468baf9897fd34f535c42af0643a598884f882bc832e68edbfe1ea530c2df563a4
+  languageName: node
+  linkType: hard
+
+"@octokit/types@npm:^12.0.0":
+  version: 12.4.0
+  resolution: "@octokit/types@npm:12.4.0"
+  dependencies:
+    "@octokit/openapi-types": ^19.1.0
+  checksum: b52b3fd8af307a1868846991f8376548a790814b20639dee1110271a768c0489081970df893ca2230f6285066003230d22f5877eeac90418971a475c79808241
   languageName: node
   linkType: hard
 
@@ -1854,6 +1936,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "docblock-generator@workspace:packages/docblock-generator"
   dependencies:
+    "@octokit/core": ^5.0.2
     "@types/node": ^20.9.4
     commander: ^11.1.0
     dotenv: ^16.3.1
