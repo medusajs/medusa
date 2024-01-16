@@ -1312,6 +1312,119 @@ describe("Promotion Service: computeActions", () => {
         },
       ])
     })
+
+    it("should compute budget exceeded action when applicable total exceeds campaign budget for type spend", async () => {
+      await createCampaigns(repositoryManager)
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          campaign_id: "campaign-id-1",
+          application_method: {
+            type: "fixed",
+            target_type: "shipping_methods",
+            allocation: "each",
+            value: "1200",
+            max_quantity: 2,
+            target_rules: [
+              {
+                attribute: "shipping_option.id",
+                operator: "in",
+                values: ["express", "standard"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        shipping_methods: [
+          {
+            id: "shipping_method_express",
+            unit_price: 1200,
+            shipping_option: {
+              id: "express",
+            },
+          },
+        ],
+      })
+
+      expect(result).toEqual([
+        { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+      ])
+    })
+
+    it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
+      await createCampaigns(repositoryManager)
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          campaign_id: "campaign-id-2",
+          application_method: {
+            type: "fixed",
+            target_type: "shipping_methods",
+            allocation: "each",
+            value: "1200",
+            max_quantity: 2,
+            target_rules: [
+              {
+                attribute: "shipping_option.id",
+                operator: "in",
+                values: ["express", "standard"],
+              },
+            ],
+          },
+        },
+      ])
+
+      await service.updateCampaigns({
+        id: "campaign-id-2",
+        budget: { used: 1000 },
+      })
+
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        shipping_methods: [
+          {
+            id: "shipping_method_express",
+            unit_price: 1200,
+            shipping_option: {
+              id: "express",
+            },
+          },
+        ],
+      })
+
+      expect(result).toEqual([
+        { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+      ])
+    })
   })
 
   describe("when promotion is for shipping_method and allocation is across", () => {
@@ -1609,6 +1722,117 @@ describe("Promotion Service: computeActions", () => {
           amount: 100,
           code: "PROMOTION_TEST",
         },
+      ])
+    })
+
+    it("should compute budget exceeded action when applicable total exceeds campaign budget for type spend", async () => {
+      await createCampaigns(repositoryManager)
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          campaign_id: "campaign-id-1",
+          application_method: {
+            type: "fixed",
+            target_type: "shipping_methods",
+            allocation: "across",
+            value: "1200",
+            target_rules: [
+              {
+                attribute: "shipping_option.id",
+                operator: "in",
+                values: ["express", "standard"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        shipping_methods: [
+          {
+            id: "shipping_method_express",
+            unit_price: 1200,
+            shipping_option: {
+              id: "express",
+            },
+          },
+        ],
+      })
+
+      expect(result).toEqual([
+        { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+      ])
+    })
+
+    it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
+      await createCampaigns(repositoryManager)
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          campaign_id: "campaign-id-2",
+          application_method: {
+            type: "fixed",
+            target_type: "shipping_methods",
+            allocation: "across",
+            value: "1200",
+            target_rules: [
+              {
+                attribute: "shipping_option.id",
+                operator: "in",
+                values: ["express", "standard"],
+              },
+            ],
+          },
+        },
+      ])
+
+      await service.updateCampaigns({
+        id: "campaign-id-2",
+        budget: { used: 1000 },
+      })
+
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        shipping_methods: [
+          {
+            id: "shipping_method_express",
+            unit_price: 1200,
+            shipping_option: {
+              id: "express",
+            },
+          },
+        ],
+      })
+
+      expect(result).toEqual([
+        { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
       ])
     })
   })
