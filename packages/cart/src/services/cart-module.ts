@@ -272,10 +272,11 @@ export default class CartModuleService implements ICartModuleService {
       | string
       | CartTypes.CreateLineItemForCartDTO[]
       | CartTypes.CreateLineItemForCartDTO,
-    dataOrSharedContext?:
+    @MedusaContext()
+    dataOrSharedContext:
       | CartTypes.CreateLineItemDTO[]
       | CartTypes.CreateLineItemDTO
-      | Context,
+      | Context = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[] | CartTypes.CartLineItemDTO> {
     let items: LineItem[] = []
@@ -345,12 +346,12 @@ export default class CartModuleService implements ICartModuleService {
       | string
       | CartTypes.UpdateLineItemWithSelectorDTO[]
       | Partial<CartTypes.CartLineItemDTO>,
+    @MedusaContext()
     dataOrSharedContext:
       | CartTypes.UpdateLineItemDTO
       | Partial<CartTypes.UpdateLineItemDTO>
       | Context = {},
-    @MedusaContext()
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[] | CartTypes.CartLineItemDTO> {
     let items: LineItem[] = []
     if (isString(lineItemIdOrDataOrSelector)) {
@@ -377,7 +378,7 @@ export default class CartModuleService implements ICartModuleService {
           } as CartTypes.UpdateLineItemWithSelectorDTO,
         ]
 
-    items = await this.updateLineItemsWithSelector(
+    items = await this.updateLineItemsWithSelector_(
       toUpdate,
       dataOrSharedContext as Context
     )
@@ -405,7 +406,7 @@ export default class CartModuleService implements ICartModuleService {
   }
 
   @InjectTransactionManager("baseRepository_")
-  protected async updateLineItemsWithSelector(
+  protected async updateLineItemsWithSelector_(
     updates: CartTypes.UpdateLineItemWithSelectorDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<LineItem[]> {
