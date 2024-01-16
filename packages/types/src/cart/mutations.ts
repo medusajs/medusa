@@ -17,7 +17,7 @@ export interface UpdateAddressDTO extends UpsertAddressDTO {
   id: string
 }
 
-export type CreateAddressDTO = UpsertAddressDTO
+export interface CreateAddressDTO extends UpsertAddressDTO {}
 
 export interface CreateCartDTO {
   region_id?: string

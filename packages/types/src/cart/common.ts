@@ -471,10 +471,10 @@ export interface FilterableAddressProps
 }
 
 /**
- * TODO: Remove this in favor of CartDTO, when module is released
+ * TODO: Remove this in favor of CartDTO, when module is released 
  * @deprecated Use CartDTO instead
  */
-
+ 
 export type legacy__CartDTO = {
   id?: string
   email?: string
