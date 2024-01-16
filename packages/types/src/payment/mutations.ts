@@ -25,4 +25,18 @@ export interface UpdatePaymentDTO {
   customer_id?: string
 }
 
-export interface CreatePaymentSessionDTO {}
+export interface CreatePaymentSessionDTO {
+  amount: number
+  currency_code: string
+  provider_id: string
+
+  cart_id?: string
+  resource_id?: string
+  customer_id?: string
+}
+
+export interface SetPaymentSessionsDTO {
+  provider_id: string
+  amount: number
+  session_id?: string
+}
