@@ -89,8 +89,7 @@ export function abstractServiceFactory<
     static retrievePrimaryKeys(entity: EntityClass<any> | EntitySchema<any>) {
       return (
         (entity as EntitySchema<any>).meta?.primaryKeys ??
-        (entity as EntityClass<any>).prototype.__meta?.primaryKeys ??
-        "id"
+        (entity as EntityClass<any>).prototype.__meta?.primaryKeys ?? ["id"]
       )
     }
 
