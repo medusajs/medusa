@@ -69,7 +69,8 @@
     "domain": "Customers"
   },
   "customerGroups": {
-    "domain": "Customer Groups"
+    "domain": "Customer Groups",
+    "createGroup": "Create group"
   },
   "orders": {
     "domain": "Orders"

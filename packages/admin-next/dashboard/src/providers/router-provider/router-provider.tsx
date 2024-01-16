@@ -160,11 +160,13 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                lazy: () => import("../../routes/customer-groups/list"),
+                lazy: () =>
+                  import("../../routes/customer-groups/customer-group-list"),
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/customer-groups/details"),
+                lazy: () =>
+                  import("../../routes/customer-groups/customer-group-detail"),
               },
             ],
           },

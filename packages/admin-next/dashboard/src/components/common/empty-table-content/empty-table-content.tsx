@@ -51,7 +51,9 @@ export const NoRecords = ({ title, message, action }: NoRecordsProps) => {
       </div>
       {action && (
         <Link to={action.to}>
-          <Button variant="secondary">{action.label}</Button>
+          <Button variant="secondary" size="small">
+            {action.label}
+          </Button>
         </Link>
       )}
     </div>
