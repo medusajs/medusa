@@ -1,4 +1,5 @@
 import type {
+  AdminCustomerGroupsRes,
   AdminCustomersRes,
   AdminProductsRes,
   AdminRegionsRes,
@@ -200,6 +201,10 @@ const router = createBrowserRouter([
                 path: ":id",
                 lazy: () =>
                   import("../../routes/customer-groups/customer-group-detail"),
+                handle: {
+                  crumb: (data: AdminCustomerGroupsRes) =>
+                    data.customer_group.name,
+                },
                 children: [
                   {
                     path: "add-customers",

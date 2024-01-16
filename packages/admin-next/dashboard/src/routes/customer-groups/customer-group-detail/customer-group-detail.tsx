@@ -1,13 +1,20 @@
 import { useAdminCustomerGroup } from "medusa-react"
-import { Outlet, json, useParams } from "react-router-dom"
+import { Outlet, json, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { CustomerGroupCustomerSection } from "./components/customer-group-customer-section"
 import { CustomerGroupGeneralSection } from "./components/customer-group-general-section"
+import { customerGroupLoader } from "./loader"
 
 export const CustomerGroupDetail = () => {
+  const initialData = useLoaderData() as Awaited<
+    ReturnType<typeof customerGroupLoader>
+  >
+
   const { id } = useParams()
   const { customer_group, isLoading, isError, error } = useAdminCustomerGroup(
-    id!
+    id!,
+    undefined,
+    { initialData }
   )
 
   if (isLoading) {

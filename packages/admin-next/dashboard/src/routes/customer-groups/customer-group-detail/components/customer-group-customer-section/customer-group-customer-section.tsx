@@ -6,6 +6,7 @@ import {
   CommandBar,
   Container,
   Heading,
+  StatusBadge,
   Table,
   clx,
   usePrompt,
@@ -76,6 +77,7 @@ export const CustomerGroupCustomerSection = ({
       pagination,
       rowSelection,
     },
+    getRowId: (row) => row.id,
     onPaginationChange: setPagination,
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
@@ -86,13 +88,34 @@ export const CustomerGroupCustomerSection = ({
   })
 
   const { mutateAsync } = useAdminRemoveCustomersFromCustomerGroup(group.id)
+  const prompt = usePrompt()
 
   const handleRemoveCustomers = async () => {
     const selected = Object.keys(rowSelection).filter((k) => rowSelection[k])
-    await mutateAsync({
-      customer_ids: selected.map((s) => ({ id: s })),
+
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("customerGroups.removeCustomersWarning", {
+        count: selected.length,
+      }),
+      confirmText: t("general.continue"),
+      cancelText: t("general.cancel"),
     })
-    setRowSelection({})
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync(
+      {
+        customer_ids: selected.map((s) => ({ id: s })),
+      },
+      {
+        onSuccess: () => {
+          setRowSelection({})
+        },
+      }
+    )
   }
 
   const noRecords =
@@ -222,7 +245,9 @@ const CustomerActions = ({
   const handleRemove = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("customerGroups.removeProductWarning"),
+      description: t("customerGroups.removeCustomersWarning", {
+        count: 1,
+      }),
       confirmText: t("general.continue"),
       cancelText: t("general.cancel"),
     })
@@ -297,6 +322,10 @@ const useColumns = () => {
           )
         },
       }),
+      columnHelper.accessor("email", {
+        header: t("fields.email"),
+        cell: ({ getValue }) => <span>{getValue()}</span>,
+      }),
       columnHelper.display({
         id: "name",
         header: t("fields.name"),
@@ -306,6 +335,18 @@ const useColumns = () => {
             .join(" ")
 
           return name || "-"
+        },
+      }),
+      columnHelper.accessor("has_account", {
+        header: t("fields.account"),
+        cell: ({ getValue }) => {
+          const hasAccount = getValue()
+
+          return (
+            <StatusBadge color={hasAccount ? "green" : "blue"}>
+              {hasAccount ? t("customers.registered") : t("customers.guest")}
+            </StatusBadge>
+          )
         },
       }),
       columnHelper.display({
