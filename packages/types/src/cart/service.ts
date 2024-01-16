@@ -74,14 +74,8 @@ export interface ICartModuleService extends IModuleService {
   deleteAddresses(ids: string[], sharedContext?: Context): Promise<void>
   deleteAddresses(ids: string, sharedContext?: Context): Promise<void>
 
-  addLineItems(
-    data: CreateLineItemForCartDTO,
-    sharedContext?: Context
-  ): Promise<CartLineItemDTO>
-  addLineItems(
-    data: CreateLineItemForCartDTO[],
-    sharedContext?: Context
-  ): Promise<CartLineItemDTO[]>
+  addLineItems(data: CreateLineItemForCartDTO): Promise<CartLineItemDTO>
+  addLineItems(data: CreateLineItemForCartDTO[]): Promise<CartLineItemDTO[]>
   addLineItems(
     cartId: string,
     items: CreateLineItemDTO[],
@@ -89,8 +83,7 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<CartLineItemDTO[]>
 
   updateLineItems(
-    data: UpdateLineItemWithSelectorDTO[],
-    sharedContext?: Context
+    data: UpdateLineItemWithSelectorDTO[]
   ): Promise<CartLineItemDTO[]>
   updateLineItems(
     selector: Partial<CartLineItemDTO>,

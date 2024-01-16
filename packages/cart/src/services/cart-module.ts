@@ -253,12 +253,10 @@ export default class CartModuleService implements ICartModuleService {
   }
 
   addLineItems(
-    data: CartTypes.CreateLineItemForCartDTO,
-    sharedContext?: Context
+    data: CartTypes.CreateLineItemForCartDTO
   ): Promise<CartTypes.CartLineItemDTO>
   addLineItems(
-    data: CartTypes.CreateLineItemForCartDTO[],
-    sharedContext?: Context
+    data: CartTypes.CreateLineItemForCartDTO[]
   ): Promise<CartTypes.CartLineItemDTO[]>
   addLineItems(
     cartId: string,
@@ -272,7 +270,7 @@ export default class CartModuleService implements ICartModuleService {
       | string
       | CartTypes.CreateLineItemForCartDTO[]
       | CartTypes.CreateLineItemForCartDTO,
-    data: CartTypes.CreateLineItemDTO[] | CartTypes.CreateLineItemDTO,
+    data?: CartTypes.CreateLineItemDTO[] | CartTypes.CreateLineItemDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[] | CartTypes.CartLineItemDTO> {
     let items: LineItem[] = []
@@ -322,8 +320,7 @@ export default class CartModuleService implements ICartModuleService {
   }
 
   updateLineItems(
-    data: CartTypes.UpdateLineItemWithSelectorDTO[],
-    sharedContext?: Context
+    data: CartTypes.UpdateLineItemWithSelectorDTO[]
   ): Promise<CartTypes.CartLineItemDTO[]>
   updateLineItems(
     selector: Partial<CartTypes.CartLineItemDTO>,
