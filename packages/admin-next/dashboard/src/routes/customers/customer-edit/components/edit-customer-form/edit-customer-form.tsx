@@ -18,7 +18,7 @@ const EditCustomerSchema = zod.object({
   email: zod.string().email(),
   first_name: zod.string().min(1).optional(),
   last_name: zod.string().min(1).optional(),
-  phone: zod.string().min(1).optional(),
+  phone: zod.string().optional(),
 })
 
 export const EditCustomerForm = ({
@@ -49,11 +49,19 @@ export const EditCustomerForm = ({
   const { mutateAsync, isLoading } = useAdminUpdateCustomer(customer.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    await mutateAsync(data, {
-      onSuccess: () => {
-        onSuccessfulSubmit()
+    await mutateAsync(
+      {
+        email: customer.has_account ? undefined : data.email,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        phone: data.phone,
       },
-    })
+      {
+        onSuccess: () => {
+          onSuccessfulSubmit()
+        },
+      }
+    )
   })
 
   return (
@@ -69,7 +77,7 @@ export const EditCustomerForm = ({
                   <Form.Item>
                     <Form.Label>{t("fields.email")}</Form.Label>
                     <Form.Control>
-                      <Input {...field} />
+                      <Input {...field} disabled={customer.has_account} />
                     </Form.Control>
                     <Form.ErrorMessage />
                   </Form.Item>
