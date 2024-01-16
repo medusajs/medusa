@@ -10,12 +10,8 @@ type InjectedDependencies = {
 export default class PromotionRuleService<
   TEntity extends PromotionRule = PromotionRule
 > extends ModulesSdkUtils.abstractServiceFactory<
-  PromotionRule,
   InjectedDependencies,
   {
-    retrieve: PromotionTypes.PromotionRuleDTO
-    list: PromotionTypes.PromotionRuleDTO
-    listAndCount: PromotionTypes.PromotionRuleDTO
     create: CreatePromotionRuleDTO
     update: UpdatePromotionRuleDTO
   },
@@ -23,7 +19,7 @@ export default class PromotionRuleService<
     list: PromotionTypes.FilterablePromotionRuleProps
     listAndCount: PromotionTypes.FilterablePromotionRuleProps
   }
->(PromotionRule) {
+>(PromotionRule)<TEntity> {
   constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)

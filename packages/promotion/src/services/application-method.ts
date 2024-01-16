@@ -9,12 +9,8 @@ type InjectedDependencies = {
 export default class ApplicationMethodService<
   TEntity extends ApplicationMethod = ApplicationMethod
 > extends ModulesSdkUtils.abstractServiceFactory<
-  ApplicationMethod,
   InjectedDependencies,
   {
-    retrieve: PromotionTypes.ApplicationMethodDTO
-    list: PromotionTypes.ApplicationMethodDTO
-    listAndCount: PromotionTypes.ApplicationMethodDTO
     create: PromotionTypes.CreateApplicationMethodDTO
     update: PromotionTypes.UpdateApplicationMethodDTO
   },
@@ -22,7 +18,7 @@ export default class ApplicationMethodService<
     list: PromotionTypes.FilterableApplicationMethodProps
     listAndCount: PromotionTypes.FilterableApplicationMethodProps
   }
->(ApplicationMethod) {
+>(ApplicationMethod)<TEntity> {
   constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)

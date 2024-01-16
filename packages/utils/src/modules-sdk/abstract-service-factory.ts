@@ -61,7 +61,7 @@ export function abstractServiceFactory<
     [K in FilterableMethods]?: any
   }
 >(
-  model: new () => any
+  model: new (...args: any[]) => any
 ): {
   new <TEntity extends {}>(container: TContainer): AbstractService<
     TEntity,

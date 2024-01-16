@@ -10,12 +10,8 @@ type InjectedDependencies = {
 export default class CampaignService<
   TEntity extends Campaign = Campaign
 > extends ModulesSdkUtils.abstractServiceFactory<
-  Campaign,
   InjectedDependencies,
   {
-    retrieve: PromotionTypes.CampaignDTO
-    list: PromotionTypes.CampaignDTO
-    listAndCount: PromotionTypes.CampaignDTO
     create: CreateCampaignDTO
     update: UpdateCampaignDTO
   },
@@ -23,7 +19,7 @@ export default class CampaignService<
     list: PromotionTypes.FilterableCampaignProps
     listAndCount: PromotionTypes.FilterableCampaignProps
   }
->(Campaign) {
+>(Campaign)<TEntity> {
   constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
