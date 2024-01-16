@@ -1,4 +1,4 @@
-import Currency from "@models"
+import { Currency } from "@models"
 import { CurrencyService } from "@services"
 import { asClass, asValue, createContainer } from "awilix"
 
