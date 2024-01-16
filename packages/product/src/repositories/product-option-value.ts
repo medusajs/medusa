@@ -1,21 +1,16 @@
 import { Context } from "@medusajs/types"
 import {
-  CreateProductOptionValueDTO,
-  UpdateProductOptionValueDTO,
+    CreateProductOptionValueDTO,
+    UpdateProductOptionValueDTO,
 } from "../types/services/product-option-value"
 
 import { DALUtils } from "@medusajs/utils"
-import { ProductOptionValue } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { ProductOptionValue } from "@models"
 
 export class ProductOptionValueRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
   ProductOptionValue
 ) {
-  constructor(...args: any[]) {
-    // @ts-ignore
-    super(...arguments)
-  }
-
   async upsert(
     optionValues: (UpdateProductOptionValueDTO | CreateProductOptionValueDTO)[],
     context: Context = {}

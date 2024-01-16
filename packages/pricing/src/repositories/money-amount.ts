@@ -9,9 +9,4 @@ export class MoneyAmountRepository extends DALUtils.mikroOrmBaseRepositoryFactor
     create: RepositoryTypes.CreateMoneyAmountDTO
     update: RepositoryTypes.UpdateMoneyAmountDTO
   }
->(MoneyAmount) {
-  constructor(...args: any[]) {
-    // @ts-ignore
-    super(...arguments)
-  }
-}
+>(MoneyAmount) {}

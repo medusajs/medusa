@@ -1,19 +1,18 @@
 import {
-  Product,
-  ProductCategory,
-  ProductCollection,
-  ProductTag,
-  ProductType,
+    Product,
+    ProductCategory,
+    ProductCollection,
+    ProductTag,
+    ProductType,
 } from "@models"
 
 import {
-  Context,
-  DAL,
-  ProductTypes,
-  WithRequiredProperty,
+    Context,
+    DAL,
+    ProductTypes,
+    WithRequiredProperty,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { DALUtils, isDefined, MedusaError, promiseAll } from "@medusajs/utils"
 
 import { ProductServiceTypes } from "../types/services"
 
@@ -24,11 +23,6 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     create: WithRequiredProperty<ProductTypes.CreateProductOnlyDTO, "status">
   }
 >(Product) {
-  constructor(...args: any[]) {
-    // @ts-ignore
-    super(...arguments)
-  }
-
   async find(
     findOptions: DAL.FindOptions<Product & { q?: string }> = { where: {} },
     context: Context = {}

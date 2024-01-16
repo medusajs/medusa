@@ -1,11 +1,11 @@
-import { ProductType } from "@models"
 import {
-  Context,
-  CreateProductTypeDTO,
-  UpdateProductTypeDTO,
+    Context,
+    CreateProductTypeDTO,
+    UpdateProductTypeDTO,
 } from "@medusajs/types"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { DALUtils } from "@medusajs/utils"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { ProductType } from "@models"
 
 export class ProductTypeRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
   ProductType,
@@ -14,11 +14,6 @@ export class ProductTypeRepository extends DALUtils.mikroOrmBaseRepositoryFactor
     update: UpdateProductTypeDTO
   }
 >(ProductType) {
-  constructor(...args: any[]) {
-    // @ts-ignore
-    super(...arguments)
-  }
-
   async upsert(
     types: CreateProductTypeDTO[],
     context: Context = {}

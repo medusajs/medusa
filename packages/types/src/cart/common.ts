@@ -169,6 +169,11 @@ export interface CartShippingMethodDTO {
   id: string
 
   /**
+   * The ID of the associated cart
+   */
+  cart_id: string
+
+  /**
    * The name of the shipping method
    */
   name: string
@@ -341,7 +346,7 @@ export interface CartLineItemDTO {
    *
    * @expandable
    */
-  cart: CartDTO
+  cart?: CartDTO
   /**
    * The ID of the associated cart.
    */
@@ -483,14 +488,10 @@ export interface FilterableAddressProps
 export interface FilterableLineItemProps
   extends BaseFilterable<FilterableLineItemProps> {
   id?: string | string[]
-  cart_id?: string | string[]
-  title?: string
-  variant_id?: string | string[]
-  product_id?: string | string[]
 }
 
 /**
- * TODO: Remove this in favor of CartDTO, when module is released 
+ * TODO: Remove this in favor of new__CartDTO, when module is released 
  * @deprecated Use CartDTO instead
  */
 export type legacy_CartDTO = {
