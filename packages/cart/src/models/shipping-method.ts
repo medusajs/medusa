@@ -22,15 +22,14 @@ export default class ShippingMethod {
   id: string
 
   @Property({ columnType: "text" })
-  cart_id!: string
+  cart_id: string
 
   @ManyToOne(() => Cart, {
     onDelete: "cascade",
     index: "IDX_shipping_method_cart_id",
-    fieldName: "cart_id",
     nullable: true,
   })
-  cart?: Cart
+  cart?: Cart | null
 
   @Property({ columnType: "text" })
   name: string

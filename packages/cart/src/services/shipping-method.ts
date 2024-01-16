@@ -11,28 +11,23 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  retrieveEntity
+  retrieveEntity,
 } from "@medusajs/utils"
-import { Cart, ShippingMethod } from "@models"
+import { ShippingMethod } from "@models"
 import { ShippingMethodRepository } from "@repositories"
 import { CreateShippingMethodDTO, UpdateShippingMethodDTO } from "../types"
-import CartService from "./cart"
 
 type InjectedDependencies = {
   shippingMethodRepository: DAL.RepositoryService
-  cartService: CartService<any>
 }
 
 export default class ShippingMethodService<
-  TEntity extends ShippingMethod = ShippingMethod,
-  TCart extends Cart = Cart
+  TEntity extends ShippingMethod = ShippingMethod
 > {
   protected readonly shippingMethodRepository_: DAL.RepositoryService<ShippingMethod>
-  protected readonly cartService_: CartService<TCart>
 
-  constructor({ shippingMethodRepository, cartService }: InjectedDependencies) {
+  constructor({ shippingMethodRepository }: InjectedDependencies) {
     this.shippingMethodRepository_ = shippingMethodRepository
-    this.cartService_ = cartService
   }
 
   @InjectManager("shippingMethodRepository_")
@@ -111,10 +106,7 @@ export default class ShippingMethodService<
       existingMethods.map<[string, ShippingMethod]>((sm) => [sm.id, sm])
     )
 
-    const updates: {
-      method: ShippingMethod
-      update: UpdateShippingMethodDTO
-    }[] = []
+    const updates: UpdateShippingMethodDTO[] = []
 
     for (const update of data) {
       const shippingMethod = existingMethodsMap.get(update.id)
@@ -126,7 +118,7 @@ export default class ShippingMethodService<
         )
       }
 
-      updates.push({ method: shippingMethod, update })
+      updates.push({ ...update, id: shippingMethod.id })
     }
 
     return (await (

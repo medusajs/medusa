@@ -106,12 +106,10 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<void>
 
   addShippingMethods(
-    data: CreateShippingMethodDTO,
-    sharedContext?: Context
+    data: CreateShippingMethodDTO
   ): Promise<CartShippingMethodDTO>
   addShippingMethods(
-    data: CreateShippingMethodDTO[],
-    sharedContext?: Context
+    data: CreateShippingMethodDTO[]
   ): Promise<CartShippingMethodDTO[]>
   addShippingMethods(
     cartId: string,
