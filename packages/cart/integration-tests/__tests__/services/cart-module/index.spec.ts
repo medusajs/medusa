@@ -254,7 +254,6 @@ describe("Cart Module Service", () => {
           quantity: 1,
           unit_price: 100,
           title: "test",
-          tax_lines: [],
         },
       ])
 
@@ -262,7 +261,14 @@ describe("Cart Module Service", () => {
         relations: ["items"],
       })
 
-      expect(items[0].id).toBe(cart.items![0].id)
+      expect(items[0]).toEqual(
+        expect.objectContaining({
+          title: "test",
+          quantity: 1,
+          unit_price: 100,
+        })
+      )
+      expect(cart.items?.length).toBe(1)
     })
 
     it("should add multiple line items to cart succesfully", async () => {
@@ -272,24 +278,41 @@ describe("Cart Module Service", () => {
         },
       ])
 
-      const items = await service.addLineItems({
-        cart_id: createdCart.id,
-        items: [
-          {
-            quantity: 1,
-            unit_price: 100,
-            title: "test",
-            tax_lines: [],
-          },
-        ],
-      })
+      await service.addLineItems([
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+          cart_id: createdCart.id,
+        },
+        {
+          quantity: 2,
+          unit_price: 200,
+          title: "test-2",
+          cart_id: createdCart.id,
+        },
+      ])
 
       const cart = await service.retrieve(createdCart.id, {
         relations: ["items"],
       })
 
-      expect(items[0].id).toBe(cart.items![0].id)
-      expect(cart.items?.length).toBe(1)
+      expect(cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            title: "test",
+            quantity: 1,
+            unit_price: 100,
+          }),
+          expect.objectContaining({
+            title: "test-2",
+            quantity: 2,
+            unit_price: 200,
+          }),
+        ])
+      )
+
+      expect(cart.items?.length).toBe(2)
     })
 
     it("should add multiple line items to multiple carts succesfully", async () => {
@@ -308,25 +331,15 @@ describe("Cart Module Service", () => {
       const items = await service.addLineItems([
         {
           cart_id: eurCart.id,
-          items: [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-              tax_lines: [],
-            },
-          ],
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
         },
         {
           cart_id: usdCart.id,
-          items: [
-            {
-              quantity: 1,
-              unit_price: 100,
-              title: "test",
-              tax_lines: [],
-            },
-          ],
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
         },
       ])
 
@@ -363,7 +376,7 @@ describe("Cart Module Service", () => {
       expect(error.message).toContain("Cart with id: foo was not found")
     })
 
-    it("should throw an error when required params are not passed", async () => {
+    it("should throw an error when required params are not passed adding to a single cart", async () => {
       const [createdCart] = await service.create([
         {
           currency_code: "eur",
@@ -383,10 +396,32 @@ describe("Cart Module Service", () => {
         "Value for LineItem.unit_price is required, 'undefined' found"
       )
     })
+
+    it("should throw a generic error when required params are not passed using bulk add method", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const error = await service
+        .addLineItems([
+          {
+            cart_id: createdCart.id,
+            quantity: 1,
+            title: "test",
+          },
+        ] as any)
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "Value for LineItem.unit_price is required, 'undefined' found"
+      )
+    })
   })
 
   describe("updateLineItems", () => {
-    it("should update a line item in cart succesfully", async () => {
+    it("should update a line item in cart succesfully with selector approach", async () => {
       const [createdCart] = await service.create([
         {
           currency_code: "eur",
@@ -404,17 +439,42 @@ describe("Cart Module Service", () => {
 
       expect(item.title).toBe("test")
 
-      const [updatedItem] = await service.updateLineItems(createdCart.id, [
+      const [updatedItem] = await service.updateLineItems(
+        { cart_id: createdCart.id },
         {
-          id: item.id,
           title: "test2",
-        },
-      ])
+        }
+      )
 
       expect(updatedItem.title).toBe("test2")
     })
 
-    it("should update multiples line items in cart succesfully", async () => {
+    it("should update a line item in cart succesfully with id approach", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [item] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+          tax_lines: [],
+        },
+      ])
+
+      expect(item.title).toBe("test")
+
+      const updatedItem = await service.updateLineItems(item.id, {
+        title: "test2",
+      })
+
+      expect(updatedItem.title).toBe("test2")
+    })
+
+    it("should update line items in carts succesfully with multi-selector approach", async () => {
       const [createdCart] = await service.create([
         {
           currency_code: "eur",
@@ -452,14 +512,18 @@ describe("Cart Module Service", () => {
       const itemOne = items.find((i) => i.title === "test")
       const itemTwo = items.find((i) => i.title === "other-test")
 
-      const updatedItems = await service.updateLineItems(createdCart.id, [
+      const updatedItems = await service.updateLineItems([
         {
-          id: itemOne!.id,
-          title: "changed-test",
+          selector: { cart_id: createdCart.id },
+          data: {
+            title: "changed-test",
+          },
         },
         {
-          id: itemTwo!.id,
-          title: "changed-other-test",
+          selector: { id: itemTwo!.id },
+          data: {
+            title: "changed-other-test",
+          },
         },
       ])
 
@@ -632,12 +696,14 @@ describe("Cart Module Service", () => {
         },
       ])
 
-      const error = await service.addShippingMethods(createdCart.id, [
-        {
-          amount: -100,
-          name: "Test",
-        },
-      ]).catch(e => e)
+      const error = await service
+        .addShippingMethods(createdCart.id, [
+          {
+            amount: -100,
+            name: "Test",
+          },
+        ])
+        .catch((e) => e)
 
       expect(error.name).toBe(CheckConstraintViolationException.name)
     })

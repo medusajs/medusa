@@ -10,15 +10,15 @@ import {
   FilterableCartProps,
 } from "./common"
 import {
-  AddLineItemsDTO,
   CreateAddressDTO,
   CreateCartDTO,
   CreateLineItemDTO,
+  CreateLineItemForCartDTO,
   CreateShippingMethodDTO,
   UpdateAddressDTO,
   UpdateCartDTO,
   UpdateLineItemDTO,
-  UpdateLineItemsDTO,
+  UpdateLineItemWithSelectorDTO,
 } from "./mutations"
 
 export interface ICartModuleService extends IModuleService {
@@ -76,14 +76,8 @@ export interface ICartModuleService extends IModuleService {
   deleteAddresses(ids: string[], sharedContext?: Context): Promise<void>
   deleteAddresses(ids: string, sharedContext?: Context): Promise<void>
 
-  addLineItems(
-    data: AddLineItemsDTO,
-    sharedContext?: Context
-  ): Promise<CartLineItemDTO[]>
-  addLineItems(
-    data: AddLineItemsDTO[],
-    sharedContext?: Context
-  ): Promise<CartLineItemDTO[]>
+  addLineItems(data: CreateLineItemForCartDTO): Promise<CartLineItemDTO>
+  addLineItems(data: CreateLineItemForCartDTO[]): Promise<CartLineItemDTO[]>
   addLineItems(
     cartId: string,
     items: CreateLineItemDTO[],
@@ -91,21 +85,25 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<CartLineItemDTO[]>
 
   updateLineItems(
-    data: UpdateLineItemsDTO,
+    data: UpdateLineItemWithSelectorDTO[]
+  ): Promise<CartLineItemDTO[]>
+  updateLineItems(
+    selector: Partial<CartLineItemDTO>,
+    data: Partial<UpdateLineItemDTO>,
     sharedContext?: Context
   ): Promise<CartLineItemDTO[]>
   updateLineItems(
-    data: UpdateLineItemsDTO[],
+    lineId: string,
+    data: Partial<UpdateLineItemDTO>,
     sharedContext?: Context
-  ): Promise<CartLineItemDTO[]>
-  updateLineItems(
-    cartId: string,
-    data: UpdateLineItemDTO[],
-    sharedContext?: Context
-  ): Promise<CartLineItemDTO[]>
+  ): Promise<CartLineItemDTO>
 
   removeLineItems(itemIds: string[], sharedContext?: Context): Promise<void>
   removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
+  removeLineItems(
+    selector: Partial<CartLineItemDTO>,
+    sharedContext?: Context
+  ): Promise<void>
 
   addShippingMethods(
     data: CreateShippingMethodDTO,

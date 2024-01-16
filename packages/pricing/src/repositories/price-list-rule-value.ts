@@ -10,6 +10,11 @@ export class PriceListRuleValueRepository extends DALUtils.mikroOrmBaseRepositor
     update: RepositoryTypes.UpdatePriceListRuleValueDTO
   }
 >(PriceListRuleValue) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+
   async create(
     data: RepositoryTypes.CreatePriceListRuleValueDTO[],
     context: Context = {}

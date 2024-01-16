@@ -1,3 +1,5 @@
+import { CartLineItemDTO } from "./common"
+
 export interface UpsertAddressDTO {
   customer_id?: string
   company?: string
@@ -122,6 +124,15 @@ export interface CreateLineItemDTO {
   adjustments?: CreateAdjustmentDTO[]
 }
 
+export interface CreateLineItemForCartDTO extends CreateLineItemDTO {
+  cart_id: string
+}
+
+export interface UpdateLineItemWithSelectorDTO {
+  selector: Partial<CartLineItemDTO>
+  data: Partial<UpdateLineItemDTO>
+}
+
 export interface UpdateLineItemDTO
   extends Omit<
     CreateLineItemDTO,
@@ -135,16 +146,6 @@ export interface UpdateLineItemDTO
 
   tax_lines?: UpdateTaxLineDTO[] | CreateTaxLineDTO[]
   adjustments?: UpdateAdjustmentDTO[] | CreateAdjustmentDTO[]
-}
-
-export interface AddLineItemsDTO {
-  cart_id: string
-  items: CreateLineItemDTO[]
-}
-
-export interface UpdateLineItemsDTO {
-  cart_id: string
-  items: UpdateLineItemDTO[]
 }
 
 export interface CreateShippingMethodDTO {

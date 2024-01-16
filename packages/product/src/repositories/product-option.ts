@@ -10,6 +10,11 @@ export class ProductOptionRepository extends DALUtils.mikroOrmBaseRepositoryFact
     update: ProductTypes.UpdateProductOptionDTO
   }
 >(ProductOption) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+
   async create(
     data: ProductTypes.CreateProductOptionDTO[],
     context: Context = {}

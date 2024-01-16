@@ -1,4 +1,5 @@
 import { BaseFilterable } from "../../dal"
+import { PromotionRuleValueDTO } from "./promotion-rule-value"
 
 export type PromotionRuleOperatorValues =
   | "gt"
@@ -11,10 +12,14 @@ export type PromotionRuleOperatorValues =
 
 export interface PromotionRuleDTO {
   id: string
+  description?: string | null
+  attribute?: string
+  operator?: PromotionRuleOperatorValues
+  values: PromotionRuleValueDTO[]
 }
 
 export interface CreatePromotionRuleDTO {
-  description?: string
+  description?: string | null
   attribute: string
   operator: PromotionRuleOperatorValues
   values: string[] | string
@@ -31,4 +36,5 @@ export interface RemovePromotionRuleDTO {
 export interface FilterablePromotionRuleProps
   extends BaseFilterable<FilterablePromotionRuleProps> {
   id?: string[]
+  code?: string[]
 }
