@@ -8,4 +8,9 @@ export class ApplicationMethodRepository extends DALUtils.mikroOrmBaseRepository
     create: CreateApplicationMethodDTO
     update: UpdateApplicationMethodDTO
   }
->(ApplicationMethod) {}
+>(ApplicationMethod) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+}

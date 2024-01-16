@@ -998,7 +998,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // ...\n  async createFulfillment(\n    data: Record<string, unknown>,\n    items: LineItem,\n    order: Order,\n    fulfillment: Fulfillment\n  ) {\n    // No data is being sent anywhere\n    // No data to be stored in the fulfillment's data object\n    return {}\n  }\n}\n```"
+												"text": "```ts\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // ...\n  async createFulfillment(\n    data: Record<string, unknown>,\n    items: LineItem[],\n    order: Order,\n    fulfillment: Fulfillment\n  ) {\n    // No data is being sent anywhere\n    // No data to be stored in the fulfillment's data object\n    return {}\n  }\n}\n```"
 											}
 										]
 									}
@@ -3356,7 +3356,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // ...\n  async createFulfillment(\n    data: Record<string, unknown>,\n    items: LineItem,\n    order: Order,\n    fulfillment: Fulfillment\n  ) {\n    // No data is being sent anywhere\n    // No data to be stored in the fulfillment's data object\n    return {}\n  }\n}\n```"
+												"text": "```ts\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // ...\n  async createFulfillment(\n    data: Record<string, unknown>,\n    items: LineItem[],\n    order: Order,\n    fulfillment: Fulfillment\n  ) {\n    // No data is being sent anywhere\n    // No data to be stored in the fulfillment's data object\n    return {}\n  }\n}\n```"
 											}
 										]
 									}
