@@ -6,8 +6,8 @@ import {
 import {
   TransactionHandlerType,
   TransactionState,
-  TransactionStepsDefinition,
   TransactionStepStatus,
+  TransactionStepsDefinition,
 } from "./types"
 
 export type TransactionStepHandler = (
@@ -38,6 +38,7 @@ export class TransactionStep {
    */
   private stepFailed = false
   id: string
+  uuid?: string
   depth: number
   definition: TransactionStepsDefinition
   invoke: {

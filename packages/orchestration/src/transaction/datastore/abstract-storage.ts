@@ -8,7 +8,6 @@ export interface IDistributedTransactionStorage {
   get(key: string): Promise<TransactionCheckpoint | undefined>
   list(): Promise<TransactionCheckpoint[]>
   save(key: string, data: TransactionCheckpoint, ttl?: number): Promise<void>
-  delete(key: string): Promise<void>
   scheduleRetry(
     transaction: DistributedTransaction,
     step: TransactionStep,
@@ -58,10 +57,6 @@ export abstract class DistributedTransactionStorage
     ttl?: number
   ): Promise<void> {
     throw new Error("Method 'save' not implemented.")
-  }
-
-  async delete(key: string): Promise<void> {
-    throw new Error("Method 'delete' not implemented.")
   }
 
   async scheduleRetry(

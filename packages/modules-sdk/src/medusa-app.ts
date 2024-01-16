@@ -1,8 +1,10 @@
+import { mergeTypeDefs } from "@graphql-tools/merge"
+import { makeExecutableSchema } from "@graphql-tools/schema"
+import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   LoadedModule,
-  LoaderOptions,
   MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
@@ -17,19 +19,16 @@ import {
   isObject,
   ModulesSdkUtils,
 } from "@medusajs/utils"
+import { asValue } from "awilix"
 import {
   MODULE_PACKAGE_NAMES,
   ModuleRegistrationName,
   Modules,
 } from "./definitions"
 import { MedusaModule } from "./medusa-module"
-import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { cleanGraphQLSchema } from "./utils"
-import { asValue } from "awilix"
-import { makeExecutableSchema } from "@graphql-tools/schema"
-import { mergeTypeDefs } from "@graphql-tools/merge"
 
 const LinkModulePackage = "@medusajs/link-modules"
 
@@ -174,32 +173,28 @@ export type MedusaAppOutput = {
   runMigrations: RunMigrationFn
 }
 
-export async function MedusaApp(
-  {
-    sharedContainer,
-    sharedResourcesConfig,
-    servicesConfig,
-    modulesConfigPath,
-    modulesConfigFileName,
-    modulesConfig,
-    linkModules,
-    remoteFetchData,
-    injectedDependencies,
-  }: {
-    sharedContainer?: MedusaContainer
-    sharedResourcesConfig?: SharedResources
-    loadedModules?: LoadedModule[]
-    servicesConfig?: ModuleJoinerConfig[]
-    modulesConfigPath?: string
-    modulesConfigFileName?: string
-    modulesConfig?: MedusaModuleConfig
-    linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
-    remoteFetchData?: RemoteFetchDataCallback
-    injectedDependencies?: any
-  } = {
-    injectedDependencies: {},
-  }
-): Promise<{
+export async function MedusaApp({
+  sharedContainer,
+  sharedResourcesConfig,
+  servicesConfig,
+  modulesConfigPath,
+  modulesConfigFileName,
+  modulesConfig,
+  linkModules,
+  remoteFetchData,
+  injectedDependencies,
+}: {
+  sharedContainer?: MedusaContainer
+  sharedResourcesConfig?: SharedResources
+  loadedModules?: LoadedModule[]
+  servicesConfig?: ModuleJoinerConfig[]
+  modulesConfigPath?: string
+  modulesConfigFileName?: string
+  modulesConfig?: MedusaModuleConfig
+  linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
+  remoteFetchData?: RemoteFetchDataCallback
+  injectedDependencies?: any
+}): Promise<{
   modules: Record<string, LoadedModule | LoadedModule[]>
   link: RemoteLink | undefined
   query: (
@@ -210,6 +205,8 @@ export async function MedusaApp(
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
 }> {
+  injectedDependencies ??= {}
+
   const sharedContainer_ = createMedusaContainer({}, sharedContainer)
 
   const modules: MedusaModuleConfig =
@@ -230,6 +227,12 @@ export async function MedusaApp(
   registerCustomJoinerConfigs(servicesConfig ?? [])
 
   if (
+    sharedResourcesConfig?.database?.connection &&
+    !injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]
+  ) {
+    injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] =
+      sharedResourcesConfig.database.connection
+  } else if (
     dbData.clientUrl &&
     !injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]
   ) {

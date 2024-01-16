@@ -11,7 +11,7 @@ import {
   OneToMany,
   OptionalProps,
   PrimaryKey,
-  Property
+  Property,
 } from "@mikro-orm/core"
 import Cart from "./cart"
 import LineItemAdjustmentLine from "./line-item-adjustment-line"

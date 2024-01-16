@@ -5579,7 +5579,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint-community/eslint-utils@npm:^4.2.0, @eslint-community/eslint-utils@npm:^4.4.0":
+"@eslint-community/eslint-utils@npm:^4.2.0":
   version: 4.4.0
   resolution: "@eslint-community/eslint-utils@npm:4.4.0"
   dependencies:
@@ -5594,13 +5594,6 @@ __metadata:
   version: 4.5.1
   resolution: "@eslint-community/regexpp@npm:4.5.1"
   checksum: d79cbd99cc4dcfbb17e8dd30a30bb5aec5da9c60b9471043f886f116615bb15f0d417cb0ca638cefedba0b4c67c339e2011b53d88264a4540775f042a5879e01
-  languageName: node
-  linkType: hard
-
-"@eslint-community/regexpp@npm:^4.5.1":
-  version: 4.10.0
-  resolution: "@eslint-community/regexpp@npm:4.10.0"
-  checksum: c5f60ef1f1ea7649fa7af0e80a5a79f64b55a8a8fa5086de4727eb4c86c652aedee407a9c143b8995d2c0b2d75c1222bec9ba5d73dbfc1f314550554f0979ef4
   languageName: node
   linkType: hard
 
@@ -7687,7 +7680,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin-ui@^2.1.10, @medusajs/admin-ui@workspace:packages/admin-ui":
+"@medusajs/admin-ui@^2.1.11, @medusajs/admin-ui@workspace:packages/admin-ui":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-ui@workspace:packages/admin-ui"
   dependencies:
@@ -7697,8 +7690,8 @@ __metadata:
     "@hookform/error-message": ^2.0.1
     "@hookform/resolvers": ^3.3.1
     "@medusajs/icons": ^1.1.0
-    "@medusajs/medusa": ^1.19.0
-    "@medusajs/types": ^1.11.9
+    "@medusajs/medusa": ^1.19.1
+    "@medusajs/types": ^1.11.10
     "@medusajs/ui": ^2.2.4
     "@medusajs/ui-preset": ^1.0.2
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
@@ -7740,7 +7733,7 @@ __metadata:
     i18next-parser: ^8.0.0
     jest: 25.5.4
     md5: ^2.3.0
-    medusa-react: ^9.0.12
+    medusa-react: ^9.0.13
     mini-css-extract-plugin: ^2.7.6
     moment: ^2.29.4
     path-browserify: ^1.0.1
@@ -7793,12 +7786,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin@^7.1.7, @medusajs/admin@workspace:packages/admin":
+"@medusajs/admin@^7.1.10, @medusajs/admin@workspace:packages/admin":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin@workspace:packages/admin"
   dependencies:
-    "@medusajs/admin-ui": ^2.1.10
-    "@medusajs/medusa": ^1.19.0
+    "@medusajs/admin-ui": ^2.1.11
+    "@medusajs/medusa": ^1.19.1
     "@rollup/plugin-alias": 5.0.0
     "@rollup/plugin-commonjs": 24.1.0
     "@rollup/plugin-json": 6.0.0
@@ -7812,7 +7805,7 @@ __metadata:
     express: 4.18.2
     fs-extra: 11.1.0
     lodash: ^4.17.21
-    medusa-core-utils: 1.2.0
+    medusa-core-utils: 1.2.1
     rollup: 3.20.7
     rollup-plugin-esbuild: 5.0.0
     ts-dedent: ^2.2.0
@@ -7888,7 +7881,7 @@ __metadata:
   resolution: "@medusajs/cart@workspace:packages/cart"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.5
-    "@medusajs/types": ^1.11.9
+    "@medusajs/types": "workspace:^"
     "@medusajs/utils": ^1.11.2
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
@@ -7926,15 +7919,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/core-flows@^0.0.3, @medusajs/core-flows@workspace:packages/core-flows":
+"@medusajs/core-flows@^0.0.4, @medusajs/core-flows@workspace:packages/core-flows":
   version: 0.0.0-use.local
   resolution: "@medusajs/core-flows@workspace:packages/core-flows"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.5
-    "@medusajs/orchestration": ^0.5.1
-    "@medusajs/types": ^1.11.9
-    "@medusajs/utils": ^1.11.2
-    "@medusajs/workflows-sdk": ^0.1.0
+    "@medusajs/modules-sdk": ^1.12.6
+    "@medusajs/orchestration": ^0.5.2
+    "@medusajs/types": ^1.11.10
+    "@medusajs/utils": ^1.11.3
+    "@medusajs/workflows-sdk": ^0.1.1
     awilix: ^8.0.1
     cross-env: ^5.2.1
     jest: ^29.6.3
@@ -7952,6 +7945,7 @@ __metadata:
     "@hookform/resolvers": 3.3.2
     "@medusajs/icons": "workspace:^"
     "@medusajs/medusa": "workspace:^"
+    "@medusajs/types": "workspace:^"
     "@medusajs/ui": "workspace:^"
     "@medusajs/ui-preset": "workspace:^"
     "@medusajs/vite-plugin-extension": "workspace:^"
@@ -7960,17 +7954,17 @@ __metadata:
     "@tanstack/react-table": 8.10.7
     "@types/react": 18.2.43
     "@types/react-dom": 18.2.17
-    "@typescript-eslint/eslint-plugin": 6.14.0
-    "@typescript-eslint/parser": 6.14.0
     "@uiw/react-json-view": 2.0.0-alpha.10
     "@vitejs/plugin-react": 4.2.1
     autoprefixer: 10.4.16
     cmdk: ^0.2.0
+    date-fns: ^3.2.0
     i18next: 23.7.11
     i18next-browser-languagedetector: 7.2.0
     i18next-http-backend: 2.4.2
     medusa-react: "workspace:^"
     postcss: 8.4.32
+    prettier: ^3.1.1
     react: 18.2.0
     react-dom: 18.2.0
     react-hook-form: 7.49.1
@@ -8072,7 +8066,7 @@ __metadata:
   resolution: "@medusajs/inventory@workspace:packages/inventory"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/types": ^1.11.8
+    "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
@@ -8084,13 +8078,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/link-modules@^0.2.5, @medusajs/link-modules@workspace:packages/link-modules":
+"@medusajs/link-modules@^0.2.6, @medusajs/link-modules@workspace:packages/link-modules":
   version: 0.0.0-use.local
   resolution: "@medusajs/link-modules@workspace:packages/link-modules"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.5
-    "@medusajs/types": ^1.11.9
-    "@medusajs/utils": ^1.11.2
+    "@medusajs/modules-sdk": ^1.12.6
+    "@medusajs/types": ^1.11.10
+    "@medusajs/utils": ^1.11.3
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
@@ -8152,7 +8146,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
-    "@medusajs/medusa": ^1.17.4
+    "@medusajs/medusa": ^1.19.1
     "@types/uuid": ^9.0.0
     axios: ^0.24.0
     cross-env: ^5.2.1
@@ -8196,18 +8190,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@^1.12.1, @medusajs/medusa@^1.12.2, @medusajs/medusa@^1.15.0, @medusajs/medusa@^1.17.1, @medusajs/medusa@^1.17.4, @medusajs/medusa@^1.19.0, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:^, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@^1.12.1, @medusajs/medusa@^1.12.2, @medusajs/medusa@^1.15.0, @medusajs/medusa@^1.17.1, @medusajs/medusa@^1.17.4, @medusajs/medusa@^1.19.1, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:^, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
-    "@medusajs/core-flows": ^0.0.3
-    "@medusajs/link-modules": ^0.2.5
+    "@medusajs/core-flows": ^0.0.4
+    "@medusajs/link-modules": ^0.2.6
     "@medusajs/medusa-cli": ^1.3.22
-    "@medusajs/modules-sdk": ^1.12.5
-    "@medusajs/orchestration": ^0.5.1
-    "@medusajs/types": ^1.11.9
-    "@medusajs/utils": ^1.11.2
-    "@medusajs/workflows-sdk": ^0.1.0
+    "@medusajs/modules-sdk": ^1.12.6
+    "@medusajs/orchestration": ^0.5.2
+    "@medusajs/types": ^1.11.10
+    "@medusajs/utils": ^1.11.3
+    "@medusajs/workflows-sdk": ^0.1.1
     "@types/express": ^4.17.17
     "@types/ioredis": ^4.28.10
     "@types/jsonwebtoken": ^8.5.9
@@ -8239,10 +8233,10 @@ __metadata:
     jest: ^25.5.4
     jsonwebtoken: ^9.0.0
     lodash: ^4.17.21
-    medusa-core-utils: ^1.2.0
-    medusa-interfaces: ^1.3.7
+    medusa-core-utils: ^1.2.1
+    medusa-interfaces: ^1.3.8
     medusa-telemetry: ^0.0.17
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.41
     morgan: ^1.9.1
     multer: ^1.4.5-lts.1
     node-schedule: ^2.1.1
@@ -8274,15 +8268,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@^1.12.2, @medusajs/modules-sdk@^1.12.3, @medusajs/modules-sdk@^1.12.4, @medusajs/modules-sdk@^1.12.5, @medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/modules-sdk":
+"@medusajs/modules-sdk@^1.12.2, @medusajs/modules-sdk@^1.12.3, @medusajs/modules-sdk@^1.12.4, @medusajs/modules-sdk@^1.12.5, @medusajs/modules-sdk@^1.12.6, @medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
     "@graphql-tools/merge": ^9.0.0
     "@graphql-tools/schema": ^10.0.0
-    "@medusajs/orchestration": ^0.5.1
-    "@medusajs/types": ^1.11.9
-    "@medusajs/utils": ^1.11.2
+    "@medusajs/orchestration": ^0.5.2
+    "@medusajs/types": ^1.11.10
+    "@medusajs/utils": ^1.11.3
     awilix: ^8.0.0
     cross-env: ^5.2.1
     graphql: ^16.6.0
@@ -8342,12 +8336,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/orchestration@^0.5.0, @medusajs/orchestration@^0.5.1, @medusajs/orchestration@workspace:packages/orchestration":
+"@medusajs/orchestration@^0.5.2, @medusajs/orchestration@workspace:packages/orchestration":
   version: 0.0.0-use.local
   resolution: "@medusajs/orchestration@workspace:packages/orchestration"
   dependencies:
-    "@medusajs/types": ^1.11.9
-    "@medusajs/utils": ^1.11.2
+    "@medusajs/types": ^1.11.10
+    "@medusajs/utils": ^1.11.3
     awilix: ^8.0.0
     cross-env: ^5.2.1
     graphql: ^16.6.0
@@ -8358,9 +8352,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/pricing@workspace:^, @medusajs/pricing@workspace:packages/pricing":
+"@medusajs/payment@workspace:packages/payment":
   version: 0.0.0-use.local
-  resolution: "@medusajs/pricing@workspace:packages/pricing"
+  resolution: "@medusajs/payment@workspace:packages/payment"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
@@ -8375,6 +8369,33 @@ __metadata:
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
+    rimraf: ^3.0.2
+    ts-jest: ^29.1.1
+    ts-node: ^10.9.1
+    tsc-alias: ^1.8.6
+    typescript: ^5.1.6
+  bin:
+    medusa-payment-seed: dist/scripts/bin/run-seed.js
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/pricing@workspace:^, @medusajs/pricing@workspace:packages/pricing":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/pricing@workspace:packages/pricing"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.12.6
+    "@medusajs/types": ^1.11.10
+    "@medusajs/utils": ^1.11.3
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    dotenv: ^16.1.4
+    jest: ^29.6.3
+    knex: 2.4.2
+    medusa-test-utils: ^1.1.41
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -8391,9 +8412,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/product"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.5
-    "@medusajs/types": ^1.11.9
-    "@medusajs/utils": ^1.11.2
+    "@medusajs/modules-sdk": ^1.12.6
+    "@medusajs/types": ^1.11.10
+    "@medusajs/utils": ^1.11.3
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8405,7 +8426,7 @@ __metadata:
     jest: ^29.6.3
     knex: 2.4.2
     lodash: ^4.17.21
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: ^1.1.41
     pg-god: ^1.0.12
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
@@ -8413,8 +8434,6 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   bin:
-    medusa-product-migrations-down: dist/scripts/bin/run-migration-down.js
-    medusa-product-migrations-up: dist/scripts/bin/run-migration-up.js
     medusa-product-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
@@ -8453,7 +8472,7 @@ __metadata:
   resolution: "@medusajs/stock-location@workspace:packages/stock-location"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/types": ^1.11.8
+    "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
@@ -8491,7 +8510,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^1.10.0, @medusajs/types@^1.11.5, @medusajs/types@^1.11.6, @medusajs/types@^1.11.8, @medusajs/types@^1.11.9, @medusajs/types@^1.8.10, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^1.10.0, @medusajs/types@^1.11.10, @medusajs/types@^1.11.5, @medusajs/types@^1.11.6, @medusajs/types@^1.11.9, @medusajs/types@^1.8.10, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -8594,11 +8613,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@^1.10.5, @medusajs/utils@^1.11.1, @medusajs/utils@^1.11.2, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^1.10.5, @medusajs/utils@^1.11.1, @medusajs/utils@^1.11.2, @medusajs/utils@^1.11.3, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
-    "@medusajs/types": ^1.11.9
+    "@medusajs/types": ^1.11.10
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
@@ -8636,18 +8655,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflow-orchestrator-inmemory@workspace:packages/workflow-orchestrator-inmemory":
+"@medusajs/workflows-inmemory@workspace:packages/workflows-inmemory":
   version: 0.0.0-use.local
-  resolution: "@medusajs/workflow-orchestrator-inmemory@workspace:packages/workflow-orchestrator-inmemory"
+  resolution: "@medusajs/workflows-inmemory@workspace:packages/workflows-inmemory"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.2
     "@medusajs/workflows-sdk": ^0.1.0
-    "@mikro-orm/cli": 5.7.12
-    "@mikro-orm/core": 5.7.12
-    "@mikro-orm/migrations": 5.7.12
-    "@mikro-orm/postgresql": 5.7.12
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
     dotenv: ^16.1.4
@@ -8659,53 +8678,17 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-workflow-orchestrator-migrations-down: dist/scripts/bin/run-migration-down.js
-    medusa-workflow-orchestrator-migrations-up: dist/scripts/bin/run-migration-up.js
-    medusa-workflow-orchestrator-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflow-orchestrator-redis@workspace:packages/workflow-orchestrator-redis":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/workflow-orchestrator-redis@workspace:packages/workflow-orchestrator-redis"
-  dependencies:
-    "@medusajs/modules-sdk": ^1.12.5
-    "@medusajs/types": ^1.11.9
-    "@medusajs/utils": ^1.11.2
-    "@medusajs/workflows-sdk": ^0.1.0
-    "@mikro-orm/cli": 5.7.12
-    "@mikro-orm/core": 5.7.12
-    "@mikro-orm/migrations": 5.7.12
-    "@mikro-orm/postgresql": 5.7.12
-    awilix: ^8.0.0
-    bullmq: ^5.1.1
-    cross-env: ^5.2.1
-    dotenv: ^16.1.4
-    ioredis: ^5.3.2
-    jest: ^29.6.3
-    knex: 2.4.2
-    medusa-test-utils: ^1.1.40
-    rimraf: ^3.0.2
-    ts-jest: ^29.1.1
-    ts-node: ^10.9.1
-    tsc-alias: ^1.8.6
-    typescript: ^5.1.6
-  bin:
-    medusa-workflow-orchestrator-migrations-down: dist/scripts/bin/run-migration-down.js
-    medusa-workflow-orchestrator-migrations-up: dist/scripts/bin/run-migration-up.js
-    medusa-workflow-orchestrator-seed: dist/scripts/bin/run-seed.js
-  languageName: unknown
-  linkType: soft
-
-"@medusajs/workflows-sdk@^0.1.0, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
+"@medusajs/workflows-sdk@^0.1.0, @medusajs/workflows-sdk@^0.1.1, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows-sdk@workspace:packages/workflows-sdk"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/orchestration": ^0.5.0
-    "@medusajs/types": ^1.11.8
-    "@medusajs/utils": ^1.11.1
+    "@medusajs/modules-sdk": ^1.12.6
+    "@medusajs/orchestration": ^0.5.2
+    "@medusajs/types": ^1.11.10
+    "@medusajs/utils": ^1.11.3
     awilix: ^8.0.1
     cross-env: ^5.2.1
     jest: ^29.6.3
@@ -8715,55 +8698,6 @@ __metadata:
     ulid: ^2.3.0
   languageName: unknown
   linkType: soft
-
-"@mikro-orm/cli@npm:5.7.12":
-  version: 5.7.12
-  resolution: "@mikro-orm/cli@npm:5.7.12"
-  dependencies:
-    "@jercle/yargonaut": 1.1.5
-    "@mikro-orm/core": ~5.7.12
-    "@mikro-orm/knex": ~5.7.12
-    fs-extra: 11.1.1
-    tsconfig-paths: 4.2.0
-    yargs: 17.7.2
-  peerDependencies:
-    "@mikro-orm/better-sqlite": ^5.0.0
-    "@mikro-orm/entity-generator": ^5.0.0
-    "@mikro-orm/mariadb": ^5.0.0
-    "@mikro-orm/migrations": ^5.0.0
-    "@mikro-orm/migrations-mongodb": ^5.0.0
-    "@mikro-orm/mongodb": ^5.0.0
-    "@mikro-orm/mysql": ^5.0.0
-    "@mikro-orm/postgresql": ^5.0.0
-    "@mikro-orm/seeder": ^5.0.0
-    "@mikro-orm/sqlite": ^5.0.0
-  peerDependenciesMeta:
-    "@mikro-orm/better-sqlite":
-      optional: true
-    "@mikro-orm/entity-generator":
-      optional: true
-    "@mikro-orm/mariadb":
-      optional: true
-    "@mikro-orm/migrations":
-      optional: true
-    "@mikro-orm/migrations-mongodb":
-      optional: true
-    "@mikro-orm/mongodb":
-      optional: true
-    "@mikro-orm/mysql":
-      optional: true
-    "@mikro-orm/postgresql":
-      optional: true
-    "@mikro-orm/seeder":
-      optional: true
-    "@mikro-orm/sqlite":
-      optional: true
-  bin:
-    mikro-orm: cli.js
-    mikro-orm-esm: esm.js
-  checksum: dba36b1202a127132c325694348b5f5a44a35c4ac59eefb89367712d3026c5453fb9dd356c0d43884a736f404bf7a8ebda6383d85a7023204035740d8ecc21e0
-  languageName: node
-  linkType: hard
 
 "@mikro-orm/cli@npm:5.9.7":
   version: 5.9.7
@@ -8814,53 +8748,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mikro-orm/core@npm:5.7.12":
-  version: 5.7.12
-  resolution: "@mikro-orm/core@npm:5.7.12"
-  dependencies:
-    acorn-loose: 8.3.0
-    acorn-walk: 8.2.0
-    dotenv: 16.1.4
-    fs-extra: 11.1.1
-    globby: 11.1.0
-    mikro-orm: ~5.7.12
-    reflect-metadata: 0.1.13
-  peerDependencies:
-    "@mikro-orm/better-sqlite": ^5.0.0
-    "@mikro-orm/entity-generator": ^5.0.0
-    "@mikro-orm/mariadb": ^5.0.0
-    "@mikro-orm/migrations": ^5.0.0
-    "@mikro-orm/migrations-mongodb": ^5.0.0
-    "@mikro-orm/mongodb": ^5.0.0
-    "@mikro-orm/mysql": ^5.0.0
-    "@mikro-orm/postgresql": ^5.0.0
-    "@mikro-orm/seeder": ^5.0.0
-    "@mikro-orm/sqlite": ^5.0.0
-  peerDependenciesMeta:
-    "@mikro-orm/better-sqlite":
-      optional: true
-    "@mikro-orm/entity-generator":
-      optional: true
-    "@mikro-orm/mariadb":
-      optional: true
-    "@mikro-orm/migrations":
-      optional: true
-    "@mikro-orm/migrations-mongodb":
-      optional: true
-    "@mikro-orm/mongodb":
-      optional: true
-    "@mikro-orm/mysql":
-      optional: true
-    "@mikro-orm/postgresql":
-      optional: true
-    "@mikro-orm/seeder":
-      optional: true
-    "@mikro-orm/sqlite":
-      optional: true
-  checksum: 1458e1bf069870dbf6d2a110a5c80537401e18415a491967d6ae77b9b195ed50c5e829c3409f7839163dd4bfc1b833c8f0de0466a50a798f2ddd64df5e6296fa
-  languageName: node
-  linkType: hard
-
 "@mikro-orm/core@npm:5.9.7":
   version: 5.9.7
   resolution: "@mikro-orm/core@npm:5.9.7"
@@ -8908,53 +8795,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mikro-orm/core@npm:~5.7.12":
-  version: 5.7.14
-  resolution: "@mikro-orm/core@npm:5.7.14"
-  dependencies:
-    acorn-loose: 8.3.0
-    acorn-walk: 8.2.0
-    dotenv: 16.3.1
-    fs-extra: 11.1.1
-    globby: 11.1.0
-    mikro-orm: ~5.7.14
-    reflect-metadata: 0.1.13
-  peerDependencies:
-    "@mikro-orm/better-sqlite": ^5.0.0
-    "@mikro-orm/entity-generator": ^5.0.0
-    "@mikro-orm/mariadb": ^5.0.0
-    "@mikro-orm/migrations": ^5.0.0
-    "@mikro-orm/migrations-mongodb": ^5.0.0
-    "@mikro-orm/mongodb": ^5.0.0
-    "@mikro-orm/mysql": ^5.0.0
-    "@mikro-orm/postgresql": ^5.0.0
-    "@mikro-orm/seeder": ^5.0.0
-    "@mikro-orm/sqlite": ^5.0.0
-  peerDependenciesMeta:
-    "@mikro-orm/better-sqlite":
-      optional: true
-    "@mikro-orm/entity-generator":
-      optional: true
-    "@mikro-orm/mariadb":
-      optional: true
-    "@mikro-orm/migrations":
-      optional: true
-    "@mikro-orm/migrations-mongodb":
-      optional: true
-    "@mikro-orm/mongodb":
-      optional: true
-    "@mikro-orm/mysql":
-      optional: true
-    "@mikro-orm/postgresql":
-      optional: true
-    "@mikro-orm/seeder":
-      optional: true
-    "@mikro-orm/sqlite":
-      optional: true
-  checksum: 9c9805f58cf0828ae188f0d07501ec7d194120f5a90ebf0f0b7bc21cfbffe1652ef17b9388c7667a8f914b70b8b54e4ad0207fc9c8cc4b148548bc56b56d5572
-  languageName: node
-  linkType: hard
-
 "@mikro-orm/knex@npm:5.9.7":
   version: 5.9.7
   resolution: "@mikro-orm/knex@npm:5.9.7"
@@ -8993,58 +8833,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mikro-orm/knex@npm:~5.7.12":
-  version: 5.7.14
-  resolution: "@mikro-orm/knex@npm:5.7.14"
-  dependencies:
-    fs-extra: 11.1.1
-    knex: 2.5.1
-    sqlstring: 2.3.3
-  peerDependencies:
-    "@mikro-orm/core": ^5.0.0
-    "@mikro-orm/entity-generator": ^5.0.0
-    "@mikro-orm/migrations": ^5.0.0
-    better-sqlite3: "*"
-    mssql: "*"
-    mysql: "*"
-    mysql2: "*"
-    pg: "*"
-    sqlite3: "*"
-  peerDependenciesMeta:
-    "@mikro-orm/entity-generator":
-      optional: true
-    "@mikro-orm/migrations":
-      optional: true
-    better-sqlite3:
-      optional: true
-    mssql:
-      optional: true
-    mysql:
-      optional: true
-    mysql2:
-      optional: true
-    pg:
-      optional: true
-    sqlite3:
-      optional: true
-  checksum: b33520b512b134ec5c61b5ee5f21013fd6c818587a04cbfa8bb4c9e746f7ee6ffd294ff56713e582d8b2051b6eb97cfa0cb6b697c4d77e1b095666f47cc5a0bf
-  languageName: node
-  linkType: hard
-
-"@mikro-orm/migrations@npm:5.7.12":
-  version: 5.7.12
-  resolution: "@mikro-orm/migrations@npm:5.7.12"
-  dependencies:
-    "@mikro-orm/knex": ~5.7.12
-    fs-extra: 11.1.1
-    knex: 2.4.2
-    umzug: 3.2.1
-  peerDependencies:
-    "@mikro-orm/core": ^5.0.0
-  checksum: 93513f15f46f8f612fb90762712e24aa8d877bc6b59bfa903221f42e85140fcc724cb519bf74fa8be2acd40819525684acbc0d4b44a8579f1c84457f6962523b
-  languageName: node
-  linkType: hard
-
 "@mikro-orm/migrations@npm:5.9.7":
   version: 5.9.7
   resolution: "@mikro-orm/migrations@npm:5.9.7"
@@ -9056,28 +8844,6 @@ __metadata:
   peerDependencies:
     "@mikro-orm/core": ^5.0.0
   checksum: 3b1c3e449d2aee7ed7f03153e17e2772423115b895836e4ece40c9b318849d8de9cce1ad9fa545a8ef54fa7fe5ab474c3444e2c598ebc9f3e070fe382882862a
-  languageName: node
-  linkType: hard
-
-"@mikro-orm/postgresql@npm:5.7.12":
-  version: 5.7.12
-  resolution: "@mikro-orm/postgresql@npm:5.7.12"
-  dependencies:
-    "@mikro-orm/knex": ~5.7.12
-    pg: 8.11.0
-  peerDependencies:
-    "@mikro-orm/core": ^5.0.0
-    "@mikro-orm/entity-generator": ^5.0.0
-    "@mikro-orm/migrations": ^5.0.0
-    "@mikro-orm/seeder": ^5.0.0
-  peerDependenciesMeta:
-    "@mikro-orm/entity-generator":
-      optional: true
-    "@mikro-orm/migrations":
-      optional: true
-    "@mikro-orm/seeder":
-      optional: true
-  checksum: b6aecd3eb9013720e242390f9a4b470ff45f222ccddfeb8b260a9c0682073dbe9b6cfb9f688b7fde19197748a9026073d0693d66a7a0b2de2c83abfbd1fec291
   languageName: node
   linkType: hard
 
@@ -17522,13 +17288,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json-schema@npm:^7.0.12":
-  version: 7.0.15
-  resolution: "@types/json-schema@npm:7.0.15"
-  checksum: a996a745e6c5d60292f36731dd41341339d4eeed8180bb09226e5c8d23759067692b1d88e5d91d72ee83dfc00d3aca8e7bd43ea120516c17922cbcb7c3e252db
-  languageName: node
-  linkType: hard
-
 "@types/json5@npm:^0.0.29":
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
@@ -18349,31 +18108,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:6.14.0":
-  version: 6.14.0
-  resolution: "@typescript-eslint/eslint-plugin@npm:6.14.0"
-  dependencies:
-    "@eslint-community/regexpp": ^4.5.1
-    "@typescript-eslint/scope-manager": 6.14.0
-    "@typescript-eslint/type-utils": 6.14.0
-    "@typescript-eslint/utils": 6.14.0
-    "@typescript-eslint/visitor-keys": 6.14.0
-    debug: ^4.3.4
-    graphemer: ^1.4.0
-    ignore: ^5.2.4
-    natural-compare: ^1.4.0
-    semver: ^7.5.4
-    ts-api-utils: ^1.0.1
-  peerDependencies:
-    "@typescript-eslint/parser": ^6.0.0 || ^6.0.0-alpha
-    eslint: ^7.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 6360efb0e142ed91de5e9bddcd041f769feeedd256332733be08f7a74c8ae637cbfb78c6b85d747c73231bbb95cef95ed2d2854ab7d43aebfbedb3a191f447f1
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/eslint-plugin@npm:^4.33.0":
   version: 4.33.0
   resolution: "@typescript-eslint/eslint-plugin@npm:4.33.0"
@@ -18433,24 +18167,6 @@ __metadata:
   peerDependencies:
     eslint: "*"
   checksum: bb2a48c9df21ef06ccbcd083753b8c51b30a46cde67ab56d278b30ad7868d2e07641e51b6f7fb54437dcb7aff134fac44708e730e2b8f6e43027fefe8629bcb9
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/parser@npm:6.14.0":
-  version: 6.14.0
-  resolution: "@typescript-eslint/parser@npm:6.14.0"
-  dependencies:
-    "@typescript-eslint/scope-manager": 6.14.0
-    "@typescript-eslint/types": 6.14.0
-    "@typescript-eslint/typescript-estree": 6.14.0
-    "@typescript-eslint/visitor-keys": 6.14.0
-    debug: ^4.3.4
-  peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 0344f7f640374e7e5a5b50e9c90fbd161611b3f455132e541ef9116eef7bd3acf364db64bd38d4b6b4fe148414494620c9df660f8ddce036019c38ae8e146585
   languageName: node
   linkType: hard
 
@@ -18518,16 +18234,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/scope-manager@npm:6.14.0":
-  version: 6.14.0
-  resolution: "@typescript-eslint/scope-manager@npm:6.14.0"
-  dependencies:
-    "@typescript-eslint/types": 6.14.0
-    "@typescript-eslint/visitor-keys": 6.14.0
-  checksum: 8c59a215af3d7d24d8d0b21c28a858263de471650829f288a941e0eb8af8a054798da5c7594b7f39370219718270c18464b5edb96f451457e5f080a33ba57c2c
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/type-utils@npm:5.60.1":
   version: 5.60.1
   resolution: "@typescript-eslint/type-utils@npm:5.60.1"
@@ -18542,23 +18248,6 @@ __metadata:
     typescript:
       optional: true
   checksum: ef07f5c84636b8a9ff68dbc093ba6bce32d0e0f56831b214c2df3ff189502ae103c73bda7eb5e9f9ca21d3492dc851b7ac4b2cb83bdd6fbf5a9fe21068b404f4
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/type-utils@npm:6.14.0":
-  version: 6.14.0
-  resolution: "@typescript-eslint/type-utils@npm:6.14.0"
-  dependencies:
-    "@typescript-eslint/typescript-estree": 6.14.0
-    "@typescript-eslint/utils": 6.14.0
-    debug: ^4.3.4
-    ts-api-utils: ^1.0.1
-  peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 836a6e84be5a245b07c76968c98e2f3bae064767dde720080fe8f33e226188510778dbca4199b7e42ef675ec3fd6d0ab522ec1c77d6e2a9b50e8e275fe7c72c9
   languageName: node
   linkType: hard
 
@@ -18580,13 +18269,6 @@ __metadata:
   version: 5.62.0
   resolution: "@typescript-eslint/types@npm:5.62.0"
   checksum: 7febd3a7f0701c0b927e094f02e82d8ee2cada2b186fcb938bc2b94ff6fbad88237afc304cbaf33e82797078bbbb1baf91475f6400912f8b64c89be79bfa4ddf
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/types@npm:6.14.0":
-  version: 6.14.0
-  resolution: "@typescript-eslint/types@npm:6.14.0"
-  checksum: d59306a7a441982a4dcee7d775928fd5086aba9331f7a238f915723a0dc785df0e43af562a30a7c2f1b056a1e49fd64863a8d2450d31706193add0ade87334a4
   languageName: node
   linkType: hard
 
@@ -18644,24 +18326,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/typescript-estree@npm:6.14.0":
-  version: 6.14.0
-  resolution: "@typescript-eslint/typescript-estree@npm:6.14.0"
-  dependencies:
-    "@typescript-eslint/types": 6.14.0
-    "@typescript-eslint/visitor-keys": 6.14.0
-    debug: ^4.3.4
-    globby: ^11.1.0
-    is-glob: ^4.0.3
-    semver: ^7.5.4
-    ts-api-utils: ^1.0.1
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 767c3309987b8ad053a2403605a9bd7c4eb3283dece864a741a7531a1c28eea4d85acaa4613141b64e194f9f6c4cbc5bc762c9b9f3a67c6202aa8cbb18b180d2
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/utils@npm:5.60.1":
   version: 5.60.1
   resolution: "@typescript-eslint/utils@npm:5.60.1"
@@ -18677,23 +18341,6 @@ __metadata:
   peerDependencies:
     eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
   checksum: cb408bd67dd5be3a3585b67ac19f60e9feb309a56782924b314077f7dc77cb10e690fdb4a7ac643784e8fab30bc04d6f23935c1aed6d08233f8dd8604782ac27
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/utils@npm:6.14.0":
-  version: 6.14.0
-  resolution: "@typescript-eslint/utils@npm:6.14.0"
-  dependencies:
-    "@eslint-community/eslint-utils": ^4.4.0
-    "@types/json-schema": ^7.0.12
-    "@types/semver": ^7.5.0
-    "@typescript-eslint/scope-manager": 6.14.0
-    "@typescript-eslint/types": 6.14.0
-    "@typescript-eslint/typescript-estree": 6.14.0
-    semver: ^7.5.4
-  peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
-  checksum: 72689b2897b89e1bd1c71c1c2ae436d0ccfbcfffabf3be4378de74ad8138b2ecdbeeda7c1720e2f1754569e773f2fc7216f704335e1e56c38c7601ee1d190aeb
   languageName: node
   linkType: hard
 
@@ -18742,16 +18389,6 @@ __metadata:
     "@typescript-eslint/types": 5.62.0
     eslint-visitor-keys: ^3.3.0
   checksum: 7c3b8e4148e9b94d9b7162a596a1260d7a3efc4e65199693b8025c71c4652b8042501c0bc9f57654c1e2943c26da98c0f77884a746c6ae81389fcb0b513d995d
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/visitor-keys@npm:6.14.0":
-  version: 6.14.0
-  resolution: "@typescript-eslint/visitor-keys@npm:6.14.0"
-  dependencies:
-    "@typescript-eslint/types": 6.14.0
-    eslint-visitor-keys: ^3.4.1
-  checksum: 0e2363f9f1986ebdb41507c54a666fa1c336eb6beb383dc342a10844d3c42c89067b21c3f158851fa6f0825e1e451a5470b5454fde70a6fc33b4b0259462d954
   languageName: node
   linkType: hard
 
@@ -24756,6 +24393,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "date-fns@npm:3.2.0"
+  checksum: f93e987f785d7f2b7349986d150b014ce21fa6425e2e1edea6f0e01731dceef68deabf0f723689c28604e857648ac708a52b924cb7584e4321835686aa665371
+  languageName: node
+  linkType: hard
+
 "dayjs@npm:1.10.4":
   version: 1.10.4
   resolution: "dayjs@npm:1.10.4"
@@ -25647,13 +25291,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.1.4":
-  version: 16.1.4
-  resolution: "dotenv@npm:16.1.4"
-  checksum: 47cf5ce136bf2a5e8402fc9855d95848973cfee423fe0adf1a7cd565c842c51e5b8c95889b075140c26b092b74dd2a319970ff496cd7159ab3f1fc58edfc0ede
-  languageName: node
-  linkType: hard
-
 "dotenv@npm:16.3.1, dotenv@npm:^16.0.0, dotenv@npm:^16.0.3, dotenv@npm:^16.1.4":
   version: 16.3.1
   resolution: "dotenv@npm:16.3.1"
@@ -25815,13 +25452,6 @@ __metadata:
     minimalistic-assert: ^1.0.1
     minimalistic-crypto-utils: ^1.0.1
   checksum: 5f361270292c3b27cf0843e84526d11dec31652f03c2763c6c2b8178548175ff5eba95341dd62baff92b2265d1af076526915d8af6cc9cb7559c44a62f8ca6e2
-  languageName: node
-  linkType: hard
-
-"emittery@npm:^0.12.1":
-  version: 0.12.1
-  resolution: "emittery@npm:0.12.1"
-  checksum: 7a8395bdcebd6bd42054469c93f453308f93d67a81f8fe08f7047c824b4623794f03aefd0a23e73d967bb3b9f722ba7eff216c808bb80caaa7d13c42227e06c8
   languageName: node
   linkType: hard
 
@@ -28852,16 +28482,6 @@ __metadata:
     jsonfile: ^6.0.1
     universalify: ^2.0.0
   checksum: 9b808bd884beff5cb940773018179a6b94a966381d005479f00adda6b44e5e3d4abf765135773d849cc27efe68c349e4a7b86acd7d3306d5932c14f3a4b17a92
-  languageName: node
-  linkType: hard
-
-"fs-jetpack@npm:^4.3.1":
-  version: 4.3.1
-  resolution: "fs-jetpack@npm:4.3.1"
-  dependencies:
-    minimatch: ^3.0.2
-    rimraf: ^2.6.3
-  checksum: 5d27e829233de005505417bae2f55412ae65ff63a57b68ac6d3cd8dde29ed9f0797c2a83356d20237bf74f516db8e40636c5fc238b49b4414b3d9339e60f7914
   languageName: node
   linkType: hard
 
@@ -37251,7 +36871,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"medusa-core-utils@1.2.0, medusa-core-utils@^1.2.0, medusa-core-utils@workspace:packages/medusa-core-utils":
+"medusa-core-utils@1.2.1, medusa-core-utils@^1.2.0, medusa-core-utils@^1.2.1, medusa-core-utils@workspace:packages/medusa-core-utils":
   version: 0.0.0-use.local
   resolution: "medusa-core-utils@workspace:packages/medusa-core-utils"
   dependencies:
@@ -37378,10 +36998,10 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.2.0
-    medusa-interfaces: ^1.3.7
+    medusa-core-utils: ^1.2.1
+    medusa-interfaces: ^1.3.8
   peerDependencies:
-    medusa-interfaces: 1.3.7
+    medusa-interfaces: 1.3.8
   languageName: unknown
   linkType: soft
 
@@ -37396,8 +37016,8 @@ __metadata:
     "@babel/plugin-transform-runtime": ^7.7.6
     "@babel/preset-env": ^7.7.5
     "@babel/runtime": ^7.9.6
-    "@medusajs/medusa": ^1.17.4
-    "@medusajs/utils": ^1.10.5
+    "@medusajs/medusa": ^1.19.1
+    "@medusajs/utils": ^1.11.3
     axios: ^0.20.0
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
@@ -37405,15 +37025,15 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.2.0
-    medusa-interfaces: ^1.3.7
+    medusa-core-utils: ^1.2.1
+    medusa-interfaces: ^1.3.8
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
     medusa-interfaces: ^1.3.7
   languageName: unknown
   linkType: soft
 
-"medusa-interfaces@^1.3.7, medusa-interfaces@workspace:*, medusa-interfaces@workspace:packages/medusa-interfaces":
+"medusa-interfaces@^1.3.7, medusa-interfaces@^1.3.8, medusa-interfaces@workspace:*, medusa-interfaces@workspace:packages/medusa-interfaces":
   version: 0.0.0-use.local
   resolution: "medusa-interfaces@workspace:packages/medusa-interfaces"
   dependencies:
@@ -37428,8 +37048,8 @@ __metadata:
     "@babel/runtime": ^7.9.6
     cross-env: ^5.2.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.2.0
-    medusa-test-utils: ^1.1.40
+    medusa-core-utils: ^1.2.1
+    medusa-test-utils: ^1.1.41
     rimraf: ^5.0.1
     typescript: ^4.4.4
   languageName: unknown
@@ -37458,11 +37078,11 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.4
     lodash: ^4.17.21
-    medusa-core-utils: ^1.2.0
-    medusa-interfaces: ^1.3.7
-    medusa-test-utils: ^1.1.40
+    medusa-core-utils: ^1.2.1
+    medusa-interfaces: ^1.3.8
+    medusa-test-utils: ^1.1.41
   peerDependencies:
-    medusa-interfaces: 1.3.7
+    medusa-interfaces: 1.3.8
   languageName: unknown
   linkType: soft
 
@@ -37545,9 +37165,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-payment-stripe@workspace:packages/medusa-payment-stripe"
   dependencies:
-    "@medusajs/admin": ^7.1.7
-    "@medusajs/medusa": ^1.17.4
-    "@medusajs/utils": ^1.11.2
+    "@medusajs/admin": ^7.1.10
+    "@medusajs/medusa": ^1.19.1
+    "@medusajs/utils": ^1.11.3
     "@tanstack/react-table": ^8.7.9
     "@types/stripe": ^8.0.417
     awilix: ^8.0.1
@@ -37555,7 +37175,7 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-react: ^9.0.11
+    medusa-react: ^9.0.13
     rimraf: ^5.0.1
     stripe: ^11.10.0
     typescript: ^4.9.5
@@ -37940,12 +37560,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-react@^9.0.11, medusa-react@^9.0.12, medusa-react@workspace:^, medusa-react@workspace:packages/medusa-react":
+"medusa-react@^9.0.13, medusa-react@workspace:^, medusa-react@workspace:packages/medusa-react":
   version: 0.0.0-use.local
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:
     "@babel/core": ^7.16.0
-    "@medusajs/medusa": ^1.19.0
+    "@medusajs/medusa": ^1.19.1
     "@medusajs/medusa-js": "*"
     "@storybook/addon-essentials": ^6.3.12
     "@storybook/addon-links": ^6.3.12
@@ -38036,7 +37656,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-test-utils@^1.1.40, medusa-test-utils@workspace:packages/medusa-test-utils":
+"medusa-test-utils@^1.1.40, medusa-test-utils@^1.1.41, medusa-test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
   resolution: "medusa-test-utils@workspace:packages/medusa-test-utils"
   dependencies:
@@ -38044,7 +37664,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     cross-env: ^5.2.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.2.0
+    medusa-core-utils: ^1.2.1
     pg-god: ^1.0.12
     randomatic: ^3.1.1
     rimraf: ^3.0.2
@@ -38296,13 +37916,6 @@ __metadata:
   version: 5.9.7
   resolution: "mikro-orm@npm:5.9.7"
   checksum: 01eb2b71e5f830c064749779d30ed1772e28420cfedeafbbbce8599714eae308af467014001e0404d7ba43de9f1f979a05fd6b267a89c8f7e1e8ec6013fb5120
-  languageName: node
-  linkType: hard
-
-"mikro-orm@npm:~5.7.12, mikro-orm@npm:~5.7.14":
-  version: 5.7.14
-  resolution: "mikro-orm@npm:5.7.14"
-  checksum: 1a72b863e130b86f2cc9aa6828b49546cde1dfc7f6ba9b8035c88dc6fff9f60d038cada2dc4332304c6bdc197dece709a6fad845490ab2584546852278b62f6d
   languageName: node
   linkType: hard
 
@@ -41300,7 +40913,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pony-cause@npm:^2.1.2, pony-cause@npm:^2.1.4":
+"pony-cause@npm:^2.1.4":
   version: 2.1.10
   resolution: "pony-cause@npm:2.1.10"
   checksum: 55ad0ca52039895f273c69e55fc9fe882deff38689dc5962558bfa16cce0ea7cb5bb7b67d0c43ec9c3e7edeb81f81ee8c1113014930d77b2cbac5adc4ac7fb64
@@ -42510,6 +42123,15 @@ __metadata:
   bin:
     prettier: bin-prettier.js
   checksum: 463ea8f9a0946cd5b828d8cf27bd8b567345cf02f56562d5ecde198b91f47a76b7ac9eae0facd247ace70e927143af6135e8cf411986b8cb8478784a4d6d724a
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "prettier@npm:3.1.1"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: facc944ba20e194ff4db765e830ffbcb642803381f0d2033ed397e79904fa4ccc877dc25ad68f42d36985c01d051c990ca1b905fb83d2d7d65fe69e4386fa1a3
   languageName: node
   linkType: hard
 
@@ -48911,15 +48533,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-api-utils@npm:^1.0.1":
-  version: 1.0.3
-  resolution: "ts-api-utils@npm:1.0.3"
-  peerDependencies:
-    typescript: ">=4.2.0"
-  checksum: 9408338819c3aca2a709f0bc54e3f874227901506cacb1163612a6c8a43df224174feb965a5eafdae16f66fc68fd7bfee8d3275d0fa73fbb8699e03ed26520c9
-  languageName: node
-  linkType: hard
-
 "ts-clone-node@npm:^3.0.0":
   version: 3.0.0
   resolution: "ts-clone-node@npm:3.0.0"
@@ -49595,7 +49208,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^2.18.0, type-fest@npm:^2.19.0, type-fest@npm:~2.19":
+"type-fest@npm:^2.19.0, type-fest@npm:~2.19":
   version: 2.19.0
   resolution: "type-fest@npm:2.19.0"
   checksum: a5a7ecf2e654251613218c215c7493574594951c08e52ab9881c9df6a6da0aeca7528c213c622bc374b4e0cb5c443aa3ab758da4e3c959783ce884c3194e12cb
@@ -49879,20 +49492,6 @@ __metadata:
   bin:
     ulid: ./bin/cli.js
   checksum: 070d237502781085e59cf3d8ece752ff96cd3a0990cf1c1be57273f4550597daeb72e9a7db8e5a320de31102509bb3321d280b54bfc44e98025e4628a9629773
-  languageName: node
-  linkType: hard
-
-"umzug@npm:3.2.1":
-  version: 3.2.1
-  resolution: "umzug@npm:3.2.1"
-  dependencies:
-    "@rushstack/ts-command-line": ^4.12.2
-    emittery: ^0.12.1
-    fs-jetpack: ^4.3.1
-    glob: ^8.0.3
-    pony-cause: ^2.1.2
-    type-fest: ^2.18.0
-  checksum: ff5d417c5f0211e8c3c2529c347313ecef5db3ff4b219c71098e09884674387ac14870749ecf42ac26aabcf7559207b855fb0016eb8c50f7cd979f816d4b1545
   languageName: node
   linkType: hard
 

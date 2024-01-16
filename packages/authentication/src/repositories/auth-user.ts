@@ -1,77 +1,22 @@
-import { Context, DAL } from "@medusajs/types"
+import { Context } from "@medusajs/types"
 import { DALUtils } from "@medusajs/utils"
-import {
-  FilterQuery as MikroFilterQuery,
-  FindOptions as MikroOptions,
-  LoadStrategy,
-} from "@mikro-orm/core"
 
 import { AuthUser } from "@models"
 import { RepositoryTypes } from "@types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-export class AuthUserRepository extends DALUtils.MikroOrmBaseRepository {
-  protected readonly manager_: SqlEntityManager
-
-  constructor({ manager }: { manager: SqlEntityManager }) {
+export class AuthUserRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
+  AuthUser
+) {
+  constructor(...args: any[]) {
     // @ts-ignore
-    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
-    this.manager_ = manager
-  }
-
-  async find(
-    findOptions: DAL.FindOptions<AuthUser> = { where: {} },
-    context: Context = {}
-  ): Promise<AuthUser[]> {
-    const manager = this.getActiveManager<SqlEntityManager>(context)
-
-    const findOptions_ = { ...findOptions }
-    findOptions_.options ??= {}
-
-    Object.assign(findOptions_.options, {
-      strategy: LoadStrategy.SELECT_IN,
-    })
-
-    return await manager.find(
-      AuthUser,
-      findOptions_.where as MikroFilterQuery<AuthUser>,
-      findOptions_.options as MikroOptions<AuthUser>
-    )
-  }
-
-  async findAndCount(
-    findOptions: DAL.FindOptions<AuthUser> = { where: {} },
-    context: Context = {}
-  ): Promise<[AuthUser[], number]> {
-    const manager = this.getActiveManager<SqlEntityManager>(context)
-
-    const findOptions_ = { ...findOptions }
-    findOptions_.options ??= {}
-
-    Object.assign(findOptions_.options, {
-      strategy: LoadStrategy.SELECT_IN,
-    })
-
-    return await manager.findAndCount(
-      AuthUser,
-      findOptions_.where as MikroFilterQuery<AuthUser>,
-      findOptions_.options as MikroOptions<AuthUser>
-    )
-  }
-
-  async delete(ids: string[], context: Context = {}): Promise<void> {
-    const manager = this.getActiveManager<SqlEntityManager>(context)
-    await manager.nativeDelete(AuthUser, { id: { $in: ids } }, {})
   }
 
   async create(
     data: RepositoryTypes.CreateAuthUserDTO[],
     context: Context = {}
   ): Promise<AuthUser[]> {
-    const manager: SqlEntityManager =
-      this.getActiveManager<SqlEntityManager>(context)
-
     const toCreate = data.map((authUser) => {
       const authUserClone = { ...authUser } as any
 
@@ -80,13 +25,7 @@ export class AuthUserRepository extends DALUtils.MikroOrmBaseRepository {
       return authUserClone
     })
 
-    const authUsers = toCreate.map((authUserData) => {
-      return manager.create(AuthUser, authUserData)
-    })
-
-    manager.persist(authUsers)
-
-    return authUsers
+    return await super.create(toCreate, context)
   }
 
   async update(

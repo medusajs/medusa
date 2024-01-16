@@ -19,7 +19,7 @@ ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config_","type":"[ConfigModule](../../medusa/types/medusa.ConfigModule-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"enqueue_","type":"Promise&#60;void&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"logger_","type":"[Logger](../../medusa/types/medusa.Logger.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shouldEnqueuerRun","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"stagedJobService_","type":"[StagedJobService](services.StagedJobService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config_","type":"[ConfigModule](../../medusa/types/medusa.ConfigModule-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"enqueue_","type":"Promise&#60;void&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"logger_","type":"[Logger](../../types/LoggerTypes/interfaces/types.LoggerTypes.Logger.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shouldEnqueuerRun","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"stagedJobService_","type":"[StagedJobService](services.StagedJobService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"IEventBusModuleService","type":"`IEventBusModuleService`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"IEventBusModuleService","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 ___
 
@@ -55,7 +55,7 @@ transaction manager is created.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: `TError`) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -75,7 +75,7 @@ Calls all subscribers when an event occurs.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"data","type":"EmitData&#60;T&#62;[]","description":"The data to use to process the events","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"data","type":"[EmitData](../../types/EventBusTypes/types/types.EventBusTypes.EmitData.mdx)&#60;T&#62;[]","description":"The data to use to process the events","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -91,7 +91,7 @@ Calls all subscribers when an event occurs.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"eventName","type":"`string`","description":"the name of the event to be process.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`T`","description":"the data to send to the subscriber.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`Record<string, unknown>`","description":"options to add the job with","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"eventName","type":"`string`","description":"the name of the event to be process.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"T","description":"the data to send to the subscriber.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`Record<string, unknown>`","description":"options to add the job with","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -153,11 +153,11 @@ Adds a function to a list of event subscribers.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"event","type":"`string` \\| `symbol`","description":"the event that the subscriber will listen for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subscriber","type":"Subscriber&#60;unknown&#62;","description":"the function to be called when a certain event\nhappens. Subscribers must return a Promise.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[SubscriberContext](../../medusa/interfaces/medusa.SubscriberContext.mdx)","description":"subscriber context","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"event","type":"`string` \\| `symbol`","description":"the event that the subscriber will listen for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subscriber","type":"[Subscriber](../../types/EventBusTypes/types/types.EventBusTypes.Subscriber.mdx)&#60;unknown&#62;","description":"the function to be called when a certain event\nhappens. Subscribers must return a Promise.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[SubscriberContext](../../types/EventBusTypes/types/types.EventBusTypes.SubscriberContext.mdx)","description":"subscriber context","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EventBusService","type":"`object`","description":"Can keep track of multiple subscribers to different events and run the\nsubscribers when events happen. Events will run asynchronously.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"this","expandable":false,"children":[]}]} />
 
 ___
 
@@ -167,11 +167,11 @@ Removes function from the list of event subscribers.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"event","type":"`string` \\| `symbol`","description":"the event of the subcriber.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subscriber","type":"Subscriber&#60;unknown&#62;","description":"the function to be removed","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[SubscriberContext](../../medusa/interfaces/medusa.SubscriberContext.mdx)","description":"subscriber context","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"event","type":"`string` \\| `symbol`","description":"the event of the subcriber.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subscriber","type":"[Subscriber](../../types/EventBusTypes/types/types.EventBusTypes.Subscriber.mdx)&#60;unknown&#62;","description":"the function to be removed","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[SubscriberContext](../../types/EventBusTypes/types/types.EventBusTypes.SubscriberContext.mdx)","description":"subscriber context","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EventBusService","type":"`object`","description":"Can keep track of multiple subscribers to different events and run the\nsubscribers when events happen. Events will run asynchronously.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"this","expandable":false,"children":[]}]} />
 
 ___
 
@@ -183,4 +183,4 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EventBusService","type":"`object`","description":"Can keep track of multiple subscribers to different events and run the\nsubscribers when events happen. Events will run asynchronously.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />

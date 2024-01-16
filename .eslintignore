@@ -24,8 +24,8 @@ packages/*
 !packages/orchestration
 !packages/workflows-sdk
 !packages/core-flows
-!packages/workflow-orchestrator-inmemory
-!packages/workflow-orchestrator-redis
+!packages/workflows-inmemory
+!packages/workflows-redis
 
 
 **/models/*

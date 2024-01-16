@@ -165,4 +165,27 @@ export class SalesChannel extends SoftDeletableEntity {
  *    externalDocs:
  *      description: "Learn about the metadata attribute, and how to delete and update it."
  *      url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
+ *  carts:
+ *    description: The associated carts.
+ *    type: array
+ *    nullable: true
+ *    x-expandable: "carts"
+ *    x-featureFlag: "medusa_v2"
+ *    items:
+ *      $ref: "#/components/schemas/Cart"
+ *  orders:
+ *    description: The associated orders.
+ *    type: array
+ *    nullable: true
+ *    x-expandable: "orders"
+ *    x-featureFlag: "medusa_v2"
+ *    items:
+ *      $ref: "#/components/schemas/Order"
+ *  publishableKeys:
+ *    description: The associated publishable API keys.
+ *    type: array
+ *    nullable: true
+ *    x-expandable: "publishableKeys"
+ *    items:
+ *      $ref: "#/components/schemas/PublishableApiKey"
  */

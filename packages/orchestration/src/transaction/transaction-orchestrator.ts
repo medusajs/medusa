@@ -144,7 +144,10 @@ export class TransactionOrchestrator extends EventEmitter {
     }
   }
 
-  private async checkStepTimeout(transaction, step) {
+  private async checkStepTimeout(
+    transaction: DistributedTransaction,
+    step: TransactionStep
+  ) {
     let hasTimedOut = false
     if (
       step.hasTimeout() &&
@@ -167,6 +170,7 @@ export class TransactionOrchestrator extends EventEmitter {
   }
 
   private async checkAllSteps(transaction: DistributedTransaction): Promise<{
+    current: TransactionStep[]
     next: TransactionStep[]
     total: number
     remaining: number
@@ -182,6 +186,8 @@ export class TransactionOrchestrator extends EventEmitter {
     const flow = transaction.getFlow()
 
     const nextSteps: TransactionStep[] = []
+    const currentSteps: TransactionStep[] = []
+
     const allSteps =
       flow.state === TransactionState.COMPENSATING
         ? this.getCompensationSteps(flow)
@@ -204,6 +210,7 @@ export class TransactionOrchestrator extends EventEmitter {
       }
 
       if (curState.status === TransactionStepStatus.WAITING) {
+        currentSteps.push(stepDef)
         hasWaiting = true
 
         if (stepDef.hasAwaitingRetry()) {
@@ -223,6 +230,8 @@ export class TransactionOrchestrator extends EventEmitter {
 
         continue
       } else if (curState.status === TransactionStepStatus.TEMPORARY_FAILURE) {
+        currentSteps.push(stepDef)
+
         if (!stepDef.canRetry()) {
           if (stepDef.hasRetryInterval() && !stepDef.retryRescheduledAt) {
             stepDef.hasScheduledRetry = true
@@ -288,6 +297,7 @@ export class TransactionOrchestrator extends EventEmitter {
     }
 
     return {
+      current: currentSteps,
       next: nextSteps,
       total: totalSteps,
       remaining: totalSteps - completedSteps,
@@ -318,6 +328,10 @@ export class TransactionOrchestrator extends EventEmitter {
     step: TransactionStep,
     response: unknown
   ): Promise<void> {
+    if (step.getStates().status === TransactionStepStatus.PERMANENT_FAILURE) {
+      return
+    }
+
     if (step.saveResponse) {
       transaction.addResponse(
         step.definition.action!,
@@ -345,7 +359,7 @@ export class TransactionOrchestrator extends EventEmitter {
     if (step.hasRetryScheduled()) {
       cleaningUp.push(transaction.clearRetry(step))
     }
-    if (step.hasTimeout()) {
+    if (step.hasTimeout() && !step.isCompensating()) {
       cleaningUp.push(transaction.clearStepTimeout(step))
     }
 
@@ -413,7 +427,10 @@ export class TransactionOrchestrator extends EventEmitter {
     transaction.emit(eventName, { step, transaction })
   }
 
-  private async checkTransactionTimeout(transaction, currentSteps) {
+  private async checkTransactionTimeout(
+    transaction: DistributedTransaction,
+    currentSteps: TransactionStep[]
+  ) {
     let hasTimedOut = false
     const flow = transaction.getFlow()
     if (
@@ -423,6 +440,8 @@ export class TransactionOrchestrator extends EventEmitter {
     ) {
       flow.timedOutAt = Date.now()
       this.emit(DistributedTransactionEvent.TIMEOUT, { transaction })
+
+      void transaction.clearTransactionTimeout()
 
       for (const step of currentSteps) {
         await TransactionOrchestrator.setStepFailure(
@@ -457,7 +476,7 @@ export class TransactionOrchestrator extends EventEmitter {
 
       const hasTimedOut = await this.checkTransactionTimeout(
         transaction,
-        nextSteps.next
+        nextSteps.current
       )
       if (hasTimedOut) {
         continue
@@ -465,14 +484,10 @@ export class TransactionOrchestrator extends EventEmitter {
 
       if (nextSteps.remaining === 0) {
         if (transaction.hasTimeout()) {
-          await transaction.clearTransactionTimeout()
+          void transaction.clearTransactionTimeout()
         }
 
-        if (flow.options?.retentionTime == undefined) {
-          await transaction.deleteCheckpoint()
-        } else {
-          await transaction.saveCheckpoint()
-        }
+        await transaction.saveCheckpoint()
 
         this.emit(DistributedTransactionEvent.FINISH, { transaction })
       }
@@ -808,6 +823,7 @@ export class TransactionOrchestrator extends EventEmitter {
             new TransactionStep(),
             existingSteps?.[id] || {
               id,
+              uuid: definitionCopy.uuid,
               depth: level.length - 1,
               definition: definitionCopy,
               saveResponse: definitionCopy.saveResponse ?? true,

@@ -39,7 +39,7 @@ export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
 
   update(data: unknown[], context?: Context): Promise<T[]>
 
-  delete(ids: string[], context?: Context): Promise<void>
+  delete(idsOrPKs: string[] | object[], context?: Context): Promise<void>
 
   /**
    * Soft delete entities and cascade to related entities if configured.
@@ -81,7 +81,7 @@ export interface TreeRepositoryService<T = any>
 
 /**
  * @interface
- * 
+ *
  * An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
  */
 export type SoftDeleteReturn<TReturnableLinkableKeys = string> = {
@@ -93,7 +93,7 @@ export type SoftDeleteReturn<TReturnableLinkableKeys = string> = {
 
 /**
  * @interface
- * 
+ *
  * An object that is used to specify an entity's related entities that should be restored when the main entity is restored.
  */
 export type RestoreReturn<TReturnableLinkableKeys = string> = {

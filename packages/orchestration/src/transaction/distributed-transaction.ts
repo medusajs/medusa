@@ -177,11 +177,11 @@ export class DistributedTransaction extends EventEmitter {
   }
 
   public hasTimeout(): boolean {
-    return !!this.getFlow().definition.timeout
+    return !!this.getFlow().options?.timeout
   }
 
   public getTimeoutInterval(): number | undefined {
-    return this.getFlow().definition.timeout
+    return this.getFlow().options?.timeout
   }
 
   public async saveCheckpoint(
@@ -224,20 +224,6 @@ export class DistributedTransaction extends EventEmitter {
     }
 
     return null
-  }
-
-  public async deleteCheckpoint(): Promise<void> {
-    const options = this.getFlow().options
-    if (!options?.storeExecution) {
-      return
-    }
-
-    const key = TransactionOrchestrator.getKeyName(
-      DistributedTransaction.keyPrefix,
-      this.modelId,
-      this.transactionId
-    )
-    await DistributedTransaction.keyValueStore.delete(key)
   }
 
   public async scheduleRetry(
