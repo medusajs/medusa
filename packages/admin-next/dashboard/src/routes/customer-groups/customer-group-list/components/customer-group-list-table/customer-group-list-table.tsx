@@ -1,5 +1,6 @@
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { CustomerGroup } from "@medusajs/medusa"
-import { Button, Container, Heading, Table, clx } from "@medusajs/ui"
+import { Button, Container, Heading, Table, clx, usePrompt } from "@medusajs/ui"
 import {
   PaginationState,
   RowSelectionState,
@@ -8,7 +9,10 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { useAdminCustomerGroups } from "medusa-react"
+import {
+  useAdminCustomerGroups,
+  useAdminDeleteCustomerGroup,
+} from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
@@ -16,6 +20,7 @@ import {
   NoRecords,
   NoResults,
 } from "../../../../../components/common/empty-table-content"
+import { TableRowActions } from "../../../../../components/common/table-row-actions"
 import { OrderBy } from "../../../../../components/filtering/order-by"
 import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
@@ -176,6 +181,55 @@ export const CustomerGroupListTable = () => {
   )
 }
 
+const CustomerGroupActions = ({ group }: { group: CustomerGroup }) => {
+  const { t } = useTranslation()
+  const prompt = usePrompt()
+
+  const { mutateAsync } = useAdminDeleteCustomerGroup(group.id)
+
+  const handleDelete = async () => {
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("customerGroups.deleteCustomerGroupWarning", {
+        name: group.name,
+      }),
+      confirmText: t("general.delete"),
+      cancelText: t("general.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync(undefined)
+  }
+
+  return (
+    <TableRowActions
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: t("general.edit"),
+              to: `/customer-groups/${group.id}/edit`,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              icon: <Trash />,
+              label: t("general.delete"),
+              onClick: handleDelete,
+            },
+          ],
+        },
+      ]}
+    />
+  )
+}
+
 const columnHelper = createColumnHelper<CustomerGroup>()
 
 const useColumns = () => {
@@ -186,6 +240,10 @@ const useColumns = () => {
       columnHelper.accessor("name", {
         header: t("fields.name"),
         cell: ({ getValue }) => getValue(),
+      }),
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => <CustomerGroupActions group={row.original} />,
       }),
     ],
     [t]

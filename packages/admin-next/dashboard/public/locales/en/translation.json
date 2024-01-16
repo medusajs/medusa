@@ -88,7 +88,8 @@
     "customerAlreadyAdded": "The customer has already been added to the group.",
     "editCustomerGroup": "Edit Customer Group",
     "removeCustomersWarning_one": "You are about to remove {{count}} customer from the customer group. This action cannot be undone.",
-    "removeCustomersWarning_other": "You are about to remove {{count}} customers from the customer group. This action cannot be undone."
+    "removeCustomersWarning_other": "You are about to remove {{count}} customers from the customer group. This action cannot be undone.",
+    "deleteCustomerGroupWarning": "You are about to delete the customer group {{name}}. This action cannot be undone."
   },
   "orders": {
     "domain": "Orders"
