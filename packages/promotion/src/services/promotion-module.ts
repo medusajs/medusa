@@ -245,6 +245,8 @@ export default class PromotionModuleService<
           "application_method.target_rules.values",
           "rules",
           "rules.values",
+          "campaign",
+          "campaign.budget",
         ],
       }
     )
@@ -651,6 +653,7 @@ export default class PromotionModuleService<
         !allowedAllocationForQuantity.includes(applicationMethodData.allocation)
       ) {
         applicationMethodData.max_quantity = null
+        existingApplicationMethod.max_quantity = null
       }
 
       validateApplicationMethodAttributes({
@@ -1059,12 +1062,8 @@ export default class PromotionModuleService<
     const campaignBudgetsData: UpdateCampaignBudgetDTO[] = []
 
     const existingCampaigns = await this.listCampaigns(
-      {
-        id: campaignIds,
-      },
-      {
-        relations: ["budget"],
-      },
+      { id: campaignIds },
+      { relations: ["budget"] },
       sharedContext
     )
 

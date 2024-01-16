@@ -39,4 +39,5 @@ export enum ComputedActions {
   ADD_SHIPPING_METHOD_ADJUSTMENT = "addShippingMethodAdjustment",
   REMOVE_ITEM_ADJUSTMENT = "removeItemAdjustment",
   REMOVE_SHIPPING_METHOD_ADJUSTMENT = "removeShippingMethodAdjustment",
+  CAMPAIGN_BUDGET_EXCEEDED = "campaignBudgetExceeded",
 }
