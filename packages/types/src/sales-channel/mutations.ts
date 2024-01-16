@@ -1,10 +1,10 @@
-export type CreateSalesChannelDTO = {
+export interface CreateSalesChannelDTO {
   name: string
   description?: string
   is_disabled?: boolean
 }
 
-export type UpdateSalesChannelDTO = {
+export interface UpdateSalesChannelDTO {
   id: string
   name?: string
   description?: string

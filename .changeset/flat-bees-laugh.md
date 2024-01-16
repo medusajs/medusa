@@ -1,7 +1,8 @@
 ---
 "@medusajs/core-flows": patch
-"@medusajs/modules-sdk": patch
+"@medusajs/link-modules": patch
 "@medusajs/medusa": patch
+"@medusajs/modules-sdk": patch
 "@medusajs/types": patch
 ---
 

@@ -1,4 +1,5 @@
 import { DALUtils, generateEntityId } from "@medusajs/utils"
+
 import {
   BeforeCreate,
   Entity,
@@ -8,11 +9,16 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { DAL } from "@medusajs/types"
+
+type SalesChannelOptionalProps =
+  | "is_disabled"
+  | DAL.SoftDeletableEntityDateColumns
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class SalesChannel {
-  [OptionalProps]?: "created_at" | "updated_at" | "deleted_at"
+  [OptionalProps]?: SalesChannelOptionalProps
 
   @PrimaryKey({ columnType: "text" })
   id!: string
