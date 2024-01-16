@@ -1004,7 +1004,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "modules/taxes/backend/create-tax-provider",
+          id: "references/tax/classes/tax.AbstractTaxService",
           label: "Backend: Create Tax Provider",
         },
         {

@@ -9,8 +9,8 @@ import { ProviderTaxLine } from "../types/tax-service"
 class SystemTaxService extends AbstractTaxService {
   static identifier = "system"
 
-  constructor() {
-    super({})
+  constructor(_) {
+    super(_)
   }
 
   async getTaxLines(
