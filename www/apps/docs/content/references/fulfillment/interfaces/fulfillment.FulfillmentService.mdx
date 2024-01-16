@@ -194,7 +194,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
   // ...
   async createFulfillment(
     data: Record<string, unknown>,
-    items: LineItem,
+    items: LineItem[],
     order: Order,
     fulfillment: Fulfillment
   ) {

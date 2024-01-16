@@ -28,6 +28,10 @@ export default async ({
     applicationMethodService: asClass(
       defaultServices.ApplicationMethodService
     ).singleton(),
+    campaignService: asClass(defaultServices.CampaignService).singleton(),
+    campaignBudgetService: asClass(
+      defaultServices.CampaignBudgetService
+    ).singleton(),
   })
 
   if (customRepositories) {
@@ -55,6 +59,12 @@ function loadDefaultRepositories({ container }) {
     ).singleton(),
     promotionRuleValueRepository: asClass(
       defaultRepositories.PromotionRuleValueRepository
+    ).singleton(),
+    campaignRepository: asClass(
+      defaultRepositories.CampaignRepository
+    ).singleton(),
+    campaignBudgetRepository: asClass(
+      defaultRepositories.CampaignBudgetRepository
     ).singleton(),
   })
 }
