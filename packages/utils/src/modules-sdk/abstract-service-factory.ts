@@ -182,13 +182,3 @@ export function abstractServiceFactory<
     container: TContainer
   ) => AbstractService<TEntity, TContainer, TDTos, TFilters>
 }
-
-class Entity {}
-
-class Test extends abstractServiceFactory<object, {}>(Entity)<{}> {
-  constructor() {
-    super(...arguments)
-  }
-
-  test() {}
-}
