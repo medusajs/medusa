@@ -1,13 +1,22 @@
-import { AddressDTO } from "../address"
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
-import { CartAddressDTO, CartDTO, FilterableAddressProps, FilterableCartProps } from "./common"
+import {
+  CartAddressDTO,
+  CartDTO,
+  CartLineItemDTO,
+  FilterableAddressProps,
+  FilterableCartProps,
+} from "./common"
 import {
   CreateAddressDTO,
   CreateCartDTO,
+  CreateLineItemDTO,
+  CreateLineItemForCartDTO,
   UpdateAddressDTO,
   UpdateCartDTO,
+  UpdateLineItemDTO,
+  UpdateLineItemWithSelectorDTO,
 } from "./mutations"
 
 export interface ICartModuleService extends IModuleService {
@@ -40,7 +49,7 @@ export interface ICartModuleService extends IModuleService {
 
   listAddresses(
     filters?: FilterableAddressProps,
-    config?: FindConfig<AddressDTO>,
+    config?: FindConfig<CartAddressDTO>,
     sharedContext?: Context
   ): Promise<CartAddressDTO[]>
 
@@ -65,20 +74,32 @@ export interface ICartModuleService extends IModuleService {
   deleteAddresses(ids: string[], sharedContext?: Context): Promise<void>
   deleteAddresses(ids: string, sharedContext?: Context): Promise<void>
 
-  // addLineItems(data: AddLineItemsDTO, sharedContext?: Context): Promise<CartDTO>
-  // addLineItems(
-  //   data: AddLineItemsDTO[],
-  //   sharedContext?: Context
-  // ): Promise<CartDTO[]>
+  addLineItems(data: CreateLineItemForCartDTO): Promise<CartLineItemDTO>
+  addLineItems(data: CreateLineItemForCartDTO[]): Promise<CartLineItemDTO[]>
+  addLineItems(
+    cartId: string,
+    items: CreateLineItemDTO[],
+    sharedContext?: Context
+  ): Promise<CartLineItemDTO[]>
 
-  // updateLineItems(
-  //   data: UpdateLineItemsDTO,
-  //   sharedContext?: Context
-  // ): Promise<CartDTO>
-  // updateLineItems(
-  //   data: UpdateLineItemsDTO[],
-  //   sharedContext?: Context
-  // ): Promise<CartDTO[]>
+  updateLineItems(
+    data: UpdateLineItemWithSelectorDTO[]
+  ): Promise<CartLineItemDTO[]>
+  updateLineItems(
+    selector: Partial<CartLineItemDTO>,
+    data: Partial<UpdateLineItemDTO>,
+    sharedContext?: Context
+  ): Promise<CartLineItemDTO[]>
+  updateLineItems(
+    lineId: string,
+    data: Partial<UpdateLineItemDTO>,
+    sharedContext?: Context
+  ): Promise<CartLineItemDTO>
 
-  // removeLineItems(lineItemIds: string[], sharedContext?: Context): Promise<void>
+  removeLineItems(itemIds: string[], sharedContext?: Context): Promise<void>
+  removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
+  removeLineItems(
+    selector: Partial<CartLineItemDTO>,
+    sharedContext?: Context
+  ): Promise<void>
 }
