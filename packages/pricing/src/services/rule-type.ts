@@ -16,7 +16,10 @@ export default class RuleTypeService<
   TEntity extends RuleType = RuleType
 > extends ModulesSdkUtils.abstractServiceFactory<
   InjectedDependencies,
-  {},
+  {
+    create: ServiceTypes.CreateRuleTypeDTO
+    update: ServiceTypes.UpdateRuleTypeDTO
+  },
   {
     list: ServiceTypes.FilterableRuleTypeProps
     listAndCount: ServiceTypes.FilterableRuleTypeProps
