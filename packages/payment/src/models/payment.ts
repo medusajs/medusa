@@ -20,15 +20,7 @@ import Capture from "./capture"
 import PaymentSession from "./payment-session"
 import PaymentCollection from "./payment-collection"
 
-type OptionalPaymentProps =
-  | "authorized_amount"
-  | "cart_id"
-  | "order_id"
-  | "customer_id"
-  | "data"
-  | "captured_at"
-  | "canceled_at"
-  | DAL.SoftDeletableEntityDateColumns
+type OptionalPaymentProps = DAL.EntityDateColumns
 
 @Entity({ tableName: "payment" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -49,7 +41,7 @@ export default class Payment {
     nullable: true,
     serializer: Number,
   })
-  authorized_amount: number | null
+  authorized_amount?: number | null
 
   @Property({ columnType: "text" })
   currency_code: string
@@ -58,16 +50,16 @@ export default class Payment {
   provider_id: string
 
   @Property({ columnType: "text", nullable: true })
-  cart_id: string | null
+  cart_id?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  order_id: string | null
+  order_id?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  order_edit_id: string | null
+  order_edit_id?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  customer_id: string | null
+  customer_id?: string | null
 
   @Property({ columnType: "jsonb", nullable: true })
   data?: Record<string, unknown> | null
@@ -92,19 +84,19 @@ export default class Payment {
     nullable: true,
     index: "IDX_payment_deleted_at",
   })
-  deleted_at: Date | null
+  deleted_at?: Date | null
 
   @Property({
     columnType: "timestamptz",
     nullable: true,
   })
-  captured_at: Date | null
+  captured_at?: Date | null
 
   @Property({
     columnType: "timestamptz",
     nullable: true,
   })
-  canceled_at: Date | null
+  canceled_at?: Date | null
 
   @OneToMany(() => Refund, (refund) => refund.payment, {
     cascade: [Cascade.REMOVE],
@@ -120,7 +112,7 @@ export default class Payment {
     index: "IDX_payment_payment_collection_id",
     fieldName: "payment_collection_id",
   })
-  payment_collection!: PaymentCollection
+  payment_collection: PaymentCollection
 
   @OneToOne({ owner: true, fieldName: "session_id" })
   session: PaymentSession

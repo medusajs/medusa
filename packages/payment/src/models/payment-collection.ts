@@ -23,13 +23,7 @@ import PaymentProvider from "./payment-provider"
 import PaymentSession from "./payment-session"
 import Payment from "./payment"
 
-type OptionalPaymentCollectionProps =
-  | "authorized_amount"
-  | "refunded_amount"
-  | "region_id"
-  | "completed_at"
-  | "status"
-  | DAL.SoftDeletableEntityDateColumns
+type OptionalPaymentCollectionProps = "status" | DAL.EntityDateColumns
 
 @Entity({ tableName: "payment_collection" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -53,14 +47,14 @@ export default class PaymentCollection {
     nullable: true,
     serializer: Number,
   })
-  authorized_amount: number | null
+  authorized_amount?: number | null
 
   @Property({
     columnType: "numeric",
     nullable: true,
     serializer: Number,
   })
-  refunded_amount: number | null
+  refunded_amount?: number | null
 
   @Property({ columnType: "text", nullable: true })
   region_id?: string | null
@@ -85,19 +79,19 @@ export default class PaymentCollection {
     nullable: true,
     index: "IDX_payment_collection_deleted_at",
   })
-  deleted_at: Date | null
+  deleted_at?: Date | null
 
   @Property({
     columnType: "timestamptz",
     nullable: true,
   })
-  completed_at: Date | null
+  completed_at?: Date | null
 
   @Enum({
     items: () => PaymentCollectionStatus,
     default: PaymentCollectionStatus.NOT_PAID,
   })
-  status?: PaymentCollectionStatus = PaymentCollectionStatus.NOT_PAID
+  status: PaymentCollectionStatus = PaymentCollectionStatus.NOT_PAID
 
   @ManyToMany(() => PaymentProvider)
   payment_providers = new Collection<PaymentProvider>(this)
