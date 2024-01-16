@@ -272,23 +272,19 @@ export default class CartModuleService implements ICartModuleService {
       | string
       | CartTypes.CreateLineItemForCartDTO[]
       | CartTypes.CreateLineItemForCartDTO,
-    @MedusaContext()
-    dataOrSharedContext:
-      | CartTypes.CreateLineItemDTO[]
-      | CartTypes.CreateLineItemDTO
-      | Context = {},
+    data: CartTypes.CreateLineItemDTO[] | CartTypes.CreateLineItemDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[] | CartTypes.CartLineItemDTO> {
     let items: LineItem[] = []
     if (isString(cartIdOrData)) {
       items = await this.addLineItems_(
         cartIdOrData,
-        dataOrSharedContext as CartTypes.CreateLineItemDTO[],
+        data as CartTypes.CreateLineItemDTO[],
         sharedContext
       )
     } else {
       const data = Array.isArray(cartIdOrData) ? cartIdOrData : [cartIdOrData]
-      items = await this.addLineItemsBulk_(data, dataOrSharedContext as Context)
+      items = await this.addLineItemsBulk_(data, sharedContext)
     }
 
     return await this.baseRepository_.serialize<CartTypes.CartLineItemDTO[]>(
@@ -346,18 +342,14 @@ export default class CartModuleService implements ICartModuleService {
       | string
       | CartTypes.UpdateLineItemWithSelectorDTO[]
       | Partial<CartTypes.CartLineItemDTO>,
-    @MedusaContext()
-    dataOrSharedContext:
-      | CartTypes.UpdateLineItemDTO
-      | Partial<CartTypes.UpdateLineItemDTO>
-      | Context = {},
+    data?: CartTypes.UpdateLineItemDTO | Partial<CartTypes.UpdateLineItemDTO>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartLineItemDTO[] | CartTypes.CartLineItemDTO> {
     let items: LineItem[] = []
     if (isString(lineItemIdOrDataOrSelector)) {
       const item = await this.updateLineItem_(
         lineItemIdOrDataOrSelector,
-        dataOrSharedContext as Partial<CartTypes.UpdateLineItemDTO>,
+        data as Partial<CartTypes.UpdateLineItemDTO>,
         sharedContext
       )
 
@@ -374,14 +366,11 @@ export default class CartModuleService implements ICartModuleService {
       : [
           {
             selector: lineItemIdOrDataOrSelector,
-            data: dataOrSharedContext,
+            data: data,
           } as CartTypes.UpdateLineItemWithSelectorDTO,
         ]
 
-    items = await this.updateLineItemsWithSelector_(
-      toUpdate,
-      dataOrSharedContext as Context
-    )
+    items = await this.updateLineItemsWithSelector_(toUpdate, sharedContext)
 
     return await this.baseRepository_.serialize<CartTypes.CartLineItemDTO[]>(
       items,
