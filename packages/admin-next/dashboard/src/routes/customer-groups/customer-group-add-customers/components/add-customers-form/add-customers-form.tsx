@@ -27,7 +27,10 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import * as zod from "zod"
-import { NoRecords } from "../../../../../components/common/empty-table-content"
+import {
+  NoRecords,
+  NoResults,
+} from "../../../../../components/common/empty-table-content"
 import { Form } from "../../../../../components/common/form"
 import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
@@ -185,58 +188,64 @@ export const AddCustomersForm = ({
                 </div>
               </div>
               <div className="w-full flex-1 overflow-y-auto">
-                <Table>
-                  <Table.Header className="border-t-0">
-                    {table.getHeaderGroups().map((headerGroup) => {
-                      return (
+                {(customers?.length || 0) > 0 ? (
+                  <Table>
+                    <Table.Header className="border-t-0">
+                      {table.getHeaderGroups().map((headerGroup) => {
+                        return (
+                          <Table.Row
+                            key={headerGroup.id}
+                            className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap"
+                          >
+                            {headerGroup.headers.map((header) => {
+                              return (
+                                <Table.HeaderCell key={header.id}>
+                                  {flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext()
+                                  )}
+                                </Table.HeaderCell>
+                              )
+                            })}
+                          </Table.Row>
+                        )
+                      })}
+                    </Table.Header>
+                    <Table.Body className="border-b-0">
+                      {table.getRowModel().rows.map((row) => (
                         <Table.Row
-                          key={headerGroup.id}
-                          className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap"
+                          key={row.id}
+                          className={clx(
+                            "transition-fg",
+                            {
+                              "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
+                                row.getIsSelected(),
+                            },
+                            {
+                              "bg-ui-bg-disabled hover:bg-ui-bg-disabled":
+                                row.original.groups
+                                  ?.map((cg) => cg.id)
+                                  .includes(customerGroupId),
+                            }
+                          )}
                         >
-                          {headerGroup.headers.map((header) => {
-                            return (
-                              <Table.HeaderCell key={header.id}>
-                                {flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                                )}
-                              </Table.HeaderCell>
-                            )
-                          })}
+                          {row.getVisibleCells().map((cell) => (
+                            <Table.Cell key={cell.id}>
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </Table.Cell>
+                          ))}
                         </Table.Row>
-                      )
-                    })}
-                  </Table.Header>
-                  <Table.Body className="border-b-0">
-                    {table.getRowModel().rows.map((row) => (
-                      <Table.Row
-                        key={row.id}
-                        className={clx(
-                          "transition-fg",
-                          {
-                            "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                              row.getIsSelected(),
-                          },
-                          {
-                            "bg-ui-bg-disabled hover:bg-ui-bg-disabled":
-                              row.original.groups
-                                ?.map((cg) => cg.id)
-                                .includes(customerGroupId),
-                          }
-                        )}
-                      >
-                        {row.getVisibleCells().map((cell) => (
-                          <Table.Cell key={cell.id}>
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </Table.Cell>
-                        ))}
-                      </Table.Row>
-                    ))}
-                  </Table.Body>
-                </Table>
+                      ))}
+                    </Table.Body>
+                  </Table>
+                ) : (
+                  <div className="flex-1 flex items-center justify-center min-h-full">
+                    <NoResults />
+                  </div>
+                )}
               </div>
               <LocalizedTablePagination
                 canNextPage={table.getCanNextPage()}
