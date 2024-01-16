@@ -79,7 +79,7 @@ export const RegionCreate = () => {
               </div>
             </FocusModal.Header>
             <FocusModal.Body className="flex flex-col items-center pt-[72px]">
-              <div className="w-full max-w-[720px] flex flex-col gap-y-10">
+              <div className="w-full max-w-[720px] flex flex-col gap-y-8">
                 <Heading></Heading>
                 <div className="flex flex-col gap-y-4">
                   <div className="grid grid-cols-2 gap-4">

@@ -8,6 +8,7 @@
     "create": "Create",
     "delete": "Delete",
     "edit": "Edit",
+    "confirm": "Confirm",
     "add": "Add",
     "continue": "Continue",
     "start": "Start",
@@ -66,7 +67,17 @@
     "domain": "Gift Cards"
   },
   "customers": {
-    "domain": "Customers"
+    "domain": "Customers",
+    "editCustomer": "Edit Customer",
+    "createCustomer": "Create Customer",
+    "createCustomerHint": "Create a new customer to manage their details.",
+    "passwordHint": "Create a password for the customer to use when logging in to the storefront. Make sure that you communicate the password to the customer.",
+    "changePassword": "Change password",
+    "changePasswordPromptTitle": "Change password",
+    "changePasswordPromptDescription": "You are about to change the password for {{email}}. Make sure that you have communicated the new password to the customer before proceeding.",
+    "guest": "Guest",
+    "registered": "Registered",
+    "firstSeen": "First seen"
   },
   "customerGroups": {
     "domain": "Customer Groups"
@@ -161,6 +172,7 @@
     "description": "Description",
     "email": "Email",
     "password": "Password",
+    "confirmPassword": "Confirm Password",
     "categories": "Categories",
     "category": "Category",
     "collection": "Collection",
@@ -194,6 +206,9 @@
     "phone": "Phone",
     "metadata": "Metadata",
     "selectCountry": "Select country",
-    "variants": "Variants"
+    "variants": "Variants",
+    "orders": "Orders",
+    "account": "Account",
+    "total": "Total"
   }
 }
