@@ -20,6 +20,7 @@ export default async ({
   container.register({
     cartService: asClass(defaultServices.CartService).singleton(),
     addressService: asClass(defaultServices.AddressService).singleton(),
+    lineItemService: asClass(defaultServices.LineItemService).singleton(),
   })
 
   if (customRepositories) {
@@ -38,5 +39,6 @@ function loadDefaultRepositories({ container }) {
     baseRepository: asClass(defaultRepositories.BaseRepository).singleton(),
     cartRepository: asClass(defaultRepositories.CartRepository).singleton(),
     addressRepository: asClass(defaultRepositories.AddressRepository).singleton(),
+    lineItemRepository: asClass(defaultRepositories.LineItemRepository).singleton(),
   })
 }

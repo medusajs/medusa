@@ -1,5 +1,6 @@
 import {
   AddressDTO,
+  CartAddressDTO,
   Context,
   DAL,
   FilterableAddressProps,
@@ -46,7 +47,7 @@ export default class AddressService<TEntity extends Address = Address> {
   @InjectManager("addressRepository_")
   async list(
     filters: FilterableAddressProps = {},
-    config: FindConfig<AddressDTO> = {},
+    config: FindConfig<CartAddressDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     const queryOptions = ModulesSdkUtils.buildQuery<Address>(filters, config)
@@ -97,7 +98,7 @@ export default class AddressService<TEntity extends Address = Address> {
       existingAddresses.map<[string, Address]>((addr) => [addr.id, addr])
     )
 
-    const updates: { address: Address; update: UpdateAddressDTO }[] = []
+    const updates: UpdateAddressDTO[] = []
 
     for (const update of data) {
       const address = existingAddressesMap.get(update.id)
@@ -109,7 +110,7 @@ export default class AddressService<TEntity extends Address = Address> {
         )
       }
 
-      updates.push({ address, update })
+      updates.push({ ...update, id: address.id })
     }
 
     return (await (this.addressRepository_ as AddressRepository).update(
