@@ -14,7 +14,11 @@ import {
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
 
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  generateEntityId,
+  optionalNumericSerializer,
+} from "@medusajs/utils"
 import Refund from "./refund"
 import Capture from "./capture"
 import PaymentSession from "./payment-session"
@@ -39,7 +43,7 @@ export default class Payment {
   @Property({
     columnType: "numeric",
     nullable: true,
-    serializer: Number,
+    serializer: optionalNumericSerializer,
   })
   authorized_amount?: number | null
 

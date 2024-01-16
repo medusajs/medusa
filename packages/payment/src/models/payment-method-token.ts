@@ -33,11 +33,11 @@ export default class PaymentMethodToken {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "paymt")
+    this.id = generateEntityId(this.id, "paymttok")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "paymt")
+    this.id = generateEntityId(this.id, "paymttok")
   }
 }

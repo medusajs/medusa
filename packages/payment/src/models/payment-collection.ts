@@ -17,6 +17,7 @@ import { DAL } from "@medusajs/types"
 import {
   DALUtils,
   generateEntityId,
+  optionalNumericSerializer,
   PaymentCollectionStatus,
 } from "@medusajs/utils"
 import PaymentProvider from "./payment-provider"
@@ -45,14 +46,14 @@ export default class PaymentCollection {
   @Property({
     columnType: "numeric",
     nullable: true,
-    serializer: Number,
+    serializer: optionalNumericSerializer,
   })
   authorized_amount?: number | null
 
   @Property({
     columnType: "numeric",
     nullable: true,
-    serializer: Number,
+    serializer: optionalNumericSerializer,
   })
   refunded_amount?: number | null
 
