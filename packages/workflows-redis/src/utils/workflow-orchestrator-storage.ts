@@ -55,10 +55,12 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
         ]
 
         if (allJobs.includes(job.name as JobType)) {
-          void this.executeTransaction(
-            job.data.workflowId,
-            job.data.transactionId
-          )
+          process.nextTick(async () => {
+            await this.executeTransaction(
+              job.data.workflowId,
+              job.data.transactionId
+            )
+          })
         }
       },
       { connection: redisWorkerConnection }
@@ -100,10 +102,26 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     })
   }
 
+  private stringifyWithSymbol(key, value) {
+    if (key === "__type" && typeof value === "symbol") {
+      return Symbol.keyFor(value)
+    }
+
+    return value
+  }
+
+  private jsonWithSymbol(key, value) {
+    if (key === "__type" && typeof value === "string") {
+      return Symbol.for(value)
+    }
+
+    return value
+  }
+
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
     const data = await this.redisClient.get(key)
 
-    return data ? JSON.parse(data) : undefined
+    return data ? JSON.parse(data, this.jsonWithSymbol) : undefined
   }
 
   async list(): Promise<TransactionCheckpoint[]> {
@@ -114,7 +132,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     for (const key of keys) {
       const data = await this.redisClient.get(key)
       if (data) {
-        transactions.push(JSON.parse(data))
+        transactions.push(JSON.parse(data, this.jsonWithSymbol))
       }
     }
     return transactions
@@ -146,9 +164,17 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
 
     if (!hasFinished) {
       if (ttl) {
-        await this.redisClient.set(key, JSON.stringify(data), "EX", ttl)
+        await this.redisClient.set(
+          key,
+          JSON.stringify(data, this.stringifyWithSymbol),
+          "EX",
+          ttl
+        )
       } else {
-        await this.redisClient.set(key, JSON.stringify(data))
+        await this.redisClient.set(
+          key,
+          JSON.stringify(data, this.stringifyWithSymbol)
+        )
       }
     }
 

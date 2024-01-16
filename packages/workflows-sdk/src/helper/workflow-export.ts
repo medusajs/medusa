@@ -131,31 +131,38 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 
       let result: any = undefined
 
-      const resFrom =
-        resultFrom?.__type === OrchestrationUtils.SymbolWorkflowStep
-          ? resultFrom.__step__
-          : resultFrom
+      if (
+        resultFrom?.__type === OrchestrationUtils.SymbolWorkflowStepTransformer
+      ) {
+        result = await resolveValue(resultFrom, transaction.getContext())
+      } else {
+        const resFrom =
+          resultFrom?.__type === OrchestrationUtils.SymbolWorkflowStep
+            ? resultFrom.__step__
+            : resultFrom
 
-      if (resFrom) {
-        if (Array.isArray(resFrom)) {
-          result = resFrom.map((from) => {
-            const res = transaction.getContext().invoke?.[from]
-            return res?.__type === OrchestrationUtils.SymbolWorkflowWorkflowData
-              ? res.output
-              : res
-          })
-        } else {
-          const res = transaction.getContext().invoke?.[resFrom]
-          result =
-            res?.__type === OrchestrationUtils.SymbolWorkflowWorkflowData
-              ? res.output
-              : res
+        if (resFrom) {
+          if (Array.isArray(resFrom)) {
+            result = resFrom.map((from) => {
+              const res = transaction.getContext().invoke?.[from]
+              return res?.__type ===
+                OrchestrationUtils.SymbolWorkflowWorkflowData
+                ? res.output
+                : res
+            })
+          } else {
+            const res = transaction.getContext().invoke?.[resFrom]
+            result =
+              res?.__type === OrchestrationUtils.SymbolWorkflowWorkflowData
+                ? res.output
+                : res
+          }
+
+          const ret = result || resFrom
+          result = options?.wrappedInput
+            ? await resolveValue(ret, transaction.getContext())
+            : ret
         }
-
-        const ret = result || resFrom
-        result = options?.wrappedInput
-          ? await resolveValue(ret, transaction.getContext())
-          : ret
       }
 
       return {
