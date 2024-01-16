@@ -86,7 +86,7 @@ export class DistributedTransaction extends EventEmitter {
     this.keyValueStore = storage
   }
 
-  private static keyPrefix = "dtrans"
+  public static keyPrefix = "dtrans"
 
   constructor(
     private flow: TransactionFlow,
