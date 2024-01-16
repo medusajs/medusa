@@ -9,6 +9,7 @@ import {
   MedusaError,
 } from "@medusajs/utils"
 import { areRulesValidForContext } from "../validations"
+import { computeActionForBudgetExceeded } from "./usage"
 
 export function getComputedActionsForItems(
   promotion: PromotionTypes.PromotionDTO,
@@ -62,15 +63,28 @@ export function applyPromotionToItems(
   ) {
     for (const method of items!) {
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
-      const promotionValue = parseFloat(applicationMethod!.value!)
+      const quantityMultiplier = Math.min(
+        method.quantity,
+        applicationMethod?.max_quantity!
+      )
+      const promotionValue =
+        parseFloat(applicationMethod!.value!) * quantityMultiplier
       const applicableTotal =
-        method.unit_price *
-          Math.min(method.quantity, applicationMethod?.max_quantity!) -
-        appliedPromoValue
-
+        method.unit_price * quantityMultiplier - appliedPromoValue
       const amount = Math.min(promotionValue, applicableTotal)
 
       if (amount <= 0) {
+        continue
+      }
+
+      const budgetExceededAction = computeActionForBudgetExceeded(
+        promotion,
+        amount
+      )
+
+      if (budgetExceededAction) {
+        computedActions.push(budgetExceededAction)
+
         continue
       }
 
@@ -92,30 +106,32 @@ export function applyPromotionToItems(
   ) {
     const totalApplicableValue = items!.reduce((acc, method) => {
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
-      return (
-        acc +
-        method.unit_price *
-          Math.min(method.quantity, applicationMethod?.max_quantity!) -
-        appliedPromoValue
-      )
+      return acc + method.unit_price * method.quantity - appliedPromoValue
     }, 0)
 
     for (const method of items!) {
       const promotionValue = parseFloat(applicationMethod!.value!)
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
-
       const applicableTotal =
-        method.unit_price *
-          Math.min(method.quantity, applicationMethod?.max_quantity!) -
-        appliedPromoValue
+        method.unit_price * method.quantity - appliedPromoValue
 
       // TODO: should we worry about precision here?
       const applicablePromotionValue =
         (applicableTotal / totalApplicableValue) * promotionValue
-
       const amount = Math.min(applicablePromotionValue, applicableTotal)
 
       if (amount <= 0) {
+        continue
+      }
+
+      const budgetExceededAction = computeActionForBudgetExceeded(
+        promotion,
+        amount
+      )
+
+      if (budgetExceededAction) {
+        computedActions.push(budgetExceededAction)
+
         continue
       }
 
