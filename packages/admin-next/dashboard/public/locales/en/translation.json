@@ -76,7 +76,8 @@
     "changePasswordPromptTitle": "Change password",
     "changePasswordPromptDescription": "You are about to change the password for {{email}}. Make sure that you have communicated the new password to the customer before proceeding.",
     "guest": "Guest",
-    "registered": "Registered"
+    "registered": "Registered",
+    "firstSeen": "First seen"
   },
   "customerGroups": {
     "domain": "Customer Groups"

@@ -47,9 +47,9 @@ export const CustomerGeneralSection = ({
           </DropdownMenu.Content>
         </DropdownMenu>
       </div>
-      <div className="flex items-center justify-evenly flex-wrap">
+      <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         <Bulletpoint
-          title="Name"
+          title={t("fields.name")}
           value={
             customer.first_name && customer.last_name
               ? `${customer.first_name} ${customer.last_name}`
@@ -61,14 +61,18 @@ export const CustomerGeneralSection = ({
           }
         />
         <Bulletpoint
-          title="First seen"
+          title={t("customers.firstSeen")}
           value={format(new Date(customer.created_at), "MMM d, yyyy")}
         />
         <Bulletpoint title="Phone" value={customer.phone} />
         <Bulletpoint title="Orders" value={customer.orders.length} />
         <Bulletpoint
-          title="Status"
-          value={customer.has_account ? "Signed up" : "Guest"}
+          title={t("fields.account")}
+          value={
+            customer.has_account
+              ? t("customers.registered")
+              : t("customers.guest")
+          }
         />
       </div>
     </Container>
