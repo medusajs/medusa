@@ -30,10 +30,12 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
   constructor({
     workflowExecutionService,
     redisConnection,
+    redisWorkerConnection,
     redisQueueName,
   }: {
     workflowExecutionService: WorkflowExecutionService
     redisConnection: Redis
+    redisWorkerConnection: Redis
     redisQueueName: string
   }) {
     super()
@@ -59,7 +61,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
           )
         }
       },
-      { connection: this.redisClient }
+      { connection: redisWorkerConnection }
     )
   }
 

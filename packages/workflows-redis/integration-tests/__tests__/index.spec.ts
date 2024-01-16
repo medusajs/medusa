@@ -8,7 +8,7 @@ import { DB_URL, TestDatabase } from "../utils"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
-  searchPath: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+  searchPath: process.env.MEDUSA_WORKFLOW_ORCHESTRATOR_DB_SCHEMA,
   connection: {
     connectionString: DB_URL,
   },
@@ -41,11 +41,15 @@ describe("Workflow Orchestrator module", function () {
         },
         modulesConfig: {
           workflows: {
+            resolve: __dirname + "/../..",
             options: {
               database: {
                 clientUrl: DB_URL,
                 schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
                 // debug: true,
+              },
+              redis: {
+                url: "localhost:6379",
               },
             },
           },
@@ -62,7 +66,7 @@ describe("Workflow Orchestrator module", function () {
 
     afterEach(afterEach_)
 
-    it("should return a list of workflow executions and remove after completed when there is no retentionTime set", async () => {
+    it.only("should return a list of workflow executions and remove after completed when there is no retentionTime set", async () => {
       await workflowOrcModule.run("workflow_1", {
         input: {
           value: "123",

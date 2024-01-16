@@ -23,12 +23,19 @@ export default async ({
 
   const cnnPubSub = pubsub ?? { url, options: redisOptions }
 
+  const queueName = options?.queueName ?? "medusa-workflows"
+
   let connection
   let redisPublisher
   let redisSubscriber
+  let workerConnection
 
   try {
     connection = await getConnection(url, redisOptions)
+    workerConnection = await getConnection(url, {
+      ...(redisOptions ?? {}),
+      maxRetriesPerRequest: null,
+    })
     logger?.info(`Connection to Redis in module 'workflows-redis' established`)
   } catch (err) {
     logger?.error(
@@ -50,8 +57,10 @@ export default async ({
 
   container.register({
     redisConnection: asValue(connection),
+    redisWorkerConnection: asValue(workerConnection),
     redisPublisher: asValue(redisPublisher),
     redisSubscriber: asValue(redisSubscriber),
+    redisQueueName: asValue(queueName),
   })
 }
 
