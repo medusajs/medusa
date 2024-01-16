@@ -234,7 +234,7 @@ export default class CartModuleService implements ICartModuleService {
 
   @InjectManager("baseRepository_")
   async listLineItems(
-    filters = {},
+    filters: CartTypes.FilterableLineItemProps = {},
     config: FindConfig<CartTypes.CartLineItemDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ) {
@@ -282,21 +282,12 @@ export default class CartModuleService implements ICartModuleService {
     if (isString(cartIdOrData)) {
       items = await this.addLineItems_(
         cartIdOrData,
-        dataOrSharedContext as
-          | CartTypes.CreateLineItemDTO[]
-          | CartTypes.CreateLineItemDTO,
+        dataOrSharedContext as CartTypes.CreateLineItemDTO[],
         sharedContext
       )
-    } else if (Array.isArray(cartIdOrData)) {
-      items = await this.addLineItemsBulk_(
-        cartIdOrData,
-        dataOrSharedContext as Context
-      )
     } else {
-      items = await this.addLineItemsBulk_(
-        [cartIdOrData],
-        dataOrSharedContext as Context
-      )
+      const data = Array.isArray(cartIdOrData) ? cartIdOrData : [cartIdOrData]
+      items = await this.addLineItemsBulk_(data, dataOrSharedContext as Context)
     }
 
     return await this.baseRepository_.serialize<CartTypes.CartLineItemDTO[]>(
@@ -310,12 +301,10 @@ export default class CartModuleService implements ICartModuleService {
   @InjectTransactionManager("baseRepository_")
   protected async addLineItems_(
     cartId: string,
-    data: CartTypes.CreateLineItemDTO[] | CartTypes.CreateLineItemDTO,
+    items: CartTypes.CreateLineItemDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<LineItem[]> {
     const cart = await this.retrieve(cartId, { select: ["id"] }, sharedContext)
-
-    const items = Array.isArray(data) ? data : [data]
 
     const toUpdate = items.map((item) => {
       return {
@@ -423,7 +412,7 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<LineItem[]> {
     let toUpdate: UpdateLineItemDTO[] = []
     for (const { selector, data } of updates) {
-      const items = await this.listLineItems({ ...selector }, {})
+      const items = await this.listLineItems({ ...selector }, {}, sharedContext)
 
       items.forEach((item) => {
         toUpdate.push({
@@ -453,7 +442,11 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<void> {
     let toDelete: string[] = []
     if (isObject(itemIdsOrSelector)) {
-      const items = await this.listLineItems({ ...itemIdsOrSelector }, {})
+      const items = await this.listLineItems(
+        { ...itemIdsOrSelector } as Partial<CartTypes.CartLineItemDTO>,
+        {},
+        sharedContext
+      )
 
       toDelete = items.map((item) => item.id)
     } else {

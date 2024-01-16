@@ -147,13 +147,3 @@ export interface UpdateLineItemDTO
   tax_lines?: UpdateLineItemTaxLineDTO[] | CreateLineItemTaxLineDTO[]
   adjustments?: UpdateLineItemAdjustmentDTO[] | CreateLineItemAdjustmentDTO[]
 }
-
-// export interface AddLineItemsDTO {
-//   cart_id: string
-//   items: CreateLineItemDTO[]
-// }
-
-// export interface UpdateLineItemsDTO {
-//   cart_id: string
-//   items: UpdateLineItemDTO[]
-// }

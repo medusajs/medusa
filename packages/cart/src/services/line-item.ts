@@ -97,7 +97,7 @@ export default class LineItemService<TEntity extends LineItem = LineItem> {
       existingLines.map<[string, LineItem]>((li) => [li.id, li])
     )
 
-    const updates: { lineItem: LineItem; update: UpdateLineItemDTO }[] = []
+    const updates: UpdateLineItemDTO[] = []
 
     for (const update of data) {
       const lineItem = existingLinesMap.get(update.id)
@@ -109,7 +109,7 @@ export default class LineItemService<TEntity extends LineItem = LineItem> {
         )
       }
 
-      updates.push({ lineItem, update })
+      updates.push({ ...update, id: lineItem.id })
     }
 
     return (await (this.lineItemRepository_ as LineItemRepository).update(

@@ -483,6 +483,10 @@ export interface FilterableAddressProps
 export interface FilterableLineItemProps
   extends BaseFilterable<FilterableLineItemProps> {
   id?: string | string[]
+  cart_id?: string | string[]
+  title?: string
+  variant_id?: string | string[]
+  product_id?: string | string[]
 }
 
 /**
