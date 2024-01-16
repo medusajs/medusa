@@ -6,12 +6,18 @@ import {
   DOCBLOCK_NEW_LINE,
 } from "../../constants.js"
 import getSymbol from "../../utils/get-symbol.js"
-import KnowledgeBaseFactory from "../knowledge-base-factory.js"
+import KnowledgeBaseFactory, {
+  RetrieveOptions,
+} from "../knowledge-base-factory.js"
 import {
   getCustomNamespaceTag,
   shouldHaveCustomNamespace,
 } from "../../utils/medusa-react-utils.js"
-import capitalize from "../../utils/capitalize.js"
+import {
+  camelToWords,
+  capitalize,
+  normalizeName,
+} from "../../utils/str-formatting.js"
 
 export type GeneratorOptions = {
   checker: ts.TypeChecker
@@ -130,6 +136,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
      */
     nodeType?: ts.Type
   }): string {
+    const knowledgeBaseOptions = this.getKnowledgeOptions(node)
     if (!nodeType) {
       nodeType =
         "type" in node && node.type && ts.isTypeNode(node.type as ts.Node)
@@ -143,9 +150,15 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
       symbol = getSymbol(node, this.checker)
     }
 
-    const summary = symbol
-      ? this.getSymbolDocBlock(symbol)
-      : this.getTypeDocBlock(nodeType)
+    let summary = ""
+
+    if (symbol) {
+      summary = this.getSymbolDocBlock(symbol, knowledgeBaseOptions)
+    }
+
+    if (!summary.length) {
+      summary = this.getTypeDocBlock(nodeType, knowledgeBaseOptions)
+    }
 
     return summary.length > 0 ? summary : this.defaultSummary
   }
@@ -157,7 +170,10 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
    * @param {ts.Type} nodeType - The type of a node.
    * @returns {string} The summary comment.
    */
-  private getTypeDocBlock(nodeType: ts.Type): string {
+  private getTypeDocBlock(
+    nodeType: ts.Type,
+    knowledgeBaseOptions?: Partial<RetrieveOptions>
+  ): string {
     if (nodeType.aliasSymbol || nodeType.symbol) {
       const symbolDoc = this.getSymbolDocBlock(
         nodeType.aliasSymbol || nodeType.symbol
@@ -177,9 +193,10 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
       const typeArgumentDoc = this.getTypeDocBlock(typeArguments[0])
 
       if (!typeArgumentDoc.length) {
-        const tryKnowledgeSummary = this.knowledgeBaseFactory.tryToGetSummary(
-          this.checker.typeToString(nodeType)
-        )
+        const tryKnowledgeSummary = this.knowledgeBaseFactory.tryToGetSummary({
+          ...knowledgeBaseOptions,
+          str: this.checker.typeToString(nodeType),
+        })
 
         if (tryKnowledgeSummary?.length) {
           return tryKnowledgeSummary
@@ -195,9 +212,10 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     }
 
     return (
-      this.knowledgeBaseFactory.tryToGetSummary(
-        this.checker.typeToString(nodeType)
-      ) || ""
+      this.knowledgeBaseFactory.tryToGetSummary({
+        ...knowledgeBaseOptions,
+        str: this.checker.typeToString(nodeType),
+      }) || ""
     )
   }
 
@@ -208,7 +226,10 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
    * @param {ts.Symbol} symbol - The symbol to retrieve its docblock.
    * @returns {string} The symbol's docblock.
    */
-  private getSymbolDocBlock(symbol: ts.Symbol): string {
+  private getSymbolDocBlock(
+    symbol: ts.Symbol,
+    knowledgeBaseOptions?: Partial<RetrieveOptions>
+  ): string {
     const commentDisplayParts = symbol.getDocumentationComment(this.checker)
     if (!commentDisplayParts.length) {
       // try to get description from the first JSDoc comment
@@ -225,10 +246,14 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
 
     if (!commentDisplayParts.length) {
       return (
-        this.knowledgeBaseFactory.tryToGetSummary(
-          this.checker.typeToString(this.checker.getTypeOfSymbol(symbol))
-        ) ||
-        this.knowledgeBaseFactory.tryToGetSummary(symbol.name) ||
+        this.knowledgeBaseFactory.tryToGetSummary({
+          ...knowledgeBaseOptions,
+          str: this.checker.typeToString(this.checker.getTypeOfSymbol(symbol)),
+        }) ||
+        this.knowledgeBaseFactory.tryToGetSummary({
+          ...knowledgeBaseOptions,
+          str: symbol.name,
+        }) ||
         ""
       )
     }
@@ -431,6 +456,24 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
         })
       }) || false
     )
+  }
+
+  getKnowledgeOptions(node: ts.Node): Partial<RetrieveOptions> {
+    const rawParentName =
+      "name" in node.parent &&
+      node.parent.name &&
+      ts.isIdentifier(node.parent.name as ts.Node)
+        ? (node.parent.name as ts.Identifier).getText()
+        : undefined
+    return {
+      kind: node.kind,
+      templateOptions: {
+        rawParentName,
+        parentName: rawParentName
+          ? camelToWords(normalizeName(rawParentName))
+          : undefined,
+      },
+    }
   }
 }
 

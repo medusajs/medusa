@@ -2,7 +2,7 @@ import path from "path"
 import getMonorepoRoot from "./get-monorepo-root.js"
 import ts from "typescript"
 import { minimatch } from "minimatch"
-import capitalize from "./capitalize.js"
+import { capitalize } from "./str-formatting.js"
 
 export const kindsCanHaveNamespace = [
   ts.SyntaxKind.SourceFile,
@@ -45,7 +45,11 @@ export function getNamespacePath(node: ts.Node): string {
 
   const fileName = path.basename(sourceFile.fileName)
 
-  if (!fileName.startsWith("index")) {
+  if (
+    !fileName.startsWith("index") &&
+    !fileName.startsWith("mutations") &&
+    !fileName.startsWith("queries")
+  ) {
     hookPath += `/${fileName.replace(path.extname(fileName), "")}`
   }
 

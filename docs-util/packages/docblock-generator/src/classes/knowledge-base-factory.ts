@@ -1,12 +1,33 @@
 import ts from "typescript"
 import { DOCBLOCK_DOUBLE_LINES, DOCBLOCK_NEW_LINE } from "../constants.js"
-import capitalize from "../utils/capitalize.js"
+import {
+  camelToTitle,
+  camelToWords,
+  normalizeName,
+} from "../utils/str-formatting.js"
+
+type TemplateOptions = {
+  parentName?: string
+  rawParentName?: string
+  returnTypeName?: string
+}
 
 type KnowledgeBase = {
   startsWith?: string
   endsWith?: string
   exact?: string
-  template: string | ((str: string) => string)
+  template: string | ((str: string, options?: TemplateOptions) => string)
+  kind?: ts.SyntaxKind[]
+}
+
+export type RetrieveOptions = {
+  str: string
+  templateOptions?: TemplateOptions
+  kind?: ts.SyntaxKind
+}
+
+type RetrieveSymbolOptions = Omit<RetrieveOptions, "str"> & {
+  symbol: ts.Symbol
 }
 
 /**
@@ -16,89 +37,130 @@ class KnowledgeBaseFactory {
   private summaryKnowledgeBase: KnowledgeBase[] = [
     {
       startsWith: "FindConfig",
-      template: `The configurations determining how the {type name} is retrieved. Its properties, such as \`select\` or \`relations\`, accept the ${DOCBLOCK_NEW_LINE}attributes or relations associated with a {item name}.`,
+      template: (str) => {
+        const typeArgs = str
+          .replace("FindConfig<", "")
+          .replace(/>$/, "")
+          .split(",")
+          .map((part) => camelToWords(normalizeName(part.trim())))
+        const typeName =
+          typeArgs.length > 0 && typeArgs[0].length > 0
+            ? typeArgs[0]
+            : `{type name}`
+        return `The configurations determining how the ${typeName} is retrieved. Its properties, such as \`select\` or \`relations\`, accept the ${DOCBLOCK_NEW_LINE}attributes or relations associated with a ${typeName}.`
+      },
     },
     {
       startsWith: "Filterable",
-      template: "The filters to apply on the retrieved {type name}.",
+      endsWith: "Props",
+      template: (str) => {
+        return `The filters to apply on the retrieved ${camelToTitle(
+          normalizeName(str)
+        )}.`
+      },
     },
     {
       startsWith: "Create",
       endsWith: "DTO",
-      template: "The {type name} to be created.",
+      template: (str) => {
+        return `The ${camelToTitle(normalizeName(str))} to be created.`
+      },
     },
     {
       startsWith: "Update",
       endsWith: "DTO",
-      template: "The attributes to update in the {type name}.",
+      template: (str) => {
+        return `The attributes to update in the ${camelToTitle(
+          normalizeName(str)
+        )}.`
+      },
     },
     {
       startsWith: "RestoreReturn",
       template: `Configurations determining which relations to restore along with each of the {type name}. You can pass to its \`returnLinkableKeys\` ${DOCBLOCK_NEW_LINE}property any of the {type name}'s relation attribute names, such as \`{type relation name}\`.`,
     },
     {
+      endsWith: "DTO",
+      template: (str: string): string => {
+        return `The ${camelToTitle(normalizeName(str))} details.`
+      },
+    },
+    {
       endsWith: "_id",
       template: (str: string): string => {
-        const formatted = str
-          .replace(/_id$/, "")
-          .split("_")
-          .map((word) => capitalize(word))
-          .join(" ")
+        const formatted = str.replace(/_id$/, "").split("_").join(" ")
 
-        return `The ${formatted}'s ID.`
+        return `The associated ${formatted}'s ID.`
       },
+      kind: [ts.SyntaxKind.PropertySignature],
     },
     {
       endsWith: "Id",
       template: (str: string): string => {
-        const formatted = str
-          .replace(/Id$/, "")
-          .split(/[A-Z]/)
-          .map((word) => capitalize(word))
-          .join(" ")
+        const formatted = camelToWords(str.replace(/Id$/, ""))
 
         return `The ${formatted}'s ID.`
       },
+      kind: [
+        ts.SyntaxKind.PropertySignature,
+        ts.SyntaxKind.PropertyDeclaration,
+        ts.SyntaxKind.Parameter,
+      ],
     },
     {
       exact: "id",
-      template: "The ID of the {name}",
+      template: (str, options) => {
+        if (options?.rawParentName?.startsWith("Filterable")) {
+          return `The IDs to filter ${options?.parentName || `{name}`} by.`
+        }
+        return `The ID of the ${options?.parentName || `{name}`}.`
+      },
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
+    {
+      exact: "metadata",
+      template: "Holds custom data in key-value pairs.",
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
+    {
+      exact: "customHeaders",
+      template: "Custom headers to attach to the request.",
     },
   ]
   private functionSummaryKnowledgeBase: KnowledgeBase[] = [
     {
       startsWith: "listAndCount",
       template:
-        "retrieves a paginated list of {type name} along with the total count of available {type name} satisfying the provided filters.",
+        "retrieves a paginated list of {return type} along with the total count of available {return type} satisfying the provided filters.",
     },
     {
       startsWith: "list",
       template:
-        "retrieves a paginated list of {type name} based on optional filters and configuration.",
+        "retrieves a paginated list of {return type} based on optional filters and configuration.",
     },
     {
       startsWith: "retrieve",
-      template: "retrieves a {type name} by its ID.",
+      template: "retrieves a {return type} by its ID.",
     },
     {
       startsWith: "create",
-      template: "creates a new {type name}",
+      template: "creates a new {return type}",
     },
     {
       startsWith: "delete",
-      template: "deletes {type name} by its ID.",
+      template: "deletes {return type} by its ID.",
     },
     {
       startsWith: "update",
-      template: "updates existing {type name}.",
+      template: "updates existing {return type}.",
     },
     {
       startsWith: "softDelete",
-      template: "soft deletes {type name} by their IDs.",
+      template: "soft deletes {return type} by their IDs.",
     },
     {
       startsWith: "restore",
-      template: "restores soft deleted {type name} by their IDs.",
+      template: "restores soft deleted {return type} by their IDs.",
     },
   ]
   private exampleCodeBlockLine = `${DOCBLOCK_DOUBLE_LINES}\`\`\`ts${DOCBLOCK_NEW_LINE}{example-code}${DOCBLOCK_NEW_LINE}\`\`\`${DOCBLOCK_DOUBLE_LINES}`
@@ -115,23 +177,23 @@ class KnowledgeBaseFactory {
   private functionReturnKnowledgeBase: KnowledgeBase[] = [
     {
       startsWith: "listAndCount",
-      template: "The list of {type name} along with their total count.",
+      template: "The list of {return type} along with their total count.",
     },
     {
       startsWith: "list",
-      template: "The list of {type name}.",
+      template: "The list of {return type}.",
     },
     {
       startsWith: "retrieve",
-      template: "The retrieved {type name}.",
+      template: "The retrieved {return type}.",
     },
     {
       startsWith: "create",
-      template: "The created {type name}.",
+      template: "The created {return type}.",
     },
     {
       startsWith: "update",
-      template: "The updated {type name}.",
+      template: "The updated {return type}.",
     },
     {
       startsWith: "restore",
@@ -146,13 +208,21 @@ class KnowledgeBaseFactory {
    * @param {KnowledgeBase[]} knowledgeBase - A knowledge base to search in.
    * @returns {string | undefined} The matching knowledge base template, if found.
    */
-  tryToFindInKnowledgeBase(
-    str: string,
+  tryToFindInKnowledgeBase({
+    str,
+    knowledgeBase,
+    templateOptions,
+    kind,
+  }: RetrieveOptions & {
     knowledgeBase: KnowledgeBase[]
-  ): string | undefined {
+  }): string | undefined {
     const foundItem = knowledgeBase.find((item) => {
       if (item.exact) {
         return str === item.exact
+      }
+
+      if (item.kind?.length && (!kind || !item.kind.includes(kind))) {
+        return false
       }
 
       if (item.startsWith && item.endsWith) {
@@ -172,21 +242,22 @@ class KnowledgeBaseFactory {
 
     return typeof foundItem.template === "string"
       ? foundItem?.template
-      : foundItem?.template(str)
+      : foundItem?.template(str, templateOptions)
   }
 
   /**
    * Tries to retrieve the summary template of a specified type from the {@link summaryKnowledgeBase}.
    *
-   * @param {string} typeStr - The name of the type to retrieve its summary.
+   * @param {string} str - The name of the type to retrieve its summary.
    * @returns {string | undefined} The matching knowledge base template, if found.
    */
-  tryToGetSummary(typeStr: string): string | undefined {
-    const normalizedTypeStr = typeStr.replaceAll("[]", "")
-    return this.tryToFindInKnowledgeBase(
-      normalizedTypeStr,
-      this.summaryKnowledgeBase
-    )
+  tryToGetSummary({ str, ...options }: RetrieveOptions): string | undefined {
+    const normalizedTypeStr = str.replaceAll("[]", "")
+    return this.tryToFindInKnowledgeBase({
+      ...options,
+      str: normalizedTypeStr,
+      knowledgeBase: this.summaryKnowledgeBase,
+    })
   }
 
   /**
@@ -195,11 +266,15 @@ class KnowledgeBaseFactory {
    * @param {ts.Symbol} symbol - The symbol of the function to retrieve its summary template.
    * @returns {string | undefined} The matching knowledge base template, if found.
    */
-  tryToGetFunctionSummary(symbol: ts.Symbol): string | undefined {
-    return this.tryToFindInKnowledgeBase(
-      symbol.getName(),
-      this.functionSummaryKnowledgeBase
-    )
+  tryToGetFunctionSummary({
+    symbol,
+    ...options
+  }: RetrieveSymbolOptions): string | undefined {
+    return this.tryToFindInKnowledgeBase({
+      ...options,
+      str: symbol.getName(),
+      knowledgeBase: this.functionSummaryKnowledgeBase,
+    })
   }
 
   /**
@@ -208,11 +283,15 @@ class KnowledgeBaseFactory {
    * @param {ts.Symbol} symbol - The symbol of the function to retrieve its example template.
    * @returns {string | undefined} The matching knowledge base template, if found.
    */
-  tryToGetFunctionExamples(symbol: ts.Symbol): string | undefined {
-    return this.tryToFindInKnowledgeBase(
-      symbol.getName(),
-      this.examplesKnowledgeBase
-    )
+  tryToGetFunctionExamples({
+    symbol,
+    ...options
+  }: RetrieveSymbolOptions): string | undefined {
+    return this.tryToFindInKnowledgeBase({
+      ...options,
+      str: symbol.getName(),
+      knowledgeBase: this.examplesKnowledgeBase,
+    })
   }
 
   /**
@@ -221,11 +300,15 @@ class KnowledgeBaseFactory {
    * @param {ts.Symbol} symbol - The symbol of the function to retrieve its return template.
    * @returns {string | undefined} The matching knowledge base template, if found.
    */
-  tryToGetFunctionReturns(symbol: ts.Symbol): string | undefined {
-    return this.tryToFindInKnowledgeBase(
-      symbol.getName(),
-      this.functionReturnKnowledgeBase
-    )
+  tryToGetFunctionReturns({
+    symbol,
+    ...options
+  }: RetrieveSymbolOptions): string | undefined {
+    return this.tryToFindInKnowledgeBase({
+      ...options,
+      str: symbol.getName(),
+      knowledgeBase: this.functionReturnKnowledgeBase,
+    })
   }
 }
 

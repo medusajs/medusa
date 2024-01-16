@@ -141,8 +141,10 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
    */
   getFunctionSummary(node: FunctionNode, symbol?: ts.Symbol): string {
     return symbol
-      ? this.knowledgeBaseFactory.tryToGetFunctionSummary(symbol) ||
-          this.getNodeSummary({ node, symbol })
+      ? this.knowledgeBaseFactory.tryToGetFunctionSummary({
+          symbol: symbol,
+          kind: node.kind,
+        }) || this.getNodeSummary({ node, symbol })
       : this.getNodeSummary({ node, symbol })
   }
 
@@ -156,8 +158,9 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
     const str = `${DOCBLOCK_DOUBLE_LINES}@example${DOCBLOCK_NEW_LINE}`
     return `${str}${
       symbol
-        ? this.knowledgeBaseFactory.tryToGetFunctionExamples(symbol) ||
-          `{example-code}`
+        ? this.knowledgeBaseFactory.tryToGetFunctionExamples({
+            symbol: symbol,
+          }) || `{example-code}`
         : `{example-code}`
     }`
   }
@@ -232,8 +235,10 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
 
     str += `${DOCBLOCK_NEW_LINE}@returns {${returnTypeStr}} ${
       nodeSymbol
-        ? this.knowledgeBaseFactory.tryToGetFunctionReturns(nodeSymbol) ||
-          possibleReturnSummary
+        ? this.knowledgeBaseFactory.tryToGetFunctionReturns({
+            symbol: nodeSymbol,
+            kind: actualNode.kind,
+          }) || possibleReturnSummary
         : possibleReturnSummary
     }`
 

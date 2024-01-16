@@ -3,6 +3,7 @@ import FunctionKindGenerator from "./function.js"
 import DefaultKindGenerator from "./default.js"
 import MedusaReactHooksKindGenerator from "./medusa-react-hooks.js"
 import SourceFileKindGenerator from "./source-file.js"
+import DTOPropertyGenerator from "./dto-property.js"
 
 /**
  * A class that is used as a registry for the kind generators.
@@ -16,6 +17,7 @@ class KindsRegistry {
       new MedusaReactHooksKindGenerator({ checker }),
       new FunctionKindGenerator({ checker }),
       new SourceFileKindGenerator({ checker }),
+      new DTOPropertyGenerator({ checker }),
     ]
     this.defaultKindGenerator = new DefaultKindGenerator({ checker })
   }
