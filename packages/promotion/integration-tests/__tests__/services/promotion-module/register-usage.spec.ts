@@ -99,8 +99,8 @@ describe("Promotion Service: campaign usage", () => {
       )
     })
 
-    it("should throw an error when compute action with code does not exist", async () => {
-      const error = await service
+    it("should not throw an error when compute action with code does not exist", async () => {
+      const response = await service
         .registerUsage([
           {
             action: "addShippingMethodAdjustment",
@@ -111,12 +111,10 @@ describe("Promotion Service: campaign usage", () => {
         ])
         .catch((e) => e)
 
-      expect(error.message).toEqual(
-        "Promotion with code DOESNOTEXIST not found"
-      )
+      expect(response).toEqual(undefined)
     })
 
-    it("should throw error when exceeded limit for type usage", async () => {
+    it("should not register usage when limit is exceed for type usage", async () => {
       const createdPromotion = await service.create({
         code: "TEST_PROMO_USAGE",
         type: "standard",
@@ -128,29 +126,36 @@ describe("Promotion Service: campaign usage", () => {
         budget: { used: 1000, limit: 1000 },
       })
 
-      const error = await service
-        .registerUsage([
-          {
-            action: "addShippingMethodAdjustment",
-            shipping_method_id: "shipping_method_express",
-            amount: 200,
-            code: createdPromotion.code!,
-          },
-          {
-            action: "addShippingMethodAdjustment",
-            shipping_method_id: "shipping_method_standard",
-            amount: 500,
-            code: createdPromotion.code!,
-          },
-        ])
-        .catch((e) => e)
+      await service.registerUsage([
+        {
+          action: "addShippingMethodAdjustment",
+          shipping_method_id: "shipping_method_express",
+          amount: 200,
+          code: createdPromotion.code!,
+        },
+        {
+          action: "addShippingMethodAdjustment",
+          shipping_method_id: "shipping_method_standard",
+          amount: 500,
+          code: createdPromotion.code!,
+        },
+      ])
 
-      expect(error.message).toContain(
-        "Promotion with code TEST_PROMO_USAGE exceeded its campaign budget"
+      const campaign = await service.retrieveCampaign("campaign-id-2", {
+        relations: ["budget"],
+      })
+
+      expect(campaign).toEqual(
+        expect.objectContaining({
+          budget: expect.objectContaining({
+            limit: 1000,
+            used: 1000,
+          }),
+        })
       )
     })
 
-    it("should throw error when exceeded limit for type spend", async () => {
+    it("should not register usage above limit when exceeded for type spend", async () => {
       const createdPromotion = await service.create({
         code: "TEST_PROMO_SPEND",
         type: "standard",
@@ -162,25 +167,32 @@ describe("Promotion Service: campaign usage", () => {
         budget: { used: 900, limit: 1000 },
       })
 
-      const error = await service
-        .registerUsage([
-          {
-            action: "addShippingMethodAdjustment",
-            shipping_method_id: "shipping_method_express",
-            amount: 100,
-            code: createdPromotion.code!,
-          },
-          {
-            action: "addShippingMethodAdjustment",
-            shipping_method_id: "shipping_method_standard",
-            amount: 100,
-            code: createdPromotion.code!,
-          },
-        ])
-        .catch((e) => e)
+      await service.registerUsage([
+        {
+          action: "addShippingMethodAdjustment",
+          shipping_method_id: "shipping_method_express",
+          amount: 100,
+          code: createdPromotion.code!,
+        },
+        {
+          action: "addShippingMethodAdjustment",
+          shipping_method_id: "shipping_method_standard",
+          amount: 100,
+          code: createdPromotion.code!,
+        },
+      ])
 
-      expect(error.message).toContain(
-        "Promotion with code TEST_PROMO_SPEND exceeded its campaign budget"
+      const campaign = await service.retrieveCampaign("campaign-id-1", {
+        relations: ["budget"],
+      })
+
+      expect(campaign).toEqual(
+        expect.objectContaining({
+          budget: expect.objectContaining({
+            limit: 1000,
+            used: 1000,
+          }),
+        })
       )
     })
   })

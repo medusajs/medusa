@@ -124,10 +124,7 @@ export default class PromotionModuleService<
       const promotion = existingPromotionsMap.get(computedAction.code)
 
       if (!promotion) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Promotion with code ${computedAction.code} not found`
-        )
+        continue
       }
 
       const campaignBudget = promotion.campaign?.budget
@@ -148,10 +145,7 @@ export default class PromotionModuleService<
           campaignBudget.limit &&
           campaignBudgetData.used > campaignBudget.limit
         ) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Promotion with code ${computedAction.code} exceeded its campaign budget`
-          )
+          continue
         }
 
         promotionCodeCampaignBudgetMap.set(
@@ -177,10 +171,7 @@ export default class PromotionModuleService<
           campaignBudget.limit &&
           campaignBudgetData.used > campaignBudget.limit
         ) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Promotion with code ${computedAction.code} exceeded its campaign budget`
-          )
+          continue
         }
 
         promotionCodeCampaignBudgetMap.set(
