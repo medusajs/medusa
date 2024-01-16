@@ -150,7 +150,7 @@ describe("Promotion Service: campaign usage", () => {
       )
     })
 
-    it("should sthrow error when exceeded limit for type spend", async () => {
+    it("should throw error when exceeded limit for type spend", async () => {
       const createdPromotion = await service.create({
         code: "TEST_PROMO_SPEND",
         type: "standard",

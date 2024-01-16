@@ -93,7 +93,7 @@ export default class PromotionModuleService<
 
   @InjectManager("baseRepository_")
   async registerUsage(
-    computedActions: PromotionTypes.ComputeActions[],
+    computedActions: PromotionTypes.UsageComputedActions[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     const promotionCodes = computedActions
@@ -121,7 +121,6 @@ export default class PromotionModuleService<
         continue
       }
 
-      computedAction = computedAction as PromotionTypes.UsageComputedActions
       const promotion = existingPromotionsMap.get(computedAction.code)
 
       if (!promotion) {
