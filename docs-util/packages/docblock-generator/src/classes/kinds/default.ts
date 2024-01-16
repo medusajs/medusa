@@ -394,6 +394,29 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
       tags.add(getCustomNamespaceTag(node))
     }
 
+    // check for default value
+    if (
+      "initializer" in node &&
+      node.initializer &&
+      ts.isExpression(node.initializer as ts.Node)
+    ) {
+      const initializer = node.initializer as ts.Expression
+
+      // retrieve default value only if the value is numeric, string, or boolean
+      const defaultValue =
+        ts.isNumericLiteral(initializer) || ts.isStringLiteral(initializer)
+          ? initializer.getText()
+          : initializer.kind === ts.SyntaxKind.FalseKeyword
+            ? "false"
+            : initializer.kind === ts.SyntaxKind.TrueKeyword
+              ? "true"
+              : ""
+
+      if (defaultValue.length) {
+        tags.add(`@defaultValue ${defaultValue}`)
+      }
+    }
+
     let str = ""
     tags.forEach((tag) => {
       if (str.length > 0) {
