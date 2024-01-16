@@ -19,7 +19,8 @@ export default class ProductImageService<TEntity extends Image = Image> {
     urls: string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await (this.productImageRepository_ as ProductImageRepository)
-      .upsert!(urls, sharedContext)) as TEntity[]
+    const repo = this
+      .productImageRepository_ as unknown as ProductImageRepository
+    return (await repo.upsert!(urls, sharedContext)) as TEntity[]
   }
 }

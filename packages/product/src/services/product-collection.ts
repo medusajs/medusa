@@ -10,15 +10,14 @@ type InjectedDependencies = {
 export default class ProductCollectionService<
   TEntity extends ProductCollection = ProductCollection
 > extends ModulesSdkUtils.abstractServiceFactory<
-  ProductCollection,
   InjectedDependencies,
   {
-    retrieve: ProductTypes.ProductCollectionDTO
     create: ProductTypes.CreateProductCollectionDTO
     update: ProductTypes.UpdateProductCollectionDTO
   }
->(ProductCollection) {
-  protected readonly productCollectionRepository_: DAL.RepositoryService
+>(ProductCollection)<TEntity> {
+  // eslint-disable-next-line max-len
+  protected readonly productCollectionRepository_: DAL.RepositoryService<TEntity>
 
   constructor(container: InjectedDependencies) {
     super(container)
@@ -26,42 +25,43 @@ export default class ProductCollectionService<
   }
 
   @InjectManager("productCollectionRepository_")
-  async list(
+  async list<TEntityMethod = ProductTypes.ProductCollectionDTO>(
     filters: ProductTypes.FilterableProductCollectionProps = {},
-    config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
+    config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await this.productCollectionRepository_.find(
+    return await this.productCollectionRepository_.find(
       this.buildListQueryOptions(filters, config),
       sharedContext
-    )) as TEntity[]
+    )
   }
 
   @InjectManager("productCollectionRepository_")
-  async listAndCount(
+  async listAndCount<TEntityMethod = ProductTypes.ProductCollectionDTO>(
     filters: ProductTypes.FilterableProductCollectionProps = {},
-    config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
+    config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
-    return (await this.productCollectionRepository_.findAndCount(
+    return await this.productCollectionRepository_.findAndCount(
       this.buildListQueryOptions(filters, config),
       sharedContext
-    )) as [TEntity[], number]
+    )
   }
 
-  protected buildListQueryOptions(
+  protected buildListQueryOptions<
+    TEntityMethod = ProductTypes.ProductCollectionDTO
+  >(
     filters: ProductTypes.FilterableProductCollectionProps = {},
-    config: FindConfig<ProductTypes.ProductCollectionDTO> = {}
-  ) {
-    const queryOptions = ModulesSdkUtils.buildQuery<ProductCollection>(
-      filters,
-      config
-    )
+    config: FindConfig<TEntityMethod> = {}
+  ): DAL.FindOptions<TEntity> {
+    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
 
     queryOptions.where ??= {}
 
     if (filters.title) {
-      queryOptions.where["title"] = { $like: filters.title }
+      queryOptions.where.title = {
+        $like: `%${filters.title}%`,
+      } as DAL.FindOptions<TEntity>["where"]["title"]
     }
 
     return queryOptions

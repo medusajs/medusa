@@ -9,17 +9,13 @@ type InjectedDependencies = {
 export default class ProductService<
   TEntity extends Product = Product
 > extends ModulesSdkUtils.abstractServiceFactory<
-  Product,
   InjectedDependencies,
   {
-    retrieve: ProductTypes.ProductDTO
-    list: ProductTypes.ProductDTO
-    listAndCount: ProductTypes.ProductDTO
     create: ProductTypes.CreateProductOnlyDTO
     update: ProductTypes.UpdateProductDTO
   }
->(Product) {
-  protected readonly productRepository_: DAL.RepositoryService
+>(Product)<TEntity> {
+  protected readonly productRepository_: DAL.RepositoryService<TEntity>
 
   constructor({ productRepository }: InjectedDependencies) {
     // @ts-ignore
@@ -30,9 +26,9 @@ export default class ProductService<
   }
 
   @InjectManager("productRepository_")
-  async list(
+  async list<TEntityMethod = ProductTypes.ProductDTO>(
     filters: ProductTypes.FilterableProductProps = {},
-    config: FindConfig<ProductTypes.ProductDTO> = {},
+    config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     if (filters.category_id) {
@@ -48,13 +44,13 @@ export default class ProductService<
       delete filters.category_id
     }
 
-    return (await this.list(filters, config, sharedContext)) as TEntity[]
+    return await super.list<TEntityMethod>(filters, config, sharedContext)
   }
 
   @InjectManager("productRepository_")
-  async listAndCount(
+  async listAndCount<TEntityMethod = ProductTypes.ProductDTO>(
     filters: ProductTypes.FilterableProductProps = {},
-    config: FindConfig<ProductTypes.ProductDTO> = {},
+    config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     if (filters.category_id) {
@@ -70,9 +66,10 @@ export default class ProductService<
       delete filters.category_id
     }
 
-    return (await this.listAndCount(filters, config, sharedContext)) as [
-      TEntity[],
-      number
-    ]
+    return await super.listAndCount<TEntityMethod>(
+      filters,
+      config,
+      sharedContext
+    )
   }
 }

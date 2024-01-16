@@ -1,9 +1,6 @@
 import { ProductOptionValue } from "@models"
 import { Context, DAL } from "@medusajs/types"
-import {
-  ProductOptionRepository,
-  ProductOptionValueRepository,
-} from "@repositories"
+import { ProductOptionValueRepository } from "@repositories"
 import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 import {
   CreateProductOptionValueDTO,
@@ -17,11 +14,11 @@ type InjectedDependencies = {
 export default class ProductOptionValueService<
   TEntity extends ProductOptionValue = ProductOptionValue
 > {
-  protected readonly productOptionValueRepository_: DAL.RepositoryService
+  // eslint-disable-next-line max-len
+  protected readonly productOptionValueRepository_: DAL.RepositoryService<TEntity>
 
   constructor({ productOptionValueRepository }: InjectedDependencies) {
-    this.productOptionValueRepository_ =
-      productOptionValueRepository as ProductOptionRepository
+    this.productOptionValueRepository_ = productOptionValueRepository
   }
 
   @InjectTransactionManager("productOptionValueRepository_")
@@ -37,8 +34,8 @@ export default class ProductOptionValueService<
     data: (UpdateProductOptionValueDTO | CreateProductOptionValueDTO)[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await (
-      this.productOptionValueRepository_ as ProductOptionValueRepository
-    ).upsert!(data, sharedContext)) as TEntity[]
+    const repo = this
+      .productOptionValueRepository_ as unknown as ProductOptionValueRepository
+    return (await repo.upsert!(data, sharedContext)) as TEntity[]
   }
 }

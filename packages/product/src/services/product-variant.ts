@@ -2,13 +2,12 @@ import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
+  isString,
   MedusaContext,
   ModulesSdkUtils,
-  isString,
   retrieveEntity,
 } from "@medusajs/utils"
 import { Product, ProductVariant } from "@models"
-import { ProductVariantRepository } from "@repositories"
 
 import { ProductVariantServiceTypes } from "../types/services"
 import ProductService from "./product"
@@ -22,7 +21,7 @@ export default class ProductVariantService<
   TEntity extends ProductVariant = ProductVariant,
   TProduct extends Product = Product
 > {
-  protected readonly productVariantRepository_: DAL.RepositoryService
+  protected readonly productVariantRepository_: DAL.RepositoryService<TEntity>
   protected readonly productService_: ProductService<TProduct>
 
   constructor({
@@ -57,15 +56,12 @@ export default class ProductVariantService<
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<ProductVariant>(
-      filters,
-      config
-    )
+    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
 
-    return (await this.productVariantRepository_.find(
+    return await this.productVariantRepository_.find(
       queryOptions,
       sharedContext
-    )) as TEntity[]
+    )
   }
 
   @InjectManager("productVariantRepository_")
@@ -74,15 +70,12 @@ export default class ProductVariantService<
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<ProductVariant>(
-      filters,
-      config
-    )
+    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
 
-    return (await this.productVariantRepository_.findAndCount(
+    return await this.productVariantRepository_.findAndCount(
       queryOptions,
       sharedContext
-    )) as [TEntity[], number]
+    )
   }
 
   @InjectTransactionManager("productVariantRepository_")
@@ -113,11 +106,9 @@ export default class ProductVariantService<
       })
     })
 
-    return (await (
-      this.productVariantRepository_ as ProductVariantRepository
-    ).create(data_, {
+    return await this.productVariantRepository_.create(data_, {
       transactionManager: sharedContext.transactionManager,
-    })) as TEntity[]
+    })
   }
 
   @InjectTransactionManager("productVariantRepository_")
@@ -139,11 +130,9 @@ export default class ProductVariantService<
     const variantsData = [...data]
     variantsData.forEach((variant) => Object.assign(variant, { product }))
 
-    return (await (
-      this.productVariantRepository_ as ProductVariantRepository
-    ).update(variantsData, {
+    return await this.productVariantRepository_.update(variantsData, {
       transactionManager: sharedContext.transactionManager,
-    })) as TEntity[]
+    })
   }
 
   @InjectTransactionManager("productVariantRepository_")

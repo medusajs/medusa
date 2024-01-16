@@ -988,10 +988,10 @@ export default class ProductModuleService<
       })
     )
 
-    const products = (await this.productService_.create(
+    const products = await this.productService_.create(
       productsData,
       sharedContext
-    )) as TProduct[]
+    )
 
     const productByHandleMap = new Map<string, TProduct>(
       products.map((product) => [product.handle!, product])
@@ -1128,10 +1128,10 @@ export default class ProductModuleService<
       })
     )
 
-    const products = (await this.productService_.update(
+    const products = await this.productService_.update(
       productsData,
       sharedContext
-    )) as TProduct[]
+    )
 
     const productByIdMap = new Map<string, TProduct>(
       products.map((product) => [product.id, product])
@@ -1421,9 +1421,6 @@ export default class ProductModuleService<
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TProduct[], Record<string, unknown[]>]> {
-    return (await this.productService_.restore(productIds, sharedContext)) as [
-      TProduct[],
-      Record<string, unknown[]>
-    ]
+    return await this.productService_.restore(productIds, sharedContext)
   }
 }

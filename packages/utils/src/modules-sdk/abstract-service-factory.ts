@@ -14,7 +14,7 @@ import { buildQuery } from "./build-query"
  */
 
 type FilterableMethods = "list" | "listAndCount"
-type Methods = FilterableMethods | "retrieve" | "create" | "update"
+type Methods = "create" | "update"
 
 export interface AbstractService<
   TEntity extends {},
@@ -26,19 +26,19 @@ export interface AbstractService<
 > {
   get __container__(): TContainer
 
-  retrieve(
+  retrieve<TEntityMethod = TEntity>(
     id: string,
-    config?: FindConfig<TDTos["retrieve"]>,
+    config?: FindConfig<TEntityMethod>,
     sharedContext?: Context
   ): Promise<TEntity>
-  list(
+  list<TEntityMethod = TEntity>(
     filters?: TFilters["list"],
-    config?: FindConfig<TDTos["list"]>,
+    config?: FindConfig<TEntityMethod>,
     sharedContext?: Context
   ): Promise<TEntity[]>
-  listAndCount(
+  listAndCount<TEntityMethod = TEntity>(
     filters?: TFilters["listAndCount"],
-    config?: FindConfig<TDTos["listAndCount"]>,
+    config?: FindConfig<TEntityMethod>,
     sharedContext?: Context
   ): Promise<[TEntity[], number]>
   create(data: any, sharedContext?: Context): Promise<TEntity[]>
@@ -55,7 +55,6 @@ export interface AbstractService<
 }
 
 export function abstractServiceFactory<
-  TEntity extends {},
   TContainer extends object = object,
   TDTos extends { [K in Methods]?: any } = { [K in Methods]?: any },
   TFilters extends { [K in FilterableMethods]?: any } = {
@@ -63,16 +62,18 @@ export function abstractServiceFactory<
   }
 >(
   model: new () => any
-): new (container: TContainer) => AbstractService<
-  TEntity,
-  TContainer,
-  TDTos,
-  TFilters
-> {
+): {
+  new <TEntity extends {}>(container: TContainer): AbstractService<
+    TEntity,
+    TContainer,
+    TDTos,
+    TFilters
+  >
+} {
   const injectedRepositoryName = `${lowerCaseFirst(model.name)}Repository`
   const propertyRepositoryName = `__${injectedRepositoryName}__`
 
-  class AbstractService_
+  class AbstractService_<TEntity extends {}>
     implements AbstractService<TEntity, TContainer, TDTos, TFilters>
   {
     readonly __container__: TContainer;
@@ -84,12 +85,12 @@ export function abstractServiceFactory<
     }
 
     @InjectManager(propertyRepositoryName)
-    async retrieve(
+    async retrieve<TEntityMethod = TEntity>(
       id: string,
-      config: FindConfig<TDTos["retrieve"]> = {},
+      config: FindConfig<TEntityMethod> = {},
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity> {
-      return (await retrieveEntity<TEntity, TDTos["retrieve"]>({
+      return (await retrieveEntity({
         id: id,
         entityName: model.name,
         repository: this[propertyRepositoryName],
@@ -99,9 +100,9 @@ export function abstractServiceFactory<
     }
 
     @InjectManager(propertyRepositoryName)
-    async list(
+    async list<TEntityMethod = TEntity>(
       filters: TFilters["list"] = {},
-      config: FindConfig<TDTos["list"]> = {},
+      config: FindConfig<TEntityMethod> = {},
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity[]> {
       const queryOptions = buildQuery<TEntity>(filters, config)
@@ -113,9 +114,9 @@ export function abstractServiceFactory<
     }
 
     @InjectManager(propertyRepositoryName)
-    async listAndCount(
+    async listAndCount<TEntityMethod = TEntity>(
       filters: TFilters["listAndCount"] = {},
-      config: FindConfig<TDTos["listAndCount"]> = {},
+      config: FindConfig<TEntityMethod> = {},
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[TEntity[], number]> {
       const queryOptions = buildQuery<TEntity>(filters, config)
@@ -177,7 +178,17 @@ export function abstractServiceFactory<
     }
   }
 
-  return AbstractService_ as unknown as new (
+  return AbstractService_ as unknown as new <TEntity extends {}>(
     container: TContainer
   ) => AbstractService<TEntity, TContainer, TDTos, TFilters>
+}
+
+class Entity {}
+
+class Test extends abstractServiceFactory<object, {}>(Entity)<{}> {
+  constructor() {
+    super(...arguments)
+  }
+
+  test() {}
 }
