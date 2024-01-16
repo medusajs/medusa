@@ -26,7 +26,10 @@ import {
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
-import { NoRecords } from "../../../../../components/common/empty-table-content"
+import {
+  NoRecords,
+  NoResults,
+} from "../../../../../components/common/empty-table-content"
 import { TableRowActions } from "../../../../../components/common/table-row-actions"
 import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
@@ -61,11 +64,17 @@ export const CustomerGroupCustomerSection = ({
 
   const params = useQueryParams(["q"])
   const { customers, count, isLoading, isError, error } =
-    useAdminCustomerGroupCustomers(group.id, {
-      limit: PAGE_SIZE,
-      offset: pageIndex * PAGE_SIZE,
-      ...params,
-    })
+    useAdminCustomerGroupCustomers(
+      group.id,
+      {
+        limit: PAGE_SIZE,
+        offset: pageIndex * PAGE_SIZE,
+        ...params,
+      },
+      {
+        keepPreviousData: true,
+      }
+    )
 
   const columns = useColumns()
 
@@ -149,53 +158,61 @@ export const CustomerGroupCustomerSection = ({
               </div>
             </div>
             <div>
-              <Table>
-                <Table.Header className="border-t-0">
-                  {table.getHeaderGroups().map((headerGroup) => {
-                    return (
+              {(customers?.length || 0) > 0 ? (
+                <Table>
+                  <Table.Header className="border-t-0">
+                    {table.getHeaderGroups().map((headerGroup) => {
+                      return (
+                        <Table.Row
+                          key={headerGroup.id}
+                          className=" [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap"
+                        >
+                          {headerGroup.headers.map((header) => {
+                            return (
+                              <Table.HeaderCell key={header.id}>
+                                {flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
+                              </Table.HeaderCell>
+                            )
+                          })}
+                        </Table.Row>
+                      )
+                    })}
+                  </Table.Header>
+                  <Table.Body className="border-b-0">
+                    {table.getRowModel().rows.map((row) => (
                       <Table.Row
-                        key={headerGroup.id}
-                        className=" [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap"
-                      >
-                        {headerGroup.headers.map((header) => {
-                          return (
-                            <Table.HeaderCell key={header.id}>
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                            </Table.HeaderCell>
-                          )
-                        })}
-                      </Table.Row>
-                    )
-                  })}
-                </Table.Header>
-                <Table.Body className="border-b-0">
-                  {table.getRowModel().rows.map((row) => (
-                    <Table.Row
-                      key={row.id}
-                      className={clx(
-                        "transition-fg cursor-pointer [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap [&_td:first-of-type]:w-[1%] [&_td:first-of-type]:whitespace-nowrap",
-                        {
-                          "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                            row.getIsSelected(),
+                        key={row.id}
+                        className={clx(
+                          "transition-fg cursor-pointer [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap [&_td:first-of-type]:w-[1%] [&_td:first-of-type]:whitespace-nowrap",
+                          {
+                            "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
+                              row.getIsSelected(),
+                          }
+                        )}
+                        onClick={() =>
+                          navigate(`/customers/${row.original.id}`)
                         }
-                      )}
-                      onClick={() => navigate(`/customers/${row.original.id}`)}
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <Table.Cell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </Table.Cell>
-                      ))}
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
+                      >
+                        {row.getVisibleCells().map((cell) => (
+                          <Table.Cell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </Table.Cell>
+                        ))}
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table>
+              ) : (
+                <div className="border-b">
+                  <NoResults />
+                </div>
+              )}
               <LocalizedTablePagination
                 canNextPage={table.getCanNextPage()}
                 canPreviousPage={table.getCanPreviousPage()}

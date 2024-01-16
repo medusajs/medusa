@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
 type NoResultsProps = {
-  title: string
+  title?: string
   message?: string
 }
 
@@ -16,7 +16,7 @@ export const NoResults = ({ title, message }: NoResultsProps) => {
       <div className="flex flex-col items-center gap-y-2">
         <MagnifyingGlass />
         <Text size="small" leading="compact" weight="plus">
-          {title}
+          {title ?? t("general.noResultsTitle")}
         </Text>
         <Text size="small" className="text-ui-fg-subtle">
           {message ?? t("general.noResultsMessage")}
