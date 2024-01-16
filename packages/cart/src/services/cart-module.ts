@@ -6,7 +6,8 @@ import {
   FindConfig,
   ICartModuleService,
   InternalModuleDeclaration,
-  ModuleJoinerConfig
+  LineItemAdjustmentLineDTO,
+  ModuleJoinerConfig,
 } from "@medusajs/types"
 import {
   InjectManager,
@@ -18,11 +19,15 @@ import {
 } from "@medusajs/utils"
 import { LineItem, LineItemAdjustmentLine } from "@models"
 import { UpdateLineItemDTO } from "@types"
+import {
+  CreateLineItemAdjustmentDTO,
+  UpdateLineItemAdjustmentDTO,
+} from "src/types/line-item-adjustment"
 import { joinerConfig } from "../joiner-config"
 import * as services from "../services"
 import AddressService from "./address"
 import CartService from "./cart"
-import LineItemAdjustmentService from "./line-item-adjustment-service"
+import LineItemAdjustmentService from "./line-item-adjustment"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -553,182 +558,156 @@ export default class CartModuleService implements ICartModuleService {
     })
   }
 
-  async addLineItemAdjustments(
-    data: CartTypes.AddLineItemAdjustmentsDTO[],
-    sharedContext?: Context | undefined
-  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]>
-  async addLineItemAdjustments(
-    data: CartTypes.AddLineItemAdjustmentsDTO,
-    sharedContext?: Context | undefined
-  ): Promise<CartTypes.LineItemAdjustmentLineDTO>
-  async addLineItemAdjustments(
-    lineId: string,
-    data: CartTypes.AddLineItemAdjustmentsDTO[],
-    sharedContext?: Context | undefined
-  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]>
+  // async addLineItemAdjustments(
+  //   data: CartTypes.AddLineItemAdjustmentsDTO[],
+  //   sharedContext?: Context | undefined
+  // ): Promise<CartTypes.LineItemAdjustmentLineDTO[]>
+  // async addLineItemAdjustments(
+  //   data: CartTypes.AddLineItemAdjustmentsDTO,
+  //   sharedContext?: Context | undefined
+  // ): Promise<CartTypes.LineItemAdjustmentLineDTO>
+  // async addLineItemAdjustments(
+  //   lineId: string,
+  //   data: CartTypes.AddLineItemAdjustmentsDTO[],
+  //   sharedContext?: Context | undefined
+  // ): Promise<CartTypes.LineItemAdjustmentLineDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
-  async addLineItemAdjustments(
-    lineIdOrData: string | CartTypes.AddLineItemAdjustmentsDTO[] | CartTypes.AddLineItemAdjustmentsDTO,
-    data:CartTypes.AddLineItemAdjustmentsDTO
-      | CartTypes.AddLineItemAdjustmentsDTO[],
-    @MedusaContext()
-    sharedContext?: Context = {}
-  ): Promise<
-    | CartTypes.LineItemAdjustmentLineDTO[]
-    | CartTypes.LineItemAdjustmentLineDTO
-    | void
-  > {
-    let adjustments: LineItemAdjustmentLine[] = []
-    if (isString(lineIdOrData)) {
-      adjustments = await this.addLineItemAdjustments_(
-        lineIdOrData,
-        data,
-        sharedContext
-      )
-    } else if(Array.isArray(lineIdOrData)) {
-      adjustments = await this.addLineItemAdjustmentsBulk_(lineIdOrData, sharedContext)
-    }
+  // @InjectTransactionManager("baseRepository_")
+  // async addLineItemAdjustments(
+  //   lineIdOrData:
+  //     | string
+  //     | CartTypes.AddLineItemAdjustmentsDTO[]
+  //     | CartTypes.AddLineItemAdjustmentsDTO,
+  //   data:
+  //     | CartTypes.AddLineItemAdjustmentsDTO
+  //     | CartTypes.AddLineItemAdjustmentsDTO[],
+  //   @MedusaContext()
+  //   sharedContext: Context = {}
+  // ): Promise<
+  //   | CartTypes.LineItemAdjustmentLineDTO[]
+  //   | CartTypes.LineItemAdjustmentLineDTO
+  //   | void
+  // > {
+  //   let adjustments: LineItemAdjustmentLine[] = []
+  //   if (isString(lineIdOrData)) {
+  //     adjustments = await this.addLineItemAdjustments_(
+  //       lineIdOrData,
+  //       data,
+  //       sharedContext
+  //     )
+  //   } else if (Array.isArray(lineIdOrData)) {
+  //     adjustments = await this.addLineItemAdjustmentsBulk_(
+  //       lineIdOrData as CartTypes.CreateLineItemAdjustmentDTO[],
+  //       sharedContext
+  //     )
+  //   }
 
-    return await this.baseRepository_.serialize<
-      CartTypes.LineItemAdjustmentLineDTO[]
-    >(adjustments, {
-      populate: true,
-    })
-  }
+  //   return await this.baseRepository_.serialize<
+  //     CartTypes.LineItemAdjustmentLineDTO[]
+  //   >(adjustments, {
+  //     populate: true,
+  //   })
+  // }
 
-  @InjectTransactionManager("baseRepository_")
-  protected async addLineItemAdjustments_(
-    lineId: string,
-    data: CartTypes.AddLineItemAdjustmentsDTO[] | CartTypes.AddLineItemAdjustmentsDTO,
-    @MedusaContext() sharedContext?: Context = {}
-  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]> {
-    const line = await this.lineItemService_.retrieve(lineId, {}, sharedContext)
-    
-    const adjustments = Array.isArray(data) ? data : [data]
+  // @InjectTransactionManager("baseRepository_")
+  // protected async addLineItemAdjustments_(
+  //   lineId: string,
+  //   data:
+  //     | CartTypes.AddLineItemAdjustmentsDTO[]
+  //     | CartTypes.AddLineItemAdjustmentsDTO,
+  //   @MedusaContext() sharedContext: Context = {}
+  // ): Promise<LineItemAdjustmentLine[]> {
+  //   const line = await this.lineItemService_.retrieve(lineId, {}, sharedContext)
 
-    const toUpdate = adjustments.map((adj) => {
-      return {
-        ...adj,
-        line_id: line.id,
-      }
-    })
+  //   const adjustments = Array.isArray(data) ? data : [data]
 
-    return await this.addLineItemAdjustmentsBulk_(toUpdate, sharedContext)
-  }
+  //   const toUpdate = adjustments.map((adj) => {
+  //     return {
+  //       ...adj,
+  //       line_id: line.id,
+  //     }
+  //   })
+
+  //   return await this.addLineItemAdjustmentsBulk_(toUpdate, sharedContext)
+  // }
 
   @InjectTransactionManager("baseRepository_")
   protected async addLineItemAdjustmentsBulk_(
     data: CartTypes.CreateLineItemAdjustmentDTO[],
-    @MedusaContext() sharedContext?: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<LineItemAdjustmentLine[]> {
-    return await this.lineItemAdjustmentService_.create(
-      data,
+    return await this.lineItemAdjustmentService_.create(data, sharedContext)
+  }
+
+  // async addLineItemAdjustments(
+  //   data: CartTypes.AddLineItemAdjustmentsDTO,
+  //   sharedContext?: Context | undefined
+  // ): Promise<CartTypes.LineItemAdjustmentLineDTO>
+  // async addLineItemAdjustments(
+  //   lineId: string,
+  //   data: CartTypes.AddLineItemAdjustmentsDTO[],
+  //   sharedContext?: Context | undefined
+  // ): Promise<CartTypes.LineItemAdjustmentLineDTO[]>
+
+  @InjectTransactionManager("baseRepository_")
+  async setLineItemAdjustments(
+    cartId: string,
+    adjustments: (
+      | CartTypes.CreateLineItemAdjustmentDTO
+      | CartTypes.UpdateLineItemAdjustmentDTO
+    )[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]> {
+    const cart = await this.retrieve(
+      cartId,
+      { select: ["id"], relations: ["items.adjustments"] },
       sharedContext
     )
-  }
 
-  async setLineItemAdjustments(
-    data: CartTypes.AddLineItemAdjustmentsDTO[],
-    sharedContext?: Context | undefined
-  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]>
-  async setLineItemAdjustments(
-    data: CartTypes.AddLineItemAdjustmentsDTO,
-    sharedContext?: Context | undefined
-  ): Promise<CartTypes.LineItemAdjustmentLineDTO>
-  @InjectTransactionManager("baseRepository_")
-  async setLineItemAdjustments(
-    data:
-      | CartTypes.AddLineItemAdjustmentsDTO
-      | CartTypes.AddLineItemAdjustmentsDTO[],
-    sharedContext?: unknown
-  ): Promise<
-    | CartTypes.LineItemAdjustmentLineDTO[]
-    | CartTypes.LineItemAdjustmentLineDTO
-    | void
-  > {
-    const input = Array.isArray(data) ? data : [data]
-
-    return await this.setLineItemAdjustments_(input, sharedContext as Context)
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async setLineItemAdjustments_(
-    data: CartTypes.SetLineItemAdjustmentsDTO[],
-    sharedContext?: Context
-  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]> {
-    const cartToAdjustmentsMap = new Map<
-      string,
-      (CartTypes.CreateLineItemAdjustmentDTO | CartTypes.UpdateLineItemAdjustmentDTO)[]
-    >()
-
-    for (const d of data) {
-      cartToAdjustmentsMap.set(d.cart_id, d.adjustments)
-    }
+    const lineIds = cart.items?.map((item) => item.id)
 
     const existingAdjustments = await this.listLineItemAdjustments(
-      { cart_id: [...cartToAdjustmentsMap.keys()] },
+      { item_id: lineIds },
       { select: ["id"] },
       sharedContext
     )
 
-    // From the existing adjustments, find the ones that are not passed in data
-    const toDelete = existingAdjustments.filter((adj) => {
-      const adjustments = cartToAdjustmentsMap.get(adj.cart_id)
-      if (adjustments) {
-        return !adjustments.find((a) => a.id === adj.id)
+    let toUpdate: UpdateLineItemAdjustmentDTO[] = []
+    let toCreate: CreateLineItemAdjustmentDTO[] = []
+    for (const adj of adjustments) {
+      if ("id" in adj) {
+        toUpdate.push(adj as UpdateLineItemAdjustmentDTO)
+      } else {
+        toCreate.push(adj as CreateLineItemAdjustmentDTO)
       }
-      return true
-    })
-    
-
-    const allAdjustments = data.map((d) => d.adjustments).flat()
-
-    const existingAdjustmentsMap = new Map(
-      existingAdjustments.map((adj) => [adj.id, adj])
-    )
-
-    const toDelete = allAdjustments.filter((adj) => {
-      if (adj.id) {
-        
-      }
-      adj?.id && !existingAdjustmentsMap.has(adj.id)
-    })
-
-    const adjustmentsToDelete = existingAdjustments.filter(
-      (adj) => !adjustmentsMap.has(adj.id)
-    )
-
-    await this.lineItemAdjustmentService_.delete(
-      adjustmentsToDelete.map((adj) => adj.id)
-    )
-
-    let toDelete: string[] = []
-    let toUpdate = []
-
-    for (const update of data) {
-      if (adj.) {
-        const existing = existingAdjustmentsMap.get(adj.id)
-      }
-
-      
     }
 
-    const items = await promiseAll(
-      [...adjustmentsMap].map(async ([cartId, adjustments]) => {
+    const adjustmentsSet = new Set(toUpdate.map((a) => a.id))
 
-        return await this.lineItemAdjustmentService_.create(
-          adjustments,
-          sharedContext
-        )
-      })
-    )
+    const toDelete: LineItemAdjustmentLineDTO[] = []
 
-    return await this.listLineItemAdjustments(
-      { id: items.flat().map((c) => c.id) },
-      {},
+    // From the existing adjustments, find the ones that are not passed in adjustments
+    existingAdjustments.forEach((adj: LineItemAdjustmentLineDTO) => {
+      if (!adjustmentsSet.has(adj.id)) {
+        toDelete.push(adj)
+      }
+    })
+
+    await this.lineItemAdjustmentService_.delete(
+      toDelete.map((adj) => adj!.id),
       sharedContext
     )
+
+    const [result] = await promiseAll([
+      this.lineItemAdjustmentService_.create(toCreate, sharedContext),
+      this.lineItemAdjustmentService_.update(toUpdate, sharedContext),
+    ])
+
+    return await this.baseRepository_.serialize<
+      CartTypes.LineItemAdjustmentLineDTO[]
+    >(result, {
+      populate: true,
+    })
   }
 
   async removeLineItemAdjustments(
@@ -740,10 +719,34 @@ export default class CartModuleService implements ICartModuleService {
     sharedContext?: Context
   ): Promise<void>
   async removeLineItemAdjustments(
-    adjustmentIds: string,
+    selector: Partial<CartTypes.LineItemAdjustmentLineDTO>,
     sharedContext?: Context
+  ): Promise<void>
+
+  async removeLineItemAdjustments(
+    adjustmentIdsOrSelector:
+      | string
+      | string[]
+      | Partial<CartTypes.LineItemAdjustmentLineDTO>,
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    const ids = Array.isArray(adjustmentIds) ? adjustmentIds : [adjustmentIds]
+    let ids: string[] = []
+    if (isObject(adjustmentIdsOrSelector)) {
+      const adjustments = await this.listLineItemAdjustments(
+        {
+          ...adjustmentIdsOrSelector,
+        } as Partial<CartTypes.LineItemAdjustmentLineDTO>,
+        { select: ["id"] },
+        sharedContext
+      )
+
+      ids = adjustments.map((adj) => adj.id)
+    } else {
+      ids = Array.isArray(adjustmentIdsOrSelector)
+        ? adjustmentIdsOrSelector
+        : [adjustmentIdsOrSelector]
+    }
+
     await this.lineItemAdjustmentService_.delete(ids, sharedContext)
   }
 }

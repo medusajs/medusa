@@ -19,10 +19,10 @@ export default abstract class AdjustmentLine {
   @Property({ columnType: "text", nullable: true })
   promotion_id?: string | null
 
-  @Property({ columnType: "text" })
-  code: string
+  @Property({ columnType: "text", nullable: true })
+  code?: string | null
 
-  @Property({ columnType: "numeric" })
+  @Property({ columnType: "numeric", serializer: Number })
   amount: number
 
   @Property({ columnType: "text", nullable: true })

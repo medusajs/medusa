@@ -7,10 +7,10 @@ import {
   CartLineItemDTO,
   FilterableAddressProps,
   FilterableCartProps,
+  FilterableLineItemProps,
   LineItemAdjustmentLineDTO,
 } from "./common"
 import {
-  AddLineItemAdjustmentsDTO,
   CreateAddressDTO,
   CreateCartDTO,
   CreateLineItemAdjustmentDTO,
@@ -18,6 +18,7 @@ import {
   CreateLineItemForCartDTO,
   UpdateAddressDTO,
   UpdateCartDTO,
+  UpdateLineItemAdjustmentDTO,
   UpdateLineItemDTO,
   UpdateLineItemWithSelectorDTO,
 } from "./mutations"
@@ -77,6 +78,18 @@ export interface ICartModuleService extends IModuleService {
   deleteAddresses(ids: string[], sharedContext?: Context): Promise<void>
   deleteAddresses(ids: string, sharedContext?: Context): Promise<void>
 
+  retrieveLineItem(
+    itemId: string,
+    config: FindConfig<CartLineItemDTO>,
+    sharedContext?: Context
+  ): Promise<CartLineItemDTO>
+
+  listLineItems(
+    filters: FilterableLineItemProps,
+    config: FindConfig<CartLineItemDTO>,
+    sharedContext?: Context
+  ): Promise<CartLineItemDTO[]>
+
   addLineItems(data: CreateLineItemForCartDTO): Promise<CartLineItemDTO>
   addLineItems(data: CreateLineItemForCartDTO[]): Promise<CartLineItemDTO[]>
   addLineItems(
@@ -121,13 +134,10 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<LineItemAdjustmentLineDTO>
 
   setLineItemAdjustments(
-    data: AddLineItemAdjustmentsDTO[],
+    cartId: string,
+    data: (CreateLineItemAdjustmentDTO | UpdateLineItemAdjustmentDTO)[],
     sharedContext?: Context
   ): Promise<LineItemAdjustmentLineDTO[]>
-  setLineItemAdjustments(
-    data: AddLineItemAdjustmentsDTO,
-    sharedContext?: Context
-  ): Promise<LineItemAdjustmentLineDTO>
 
   removeLineItemAdjustments(
     adjustmentIds: string[],
@@ -135,6 +145,10 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<void>
   removeLineItemAdjustments(
     adjustmentIds: string,
+    sharedContext?: Context
+  ): Promise<void>
+  removeLineItemAdjustments(
+    selector: Partial<LineItemAdjustmentLineDTO>,
     sharedContext?: Context
   ): Promise<void>
 }

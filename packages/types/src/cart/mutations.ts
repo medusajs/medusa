@@ -65,31 +65,11 @@ export interface CreateLineItemTaxLineDTO {
 }
 
 export interface CreateLineItemAdjustmentDTO {
-  cart_id: string
   item_id: string
   amount: number
   code?: string
   description?: string
   promotion_id?: string
-  provider_id?: string
-}
-
-export interface AddLineItemAdjustmentsDTO {
-  cart_id: string
-  adjustments: CreateLineItemAdjustmentDTO[]
-}
-
-export interface SetLineItemAdjustmentsDTO {
-  cart_id: string
-  adjustments: (CreateLineItemAdjustmentDTO | UpdateLineItemAdjustmentDTO)[]
-}
-
-export interface UpdateLineItemTaxLineDTO {
-  id: string
-  description?: string
-  tax_rate_id?: string
-  code?: string
-  rate?: number
   provider_id?: string
 }
 
@@ -99,6 +79,28 @@ export interface UpdateLineItemAdjustmentDTO {
   amount?: number
   description?: string
   promotion_id?: string
+  provider_id?: string
+}
+
+export interface SetLineItemAdjustmentsDTO
+  extends Partial<UpdateLineItemAdjustmentDTO> {
+  id?: string
+}
+
+export interface AddLineItemAdjustmentsDTO {
+  adjustments: CreateLineItemAdjustmentDTO[]
+}
+
+// export interface SetLineItemAdjustmentsDTO {
+//   adjustments: (CreateLineItemAdjustmentDTO | UpdateLineItemAdjustmentDTO)[]
+// }
+
+export interface UpdateLineItemTaxLineDTO {
+  id: string
+  description?: string
+  tax_rate_id?: string
+  code?: string
+  rate?: number
   provider_id?: string
 }
 

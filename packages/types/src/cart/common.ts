@@ -50,8 +50,13 @@ export interface ShippingMethodAdjustmentLineDTO extends AdjustmentLineDTO {
 export interface LineItemAdjustmentLineDTO extends AdjustmentLineDTO {
   /**
    * The associated line item
+   * @expandable
    */
-  line_item: CartLineItemDTO
+  item: CartLineItemDTO
+  /**
+   * The associated line item
+   */
+  item_id: string
 }
 
 export interface TaxLineDTO {
@@ -494,7 +499,7 @@ export interface FilterableLineItemProps
 }
 
 /**
- * TODO: Remove this in favor of CartDTO, when module is released 
+ * TODO: Remove this in favor of CartDTO, when module is released
  * @deprecated Use CartDTO instead
  */
 export type legacy_CartDTO = {

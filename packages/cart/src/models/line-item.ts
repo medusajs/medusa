@@ -117,9 +117,9 @@ export default class LineItem {
 
   @OneToMany(
     () => LineItemAdjustmentLine,
-    (adjustment) => adjustment.line_item,
+    (adjustment) => adjustment.item,
     {
-      cascade: [Cascade.REMOVE],
+      cascade: [Cascade.REMOVE, Cascade.PERSIST],
     }
   )
   adjustments = new Collection<LineItemAdjustmentLine>(this)

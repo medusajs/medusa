@@ -1,6 +1,5 @@
 import {
   Context,
-  CreateLineItemAdjustmentDTO,
   DAL,
   FindConfig,
   LineItemAdjustmentLineDTO,
@@ -14,6 +13,10 @@ import {
 } from "@medusajs/utils"
 import { Address, LineItemAdjustmentLine } from "@models"
 import { LineItemAdjustmentRepository } from "@repositories"
+import {
+  CreateLineItemAdjustmentDTO,
+  UpdateLineItemAdjustmentDTO,
+} from "src/types/line-item-adjustment"
 import CartService from "./cart"
 
 type InjectedDependencies = {
@@ -103,5 +106,13 @@ export default class LineItemAdjustmentService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     await this.lineItemAdjustmentRepository_.delete(ids, sharedContext)
+  }
+
+  @InjectTransactionManager("lineItemAdjustmentRepository_")
+  async update(
+    data: UpdateLineItemAdjustmentDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.lineItemAdjustmentRepository_.update(data, sharedContext)
   }
 }
