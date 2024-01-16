@@ -1980,4 +1980,41 @@ describe("Workflow composer", function () {
     expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
     expect(mockCompensateSte1.mock.calls[0][0]).toEqual(undefined)
   })
+
+  it("should compose a workflow that returns destructured properties", async () => {
+    const step = function () {
+      return new StepResponse({
+        propertyNotReturned: 1234,
+        property: {
+          complex: {
+            nested: 123,
+          },
+          a: "bc",
+        },
+        obj: "return from 2",
+      })
+    }
+
+    const step1 = createStep("step1", step)
+
+    const workflow = createWorkflow("workflow1", function () {
+      const { property, obj } = step1()
+
+      return { someOtherName: property, obj }
+    })
+
+    const { result } = await workflow().run({
+      throwOnError: false,
+    })
+
+    expect(result).toEqual({
+      someOtherName: {
+        complex: {
+          nested: 123,
+        },
+        a: "bc",
+      },
+      obj: "return from 2",
+    })
+  })
 })
