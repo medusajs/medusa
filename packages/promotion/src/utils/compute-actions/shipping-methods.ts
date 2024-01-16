@@ -6,6 +6,7 @@ import {
   MedusaError,
 } from "@medusajs/utils"
 import { areRulesValidForContext } from "../validations"
+import { computeActionForBudgetExceeded } from "./usage"
 
 export function getComputedActionsForShippingMethods(
   promotion: PromotionTypes.PromotionDTO,
@@ -62,6 +63,17 @@ export function applyPromotionToShippingMethods(
         continue
       }
 
+      const budgetExceededAction = computeActionForBudgetExceeded(
+        promotion,
+        amount
+      )
+
+      if (budgetExceededAction) {
+        computedActions.push(budgetExceededAction)
+
+        continue
+      }
+
       methodIdPromoValueMap.set(method.id, appliedPromoValue + amount)
 
       computedActions.push({
@@ -97,6 +109,17 @@ export function applyPromotionToShippingMethods(
       const amount = Math.min(applicablePromotionValue, applicableTotal)
 
       if (amount <= 0) {
+        continue
+      }
+
+      const budgetExceededAction = computeActionForBudgetExceeded(
+        promotion,
+        amount
+      )
+
+      if (budgetExceededAction) {
+        computedActions.push(budgetExceededAction)
+
         continue
       }
 
