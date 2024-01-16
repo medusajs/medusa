@@ -1740,6 +1740,7 @@ describe("Promotion Service: computeActions", () => {
         {
           action: "removeItemAdjustment",
           adjustment_id: "test-adjustment",
+          code: "ADJUSTMENT_CODE",
         },
         {
           action: "addItemAdjustment",
@@ -1833,6 +1834,7 @@ describe("Promotion Service: computeActions", () => {
         {
           action: "removeShippingMethodAdjustment",
           adjustment_id: "test-adjustment",
+          code: "ADJUSTMENT_CODE",
         },
         {
           action: "addShippingMethodAdjustment",
