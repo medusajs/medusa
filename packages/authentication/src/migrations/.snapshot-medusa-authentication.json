@@ -39,6 +39,15 @@
           ],
           "mappedType": "enum"
         },
+        "config": {
+          "name": "config",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
         "is_active": {
           "name": "is_active",
           "type": "boolean",
