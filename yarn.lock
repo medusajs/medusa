@@ -7854,8 +7854,10 @@ __metadata:
     cross-env: ^5.2.1
     dotenv: ^16.1.4
     jest: ^29.6.3
+    jsonwebtoken: ^9.0.2
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
+    oauth: ^0.10.0
     rimraf: ^3.0.2
     scrypt-kdf: ^2.0.1
     ts-jest: ^29.1.1
@@ -35407,6 +35409,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jsonwebtoken@npm:^9.0.2":
+  version: 9.0.2
+  resolution: "jsonwebtoken@npm:9.0.2"
+  dependencies:
+    jws: ^3.2.2
+    lodash.includes: ^4.3.0
+    lodash.isboolean: ^3.0.3
+    lodash.isinteger: ^4.0.4
+    lodash.isnumber: ^3.0.3
+    lodash.isplainobject: ^4.0.6
+    lodash.isstring: ^4.0.1
+    lodash.once: ^4.0.0
+    ms: ^2.1.1
+    semver: ^7.5.4
+  checksum: d287a29814895e866db2e5a0209ce730cbc158441a0e5a70d5e940eb0d28ab7498c6bf45029cc8b479639bca94056e9a7f254e2cdb92a2f5750c7f358657a131
+  languageName: node
+  linkType: hard
+
 "jsprim@npm:^1.2.2":
   version: 1.4.2
   resolution: "jsprim@npm:1.4.2"
@@ -39437,6 +39457,13 @@ __metadata:
   version: 0.9.0
   resolution: "oauth-sign@npm:0.9.0"
   checksum: fc92a516f6ddbb2699089a2748b04f55c47b6ead55a77cd3a2cbbce5f7af86164cb9425f9ae19acfd066f1ad7d3a96a67b8928c6ea946426f6d6c29e448497c2
+  languageName: node
+  linkType: hard
+
+"oauth@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "oauth@npm:0.10.0"
+  checksum: 76f3e186cfd76cb33e5d5d442861c86680a5c3b71b2db1b854212087532c265a69de1a2ab9db683e6c6df733e17cfc67476527b81b224a19c1917de2bc3f75fa
   languageName: node
   linkType: hard
 
