@@ -60,38 +60,6 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     return protocol + "://" + host + path
   }
 
-  async verify_(request, accessToken, refreshToken) {
-    // decode email from jwt
-    const jwtData = (await jwt.decode(refreshToken.id_token, {
-      complete: true,
-    })) as JwtPayload | null
-    // const email = jwtData!.email
-    const entity_id = jwtData!.payload.email
-
-    let authUser
-
-    try {
-      authUser = await this.authUserSerivce_.retrieveByProviderAndEntityId(
-        entity_id,
-        GoogleProvider.PROVIDER
-      )
-    } catch (error) {
-      if (error.type === MedusaError.Types.NOT_FOUND) {
-        authUser = await this.authUserSerivce_.create([
-          {
-            entity_id,
-            provider_id: GoogleProvider.PROVIDER,
-            user_metadata: jwtData!.payload,
-          },
-        ])
-      } else {
-        return { success: false, error: error.message }
-      }
-    }
-
-    return { success: true, authUser }
-  }
-
   async getProviderConfig(
     req: Record<string, unknown>
   ): Promise<GoogleProviderConfig> {
@@ -194,6 +162,40 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
 
     return state
   }
+
+    // abstractable
+    async verify_(request, accessToken, refreshToken) {
+      // decode email from jwt
+      const jwtData = (await jwt.decode(refreshToken.id_token, {
+        complete: true,
+      })) as JwtPayload | null
+      // const email = jwtData!.email
+      const entity_id = jwtData!.payload.email
+  
+      let authUser
+  
+      try {
+        authUser = await this.authUserSerivce_.retrieveByProviderAndEntityId(
+          entity_id,
+          GoogleProvider.PROVIDER
+        )
+      } catch (error) {
+        if (error.type === MedusaError.Types.NOT_FOUND) {
+          authUser = await this.authUserSerivce_.create([
+            {
+              entity_id,
+              provider_id: GoogleProvider.PROVIDER,
+              user_metadata: jwtData!.payload,
+            },
+          ])
+        } else {
+          return { success: false, error: error.message }
+        }
+      }
+  
+      return { success: true, authUser }
+    }
+  
 
   private getOAuthAccessTokenCallback(setResult) {
     return async (err, accessToken, refreshToken, params) => {
