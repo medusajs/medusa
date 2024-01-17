@@ -3,4 +3,4 @@
 "@medusajs/types": patch
 ---
 
-feat(medusa,types): add promotion list endpoint
+feat(medusa,types): add promotion list and get endpoint

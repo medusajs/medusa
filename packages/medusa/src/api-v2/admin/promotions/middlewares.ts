@@ -1,6 +1,7 @@
 import { MedusaV2Flag } from "@medusajs/utils"
 import { isFeatureFlagEnabled, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { AdminGetPromotionsPromotionParams } from "./[id]/route"
 import { AdminGetPromotionsParams } from "./route"
 
 export const defaultAdminPromotionRelations = ["campaign", "application_method"]
@@ -44,7 +45,10 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/promotions/*",
     middlewares: [
       isFeatureFlagEnabled(MedusaV2Flag.key),
-      transformQuery(AdminGetPromotionsParams, retrieveTransformQueryConfig),
+      transformQuery(
+        AdminGetPromotionsPromotionParams,
+        retrieveTransformQueryConfig
+      ),
     ],
   },
 ]
