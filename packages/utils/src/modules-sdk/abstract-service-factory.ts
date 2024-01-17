@@ -51,13 +51,16 @@ export interface AbstractService<
   ): Promise<[TEntity[], number]>
   create(data: any[], sharedContext?: Context): Promise<TEntity[]>
   update(data: any[], sharedContext?: Context): Promise<TEntity[]>
-  delete(ids: string[], sharedContext?: Context): Promise<void>
+  delete(
+    primaryKeyValues: string[] | object[],
+    sharedContext?: Context
+  ): Promise<void>
   softDelete(
-    ids: string[],
+    idsOrFilter: string[] | InternalFilerQuery,
     sharedContext?: Context
   ): Promise<[TEntity[], Record<string, unknown[]>]>
   restore(
-    ids: string[],
+    idsOrFilter: string[] | InternalFilerQuery,
     sharedContext?: Context
   ): Promise<[TEntity[], Record<string, unknown[]>]>
 }
