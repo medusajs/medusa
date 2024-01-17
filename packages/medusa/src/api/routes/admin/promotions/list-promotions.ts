@@ -12,7 +12,7 @@ export default async (req: Request, res: Response) => {
     req.filterableFields,
     req.listConfig
   )
-  console.log("running here - ", promotions)
+
   const { limit, offset } = req.validatedQuery
 
   res.json({
