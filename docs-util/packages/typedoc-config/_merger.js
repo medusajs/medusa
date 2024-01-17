@@ -541,6 +541,34 @@ npx medusa develop
       reflectionTitle: {
         fullReplacement: "How to Create a Tax Provider",
       },
+      endSections: [
+        `## Test Implementation
+
+:::note
+
+If you created your tax provider in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
+
+:::
+
+After finishing your tax provider implementation:
+
+1\\. Run the \`build\` command in the root of your Medusa backend:
+
+\`\`\`bash npm2yarn
+npm run build
+\`\`\`
+
+2\\. Start the backend with the \`develop\` command:
+
+\`\`\`bash
+npx medusa develop
+\`\`\`
+
+3\\. Use the tax provider in a region. You can do that either using the [Admin APIs](https://docs.medusajs.com/modules/taxes/admin/manage-tax-settings#change-tax-provider-of-a-region) or the [Medusa Admin](https://docs.medusajs.com/user-guide/taxes/manage#change-tax-provider).
+
+4\\. To test out your tax provider implementation, you can [trigger taxes calculation manually](https://docs.medusajs.com/modules/taxes/storefront/manual-calculation).
+      `,
+      ],
     },
 
     // TAX CALCULATION CONFIG
@@ -561,6 +589,32 @@ npx medusa develop
       reflectionTitle: {
         fullReplacement: "How to Override a Tax Calculation Strategy",
       },
+      endSections: [
+        `## Test Implementation
+
+:::note
+
+If you created your tax calculation strategy in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
+
+:::
+
+After finishing your tax calculation strategy implementation:
+
+1\\. Run the \`build\` command in the root of your Medusa backend:
+
+\`\`\`bash npm2yarn
+npm run build
+\`\`\`
+
+2\\. Start the backend with the \`develop\` command:
+
+\`\`\`bash
+npx medusa develop
+\`\`\`
+
+3\\. To test out your tax calculatio strategy implementation, you can [trigger taxes calculation manually](https://docs.medusajs.com/modules/taxes/storefront/manual-calculation).
+      `,
+      ],
     },
 
     // WORKFLOWS CONFIG
