@@ -6,7 +6,7 @@ import { Customer } from "../models/customer"
 import { ProviderTaxLine, TaxServiceRate } from "../types/tax-service"
 import { LineAllocationsMap } from "../types/totals"
 import { TransactionBaseService } from "./transaction-base-service"
-import { MedusaContainer } from "medusa-core-utils"
+import { MedusaContainer } from "@medusajs/types"
 
 /**
  * A shipping method and the tax rates configured to apply to the
