@@ -83,14 +83,6 @@ export default async ({
     )
   )
 
-  // Adds core api routes
-  await new RoutesLoader({
-    app,
-    rootDir: path.join(__dirname, "../api-v2"),
-    activityId: activityId,
-    configModule,
-  }).load()
-
   await promiseAll(
     resolved.map(async (pluginDetails) => {
       registerRepositories(pluginDetails, container)
