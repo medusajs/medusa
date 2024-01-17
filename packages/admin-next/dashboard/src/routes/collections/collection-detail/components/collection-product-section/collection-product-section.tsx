@@ -68,11 +68,17 @@ export const CollectionProductSection = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const params = useQueryParams(["q", "order"])
-  const { products, count, isLoading, isError, error } = useAdminProducts({
-    limit: PAGE_SIZE,
-    offset: pageIndex * PAGE_SIZE,
-    collection_id: [collection.id],
-  })
+  const { products, count, isLoading, isError, error } = useAdminProducts(
+    {
+      limit: PAGE_SIZE,
+      offset: pageIndex * PAGE_SIZE,
+      collection_id: [collection.id],
+      ...params,
+    },
+    {
+      keepPreviousData: true,
+    }
+  )
 
   const columns = useColumns()
 
@@ -150,7 +156,7 @@ export const CollectionProductSection = ({
           <div></div>
           <div className="flex items-center gap-x-2">
             <Query />
-            <OrderBy keys={["title"]} />
+            <OrderBy keys={["title", "status", "created_at", "updated_at"]} />
           </div>
         </div>
       )}
