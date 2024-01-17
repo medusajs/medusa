@@ -141,28 +141,21 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
             ? resultFrom.__step__
             : resultFrom
 
-        if (resFrom) {
-          if (Array.isArray(resFrom)) {
-            result = resFrom.map((from) => {
-              const res = transaction.getContext().invoke?.[from]
-              return res?.__type ===
-                OrchestrationUtils.SymbolWorkflowWorkflowData
-                ? res.output
-                : res
-            })
-          } else {
-            const res = transaction.getContext().invoke?.[resFrom]
-            result =
-              res?.__type === OrchestrationUtils.SymbolWorkflowWorkflowData
-                ? res.output
-                : res
-          }
+        const resIsArray = Array.isArray(resFrom)
+        const resFromArray = resIsArray ? resFrom : [resFrom]
 
-          const ret = result || resFrom
-          result = options?.wrappedInput
-            ? await resolveValue(ret, transaction.getContext())
-            : ret
-        }
+        result = resFromArray.map((from) => {
+          const res = transaction.getContext().invoke?.[from]
+          return res?.__type === OrchestrationUtils.SymbolWorkflowWorkflowData
+            ? res.output
+            : res
+        })
+        result = resIsArray ? result : result[0]
+
+        const ret = result || resFrom
+        result = options?.wrappedInput
+          ? await resolveValue(ret, transaction.getContext())
+          : ret
       }
 
       return {
