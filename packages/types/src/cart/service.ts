@@ -7,6 +7,7 @@ import {
   CartLineItemDTO,
   FilterableAddressProps,
   FilterableCartProps,
+  FilterableLineItemAdjustmentProps,
   FilterableLineItemProps,
   LineItemAdjustmentLineDTO,
 } from "./common"
@@ -118,6 +119,12 @@ export interface ICartModuleService extends IModuleService {
     selector: Partial<CartLineItemDTO>,
     sharedContext?: Context
   ): Promise<void>
+
+  listLineItemAdjustments(
+    filters: FilterableLineItemAdjustmentProps,
+    config?: FindConfig<LineItemAdjustmentLineDTO>,
+    sharedContext?: Context
+  ): Promise<LineItemAdjustmentLineDTO[]>
 
   addLineItemAdjustments(
     data: CreateLineItemAdjustmentDTO[]

@@ -542,7 +542,7 @@ export default class CartModuleService implements ICartModuleService {
 
   @InjectManager("baseRepository_")
   async listLineItemAdjustments(
-    filters = {},
+    filters: CartTypes.FilterableLineItemAdjustmentProps = {},
     config: FindConfig<CartTypes.LineItemAdjustmentLineDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ) {

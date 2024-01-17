@@ -1037,4 +1037,78 @@ describe("Cart Module Service", () => {
       )
     })
   })
+
+  describe("removeLineItemAdjustments", () => {
+    it("should remove a line item succesfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [item] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+
+      const [adjustment] = await service.addLineItemAdjustments(
+        createdCart.id,
+        [
+          {
+            item_id: item.id,
+            amount: 50,
+          },
+        ]
+      )
+
+      expect(adjustment.item_id).toBe(item.id)
+
+      await service.removeLineItemAdjustments(adjustment.id)
+
+      const adjustments = await service.listLineItemAdjustments({
+        item_id: item.id,
+      })
+
+      expect(adjustments?.length).toBe(0)
+    })
+
+    it("should remove a line item succesfully with selector", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [item] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+
+      const [adjustment] = await service.addLineItemAdjustments(
+        createdCart.id,
+        [
+          {
+            item_id: item.id,
+            amount: 50,
+          },
+        ]
+      )
+
+      expect(adjustment.item_id).toBe(item.id)
+
+      await service.removeLineItemAdjustments({ item_id: item.id })
+
+      const adjustments = await service.listLineItemAdjustments({
+        item_id: item.id,
+      })
+
+      expect(adjustments?.length).toBe(0)
+    })
+  })
 })
