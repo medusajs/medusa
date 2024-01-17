@@ -467,6 +467,26 @@ module.exports = {
       },
     },
 
+    // TAX CALCULATION CONFIG
+    "^tax_calculation": {
+      reflectionGroups: {
+        Properties: false,
+      },
+      frontmatterData: {
+        displayed_sidebar: "modules",
+      },
+    },
+    "^tax_calculation/.*AbstractTaxCalculationStrategy": {
+      reflectionDescription: `In this document, you’ll learn how to override the tax calculations strategy in the Medusa backend and the methods you must implement in it.`,
+      frontmatterData: {
+        displayed_sidebar: "modules",
+        slug: "/modules/taxes/backend/tax-calculation-strategy",
+      },
+      reflectionTitle: {
+        fullReplacement: "How to Override a Tax Calculation Strategy",
+      },
+    },
+
     // WORKFLOWS CONFIG
     "^workflows": {
       expandMembers: true,
