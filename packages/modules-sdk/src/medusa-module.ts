@@ -1,5 +1,6 @@
 import {
   ExternalModuleDeclaration,
+  IModuleService,
   InternalModuleDeclaration,
   LinkModuleDefinition,
   LoadedModule,
@@ -84,6 +85,22 @@ export class MedusaModule {
 
       return MedusaModule.getModuleInstance(key)
     })
+  }
+  
+  public static onApplicationStart(): void {
+    for (const instances of MedusaModule.instances_.values()) {
+      for (const instance of Object.values(instances) as IModuleService[]) {
+        console.log(instance)
+        if (instance?.__hooks) {
+          instance.__hooks?.onApplicationStart
+            ?.bind(instance)()
+            .catch(() => {
+              // The module should handle this and log it
+              return void 0
+            })
+        }
+      }
+    }
   }
 
   public static clearInstances(): void {
