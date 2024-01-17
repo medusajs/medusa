@@ -262,6 +262,7 @@ export function mikroOrmBaseRepositoryFactory<
     }
 
     async update(data: TDTos["update"][], context?: Context): Promise<T[]> {
+      // TODO: Move this logic to the service packages/utils/src/modules-sdk/abstract-service-factory.ts
       const manager = this.getActiveManager<EntityManager>(context)
 
       const primaryKeys =

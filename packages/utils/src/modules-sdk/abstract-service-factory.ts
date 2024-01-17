@@ -1,12 +1,18 @@
 import {
   doNotForceTransaction,
+  isDefined,
+  isString,
   lowerCaseFirst,
+  MedusaError,
   shouldForceTransaction,
 } from "../common"
 import { InjectManager, InjectTransactionManager } from "./decorators"
-import { Context, FindConfig } from "@medusajs/types"
+import {
+  Context,
+  FilterQuery as InternalFilerQuery,
+  FindConfig,
+} from "@medusajs/types"
 import { MedusaContext } from "../decorators"
-import { retrieveEntity } from "./retrieve-entity"
 import { buildQuery } from "./build-query"
 import { EntityClass } from "@mikro-orm/core/typings"
 import { EntitySchema } from "@mikro-orm/core"
@@ -43,8 +49,8 @@ export interface AbstractService<
     config?: FindConfig<TEntityMethod>,
     sharedContext?: Context
   ): Promise<[TEntity[], number]>
-  create(data: any, sharedContext?: Context): Promise<TEntity[]>
-  update(data: any, sharedContext?: Context): Promise<TEntity[]>
+  create(data: any[], sharedContext?: Context): Promise<TEntity[]>
+  update(data: any[], sharedContext?: Context): Promise<TEntity[]>
   delete(ids: string[], sharedContext?: Context): Promise<void>
   softDelete(
     ids: string[],
@@ -95,19 +101,53 @@ export function abstractServiceFactory<
 
     @InjectManager(propertyRepositoryName)
     async retrieve<TEntityMethod = TEntity>(
-      id: string,
+      primaryKeyValues: string | string[] | object[],
       config: FindConfig<TEntityMethod> = {},
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity> {
-      // TODO: Add support for composite primary keys
-      return (await retrieveEntity({
-        id: id,
-        identifierColumn: AbstractService_.retrievePrimaryKeys(model)[0],
-        entityName: model.name,
-        repository: this[propertyRepositoryName],
-        config,
-        sharedContext,
-      })) as TEntity
+      const primaryKeys = AbstractService_.retrievePrimaryKeys(model)
+
+      if (!isDefined(primaryKeyValues)) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `${lowerCaseFirst(model.name)} ${primaryKeys.join(
+            ", "
+          )} must be defined`
+        )
+      }
+
+      let primaryKeysCriteria = {}
+      if (primaryKeys.length === 1) {
+        primaryKeysCriteria[primaryKeys[0]] = primaryKeyValues
+      } else {
+        primaryKeysCriteria = (primaryKeyValues as string[] | object[]).map(
+          (primaryKeyValue) => ({
+            $and: primaryKeys.map((key) => ({ [key]: primaryKeyValue[key] })),
+          })
+        )
+      }
+
+      const queryOptions = buildQuery<TEntity>(primaryKeysCriteria, config)
+
+      const entities = await this[propertyRepositoryName].find(
+        queryOptions,
+        sharedContext
+      )
+
+      if (!entities?.length) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `${model.name} with ${primaryKeys.join(", ")}: ${
+            Array.isArray(primaryKeyValues)
+              ? primaryKeyValues.map((v) =>
+                  [isString(v) ? v : Object.values(v)].join(", ")
+                )
+              : primaryKeyValues
+          } was not found`
+        )
+      }
+
+      return entities[0]
     }
 
     @InjectManager(propertyRepositoryName)
@@ -162,30 +202,32 @@ export function abstractServiceFactory<
 
     @InjectTransactionManager(doNotForceTransaction, propertyRepositoryName)
     async delete(
-      ids: string[],
+      primaryKeyValues: string[] | object[],
       @MedusaContext() sharedContext: Context = {}
     ): Promise<void> {
-      await this[propertyRepositoryName].delete(ids, sharedContext)
+      await this[propertyRepositoryName].delete(primaryKeyValues, sharedContext)
     }
 
     @InjectTransactionManager(propertyRepositoryName)
     async softDelete(
-      ids: string[],
+      idsOrFilter: string[] | InternalFilerQuery,
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[TEntity[], Record<string, unknown[]>]> {
-      return await this[propertyRepositoryName].softDelete(ids, {
-        transactionManager: sharedContext.transactionManager,
-      })
+      return await this[propertyRepositoryName].softDelete(
+        idsOrFilter,
+        sharedContext
+      )
     }
 
     @InjectTransactionManager(propertyRepositoryName)
     async restore(
-      ids: string[],
+      idsOrFilter: string[] | InternalFilerQuery,
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[TEntity[], Record<string, unknown[]>]> {
-      return await this[propertyRepositoryName].restore(ids, {
-        transactionManager: sharedContext.transactionManager,
-      })
+      return await this[propertyRepositoryName].restore(
+        idsOrFilter,
+        sharedContext
+      )
     }
   }
 
