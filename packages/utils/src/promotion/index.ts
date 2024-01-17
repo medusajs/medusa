@@ -33,3 +33,11 @@ export enum CampaignBudgetType {
   SPEND = "spend",
   USAGE = "usage",
 }
+
+export enum ComputedActions {
+  ADD_ITEM_ADJUSTMENT = "addItemAdjustment",
+  ADD_SHIPPING_METHOD_ADJUSTMENT = "addShippingMethodAdjustment",
+  REMOVE_ITEM_ADJUSTMENT = "removeItemAdjustment",
+  REMOVE_SHIPPING_METHOD_ADJUSTMENT = "removeShippingMethodAdjustment",
+  CAMPAIGN_BUDGET_EXCEEDED = "campaignBudgetExceeded",
+}
