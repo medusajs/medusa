@@ -56,7 +56,17 @@
     }
   },
   "collections": {
-    "domain": "Collections"
+    "domain": "Collections",
+    "createCollection": "Create Collection",
+    "createCollectionHint": "Create a new collection to organize your products.",
+    "editCollection": "Edit Collection",
+    "handleTooltip": "The handle is used to reference the collection in your storefront. If not specified, the handle will be generated from the collection title.",
+    "deleteWarning_one": "You are about to delete {{count}} collection. This action cannot be undone.",
+    "deleteWarning_other": "You are about to delete {{count}} collections. This action cannot be undone.",
+    "viewProduct": "View product",
+    "removeSingleProductWarning": "You are about to remove the product {{title}} from the collection. This action cannot be undone.",
+    "removeProductsWarning_one": "You are about to remove {{count}} product from the collection. This action cannot be undone.",
+    "removeProductsWarning_other": "You are about to remove {{count}} products from the collection. This action cannot be undone."
   },
   "categories": {
     "domain": "Categories"
@@ -78,7 +88,8 @@
     "changePasswordPromptDescription": "You are about to change the password for {{email}}. Make sure that you have communicated the new password to the customer before proceeding.",
     "guest": "Guest",
     "registered": "Registered",
-    "firstSeen": "First seen"
+    "firstSeen": "First seen",
+    "viewOrder": "View order"
   },
   "customerGroups": {
     "domain": "Customer Groups",
@@ -153,7 +164,9 @@
     "addSalesChannels": "Add sales channels",
     "detailsHint": "Specify the details of the location.",
     "noLocationsFound": "No locations found",
-    "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone."
+    "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone.",
+    "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the location.",
+    "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location."
   },
   "salesChannels": {
     "domain": "Sales Channels",
@@ -218,6 +231,7 @@
     "phone": "Phone",
     "metadata": "Metadata",
     "selectCountry": "Select country",
+    "products": "Products",
     "variants": "Variants",
     "orders": "Orders",
     "account": "Account",

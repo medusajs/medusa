@@ -1,5 +1,5 @@
 import { ProductCollection } from "@medusajs/medusa"
-import { Button, Container, Heading, Table, clx } from "@medusajs/ui"
+import { Button, Container, Heading, Table, clx, usePrompt } from "@medusajs/ui"
 import {
   PaginationState,
   createColumnHelper,
@@ -7,11 +7,13 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { useAdminCollections } from "medusa-react"
+import { useAdminCollections, useAdminDeleteCollection } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
 
+import { PencilSquare, Trash } from "@medusajs/icons"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
@@ -150,8 +152,49 @@ const CollectionActions = ({
   collection: ProductCollection
 }) => {
   const { t } = useTranslation()
+  const prompt = usePrompt()
 
-  return <div></div>
+  const { mutateAsync } = useAdminDeleteCollection(collection.id)
+
+  const handleDelete = async () => {
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("collections.deleteWarning", {
+        count: 1,
+      }),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync()
+  }
+
+  return (
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: t("general.edit"),
+              to: `/collections/${collection.id}/edit`,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              icon: <Trash />,
+              label: t("general.delete"),
+              onClick: handleDelete,
+            },
+          ],
+        },
+      ]}
+    />
+  )
 }
 
 const columnHelper = createColumnHelper<ProductCollection>()
@@ -164,6 +207,10 @@ const useColumns = () => {
       columnHelper.accessor("title", {
         header: t("fields.title"),
         cell: ({ getValue }) => getValue(),
+      }),
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => <CollectionActions collection={row.original} />,
       }),
     ],
     [t]

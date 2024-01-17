@@ -1,14 +1,13 @@
-import { EllipsisHorizontal, PencilSquare, Trash } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { SalesChannel } from "@medusajs/medusa"
 import {
   Button,
   Container,
-  DropdownMenu,
   Heading,
-  IconButton,
   StatusBadge,
   Table,
   clx,
+  usePrompt,
 } from "@medusajs/ui"
 import {
   PaginationState,
@@ -22,6 +21,7 @@ import { useAdminDeleteSalesChannel, useAdminSalesChannels } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { OrderBy } from "../../../../../components/filtering/order-by"
 import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
@@ -162,29 +162,57 @@ export const SalesChannelListTable = () => {
   )
 }
 
-const SalesChannelActions = ({ id }: { id: string }) => {
-  const { mutateAsync } = useAdminDeleteSalesChannel(id)
+const SalesChannelActions = ({
+  salesChannel,
+}: {
+  salesChannel: SalesChannel
+}) => {
   const { t } = useTranslation()
+  const prompt = usePrompt()
+  const { mutateAsync } = useAdminDeleteSalesChannel(salesChannel.id)
+
+  const handleDelete = async () => {
+    const confirm = await prompt({
+      title: t("general.areYouSure"),
+      description: t("salesChannels.deleteSalesChannelWarning", {
+        name: salesChannel.name,
+      }),
+      verificationInstruction: t("general.typeToConfirm"),
+      verificationText: salesChannel.name,
+      confirmText: t("general.delete"),
+      cancelText: t("general.cancel"),
+    })
+
+    if (!confirm) {
+      return
+    }
+
+    await mutateAsync()
+  }
 
   return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
-        <IconButton variant="transparent">
-          <EllipsisHorizontal />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <DropdownMenu.Item className="gap-x-2">
-          <PencilSquare className="text-ui-fg-subtle" />
-          <span>{t("general.edit")}</span>
-        </DropdownMenu.Item>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Item className="gap-x-2">
-          <Trash className="text-ui-fg-subtle" />
-          <span>{t("general.delete")}</span>
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
-    </DropdownMenu>
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: t("general.edit"),
+              to: `/settings/sales-channels/${salesChannel.id}/edit`,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              icon: <Trash />,
+              label: t("general.delete"),
+              onClick: handleDelete,
+            },
+          ],
+        },
+      ]}
+    />
   )
 }
 
@@ -223,7 +251,7 @@ const useColumns = () => {
       columnHelper.display({
         id: "actions",
         cell: ({ row }) => {
-          return <SalesChannelActions id={row.original.id} />
+          return <SalesChannelActions salesChannel={row.original} />
         },
       }),
     ],

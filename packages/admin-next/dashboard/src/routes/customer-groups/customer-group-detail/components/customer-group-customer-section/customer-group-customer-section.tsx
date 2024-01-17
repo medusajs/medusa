@@ -26,11 +26,11 @@ import {
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import {
   NoRecords,
   NoResults,
 } from "../../../../../components/common/empty-table-content"
-import { TableRowActions } from "../../../../../components/common/table-row-actions"
 import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
@@ -279,7 +279,7 @@ const CustomerActions = ({
   }
 
   return (
-    <TableRowActions
+    <ActionMenu
       groups={[
         {
           actions: [

@@ -1,11 +1,9 @@
-import { EllipsisHorizontal, PencilSquare } from "@medusajs/icons"
+import { PencilSquare } from "@medusajs/icons"
 import { Customer } from "@medusajs/medusa"
 import {
   Button,
   Container,
-  DropdownMenu,
   Heading,
-  IconButton,
   StatusBadge,
   Table,
   clx,
@@ -21,6 +19,7 @@ import { useAdminCustomers } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
@@ -162,24 +161,19 @@ const CustomerActions = ({ customer }: { customer: Customer }) => {
   const { t } = useTranslation()
 
   return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
-        <IconButton size="small" variant="transparent">
-          <EllipsisHorizontal />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <Link to={`/customers/${customer.id}/edit`}>
-          <DropdownMenu.Item
-            className="flex items-center gap-x-2"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <PencilSquare className="text-ui-fg-subtle" />
-            {t("general.edit")}
-          </DropdownMenu.Item>
-        </Link>
-      </DropdownMenu.Content>
-    </DropdownMenu>
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: t("general.edit"),
+              to: `/customers/${customer.id}/edit`,
+            },
+          ],
+        },
+      ]}
+    />
   )
 }
 
