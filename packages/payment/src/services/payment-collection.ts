@@ -1,5 +1,5 @@
 import { PaymentCollection } from "@models"
-import { Context, DAL } from "@medusajs/types"
+import { Context, DAL, PaymentCollectionDTO } from "@medusajs/types"
 import {
   doNotForceTransaction,
   InjectTransactionManager,
@@ -7,12 +7,14 @@ import {
   shouldForceTransaction,
 } from "@medusajs/utils"
 
+import { PaymentCollectionRepository } from "@repositories"
+
 type InjectedDependencies = {
   paymentCollectionRepository: DAL.RepositoryService
 }
 
 export default class PaymentCollectionService<
-  T extends PaymentCollection = PaymentCollection
+  TEntity extends PaymentCollection = PaymentCollection
 > {
   protected readonly paymentCollectionRepository_: DAL.RepositoryService
 
@@ -24,7 +26,14 @@ export default class PaymentCollectionService<
     shouldForceTransaction,
     "paymentCollectionRepository_"
   )
-  create() {}
+  async create(
+    data: PaymentCollectionDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentCollectionDTO[]> {
+    return (await (
+      this.paymentCollectionRepository_ as PaymentCollectionRepository
+    ).create(data, sharedContext)) as TEntity[]
+  }
 
   @InjectTransactionManager(
     doNotForceTransaction,

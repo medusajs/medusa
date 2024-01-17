@@ -18,7 +18,9 @@ export default async ({
   )?.repositories
 
   container.register({
-    // paymentService: asClass(defaultServices.PaymentService).singleton(),
+    paymentCollectionService: asClass(
+      defaultServices.PaymentCollection
+    ).singleton(),
   })
 
   if (customRepositories) {
@@ -35,5 +37,8 @@ export default async ({
 function loadDefaultRepositories({ container }) {
   container.register({
     baseRepository: asClass(defaultRepositories.BaseRepository).singleton(),
+    paymentCollectionRepository: asClass(
+      defaultRepositories.PaymentCollectionRepository
+    ).singleton(),
   })
 }
