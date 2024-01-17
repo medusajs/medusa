@@ -81,7 +81,6 @@ export default class PaymentModule<TPayment extends Payment = Payment>
   @InjectTransactionManager("baseRepository_")
   async deletePaymentCollection(
     ids: string | string[],
-    data: CreatePaymentCollectionDTO | CreatePaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
   ) {
     const paymentCollectionIds = Array.isArray(ids) ? ids : [ids]
