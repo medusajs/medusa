@@ -128,7 +128,12 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         throw new Error(errorMessage)
       }
 
-      const result = await resolveValue(resultFrom, transaction.getContext())
+      let result
+      if (options?.wrappedInput) {
+        result = await resolveValue(resultFrom, transaction.getContext())
+      } else {
+        result = transaction.getContext().invoke?.[resultFrom]
+      }
 
       return {
         errors,
