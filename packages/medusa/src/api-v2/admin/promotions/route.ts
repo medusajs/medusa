@@ -10,11 +10,11 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   )
 
   const [promotions, count] = await promotionModuleService.listAndCount(
-    req.filterableFields || {},
-    req.listConfig || {}
+    req.filterableFields,
+    req.listConfig
   )
 
-  const { limit, offset } = req.validatedQuery || {}
+  const { limit, offset } = req.validatedQuery
 
   res.json({
     count,
