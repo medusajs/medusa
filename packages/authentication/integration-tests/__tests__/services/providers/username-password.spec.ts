@@ -49,24 +49,25 @@ describe("AuthenticationModuleService - AuthProvider", () => {
         // Add authenticated user
         {
           provider: "usernamePassword",
+          entity_id: email,
           provider_metadata: {
-            email,
             password: passwordHash,
           },
         },
       ])
 
       const res = await service.authenticate("usernamePassword", {
-        email: "test@test.com",
-        password: password,
+        body: {
+          email: "test@test.com",
+          password: password,
+        },
       })
 
       expect(res).toEqual({
         success: true,
         authUser: expect.objectContaining({
+          entity_id: email,
           provider_metadata: {
-            email,
-            password_hash: passwordHash,
           },
         }),
       })
@@ -78,7 +79,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
       await seedDefaultData(testManager)
 
       const res = await service.authenticate("usernamePassword", {
-        email: "test@test.com",
+        body: { email: "test@test.com" },
       })
 
       expect(res).toEqual({
@@ -91,7 +92,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
       await seedDefaultData(testManager)
 
       const res = await service.authenticate("usernamePassword", {
-        password: "supersecret",
+        body: { password: "supersecret" },
       })
 
       expect(res).toEqual({
@@ -112,16 +113,18 @@ describe("AuthenticationModuleService - AuthProvider", () => {
         // Add authenticated user
         {
           provider: "usernamePassword",
+          entity_id: email,
           provider_metadata: {
-            email,
             password_hash: passwordHash,
           },
         },
       ])
 
       const res = await service.authenticate("usernamePassword", {
-        email: "test@test.com",
-        password: "password",
+        body: {
+          email: "test@test.com",
+          password: "password",
+        },
       })
 
       expect(res).toEqual({

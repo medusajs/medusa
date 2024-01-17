@@ -53,15 +53,10 @@ describe("AuthenticationModuleService - AuthProvider", () => {
         },
       ])
 
-      let error
+      const { success, error } = await service.authenticate("notRegistered", {})
 
-      try {
-        await service.authenticate("notRegistered", {})
-      } catch (err) {
-        error = err
-      }
-
-      expect(error.message).toEqual(
+      expect(success).toBe(false)
+      expect(error).toEqual(
         "AuthenticationProvider with for provider: notRegistered wasn't registered in the module. Have you configured your options correctly?"
       )
     })

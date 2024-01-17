@@ -351,8 +351,10 @@ export default class AuthenticationModuleService<
   ): AbstractAuthenticationModuleProvider {
     let containerProvider: AbstractAuthenticationModuleProvider
     try {
+      console.log("containerProvider")
       containerProvider = this.__container__[`auth_provider_${provider}`]
     } catch (error) {
+      console.log(error)
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `AuthenticationProvider with for provider: ${provider} wasn't registered in the module. Have you configured your options correctly?`
@@ -369,14 +371,17 @@ export default class AuthenticationModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthenticationResponse> {    
     let registeredProvider 
+    console.log("hello")
     try { 
       await this.retrieveAuthProvider(provider, {})
 
+      console.log(registeredProvider)
       registeredProvider = this.getRegisteredAuthenticationProvider(provider)
+
+      return await registeredProvider.authenticate(authenticationData)
     } catch (error) { 
+      console.log(JSON.stringify(error, null, 2))
       return { success: false, error: error.message }
     }
-
-    return await registeredProvider.authenticate(authenticationData)
   }
 }

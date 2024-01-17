@@ -42,7 +42,7 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
       UsernamePasswordProvider.PROVIDER
     )
 
-    const password_hash = authUser.provider_metadata?.password_hash
+    const password_hash = authUser.provider_metadata?.password
 
     if (password_hash && typeof password_hash === "string") {
       const buf = Buffer.from(password_hash, "base64")
@@ -50,6 +50,8 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
       const success = await Scrypt.verify(buf, password)
 
       if (success) {
+        delete authUser.provider_metadata!.password
+
         return { success, authUser: JSON.parse(JSON.stringify(authUser)) }
       }
     }
