@@ -308,12 +308,16 @@ export async function MedusaApp(
       }))
   }
 
-  return {
-    modules: allModules,
-    link: remoteLink,
-    query,
-    entitiesMap: schema.getTypeMap(),
-    notFound,
-    runMigrations,
+  try {
+    return {
+      modules: allModules,
+      link: remoteLink,
+      query,
+      entitiesMap: schema.getTypeMap(),
+      notFound,
+      runMigrations,
+    }
+  } finally {
+    await MedusaModule.onApplicationStart()
   }
 }
