@@ -1,5 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
+import { FindParams } from "../../../../types/common"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
@@ -14,3 +15,5 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
   res.status(200).json({ promotion })
 }
+
+export class AdminGetPromotionsPromotionParams extends FindParams {}
