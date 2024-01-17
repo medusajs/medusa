@@ -2017,4 +2017,73 @@ describe("Workflow composer", function () {
       obj: "return from 2",
     })
   })
+
+  it("should compose a workflow that returns an array of steps", async () => {
+    const step1 = createStep("step1", () => {
+      return new StepResponse({
+        obj: "return from 1",
+      })
+    })
+    const step2 = createStep("step2", () => {
+      return new StepResponse({
+        obj: "returned from 2**",
+      })
+    })
+
+    const workflow = createWorkflow("workflow1", function () {
+      const s1 = step1()
+      const s2 = step2()
+
+      return [s1, s2]
+    })
+
+    const { result } = await workflow().run({
+      throwOnError: false,
+    })
+
+    expect(result).toEqual([
+      {
+        obj: "return from 1",
+      },
+      {
+        obj: "returned from 2**",
+      },
+    ])
+  })
+
+  it("should compose a workflow that returns an object mixed of steps and properties", async () => {
+    const step1 = createStep("step1", () => {
+      return new StepResponse({
+        obj: {
+          nested: "nested",
+        },
+      })
+    })
+
+    const step2 = createStep("step2", () => {
+      return new StepResponse({
+        obj: "returned from 2**",
+      })
+    })
+
+    const workflow = createWorkflow("workflow1", function () {
+      const { obj } = step1()
+      const s2 = step2()
+
+      return [{ step1_nested_obj: obj.nested }, s2]
+    })
+
+    const { result } = await workflow().run({
+      throwOnError: false,
+    })
+
+    expect(result).toEqual([
+      {
+        step1_nested_obj: "nested",
+      },
+      {
+        obj: "returned from 2**",
+      },
+    ])
+  })
 })

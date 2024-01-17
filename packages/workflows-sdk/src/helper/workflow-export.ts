@@ -9,7 +9,6 @@ import {
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 
 import { MedusaModule } from "@medusajs/modules-sdk"
-import { OrchestrationUtils } from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { MedusaWorkflow } from "../medusa-workflow"
@@ -129,34 +128,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         throw new Error(errorMessage)
       }
 
-      let result: any = undefined
-
-      if (
-        resultFrom?.__type === OrchestrationUtils.SymbolWorkflowStepTransformer
-      ) {
-        result = await resolveValue(resultFrom, transaction.getContext())
-      } else {
-        const resFrom =
-          resultFrom?.__type === OrchestrationUtils.SymbolWorkflowStep
-            ? resultFrom.__step__
-            : resultFrom
-
-        const resIsArray = Array.isArray(resFrom)
-        const resFromArray = resIsArray ? resFrom : [resFrom]
-
-        result = resFromArray.map((from) => {
-          const res = transaction.getContext().invoke?.[from]
-          return res?.__type === OrchestrationUtils.SymbolWorkflowWorkflowData
-            ? res.output
-            : res
-        })
-        result = resIsArray ? result : result[0]
-
-        const ret = result || resFrom
-        result = options?.wrappedInput
-          ? await resolveValue(ret, transaction.getContext())
-          : ret
-      }
+      const result = await resolveValue(resultFrom, transaction.getContext())
 
       return {
         errors,
