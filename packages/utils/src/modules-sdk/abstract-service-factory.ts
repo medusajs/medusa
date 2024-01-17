@@ -1,22 +1,22 @@
 import {
+  Context,
+  FindConfig,
+  FilterQuery as InternalFilterQuery,
+} from "@medusajs/types"
+import { EntitySchema } from "@mikro-orm/core"
+import { EntityClass } from "@mikro-orm/core/typings"
+import {
+  MedusaError,
   doNotForceTransaction,
   isDefined,
   isString,
   lowerCaseFirst,
-  MedusaError,
   shouldForceTransaction,
   upperCaseFirst,
 } from "../common"
-import { InjectManager, InjectTransactionManager } from "./decorators"
-import {
-  Context,
-  FilterQuery as InternalFilterQuery,
-  FindConfig,
-} from "@medusajs/types"
 import { MedusaContext } from "../decorators"
 import { buildQuery } from "./build-query"
-import { EntityClass } from "@mikro-orm/core/typings"
-import { EntitySchema } from "@mikro-orm/core"
+import { InjectManager, InjectTransactionManager } from "./decorators"
 
 /**
  * Utility factory and interfaces for internal module services
@@ -28,7 +28,7 @@ type Methods = "create" | "update"
 export interface AbstractService<
   TEntity extends {},
   TContainer extends object = object,
-  TDTos extends { [K in Methods]?: any } = { [K in Methods]?: any },
+  TDTOs extends { [K in Methods]?: any } = { [K in Methods]?: any },
   TFilters extends { [K in FilterableMethods]?: any } = {
     [K in FilterableMethods]?: any
   }
@@ -50,8 +50,8 @@ export interface AbstractService<
     config?: FindConfig<TEntityMethod>,
     sharedContext?: Context
   ): Promise<[TEntity[], number]>
-  create(data: any[], sharedContext?: Context): Promise<TEntity[]>
-  update(data: any[], sharedContext?: Context): Promise<TEntity[]>
+  create(data: TDTOs["create"][], sharedContext?: Context): Promise<TEntity[]>
+  update(data: TDTOs["update"], sharedContext?: Context): Promise<TEntity[]>
   delete(
     primaryKeyValues: string[] | object[],
     sharedContext?: Context
@@ -68,7 +68,7 @@ export interface AbstractService<
 
 export function abstractServiceFactory<
   TContainer extends object = object,
-  TDTos extends { [K in Methods]?: any } = { [K in Methods]?: any },
+  TDTOs extends { [K in Methods]?: any } = { [K in Methods]?: any },
   TFilters extends { [K in FilterableMethods]?: any } = {
     [K in FilterableMethods]?: any
   }
@@ -78,7 +78,7 @@ export function abstractServiceFactory<
   new <TEntity extends {}>(container: TContainer): AbstractService<
     TEntity,
     TContainer,
-    TDTos,
+    TDTOs,
     TFilters
   >
 } {
@@ -86,7 +86,7 @@ export function abstractServiceFactory<
   const propertyRepositoryName = `__${injectedRepositoryName}__`
 
   class AbstractService_<TEntity extends {}>
-    implements AbstractService<TEntity, TContainer, TDTos, TFilters>
+    implements AbstractService<TEntity, TContainer, TDTOs, TFilters>
   {
     readonly __container__: TContainer;
     [key: string]: any
@@ -188,7 +188,7 @@ export function abstractServiceFactory<
 
     @InjectTransactionManager(shouldForceTransaction, propertyRepositoryName)
     async create(
-      data: TDTos["create"][],
+      data: TDTOs["create"][],
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity[]> {
       return (await this[propertyRepositoryName].create(
@@ -199,7 +199,7 @@ export function abstractServiceFactory<
 
     @InjectTransactionManager(shouldForceTransaction, propertyRepositoryName)
     async update(
-      data: TDTos["update"][],
+      data: TDTOs["update"][],
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity[]> {
       return (await this[propertyRepositoryName].update(
@@ -241,5 +241,5 @@ export function abstractServiceFactory<
 
   return AbstractService_ as unknown as new <TEntity extends {}>(
     container: TContainer
-  ) => AbstractService<TEntity, TContainer, TDTos, TFilters>
+  ) => AbstractService<TEntity, TContainer, TDTOs, TFilters>
 }
