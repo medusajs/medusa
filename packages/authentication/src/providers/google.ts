@@ -225,7 +225,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
 
       var state = (req.query && req.query.state) || (req.body && req.body.state)
       try {
-        this._stateStore.verify(req, state, loaded)
+        this._stateStore.verify(req, state, loaded) // TODO: call loaded
       } catch (ex) {
         return { success: false, error: ex }
       }
@@ -246,7 +246,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
         params.redirect_uri = callbackURL
       }
 
-      function stored(err, state) {
+      function stored() {
         var parsed: Omit<UrlWithParsedQuery, "search"> & {
           search?: string | null
         } = url.parse(oauth2._authorizeUrl, true)

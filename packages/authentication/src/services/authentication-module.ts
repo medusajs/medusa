@@ -158,7 +158,7 @@ export default class AuthenticationModuleService<
   protected async createAuthProviders_(
     data: any[],
     @MedusaContext() sharedContext: Context
-  ): Promise<AuthenticationTypes.AuthProviderDTO[]> {
+  ): Promise<TAuthProvider[]> {
     return await this.authProviderService_.create(data, sharedContext)
   }
 
@@ -196,7 +196,7 @@ export default class AuthenticationModuleService<
   async updateAuthProvider_(
     data: AuthenticationTypes.UpdateAuthProviderDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthProviderDTO[]> {
+  ): Promise<TAuthProvider[]> {
     return await this.authProviderService_.update(data, sharedContext)
   }
 

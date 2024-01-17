@@ -24,7 +24,7 @@ export default class AuthProvider {
   domain: ProviderDomain = ProviderDomain.ALL
 
   @Property({ columnType: "jsonb", nullable: true })
-  config: Record<string, any> | null
+  config: Record<string, unknown> | null
 
   @Property({ columnType: "boolean", default: false })
   is_active = false
