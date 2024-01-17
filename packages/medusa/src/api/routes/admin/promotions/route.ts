@@ -1,8 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
-import { IsOptional, IsString } from "class-validator"
-import { extendedFindParamsMixin } from "../../../types/common"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const promotionModuleService: IPromotionModuleService = req.scope.resolve(
@@ -22,13 +20,4 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     offset,
     limit,
   })
-}
-
-export class AdminGetPromotionsParams extends extendedFindParamsMixin({
-  limit: 100,
-  offset: 0,
-}) {
-  @IsString()
-  @IsOptional()
-  code?: string
 }
