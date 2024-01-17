@@ -1,6 +1,17 @@
 import { PaymentCollection } from "@models"
-import { Context, DAL, PaymentCollectionDTO } from "@medusajs/types"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import {
+  Context,
+  DAL,
+  FilterablePaymentCollectionProps,
+  FindConfig,
+  PaymentCollectionDTO,
+} from "@medusajs/types"
+import {
+  InjectManager,
+  InjectTransactionManager,
+  MedusaContext,
+  ModulesSdkUtils,
+} from "@medusajs/utils"
 
 import { PaymentCollectionRepository } from "@repositories"
 
@@ -33,5 +44,39 @@ export default class PaymentCollectionService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     await this.paymentCollectionRepository_.delete(ids, sharedContext)
+  }
+
+  @InjectManager("paymentCollectionRepository_")
+  async list(
+    filters: FilterablePaymentCollectionProps = {},
+    config: FindConfig<PaymentCollectionDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TEntity[]> {
+    const queryOptions = ModulesSdkUtils.buildQuery<PaymentCollection>(
+      filters,
+      config
+    )
+
+    return (await this.paymentCollectionRepository_.find(
+      queryOptions,
+      sharedContext
+    )) as TEntity[]
+  }
+
+  @InjectManager("paymentCollectionRepository_")
+  async listAndCount(
+    filters: FilterablePaymentCollectionProps = {},
+    config: FindConfig<PaymentCollectionDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TEntity[], number]> {
+    const queryOptions = ModulesSdkUtils.buildQuery<PaymentCollection>(
+      filters,
+      config
+    )
+
+    return (await this.paymentCollectionRepository_.findAndCount(
+      queryOptions,
+      sharedContext
+    )) as [TEntity[], number]
   }
 }

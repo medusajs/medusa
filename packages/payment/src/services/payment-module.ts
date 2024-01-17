@@ -2,12 +2,18 @@ import {
   Context,
   CreatePaymentCollectionDTO,
   DAL,
+  FilterablePaymentCollectionProps,
+  FindConfig,
   InternalModuleDeclaration,
   IPaymentModuleService,
   ModuleJoinerConfig,
   PaymentCollectionDTO,
 } from "@medusajs/types"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import {
+  InjectManager,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/utils"
 
 import * as services from "@services"
 
@@ -88,5 +94,45 @@ export default class PaymentModule<TPayment extends Payment = Payment>
       paymentCollectionIds,
       sharedContext
     )
+  }
+
+  @InjectManager("baseRepository_")
+  async listPaymentCollections(
+    filters?: FilterablePaymentCollectionProps,
+    config?: FindConfig<PaymentCollectionDTO>,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentCollectionDTO[]> {
+    const paymentCollections = await this.paymentCollectionService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<PaymentCollectionDTO[]>(
+      paymentCollections,
+      { populate: true }
+    )
+  }
+
+  @InjectManager("baseRepository_")
+  async listAndCountPaymentCollections(
+    filters?: FilterablePaymentCollectionProps,
+    config?: FindConfig<PaymentCollectionDTO>,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<[PaymentCollectionDTO[], number]> {
+    const [paymentCollections, count] =
+      await this.paymentCollectionService_.listAndCount(
+        filters,
+        config,
+        sharedContext
+      )
+
+    return [
+      await this.baseRepository_.serialize<PaymentCollectionDTO[]>(
+        paymentCollections,
+        { populate: true }
+      ),
+      count,
+    ]
   }
 }
