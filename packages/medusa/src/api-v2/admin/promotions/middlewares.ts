@@ -33,10 +33,13 @@ const listTransformQueryConfig = {
 
 export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
+    matcher: "/admin/promotions*",
+    middlewares: [isFeatureFlagEnabled(MedusaV2Flag.key)],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/promotions",
     middlewares: [
-      isFeatureFlagEnabled(MedusaV2Flag.key),
       transformQuery(AdminGetPromotionsParams, listTransformQueryConfig),
     ],
   },
@@ -44,7 +47,6 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/promotions/*",
     middlewares: [
-      isFeatureFlagEnabled(MedusaV2Flag.key),
       transformQuery(
         AdminGetPromotionsPromotionParams,
         retrieveTransformQueryConfig
