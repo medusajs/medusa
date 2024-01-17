@@ -57,7 +57,7 @@ export default class PaymentCollection {
   })
   refunded_amount?: number | null
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", index: "IDX_payment_collection_region_id" })
   region_id: string
 
   @Property({
