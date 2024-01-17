@@ -7,7 +7,7 @@ export const defaultAdminPromotionRelations = ["campaign", "application_method"]
 export const allowedAdminPromotionRelations = [
   ...defaultAdminPromotionRelations,
 ]
-export const defaultPromotionFields = [
+export const defaultAdminPromotionFields = [
   "id",
   "code",
   "campaign",
@@ -19,7 +19,7 @@ export const defaultPromotionFields = [
 ]
 
 const retrieveTransformQueryConfig = {
-  defaultFields: defaultPromotionFields,
+  defaultFields: defaultAdminPromotionFields,
   defaultRelations: defaultAdminPromotionRelations,
   allowedRelations: allowedAdminPromotionRelations,
   isList: false,
@@ -30,11 +30,21 @@ const listTransformQueryConfig = {
   isList: true,
 }
 
-export const adminPromotionRoutesMiddleware: MiddlewareRoute = {
-  method: ["GET"],
-  matcher: "/admin/promotions*",
-  middlewares: [
-    isFeatureFlagEnabled(MedusaV2Flag.key),
-    transformQuery(AdminGetPromotionsParams, listTransformQueryConfig),
-  ],
-}
+export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
+  {
+    method: ["GET"],
+    matcher: "/admin/promotions",
+    middlewares: [
+      isFeatureFlagEnabled(MedusaV2Flag.key),
+      transformQuery(AdminGetPromotionsParams, listTransformQueryConfig),
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/promotions/*",
+    middlewares: [
+      isFeatureFlagEnabled(MedusaV2Flag.key),
+      transformQuery(AdminGetPromotionsParams, retrieveTransformQueryConfig),
+    ],
+  },
+]

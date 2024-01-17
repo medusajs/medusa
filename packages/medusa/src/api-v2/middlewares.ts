@@ -1,6 +1,6 @@
 import { MiddlewaresConfig } from "../loaders/helpers/routing/types"
-import { adminPromotionRoutesMiddleware } from "./admin/promotions/middleware"
+import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
 
 export const config: MiddlewaresConfig = {
-  routes: [adminPromotionRoutesMiddleware],
+  routes: [...adminPromotionRoutesMiddlewares],
 }
