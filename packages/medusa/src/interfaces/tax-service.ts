@@ -30,11 +30,29 @@ export type ItemTaxCalculationLine = {
  * the items are going.
  */
 export type TaxCalculationContext = {
+  /**
+   * The shipping address used in the cart.
+   */
   shipping_address: Address | null
+  /**
+   * The customer that the cart belongs to.
+   */
   customer: Customer
+  /**
+   * The cart's region.
+   */
   region: Region
+  /**
+   * Whether the cart is used in a return flow.
+   */
   is_return: boolean
+  /**
+   * The shipping methods used in the cart.
+   */
   shipping_methods: ShippingMethod[]
+  /**
+   * Gift cards and Discounts applied on line items.
+   */
   allocation_map: LineAllocationsMap
 }
 
