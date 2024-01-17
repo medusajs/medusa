@@ -57,8 +57,8 @@ export default class PaymentCollection {
   })
   refunded_amount?: number | null
 
-  @Property({ columnType: "text", nullable: true })
-  region_id?: string | null
+  @Property({ columnType: "text" })
+  region_id: string
 
   @Property({
     onCreate: () => new Date(),
