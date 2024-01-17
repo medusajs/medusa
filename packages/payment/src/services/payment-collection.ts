@@ -1,11 +1,6 @@
 import { PaymentCollection } from "@models"
 import { Context, DAL, PaymentCollectionDTO } from "@medusajs/types"
-import {
-  doNotForceTransaction,
-  InjectTransactionManager,
-  MedusaContext,
-  shouldForceTransaction,
-} from "@medusajs/utils"
+import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 
 import { PaymentCollectionRepository } from "@repositories"
 
@@ -22,10 +17,7 @@ export default class PaymentCollectionService<
     this.paymentCollectionRepository_ = paymentCollectionRepository
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "paymentCollectionRepository_"
-  )
+  @InjectTransactionManager("paymentCollectionRepository_")
   async create(
     data: PaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
@@ -35,10 +27,7 @@ export default class PaymentCollectionService<
     ).create(data, sharedContext)) as TEntity[]
   }
 
-  @InjectTransactionManager(
-    doNotForceTransaction,
-    "paymentCollectionRepository_"
-  )
+  @InjectTransactionManager("paymentCollectionRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}

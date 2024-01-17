@@ -32,6 +32,7 @@ describe("Payment Module Service", () => {
         .createPaymentCollection([
           {
             amount: 200,
+            region_id: "req_123",
           } as any,
         ])
         .catch((e) => e)
@@ -44,6 +45,7 @@ describe("Payment Module Service", () => {
         .createPaymentCollection([
           {
             currency_code: "USD",
+            region_id: "req_123",
           } as any,
         ])
         .catch((e) => e)
@@ -51,11 +53,24 @@ describe("Payment Module Service", () => {
       expect(error.message).toContain(
         "Value for PaymentCollection.amount is required, 'undefined' found"
       )
+
+      error = await service
+        .createPaymentCollection([
+          {
+            currency_code: "USD",
+            amount: 200,
+          } as any,
+        ])
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "Value for PaymentCollection.region_id is required, 'undefined' found"
+      )
     })
 
     it("should create a payment collection successfully", async () => {
       const [createdPaymentCollection] = await service.createPaymentCollection([
-        { currency_code: "USD", amount: 200 },
+        { currency_code: "USD", amount: 200, region_id: "reg_123" },
       ])
 
       expect(createdPaymentCollection).toEqual(

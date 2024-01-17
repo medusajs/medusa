@@ -68,4 +68,26 @@ export default class PaymentModule<TPayment extends Payment = Payment>
       }
     )
   }
+
+  deletePaymentCollection(
+    paymentCollectionId: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  deletePaymentCollection(
+    paymentCollectionId: string,
+    sharedContext?: Context
+  ): Promise<void>
+
+  @InjectTransactionManager("baseRepository_")
+  async deletePaymentCollection(
+    ids: string | string[],
+    data: CreatePaymentCollectionDTO | CreatePaymentCollectionDTO[],
+    @MedusaContext() sharedContext?: Context
+  ) {
+    const paymentCollectionIds = Array.isArray(ids) ? ids : [ids]
+    await this.paymentCollectionService_.delete(
+      paymentCollectionIds,
+      sharedContext
+    )
+  }
 }
