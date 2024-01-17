@@ -115,7 +115,7 @@ module.exports = {
       maxLevel: 2,
     },
     "^fulfillment/.*AbstractFulfillmentService": {
-      reflectionDescription: `In this document, you’ll learn how to create a fulfillment provider to a Medusa backend and the methods you must implement in it. If you’re unfamiliar with the Shipping architecture in Medusa, make sure to [check out the overview first](https://docs.medusajs.com/modules/carts-and-checkout/shipping).`,
+      reflectionDescription: `In this document, you’ll learn how to create a fulfillment provider in the Medusa backend and the methods you must implement in it. If you’re unfamiliar with the Shipping architecture in Medusa, make sure to [check out the overview first](https://docs.medusajs.com/modules/carts-and-checkout/shipping).`,
       frontmatterData: {
         displayed_sidebar: "modules",
         slug: "/modules/carts-and-checkout/backend/add-fulfillment-provider",
@@ -520,6 +520,46 @@ npx medusa develop
         kind: false,
         typeParameters: false,
         suffix: " Reference",
+      },
+    },
+
+    // TAX PROVIDER CONFIG
+    "^tax": {
+      reflectionGroups: {
+        Properties: false,
+      },
+      frontmatterData: {
+        displayed_sidebar: "modules",
+      },
+    },
+    "^tax/.*AbstractTaxService": {
+      reflectionDescription: `In this document, you’ll learn how to create a tax provider in the Medusa backend and the methods you must implement in it.`,
+      frontmatterData: {
+        displayed_sidebar: "modules",
+        slug: "/modules/taxes/backend/create-tax-provider",
+      },
+      reflectionTitle: {
+        fullReplacement: "How to Create a Tax Provider",
+      },
+    },
+
+    // TAX CALCULATION CONFIG
+    "^tax_calculation": {
+      reflectionGroups: {
+        Properties: false,
+      },
+      frontmatterData: {
+        displayed_sidebar: "modules",
+      },
+    },
+    "^tax_calculation/.*AbstractTaxCalculationStrategy": {
+      reflectionDescription: `In this document, you’ll learn how to override the tax calculations strategy in the Medusa backend and the methods you must implement in it.`,
+      frontmatterData: {
+        displayed_sidebar: "modules",
+        slug: "/modules/taxes/backend/tax-calculation-strategy",
+      },
+      reflectionTitle: {
+        fullReplacement: "How to Override a Tax Calculation Strategy",
       },
     },
 
