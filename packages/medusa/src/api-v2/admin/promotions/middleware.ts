@@ -30,7 +30,7 @@ const listTransformQueryConfig = {
   isList: true,
 }
 
-export const promotionsRouteMiddleware: MiddlewareRoute = {
+export const adminPromotionRoutesMiddleware: MiddlewareRoute = {
   method: ["GET"],
   matcher: "/admin/promotions*",
   middlewares: [
