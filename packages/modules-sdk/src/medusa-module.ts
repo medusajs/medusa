@@ -90,7 +90,6 @@ export class MedusaModule {
   public static onApplicationStart(): void {
     for (const instances of MedusaModule.instances_.values()) {
       for (const instance of Object.values(instances) as IModuleService[]) {
-        console.log(instance)
         if (instance?.__hooks) {
           instance.__hooks?.onApplicationStart
             ?.bind(instance)()
