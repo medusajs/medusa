@@ -7,15 +7,18 @@ import {
   CartLineItemDTO,
   FilterableAddressProps,
   FilterableCartProps,
+  LineItemTaxLineDTO,
 } from "./common"
 import {
   CreateAddressDTO,
   CreateCartDTO,
   CreateLineItemDTO,
   CreateLineItemForCartDTO,
+  CreateLineItemTaxLineDTO,
   UpdateAddressDTO,
   UpdateCartDTO,
   UpdateLineItemDTO,
+  UpdateLineItemTaxLineDTO,
   UpdateLineItemWithSelectorDTO,
 } from "./mutations"
 
@@ -100,6 +103,43 @@ export interface ICartModuleService extends IModuleService {
   removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
   removeLineItems(
     selector: Partial<CartLineItemDTO>,
+    sharedContext?: Context
+  ): Promise<void>
+
+  listLineItemTaxLines(
+    filters: any,
+    config?: FindConfig<LineItemTaxLineDTO>,
+    sharedContext?: Context
+  ): Promise<LineItemTaxLineDTO[]>
+
+  addLineItemTaxLines(
+    taxLines: CreateLineItemTaxLineDTO[]
+  ): Promise<LineItemTaxLineDTO[]>
+  addLineItemTaxLines(
+    taxLine: CreateLineItemTaxLineDTO
+  ): Promise<LineItemTaxLineDTO[]>
+  addLineItemTaxLines(
+    cartId: string,
+    taxLines: CreateLineItemTaxLineDTO[],
+    sharedContext?: Context
+  ): Promise<LineItemTaxLineDTO[]>
+
+  setLineItemTaxLines(
+    cartId: string,
+    taxLines: (CreateLineItemTaxLineDTO | UpdateLineItemTaxLineDTO)[],
+    sharedContext?: Context
+  ): Promise<LineItemTaxLineDTO[]>
+
+  removeLineItemTaxLines(
+    taxLineIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  removeLineItemTaxLines(
+    taxLineIds: string,
+    sharedContext?: Context
+  ): Promise<void>
+  removeLineItemTaxLines(
+    selector: Partial<LineItemTaxLineDTO>,
     sharedContext?: Context
   ): Promise<void>
 }
