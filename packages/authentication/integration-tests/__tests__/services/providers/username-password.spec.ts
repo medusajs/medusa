@@ -29,6 +29,10 @@ describe("AuthenticationModuleService - AuthProvider", () => {
         schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
       },
     })
+    
+    if(service.__hooks?.onApplicationStart) {
+      await service.__hooks.onApplicationStart()
+    }
   })
 
   afterEach(async () => {
