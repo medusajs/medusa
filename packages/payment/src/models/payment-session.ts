@@ -38,9 +38,6 @@ export default class PaymentSession {
   })
   status: PaymentSessionStatus
 
-  @Property({ columnType: "boolean", nullable: true })
-  is_selected?: boolean | null
-
   @Property({
     columnType: "timestamptz",
     nullable: true,
