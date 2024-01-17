@@ -114,10 +114,12 @@ export function abstractServiceFactory<
       if (!isDefined(primaryKeyValues)) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `${lowerCaseFirst(model.name)}${
+          `${
             primaryKeys.length === 1
-              ? upperCaseFirst(primaryKeys[0])
-              : " " + primaryKeys.join(", ")
+              ? `"${
+                  lowerCaseFirst(model.name) + upperCaseFirst(primaryKeys[0])
+                }"`
+              : `${lowerCaseFirst(model.name)} ${primaryKeys.join(", ")}`
           } must be defined`
         )
       }
