@@ -1,7 +1,7 @@
 import {
   Context,
   DAL,
-  FilterQuery as InternalFilerQuery,
+  FilterQuery as InternalFilterQuery,
   RepositoryTransformOptions,
 } from "@medusajs/types"
 import {
@@ -106,7 +106,7 @@ export class MikroOrmBaseRepository<
 
   @InjectTransactionManager()
   async softDelete(
-    idsOrFilter: string[] | InternalFilerQuery,
+    idsOrFilter: string[] | InternalFilterQuery,
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
@@ -138,7 +138,7 @@ export class MikroOrmBaseRepository<
 
   @InjectTransactionManager()
   async restore(
-    idsOrFilter: string[] | InternalFilerQuery,
+    idsOrFilter: string[] | InternalFilterQuery,
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {

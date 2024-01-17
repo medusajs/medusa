@@ -9,7 +9,7 @@ import {
 import { InjectManager, InjectTransactionManager } from "./decorators"
 import {
   Context,
-  FilterQuery as InternalFilerQuery,
+  FilterQuery as InternalFilterQuery,
   FindConfig,
 } from "@medusajs/types"
 import { MedusaContext } from "../decorators"
@@ -56,11 +56,11 @@ export interface AbstractService<
     sharedContext?: Context
   ): Promise<void>
   softDelete(
-    idsOrFilter: string[] | InternalFilerQuery,
+    idsOrFilter: string[] | InternalFilterQuery,
     sharedContext?: Context
   ): Promise<[TEntity[], Record<string, unknown[]>]>
   restore(
-    idsOrFilter: string[] | InternalFilerQuery,
+    idsOrFilter: string[] | InternalFilterQuery,
     sharedContext?: Context
   ): Promise<[TEntity[], Record<string, unknown[]>]>
 }
@@ -213,7 +213,7 @@ export function abstractServiceFactory<
 
     @InjectTransactionManager(propertyRepositoryName)
     async softDelete(
-      idsOrFilter: string[] | InternalFilerQuery,
+      idsOrFilter: string[] | InternalFilterQuery,
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[TEntity[], Record<string, unknown[]>]> {
       return await this[propertyRepositoryName].softDelete(
@@ -224,7 +224,7 @@ export function abstractServiceFactory<
 
     @InjectTransactionManager(propertyRepositoryName)
     async restore(
-      idsOrFilter: string[] | InternalFilerQuery,
+      idsOrFilter: string[] | InternalFilterQuery,
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[TEntity[], Record<string, unknown[]>]> {
       return await this[propertyRepositoryName].restore(
