@@ -8438,7 +8438,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/promotion@workspace:packages/promotion":
+"@medusajs/promotion@workspace:^, @medusajs/promotion@workspace:packages/promotion":
   version: 0.0.0-use.local
   resolution: "@medusajs/promotion@workspace:packages/promotion"
   dependencies:
@@ -8613,7 +8613,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@^1.10.5, @medusajs/utils@^1.11.1, @medusajs/utils@^1.11.2, @medusajs/utils@^1.11.3, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^1.10.5, @medusajs/utils@^1.11.1, @medusajs/utils@^1.11.2, @medusajs/utils@^1.11.3, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
@@ -31191,6 +31191,9 @@ __metadata:
     "@medusajs/modules-sdk": "workspace:^"
     "@medusajs/pricing": "workspace:^"
     "@medusajs/product": "workspace:^"
+    "@medusajs/promotion": "workspace:^"
+    "@medusajs/types": "workspace:^"
+    "@medusajs/utils": "workspace:^"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
