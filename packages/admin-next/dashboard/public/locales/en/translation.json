@@ -35,6 +35,7 @@
     "areYouSure": "Are you sure?",
     "noRecordsFound": "No records found",
     "typeToConfirm": "Please type {val} to confirm:",
+    "noResults": "No results",
     "noResultsMessage": "Try changing the filters or search query",
     "noRecordsTitle": "No records",
     "noRecordsMessage": "There are no records to show",
@@ -129,10 +130,13 @@
   "regions": {
     "domain": "Regions",
     "createRegion": "Create Region",
+    "createRegionHint": "Manage tax rates and providers for a set of countries.",
     "editRegion": "Edit Region",
     "deleteRegionWarning": "You are about to delete the region {{name}}. This action cannot be undone.",
     "taxInclusiveHint": "When enabled all prices in the region will be tax inclusive.",
-    "providersHint": "The providers that are available in the region."
+    "providersHint": "The providers that are available in the region.",
+    "shippingOptions": "Shipping Options",
+    "returnShippingOptions": "Return Shipping Options"
   },
   "locations": {
     "domain": "Locations",

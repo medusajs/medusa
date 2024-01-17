@@ -1,15 +1,5 @@
-import { EllipsisHorizontal, PencilSquare } from "@medusajs/icons"
-import { Customer } from "@medusajs/medusa"
-import {
-  Button,
-  Container,
-  DropdownMenu,
-  Heading,
-  IconButton,
-  StatusBadge,
-  Table,
-  clx,
-} from "@medusajs/ui"
+import { ProductCollection } from "@medusajs/medusa"
+import { Button, Container, Heading, Table, clx } from "@medusajs/ui"
 import {
   PaginationState,
   createColumnHelper,
@@ -17,18 +7,18 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { useAdminCustomers } from "medusa-react"
+import { useAdminCollections } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
+
 import { NoRecords } from "../../../../../components/common/empty-table-content"
-import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 const PAGE_SIZE = 50
 
-export const CustomerListTable = () => {
+export const CollectionListTable = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
@@ -46,16 +36,18 @@ export const CustomerListTable = () => {
   )
 
   const params = useQueryParams(["q"])
-  const { customers, count, isLoading, isError, error } = useAdminCustomers({
-    limit: PAGE_SIZE,
-    offset: pageIndex * PAGE_SIZE,
-    ...params,
-  })
+  const { collections, count, isError, error, isLoading } = useAdminCollections(
+    {
+      limit: PAGE_SIZE,
+      offset: pageIndex * PAGE_SIZE,
+      ...params,
+    }
+  )
 
   const columns = useColumns()
 
   const table = useReactTable({
-    data: customers ?? [],
+    data: collections ?? [],
     columns,
     pageCount: Math.ceil((count ?? 0) / PAGE_SIZE),
     state: {
@@ -68,7 +60,7 @@ export const CustomerListTable = () => {
 
   const noRecords =
     !isLoading &&
-    (!customers || customers.length === 0) &&
+    (!collections || collections.length === 0) &&
     !Object.values(params).filter(Boolean).length
 
   if (isError) {
@@ -77,19 +69,13 @@ export const CustomerListTable = () => {
 
   return (
     <Container className="p-0 divide-y">
-      <div className="px-6 py-4 flex items-center justify-between">
-        <Heading>{t("customers.domain")}</Heading>
-        <Link to="/customers/create">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading>{t("collections.domain")}</Heading>
+        <Link to="/collections/create">
           <Button size="small" variant="secondary">
             {t("general.create")}
           </Button>
         </Link>
-      </div>
-      <div className="px-6 py-4 flex items-center justify-between">
-        <div></div>
-        <div className="flex items-center gap-x-2">
-          <Query />
-        </div>
       </div>
       {noRecords ? (
         <NoRecords />
@@ -128,7 +114,7 @@ export const CustomerListTable = () => {
                         row.getIsSelected(),
                     }
                   )}
-                  onClick={() => navigate(`/customers/${row.original.id}`)}
+                  onClick={() => navigate(`/collections/${row.original.id}`)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <Table.Cell key={cell.id}>
@@ -158,77 +144,26 @@ export const CustomerListTable = () => {
   )
 }
 
-const CustomerActions = ({ customer }: { customer: Customer }) => {
+const CollectionActions = ({
+  collection,
+}: {
+  collection: ProductCollection
+}) => {
   const { t } = useTranslation()
 
-  return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
-        <IconButton size="small" variant="transparent">
-          <EllipsisHorizontal />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <Link to={`/customers/${customer.id}/edit`}>
-          <DropdownMenu.Item
-            className="flex items-center gap-x-2"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <PencilSquare className="text-ui-fg-subtle" />
-            {t("general.edit")}
-          </DropdownMenu.Item>
-        </Link>
-      </DropdownMenu.Content>
-    </DropdownMenu>
-  )
+  return <div></div>
 }
 
-const columnHelper = createColumnHelper<Customer>()
+const columnHelper = createColumnHelper<ProductCollection>()
 
 const useColumns = () => {
   const { t } = useTranslation()
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "name",
-        header: t("fields.name"),
-        cell: ({ row }) => {
-          const firstName = row.original.first_name
-          const lastName = row.original.last_name
-
-          let value = "-"
-
-          if (firstName && lastName) {
-            value = `${firstName} ${lastName}`
-          } else if (firstName) {
-            value = firstName
-          } else if (lastName) {
-            value = lastName
-          }
-
-          return <span>{value}</span>
-        },
-      }),
-      columnHelper.accessor("email", {
-        header: t("fields.email"),
-        cell: ({ getValue }) => <span>{getValue()}</span>,
-      }),
-      columnHelper.accessor("has_account", {
-        header: t("fields.account"),
-        cell: ({ getValue }) => {
-          const hasAccount = getValue()
-
-          return (
-            <StatusBadge color={hasAccount ? "green" : "blue"}>
-              {hasAccount ? t("customers.registered") : t("customers.guest")}
-            </StatusBadge>
-          )
-        },
-      }),
-      columnHelper.display({
-        id: "actions",
-        cell: ({ row }) => <CustomerActions customer={row.original} />,
+      columnHelper.accessor("title", {
+        header: t("fields.title"),
+        cell: ({ getValue }) => getValue(),
       }),
     ],
     [t]

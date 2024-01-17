@@ -136,11 +136,12 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                lazy: () => import("../../routes/collections/list"),
+                lazy: () => import("../../routes/collections/collection-list"),
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/collections/details"),
+                lazy: () =>
+                  import("../../routes/collections/collection-detail"),
               },
             ],
           },
