@@ -1,19 +1,20 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
 import { IsOptional, IsString } from "class-validator"
-import { Request, Response } from "express"
-import { extendedFindParamsMixin } from "../../../../types/common"
+import { extendedFindParamsMixin } from "../../../types/common"
+import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
-export default async (req: Request, res: Response) => {
+export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const promotionModuleService: IPromotionModuleService = req.scope.resolve(
-    "promotionModuleService"
+    ModuleRegistrationName.PROMOTION
   )
 
   const [promotions, count] = await promotionModuleService.listAndCount(
-    req.filterableFields,
-    req.listConfig
+    req.filterableFields || {},
+    req.listConfig || {}
   )
 
-  const { limit, offset } = req.validatedQuery
+  const { limit, offset } = req.validatedQuery || {}
 
   res.json({
     count,

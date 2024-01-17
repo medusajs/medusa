@@ -6,11 +6,12 @@ import { default as requireCustomerAuthentication } from "./require-customer-aut
 
 export { default as authenticate } from "./authenticate"
 export { default as authenticateCustomer } from "./authenticate-customer"
-export { default as errorHandler } from "./error-handler"
 export { default as wrapHandler } from "./await-middleware"
 export { canAccessBatchJob } from "./batch-job/can-access-batch-job"
 export { getRequestedBatchJob } from "./batch-job/get-requested-batch-job"
 export { doesConditionBelongToDiscount } from "./discount/does-condition-belong-to-discount"
+export { default as errorHandler } from "./error-handler"
+export { isFeatureFlagEnabled } from "./feature-flag-enabled"
 export { default as normalizeQuery } from "./normalized-query"
 export { default as requireCustomerAuthentication } from "./require-customer-authentication"
 export { transformBody } from "./transform-body"

@@ -3,7 +3,7 @@ import {
   promiseAll,
   upperCaseFirst,
 } from "@medusajs/utils"
-import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
+import { Lifetime, aliasTo, asFunction, asValue } from "awilix"
 import { Express } from "express"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
@@ -82,6 +82,14 @@ export default async ({
       async (pluginDetails) => await runSetupFunctions(pluginDetails)
     )
   )
+
+  // Adds core api routes
+  await new RoutesLoader({
+    app,
+    rootDir: path.join(__dirname, "../api-v2"),
+    activityId: activityId,
+    configModule,
+  }).load()
 
   await promiseAll(
     resolved.map(async (pluginDetails) => {
