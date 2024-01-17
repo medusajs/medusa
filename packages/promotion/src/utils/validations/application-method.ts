@@ -9,6 +9,7 @@ import {
   ApplicationMethodType,
   MedusaError,
   isDefined,
+  isPresent,
 } from "@medusajs/utils"
 
 export const allowedAllocationTargetTypes: string[] = [
@@ -32,6 +33,16 @@ export function validateApplicationMethodAttributes(data: {
   max_quantity?: number | null
 }) {
   const allTargetTypes: string[] = Object.values(ApplicationMethodTargetType)
+
+  if (
+    data.allocation === ApplicationMethodAllocation.ACROSS &&
+    isPresent(data.max_quantity)
+  ) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `application_method.max_quantity is not allowed to be set for allocation (${ApplicationMethodAllocation.ACROSS})`
+    )
+  }
 
   if (!allTargetTypes.includes(data.target_type)) {
     throw new MedusaError(
