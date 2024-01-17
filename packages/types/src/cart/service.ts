@@ -80,17 +80,17 @@ export interface ICartModuleService extends IModuleService {
 
   retrieveLineItem(
     itemId: string,
-    config: FindConfig<CartLineItemDTO>,
+    config?: FindConfig<CartLineItemDTO>,
     sharedContext?: Context
   ): Promise<CartLineItemDTO>
 
   listLineItems(
     filters: FilterableLineItemProps,
-    config: FindConfig<CartLineItemDTO>,
+    config?: FindConfig<CartLineItemDTO>,
     sharedContext?: Context
   ): Promise<CartLineItemDTO[]>
 
-  addLineItems(data: CreateLineItemForCartDTO): Promise<CartLineItemDTO>
+  addLineItems(data: CreateLineItemForCartDTO): Promise<CartLineItemDTO[]>
   addLineItems(data: CreateLineItemForCartDTO[]): Promise<CartLineItemDTO[]>
   addLineItems(
     cartId: string,
@@ -120,18 +120,16 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<void>
 
   addLineItemAdjustments(
+    data: CreateLineItemAdjustmentDTO[]
+  ): Promise<LineItemAdjustmentLineDTO[]>
+  addLineItemAdjustments(
+    data: CreateLineItemAdjustmentDTO
+  ): Promise<LineItemAdjustmentLineDTO[]>
+  addLineItemAdjustments(
+    cartId: string,
     data: CreateLineItemAdjustmentDTO[],
     sharedContext?: Context
   ): Promise<LineItemAdjustmentLineDTO[]>
-  addLineItemAdjustments(
-    data: CreateLineItemAdjustmentDTO,
-    sharedContext?: Context
-  ): Promise<LineItemAdjustmentLineDTO>
-  addLineItemAdjustments(
-    lineId: string,
-    data: CreateLineItemAdjustmentDTO,
-    sharedContext?: Context
-  ): Promise<LineItemAdjustmentLineDTO>
 
   setLineItemAdjustments(
     cartId: string,

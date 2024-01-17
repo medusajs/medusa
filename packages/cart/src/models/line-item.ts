@@ -119,7 +119,7 @@ export default class LineItem {
     () => LineItemAdjustmentLine,
     (adjustment) => adjustment.item,
     {
-      cascade: [Cascade.REMOVE, Cascade.PERSIST],
+      cascade: [Cascade.REMOVE],
     }
   )
   adjustments = new Collection<LineItemAdjustmentLine>(this)

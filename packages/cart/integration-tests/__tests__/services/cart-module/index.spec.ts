@@ -835,4 +835,170 @@ describe("Cart Module Service", () => {
       expect(cart.items?.[0].adjustments?.length).toBe(1)
     })
   })
+
+  describe("addLineItemAdjustments", () => {
+    it("should add line item adjustments for items in a cart", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [itemOne] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+
+      const adjustments = await service.addLineItemAdjustments(createdCart.id, [
+        {
+          item_id: itemOne.id,
+          amount: 100,
+          code: "FREE",
+        },
+      ])
+
+      expect(adjustments).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            item_id: itemOne.id,
+            amount: 100,
+            code: "FREE",
+          }),
+        ])
+      )
+    })
+
+    it("should add multiple line item adjustments for multiple line items", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [itemOne] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+      const [itemTwo] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 2,
+          unit_price: 200,
+          title: "test-2",
+        },
+      ])
+
+      const adjustments = await service.addLineItemAdjustments(createdCart.id, [
+        {
+          item_id: itemOne.id,
+          amount: 100,
+          code: "FREE",
+        },
+        {
+          item_id: itemTwo.id,
+          amount: 150,
+          code: "CODE-2",
+        },
+      ])
+
+      expect(adjustments).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            item_id: itemOne.id,
+            amount: 100,
+            code: "FREE",
+          }),
+          expect.objectContaining({
+            item_id: itemTwo.id,
+            amount: 150,
+            code: "CODE-2",
+          }),
+        ])
+      )
+    })
+
+    it("should add line item adjustments for line items on multiple carts", async () => {
+      const [cartOne] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+      const [cartTwo] = await service.create([
+        {
+          currency_code: "usd",
+        },
+      ])
+
+      const [itemOne] = await service.addLineItems(cartOne.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+      const [itemTwo] = await service.addLineItems(cartTwo.id, [
+        {
+          quantity: 2,
+          unit_price: 200,
+          title: "test-2",
+        },
+      ])
+
+      await service.addLineItemAdjustments([
+        // item from cart one
+        {
+          item_id: itemOne.id,
+          amount: 100,
+          code: "FREE",
+        },
+        // item from cart two
+        {
+          item_id: itemTwo.id,
+          amount: 150,
+          code: "CODE-2",
+        },
+      ])
+
+      const cartOneItems = await service.listLineItems(
+        { cart_id: cartOne.id },
+        { relations: ["adjustments"] }
+      )
+      const cartTwoItems = await service.listLineItems(
+        { cart_id: cartTwo.id },
+        { relations: ["adjustments"] }
+      )
+
+      expect(cartOneItems).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            adjustments: expect.arrayContaining([
+              expect.objectContaining({
+                item_id: itemOne.id,
+                amount: 100,
+                code: "FREE",
+              }),
+            ]),
+          }),
+        ])
+      )
+      expect(cartTwoItems).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            adjustments: expect.arrayContaining([
+              expect.objectContaining({
+                item_id: itemTwo.id,
+                amount: 150,
+                code: "CODE-2",
+              }),
+            ]),
+          }),
+        ])
+      )
+    })
+  })
 })
