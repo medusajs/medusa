@@ -45,6 +45,8 @@ import { MedusaContainer } from "@medusajs/types"
  *
  * export default TaxCalculationStrategy
  * ```
+ *
+ * ---
  */
 export interface ITaxCalculationStrategy {
   /**
@@ -122,6 +124,7 @@ export abstract class AbstractTaxCalculationStrategy
 
   /**
    * You can use the `constructor` of your tax calculation strategy to access the different services in Medusa through dependency injection.
+   *
    * You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.
    * Additionally, if you’re creating your tax calculation strategy as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor.
    *

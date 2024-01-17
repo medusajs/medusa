@@ -1009,7 +1009,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "modules/taxes/backend/tax-calculation-strategy",
+          id: "references/tax_calculation/classes/tax_calculation.AbstractTaxCalculationStrategy",
           label: "Backend: Override Tax Calculation",
         },
         {
