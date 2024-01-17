@@ -7,16 +7,20 @@ import {
   CartLineItemDTO,
   FilterableAddressProps,
   FilterableCartProps,
+  FilterableShippingMethodProps,
+  ShippingMethodAdjustmentLineDTO,
 } from "./common"
 import {
   CreateAddressDTO,
   CreateCartDTO,
   CreateLineItemDTO,
   CreateLineItemForCartDTO,
+  CreateShippingMethodAdjustmentDTO,
   UpdateAddressDTO,
   UpdateCartDTO,
   UpdateLineItemDTO,
   UpdateLineItemWithSelectorDTO,
+  UpdateShippingMethodAdjustmentDTO,
 } from "./mutations"
 
 export interface ICartModuleService extends IModuleService {
@@ -100,6 +104,46 @@ export interface ICartModuleService extends IModuleService {
   removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
   removeLineItems(
     selector: Partial<CartLineItemDTO>,
+    sharedContext?: Context
+  ): Promise<void>
+
+  listShippingMethodAdjustments(
+    filters: FilterableShippingMethodProps,
+    config?: FindConfig<ShippingMethodAdjustmentLineDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingMethodAdjustmentLineDTO[]>
+
+  addShippingMethodAdjustments(
+    data: CreateShippingMethodAdjustmentDTO[]
+  ): Promise<ShippingMethodAdjustmentLineDTO[]>
+  addShippingMethodAdjustments(
+    data: CreateShippingMethodAdjustmentDTO
+  ): Promise<ShippingMethodAdjustmentLineDTO[]>
+  addShippingMethodAdjustments(
+    cartId: string,
+    data: CreateShippingMethodAdjustmentDTO[],
+    sharedContext?: Context
+  ): Promise<ShippingMethodAdjustmentLineDTO[]>
+
+  setShippingMethodAdjustments(
+    cartId: string,
+    data: (
+      | CreateShippingMethodAdjustmentDTO
+      | UpdateShippingMethodAdjustmentDTO
+    )[],
+    sharedContext?: Context
+  ): Promise<ShippingMethodAdjustmentLineDTO[]>
+
+  removeShippingMethodAdjustments(
+    adjustmentIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  removeShippingMethodAdjustments(
+    adjustmentIds: string,
+    sharedContext?: Context
+  ): Promise<void>
+  removeShippingMethodAdjustments(
+    selector: Partial<ShippingMethodAdjustmentLineDTO>,
     sharedContext?: Context
   ): Promise<void>
 }
