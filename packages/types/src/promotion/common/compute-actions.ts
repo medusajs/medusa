@@ -3,6 +3,16 @@ export type ComputeActions =
   | RemoveItemAdjustmentAction
   | AddShippingMethodAdjustment
   | RemoveShippingMethodAdjustment
+  | CampaignBudgetExceededAction
+
+export type UsageComputedActions =
+  | AddShippingMethodAdjustment
+  | AddItemAdjustmentAction
+
+export interface CampaignBudgetExceededAction {
+  action: "campaignBudgetExceeded"
+  code: string
+}
 
 export interface AddItemAdjustmentAction {
   action: "addItemAdjustment"
@@ -16,6 +26,7 @@ export interface RemoveItemAdjustmentAction {
   action: "removeItemAdjustment"
   adjustment_id: string
   description?: string
+  code: string
 }
 
 export interface AddShippingMethodAdjustment {
@@ -29,6 +40,7 @@ export interface AddShippingMethodAdjustment {
 export interface RemoveShippingMethodAdjustment {
   action: "removeShippingMethodAdjustment"
   adjustment_id: string
+  code: string
 }
 
 export interface ComputeActionAdjustmentLine extends Record<string, unknown> {

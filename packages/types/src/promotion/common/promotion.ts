@@ -5,6 +5,7 @@ import {
   CreateApplicationMethodDTO,
   UpdateApplicationMethodDTO,
 } from "./application-method"
+import { CampaignDTO } from "./campaign"
 import { CreatePromotionRuleDTO, PromotionRuleDTO } from "./promotion-rule"
 
 export type PromotionType = "standard" | "buyget"
@@ -16,6 +17,7 @@ export interface PromotionDTO {
   is_automatic?: boolean
   application_method?: ApplicationMethodDTO
   rules?: PromotionRuleDTO[]
+  campaign?: CampaignDTO
 }
 
 export interface CreatePromotionDTO {
