@@ -7,6 +7,14 @@ import { AuthService } from "../services"
 import { ConfigModule } from "../types/global"
 import { MedusaRequest } from "../types/routing"
 
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
 export default async ({
   app,
   configModule,
