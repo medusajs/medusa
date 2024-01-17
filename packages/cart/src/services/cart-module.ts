@@ -17,7 +17,7 @@ import {
   isObject,
   isString,
 } from "@medusajs/utils"
-import { LineItem } from "@models"
+import { Cart, LineItem } from "@models"
 import { UpdateLineItemDTO } from "@types"
 import { joinerConfig } from "../joiner-config"
 import * as services from "../services"
@@ -137,7 +137,33 @@ export default class CartModuleService implements ICartModuleService {
     data: CartTypes.CreateCartDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    return await this.cartService_.create(data, sharedContext)
+    const lineItemsToCreate: CartTypes.CreateLineItemForCartDTO[] = []
+    const createdCarts: Cart[] = []
+    for (const { items, ...cart } of data) {
+      const [created] = await this.cartService_.create(
+        [cart as CartTypes.CreateCartDTO],
+        sharedContext
+      )
+
+      createdCarts.push(created)
+
+      if (items?.length) {
+        const cartItems = items.map((item) => {
+          return {
+            ...item,
+            cart_id: created.id,
+          }
+        })
+
+        lineItemsToCreate.push(
+          ...(cartItems as CartTypes.CreateLineItemForCartDTO[])
+        )
+      }
+    }
+
+    await this.addLineItemsBulk_(lineItemsToCreate, sharedContext)
+
+    return createdCarts
   }
 
   async update(
