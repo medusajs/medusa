@@ -1,6 +1,7 @@
 import { PaymentCollection } from "@models"
 import {
   Context,
+  CreatePaymentCollectionDTO,
   DAL,
   FilterablePaymentCollectionProps,
   FindConfig,
@@ -30,12 +31,22 @@ export default class PaymentCollectionService<
 
   @InjectTransactionManager("paymentCollectionRepository_")
   async create(
-    data: PaymentCollectionDTO[],
+    data: CreatePaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]> {
     return (await (
       this.paymentCollectionRepository_ as PaymentCollectionRepository
     ).create(data, sharedContext)) as TEntity[]
+  }
+
+  @InjectTransactionManager("paymentCollectionRepository_")
+  async update(
+    data: CreatePaymentCollectionDTO[],
+    @MedusaContext() sharedContext?: Context
+  ) {
+    return (await (
+      this.paymentCollectionRepository_ as PaymentCollectionRepository
+    ).update(data, sharedContext)) as TEntity[]
   }
 
   @InjectTransactionManager("paymentCollectionRepository_")

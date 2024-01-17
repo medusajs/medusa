@@ -3,6 +3,7 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 import { initialize } from "../../../../src/initialize"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { createPaymentCollections } from "../../../__fixtures__/payment-collection"
 
 jest.setTimeout(30000)
 
@@ -20,6 +21,8 @@ describe("Payment Module Service", () => {
         schema: process.env.MEDUSA_PAYMNET_DB_SCHEMA,
       },
     })
+
+    await createPaymentCollections(repositoryManager)
   })
 
   afterEach(async () => {
@@ -83,6 +86,55 @@ describe("Payment Module Service", () => {
           currency_code: "USD",
           amount: 200,
         })
+      )
+    })
+  })
+
+  describe("delete", () => {
+    it("should delete a Payment Collection", async () => {
+      let collection = await service.listPaymentCollections({
+        id: ["pay-col-id-1"],
+      })
+
+      expect(collection.length).toEqual(1)
+
+      await service.deletePaymentCollection(["pay-col-id-1"])
+
+      collection = await service.listPaymentCollections({
+        id: ["pay-col-id-1"],
+      })
+
+      expect(collection.length).toEqual(0)
+    })
+  })
+
+  describe("list", () => {
+    it("should list and count Payment Collection", async () => {
+      let [collections, count] = await service.listAndCountPaymentCollections()
+
+      expect(count).toEqual(3)
+
+      expect(collections).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "pay-col-id-1",
+            amount: 100,
+            region_id: "region-id-1",
+            currency_code: "usd",
+          }),
+          expect.objectContaining({
+            id: "pay-col-id-2",
+            amount: 200,
+            region_id: "region-id-1",
+            currency_code: "usd",
+          }),
+          expect.objectContaining({
+            id: "pay-col-id-3",
+            amount: 300,
+            region_id: "region-id-2",
+            currency_code: "usd",
+          }),
+        ])
       )
     })
   })

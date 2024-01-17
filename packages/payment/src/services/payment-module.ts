@@ -8,6 +8,7 @@ import {
   IPaymentModuleService,
   ModuleJoinerConfig,
   PaymentCollectionDTO,
+  UpdatePaymentCollectionDTO,
 } from "@medusajs/types"
 import {
   InjectManager,
@@ -69,6 +70,34 @@ export default class PaymentModule<TPayment extends Payment = Payment>
 
     return await this.baseRepository_.serialize<PaymentCollectionDTO[]>(
       Array.isArray(data) ? collections : collections[0],
+      {
+        populate: true,
+      }
+    )
+  }
+
+  updatePaymentCollection(
+    data: UpdatePaymentCollectionDTO[],
+    sharedContext?: Context
+  ): Promise<PaymentCollectionDTO[]>
+  updatePaymentCollection(
+    data: UpdatePaymentCollectionDTO,
+    sharedContext?: Context
+  ): Promise<PaymentCollectionDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async updatePaymentCollection(
+    data: UpdatePaymentCollectionDTO | UpdatePaymentCollectionDTO[],
+    sharedContext?: Context
+  ): Promise<PaymentCollectionDTO | PaymentCollectionDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+    const result = await this.paymentCollectionService_.update(
+      input,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<PaymentCollectionDTO[]>(
+      Array.isArray(data) ? result : result[0],
       {
         populate: true,
       }
