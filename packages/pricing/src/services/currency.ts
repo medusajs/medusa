@@ -52,14 +52,6 @@ export default class CurrencyService<
     filters: ServiceTypes.FilterableCurrencyProps = {},
     config: FindConfig<TEntityMethod> = {}
   ) {
-    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
-
-    if (filters.code) {
-      queryOptions.where.code = {
-        $in: filters.code,
-      } as DAL.FindOptions<TEntity>[`where`][`code`]
-    }
-
-    return queryOptions
+    return ModulesSdkUtils.buildQuery<TEntity>(filters, config)
   }
 }

@@ -54,14 +54,6 @@ export default class PriceSetMoneyAmountService<
     filters: ServiceTypes.FilterablePriceSetMoneyAmountProps = {},
     config: FindConfig<TEntityMethod> = {}
   ) {
-    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
-
-    if (filters.id) {
-      queryOptions.where.id = {
-        $in: filters.id,
-      } as DAL.FindOptions<TEntity>["where"]["id"]
-    }
-
-    return queryOptions
+    return ModulesSdkUtils.buildQuery<TEntity>(filters, config)
   }
 }
