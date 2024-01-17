@@ -10,6 +10,7 @@ export type CreateAuthProviderDTO = {
   name: string
   domain?: ProviderDomain
   is_active?: boolean
+  config?: Record<string, unknown>
 }
 
 export type UpdateAuthProviderDTO = {

@@ -1,6 +1,12 @@
 import * as defaultProviders from "@providers"
 
-import { AwilixContainer, ClassOrFunctionReturning, Resolver, asClass, asFunction, asValue } from "awilix"
+import {
+  AwilixContainer,
+  ClassOrFunctionReturning,
+  Constructor,
+  Resolver,
+  asClass,
+} from "awilix"
 import { LoaderOptions, ModulesSdkTypes } from "@medusajs/types"
 
 export default async ({
@@ -17,7 +23,9 @@ export default async ({
 
   for (const provider of providersToLoad) {
     container.register({
-      [`auth_provider_${provider.PROVIDER}`]: asClass(provider).singleton(),
+      [`auth_provider_${provider.PROVIDER}`]: asClass(
+        provider as Constructor<any>
+      ).singleton(),
     })
   }
 

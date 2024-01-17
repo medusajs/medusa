@@ -5,6 +5,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+
 import { ProviderDomain } from "../types/repositories/auth-provider"
 
 type OptionalFields = "domain" | "is_active"
@@ -21,6 +22,9 @@ export default class AuthProvider {
 
   @Enum({ items: () => ProviderDomain, default: ProviderDomain.ALL })
   domain: ProviderDomain = ProviderDomain.ALL
+
+  @Property({ columnType: "jsonb", nullable: true })
+  config: Record<string, any> | null
 
   @Property({ columnType: "boolean", default: false })
   is_active = false
