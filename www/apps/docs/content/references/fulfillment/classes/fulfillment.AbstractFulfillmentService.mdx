@@ -463,3 +463,31 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"Whether the fulfillment option is valid. If the returned value is false, an error is thrown and the shipping option will not be saved.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
+
+---
+
+## Test Implementation
+
+:::note
+
+If you created your fulfillment provider in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
+
+:::
+
+After finishing your fulfillment provider implementation:
+
+1\. Run the `build` command in the root of your Medusa backend:
+
+```bash npm2yarn
+npm run build
+```
+
+2\. Start the backend with the `develop` command:
+
+```bash
+npx medusa develop
+```
+
+3\. Enable your fulfillment provider in one or more regions. You can do that either using the [Admin APIs](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) or the [Medusa Admin](https://docs.medusajs.com/user-guide/regions/providers#manage-fulfillment-providers).
+
+4\. To test out your fulfillment provider implementation, create a cart and complete an order. You can do that either using the [Next.js starter](https://docs.medusajs.com/starters/nextjs-medusa-starter) or [using Medusa's APIs and clients](https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart).
