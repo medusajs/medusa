@@ -14,6 +14,7 @@ import { AuthProvider, AuthUser } from "@models"
 
 import { joinerConfig } from "../joiner-config"
 import { AuthProviderService, AuthUserService } from "@services"
+
 import {
   InjectManager,
   InjectTransactionManager,
@@ -29,6 +30,7 @@ import {
   FilterableAuthUserProps,
   UpdateAuthUserDTO,
 } from "@medusajs/types/dist/authentication/common"
+import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -43,6 +45,33 @@ export default class AuthenticationModuleService<
 {
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  __hooks = {
+    onApplicationStart: async () => {
+      const providersToLoad = this.__container__["auth_providers"]
+
+      const providers = await this.authProviderService_.list({
+        provider: providersToLoad.map((p) => p.provider),
+      })
+
+      const loadedProvidersMap = new Map(providers.map((p) => [p.provider, p]))
+
+      const providersToCreate: ServiceTypes.CreateAuthProviderDTO[] = []
+
+      for (const provider of providersToLoad) {
+        if (loadedProvidersMap.has(provider.provider)) {
+          continue
+        }
+
+        providersToCreate.push({
+          provider: provider.provider,
+          name: provider.displayName,
+        })
+      }
+
+      await this.authProviderService_.create(providersToCreate)
+    },
   }
 
   protected __container__: MedusaContainer
@@ -351,10 +380,8 @@ export default class AuthenticationModuleService<
   ): AbstractAuthenticationModuleProvider {
     let containerProvider: AbstractAuthenticationModuleProvider
     try {
-      console.log("containerProvider")
       containerProvider = this.__container__[`auth_provider_${provider}`]
     } catch (error) {
-      console.log(error)
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `AuthenticationProvider with for provider: ${provider} wasn't registered in the module. Have you configured your options correctly?`
@@ -369,18 +396,16 @@ export default class AuthenticationModuleService<
     provider: string,
     authenticationData: Record<string, unknown>,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthenticationResponse> {    
-    let registeredProvider 
-    console.log("hello")
-    try { 
+  ): Promise<AuthenticationResponse> {
+    let registeredProvider
+
+    try {
       await this.retrieveAuthProvider(provider, {})
 
-      console.log(registeredProvider)
       registeredProvider = this.getRegisteredAuthenticationProvider(provider)
-
+      
       return await registeredProvider.authenticate(authenticationData)
-    } catch (error) { 
-      console.log(JSON.stringify(error, null, 2))
+    } catch (error) {
       return { success: false, error: error.message }
     }
   }
