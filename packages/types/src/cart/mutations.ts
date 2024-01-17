@@ -87,14 +87,6 @@ export interface SetLineItemAdjustmentsDTO
   id?: string
 }
 
-export interface AddLineItemAdjustmentsDTO {
-  adjustments: CreateLineItemAdjustmentDTO[]
-}
-
-// export interface SetLineItemAdjustmentsDTO {
-//   adjustments: (CreateLineItemAdjustmentDTO | UpdateLineItemAdjustmentDTO)[]
-// }
-
 export interface UpdateLineItemTaxLineDTO {
   id: string
   description?: string
