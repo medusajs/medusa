@@ -17,7 +17,7 @@ export default class AuthProviderService<
     update: ServiceTypes.UpdateAuthProviderDTO
   }
 >(AuthProvider)<TEntity> {
-  constructor({ authProviderRepository }: InjectedDependencies) {
+  constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
   }

@@ -1,6 +1,5 @@
 import { ProductOption } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import { ProductOptionRepository } from "@repositories"
 import {
   InjectManager,
   InjectTransactionManager,
@@ -74,8 +73,6 @@ export default class ProductOptionService<
       | ProductTypes.UpdateProductOptionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    const repo = this
-      .productOptionRepository_ as unknown as ProductOptionRepository
-    return (await repo.upsert!(data, sharedContext)) as TEntity[]
+    return await this.productOptionRepository_.upsert!(data, sharedContext)
   }
 }

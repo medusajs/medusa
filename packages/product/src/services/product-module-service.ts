@@ -1354,10 +1354,7 @@ export default class ProductModuleService<
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TProduct[], Record<string, unknown[]>]> {
-    return (await this.productService_.softDelete(
-      productIds,
-      sharedContext
-    )) as [TProduct[], Record<string, unknown[]>]
+    return await this.productService_.softDelete(productIds, sharedContext)
   }
 
   @InjectManager("baseRepository_")

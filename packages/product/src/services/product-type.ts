@@ -6,7 +6,6 @@ import {
   ProductTypes,
   UpsertProductTypeDTO,
 } from "@medusajs/types"
-import { ProductTypeRepository } from "@repositories"
 import {
   InjectManager,
   InjectTransactionManager,
@@ -78,7 +77,6 @@ export default class ProductTypeService<
     types: UpsertProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    const repo = this.productTypeRepository_ as unknown as ProductTypeRepository
-    return (await repo.upsert!(types, sharedContext)) as TEntity[]
+    return await this.productTypeRepository_.upsert!(types, sharedContext)
   }
 }

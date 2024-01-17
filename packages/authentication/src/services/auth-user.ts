@@ -6,7 +6,6 @@ import {
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import { AuthUser } from "@models"
-import { AuthUserRepository } from "@repositories"
 
 import { RepositoryTypes, ServiceTypes } from "@types"
 
@@ -22,7 +21,7 @@ export default class AuthUserService<
     create: ServiceTypes.CreateAuthUserDTO
   }
 >(AuthUser)<TEntity> {
-  protected readonly authUserRepository_: DAL.RepositoryService
+  protected readonly authUserRepository_: DAL.RepositoryService<TEntity>
 
   constructor({ authUserRepository }: InjectedDependencies) {
     // @ts-ignore
@@ -63,9 +62,6 @@ export default class AuthUserService<
       updates.push({ update, user })
     }
 
-    return (await (this.authUserRepository_ as AuthUserRepository).update(
-      updates,
-      sharedContext
-    )) as TEntity[]
+    return await this.authUserRepository_.update(updates, sharedContext)
   }
 }
