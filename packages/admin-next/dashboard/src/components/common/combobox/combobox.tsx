@@ -261,7 +261,7 @@ const NoResults = forwardRef<
         className
       )}
     >
-      {children ?? t("general.noResults")}
+      {children ?? t("general.noResultsTitle")}
     </span>
   )
 })

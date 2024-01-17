@@ -1,4 +1,5 @@
 import type {
+  AdminCustomerGroupsRes,
   AdminCustomersRes,
   AdminProductsRes,
   AdminRegionsRes,
@@ -184,12 +185,43 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/customer-groups/list"),
+                path: "",
+                lazy: () =>
+                  import("../../routes/customer-groups/customer-group-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-create"
+                      ),
+                  },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/customer-groups/details"),
+                lazy: () =>
+                  import("../../routes/customer-groups/customer-group-detail"),
+                handle: {
+                  crumb: (data: AdminCustomerGroupsRes) =>
+                    data.customer_group.name,
+                },
+                children: [
+                  {
+                    path: "add-customers",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-add-customers"
+                      ),
+                  },
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-edit"
+                      ),
+                  },
+                ],
               },
             ],
           },

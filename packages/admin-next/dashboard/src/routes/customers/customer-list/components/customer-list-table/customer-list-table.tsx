@@ -190,29 +190,20 @@ const useColumns = () => {
 
   return useMemo(
     () => [
+      columnHelper.accessor("email", {
+        header: t("fields.email"),
+        cell: ({ getValue }) => <span>{getValue()}</span>,
+      }),
       columnHelper.display({
         id: "name",
         header: t("fields.name"),
         cell: ({ row }) => {
-          const firstName = row.original.first_name
-          const lastName = row.original.last_name
+          const name = [row.original.first_name, row.original.last_name]
+            .filter(Boolean)
+            .join(" ")
 
-          let value = "-"
-
-          if (firstName && lastName) {
-            value = `${firstName} ${lastName}`
-          } else if (firstName) {
-            value = firstName
-          } else if (lastName) {
-            value = lastName
-          }
-
-          return <span>{value}</span>
+          return name || "-"
         },
-      }),
-      columnHelper.accessor("email", {
-        header: t("fields.email"),
-        cell: ({ getValue }) => <span>{getValue()}</span>,
       }),
       columnHelper.accessor("has_account", {
         header: t("fields.account"),

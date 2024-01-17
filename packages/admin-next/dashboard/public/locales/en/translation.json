@@ -35,7 +35,7 @@
     "areYouSure": "Are you sure?",
     "noRecordsFound": "No records found",
     "typeToConfirm": "Please type {val} to confirm:",
-    "noResults": "No results",
+    "noResultsTitle": "No results",
     "noResultsMessage": "Try changing the filters or search query",
     "noRecordsTitle": "No records",
     "noRecordsMessage": "There are no records to show",
@@ -81,7 +81,15 @@
     "firstSeen": "First seen"
   },
   "customerGroups": {
-    "domain": "Customer Groups"
+    "domain": "Customer Groups",
+    "createGroup": "Create group",
+    "createCustomerGroup": "Create Customer Group",
+    "createCustomerGroupHint": "Create a new customer group to segment your customers.",
+    "customerAlreadyAdded": "The customer has already been added to the group.",
+    "editCustomerGroup": "Edit Customer Group",
+    "removeCustomersWarning_one": "You are about to remove {{count}} customer from the customer group. This action cannot be undone.",
+    "removeCustomersWarning_other": "You are about to remove {{count}} customers from the customer group. This action cannot be undone.",
+    "deleteCustomerGroupWarning": "You are about to delete the customer group {{name}}. This action cannot be undone."
   },
   "orders": {
     "domain": "Orders"
