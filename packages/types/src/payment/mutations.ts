@@ -2,9 +2,14 @@
  * TODO
  */
 
-export interface CreatePaymentCollectionDTO {}
+export interface CreatePaymentCollectionDTO {
+  region_id: string
+  currency_code: string
+  amount: number
+}
 
-export interface UpdatePaymentCollectionDTO {}
+export interface UpdatePaymentCollectionDTO
+  extends CreatePaymentCollectionDTO {}
 
 export interface CreatePaymentDTO {
   amount: number
