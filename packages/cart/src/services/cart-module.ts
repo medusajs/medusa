@@ -542,11 +542,11 @@ export default class CartModuleService implements ICartModuleService {
 
   @InjectManager("baseRepository_")
   async listLineItemAdjustments(
-    filters = {},
+    filters: CartTypes.FilterableLineItemAdjustmentProps = {},
     config: FindConfig<CartTypes.LineItemAdjustmentLineDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const lines = await this.lineItemAdjustmentService_.list(
+    const adjustments = await this.lineItemAdjustmentService_.list(
       filters,
       config,
       sharedContext
@@ -554,20 +554,20 @@ export default class CartModuleService implements ICartModuleService {
 
     return await this.baseRepository_.serialize<
       CartTypes.LineItemAdjustmentLineDTO[]
-    >(lines, {
+    >(adjustments, {
       populate: true,
     })
   }
 
   async addLineItemAdjustments(
-    data: CartTypes.CreateLineItemAdjustmentDTO[]
+    adjustments: CartTypes.CreateLineItemAdjustmentDTO[]
   ): Promise<CartTypes.LineItemAdjustmentLineDTO[]>
   async addLineItemAdjustments(
-    data: CartTypes.CreateLineItemAdjustmentDTO
+    adjustment: CartTypes.CreateLineItemAdjustmentDTO
   ): Promise<CartTypes.LineItemAdjustmentLineDTO[]>
   async addLineItemAdjustments(
     cartId: string,
-    data: CartTypes.CreateLineItemAdjustmentDTO[],
+    adjustments: CartTypes.CreateLineItemAdjustmentDTO[],
     sharedContext?: Context
   ): Promise<CartTypes.LineItemAdjustmentLineDTO[]>
 
@@ -685,7 +685,7 @@ export default class CartModuleService implements ICartModuleService {
     sharedContext?: Context
   ): Promise<void>
   async removeLineItemAdjustments(
-    adjustmentIds: string,
+    adjustmentId: string,
     sharedContext?: Context
   ): Promise<void>
   async removeLineItemAdjustments(

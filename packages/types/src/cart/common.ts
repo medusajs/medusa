@@ -498,6 +498,14 @@ export interface FilterableLineItemProps
   product_id?: string | string[]
 }
 
+export interface FilterableLineItemAdjustmentProps
+  extends BaseFilterable<FilterableLineItemAdjustmentProps> {
+  id?: string | string[]
+  item_id?: string | string[]
+  promotion_id?: string | string[]
+  provider_id?: string | string[]
+}
+
 /**
  * TODO: Remove this in favor of CartDTO, when module is released
  * @deprecated Use CartDTO instead
