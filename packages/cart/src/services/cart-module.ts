@@ -13,6 +13,7 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
   isObject,
   isString,
   promiseAll,
@@ -581,8 +582,22 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<CartTypes.LineItemAdjustmentLineDTO[]> {
     let addedAdjustments: LineItemAdjustmentLine[] = []
     if (isString(cartIdOrData)) {
-      // validation purposes
-      await this.retrieve(cartIdOrData, { select: ["id"] }, sharedContext)
+      const cart = await this.retrieve(
+        cartIdOrData,
+        { select: ["id"], relations: ["items"] },
+        sharedContext
+      )
+
+      const lineIds = cart.items?.map((item) => item.id)
+
+      for (const adj of adjustments || []) {
+        if (!lineIds?.includes(adj.item_id)) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Line item with id ${adj.item_id} does not exist on cart with id ${cartIdOrData}`
+          )
+        }
+      }
 
       addedAdjustments = await this.lineItemAdjustmentService_.create(
         adjustments as CartTypes.CreateLineItemAdjustmentDTO[],
@@ -590,8 +605,9 @@ export default class CartModuleService implements ICartModuleService {
       )
     } else {
       const data = Array.isArray(cartIdOrData) ? cartIdOrData : [cartIdOrData]
+
       addedAdjustments = await this.lineItemAdjustmentService_.create(
-        cartIdOrData as CartTypes.CreateLineItemAdjustmentDTO[],
+        data as CartTypes.CreateLineItemAdjustmentDTO[],
         sharedContext
       )
     }
