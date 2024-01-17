@@ -3,6 +3,7 @@ export type AuthProviderDTO = {
   name: string
   domain: ProviderDomain
   is_active: boolean
+  config: Record<string, unknown>
 }
 
 export type CreateAuthProviderDTO = {
@@ -18,6 +19,7 @@ export type UpdateAuthProviderDTO = {
   name?: string
   domain?: ProviderDomain
   is_active?: boolean
+  config?: Record<string, unknown>
 }
 
 export enum ProviderDomain {
