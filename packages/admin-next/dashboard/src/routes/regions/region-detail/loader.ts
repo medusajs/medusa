@@ -14,8 +14,6 @@ export const regionLoader = async ({ params }: LoaderFunctionArgs) => {
   const id = params.id
   const query = regionQuery(id!)
 
-  console.log("regionLoader", query)
-
   return (
     queryClient.getQueryData<Response<AdminProductsRes>>(query.queryKey) ??
     (await queryClient.fetchQuery(query))

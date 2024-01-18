@@ -19,11 +19,12 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { useAdminCurrencies, useAdminUpdateStore } from "medusa-react"
-import { FormEvent, useMemo, useRef, useState } from "react"
+import { FormEvent, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { OrderBy } from "../../../../../components/filtering/order-by"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
+import { useHandleTableScroll } from "../../../../../hooks/use-handle-table-scroll"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 type AddCurrenciesFormProps = {
@@ -86,20 +87,7 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
 
   const { mutateAsync, isLoading: isMutating } = useAdminUpdateStore()
 
-  const tableContainerRef = useRef<HTMLDivElement>(null)
-
-  // Listen for if the table container that has overflow-y: auto is scrolled, and if true set some state
-  const [isScrolled, setIsScrolled] = useState(false)
-
-  const handleScroll = () => {
-    if (tableContainerRef.current) {
-      setIsScrolled(
-        tableContainerRef.current.scrollTop > 0 &&
-          tableContainerRef.current.scrollTop <
-            tableContainerRef.current.scrollHeight
-      )
-    }
-  }
+  const { handleScroll, isScrolled, tableContainerRef } = useHandleTableScroll()
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -127,10 +115,6 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
     await mutateAsync({
       currencies,
     })
-  }
-
-  if (isLoading) {
-    return <div>Loading...</div>
   }
 
   if (isError) {

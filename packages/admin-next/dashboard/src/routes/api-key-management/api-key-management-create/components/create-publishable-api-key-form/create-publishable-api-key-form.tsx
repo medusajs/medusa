@@ -62,7 +62,7 @@ export const CreatePublishableApiKeyForm = ({
         </FocusModal.Header>
         <FocusModal.Body className="flex flex-1 flex-col overflow-hidden">
           <div className="flex flex-1 flex-col items-center overflow-y-auto">
-            <div className="flex w-full max-w-[720px] flex-col gap-y-10 px-2 pb-6 pt-[72px]">
+            <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
               <div>
                 <Heading>
                   {t("apiKeyManagement.createPublishableApiKey")}
