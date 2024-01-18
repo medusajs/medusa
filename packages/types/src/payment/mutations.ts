@@ -9,7 +9,7 @@ export interface CreatePaymentCollectionDTO {
 }
 
 export interface UpdatePaymentCollectionDTO
-  extends CreatePaymentCollectionDTO {}
+  extends Partial<CreatePaymentCollectionDTO> {}
 
 export interface CreatePaymentDTO {
   amount: number
