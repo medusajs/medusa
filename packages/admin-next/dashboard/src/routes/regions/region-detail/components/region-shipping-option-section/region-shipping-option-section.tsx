@@ -1,5 +1,5 @@
 import { Region, ShippingOption } from "@medusajs/medusa"
-import { Container, StatusBadge, Table, clx } from "@medusajs/ui"
+import { Container, Heading, StatusBadge, Table, clx } from "@medusajs/ui"
 import {
   PaginationState,
   RowSelectionState,
@@ -17,15 +17,18 @@ type RegionShippingOptionSectionProps = {
   region: Region
 }
 
-const PAGE_SIZE = 20
-
-// TODO: Need to fix pagination and search for shipping options
 export const RegionShippingOptionSection = ({
   region,
 }: RegionShippingOptionSectionProps) => {
+  const { shipping_options, count, isError, error, isLoading } =
+    useAdminShippingOptions({
+      region_id: region.id,
+      is_return: false,
+    })
+
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: PAGE_SIZE,
+    pageSize: count || 0,
   })
 
   const pagination = useMemo(
@@ -36,11 +39,6 @@ export const RegionShippingOptionSection = ({
     [pageIndex, pageSize]
   )
 
-  const { shipping_options, count, isError, error, isLoading } =
-    useAdminShippingOptions({
-      region_id: region.id,
-    })
-
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const columns = useShippingOptionColumns()
@@ -48,7 +46,7 @@ export const RegionShippingOptionSection = ({
   const table = useReactTable({
     data: shipping_options ?? [],
     columns,
-    pageCount: Math.ceil((count ?? 0) / PAGE_SIZE),
+    pageCount: count ? 1 : 0,
     state: {
       pagination,
       rowSelection,
@@ -59,17 +57,17 @@ export const RegionShippingOptionSection = ({
     onRowSelectionChange: setRowSelection,
   })
 
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
+  const { t } = useTranslation()
 
   if (isError) {
     throw error
   }
 
   return (
-    <Container className="p-0">
-      <div className="px-6 py-4">{/* Filters go here */}</div>
+    <Container className="p-0 divide-y">
+      <div className="px-6 py-4">
+        <Heading level="h2">{t("regions.shippingOptions")}</Heading>
+      </div>
       <Table>
         <Table.Header>
           {table.getHeaderGroups().map((headerGroup) => {
@@ -121,7 +119,7 @@ export const RegionShippingOptionSection = ({
         count={count ?? 0}
         pageIndex={pageIndex}
         pageCount={table.getPageCount()}
-        pageSize={PAGE_SIZE}
+        pageSize={count ?? 0}
       />
     </Container>
   )

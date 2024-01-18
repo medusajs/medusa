@@ -17,8 +17,8 @@ import {
   isObject,
   isString,
 } from "@medusajs/utils"
-import { LineItem } from "@models"
-import { UpdateLineItemDTO } from "@types"
+import { Cart, LineItem, ShippingMethod } from "@models"
+import { CreateLineItemDTO, UpdateLineItemDTO } from "@types"
 import { joinerConfig } from "../joiner-config"
 import * as services from "../services"
 
@@ -27,6 +27,7 @@ type InjectedDependencies = {
   cartService: services.CartService
   addressService: services.AddressService
   lineItemService: services.LineItemService
+  shippingMethodService: services.ShippingMethodService
 }
 
 export default class CartModuleService implements ICartModuleService {
@@ -34,6 +35,7 @@ export default class CartModuleService implements ICartModuleService {
   protected cartService_: services.CartService
   protected addressService_: services.AddressService
   protected lineItemService_: services.LineItemService
+  protected shippingMethodService_: services.ShippingMethodService
 
   constructor(
     {
@@ -41,6 +43,7 @@ export default class CartModuleService implements ICartModuleService {
       cartService,
       addressService,
       lineItemService,
+      shippingMethodService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -48,6 +51,7 @@ export default class CartModuleService implements ICartModuleService {
     this.cartService_ = cartService
     this.addressService_ = addressService
     this.lineItemService_ = lineItemService
+    this.shippingMethodService_ = shippingMethodService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -137,7 +141,30 @@ export default class CartModuleService implements ICartModuleService {
     data: CartTypes.CreateCartDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    return await this.cartService_.create(data, sharedContext)
+    const lineItemsToCreate: CreateLineItemDTO[] = []
+    const createdCarts: Cart[] = []
+    for (const { items, ...cart } of data) {
+      const [created] = await this.cartService_.create([cart], sharedContext)
+
+      createdCarts.push(created)
+
+      if (items?.length) {
+        const cartItems = items.map((item) => {
+          return {
+            ...item,
+            cart_id: created.id,
+          }
+        })
+
+        lineItemsToCreate.push(...cartItems)
+      }
+    }
+
+    if (lineItemsToCreate.length) {
+      await this.addLineItemsBulk_(lineItemsToCreate, sharedContext)
+    }
+
+    return createdCarts
   }
 
   async update(
@@ -252,6 +279,25 @@ export default class CartModuleService implements ICartModuleService {
     )
   }
 
+  @InjectManager("baseRepository_")
+  async listShippingMethods(
+    filters: CartTypes.FilterableShippingMethodProps = {},
+    config: FindConfig<CartTypes.CartShippingMethodDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<CartTypes.CartShippingMethodDTO[]> {
+    const methods = await this.shippingMethodService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      CartTypes.CartShippingMethodDTO[]
+    >(methods, {
+      populate: true,
+    })
+  }
+
   addLineItems(
     data: CartTypes.CreateLineItemForCartDTO
   ): Promise<CartTypes.CartLineItemDTO>
@@ -301,7 +347,7 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<LineItem[]> {
     const cart = await this.retrieve(cartId, { select: ["id"] }, sharedContext)
 
-    const toUpdate = items.map((item) => {
+    const toUpdate: CreateLineItemDTO[] = items.map((item) => {
       return {
         ...item,
         cart_id: cart.id,
@@ -313,7 +359,7 @@ export default class CartModuleService implements ICartModuleService {
 
   @InjectTransactionManager("baseRepository_")
   protected async addLineItemsBulk_(
-    data: CartTypes.CreateLineItemForCartDTO[],
+    data: CreateLineItemDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<LineItem[]> {
     return await this.lineItemService_.create(data, sharedContext)
@@ -526,5 +572,113 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<void> {
     const addressIds = Array.isArray(ids) ? ids : [ids]
     await this.addressService_.delete(addressIds, sharedContext)
+  }
+
+  async addShippingMethods(
+    data: CartTypes.CreateShippingMethodDTO
+  ): Promise<CartTypes.CartShippingMethodDTO>
+  async addShippingMethods(
+    data: CartTypes.CreateShippingMethodDTO[]
+  ): Promise<CartTypes.CartShippingMethodDTO[]>
+  async addShippingMethods(
+    cartId: string,
+    methods: CartTypes.CreateShippingMethodDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.CartShippingMethodDTO[]>
+
+  @InjectManager("baseRepository_")
+  async addShippingMethods(
+    cartIdOrData:
+      | string
+      | CartTypes.CreateShippingMethodDTO[]
+      | CartTypes.CreateShippingMethodDTO,
+    data?: CartTypes.CreateShippingMethodDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    CartTypes.CartShippingMethodDTO[] | CartTypes.CartShippingMethodDTO
+  > {
+    let methods: ShippingMethod[] = []
+    if (isString(cartIdOrData)) {
+      methods = await this.addShippingMethods_(
+        cartIdOrData,
+        data as CartTypes.CreateShippingMethodDTO[],
+        sharedContext
+      )
+    } else {
+      const data = Array.isArray(cartIdOrData) ? cartIdOrData : [cartIdOrData]
+      methods = await this.addShippingMethodsBulk_(data, sharedContext)
+    }
+
+    return await this.baseRepository_.serialize<
+      CartTypes.CartShippingMethodDTO[]
+    >(methods, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async addShippingMethods_(
+    cartId: string,
+    data: CartTypes.CreateShippingMethodDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ShippingMethod[]> {
+    const cart = await this.retrieve(cartId, { select: ["id"] }, sharedContext)
+
+    const methods = data.map((method) => {
+      return {
+        ...method,
+        cart_id: cart.id,
+      }
+    })
+
+    return await this.addShippingMethodsBulk_(methods, sharedContext)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async addShippingMethodsBulk_(
+    data: CartTypes.CreateShippingMethodDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ShippingMethod[]> {
+    return await this.shippingMethodService_.create(data, sharedContext)
+  }
+
+  async removeShippingMethods(
+    methodIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  async removeShippingMethods(
+    methodIds: string,
+    sharedContext?: Context
+  ): Promise<void>
+  async removeShippingMethods(
+    selector: Partial<CartTypes.CartShippingMethodDTO>,
+    sharedContext?: Context
+  ): Promise<void>
+
+  @InjectTransactionManager("baseRepository_")
+  async removeShippingMethods(
+    methodIdsOrSelector:
+      | string
+      | string[]
+      | Partial<CartTypes.CartShippingMethodDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    let toDelete: string[] = []
+    if (isObject(methodIdsOrSelector)) {
+      const methods = await this.listShippingMethods(
+        {
+          ...(methodIdsOrSelector as Partial<CartTypes.CartShippingMethodDTO>),
+        },
+        {},
+        sharedContext
+      )
+
+      toDelete = methods.map((m) => m.id)
+    } else {
+      toDelete = Array.isArray(methodIdsOrSelector)
+        ? methodIdsOrSelector
+        : [methodIdsOrSelector]
+    }
+    await this.shippingMethodService_.delete(toDelete, sharedContext)
   }
 }
