@@ -105,11 +105,11 @@ export default class Customer {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "customer")
+    this.id = generateEntityId(this.id, "cus")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "customer")
+    this.id = generateEntityId(this.id, "cus")
   }
 }
