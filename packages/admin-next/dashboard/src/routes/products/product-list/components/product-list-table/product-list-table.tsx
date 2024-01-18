@@ -1,13 +1,11 @@
-import { EllipsisHorizontal, Trash } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import type { Product } from "@medusajs/medusa"
 import {
   Button,
   Checkbox,
   CommandBar,
   Container,
-  DropdownMenu,
   Heading,
-  IconButton,
   Table,
   clx,
 } from "@medusajs/ui"
@@ -32,6 +30,7 @@ import {
   ProductVariantCell,
 } from "../../../../../components/common/product-table-cells"
 
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 import { productsLoader } from "../../loader"
 
@@ -172,6 +171,7 @@ export const ProductListTable = () => {
 }
 
 const ProductActions = ({ id }: { id: string }) => {
+  const { t } = useTranslation()
   const { mutateAsync } = useAdminDeleteProduct(id)
 
   const handleDelete = async () => {
@@ -179,21 +179,28 @@ const ProductActions = ({ id }: { id: string }) => {
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
-        <IconButton size="small" variant="transparent">
-          <EllipsisHorizontal />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <DropdownMenu.Item onClick={handleDelete}>
-          <div className="flex items-center gap-x-2">
-            <Trash className="text-ui-fg-subtle" />
-            <span>Delete</span>
-          </div>
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
-    </DropdownMenu>
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: t("general.edit"),
+              to: `/products/${id}/edit`,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              icon: <Trash />,
+              label: t("general.delete"),
+              onClick: handleDelete,
+            },
+          ],
+        },
+      ]}
+    />
   )
 }
 

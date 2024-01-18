@@ -122,7 +122,7 @@ export const NavItem = ({
                         "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex h-8 flex-1 items-center gap-x-2 rounded-md px-2 py-2.5 outline-none first-of-type:mt-1 last-of-type:mb-2 md:py-1.5",
                         {
                           "bg-ui-bg-base text-ui-fg-base hover:bg-ui-bg-base shadow-elevation-card-rest":
-                            location.pathname === item.to,
+                            location.pathname.startsWith(item.to),
                         }
                       )}
                     >
