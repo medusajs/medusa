@@ -7,12 +7,10 @@ import {
 } from "@repositories"
 import {
   Constructor,
-  CreateProductTagDTO,
   CreateProductTypeDTO,
   DAL,
   ModulesSdkTypes,
   ProductTypes,
-  UpdateProductTagDTO,
   UpdateProductTypeDTO,
   WithRequiredProperty,
 } from "@medusajs/types"
@@ -94,13 +92,8 @@ export default async ({
         update: ProductOptionValueServiceTypes.UpdateProductOptionValueDTO
       }
     >(ProductOptionValue)
-  const defaultProductTagRepository = DALUtils.mikroOrmBaseRepositoryFactory<
-    ProductTag,
-    {
-      create: CreateProductTagDTO
-      update: UpdateProductTagDTO
-    }
-  >(ProductTag)
+  const defaultProductTagRepository =
+    DALUtils.mikroOrmBaseRepositoryFactory(ProductTag)
   const defaultProductTypeRepository = DALUtils.mikroOrmBaseRepositoryFactory<
     ProductType,
     {

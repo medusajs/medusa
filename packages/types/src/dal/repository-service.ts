@@ -27,7 +27,14 @@ interface BaseRepositoryService<T = any> {
   ): Promise<TOutput>
 }
 
-export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
+type DtoBasedMutationMethods = "create" | "update"
+
+export interface RepositoryService<
+  T = any,
+  TDTOs extends { [K in DtoBasedMutationMethods]?: any } = {
+    [K in DtoBasedMutationMethods]?: any
+  }
+> extends BaseRepositoryService<T> {
   find(options?: FindOptions<T>, context?: Context): Promise<T[]>
 
   findAndCount(
@@ -35,9 +42,9 @@ export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
     context?: Context
   ): Promise<[T[], number]>
 
-  create(data: unknown[], context?: Context): Promise<T[]>
+  create(data: TDTOs["create"][], context?: Context): Promise<T[]>
 
-  update(data: unknown[], context?: Context): Promise<T[]>
+  update(data: TDTOs["update"][], context?: Context): Promise<T[]>
 
   delete(ids: string[], context?: Context): Promise<void>
 
@@ -59,7 +66,10 @@ export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
     context?: Context
   ): Promise<[T[], Record<string, unknown[]>]>
 
-  upsert(data: unknown[], context?: Context): Promise<T[]>
+  upsert(
+    data: (TDTOs["create"] | TDTOs["update"])[],
+    context?: Context
+  ): Promise<T[]>
 }
 
 export interface TreeRepositoryService<T = any>

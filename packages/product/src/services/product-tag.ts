@@ -12,6 +12,7 @@ import {
   MedusaContext,
   ModulesSdkUtils,
 } from "@medusajs/utils"
+import { IProductTagRepository } from "@types"
 
 type InjectedDependencies = {
   productTagRepository: DAL.RepositoryService
@@ -26,7 +27,7 @@ export default class ProductTagService<
     update: ProductTypes.UpdateProductTagDTO
   }
 >(ProductTag)<TEntity> {
-  protected readonly productTagRepository_: DAL.RepositoryService<TEntity>
+  protected readonly productTagRepository_: IProductTagRepository<TEntity>
 
   constructor(container: InjectedDependencies) {
     super(container)
@@ -76,6 +77,6 @@ export default class ProductTagService<
     data: UpsertProductTagDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return await this.productTagRepository_.upsert!(data, sharedContext)
+    return await this.productTagRepository_.upsert(data, sharedContext)
   }
 }
