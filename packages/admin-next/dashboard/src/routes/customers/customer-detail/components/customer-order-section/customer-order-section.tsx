@@ -1,14 +1,6 @@
-import { EllipsisHorizontal, ReceiptPercent } from "@medusajs/icons"
+import { ReceiptPercent } from "@medusajs/icons"
 import { Customer, Order } from "@medusajs/medusa"
-import {
-  Button,
-  Container,
-  DropdownMenu,
-  Heading,
-  IconButton,
-  Table,
-  clx,
-} from "@medusajs/ui"
+import { Button, Container, Heading, Table, clx } from "@medusajs/ui"
 import {
   PaginationState,
   RowSelectionState,
@@ -20,7 +12,8 @@ import {
 import { useAdminOrders } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 import {
   OrderDateCell,
@@ -184,22 +177,22 @@ export const CustomerOrderSection = ({
 }
 
 const OrderActions = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
+
   return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
-        <IconButton size="small" variant="transparent">
-          <EllipsisHorizontal />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <Link to={`/orders/${order.id}`}>
-          <DropdownMenu.Item className="flex items-center gap-x-2">
-            <ReceiptPercent />
-            <span>Go to order</span>
-          </DropdownMenu.Item>
-        </Link>
-      </DropdownMenu.Content>
-    </DropdownMenu>
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <ReceiptPercent />,
+              label: t("customers.viewOrder"),
+              to: `/orders/${order.id}/edit`,
+            },
+          ],
+        },
+      ]}
+    />
   )
 }
 
