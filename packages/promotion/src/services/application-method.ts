@@ -1,6 +1,7 @@
 import { DAL, PromotionTypes } from "@medusajs/types"
 import { ApplicationMethod } from "@models"
 import { ModulesSdkUtils } from "@medusajs/utils"
+import { CreateApplicationMethodDTO, UpdateApplicationMethodDTO } from "@types"
 
 type InjectedDependencies = {
   applicationMethodRepository: DAL.RepositoryService
@@ -11,8 +12,8 @@ export default class ApplicationMethodService<
 > extends ModulesSdkUtils.abstractServiceFactory<
   InjectedDependencies,
   {
-    create: PromotionTypes.CreateApplicationMethodDTO
-    update: PromotionTypes.UpdateApplicationMethodDTO
+    create: CreateApplicationMethodDTO
+    update: UpdateApplicationMethodDTO
   },
   {
     list: PromotionTypes.FilterableApplicationMethodProps

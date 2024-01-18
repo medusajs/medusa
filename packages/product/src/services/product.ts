@@ -1,6 +1,7 @@
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
 import { Product } from "@models"
+import { ProductServiceTypes } from "@types"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
@@ -12,7 +13,7 @@ export default class ProductService<
   InjectedDependencies,
   {
     create: ProductTypes.CreateProductOnlyDTO
-    update: ProductTypes.UpdateProductDTO
+    update: ProductServiceTypes.UpdateProductDTO
   }
 >(Product)<TEntity> {
   protected readonly productRepository_: DAL.RepositoryService<TEntity>

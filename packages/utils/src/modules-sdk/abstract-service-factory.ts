@@ -1,16 +1,16 @@
 import {
   Context,
-  FindConfig,
   FilterQuery as InternalFilterQuery,
+  FindConfig,
 } from "@medusajs/types"
 import { EntitySchema } from "@mikro-orm/core"
 import { EntityClass } from "@mikro-orm/core/typings"
 import {
-  MedusaError,
   doNotForceTransaction,
   isDefined,
   isString,
   lowerCaseFirst,
+  MedusaError,
   shouldForceTransaction,
   upperCaseFirst,
 } from "../common"
@@ -51,7 +51,7 @@ export interface AbstractService<
     sharedContext?: Context
   ): Promise<[TEntity[], number]>
   create(data: TDTOs["create"][], sharedContext?: Context): Promise<TEntity[]>
-  update(data: TDTOs["update"], sharedContext?: Context): Promise<TEntity[]>
+  update(data: TDTOs["update"][], sharedContext?: Context): Promise<TEntity[]>
   delete(
     primaryKeyValues: string[] | object[],
     sharedContext?: Context
