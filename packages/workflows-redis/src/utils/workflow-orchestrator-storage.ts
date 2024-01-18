@@ -20,6 +20,7 @@ enum JobType {
 
 // eslint-disable-next-line max-len
 export class RedisDistributedTransactionStorage extends DistributedTransactionStorage {
+  private static TTL_AFTER_COMPLETED = 60 * 15 // 15 minutes
   private workflowExecutionService_: WorkflowExecutionService
   private workflowOrchestratorService_: WorkflowOrchestratorService
 
@@ -55,6 +56,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
         ]
 
         if (allJobs.includes(job.name as JobType)) {
+          console.log("job", job.name, job.data)
           await this.executeTransaction(
             job.data.workflowId,
             job.data.transactionId
@@ -183,7 +185,13 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     }
 
     if (hasFinished) {
-      await this.redisClient.del(key)
+      // await this.redisClient.del(key)
+      await this.redisClient.set(
+        key,
+        JSON.stringify(data, this.stringifyWithSymbol),
+        "EX",
+        RedisDistributedTransactionStorage.TTL_AFTER_COMPLETED
+      )
     }
   }
 

@@ -31,7 +31,9 @@ createWorkflow(
     name: "workflow_step_timeout",
   },
   function (input) {
-    const resp = step_1_async(input)
+    const resp = step_1(input).config({
+      timeout: 0.1, // 0.1 second
+    })
 
     return resp
   }
@@ -42,10 +44,7 @@ createWorkflow(
     name: "workflow_step_timeout_async",
   },
   function (input) {
-    const resp = step_1_async(input).config({
-      timeout: 0.1, // 0.1 second
-      async: true,
-    })
+    const resp = step_1_async(input)
 
     return resp
   }

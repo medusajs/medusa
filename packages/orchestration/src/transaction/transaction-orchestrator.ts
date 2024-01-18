@@ -179,11 +179,7 @@ export class TransactionOrchestrator extends EventEmitter {
   ) {
     const flow = transaction.getFlow()
     let hasTimedOut = false
-    if (
-      transaction.hasTimeout() &&
-      !flow.timedOutAt &&
-      this.hasExpired({ transaction }, Date.now())
-    ) {
+    if (!flow.timedOutAt && this.hasExpired({ transaction }, Date.now())) {
       flow.timedOutAt = Date.now()
 
       void transaction.clearTransactionTimeout()
@@ -212,7 +208,6 @@ export class TransactionOrchestrator extends EventEmitter {
   ) {
     let hasTimedOut = false
     if (
-      step.hasTimeout() &&
       !step.timedOutAt &&
       step.canCancel() &&
       this.hasExpired({ step }, Date.now())

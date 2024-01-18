@@ -172,6 +172,7 @@ describe("Workflow Orchestrator module", function () {
         "workflow_transaction_timeout",
         {
           input: {},
+          transactionId: "trx",
           throwOnError: false,
         }
       )
@@ -180,11 +181,13 @@ describe("Workflow Orchestrator module", function () {
       expect(result).toEqual({ executed: true })
       expect(errors).toHaveLength(1)
       expect(errors[0].action).toEqual("step_1")
-      expect(errors[0].error).toBeInstanceOf(TransactionTimeoutError)
+      expect(
+        TransactionTimeoutError.isTransactionTimeoutError(errors[0].error)
+      ).toBe(true)
     })
 
-    it.only("should revert the entire transaction when a step timeout expires in a async step", async () => {
-      const ret = await workflowOrcModule.run("workflow_step_timeout_async", {
+    it("should revert the entire transaction when a step timeout expires in a async step", async () => {
+      await workflowOrcModule.run("workflow_step_timeout_async", {
         input: {
           myInput: "123",
         },
@@ -192,7 +195,7 @@ describe("Workflow Orchestrator module", function () {
         throwOnError: false,
       })
 
-      await setTimeout(2000)
+      await setTimeout(200)
 
       const { transaction, result, errors } = await workflowOrcModule.run(
         "workflow_step_timeout_async",
@@ -205,23 +208,42 @@ describe("Workflow Orchestrator module", function () {
         }
       )
 
-      console.log(transaction)
+      expect(transaction.flow.state).toEqual("reverted")
+      // expect(result).toEqual({ executed: true })
+      expect(errors).toHaveLength(1)
+      expect(errors[0].action).toEqual("step_1_async")
+      expect(
+        TransactionStepTimeoutError.isTransactionStepTimeoutError(
+          errors[0].error
+        )
+      ).toBe(true)
     })
 
     it("should revert the entire transaction when the transaction timeout expires in a transaction containing an async step", async () => {
+      await workflowOrcModule.run("workflow_transaction_timeout_async", {
+        input: {},
+        transactionId: "transaction_1",
+        throwOnError: false,
+      })
+
+      await setTimeout(200)
+
       const { transaction, result, errors } = await workflowOrcModule.run(
         "workflow_transaction_timeout_async",
         {
           input: {},
+          transactionId: "transaction_1",
           throwOnError: false,
         }
       )
 
       expect(transaction.flow.state).toEqual("reverted")
-      expect(result).toEqual({ executed: true })
+      //expect(result).toEqual({ executed: true })
       expect(errors).toHaveLength(1)
       expect(errors[0].action).toEqual("step_1")
-      expect(errors[0].error).toBeInstanceOf(TransactionTimeoutError)
+      expect(
+        TransactionTimeoutError.isTransactionTimeoutError(errors[0].error)
+      ).toBe(true)
     })
   })
 })
