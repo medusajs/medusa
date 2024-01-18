@@ -56,6 +56,23 @@ export interface UpdateCartDTO {
   metadata?: Record<string, unknown>
 }
 
+export interface CreateShippingMethodTaxLineDTO {
+  description?: string
+  tax_rate_id?: string
+  code: string
+  rate: number
+  provider_id?: string
+}
+
+export interface UpdateShippingMethodTaxLineDTO {
+  id: string
+  description?: string
+  tax_rate_id?: string
+  code?: string
+  rate?: number
+  provider_id?: string
+}
+
 export interface CreateLineItemTaxLineDTO {
   description?: string
   tax_rate_id?: string
