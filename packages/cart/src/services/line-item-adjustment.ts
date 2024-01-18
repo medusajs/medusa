@@ -19,8 +19,6 @@ export default class LineItemAdjustmentService<
     update: UpdateLineItemAdjustmentDTO
   }
 >(LineItemAdjustmentLine)<TEntity> {
-  protected readonly lineItemAdjustmentRepository_: DAL.RepositoryService<TEntity>
-
   constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
