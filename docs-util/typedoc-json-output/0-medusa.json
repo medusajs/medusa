@@ -124,7 +124,15 @@
 			"name": "DefaultPriceType",
 			"variant": "declaration",
 			"kind": 8,
-			"flags": {}
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The type of default price type."
+					}
+				]
+			}
 		},
 		{
 			"id": 5220,
@@ -508,6 +516,22 @@
 			"variant": "declaration",
 			"kind": 16,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The "
+					},
+					{
+						"kind": "code",
+						"text": "`calculatedPrice`"
+					},
+					{
+						"kind": "text",
+						"text": " is the original price."
+					}
+				]
+			},
 			"type": {
 				"type": "literal",
 				"value": "default"
@@ -4402,7 +4426,7 @@
 									},
 									{
 										"kind": "text",
-										"text": " of your fulfillment provider to access the different services in Medusa through dependency injection.\nYou can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.\nAdditionally, if you’re creating your fulfillment provider as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor."
+										"text": " of your fulfillment provider to access the different services in Medusa through dependency injection.\n\nYou can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.\nAdditionally, if you’re creating your fulfillment provider as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor."
 									}
 								],
 								"blockTags": [
@@ -12521,53 +12545,78 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "You can use the "
+									},
+									{
+										"kind": "code",
+										"text": "`constructor`"
+									},
+									{
+										"kind": "text",
+										"text": " of your price-selection strategy to access the different services in Medusa through dependency injection."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// ...\nimport {\n  AbstractPriceSelectionStrategy,\n  CustomerService,\n} from \"@medusajs/medusa\"\ntype InjectedDependencies = {\n  customerService: CustomerService\n}\n\nclass MyStrategy extends\n  AbstractPriceSelectionStrategy {\n\n  protected customerService_: CustomerService\n\n  constructor(container: InjectedDependencies) {\n    super(container)\n    this.customerService_ = container.customerService\n  }\n\n  // ...\n}\n\nexport default  MyStrategy\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
 									"id": 3568,
-									"name": "__container__",
+									"name": "container",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "An instance of "
+											},
+											{
+												"kind": "code",
+												"text": "`MedusaContainer`"
+											},
+											{
+												"kind": "text",
+												"text": " that allows you to access other resources, such as services, in your Medusa backend."
+											}
+										]
+									},
 									"type": {
-										"type": "intrinsic",
-										"name": "any"
+										"type": "reference",
+										"target": 4879,
+										"name": "MedusaContainer",
+										"package": "@medusajs/types"
 									}
 								},
 								{
 									"id": 3569,
-									"name": "__configModule__",
+									"name": "config",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
 									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
+									"comment": {
+										"summary": [
 											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
+												"kind": "text",
+												"text": "If this price-selection strategy is created in a plugin, the plugin's options are passed in this parameter."
 											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								},
-								{
-									"id": 3570,
-									"name": "__moduleDeclaration__",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {
-										"isOptional": true
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -12596,21 +12645,21 @@
 								"name": "AbstractPriceSelectionStrategy",
 								"package": "@medusajs/medusa"
 							},
-							"inheritedFrom": {
+							"overwrites": {
 								"type": "reference",
 								"target": 3763,
 								"name": "TransactionBaseService.constructor"
 							}
 						}
 					],
-					"inheritedFrom": {
+					"overwrites": {
 						"type": "reference",
 						"target": 3762,
 						"name": "TransactionBaseService.constructor"
 					}
 				},
 				{
-					"id": 3587,
+					"id": 3588,
 					"name": "__configModule__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -12645,7 +12694,7 @@
 					}
 				},
 				{
-					"id": 3586,
+					"id": 3587,
 					"name": "__container__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -12664,7 +12713,7 @@
 					}
 				},
 				{
-					"id": 3588,
+					"id": 3589,
 					"name": "__moduleDeclaration__",
 					"variant": "declaration",
 					"kind": 1024,
@@ -12699,7 +12748,77 @@
 					}
 				},
 				{
-					"id": 3582,
+					"id": 3571,
+					"name": "config",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "If this price-selection strategy is created in a plugin, the plugin's options are passed in this parameter."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3570,
+					"name": "container",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of "
+							},
+							{
+								"kind": "code",
+								"text": "`MedusaContainer`"
+							},
+							{
+								"kind": "text",
+								"text": " that allows you to access other resources, such as services, in your Medusa backend."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 4879,
+						"name": "MedusaContainer",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 3583,
 					"name": "manager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -12722,7 +12841,7 @@
 					}
 				},
 				{
-					"id": 3583,
+					"id": 3584,
 					"name": "transactionManager_",
 					"variant": "declaration",
 					"kind": 1024,
@@ -12754,21 +12873,7 @@
 					}
 				},
 				{
-					"id": 3562,
-					"name": "_isPriceSelectionStrategy",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isStatic": true
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "boolean"
-					},
-					"defaultValue": "true"
-				},
-				{
-					"id": 3584,
+					"id": 3585,
 					"name": "activeManager_",
 					"variant": "declaration",
 					"kind": 262144,
@@ -12776,7 +12881,7 @@
 						"isProtected": true
 					},
 					"getSignature": {
-						"id": 3585,
+						"id": 3586,
 						"name": "activeManager_",
 						"variant": "signature",
 						"kind": 524288,
@@ -12803,7 +12908,7 @@
 					}
 				},
 				{
-					"id": 3597,
+					"id": 3598,
 					"name": "atomicPhase_",
 					"variant": "declaration",
 					"kind": 2048,
@@ -12812,7 +12917,7 @@
 					},
 					"signatures": [
 						{
-							"id": 3598,
+							"id": 3599,
 							"name": "atomicPhase_",
 							"variant": "signature",
 							"kind": 4096,
@@ -12838,14 +12943,14 @@
 							},
 							"typeParameter": [
 								{
-									"id": 3599,
+									"id": 3600,
 									"name": "TResult",
 									"variant": "typeParam",
 									"kind": 131072,
 									"flags": {}
 								},
 								{
-									"id": 3600,
+									"id": 3601,
 									"name": "TError",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -12854,7 +12959,7 @@
 							],
 							"parameters": [
 								{
-									"id": 3601,
+									"id": 3602,
 									"name": "work",
 									"variant": "param",
 									"kind": 32768,
@@ -12870,21 +12975,21 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 3602,
+											"id": 3603,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"signatures": [
 												{
-													"id": 3603,
+													"id": 3604,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
 													"flags": {},
 													"parameters": [
 														{
-															"id": 3604,
+															"id": 3605,
 															"name": "transactionManager",
 															"variant": "param",
 															"kind": 32768,
@@ -12924,7 +13029,7 @@
 									}
 								},
 								{
-									"id": 3605,
+									"id": 3606,
 									"name": "isolationOrErrorHandler",
 									"variant": "param",
 									"kind": 32768,
@@ -12954,21 +13059,21 @@
 											{
 												"type": "reflection",
 												"declaration": {
-													"id": 3606,
+													"id": 3607,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"signatures": [
 														{
-															"id": 3607,
+															"id": 3608,
 															"name": "__type",
 															"variant": "signature",
 															"kind": 4096,
 															"flags": {},
 															"parameters": [
 																{
-																	"id": 3608,
+																	"id": 3609,
 																	"name": "error",
 																	"variant": "param",
 																	"kind": 32768,
@@ -13017,7 +13122,7 @@
 									}
 								},
 								{
-									"id": 3609,
+									"id": 3610,
 									"name": "maybeErrorHandlerOrDontFail",
 									"variant": "param",
 									"kind": 32768,
@@ -13035,21 +13140,21 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 3610,
+											"id": 3611,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"signatures": [
 												{
-													"id": 3611,
+													"id": 3612,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
 													"flags": {},
 													"parameters": [
 														{
-															"id": 3612,
+															"id": 3613,
 															"name": "error",
 															"variant": "param",
 															"kind": 32768,
@@ -13128,7 +13233,7 @@
 					}
 				},
 				{
-					"id": 3571,
+					"id": 3572,
 					"name": "calculateVariantPrice",
 					"variant": "declaration",
 					"kind": 2048,
@@ -13138,7 +13243,7 @@
 					},
 					"signatures": [
 						{
-							"id": 3572,
+							"id": 3573,
 							"name": "calculateVariantPrice",
 							"variant": "signature",
 							"kind": 4096,
@@ -13147,7 +13252,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Calculate the original and discount price for a given variant in a set of\ncircumstances described in the context."
+										"text": "This method retrieves one or more product variants' prices. It's used when retrieving product variants or their associated line items.\nIt's also used when retrieving other entities that product variants and line items belong to, such as products and carts respectively."
 									}
 								],
 								"blockTags": [
@@ -13156,7 +13261,20 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "pricing details in an object containing the calculated lowest price,\nthe default price an all valid prices for the given variant"
+												"text": "A map, each key is an ID of a variant, and its value is an object holding the price selection result."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "For example, here's a snippet of how the price selection strategy is implemented in the Medusa backend:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  AbstractPriceSelectionStrategy,\n  CustomerService,\n  PriceSelectionContext,\n  PriceSelectionResult,\n} from \"@medusajs/medusa\"\n\ntype InjectedDependencies = {\n  customerService: CustomerService\n}\n\nexport default class MyStrategy extends\n  AbstractPriceSelectionStrategy {\n\n  async calculateVariantPrice(\n    data: {\n      variantId: string\n      quantity?: number\n    }[],\n    context: PriceSelectionContext\n  ): Promise<Map<string, PriceSelectionResult>> {\n    const dataMap = new Map(data.map((d) => [d.variantId, d]))\n\n    const cacheKeysMap = new Map(\n      data.map(({ variantId, quantity }) => [\n        variantId,\n        this.getCacheKey(variantId, { ...context, quantity }),\n      ])\n    )\n\n    const nonCachedData: {\n      variantId: string\n      quantity?: number\n    }[] = []\n\n    const variantPricesMap = new Map<string, PriceSelectionResult>()\n\n    if (!context.ignore_cache) {\n      const cacheHits = await promiseAll(\n        [...cacheKeysMap].map(async ([, cacheKey]) => {\n          return await this.cacheService_.get<PriceSelectionResult>(cacheKey)\n        })\n      )\n\n      if (!cacheHits.length) {\n        nonCachedData.push(...dataMap.values())\n      }\n\n      for (const [index, cacheHit] of cacheHits.entries()) {\n        const variantId = data[index].variantId\n        if (cacheHit) {\n          variantPricesMap.set(variantId, cacheHit)\n          continue\n        }\n\n        nonCachedData.push(dataMap.get(variantId)!)\n      }\n    } else {\n      nonCachedData.push(...dataMap.values())\n    }\n\n    let results: Map<string, PriceSelectionResult> = new Map()\n\n    if (\n      this.featureFlagRouter_.isFeatureEnabled(\n        TaxInclusivePricingFeatureFlag.key\n      )\n    ) {\n      results = await this.calculateVariantPrice_new(nonCachedData, context)\n    } else {\n      results = await this.calculateVariantPrice_old(nonCachedData, context)\n    }\n\n    await promiseAll(\n      [...results].map(async ([variantId, prices]) => {\n        variantPricesMap.set(variantId, prices)\n        if (!context.ignore_cache) {\n          await this.cacheService_.set(cacheKeysMap.get(variantId)!, prices)\n        }\n      })\n    )\n\n    return variantPricesMap\n  }\n\n  // ...\n}\n```"
 											}
 										]
 									}
@@ -13164,24 +13282,32 @@
 							},
 							"parameters": [
 								{
-									"id": 3573,
+									"id": 3574,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The necessary data to perform the price selection for each variant ID."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
 											"type": "reflection",
 											"declaration": {
-												"id": 3574,
+												"id": 3575,
 												"name": "__type",
 												"variant": "declaration",
 												"kind": 65536,
 												"flags": {},
 												"children": [
 													{
-														"id": 3577,
+														"id": 3578,
 														"name": "quantity",
 														"variant": "declaration",
 														"kind": 1024,
@@ -13195,22 +13321,6 @@
 													},
 													{
 														"id": 3576,
-														"name": "taxRates",
-														"variant": "declaration",
-														"kind": 1024,
-														"flags": {},
-														"type": {
-															"type": "array",
-															"elementType": {
-																"type": "reference",
-																"target": 4911,
-																"name": "TaxServiceRate",
-																"package": "@medusajs/medusa"
-															}
-														}
-													},
-													{
-														"id": 3575,
 														"name": "variantId",
 														"variant": "declaration",
 														"kind": 1024,
@@ -13225,9 +13335,8 @@
 													{
 														"title": "Properties",
 														"children": [
-															3577,
-															3576,
-															3575
+															3578,
+															3576
 														]
 													}
 												]
@@ -13236,7 +13345,7 @@
 									}
 								},
 								{
-									"id": 3578,
+									"id": 3579,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -13245,13 +13354,13 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "Details relevant to determine the correct pricing of the variant"
+												"text": "The context of the price selection."
 											}
 										]
 									},
 									"type": {
 										"type": "reference",
-										"target": 3613,
+										"target": 3614,
 										"name": "PriceSelectionContext",
 										"package": "@medusajs/medusa"
 									}
@@ -13303,7 +13412,7 @@
 					}
 				},
 				{
-					"id": 3579,
+					"id": 3580,
 					"name": "onVariantsPricesUpdate",
 					"variant": "declaration",
 					"kind": 2048,
@@ -13312,7 +13421,7 @@
 					},
 					"signatures": [
 						{
-							"id": 3580,
+							"id": 3581,
 							"name": "onVariantsPricesUpdate",
 							"variant": "signature",
 							"kind": 4096,
@@ -13321,13 +13430,41 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Notify price selection strategy that variants prices have been updated."
+										"text": "This method is called when prices of product variants have changed.\nYou can use it to invalidate prices stored in the cache."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves after any necessary actions are performed."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "For example, this is how this method is implemented in the Medusa backend's default\nprice selection strategy:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  AbstractPriceSelectionStrategy,\n  CustomerService,\n} from \"@medusajs/medusa\"\nimport { promiseAll } from \"@medusajs/utils\"\n\ntype InjectedDependencies = {\n  customerService: CustomerService\n}\n\nexport default class MyStrategy extends\n  AbstractPriceSelectionStrategy {\n\n  public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {\n    await promiseAll(\n      variantIds.map(\n        async (id: string) => await this.cacheService_.invalidate(`ps:${id}:*`)\n      )\n    )\n  }\n\n  // ...\n}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\n:::note\n\nLearn more about the cache service in [this documentation](https://docs.medusajs.com/development/cache/overview).\n\n:::"
+											}
+										]
 									}
 								]
 							},
 							"parameters": [
 								{
-									"id": 3581,
+									"id": 3582,
 									"name": "variantIds",
 									"variant": "param",
 									"kind": 32768,
@@ -13336,7 +13473,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ids of the updated variants"
+												"text": "The IDs of the updated variants."
 											}
 										]
 									},
@@ -13378,7 +13515,7 @@
 					}
 				},
 				{
-					"id": 3592,
+					"id": 3593,
 					"name": "shouldRetryTransaction_",
 					"variant": "declaration",
 					"kind": 2048,
@@ -13387,14 +13524,14 @@
 					},
 					"signatures": [
 						{
-							"id": 3593,
+							"id": 3594,
 							"name": "shouldRetryTransaction_",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 3594,
+									"id": 3595,
 									"name": "err",
 									"variant": "param",
 									"kind": 32768,
@@ -13424,14 +13561,14 @@
 											{
 												"type": "reflection",
 												"declaration": {
-													"id": 3595,
+													"id": 3596,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 3596,
+															"id": 3597,
 															"name": "code",
 															"variant": "declaration",
 															"kind": 1024,
@@ -13446,7 +13583,7 @@
 														{
 															"title": "Properties",
 															"children": [
-																3596
+																3597
 															]
 														}
 													]
@@ -13474,21 +13611,21 @@
 					}
 				},
 				{
-					"id": 3589,
+					"id": 3590,
 					"name": "withTransaction",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 3590,
+							"id": 3591,
 							"name": "withTransaction",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 3591,
+									"id": 3592,
 									"name": "transactionManager",
 									"variant": "param",
 									"kind": 32768,
@@ -13532,41 +13669,6 @@
 						"target": 3558,
 						"name": "IPriceSelectionStrategy.withTransaction"
 					}
-				},
-				{
-					"id": 3563,
-					"name": "isPriceSelectionStrategy",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {
-						"isStatic": true
-					},
-					"signatures": [
-						{
-							"id": 3564,
-							"name": "isPriceSelectionStrategy",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 3565,
-									"name": "object",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								}
-							],
-							"type": {
-								"type": "intrinsic",
-								"name": "boolean"
-							}
-						}
-					]
 				}
 			],
 			"groups": [
@@ -13579,29 +13681,29 @@
 				{
 					"title": "Properties",
 					"children": [
-						3587,
-						3586,
 						3588,
-						3582,
+						3587,
+						3589,
+						3571,
+						3570,
 						3583,
-						3562
+						3584
 					]
 				},
 				{
 					"title": "Accessors",
 					"children": [
-						3584
+						3585
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						3597,
-						3571,
-						3579,
-						3592,
-						3589,
-						3563
+						3598,
+						3572,
+						3580,
+						3593,
+						3590
 					]
 				}
 			],
@@ -13623,7 +13725,7 @@
 			]
 		},
 		{
-			"id": 3643,
+			"id": 3642,
 			"name": "AbstractTaxCalculationStrategy",
 			"variant": "declaration",
 			"kind": 128,
@@ -13632,7 +13734,7 @@
 			},
 			"children": [
 				{
-					"id": 3648,
+					"id": 3647,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
@@ -13641,58 +13743,83 @@
 					},
 					"signatures": [
 						{
-							"id": 3649,
+							"id": 3648,
 							"name": "new AbstractTaxCalculationStrategy",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "You can use the "
+									},
+									{
+										"kind": "code",
+										"text": "`constructor`"
+									},
+									{
+										"kind": "text",
+										"text": " of your tax calculation strategy to access the different services in Medusa through dependency injection.\n\nYou can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.\nAdditionally, if you’re creating your tax calculation strategy as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  ITaxCalculationStrategy,\n  LineItemService,\n} from \"@medusajs/medusa\"\n\ntype InjectedDependencies = {\n  lineItemService: LineItemService\n}\n\nclass TaxCalculationStrategy\n  implements ITaxCalculationStrategy {\n\n  protected readonly lineItemService_: LineItemService\n\n  constructor({ lineItemService }: InjectedDependencies) {\n    this.lineItemService_ = lineItemService\n  }\n\n  // ...\n}\n\nexport default TaxCalculationStrategy\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 3650,
-									"name": "__container__",
+									"id": 3649,
+									"name": "container",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "An instance of "
+											},
+											{
+												"kind": "code",
+												"text": "`MedusaContainer`"
+											},
+											{
+												"kind": "text",
+												"text": " that allows you to access other resources, such as services, in your Medusa backend."
+											}
+										]
+									},
 									"type": {
-										"type": "intrinsic",
-										"name": "any"
+										"type": "reference",
+										"target": 4879,
+										"name": "MedusaContainer",
+										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 3651,
-									"name": "__configModule__",
+									"id": 3650,
+									"name": "config",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {
 										"isOptional": true
 									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
+									"comment": {
+										"summary": [
 											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
+												"kind": "text",
+												"text": "If this tax calculation strategy is created in a plugin, the plugin's options are passed in this parameter."
 											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								},
-								{
-									"id": 3652,
-									"name": "__moduleDeclaration__",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {
-										"isOptional": true
+										]
 									},
 									"type": {
 										"type": "reference",
@@ -13717,18 +13844,18 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 3643,
+								"target": 3642,
 								"name": "AbstractTaxCalculationStrategy",
 								"package": "@medusajs/medusa"
 							},
-							"inheritedFrom": {
+							"overwrites": {
 								"type": "reference",
 								"target": 3763,
 								"name": "TransactionBaseService.constructor"
 							}
 						}
 					],
-					"inheritedFrom": {
+					"overwrites": {
 						"type": "reference",
 						"target": 3762,
 						"name": "TransactionBaseService.constructor"
@@ -13824,6 +13951,76 @@
 					}
 				},
 				{
+					"id": 3652,
+					"name": "config",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "If this tax calculation strategy is created in a plugin, the plugin's options are passed in this parameter."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 3651,
+					"name": "container",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of "
+							},
+							{
+								"kind": "code",
+								"text": "`MedusaContainer`"
+							},
+							{
+								"kind": "text",
+								"text": " that allows you to access other resources, such as services, in your Medusa backend."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 4879,
+						"name": "MedusaContainer",
+						"package": "@medusajs/types"
+					}
+				},
+				{
 					"id": 3658,
 					"name": "manager_",
 					"variant": "declaration",
@@ -13877,20 +14074,6 @@
 						"target": 3768,
 						"name": "TransactionBaseService.transactionManager_"
 					}
-				},
-				{
-					"id": 3644,
-					"name": "_isTaxCalculationStrategy",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isStatic": true
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "boolean"
-					},
-					"defaultValue": "true"
 				},
 				{
 					"id": 3660,
@@ -14271,7 +14454,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Calculates the tax amount for a given set of line items under applicable\ntax conditions and calculation contexts."
+										"text": "This method calculates the tax amount for a given set of line items under applicable\ntax conditions and calculation contexts.\n\nThis method is used whenever taxes are calculated. If automatic tax calculation is disabled in a region,\nthen it's only triggered when taxes are calculated manually as explained in\n[this guide](https://docs.medusajs.com/modules/taxes/storefront/manual-calculation)."
 									}
 								],
 								"blockTags": [
@@ -14280,7 +14463,20 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "the tax total"
+												"text": "The calculated tax total"
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "An example of the general implementation of this method in the Medusa backend's tax calculation strategy:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nasync calculate(\n  items: LineItem[],\n  taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[],\n  calculationContext: TaxCalculationContext\n): Promise<number> {\n  const lineItemsTaxLines = taxLines.filter(\n    (tl) => \"item_id\" in tl\n  ) as LineItemTaxLine[]\n  const shippingMethodsTaxLines = taxLines.filter(\n    (tl) => \"shipping_method_id\" in tl\n  ) as ShippingMethodTaxLine[]\n\n  const lineItemsTax = this.calculateLineItemsTax(\n    items,\n    lineItemsTaxLines,\n    calculationContext\n  )\n\n  const shippingMethodsTax = this.calculateShippingMethodsTax(\n    calculationContext.shipping_methods,\n    shippingMethodsTaxLines\n  )\n\n  return Math.round(lineItemsTax + shippingMethodsTax)\n}\n```"
 											}
 										]
 									}
@@ -14297,7 +14493,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "the line items to calculate the tax total for"
+												"text": "The line items to calculate the tax total for."
 											}
 										]
 									},
@@ -14324,7 +14520,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "the tax lines that applies to the calculation"
+												"text": "The tax lines used for the calculation"
 											}
 										]
 									},
@@ -14365,7 +14561,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "other details relevant for the calculation"
+												"text": "Other details relevant for the calculation"
 											}
 										]
 									},
@@ -14394,14 +14590,14 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 3639,
+								"target": 3638,
 								"name": "ITaxCalculationStrategy.calculate"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 3638,
+						"target": 3637,
 						"name": "ITaxCalculationStrategy.calculate"
 					}
 				},
@@ -14550,48 +14746,13 @@
 						"target": 3774,
 						"name": "TransactionBaseService.withTransaction"
 					}
-				},
-				{
-					"id": 3645,
-					"name": "isTaxCalculationStrategy",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {
-						"isStatic": true
-					},
-					"signatures": [
-						{
-							"id": 3646,
-							"name": "isTaxCalculationStrategy",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 3647,
-									"name": "object",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								}
-							],
-							"type": {
-								"type": "intrinsic",
-								"name": "boolean"
-							}
-						}
-					]
 				}
 			],
 			"groups": [
 				{
 					"title": "Constructors",
 					"children": [
-						3648
+						3647
 					]
 				},
 				{
@@ -14600,9 +14761,10 @@
 						3663,
 						3662,
 						3664,
+						3652,
+						3651,
 						3658,
-						3659,
-						3644
+						3659
 					]
 				},
 				{
@@ -14617,8 +14779,7 @@
 						3673,
 						3653,
 						3668,
-						3665,
-						3645
+						3665
 					]
 				}
 			],
@@ -14633,7 +14794,7 @@
 			"implementedTypes": [
 				{
 					"type": "reference",
-					"target": 3637,
+					"target": 3636,
 					"name": "ITaxCalculationStrategy",
 					"package": "@medusajs/medusa"
 				}
@@ -14675,7 +14836,7 @@
 									},
 									{
 										"kind": "text",
-										"text": " of your tax provider to access the different services in Medusa through dependency injection.\nYou can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.\nAdditionally, if you’re creating your tax provider as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor."
+										"text": " of your tax provider to access the different services in Medusa through dependency injection.\n\nYou can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.\nAdditionally, if you’re creating your tax provider as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor."
 									}
 								],
 								"blockTags": [
@@ -14715,9 +14876,9 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 4895,
+										"target": 4879,
 										"name": "MedusaContainer",
-										"package": "medusa-core-utils"
+										"package": "@medusajs/types"
 									}
 								},
 								{
@@ -14930,9 +15091,9 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 4895,
+						"target": 4879,
 						"name": "MedusaContainer",
-						"package": "medusa-core-utils"
+						"package": "@medusajs/types"
 					}
 				},
 				{
@@ -74760,7 +74921,7 @@
 				},
 				{
 					"type": "reference",
-					"target": 3643,
+					"target": 3642,
 					"name": "AbstractTaxCalculationStrategy"
 				},
 				{
@@ -80688,6 +80849,38 @@
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "## Overview\n\nThe price selection strategy retrieves the best price for a product variant for a specific context such as selected region, taxes applied,\nthe quantity in cart, and more.\n\nMedusa provides a default price selection strategy, but you can override it. A price selecion strategy is a TypeScript or JavaScript file in the "
+					},
+					{
+						"kind": "code",
+						"text": "`src/strategies`"
+					},
+					{
+						"kind": "text",
+						"text": " directory of your Medusa backend project. It exports a class that extends the "
+					},
+					{
+						"kind": "code",
+						"text": "`AbstractPriceSelectionStrategy`"
+					},
+					{
+						"kind": "text",
+						"text": " class.\n\nFor example:\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts title=\"src/strategies/price.ts\"\nimport {\n  AbstractPriceSelectionStrategy,\n  PriceSelectionContext,\n  PriceSelectionResult,\n} from \"@medusajs/medusa\"\n\nexport default class MyStrategy extends\n  AbstractPriceSelectionStrategy {\n\n  async calculateVariantPrice(\n    data: {\n      variantId: string;\n      quantity?: number\n    }[],\n    context: PriceSelectionContext\n  ): Promise<Map<string, PriceSelectionResult>> {\n    throw new Error(\"Method not implemented.\")\n  }\n}\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\n---"
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 3548,
@@ -80706,7 +80899,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Calculate the original and discount price for a given variant in a set of\ncircumstances described in the context."
+										"text": "This method retrieves one or more product variants' prices. It's used when retrieving product variants or their associated line items.\nIt's also used when retrieving other entities that product variants and line items belong to, such as products and carts respectively."
 									}
 								],
 								"blockTags": [
@@ -80715,7 +80908,20 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "pricing details in an object containing the calculated lowest price,\nthe default price an all valid prices for the given variant"
+												"text": "A map, each key is an ID of a variant, and its value is an object holding the price selection result."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "For example, here's a snippet of how the price selection strategy is implemented in the Medusa backend:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  AbstractPriceSelectionStrategy,\n  CustomerService,\n  PriceSelectionContext,\n  PriceSelectionResult,\n} from \"@medusajs/medusa\"\n\ntype InjectedDependencies = {\n  customerService: CustomerService\n}\n\nexport default class MyStrategy extends\n  AbstractPriceSelectionStrategy {\n\n  async calculateVariantPrice(\n    data: {\n      variantId: string\n      quantity?: number\n    }[],\n    context: PriceSelectionContext\n  ): Promise<Map<string, PriceSelectionResult>> {\n    const dataMap = new Map(data.map((d) => [d.variantId, d]))\n\n    const cacheKeysMap = new Map(\n      data.map(({ variantId, quantity }) => [\n        variantId,\n        this.getCacheKey(variantId, { ...context, quantity }),\n      ])\n    )\n\n    const nonCachedData: {\n      variantId: string\n      quantity?: number\n    }[] = []\n\n    const variantPricesMap = new Map<string, PriceSelectionResult>()\n\n    if (!context.ignore_cache) {\n      const cacheHits = await promiseAll(\n        [...cacheKeysMap].map(async ([, cacheKey]) => {\n          return await this.cacheService_.get<PriceSelectionResult>(cacheKey)\n        })\n      )\n\n      if (!cacheHits.length) {\n        nonCachedData.push(...dataMap.values())\n      }\n\n      for (const [index, cacheHit] of cacheHits.entries()) {\n        const variantId = data[index].variantId\n        if (cacheHit) {\n          variantPricesMap.set(variantId, cacheHit)\n          continue\n        }\n\n        nonCachedData.push(dataMap.get(variantId)!)\n      }\n    } else {\n      nonCachedData.push(...dataMap.values())\n    }\n\n    let results: Map<string, PriceSelectionResult> = new Map()\n\n    if (\n      this.featureFlagRouter_.isFeatureEnabled(\n        TaxInclusivePricingFeatureFlag.key\n      )\n    ) {\n      results = await this.calculateVariantPrice_new(nonCachedData, context)\n    } else {\n      results = await this.calculateVariantPrice_old(nonCachedData, context)\n    }\n\n    await promiseAll(\n      [...results].map(async ([variantId, prices]) => {\n        variantPricesMap.set(variantId, prices)\n        if (!context.ignore_cache) {\n          await this.cacheService_.set(cacheKeysMap.get(variantId)!, prices)\n        }\n      })\n    )\n\n    return variantPricesMap\n  }\n\n  // ...\n}\n```"
 											}
 										]
 									}
@@ -80728,6 +80934,14 @@
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The necessary data to perform the price selection for each variant ID."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -80751,7 +80965,7 @@
 															"summary": [
 																{
 																	"kind": "text",
-																	"text": "The variant's quantity."
+																	"text": "The variant's quantity in the cart, if available."
 																}
 															]
 														},
@@ -80770,7 +80984,7 @@
 															"summary": [
 																{
 																	"kind": "text",
-																	"text": "The variant id of the variant for which to retrieve prices"
+																	"text": "The ID of the variant to retrieve its prices."
 																}
 															]
 														},
@@ -80803,13 +81017,13 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "Details relevant to determine the correct pricing of the variant"
+												"text": "The context of the price selection."
 											}
 										]
 									},
 									"type": {
 										"type": "reference",
-										"target": 3613,
+										"target": 3614,
 										"name": "PriceSelectionContext",
 										"package": "@medusajs/medusa"
 									}
@@ -80867,7 +81081,35 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Notify price selection strategy that variants prices have been updated."
+										"text": "This method is called when prices of product variants have changed.\nYou can use it to invalidate prices stored in the cache."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves after any necessary actions are performed."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "For example, this is how this method is implemented in the Medusa backend's default\nprice selection strategy:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  AbstractPriceSelectionStrategy,\n  CustomerService,\n} from \"@medusajs/medusa\"\nimport { promiseAll } from \"@medusajs/utils\"\n\ntype InjectedDependencies = {\n  customerService: CustomerService\n}\n\nexport default class MyStrategy extends\n  AbstractPriceSelectionStrategy {\n\n  public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {\n    await promiseAll(\n      variantIds.map(\n        async (id: string) => await this.cacheService_.invalidate(`ps:${id}:*`)\n      )\n    )\n  }\n\n  // ...\n}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\n:::note\n\nLearn more about the cache service in [this documentation](https://docs.medusajs.com/development/cache/overview).\n\n:::"
+											}
+										]
 									}
 								]
 							},
@@ -80882,7 +81124,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The ids of the updated variants"
+												"text": "The IDs of the updated variants."
 											}
 										]
 									},
@@ -80991,21 +81233,69 @@
 			]
 		},
 		{
-			"id": 3637,
+			"id": 3636,
 			"name": "ITaxCalculationStrategy",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "## Overview\n\nA tax calculation strategy is used to calculate taxes when calculating a cart's totals. The Medusa\nbackend provides a tax calculation strategy that handles calculating the taxes, taking into account the\ndefined tax rates and settings such as whether tax-inclusive pricing is enabled.\n\nYou can override the tax calculation strategy to implement different calculation logic or to\nintegrate a third-party service that handles the tax calculation. You can override it either\nin a Medusa backend setup or in a plugin.\n\nA tax calculation strategy should be defined in a TypeScript or JavaScript file created under the "
+					},
+					{
+						"kind": "code",
+						"text": "`src/strategies`"
+					},
+					{
+						"kind": "text",
+						"text": " directory.\nThe class must also implement the "
+					},
+					{
+						"kind": "code",
+						"text": "`ITaxCalculationStrategy`"
+					},
+					{
+						"kind": "text",
+						"text": " interface imported from the "
+					},
+					{
+						"kind": "code",
+						"text": "`@medusajs/medusa`"
+					},
+					{
+						"kind": "text",
+						"text": " package.\n\nFor example, you can create the file "
+					},
+					{
+						"kind": "code",
+						"text": "`src/strategies/tax-calculation.ts`"
+					},
+					{
+						"kind": "text",
+						"text": " with the following content:\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts title=\"src/strategies/tax-calculation.ts\"\nimport {\n  ITaxCalculationStrategy,\n  LineItem,\n  LineItemTaxLine,\n  ShippingMethodTaxLine,\n  TaxCalculationContext,\n} from \"@medusajs/medusa\"\n\nclass TaxCalculationStrategy\n  implements ITaxCalculationStrategy {\n\n  async calculate(\n    items: LineItem[],\n    taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[],\n    calculationContext: TaxCalculationContext\n  ): Promise<number> {\n    throw new Error(\"Method not implemented.\")\n  }\n\n}\n\nexport default TaxCalculationStrategy\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\n---"
+					}
+				]
+			},
 			"children": [
 				{
-					"id": 3638,
+					"id": 3637,
 					"name": "calculate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 3639,
+							"id": 3638,
 							"name": "calculate",
 							"variant": "signature",
 							"kind": 4096,
@@ -81014,7 +81304,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Calculates the tax amount for a given set of line items under applicable\ntax conditions and calculation contexts."
+										"text": "This method calculates the tax amount for a given set of line items under applicable\ntax conditions and calculation contexts.\n\nThis method is used whenever taxes are calculated. If automatic tax calculation is disabled in a region,\nthen it's only triggered when taxes are calculated manually as explained in\n[this guide](https://docs.medusajs.com/modules/taxes/storefront/manual-calculation)."
 									}
 								],
 								"blockTags": [
@@ -81023,7 +81313,20 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "the tax total"
+												"text": "The calculated tax total"
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "An example of the general implementation of this method in the Medusa backend's tax calculation strategy:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nasync calculate(\n  items: LineItem[],\n  taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[],\n  calculationContext: TaxCalculationContext\n): Promise<number> {\n  const lineItemsTaxLines = taxLines.filter(\n    (tl) => \"item_id\" in tl\n  ) as LineItemTaxLine[]\n  const shippingMethodsTaxLines = taxLines.filter(\n    (tl) => \"shipping_method_id\" in tl\n  ) as ShippingMethodTaxLine[]\n\n  const lineItemsTax = this.calculateLineItemsTax(\n    items,\n    lineItemsTaxLines,\n    calculationContext\n  )\n\n  const shippingMethodsTax = this.calculateShippingMethodsTax(\n    calculationContext.shipping_methods,\n    shippingMethodsTaxLines\n  )\n\n  return Math.round(lineItemsTax + shippingMethodsTax)\n}\n```"
 											}
 										]
 									}
@@ -81031,7 +81334,7 @@
 							},
 							"parameters": [
 								{
-									"id": 3640,
+									"id": 3639,
 									"name": "items",
 									"variant": "param",
 									"kind": 32768,
@@ -81040,7 +81343,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "the line items to calculate the tax total for"
+												"text": "The line items to calculate the tax total for."
 											}
 										]
 									},
@@ -81058,7 +81361,7 @@
 									}
 								},
 								{
-									"id": 3641,
+									"id": 3640,
 									"name": "taxLines",
 									"variant": "param",
 									"kind": 32768,
@@ -81067,7 +81370,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "the tax lines that applies to the calculation"
+												"text": "The tax lines used for the calculation"
 											}
 										]
 									},
@@ -81099,7 +81402,7 @@
 									}
 								},
 								{
-									"id": 3642,
+									"id": 3641,
 									"name": "calculationContext",
 									"variant": "param",
 									"kind": 32768,
@@ -81108,7 +81411,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "other details relevant for the calculation"
+												"text": "Other details relevant for the calculation"
 											}
 										]
 									},
@@ -81143,14 +81446,14 @@
 				{
 					"title": "Methods",
 					"children": [
-						3638
+						3637
 					]
 				}
 			],
 			"implementedBy": [
 				{
 					"type": "reference",
-					"target": 3643,
+					"target": 3642,
 					"name": "AbstractTaxCalculationStrategy"
 				}
 			]
@@ -86223,6 +86526,439 @@
 					"target": 3761,
 					"name": "TransactionBaseService",
 					"package": "@medusajs/medusa"
+				}
+			]
+		},
+		{
+			"id": 3614,
+			"name": "PriceSelectionContext",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The context of the price selection."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 3615,
+					"name": "cart_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The cart's ID. This is used when the prices are being retrieved for the variant of a line item,\nas it is used to determine the current region and currency code of the context."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3619,
+					"name": "currency_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The currency code the customer is using."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3616,
+					"name": "customer_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the customer viewing the variant."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3622,
+					"name": "ignore_cache",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Whether to calculate the prices even if the value of an earlier price calculation\nis available in the cache."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				},
+				{
+					"id": 3620,
+					"name": "include_discount_prices",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Whether the price list's prices should be retrieved or not."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				},
+				{
+					"id": 3618,
+					"name": "quantity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The quantity of the item in the cart. This is used to filter out price lists that have\n"
+							},
+							{
+								"kind": "code",
+								"text": "`min_quantity`"
+							},
+							{
+								"kind": "text",
+								"text": " or "
+							},
+							{
+								"kind": "code",
+								"text": "`max_quantity`"
+							},
+							{
+								"kind": "text",
+								"text": " conditions set."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 3617,
+					"name": "region_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The region's ID."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3621,
+					"name": "tax_rates",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The tax rates to be applied. This is only used for\n[Tax-Inclusive Pricing](https://docs.medusajs.com/modules/taxes/inclusive-pricing)."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reference",
+							"target": 4911,
+							"name": "TaxServiceRate",
+							"package": "@medusajs/medusa"
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						3615,
+						3619,
+						3616,
+						3622,
+						3620,
+						3618,
+						3617,
+						3621
+					]
+				}
+			]
+		},
+		{
+			"id": 3629,
+			"name": "PriceSelectionResult",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The price selection result of a variant."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 3632,
+					"name": "calculatedPrice",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The lowest price among the prices of the product variant retrieved using the context object."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 3633,
+					"name": "calculatedPriceIncludesTax",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Whether the calculated price includes taxes or not.\nThis is only available for [Tax-Inclusive Pricing](https://docs.medusajs.com/modules/taxes/inclusive-pricing)."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						]
+					}
+				},
+				{
+					"id": 3634,
+					"name": "calculatedPriceType",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The type of price applied in "
+							},
+							{
+								"kind": "code",
+								"text": "`calculatedPrice`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 3628,
+						"name": "PriceType",
+						"package": "@medusajs/medusa"
+					}
+				},
+				{
+					"id": 3630,
+					"name": "originalPrice",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The original price of the variant which depends on the selected region or currency code in the context object.\nIf both region ID and currency code are available in the context object, the region has higher precedence."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 3631,
+					"name": "originalPriceIncludesTax",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Whether the original price includes taxes or not. This is only available\nfor [Tax-Inclusive Pricing](https://docs.medusajs.com/modules/taxes/inclusive-pricing)."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						]
+					}
+				},
+				{
+					"id": 3635,
+					"name": "prices",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "All possible prices of the variant that are retrieved using the "
+							},
+							{
+								"kind": "code",
+								"text": "`context`"
+							},
+							{
+								"kind": "text",
+								"text": " object.\nIt can include its original price and its price lists if there are any."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reference",
+							"target": {
+								"sourceFileName": "../../../packages/medusa/src/models/money-amount.ts",
+								"qualifiedName": "MoneyAmount"
+							},
+							"name": "MoneyAmount",
+							"package": "@medusajs/medusa"
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						3632,
+						3633,
+						3634,
+						3630,
+						3631,
+						3635
+					]
 				}
 			]
 		},
@@ -101469,118 +102205,7 @@
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
-							"flags": {},
-							"children": [
-								{
-									"id": 4887,
-									"name": "createScope",
-									"variant": "declaration",
-									"kind": 1024,
-									"flags": {},
-									"type": {
-										"type": "reflection",
-										"declaration": {
-											"id": 4888,
-											"name": "__type",
-											"variant": "declaration",
-											"kind": 65536,
-											"flags": {},
-											"signatures": [
-												{
-													"id": 4889,
-													"name": "__type",
-													"variant": "signature",
-													"kind": 4096,
-													"flags": {},
-													"type": {
-														"type": "reference",
-														"target": 4879,
-														"name": "MedusaContainer",
-														"package": "@medusajs/types"
-													}
-												}
-											]
-										}
-									}
-								},
-								{
-									"id": 4881,
-									"name": "registerAdd",
-									"variant": "declaration",
-									"kind": 1024,
-									"flags": {},
-									"type": {
-										"type": "reflection",
-										"declaration": {
-											"id": 4882,
-											"name": "__type",
-											"variant": "declaration",
-											"kind": 65536,
-											"flags": {},
-											"signatures": [
-												{
-													"id": 4883,
-													"name": "__type",
-													"variant": "signature",
-													"kind": 4096,
-													"flags": {},
-													"typeParameter": [
-														{
-															"id": 4886,
-															"name": "T",
-															"variant": "typeParam",
-															"kind": 131072,
-															"flags": {}
-														}
-													],
-													"parameters": [
-														{
-															"id": 4884,
-															"name": "name",
-															"variant": "param",
-															"kind": 32768,
-															"flags": {},
-															"type": {
-																"type": "intrinsic",
-																"name": "string"
-															}
-														},
-														{
-															"id": 4885,
-															"name": "registration",
-															"variant": "param",
-															"kind": 32768,
-															"flags": {},
-															"type": {
-																"type": "reference",
-																"target": 4886,
-																"name": "T",
-																"package": "@medusajs/types",
-																"refersToTypeParameter": true
-															}
-														}
-													],
-													"type": {
-														"type": "reference",
-														"target": 4879,
-														"name": "MedusaContainer",
-														"package": "@medusajs/types"
-													}
-												}
-											]
-										}
-									}
-								}
-							],
-							"groups": [
-								{
-									"title": "Properties",
-									"children": [
-										4887,
-										4881
-									]
-								}
-							]
+							"flags": {}
 						}
 					}
 				]
@@ -104169,299 +104794,6 @@
 								4126,
 								4123,
 								4122
-							]
-						}
-					]
-				}
-			}
-		},
-		{
-			"id": 3613,
-			"name": "PriceSelectionContext",
-			"variant": "declaration",
-			"kind": 2097152,
-			"flags": {},
-			"type": {
-				"type": "reflection",
-				"declaration": {
-					"id": 3614,
-					"name": "__type",
-					"variant": "declaration",
-					"kind": 65536,
-					"flags": {},
-					"children": [
-						{
-							"id": 3615,
-							"name": "cart_id",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "intrinsic",
-								"name": "string"
-							}
-						},
-						{
-							"id": 3619,
-							"name": "currency_code",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "intrinsic",
-								"name": "string"
-							}
-						},
-						{
-							"id": 3616,
-							"name": "customer_id",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "intrinsic",
-								"name": "string"
-							}
-						},
-						{
-							"id": 3622,
-							"name": "ignore_cache",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "intrinsic",
-								"name": "boolean"
-							}
-						},
-						{
-							"id": 3620,
-							"name": "include_discount_prices",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "intrinsic",
-								"name": "boolean"
-							}
-						},
-						{
-							"id": 3618,
-							"name": "quantity",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "intrinsic",
-								"name": "number"
-							}
-						},
-						{
-							"id": 3617,
-							"name": "region_id",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "intrinsic",
-								"name": "string"
-							}
-						},
-						{
-							"id": 3621,
-							"name": "tax_rates",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "array",
-								"elementType": {
-									"type": "reference",
-									"target": 4911,
-									"name": "TaxServiceRate",
-									"package": "@medusajs/medusa"
-								}
-							}
-						}
-					],
-					"groups": [
-						{
-							"title": "Properties",
-							"children": [
-								3615,
-								3619,
-								3616,
-								3622,
-								3620,
-								3618,
-								3617,
-								3621
-							]
-						}
-					]
-				}
-			}
-		},
-		{
-			"id": 3629,
-			"name": "PriceSelectionResult",
-			"variant": "declaration",
-			"kind": 2097152,
-			"flags": {},
-			"type": {
-				"type": "reflection",
-				"declaration": {
-					"id": 3630,
-					"name": "__type",
-					"variant": "declaration",
-					"kind": 65536,
-					"flags": {},
-					"children": [
-						{
-							"id": 3633,
-							"name": "calculatedPrice",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"type": {
-								"type": "union",
-								"types": [
-									{
-										"type": "intrinsic",
-										"name": "number"
-									},
-									{
-										"type": "literal",
-										"value": null
-									}
-								]
-							}
-						},
-						{
-							"id": 3634,
-							"name": "calculatedPriceIncludesTax",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "union",
-								"types": [
-									{
-										"type": "intrinsic",
-										"name": "boolean"
-									},
-									{
-										"type": "literal",
-										"value": null
-									}
-								]
-							}
-						},
-						{
-							"id": 3635,
-							"name": "calculatedPriceType",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "reference",
-								"target": 3628,
-								"name": "PriceType",
-								"package": "@medusajs/medusa"
-							}
-						},
-						{
-							"id": 3631,
-							"name": "originalPrice",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"type": {
-								"type": "union",
-								"types": [
-									{
-										"type": "intrinsic",
-										"name": "number"
-									},
-									{
-										"type": "literal",
-										"value": null
-									}
-								]
-							}
-						},
-						{
-							"id": 3632,
-							"name": "originalPriceIncludesTax",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {
-								"isOptional": true
-							},
-							"type": {
-								"type": "union",
-								"types": [
-									{
-										"type": "intrinsic",
-										"name": "boolean"
-									},
-									{
-										"type": "literal",
-										"value": null
-									}
-								]
-							}
-						},
-						{
-							"id": 3636,
-							"name": "prices",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"type": {
-								"type": "array",
-								"elementType": {
-									"type": "reference",
-									"target": {
-										"sourceFileName": "../../../packages/medusa/src/models/money-amount.ts",
-										"qualifiedName": "MoneyAmount"
-									},
-									"name": "MoneyAmount",
-									"package": "@medusajs/medusa"
-								}
-							}
-						}
-					],
-					"groups": [
-						{
-							"title": "Properties",
-							"children": [
-								3633,
-								3634,
-								3635,
-								3631,
-								3632,
-								3636
 							]
 						}
 					]
@@ -110450,7 +110782,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "The cart's customer."
+										"text": "The customer that the cart belongs to."
 									}
 								]
 							},
@@ -110517,7 +110849,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "The shipping address in the cart."
+										"text": "The shipping address used in the cart."
 									}
 								]
 							},
@@ -119918,7 +120250,7 @@
 				3300,
 				3456,
 				3561,
-				3643,
+				3642,
 				3711,
 				4438,
 				4467,
@@ -120269,7 +120601,7 @@
 				2870,
 				3144,
 				3547,
-				3637,
+				3636,
 				3705,
 				4907,
 				5082,
@@ -120281,6 +120613,8 @@
 				3257,
 				3252,
 				3374,
+				3614,
+				3629,
 				5256,
 				5249,
 				5151,
@@ -120480,8 +120814,6 @@
 				4136,
 				4128,
 				4119,
-				3613,
-				3629,
 				3628,
 				4563,
 				4801,
@@ -132922,45 +133254,29 @@
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "AbstractPriceSelectionStrategy"
 		},
-		"3562": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "AbstractPriceSelectionStrategy._isPriceSelectionStrategy"
-		},
-		"3563": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "AbstractPriceSelectionStrategy.isPriceSelectionStrategy"
-		},
-		"3564": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "AbstractPriceSelectionStrategy.isPriceSelectionStrategy"
-		},
-		"3565": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "object"
-		},
 		"3566": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.__constructor"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
+			"qualifiedName": "AbstractPriceSelectionStrategy.__constructor"
 		},
 		"3567": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
 			"qualifiedName": "AbstractPriceSelectionStrategy"
 		},
 		"3568": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__container__"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
+			"qualifiedName": "container"
 		},
 		"3569": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__configModule__"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
+			"qualifiedName": "config"
 		},
 		"3570": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__moduleDeclaration__"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
+			"qualifiedName": "AbstractPriceSelectionStrategy.container"
 		},
 		"3571": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "AbstractPriceSelectionStrategy.calculateVariantPrice"
+			"qualifiedName": "AbstractPriceSelectionStrategy.config"
 		},
 		"3572": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
@@ -132968,31 +133284,27 @@
 		},
 		"3573": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "data"
+			"qualifiedName": "AbstractPriceSelectionStrategy.calculateVariantPrice"
 		},
 		"3574": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "data"
 		},
 		"3575": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "__type.variantId"
+			"qualifiedName": "__type"
 		},
 		"3576": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "__type.taxRates"
-		},
-		"3577": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "__type.quantity"
+			"qualifiedName": "__type.variantId"
 		},
 		"3578": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "__type.quantity"
 		},
 		"3579": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "AbstractPriceSelectionStrategy.onVariantsPricesUpdate"
+			"qualifiedName": "context"
 		},
 		"3580": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
@@ -133000,19 +133312,19 @@
 		},
 		"3581": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "variantIds"
+			"qualifiedName": "AbstractPriceSelectionStrategy.onVariantsPricesUpdate"
 		},
 		"3582": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.manager_"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
+			"qualifiedName": "variantIds"
 		},
 		"3583": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.transactionManager_"
+			"qualifiedName": "TransactionBaseService.manager_"
 		},
 		"3584": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.activeManager_"
+			"qualifiedName": "TransactionBaseService.transactionManager_"
 		},
 		"3585": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
@@ -133020,19 +133332,19 @@
 		},
 		"3586": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.__container__"
+			"qualifiedName": "TransactionBaseService.activeManager_"
 		},
 		"3587": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.__configModule__"
+			"qualifiedName": "TransactionBaseService.__container__"
 		},
 		"3588": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.__moduleDeclaration__"
+			"qualifiedName": "TransactionBaseService.__configModule__"
 		},
 		"3589": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.withTransaction"
+			"qualifiedName": "TransactionBaseService.__moduleDeclaration__"
 		},
 		"3590": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
@@ -133040,11 +133352,11 @@
 		},
 		"3591": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "transactionManager"
+			"qualifiedName": "TransactionBaseService.withTransaction"
 		},
 		"3592": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
+			"qualifiedName": "transactionManager"
 		},
 		"3593": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
@@ -133052,19 +133364,19 @@
 		},
 		"3594": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "err"
+			"qualifiedName": "TransactionBaseService.shouldRetryTransaction_"
 		},
 		"3595": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "err"
 		},
 		"3596": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type.code"
+			"qualifiedName": "__type"
 		},
 		"3597": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.atomicPhase_"
+			"qualifiedName": "__type.code"
 		},
 		"3598": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
@@ -133072,19 +133384,19 @@
 		},
 		"3599": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TResult"
+			"qualifiedName": "TransactionBaseService.atomicPhase_"
 		},
 		"3600": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TError"
+			"qualifiedName": "TResult"
 		},
 		"3601": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "work"
+			"qualifiedName": "TError"
 		},
 		"3602": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "work"
 		},
 		"3603": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
@@ -133092,15 +133404,15 @@
 		},
 		"3604": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "transactionManager"
+			"qualifiedName": "__type"
 		},
 		"3605": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "isolationOrErrorHandler"
+			"qualifiedName": "transactionManager"
 		},
 		"3606": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "isolationOrErrorHandler"
 		},
 		"3607": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
@@ -133108,15 +133420,15 @@
 		},
 		"3608": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "error"
+			"qualifiedName": "__type"
 		},
 		"3609": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "maybeErrorHandlerOrDontFail"
+			"qualifiedName": "error"
 		},
 		"3610": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "maybeErrorHandlerOrDontFail"
 		},
 		"3611": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
@@ -133124,15 +133436,15 @@
 		},
 		"3612": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "error"
+			"qualifiedName": "__type"
 		},
 		"3613": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "PriceSelectionContext"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"qualifiedName": "error"
 		},
 		"3614": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "PriceSelectionContext"
 		},
 		"3615": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
@@ -133196,35 +133508,35 @@
 		},
 		"3630": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.originalPrice"
 		},
 		"3631": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "__type.originalPrice"
+			"qualifiedName": "__type.originalPriceIncludesTax"
 		},
 		"3632": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "__type.originalPriceIncludesTax"
+			"qualifiedName": "__type.calculatedPrice"
 		},
 		"3633": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "__type.calculatedPrice"
+			"qualifiedName": "__type.calculatedPriceIncludesTax"
 		},
 		"3634": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "__type.calculatedPriceIncludesTax"
+			"qualifiedName": "__type.calculatedPriceType"
 		},
 		"3635": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "__type.calculatedPriceType"
+			"qualifiedName": "__type.prices"
 		},
 		"3636": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-			"qualifiedName": "__type.prices"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
+			"qualifiedName": "ITaxCalculationStrategy"
 		},
 		"3637": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
-			"qualifiedName": "ITaxCalculationStrategy"
+			"qualifiedName": "ITaxCalculationStrategy.calculate"
 		},
 		"3638": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
@@ -133232,59 +133544,43 @@
 		},
 		"3639": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
-			"qualifiedName": "ITaxCalculationStrategy.calculate"
+			"qualifiedName": "items"
 		},
 		"3640": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
-			"qualifiedName": "items"
+			"qualifiedName": "taxLines"
 		},
 		"3641": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
-			"qualifiedName": "taxLines"
+			"qualifiedName": "calculationContext"
 		},
 		"3642": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
-			"qualifiedName": "calculationContext"
-		},
-		"3643": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "AbstractTaxCalculationStrategy"
-		},
-		"3644": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
-			"qualifiedName": "AbstractTaxCalculationStrategy._isTaxCalculationStrategy"
-		},
-		"3645": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
-			"qualifiedName": "AbstractTaxCalculationStrategy.isTaxCalculationStrategy"
-		},
-		"3646": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
-			"qualifiedName": "AbstractTaxCalculationStrategy.isTaxCalculationStrategy"
 		},
 		"3647": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
-			"qualifiedName": "object"
+			"qualifiedName": "AbstractTaxCalculationStrategy.__constructor"
 		},
 		"3648": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "TransactionBaseService.__constructor"
-		},
-		"3649": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
 			"qualifiedName": "AbstractTaxCalculationStrategy"
 		},
+		"3649": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
+			"qualifiedName": "container"
+		},
 		"3650": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__container__"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
+			"qualifiedName": "config"
 		},
 		"3651": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__configModule__"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
+			"qualifiedName": "AbstractTaxCalculationStrategy.container"
 		},
 		"3652": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-			"qualifiedName": "__moduleDeclaration__"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
+			"qualifiedName": "AbstractTaxCalculationStrategy.config"
 		},
 		"3653": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/tax-calculation-strategy.ts",
@@ -137603,42 +137899,6 @@
 			"qualifiedName": "MedusaContainer"
 		},
 		"4880": {
-			"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
-			"qualifiedName": "__type"
-		},
-		"4881": {
-			"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
-			"qualifiedName": "__type.registerAdd"
-		},
-		"4882": {
-			"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
-			"qualifiedName": "__type"
-		},
-		"4883": {
-			"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
-			"qualifiedName": "__type"
-		},
-		"4884": {
-			"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
-			"qualifiedName": "name"
-		},
-		"4885": {
-			"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
-			"qualifiedName": "registration"
-		},
-		"4886": {
-			"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
-			"qualifiedName": "T"
-		},
-		"4887": {
-			"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
-			"qualifiedName": "__type.createScope"
-		},
-		"4888": {
-			"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
-			"qualifiedName": "__type"
-		},
-		"4889": {
 			"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
 			"qualifiedName": "__type"
 		},
