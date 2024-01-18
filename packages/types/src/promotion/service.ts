@@ -17,6 +17,8 @@ import {
 import { CreateCampaignDTO, UpdateCampaignDTO } from "./mutations"
 
 export interface IPromotionModuleService extends IModuleService {
+  registerUsage(computedActions: ComputeActions[]): Promise<void>
+
   computeActions(
     promotionCodesToApply: string[],
     applicationContext: ComputeActionContext,

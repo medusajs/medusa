@@ -11,7 +11,7 @@ import {
   OneToMany,
   OptionalProps,
   PrimaryKey,
-  Property,
+  Property
 } from "@mikro-orm/core"
 import Address from "./address"
 import LineItem from "./line-item"
@@ -78,7 +78,6 @@ export default class Cart {
 
   @OneToMany(() => ShippingMethod, (shippingMethod) => shippingMethod.cart, {
     cascade: [Cascade.REMOVE],
-    
   })
   shipping_methods = new Collection<ShippingMethod>(this)
 
