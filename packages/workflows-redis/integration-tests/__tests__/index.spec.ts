@@ -209,7 +209,7 @@ describe("Workflow Orchestrator module", function () {
       )
 
       expect(transaction.flow.state).toEqual("reverted")
-      // expect(result).toEqual({ executed: true })
+      expect(result).toEqual(undefined)
       expect(errors).toHaveLength(1)
       expect(errors[0].action).toEqual("step_1_async")
       expect(
@@ -238,7 +238,7 @@ describe("Workflow Orchestrator module", function () {
       )
 
       expect(transaction.flow.state).toEqual("reverted")
-      //expect(result).toEqual({ executed: true })
+      expect(result).toEqual(undefined)
       expect(errors).toHaveLength(1)
       expect(errors[0].action).toEqual("step_1")
       expect(

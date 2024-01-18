@@ -56,7 +56,6 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
         ]
 
         if (allJobs.includes(job.name as JobType)) {
-          console.log("job", job.name, job.data)
           await this.executeTransaction(
             job.data.workflowId,
             job.data.transactionId
