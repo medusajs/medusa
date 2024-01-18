@@ -3,7 +3,7 @@ import {
   promiseAll,
   upperCaseFirst,
 } from "@medusajs/utils"
-import { Lifetime, aliasTo, asFunction, asValue } from "awilix"
+import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
 import { Express } from "express"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
