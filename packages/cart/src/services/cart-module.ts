@@ -6,7 +6,6 @@ import {
   ICartModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
-  WithRequiredProperty,
 } from "@medusajs/types"
 import {
   InjectManager,
@@ -15,7 +14,6 @@ import {
   MedusaError,
   isObject,
   isString,
-  promiseAll,
 } from "@medusajs/utils"
 import { LineItem, LineItemAdjustmentLine, ShippingMethod } from "@models"
 import { UpdateLineItemDTO } from "@types"
@@ -573,7 +571,9 @@ export default class CartModuleService implements ICartModuleService {
       | string
       | CartTypes.CreateShippingMethodDTO[]
       | CartTypes.CreateShippingMethodDTO,
-    data?: CartTypes.CreateShippingMethodDTO[],
+    data?:
+      | CartTypes.CreateShippingMethodDTO[]
+      | CartTypes.CreateShippingMethodForCartDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     CartTypes.CartShippingMethodDTO[] | CartTypes.CartShippingMethodDTO
@@ -588,10 +588,7 @@ export default class CartModuleService implements ICartModuleService {
     } else {
       const data = Array.isArray(cartIdOrData) ? cartIdOrData : [cartIdOrData]
       methods = await this.addShippingMethodsBulk_(
-        data as WithRequiredProperty<
-          CartTypes.CreateShippingMethodDTO,
-          "cart_id"
-        >[],
+        data as CartTypes.CreateShippingMethodForCartDTO[],
         sharedContext
       )
     }
@@ -623,7 +620,7 @@ export default class CartModuleService implements ICartModuleService {
 
   @InjectTransactionManager("baseRepository_")
   protected async addShippingMethodsBulk_(
-    data: WithRequiredProperty<CartTypes.CreateShippingMethodDTO, "cart_id">[],
+    data: CartTypes.CreateShippingMethodForCartDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ShippingMethod[]> {
     return await this.shippingMethodService_.create(data, sharedContext)
@@ -797,10 +794,10 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
 
-    const [result] = await promiseAll([
-      this.lineItemAdjustmentService_.create(toCreate, sharedContext),
-      this.lineItemAdjustmentService_.update(toUpdate, sharedContext),
-    ])
+    const result = await this.lineItemAdjustmentService_.upsert(
+      [...toCreate, ...toUpdate],
+      sharedContext
+    )
 
     return await this.baseRepository_.serialize<
       CartTypes.LineItemAdjustmentLineDTO[]

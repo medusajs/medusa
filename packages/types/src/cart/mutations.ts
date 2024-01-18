@@ -183,6 +183,10 @@ export interface CreateShippingMethodDTO {
   adjustments?: CreateAdjustmentDTO[]
 }
 
+export interface CreateShippingMethodForCartDTO extends CreateShippingMethodDTO {
+  cart_id: string
+}
+
 export interface UpdateShippingMethodDTO {
   id: string
   name?: string
