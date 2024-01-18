@@ -30,6 +30,7 @@ export type TransactionFlow = {
   hasFailedSteps: boolean
   hasWaitingSteps: boolean
   hasSkippedSteps: boolean
+  hasRevertedSteps: boolean
   timedOutAt: number | null
   startedAt?: number
   state: TransactionState
@@ -104,6 +105,7 @@ export class TransactionOrchestrator extends EventEmitter {
     const states = [
       TransactionStepState.DONE,
       TransactionStepState.FAILED,
+      TransactionStepState.TIMEOUT,
       TransactionStepState.SKIPPED,
     ]
 
@@ -157,16 +159,51 @@ export class TransactionOrchestrator extends EventEmitter {
     const hasStepTimedOut =
       step &&
       step.hasTimeout() &&
+      !step.isCompensating() &&
       dateNow > step.startedAt! + step.getTimeoutInterval()! * 1e3
 
     const hasTransactionTimedOut =
       transaction &&
       transaction.hasTimeout() &&
+      transaction.getFlow().state !== TransactionState.COMPENSATING &&
       dateNow >
         transaction.getFlow().startedAt! +
           transaction.getTimeoutInterval()! * 1e3
 
     return !!hasStepTimedOut || !!hasTransactionTimedOut
+  }
+
+  private async checkTransactionTimeout(
+    transaction: DistributedTransaction,
+    currentSteps: TransactionStep[]
+  ) {
+    const flow = transaction.getFlow()
+    let hasTimedOut = false
+    if (
+      transaction.hasTimeout() &&
+      !flow.timedOutAt &&
+      this.hasExpired({ transaction }, Date.now())
+    ) {
+      flow.timedOutAt = Date.now()
+
+      void transaction.clearTransactionTimeout()
+
+      for (const step of currentSteps) {
+        await TransactionOrchestrator.setStepTimeout(
+          transaction,
+          step,
+          new TransactionTimeoutError()
+        )
+      }
+
+      await transaction.saveCheckpoint()
+
+      this.emit(DistributedTransactionEvent.TIMEOUT, { transaction })
+
+      hasTimedOut = true
+    }
+
+    return hasTimedOut
   }
 
   private async checkStepTimeout(
@@ -176,7 +213,6 @@ export class TransactionOrchestrator extends EventEmitter {
     let hasTimedOut = false
     if (
       step.hasTimeout() &&
-      !step.isCompensating() &&
       !step.timedOutAt &&
       step.canCancel() &&
       this.hasExpired({ step }, Date.now())
@@ -295,6 +331,7 @@ export class TransactionOrchestrator extends EventEmitter {
     }
 
     flow.hasWaitingSteps = hasWaiting
+    flow.hasRevertedSteps = hasReverted
 
     const totalSteps = allSteps.length - 1
     if (
@@ -358,6 +395,9 @@ export class TransactionOrchestrator extends EventEmitter {
     step: TransactionStep,
     response: unknown
   ): Promise<void> {
+    const hasStepTimedOut =
+      step.getStates().state === TransactionStepState.TIMEOUT
+
     if (step.saveResponse) {
       transaction.addResponse(
         step.definition.action!,
@@ -370,20 +410,14 @@ export class TransactionOrchestrator extends EventEmitter {
 
     const flow = transaction.getFlow()
 
-    step.changeStatus(TransactionStepStatus.OK)
+    if (!hasStepTimedOut) {
+      step.changeStatus(TransactionStepStatus.OK)
+    }
 
     if (step.isCompensating()) {
       step.changeState(TransactionStepState.REVERTED)
-    } else {
-      if (step.getStates().state !== TransactionStepState.TIMEOUT) {
-        step.changeState(TransactionStepState.DONE)
-      } else {
-        await TransactionOrchestrator.setStepFailure(
-          transaction,
-          step,
-          undefined
-        )
-      }
+    } else if (!hasStepTimedOut) {
+      step.changeState(TransactionStepState.DONE)
     }
 
     if (step.definition.async || flow.options?.storeExecution) {
@@ -411,6 +445,10 @@ export class TransactionOrchestrator extends EventEmitter {
     step: TransactionStep,
     error: Error | any
   ): Promise<void> {
+    if (step.getStates().state === TransactionStepState.TIMEOUT) {
+      return
+    }
+
     step.changeState(TransactionStepState.TIMEOUT)
 
     transaction.addError(
@@ -494,40 +532,6 @@ export class TransactionOrchestrator extends EventEmitter {
       ? DistributedTransactionEvent.COMPENSATE_STEP_FAILURE
       : DistributedTransactionEvent.STEP_FAILURE
     transaction.emit(eventName, { step, transaction })
-  }
-
-  private async checkTransactionTimeout(
-    transaction: DistributedTransaction,
-    currentSteps: TransactionStep[]
-  ) {
-    const flow = transaction.getFlow()
-    let hasTimedOut = false
-    if (
-      transaction.hasTimeout() &&
-      flow.state !== TransactionState.COMPENSATING &&
-      !flow.timedOutAt &&
-      this.hasExpired({ transaction }, Date.now())
-    ) {
-      flow.timedOutAt = Date.now()
-
-      void transaction.clearTransactionTimeout()
-
-      for (const step of currentSteps) {
-        await TransactionOrchestrator.setStepTimeout(
-          transaction,
-          step,
-          new TransactionTimeoutError()
-        )
-      }
-
-      await transaction.saveCheckpoint()
-
-      this.emit(DistributedTransactionEvent.TIMEOUT, { transaction })
-
-      hasTimedOut = true
-    }
-
-    return hasTimedOut
   }
 
   private async executeNext(
@@ -641,10 +645,7 @@ export class TransactionOrchestrator extends EventEmitter {
             transaction
               .handler(step.definition.action + "", type, payload, transaction)
               .then(async (response: any) => {
-                if (
-                  this.hasExpired({ transaction, step }, Date.now()) &&
-                  !step.isCompensating()
-                ) {
+                if (this.hasExpired({ transaction, step }, Date.now())) {
                   await this.checkStepTimeout(transaction, step)
                   await this.checkTransactionTimeout(transaction, [step])
                 }
@@ -806,6 +807,7 @@ export class TransactionOrchestrator extends EventEmitter {
       hasFailedSteps: false,
       hasSkippedSteps: false,
       hasWaitingSteps: false,
+      hasRevertedSteps: false,
       timedOutAt: null,
       state: TransactionState.NOT_STARTED,
       definition: this.definition,
