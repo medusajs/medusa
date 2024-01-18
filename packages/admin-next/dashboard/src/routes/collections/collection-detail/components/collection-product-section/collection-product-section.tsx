@@ -1,4 +1,4 @@
-import { Tag, Trash } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import type { Product, ProductCollection } from "@medusajs/medusa"
 import {
   Button,
@@ -25,7 +25,7 @@ import {
 } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import {
   NoRecords,
@@ -54,6 +54,7 @@ export const CollectionProductSection = ({
   collection,
 }: CollectionProductSectionProps) => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -199,12 +200,13 @@ export const CollectionProductSection = ({
                   <Table.Row
                     key={row.id}
                     className={clx(
-                      "transition-fg [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap [&_td:first-of-type]:w-[1%] [&_td:first-of-type]:whitespace-nowrap",
+                      "transition-fg cursor-pointer [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap [&_td:first-of-type]:w-[1%] [&_td:first-of-type]:whitespace-nowrap",
                       {
                         "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
                           row.getIsSelected(),
                       }
                     )}
+                    onClick={() => navigate(`/products/${row.original.id}`)}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <Table.Cell key={cell.id}>
@@ -286,9 +288,9 @@ const ProductActions = ({
         {
           actions: [
             {
-              icon: <Tag />,
-              label: t("collections.viewProduct"),
-              to: `/products/${product.id}`,
+              icon: <PencilSquare />,
+              label: t("general.edit"),
+              to: `/products/${product.id}/edit`,
             },
           ],
         },

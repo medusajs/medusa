@@ -63,7 +63,6 @@
     "handleTooltip": "The handle is used to reference the collection in your storefront. If not specified, the handle will be generated from the collection title.",
     "deleteWarning_one": "You are about to delete {{count}} collection. This action cannot be undone.",
     "deleteWarning_other": "You are about to delete {{count}} collections. This action cannot be undone.",
-    "viewProduct": "View product",
     "removeSingleProductWarning": "You are about to remove the product {{title}} from the collection. This action cannot be undone.",
     "removeProductsWarning_one": "You are about to remove {{count}} product from the collection. This action cannot be undone.",
     "removeProductsWarning_other": "You are about to remove {{count}} products from the collection. This action cannot be undone."
