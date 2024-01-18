@@ -66,6 +66,11 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/pricing",
     },
+    [Modules.PROMOTION]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/promotion",
+    },
     [Modules.SALES_CHANNEL]: {
       scope: "internal",
       resources: "shared",
