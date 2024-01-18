@@ -7961,8 +7961,6 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   bin:
-    medusa-customer-migrations-down: dist/scripts/bin/run-migration-down.js
-    medusa-customer-migrations-up: dist/scripts/bin/run-migration-up.js
     medusa-customer-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft

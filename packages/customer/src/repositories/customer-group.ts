@@ -1,11 +1,11 @@
 import { DALUtils } from "@medusajs/utils"
 import { CustomerGroup } from "@models"
-import { CreateCartDTO, UpdateCartDTO } from "@types"
+import { CreateCustomerGroupDTO, UpdateCustomerGroupDTO } from "@types"
 
 export class CustomerGroupRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
   CustomerGroup,
   {
-    create: CreateCartDTO
-    update: UpdateCartDTO
+    create: CreateCustomerGroupDTO
+    update: UpdateCustomerGroupDTO
   }
 >(CustomerGroup) {}
