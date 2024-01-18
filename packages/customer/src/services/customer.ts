@@ -11,4 +11,9 @@ export default class CustomerService<
 > extends ModulesSdkUtils.abstractServiceFactory<
   InjectedDependencies,
   { create: CreateCustomerDTO }
->(Customer)<TEntity> {}
+>(Customer)<TEntity> {
+  constructor(container: InjectedDependencies) {
+    // @ts-ignore
+    super(...arguments)
+  }
+}
