@@ -9,7 +9,7 @@ import {
   MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
-import { ProductCategoryServiceTypes } from "../types"
+import { ProductCategoryServiceTypes } from "@types"
 
 type InjectedDependencies = {
   productCategoryRepository: DAL.TreeRepositoryService
