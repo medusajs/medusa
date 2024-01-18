@@ -37,7 +37,7 @@ There are other resources that provide steps specific to a strategy type:
 
 - [How to override the Cart Completion Strategy](../../modules/carts-and-checkout/backend/cart-completion-strategy.md)
 - [How to override the Tax Calculation Strategy](../../references/tax_calculation/classes/tax_calculation.AbstractTaxCalculationStrategy.mdx)
-- [How to override the Price Selection Strategy](../../modules/price-lists/backend/override-price-selection-strategy.mdx)
+- [How to override the Price Selection Strategy](/modules/price-lists/price-selection-strategy)
 - [How to override a Batch Job Strategy](../batch-jobs/customize-import.md)
 
 ---
