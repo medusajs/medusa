@@ -1834,7 +1834,7 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "development/file-service/create-file-service",
+              id: "references/file/classes/file.AbstractFileService",
               label: "Create a File Service",
             },
           ],

@@ -104,17 +104,63 @@ module.exports = {
       maxLevel: 1,
     },
 
-    // FULFILLMENT CONFIG
-    "^fulfillment": {
+    // FILE CONFIG
+    "^file": {
+      frontmatterData: {
+        displayed_sidebar: "core",
+      },
+    },
+    "^file/.*AbstractFileService": {
       reflectionGroups: {
         Properties: false,
       },
+      reflectionDescription: `In this document, you’ll learn how to create a file service in the Medusa backend and the methods you must implement in it.`,
+      frontmatterData: {
+        displayed_sidebar: "core",
+        slug: "/development/file-service/create-file-service",
+      },
+      reflectionTitle: {
+        fullReplacement: "How to Create a File Service",
+      },
+      endSections: [
+        `## Test Implementation
+
+:::note
+
+If you created your file service in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
+
+:::
+
+After finishing your file service implementation:
+
+1\\. Run the \`build\` command in the root of your Medusa backend:
+
+\`\`\`bash npm2yarn
+npm run build
+\`\`\`
+
+2\\. Start the backend with the \`develop\` command:
+
+\`\`\`bash
+npx medusa develop
+\`\`\`
+
+3\\. Upload a file using the [Admin REST APIs](https://docs.medusajs.com/api/admin#uploads_postuploads) or using the Medusa admin, for example, to [upload a product's thumbnail](https://docs.medusajs.com/user-guide/products/manage#manage-thumbnails).
+      `,
+      ],
+    },
+
+    // FULFILLMENT CONFIG
+    "^fulfillment": {
       frontmatterData: {
         displayed_sidebar: "modules",
       },
       maxLevel: 2,
     },
     "^fulfillment/.*AbstractFulfillmentService": {
+      reflectionGroups: {
+        Properties: false,
+      },
       reflectionDescription: `In this document, you’ll learn how to create a fulfillment provider in the Medusa backend and the methods you must implement in it. If you’re unfamiliar with the Shipping architecture in Medusa, make sure to [check out the overview first](https://docs.medusajs.com/modules/carts-and-checkout/shipping).`,
       frontmatterData: {
         displayed_sidebar: "modules",
@@ -467,7 +513,7 @@ npm run build
 npx medusa develop
 \`\`\`
 
-3\\. Enable your payment processor in one or more regions. You can do that either using the [Admin APIs](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) or the [Medusa Admin](https://docs.medusajs.com/user-guide/regions/providers#manage-fulfillment-providers).
+3\\. Enable your payment processor in one or more regions. You can do that either using the [Admin APIs](https://docs.medusajs.com/api/admin#regions_postregionsregionpaymentproviders) or the [Medusa Admin](https://docs.medusajs.com/user-guide/regions/providers#manage-payment-providers).
 
 4\\. There are different ways to test out your payment processor, such as authorizing payment on order completion or capturing payment of an order. You test payment in a checkout flow either using the [Next.js starter](https://docs.medusajs.com/starters/nextjs-medusa-starter) or [using Medusa's APIs and clients](https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-checkout-flow).
       `,
@@ -476,15 +522,15 @@ npx medusa develop
 
     // PRICE SELECTION CONFIG
     "^price_selection": {
-      reflectionGroups: {
-        Properties: false,
-      },
       frontmatterData: {
         displayed_sidebar: "modules",
       },
     },
     "^price_selection/.*AbstractPriceSelectionStrategy": {
       reflectionDescription: `In this document, you’ll learn what the price selection strategy and how to override it in the Medusa backend.`,
+      reflectionGroups: {
+        Properties: false,
+      },
       frontmatterData: {
         displayed_sidebar: "modules",
         slug: "/modules/price-lists/price-selection-strategy",
@@ -649,16 +695,62 @@ npx medusa develop
       },
     },
 
-    // TAX PROVIDER CONFIG
-    "^tax": {
+    // TAX CALCULATION CONFIG
+    "^tax_calculation": {
+      frontmatterData: {
+        displayed_sidebar: "modules",
+      },
+    },
+    "^tax_calculation/.*AbstractTaxCalculationStrategy": {
       reflectionGroups: {
         Properties: false,
       },
+      reflectionDescription: `In this document, you’ll learn how to override the tax calculations strategy in the Medusa backend and the methods you must implement in it.`,
+      frontmatterData: {
+        displayed_sidebar: "modules",
+        slug: "/modules/taxes/backend/tax-calculation-strategy",
+      },
+      reflectionTitle: {
+        fullReplacement: "How to Override a Tax Calculation Strategy",
+      },
+      endSections: [
+        `## Test Implementation
+
+:::note
+
+If you created your tax calculation strategy in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
+
+:::
+
+After finishing your tax calculation strategy implementation:
+
+1\\. Run the \`build\` command in the root of your Medusa backend:
+
+\`\`\`bash npm2yarn
+npm run build
+\`\`\`
+
+2\\. Start the backend with the \`develop\` command:
+
+\`\`\`bash
+npx medusa develop
+\`\`\`
+
+3\\. To test out your tax calculation strategy implementation, you can [trigger taxes calculation manually](https://docs.medusajs.com/modules/taxes/storefront/manual-calculation).
+      `,
+      ],
+    },
+
+    // TAX PROVIDER CONFIG
+    "^tax": {
       frontmatterData: {
         displayed_sidebar: "modules",
       },
     },
     "^tax/.*AbstractTaxService": {
+      reflectionGroups: {
+        Properties: false,
+      },
       reflectionDescription: `In this document, you’ll learn how to create a tax provider in the Medusa backend and the methods you must implement in it.`,
       frontmatterData: {
         displayed_sidebar: "modules",
@@ -693,52 +785,6 @@ npx medusa develop
 3\\. Use the tax provider in a region. You can do that either using the [Admin APIs](https://docs.medusajs.com/modules/taxes/admin/manage-tax-settings#change-tax-provider-of-a-region) or the [Medusa Admin](https://docs.medusajs.com/user-guide/taxes/manage#change-tax-provider).
 
 4\\. To test out your tax provider implementation, you can [trigger taxes calculation manually](https://docs.medusajs.com/modules/taxes/storefront/manual-calculation).
-      `,
-      ],
-    },
-
-    // TAX CALCULATION CONFIG
-    "^tax_calculation": {
-      reflectionGroups: {
-        Properties: false,
-      },
-      frontmatterData: {
-        displayed_sidebar: "modules",
-      },
-    },
-    "^tax_calculation/.*AbstractTaxCalculationStrategy": {
-      reflectionDescription: `In this document, you’ll learn how to override the tax calculations strategy in the Medusa backend and the methods you must implement in it.`,
-      frontmatterData: {
-        displayed_sidebar: "modules",
-        slug: "/modules/taxes/backend/tax-calculation-strategy",
-      },
-      reflectionTitle: {
-        fullReplacement: "How to Override a Tax Calculation Strategy",
-      },
-      endSections: [
-        `## Test Implementation
-
-:::note
-
-If you created your tax calculation strategy in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
-
-:::
-
-After finishing your tax calculation strategy implementation:
-
-1\\. Run the \`build\` command in the root of your Medusa backend:
-
-\`\`\`bash npm2yarn
-npm run build
-\`\`\`
-
-2\\. Start the backend with the \`develop\` command:
-
-\`\`\`bash
-npx medusa develop
-\`\`\`
-
-3\\. To test out your tax calculation strategy implementation, you can [trigger taxes calculation manually](https://docs.medusajs.com/modules/taxes/storefront/manual-calculation).
       `,
       ],
     },

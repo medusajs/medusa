@@ -162,10 +162,8 @@ export function getReflectionTypeParameters({
             ? componentItem[parentKey - 1].children?.push(childParameter)
             : componentItem.push(childParameter)
         }
-      } else {
-        parentKey
-          ? componentItem[parentKey - 1].children?.push(formatParameter())
-          : componentItem.push(formatParameter())
+      } else if (!parentKey) {
+        componentItem.push(formatParameter())
       }
     }
   } else if (reflectionType.type === "array") {
