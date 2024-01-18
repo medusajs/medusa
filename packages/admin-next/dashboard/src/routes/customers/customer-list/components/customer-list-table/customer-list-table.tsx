@@ -12,7 +12,6 @@ import {
 } from "@medusajs/ui"
 import {
   PaginationState,
-  RowSelectionState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
@@ -45,8 +44,6 @@ export const CustomerListTable = () => {
     [pageIndex, pageSize]
   )
 
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
-
   const { q } = useQueryParams(["q"])
   const { customers, count, isLoading, isError, error } = useAdminCustomers({
     q,
@@ -62,10 +59,8 @@ export const CustomerListTable = () => {
     pageCount: Math.ceil((count ?? 0) / PAGE_SIZE),
     state: {
       pagination,
-      rowSelection,
     },
     onPaginationChange: setPagination,
-    onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
   })

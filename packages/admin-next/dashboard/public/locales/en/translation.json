@@ -9,6 +9,10 @@
     "delete": "Delete",
     "edit": "Edit",
     "confirm": "Confirm",
+    "active": "Active",
+    "inactive": "Inactive",
+    "public": "Public",
+    "internal": "Internal",
     "add": "Add",
     "continue": "Continue",
     "start": "Start",
@@ -59,7 +63,9 @@
     "domain": "Collections"
   },
   "categories": {
-    "domain": "Categories"
+    "domain": "Categories",
+    "createCategory": "Create Category",
+    "createCategoryHint": "Create a new category to organize your products."
   },
   "inventory": {
     "domain": "Inventory"
@@ -192,6 +198,7 @@
     "type": "Type",
     "sales_channels": "Sales Channels",
     "status": "Status",
+    "visibility": "Visibility",
     "code": "Code",
     "countries": "Countries",
     "paymentProviders": "Payment Providers",

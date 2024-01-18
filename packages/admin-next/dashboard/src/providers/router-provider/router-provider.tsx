@@ -120,12 +120,35 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/categories/list"),
+                path: "",
+                lazy: () => import("../../routes/categories/category-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/categories/category-create"),
+                  },
+                  {
+                    path: "edit-order",
+                    lazy: () =>
+                      import("../../routes/categories/category-edit-order"),
+                  },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/categories/details"),
+                lazy: () => import("../../routes/categories/category-detail"),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/categories/category-edit"),
+                  },
+                  {
+                    path: "add-products",
+                    lazy: () =>
+                      import("../../routes/categories/category-add-products"),
+                  },
+                ],
               },
             ],
           },
