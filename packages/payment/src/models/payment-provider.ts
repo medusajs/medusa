@@ -9,6 +9,7 @@ export default class PaymentProvider {
 
   @Property({
     default: true,
+    columnType: "boolean",
   })
   is_enabled: boolean = true
 }
