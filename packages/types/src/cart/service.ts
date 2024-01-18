@@ -8,6 +8,7 @@ import {
   CartShippingMethodDTO,
   FilterableAddressProps,
   FilterableCartProps,
+  FilterableShippingMethodProps,
 } from "./common"
 import {
   CreateAddressDTO,
@@ -104,6 +105,12 @@ export interface ICartModuleService extends IModuleService {
     selector: Partial<CartLineItemDTO>,
     sharedContext?: Context
   ): Promise<void>
+
+  listShippingMethods(
+    filters: FilterableShippingMethodProps,
+    config: FindConfig<CartShippingMethodDTO>,
+    sharedContext: Context
+  ): Promise<CartShippingMethodDTO[]>
 
   addShippingMethods(
     data: CreateShippingMethodDTO

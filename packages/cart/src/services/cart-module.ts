@@ -258,10 +258,10 @@ export default class CartModuleService implements ICartModuleService {
 
   @InjectManager("baseRepository_")
   async listShippingMethods(
-    filters = {},
+    filters: CartTypes.FilterableShippingMethodProps = {},
     config: FindConfig<CartTypes.CartShippingMethodDTO> = {},
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<CartTypes.CartShippingMethodDTO[]> {
     const methods = await this.shippingMethodService_.list(
       filters,
       config,

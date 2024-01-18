@@ -494,6 +494,14 @@ export interface FilterableLineItemProps
   product_id?: string | string[]
 }
 
+export interface FilterableShippingMethodProps
+  extends BaseFilterable<FilterableShippingMethodProps> {
+  id?: string | string[]
+  cart_id?: string | string[]
+  name?: string
+  shipping_option_id?: string | string[]
+}
+
 /**
  * TODO: Remove this in favor of CartDTO, when module is released
  * @deprecated Use CartDTO instead
