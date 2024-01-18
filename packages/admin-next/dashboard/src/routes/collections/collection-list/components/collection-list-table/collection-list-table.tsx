@@ -14,7 +14,11 @@ import { Link, useNavigate } from "react-router-dom"
 
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { NoRecords } from "../../../../../components/common/empty-table-content"
+import {
+  NoRecords,
+  NoResults,
+} from "../../../../../components/common/empty-table-content"
+import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
@@ -43,6 +47,9 @@ export const CollectionListTable = () => {
       limit: PAGE_SIZE,
       offset: pageIndex * PAGE_SIZE,
       ...params,
+    },
+    {
+      keepPreviousData: true,
     }
   )
 
@@ -79,57 +86,71 @@ export const CollectionListTable = () => {
           </Button>
         </Link>
       </div>
+      {!noRecords && (
+        <div className="px-6 py-4 flex items-center justify-between">
+          <div></div>
+          <div className="flex items-center gap-x-2">
+            <Query />
+          </div>
+        </div>
+      )}
       {noRecords ? (
         <NoRecords />
       ) : (
         <div>
-          <Table>
-            <Table.Header className="border-t-0">
-              {table.getHeaderGroups().map((headerGroup) => {
-                return (
+          {!isLoading && !collections?.length ? (
+            <div className="border-b">
+              <NoResults />
+            </div>
+          ) : (
+            <Table>
+              <Table.Header className="border-t-0">
+                {table.getHeaderGroups().map((headerGroup) => {
+                  return (
+                    <Table.Row
+                      key={headerGroup.id}
+                      className=" [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th]:w-1/3"
+                    >
+                      {headerGroup.headers.map((header) => {
+                        return (
+                          <Table.HeaderCell key={header.id}>
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                          </Table.HeaderCell>
+                        )
+                      })}
+                    </Table.Row>
+                  )
+                })}
+              </Table.Header>
+              <Table.Body className="border-b-0">
+                {table.getRowModel().rows.map((row) => (
                   <Table.Row
-                    key={headerGroup.id}
-                    className=" [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th]:w-1/3"
+                    key={row.id}
+                    className={clx(
+                      "transition-fg cursor-pointer [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
+                      {
+                        "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
+                          row.getIsSelected(),
+                      }
+                    )}
+                    onClick={() => navigate(`/collections/${row.original.id}`)}
                   >
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <Table.HeaderCell key={header.id}>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                        </Table.HeaderCell>
-                      )
-                    })}
+                    {row.getVisibleCells().map((cell) => (
+                      <Table.Cell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Table.Cell>
+                    ))}
                   </Table.Row>
-                )
-              })}
-            </Table.Header>
-            <Table.Body className="border-b-0">
-              {table.getRowModel().rows.map((row) => (
-                <Table.Row
-                  key={row.id}
-                  className={clx(
-                    "transition-fg cursor-pointer [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
-                    {
-                      "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                        row.getIsSelected(),
-                    }
-                  )}
-                  onClick={() => navigate(`/collections/${row.original.id}`)}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <Table.Cell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </Table.Cell>
-                  ))}
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
+                ))}
+              </Table.Body>
+            </Table>
+          )}
           <LocalizedTablePagination
             canNextPage={table.getCanNextPage()}
             canPreviousPage={table.getCanPreviousPage()}

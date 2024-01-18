@@ -22,11 +22,14 @@ import {
   useAdminAddProductsToCollection,
   useAdminProducts,
 } from "medusa-react"
-import { useEffect, useMemo, useState } from "react"
+import { Fragment, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { NoRecords } from "../../../../../components/common/empty-table-content"
+import {
+  NoRecords,
+  NoResults,
+} from "../../../../../components/common/empty-table-content"
 import { Form } from "../../../../../components/common/form"
 import {
   ProductAvailabilityCell,
@@ -38,6 +41,7 @@ import {
 import { OrderBy } from "../../../../../components/filtering/order-by"
 import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
+import { useHandleTableScroll } from "../../../../../hooks/use-handle-table-scroll"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 import { queryClient } from "../../../../../lib/medusa"
 
@@ -153,6 +157,8 @@ export const AddProductsToCollectionForm = ({
     )
   })
 
+  const { handleScroll, isScrolled, tableContainerRef } = useHandleTableScroll()
+
   const noRecords =
     !isLoading &&
     products?.length === 0 &&
@@ -195,76 +201,96 @@ export const AddProductsToCollectionForm = ({
               </div>
             </div>
           )}
-          <div className="w-full flex-1 overflow-y-auto">
-            {!noRecords ? (
-              <Table>
-                <Table.Header className="border-t-0">
-                  {table.getHeaderGroups().map((headerGroup) => {
-                    return (
-                      <Table.Row
-                        key={headerGroup.id}
-                        className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th]:w-1/5"
-                      >
-                        {headerGroup.headers.map((header) => {
-                          return (
-                            <Table.HeaderCell key={header.id}>
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                            </Table.HeaderCell>
-                          )
-                        })}
-                      </Table.Row>
-                    )
-                  })}
-                </Table.Header>
-                <Table.Body className="border-b-0">
-                  {table.getRowModel().rows.map((row) => (
-                    <Table.Row
-                      key={row.id}
+          {!noRecords ? (
+            <Fragment>
+              <div
+                ref={tableContainerRef}
+                className="w-full flex-1 overflow-y-auto"
+                onScroll={handleScroll}
+              >
+                {!isLoading && !products?.length ? (
+                  <div className="flex-1 flex items-center justify-center h-full">
+                    <NoResults />
+                  </div>
+                ) : (
+                  <Table>
+                    <Table.Header
                       className={clx(
-                        "transition-fg",
+                        "bg-ui-bg-base transition-fg sticky inset-x-0 top-0 z-10 border-t-0",
                         {
-                          "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                            row.getIsSelected(),
-                        },
-                        {
-                          "bg-ui-bg-disabled hover:bg-ui-bg-disabled":
-                            row.original.collection_id === collection.id,
+                          "shadow-elevation-card-hover": isScrolled,
                         }
                       )}
                     >
-                      {row.getVisibleCells().map((cell) => (
-                        <Table.Cell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
+                      {table.getHeaderGroups().map((headerGroup) => {
+                        return (
+                          <Table.Row
+                            key={headerGroup.id}
+                            className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th]:w-1/5"
+                          >
+                            {headerGroup.headers.map((header) => {
+                              return (
+                                <Table.HeaderCell key={header.id}>
+                                  {flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext()
+                                  )}
+                                </Table.HeaderCell>
+                              )
+                            })}
+                          </Table.Row>
+                        )
+                      })}
+                    </Table.Header>
+                    <Table.Body className="border-b-0">
+                      {table.getRowModel().rows.map((row) => (
+                        <Table.Row
+                          key={row.id}
+                          className={clx(
+                            "transition-fg",
+                            {
+                              "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
+                                row.getIsSelected(),
+                            },
+                            {
+                              "bg-ui-bg-disabled hover:bg-ui-bg-disabled":
+                                row.original.collection_id === collection.id,
+                            }
                           )}
-                        </Table.Cell>
+                        >
+                          {row.getVisibleCells().map((cell) => (
+                            <Table.Cell key={cell.id}>
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </Table.Cell>
+                          ))}
+                        </Table.Row>
                       ))}
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
-            ) : (
-              <div className="flex-1 flex items-center justify-center">
-                <NoRecords />
+                    </Table.Body>
+                  </Table>
+                )}
               </div>
-            )}
-          </div>
-          <div className="w-full border-t">
-            <LocalizedTablePagination
-              canNextPage={table.getCanNextPage()}
-              canPreviousPage={table.getCanPreviousPage()}
-              nextPage={table.nextPage}
-              previousPage={table.previousPage}
-              count={count ?? 0}
-              pageIndex={pageIndex}
-              pageCount={table.getPageCount()}
-              pageSize={PAGE_SIZE}
-            />
-          </div>
+              <div className="w-full border-t">
+                <LocalizedTablePagination
+                  canNextPage={table.getCanNextPage()}
+                  canPreviousPage={table.getCanPreviousPage()}
+                  nextPage={table.nextPage}
+                  previousPage={table.previousPage}
+                  count={count ?? 0}
+                  pageIndex={pageIndex}
+                  pageCount={table.getPageCount()}
+                  pageSize={PAGE_SIZE}
+                />
+              </div>
+            </Fragment>
+          ) : (
+            <div className="flex-1 flex items-center justify-center">
+              <NoRecords />
+              {/* TODO: fix this, and add NoRecords as well */}
+            </div>
+          )}
         </FocusModal.Body>
       </form>
     </Form>

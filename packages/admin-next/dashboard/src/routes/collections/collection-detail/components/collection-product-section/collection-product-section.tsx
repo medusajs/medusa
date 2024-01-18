@@ -27,7 +27,10 @@ import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { NoRecords } from "../../../../../components/common/empty-table-content"
+import {
+  NoRecords,
+  NoResults,
+} from "../../../../../components/common/empty-table-content"
 import {
   ProductAvailabilityCell,
   ProductCollectionCell,
@@ -164,52 +167,58 @@ export const CollectionProductSection = ({
         <NoRecords />
       ) : (
         <div>
-          <Table>
-            <Table.Header className="border-t-0">
-              {table.getHeaderGroups().map((headerGroup) => {
-                return (
+          {!isLoading && !products?.length ? (
+            <div className="border-b">
+              <NoResults />
+            </div>
+          ) : (
+            <Table>
+              <Table.Header className="border-t-0">
+                {table.getHeaderGroups().map((headerGroup) => {
+                  return (
+                    <Table.Row
+                      key={headerGroup.id}
+                      className="[&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th]:w-1/5"
+                    >
+                      {headerGroup.headers.map((header) => {
+                        return (
+                          <Table.HeaderCell key={header.id}>
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                          </Table.HeaderCell>
+                        )
+                      })}
+                    </Table.Row>
+                  )
+                })}
+              </Table.Header>
+              <Table.Body className="border-b-0">
+                {table.getRowModel().rows.map((row) => (
                   <Table.Row
-                    key={headerGroup.id}
-                    className="[&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th]:w-1/5"
+                    key={row.id}
+                    className={clx(
+                      "transition-fg [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap [&_td:first-of-type]:w-[1%] [&_td:first-of-type]:whitespace-nowrap",
+                      {
+                        "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
+                          row.getIsSelected(),
+                      }
+                    )}
                   >
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <Table.HeaderCell key={header.id}>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                        </Table.HeaderCell>
-                      )
-                    })}
+                    {row.getVisibleCells().map((cell) => (
+                      <Table.Cell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Table.Cell>
+                    ))}
                   </Table.Row>
-                )
-              })}
-            </Table.Header>
-            <Table.Body className="border-b-0">
-              {table.getRowModel().rows.map((row) => (
-                <Table.Row
-                  key={row.id}
-                  className={clx(
-                    "transition-fg [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap [&_td:first-of-type]:w-[1%] [&_td:first-of-type]:whitespace-nowrap",
-                    {
-                      "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                        row.getIsSelected(),
-                    }
-                  )}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <Table.Cell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </Table.Cell>
-                  ))}
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
+                ))}
+              </Table.Body>
+            </Table>
+          )}
           <LocalizedTablePagination
             canNextPage={table.getCanNextPage()}
             canPreviousPage={table.getCanPreviousPage()}
