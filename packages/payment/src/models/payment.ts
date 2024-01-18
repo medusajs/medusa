@@ -45,7 +45,7 @@ export default class Payment {
     nullable: true,
     serializer: optionalNumericSerializer,
   })
-  authorized_amount?: number | null
+  authorized_amount: number | null = null
 
   @Property({ columnType: "text" })
   currency_code: string
@@ -54,19 +54,19 @@ export default class Payment {
   provider_id: string
 
   @Property({ columnType: "text", nullable: true })
-  cart_id?: string | null
+  cart_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  order_id?: string | null
+  order_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  order_edit_id?: string | null
+  order_edit_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  customer_id?: string | null
+  customer_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  data?: Record<string, unknown> | null
+  data: Record<string, unknown> | null = null
 
   @Property({
     onCreate: () => new Date(),
@@ -88,19 +88,19 @@ export default class Payment {
     nullable: true,
     index: "IDX_payment_deleted_at",
   })
-  deleted_at?: Date | null
+  deleted_at: Date | null = null
 
   @Property({
     columnType: "timestamptz",
     nullable: true,
   })
-  captured_at?: Date | null
+  captured_at: Date | null = null
 
   @Property({
     columnType: "timestamptz",
     nullable: true,
   })
-  canceled_at?: Date | null
+  canceled_at: Date | null = null
 
   @OneToMany(() => Refund, (refund) => refund.payment, {
     cascade: [Cascade.REMOVE],

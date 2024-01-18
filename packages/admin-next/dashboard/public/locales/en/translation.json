@@ -1,12 +1,26 @@
 {
   "$schema": "../$schema.json",
   "general": {
+    "ascending": "Ascending",
+    "descending": "Descending",
     "cancel": "Cancel",
     "save": "Save",
     "create": "Create",
     "delete": "Delete",
     "edit": "Edit",
+    "confirm": "Confirm",
+    "add": "Add",
+    "continue": "Continue",
+    "start": "Start",
+    "end": "End",
+    "apply": "Apply",
+    "range": "Range",
     "search": "Search",
+    "of": "of",
+    "results": "results",
+    "pages": "pages",
+    "next": "Next",
+    "prev": "Prev",
     "extensions": "Extensions",
     "settings": "Settings",
     "general": "General",
@@ -14,17 +28,26 @@
     "enabled": "Enabled",
     "disabled": "Disabled",
     "remove": "Remove",
+    "admin": "Admin",
+    "store": "Store",
     "countSelected": "{{count}} selected",
     "plusCountMore": "+ {{count}} more",
     "areYouSure": "Are you sure?",
-    "noRecordsFound": "No records found"
+    "noRecordsFound": "No records found",
+    "typeToConfirm": "Please type {val} to confirm:",
+    "noResultsTitle": "No results",
+    "noResultsMessage": "Try changing the filters or search query",
+    "noRecordsTitle": "No records",
+    "noRecordsMessage": "There are no records to show",
+    "unsavedChangesTitle": "Are you sure you want to leave this page?",
+    "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page."
   },
   "products": {
     "domain": "Products",
     "variants": "Variants",
     "availableInSalesChannels": "Available in <0>{{x}}</0> of <1>{{y}}</1> sales channels",
-    "inStockVariants_one": "{{inventory}} in stock for {{count}} variant",
-    "inStockVariants_other": "{{inventory}} in stock for {{count}} variants",
+    "variantCount_one": "{{count}} variant",
+    "variantCount_other": "{{count}} variants",
     "productStatus": {
       "draft": "Draft",
       "published": "Published",
@@ -45,10 +68,28 @@
     "domain": "Gift Cards"
   },
   "customers": {
-    "domain": "Customers"
+    "domain": "Customers",
+    "editCustomer": "Edit Customer",
+    "createCustomer": "Create Customer",
+    "createCustomerHint": "Create a new customer to manage their details.",
+    "passwordHint": "Create a password for the customer to use when logging in to the storefront. Make sure that you communicate the password to the customer.",
+    "changePassword": "Change password",
+    "changePasswordPromptTitle": "Change password",
+    "changePasswordPromptDescription": "You are about to change the password for {{email}}. Make sure that you have communicated the new password to the customer before proceeding.",
+    "guest": "Guest",
+    "registered": "Registered",
+    "firstSeen": "First seen"
   },
   "customerGroups": {
-    "domain": "Customer Groups"
+    "domain": "Customer Groups",
+    "createGroup": "Create group",
+    "createCustomerGroup": "Create Customer Group",
+    "createCustomerGroupHint": "Create a new customer group to segment your customers.",
+    "customerAlreadyAdded": "The customer has already been added to the group.",
+    "editCustomerGroup": "Edit Customer Group",
+    "removeCustomersWarning_one": "You are about to remove {{count}} customer from the customer group. This action cannot be undone.",
+    "removeCustomersWarning_other": "You are about to remove {{count}} customers from the customer group. This action cannot be undone.",
+    "deleteCustomerGroupWarning": "You are about to delete the customer group {{name}}. This action cannot be undone."
   },
   "orders": {
     "domain": "Orders"
@@ -65,9 +106,11 @@
   "profile": {
     "domain": "Profile",
     "manageYourProfileDetails": "Manage your profile details",
-    "editProfileDetails": "Edit Profile Details",
+    "editProfile": "Edit profile",
     "languageHint": "The language you want to use in the admin dashboard. This will not change the language of your store.",
-    "userInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>."
+    "userInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>.",
+    "language": "Language",
+    "usageInsights": "Usage insights"
   },
   "users": {
     "domain": "Users",
@@ -81,38 +124,54 @@
   "store": {
     "domain": "Store",
     "manageYourStoresDetails": "Manage your store's details",
-    "editStoreDetails": "Edit Store Details",
-    "storeName": "Store name",
+    "editStore": "Edit store",
+    "defaultCurrency": "Default currency",
     "swapLinkTemplate": "Swap link template",
     "paymentLinkTemplate": "Payment link template",
-    "inviteLinkTemplate": "Invite link template"
+    "inviteLinkTemplate": "Invite link template",
+    "currencies": "Currencies",
+    "addCurrencies": "Add currencies",
+    "removeCurrencyWarning_one": "You are about to remove {{count}} currency from your store. Ensure that you have removed all prices using the currency before proceeding.",
+    "removeCurrencyWarning_other": "You are about to remove {{count}} currencies from your store. Ensure that you have removed all prices using the currencies before proceeding.",
+    "currencyAlreadyAdded": "The currency has already been added to your store."
   },
   "regions": {
-    "domain": "Regions"
+    "domain": "Regions",
+    "createRegion": "Create Region",
+    "editRegion": "Edit Region",
+    "deleteRegionWarning": "You are about to delete the region {{name}}. This action cannot be undone.",
+    "taxInclusiveHint": "When enabled all prices in the region will be tax inclusive.",
+    "providersHint": "The providers that are available in the region."
+  },
+  "locations": {
+    "domain": "Locations",
+    "createLocation": "Create location",
+    "editLocation": "Edit location",
+    "addSalesChannels": "Add sales channels",
+    "detailsHint": "Specify the details of the location.",
+    "noLocationsFound": "No locations found",
+    "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone."
   },
   "salesChannels": {
     "domain": "Sales Channels",
+    "createSalesChannel": "Create Sales Channel",
+    "createSalesChannelHint": "Create a new sales channel to sell your products on.",
+    "enabledHint": "Specify if the sales channel is enabled or disabled.",
     "removeProductsWarning_one": "You are about to remove {{count}} product from {{sales_channel}}.",
     "removeProductsWarning_other": "You are about to remove {{count}} products from {{sales_channel}}.",
     "addProducts": "Add Products",
-    "editSalesChannel": "Edit Sales Channel",
-    "isEnabledHint": "Specify if the sales channel is enabled or disabled.",
-    "productAlreadyAdded": "The product has already been added to the sales channel."
-  },
-  "currencies": {
-    "domain": "Currencies",
-    "manageTheCurrencies": "Manage the currencies you want to use in your store",
-    "editCurrencyDetails": "Edit Currency Details",
-    "defaultCurrency": "Default Currency",
-    "defaultCurrencyHint": "The default currency of your store.",
-    "removeCurrenciesWarning_one": "You are about to remove {{count}} currency from your store. Ensure that you have removed all prices using the currency before proceeding.",
-    "removeCurrenciesWarning_other": "You are about to remove {{count}} currencies from your store. Ensure that you have removed all prices using the currencies before proceeding.",
-    "currencyAlreadyAdded": "The currency has already been added to your store."
+    "editSalesChannel": "Edit sales channel",
+    "productAlreadyAdded": "The product has already been added to the sales channel.",
+    "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone."
   },
   "apiKeyManagement": {
     "domain": "API Key Management",
-    "createAPublishableApiKey": "Create a publishable API key",
-    "createKey": "Create Key"
+    "createKey": "Create key",
+    "createPublishableApiKey": "Create Publishable API Key",
+    "revoke": "Revoke",
+    "publishableApiKeyHint": "Publishable API keys are used to limit the scope of requests to specific sales channels.",
+    "deleteKeyWarning": "You are about to delete the API key {{title}}. This action cannot be undone.",
+    "revokeKeyWarning": "You are about to revoke the API key {{title}}."
   },
   "fields": {
     "name": "Name",
@@ -122,6 +181,7 @@
     "description": "Description",
     "email": "Email",
     "password": "Password",
+    "confirmPassword": "Confirm Password",
     "categories": "Categories",
     "category": "Category",
     "collection": "Collection",
@@ -133,8 +193,31 @@
     "sales_channels": "Sales Channels",
     "status": "Status",
     "code": "Code",
+    "countries": "Countries",
+    "paymentProviders": "Payment Providers",
+    "fulfillmentProviders": "Fulfillment Providers",
+    "providers": "Providers",
     "availability": "Availability",
     "inventory": "Inventory",
-    "optional": "Optional"
+    "optional": "Optional",
+    "taxInclusivePricing": "Tax Inclusive Pricing",
+    "taxRate": "Tax Rate",
+    "taxCode": "Tax Code",
+    "currency": "Currency",
+    "address": "Address",
+    "address2": "Apartment, suite, etc.",
+    "city": "City",
+    "postalCode": "Postal Code",
+    "country": "Country",
+    "state": "State",
+    "province": "Province",
+    "company": "Company",
+    "phone": "Phone",
+    "metadata": "Metadata",
+    "selectCountry": "Select country",
+    "variants": "Variants",
+    "orders": "Orders",
+    "account": "Account",
+    "total": "Total"
   }
 }

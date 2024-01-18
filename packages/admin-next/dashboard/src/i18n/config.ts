@@ -1,3 +1,4 @@
+import { enUS } from "date-fns/locale"
 import i18n from "i18next"
 import LanguageDetector from "i18next-browser-languagedetector"
 import Backend, { type HttpBackendOptions } from "i18next-http-backend"
@@ -22,6 +23,7 @@ export const languages: Language[] = [
     code: "en",
     display_name: "English",
     ltr: true,
+    date_locale: enUS,
   },
 ]
 
