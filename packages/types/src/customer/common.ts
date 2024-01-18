@@ -1,6 +1,6 @@
 import { AddressDTO } from "../address"
 
-export type CustomerDTO = {
+export interface CustomerDTO {
   id: string
   email: string
   default_billing_address_id?: string | null
