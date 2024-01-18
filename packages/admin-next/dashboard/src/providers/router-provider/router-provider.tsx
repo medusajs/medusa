@@ -1,4 +1,5 @@
 import type {
+  AdminCollectionsRes,
   AdminCustomerGroupsRes,
   AdminCustomersRes,
   AdminProductsRes,
@@ -136,12 +137,37 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/collections/list"),
+                path: "",
+                lazy: () => import("../../routes/collections/collection-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/collections/collection-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/collections/details"),
+                handle: {
+                  crumb: (data: AdminCollectionsRes) => data.collection.title,
+                },
+                lazy: () =>
+                  import("../../routes/collections/collection-detail"),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../routes/collections/collection-edit"),
+                  },
+                  {
+                    path: "add-products",
+                    lazy: () =>
+                      import(
+                        "../../routes/collections/collection-add-products"
+                      ),
+                  },
+                ],
               },
             ],
           },

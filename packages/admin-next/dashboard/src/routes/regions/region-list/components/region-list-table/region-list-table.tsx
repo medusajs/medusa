@@ -1,27 +1,26 @@
-import { EllipsisHorizontal, PencilSquare, Trash } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { Region } from "@medusajs/medusa"
 import {
   Button,
   Container,
-  DropdownMenu,
   Heading,
-  IconButton,
   Table,
   Tooltip,
   clx,
+  usePrompt,
 } from "@medusajs/ui"
 import {
   PaginationState,
-  RowSelectionState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { useAdminRegions } from "medusa-react"
+import { useAdminDeleteRegion, useAdminRegions } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 
 const PAGE_SIZE = 50
@@ -43,8 +42,6 @@ export const RegionListTable = () => {
     [pageIndex, pageSize]
   )
 
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
-
   const { regions, count, isLoading, isError, error } = useAdminRegions({
     limit: PAGE_SIZE,
     offset: pageIndex * PAGE_SIZE,
@@ -58,10 +55,8 @@ export const RegionListTable = () => {
     pageCount: Math.ceil((count ?? 0) / PAGE_SIZE),
     state: {
       pagination,
-      rowSelection,
     },
     onPaginationChange: setPagination,
-    onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
   })
@@ -140,32 +135,52 @@ export const RegionListTable = () => {
 
 const RegionActions = ({ region }: { region: Region }) => {
   const { t } = useTranslation()
+  const prompt = usePrompt()
+
+  const { mutateAsync } = useAdminDeleteRegion(region.id)
+
+  const handleDelete = async () => {
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("regions.deleteRegionWarning", {
+        name: region.name,
+      }),
+      verificationText: region.name,
+      verificationInstruction: t("general.typeToConfirm"),
+      confirmText: t("general.confirm"),
+      cancelText: t("general.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync(undefined)
+  }
 
   return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger asChild onClick={(e) => e.stopPropagation()}>
-        <IconButton variant="transparent">
-          <EllipsisHorizontal />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <Link to={`/settings/regions/${region.id}/edit`}>
-          <DropdownMenu.Item onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center gap-x-2">
-              <PencilSquare className="text-ui-fg-subtle" />
-              <span>{t("general.edit")}</span>
-            </div>
-          </DropdownMenu.Item>
-        </Link>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Item onClick={(e) => e.stopPropagation()}>
-          <div className="flex items-center gap-x-2">
-            <Trash className="text-ui-fg-subtle" />
-            <span>{t("general.delete")}</span>
-          </div>
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
-    </DropdownMenu>
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              label: t("general.edit"),
+              to: `/settings/regions/${region.id}/edit`,
+              icon: <PencilSquare />,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              label: t("general.delete"),
+              onClick: handleDelete,
+              icon: <Trash />,
+            },
+          ],
+        },
+      ]}
+    />
   )
 }
 
