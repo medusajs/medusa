@@ -37,11 +37,11 @@ export default async ({ app, container, configModule }: Options) => {
      */
     await new RoutesLoader({
       app,
-      rootDir: path.join(__dirname, "../api/routes"),
+      rootDir: path.join(__dirname, "../api-v2"),
       configModule,
     }).load()
   } catch (err) {
-    logger.warn(`An error occurred while registering Medusa Core API Routes`)
+    throw Error("An error occurred while registering Medusa Core API Routes")
   }
 
   return app

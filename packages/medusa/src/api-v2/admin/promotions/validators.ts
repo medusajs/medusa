@@ -1,5 +1,5 @@
 import { IsOptional, IsString } from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../../types/common"
+import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 
 export class AdminGetPromotionsPromotionParams extends FindParams {}
 
