@@ -16,7 +16,7 @@ export default class LineItemService<
     update: UpdateLineItemDTO
   }
 >(LineItem)<TEntity> {
-  constructor({ lineItemRepository }: InjectedDependencies) {
+  constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
   }

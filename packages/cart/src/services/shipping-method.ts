@@ -16,7 +16,7 @@ export default class ShippingMethodService<
     update: UpdateShippingMethodDTO
   }
 >(ShippingMethod)<TEntity> {
-  constructor({ shippingMethodRepository }: InjectedDependencies) {
+  constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
   }
