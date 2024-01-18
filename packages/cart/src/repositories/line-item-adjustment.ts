@@ -3,7 +3,7 @@ import { LineItemAdjustmentLine } from "@models"
 import {
   CreateLineItemAdjustmentDTO,
   UpdateLineItemAdjustmentDTO,
-} from "src/types/line-item-adjustment"
+} from "@types"
 
 export class LineItemAdjustmentRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
   LineItemAdjustmentLine,
@@ -11,4 +11,9 @@ export class LineItemAdjustmentRepository extends DALUtils.mikroOrmBaseRepositor
     create: CreateLineItemAdjustmentDTO
     update: UpdateLineItemAdjustmentDTO
   }
->(LineItemAdjustmentLine) {}
+>(LineItemAdjustmentLine) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+}

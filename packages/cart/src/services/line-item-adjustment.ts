@@ -23,17 +23,20 @@ export default class LineItemAdjustmentService<
     update: UpdateLineItemAdjustmentDTO
   }
 >(LineItemAdjustmentLine)<TEntity> {
-  constructor(container: InjectedDependencies) {
+  protected readonly lineItemAdjustmentRepository_: DAL.RepositoryService<TEntity>
+
+  constructor({ lineItemAdjustmentRepository }: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
+    this.lineItemAdjustmentRepository_ = lineItemAdjustmentRepository
   }
 
-  @InjectTransactionManager("productImageRepository_")
+  @InjectTransactionManager("lineItemAdjustmentRepository_")
   async upsert(
     adjustments: (CreateLineItemAdjustmentDTO | UpdateLineItemAdjustmentDTO)[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return await this.__container__.lineItemAdjustmentRepository.upsert!(
+    return await this.lineItemAdjustmentRepository_.upsert!(
       adjustments,
       sharedContext
     )

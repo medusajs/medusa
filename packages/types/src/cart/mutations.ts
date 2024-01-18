@@ -29,17 +29,15 @@ export interface CreateCartDTO {
   region_id?: string
   customer_id?: string
   sales_channel_id?: string
-
   email?: string
   currency_code: string
-
   shipping_address_id?: string
   billing_address_id?: string
-
   shipping_address?: CreateAddressDTO | UpdateAddressDTO
   billing_address?: CreateAddressDTO | UpdateAddressDTO
-
   metadata?: Record<string, unknown>
+
+  items?: CreateLineItemDTO[]
 }
 
 export interface UpdateCartDTO {
@@ -107,6 +105,16 @@ export interface CreateLineItemAdjustmentDTO extends CreateAdjustmentDTO {
 
 export interface UpdateLineItemAdjustmentDTO extends UpdateAdjustmentDTO {
   item_id: string
+}
+
+export interface UpsertLineItemAdjustmentDTO {
+  id?: string
+  item_id: string
+  code?: string
+  amount?: number
+  description?: string
+  promotion_id?: string
+  provider_id?: string
 }
 
 /** ADJUSTMENT START */
@@ -183,7 +191,8 @@ export interface CreateShippingMethodDTO {
   adjustments?: CreateAdjustmentDTO[]
 }
 
-export interface CreateShippingMethodForCartDTO extends CreateShippingMethodDTO {
+export interface CreateShippingMethodForCartDTO
+  extends CreateShippingMethodDTO {
   cart_id: string
 }
 

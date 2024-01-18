@@ -21,10 +21,10 @@ import {
   CreateLineItemForCartDTO,
   CreateShippingMethodDTO,
   UpdateAddressDTO,
-  UpdateAdjustmentDTO,
   UpdateCartDTO,
   UpdateLineItemDTO,
   UpdateLineItemWithSelectorDTO,
+  UpsertLineItemAdjustmentDTO
 } from "./mutations"
 
 export interface ICartModuleService extends IModuleService {
@@ -173,7 +173,7 @@ export interface ICartModuleService extends IModuleService {
 
   setLineItemAdjustments(
     cartId: string,
-    data: (CreateAdjustmentDTO | UpdateAdjustmentDTO)[],
+    data: UpsertLineItemAdjustmentDTO[],
     sharedContext?: Context
   ): Promise<LineItemAdjustmentLineDTO[]>
 

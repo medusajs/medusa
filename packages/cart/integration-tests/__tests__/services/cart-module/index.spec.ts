@@ -124,6 +124,91 @@ describe("Cart Module Service", () => {
         })
       )
     })
+
+    it("should create a cart with items", async () => {
+      const createdCart = await service.create({
+        currency_code: "eur",
+        items: [
+          {
+            title: "test",
+            quantity: 1,
+            unit_price: 100,
+          },
+        ],
+      })
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["items"],
+      })
+
+      expect(cart).toEqual(
+        expect.objectContaining({
+          id: createdCart.id,
+          currency_code: "eur",
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              title: "test",
+              unit_price: 100,
+            }),
+          ]),
+        })
+      )
+    })
+
+    it("should create multiple carts with items", async () => {
+      const createdCarts = await service.create([
+        {
+          currency_code: "eur",
+          items: [
+            {
+              title: "test",
+              quantity: 1,
+              unit_price: 100,
+            },
+          ],
+        },
+        {
+          currency_code: "usd",
+          items: [
+            {
+              title: "test-2",
+              quantity: 2,
+              unit_price: 200,
+            },
+          ],
+        },
+      ])
+
+      const carts = await service.list(
+        { id: createdCarts.map((c) => c.id) },
+        {
+          relations: ["items"],
+        }
+      )
+
+      expect(carts).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            currency_code: "eur",
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                title: "test",
+                unit_price: 100,
+              }),
+            ]),
+          }),
+          expect.objectContaining({
+            currency_code: "usd",
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                title: "test-2",
+                unit_price: 200,
+              }),
+            ]),
+          }),
+        ])
+      )
+    })
   })
 
   describe("update", () => {
