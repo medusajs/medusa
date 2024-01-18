@@ -29,7 +29,7 @@ type InjectedDependencies = {
   cartService: services.CartService
   addressService: services.AddressService
   lineItemService: services.LineItemService
-  shippingMethodAdjustmentService: services.ShippingAdjustmentService
+  shippingMethodAdjustmentService: services.ShippingMethodAdjustmentService
 }
 
 export default class CartModuleService implements ICartModuleService {
@@ -37,7 +37,7 @@ export default class CartModuleService implements ICartModuleService {
   protected cartService_: services.CartService
   protected addressService_: services.AddressService
   protected lineItemService_: services.LineItemService
-  protected shippingMethodAdjustmentService_: services.ShippingAdjustmentService
+  protected shippingMethodAdjustmentService_: services.ShippingMethodAdjustmentService
 
   constructor(
     {
@@ -607,7 +607,7 @@ export default class CartModuleService implements ICartModuleService {
     }
 
     return await this.baseRepository_.serialize<
-      CartTypes.LineItemAdjustmentLineDTO[]
+      CartTypes.ShippingMethodAdjustmentLineDTO[]
     >(addedAdjustments, {
       populate: true,
     })

@@ -466,12 +466,9 @@ describe("Cart Module Service", () => {
 
       expect(item.title).toBe("test")
 
-      const updatedItem = await service.updateLineItems(
-        item.id,
-        {
-          title: "test2",
-        }
-      )
+      const updatedItem = await service.updateLineItems(item.id, {
+        title: "test2",
+      })
 
       expect(updatedItem.title).toBe("test2")
     })
@@ -519,13 +516,13 @@ describe("Cart Module Service", () => {
           selector: { cart_id: createdCart.id },
           data: {
             title: "changed-test",
-          }
+          },
         },
         {
           selector: { id: itemTwo!.id },
           data: {
             title: "changed-other-test",
-          }
+          },
         },
       ])
 
@@ -601,6 +598,553 @@ describe("Cart Module Service", () => {
       })
 
       expect(cart.items?.length).toBe(0)
+    })
+  })
+
+  describe("setShippingMethodAdjustments", () => {
+    it("should set shipping method adjustments for a cart", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [shippingMethodOne] = await service.addShippingMethods(
+        createdCart.id,
+        [
+          {
+            quantity: 1,
+            amount: 100,
+            title: "test",
+          },
+        ]
+      )
+
+      const [itemTwo] = await service.addShippingMethods(createdCart.id, [
+        {
+          quantity: 2,
+          amount: 200,
+          title: "test-2",
+        },
+      ])
+
+      const adjustments = await service.setShippingMethodAdjustments(
+        createdCart.id,
+        [
+          {
+            shipping_method_id: shippingMethodOne.id,
+            amount: 100,
+            code: "FREE",
+          },
+          {
+            shipping_method_id: itemTwo.id,
+            amount: 200,
+            code: "FREE-2",
+          },
+        ]
+      )
+
+      expect(adjustments).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            shipping_method_id: shippingMethodOne.id,
+            amount: 100,
+            code: "FREE",
+          }),
+          expect.objectContaining({
+            shipping_method_id: itemTwo.id,
+            amount: 200,
+            code: "FREE-2",
+          }),
+        ])
+      )
+    })
+
+    it("should replace shipping method adjustments for a cart", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [shippingMethodOne] = await service.addShippingMethods(
+        createdCart.id,
+        [
+          {
+            quantity: 1,
+            amount: 100,
+            title: "test",
+          },
+        ]
+      )
+
+      const adjustments = await service.setShippingMethodAdjustments(
+        createdCart.id,
+        [
+          {
+            shipping_method_id: shippingMethodOne.id,
+            amount: 100,
+            code: "FREE",
+          },
+        ]
+      )
+
+      expect(adjustments).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            shipping_method_id: shippingMethodOne.id,
+            amount: 100,
+            code: "FREE",
+          }),
+        ])
+      )
+
+      await service.setShippingMethodAdjustments(createdCart.id, [
+        {
+          shipping_method_id: shippingMethodOne.id,
+          amount: 50,
+          code: "50%",
+        },
+      ])
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["items.adjustments"],
+      })
+
+      expect(cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: shippingMethodOne.id,
+            adjustments: expect.arrayContaining([
+              expect.objectContaining({
+                shipping_method_id: shippingMethodOne.id,
+                amount: 50,
+                code: "50%",
+              }),
+            ]),
+          }),
+        ])
+      )
+
+      expect(cart.items?.length).toBe(1)
+      expect(cart.items?.[0].adjustments?.length).toBe(1)
+    })
+
+    it("should remove all shipping method adjustments for a cart", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [shippingMethodOne] = await service.addShippingMethods(
+        createdCart.id,
+        [
+          {
+            quantity: 1,
+            amount: 100,
+            title: "test",
+          },
+        ]
+      )
+
+      const adjustments = await service.setShippingMethodAdjustments(
+        createdCart.id,
+        [
+          {
+            shipping_method_id: shippingMethodOne.id,
+            amount: 100,
+            code: "FREE",
+          },
+        ]
+      )
+
+      expect(adjustments).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            shipping_method_id: shippingMethodOne.id,
+            amount: 100,
+            code: "FREE",
+          }),
+        ])
+      )
+
+      await service.setShippingMethodAdjustments(createdCart.id, [])
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["items.adjustments"],
+      })
+
+      expect(cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: shippingMethodOne.id,
+            adjustments: [],
+          }),
+        ])
+      )
+
+      expect(cart.items?.length).toBe(1)
+      expect(cart.items?.[0].adjustments?.length).toBe(0)
+    })
+
+    it("should update shipping method adjustments for a cart", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [shippingMethodOne] = await service.addShippingMethods(
+        createdCart.id,
+        [
+          {
+            quantity: 1,
+            amount: 100,
+            title: "test",
+          },
+        ]
+      )
+
+      const adjustments = await service.setShippingMethodAdjustments(
+        createdCart.id,
+        [
+          {
+            shipping_method_id: shippingMethodOne.id,
+            amount: 100,
+            code: "FREE",
+          },
+        ]
+      )
+
+      expect(adjustments).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            shipping_method_id: shippingMethodOne.id,
+            amount: 100,
+            code: "FREE",
+          }),
+        ])
+      )
+
+      await service.setShippingMethodAdjustments(createdCart.id, [
+        {
+          id: adjustments[0].id,
+          amount: 50,
+          code: "50%",
+        },
+      ])
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["items.adjustments"],
+      })
+
+      expect(cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: shippingMethodOne.id,
+            adjustments: [
+              expect.objectContaining({
+                id: adjustments[0].id,
+                shipping_method_id: shippingMethodOne.id,
+                amount: 50,
+                code: "50%",
+              }),
+            ],
+          }),
+        ])
+      )
+
+      expect(cart.items?.length).toBe(1)
+      expect(cart.items?.[0].adjustments?.length).toBe(1)
+    })
+  })
+
+  describe("addShippingMethodAdjustments", () => {
+    it("should add shipping method adjustments for items in a cart", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [shippingMethodOne] = await service.addShippingMethods(
+        createdCart.id,
+        [
+          {
+            quantity: 1,
+            amount: 100,
+            title: "test",
+          },
+        ]
+      )
+
+      const adjustments = await service.addShippingMethodAdjustments(
+        createdCart.id,
+        [
+          {
+            shipping_method_id: shippingMethodOne.id,
+            amount: 100,
+            code: "FREE",
+          },
+        ]
+      )
+
+      expect(adjustments).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            shipping_method_id: shippingMethodOne.id,
+            amount: 100,
+            code: "FREE",
+          }),
+        ])
+      )
+    })
+
+    it("should add multiple shipping method adjustments for multiple shipping methods", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [shippingMethodOne] = await service.addShippingMethods(
+        createdCart.id,
+        [
+          {
+            quantity: 1,
+            amount: 100,
+            title: "test",
+          },
+        ]
+      )
+      const [itemTwo] = await service.addShippingMethods(createdCart.id, [
+        {
+          quantity: 2,
+          amount: 200,
+          title: "test-2",
+        },
+      ])
+
+      const adjustments = await service.addShippingMethodAdjustments(
+        createdCart.id,
+        [
+          {
+            shipping_method_id: shippingMethodOne.id,
+            amount: 100,
+            code: "FREE",
+          },
+          {
+            shipping_method_id: itemTwo.id,
+            amount: 150,
+            code: "CODE-2",
+          },
+        ]
+      )
+
+      expect(adjustments).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            shipping_method_id: shippingMethodOne.id,
+            amount: 100,
+            code: "FREE",
+          }),
+          expect.objectContaining({
+            shipping_method_id: itemTwo.id,
+            amount: 150,
+            code: "CODE-2",
+          }),
+        ])
+      )
+    })
+
+    it("should add shipping method adjustments for shipping methods on multiple carts", async () => {
+      const [cartOne] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+      const [cartTwo] = await service.create([
+        {
+          currency_code: "usd",
+        },
+      ])
+
+      const [shippingMethodOne] = await service.addShippingMethods(cartOne.id, [
+        {
+          quantity: 1,
+          amount: 100,
+          title: "test",
+        },
+      ])
+      const [itemTwo] = await service.addShippingMethods(cartTwo.id, [
+        {
+          quantity: 2,
+          amount: 200,
+          title: "test-2",
+        },
+      ])
+
+      await service.addShippingMethodAdjustments([
+        // item from cart one
+        {
+          shipping_method_id: shippingMethodOne.id,
+          amount: 100,
+          code: "FREE",
+        },
+        // item from cart two
+        {
+          shipping_method_id: itemTwo.id,
+          amount: 150,
+          code: "CODE-2",
+        },
+      ])
+
+      const cartOneItems = await service.listShippingMethods(
+        { cart_id: cartOne.id },
+        { relations: ["adjustments"] }
+      )
+      const cartTwoItems = await service.listShippingMethods(
+        { cart_id: cartTwo.id },
+        { relations: ["adjustments"] }
+      )
+
+      expect(cartOneItems).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            adjustments: expect.arrayContaining([
+              expect.objectContaining({
+                shipping_method_id: shippingMethodOne.id,
+                amount: 100,
+                code: "FREE",
+              }),
+            ]),
+          }),
+        ])
+      )
+      expect(cartTwoItems).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            adjustments: expect.arrayContaining([
+              expect.objectContaining({
+                shipping_method_id: itemTwo.id,
+                amount: 150,
+                code: "CODE-2",
+              }),
+            ]),
+          }),
+        ])
+      )
+    })
+
+    it("should throw if shipping method is not associated with cart", async () => {
+      const [cartOne] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [cartTwo] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [shippingMethodOne] = await service.addShippingMethods(cartOne.id, [
+        {
+          quantity: 1,
+          amount: 100,
+          title: "test",
+        },
+      ])
+
+      const error = await service
+        .addShippingMethodAdjustments(cartTwo.id, [
+          {
+            shipping_method_id: shippingMethodOne.id,
+            amount: 100,
+            code: "FREE",
+          },
+        ])
+        .catch((e) => e)
+
+      expect(error.message).toBe(
+        `Line item with id ${shippingMethodOne.id} does not exist on cart with id ${cartTwo.id}`
+      )
+    })
+  })
+
+  describe("removeShippingMethodAdjustments", () => {
+    it("should remove a shipping method succesfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [item] = await service.addShippingMethods(createdCart.id, [
+        {
+          quantity: 1,
+          amount: 100,
+          title: "test",
+        },
+      ])
+
+      const [adjustment] = await service.addShippingMethodAdjustments(
+        createdCart.id,
+        [
+          {
+            shipping_method_id: item.id,
+            amount: 50,
+          },
+        ]
+      )
+
+      expect(adjustment.item_id).toBe(item.id)
+
+      await service.removeShippingMethodAdjustments(adjustment.id)
+
+      const adjustments = await service.listShippingMethodAdjustments({
+        shipping_method_id: item.id,
+      })
+
+      expect(adjustments?.length).toBe(0)
+    })
+
+    it("should remove a shipping method succesfully with selector", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [item] = await service.addShippingMethods(createdCart.id, [
+        {
+          quantity: 1,
+          amount: 100,
+          title: "test",
+        },
+      ])
+
+      const [adjustment] = await service.addShippingMethodAdjustments(
+        createdCart.id,
+        [
+          {
+            shipping_method_id: item.id,
+            amount: 50,
+          },
+        ]
+      )
+
+      expect(adjustment.item_id).toBe(item.id)
+
+      await service.removeShippingMethodAdjustments({ shipping_method_id: item.id })
+
+      const adjustments = await service.listShippingMethodAdjustments({
+        shipping_method_id: item.id,
+      })
+
+      expect(adjustments?.length).toBe(0)
     })
   })
 })
