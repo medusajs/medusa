@@ -15,4 +15,9 @@ export default class LineItemService<
     create: CreateLineItemDTO
     update: UpdateLineItemDTO
   }
->(LineItem)<TEntity> {}
+>(LineItem)<TEntity> {
+  constructor({ lineItemRepository }: InjectedDependencies) {
+    // @ts-ignore
+    super(...arguments)
+  }
+}
