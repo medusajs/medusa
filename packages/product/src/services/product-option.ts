@@ -7,10 +7,9 @@ import {
   composeMessage,
 } from "@medusajs/utils"
 import { ProductOption } from "@models"
-import { ProductOptionRepository } from "@repositories"
 
 import { Modules } from "@medusajs/modules-sdk"
-import { InternalContext, ProductOptionEvents } from "../types"
+import { ProductOptionEvents } from "../types"
 
 type InjectedDependencies = {
   productOptionRepository: DAL.RepositoryService
@@ -74,11 +73,12 @@ export default class ProductOptionService<
   @InjectTransactionManager("productOptionRepository_")
   async create(
     data: ProductTypes.CreateProductOptionOnlyDTO[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    const options = await (
-      this.productOptionRepository_ as ProductOptionRepository
-    ).create(data, sharedContext)
+    const options = await this.productOptionRepository_.create(
+      data,
+      sharedContext
+    )
 
     sharedContext.messageAggregator?.save(
       options.map(({ id }) => {
@@ -97,11 +97,12 @@ export default class ProductOptionService<
   @InjectTransactionManager("productOptionRepository_")
   async update(
     data: ProductTypes.UpdateProductOptionDTO[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    const options = await (
-      this.productOptionRepository_ as ProductOptionRepository
-    ).update(data, sharedContext)
+    const options = await this.productOptionRepository_.update(
+      data,
+      sharedContext
+    )
 
     sharedContext.messageAggregator?.save(
       options.map(({ id }) => {
@@ -120,7 +121,7 @@ export default class ProductOptionService<
   @InjectTransactionManager("productOptionRepository_")
   async delete(
     ids: string[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     await this.productOptionRepository_.delete(ids, sharedContext)
 
@@ -142,7 +143,7 @@ export default class ProductOptionService<
       | ProductTypes.CreateProductOptionDTO[]
       | ProductTypes.UpdateProductOptionDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<[TEntity[], TEntity[], TEntity[]]> {
     return await this.productOptionRepository_.upsert!(data, sharedContext)
   }
 }

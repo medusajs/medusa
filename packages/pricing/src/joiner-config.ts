@@ -8,6 +8,7 @@ import {
   PriceSet,
   PriceSetMoneyAmount,
 } from "@models"
+import schema from "./schema"
 
 export const LinkableKeys = {
   money_amount_id: MoneyAmount.name,

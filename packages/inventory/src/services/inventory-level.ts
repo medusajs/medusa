@@ -15,11 +15,7 @@ import {
 } from "@medusajs/utils"
 import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryLevel } from "../models"
-import {
-  InternalContext,
-  InventoryItemEvents,
-  InventoryLevelEvents,
-} from "../types"
+import { InventoryItemEvents, InventoryLevelEvents } from "../types"
 import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
@@ -122,7 +118,7 @@ export default class InventoryLevelService {
   @InjectEntityManager()
   async create(
     data: CreateInventoryLevelInput[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<InventoryLevel[]> {
     const manager = context.transactionManager!
 
@@ -171,7 +167,7 @@ export default class InventoryLevelService {
       DeepPartial<InventoryLevel>,
       "id" | "created_at" | "metadata" | "deleted_at"
     >,
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<InventoryLevel> {
     const manager = context.transactionManager!
     const levelRepository = manager.getRepository(InventoryLevel)
@@ -233,7 +229,7 @@ export default class InventoryLevelService {
   @InjectEntityManager()
   async deleteByInventoryItemId(
     inventoryItemId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     const ids = Array.isArray(inventoryItemId)
       ? inventoryItemId
@@ -264,7 +260,7 @@ export default class InventoryLevelService {
   @InjectEntityManager()
   async restoreByInventoryItemId(
     inventoryItemId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     const ids = Array.isArray(inventoryItemId)
       ? inventoryItemId
@@ -295,7 +291,7 @@ export default class InventoryLevelService {
   @InjectEntityManager()
   async delete(
     inventoryLevelId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     const ids = Array.isArray(inventoryLevelId)
       ? inventoryLevelId
@@ -326,7 +322,7 @@ export default class InventoryLevelService {
   @InjectEntityManager()
   async deleteByLocationId(
     locationId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const levelRepository = manager.getRepository(InventoryLevel)

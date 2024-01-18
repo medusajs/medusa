@@ -1,6 +1,6 @@
-import { ProductOptionValue } from "@models"
 import { Context, DAL } from "@medusajs/types"
 import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import { ProductOptionValue } from "@models"
 import { ProductOptionValueServiceTypes } from "@types"
 
 type InjectedDependencies = {
@@ -32,7 +32,7 @@ export default class ProductOptionValueService<
       | ProductOptionValueServiceTypes.CreateProductOptionValueDTO
     )[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<[TEntity[], TEntity[], TEntity[]]> {
     return await this.productOptionValueRepository_.upsert!(data, sharedContext)
   }
 }

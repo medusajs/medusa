@@ -15,7 +15,7 @@ import {
   composeMessage,
 } from "@medusajs/utils"
 import { Product } from "@models"
-import { InternalContext, ProductEvents } from "../types"
+import { ProductEvents } from "../types"
 import { ProductServiceTypes } from "../types/services"
 
 type InjectedDependencies = {
@@ -92,7 +92,7 @@ export default class ProductService<
   @InjectTransactionManager("productRepository_")
   async create(
     data: ProductTypes.CreateProductOnlyDTO[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     data.forEach((product) => {
       product.status ??= ProductUtils.ProductStatus.DRAFT
@@ -125,7 +125,7 @@ export default class ProductService<
   @InjectTransactionManager("productRepository_")
   async update(
     data: ProductServiceTypes.UpdateProductDTO[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     const products = await this.productRepository_.update(
       data as WithRequiredProperty<
@@ -154,7 +154,7 @@ export default class ProductService<
   @InjectTransactionManager("productRepository_")
   async delete(
     ids: string[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     await this.productRepository_.delete(ids, {
       transactionManager: sharedContext.transactionManager,
@@ -175,7 +175,7 @@ export default class ProductService<
   @InjectTransactionManager("productRepository_")
   async softDelete(
     productIds: string[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], Record<string, unknown[]>]> {
     const [entities, cascadeEntities] =
       await this.productRepository_.softDelete(productIds, {
@@ -199,7 +199,7 @@ export default class ProductService<
   @InjectTransactionManager("productRepository_")
   async restore(
     productIds: string[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], Record<string, unknown[]>]> {
     const [entities, cascadeEntities] = await this.productRepository_.restore(
       productIds,

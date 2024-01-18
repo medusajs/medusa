@@ -9,7 +9,7 @@ import {
 } from "@medusajs/utils"
 
 import { ProductCollection } from "@models"
-import { InternalContext, ProductCollectionEvents } from "../types"
+import { ProductCollectionEvents } from "../types"
 
 type InjectedDependencies = {
   productCollectionRepository: DAL.RepositoryService
@@ -78,7 +78,7 @@ export default class ProductCollectionService<
   @InjectTransactionManager("productCollectionRepository_")
   async create(
     data: ProductTypes.CreateProductCollectionDTO[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     const collections = await this.productCollectionRepository_.create(
       data,
@@ -102,7 +102,7 @@ export default class ProductCollectionService<
   @InjectTransactionManager("productCollectionRepository_")
   async update(
     data: ProductTypes.UpdateProductCollectionDTO[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     const collections = await this.productCollectionRepository_.update(
       data,
@@ -126,7 +126,7 @@ export default class ProductCollectionService<
   @InjectTransactionManager("productCollectionRepository_")
   async delete(
     ids: string[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     await this.productCollectionRepository_.delete(ids, sharedContext)
 

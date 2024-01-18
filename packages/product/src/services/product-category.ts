@@ -12,11 +12,7 @@ import { ProductCategory } from "@models"
 import { ProductCategoryRepository } from "@repositories"
 
 import { Modules } from "@medusajs/modules-sdk"
-import {
-  InternalContext,
-  ProductCategoryEvents,
-  ProductCategoryServiceTypes,
-} from "../types"
+import { ProductCategoryEvents, ProductCategoryServiceTypes } from "../types"
 
 type InjectedDependencies = {
   productCategoryRepository: DAL.TreeRepositoryService
@@ -122,7 +118,7 @@ export default class ProductCategoryService<
   @InjectTransactionManager("productCategoryRepository_")
   async create(
     data: ProductCategoryServiceTypes.CreateProductCategoryDTO,
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
     // TODO: bulk create
     const variant = await (
@@ -145,7 +141,7 @@ export default class ProductCategoryService<
   async update(
     id: string,
     data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
     // TODO: bulk update
     const variant = await (
@@ -167,7 +163,7 @@ export default class ProductCategoryService<
   @InjectTransactionManager("productCategoryRepository_")
   async delete(
     id: string,
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     // TODO: bulk delete
     await this.productCategoryRepository_.delete(id, sharedContext)

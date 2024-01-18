@@ -13,10 +13,10 @@ import {
   composeMessage,
 } from "@medusajs/utils"
 import { ProductType } from "@models"
-import { ProductTypeRepository } from "@repositories"
 
 import { Modules } from "@medusajs/modules-sdk"
-import { InternalContext, ProductTypeEvents } from "../types"
+import { CreateProductTypeDTO, UpdateProductTypeDTO } from "@medusajs/types"
+import { ProductTypeEvents } from "../types"
 
 type InjectedDependencies = {
   productTypeRepository: DAL.RepositoryService
@@ -80,11 +80,10 @@ export default class ProductTypeService<
   @InjectTransactionManager("productTypeRepository_")
   async upsert(
     data: UpsertProductTypeDTO[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], TEntity[], TEntity[]]> {
-    const [types, updatedTypes, insertedTypes] = await (
-      this.productTypeRepository_ as ProductTypeRepository
-    ).upsert!(data, sharedContext)
+    const [types, updatedTypes, insertedTypes] = await this
+      .productTypeRepository_.upsert!(data, sharedContext)
 
     sharedContext.messageAggregator?.save(
       updatedTypes.map(({ id }) => {
@@ -118,11 +117,9 @@ export default class ProductTypeService<
   @InjectTransactionManager("productTypeRepository_")
   async create(
     data: CreateProductTypeDTO[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    const types = await (
-      this.productTypeRepository_ as ProductTypeRepository
-    ).create(data, sharedContext)
+    const types = await this.productTypeRepository_.create(data, sharedContext)
 
     sharedContext.messageAggregator?.save(
       types.map(({ id }) => {
@@ -141,11 +138,9 @@ export default class ProductTypeService<
   @InjectTransactionManager("productTypeRepository_")
   async update(
     data: UpdateProductTypeDTO[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    const types = await (
-      this.productTypeRepository_ as ProductTypeRepository
-    ).update(data, sharedContext)
+    const types = await this.productTypeRepository_.update(data, sharedContext)
 
     sharedContext.messageAggregator?.save(
       types.map(({ id }) => {
@@ -164,7 +159,7 @@ export default class ProductTypeService<
   @InjectTransactionManager("productTypeRepository_")
   async delete(
     ids: string[],
-    @MedusaContext() sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     await this.productTypeRepository_.delete(ids, sharedContext)
 

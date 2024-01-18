@@ -16,7 +16,7 @@ import {
 } from "@medusajs/utils"
 import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryItem } from "../models"
-import { InternalContext, InventoryItemEvents } from "../types"
+import { InventoryItemEvents } from "../types"
 import { buildQuery } from "../utils/build-query"
 import { getListQuery } from "../utils/query"
 
@@ -118,7 +118,7 @@ export default class InventoryItemService {
   @InjectEntityManager()
   async create(
     data: CreateInventoryItemInput[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<InventoryItem[]> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(InventoryItem)
@@ -172,7 +172,7 @@ export default class InventoryItemService {
       DeepPartial<InventoryItem>,
       "id" | "created_at" | "metadata" | "deleted_at"
     >,
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<InventoryItem> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(InventoryItem)
@@ -207,7 +207,7 @@ export default class InventoryItemService {
   @InjectEntityManager()
   async delete(
     inventoryItemId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(InventoryItem)
@@ -237,7 +237,7 @@ export default class InventoryItemService {
   @InjectEntityManager()
   async restore(
     inventoryItemId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(InventoryItem)

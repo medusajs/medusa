@@ -1,32 +1,32 @@
-import { EntityManager, In } from "typeorm"
 import {
   IEventBusService,
   IInventoryService,
+  IStockLocationService,
   InventoryItemDTO,
   InventoryLevelDTO,
-  IStockLocationService,
   RemoteQueryFunction,
   ReservationItemDTO,
   ReserveQuantityContext,
 } from "@medusajs/types"
-import { LineItem, Product, ProductVariant } from "../models"
 import {
-  buildEventMessages,
   FlagRouter,
-  isDefined,
   MedusaError,
+  MedusaV2Flag,
+  buildEventMessages,
+  isDefined,
   promiseAll,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import { EntityManager, In } from "typeorm"
+import { LineItem, Product, ProductVariant } from "../models"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 
+import { TransactionBaseService } from "../interfaces"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
+import { getSetDifference } from "../utils/diff-set"
 import ProductVariantService from "./product-variant"
 import SalesChannelInventoryService from "./sales-channel-inventory"
 import SalesChannelLocationService from "./sales-channel-location"
-import { TransactionBaseService } from "../interfaces"
-import { getSetDifference } from "../utils/diff-set"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -324,11 +324,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     // Verify that variant exists
     let variants
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(
-        IsolateProductDomainFeatureFlag.key
-      )
-    ) {
+    if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       variants = await this.remoteQuery_(
         remoteQueryObjectFromString({
           entryPoint: "variants",

@@ -10,7 +10,7 @@
 "@medusajs/stock-location": patch
 "@medusajs/types": patch
 "@medusajs/utils": patch
-"@medusajs/workflows": patch
+"@medusajs/workflows-sdk": patch
 ---
 
-feat(): Implement the search engine module
+chore: Foundational changes to support index module

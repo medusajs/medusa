@@ -1,11 +1,10 @@
-import { Message } from "@medusajs/types"
+import {
+  IMessageAggregator,
+  Message,
+  MessageAggregatorFormat,
+} from "@medusajs/types"
 
-export interface MessageAggregatorFormat {
-  groupBy?: string[]
-  sortBy?: { [key: string]: string[] | string | number }
-}
-
-export class MessageAggregator {
+export class MessageAggregator implements IMessageAggregator {
   private messages: Message[]
 
   constructor() {

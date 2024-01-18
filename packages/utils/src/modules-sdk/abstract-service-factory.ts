@@ -1,16 +1,16 @@
 import {
   Context,
-  FilterQuery as InternalFilterQuery,
   FindConfig,
+  FilterQuery as InternalFilterQuery,
 } from "@medusajs/types"
 import { EntitySchema } from "@mikro-orm/core"
 import { EntityClass } from "@mikro-orm/core/typings"
 import {
+  MedusaError,
   doNotForceTransaction,
   isDefined,
   isString,
   lowerCaseFirst,
-  MedusaError,
   shouldForceTransaction,
   upperCaseFirst,
 } from "../common"
@@ -64,6 +64,10 @@ export interface AbstractService<
     idsOrFilter: string[] | InternalFilterQuery,
     sharedContext?: Context
   ): Promise<[TEntity[], Record<string, unknown[]>]>
+  upsert(
+    data: TDTOs["create"][] | TDTOs["update"][],
+    sharedContext?: Context
+  ): Promise<[TEntity[], TEntity[], TEntity[]]>
 }
 
 export function abstractServiceFactory<
@@ -236,6 +240,46 @@ export function abstractServiceFactory<
         idsOrFilter,
         sharedContext
       )
+    }
+
+    @InjectTransactionManager(propertyRepositoryName)
+    async upsert(
+      data: TDTOs["create"][] | TDTOs["update"][],
+      @MedusaContext() sharedContext: Context = {}
+    ): Promise<[TEntity[], TEntity[], TEntity[]]> {
+      const [allEntries, updatedEntries, insertedEntries] = await this[
+        propertyRepositoryName
+      ].upsert!(data, sharedContext)
+
+      /*
+      sharedContext.messageAggregator?.save(
+        updatedEntries.map(({ id }) => {
+          return composeMessage(ProductTypeEvents.PRODUCT_TYPE_UPDATED, {
+            data: { id },
+            service: Modules.PRODUCT,
+            entity: ProductType.name,
+            context: sharedContext,
+          })
+        })
+      )
+
+      sharedContext.messageAggregator?.save(
+        insertedEntries.map(({ id }) => {
+          return composeMessage(ProductTypeEvents.PRODUCT_TYPE_CREATED, {
+            data: { id },
+            service: Modules.PRODUCT,
+            entity: ProductType.name,
+            context: sharedContext,
+          })
+        })
+      )
+      */
+
+      return [allEntries, updatedEntries, insertedEntries] as [
+        TEntity[],
+        TEntity[],
+        TEntity[]
+      ]
     }
   }
 

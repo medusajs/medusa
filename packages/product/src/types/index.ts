@@ -1,15 +1,10 @@
 export * from "./services"
 
-import { Context, IEventBusModuleService, Logger } from "@medusajs/types"
-import { MessageAggregator } from "@medusajs/utils"
+import { IEventBusModuleService, Logger } from "@medusajs/types"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger
   eventBusModuleService?: IEventBusModuleService
-}
-
-export interface InternalContext extends Context {
-  messageAggregator?: MessageAggregator
 }
 
 export * from "./events"

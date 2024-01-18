@@ -29,7 +29,6 @@ import {
 } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { joinerConfig } from "../joiner-config"
-import { InternalContext } from "../types"
 import InventoryItemService from "./inventory-item"
 import InventoryLevelService from "./inventory-level"
 import ReservationItemService from "./reservation-item"
@@ -258,7 +257,7 @@ export default class InventoryService implements IInventoryService {
   })
   async createReservationItems(
     input: CreateReservationItemInput[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<ReservationItemDTO[]> {
     await this.ensureInventoryLevels(input, context)
 
@@ -296,7 +295,7 @@ export default class InventoryService implements IInventoryService {
   })
   async createInventoryItems(
     input: CreateInventoryItemInput[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<InventoryItemDTO[]> {
     const result = await this.inventoryItemService_.create(input, context)
 
@@ -320,7 +319,7 @@ export default class InventoryService implements IInventoryService {
   })
   async createInventoryItem(
     input: CreateInventoryItemInput,
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<InventoryItemDTO> {
     const [result] = await this.createInventoryItems([input], context)
 
@@ -338,7 +337,7 @@ export default class InventoryService implements IInventoryService {
   })
   async createInventoryLevels(
     input: CreateInventoryLevelInput[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<InventoryLevelDTO[]> {
     const result = await this.inventoryLevelService_.create(input, context)
 
@@ -383,7 +382,7 @@ export default class InventoryService implements IInventoryService {
   async updateInventoryItem(
     inventoryItemId: string,
     input: Partial<CreateInventoryItemInput>,
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<InventoryItemDTO> {
     const inventoryItem = await this.inventoryItemService_.update(
       inventoryItemId,
@@ -410,7 +409,7 @@ export default class InventoryService implements IInventoryService {
   })
   async deleteInventoryItem(
     inventoryItemId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     await this.inventoryLevelService_.deleteByInventoryItemId(
       inventoryItemId,
@@ -436,7 +435,7 @@ export default class InventoryService implements IInventoryService {
   })
   async restoreInventoryItem(
     inventoryItemId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     await this.inventoryLevelService_.restoreByInventoryItemId(
       inventoryItemId,
@@ -457,7 +456,7 @@ export default class InventoryService implements IInventoryService {
   })
   async deleteInventoryItemLevelByLocationId(
     locationId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     await this.inventoryLevelService_.deleteByLocationId(locationId, context)
 
@@ -473,7 +472,7 @@ export default class InventoryService implements IInventoryService {
   })
   async deleteReservationItemByLocationId(
     locationId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     await this.reservationItemService_.deleteByLocationId(locationId, context)
 
@@ -496,7 +495,7 @@ export default class InventoryService implements IInventoryService {
   async deleteInventoryLevel(
     inventoryItemId: string,
     locationId: string,
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     const [inventoryLevel] = await this.inventoryLevelService_.list(
       { inventory_item_id: inventoryItemId, location_id: locationId },
@@ -525,7 +524,7 @@ export default class InventoryService implements IInventoryService {
       inventory_item_id: string
       location_id: string
     } & UpdateInventoryLevelInput)[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<InventoryLevelDTO[]> {
     const inventoryLevels = await this.ensureInventoryLevels(updates)
 
@@ -601,7 +600,7 @@ export default class InventoryService implements IInventoryService {
   async updateReservationItem(
     reservationItemId: string,
     input: UpdateReservationItemInput,
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<ReservationItemDTO> {
     const result = await this.reservationItemService_.update(
       reservationItemId,
@@ -628,7 +627,7 @@ export default class InventoryService implements IInventoryService {
   })
   async deleteReservationItemsByLineItem(
     lineItemId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     await this.reservationItemService_.deleteByLineItem(lineItemId, context)
 
@@ -649,7 +648,7 @@ export default class InventoryService implements IInventoryService {
   })
   async deleteReservationItem(
     reservationItemId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     await this.reservationItemService_.delete(reservationItemId, context)
 

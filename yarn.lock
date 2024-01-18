@@ -5645,13 +5645,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@faker-js/faker@npm:^8.2.0":
-  version: 8.2.0
-  resolution: "@faker-js/faker@npm:8.2.0"
-  checksum: 0b7c29714f61d9e862baad29f43c016f0d3ba4b22ba1ebc963e587f15744c145b4e3a4dc8b328dc139472a75fa19e769d53986e158e717fedf5b64862bbbfec7
-  languageName: node
-  linkType: hard
-
 "@fal-works/esbuild-plugin-global-externals@npm:^2.1.2":
   version: 2.1.2
   resolution: "@fal-works/esbuild-plugin-global-externals@npm:2.1.2"

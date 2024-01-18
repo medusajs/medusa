@@ -1,13 +1,13 @@
+import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
+import { DALUtils, MedusaError, isDefined } from "@medusajs/utils"
 import {
+  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
-  LoadStrategy,
 } from "@mikro-orm/core"
-import { ProductCategory } from "@models"
-import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
-import groupBy from "lodash/groupBy"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
+import { ProductCategory } from "@models"
+import groupBy from "lodash/groupBy"
 
 import { ProductCategoryServiceTypes } from "../types"
 

@@ -85,8 +85,6 @@ class PricingService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.pricingModuleService = pricingModuleService
-    this.remoteQuery = remoteQuery
     this.regionService = regionService
     this.taxProviderService = taxProviderService
     this.priceSelectionStrategy = priceSelectionStrategy

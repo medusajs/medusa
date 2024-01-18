@@ -188,20 +188,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
         resources: MODULE_RESOURCE_TYPE.SHARED,
       },
     },
-    [Modules.SEARCH]: {
-      key: Modules.SEARCH,
-      registrationName: ModuleRegistrationName.SEARCH,
-      defaultPackage: false,
-      label: "SearchModuleService",
-      isRequired: false,
-      canOverride: true,
-      isQueryable: true,
-      dependencies: ["logger", ModuleRegistrationName.EVENT_BUS, "remoteQuery"],
-      defaultModuleDeclaration: {
-        scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.SHARED,
-      },
-    },
   }
 
 export const MODULE_DEFINITIONS: ModuleDefinition[] =

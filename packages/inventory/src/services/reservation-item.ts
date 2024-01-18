@@ -8,17 +8,17 @@ import {
   UpdateReservationItemInput,
 } from "@medusajs/types"
 import {
-  composeMessage,
   InjectEntityManager,
-  isDefined,
   MedusaContext,
   MedusaError,
+  composeMessage,
+  isDefined,
   promiseAll,
 } from "@medusajs/utils"
 import { EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryLevelService } from "."
 import { ReservationItem } from "../models"
-import { InternalContext, ReservationItemEvents } from "../types"
+import { ReservationItemEvents } from "../types"
 import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
@@ -130,7 +130,7 @@ export default class ReservationItemService {
   @InjectEntityManager()
   async create(
     data: CreateReservationItemInput[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<ReservationItem[]> {
     const manager = context.transactionManager!
     const reservationItemRepository = manager.getRepository(ReservationItem)
@@ -187,7 +187,7 @@ export default class ReservationItemService {
   async update(
     reservationItemId: string,
     data: UpdateReservationItemInput,
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<ReservationItem> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
@@ -255,7 +255,7 @@ export default class ReservationItemService {
   @InjectEntityManager()
   async deleteByLineItem(
     lineItemId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
@@ -310,7 +310,7 @@ export default class ReservationItemService {
   @InjectEntityManager()
   async deleteByLocationId(
     locationId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
@@ -341,7 +341,7 @@ export default class ReservationItemService {
   @InjectEntityManager()
   async delete(
     reservationItemId: string | string[],
-    @MedusaContext() context: InternalContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     const ids = Array.isArray(reservationItemId)
       ? reservationItemId

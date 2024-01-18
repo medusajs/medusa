@@ -1,6 +1,4 @@
-import { DatabaseType, EntityManager } from "typeorm"
-import { Context } from "@medusajs/types"
-import { MessageAggregator } from "@medusajs/utils"
+import { DatabaseType } from "typeorm"
 
 export type InventoryServiceInitializeOptions = {
   database?: {
@@ -11,10 +9,6 @@ export type InventoryServiceInitializeOptions = {
     schema?: string
     logging?: boolean
   }
-}
-
-export type InternalContext = Context<EntityManager> & {
-  messageAggregator?: MessageAggregator
 }
 
 export * from "./events"

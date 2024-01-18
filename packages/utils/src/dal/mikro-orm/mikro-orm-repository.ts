@@ -394,7 +394,7 @@ export function mikroOrmBaseRepositoryFactory<
 
     async findAndCount(
       findOptions: DAL.FindOptions<T> = { where: {} },
-      context: Context = {}
+      context: Context<EntityManager> = {}
     ): Promise<[T[], number]> {
       const manager = this.getActiveManager<EntityManager>(context)
 

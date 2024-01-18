@@ -51,7 +51,7 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Pr
 
   async findAndCount(
     findOptions: DAL.FindOptions<Product & { q?: string }> = { where: {} },
-    context: Context = {}
+    context: Context<SqlEntityManager> = {}
   ): Promise<[Product[], number]> {
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
