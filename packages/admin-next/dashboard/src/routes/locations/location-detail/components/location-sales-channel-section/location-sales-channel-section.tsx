@@ -1,15 +1,14 @@
-import { EllipsisHorizontal, PencilSquare, Trash } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { SalesChannel } from "@medusajs/medusa"
 import { StockLocationExpandedDTO } from "@medusajs/types"
 import {
   Button,
   Container,
-  DropdownMenu,
   Heading,
-  IconButton,
   StatusBadge,
   Table,
   clx,
+  usePrompt,
 } from "@medusajs/ui"
 import {
   PaginationState,
@@ -19,9 +18,11 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
+import { useAdminRemoveLocationFromSalesChannel } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { NoRecords } from "../../../../../components/common/empty-table-content/empty-table-content"
 
 type LocationSalesChannelSectionProps = {
@@ -67,6 +68,9 @@ export const LocationSalesChannelSection = ({
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
+    meta: {
+      locationId: location.id,
+    },
   })
 
   return (
@@ -143,28 +147,55 @@ export const LocationSalesChannelSection = ({
   )
 }
 
-const SalesChannelActions = ({ id }: { id: string }) => {
+const SalesChannelActions = ({
+  salesChannel,
+  locationId,
+}: {
+  salesChannel: SalesChannel
+  locationId: string
+}) => {
   const { t } = useTranslation()
+  const prompt = usePrompt()
+
+  const { mutateAsync } = useAdminRemoveLocationFromSalesChannel()
+
+  const handleDelete = async () => {
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("locations.removeSalesChannelsWarning", { count: 1 }),
+      confirmText: t("general.delete"),
+      cancelText: t("general.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync({
+      location_id: locationId,
+      sales_channel_id: salesChannel.id,
+    })
+  }
 
   return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
-        <IconButton variant="transparent">
-          <EllipsisHorizontal />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <DropdownMenu.Item className="gap-x-2">
-          <PencilSquare className="text-ui-fg-subtle" />
-          <span>{t("general.edit")}</span>
-        </DropdownMenu.Item>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Item className="gap-x-2">
-          <Trash className="text-ui-fg-subtle" />
-          <span>{t("general.delete")}</span>
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
-    </DropdownMenu>
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: t("general.edit"),
+              to: `/settings/sales-channels/${salesChannel.id}/edit`,
+            },
+            {
+              icon: <Trash />,
+              label: t("general.delete"),
+              onClick: handleDelete,
+            },
+          ],
+        },
+      ]}
+    />
   )
 }
 
@@ -198,8 +229,17 @@ const useColumns = () => {
       }),
       columnHelper.display({
         id: "actions",
-        cell: ({ row }) => {
-          return <SalesChannelActions id={row.original.id} />
+        cell: ({ row, table }) => {
+          const { locationId } = table.options.meta as {
+            locationId: string
+          }
+
+          return (
+            <SalesChannelActions
+              salesChannel={row.original}
+              locationId={locationId}
+            />
+          )
         },
       }),
     ],
