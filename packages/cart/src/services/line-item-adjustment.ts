@@ -1,9 +1,5 @@
-import { Context, DAL } from "@medusajs/types"
-import {
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-} from "@medusajs/utils"
+import { DAL } from "@medusajs/types"
+import { ModulesSdkUtils } from "@medusajs/utils"
 import { LineItemAdjustmentLine } from "@models"
 import {
   CreateLineItemAdjustmentDTO,
@@ -25,20 +21,8 @@ export default class LineItemAdjustmentService<
 >(LineItemAdjustmentLine)<TEntity> {
   protected readonly lineItemAdjustmentRepository_: DAL.RepositoryService<TEntity>
 
-  constructor({ lineItemAdjustmentRepository }: InjectedDependencies) {
+  constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
-    this.lineItemAdjustmentRepository_ = lineItemAdjustmentRepository
-  }
-
-  @InjectTransactionManager("lineItemAdjustmentRepository_")
-  async upsert(
-    adjustments: (CreateLineItemAdjustmentDTO | UpdateLineItemAdjustmentDTO)[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return await this.lineItemAdjustmentRepository_.upsert!(
-      adjustments,
-      sharedContext
-    )
   }
 }
