@@ -247,7 +247,7 @@ export function abstractServiceFactory<
       data: (TDTOs["create"] | TDTOs["update"])[],
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity[]> {
-      return await this[propertyRepositoryName].restore(data, sharedContext)
+      return await this[propertyRepositoryName].upsert(data, sharedContext)
     }
   }
 
