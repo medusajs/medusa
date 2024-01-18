@@ -1,7 +1,7 @@
 import {
   Context,
   DAL,
-  FilterQuery as InternalFilerQuery,
+  FilterQuery as InternalFilterQuery,
   RepositoryTransformOptions,
 } from "@medusajs/types"
 import {
@@ -16,9 +16,9 @@ import {
   EntityName,
   FilterQuery as MikroFilterQuery,
 } from "@mikro-orm/core/typings"
-import { isString, MedusaError } from "../../common"
+import { MedusaError, isString } from "../../common"
 import { MedusaContext } from "../../decorators"
-import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
+import { InjectTransactionManager, buildQuery } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
@@ -106,7 +106,7 @@ export class MikroOrmBaseRepository<
 
   @InjectTransactionManager()
   async softDelete(
-    idsOrFilter: string[] | InternalFilerQuery,
+    idsOrFilter: string[] | InternalFilterQuery,
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
@@ -138,7 +138,7 @@ export class MikroOrmBaseRepository<
 
   @InjectTransactionManager()
   async restore(
-    idsOrFilter: string[] | InternalFilerQuery,
+    idsOrFilter: string[] | InternalFilterQuery,
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
@@ -224,7 +224,7 @@ type DtoBasedMutationMethods = "create" | "update"
 
 export function mikroOrmBaseRepositoryFactory<
   T extends object = object,
-  TDTos extends { [K in DtoBasedMutationMethods]?: any } = {
+  TDTOs extends { [K in DtoBasedMutationMethods]?: any } = {
     [K in DtoBasedMutationMethods]?: any
   }
 >(entity: EntityClass<T> | EntitySchema<T>) {
@@ -242,11 +242,11 @@ export function mikroOrmBaseRepositoryFactory<
     static retrievePrimaryKeys(entity: EntityClass<T> | EntitySchema<T>) {
       return (
         (entity as EntitySchema<T>).meta?.primaryKeys ??
-        (entity as EntityClass<T>).prototype.__meta.primaryKeys
+        (entity as EntityClass<T>).prototype.__meta.primaryKeys ?? ["id"]
       )
     }
 
-    async create(data: TDTos["create"][], context?: Context): Promise<T[]> {
+    async create(data: TDTOs["create"][], context?: Context): Promise<T[]> {
       const manager = this.getActiveManager<EntityManager>(context)
 
       const entities = data.map((data_) => {
@@ -261,7 +261,8 @@ export function mikroOrmBaseRepositoryFactory<
       return entities
     }
 
-    async update(data: TDTos["update"][], context?: Context): Promise<T[]> {
+    async update(data: TDTOs["update"][], context?: Context): Promise<T[]> {
+      // TODO: Move this logic to the service packages/utils/src/modules-sdk/abstract-service-factory.ts
       const manager = this.getActiveManager<EntityManager>(context)
 
       const primaryKeys =
