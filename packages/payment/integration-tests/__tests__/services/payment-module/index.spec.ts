@@ -137,5 +137,51 @@ describe("Payment Module Service", () => {
         ])
       )
     })
+
+    it("should list Payment Collections by region_id", async () => {
+      let collections = await service.listPaymentCollections(
+        {
+          region_id: "region-id-1",
+        },
+        { select: ["id", "amount", "region_id"] }
+      )
+
+      expect(collections.length).toEqual(2)
+
+      expect(collections).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "pay-col-id-1",
+            amount: 100,
+            region_id: "region-id-1",
+          }),
+          expect.objectContaining({
+            id: "pay-col-id-2",
+            amount: 200,
+            region_id: "region-id-1",
+          }),
+        ])
+      )
+    })
+
+    it("should list Payment Collections by id", async () => {
+      let collections = await service.listPaymentCollections(
+        {
+          id: "pay-col-id-1",
+        },
+        { select: ["id", "amount"] }
+      )
+
+      expect(collections.length).toEqual(1)
+
+      expect(collections).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "pay-col-id-1",
+            amount: 100,
+          }),
+        ])
+      )
+    })
   })
 })
