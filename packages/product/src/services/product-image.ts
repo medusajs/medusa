@@ -1,7 +1,6 @@
 import { Image } from "@models"
 import { Context, DAL } from "@medusajs/types"
 import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
-import { ProductImageRepository } from "@repositories"
 
 type InjectedDependencies = {
   productImageRepository: DAL.RepositoryService
@@ -19,7 +18,6 @@ export default class ProductImageService<TEntity extends Image = Image> {
     urls: string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await (this.productImageRepository_ as ProductImageRepository)
-      .upsert!(urls, sharedContext)) as TEntity[]
+    return await this.productImageRepository_.upsert!(urls, sharedContext)
   }
 }
