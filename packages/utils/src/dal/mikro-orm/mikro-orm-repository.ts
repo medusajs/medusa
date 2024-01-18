@@ -16,9 +16,9 @@ import {
   EntityName,
   FilterQuery as MikroFilterQuery,
 } from "@mikro-orm/core/typings"
-import { MedusaError, isString } from "../../common"
+import { isString, MedusaError } from "../../common"
 import { MedusaContext } from "../../decorators"
-import { InjectTransactionManager, buildQuery } from "../../modules-sdk"
+import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
@@ -101,6 +101,10 @@ export class MikroOrmBaseRepository<
     options?: DAL.FindOptions<T>,
     context?: Context
   ): Promise<[T[], number]> {
+    throw new Error("Method not implemented.")
+  }
+
+  upsert(data: unknown[], context: Context = {}): Promise<T[]> {
     throw new Error("Method not implemented.")
   }
 
@@ -410,6 +414,83 @@ export function mikroOrmBaseRepositoryFactory<
         findOptions_.where as MikroFilterQuery<T>,
         findOptions_.options as MikroOptions<T>
       )
+    }
+
+    async upsert(
+      data: (TDTOs["create"] | TDTOs["update"])[],
+      context: Context = {}
+    ): Promise<T[]> {
+      // TODO: Move this logic to the service packages/utils/src/modules-sdk/abstract-service-factory.ts
+      const manager = this.getActiveManager<EntityManager>(context)
+
+      const primaryKeys =
+        MikroOrmAbstractBaseRepository_.retrievePrimaryKeys(entity)
+
+      let primaryKeysCriteria: { [key: string]: any }[] = []
+      if (primaryKeys.length === 1) {
+        primaryKeysCriteria.push({
+          [primaryKeys[0]]: data.map((d) => d[primaryKeys[0]]),
+        })
+      } else {
+        primaryKeysCriteria = data.map((d) => ({
+          $and: primaryKeys.map((key) => ({ [key]: d[key] })),
+        }))
+      }
+
+      const allEntities = await Promise.all(
+        primaryKeysCriteria.map(
+          async (criteria) =>
+            await this.find({ where: criteria } as DAL.FindOptions<T>, context)
+        )
+      )
+
+      const existingEntities = allEntities.flat()
+
+      const existingEntitiesMap = new Map<string, T>()
+      existingEntities.forEach((entity) => {
+        if (entity) {
+          const key =
+            MikroOrmAbstractBaseRepository_.buildUniqueCompositeKeyValue(
+              primaryKeys,
+              entity
+            )
+          existingEntitiesMap.set(key, entity)
+        }
+      })
+
+      const upsertedEntities: T[] = []
+      const createdEntities: T[] = []
+      const updatedEntities: T[] = []
+
+      data.forEach((data_) => {
+        // In case the data provided are just strings, then we build an object with the primary key as the key and the data as the valuecd -
+        const key =
+          MikroOrmAbstractBaseRepository_.buildUniqueCompositeKeyValue(
+            primaryKeys,
+            data_
+          )
+
+        const existingEntity = existingEntitiesMap.get(key)
+        if (existingEntity) {
+          const updatedType = manager.assign(existingEntity, data_)
+          updatedEntities.push(updatedType)
+        } else {
+          const newEntity = manager.create(entity, data_)
+          createdEntities.push(newEntity)
+        }
+      })
+
+      if (createdEntities.length) {
+        manager.persist(createdEntities)
+        upsertedEntities.push(...createdEntities)
+      }
+
+      if (updatedEntities.length) {
+        manager.persist(updatedEntities)
+        upsertedEntities.push(...updatedEntities)
+      }
+
+      return upsertedEntities
     }
   }
 

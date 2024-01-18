@@ -64,6 +64,10 @@ export interface AbstractService<
     idsOrFilter: string[] | InternalFilterQuery,
     sharedContext?: Context
   ): Promise<[TEntity[], Record<string, unknown[]>]>
+  upsert(
+    data: (string | TDTOs["create"] | TDTOs["update"])[],
+    sharedContext?: Context
+  ): Promise<TEntity[]>
 }
 
 export function abstractServiceFactory<
@@ -75,7 +79,7 @@ export function abstractServiceFactory<
 >(
   model: new (...args: any[]) => any
 ): {
-  new <TEntity extends {}>(container: TContainer): AbstractService<
+  new <TEntity extends object = any>(container: TContainer): AbstractService<
     TEntity,
     TContainer,
     TDTOs,
@@ -236,6 +240,14 @@ export function abstractServiceFactory<
         idsOrFilter,
         sharedContext
       )
+    }
+
+    @InjectTransactionManager(propertyRepositoryName)
+    async upsert(
+      data: (string | TDTOs["create"] | TDTOs["update"])[],
+      @MedusaContext() sharedContext: Context = {}
+    ): Promise<[TEntity[], Record<string, unknown[]>]> {
+      return await this[propertyRepositoryName].restore(data, sharedContext)
     }
   }
 

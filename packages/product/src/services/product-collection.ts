@@ -1,7 +1,17 @@
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
+import {
+  InjectManager,
+  InjectTransactionManager,
+  MedusaContext,
+  ModulesSdkUtils,
+} from "@medusajs/utils"
 
 import { ProductCollection } from "@models"
+import { ProductCollectionServiceTypes } from "@types"
+import {
+  CreateProductCollection,
+  UpdateProductCollection,
+} from "../types/services/product-collection"
 
 type InjectedDependencies = {
   productCollectionRepository: DAL.RepositoryService
@@ -12,8 +22,8 @@ export default class ProductCollectionService<
 > extends ModulesSdkUtils.abstractServiceFactory<
   InjectedDependencies,
   {
-    create: ProductTypes.CreateProductCollectionDTO
-    update: ProductTypes.UpdateProductCollectionDTO
+    create: CreateProductCollection
+    update: UpdateProductCollection
   }
 >(ProductCollection)<TEntity> {
   // eslint-disable-next-line max-len
@@ -65,5 +75,41 @@ export default class ProductCollectionService<
     }
 
     return queryOptions
+  }
+
+  @InjectTransactionManager("productCollectionRepository_")
+  async create(
+    data: ProductCollectionServiceTypes.CreateProductCollection[],
+    context: Context = {}
+  ): Promise<TEntity[]> {
+    const productCollections = data.map((collectionData) => {
+      if (collectionData.product_ids) {
+        collectionData.products = collectionData.product_ids
+
+        delete collectionData.product_ids
+      }
+
+      return collectionData
+    })
+
+    return super.create(productCollections, context)
+  }
+
+  @InjectTransactionManager("productCollectionRepository_")
+  async update(
+    data: ProductCollectionServiceTypes.UpdateProductCollection[],
+    context: Context = {}
+  ): Promise<TEntity[]> {
+    const productCollections = data.map((collectionData) => {
+      if (collectionData.product_ids) {
+        collectionData.products = collectionData.product_ids
+
+        delete collectionData.product_ids
+      }
+
+      return collectionData
+    })
+
+    return super.update(productCollections, context)
   }
 }

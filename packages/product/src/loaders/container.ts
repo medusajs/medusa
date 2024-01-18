@@ -2,16 +2,20 @@ import * as DefaultRepositories from "@repositories"
 import {
   BaseRepository,
   ProductCategoryRepository,
-  ProductCollectionRepository,
   ProductImageRepository,
-  ProductOptionRepository,
-  ProductOptionValueRepository,
   ProductRepository,
-  ProductTagRepository,
-  ProductTypeRepository,
-  ProductVariantRepository,
 } from "@repositories"
-import { Constructor, DAL, ModulesSdkTypes } from "@medusajs/types"
+import {
+  Constructor,
+  CreateProductTagDTO,
+  CreateProductTypeDTO,
+  DAL,
+  ModulesSdkTypes,
+  ProductTypes,
+  UpdateProductTagDTO,
+  UpdateProductTypeDTO,
+  WithRequiredProperty,
+} from "@medusajs/types"
 import {
   ProductCategoryService,
   ProductCollectionService,
@@ -27,7 +31,21 @@ import {
 
 import { LoaderOptions } from "@medusajs/modules-sdk"
 import { asClass } from "awilix"
-import { lowerCaseFirst } from "@medusajs/utils"
+import { DALUtils, lowerCaseFirst } from "@medusajs/utils"
+import {
+  ProductCollection,
+  ProductOption,
+  ProductOptionValue,
+  ProductTag,
+  ProductType,
+  ProductVariant,
+} from "@models"
+import {
+  ProductCollectionServiceTypes,
+  ProductOptionValueServiceTypes,
+  ProductVariantServiceTypes,
+} from "@types"
+import { RequiredEntityData } from "@mikro-orm/core"
 
 export default async ({
   container,
@@ -53,29 +71,99 @@ export default async ({
     productOptionValueService: asClass(ProductOptionValueService).singleton(),
   })
 
+  const defaultProductCollectionRepository =
+    DALUtils.mikroOrmBaseRepositoryFactory<
+      ProductCollection,
+      {
+        create: ProductCollectionServiceTypes.CreateProductCollection
+        update: ProductCollectionServiceTypes.UpdateProductCollection
+      }
+    >(ProductCollection)
+  const defaultProductOptionRepository = DALUtils.mikroOrmBaseRepositoryFactory<
+    ProductOption,
+    {
+      create: ProductTypes.CreateProductOptionDTO
+      update: ProductTypes.UpdateProductOptionDTO
+    }
+  >(ProductOption)
+  const defaultProductOptionValueRepository =
+    DALUtils.mikroOrmBaseRepositoryFactory<
+      ProductOptionValue,
+      {
+        create: ProductOptionValueServiceTypes.CreateProductOptionValueDTO
+        update: ProductOptionValueServiceTypes.UpdateProductOptionValueDTO
+      }
+    >(ProductOptionValue)
+  const defaultProductTagRepository = DALUtils.mikroOrmBaseRepositoryFactory<
+    ProductTag,
+    {
+      create: CreateProductTagDTO
+      update: UpdateProductTagDTO
+    }
+  >(ProductTag)
+  const defaultProductTypeRepository = DALUtils.mikroOrmBaseRepositoryFactory<
+    ProductType,
+    {
+      create: CreateProductTypeDTO
+      update: UpdateProductTypeDTO
+    }
+  >(ProductType)
+  const defaultProductVariantRepository =
+    DALUtils.mikroOrmBaseRepositoryFactory<
+      ProductVariant,
+      {
+        create: RequiredEntityData<ProductVariant>
+        update: WithRequiredProperty<
+          ProductVariantServiceTypes.UpdateProductVariantDTO,
+          "id"
+        >
+      }
+    >(ProductVariant)
+
+  const defaultRepositories = {
+    productCollectionRepository: defaultProductCollectionRepository,
+    productOptionRepository: defaultProductOptionRepository,
+    productOptionValueRepository: defaultProductOptionValueRepository,
+    productTagRepository: defaultProductTagRepository,
+    productTypeRepository: defaultProductTypeRepository,
+    productVariantRepository: defaultProductVariantRepository,
+  }
+
   if (customRepositories) {
-    loadCustomRepositories({ customRepositories, container })
+    loadCustomRepositories({
+      customRepositories,
+      defaultRepositories,
+      container,
+    })
   } else {
-    loadDefaultRepositories({ container })
+    loadDefaultRepositories({ defaultRepositories, container })
   }
 }
 
-function loadDefaultRepositories({ container }) {
+function loadDefaultRepositories({ defaultRepositories, container }) {
   container.register({
     baseRepository: asClass(BaseRepository).singleton(),
     productImageRepository: asClass(ProductImageRepository).singleton(),
     productCategoryRepository: asClass(ProductCategoryRepository).singleton(),
     productCollectionRepository: asClass(
-      ProductCollectionRepository
+      defaultRepositories.productCollectionRepository
     ).singleton(),
     productRepository: asClass(ProductRepository).singleton(),
-    productTagRepository: asClass(ProductTagRepository).singleton(),
-    productTypeRepository: asClass(ProductTypeRepository).singleton(),
-    productOptionRepository: asClass(ProductOptionRepository).singleton(),
-    productOptionValueRepository: asClass(
-      ProductOptionValueRepository
+    productTagRepository: asClass(
+      defaultRepositories.productTagRepository
     ).singleton(),
-    productVariantRepository: asClass(ProductVariantRepository).singleton(),
+    productTypeRepository: asClass(
+      defaultRepositories.productTypeRepository
+    ).singleton(),
+    productOptionRepository: asClass(
+      defaultRepositories.productOptionRepository
+    ).singleton(),
+    productOptionValueRepository: asClass(
+      defaultRepositories.productOptionValueRepository
+    ).singleton(),
+    productVariantRepository: asClass(
+      defaultRepositories.productVariantRepository
+    ).singleton(),
   })
 }
 
@@ -83,13 +171,23 @@ function loadDefaultRepositories({ container }) {
  * Load the repositories from the custom repositories object. If a repository is not
  * present in the custom repositories object, the default repository will be used.
  *
+ * @param defaultRepositories
  * @param customRepositories
  * @param container
  */
-function loadCustomRepositories({ customRepositories, container }) {
+function loadCustomRepositories({
+  defaultRepositories,
+  customRepositories,
+  container,
+}) {
   const customRepositoriesMap = new Map(Object.entries(customRepositories))
 
-  Object.entries(DefaultRepositories).forEach(([key, DefaultRepository]) => {
+  const allDefaultRepositories = {
+    ...defaultRepositories,
+    ...DefaultRepositories,
+  }
+
+  Object.entries(allDefaultRepositories).forEach(([key, DefaultRepository]) => {
     let finalRepository = customRepositoriesMap.get(key)
 
     if (
@@ -99,6 +197,7 @@ function loadCustomRepositories({ customRepositories, container }) {
       finalRepository = DefaultRepository
     }
 
+    console.log("finalRepository", finalRepository)
     container.register({
       [lowerCaseFirst(key)]: asClass(
         finalRepository as Constructor<DAL.RepositoryService>

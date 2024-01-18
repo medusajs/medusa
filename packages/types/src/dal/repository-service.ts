@@ -59,7 +59,7 @@ export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
     context?: Context
   ): Promise<[T[], Record<string, unknown[]>]>
 
-  upsert?(data: unknown[], context?: Context): Promise<T[]>
+  upsert(data: unknown[], context?: Context): Promise<T[]>
 }
 
 export interface TreeRepositoryService<T = any>
