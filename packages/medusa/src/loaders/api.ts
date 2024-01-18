@@ -14,8 +14,6 @@ type Options = {
 }
 
 export default async ({ app, container, configModule }: Options) => {
-  const logger = container.resolve("logger")
-
   // This is a workaround for the issue described here: https://github.com/expressjs/express/issues/3454
   // We parse the url and get the qs to be parsed and override the query prop from the request
   app.use(function (req, res, next) {
