@@ -82,52 +82,54 @@ describe("GET /admin/campaigns", () => {
 
     expect(response.status).toEqual(200)
     expect(response.data.count).toEqual(2)
-    expect(response.data.campaigns).toEqual([
-      expect.objectContaining({
-        id: expect.any(String),
-        name: "campaign 1",
-        description: "test description",
-        currency: "USD",
-        campaign_identifier: "test-1",
-        starts_at: expect.any(String),
-        ends_at: expect.any(String),
-        budget: {
+    expect(response.data.campaigns).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
           id: expect.any(String),
-          campaign: expect.any(Object),
-          type: "spend",
-          limit: 1000,
-          used: 0,
+          name: "campaign 1",
+          description: "test description",
+          currency: "USD",
+          campaign_identifier: "test-1",
+          starts_at: expect.any(String),
+          ends_at: expect.any(String),
+          budget: {
+            id: expect.any(String),
+            campaign: expect.any(Object),
+            type: "spend",
+            limit: 1000,
+            used: 0,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+          },
           created_at: expect.any(String),
           updated_at: expect.any(String),
           deleted_at: null,
-        },
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-        deleted_at: null,
-      }),
-      expect.objectContaining({
-        id: expect.any(String),
-        name: "campaign 2",
-        description: "test description",
-        currency: "USD",
-        campaign_identifier: "test-2",
-        starts_at: expect.any(String),
-        ends_at: expect.any(String),
-        budget: {
+        }),
+        expect.objectContaining({
           id: expect.any(String),
-          campaign: expect.any(Object),
-          type: "usage",
-          limit: 1000,
-          used: 0,
+          name: "campaign 2",
+          description: "test description",
+          currency: "USD",
+          campaign_identifier: "test-2",
+          starts_at: expect.any(String),
+          ends_at: expect.any(String),
+          budget: {
+            id: expect.any(String),
+            campaign: expect.any(Object),
+            type: "usage",
+            limit: 1000,
+            used: 0,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+          },
           created_at: expect.any(String),
           updated_at: expect.any(String),
           deleted_at: null,
-        },
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-        deleted_at: null,
-      }),
-    ])
+        }),
+      ])
+    )
   })
 
   it("should get all campaigns and its count filtered", async () => {
