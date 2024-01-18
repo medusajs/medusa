@@ -21,7 +21,29 @@ import NoteService from "../../../../services/note"
  *       medusa.admin.notes.delete(noteId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteNote } from "medusa-react"
+ *
+ *       type Props = {
+ *         noteId: string
+ *       }
+ *
+ *       const Note = ({ noteId }: Props) => {
+ *         const deleteNote = useAdminDeleteNote(noteId)
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteNote.mutate()
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Note
  *   - lang: Shell
  *     label: cURL
  *     source: |

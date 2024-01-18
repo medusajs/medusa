@@ -54,7 +54,41 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminDeleteProductTypeTaxRates,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         taxRateId: string
+ *       }
+ *
+ *       const TaxRate = ({ taxRateId }: Props) => {
+ *         const removeProductTypes = useAdminDeleteProductTypeTaxRates(
+ *           taxRateId
+ *         )
+ *         // ...
+ *
+ *         const handleRemoveProductTypes = (
+ *           productTypeIds: string[]
+ *         ) => {
+ *           removeProductTypes.mutate({
+ *             product_types: productTypeIds,
+ *           }, {
+ *             onSuccess: ({ tax_rate }) => {
+ *               console.log(tax_rate.product_types)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default TaxRate
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -125,6 +159,7 @@ export default async (req, res) => {
 /**
  * @schema AdminDeleteTaxRatesTaxRateProductTypesReq
  * type: object
+ * description: "Product types to remove from the tax rates."
  * required:
  *   - product_types
  * properties:
@@ -139,11 +174,20 @@ export class AdminDeleteTaxRatesTaxRateProductTypesReq {
   product_types: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminDeleteTaxRatesTaxRateProductTypesParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

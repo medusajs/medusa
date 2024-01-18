@@ -6,7 +6,13 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { GiftCard } from "./GiftCard"
 import type { Region } from "./Region"
 
+/**
+ * The list of gift cards with pagination fields.
+ */
 export interface AdminGiftCardsListRes {
+  /**
+   * The list of gift cards.
+   */
   gift_cards: Array<
     Merge<
       SetRelation<GiftCard, "order" | "region">,

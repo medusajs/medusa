@@ -1,19 +1,16 @@
 import {
   Context,
-  CreateProductTagDTO,
   DAL,
   FindConfig,
   ProductTypes,
-  UpdateProductTagDTO,
   UpsertProductTagDTO,
 } from "@medusajs/types"
 import {
-  composeMessage,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  retrieveEntity,
+  composeMessage,
 } from "@medusajs/utils"
 import { ProductTag } from "@models"
 import { ProductTagRepository } from "@repositories"
@@ -27,60 +24,53 @@ type InjectedDependencies = {
 
 export default class ProductTagService<
   TEntity extends ProductTag = ProductTag
-> {
-  protected readonly productTagRepository_: DAL.RepositoryService
-
-  constructor({ productTagRepository }: InjectedDependencies) {
-    this.productTagRepository_ = productTagRepository
+> extends ModulesSdkUtils.abstractServiceFactory<
+  InjectedDependencies,
+  {
+    create: ProductTypes.CreateProductTagDTO
+    update: ProductTypes.UpdateProductTagDTO
   }
+>(ProductTag)<TEntity> {
+  protected readonly productTagRepository_: DAL.RepositoryService<TEntity>
 
-  @InjectManager("productTagRepository_")
-  async retrieve(
-    productTagId: string,
-    config: FindConfig<ProductTypes.ProductTagDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity> {
-    return (await retrieveEntity<ProductTag, ProductTypes.ProductTagDTO>({
-      id: productTagId,
-      entityName: ProductTag.name,
-      repository: this.productTagRepository_,
-      config,
-      sharedContext,
-    })) as TEntity
+  constructor(container: InjectedDependencies) {
+    super(container)
+    this.productTagRepository_ = container.productTagRepository
   }
-
   @InjectManager("productTagRepository_")
-  async list(
+  async list<TEntityMethod = ProductTypes.ProductTagDTO>(
     filters: ProductTypes.FilterableProductTagProps = {},
-    config: FindConfig<ProductTypes.ProductTagDTO> = {},
+    config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await this.productTagRepository_.find(
+    return await this.productTagRepository_.find(
       this.buildQueryForList(filters, config),
       sharedContext
-    )) as TEntity[]
+    )
   }
 
   @InjectManager("productTagRepository_")
-  async listAndCount(
+  async listAndCount<TEntityMethod = ProductTypes.ProductTagDTO>(
     filters: ProductTypes.FilterableProductTagProps = {},
-    config: FindConfig<ProductTypes.ProductTagDTO> = {},
+    config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
-    return (await this.productTagRepository_.findAndCount(
+    return await this.productTagRepository_.findAndCount(
       this.buildQueryForList(filters, config),
       sharedContext
-    )) as [TEntity[], number]
+    )
   }
 
-  private buildQueryForList(
+  private buildQueryForList<TEntityMethod = ProductTypes.ProductTagDTO>(
     filters: ProductTypes.FilterableProductTagProps = {},
-    config: FindConfig<ProductTypes.ProductTagDTO> = {}
-  ) {
-    const queryOptions = ModulesSdkUtils.buildQuery<ProductTag>(filters, config)
+    config: FindConfig<TEntityMethod> = {}
+  ): DAL.FindOptions<TEntity> {
+    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
 
     if (filters.value) {
-      queryOptions.where["value"] = { $ilike: filters.value }
+      queryOptions.where.value = {
+        $ilike: filters.value,
+      } as DAL.FindOptions<TEntity>["where"]["value"]
     }
 
     return queryOptions

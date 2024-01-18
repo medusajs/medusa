@@ -29,7 +29,31 @@ import { defaultAdminCollectionsRelations } from "."
  *       })
  *       .then(({ collection }) => {
  *         console.log(collection.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateCollection } from "medusa-react"
+ *
+ *       const CreateCollection = () => {
+ *         const createCollection = useAdminCreateCollection()
+ *         // ...
+ *
+ *         const handleCreate = (title: string) => {
+ *           createCollection.mutate({
+ *             title
+ *           }, {
+ *             onSuccess: ({ collection }) => {
+ *               console.log(collection.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -89,6 +113,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostCollectionsReq
  * type: object
+ * description: The product collection's details.
  * required:
  *   - title
  * properties:

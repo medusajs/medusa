@@ -10,7 +10,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/tax-rates/{id}/product-types/batch
  * operationId: "PostTaxRatesTaxRateProductTypes"
  * summary: "Add to Product Types"
- * description: "Associates a Tax Rate with a list of Product Types"
+ * description: "Add Product Types to a Tax Rate."
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
@@ -54,7 +54,39 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminCreateProductTypeTaxRates,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         taxRateId: string
+ *       }
+ *
+ *       const TaxRate = ({ taxRateId }: Props) => {
+ *         const addProductTypes = useAdminCreateProductTypeTaxRates(
+ *           taxRateId
+ *         )
+ *         // ...
+ *
+ *         const handleAddProductTypes = (productTypeIds: string[]) => {
+ *           addProductTypes.mutate({
+ *             product_types: productTypeIds,
+ *           }, {
+ *             onSuccess: ({ tax_rate }) => {
+ *               console.log(tax_rate.product_types)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default TaxRate
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -125,6 +157,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostTaxRatesTaxRateProductTypesReq
  * type: object
+ * description: "The product types to add to the tax rate."
  * required:
  *   - product_types
  * properties:
@@ -139,11 +172,20 @@ export class AdminPostTaxRatesTaxRateProductTypesReq {
   product_types: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminPostTaxRatesTaxRateProductTypesParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

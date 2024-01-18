@@ -54,7 +54,39 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteShippingTaxRates } from "medusa-react"
+ *
+ *       type Props = {
+ *         taxRateId: string
+ *       }
+ *
+ *       const TaxRate = ({ taxRateId }: Props) => {
+ *         const removeShippingOptions = useAdminDeleteShippingTaxRates(
+ *           taxRateId
+ *         )
+ *         // ...
+ *
+ *         const handleRemoveShippingOptions = (
+ *           shippingOptionIds: string[]
+ *         ) => {
+ *           removeShippingOptions.mutate({
+ *             shipping_options: shippingOptionIds,
+ *           }, {
+ *             onSuccess: ({ tax_rate }) => {
+ *               console.log(tax_rate.shipping_options)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default TaxRate
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -125,6 +157,7 @@ export default async (req, res) => {
 /**
  * @schema AdminDeleteTaxRatesTaxRateShippingOptionsReq
  * type: object
+ * description: "The details of the shipping options to remove their associate with the tax rate."
  * required:
  *   - shipping_options
  * properties:
@@ -139,11 +172,20 @@ export class AdminDeleteTaxRatesTaxRateShippingOptionsReq {
   shipping_options: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminDeleteTaxRatesTaxRateShippingOptionsParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

@@ -6,7 +6,7 @@ import { MarkdownTheme } from "../../theme"
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
     "commentTag",
-    function (tag: CommentTag, commentLevel = 4, parent = null) {
+    function (tag: CommentTag, parent = null) {
       const { showCommentsAsHeader, showCommentsAsDetails } =
         theme.getFormattingOptionsForLocation()
       if (tag.tag === "@schema") {
@@ -19,8 +19,7 @@ export default function (theme: MarkdownTheme) {
 
       if (showCommentsAsHeader) {
         return `${Handlebars.helpers.titleLevel.call(
-          parent,
-          commentLevel
+          parent
         )} ${tagTitle}\n\n${tagContent}`
       } else if (showCommentsAsDetails) {
         return `<details>\n<summary>\n${tagTitle}\n</summary>\n\n${tagContent}\n\n</details>`

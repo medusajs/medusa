@@ -1,3 +1,7 @@
+import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
+import { IModuleService } from "../modules-sdk"
+import { Context } from "../shared-context"
 import {
   CreateProductCategoryDTO,
   CreateProductCollectionDTO,
@@ -5,6 +9,7 @@ import {
   CreateProductOptionDTO,
   CreateProductTagDTO,
   CreateProductTypeDTO,
+  CreateProductVariantDTO,
   FilterableProductCategoryProps,
   FilterableProductCollectionProps,
   FilterableProductOptionProps,
@@ -25,12 +30,8 @@ import {
   UpdateProductOptionDTO,
   UpdateProductTagDTO,
   UpdateProductTypeDTO,
+  UpdateProductVariantDTO,
 } from "./common"
-
-import { FindConfig } from "../common"
-import { RestoreReturn, SoftDeleteReturn } from "../dal"
-import { IModuleService } from "../modules-sdk"
-import { Context } from "../shared-context"
 
 export interface IProductModuleService extends IModuleService {
   /**
@@ -64,20 +65,17 @@ export interface IProductModuleService extends IModuleService {
    *
    * ```ts
    * import {
-   *   initialize as initializePricingModule,
-   * } from "@medusajs/pricing"
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
    *
-   * async function retrievePriceSet (priceSetId: string) {
-   *   const pricingService = await initializePricingModule()
+   * async function retrieveProduct (id: string) {
+   *   const productModule = await initializeProductModule()
    *
-   *   const priceSet = await pricingService.retrieve(
-   *     priceSetId,
-   *     {
-   *       relations: ["money_amounts"]
-   *     }
-   *   )
+   *   const product = await productModule.retrieve(id, {
+   *     relations: ["categories"]
+   *   })
    *
-   *   // do something with the price set or return it
+   *   // do something with the product or return it
    * }
    * ```
    */
@@ -1488,6 +1486,85 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<ProductVariantDTO[]>
 
   /**
+   * This method is used to update a product's variants.
+   *
+   * @param {UpdateProductVariantDTO[]} data - The product variants to update.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductVariantDTO[]>} The updated product variants's details.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   * import {
+   *   UpdateProductVariantDTO
+   * } from "@medusajs/product/dist/types/services/product-variant"
+   *
+   * async function updateProductVariants (items: UpdateProductVariantDTO[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const productVariants = await productModule.updateVariants(items)
+   *
+   *   // do something with the product variants or return them
+   * }
+   */
+  updateVariants(
+    data: UpdateProductVariantDTO[],
+    sharedContext?: Context
+  ): Promise<ProductVariantDTO[]>
+
+  /**
+   * This method is used to create variants for a product.
+   *
+   * @param {CreateProductVariantDTO[]} data - The product variants to create.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductVariantDTO[]>} The created product variants' details.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function createProductVariants (items: {
+   *   product_id: string,
+   *   title: string
+   * }[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   const productVariants = await productModule.createVariants(items)
+   *
+   *   // do something with the product variants or return them
+   * }
+   */
+  createVariants(
+    data: CreateProductVariantDTO[],
+    sharedContext?: Context
+  ): Promise<ProductVariantDTO[]>
+
+  /**
+   * This method is used to delete ProductVariant. This method will completely remove the ProductVariant and they can no longer be accessed or retrieved.
+   *
+   * @param {string[]} productVariantIds - The IDs of the ProductVariant to be deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the ProductVariant are successfully deleted.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function deleteProducts (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   await productModule.deleteVariants(ids)
+   * }
+   */
+  deleteVariants(
+    productVariantIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
    * This method is used to retrieve a paginated list of product variants along with the total count of available product variants satisfying the provided filters.
    *
    * @param {FilterableProductVariantProps} filters - The filters applied on the retrieved product variants.
@@ -2400,7 +2477,7 @@ export interface IProductModuleService extends IModuleService {
    *
    * @param {string[]} productIds - The IDs of the products to restore.
    * @param {RestoreReturn<TReturnableLinkableKeys>} config -
-   * Configurations determining which relations to restore along with the each of the products. You can pass to its `returnLinkableKeys`
+   * Configurations determining which relations to restore along with each of the products. You can pass to its `returnLinkableKeys`
    * property any of the product's relation attribute names, such as `variant_id`.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<Record<string, string[]> | void>}
@@ -2429,6 +2506,32 @@ export interface IProductModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
+  /**
+   * This method is used to restore product varaints that were soft deleted. Product variants are soft deleted when they're not
+   * provided in a product's details passed to the {@link update} method.
+   *
+   * @param {string[]} variantIds - The IDs of the variants to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to restore along with each of the product variants. You can pass to its `returnLinkableKeys`
+   * property any of the product variant's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the product variant entity's relations
+   * and its value is an array of strings, each being the ID of the record associated with the product variant through this relation.
+   *
+   * If there are no related records that were restored, the promise resolved to `void`.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function restoreProductVariants (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   await productModule.restoreVariants(ids)
+   * }
+   */
   restoreVariants<TReturnableLinkableKeys extends string = string>(
     variantIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,

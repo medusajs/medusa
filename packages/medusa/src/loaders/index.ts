@@ -8,11 +8,12 @@ import { Express, NextFunction, Request, Response } from "express"
 import databaseLoader, { dataSource } from "./database"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, isString } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { createMedusaContainer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
+import path from "path"
 import requestIp from "request-ip"
 import { Connection } from "typeorm"
 import { MedusaContainer } from "../types/global"
@@ -21,6 +22,7 @@ import loadConfig from "./config"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
+import { RoutesLoader } from "./helpers/routing"
 import Logger from "./logger"
 import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
 import modelsLoader from "./models"
@@ -40,23 +42,34 @@ type Options = {
 }
 
 async function loadLegacyModulesEntities(configModules, container) {
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
   for (const [moduleName, moduleConfig] of Object.entries(configModules)) {
     const definition = ModulesDefinition[moduleName]
 
-    if (!definition.isLegacy) {
+    if (!definition?.isLegacy) {
       continue
     }
 
-    if (
-      (moduleConfig as InternalModuleDeclaration).resources ===
-        MODULE_RESOURCE_TYPE.SHARED ||
-      (definition.defaultModuleDeclaration as InternalModuleDeclaration)
-        .resources === MODULE_RESOURCE_TYPE.SHARED
-    ) {
-      const module = await import(
-        (moduleConfig as InternalModuleDeclaration).resolve ??
-          (definition.defaultPackage as string)
-      )
+    let modulePath = isString(moduleConfig)
+      ? moduleConfig
+      : (moduleConfig as InternalModuleDeclaration).resolve ??
+        (definition.defaultPackage as string)
+
+    const resources = isString(moduleConfig)
+      ? (definition.defaultModuleDeclaration as InternalModuleDeclaration)
+          .resources
+      : (moduleConfig as InternalModuleDeclaration).resources ??
+        (definition.defaultModuleDeclaration as InternalModuleDeclaration)
+          .resources
+
+    if (resources === MODULE_RESOURCE_TYPE.SHARED) {
+      if (!modulePath) {
+        logger.warn(`Unable to load module entities for ${moduleName}`)
+        continue
+      }
+
+      const module = await import(modulePath)
 
       if (module.default?.models) {
         module.default.models.map((model) =>
@@ -174,7 +187,7 @@ export default async ({
   const expActivity = Logger.activity(`Initializing express${EOL}`)
   track("EXPRESS_INIT_STARTED")
   await expressLoader({ app: expressApp, configModule })
-  await passportLoader({ app: expressApp, container, configModule })
+  await passportLoader({ app: expressApp, configModule })
   const exAct = Logger.success(expActivity, "Express intialized") || {}
   track("EXPRESS_INIT_COMPLETED", { duration: exAct.duration })
 
@@ -184,6 +197,22 @@ export default async ({
     ;(req as any).scope = container.createScope()
     next()
   })
+
+  // TODO: Figure out why this is causing issues with test when placed inside ./api.ts
+  // Adding this here temporarily
+  // Test: (packages/medusa/src/api/routes/admin/currencies/update-currency.ts)
+  try {
+    /**
+     * Register the Medusa CORE API routes using the file based routing.
+     */
+    await new RoutesLoader({
+      app: expressApp,
+      rootDir: path.join(__dirname, "../api-v2"),
+      configModule,
+    }).load()
+  } catch (err) {
+    throw Error("An error occurred while registering Medusa Core API Routes")
+  }
 
   const pluginsActivity = Logger.activity(`Initializing plugins${EOL}`)
   track("PLUGINS_INIT_STARTED")

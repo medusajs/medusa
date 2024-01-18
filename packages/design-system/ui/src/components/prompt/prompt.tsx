@@ -7,8 +7,51 @@ import { Button } from "@/components/button"
 import { Heading } from "@/components/heading"
 import { clx } from "@/utils/clx"
 
-const Root = Primitives.AlertDialog
-Root.displayName = "Prompt.Root"
+type PromptVariant = "danger" | "confirmation"
+
+const PromptContext = React.createContext<{ variant: PromptVariant }>({
+  variant: "danger",
+})
+
+const usePromptContext = () => {
+  const context = React.useContext(PromptContext)
+  if (!context) {
+    throw new Error("usePromptContext must be used within a PromptProvider")
+  }
+  return context
+}
+
+type PromptProviderProps = React.PropsWithChildren<{
+  variant: PromptVariant
+}>
+
+const PromptProvider = ({ variant, children }: PromptProviderProps) => {
+  return (
+    <PromptContext.Provider value={{ variant }}>
+      {children}
+    </PromptContext.Provider>
+  )
+}
+
+/**
+ * This component is based on the [Radix UI Alert Dialog](https://www.radix-ui.com/primitives/docs/components/alert-dialog) primitives.
+ */
+const Root = ({
+  /**
+   * The variant of the prompt.
+   */
+  variant = "danger",
+  ...props
+}: React.ComponentPropsWithoutRef<typeof Primitives.Root> & {
+  variant?: PromptVariant
+}) => {
+  return (
+    <PromptProvider variant={variant}>
+      <Primitives.Root {...props} />
+    </PromptProvider>
+  )
+}
+Root.displayName = "Prompt"
 
 const Trigger = Primitives.Trigger
 Trigger.displayName = "Prompt.Trigger"
@@ -27,7 +70,7 @@ const Overlay = React.forwardRef<
       ref={ref}
       className={clx(
         "bg-ui-bg-overlay fixed inset-0",
-        // "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", // Re-enable when Admin UI has been cleaned up
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
         className
       )}
       {...props}
@@ -60,8 +103,8 @@ const Content = React.forwardRef<
       <Primitives.Content
         ref={ref}
         className={clx(
-          "bg-ui-bg-base shadow-elevation-flyout fixed left-[50%] top-[50%] flex w-full max-w-[400px] translate-x-[-50%] translate-y-[-50%] flex-col rounded-lg border focus:outline-none",
-          // "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] duration-200",  // Re-enable when Admin UI has been cleaned up
+          "bg-ui-bg-base shadow-elevation-flyout fixed left-[50%] top-[50%] flex w-full max-w-[400px] translate-x-[-50%] translate-y-[-50%] flex-col rounded-lg border focus-visible:outline-none",
+          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] duration-200",
           className
         )}
         {...props}
@@ -89,9 +132,15 @@ const Action = React.forwardRef<
   React.ElementRef<typeof Primitives.Action>,
   Omit<React.ComponentPropsWithoutRef<typeof Primitives.Action>, "asChild">
 >(({ className, children, type, ...props }, ref) => {
+  const { variant } = usePromptContext()
+
   return (
     <Primitives.Action ref={ref} className={className} {...props} asChild>
-      <Button type={type} variant="danger">
+      <Button
+        size="small"
+        type={type}
+        variant={variant === "danger" ? "danger" : "primary"}
+      >
         {children}
       </Button>
     </Primitives.Action>
@@ -105,12 +154,17 @@ const Cancel = React.forwardRef<
 >(({ className, children, ...props }, ref) => {
   return (
     <Primitives.Cancel ref={ref} className={clx(className)} {...props} asChild>
-      <Button variant="secondary">{children}</Button>
+      <Button size="small" variant="secondary">
+        {children}
+      </Button>
     </Primitives.Cancel>
   )
 })
 Cancel.displayName = "Prompt.Cancel"
 
+/**
+ * This component is based on the `div` element and supports all of its props
+ */
 const Header = ({
   className,
   ...props
@@ -122,7 +176,11 @@ const Header = ({
     />
   )
 }
+Header.displayName = "Prompt.Header"
 
+/**
+ * This component is based on the `div` element and supports all of its props
+ */
 const Footer = ({
   className,
   ...props
@@ -134,6 +192,7 @@ const Footer = ({
     />
   )
 }
+Footer.displayName = "Prompt.Footer"
 
 const Prompt = Object.assign(Root, {
   Trigger,

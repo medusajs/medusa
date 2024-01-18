@@ -1,14 +1,7 @@
-import { Context, DAL, FindConfig, PricingTypes } from "@medusajs/types"
-import {
-  doNotForceTransaction,
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-  retrieveEntity,
-} from "@medusajs/utils"
-import { PriceSet, PriceSetMoneyAmount } from "@models"
-import { PriceSetMoneyAmountRepository } from "@repositories"
+import { Context, DAL, FindConfig } from "@medusajs/types"
+import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
+import { PriceSetMoneyAmount } from "@models"
+import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   priceSetMoneyAmountRepository: DAL.RepositoryService
@@ -16,95 +9,51 @@ type InjectedDependencies = {
 
 export default class PriceSetMoneyAmountService<
   TEntity extends PriceSetMoneyAmount = PriceSetMoneyAmount
-> {
-  protected readonly priceSetMoneyAmountRepository_: DAL.RepositoryService
+> extends ModulesSdkUtils.abstractServiceFactory<
+  InjectedDependencies,
+  {
+    create: ServiceTypes.CreatePriceSetMoneyAmountDTO
+    update: ServiceTypes.UpdatePriceSetMoneyAmountDTO
+  }
+>(PriceSetMoneyAmount)<TEntity> {
+  protected readonly priceSetMoneyAmountRepository_: DAL.RepositoryService<TEntity>
 
   constructor({ priceSetMoneyAmountRepository }: InjectedDependencies) {
+    // @ts-ignore
+    super(...arguments)
     this.priceSetMoneyAmountRepository_ = priceSetMoneyAmountRepository
   }
 
   @InjectManager("priceSetMoneyAmountRepository_")
-  async retrieve(
-    priceSetId: string,
-    config: FindConfig<PricingTypes.PriceSetRuleTypeDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity> {
-    return (await retrieveEntity<
-      PriceSetMoneyAmount,
-      PricingTypes.PriceSetRuleTypeDTO
-    >({
-      id: priceSetId,
-      entityName: PriceSet.name,
-      repository: this.priceSetMoneyAmountRepository_,
-      config,
-      sharedContext,
-    })) as TEntity
-  }
-
-  @InjectManager("priceSetMoneyAmountRepository_")
-  async list(
-    filters: PricingTypes.FilterablePriceSetRuleTypeProps = {},
-    config: FindConfig<PricingTypes.PriceSetDTO> = {},
+  async list<TEntityMethod = ServiceTypes.PriceSetMoneyAmountDTO>(
+    filters: ServiceTypes.FilterablePriceSetMoneyAmountProps = {},
+    config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await this.priceSetMoneyAmountRepository_.find(
+    return await this.priceSetMoneyAmountRepository_.find(
       this.buildQueryForList(filters, config),
       sharedContext
-    )) as TEntity[]
+    )
   }
 
   @InjectManager("priceSetMoneyAmountRepository_")
-  async listAndCount(
-    filters: PricingTypes.FilterablePriceSetRuleTypeProps = {},
-    config: FindConfig<PricingTypes.PriceSetDTO> = {},
+  async listAndCount<TEntityMethod = ServiceTypes.PriceSetMoneyAmountDTO>(
+    filters: ServiceTypes.FilterablePriceSetMoneyAmountProps = {},
+    config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
-    return (await this.priceSetMoneyAmountRepository_.findAndCount(
+    return await this.priceSetMoneyAmountRepository_.findAndCount(
       this.buildQueryForList(filters, config),
       sharedContext
-    )) as [TEntity[], number]
+    )
   }
 
-  private buildQueryForList(
-    filters: PricingTypes.FilterablePriceSetRuleTypeProps = {},
-    config: FindConfig<PricingTypes.PriceSetDTO> = {}
+  private buildQueryForList<
+    TEntityMethod = ServiceTypes.PriceSetMoneyAmountDTO
+  >(
+    filters: ServiceTypes.FilterablePriceSetMoneyAmountProps = {},
+    config: FindConfig<TEntityMethod> = {}
   ) {
-    const queryOptions = ModulesSdkUtils.buildQuery<PriceSet>(filters, config)
-
-    if (filters.id) {
-      queryOptions.where.id = { $in: filters.id }
-    }
-
-    return queryOptions
-  }
-
-  @InjectTransactionManager("priceSetMoneyAmountRepository_")
-  async create(
-    data: PricingTypes.CreatePriceSetMoneyAmountDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return (await (
-      this
-        .priceSetMoneyAmountRepository_ as unknown as PriceSetMoneyAmountRepository
-    ).create(data, sharedContext)) as TEntity[]
-  }
-
-  @InjectTransactionManager("priceSetMoneyAmountRepository_")
-  async update(
-    data: PricingTypes.UpdatePriceSetMoneyAmountDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return (await (
-      this
-        .priceSetMoneyAmountRepository_ as unknown as PriceSetMoneyAmountRepository
-    ).update(data, sharedContext)) as TEntity[]
-  }
-
-  @InjectTransactionManager("priceSetMoneyAmountRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.priceSetMoneyAmountRepository_.delete(ids, sharedContext)
+    return ModulesSdkUtils.buildQuery<TEntity>(filters, config)
   }
 }

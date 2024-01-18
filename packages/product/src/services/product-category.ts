@@ -1,12 +1,12 @@
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
-  composeMessage,
   InjectManager,
   InjectTransactionManager,
-  isDefined,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  composeMessage,
+  isDefined,
 } from "@medusajs/utils"
 import { ProductCategory } from "@models"
 import { ProductCategoryRepository } from "@repositories"

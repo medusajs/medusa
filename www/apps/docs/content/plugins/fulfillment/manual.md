@@ -30,7 +30,7 @@ npm install medusa-fulfillment-manual
 
 Finally, add the plugin to the `plugins` array in `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -53,4 +53,4 @@ Then, you must enable the Manual Fulfillment Provider in at least one region to 
 
 After enabling the provider, you must add shipping options for that provider. You can also do that using either the [Medusa Admin](../../user-guide/regions/shipping-options.mdx) or the [Admin REST APIs](../../modules/regions-and-currencies/admin/manage-regions.mdx#add-a-shipping-option-to-a-region).
 
-Finally, try to place an order using either a [storefront](../../starters/nextjs-medusa-starter.mdx) or the [Store APIs](https://docs.medusajs.com/api/store). You should be able to use the shipping options you created for the fullfilment provider.
+Finally, try to place an order using either a [storefront](../../starters/nextjs-medusa-starter.mdx) or the [Store APIs](https://docs.medusajs.com/api/store). You should be able to use the shipping options you created for the fulfillment provider.

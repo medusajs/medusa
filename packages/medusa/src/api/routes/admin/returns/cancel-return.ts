@@ -20,8 +20,36 @@ import { defaultReturnCancelFields, defaultReturnCancelRelations } from "."
  *       // must be previously logged in or use api token
  *       medusa.admin.returns.cancel(returnId)
  *       .then(({ order }) => {
- *         console.log(order.id);
- *       });
+ *         console.log(order.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCancelReturn } from "medusa-react"
+ *
+ *       type Props = {
+ *         returnId: string
+ *       }
+ *
+ *       const Return = ({ returnId }: Props) => {
+ *         const cancelReturn = useAdminCancelReturn(
+ *           returnId
+ *         )
+ *         // ...
+ *
+ *         const handleCancel = () => {
+ *           cancelReturn.mutate(void 0, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.returns)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Return
  *   - lang: Shell
  *     label: cURL
  *     source: |

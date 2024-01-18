@@ -72,7 +72,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: [],
+  ignorePatterns: ["packages/admin-next/dashboard/**/dist"],
   overrides: [
     {
       files: ["*.ts"],
@@ -90,15 +90,15 @@ module.exports = {
           "./packages/event-bus-redis/tsconfig.spec.json",
           "./packages/medusa-plugin-meilisearch/tsconfig.spec.json",
           "./packages/medusa-plugin-algolia/tsconfig.spec.json",
-          "./packages/admin-ui/tsconfig.json",
           "./packages/inventory/tsconfig.spec.json",
           "./packages/stock-location/tsconfig.spec.json",
           "./packages/cache-redis/tsconfig.spec.json",
           "./packages/cache-inmemory/tsconfig.spec.json",
-          "./packages/admin-ui/tsconfig.json",
           "./packages/create-medusa-app/tsconfig.json",
           "./packages/product/tsconfig.json",
-          "./packages/search/tsconfig.json",
+          "./packages/orchestration/tsconfig.json",
+          "./packages/workflows-sdk/tsconfig.spec.json",
+          "./packages/core-flows/tsconfig.spec.json",
         ],
       },
       rules: {
@@ -221,6 +221,26 @@ module.exports = {
             args: "after-used",
             argsIgnorePattern: "^_",
           },
+        ],
+      },
+    },
+    {
+      files: ["packages/admin-next/dashboard/src/**/*.{ts,tsx}"],
+      env: { browser: true, es2020: true, node: true },
+      extends: [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react-hooks/recommended",
+      ],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: "tsconfig.json",
+      },
+      plugins: ["react-refresh"],
+      rules: {
+        "react-refresh/only-export-components": [
+          "warn",
+          { allowConstantExport: true },
         ],
       },
     },

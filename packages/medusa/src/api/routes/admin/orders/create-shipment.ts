@@ -16,7 +16,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/shipment
  * operationId: "PostOrdersOrderShipment"
  * summary: "Ship a Fulfillment"
- * description: "Mark a fulfillment as shipped. This changes the order's fulfillment status to either `shipped` or `partially_shipped`, depending on
+ * description: "Create a shipment and mark a fulfillment as shipped. This changes the order's fulfillment status to either `partially_shipped` or `shipped`, depending on
  *  whether all the items were shipped."
  * x-authenticated: true
  * externalDocs:
@@ -46,7 +46,39 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateShipment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const createShipment = useAdminCreateShipment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           fulfillmentId: string
+ *         ) => {
+ *           createShipment.mutate({
+ *             fulfillment_id: fulfillmentId,
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.fulfillment_status)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -116,6 +148,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostOrdersOrderShipmentReq
  * type: object
+ * description: "The details of the shipment to create."
  * required:
  *   - fulfillment_id
  * properties:

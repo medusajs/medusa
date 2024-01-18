@@ -4,7 +4,7 @@
   import MagnifyingGlassMini from "../magnifying-glass-mini"
 
   describe("MagnifyingGlassMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<MagnifyingGlassMini data-testid="icon" />)
 
 

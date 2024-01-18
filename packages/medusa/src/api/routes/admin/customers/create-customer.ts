@@ -8,7 +8,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/customers
  * operationId: "PostCustomers"
  * summary: "Create a Customer"
- * description: "Allow admins to create a customer."
+ * description: "Create a customer as an admin."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -32,7 +32,36 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateCustomer } from "medusa-react"
+ *
+ *       type CustomerData = {
+ *         first_name: string
+ *         last_name: string
+ *         email: string
+ *         password: string
+ *       }
+ *
+ *       const CreateCustomer = () => {
+ *         const createCustomer = useAdminCreateCustomer()
+ *         // ...
+ *
+ *         const handleCreate = (customerData: CustomerData) => {
+ *           createCustomer.mutate(customerData, {
+ *             onSuccess: ({ customer }) => {
+ *               console.log(customer.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateCustomer
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -87,6 +116,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostCustomersReq
  * type: object
+ * description: "The details of the customer to create."
  * required:
  *   - email
  *   - first_name

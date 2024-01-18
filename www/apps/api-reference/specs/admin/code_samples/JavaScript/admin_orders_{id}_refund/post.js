@@ -7,4 +7,4 @@ medusa.admin.orders.refundPayment(orderId, {
 })
 .then(({ order }) => {
   console.log(order.id);
-});
+})

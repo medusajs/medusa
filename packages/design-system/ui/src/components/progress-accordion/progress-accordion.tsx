@@ -13,6 +13,9 @@ import { ProgressStatus } from "@/types"
 import { clx } from "@/utils/clx"
 import { IconButton } from "../icon-button"
 
+/**
+ * This component is based on the [Radix UI Accordion](https://radix-ui.com/primitives/docs/components/accordion) primitves.
+ */
 const Root = (props: React.ComponentPropsWithoutRef<typeof Primitves.Root>) => {
   return <Primitves.Root {...props} />
 }
@@ -44,7 +47,13 @@ interface StatusIndicatorProps extends React.ComponentPropsWithoutRef<"span"> {
   status: ProgressStatus
 }
 
-const ProgressIndicator = ({ status, ...props }: StatusIndicatorProps) => {
+const ProgressIndicator = ({
+  /**
+   * The current status.
+   */
+  status,
+  ...props
+}: StatusIndicatorProps) => {
   const Icon = React.useMemo(() => {
     switch (status) {
       case "not-started":
@@ -67,30 +76,44 @@ const ProgressIndicator = ({ status, ...props }: StatusIndicatorProps) => {
     </span>
   )
 }
+ProgressIndicator.displayName = "ProgressAccordion.ProgressIndicator"
 
 const Header = React.forwardRef<
   React.ElementRef<typeof Primitves.Header>,
   HeaderProps
->(({ className, status = "not-started", children, ...props }, ref) => {
-  return (
-    <Primitves.Header
-      ref={ref}
-      className={clx(
-        "h3-core text-ui-fg-base group flex w-full flex-1 items-center gap-4 px-8",
-        className
-      )}
-      {...props}
-    >
-      <ProgressIndicator status={status} />
-      {children}
-      <Primitves.Trigger asChild className="ml-auto">
-        <IconButton variant="transparent">
-          <Plus className="transform transition-transform group-data-[state=open]:rotate-45" />
-        </IconButton>
-      </Primitves.Trigger>
-    </Primitves.Header>
-  )
-})
+>(
+  (
+    {
+      className,
+      /**
+       * The current status.
+       */
+      status = "not-started",
+      children,
+      ...props
+    }: HeaderProps,
+    ref
+  ) => {
+    return (
+      <Primitves.Header
+        ref={ref}
+        className={clx(
+          "h3-core text-ui-fg-base group flex w-full flex-1 items-center gap-4 px-6",
+          className
+        )}
+        {...props}
+      >
+        <ProgressIndicator status={status} />
+        {children}
+        <Primitves.Trigger asChild className="ml-auto">
+          <IconButton variant="transparent">
+            <Plus className="transform transition-transform group-data-[state=open]:rotate-45" />
+          </IconButton>
+        </Primitves.Trigger>
+      </Primitves.Header>
+    )
+  }
+)
 Header.displayName = "ProgressAccordion.Header"
 
 const Content = React.forwardRef<
@@ -102,7 +125,7 @@ const Content = React.forwardRef<
       ref={ref}
       className={clx(
         "overflow-hidden",
-        "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down pl-24 pr-8",
+        "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down pl-[88px] pr-6",
         className
       )}
       {...props}

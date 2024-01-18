@@ -1,4 +1,5 @@
 type: object
+description: The details of the reservation to create.
 required:
   - location_id
   - inventory_item_id
@@ -16,6 +17,9 @@ properties:
   quantity:
     description: The quantity to reserve.
     type: number
+  description:
+    description: The reservation's description.
+    type: string
   metadata:
     description: An optional set of key-value pairs with additional information.
     type: object

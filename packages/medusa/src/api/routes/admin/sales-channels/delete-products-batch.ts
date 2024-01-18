@@ -36,8 +36,44 @@ import { Type } from "class-transformer"
  *         ]
  *       })
  *       .then(({ sales_channel }) => {
- *         console.log(sales_channel.id);
- *       });
+ *         console.log(sales_channel.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminDeleteProductsFromSalesChannel,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         salesChannelId: string
+ *       }
+ *
+ *       const SalesChannel = ({ salesChannelId }: Props) => {
+ *         const deleteProducts = useAdminDeleteProductsFromSalesChannel(
+ *           salesChannelId
+ *         )
+ *         // ...
+ *
+ *         const handleDeleteProducts = (productId: string) => {
+ *           deleteProducts.mutate({
+ *             product_ids: [
+ *               {
+ *                 id: productId,
+ *               },
+ *             ],
+ *           }, {
+ *             onSuccess: ({ sales_channel }) => {
+ *               console.log(sales_channel.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default SalesChannel
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -103,11 +139,12 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminDeleteSalesChannelsChannelProductsBatchReq
  * type: object
+ * description: "The details of the products to delete from the sales channel."
  * required:
  *   - product_ids
  * properties:
  *   product_ids:
- *     description: The IDs of the products to remove from the Sales Channel.
+ *     description: The IDs of the products to remove from the sales channel.
  *     type: array
  *     items:
  *       type: object

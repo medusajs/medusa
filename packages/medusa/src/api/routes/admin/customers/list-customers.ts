@@ -37,7 +37,34 @@ import customerController from "../../../../controllers/customers"
  *       medusa.admin.customers.list()
  *       .then(({ customers, limit, offset, count }) => {
  *         console.log(customers.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCustomers } from "medusa-react"
+ *
+ *       const Customers = () => {
+ *         const { customers, isLoading } = useAdminCustomers()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {customers && !customers.length && (
+ *               <span>No customers</span>
+ *             )}
+ *             {customers && customers.length > 0 && (
+ *               <ul>
+ *                 {customers.map((customer) => (
+ *                   <li key={customer.id}>{customer.first_name}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Customers
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -79,18 +106,32 @@ export default async (req, res) => {
   res.json(result)
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved customers.
+ */
 export class AdminGetCustomersParams extends AdminListCustomerSelector {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string

@@ -6,4 +6,4 @@ medusa.auth.getToken({
 })
 .then(({ access_token }) => {
   console.log(access_token);
-});
+})

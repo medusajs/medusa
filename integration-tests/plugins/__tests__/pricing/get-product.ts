@@ -8,6 +8,7 @@ import path from "path"
 import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
 import { getContainer } from "../../../environment-helpers/use-container"
 import adminSeeder from "../../../helpers/admin-seeder"
+import { createDefaultRuleTypes } from "../../helpers/create-default-rule-types"
 
 jest.setTimeout(5000000)
 
@@ -24,8 +25,7 @@ const adminHeaders = {
 }
 
 const env = {
-  MEDUSA_FF_ISOLATE_PRICING_DOMAIN: true,
-  MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
+  MEDUSA_FF_MEDUSA_V2: true,
 }
 
 describe("Link Modules", () => {
@@ -47,6 +47,7 @@ describe("Link Modules", () => {
   })
 
   beforeEach(async () => {
+    await createDefaultRuleTypes(medusaContainer)
     await adminSeeder(dbConnection)
     await simpleRegionFactory(dbConnection, {
       id: "region-1",

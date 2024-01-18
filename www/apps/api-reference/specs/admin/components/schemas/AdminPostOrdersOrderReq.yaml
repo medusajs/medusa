@@ -1,7 +1,8 @@
 type: object
+description: The details to update of the order.
 properties:
   email:
-    description: the email associated with the order
+    description: The email associated with the order
     type: string
   billing_address:
     description: The order's billing address

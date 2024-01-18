@@ -8,16 +8,23 @@ export interface IPriceSelectionStrategy extends ITransactionBaseService {
   /**
    * Calculate the original and discount price for a given variant in a set of
    * circumstances described in the context.
-   * @param variantId The variant id of the variant for which to retrieve prices
-   * @param context Details relevant to determine the correct pricing of the variant
    * @return pricing details in an object containing the calculated lowest price,
    * the default price an all valid prices for the given variant
    */
   calculateVariantPrice(
     data: {
+      /**
+       * The variant id of the variant for which to retrieve prices
+       */
       variantId: string
+      /**
+       * The variant's quantity.
+       */
       quantity?: number
     }[],
+    /**
+     * Details relevant to determine the correct pricing of the variant
+     */
     context: PriceSelectionContext
   ): Promise<Map<string, PriceSelectionResult>>
 
@@ -32,6 +39,12 @@ export abstract class AbstractPriceSelectionStrategy
   extends TransactionBaseService
   implements IPriceSelectionStrategy
 {
+  static _isPriceSelectionStrategy = true
+
+  static isPriceSelectionStrategy(object): boolean {
+    return object?.constructor?._isPriceSelectionStrategy
+  }
+
   public abstract calculateVariantPrice(
     data: {
       variantId: string
@@ -44,16 +57,6 @@ export abstract class AbstractPriceSelectionStrategy
   public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {
     return void 0
   }
-}
-
-export function isPriceSelectionStrategy(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  object: any
-): object is IPriceSelectionStrategy {
-  return (
-    typeof object.calculateVariantPrice === "function" &&
-    typeof object.withTransaction === "function"
-  )
 }
 
 export type PriceSelectionContext = {

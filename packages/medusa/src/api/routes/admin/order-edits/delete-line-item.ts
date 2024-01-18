@@ -26,9 +26,41 @@ import {
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdits.removeLineItem(orderEditId, lineItemId)
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
- *         })
+ *       .then(({ order_edit }) => {
+ *         console.log(order_edit.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminOrderEditDeleteLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *         itemId: string
+ *       }
+ *
+ *       const OrderEditLineItem = ({
+ *         orderEditId,
+ *         itemId
+ *       }: Props) => {
+ *         const removeLineItem = useAdminOrderEditDeleteLineItem(
+ *           orderEditId,
+ *           itemId
+ *         )
+ *
+ *         const handleRemoveLineItem = () => {
+ *           removeLineItem.mutate(void 0, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(order_edit.changes)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEditLineItem
  *   - lang: Shell
  *     label: cURL
  *     source: |

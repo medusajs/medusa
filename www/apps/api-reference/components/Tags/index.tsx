@@ -3,13 +3,12 @@
 import type { OpenAPIV3 } from "openapi-types"
 import { useEffect, useState } from "react"
 import useSWR from "swr"
-import fetcher from "@/utils/swr-fetcher"
 import { useBaseSpecs } from "@/providers/base-specs"
 import dynamic from "next/dynamic"
 import type { TagSectionProps } from "./Section"
 import { useArea } from "@/providers/area"
 import getLinkWithBasePath from "@/utils/get-link-with-base-path"
-import { SidebarItemSections, useSidebar } from "docs-ui"
+import { SidebarItemSections, swrFetcher, useSidebar } from "docs-ui"
 import getSectionId from "@/utils/get-section-id"
 import { ExpandedDocument } from "@/types/openapi"
 import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
@@ -38,7 +37,7 @@ const Tags = () => {
     loadData && !baseSpecs
       ? getLinkWithBasePath(`/base-specs?area=${area}&expand=${expand}`)
       : null,
-    fetcher,
+    swrFetcher,
     {
       errorRetryInterval: 2000,
     }

@@ -12,4 +12,4 @@ medusa.admin.priceLists.addPrices(priceListId, {
 })
 .then(({ price_list }) => {
   console.log(price_list.id);
-});
+})

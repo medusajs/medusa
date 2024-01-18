@@ -1,6 +1,11 @@
+import { Workflows, updateProducts } from "@medusajs/core-flows"
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { FlagRouter, MedusaError, promiseAll } from "@medusajs/utils"
-import { updateProducts, Workflows } from "@medusajs/workflows"
+import {
+  FlagRouter,
+  MedusaError,
+  MedusaV2Flag,
+  promiseAll,
+} from "@medusajs/utils"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -40,6 +45,7 @@ import {
   ProductVariantPricesUpdateReq,
   UpdateProductVariantInput,
 } from "../../../../types/product-variant"
+import { retrieveProduct } from "../../../../utils"
 import {
   createVariantsTransaction,
   revertVariantTransaction,
@@ -51,7 +57,6 @@ import { ProductVariantRepository } from "../../../../repositories/product-varia
 import { Logger } from "../../../../types/global"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -81,7 +86,39 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateProduct } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *       }
+ *
+ *       const Product = ({ productId }: Props) => {
+ *         const updateProduct = useAdminUpdateProduct(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           title: string
+ *         ) => {
+ *           updateProduct.mutate({
+ *             title,
+ *           }, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Product
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -140,17 +177,15 @@ export default async (req, res) => {
   const productModuleService = req.scope.resolve("productModuleService")
 
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.UpdateProducts,
-  })
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
 
-  if (isWorkflowEnabled && !productModuleService) {
+  if (isMedusaV2Enabled && !productModuleService) {
     logger.warn(
       `Cannot run ${Workflows.UpdateProducts} workflow without '@medusajs/product' installed`
     )
   }
 
-  if (isWorkflowEnabled && !!productModuleService) {
+  if (isMedusaV2Enabled) {
     const updateProductWorkflow = updateProducts(req.scope)
 
     const input = {
@@ -289,8 +324,12 @@ export default async (req, res) => {
 
   let rawProduct
 
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
-    rawProduct = await getProductWithIsolatedProductModule(req, id)
+  if (isMedusaV2Enabled) {
+    rawProduct = await retrieveProduct(
+      req.scope,
+      id,
+      defaultAdminProductRemoteQueryObject
+    )
   } else {
     rawProduct = await productService.retrieve(id, {
       select: defaultAdminProductFields,
@@ -301,26 +340,6 @@ export default async (req, res) => {
   const [product] = await pricingService.setAdminProductPricing([rawProduct])
 
   res.json({ product })
-}
-
-async function getProductWithIsolatedProductModule(req, id) {
-  // TODO: Add support for fields/expands
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const variables = { id }
-
-  const query = {
-    product: {
-      __args: variables,
-      ...defaultAdminProductRemoteQueryObject,
-    },
-  }
-
-  const [product] = await remoteQuery(query)
-
-  product.profile_id = product.profile?.id
-
-  return product
 }
 
 class ProductVariantOptionReq {
@@ -420,6 +439,7 @@ class ProductVariantReq {
 /**
  * @schema AdminPostProductsProductReq
  * type: object
+ * description: "The details to update of the product."
  * properties:
  *   title:
  *     description: "The title of the Product"
@@ -621,6 +641,9 @@ class ProductVariantReq {
  *   width:
  *     description: The width of the Product.
  *     type: number
+ *   hs_code:
+ *     description: The Harmonized System code of the product variant.
+ *     type: string
  *   origin_country:
  *     description: The country of origin of the Product.
  *     type: string

@@ -1,7 +1,8 @@
 type: object
+description: The refund's details.
 required:
   - refund
 properties:
   refund:
-    description: Refund details
+    description: Refund details.
     $ref: ./Refund.yaml

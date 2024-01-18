@@ -3,13 +3,14 @@ import { AbstractCartCompletionStrategy } from "../../../../interfaces"
 import { IdempotencyKey } from "../../../../models"
 import { IdempotencyKeyService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { Logger } from "@medusajs/types"
 
 /**
  * @oas [post] /store/carts/{id}/complete
  * summary: "Complete a Cart"
  * operationId: "PostCartsCartComplete"
  * description: |
- *   Complete a cart and place an order or create a swap, based on what the cart is created for. This includes attempting to authorize the cart's payment.
+ *   Complete a cart and place an order or create a swap, based on the cart's type. This includes attempting to authorize the cart's payment.
  *   If authorizing the payment requires more action, the cart will not be completed and the order will not be placed or the swap will not be created.
  *
  *   An idempotency key will be generated if none is provided in the header `Idempotency-Key` and added to
@@ -31,7 +32,32 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.carts.complete(cartId)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCompleteCart } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const completeCart = useCompleteCart(cartId)
+ *
+ *         const handleComplete = () => {
+ *           completeCart.mutate(void 0, {
+ *             onSuccess: ({ data, type }) => {
+ *               console.log(data.id, type)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -66,6 +92,7 @@ export default async (req, res) => {
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
   )
+  const logger: Logger = req.scope.resolve("logger")
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -77,7 +104,7 @@ export default async (req, res) => {
         .initializeRequest(headerKey, req.method, req.params, req.path)
     })
   } catch (error) {
-    console.log(error)
+    logger.log(error)
     res.status(409).send("Failed to create idempotency key")
     return
   }

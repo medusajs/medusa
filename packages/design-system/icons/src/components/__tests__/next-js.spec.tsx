@@ -4,7 +4,7 @@
   import NextJs from "../next-js"
 
   describe("NextJs", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<NextJs data-testid="icon" />)
 
 

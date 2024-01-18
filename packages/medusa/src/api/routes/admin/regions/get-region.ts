@@ -1,6 +1,5 @@
-import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
-
 import RegionService from "../../../../services/region"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [get] /admin/regions/{id}
@@ -22,7 +21,33 @@ import RegionService from "../../../../services/region"
  *       medusa.admin.regions.retrieve(regionId)
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminRegion } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const { region, isLoading } = useAdminRegion(
+ *           regionId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {region && <span>{region.name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -57,10 +82,10 @@ import RegionService from "../../../../services/region"
 export default async (req, res) => {
   const { region_id } = req.params
   const regionService: RegionService = req.scope.resolve("regionService")
-  const region = await regionService.retrieve(region_id, {
-    select: defaultAdminRegionFields,
-    relations: defaultAdminRegionRelations,
-  })
+
+  const region = await regionService.retrieve(region_id, req.retrieveConfig)
 
   res.status(200).json({ region })
 }
+
+export class AdminGetRegionsRegionParams extends FindParams {}

@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the product.
+ */
 export interface AdminPostProductsProductReq {
   /**
    * The title of the Product
@@ -214,6 +217,10 @@ export interface AdminPostProductsProductReq {
    * The width of the Product.
    */
   width?: number
+  /**
+   * The Harmonized System code of the product variant.
+   */
+  hs_code?: string
   /**
    * The country of origin of the Product.
    */

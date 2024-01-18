@@ -60,6 +60,7 @@ export const defaultStoreProductCategoryFields = [
   "created_at",
   "updated_at",
   "rank",
+  "metadata",
 ]
 
 export const allowedStoreProductCategoryFields = [
@@ -71,11 +72,13 @@ export const allowedStoreProductCategoryFields = [
   "created_at",
   "updated_at",
   "rank",
+  "metadata",
 ]
 
 /**
  * @schema StoreGetProductCategoriesCategoryRes
  * type: object
+ * description: "The product category's details."
  * x-expanded-relations:
  *   field: product_category
  *   relations:
@@ -95,6 +98,7 @@ export type StoreGetProductCategoriesCategoryRes = {
 /**
  * @schema StoreGetProductCategoriesRes
  * type: object
+ * description: "The list of product categories with pagination fields."
  * x-expanded-relations:
  *   field: product_categories
  *   relations:

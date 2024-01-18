@@ -1,3 +1,6 @@
+import { mergeTypeDefs } from "@graphql-tools/merge"
+import { makeExecutableSchema } from "@graphql-tools/schema"
+import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
@@ -17,19 +20,16 @@ import {
   isObject,
   ModulesSdkUtils,
 } from "@medusajs/utils"
+import { asValue } from "awilix"
 import {
   MODULE_PACKAGE_NAMES,
   ModuleRegistrationName,
   Modules,
 } from "./definitions"
 import { MedusaModule } from "./medusa-module"
-import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { cleanGraphQLSchema } from "./utils"
-import { asValue } from "awilix"
-import { makeExecutableSchema } from "@graphql-tools/schema"
-import { mergeTypeDefs } from "@graphql-tools/merge"
 
 const LinkModulePackage = "@medusajs/link-modules"
 

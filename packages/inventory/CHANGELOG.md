@@ -1,5 +1,29 @@
 # @medusajs/inventory
 
+## 1.11.4
+
+### Patch Changes
+
+- [#5713](https://github.com/medusajs/medusa/pull/5713) [`18afe0b9a`](https://github.com/medusajs/medusa/commit/18afe0b9addb33ec2e3b285651b4eb1ef8065845) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(stock-location, inventory, medusa, types, utils): allow buildQuery to take null as an argument in order to prevent default pagination
+
+- Updated dependencies [[`18afe0b9a`](https://github.com/medusajs/medusa/commit/18afe0b9addb33ec2e3b285651b4eb1ef8065845), [`de8f74867`](https://github.com/medusajs/medusa/commit/de8f748674bfd19b3dbadb9695d9080aa91940de), [`dc5750dd6`](https://github.com/medusajs/medusa/commit/dc5750dd665a91d35c0246ba83c7f90ec74907f4)]:
+  - @medusajs/utils@1.11.1
+  - @medusajs/modules-sdk@1.12.4
+
+# @medusajs/inventory
+
+## 1.11.3
+
+### Patch Changes
+
+- [`c39bf69a5`](https://github.com/medusajs/medusa/commit/c39bf69a5e5cae75d7fa12aa6022b10903557a32) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing version bumps
+
+- [#5543](https://github.com/medusajs/medusa/pull/5543) [`f90ba0208`](https://github.com/medusajs/medusa/commit/f90ba02087778d8131aed3a59a6dc9c8ca3c95f4) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(utils): Introduce promiseAll util
+
+- Updated dependencies [[`c39bf69a5`](https://github.com/medusajs/medusa/commit/c39bf69a5e5cae75d7fa12aa6022b10903557a32), [`154c9b43b`](https://github.com/medusajs/medusa/commit/154c9b43bde1fdff562aba9da8a79af2660b29b3)]:
+  - @medusajs/modules-sdk@1.12.3
+  - @medusajs/utils@1.10.5
+
 ## 1.11.2
 
 ### Patch Changes

@@ -4,7 +4,7 @@
   import RocketLaunch from "../rocket-launch"
 
   describe("RocketLaunch", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<RocketLaunch data-testid="icon" />)
 
 

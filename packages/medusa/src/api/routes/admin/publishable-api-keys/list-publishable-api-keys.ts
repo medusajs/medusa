@@ -27,9 +27,43 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.publishableApiKeys.list()
- *         .then(({ publishable_api_keys, count, limit, offset }) => {
- *           console.log(publishable_api_keys)
- *         })
+ *       .then(({ publishable_api_keys, count, limit, offset }) => {
+ *         console.log(publishable_api_keys)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { PublishableApiKey } from "@medusajs/medusa"
+ *       import { useAdminPublishableApiKeys } from "medusa-react"
+ *
+ *       const PublishableApiKeys = () => {
+ *         const { publishable_api_keys, isLoading } =
+ *           useAdminPublishableApiKeys()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {publishable_api_keys && !publishable_api_keys.length && (
+ *               <span>No Publishable API Keys</span>
+ *             )}
+ *             {publishable_api_keys &&
+ *               publishable_api_keys.length > 0 && (
+ *               <ul>
+ *                 {publishable_api_keys.map(
+ *                   (publishableApiKey: PublishableApiKey) => (
+ *                     <li key={publishableApiKey.id}>
+ *                       {publishableApiKey.title}
+ *                     </li>
+ *                   )
+ *                 )}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default PublishableApiKeys
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -82,10 +116,16 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved publishable API keys.
+ */
 export class GetPublishableApiKeysParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
+  /**
+   * Search term to search publishable API keys' titles.
+   */
   @IsString()
   @IsOptional()
   q?: string

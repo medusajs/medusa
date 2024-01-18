@@ -30,7 +30,7 @@ import { StorePostAuthReq } from "./create-session"
  *       })
  *       .then(({ access_token }) => {
  *         console.log(access_token);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -6,6 +6,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { Customer } from "./Customer"
 import type { Order } from "./Order"
 
+/**
+ * The customer's details.
+ */
 export interface StoreAuthRes {
   /**
    * Customer's details.

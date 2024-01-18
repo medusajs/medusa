@@ -10,7 +10,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/regions/{id}/countries
  * operationId: "PostRegionsRegionCountries"
  * summary: "Add Country"
- * description: "Add a Country to the list of Countries in a Region"
+ * description: "Add a Country to the list of Countries in a Region."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
@@ -33,7 +33,39 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminRegionAddCountry } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const addCountry = useAdminRegionAddCountry(regionId)
+ *         // ...
+ *
+ *         const handleAddCountry = (
+ *           countryCode: string
+ *         ) => {
+ *           addCountry.mutate({
+ *             country_code: countryCode
+ *           }, {
+ *             onSuccess: ({ region }) => {
+ *               console.log(region.countries)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -95,6 +127,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostRegionsRegionCountriesReq
  * type: object
+ * description: "The details of the country to add to the region."
  * required:
  *   - country_code
  * properties:

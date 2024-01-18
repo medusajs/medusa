@@ -58,7 +58,43 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateClaim } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const CreateClaim = ({ orderId }: Props) => {
+ *
+ *       const CreateClaim = (orderId: string) => {
+ *         const createClaim = useAdminCreateClaim(orderId)
+ *         // ...
+ *
+ *         const handleCreate = (itemId: string) => {
+ *           createClaim.mutate({
+ *             type: "refund",
+ *             claim_items: [
+ *               {
+ *                 item_id: itemId,
+ *                 quantity: 1,
+ *               },
+ *             ],
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.claims)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateClaim
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -309,12 +345,14 @@ export default async (req, res) => {
 /**
  * @schema AdminPostOrdersOrderClaimsReq
  * type: object
+ * description: "The details of the claim to be created."
  * required:
  *   - type
  *   - claim_items
  * properties:
  *   type:
- *     description: "The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items."
+ *     description: >-
+ *       The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items.
  *     type: string
  *     enum:
  *       - replace
@@ -406,6 +444,9 @@ export default async (req, res) => {
  *   no_notification:
  *      description: If set to true no notification will be send related to this Claim.
  *      type: boolean
+ *   return_location_id:
+ *      description: The ID of the location used for the associated return.
+ *      type: string
  *   metadata:
  *      description: An optional set of key-value pairs to hold additional information.
  *      type: object
@@ -464,11 +505,20 @@ export class AdminPostOrdersOrderClaimsReq {
   metadata?: Record<string, unknown>
 }
 
+/**
+ * The return's shipping method details.
+ */
 class ReturnShipping {
+  /**
+   * The ID of the shipping option used for the return.
+   */
   @IsString()
   @IsOptional()
   option_id?: string
 
+  /**
+   * The shipping method's price.
+   */
   @IsInt()
   @IsOptional()
   price?: number

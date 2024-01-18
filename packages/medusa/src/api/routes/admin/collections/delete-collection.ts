@@ -23,7 +23,33 @@ import ProductCollectionService from "../../../../services/product-collection"
  *       medusa.admin.collections.delete(collectionId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         collectionId: string
+ *       }
+ *
+ *       const Collection = ({ collectionId }: Props) => {
+ *         const deleteCollection = useAdminDeleteCollection(collectionId)
+ *         // ...
+ *
+ *         const handleDelete = (title: string) => {
+ *           deleteCollection.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Collection
  *   - lang: Shell
  *     label: cURL
  *     source: |

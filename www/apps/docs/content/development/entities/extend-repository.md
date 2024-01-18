@@ -39,7 +39,7 @@ A data source is Typeorm’s connection settings that allows you to connect to y
 
 Here’s an example of the implementation of the extended Product repository:
 
-```ts title=src/repositories/product.ts
+```ts title="src/repositories/product.ts"
 import { Product } from "@medusajs/medusa"
 import { 
   dataSource,
@@ -87,7 +87,7 @@ You can now use your extended repository in other resources such as services or 
 
 Here’s an example of using it in an API Route:
 
-```ts title=src/api/store/custom/route.ts
+```ts title="src/api/store/custom/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,

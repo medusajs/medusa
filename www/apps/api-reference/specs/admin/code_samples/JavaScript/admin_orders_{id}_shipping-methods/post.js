@@ -7,4 +7,4 @@ medusa.admin.orders.addShippingMethod(orderId, {
 })
 .then(({ order }) => {
   console.log(order.id);
-});
+})

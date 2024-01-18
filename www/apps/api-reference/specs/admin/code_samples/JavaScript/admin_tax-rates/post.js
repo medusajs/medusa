@@ -8,4 +8,4 @@ medusa.admin.taxRates.create({
 })
 .then(({ tax_rate }) => {
   console.log(tax_rate.id);
-});
+})

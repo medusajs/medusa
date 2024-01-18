@@ -7,6 +7,7 @@
       "packages/medusa-js",
       "packages/medusa-react",
       "packages/*",
+      "packages/admin-next/*",
       "packages/design-system/*",
       "packages/generated/*",
       "packages/oas/*",
@@ -38,6 +39,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
     "eslint-plugin-storybook": "^0.6.12",
     "eslint-plugin-unused-imports": "^2.0.0",
     "express": "^4.17.1",
@@ -92,7 +94,6 @@
   "resolutions": {
     "@redocly/cli/react": "^17.0.1",
     "@redocly/cli/react-dom": "^17.0.1",
-    "pg": "8.10.0",
-    "class-variance-authority@0.6.1": "patch:class-variance-authority@npm:0.6.1#.yarn/patches/class-variance-authority-npm-0.6.1-22a468e86e.patch"
+    "pg": "8.10.0"
   }
 }

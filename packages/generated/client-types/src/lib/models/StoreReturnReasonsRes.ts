@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { ReturnReason } from "./ReturnReason"
 
+/**
+ * The return reason's details.
+ */
 export interface StoreReturnReasonsRes {
   /**
    * Return reason details.

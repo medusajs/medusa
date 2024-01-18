@@ -26,7 +26,28 @@ import { ExtendedStoreDTO } from "../../../../types/store"
  *       medusa.admin.store.retrieve()
  *       .then(({ store }) => {
  *         console.log(store.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminStore } from "medusa-react"
+ *
+ *       const Store = () => {
+ *         const {
+ *           store,
+ *           isLoading
+ *         } = useAdminStore()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {store && <span>{store.name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Store
  *   - lang: Shell
  *     label: cURL
  *     source: |

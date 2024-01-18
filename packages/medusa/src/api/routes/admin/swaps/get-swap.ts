@@ -22,7 +22,29 @@ import { SwapService } from "../../../../services"
  *       medusa.admin.swaps.retrieve(swapId)
  *       .then(({ swap }) => {
  *         console.log(swap.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminSwap } from "medusa-react"
+ *
+ *       type Props = {
+ *         swapId: string
+ *       }
+ *
+ *       const Swap = ({ swapId }: Props) => {
+ *         const { swap, isLoading } = useAdminSwap(swapId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {swap && <span>{swap.id}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Swap
  *   - lang: Shell
  *     label: cURL
  *     source: |

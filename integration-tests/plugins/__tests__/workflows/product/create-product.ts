@@ -1,11 +1,11 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IProductModuleService, WorkflowTypes } from "@medusajs/types"
 import {
-  createProducts,
   CreateProductsActions,
   Handlers,
-  pipe,
-} from "@medusajs/workflows"
+  createProducts,
+} from "@medusajs/core-flows"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IProductModuleService, WorkflowTypes } from "@medusajs/types"
+import { pipe } from "@medusajs/workflows-sdk"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { getContainer } from "../../../../environment-helpers/use-container"

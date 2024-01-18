@@ -22,7 +22,33 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.payments.retrieve(paymentId)
  *       .then(({ payment }) => {
  *         console.log(payment.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminPayment } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentId: string
+ *       }
+ *
+ *       const Payment = ({ paymentId }: Props) => {
+ *         const {
+ *           payment,
+ *           isLoading,
+ *         } = useAdminPayment(paymentId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {payment && <span>{payment.amount}</span>}
+ *
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Payment
  *   - lang: Shell
  *     label: cURL
  *     source: |

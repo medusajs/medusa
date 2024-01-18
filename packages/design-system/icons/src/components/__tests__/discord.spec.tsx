@@ -4,7 +4,7 @@
   import Discord from "../discord"
 
   describe("Discord", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Discord data-testid="icon" />)
 
 

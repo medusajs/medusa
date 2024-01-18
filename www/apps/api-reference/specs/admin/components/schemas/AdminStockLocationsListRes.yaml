@@ -1,4 +1,5 @@
 type: object
+description: The list of stock locations with pagination fields.
 required:
   - stock_locations
   - count
@@ -7,6 +8,7 @@ required:
 properties:
   stock_locations:
     type: array
+    description: The list of stock locations.
     items:
       $ref: ./StockLocationExpandedDTO.yaml
   count:

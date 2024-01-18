@@ -4,7 +4,7 @@
   import DocumentTextSolid from "../document-text-solid"
 
   describe("DocumentTextSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<DocumentTextSolid data-testid="icon" />)
 
 

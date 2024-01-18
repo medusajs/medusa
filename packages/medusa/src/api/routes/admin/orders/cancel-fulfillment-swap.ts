@@ -13,7 +13,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersSwapFulfillmentsCancel"
  * summary: "Cancel Swap's Fulfilmment"
- * description: "Cancel a swap's fulfillment and change its status."
+ * description: "Cancel a swap's fulfillment and change its fulfillment status to `canceled`."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the order the swap is associated with.
@@ -34,7 +34,40 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.orders.cancelSwapFulfillment(orderId, swapId, fulfillmentId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCancelSwapFulfillment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string,
+ *         swapId: string
+ *       }
+ *
+ *       const Swap = ({
+ *         orderId,
+ *         swapId
+ *       }: Props) => {
+ *         const cancelFulfillment = useAdminCancelSwapFulfillment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleCancelFulfillment = (
+ *           fulfillmentId: string
+ *         ) => {
+ *           cancelFulfillment.mutate({
+ *             swap_id: swapId,
+ *             fulfillment_id: fulfillmentId,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Swap
  *   - lang: Shell
  *     label: cURL
  *     source: |

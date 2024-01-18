@@ -63,7 +63,7 @@ Where:
 
 Finally, add the plugin to the `plugins` array in `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...,
   {

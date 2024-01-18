@@ -15,7 +15,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/shipping-methods
  * operationId: "PostOrdersOrderShippingMethods"
  * summary: "Add a Shipping Method"
- * description: "Adds a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced."
+ * description: "Add a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced."
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
@@ -42,7 +42,41 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminAddShippingMethod } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const addShippingMethod = useAdminAddShippingMethod(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleAddShippingMethod = (
+ *           optionId: string,
+ *           price: number
+ *         ) => {
+ *           addShippingMethod.mutate({
+ *             option_id: optionId,
+ *             price
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.shipping_methods)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -105,6 +139,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostOrdersOrderShippingMethodsReq
  * type: object
+ * description: "The shipping method's details."
  * required:
  *   - price
  *   - option_id
@@ -115,7 +150,7 @@ export default async (req, res) => {
  *   option_id:
  *     type: string
  *     description: The ID of the Shipping Option to create the Shipping Method from.
- *   date:
+ *   data:
  *     type: object
  *     description: The data required for the Shipping Option to create a Shipping Method. This depends on the Fulfillment Provider.
  */

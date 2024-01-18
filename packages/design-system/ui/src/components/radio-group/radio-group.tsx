@@ -7,6 +7,9 @@ import { clx } from "@/utils/clx"
 import { Hint } from "../hint"
 import { Label } from "../label"
 
+/**
+ * This component is based on the [Radix UI Radio Group](https://www.radix-ui.com/primitives/docs/components/radio-group) primitives.
+ */
 const Root = React.forwardRef<
   React.ElementRef<typeof Primitives.Root>,
   React.ComponentPropsWithoutRef<typeof Primitives.Root>
@@ -19,7 +22,7 @@ const Root = React.forwardRef<
     />
   )
 })
-Root.displayName = "RadioGroup.Root"
+Root.displayName = "RadioGroup"
 
 const Indicator = React.forwardRef<
   React.ElementRef<typeof Primitives.Indicator>,
@@ -59,7 +62,7 @@ const Item = React.forwardRef<
           "shadow-borders-base bg-ui-bg-base transition-fg flex h-[14px] w-[14px] items-center justify-center rounded-full",
           "group-hover:bg-ui-bg-base-hover",
           "group-data-[state=checked]:bg-ui-bg-interactive group-data-[state=checked]:shadow-borders-interactive-with-shadow",
-          "group-focus:!shadow-borders-interactive-with-focus",
+          "group-focus-visible:!shadow-borders-interactive-with-focus",
           "group-disabled:!bg-ui-bg-disabled group-disabled:!shadow-borders-base"
         )}
       >
@@ -92,7 +95,7 @@ const ChoiceBox = React.forwardRef<
     <Primitives.Item
       ref={ref}
       className={clx(
-        "shadow-borders-base bg-ui-bg-base focus:shadow-borders-interactive-with-focus transition-fg disabled:bg-ui-bg-disabled group flex items-start gap-x-2 rounded-lg p-3 disabled:cursor-not-allowed",
+        "shadow-borders-base bg-ui-bg-base focus-visible:shadow-borders-interactive-with-focus transition-fg disabled:bg-ui-bg-disabled group flex items-start gap-x-2 rounded-lg p-3 disabled:cursor-not-allowed",
         className
       )}
       {...props}

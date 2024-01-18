@@ -48,7 +48,37 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateDraftOrder } from "medusa-react"
+ *
+ *       type Props = {
+ *         draftOrderId: string
+ *       }
+ *
+ *       const DraftOrder = ({ draftOrderId }: Props) => {
+ *         const updateDraftOrder = useAdminUpdateDraftOrder(
+ *           draftOrderId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (email: string) => {
+ *           updateDraftOrder.mutate({
+ *             email,
+ *           }, {
+ *             onSuccess: ({ draft_order }) => {
+ *               console.log(draft_order.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DraftOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -145,6 +175,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostDraftOrdersDraftOrderReq
  * type: object
+ * description: "The details of the draft order to update."
  * properties:
  *   region_id:
  *     type: string

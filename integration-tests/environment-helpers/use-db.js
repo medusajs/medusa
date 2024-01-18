@@ -2,7 +2,11 @@ const path = require("path")
 
 const { getConfigFile } = require("medusa-core-utils")
 const { asValue } = require("awilix")
-const { isObject, createMedusaContainer } = require("@medusajs/utils")
+const {
+  isObject,
+  createMedusaContainer,
+  MedusaV2Flag,
+} = require("@medusajs/utils")
 const { dropDatabase } = require("pg-god")
 const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
@@ -28,6 +32,8 @@ const keepTables = [
   "payment_provider",
   "country",
   "currency",
+  "migrations",
+  "mikro_orm_migrations",
 ]
 
 const DbTestUtil = {
@@ -48,21 +54,23 @@ const DbTestUtil = {
 
   teardown: async function ({ forceDelete } = {}) {
     forceDelete = forceDelete || []
-    const entities = this.db_.entityMetadatas
     const manager = this.db_.manager
 
     await manager.query(`SET session_replication_role = 'replica';`)
+    const tableNames = await manager.query(`SELECT table_name
+                                            FROM information_schema.tables
+                                            WHERE table_schema = 'public';`)
 
-    for (const entity of entities) {
+    for (const { table_name } of tableNames) {
       if (
-        keepTables.includes(entity.tableName) &&
-        !forceDelete.includes(entity.tableName)
+        keepTables.includes(table_name) &&
+        !forceDelete.includes(table_name)
       ) {
         continue
       }
 
       await manager.query(`DELETE
-                           FROM "${entity.tableName}";`)
+                           FROM "${table_name}";`)
     }
 
     await manager.query(`SET session_replication_role = 'origin';`)
@@ -140,27 +148,25 @@ module.exports = {
 
     instance.setDb(dbDataSource)
 
-    const IsolateProductDomainFeatureFlag =
-      require("@medusajs/medusa/dist/loaders/feature-flags/isolate-product-domain").default
-    const IsolatePricingDomainFeatureFlag =
-      require("@medusajs/medusa/dist/loaders/feature-flags/isolate-pricing-domain").default
-
-    if (
-      featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
-      featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
-    ) {
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       const pgConnectionLoader =
         require("@medusajs/medusa/dist/loaders/pg-connection").default
+
+      const featureFlagLoader =
+        require("@medusajs/medusa/dist/loaders/feature-flags").default
 
       const medusaAppLoader =
         require("@medusajs/medusa/dist/loaders/medusa-app").default
 
       const container = createMedusaContainer()
 
+      const featureFlagRouter = await featureFlagLoader(configModule)
+
       container.register({
         [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
         [ContainerRegistrationKeys.LOGGER]: asValue(console),
         [ContainerRegistrationKeys.MANAGER]: asValue(dbDataSource.manager),
+        featureFlagRouter: asValue(featureFlagRouter),
       })
 
       const pgConnection = await pgConnectionLoader({ configModule, container })

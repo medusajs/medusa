@@ -4,7 +4,7 @@
   import Javascript from "../javascript"
 
   describe("Javascript", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Javascript data-testid="icon" />)
 
 

@@ -4,7 +4,7 @@
   import CircleStack from "../circle-stack"
 
   describe("CircleStack", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CircleStack data-testid="icon" />)
 
 

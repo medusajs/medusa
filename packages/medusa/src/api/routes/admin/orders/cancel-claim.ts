@@ -32,7 +32,30 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.orders.cancelClaim(orderId, claimId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCancelClaim } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *         claimId: string
+ *       }
+ *
+ *       const Claim = ({ orderId, claimId }: Props) => {
+ *         const cancelClaim = useAdminCancelClaim(orderId)
+ *         // ...
+ *
+ *         const handleCancel = () => {
+ *           cancelClaim.mutate(claimId)
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Claim
  *   - lang: Shell
  *     label: cURL
  *     source: |

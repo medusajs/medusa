@@ -1,5 +1,23 @@
 # Change Log
 
+## 6.1.5
+
+### Patch Changes
+
+- [#5941](https://github.com/medusajs/medusa/pull/5941) [`bfd10dada`](https://github.com/medusajs/medusa/commit/bfd10dadaf6286aa26dac96d7c0cc5bc24e43c9b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-js): remove unnecessary `query` field in `AdminInventoryItemsResource.deleteLocationLevel` method
+
+- [#5926](https://github.com/medusajs/medusa/pull/5926) [`f25ca30b3`](https://github.com/medusajs/medusa/commit/f25ca30b3aec558094b1dffe70583fcbba64b29a) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa, medusa-js): publishable api key bugs
+
+## 6.1.4
+
+### Patch Changes
+
+- [#5582](https://github.com/medusajs/medusa/pull/5582) [`91615f9c4`](https://github.com/medusajs/medusa/commit/91615f9c459a2d8cb842561c5edb335680d30298) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(@medusajs/client-types): Fix types and TSDocs
+  fix(medusa-react): Fix response type of Publishable API Key's list sales channels.
+  fix(@medusajs/medusa-js): Fix incorrect parameter and response types.
+  fix(@medusajs/medusa): Fix incorrect types and add TSDocs
+  fix(@medusajs/types): Fix incorrect types and add TSDocs
+
 ## 6.1.3
 
 ### Patch Changes

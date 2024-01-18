@@ -8,7 +8,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/claims/{claim_id}/shipments
  * operationId: "PostOrdersOrderClaimsClaimShipments"
  * summary: "Ship a Claim's Fulfillment"
- * description: "Mark a claim's fulfillment as shipped. This changes the claim's fulfillment status to either `shipped` or `partially_shipped`, depending on
+ * description: "Create a shipment for the claim and mark its fulfillment as shipped. This changes the claim's fulfillment status to either `partially_shipped` or `shipped`, depending on
  *  whether all the items were shipped."
  * x-authenticated: true
  * externalDocs:
@@ -39,7 +39,37 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateClaimShipment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *         claimId: string
+ *       }
+ *
+ *       const Claim = ({ orderId, claimId }: Props) => {
+ *         const createShipment = useAdminCreateClaimShipment(orderId)
+ *         // ...
+ *
+ *         const handleCreateShipment = (fulfillmentId: string) => {
+ *           createShipment.mutate({
+ *             claim_id: claimId,
+ *             fulfillment_id: fulfillmentId,
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.claims)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Claim
  *   - lang: Shell
  *     label: cURL
  *     source: |

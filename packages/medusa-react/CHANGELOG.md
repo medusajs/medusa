@@ -1,5 +1,34 @@
 # Change Log
 
+## 9.0.13
+
+### Patch Changes
+
+- [#6004](https://github.com/medusajs/medusa/pull/6004) [`7d650771d`](https://github.com/medusajs/medusa/commit/7d650771d1c1d3e5d77ff95c12e4970743b64303) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-react): general type fixes related to generating reference documentation
+
+- [#5982](https://github.com/medusajs/medusa/pull/5982) [`925feea04`](https://github.com/medusajs/medusa/commit/925feea04a8222285175c33577548e50516069a7) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(cart): Add cart module package
+
+- Updated dependencies [[`bfd10dada`](https://github.com/medusajs/medusa/commit/bfd10dadaf6286aa26dac96d7c0cc5bc24e43c9b), [`f25ca30b3`](https://github.com/medusajs/medusa/commit/f25ca30b3aec558094b1dffe70583fcbba64b29a)]:
+  - @medusajs/medusa-js@6.1.5
+
+## 9.0.12
+
+### Patch Changes
+
+- [#5765](https://github.com/medusajs/medusa/pull/5765) [`4e9d95454`](https://github.com/medusajs/medusa/commit/4e9d954549916ea260583a6b5e36f0c6c02d4d22) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa-react): Allow setting maxRetries on MedusaProvider
+
+## 9.0.11
+
+### Patch Changes
+
+- [#5582](https://github.com/medusajs/medusa/pull/5582) [`91615f9c4`](https://github.com/medusajs/medusa/commit/91615f9c459a2d8cb842561c5edb335680d30298) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(@medusajs/client-types): Fix types and TSDocs
+  fix(medusa-react): Fix response type of Publishable API Key's list sales channels.
+  fix(@medusajs/medusa-js): Fix incorrect parameter and response types.
+  fix(@medusajs/medusa): Fix incorrect types and add TSDocs
+  fix(@medusajs/types): Fix incorrect types and add TSDocs
+- Updated dependencies [[`91615f9c4`](https://github.com/medusajs/medusa/commit/91615f9c459a2d8cb842561c5edb335680d30298)]:
+  - @medusajs/medusa-js@6.1.4
+
 ## 9.0.10
 
 ### Patch Changes

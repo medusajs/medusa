@@ -33,7 +33,42 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminRegionAddPaymentProvider
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const addPaymentProvider =
+ *           useAdminRegionAddPaymentProvider(regionId)
+ *         // ...
+ *
+ *         const handleAddPaymentProvider = (
+ *           providerId: string
+ *         ) => {
+ *           addPaymentProvider.mutate({
+ *             provider_id: providerId
+ *           }, {
+ *             onSuccess: ({ region }) => {
+ *               console.log(region.payment_providers)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -94,6 +129,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostRegionsRegionPaymentProvidersReq
  * type: object
+ * description: "The details of the payment provider to add to the region."
  * required:
  *   - provider_id
  * properties:

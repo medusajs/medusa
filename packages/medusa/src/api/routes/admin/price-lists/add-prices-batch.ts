@@ -1,18 +1,21 @@
+import { updatePriceLists } from "@medusajs/core-flows"
+import { MedusaContainer } from "@medusajs/types"
+import { MedusaV2Flag } from "@medusajs/utils"
+import { Type } from "class-transformer"
 import { IsArray, IsBoolean, IsOptional, ValidateNested } from "class-validator"
+import { EntityManager } from "typeorm"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
-
-import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
-import { Type } from "class-transformer"
+import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
+import { getPriceListPricingModule } from "./modules-queries"
 
 /**
  * @oas [post] /admin/price-lists/{id}/prices/batch
  * operationId: "PostPriceListsPriceListPricesBatch"
  * summary: "Add or Update Prices"
- * description: "Add or update a list of prices in a Price List"
+ * description: "Add or update a list of prices in a Price List."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Price List.
@@ -41,7 +44,43 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreatePriceListPrices } from "medusa-react"
+ *
+ *       type PriceData = {
+ *         amount: number
+ *         variant_id: string
+ *         currency_code: string
+ *       }
+ *
+ *       type Props = {
+ *         priceListId: string
+ *       }
+ *
+ *       const PriceList = ({
+ *         priceListId
+ *       }: Props) => {
+ *         const addPrices = useAdminCreatePriceListPrices(priceListId)
+ *         // ...
+ *
+ *         const handleAddPrices = (prices: PriceData[]) => {
+ *           addPrices.mutate({
+ *             prices
+ *           }, {
+ *             onSuccess: ({ price_list }) => {
+ *               console.log(price_list.prices)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -85,23 +124,48 @@ import { EntityManager } from "typeorm"
  */
 export default async (req, res) => {
   const { id } = req.params
-
-  const validated = await validator(AdminPostPriceListPricesPricesReq, req.body)
-
+  let priceList
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const manager: EntityManager = req.scope.resolve("manager")
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await priceListService
-      .withTransaction(transactionManager)
-      .addPrices(id, validated.prices, validated.override)
-  })
+  const validated = await validator(AdminPostPriceListPricesPricesReq, req.body)
 
-  const priceList = await priceListService.retrieve(id, {
-    select: defaultAdminPriceListFields as (keyof PriceList)[],
-    relations: defaultAdminPriceListRelations,
-  })
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    const updatePriceListWorkflow = updatePriceLists(req.scope)
+
+    const input = {
+      price_lists: [
+        {
+          id,
+          ...validated,
+        },
+      ],
+    }
+
+    await updatePriceListWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+
+    priceList = await getPriceListPricingModule(id, {
+      container: req.scope as MedusaContainer,
+    })
+  } else {
+    await manager.transaction(async (transactionManager) => {
+      await priceListService
+        .withTransaction(transactionManager)
+        .addPrices(id, validated.prices, validated.override)
+    })
+
+    priceList = await priceListService.retrieve(id, {
+      select: defaultAdminPriceListFields as (keyof PriceList)[],
+      relations: defaultAdminPriceListRelations,
+    })
+  }
 
   res.json({ price_list: priceList })
 }
@@ -109,6 +173,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostPriceListPricesPricesReq
  * type: object
+ * description: "The details of the prices to add."
  * properties:
  *   prices:
  *     description: The prices to update or add.
@@ -144,7 +209,8 @@ export default async (req, res) => {
  *           description: The maximum quantity for which the price will be used.
  *           type: integer
  *   override:
- *     description: "If set to `true`, the prices will replace all existing prices associated with the Price List."
+ *     description: >-
+ *       If set to `true`, the prices will replace all existing prices associated with the Price List.
  *     type: boolean
  */
 export class AdminPostPriceListPricesPricesReq {

@@ -20,11 +20,10 @@ const adminHeaders = {
 }
 
 const env = {
-  MEDUSA_FF_ISOLATE_PRICING_DOMAIN: true,
-  MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
+  MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/products/:id", () => {
+describe("POST /admin/products/:id", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -110,10 +109,11 @@ describe("[Product & Pricing Module] POST /admin/products/:id", () => {
     )
 
     expect(response.status).toEqual(200)
+    expect(response.data.product.variants).toHaveLength(1)
     expect(response.data.product).toEqual(
       expect.objectContaining({
         id: expect.any(String),
-        variants: expect.arrayContaining([
+        variants: [
           expect.objectContaining({
             id: variant.id,
             title: "test variant update",
@@ -129,7 +129,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id", () => {
               }),
             ]),
           }),
-        ]),
+        ],
       })
     )
   })
@@ -142,7 +142,6 @@ describe("[Product & Pricing Module] POST /admin/products/:id", () => {
         {
           amount: 3000,
           currency_code: "usd",
-          rules: {},
         },
       ],
     })

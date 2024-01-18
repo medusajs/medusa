@@ -8,11 +8,11 @@ info:
 tags:
   - name: Auth
     description: >
-      Authentication API Routes allow customers to manage their session, such as
-      login or log out.
+      Authentication API Routes allow you to manage a customer's session, such
+      as login or log out.
 
-      When a customer is logged in, the cookie header is set indicating the
-      customer's login session.
+      You can send authenticated requests for a customer either using the Cookie
+      header or using the JWT Token.
     externalDocs:
       description: How to implement customer profiles in your storefront
       url: >-
@@ -176,7 +176,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -237,7 +237,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -276,6 +276,19 @@ paths:
       x-codegen:
         method: deleteSession
       x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.auth.deleteSession()
+
+            .then(() => {
+              // customer logged out successfully
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -332,7 +345,7 @@ paths:
 
             .then(({ access_token }) => {
               console.log(access_token);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -424,8 +437,8 @@ paths:
         customer changes their region.
 
 
-        If a customer is logged in, the cart's customer ID and email will
-        automatically be set.
+        If a customer is logged in, make sure to pass its ID or email within the
+        cart's details so that the cart is attached to the customer.
       requestBody:
         content:
           application/json:
@@ -446,7 +459,35 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useCreateCart } from "medusa-react"
+
+            type Props = {
+              regionId: string
+            }
+
+            const Cart = ({ regionId }: Props) => {
+              const createCart = useCreateCart()
+
+              const handleCreate = () => {
+                createCart.mutate({
+                  region_id: regionId
+                  // creates an empty cart
+                }, {
+                  onSuccess: ({ cart }) => {
+                    console.log(cart.items)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default Cart
         - lang: Shell
           label: cURL
           source: |
@@ -497,7 +538,38 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useGetCart } from "medusa-react"
+
+            type Props = {
+              cartId: string
+            }
+
+            const Cart = ({ cartId }: Props) => {
+              const { cart, isLoading } = useGetCart(cartId)
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {cart && cart.items.length === 0 && (
+                    <span>Cart is empty</span>
+                  )}
+                  {cart && cart.items.length > 0 && (
+                    <ul>
+                      {cart.items.map((item) => (
+                        <li key={item.id}>{item.title}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )
+            }
+
+            export default Cart
         - lang: Shell
           label: cURL
           source: |
@@ -557,7 +629,36 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useUpdateCart } from "medusa-react"
+
+            type Props = {
+              cartId: string
+            }
+
+            const Cart = ({ cartId }: Props) => {
+              const updateCart = useUpdateCart(cartId)
+
+              const handleUpdate = (
+                email: string
+              ) => {
+                updateCart.mutate({
+                  email
+                }, {
+                  onSuccess: ({ cart }) => {
+                    console.log(cart.email)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default Cart
         - lang: Shell
           label: cURL
           source: |
@@ -590,9 +691,8 @@ paths:
       summary: Complete a Cart
       operationId: PostCartsCartComplete
       description: >
-        Complete a cart and place an order or create a swap, based on what the
-        cart is created for. This includes attempting to authorize the cart's
-        payment.
+        Complete a cart and place an order or create a swap, based on the cart's
+        type. This includes attempting to authorize the cart's payment.
 
         If authorizing the payment requires more action, the cart will not be
         completed and the order will not be placed or the swap will not be
@@ -633,7 +733,32 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useCompleteCart } from "medusa-react"
+
+            type Props = {
+              cartId: string
+            }
+
+            const Cart = ({ cartId }: Props) => {
+              const completeCart = useCompleteCart(cartId)
+
+              const handleComplete = () => {
+                completeCart.mutate(void 0, {
+                  onSuccess: ({ data, type }) => {
+                    console.log(data.id, type)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default Cart
         - lang: Shell
           label: cURL
           source: |
@@ -669,8 +794,9 @@ paths:
       summary: Remove Discount
       description: >-
         Remove a Discount from a Cart. This only removes the application of the
-        discount, and not completely delete it. The totals will be re-calculated
-        and the payment sessions will be refreshed after the removal.
+        discount, and not completely deletes it. The totals will be
+        re-calculated and the payment sessions will be refreshed after the
+        removal.
       parameters:
         - in: path
           name: id
@@ -699,7 +825,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -760,7 +886,38 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useCreateLineItem } from "medusa-react"
+
+            type Props = {
+              cartId: string
+            }
+
+            const Cart = ({ cartId }: Props) => {
+              const createLineItem = useCreateLineItem(cartId)
+
+              const handleAddItem = (
+                variantId: string,
+                quantity: number
+              ) => {
+                createLineItem.mutate({
+                  variant_id: variantId,
+                  quantity,
+                }, {
+                  onSuccess: ({ cart }) => {
+                    console.log(cart.items)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default Cart
         - lang: Shell
           label: cURL
           source: |
@@ -829,7 +986,38 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useUpdateLineItem } from "medusa-react"
+
+            type Props = {
+              cartId: string
+            }
+
+            const Cart = ({ cartId }: Props) => {
+              const updateLineItem = useUpdateLineItem(cartId)
+
+              const handleUpdateItem = (
+                lineItemId: string,
+                quantity: number
+              ) => {
+                updateLineItem.mutate({
+                  lineId: lineItemId,
+                  quantity,
+                }, {
+                  onSuccess: ({ cart }) => {
+                    console.log(cart.items)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default Cart
         - lang: Shell
           label: cURL
           source: |
@@ -891,7 +1079,36 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useDeleteLineItem } from "medusa-react"
+
+            type Props = {
+              cartId: string
+            }
+
+            const Cart = ({ cartId }: Props) => {
+              const deleteLineItem = useDeleteLineItem(cartId)
+
+              const handleDeleteItem = (
+                lineItemId: string
+              ) => {
+                deleteLineItem.mutate({
+                  lineId: lineItemId,
+                }, {
+                  onSuccess: ({ cart }) => {
+                    console.log(cart.items)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default Cart
         - lang: Shell
           label: cURL
           source: |
@@ -952,7 +1169,36 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useSetPaymentSession } from "medusa-react"
+
+            type Props = {
+              cartId: string
+            }
+
+            const Cart = ({ cartId }: Props) => {
+              const setPaymentSession = useSetPaymentSession(cartId)
+
+              const handleSetPaymentSession = (
+                providerId: string
+              ) => {
+                setPaymentSession.mutate({
+                  provider_id: providerId,
+                }, {
+                  onSuccess: ({ cart }) => {
+                    console.log(cart.payment_session)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default Cart
         - lang: Shell
           label: cURL
           source: |
@@ -986,7 +1232,7 @@ paths:
       summary: Create Payment Sessions
       description: >-
         Create Payment Sessions for each of the available Payment Providers in
-        the Cart's Region. If there only one payment session is created, it will
+        the Cart's Region. If there's only one payment session created, it will
         be selected by default. The creation of the payment session uses the
         payment provider and may require sending requests to third-party
         services.
@@ -1012,7 +1258,32 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useCreatePaymentSession } from "medusa-react"
+
+            type Props = {
+              cartId: string
+            }
+
+            const Cart = ({ cartId }: Props) => {
+              const createPaymentSession = useCreatePaymentSession(cartId)
+
+              const handleComplete = () => {
+                createPaymentSession.mutate(void 0, {
+                  onSuccess: ({ cart }) => {
+                    console.log(cart.payment_sessions)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default Cart
         - lang: Shell
           label: cURL
           source: |
@@ -1081,7 +1352,38 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useUpdatePaymentSession } from "medusa-react"
+
+            type Props = {
+              cartId: string
+            }
+
+            const Cart = ({ cartId }: Props) => {
+              const updatePaymentSession = useUpdatePaymentSession(cartId)
+
+              const handleUpdate = (
+                providerId: string,
+                data: Record<string, unknown>
+              ) => {
+                updatePaymentSession.mutate({
+                  provider_id: providerId,
+                  data
+                }, {
+                  onSuccess: ({ cart }) => {
+                    console.log(cart.payment_session)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default Cart
         - lang: Shell
           label: cURL
           source: >
@@ -1148,7 +1450,36 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useDeletePaymentSession } from "medusa-react"
+
+            type Props = {
+              cartId: string
+            }
+
+            const Cart = ({ cartId }: Props) => {
+              const deletePaymentSession = useDeletePaymentSession(cartId)
+
+              const handleDeletePaymentSession = (
+                providerId: string
+              ) => {
+                deletePaymentSession.mutate({
+                  provider_id: providerId,
+                }, {
+                  onSuccess: ({ cart }) => {
+                    console.log(cart.payment_sessions)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default Cart
         - lang: Shell
           label: cURL
           source: >
@@ -1210,7 +1541,36 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useRefreshPaymentSession } from "medusa-react"
+
+            type Props = {
+              cartId: string
+            }
+
+            const Cart = ({ cartId }: Props) => {
+              const refreshPaymentSession = useRefreshPaymentSession(cartId)
+
+              const handleRefresh = (
+                providerId: string
+              ) => {
+                refreshPaymentSession.mutate({
+                  provider_id: providerId,
+                }, {
+                  onSuccess: ({ cart }) => {
+                    console.log(cart.payment_sessions)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default Cart
         - lang: Shell
           label: cURL
           source: >
@@ -1271,7 +1631,36 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useAddShippingMethodToCart } from "medusa-react"
+
+            type Props = {
+              cartId: string
+            }
+
+            const Cart = ({ cartId }: Props) => {
+              const addShippingMethod = useAddShippingMethodToCart(cartId)
+
+              const handleAddShippingMethod = (
+                optionId: string
+              ) => {
+                addShippingMethod.mutate({
+                  option_id: optionId,
+                }, {
+                  onSuccess: ({ cart }) => {
+                    console.log(cart.shipping_methods)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default Cart
         - lang: Shell
           label: cURL
           source: |
@@ -1436,7 +1825,34 @@ paths:
 
             .then(({ collections, limit, offset, count }) => {
               console.log(collections.length);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useCollections } from "medusa-react"
+
+            const ProductCollections = () => {
+              const { collections, isLoading } = useCollections()
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {collections && collections.length === 0 && (
+                    <span>No Product Collections</span>
+                  )}
+                  {collections && collections.length > 0 && (
+                    <ul>
+                      {collections.map((collection) => (
+                        <li key={collection.id}>{collection.title}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )
+            }
+
+            export default ProductCollections
         - lang: Shell
           label: cURL
           source: |
@@ -1487,7 +1903,29 @@ paths:
 
             .then(({ collection }) => {
               console.log(collection.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useCollection } from "medusa-react"
+
+            type Props = {
+              collectionId: string
+            }
+
+            const ProductCollection = ({ collectionId }: Props) => {
+              const { collection, isLoading } = useCollection(collectionId)
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {collection && <span>{collection.title}</span>}
+                </div>
+              )
+            }
+
+            export default ProductCollection
         - lang: Shell
           label: cURL
           source: |
@@ -1546,7 +1984,37 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useCreateCustomer } from "medusa-react"
+
+            const RegisterCustomer = () => {
+              const createCustomer = useCreateCustomer()
+              // ...
+
+              const handleCreate = (
+                customerData: {
+                  first_name: string
+                  last_name: string
+                  email: string
+                  password: string
+                }
+              ) => {
+                // ...
+                createCustomer.mutate(customerData, {
+                  onSuccess: ({ customer }) => {
+                    console.log(customer.id)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default RegisterCustomer
         - lang: Shell
           label: cURL
           source: |
@@ -1620,7 +2088,27 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useMeCustomer } from "medusa-react"
+
+            const Customer = () => {
+              const { customer, isLoading } = useMeCustomer()
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {customer && (
+                    <span>{customer.first_name} {customer.last_name}</span>
+                  )}
+                </div>
+              )
+            }
+
+            export default Customer
         - lang: Shell
           label: cURL
           source: |
@@ -1679,7 +2167,39 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useUpdateMe } from "medusa-react"
+
+            type Props = {
+              customerId: string
+            }
+
+            const Customer = ({ customerId }: Props) => {
+              const updateCustomer = useUpdateMe()
+              // ...
+
+              const handleUpdate = (
+                firstName: string
+              ) => {
+                // ...
+                updateCustomer.mutate({
+                  id: customerId,
+                  first_name: firstName,
+                }, {
+                  onSuccess: ({ customer }) => {
+                    console.log(customer.first_name)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default Customer
         - lang: Shell
           label: cURL
           source: |
@@ -1753,7 +2273,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1832,7 +2352,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -1899,7 +2419,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -2150,7 +2670,33 @@ paths:
 
             .then(({ orders, limit, offset, count }) => {
               console.log(orders);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useCustomerOrders } from "medusa-react"
+
+            const Orders = () => {
+              // refetch a function that can be used to
+              // re-retrieve orders after the customer logs in
+              const { orders, isLoading } = useCustomerOrders()
+
+              return (
+                <div>
+                  {isLoading && <span>Loading orders...</span>}
+                  {orders?.length && (
+                    <ul>
+                      {orders.map((order) => (
+                        <li key={order.id}>{order.display_id}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )
+            }
+
+            export default Orders
         - lang: Shell
           label: cURL
           source: |
@@ -2209,7 +2755,7 @@ paths:
 
             .then(({ payment_methods }) => {
               console.log(payment_methods.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2275,7 +2821,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2400,7 +2946,32 @@ paths:
 
             .then(({ gift_card }) => {
               console.log(gift_card.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useGiftCard } from "medusa-react"
+
+            type Props = {
+              giftCardCode: string
+            }
+
+            const GiftCard = ({ giftCardCode }: Props) => {
+              const { gift_card, isLoading, isError } = useGiftCard(
+                giftCardCode
+              )
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {gift_card && <span>{gift_card.value}</span>}
+                  {isError && <span>Gift Card does not exist</span>}
+                </div>
+              )
+            }
+
+            export default GiftCard
         - lang: Shell
           label: cURL
           source: |
@@ -2451,7 +3022,35 @@ paths:
 
             .then(({ order_edit }) => {
               console.log(order_edit.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useOrderEdit } from "medusa-react"
+
+            type Props = {
+              orderEditId: string
+            }
+
+            const OrderEdit = ({ orderEditId }: Props) => {
+              const { order_edit, isLoading } = useOrderEdit(orderEditId)
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {order_edit && (
+                    <ul>
+                      {order_edit.changes.map((change) => (
+                        <li key={change.id}>{change.type}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )
+            }
+
+            export default OrderEdit
         - lang: Shell
           label: cURL
           source: |
@@ -2507,9 +3106,38 @@ paths:
             3 })
 
             medusa.orderEdits.complete(orderEditId)
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
+
+            .then(({ order_edit }) => {
+              console.log(order_edit.id)
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useCompleteOrderEdit } from "medusa-react"
+
+            type Props = {
+              orderEditId: string
+            }
+
+            const OrderEdit = ({ orderEditId }: Props) => {
+              const completeOrderEdit = useCompleteOrderEdit(
+                orderEditId
+              )
+              // ...
+
+              const handleCompleteOrderEdit = () => {
+                completeOrderEdit.mutate(void 0, {
+                  onSuccess: ({ order_edit }) => {
+                    console.log(order_edit.confirmed_at)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default OrderEdit
         - lang: Shell
           label: cURL
           source: |
@@ -2562,9 +3190,40 @@ paths:
             3 })
 
             medusa.orderEdits.decline(orderEditId)
-              .then(({ order_edit }) => {
-                console.log(order_edit.id);
-              })
+
+            .then(({ order_edit }) => {
+              console.log(order_edit.id);
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useDeclineOrderEdit } from "medusa-react"
+
+            type Props = {
+              orderEditId: string
+            }
+
+            const OrderEdit = ({ orderEditId }: Props) => {
+              const declineOrderEdit = useDeclineOrderEdit(orderEditId)
+              // ...
+
+              const handleDeclineOrderEdit = (
+                declinedReason: string
+              ) => {
+                declineOrderEdit.mutate({
+                  declined_reason: declinedReason,
+                }, {
+                  onSuccess: ({ order_edit }) => {
+                    console.log(order_edit.declined_at)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default OrderEdit
         - lang: Shell
           label: cURL
           source: |
@@ -2653,7 +3312,40 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useOrders } from "medusa-react"
+
+            type Props = {
+              displayId: number
+              email: string
+            }
+
+            const Order = ({
+              displayId,
+              email
+            }: Props) => {
+              const {
+                order,
+                isLoading,
+              } = useOrders({
+                display_id: displayId,
+                email,
+              })
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {order && <span>{order.display_id}</span>}
+
+                </div>
+              )
+            }
+
+            export default Order
         - lang: Shell
           label: cURL
           source: >
@@ -2723,7 +3415,35 @@ paths:
 
             .catch(() => {
               // an error occurred
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useRequestOrderAccess } from "medusa-react"
+
+            const ClaimOrder = () => {
+              const claimOrder = useRequestOrderAccess()
+
+              const handleClaimOrder = (
+                orderIds: string[]
+              ) => {
+                claimOrder.mutate({
+                  order_ids: orderIds
+                }, {
+                  onSuccess: () => {
+                    // successful
+                  },
+                  onError: () => {
+                    // an error occurred.
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default ClaimOrder
         - lang: Shell
           label: cURL
           source: |
@@ -2782,7 +3502,33 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useCartOrder } from "medusa-react"
+
+            type Props = {
+              cartId: string
+            }
+
+            const Order = ({ cartId }: Props) => {
+              const {
+                order,
+                isLoading,
+              } = useCartOrder(cartId)
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {order && <span>{order.display_id}</span>}
+
+                </div>
+              )
+            }
+
+            export default Order
         - lang: Shell
           label: cURL
           source: |
@@ -2845,7 +3591,35 @@ paths:
 
             .catch(() => {
               // an error occurred
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useGrantOrderAccess } from "medusa-react"
+
+            const ClaimOrder = () => {
+              const confirmOrderRequest = useGrantOrderAccess()
+
+              const handleOrderRequestConfirmation = (
+                token: string
+              ) => {
+                confirmOrderRequest.mutate({
+                  token
+                }, {
+                  onSuccess: () => {
+                    // successful
+                  },
+                  onError: () => {
+                    // an error occurred.
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default ClaimOrder
         - lang: Shell
           label: cURL
           source: |
@@ -2916,7 +3690,33 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useOrder } from "medusa-react"
+
+            type Props = {
+              orderId: string
+            }
+
+            const Order = ({ orderId }: Props) => {
+              const {
+                order,
+                isLoading,
+              } = useOrder(orderId)
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {order && <span>{order.display_id}</span>}
+
+                </div>
+              )
+            }
+
+            export default Order
         - lang: Shell
           label: cURL
           source: |
@@ -2982,9 +3782,41 @@ paths:
             // must be previously logged in or use api token
 
             medusa.paymentCollections.retrieve(paymentCollectionId)
-              .then(({ payment_collection }) => {
-                console.log(payment_collection.id)
-              })
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id)
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { usePaymentCollection } from "medusa-react"
+
+            type Props = {
+              paymentCollectionId: string
+            }
+
+            const PaymentCollection = ({
+              paymentCollectionId
+            }: Props) => {
+              const {
+                payment_collection,
+                isLoading
+              } = usePaymentCollection(
+                paymentCollectionId
+              )
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {payment_collection && (
+                    <span>{payment_collection.status}</span>
+                  )}
+                </div>
+              )
+            }
+
+            export default PaymentCollection
         - lang: Shell
           label: cURL
           source: |
@@ -3049,7 +3881,40 @@ paths:
 
             .then(({ payment_collection }) => {
               console.log(payment_collection.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useManagePaymentSession } from "medusa-react"
+
+            type Props = {
+              paymentCollectionId: string
+            }
+
+            const PaymentCollection = ({
+              paymentCollectionId
+            }: Props) => {
+              const managePaymentSession = useManagePaymentSession(
+                paymentCollectionId
+              )
+
+              const handleManagePaymentSession = (
+                providerId: string
+              ) => {
+                managePaymentSession.mutate({
+                  provider_id: providerId
+                }, {
+                  onSuccess: ({ payment_collection }) => {
+                    console.log(payment_collection.payment_sessions)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default PaymentCollection
         - lang: Shell
           label: cURL
           source: >
@@ -3098,7 +3963,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The ID of the Payment Collections.
+          description: The ID of the Payment Collection.
           schema:
             type: string
       requestBody:
@@ -3140,7 +4005,7 @@ paths:
 
             .then(({ payment_collection }) => {
               console.log(payment_collection.id);
-            });
+            })
 
 
             // Example 2: Updating one session and removing the other
@@ -3157,7 +4022,65 @@ paths:
 
             .then(({ payment_collection }) => {
               console.log(payment_collection.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useManageMultiplePaymentSessions } from "medusa-react"
+
+            type Props = {
+              paymentCollectionId: string
+            }
+
+            const PaymentCollection = ({
+              paymentCollectionId
+            }: Props) => {
+              const managePaymentSessions = useManageMultiplePaymentSessions(
+                paymentCollectionId
+              )
+
+              const handleManagePaymentSessions = () => {
+                // Total amount = 10000
+
+                // Example 1: Adding two new sessions
+                managePaymentSessions.mutate({
+                  sessions: [
+                    {
+                      provider_id: "stripe",
+                      amount: 5000,
+                    },
+                    {
+                      provider_id: "manual",
+                      amount: 5000,
+                    },
+                  ]
+                }, {
+                  onSuccess: ({ payment_collection }) => {
+                    console.log(payment_collection.payment_sessions)
+                  }
+                })
+
+                // Example 2: Updating one session and removing the other
+                managePaymentSessions.mutate({
+                  sessions: [
+                    {
+                      provider_id: "stripe",
+                      amount: 10000,
+                      session_id: "ps_123456"
+                    },
+                  ]
+                }, {
+                  onSuccess: ({ payment_collection }) => {
+                    console.log(payment_collection.payment_sessions)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default PaymentCollection
         - lang: Shell
           label: cURL
           source: >
@@ -3238,7 +4161,39 @@ paths:
 
             .then(({ payment_collection }) => {
               console.log(payment_collection.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useAuthorizePaymentSessionsBatch } from "medusa-react"
+
+            type Props = {
+              paymentCollectionId: string
+            }
+
+            const PaymentCollection = ({
+              paymentCollectionId
+            }: Props) => {
+              const authorizePaymentSessions = useAuthorizePaymentSessionsBatch(
+                paymentCollectionId
+              )
+              // ...
+
+              const handleAuthorizePayments = (paymentSessionIds: string[]) => {
+                authorizePaymentSessions.mutate({
+                  session_ids: paymentSessionIds
+                }, {
+                  onSuccess: ({ payment_collection }) => {
+                    console.log(payment_collection.payment_sessions)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default PaymentCollection
         - lang: Shell
           label: cURL
           source: >
@@ -3305,7 +4260,42 @@ paths:
 
             .then(({ payment_session }) => {
               console.log(payment_session.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: >
+            import React from "react"
+
+            import { usePaymentCollectionRefreshPaymentSession } from
+            "medusa-react"
+
+
+            type Props = {
+              paymentCollectionId: string
+            }
+
+
+            const PaymentCollection = ({
+              paymentCollectionId
+            }: Props) => {
+              const refreshPaymentSession = usePaymentCollectionRefreshPaymentSession(
+                paymentCollectionId
+              )
+              // ...
+
+              const handleRefreshPaymentSession = (paymentSessionId: string) => {
+                refreshPaymentSession.mutate(paymentSessionId, {
+                  onSuccess: ({ payment_session }) => {
+                    console.log(payment_session.status)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+
+            export default PaymentCollection
         - lang: Shell
           label: cURL
           source: >
@@ -3343,7 +4333,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The ID of the Payment Collections.
+          description: The ID of the Payment Collection.
           schema:
             type: string
         - in: path
@@ -3369,7 +4359,37 @@ paths:
 
             .then(({ payment_collection }) => {
               console.log(payment_collection.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useAuthorizePaymentSession } from "medusa-react"
+
+            type Props = {
+              paymentCollectionId: string
+            }
+
+            const PaymentCollection = ({
+              paymentCollectionId
+            }: Props) => {
+              const authorizePaymentSession = useAuthorizePaymentSession(
+                paymentCollectionId
+              )
+              // ...
+
+              const handleAuthorizePayment = (paymentSessionId: string) => {
+                authorizePaymentSession.mutate(paymentSessionId, {
+                  onSuccess: ({ payment_collection }) => {
+                    console.log(payment_collection.payment_sessions)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default PaymentCollection
         - lang: Shell
           label: cURL
           source: >
@@ -3480,7 +4500,39 @@ paths:
 
             .then(({ product_categories, limit, offset, count }) => {
               console.log(product_categories.length);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useProductCategories } from "medusa-react"
+
+            function Categories() {
+              const {
+                product_categories,
+                isLoading,
+              } = useProductCategories()
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {product_categories && !product_categories.length && (
+                    <span>No Categories</span>
+                  )}
+                  {product_categories && product_categories.length > 0 && (
+                    <ul>
+                      {product_categories.map(
+                        (category) => (
+                          <li key={category.id}>{category.name}</li>
+                        )
+                      )}
+                    </ul>
+                  )}
+                </div>
+              )
+            }
+
+            export default Categories
         - lang: Shell
           label: cURL
           source: |
@@ -3553,9 +4605,34 @@ paths:
             // must be previously logged in or use api token
 
             medusa.productCategories.retrieve(productCategoryId)
-              .then(({ product_category }) => {
-                console.log(product_category.id);
-              });
+
+            .then(({ product_category }) => {
+              console.log(product_category.id);
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useProductCategory } from "medusa-react"
+
+            type Props = {
+              categoryId: string
+            }
+
+            const Category = ({ categoryId }: Props) => {
+              const { product_category, isLoading } = useProductCategory(
+                categoryId
+              )
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {product_category && <span>{product_category.name}</span>}
+                </div>
+              )
+            }
+
+            export default Category
         - lang: Shell
           label: cURL
           source: |
@@ -3703,7 +4780,39 @@ paths:
 
             .then(({ product_tags }) => {
               console.log(product_tags.length);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useProductTags } from "medusa-react"
+
+            function Tags() {
+              const {
+                product_tags,
+                isLoading,
+              } = useProductTags()
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {product_tags && !product_tags.length && (
+                    <span>No Product Tags</span>
+                  )}
+                  {product_tags && product_tags.length > 0 && (
+                    <ul>
+                      {product_tags.map(
+                        (tag) => (
+                          <li key={tag.id}>{tag.value}</li>
+                        )
+                      )}
+                    </ul>
+                  )}
+                </div>
+              )
+            }
+
+            export default Tags
         - lang: Shell
           label: cURL
           source: |
@@ -3850,7 +4959,39 @@ paths:
 
             .then(({ product_types }) => {
               console.log(product_types.length);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useProductTypes } from "medusa-react"
+
+            function Types() {
+              const {
+                product_types,
+                isLoading,
+              } = useProductTypes()
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {product_types && !product_types.length && (
+                    <span>No Product Types</span>
+                  )}
+                  {product_types && product_types.length > 0 && (
+                    <ul>
+                      {product_types.map(
+                        (type) => (
+                          <li key={type.id}>{type.value}</li>
+                        )
+                      )}
+                    </ul>
+                  )}
+                </div>
+              )
+            }
+
+            export default Types
         - lang: Shell
           label: cURL
           source: |
@@ -4130,7 +5271,32 @@ paths:
 
             .then(({ products, limit, offset, count }) => {
               console.log(products.length);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useProducts } from "medusa-react"
+
+            const Products = () => {
+              const { products, isLoading } = useProducts()
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {products && !products.length && <span>No Products</span>}
+                  {products && products.length > 0 && (
+                    <ul>
+                      {products.map((product) => (
+                        <li key={product.id}>{product.title}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )
+            }
+
+            export default Products
         - lang: Shell
           label: cURL
           source: |
@@ -4184,7 +5350,7 @@ paths:
 
             .then(({ hits }) => {
               console.log(hits.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4303,7 +5469,29 @@ paths:
 
             .then(({ product }) => {
               console.log(product.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useProduct } from "medusa-react"
+
+            type Props = {
+              productId: string
+            }
+
+            const Product = ({ productId }: Props) => {
+              const { product, isLoading } = useProduct(productId)
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {product && <span>{product.title}</span>}
+                </div>
+              )
+            }
+
+            export default Product
         - lang: Shell
           label: cURL
           source: |
@@ -4410,9 +5598,35 @@ paths:
 
             medusa.regions.list()
 
-            .then(({ regions }) => {
+            .then(({ regions, count, limit, offset }) => {
               console.log(regions.length);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useRegions } from "medusa-react"
+
+            const Regions = () => {
+              const { regions, isLoading } = useRegions()
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {regions?.length && (
+                    <ul>
+                      {regions.map((region) => (
+                        <li key={region.id}>
+                          {region.name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )
+            }
+
+            export default Regions
         - lang: Shell
           label: cURL
           source: |
@@ -4463,7 +5677,31 @@ paths:
 
             .then(({ region }) => {
               console.log(region.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useRegion } from "medusa-react"
+
+            type Props = {
+              regionId: string
+            }
+
+            const Region = ({ regionId }: Props) => {
+              const { region, isLoading } = useRegion(
+                regionId
+              )
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {region && <span>{region.name}</span>}
+                </div>
+              )
+            }
+
+            export default Region
         - lang: Shell
           label: cURL
           source: |
@@ -4509,7 +5747,36 @@ paths:
 
             .then(({ return_reasons }) => {
               console.log(return_reasons.length);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useReturnReasons } from "medusa-react"
+
+            const ReturnReasons = () => {
+              const {
+                return_reasons,
+                isLoading
+              } = useReturnReasons()
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {return_reasons?.length && (
+                    <ul>
+                      {return_reasons.map((returnReason) => (
+                        <li key={returnReason.id}>
+                          {returnReason.label}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )
+            }
+
+            export default ReturnReasons
         - lang: Shell
           label: cURL
           source: |
@@ -4560,7 +5827,34 @@ paths:
 
             .then(({ return_reason }) => {
               console.log(return_reason.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useReturnReason } from "medusa-react"
+
+            type Props = {
+              returnReasonId: string
+            }
+
+            const ReturnReason = ({ returnReasonId }: Props) => {
+              const {
+                return_reason,
+                isLoading
+              } = useReturnReason(
+                returnReasonId
+              )
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {return_reason && <span>{return_reason.label}</span>}
+                </div>
+              )
+            }
+
+            export default ReturnReason
         - lang: Shell
           label: cURL
           source: |
@@ -4622,7 +5916,46 @@ paths:
 
             .then((data) => {
               console.log(data.return.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useCreateReturn } from "medusa-react"
+
+            type CreateReturnData = {
+              items: {
+                item_id: string,
+                quantity: number
+              }[]
+              return_shipping: {
+                option_id: string
+              }
+            }
+
+            type Props = {
+              orderId: string
+            }
+
+            const CreateReturn = ({ orderId }: Props) => {
+              const createReturn = useCreateReturn()
+              // ...
+
+              const handleCreate = (data: CreateReturnData) => {
+                createReturn.mutate({
+                  ...data,
+                  order_id: orderId
+                }, {
+                  onSuccess: ({ return: returnData }) => {
+                    console.log(returnData.id)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default CreateReturn
         - lang: Shell
           label: cURL
           source: |
@@ -4700,7 +6033,37 @@ paths:
 
             .then(({ shipping_options }) => {
               console.log(shipping_options.length);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useShippingOptions } from "medusa-react"
+
+            const ShippingOptions = () => {
+              const {
+                shipping_options,
+                isLoading,
+              } = useShippingOptions()
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {shipping_options?.length &&
+                    shipping_options?.length > 0 && (
+                    <ul>
+                      {shipping_options?.map((shipping_option) => (
+                        <li key={shipping_option.id}>
+                          {shipping_option.id}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )
+            }
+
+            export default ShippingOptions
         - lang: Shell
           label: cURL
           source: |
@@ -4755,7 +6118,43 @@ paths:
 
             .then(({ shipping_options }) => {
               console.log(shipping_options.length);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useCartShippingOptions } from "medusa-react"
+
+            type Props = {
+              cartId: string
+            }
+
+            const ShippingOptions = ({ cartId }: Props) => {
+              const { shipping_options, isLoading } =
+                useCartShippingOptions(cartId)
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {shipping_options && !shipping_options.length && (
+                    <span>No shipping options</span>
+                  )}
+                  {shipping_options && (
+                    <ul>
+                      {shipping_options.map(
+                        (shipping_option) => (
+                          <li key={shipping_option.id}>
+                            {shipping_option.name}
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  )}
+                </div>
+              )
+            }
+
+            export default ShippingOptions
         - lang: Shell
           label: cURL
           source: |
@@ -4837,7 +6236,52 @@ paths:
 
             .then(({ swap }) => {
               console.log(swap.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useCreateSwap } from "medusa-react"
+
+            type Props = {
+              orderId: string
+            }
+
+            type CreateData = {
+              return_items: {
+                item_id: string
+                quantity: number
+              }[]
+              additional_items: {
+                variant_id: string
+                quantity: number
+              }[]
+              return_shipping_option: string
+            }
+
+            const CreateSwap = ({
+              orderId
+            }: Props) => {
+              const createSwap = useCreateSwap()
+              // ...
+
+              const handleCreate = (
+                data: CreateData
+              ) => {
+                createSwap.mutate({
+                  ...data,
+                  order_id: orderId
+                }, {
+                  onSuccess: ({ swap }) => {
+                    console.log(swap.id)
+                  }
+                })
+              }
+
+              // ...
+            }
+
+            export default CreateSwap
         - lang: Shell
           label: cURL
           source: |
@@ -4904,7 +6348,32 @@ paths:
 
             .then(({ swap }) => {
               console.log(swap.id);
-            });
+            })
+        - lang: tsx
+          label: Medusa React
+          source: |
+            import React from "react"
+            import { useCartSwap } from "medusa-react"
+            type Props = {
+              cartId: string
+            }
+
+            const Swap = ({ cartId }: Props) => {
+              const {
+                swap,
+                isLoading,
+              } = useCartSwap(cartId)
+
+              return (
+                <div>
+                  {isLoading && <span>Loading...</span>}
+                  {swap && <span>{swap.id}</span>}
+
+                </div>
+              )
+            }
+
+            export default Swap
         - lang: Shell
           label: cURL
           source: |
@@ -5080,6 +6549,21 @@ paths:
         method: list
         queryParams: StoreGetVariantsParams
       x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.product.variants.list()
+
+            .then(({ variants }) => {
+              console.log(variants.length);
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5168,6 +6652,21 @@ paths:
         method: retrieve
         queryParams: StoreGetVariantsVariantParams
       x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.product.variants.retrieve(productVariantId)
+
+            .then(({ variant }) => {
+              console.log(variant.id);
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5594,6 +7093,7 @@ components:
           example: 16128234334802
         company:
           type: string
+          description: Company
         address_1:
           description: Address line 1
           type: string
@@ -6040,6 +7540,13 @@ components:
           description: The total of gift cards with taxes
           type: integer
           example: 0
+        sales_channels:
+          description: The associated sales channels.
+          type: array
+          nullable: true
+          x-expandable: sales_channels
+          items:
+            $ref: '#/components/schemas/SalesChannel'
     ClaimImage:
       title: Claim Image
       description: The details of an image attached to a claim.
@@ -7482,12 +8989,16 @@ components:
             - modules
           properties:
             payment_providers:
+              description: The store's payment providers.
               $ref: '#/components/schemas/PaymentProvider'
             fulfillment_providers:
+              description: The store's fulfillment providers.
               $ref: '#/components/schemas/FulfillmentProvider'
             feature_flags:
+              description: The feature flags enabled in the store's backend.
               $ref: '#/components/schemas/FeatureFlagsResponse'
             modules:
+              description: The modules installed in the store's backend.
               $ref: '#/components/schemas/ModulesResponse'
     FeatureFlagsResponse:
       type: array
@@ -7990,6 +9501,10 @@ components:
       required:
         - sku
       properties:
+        id:
+          description: The inventory item's ID.
+          type: string
+          example: iitem_12334
         sku:
           description: The Stock Keeping Unit (SKU) code of the Inventory Item.
           type: string
@@ -9250,6 +10765,14 @@ components:
               it.
             url: >-
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
+        sales_channels:
+          description: The associated sales channels.
+          type: array
+          nullable: true
+          x-expandable: sales_channels
+          x-featureFlag: medusa_v2
+          items:
+            $ref: '#/components/schemas/SalesChannel'
     OrderEdit:
       title: Order Edit
       description: >-
@@ -9708,8 +11231,8 @@ components:
           $ref: '#/components/schemas/Region'
         currency_code:
           description: >-
-            The 3 character ISO code for the currency this payment collection is
-            associated with.
+            The three character ISO code for the currency this payment
+            collection is associated with.
           type: string
           example: usd
           externalDocs:
@@ -9992,6 +11515,7 @@ components:
         - type: object
           properties:
             variants:
+              description: The product variants and their prices.
               type: array
               items:
                 $ref: '#/components/schemas/PricedVariant'
@@ -10342,6 +11866,7 @@ components:
         - id
         - is_active
         - is_internal
+        - metadata
         - mpath
         - name
         - parent_category_id
@@ -10355,6 +11880,10 @@ components:
           description: The product category's name
           type: string
           example: Regular Fit
+        description:
+          description: The product category's description.
+          type: string
+          default: ''
         handle:
           description: >-
             A unique string that identifies the Product Category - can for
@@ -10410,6 +11939,18 @@ components:
           description: The date with timezone at which the resource was updated.
           type: string
           format: date-time
+        metadata:
+          description: An optional key-value map with additional details
+          nullable: true
+          type: object
+          example:
+            car: white
+          externalDocs:
+            description: >-
+              Learn about the metadata attribute, and how to delete and update
+              it.
+            url: >-
+              https://docs.medusajs.com/development/entities/overview#metadata-attribute
     ProductCollection:
       title: Product Collection
       description: >-
@@ -11134,7 +12675,14 @@ components:
       required:
         - publishable_key_id
         - sales_channel_id
+        - created_at
+        - updated_at
+        - deleted_at
       properties:
+        id:
+          description: The relation's ID
+          type: string
+          example: pksc_01G8X9A7ESKAJXG2H0E6F1MW7A
         sales_channel_id:
           description: The sales channel's ID
           type: string
@@ -11143,6 +12691,19 @@ components:
           description: The publishable API key's ID
           type: string
           example: pak_01G1G5V21KADXNGH29BJMAJ4B4
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
+          format: date-time
     Refund:
       title: Refund
       description: >-
@@ -11269,7 +12830,7 @@ components:
           type: string
           example: EU
         currency_code:
-          description: The 3 character currency code used in the region.
+          description: The three character currency code used in the region.
           type: string
           example: usd
           externalDocs:
@@ -11770,6 +13331,29 @@ components:
               it.
             url: >-
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
+        carts:
+          description: The associated carts.
+          type: array
+          nullable: true
+          x-expandable: carts
+          x-featureFlag: medusa_v2
+          items:
+            type: object
+        orders:
+          description: The associated orders.
+          type: array
+          nullable: true
+          x-expandable: orders
+          x-featureFlag: medusa_v2
+          items:
+            type: object
+        publishableKeys:
+          description: The associated publishable API keys.
+          type: array
+          nullable: true
+          x-expandable: publishableKeys
+          items:
+            type: object
     SalesChannelLocation:
       title: Sales Channel Stock Location
       description: >-
@@ -12500,6 +14084,7 @@ components:
         - type: object
           properties:
             sales_channels:
+              description: The associated sales channels.
               $ref: '#/components/schemas/SalesChannel'
     Store:
       title: Store
@@ -12529,8 +14114,9 @@ components:
           description: The name of the Store - this may be displayed to the Customer.
           type: string
           example: Medusa Store
+          default: Medusa Store
         default_currency_code:
-          description: The 3 character currency code that is the default of the store.
+          description: The three character currency code that is the default of the store.
           type: string
           example: usd
           externalDocs:
@@ -12539,6 +14125,7 @@ components:
         default_currency:
           description: The details of the store's default currency.
           x-expandable: default_currency
+          default: usd
           nullable: true
           $ref: '#/components/schemas/Currency'
         currencies:
@@ -12603,6 +14190,7 @@ components:
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
     StoreAuthRes:
       type: object
+      description: The customer's details.
       x-expanded-relations:
         field: customer
         relations:
@@ -12617,6 +14205,7 @@ components:
           $ref: '#/components/schemas/Customer'
     StoreBearerAuthRes:
       type: object
+      description: The access token details.
       properties:
         access_token:
           description: Access token that can be used to send authenticated requests.
@@ -12638,6 +14227,7 @@ components:
             $ref: '#/components/schemas/PricedShippingOption'
     StoreCartsRes:
       type: object
+      description: The cart's details.
       x-expanded-relations:
         field: cart
         relations:
@@ -12702,6 +14292,7 @@ components:
           $ref: '#/components/schemas/Cart'
     StoreCollectionsListRes:
       type: object
+      description: The list of product collections with pagination fields.
       required:
         - collections
         - count
@@ -12726,6 +14317,7 @@ components:
           description: The number of items per page
     StoreCollectionsRes:
       type: object
+      description: The details of the product collection.
       required:
         - collection
       properties:
@@ -12734,6 +14326,10 @@ components:
           $ref: '#/components/schemas/ProductCollection'
     StoreCompleteCartRes:
       type: object
+      description: >-
+        If the cart is completed successfully, this will have the created order
+        or the swap's details, based on the cart's type. Otherwise, it'll be the
+        cart's details.
       required:
         - type
         - data
@@ -12776,6 +14372,7 @@ components:
                 - $ref: '#/components/schemas/Swap'
     StoreCustomersListOrdersRes:
       type: object
+      description: The list of the customer's orders with pagination fields.
       x-expanded-relations:
         field: orders
         relations:
@@ -12880,12 +14477,13 @@ components:
           type: integer
     StoreCustomersListPaymentMethodsRes:
       type: object
+      description: The payment method's details.
       required:
         - payment_methods
       properties:
         payment_methods:
           type: array
-          description: An array of saved payment method details.
+          description: The details of the saved payment methods.
           items:
             type: object
             required:
@@ -12904,6 +14502,7 @@ components:
                 type: object
     StoreCustomersRes:
       type: object
+      description: The customer's details.
       x-expanded-relations:
         field: customer
         relations:
@@ -12925,6 +14524,7 @@ components:
           $ref: '#/components/schemas/Customer'
     StoreGetAuthEmailRes:
       type: object
+      description: Details on whether the email exists.
       required:
         - exists
       properties:
@@ -12933,6 +14533,7 @@ components:
           type: boolean
     StoreGetProductCategoriesCategoryRes:
       type: object
+      description: The product category's details.
       x-expanded-relations:
         field: product_category
         relations:
@@ -12946,6 +14547,7 @@ components:
           $ref: '#/components/schemas/ProductCategory'
     StoreGetProductCategoriesRes:
       type: object
+      description: The list of product categories with pagination fields.
       x-expanded-relations:
         field: product_categories
         relations:
@@ -12974,6 +14576,7 @@ components:
           type: integer
           description: The number of items per page
     StoreGiftCardsRes:
+      description: The gift card's details.
       type: object
       required:
         - gift_card
@@ -12983,6 +14586,7 @@ components:
           $ref: '#/components/schemas/GiftCard'
     StoreOrderEditsRes:
       type: object
+      description: The order edit's details.
       x-expanded-relations:
         field: order_edit
         relations:
@@ -13026,6 +14630,7 @@ components:
           $ref: '#/components/schemas/OrderEdit'
     StoreOrdersRes:
       type: object
+      description: The order's details.
       required:
         - order
       x-expanded-relations:
@@ -13115,6 +14720,7 @@ components:
           $ref: '#/components/schemas/Order'
     StorePaymentCollectionSessionsReq:
       type: object
+      description: The details of the payment session to manage.
       required:
         - provider_id
       properties:
@@ -13123,6 +14729,7 @@ components:
           description: The ID of the Payment Provider.
     StorePaymentCollectionsRes:
       type: object
+      description: The payment collection's details.
       x-expanded-relations:
         field: payment_collection
         relations:
@@ -13139,6 +14746,7 @@ components:
           $ref: '#/components/schemas/PaymentCollection'
     StorePaymentCollectionsSessionRes:
       type: object
+      description: The details of the payment session.
       required:
         - payment_session
       properties:
@@ -13159,6 +14767,7 @@ components:
           description: The Customer's password.
     StorePostCartReq:
       type: object
+      description: The details of the cart to be created.
       properties:
         region_id:
           type: string
@@ -13186,8 +14795,8 @@ components:
         country_code:
           type: string
           description: >-
-            The 2 character ISO country code to create the Cart in. Setting this
-            parameter will set the country code of the shipping address.
+            The two character ISO country code to create the Cart in. Setting
+            this parameter will set the country code of the shipping address.
           externalDocs:
             url: >-
               https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
@@ -13217,6 +14826,7 @@ components:
             user_agent: Chrome
     StorePostCartsCartLineItemsItemReq:
       type: object
+      description: The details to update of the line item.
       required:
         - quantity
       properties:
@@ -13236,6 +14846,7 @@ components:
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
     StorePostCartsCartLineItemsReq:
       type: object
+      description: The details of the line item to create.
       required:
         - variant_id
         - quantity
@@ -13259,6 +14870,7 @@ components:
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
     StorePostCartsCartPaymentSessionReq:
       type: object
+      description: The details of the payment session to set.
       required:
         - provider_id
       properties:
@@ -13275,6 +14887,7 @@ components:
           description: The data to update the payment session with.
     StorePostCartsCartReq:
       type: object
+      description: The details to update of the cart.
       properties:
         region_id:
           type: string
@@ -13354,6 +14967,7 @@ components:
             user_agent: Chrome
     StorePostCartsCartShippingMethodReq:
       type: object
+      description: The details of the shipping method to add to the cart.
       required:
         - option_id
       properties:
@@ -13368,6 +14982,7 @@ components:
             provider you're using.
     StorePostCustomersCustomerAcceptClaimReq:
       type: object
+      description: The details necessary to grant order access.
       required:
         - token
       properties:
@@ -13389,6 +15004,7 @@ components:
           $ref: '#/components/schemas/AddressCreatePayload'
     StorePostCustomersCustomerOrderClaimReq:
       type: object
+      description: The details of the orders to claim.
       required:
         - order_ids
       properties:
@@ -13408,6 +15024,7 @@ components:
           format: email
     StorePostCustomersCustomerReq:
       type: object
+      description: The details to update of the customer.
       properties:
         first_name:
           description: The customer's first name.
@@ -13442,6 +15059,7 @@ components:
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
     StorePostCustomersReq:
       type: object
+      description: The details of the customer to create.
       required:
         - first_name
         - last_name
@@ -13485,12 +15103,14 @@ components:
           type: string
     StorePostOrderEditsOrderEditDecline:
       type: object
+      description: The details of the order edit's decline.
       properties:
         declined_reason:
           type: string
           description: The reason for declining the Order Edit.
     StorePostPaymentCollectionsBatchSessionsAuthorizeReq:
       type: object
+      description: The details of the payment sessions to authorize.
       required:
         - session_ids
       properties:
@@ -13501,13 +15121,14 @@ components:
             type: string
     StorePostPaymentCollectionsBatchSessionsReq:
       type: object
+      description: The details of the payment sessions to manage.
       required:
         - sessions
       properties:
         sessions:
           description: >-
-            An array of payment sessions related to the Payment Collection.
-            Existing sessions that are not added in this array will be deleted.
+            Payment sessions related to the Payment Collection. Existing
+            sessions that are not added in this array will be deleted.
           type: array
           items:
             type: object
@@ -13528,6 +15149,7 @@ components:
                   provided, a new payment session is created.
     StorePostReturnsReq:
       type: object
+      description: The details of the return to create.
       required:
         - order_id
         - items
@@ -13586,6 +15208,7 @@ components:
         filter:
           description: Pass filters based on the search service.
     StorePostSearchRes:
+      description: The list of search results.
       allOf:
         - type: object
           required:
@@ -13599,6 +15222,7 @@ components:
         - type: object
     StorePostSwapsReq:
       type: object
+      description: The details of the swap to create.
       required:
         - order_id
         - return_items
@@ -13650,6 +15274,7 @@ components:
                 type: integer
     StoreProductTagsListRes:
       type: object
+      description: The list of product tags with pagination fields.
       required:
         - product_tags
         - count
@@ -13696,6 +15321,7 @@ components:
           description: The number of items per page
     StoreProductsListRes:
       type: object
+      description: The list of products with pagination fields.
       x-expanded-relations:
         field: products
         relations:
@@ -13754,6 +15380,7 @@ components:
           $ref: '#/components/schemas/PricedProduct'
     StoreRegionsListRes:
       type: object
+      description: The list of regions with pagination fields.
       x-expanded-relations:
         field: regions
         relations:
@@ -13782,6 +15409,7 @@ components:
           description: The number of items per page
     StoreRegionsRes:
       type: object
+      description: The region's details.
       x-expanded-relations:
         field: region
         relations:
@@ -13799,6 +15427,7 @@ components:
           $ref: '#/components/schemas/Region'
     StoreReturnReasonsListRes:
       type: object
+      description: The list of return reasons.
       x-expanded-relations:
         field: return_reasons
         relations:
@@ -13814,6 +15443,7 @@ components:
             $ref: '#/components/schemas/ReturnReason'
     StoreReturnReasonsRes:
       type: object
+      description: The return reason's details.
       x-expanded-relations:
         field: return_reason
         relations:
@@ -13827,6 +15457,7 @@ components:
           $ref: '#/components/schemas/ReturnReason'
     StoreReturnsRes:
       type: object
+      description: The return's details.
       x-expanded-relations:
         field: return
         relations:
@@ -13842,6 +15473,7 @@ components:
           $ref: '#/components/schemas/Return'
     StoreShippingOptionsListRes:
       type: object
+      description: The list of shipping options.
       x-expanded-relations:
         field: shipping_options
         relations:
@@ -13856,6 +15488,7 @@ components:
             $ref: '#/components/schemas/PricedShippingOption'
     StoreSwapsRes:
       type: object
+      description: The swap's details.
       x-expanded-relations:
         field: swap
         relations:
@@ -13879,6 +15512,7 @@ components:
           $ref: '#/components/schemas/Swap'
     StoreVariantsListRes:
       type: object
+      description: The list of product variants.
       x-expanded-relations:
         field: variants
         relations:
@@ -13897,6 +15531,7 @@ components:
             $ref: '#/components/schemas/PricedVariant'
     StoreVariantsRes:
       type: object
+      description: The product variant's details.
       x-expanded-relations:
         field: variant
         relations:

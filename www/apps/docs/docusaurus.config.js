@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-require("dotenv").config()
-const fs = require("fs")
-const reverseSidebar = require("./src/utils/reverse-sidebar")
+import "dotenv/config"
+import fs from "fs"
+import path from "path"
+import { themes as prismThemes } from "prism-react-renderer"
+const reverseSidebarItems = require("./src/utils/reverse-sidebar")
 const excludeSidebarResults = require("./src/utils/exclude-sidebar-results")
 
 const announcementBar = JSON.parse(fs.readFileSync("./announcement.json"))
@@ -17,6 +19,14 @@ const config = {
   favicon: "img/favicon.ico",
   organizationName: "medusajs",
   projectName: "medusajs/www",
+  markdown: {
+    mdx1Compat: {
+      comments: true,
+      admonitions: false,
+      headingIds: false,
+    },
+    mermaid: true,
+  },
   plugins: [
     require.resolve("docusaurus-plugin-image-zoom"),
     async function tailwindPlugin() {
@@ -54,8 +64,39 @@ const config = {
         },
       }
     },
+    [
+      "./src/plugins/docusaurus-plugin-diagram2code-showcase",
+      {
+        directoryPath: path.join(__dirname, "diagrams"),
+        outputPath: path.join(__dirname, "src", "utils"),
+      },
+    ],
   ],
+  themes: ["@docusaurus/theme-mermaid"],
   themeConfig: {
+    mermaid: {
+      theme: {
+        light: "base",
+        dark: "base",
+      },
+      options: {
+        themeVariables: {
+          background: "#FFFFFF",
+          mainBkg: "#FFFFFF",
+          primaryColor: "#FFFFFF",
+          primaryTextColor: "#030712",
+          primaryBorderColor: "#D1D5DB",
+          nodeBorder: "#D1D5DB",
+          lineColor: "#11181C",
+          fontFamily: "Inter",
+          fontSize: "13px",
+          tertiaryColor: "#F3F4F6",
+          tertiaryBorderColor: "#D1D5DB",
+          tertiaryTextColor: "#030712",
+          clusterBkg: "#F3F4F6",
+        },
+      },
+    },
     image: "img/docs-meta.jpg",
     colorMode: {
       defaultMode: "light",
@@ -125,9 +166,16 @@ const config = {
         process.env.AI_API_ASSISTANT_RECAPTCHA_SITE_KEY || "temp",
     },
     prism: {
-      defaultLanguage: "js",
+      defaultLanguage: "ts",
+      additionalLanguages: ["bash", "json"],
       plugins: ["line-numbers", "show-language"],
-      theme: require("./src/themes/medusaDocs"),
+      theme: {
+        ...prismThemes.vsDark,
+        plain: {
+          ...prismThemes.vsDark.plain,
+          backgroundColor: "#111827",
+        },
+      },
     },
     zoom: {
       selector: ".markdown :not(.no-zoom-img) > img:not(.no-zoom-img)",
@@ -258,7 +306,7 @@ const config = {
             ...args
           }) {
             const sidebarItems = await defaultSidebarItemsGenerator(args)
-            return reverseSidebar(
+            return reverseSidebarItems(
               excludeSidebarResults(sidebarItems, args.item),
               args.item
             )
@@ -276,10 +324,27 @@ const config = {
       },
     ],
   ],
+  webpack: {
+    jsLoader: (isServer) => ({
+      loader: require.resolve("swc-loader"),
+      options: {
+        jsc: {
+          parser: {
+            syntax: "typescript",
+            tsx: true,
+          },
+          target: "es2017",
+        },
+        module: {
+          type: isServer ? "commonjs" : "es6",
+        },
+      },
+    }),
+  },
 }
 
 if (Object.keys(announcementBar).length) {
   config.themeConfig.announcementBar = announcementBar
 }
 
-module.exports = config
+export default config

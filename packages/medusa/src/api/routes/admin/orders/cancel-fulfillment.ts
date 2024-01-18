@@ -16,7 +16,7 @@ import { promiseAll } from "@medusajs/utils"
  * @oas [post] /admin/orders/{id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersOrderFulfillmentsCancel"
  * summary: "Cancel a Fulfilmment"
- * description: "Cancel an order's fulfillment and change its status."
+ * description: "Cancel an order's fulfillment and change its fulfillment status to `canceled`."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
@@ -36,7 +36,37 @@ import { promiseAll } from "@medusajs/utils"
  *       medusa.admin.orders.cancelFulfillment(orderId, fulfillmentId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCancelFulfillment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const cancelFulfillment = useAdminCancelFulfillment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleCancel = (
+ *           fulfillmentId: string
+ *         ) => {
+ *           cancelFulfillment.mutate(fulfillmentId, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.fulfillments)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |

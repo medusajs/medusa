@@ -4,9 +4,10 @@ import {
   InternalModuleDeclaration,
   LinkModuleDefinition,
   LoadedModule,
-  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  MedusaContainer,
+  ModuleBootstrapDeclaration,
   ModuleDefinition,
   ModuleExports,
   ModuleJoinerConfig,
@@ -53,7 +54,7 @@ type ModuleAlias = {
 export type ModuleBootstrapOptions = {
   moduleKey: string
   defaultPath: string
-  declaration?: InternalModuleDeclaration | ExternalModuleDeclaration
+  declaration?: ModuleBootstrapDeclaration
   moduleExports?: ModuleExports
   sharedContainer?: MedusaContainer
   moduleDefinition?: ModuleDefinition
@@ -103,6 +104,21 @@ export class MedusaModule {
 
       return MedusaModule.getModuleInstance(key)
     })
+  }
+  
+  public static onApplicationStart(): void {
+    for (const instances of MedusaModule.instances_.values()) {
+      for (const instance of Object.values(instances) as IModuleService[]) {
+        if (instance?.__hooks) {
+          instance.__hooks?.onApplicationStart
+            ?.bind(instance)()
+            .catch(() => {
+              // The module should handle this and log it
+              return void 0
+            })
+        }
+      }
+    }
   }
 
   public static clearInstances(): void {

@@ -27,7 +27,9 @@ type CreateUserRolesEnum = NoUndefined<AdminCreateUserRequest["role"]>
 // convert Enum type to union of string literals
 export type CreateUserRoles = `${CreateUserRolesEnum}`
 
-// remove enum type and replace with union type
+/**
+ * The details of the user to create.
+ */
 export type AdminCreateUserPayload =
   | Omit<AdminCreateUserRequest, "role">
   | {
@@ -38,6 +40,9 @@ type UpdateUserRolesEnum = NoUndefined<AdminUpdateUserRequest["role"]>
 
 export type UpdateUserRoles = `${UpdateUserRolesEnum}`
 
+/**
+ * The details to update of the user.
+ */
 export type AdminUpdateUserPayload = Omit<AdminUpdateUserRequest, "role"> & {
   role?: UpdateUserRoles
 }
@@ -48,4 +53,7 @@ export type AdminPostInvitesPayload = Omit<AdminPostInvitesReq, "role"> & {
   role: InviteUserRolesEnum
 }
 
+/**
+ * The file(s) to upload.
+ */
 export type AdminCreateUploadPayload = File | File[]

@@ -11,6 +11,9 @@ const require = createRequire(import.meta.url)
 
 const referenceNames = process.argv.slice(2) || ["all"]
 const basePath = path.join(require.resolve("typedoc-config"), "..")
+let generatedCount = 0
+let totalCount = referenceNames.length
+let ranMerger = false
 
 if (!referenceNames.length) {
   console.error(
@@ -27,15 +30,18 @@ referenceNames.forEach((name) => {
     // `typedoc-config` directory, except for files starting
     // with `_`
     const files = globSync("[^_]**.js", {
-      cwd: path.join(basePath),
+      cwd: basePath,
     })
+    totalCount = files.length
     files.forEach((file) => generateReference(file))
+  } else if (name === "merge") {
+    runMerger()
   } else {
     generateReference(`${name}.js`)
   }
 })
 
-function generateReference(referenceName: string) {
+export function generateReference(referenceName: string) {
   const configPathName = path.join(basePath, referenceName)
 
   // check if the config file exists
@@ -54,6 +60,13 @@ function generateReference(referenceName: string) {
   typedocProcess.stdout?.on("data", (chunk: string) => {
     formatColoredLog(colorLog, referenceName, chunk.trim())
   })
+  typedocProcess.on("exit", (code) => {
+    formatColoredLog(colorLog, referenceName, "Finished Generating reference.")
+    generatedCount++
+    if (generatedCount >= totalCount && !ranMerger && code !== 1) {
+      runMerger()
+    }
+  })
   typedocProcess.stderr?.on("data", (chunk: string) => {
     // split multiline outputs
     const split: string[] = chunk.split("\n")
@@ -69,7 +82,6 @@ function generateReference(referenceName: string) {
       )
     })
   })
-  formatColoredLog(colorLog, referenceName, "Finished Generating reference.")
 }
 
 function formatColoredLog(
@@ -78,4 +90,11 @@ function formatColoredLog(
   message: string
 ) {
   console.log(`${chalkInstance(title)} -> ${message}`)
+}
+
+function runMerger() {
+  // run merger
+  console.log(chalk.bgBlueBright("\n\nRunning Merger\n\n"))
+  ranMerger = true
+  generateReference("_merger.js")
 }

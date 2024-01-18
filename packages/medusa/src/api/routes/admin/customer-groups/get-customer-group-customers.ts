@@ -29,7 +29,43 @@ import { Type } from "class-transformer"
  *       medusa.admin.customerGroups.listCustomers(customerGroupId)
  *       .then(({ customers }) => {
  *         console.log(customers.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCustomerGroupCustomers } from "medusa-react"
+ *
+ *       type Props = {
+ *         customerGroupId: string
+ *       }
+ *
+ *       const CustomerGroup = ({ customerGroupId }: Props) => {
+ *         const {
+ *           customers,
+ *           isLoading,
+ *         } = useAdminCustomerGroupCustomers(
+ *           customerGroupId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {customers && !customers.length && (
+ *               <span>No customers</span>
+ *             )}
+ *             {customers && customers.length > 0 && (
+ *               <ul>
+ *                 {customers.map((customer) => (
+ *                   <li key={customer.id}>{customer.first_name}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default CustomerGroup
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -75,23 +111,38 @@ export default async (req: Request, res: Response) => {
   res.json(result)
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved customer group's customers.
+ */
 // eslint-disable-next-line max-len
 export class AdminGetGroupsGroupCustomersParams {
+  /**
+   * Search term to search customers by their email, first name, and last name.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   */
   @IsOptional()
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string

@@ -4,7 +4,7 @@
   import ArrowLeftMini from "../arrow-left-mini"
 
   describe("ArrowLeftMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ArrowLeftMini data-testid="icon" />)
 
 

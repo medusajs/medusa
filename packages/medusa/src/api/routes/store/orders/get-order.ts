@@ -22,7 +22,33 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.orders.retrieve(orderId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useOrder } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const {
+ *           order,
+ *           isLoading,
+ *         } = useOrder(orderId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {order && <span>{order.display_id}</span>}
+ *
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |

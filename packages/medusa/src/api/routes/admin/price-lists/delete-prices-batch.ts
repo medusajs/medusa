@@ -1,8 +1,10 @@
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { ArrayNotEmpty, IsString } from "class-validator"
-
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 import { validator } from "../../../../utils/validator"
+import { WorkflowTypes } from "@medusajs/types"
+import { removePriceListPrices } from "@medusajs/core-flows"
 
 /**
  * @oas [delete] /admin/price-lists/{id}/prices/batch
@@ -33,7 +35,33 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeletePriceListPrices } from "medusa-react"
+ *
+ *       const PriceList = (
+ *         priceListId: string
+ *       ) => {
+ *         const deletePrices = useAdminDeletePriceListPrices(priceListId)
+ *         // ...
+ *
+ *         const handleDeletePrices = (priceIds: string[]) => {
+ *           deletePrices.mutate({
+ *             price_ids: priceIds
+ *           }, {
+ *             onSuccess: ({ ids, deleted, object }) => {
+ *               console.log(ids)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -81,13 +109,35 @@ export default async (req, res) => {
 
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await priceListService
-      .withTransaction(transactionManager)
-      .deletePrices(id, validated.price_ids)
-  })
+
+  const isMedusaV2FlagEnabled = featureFlagRouter.isFeatureEnabled(
+    MedusaV2Flag.key
+  )
+
+  if (isMedusaV2FlagEnabled) {
+    const deletePriceListPricesWorkflow = removePriceListPrices(req.scope)
+
+    const input = {
+      price_list_id: id,
+      money_amount_ids: validated.price_ids,
+    } as WorkflowTypes.PriceListWorkflow.RemovePriceListPricesWorkflowInputDTO
+
+    await deletePriceListPricesWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+  } else {
+    await manager.transaction(async (transactionManager) => {
+      await priceListService
+        .withTransaction(transactionManager)
+        .deletePrices(id, validated.price_ids)
+    })
+  }
 
   res.json({ ids: validated.price_ids, object: "money-amount", deleted: true })
 }
@@ -95,9 +145,10 @@ export default async (req, res) => {
 /**
  * @schema AdminDeletePriceListPricesPricesReq
  * type: object
+ * description: "The details of the prices to delete."
  * properties:
  *   price_ids:
- *     description: The price IDs of the Money Amounts to delete.
+ *     description: The IDs of the prices to delete.
  *     type: array
  *     items:
  *       type: string

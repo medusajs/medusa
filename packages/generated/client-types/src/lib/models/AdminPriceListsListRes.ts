@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { PriceList } from "./PriceList"
 
+/**
+ * The list of price lists with pagination fields.
+ */
 export interface AdminPriceListsListRes {
   /**
    * An array of price lists details.

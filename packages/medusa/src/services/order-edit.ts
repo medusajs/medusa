@@ -15,6 +15,7 @@ import {
   FindOptionsWhere,
   ILike,
   IsNull,
+  Not,
 } from "typeorm"
 import { FindConfig, Selector } from "../types/common"
 import {
@@ -753,9 +754,12 @@ export default class OrderEditService extends TransactionBaseService {
 
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
-      const [lineItems] = await promiseAll([
+      const [originalOrderLineItems] = await promiseAll([
         lineItemServiceTx.update(
-          { order_id: orderEdit.order_id },
+          [
+            { order_id: orderEdit.order_id, order_edit_id: Not(orderEditId) },
+            { order_id: orderEdit.order_id, order_edit_id: IsNull() },
+          ],
           { order_id: null }
         ),
         lineItemServiceTx.update(
@@ -770,7 +774,7 @@ export default class OrderEditService extends TransactionBaseService {
       orderEdit = await orderEditRepository.save(orderEdit)
 
       if (this.inventoryService_) {
-        const itemsIds = lineItems.map((i) => i.id)
+        const itemsIds = originalOrderLineItems.map((i) => i.id)
         await this.inventoryService_!.deleteReservationItemsByLineItem(
           itemsIds,
           {

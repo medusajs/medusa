@@ -1,95 +1,53 @@
-import { Context, DAL, FindConfig, PricingTypes } from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
 import {
-  InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  retrieveEntity,
+  validateRuleAttributes,
 } from "@medusajs/utils"
 import { RuleType } from "@models"
+import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   ruleTypeRepository: DAL.RepositoryService
 }
 
-export default class RuleTypeService<TEntity extends RuleType = RuleType> {
-  protected readonly ruleTypeRepository_: DAL.RepositoryService
+export default class RuleTypeService<
+  TEntity extends RuleType = RuleType
+> extends ModulesSdkUtils.abstractServiceFactory<
+  InjectedDependencies,
+  {
+    create: ServiceTypes.CreateRuleTypeDTO
+    update: ServiceTypes.UpdateRuleTypeDTO
+  },
+  {
+    list: ServiceTypes.FilterableRuleTypeProps
+    listAndCount: ServiceTypes.FilterableRuleTypeProps
+  }
+>(RuleType)<TEntity> {
+  protected readonly ruleTypeRepository_: DAL.RepositoryService<TEntity>
 
   constructor({ ruleTypeRepository }: InjectedDependencies) {
+    // @ts-ignore
+    super(...arguments)
     this.ruleTypeRepository_ = ruleTypeRepository
-  }
-
-  @InjectManager("ruleTypeRepository_")
-  async retrieve(
-    ruleTypeId: string,
-    config: FindConfig<PricingTypes.RuleTypeDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity> {
-    return (await retrieveEntity<RuleType, PricingTypes.RuleTypeDTO>({
-      id: ruleTypeId,
-      identifierColumn: "id",
-      entityName: RuleType.name,
-      repository: this.ruleTypeRepository_,
-      config,
-      sharedContext,
-    })) as TEntity
-  }
-
-  @InjectManager("ruleTypeRepository_")
-  async list(
-    filters: PricingTypes.FilterableRuleTypeProps = {},
-    config: FindConfig<PricingTypes.RuleTypeDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<RuleType>(filters, config)
-
-    return (await this.ruleTypeRepository_.find(
-      queryOptions,
-      sharedContext
-    )) as TEntity[]
-  }
-
-  @InjectManager("ruleTypeRepository_")
-  async listAndCount(
-    filters: PricingTypes.FilterableRuleTypeProps = {},
-    config: FindConfig<PricingTypes.RuleTypeDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TEntity[], number]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<RuleType>(filters, config)
-
-    return (await this.ruleTypeRepository_.findAndCount(
-      queryOptions,
-      sharedContext
-    )) as [TEntity[], number]
   }
 
   @InjectTransactionManager("ruleTypeRepository_")
   async create(
-    data: PricingTypes.CreateRuleTypeDTO[],
+    data: ServiceTypes.CreateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await this.ruleTypeRepository_.create(
-      data,
-      sharedContext
-    )) as TEntity[]
+    validateRuleAttributes(data.map((d) => d.rule_attribute))
+    return await this.ruleTypeRepository_.create(data, sharedContext)
   }
 
   @InjectTransactionManager("ruleTypeRepository_")
   async update(
-    data: PricingTypes.UpdateRuleTypeDTO[],
+    data: ServiceTypes.UpdateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await this.ruleTypeRepository_.update(
-      data,
-      sharedContext
-    )) as TEntity[]
-  }
-
-  @InjectTransactionManager("ruleTypeRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.ruleTypeRepository_.delete(ids, sharedContext)
+    validateRuleAttributes(data.map((d) => d.rule_attribute))
+    return await this.ruleTypeRepository_.update(data, sharedContext)
   }
 }

@@ -54,7 +54,37 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateTaxRate } from "medusa-react"
+ *
+ *       type Props = {
+ *         taxRateId: string
+ *       }
+ *
+ *       const TaxRate = ({ taxRateId }: Props) => {
+ *         const updateTaxRate = useAdminUpdateTaxRate(taxRateId)
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           name: string
+ *         ) => {
+ *           updateTaxRate.mutate({
+ *             name
+ *           }, {
+ *             onSuccess: ({ tax_rate }) => {
+ *               console.log(tax_rate.name)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default TaxRate
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -140,6 +170,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostTaxRatesTaxRateReq
  * type: object
+ * description: "The details to update of the tax rate."
  * properties:
  *   code:
  *     type: string
@@ -199,11 +230,20 @@ export class AdminPostTaxRatesTaxRateReq {
   product_types?: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminPostTaxRatesTaxRateParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

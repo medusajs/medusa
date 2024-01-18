@@ -34,7 +34,33 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateCustomerGroup } from "medusa-react"
+ *
+ *       type Props = {
+ *         customerGroupId: string
+ *       }
+ *
+ *       const CustomerGroup = ({ customerGroupId }: Props) => {
+ *         const updateCustomerGroup = useAdminUpdateCustomerGroup(
+ *           customerGroupId
+ *         )
+ *         // ..
+ *
+ *         const handleUpdate = (name: string) => {
+ *           updateCustomerGroup.mutate({
+ *             name,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CustomerGroup
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -110,6 +136,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostCustomerGroupsGroupReq
  * type: object
+ * description: "The details to update in the customer group."
  * properties:
  *   name:
  *     description: "Name of the customer group"

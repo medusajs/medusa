@@ -41,7 +41,37 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.shippingOptions.list()
  *       .then(({ shipping_options, count }) => {
  *         console.log(shipping_options.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminShippingOptions } from "medusa-react"
+ *
+ *       const ShippingOptions = () => {
+ *         const {
+ *           shipping_options,
+ *           isLoading
+ *         } = useAdminShippingOptions()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {shipping_options && !shipping_options.length && (
+ *               <span>No Shipping Options</span>
+ *             )}
+ *             {shipping_options && shipping_options.length > 0 && (
+ *               <ul>
+ *                 {shipping_options.map((option) => (
+ *                   <li key={option.id}>{option.name}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ShippingOptions
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -91,16 +121,28 @@ export default async (req, res) => {
   res.status(200).json({ shipping_options: options, count })
 }
 
+/**
+ * Parameters used to filter the retrieved shipping options.
+ */
 export class AdminGetShippingOptionsParams {
+  /**
+   * Filter shipping options by the ID of the region they belong to.
+   */
   @IsOptional()
   @IsString()
   region_id?: string
 
+  /**
+   * Filter shipping options by whether they're return shipping options.
+   */
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => optionalBooleanMapper.get(value))
   is_return?: boolean
 
+  /**
+   * Filter shipping options by whether they're available for admin users only.
+   */
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => optionalBooleanMapper.get(value))

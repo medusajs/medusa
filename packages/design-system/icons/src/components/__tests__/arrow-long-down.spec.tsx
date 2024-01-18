@@ -4,7 +4,7 @@
   import ArrowLongDown from "../arrow-long-down"
 
   describe("ArrowLongDown", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ArrowLongDown data-testid="icon" />)
 
 

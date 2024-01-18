@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The product collection's details to update.
+ */
 export interface AdminPostCollectionsCollectionReq {
   /**
    * The title of the collection.
