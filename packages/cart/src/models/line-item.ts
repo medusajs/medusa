@@ -22,6 +22,7 @@ type OptionalLineItemProps =
   | "is_tax_inclusive"
   | "compare_at_unit_price"
   | "requires_shipping"
+  | "cart"
   | DAL.EntityDateColumns
 
 @Entity({ tableName: "cart_line_item" })
@@ -31,12 +32,15 @@ export default class LineItem {
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @Property({ columnType: "text" })
+  cart_id: string
+
   @ManyToOne(() => Cart, {
     onDelete: "cascade",
     index: "IDX_line_item_cart_id",
-    fieldName: "cart_id",
+    nullable: true,
   })
-  cart!: Cart
+  cart?: Cart | null
 
   @Property({ columnType: "text" })
   title: string
@@ -47,7 +51,7 @@ export default class LineItem {
   @Property({ columnType: "text", nullable: true })
   thumbnail?: string | null
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "integer" })
   quantity: number
 
   @Property({
@@ -147,7 +151,7 @@ export default class LineItem {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at: Date
+  created_at?: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -155,7 +159,7 @@ export default class LineItem {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at: Date
+  updated_at?: Date
 
   @BeforeCreate()
   onCreate() {

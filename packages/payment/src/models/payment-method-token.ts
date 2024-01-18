@@ -17,19 +17,19 @@ export default class PaymentMethodToken {
   provider_id: string
 
   @Property({ columnType: "jsonb", nullable: true })
-  data?: Record<string, unknown> | null
+  data: Record<string, unknown> | null = null
 
   @Property({ columnType: "text" })
   name: string
 
   @Property({ columnType: "text", nullable: true })
-  type_detail?: string | null
+  type_detail: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  description_detail?: string | null
+  description_detail: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  metadata?: Record<string, unknown> | null
+  metadata: Record<string, unknown> | null = null
 
   @BeforeCreate()
   onCreate() {

@@ -2,9 +2,11 @@ import { PromotionTypes } from "@medusajs/types"
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
+  ComputedActions,
   MedusaError,
 } from "@medusajs/utils"
 import { areRulesValidForContext } from "../validations"
+import { computeActionForBudgetExceeded } from "./usage"
 
 export function getComputedActionsForShippingMethods(
   promotion: PromotionTypes.PromotionDTO,
@@ -61,10 +63,21 @@ export function applyPromotionToShippingMethods(
         continue
       }
 
+      const budgetExceededAction = computeActionForBudgetExceeded(
+        promotion,
+        amount
+      )
+
+      if (budgetExceededAction) {
+        computedActions.push(budgetExceededAction)
+
+        continue
+      }
+
       methodIdPromoValueMap.set(method.id, appliedPromoValue + amount)
 
       computedActions.push({
-        action: "addShippingMethodAdjustment",
+        action: ComputedActions.ADD_SHIPPING_METHOD_ADJUSTMENT,
         shipping_method_id: method.id,
         amount,
         code: promotion.code!,
@@ -99,10 +112,21 @@ export function applyPromotionToShippingMethods(
         continue
       }
 
+      const budgetExceededAction = computeActionForBudgetExceeded(
+        promotion,
+        amount
+      )
+
+      if (budgetExceededAction) {
+        computedActions.push(budgetExceededAction)
+
+        continue
+      }
+
       methodIdPromoValueMap.set(method.id, appliedPromoValue + amount)
 
       computedActions.push({
-        action: "addShippingMethodAdjustment",
+        action: ComputedActions.ADD_SHIPPING_METHOD_ADJUSTMENT,
         shipping_method_id: method.id,
         amount,
         code: promotion.code!,

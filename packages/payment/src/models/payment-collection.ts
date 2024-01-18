@@ -48,16 +48,16 @@ export default class PaymentCollection {
     nullable: true,
     serializer: optionalNumericSerializer,
   })
-  authorized_amount?: number | null
+  authorized_amount: number | null = null
 
   @Property({
     columnType: "numeric",
     nullable: true,
     serializer: optionalNumericSerializer,
   })
-  refunded_amount?: number | null
+  refunded_amount: number | null = null
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", index: "IDX_payment_collection_region_id" })
   region_id: string
 
   @Property({
@@ -80,13 +80,13 @@ export default class PaymentCollection {
     nullable: true,
     index: "IDX_payment_collection_deleted_at",
   })
-  deleted_at?: Date | null
+  deleted_at: Date | null = null
 
   @Property({
     columnType: "timestamptz",
     nullable: true,
   })
-  completed_at?: Date | null
+  completed_at: Date | null = null
 
   @Enum({
     items: () => PaymentCollectionStatus,
