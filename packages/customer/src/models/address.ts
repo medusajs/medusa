@@ -25,6 +25,7 @@ export default class Address {
 
   @ManyToOne(() => Customer, {
     fieldName: "customer_id",
+    nullable: true,
   })
   customer?: Customer
 
