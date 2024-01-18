@@ -1,21 +1,21 @@
 import { DAL } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
-import { Address } from "@models"
-import { CreateAddressDTO, UpdateAddressDTO } from "@types"
+import { CustomerGroup } from "@models"
+import { CreateCustomerGroupDTO, UpdateCustomerGroupDTO } from "@types"
 
 type InjectedDependencies = {
-  addressRepository: DAL.RepositoryService
+  customerGroupRepository: DAL.RepositoryService
 }
 
-export default class AddressService<
-  TEntity extends Address = Address
+export default class CustomerGroupService<
+  TEntity extends CustomerGroup = CustomerGroup
 > extends ModulesSdkUtils.abstractServiceFactory<
   InjectedDependencies,
   {
-    create: CreateAddressDTO
-    update: UpdateAddressDTO
+    create: CreateCustomerGroupDTO
+    update: UpdateCustomerGroupDTO
   }
->(Address)<TEntity> {
+>(CustomerGroup)<TEntity> {
   constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
