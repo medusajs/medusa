@@ -1,7 +1,14 @@
-import type { AdminProductsRes, AdminRegionsRes } from "@medusajs/medusa"
+import type {
+  AdminCollectionsRes,
+  AdminCustomerGroupsRes,
+  AdminCustomersRes,
+  AdminProductsRes,
+  AdminRegionsRes,
+} from "@medusajs/medusa"
 import {
   Outlet,
   RouterProvider as Provider,
+  RouteObject,
   createBrowserRouter,
 } from "react-router-dom"
 
@@ -11,25 +18,28 @@ import { MainLayout } from "../../components/layout/main-layout"
 import { PublicLayout } from "../../components/layout/public-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 
-// const routeExtensions: RouteObject[] = routes.pages.map((ext) => {
-//   return {
-//     path: ext.path,
-//     async lazy() {
-//       const { default: Component } = await import(/* @vite-ignore */ ext.file)
-//       return { Component }
-//     },
-//   }
-// })
+import routes from "medusa-admin:routes/pages"
+import settings from "medusa-admin:settings/pages"
 
-// const settingsExtensions: RouteObject[] = settings.pages.map((ext) => {
-//   return {
-//     path: `/settings${ext.path}`,
-//     async lazy() {
-//       const { default: Component } = await import(/* @vite-ignore */ ext.file)
-//       return { Component }
-//     },
-//   }
-// })
+const routeExtensions: RouteObject[] = routes.pages.map((ext) => {
+  return {
+    path: ext.path,
+    async lazy() {
+      const { default: Component } = await import(/* @vite-ignore */ ext.file)
+      return { Component }
+    },
+  }
+})
+
+const settingsExtensions: RouteObject[] = settings.pages.map((ext) => {
+  return {
+    path: `/settings${ext.path}`,
+    async lazy() {
+      const { default: Component } = await import(/* @vite-ignore */ ext.file)
+      return { Component }
+    },
+  }
+})
 
 const router = createBrowserRouter([
   {
@@ -127,12 +137,37 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/collections/list"),
+                path: "",
+                lazy: () => import("../../routes/collections/collection-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/collections/collection-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/collections/details"),
+                handle: {
+                  crumb: (data: AdminCollectionsRes) => data.collection.title,
+                },
+                lazy: () =>
+                  import("../../routes/collections/collection-detail"),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../routes/collections/collection-edit"),
+                  },
+                  {
+                    path: "add-products",
+                    lazy: () =>
+                      import(
+                        "../../routes/collections/collection-add-products"
+                      ),
+                  },
+                ],
               },
             ],
           },
@@ -143,12 +178,28 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/customers/list"),
+                path: "",
+                lazy: () => import("../../routes/customers/customer-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/customers/customer-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/customers/details"),
+                lazy: () => import("../../routes/customers/customer-detail"),
+                handle: {
+                  crumb: (data: AdminCustomersRes) => data.customer.email,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/customers/customer-edit"),
+                  },
+                ],
               },
             ],
           },
@@ -159,12 +210,43 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/customer-groups/list"),
+                path: "",
+                lazy: () =>
+                  import("../../routes/customer-groups/customer-group-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-create"
+                      ),
+                  },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/customer-groups/details"),
+                lazy: () =>
+                  import("../../routes/customer-groups/customer-group-detail"),
+                handle: {
+                  crumb: (data: AdminCustomerGroupsRes) =>
+                    data.customer_group.name,
+                },
+                children: [
+                  {
+                    path: "add-customers",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-add-customers"
+                      ),
+                  },
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-edit"
+                      ),
+                  },
+                ],
               },
             ],
           },
@@ -463,10 +545,10 @@ const router = createBrowserRouter([
               },
             ],
           },
-          // ...settingsExtensions,
+          ...settingsExtensions,
         ],
       },
-      // ...routeExtensions,
+      ...routeExtensions,
     ],
   },
   {

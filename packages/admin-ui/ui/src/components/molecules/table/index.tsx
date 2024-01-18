@@ -78,7 +78,7 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
           {filteringOptions ? (
             <div className="mb-2 flex self-end">
               {Array.isArray(filteringOptions)
-                ? filteringOptions.map((fo) => <FilteringOptions {...fo} />)
+                ? filteringOptions.map((fo, idx) => <FilteringOptions {...fo} key={idx} />)
                 : filteringOptions}
             </div>
           ) : (

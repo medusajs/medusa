@@ -17,6 +17,8 @@ import {
 import { CreateCampaignDTO, UpdateCampaignDTO } from "./mutations"
 
 export interface IPromotionModuleService extends IModuleService {
+  registerUsage(computedActions: ComputeActions[]): Promise<void>
+
   computeActions(
     promotionCodesToApply: string[],
     applicationContext: ComputeActionContext,
@@ -48,6 +50,12 @@ export interface IPromotionModuleService extends IModuleService {
     config?: FindConfig<PromotionDTO>,
     sharedContext?: Context
   ): Promise<PromotionDTO[]>
+
+  listAndCount(
+    filters?: FilterablePromotionProps,
+    config?: FindConfig<PromotionDTO>,
+    sharedContext?: Context
+  ): Promise<[PromotionDTO[], number]>
 
   retrieve(
     id: string,

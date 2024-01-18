@@ -16,6 +16,8 @@
     "@medusajs/modules-sdk": "workspace:^",
     "@medusajs/pricing": "workspace:^",
     "@medusajs/product": "workspace:^",
+    "@medusajs/promotion": "workspace:^",
+    "@medusajs/utils": "workspace:^",
     "faker": "^5.5.3",
     "medusa-fulfillment-webshipper": "workspace:*",
     "medusa-interfaces": "workspace:*",
@@ -27,6 +29,7 @@
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
+    "@medusajs/types": "workspace:^",
     "babel-preset-medusa-package": "*",
     "jest": "^26.6.3",
     "jest-environment-node": "26.6.2"
