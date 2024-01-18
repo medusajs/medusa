@@ -41,7 +41,7 @@ export default class Capture {
   created_at: Date
 
   @Property({ columnType: "text", nullable: true })
-  created_by?: string | null
+  created_by: string | null = null
 
   @BeforeCreate()
   onCreate() {

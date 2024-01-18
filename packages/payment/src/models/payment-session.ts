@@ -31,7 +31,7 @@ export default class PaymentSession {
   provider_id: string
 
   @Property({ columnType: "jsonb", nullable: true })
-  data?: Record<string, unknown> | null
+  data: Record<string, unknown> | null = null
 
   @Enum({
     items: () => PaymentSessionStatus,
@@ -42,7 +42,7 @@ export default class PaymentSession {
     columnType: "timestamptz",
     nullable: true,
   })
-  authorized_at?: Date | null
+  authorized_at: Date | null = null
 
   @ManyToOne({
     index: "IDX_payment_session_payment_collection_id",
