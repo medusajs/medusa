@@ -1,4 +1,14 @@
-import { IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator"
+import { CampaignBudgetType } from "@medusajs/utils"
+import { Type } from "class-transformer"
+import {
+  IsDate,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 
 export class AdminGetCampaignsCampaignParams extends FindParams {}
@@ -34,10 +44,29 @@ export class AdminPostCampaignsCampaignReq {
   currency: string
 
   @IsOptional()
+  @ValidateNested()
+  @Type(() => CampaignBudget)
+  budget: CampaignBudget
+
+  @IsOptional()
   @IsDate()
   starts_at: Date
 
   @IsOptional()
   @IsDate()
   ends_at: Date
+}
+
+export class CampaignBudget {
+  @IsOptional()
+  @IsEnum(CampaignBudgetType)
+  type: CampaignBudgetType
+
+  @IsOptional()
+  @IsNumber()
+  limit: number
+
+  @IsOptional()
+  @IsNumber()
+  used: number
 }

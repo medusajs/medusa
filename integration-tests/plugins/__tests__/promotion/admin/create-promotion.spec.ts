@@ -73,6 +73,10 @@ describe("POST /admin/promotions", () => {
         campaign: {
           name: "test",
           campaign_identifier: "test-1",
+          budget: {
+            type: "usage",
+            limit: 100,
+          },
         },
         application_method: {
           target_type: "items",
@@ -109,6 +113,10 @@ describe("POST /admin/promotions", () => {
         campaign: expect.objectContaining({
           name: "test",
           campaign_identifier: "test-1",
+          budget: expect.objectContaining({
+            type: "usage",
+            limit: 100,
+          }),
         }),
         application_method: expect.objectContaining({
           value: 100,

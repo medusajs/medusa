@@ -441,6 +441,7 @@ export default class PromotionModuleService<
           "rules",
           "rules.values",
           "campaign",
+          "campaign.budget",
         ],
       },
       sharedContext
