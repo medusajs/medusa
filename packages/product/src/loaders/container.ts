@@ -197,7 +197,6 @@ function loadCustomRepositories({
       finalRepository = DefaultRepository
     }
 
-    console.log("finalRepository", finalRepository)
     container.register({
       [lowerCaseFirst(key)]: asClass(
         finalRepository as Constructor<DAL.RepositoryService>
