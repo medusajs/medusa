@@ -22,4 +22,3 @@ export const runMigration = ModulesSdkUtils.buildMigrationScript(
 
 export * from "./initialize"
 export * from "./loaders"
-export * from "./scripts"
