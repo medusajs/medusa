@@ -169,6 +169,11 @@ export interface CartShippingMethodDTO {
   id: string
 
   /**
+   * The ID of the associated cart
+   */
+  cart_id: string
+
+  /**
    * The name of the shipping method
    */
   name: string
@@ -487,6 +492,14 @@ export interface FilterableLineItemProps
   title?: string
   variant_id?: string | string[]
   product_id?: string | string[]
+}
+
+export interface FilterableShippingMethodProps
+  extends BaseFilterable<FilterableShippingMethodProps> {
+  id?: string | string[]
+  cart_id?: string | string[]
+  name?: string
+  shipping_option_id?: string | string[]
 }
 
 /**

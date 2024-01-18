@@ -8,4 +8,9 @@ export class LineItemRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     create: CreateLineItemDTO
     update: UpdateLineItemDTO
   }
->(LineItem) {}
+>(LineItem) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+}

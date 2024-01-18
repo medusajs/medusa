@@ -185,7 +185,7 @@ const Item = React.forwardRef<
     <SelectPrimitive.Item
       ref={ref}
       className={clx(
-        "txt-compact-medium bg-ui-bg-base grid cursor-pointer grid-cols-[20px_1fr] gap-x-2 rounded-md px-3 py-2 outline-none transition-colors",
+        "bg-ui-bg-base grid cursor-pointer grid-cols-[20px_1fr] gap-x-2 rounded-md px-3 py-2 outline-none transition-colors",
         "hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-hover",
         {
           "txt-compact-medium data-[state=checked]:txt-compact-medium-plus":
