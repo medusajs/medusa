@@ -1,13 +1,11 @@
-import { EllipsisHorizontal, PencilSquare, Trash } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { Product, SalesChannel } from "@medusajs/medusa"
 import {
   Button,
   Checkbox,
   CommandBar,
   Container,
-  DropdownMenu,
   Heading,
-  IconButton,
   Table,
   clx,
   usePrompt,
@@ -36,6 +34,7 @@ import {
 } from "../../../../../components/common/product-table-cells"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { FilterGroup } from "../../../../../components/filtering/filter-group"
 import { OrderBy } from "../../../../../components/filtering/order-by"
 import { Query } from "../../../../../components/filtering/query"
@@ -324,25 +323,27 @@ const ProductListCellActions = ({
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
-        <IconButton variant="transparent">
-          <EllipsisHorizontal />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <Link to={`/products/${productId}`}>
-          <DropdownMenu.Item className="gap-x-2">
-            <PencilSquare />
-            <span>Edit</span>
-          </DropdownMenu.Item>
-        </Link>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Item onClick={onRemove} className="gap-x-2">
-          <Trash />
-          <span>{t("general.remove")}</span>
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
-    </DropdownMenu>
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: t("general.edit"),
+              to: `/products/${productId}`,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              icon: <Trash />,
+              label: t("general.remove"),
+              onClick: onRemove,
+            },
+          ],
+        },
+      ]}
+    />
   )
 }

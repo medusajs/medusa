@@ -1,18 +1,11 @@
-import { EllipsisHorizontal, PencilSquare, Trash } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { SalesChannel } from "@medusajs/medusa"
-import {
-  Container,
-  DropdownMenu,
-  Heading,
-  IconButton,
-  StatusBadge,
-  Text,
-  usePrompt,
-} from "@medusajs/ui"
+import { Container, Heading, StatusBadge, Text, usePrompt } from "@medusajs/ui"
 import { useAdminDeleteSalesChannel } from "medusa-react"
 import { useTranslation } from "react-i18next"
 
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 
 type SalesChannelGeneralSection = {
   salesChannel: SalesChannel
@@ -33,6 +26,8 @@ export const SalesChannelGeneralSection = ({
       description: t("salesChannels.deleteSalesChannelWarning", {
         name: salesChannel.name,
       }),
+      verificationInstruction: t("general.typeToConfirm"),
+      verificationText: salesChannel.name,
       confirmText: t("general.delete"),
       cancelText: t("general.cancel"),
     })
@@ -61,26 +56,28 @@ export const SalesChannelGeneralSection = ({
           <StatusBadge color={salesChannel.is_disabled ? "red" : "green"}>
             {t(`general.${salesChannel.is_disabled ? "disabled" : "enabled"}`)}
           </StatusBadge>
-          <DropdownMenu>
-            <DropdownMenu.Trigger asChild>
-              <IconButton variant="transparent">
-                <EllipsisHorizontal />
-              </IconButton>
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Content>
-              <Link to={`/settings/sales-channels/${salesChannel.id}/edit`}>
-                <DropdownMenu.Item className="gap-x-2">
-                  <PencilSquare className="text-ui-fg-subtle" />
-                  <span>{t("general.edit")}</span>
-                </DropdownMenu.Item>
-              </Link>
-              <DropdownMenu.Separator />
-              <DropdownMenu.Item className="gap-x-2" onClick={handleDelete}>
-                <Trash className="text-ui-fg-subtle" />
-                <span>{t("general.delete")}</span>
-              </DropdownMenu.Item>
-            </DropdownMenu.Content>
-          </DropdownMenu>
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    icon: <PencilSquare />,
+                    label: t("general.edit"),
+                    to: `/settings/sales-channels/${salesChannel.id}/edit`,
+                  },
+                ],
+              },
+              {
+                actions: [
+                  {
+                    icon: <Trash />,
+                    label: t("general.delete"),
+                    onClick: handleDelete,
+                  },
+                ],
+              },
+            ]}
+          />
         </div>
       </div>
     </Container>

@@ -93,8 +93,8 @@ export const CreateCustomerForm = ({ subscribe }: CreateCustomerFormProps) => {
             </Button>
           </div>
         </FocusModal.Header>
-        <FocusModal.Body className="flex flex-col items-center pt-[72px]">
-          <div className="w-full max-w-[720px] flex flex-col gap-y-10">
+        <FocusModal.Body className="flex flex-col items-center py-16">
+          <div className="w-full max-w-[720px] flex flex-col gap-y-8">
             <div>
               <Heading>{t("customers.createCustomer")}</Heading>
               <Text size="small" className="text-ui-fg-subtle">

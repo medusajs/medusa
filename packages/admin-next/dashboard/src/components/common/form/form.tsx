@@ -1,12 +1,14 @@
+import { InformationCircleSolid } from "@medusajs/icons"
 import {
   Hint as HintComponent,
   Label as LabelComponent,
   Text,
+  Tooltip,
   clx,
 } from "@medusajs/ui"
 import * as LabelPrimitives from "@radix-ui/react-label"
 import { Slot } from "@radix-ui/react-slot"
-import { createContext, forwardRef, useContext, useId } from "react"
+import { ReactNode, createContext, forwardRef, useContext, useId } from "react"
 import {
   Controller,
   ControllerProps,
@@ -22,7 +24,7 @@ const Provider = FormProvider
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
   name: TName
 }
@@ -33,7 +35,7 @@ const FormFieldContext = createContext<FormFieldContextValue>(
 
 const Field = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
@@ -97,8 +99,9 @@ const Label = forwardRef<
   React.ElementRef<typeof LabelPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitives.Root> & {
     optional?: boolean
+    tooltip?: ReactNode
   }
->(({ className, optional = false, ...props }, ref) => {
+>(({ className, optional = false, tooltip, ...props }, ref) => {
   const { formItemId } = useFormField()
   const { t } = useTranslation()
 
@@ -112,6 +115,11 @@ const Label = forwardRef<
         weight="plus"
         {...props}
       />
+      {tooltip && (
+        <Tooltip content={tooltip}>
+          <InformationCircleSolid className="text-ui-fg-muted" />
+        </Tooltip>
+      )}
       {optional && (
         <Text size="small" leading="compact" className="text-ui-fg-muted">
           ({t("fields.optional")})

@@ -16,11 +16,11 @@ import {
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import {
   NoRecords,
   NoResults,
 } from "../../../../../components/common/empty-table-content"
-import { TableRowActions } from "../../../../../components/common/table-row-actions"
 import { OrderBy } from "../../../../../components/filtering/order-by"
 import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
@@ -205,7 +205,7 @@ const CustomerGroupActions = ({ group }: { group: CustomerGroup }) => {
   }
 
   return (
-    <TableRowActions
+    <ActionMenu
       groups={[
         {
           actions: [
