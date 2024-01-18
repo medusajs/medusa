@@ -60,7 +60,7 @@ export interface UpdateCartDTO {
   metadata?: Record<string, unknown>
 }
 
-/** ADDRESS END */
+/** CART END */
 
 /** TAXLINES START */
 export interface CreateTaxLineDTO {

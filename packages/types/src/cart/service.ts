@@ -168,8 +168,7 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<LineItemAdjustmentLineDTO[]>
   addLineItemAdjustments(
     cartId: string,
-    data: CreateAdjustmentDTO[],
-    sharedContext?: Context
+    data: CreateAdjustmentDTO[]
   ): Promise<LineItemAdjustmentLineDTO[]>
 
   setLineItemAdjustments(
