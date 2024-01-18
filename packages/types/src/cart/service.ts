@@ -15,14 +15,14 @@ import {
 } from "./common"
 import {
   CreateAddressDTO,
+  CreateAdjustmentDTO,
   CreateCartDTO,
-  CreateLineItemAdjustmentDTO,
   CreateLineItemDTO,
   CreateLineItemForCartDTO,
   CreateShippingMethodDTO,
   UpdateAddressDTO,
+  UpdateAdjustmentDTO,
   UpdateCartDTO,
-  UpdateLineItemAdjustmentDTO,
   UpdateLineItemDTO,
   UpdateLineItemWithSelectorDTO,
 } from "./mutations"
@@ -161,20 +161,20 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<LineItemAdjustmentLineDTO[]>
 
   addLineItemAdjustments(
-    data: CreateLineItemAdjustmentDTO[]
+    data: CreateAdjustmentDTO[]
   ): Promise<LineItemAdjustmentLineDTO[]>
   addLineItemAdjustments(
-    data: CreateLineItemAdjustmentDTO
+    data: CreateAdjustmentDTO
   ): Promise<LineItemAdjustmentLineDTO[]>
   addLineItemAdjustments(
     cartId: string,
-    data: CreateLineItemAdjustmentDTO[],
+    data: CreateAdjustmentDTO[],
     sharedContext?: Context
   ): Promise<LineItemAdjustmentLineDTO[]>
 
   setLineItemAdjustments(
     cartId: string,
-    data: (CreateLineItemAdjustmentDTO | UpdateLineItemAdjustmentDTO)[],
+    data: (CreateAdjustmentDTO | UpdateAdjustmentDTO)[],
     sharedContext?: Context
   ): Promise<LineItemAdjustmentLineDTO[]>
 

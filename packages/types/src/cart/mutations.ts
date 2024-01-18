@@ -64,7 +64,7 @@ export interface CreateTaxLineDTO {
   provider_id?: string
 }
 
-export interface CreateLineItemAdjustmentDTO {
+export interface CreateAdjustmentDTO {
   item_id: string
   code?: string
   amount: number
@@ -73,7 +73,7 @@ export interface CreateLineItemAdjustmentDTO {
   provider_id?: string
 }
 
-export interface UpdateLineItemAdjustmentDTO {
+export interface UpdateAdjustmentDTO {
   id: string
   code?: string
   amount: number
@@ -92,7 +92,7 @@ export interface UpdateTaxLineDTO {
 }
 
 export interface SetLineItemAdjustmentsDTO
-  extends Partial<UpdateLineItemAdjustmentDTO> {
+  extends Partial<UpdateAdjustmentDTO> {
   id?: string
 }
 
@@ -136,7 +136,7 @@ export interface CreateLineItemDTO {
   unit_price: number
 
   tax_lines?: CreateTaxLineDTO[]
-  adjustments?: CreateLineItemAdjustmentDTO[]
+  adjustments?: CreateAdjustmentDTO[]
 }
 
 export interface CreateLineItemForCartDTO extends CreateLineItemDTO {
@@ -160,24 +160,7 @@ export interface UpdateLineItemDTO
   unit_price?: number
 
   tax_lines?: UpdateTaxLineDTO[] | CreateTaxLineDTO[]
-  adjustments?: UpdateLineItemAdjustmentDTO[] | CreateLineItemAdjustmentDTO[]
-}
-
-export interface CreateShippingMethodAdjustmentDTO {
-  code?: string
-  amount: number
-  description?: string
-  promotion_id?: string
-  provider_id?: string
-}
-
-export interface UpdateShippingMethodAdjustmentDTO {
-  id: string
-  code?: string
-  amount: number
-  description?: string
-  promotion_id?: string
-  provider_id?: string
+  adjustments?: UpdateAdjustmentDTO[] | CreateAdjustmentDTO[]
 }
 
 export interface CreateShippingMethodDTO {
@@ -186,7 +169,7 @@ export interface CreateShippingMethodDTO {
   amount: number
   data?: Record<string, unknown>
   tax_lines?: CreateTaxLineDTO[]
-  adjustments?: CreateShippingMethodAdjustmentDTO[]
+  adjustments?: CreateAdjustmentDTO[]
 }
 
 export interface UpdateShippingMethodDTO {
@@ -195,5 +178,5 @@ export interface UpdateShippingMethodDTO {
   amount?: number
   data?: Record<string, unknown>
   tax_lines?: UpdateTaxLineDTO[] | CreateTaxLineDTO[]
-  adjustments?: UpdateLineItemAdjustmentDTO[] | CreateLineItemAdjustmentDTO[]
+  adjustments?: CreateAdjustmentDTO[] | UpdateAdjustmentDTO[]
 }

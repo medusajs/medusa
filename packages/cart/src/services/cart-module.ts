@@ -21,8 +21,6 @@ import { LineItem, LineItemAdjustmentLine, ShippingMethod } from "@models"
 import { UpdateLineItemDTO } from "@types"
 import { joinerConfig } from "../joiner-config"
 import * as services from "../services"
-import AddressService from "./address"
-import CartService from "./cart"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -35,8 +33,8 @@ type InjectedDependencies = {
 
 export default class CartModuleService implements ICartModuleService {
   protected baseRepository_: DAL.RepositoryService
-  protected cartService_: CartService
-  protected addressService_: AddressService
+  protected cartService_: services.CartService
+  protected addressService_: services.AddressService
   protected lineItemService_: services.LineItemService
   protected shippingMethodService_: services.ShippingMethodService
   protected lineItemAdjustmentService_: services.LineItemAdjustmentService
