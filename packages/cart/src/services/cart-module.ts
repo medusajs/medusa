@@ -14,6 +14,7 @@ import {
   MedusaError,
   isObject,
   isString,
+  promiseAll,
 } from "@medusajs/utils"
 import { Cart, LineItem, LineItemAdjustmentLine, ShippingMethod } from "@models"
 import { CreateLineItemDTO, UpdateLineItemDTO } from "@types"
@@ -596,7 +597,7 @@ export default class CartModuleService implements ICartModuleService {
       | CartTypes.CreateShippingMethodDTO,
     data?:
       | CartTypes.CreateShippingMethodDTO[]
-      | CartTypes.CreateShippingMethodForCartDTO[],
+      | CartTypes.CreateShippingMethodForSingleCartDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     CartTypes.CartShippingMethodDTO[] | CartTypes.CartShippingMethodDTO
@@ -605,13 +606,13 @@ export default class CartModuleService implements ICartModuleService {
     if (isString(cartIdOrData)) {
       methods = await this.addShippingMethods_(
         cartIdOrData,
-        data as CartTypes.CreateShippingMethodDTO[],
+        data as CartTypes.CreateShippingMethodForSingleCartDTO[],
         sharedContext
       )
     } else {
       const data = Array.isArray(cartIdOrData) ? cartIdOrData : [cartIdOrData]
       methods = await this.addShippingMethodsBulk_(
-        data as CartTypes.CreateShippingMethodForCartDTO[],
+        data as CartTypes.CreateShippingMethodDTO[],
         sharedContext
       )
     }
@@ -626,7 +627,7 @@ export default class CartModuleService implements ICartModuleService {
   @InjectTransactionManager("baseRepository_")
   protected async addShippingMethods_(
     cartId: string,
-    data: CartTypes.CreateShippingMethodDTO[],
+    data: CartTypes.CreateShippingMethodForSingleCartDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ShippingMethod[]> {
     const cart = await this.retrieve(cartId, { select: ["id"] }, sharedContext)
@@ -643,7 +644,7 @@ export default class CartModuleService implements ICartModuleService {
 
   @InjectTransactionManager("baseRepository_")
   protected async addShippingMethodsBulk_(
-    data: CartTypes.CreateShippingMethodForCartDTO[],
+    data: CartTypes.CreateShippingMethodDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ShippingMethod[]> {
     return await this.shippingMethodService_.create(data, sharedContext)
@@ -817,10 +818,10 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
 
-    const result = await this.lineItemAdjustmentService_.upsert(
-      [...toCreate, ...toUpdate],
-      sharedContext
-    )
+    const [result] = await promiseAll([
+      this.lineItemAdjustmentService_.update(toUpdate, sharedContext),
+      this.lineItemAdjustmentService_.create(toCreate, sharedContext),
+    ])
 
     return await this.baseRepository_.serialize<
       CartTypes.LineItemAdjustmentLineDTO[]

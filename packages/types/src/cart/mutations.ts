@@ -184,16 +184,19 @@ export interface UpdateLineItemDTO
 
 export interface CreateShippingMethodDTO {
   name: string
-  cart_id?: string
+  cart_id: string
   amount: number
   data?: Record<string, unknown>
   tax_lines?: CreateTaxLineDTO[]
   adjustments?: CreateAdjustmentDTO[]
 }
 
-export interface CreateShippingMethodForCartDTO
-  extends CreateShippingMethodDTO {
-  cart_id: string
+export interface CreateShippingMethodForSingleCartDTO {
+  name: string
+  amount: number
+  data?: Record<string, unknown>
+  tax_lines?: CreateTaxLineDTO[]
+  adjustments?: CreateAdjustmentDTO[]
 }
 
 export interface UpdateShippingMethodDTO {
