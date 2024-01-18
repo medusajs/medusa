@@ -1,6 +1,8 @@
 import {
   Context,
   CreatePaymentCollectionDTO,
+  CreatePaymentDTO,
+  CreatePaymentSessionDTO,
   DAL,
   FilterablePaymentCollectionProps,
   FindConfig,
@@ -8,7 +10,10 @@ import {
   IPaymentModuleService,
   ModuleJoinerConfig,
   PaymentCollectionDTO,
+  PaymentDTO,
+  SetPaymentSessionsDTO,
   UpdatePaymentCollectionDTO,
+  UpdatePaymentDTO,
 } from "@medusajs/types"
 import {
   InjectManager,
@@ -16,9 +21,8 @@ import {
   MedusaContext,
 } from "@medusajs/utils"
 
-import * as services from "@services"
-
 import { Payment } from "@models"
+import * as services from "@services"
 
 import { joinerConfig } from "../joiner-config"
 
@@ -126,6 +130,24 @@ export default class PaymentModule<TPayment extends Payment = Payment>
   }
 
   @InjectManager("baseRepository_")
+  async retrievePaymentCollection(
+    paymentCollectionId: string,
+    config: FindConfig<PaymentCollectionDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PaymentCollectionDTO> {
+    const paymentCollection = await this.paymentCollectionService_.retrieve(
+      paymentCollectionId,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<PaymentCollectionDTO>(
+      paymentCollection,
+      { populate: true }
+    )
+  }
+
+  @InjectManager("baseRepository_")
   async listPaymentCollections(
     filters?: FilterablePaymentCollectionProps,
     config?: FindConfig<PaymentCollectionDTO>,
@@ -163,5 +185,99 @@ export default class PaymentModule<TPayment extends Payment = Payment>
       ),
       count,
     ]
+  }
+
+  /**
+   * TODO
+   */
+
+  authorizePaymentCollection(
+    paymentCollectionId: string,
+    sharedContext?: Context | undefined
+  ): Promise<PaymentCollectionDTO> {
+    throw new Error("Method not implemented.")
+  }
+  completePaymentCollection(
+    paymentCollectionId: string,
+    sharedContext?: Context | undefined
+  ): Promise<PaymentCollectionDTO> {
+    throw new Error("Method not implemented.")
+  }
+  createPayment(data: CreatePaymentDTO): Promise<PaymentDTO>
+  createPayment(data: CreatePaymentDTO[]): Promise<PaymentDTO[]>
+  createPayment(
+    data: unknown
+  ):
+    | Promise<import("@medusajs/types").PaymentDTO>
+    | Promise<import("@medusajs/types").PaymentDTO[]> {
+    throw new Error("Method not implemented.")
+  }
+  capturePayment(
+    paymentId: string,
+    amount: number,
+    sharedContext?: Context | undefined
+  ): Promise<PaymentDTO> {
+    throw new Error("Method not implemented.")
+  }
+  refundPayment(
+    paymentId: string,
+    amount: number,
+    sharedContext?: Context | undefined
+  ): Promise<PaymentDTO> {
+    throw new Error("Method not implemented.")
+  }
+  updatePayment(
+    data: UpdatePaymentDTO,
+    sharedContext?: Context | undefined
+  ): Promise<PaymentDTO>
+  updatePayment(
+    data: UpdatePaymentDTO[],
+    sharedContext?: Context | undefined
+  ): Promise<PaymentDTO[]>
+  updatePayment(
+    data: unknown,
+    sharedContext?: unknown
+  ):
+    | Promise<import("@medusajs/types").PaymentDTO>
+    | Promise<import("@medusajs/types").PaymentDTO[]> {
+    throw new Error("Method not implemented.")
+  }
+  createPaymentSession(
+    paymentCollectionId: string,
+    data: CreatePaymentSessionDTO,
+    sharedContext?: Context | undefined
+  ): Promise<PaymentCollectionDTO>
+  createPaymentSession(
+    paymentCollectionId: string,
+    data: CreatePaymentSessionDTO[],
+    sharedContext?: Context | undefined
+  ): Promise<PaymentCollectionDTO>
+  createPaymentSession(
+    paymentCollectionId: unknown,
+    data: unknown,
+    sharedContext?: unknown
+  ): Promise<PaymentCollectionDTO> {
+    throw new Error("Method not implemented.")
+  }
+  authorizePaymentSessions(
+    paymentCollectionId: string,
+    sessionIds: string[],
+    sharedContext?: Context | undefined
+  ): Promise<PaymentCollectionDTO> {
+    throw new Error("Method not implemented.")
+  }
+  completePaymentSessions(
+    paymentCollectionId: string,
+    sessionIds: string[],
+    sharedContext?: Context | undefined
+  ): Promise<PaymentCollectionDTO> {
+    throw new Error("Method not implemented.")
+  }
+  setPaymentSessions(
+    paymentCollectionId: string,
+    data: SetPaymentSessionsDTO[],
+    sharedContext?: Context | undefined
+  ): Promise<PaymentCollectionDTO> {
+    throw new Error("Method not implemented.")
   }
 }

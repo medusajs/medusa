@@ -108,6 +108,31 @@ describe("Payment Module Service", () => {
     })
   })
 
+  describe("retrieve", () => {
+    it("should retrieve a Payment Collection", async () => {
+      let collection = await service.retrievePaymentCollection("pay-col-id-2")
+
+      expect(collection).toEqual(
+        expect.objectContaining({
+          id: "pay-col-id-2",
+          amount: 200,
+          region_id: "region-id-1",
+          currency_code: "usd",
+        })
+      )
+    })
+
+    it("should fail to retrieve a non existent Payment Collection", async () => {
+      let error = await service
+        .retrievePaymentCollection("pay-col-id-not-exists")
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "PaymentCollection with id: pay-col-id-not-exists was not found"
+      )
+    })
+  })
+
   describe("list", () => {
     it("should list and count Payment Collection", async () => {
       let [collections, count] = await service.listAndCountPaymentCollections()
@@ -163,24 +188,24 @@ describe("Payment Module Service", () => {
         ])
       )
     })
+  })
 
-    it("should list Payment Collections by id", async () => {
-      let collections = await service.listPaymentCollections(
-        {
-          id: "pay-col-id-1",
-        },
-        { select: ["id", "amount"] }
-      )
+  describe("update", () => {
+    it("should update a Payment Collection", async () => {
+      await service.updatePaymentCollection({
+        id: "pay-col-id-2",
+        currency_code: "eur",
+        authorized_amount: 200,
+      })
 
-      expect(collections.length).toEqual(1)
+      const collection = await service.retrievePaymentCollection("pay-col-id-2")
 
-      expect(collections).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            id: "pay-col-id-1",
-            amount: 100,
-          }),
-        ])
+      expect(collection).toEqual(
+        expect.objectContaining({
+          id: "pay-col-id-2",
+          authorized_amount: 200,
+          currency_code: "eur",
+        })
       )
     })
   })

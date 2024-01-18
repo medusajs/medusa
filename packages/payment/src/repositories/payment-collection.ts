@@ -1,4 +1,7 @@
-import { CreatePaymentCollectionDTO } from "@medusajs/types"
+import {
+  CreatePaymentCollectionDTO,
+  UpdatePaymentCollectionDTO,
+} from "@medusajs/types"
 import { DALUtils } from "@medusajs/utils"
 import { PaymentCollection } from "@models"
 
@@ -6,5 +9,6 @@ export class PaymentCollectionRepository extends DALUtils.mikroOrmBaseRepository
   PaymentCollection,
   {
     create: CreatePaymentCollectionDTO
+    update: UpdatePaymentCollectionDTO
   }
 >(PaymentCollection) {}

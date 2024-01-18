@@ -6,12 +6,15 @@ import {
   FilterablePaymentCollectionProps,
   FindConfig,
   PaymentCollectionDTO,
+  UpdatePaymentCollectionDTO,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
   ModulesSdkUtils,
+  retrieveEntity,
 } from "@medusajs/utils"
 
 import { PaymentCollectionRepository } from "@repositories"
@@ -29,6 +32,21 @@ export default class PaymentCollectionService<
     this.paymentCollectionRepository_ = paymentCollectionRepository
   }
 
+  @InjectManager("paymentCollectionRepository_")
+  async retrieve(
+    id: string,
+    config: FindConfig<PaymentCollectionDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TEntity> {
+    return (await retrieveEntity<PaymentCollection, PaymentCollectionDTO>({
+      id: id,
+      entityName: PaymentCollection.name,
+      repository: this.paymentCollectionRepository_,
+      config,
+      sharedContext,
+    })) as TEntity
+  }
+
   @InjectTransactionManager("paymentCollectionRepository_")
   async create(
     data: CreatePaymentCollectionDTO[],
@@ -41,9 +59,9 @@ export default class PaymentCollectionService<
 
   @InjectTransactionManager("paymentCollectionRepository_")
   async update(
-    data: CreatePaymentCollectionDTO[],
-    @MedusaContext() sharedContext?: Context
-  ) {
+    data: UpdatePaymentCollectionDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TEntity[]> {
     return (await (
       this.paymentCollectionRepository_ as PaymentCollectionRepository
     ).update(data, sharedContext)) as TEntity[]
