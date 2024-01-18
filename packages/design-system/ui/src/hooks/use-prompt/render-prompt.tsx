@@ -10,7 +10,9 @@ export interface RenderPromptProps {
   open: boolean
   title: string
   description: string
+  variant?: "danger" | "confirmation"
   verificationText?: string
+  verificationInstruction?: string
   cancelText?: string
   confirmText?: string
   onConfirm: () => void
@@ -23,6 +25,10 @@ export const RenderPrompt = ({
    */
   open,
   /**
+   * The variant of the prompt.
+   */
+  variant = "danger",
+  /**
    * The prompt's title.
    */
   title,
@@ -34,6 +40,11 @@ export const RenderPrompt = ({
    * The text the user has to input in order to confirm the action.
    */
   verificationText,
+  /**
+   * The instruction for the verification text. Useful for passing a translated string to use instead of the default english one.
+   * Should be in the format: "Please type {val} to confirm:"
+   */
+  verificationInstruction = "Please type {val} to confirm:",
   /**
    * The label for the Cancel button.
    */
@@ -91,8 +102,16 @@ export const RenderPrompt = ({
     }
   }, [onCancel, open])
 
+  let instructionParts = verificationInstruction.includes("{val}")
+    ? verificationInstruction.split("{val}")
+    : ["Please type", "to confirm:"]
+
+  if (instructionParts.length !== 2) {
+    instructionParts = ["Please type", "to confirm:"]
+  }
+
   return (
-    <Prompt open={open}>
+    <Prompt open={open} variant={variant}>
       <Prompt.Content>
         <form onSubmit={handleFormSubmit}>
           <Prompt.Header>
@@ -102,11 +121,11 @@ export const RenderPrompt = ({
           {verificationText && (
             <div className="border-ui-border-base mt-6 flex flex-col gap-y-4 border-y p-6">
               <Label htmlFor="verificationText" className="text-ui-fg-subtle">
-                Please type{" "}
+                {instructionParts[0]}{" "}
                 <span className="text-ui-fg-base txt-compact-medium-plus">
                   {verificationText}
                 </span>{" "}
-                to confirm.
+                {instructionParts[1]}
               </Label>
               <Input
                 autoFocus

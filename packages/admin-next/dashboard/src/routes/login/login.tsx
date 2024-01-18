@@ -1,13 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Input, Text } from "@medusajs/ui"
+import { useAdminGetSession, useAdminLogin } from "medusa-react"
 import { useForm } from "react-hook-form"
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
 import * as z from "zod"
 
 import { Form } from "../../components/common/form"
-import { useAuth } from "../../providers/auth-provider"
+import { isAxiosError } from "../../lib/is-axios-error"
 
-const schema = z.object({
+const LoginSchema = z.object({
   email: z.string().email(),
   password: z.string(),
 })
@@ -15,39 +16,57 @@ const schema = z.object({
 export const Login = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const { login } = useAuth()
 
   const from = location.state?.from?.pathname || "/"
 
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   })
 
-  const onSubmit = form.handleSubmit(async ({ email, password }) => {
-    await login(email, password)
-      .then(() => {
-        navigate(from)
-      })
-      .catch((e) => {
-        switch (e?.response?.status) {
-          case 401:
-            form.setError("password", {
-              type: "manual",
-              message: "Invalid email or password",
-            })
-            break
-          default:
-            form.setError("password", {
-              type: "manual",
-              message: "Something went wrong",
-            })
-        }
-      })
+  const { user, isLoading } = useAdminGetSession()
+
+  const { mutateAsync } = useAdminLogin({
+    retry: false,
   })
+
+  const onSubmit = form.handleSubmit(async ({ email, password }) => {
+    await mutateAsync(
+      {
+        email,
+        password,
+      },
+      {
+        onSuccess: () => {
+          navigate(from, { replace: true })
+        },
+        onError: (e) => {
+          if (isAxiosError(e)) {
+            if (e.response?.status === 401) {
+              form.setError("password", {
+                type: "manual",
+                message: "Invalid email or password",
+              })
+
+              return
+            }
+          }
+
+          form.setError("password", {
+            type: "manual",
+            message: "Something went wrong",
+          })
+        },
+      }
+    )
+  })
+
+  if (user && !isLoading) {
+    return <Navigate to={from} replace />
+  }
 
   return (
     <div className="flex flex-col gap-y-12">
@@ -79,7 +98,7 @@ export const Login = () => {
                   <Form.Label>Password</Form.Label>
                   <Link
                     to={"/forgot-password"}
-                    className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover focus:text-ui-fg-interactive-hover transition-fg outline-none"
+                    className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover transition-fg outline-none"
                   >
                     <Text leading="compact">Forgot password?</Text>
                   </Link>

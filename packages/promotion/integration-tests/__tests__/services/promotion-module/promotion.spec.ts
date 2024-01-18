@@ -1,7 +1,8 @@
 import { IPromotionModuleService } from "@medusajs/types"
-import { PromotionType } from "@medusajs/utils"
+import { CampaignBudgetType, PromotionType } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { initialize } from "../../../../src"
+import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { createPromotions } from "../../../__fixtures__/promotion"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
@@ -94,6 +95,112 @@ describe("Promotion Service", () => {
             type: "fixed",
             target_type: "order",
             value: 100,
+          }),
+        })
+      )
+    })
+
+    it("should throw an error when both campaign and campaign_id are provided", async () => {
+      const startsAt = new Date("01/01/2023")
+      const endsAt = new Date("01/01/2023")
+
+      const error = await service
+        .create({
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          campaign_id: "campaign-id-1",
+          campaign: {
+            name: "test",
+            campaign_identifier: "test-promotion-test",
+            starts_at: startsAt,
+            ends_at: endsAt,
+            budget: {
+              type: CampaignBudgetType.SPEND,
+              used: 100,
+              limit: 100,
+            },
+          },
+        })
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "Provide either the 'campaign' or 'campaign_id' parameter; both cannot be used simultaneously."
+      )
+    })
+
+    it("should create a basic promotion with campaign successfully", async () => {
+      const startsAt = new Date("01/01/2023")
+      const endsAt = new Date("01/01/2023")
+
+      await createCampaigns(repositoryManager)
+
+      const createdPromotion = await service.create({
+        code: "PROMOTION_TEST",
+        type: PromotionType.STANDARD,
+        campaign: {
+          name: "test",
+          campaign_identifier: "test-promotion-test",
+          starts_at: startsAt,
+          ends_at: endsAt,
+          budget: {
+            type: CampaignBudgetType.SPEND,
+            used: 100,
+            limit: 100,
+          },
+        },
+      })
+
+      const [promotion] = await service.list(
+        { id: [createdPromotion.id] },
+        { relations: ["campaign.budget"] }
+      )
+
+      expect(promotion).toEqual(
+        expect.objectContaining({
+          code: "PROMOTION_TEST",
+          is_automatic: false,
+          type: "standard",
+          campaign: expect.objectContaining({
+            name: "test",
+            campaign_identifier: "test-promotion-test",
+            starts_at: startsAt,
+            ends_at: endsAt,
+            budget: expect.objectContaining({
+              type: CampaignBudgetType.SPEND,
+              used: 100,
+              limit: 100,
+            }),
+          }),
+        })
+      )
+    })
+
+    it("should create a basic promotion with an existing campaign successfully", async () => {
+      await createCampaigns(repositoryManager)
+
+      const createdPromotion = await service.create({
+        code: "PROMOTION_TEST",
+        type: PromotionType.STANDARD,
+        campaign_id: "campaign-id-1",
+      })
+
+      const [promotion] = await service.list(
+        { id: [createdPromotion.id] },
+        { relations: ["campaign.budget"] }
+      )
+
+      expect(promotion).toEqual(
+        expect.objectContaining({
+          code: "PROMOTION_TEST",
+          is_automatic: false,
+          type: "standard",
+          campaign: expect.objectContaining({
+            id: "campaign-id-1",
+            budget: expect.objectContaining({
+              type: CampaignBudgetType.SPEND,
+              limit: 1000,
+              used: 0,
+            }),
           }),
         })
       )
@@ -486,6 +593,33 @@ describe("Promotion Service", () => {
 
       expect(error.message).toContain(
         `application_method.type should be one of fixed, percentage`
+      )
+    })
+
+    it("should update campaign of the promotion", async () => {
+      await createCampaigns(repositoryManager)
+      const [createdPromotion] = await createPromotions(repositoryManager, [
+        {
+          is_automatic: true,
+          code: "TEST",
+          type: PromotionType.BUYGET,
+          campaign_id: "campaign-id-1",
+        },
+      ])
+
+      const [updatedPromotion] = await service.update([
+        {
+          id: createdPromotion.id,
+          campaign_id: "campaign-id-2",
+        },
+      ])
+
+      expect(updatedPromotion).toEqual(
+        expect.objectContaining({
+          campaign: expect.objectContaining({
+            id: "campaign-id-2",
+          }),
+        })
       )
     })
   })

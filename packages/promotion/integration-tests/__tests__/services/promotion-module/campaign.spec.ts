@@ -2,6 +2,7 @@ import { IPromotionModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { initialize } from "../../../../src"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
+import { createPromotions } from "../../../__fixtures__/promotion"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
@@ -101,6 +102,43 @@ describe("Promotion Module Service: Campaigns", () => {
         })
       )
     })
+
+    it("should create a basic campaign with promotions successfully", async () => {
+      await createPromotions(repositoryManager)
+
+      const startsAt = new Date("01/01/2024")
+      const endsAt = new Date("01/01/2025")
+      const [createdCampaign] = await service.createCampaigns([
+        {
+          name: "test",
+          campaign_identifier: "test",
+          starts_at: startsAt,
+          ends_at: endsAt,
+          promotions: [{ id: "promotion-id-1" }, { id: "promotion-id-2" }],
+        },
+      ])
+
+      const campaign = await service.retrieveCampaign(createdCampaign.id, {
+        relations: ["promotions"],
+      })
+
+      expect(campaign).toEqual(
+        expect.objectContaining({
+          name: "test",
+          campaign_identifier: "test",
+          starts_at: startsAt,
+          ends_at: endsAt,
+          promotions: [
+            expect.objectContaining({
+              id: "promotion-id-1",
+            }),
+            expect.objectContaining({
+              id: "promotion-id-2",
+            }),
+          ],
+        })
+      )
+    })
   })
 
   describe("updateCampaigns", () => {
@@ -160,6 +198,66 @@ describe("Promotion Module Service: Campaigns", () => {
             limit: 100,
             used: 100,
           }),
+        })
+      )
+    })
+
+    it("should update promotions of a campaign successfully", async () => {
+      await createCampaigns(repositoryManager)
+      await createPromotions(repositoryManager)
+
+      const [updatedCampaign] = await service.updateCampaigns([
+        {
+          id: "campaign-id-1",
+          description: "test description 1",
+          currency: "EUR",
+          campaign_identifier: "new",
+          starts_at: new Date("01/01/2024"),
+          ends_at: new Date("01/01/2025"),
+          promotions: [{ id: "promotion-id-1" }, { id: "promotion-id-2" }],
+        },
+      ])
+
+      expect(updatedCampaign).toEqual(
+        expect.objectContaining({
+          description: "test description 1",
+          currency: "EUR",
+          campaign_identifier: "new",
+          starts_at: new Date("01/01/2024"),
+          ends_at: new Date("01/01/2025"),
+          promotions: [
+            expect.objectContaining({
+              id: "promotion-id-1",
+            }),
+            expect.objectContaining({
+              id: "promotion-id-2",
+            }),
+          ],
+        })
+      )
+    })
+
+    it("should remove promotions of the campaign successfully", async () => {
+      await createCampaigns(repositoryManager)
+      await createPromotions(repositoryManager)
+
+      await service.updateCampaigns({
+        id: "campaign-id-1",
+        promotions: [{ id: "promotion-id-1" }, { id: "promotion-id-2" }],
+      })
+
+      const updatedCampaign = await service.updateCampaigns({
+        id: "campaign-id-1",
+        promotions: [{ id: "promotion-id-1" }],
+      })
+
+      expect(updatedCampaign).toEqual(
+        expect.objectContaining({
+          promotions: [
+            expect.objectContaining({
+              id: "promotion-id-1",
+            }),
+          ],
         })
       )
     })

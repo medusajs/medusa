@@ -15,8 +15,8 @@ export async function createPromotions(
     let promotion = manager.create(Promotion, promotionData)
 
     manager.persist(promotion)
-
     await manager.flush()
+    promotions.push(promotion)
   }
 
   return promotions
