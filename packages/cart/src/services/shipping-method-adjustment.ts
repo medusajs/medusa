@@ -1,10 +1,10 @@
-import {
-  CreateShippingMethodAdjustmentDTO,
-  DAL,
-  UpdateShippingMethodAdjustmentDTO,
-} from "@medusajs/types"
+import { DAL } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import { ShippingMethodAdjustmentLine } from "@models"
+import {
+  CreateShippingMethodAdjustmentDTO,
+  UpdateShippingMethodAdjustmentDTO,
+} from "@types"
 
 type InjectedDependencies = {
   shippingMethodAdjustmentRepository: DAL.RepositoryService

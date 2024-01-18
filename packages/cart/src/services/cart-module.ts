@@ -815,7 +815,7 @@ export default class CartModuleService implements ICartModuleService {
     adjustmentIdsOrSelector:
       | string
       | string[]
-      | Partial<CartTypes.LineItemAdjustmentLineDTO>,
+      | Partial<CartTypes.ShippingMethodAdjustmentLineDTO>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     let ids: string[] = []

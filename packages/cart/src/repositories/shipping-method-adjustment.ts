@@ -1,9 +1,9 @@
+import { DALUtils } from "@medusajs/utils"
+import { ShippingMethodAdjustmentLine } from "@models"
 import {
   CreateShippingMethodAdjustmentDTO,
   UpdateShippingMethodAdjustmentDTO,
-} from "@medusajs/types"
-import { DALUtils } from "@medusajs/utils"
-import { ShippingMethodAdjustmentLine } from "@models"
+} from "@types"
 
 export class ShippingMethodAdjustmentRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
   ShippingMethodAdjustmentLine,
