@@ -3,7 +3,7 @@ import { DropdownMenu, IconButton } from "@medusajs/ui"
 import { ReactNode } from "react"
 import { Link } from "react-router-dom"
 
-type TableRowAction = {
+type Action = {
   icon: ReactNode
   label: string
 } & (
@@ -17,15 +17,15 @@ type TableRowAction = {
     }
 )
 
-type TableRowActionGroup = {
-  actions: TableRowAction[]
+type ActionGroup = {
+  actions: Action[]
 }
 
-type TableRowActionsProps = {
-  groups: TableRowActionGroup[]
+type ActionMenuProps = {
+  groups: ActionGroup[]
 }
 
-export const TableRowActions = ({ groups }: TableRowActionsProps) => {
+export const ActionMenu = ({ groups }: ActionMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenu.Trigger asChild>
@@ -42,7 +42,7 @@ export const TableRowActions = ({ groups }: TableRowActionsProps) => {
           const isLast = index === groups.length - 1
 
           return (
-            <div className="flex flex-col gap-y-1">
+            <DropdownMenu.Group key={index}>
               {group.actions.map((action, index) => {
                 if (action.onClick) {
                   return (
@@ -61,21 +61,18 @@ export const TableRowActions = ({ groups }: TableRowActionsProps) => {
                 }
 
                 return (
-                  <Link to={action.to} key={index}>
-                    <DropdownMenu.Item
-                      onClick={(e) => {
-                        e.stopPropagation()
-                      }}
-                      className="[&_svg]:text-ui-fg-subtle flex items-center gap-x-2"
-                    >
-                      {action.icon}
-                      <span>{action.label}</span>
-                    </DropdownMenu.Item>
-                  </Link>
+                  <div key={index}>
+                    <Link to={action.to} onClick={(e) => e.stopPropagation()}>
+                      <DropdownMenu.Item className="[&_svg]:text-ui-fg-subtle flex items-center gap-x-2">
+                        {action.icon}
+                        <span>{action.label}</span>
+                      </DropdownMenu.Item>
+                    </Link>
+                  </div>
                 )
               })}
               {!isLast && <DropdownMenu.Separator />}
-            </div>
+            </DropdownMenu.Group>
           )
         })}
       </DropdownMenu.Content>

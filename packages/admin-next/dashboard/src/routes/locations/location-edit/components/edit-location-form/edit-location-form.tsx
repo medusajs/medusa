@@ -61,7 +61,7 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
-        <Drawer.Body className="flex flex-col gap-y-10 overflow-y-auto">
+        <Drawer.Body className="flex flex-col gap-y-8 overflow-y-auto">
           <div>
             <Form.Field
               control={form.control}
