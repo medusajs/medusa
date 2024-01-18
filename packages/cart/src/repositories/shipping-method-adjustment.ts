@@ -11,4 +11,9 @@ export class ShippingMethodAdjustmentRepository extends DALUtils.mikroOrmBaseRep
     create: CreateShippingMethodAdjustmentDTO
     update: UpdateShippingMethodAdjustmentDTO
   }
->(ShippingMethodAdjustmentLine) {}
+>(ShippingMethodAdjustmentLine) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+}

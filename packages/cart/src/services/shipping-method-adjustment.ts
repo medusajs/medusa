@@ -18,4 +18,9 @@ export default class ShippingMethodAdjustmentService<
     create: CreateShippingMethodAdjustmentDTO
     update: UpdateShippingMethodAdjustmentDTO
   }
->(ShippingMethodAdjustmentLine)<TEntity> {}
+>(ShippingMethodAdjustmentLine)<TEntity> {
+  constructor(container: InjectedDependencies) {
+    // @ts-ignore
+    super(...arguments)
+  }
+}
