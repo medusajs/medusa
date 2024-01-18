@@ -171,6 +171,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         originalRun,
         { throwOnError, resultFrom },
         context?.transactionId ?? ulid(),
+        context?.eventGroupId ?? ulid(),
         input,
         context,
         events
