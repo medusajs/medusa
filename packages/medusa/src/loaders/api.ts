@@ -1,11 +1,9 @@
 import { AwilixContainer } from "awilix"
 import bodyParser from "body-parser"
 import { Express } from "express"
-import path from "path"
 import qs from "qs"
 import routes from "../api"
 import { ConfigModule } from "../types/global"
-import { RoutesLoader } from "./helpers/routing"
 
 type Options = {
   app: Express
@@ -28,19 +26,6 @@ export default async ({ app, container, configModule }: Options) => {
 
   app.use(bodyParser.json())
   app.use("/", routes(container, configModule.projectConfig))
-
-  try {
-    /**
-     * Register the Medusa CORE API routes using the file based routing.
-     */
-    await new RoutesLoader({
-      app,
-      rootDir: path.join(__dirname, "../api-v2"),
-      configModule,
-    }).load()
-  } catch (err) {
-    throw Error("An error occurred while registering Medusa Core API Routes")
-  }
 
   return app
 }
