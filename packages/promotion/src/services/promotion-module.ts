@@ -938,6 +938,27 @@ export default class PromotionModuleService<
     )
   }
 
+  @InjectManager("baseRepository_")
+  async listAndCountCampaigns(
+    filters: PromotionTypes.FilterableCampaignProps = {},
+    config: FindConfig<PromotionTypes.CampaignDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[PromotionTypes.CampaignDTO[], number]> {
+    const [campaigns, count] = await this.campaignService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [
+      await this.baseRepository_.serialize<PromotionTypes.CampaignDTO[]>(
+        campaigns,
+        { populate: true }
+      ),
+      count,
+    ]
+  }
+
   async createCampaigns(
     data: PromotionTypes.CreateCampaignDTO,
     sharedContext?: Context

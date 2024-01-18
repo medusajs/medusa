@@ -116,6 +116,12 @@ export interface IPromotionModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<CampaignDTO[]>
 
+  listAndCountCampaigns(
+    filters?: FilterableCampaignProps,
+    config?: FindConfig<CampaignDTO>,
+    sharedContext?: Context
+  ): Promise<[CampaignDTO[], number]>
+
   retrieveCampaign(
     id: string,
     config?: FindConfig<CampaignDTO>,
