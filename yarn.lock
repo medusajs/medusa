@@ -8655,9 +8655,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows-inmemory@workspace:packages/workflows-inmemory":
+"@medusajs/workflows-engine-inmemory@workspace:packages/workflows-engine-inmemory":
   version: 0.0.0-use.local
-  resolution: "@medusajs/workflows-inmemory@workspace:packages/workflows-inmemory"
+  resolution: "@medusajs/workflows-engine-inmemory@workspace:packages/workflows-engine-inmemory"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
