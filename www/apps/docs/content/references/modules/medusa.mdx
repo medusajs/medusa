@@ -389,6 +389,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [PaymentProcessorError](../medusa/interfaces/medusa.PaymentProcessorError.mdx)
 - [PaymentProcessorSessionResponse](../medusa/interfaces/medusa.PaymentProcessorSessionResponse.mdx)
 - [PaymentService](../medusa/interfaces/medusa.PaymentService.mdx)
+- [PriceSelectionContext](../medusa/interfaces/medusa.PriceSelectionContext.mdx)
+- [PriceSelectionResult](../medusa/interfaces/medusa.PriceSelectionResult.mdx)
 - [ProductCategoryDTO](../medusa/interfaces/medusa.ProductCategoryDTO.mdx)
 - [ProductCollectionDTO](../medusa/interfaces/medusa.ProductCollectionDTO.mdx)
 - [ProductDTO](../medusa/interfaces/medusa.ProductDTO.mdx)
@@ -586,8 +588,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [PriceListLoadConfig](../medusa/types/medusa.PriceListLoadConfig.mdx)
 - [PriceListPriceCreateInput](../medusa/types/medusa.PriceListPriceCreateInput.mdx)
 - [PriceListPriceUpdateInput](../medusa/types/medusa.PriceListPriceUpdateInput.mdx)
-- [PriceSelectionContext](../medusa/types/medusa.PriceSelectionContext.mdx)
-- [PriceSelectionResult](../medusa/types/medusa.PriceSelectionResult.mdx)
 - [PriceType](../medusa/types/medusa.PriceType.mdx)
 - [PricedProduct](../medusa/types/medusa.PricedProduct.mdx)
 - [PricedShippingOption](../medusa/types/medusa.PricedShippingOption.mdx)
@@ -670,6 +670,8 @@ ___
 ### DEFAULT
 
  **DEFAULT**: `"default"`
+
+The `calculatedPrice` is the original price.
 
 ___
 
@@ -1413,7 +1415,7 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"RequestHandler","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"Record","type":"`Record<string, any>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} />
+<ParameterTypes parameters={[{"name":"RequestHandler","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]},{"name":"Record","type":"`Record<string, any>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} />
 
 ___
 
@@ -1421,7 +1423,7 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"RequestHandler","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"Record","type":"`Record<string, any>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} />
+<ParameterTypes parameters={[{"name":"RequestHandler","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]},{"name":"Record","type":"`Record<string, any>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} />
 
 ___
 
@@ -1659,7 +1661,7 @@ ___
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"container","type":"[MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"createScope","type":"() => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"registerAdd","type":"`<T>`(`name`: `string`, `registration`: T) => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"priceListId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"container","type":"[MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"priceListId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -1737,7 +1739,7 @@ ___
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"container","type":"[MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"createScope","type":"() => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"registerAdd","type":"`<T>`(`name`: `string`, `registration`: T) => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"filterableFields","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"listConfig","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"container","type":"[MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"filterableFields","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"listConfig","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -1827,7 +1829,7 @@ ___
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"container","type":"[MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"createScope","type":"() => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"registerAdd","type":"`<T>`(`name`: `string`, `registration`: T) => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} />
+<ParameterTypes parameters={[{"name":"container","type":"[MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -1863,7 +1865,7 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"RequestHandler","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"Record","type":"`Record<string, any>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} />
+<ParameterTypes parameters={[{"name":"RequestHandler","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]},{"name":"Record","type":"`Record<string, any>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} />
 
 ___
 
@@ -2100,7 +2102,7 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"RequestHandler","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"Record","type":"`Record<string, any>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} />
+<ParameterTypes parameters={[{"name":"RequestHandler","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]},{"name":"Record","type":"`Record<string, any>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} />
 
 #### Deprecated
 

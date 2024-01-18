@@ -492,6 +492,10 @@
     {
       "source": "/modules/products/serverless-module",
       "destination": "/experimental/product/overview"
+    },
+    {
+      "source": "/modules/price-lists/backend/override-price-selection-strategy",
+      "destination": "/modules/price-lists/price-selection-strategy"
     }
   ],
   "framework": "docusaurus-2",
