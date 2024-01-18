@@ -1,5 +1,13 @@
+import { Currency } from "@models"
 import { CurrencyService } from "@services"
 import { asClass, asValue, createContainer } from "awilix"
+
+;(Currency as any).meta = {
+  /**
+   * Need to mock the Currency model as well to expose the primary keys when it is different than `id`
+   */
+  primaryKeys: ["code"],
+}
 
 export const nonExistingCurrencyCode = "non-existing-code"
 export const mockContainer = createContainer()

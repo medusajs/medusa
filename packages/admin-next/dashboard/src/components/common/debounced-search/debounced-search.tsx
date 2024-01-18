@@ -15,6 +15,7 @@ export const DebouncedSearch = ({
   value: initialValue,
   onChange,
   debounce = 500,
+  size = "small",
   placeholder,
   ...props
 }: DebouncedSearchProps) => {

@@ -1,18 +1,24 @@
+import type {
+  AdminCustomerGroupsRes,
+  AdminCustomersRes,
+  AdminProductsRes,
+  AdminRegionsRes,
+} from "@medusajs/medusa"
 import {
+  Outlet,
   RouterProvider as Provider,
   RouteObject,
   createBrowserRouter,
 } from "react-router-dom"
 
-import { RequireAuth } from "../../components/authentication/require-auth"
-import { AppLayout } from "../../components/layout/app-layout"
+import { ProtectedRoute } from "../../components/authentication/require-auth"
+import { ErrorBoundary } from "../../components/error/error-boundary"
+import { MainLayout } from "../../components/layout/main-layout"
 import { PublicLayout } from "../../components/layout/public-layout"
+import { SettingsLayout } from "../../components/layout/settings-layout"
 
-import { AdminProductsRes } from "@medusajs/medusa"
 import routes from "medusa-admin:routes/pages"
 import settings from "medusa-admin:settings/pages"
-import { ErrorBoundary } from "../../components/error/error-boundary"
-import { SearchProvider } from "../search-provider"
 
 const routeExtensions: RouteObject[] = routes.pages.map((ext) => {
   return {
@@ -45,161 +51,239 @@ const router = createBrowserRouter([
     ],
   },
   {
-    element: (
-      <RequireAuth>
-        <SearchProvider>
-          <AppLayout />
-        </SearchProvider>
-      </RequireAuth>
-    ),
+    element: <ProtectedRoute />,
     errorElement: <ErrorBoundary />,
     children: [
       {
         path: "/",
-        lazy: () => import("../../routes/home"),
-      },
-      {
-        path: "/orders",
+        element: <MainLayout />,
         children: [
           {
             index: true,
-            lazy: () => import("../../routes/orders/list"),
+            lazy: () => import("../../routes/home"),
           },
           {
-            path: ":id",
-            lazy: () => import("../../routes/orders/details"),
-          },
-        ],
-      },
-      {
-        path: "/draft-orders",
-        children: [
-          {
-            index: true,
-            lazy: () => import("../../routes/draft-orders/list"),
-          },
-          {
-            path: ":id",
-            lazy: () => import("../../routes/draft-orders/details"),
-          },
-        ],
-      },
-      {
-        path: "/products",
-        handle: {
-          crumb: () => "Products",
-        },
-        children: [
-          {
-            index: true,
-            lazy: () => import("../../routes/products/views/product-list"),
-          },
-          {
-            path: ":id",
-            lazy: () => import("../../routes/products/views/product-details"),
+            path: "/orders",
             handle: {
-              crumb: (data: AdminProductsRes) => data.product.title,
+              crumb: () => "Orders",
             },
-          },
-        ],
-      },
-      {
-        path: "/categories",
-        children: [
-          {
-            index: true,
-            lazy: () => import("../../routes/categories/list"),
-          },
-          {
-            path: ":id",
-            lazy: () => import("../../routes/categories/details"),
-          },
-        ],
-      },
-      {
-        path: "/collections",
-        children: [
-          {
-            index: true,
-            lazy: () => import("../../routes/collections/list"),
+            children: [
+              {
+                index: true,
+                lazy: () => import("../../routes/orders/list"),
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/orders/details"),
+              },
+            ],
           },
           {
-            path: ":id",
-            lazy: () => import("../../routes/collections/details"),
-          },
-        ],
-      },
-      {
-        path: "/customers",
-        children: [
-          {
-            index: true,
-            lazy: () => import("../../routes/customers/list"),
-          },
-          {
-            path: ":id",
-            lazy: () => import("../../routes/customers/details"),
-          },
-        ],
-      },
-      {
-        path: "/customer-groups",
-        children: [
-          {
-            index: true,
-            lazy: () => import("../../routes/customer-groups/list"),
+            path: "/draft-orders",
+            handle: {
+              crumb: () => "Draft Orders",
+            },
+            children: [
+              {
+                index: true,
+                lazy: () => import("../../routes/draft-orders/list"),
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/draft-orders/details"),
+              },
+            ],
           },
           {
-            path: ":id",
-            lazy: () => import("../../routes/customer-groups/details"),
-          },
-        ],
-      },
-      {
-        path: "/gift-cards",
-        children: [
-          {
-            index: true,
-            lazy: () => import("../../routes/gift-cards/list"),
-          },
-          {
-            path: ":id",
-            lazy: () => import("../../routes/gift-cards/details"),
-          },
-        ],
-      },
-      {
-        path: "/inventory",
-        lazy: () => import("../../routes/inventory/list"),
-      },
-      {
-        path: "/discounts",
-        children: [
-          {
-            index: true,
-            lazy: () => import("../../routes/discounts/list"),
+            path: "/products",
+            handle: {
+              crumb: () => "Products",
+            },
+            children: [
+              {
+                index: true,
+                lazy: () => import("../../routes/products/product-list"),
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/products/product-detail"),
+                handle: {
+                  crumb: (data: AdminProductsRes) => data.product.title,
+                },
+              },
+            ],
           },
           {
-            path: ":id",
-            lazy: () => import("../../routes/discounts/details"),
+            path: "/categories",
+            handle: {
+              crumb: () => "Categories",
+            },
+            children: [
+              {
+                index: true,
+                lazy: () => import("../../routes/categories/list"),
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/categories/details"),
+              },
+            ],
           },
-        ],
-      },
-      {
-        path: "/pricing",
-        children: [
           {
-            index: true,
-            lazy: () => import("../../routes/pricing/list"),
+            path: "/collections",
+            handle: {
+              crumb: () => "Collections",
+            },
+            children: [
+              {
+                index: true,
+                lazy: () => import("../../routes/collections/list"),
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/collections/details"),
+              },
+            ],
           },
           {
-            path: ":id",
-            lazy: () => import("../../routes/pricing/details"),
+            path: "/customers",
+            handle: {
+              crumb: () => "Customers",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../routes/customers/customer-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/customers/customer-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/customers/customer-detail"),
+                handle: {
+                  crumb: (data: AdminCustomersRes) => data.customer.email,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/customers/customer-edit"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/customer-groups",
+            handle: {
+              crumb: () => "Customer Groups",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../routes/customer-groups/customer-group-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../routes/customer-groups/customer-group-detail"),
+                handle: {
+                  crumb: (data: AdminCustomerGroupsRes) =>
+                    data.customer_group.name,
+                },
+                children: [
+                  {
+                    path: "add-customers",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-add-customers"
+                      ),
+                  },
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-edit"
+                      ),
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "/gift-cards",
+            handle: {
+              crumb: () => "Gift Cards",
+            },
+            children: [
+              {
+                index: true,
+                lazy: () => import("../../routes/gift-cards/list"),
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/gift-cards/details"),
+              },
+            ],
+          },
+          {
+            path: "/inventory",
+            handle: {
+              crumb: () => "Inventory",
+            },
+            lazy: () => import("../../routes/inventory/list"),
+          },
+          {
+            path: "/discounts",
+            handle: {
+              crumb: () => "Discounts",
+            },
+            children: [
+              {
+                index: true,
+                lazy: () => import("../../routes/discounts/list"),
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/discounts/details"),
+              },
+            ],
+          },
+          {
+            path: "/pricing",
+            handle: {
+              crumb: () => "Pricing",
+            },
+            children: [
+              {
+                index: true,
+                lazy: () => import("../../routes/pricing/list"),
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/pricing/details"),
+              },
+            ],
           },
         ],
       },
       {
         path: "/settings",
+        element: <SettingsLayout />,
         handle: {
           crumb: () => "Settings",
         },
@@ -210,52 +294,131 @@ const router = createBrowserRouter([
           },
           {
             path: "profile",
-            lazy: () => import("../../routes/profile/views/profile-details"),
+            lazy: () => import("../../routes/profile/profile-detail"),
             handle: {
               crumb: () => "Profile",
             },
+            children: [
+              {
+                path: "edit",
+                lazy: () => import("../../routes/profile/profile-edit"),
+              },
+            ],
           },
           {
             path: "store",
-            lazy: () => import("../../routes/store/views/store-details"),
+            lazy: () => import("../../routes/store/store-detail"),
             handle: {
               crumb: () => "Store",
             },
+            children: [
+              {
+                path: "edit",
+                lazy: () => import("../../routes/store/store-edit"),
+              },
+              {
+                path: "add-currencies",
+                lazy: () => import("../../routes/store/store-add-currencies"),
+              },
+            ],
           },
           {
             path: "locations",
-            lazy: () => import("../../routes/locations/list"),
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Locations",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../routes/locations/location-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/locations/location-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/locations/location-detail"),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/locations/location-edit"),
+                  },
+                  {
+                    path: "add-sales-channels",
+                    lazy: () =>
+                      import(
+                        "../../routes/locations/location-add-sales-channels"
+                      ),
+                  },
+                ],
+              },
+            ],
           },
           {
             path: "regions",
+            element: <Outlet />,
             handle: {
               crumb: () => "Regions",
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/regions/views/region-list"),
+                path: "",
+                lazy: () => import("../../routes/regions/region-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () => import("../../routes/regions/region-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/regions/views/region-details"),
+                lazy: () => import("../../routes/regions/region-detail"),
+                handle: {
+                  crumb: (data: AdminRegionsRes) => data.region.name,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/regions/region-edit"),
+                  },
+                ],
               },
             ],
           },
           {
             path: "users",
-            lazy: () => import("../../routes/users"),
+            element: <Outlet />,
             handle: {
               crumb: () => "Users",
             },
-          },
-          {
-            path: "currencies",
-            lazy: () =>
-              import("../../routes/currencies/views/currencies-details"),
-            handle: {
-              crumb: () => "Currencies",
-            },
+            children: [
+              {
+                path: "",
+                lazy: () => import("../../routes/users/user-list"),
+                children: [
+                  {
+                    path: "invite",
+                    lazy: () => import("../../routes/users/user-invite"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/users/user-detail"),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/users/user-edit"),
+                  },
+                ],
+              },
+            ],
           },
           {
             path: "taxes",
@@ -275,32 +438,86 @@ const router = createBrowserRouter([
           },
           {
             path: "sales-channels",
+            element: <Outlet />,
             handle: {
               crumb: () => "Sales Channels",
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () =>
-                  import(
-                    "../../routes/sales-channels/views/sales-channel-list"
-                  ),
+                  import("../../routes/sales-channels/sales-channel-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../routes/sales-channels/sales-channel-create"
+                      ),
+                  },
+                ],
               },
               {
                 path: ":id",
                 lazy: () =>
-                  import(
-                    "../../routes/sales-channels/views/sales-channel-details"
-                  ),
+                  import("../../routes/sales-channels/sales-channel-detail"),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../routes/sales-channels/sales-channel-edit"),
+                  },
+                  {
+                    path: "add-products",
+                    lazy: () =>
+                      import(
+                        "../../routes/sales-channels/sales-channel-add-products"
+                      ),
+                  },
+                ],
               },
             ],
           },
           {
             path: "api-key-management",
-            lazy: () => import("../../routes/api-key-management"),
+            element: <Outlet />,
             handle: {
               crumb: () => "API Key Management",
             },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import(
+                    "../../routes/api-key-management/api-key-management-list"
+                  ),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../routes/api-key-management/api-key-management-create"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../routes/api-key-management/api-key-management-detail"
+                  ),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../routes/api-key-management/api-key-management-edit"
+                      ),
+                  },
+                ],
+              },
+            ],
           },
           ...settingsExtensions,
         ],
