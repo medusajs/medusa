@@ -55,12 +55,10 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
         ]
 
         if (allJobs.includes(job.name as JobType)) {
-          process.nextTick(async () => {
-            await this.executeTransaction(
-              job.data.workflowId,
-              job.data.transactionId
-            )
-          })
+          await this.executeTransaction(
+            job.data.workflowId,
+            job.data.transactionId
+          )
         }
       },
       { connection: redisWorkerConnection }
@@ -96,7 +94,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
   }
 
   private async executeTransaction(workflowId: string, transactionId: string) {
-    await this.workflowOrchestratorService_.run(workflowId, {
+    return await this.workflowOrchestratorService_.run(workflowId, {
       transactionId,
       throwOnError: false,
     })
@@ -291,7 +289,8 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
   ) {
     const jobId = this.getJobId(type, transaction, step)
     const job = await this.queue.getJob(jobId)
-    if (job) {
+
+    if (job && job.attemptsStarted === 0) {
       await job.remove()
     }
   }

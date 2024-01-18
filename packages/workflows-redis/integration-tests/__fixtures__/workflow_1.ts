@@ -43,7 +43,6 @@ const step_2 = createStep(
 const step_3 = createStep(
   "step_3",
   jest.fn((res) => {
-    console.log("**********************************", JSON.stringify(res))
     return new StepResponse({
       done: {
         inputFromSyncStep: res.notAsyncResponse,

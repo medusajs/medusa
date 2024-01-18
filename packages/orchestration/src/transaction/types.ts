@@ -25,9 +25,9 @@ export type TransactionStepsDefinition = {
 
 export type TransactionModelOptions = {
   timeout?: number
-  storeExecution?: boolean
+  store?: boolean
   retentionTime?: number
-  strictCheckpoints?: boolean
+  storeExecution?: boolean
   // TODO: add metadata field for customizations
 }
 

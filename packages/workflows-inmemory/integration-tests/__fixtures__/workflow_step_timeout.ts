@@ -3,11 +3,12 @@ import {
   createStep,
   createWorkflow,
 } from "@medusajs/workflows-sdk"
+import { setTimeout } from "timers/promises"
 
 const step_1 = createStep(
   "step_1",
   jest.fn(async (input) => {
-    await new Promise((resolve) => setTimeout(resolve, 200))
+    await setTimeout(200)
 
     return new StepResponse(input, { compensate: 123 })
   }),

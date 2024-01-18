@@ -1,8 +1,13 @@
 import { MedusaApp } from "@medusajs/modules-sdk"
+import {
+  TransactionStepTimeoutError,
+  TransactionTimeoutError,
+} from "@medusajs/orchestration"
 import { RemoteJoinerQuery } from "@medusajs/types"
 import { TransactionHandlerType } from "@medusajs/utils"
 import { IWorkflowsModuleService } from "@medusajs/workflows-sdk"
 import { knex } from "knex"
+import { setTimeout } from "timers/promises"
 import "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
 
@@ -66,7 +71,7 @@ describe("Workflow Orchestrator module", function () {
 
     afterEach(afterEach_)
 
-    it.only("should return a list of workflow executions and remove after completed when there is no retentionTime set", async () => {
+    it("should return a list of workflow executions and remove after completed when there is no retentionTime set", async () => {
       await workflowOrcModule.run("workflow_1", {
         input: {
           value: "123",
@@ -143,19 +148,27 @@ describe("Workflow Orchestrator module", function () {
     })
 
     it("should revert the entire transaction when a step timeout expires", async () => {
-      const { transaction } = await workflowOrcModule.run(
+      const { transaction, result, errors } = await workflowOrcModule.run(
         "workflow_step_timeout",
         {
-          input: {},
+          input: {
+            myInput: "123",
+          },
           throwOnError: false,
         }
       )
 
       expect(transaction.flow.state).toEqual("reverted")
+      expect(result).toEqual({
+        myInput: "123",
+      })
+      expect(errors).toHaveLength(1)
+      expect(errors[0].action).toEqual("step_1")
+      expect(errors[0].error).toBeInstanceOf(TransactionStepTimeoutError)
     })
 
     it("should revert the entire transaction when the transaction timeout expires", async () => {
-      const { transaction } = await workflowOrcModule.run(
+      const { transaction, result, errors } = await workflowOrcModule.run(
         "workflow_transaction_timeout",
         {
           input: {},
@@ -163,9 +176,52 @@ describe("Workflow Orchestrator module", function () {
         }
       )
 
-      await new Promise((resolve) => setTimeout(resolve, 200))
+      expect(transaction.flow.state).toEqual("reverted")
+      expect(result).toEqual({ executed: true })
+      expect(errors).toHaveLength(1)
+      expect(errors[0].action).toEqual("step_1")
+      expect(errors[0].error).toBeInstanceOf(TransactionTimeoutError)
+    })
+
+    it.only("should revert the entire transaction when a step timeout expires in a async step", async () => {
+      const ret = await workflowOrcModule.run("workflow_step_timeout_async", {
+        input: {
+          myInput: "123",
+        },
+        transactionId: "transaction_1",
+        throwOnError: false,
+      })
+
+      await setTimeout(2000)
+
+      const { transaction, result, errors } = await workflowOrcModule.run(
+        "workflow_step_timeout_async",
+        {
+          input: {
+            myInput: "123",
+          },
+          transactionId: "transaction_1",
+          throwOnError: false,
+        }
+      )
+
+      console.log(transaction)
+    })
+
+    it("should revert the entire transaction when the transaction timeout expires in a transaction containing an async step", async () => {
+      const { transaction, result, errors } = await workflowOrcModule.run(
+        "workflow_transaction_timeout_async",
+        {
+          input: {},
+          throwOnError: false,
+        }
+      )
 
       expect(transaction.flow.state).toEqual("reverted")
+      expect(result).toEqual({ executed: true })
+      expect(errors).toHaveLength(1)
+      expect(errors[0].action).toEqual("step_1")
+      expect(errors[0].error).toBeInstanceOf(TransactionTimeoutError)
     })
   })
 })

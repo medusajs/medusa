@@ -14,16 +14,19 @@ export class PermanentStepFailureError extends Error {
   }
 }
 
-export class StepTimeoutError extends Error {
-  static isStepTimeoutError(error: Error): error is StepTimeoutError {
+export class TransactionStepTimeoutError extends Error {
+  static isTransactionStepTimeoutError(
+    error: Error
+  ): error is TransactionStepTimeoutError {
     return (
-      error instanceof StepTimeoutError || error.name === "StepTimeoutError"
+      error instanceof TransactionStepTimeoutError ||
+      error.name === "TransactionStepTimeoutError"
     )
   }
 
   constructor(message?: string) {
     super(message)
-    this.name = "StepTimeoutError"
+    this.name = "TransactionStepTimeoutError"
   }
 }
 

@@ -3,6 +3,7 @@ import { RemoteJoinerQuery } from "@medusajs/types"
 import { TransactionHandlerType } from "@medusajs/utils"
 import { IWorkflowsModuleService } from "@medusajs/workflows-sdk"
 import { knex } from "knex"
+import { setTimeout } from "timers/promises"
 import "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
 
@@ -159,7 +160,7 @@ describe("Workflow Orchestrator module", function () {
         }
       )
 
-      await new Promise((resolve) => setTimeout(resolve, 200))
+      await setTimeout(200)
 
       expect(transaction.flow.state).toEqual("reverted")
     })
