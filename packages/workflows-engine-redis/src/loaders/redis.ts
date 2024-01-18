@@ -36,10 +36,12 @@ export default async ({
       ...(redisOptions ?? {}),
       maxRetriesPerRequest: null,
     })
-    logger?.info(`Connection to Redis in module 'workflows-redis' established`)
+    logger?.info(
+      `Connection to Redis in module 'workflows-engine-redis' established`
+    )
   } catch (err) {
     logger?.error(
-      `An error occurred while connecting to Redis in module 'workflows-redis': ${err}`
+      `An error occurred while connecting to Redis in module 'workflows-engine-redis': ${err}`
     )
   }
 
@@ -47,11 +49,11 @@ export default async ({
     redisPublisher = await getConnection(cnnPubSub.url, cnnPubSub.options)
     redisSubscriber = await getConnection(cnnPubSub.url, cnnPubSub.options)
     logger?.info(
-      `Connection to Redis PubSub in module 'workflows-redis' established`
+      `Connection to Redis PubSub in module 'workflows-engine-redis' established`
     )
   } catch (err) {
     logger?.error(
-      `An error occurred while connecting to Redis PubSub in module 'workflows-redis': ${err}`
+      `An error occurred while connecting to Redis PubSub in module 'workflows-engine-redis': ${err}`
     )
   }
 
