@@ -1,5 +1,6 @@
 import { CartLineItemDTO } from "./common"
 
+/** ADDRESS START */
 export interface UpsertAddressDTO {
   customer_id?: string
   company?: string
@@ -21,6 +22,9 @@ export interface UpdateAddressDTO extends UpsertAddressDTO {
 
 export interface CreateAddressDTO extends UpsertAddressDTO {}
 
+/** ADDRESS END */
+
+/** CART START */
 export interface CreateCartDTO {
   region_id?: string
   customer_id?: string
@@ -56,6 +60,9 @@ export interface UpdateCartDTO {
   metadata?: Record<string, unknown>
 }
 
+/** ADDRESS END */
+
+/** TAXLINES START */
 export interface CreateTaxLineDTO {
   description?: string
   tax_rate_id?: string
@@ -64,6 +71,18 @@ export interface CreateTaxLineDTO {
   provider_id?: string
 }
 
+export interface UpdateTaxLineDTO {
+  id: string
+  description?: string
+  tax_rate_id?: string
+  code?: string
+  rate?: number
+  provider_id?: string
+}
+
+/** TAXLINES END */
+
+/** ADJUSTMENT START */
 export interface CreateAdjustmentDTO {
   item_id: string
   code?: string
@@ -82,29 +101,17 @@ export interface UpdateAdjustmentDTO {
   provider_id?: string
 }
 
-export interface UpdateTaxLineDTO {
-  id: string
-  code?: string
-  amount?: number
-  description?: string
-  promotion_id?: string
-  provider_id?: string
+export interface CreateLineItemAdjustmentDTO extends CreateAdjustmentDTO {
+  item_id: string
 }
 
-export interface SetLineItemAdjustmentsDTO
-  extends Partial<UpdateAdjustmentDTO> {
-  id?: string
+export interface UpdateLineItemAdjustmentDTO extends UpdateAdjustmentDTO {
+  item_id: string
 }
 
-export interface UpdateLineItemTaxLineDTO {
-  id: string
-  description?: string
-  tax_rate_id?: string
-  code?: string
-  rate?: number
-  provider_id?: string
-}
+/** ADJUSTMENT START */
 
+/** LINE ITEMS START */
 export interface CreateLineItemDTO {
   title: string
   subtitle?: string
@@ -163,6 +170,10 @@ export interface UpdateLineItemDTO
   adjustments?: UpdateAdjustmentDTO[] | CreateAdjustmentDTO[]
 }
 
+/** LINE ITEMS END */
+
+/** SHIPPING METHODS START */
+
 export interface CreateShippingMethodDTO {
   name: string
   cart_id?: string
@@ -180,3 +191,5 @@ export interface UpdateShippingMethodDTO {
   tax_lines?: UpdateTaxLineDTO[] | CreateTaxLineDTO[]
   adjustments?: CreateAdjustmentDTO[] | UpdateAdjustmentDTO[]
 }
+
+/** SHIPPING METHODS END */
