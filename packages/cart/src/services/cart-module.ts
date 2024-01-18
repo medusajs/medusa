@@ -144,10 +144,7 @@ export default class CartModuleService implements ICartModuleService {
     const lineItemsToCreate: CartTypes.CreateLineItemForCartDTO[] = []
     const createdCarts: Cart[] = []
     for (const { items, ...cart } of data) {
-      const [created] = await this.cartService_.create(
-        [cart as CartTypes.CreateCartDTO],
-        sharedContext
-      )
+      const [created] = await this.cartService_.create([cart], sharedContext)
 
       createdCarts.push(created)
 
@@ -159,13 +156,13 @@ export default class CartModuleService implements ICartModuleService {
           }
         })
 
-        lineItemsToCreate.push(
-          ...(cartItems as CartTypes.CreateLineItemForCartDTO[])
-        )
+        lineItemsToCreate.push(...cartItems)
       }
     }
 
-    await this.addLineItemsBulk_(lineItemsToCreate, sharedContext)
+    if (lineItemsToCreate.length) {
+      await this.addLineItemsBulk_(lineItemsToCreate, sharedContext)
+    }
 
     return createdCarts
   }
