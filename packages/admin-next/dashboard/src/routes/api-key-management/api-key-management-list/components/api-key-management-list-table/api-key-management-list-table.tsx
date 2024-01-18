@@ -1,15 +1,6 @@
-import { EllipsisHorizontal, Trash, XCircle } from "@medusajs/icons"
+import { PencilSquare, Trash, XCircle } from "@medusajs/icons"
 import { PublishableApiKey } from "@medusajs/medusa"
-import {
-  Button,
-  Container,
-  DropdownMenu,
-  Heading,
-  IconButton,
-  Table,
-  clx,
-  usePrompt,
-} from "@medusajs/ui"
+import { Button, Container, Heading, Table, clx, usePrompt } from "@medusajs/ui"
 import {
   PaginationState,
   RowSelectionState,
@@ -26,6 +17,7 @@ import {
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 
@@ -212,27 +204,33 @@ const KeyActions = ({ apiKey }: { apiKey: PublishableApiKey }) => {
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
-        <IconButton size="small" variant="transparent">
-          <EllipsisHorizontal />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <DropdownMenu.Item onClick={handleRevoke}>
-          <div className="flex items-center gap-x-2 [&_svg]:text-ui-fg-subtle">
-            <XCircle />
-            <span onClick={handleRevoke}>{t("apiKeyManagement.revoke")}</span>
-          </div>
-        </DropdownMenu.Item>
-        <DropdownMenu.Item onClick={handleDelete}>
-          <div className="flex items-center gap-x-2 [&_svg]:text-ui-fg-subtle">
-            <Trash />
-            <span>{t("general.delete")}</span>
-          </div>
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
-    </DropdownMenu>
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: t("general.edit"),
+              to: `/settings/api-key-management/${apiKey.id}`,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              icon: <XCircle />,
+              label: t("apiKeyManagement.revoke"),
+              onClick: handleRevoke,
+            },
+            {
+              icon: <Trash />,
+              label: t("general.delete"),
+              onClick: handleDelete,
+            },
+          ],
+        },
+      ]}
+    />
   )
 }
 

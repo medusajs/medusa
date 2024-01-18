@@ -1,5 +1,5 @@
 ---
-"@medusajs/workflows-inmemory": patch
+"@medusajs/workflows-engine-inmemory": patch
 "@medusajs/orchestration": patch
 "@medusajs/workflows-sdk": patch
 "@medusajs/modules-sdk": patch
@@ -7,4 +7,4 @@
 "@medusajs/utils": patch
 ---
 
-Workflow Orchestrator In Memory
+Workflows Engine in-memory Module

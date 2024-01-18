@@ -16,7 +16,7 @@ export default async ({
   | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
 >): Promise<void> => {
   logger?.warn(
-    "Workflow Orchestrator In Memory installed. This is not recommended for production."
+    "Workflows Engine In Memory installed. This is not recommended for production."
   )
 
   const customRepositories = (

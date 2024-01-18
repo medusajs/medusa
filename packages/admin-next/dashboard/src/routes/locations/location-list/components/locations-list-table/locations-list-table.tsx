@@ -1,15 +1,6 @@
-import { EllipsisHorizontal, PencilSquare, Trash } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { StockLocationExpandedDTO } from "@medusajs/types"
-import {
-  Button,
-  Container,
-  DropdownMenu,
-  Heading,
-  IconButton,
-  Table,
-  clx,
-  usePrompt,
-} from "@medusajs/ui"
+import { Button, Container, Heading, Table, clx, usePrompt } from "@medusajs/ui"
 import {
   PaginationState,
   RowSelectionState,
@@ -22,10 +13,11 @@ import {
   useAdminDeleteStockLocation,
   useAdminStockLocations,
 } from "medusa-react"
-import { MouseEvent, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import {
   NoRecords,
   NoResults,
@@ -176,9 +168,7 @@ const LocationActions = ({
   const prompt = usePrompt()
   const { mutateAsync } = useAdminDeleteStockLocation(location.id)
 
-  const handleDelete = async (e: MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-
+  const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
       description: t("locations.deleteLocationWarning", {
@@ -198,30 +188,24 @@ const LocationActions = ({
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
-        <IconButton variant="transparent">
-          <EllipsisHorizontal />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <Link to={`/settings/locations/${location.id}`}>
-          <DropdownMenu.Item onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center gap-x-2">
-              <PencilSquare className="text-ui-fg-subtle" />
-              <span>{t("general.edit")}</span>
-            </div>
-          </DropdownMenu.Item>
-        </Link>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Item onClick={handleDelete}>
-          <div className="flex items-center gap-x-2">
-            <Trash className="text-ui-fg-subtle" />
-            <span>{t("general.delete")}</span>
-          </div>
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
-    </DropdownMenu>
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: t("general.edit"),
+              to: `/settings/locations/${location.id}/edit`,
+            },
+            {
+              icon: <Trash />,
+              label: t("general.delete"),
+              onClick: handleDelete,
+            },
+          ],
+        },
+      ]}
+    />
   )
 }
 

@@ -43,7 +43,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.PRICING]: "@medusajs/pricing",
   [Modules.PROMOTION]: "@medusajs/promotion",
   [Modules.AUTHENTICATION]: "@medusajs/authentication",
-  [Modules.WORKFLOW]: "@medusajs/workflows-inmemory",
+  [Modules.WORKFLOW]: "@medusajs/workflows-engine-inmemory",
   [Modules.CART]: "@medusajs/cart",
   [Modules.PAYMENT]: "@medusajs/payment",
 }
