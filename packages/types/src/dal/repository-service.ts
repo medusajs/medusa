@@ -58,6 +58,8 @@ export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
     ids: string[],
     context?: Context
   ): Promise<[T[], Record<string, unknown[]>]>
+
+  upsert?(data: unknown[], context?: Context): Promise<T[]>
 }
 
 export interface TreeRepositoryService<T = any>
@@ -81,7 +83,7 @@ export interface TreeRepositoryService<T = any>
 
 /**
  * @interface
- * 
+ *
  * An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
  */
 export type SoftDeleteReturn<TReturnableLinkableKeys = string> = {
@@ -93,7 +95,7 @@ export type SoftDeleteReturn<TReturnableLinkableKeys = string> = {
 
 /**
  * @interface
- * 
+ *
  * An object that is used to specify an entity's related entities that should be restored when the main entity is restored.
  */
 export type RestoreReturn<TReturnableLinkableKeys = string> = {
