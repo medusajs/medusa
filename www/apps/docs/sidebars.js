@@ -1009,7 +1009,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "modules/taxes/backend/tax-calculation-strategy",
+          id: "references/tax_calculation/classes/tax_calculation.AbstractTaxCalculationStrategy",
           label: "Backend: Override Tax Calculation",
         },
         {
@@ -1148,11 +1148,6 @@ module.exports = {
           label: "Price Lists",
         },
         {
-          type: "doc",
-          id: "modules/price-lists/price-selection-strategy",
-          label: "Price Selection Strategy",
-        },
-        {
           type: "html",
           value: "How-to",
           customProps: {
@@ -1161,7 +1156,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "modules/price-lists/backend/override-price-selection-strategy",
+          id: "references/price_selection/classes/price_selection.AbstractPriceSelectionStrategy",
           label: "Backend: Override Price Selection",
         },
         {

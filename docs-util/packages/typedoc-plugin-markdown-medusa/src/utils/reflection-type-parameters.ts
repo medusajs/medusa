@@ -31,7 +31,7 @@ export function getReflectionTypeParameters({
   comment,
   level = 1,
   maxLevel,
-  wrapObject = false,
+  wrapObject,
   isReturn = true,
 }: GetReflectionTypeParametersParams): Parameter[] {
   const typeName = getType({
@@ -99,20 +99,24 @@ export function getReflectionTypeParameters({
           if (!reflectionTypeArg) {
             return
           }
-          const typeArgComponent = getReflectionTypeParameters({
-            reflectionType: reflectionTypeArg,
-            project,
-            level: level + 1,
-            maxLevel,
-          })
 
-          componentItem[parentKey - 1].children?.push(...typeArgComponent)
+          componentItem[parentKey - 1].children?.push(
+            ...getReflectionTypeParameters({
+              reflectionType: reflectionTypeArg,
+              project,
+              level: level + 1,
+              maxLevel,
+            })
+          )
         })
       }
     } else {
       const reflection = (reflectionType.reflection ||
         getProjectChild(project, reflectionType.name)) as DeclarationReflection
-      const parentKey = wrapObject
+      const shouldWrapObject =
+        wrapObject ||
+        (wrapObject === undefined && level > 1 && canRetrieveChildren)
+      const parentKey = shouldWrapObject
         ? componentItem.push(formatParameter())
         : undefined
       if (reflection) {

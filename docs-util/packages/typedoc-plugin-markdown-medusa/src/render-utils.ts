@@ -58,6 +58,7 @@ import ifHasMutationReturnHelper from "./resources/helpers/if-has-mutation-retur
 import reactQueryMutationReturnHelper from "./resources/helpers/react-query-mutation-return"
 import ifHasQueryReturnHelper from "./resources/helpers/if-has-query-return"
 import reactQueryQueryReturnHelper from "./resources/helpers/react-query-query-return"
+import endSectionsHelper from "./resources/helpers/end-sections"
 import { MarkdownTheme } from "./theme"
 
 const TEMPLATE_PATH = path.join(__dirname, "resources", "templates")
@@ -144,4 +145,5 @@ export function registerHelpers(theme: MarkdownTheme) {
   reactQueryMutationReturnHelper(theme)
   ifHasQueryReturnHelper(theme)
   reactQueryQueryReturnHelper(theme)
+  endSectionsHelper(theme)
 }

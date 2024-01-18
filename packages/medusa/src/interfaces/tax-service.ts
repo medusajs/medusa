@@ -44,11 +44,11 @@ export type ItemTaxCalculationLine = {
  */
 export type TaxCalculationContext = {
   /**
-   * The shipping address in the cart.
+   * The shipping address used in the cart.
    */
   shipping_address: Address | null
   /**
-   * The cart's customer.
+   * The customer that the cart belongs to.
    */
   customer: Customer
   /**
