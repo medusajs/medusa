@@ -1811,7 +1811,7 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "development/notification/create-notification-provider",
+              id: "references/notification/classes/notification.AbstractNotificationService",
               label: "Create a Notification Provider",
             },
           ],

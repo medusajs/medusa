@@ -107,7 +107,7 @@ used to generate on demand invoices or other documents.
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Registers an attachment generator to the service. The generator can be\nused to generate on demand invoices or other documents.","expandable":false,"children":[]}]} />
 
 ___
 
@@ -121,7 +121,7 @@ Takes a list of notification provider ids and persists them in the database.
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Takes a list of notification provider ids and persists them in the database.","expandable":false,"children":[]}]} />
 
 ___
 
@@ -165,7 +165,7 @@ resolution fails.
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"AbstractNotificationService","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"AbstractNotificationService","type":"`object`","description":"## Overview\n\n:::note[Prerequisites]\n\nBefore creating a Notification Provider, [install an event bus module](https://docs.medusajs.com/development/events/modules/redis).\n\n:::\n\nA Notification Provider is a provider that handles sending and resending of notifications.\n\nTo create a Notification Provider, create a TypeScript or JavaScript file in `src/services`. The name of the file is the name of the provider\n(for example, `sendgrid.ts`). The file must export a class that extends the `AbstractNotificationService` class imported from `@medusajs/medusa`.\n\nFor example, create the file `src/services/email-sender.ts` with the following content:\n\n```ts title=\"src/services/email-sender.ts\"\nimport { AbstractNotificationService } from \"@medusajs/medusa\"\nimport { EntityManager } from \"typeorm\"\n\nclass EmailSenderService extends AbstractNotificationService {\n  protected manager_: EntityManager\n  protected transactionManager_: EntityManager\n\n  sendNotification(\n    event: string,\n    data: unknown,\n    attachmentGenerator: unknown\n  ): Promise<{\n      to: string;\n      status: string;\n      data: Record<string, unknown>;\n    }> {\n    throw new Error(\"Method not implemented.\")\n  }\n  resendNotification(\n    notification: unknown,\n    config: unknown,\n    attachmentGenerator: unknown\n  ): Promise<{\n      to: string;\n      status: string;\n      data: Record<string, unknown>;\n    }> {\n    throw new Error(\"Method not implemented.\")\n  }\n\n}\n\nexport default EmailSenderService\n```\n\n---\n\n## Identifier Property\n\nThe `NotificationProvider` entity has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the notification provider\nclass is used when the Notification Provider is created in the database.\n\nThe value of this property is also used later when you want to subscribe the Notification Provider to events in a [Loader](https://docs.medusajs.com/development/loaders/overview).\n\nFor example:\n\n```ts\nclass EmailSenderService extends AbstractNotificationService {\n  static identifier = \"email-sender\"\n  // ...\n}\n```\n\n---","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 ___
 
@@ -206,7 +206,7 @@ Subscribes a given provider to an event.
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Subscribes a given provider to an event.","expandable":false,"children":[]}]} />
 
 ___
 

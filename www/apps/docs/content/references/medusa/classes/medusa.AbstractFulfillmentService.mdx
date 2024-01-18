@@ -69,13 +69,13 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"container","type":"[MedusaContainer](../types/medusa.MedusaContainer-1.mdx)","description":"An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`Record<string, unknown>`","description":"If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<ParameterTypes parameters={[{"name":"container","type":"[MedusaContainer](../types/medusa.MedusaContainer-2.mdx)","description":"An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`Record<string, unknown>`","description":"If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"container","type":"[MedusaContainer](../types/medusa.MedusaContainer-1.mdx)","description":"An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"identifier","type":"`string`","description":"The `FulfillmentProvider` entity has 2 properties: `identifier` and `is_installed`. The `identifier` property in the class is used when the fulfillment provider is created in the database.\nThe value of this property is also used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin#regions\\_postregionsregionfulfillmentproviders) to a region.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`Record<string, unknown>`","description":"If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<ParameterTypes parameters={[{"name":"container","type":"[MedusaContainer](../types/medusa.MedusaContainer-2.mdx)","description":"An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"identifier","type":"`string`","description":"The `FulfillmentProvider` entity has 2 properties: `identifier` and `is_installed`. The `identifier` property in the class is used when the fulfillment provider is created in the database.\nThe value of this property is also used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin#regions\\_postregionsregionfulfillmentproviders) to a region.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`Record<string, unknown>`","description":"If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
 ___
 
@@ -91,23 +91,129 @@ ___
 
 ## Methods
 
-### atomicPhase\_
+### getFulfillmentOptions
 
-Wraps some work within a transactional block. If the service already has
-a transaction manager attached this will be reused, otherwise a new
-transaction manager is created.
+This method is used when retrieving the list of fulfillment options available in a region, particularly by the [List Fulfillment Options API Route](https://docs.medusajs.com/api/admin#regions\_getregionsregionfulfillmentoptions).
+For example, if you’re integrating UPS as a fulfillment provider, you might support two fulfillment options: UPS Express Shipping and UPS Access Point. Each of these options can have different data associated with them.
 
-#### Type Parameters
+#### Example
 
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+```ts
+class MyFulfillmentService extends AbstractFulfillmentService {
+  // ...
+  async getFulfillmentOptions(): Promise<any[]> {
+    return [
+      {
+        id: "my-fulfillment",
+      },
+      {
+        id: "my-fulfillment-dynamic",
+      },
+    ]
+  }
+}
+```
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[{"name":"TResult","type":"TResult","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any[]&#62;","optional":false,"defaultValue":"","description":"The list of fulfillment options. These options don't have any required format. Later on, these options can be used when creating a shipping option,\nsuch as when using the [Create Shipping Option API Route](https://docs.medusajs.com/api/admin#shipping-options\\_postshippingoptions). The chosen fulfillment option, which is one of the\nitems in the array returned by this method, will be set in the `data` object of the shipping option.","expandable":false,"children":[{"name":"any[]","type":"`any`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+___
+
+### validateFulfillmentData
+
+This method is called when a shipping method is created. This typically happens when the customer chooses a shipping option during checkout, when a shipping method is created
+for an order return, or in other similar cases. The shipping option and its data are validated before the shipping method is created.
+
+You can use the provided parameters to validate the chosen shipping option. For example, you can check if the `data` object passed as a second parameter includes all data needed to
+fulfill the shipment later on.
+
+If any of the data is invalid, you can throw an error. This error will stop Medusa from creating a shipping method and the error message will be returned as a result of the API Route.
+
+#### Example
+
+```ts
+class MyFulfillmentService extends AbstractFulfillmentService {
+  // ...
+  async validateFulfillmentData(
+    optionData: Record<string, unknown>,
+    data: Record<string, unknown>,
+    cart: Cart
+  ): Promise<Record<string, unknown>> {
+    if (data.id !== "my-fulfillment") {
+      throw new Error("invalid data")
+    }
+
+    return {
+      ...data,
+    }
+  }
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[{"name":"optionData","type":"[ShippingOptionData](../types/medusa.ShippingOptionData.mdx)","description":"The data object of the shipping option selected when creating the shipping method.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"[FulfillmentProviderData](../types/medusa.FulfillmentProviderData.mdx)","description":"The `data` object passed in the body of the request.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"billing_address","type":"[Address](../../entities/classes/entities.Address.mdx)","description":"The details of the billing address associated with the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"billing_address_id","type":"`string`","description":"The billing address's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"completed_at","type":"`Date`","description":"The date with timezone at which the cart was completed.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"The context of the cart which can include info like IP or user agent.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The date with timezone at which the resource was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"[Customer](../../entities/classes/entities.Customer.mdx)","description":"The details of the customer the cart belongs to.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"customer_id","type":"`string`","description":"The customer's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"The date with timezone at which the resource was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discounts","type":"[Discount](../../entities/classes/entities.Discount.mdx)[]","description":"An array of details of all discounts applied to the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"email","type":"`string`","description":"The email associated with the cart","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"gift_cards","type":"[GiftCard](../../entities/classes/entities.GiftCard.mdx)[]","description":"An array of details of all gift cards applied to the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"id","type":"`string`","description":"The cart's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotency_key","type":"`string`","description":"Randomly generated key used to continue the completion of a cart in case of failure.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"items","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"The line items added to the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional key-value map with additional details","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`\"cart\"`","description":"","optional":false,"defaultValue":"\"cart\"","expandable":false,"children":[]},{"name":"payment","type":"[Payment](../../entities/classes/entities.Payment.mdx)","description":"The details of the payment associated with the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"payment_authorized_at","type":"`Date`","description":"The date with timezone at which the payment was authorized.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_id","type":"`string`","description":"The payment's ID if available","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_session","type":"`null` \\| [PaymentSession](../../entities/classes/entities.PaymentSession.mdx)","description":"The details of the selected payment session in the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"payment_sessions","type":"[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)[]","description":"The details of all payment sessions created on the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"region","type":"[Region](../../entities/classes/entities.Region.mdx)","description":"The details of the region associated with the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"region_id","type":"`string`","description":"The region's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sales_channel","type":"[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)","description":"The details of the sales channel associated with the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"sales_channel_id","type":"`null` \\| `string`","description":"The sales channel ID the cart is associated with.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_address","type":"`null` \\| [Address](../../entities/classes/entities.Address.mdx)","description":"The details of the shipping address associated with the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"shipping_address_id","type":"`string`","description":"The shipping address's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_methods","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]","description":"The details of the shipping methods added to the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"type","type":"[CartType](../../entities/enums/entities.CartType.mdx)","description":"The cart's type.","optional":false,"defaultValue":"default","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The date with timezone at which the resource was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discount_total","type":"`number`","description":"The total of discount rounded","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gift_card_tax_total","type":"`number`","description":"The total of gift cards with taxes","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gift_card_total","type":"`number`","description":"The total of gift cards","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"item_tax_total","type":"`null` \\| `number`","description":"The total of items with taxes","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_discount_total","type":"`number`","description":"The total of discount","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"refundable_amount","type":"`number`","description":"The amount that can be refunded","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"refunded_total","type":"`number`","description":"The total amount refunded if the order associated with this cart is returned.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"sales_channels","type":"[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)[]","description":"The associated sales channels.","optional":true,"defaultValue":"","expandable":true,"children":[]},{"name":"shipping_tax_total","type":"`null` \\| `number`","description":"The total of shipping with taxes","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_total","type":"`number`","description":"The total of shipping","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"subtotal","type":"`number`","description":"The subtotal of the cart","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_total","type":"`null` \\| `number`","description":"The total of tax","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"total","type":"`number`","description":"The total amount of the cart","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62;&#62;","optional":false,"defaultValue":"","description":"The data that will be stored in the `data` property of the shipping method to be created.\nMake sure the value you return contains everything you need to fulfill the shipment later on. The returned value may also be used to calculate the price of the shipping method\nif it doesn't have a set price. It will be passed along to the [calculatePrice](medusa.AbstractFulfillmentService.mdx#calculateprice) method.","expandable":false,"children":[{"name":"Record","type":"`Record<string, unknown>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+___
+
+### validateOption
+
+Once the admin creates the shipping option, the data of the shipping option will be validated first using this method. This method is called when the [Create Shipping Option API Route](https://docs.medusajs.com/api/admin#shipping-options\_postshippingoptions) is used.
+
+#### Example
+
+For example, you can use this method to ensure that the `id` in the `data` object is correct:
+
+```ts
+class MyFulfillmentService extends AbstractFulfillmentService {
+  // ...
+  async validateOption(
+    data: Record<string, unknown>
+  ): Promise<boolean> {
+    return data.id == "my-fulfillment"
+  }
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[{"name":"data","type":"[ShippingOptionData](../types/medusa.ShippingOptionData.mdx)","description":"the data object that is sent in the body of the request, basically, the data object of the shipping option. You can use this data to validate the shipping option before it is saved.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"Whether the fulfillment option is valid. If the returned value is false, an error is thrown and the shipping option will not be saved.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+___
+
+### canCalculate
+
+This method is used to determine whether a shipping option is calculated dynamically or flat rate. It is called if the `price_type` of the shipping option being created is set to calculated.
+
+#### Example
+
+```ts
+class MyFulfillmentService extends AbstractFulfillmentService {
+  // ...
+  async canCalculate(
+    data: Record<string, unknown>
+  ): Promise<boolean> {
+    return data.id === "my-fulfillment-dynamic"
+  }
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[{"name":"data","type":"[ShippingOptionData](../types/medusa.ShippingOptionData.mdx)","description":"The `data` object of the shipping option being created. You can use this data to determine whether the shipping option should be calculated or not.\nThis is useful if the fulfillment provider you are integrating has both flat rate and dynamically priced fulfillment options.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"If this method returns `true`, that means that the price can be calculated dynamically and the shipping option can have the `price_type` set to calculated.\nThe amount property of the shipping option will then be set to null. The amount will be created later when the shipping method is created on checkout using the [calculatePrice](medusa.AbstractFulfillmentService.mdx#calculateprice) method.\nIf the method returns `false`, an error is thrown as it means the selected shipping option is invalid and it can only have the `flat_rate` price type.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
 ___
 
@@ -161,62 +267,6 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 
 ___
 
-### canCalculate
-
-This method is used to determine whether a shipping option is calculated dynamically or flat rate. It is called if the `price_type` of the shipping option being created is set to calculated.
-
-#### Example
-
-```ts
-class MyFulfillmentService extends AbstractFulfillmentService {
-  // ...
-  async canCalculate(
-    data: Record<string, unknown>
-  ): Promise<boolean> {
-    return data.id === "my-fulfillment-dynamic"
-  }
-}
-```
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"data","type":"[ShippingOptionData](../types/medusa.ShippingOptionData.mdx)","description":"The `data` object of the shipping option being created. You can use this data to determine whether the shipping option should be calculated or not.\nThis is useful if the fulfillment provider you are integrating has both flat rate and dynamically priced fulfillment options.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"If this method returns `true`, that means that the price can be calculated dynamically and the shipping option can have the `price_type` set to calculated.\nThe amount property of the shipping option will then be set to null. The amount will be created later when the shipping method is created on checkout using the [calculatePrice](medusa.AbstractFulfillmentService.mdx#calculateprice) method.\nIf the method returns `false`, an error is thrown as it means the selected shipping option is invalid and it can only have the `flat_rate` price type.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
-
-___
-
-### cancelFulfillment
-
-This method is called when a fulfillment is cancelled by the admin. This fulfillment can be for an order, a claim, or a swap.
-
-#### Example
-
-This is the basic implementation of the method for a fulfillment provider that doesn't interact with a third-party provider to cancel the fulfillment:
-
-```ts
-class MyFulfillmentService extends FulfillmentService {
-  // ...
-  async cancelFulfillment(
-    fulfillment: Record<string, unknown>
-  ): Promise<any> {
-    return {}
-  }
-}
-```
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"fulfillment","type":"[FulfillmentProviderData](../types/medusa.FulfillmentProviderData.mdx)","description":"The `data` attribute of the fulfillment being canceled","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"The method isn't expected to return any specific data.","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
-
-___
-
 ### createFulfillment
 
 This method is used when a fulfillment is created for an order, a claim, or a swap.
@@ -248,6 +298,35 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[FulfillmentProviderData](../types/medusa.FulfillmentProviderData.mdx)&#62;","optional":false,"defaultValue":"","description":"The data that will be stored in the `data` attribute of the created fulfillment.","expandable":false,"children":[{"name":"FulfillmentProviderData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+___
+
+### cancelFulfillment
+
+This method is called when a fulfillment is cancelled by the admin. This fulfillment can be for an order, a claim, or a swap.
+
+#### Example
+
+This is the basic implementation of the method for a fulfillment provider that doesn't interact with a third-party provider to cancel the fulfillment:
+
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  async cancelFulfillment(
+    fulfillment: Record<string, unknown>
+  ): Promise<any> {
+    return {}
+  }
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[{"name":"fulfillment","type":"[FulfillmentProviderData](../types/medusa.FulfillmentProviderData.mdx)","description":"The `data` attribute of the fulfillment being canceled","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"The method isn't expected to return any specific data.","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
 ___
 
@@ -309,35 +388,6 @@ class MyFulfillmentService extends FulfillmentService {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"There are no restrictions on the returned response. If your fulfillment provider doesn't provide this functionality, you can leave the method empty or through an error.","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
-
-___
-
-### getFulfillmentOptions
-
-This method is used when retrieving the list of fulfillment options available in a region, particularly by the [List Fulfillment Options API Route](https://docs.medusajs.com/api/admin#regions\_getregionsregionfulfillmentoptions).
-For example, if you’re integrating UPS as a fulfillment provider, you might support two fulfillment options: UPS Express Shipping and UPS Access Point. Each of these options can have different data associated with them.
-
-#### Example
-
-```ts
-class MyFulfillmentService extends AbstractFulfillmentService {
-  // ...
-  async getFulfillmentOptions(): Promise<any[]> {
-    return [
-      {
-        id: "my-fulfillment",
-      },
-      {
-        id: "my-fulfillment-dynamic",
-      },
-    ]
-  }
-}
-```
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any[]&#62;","optional":false,"defaultValue":"","description":"The list of fulfillment options. These options don't have any required format. Later on, these options can be used when creating a shipping option,\nsuch as when using the [Create Shipping Option API Route](https://docs.medusajs.com/api/admin#shipping-options\\_postshippingoptions). The chosen fulfillment option, which is one of the\nitems in the array returned by this method, will be set in the `data` object of the shipping option.","expandable":false,"children":[{"name":"any[]","type":"`any`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
 ___
 
@@ -430,6 +480,18 @@ class MyFulfillmentService extends FulfillmentService {
 
 ___
 
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+___
+
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -442,82 +504,20 @@ ___
 
 ___
 
-### validateFulfillmentData
+### atomicPhase\_
 
-This method is called when a shipping method is created. This typically happens when the customer chooses a shipping option during checkout, when a shipping method is created
-for an order return, or in other similar cases. The shipping option and its data are validated before the shipping method is created.
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
 
-You can use the provided parameters to validate the chosen shipping option. For example, you can check if the `data` object passed as a second parameter includes all data needed to
-fulfill the shipment later on.
+#### Type Parameters
 
-If any of the data is invalid, you can throw an error. This error will stop Medusa from creating a shipping method and the error message will be returned as a result of the API Route.
-
-#### Example
-
-```ts
-class MyFulfillmentService extends AbstractFulfillmentService {
-  // ...
-  async validateFulfillmentData(
-    optionData: Record<string, unknown>,
-    data: Record<string, unknown>,
-    cart: Cart
-  ): Promise<Record<string, unknown>> {
-    if (data.id !== "my-fulfillment") {
-      throw new Error("invalid data")
-    }
-
-    return {
-      ...data,
-    }
-  }
-}
-```
+<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"optionData","type":"[ShippingOptionData](../types/medusa.ShippingOptionData.mdx)","description":"The data object of the shipping option selected when creating the shipping method.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"[FulfillmentProviderData](../types/medusa.FulfillmentProviderData.mdx)","description":"The `data` object passed in the body of the request.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"billing_address","type":"[Address](../../entities/classes/entities.Address.mdx)","description":"The details of the billing address associated with the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"billing_address_id","type":"`string`","description":"The billing address's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"completed_at","type":"`Date`","description":"The date with timezone at which the cart was completed.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"The context of the cart which can include info like IP or user agent.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The date with timezone at which the resource was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"[Customer](../../entities/classes/entities.Customer.mdx)","description":"The details of the customer the cart belongs to.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"customer_id","type":"`string`","description":"The customer's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"The date with timezone at which the resource was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discounts","type":"[Discount](../../entities/classes/entities.Discount.mdx)[]","description":"An array of details of all discounts applied to the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"email","type":"`string`","description":"The email associated with the cart","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"gift_cards","type":"[GiftCard](../../entities/classes/entities.GiftCard.mdx)[]","description":"An array of details of all gift cards applied to the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"id","type":"`string`","description":"The cart's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotency_key","type":"`string`","description":"Randomly generated key used to continue the completion of a cart in case of failure.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"items","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"The line items added to the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional key-value map with additional details","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`\"cart\"`","description":"","optional":false,"defaultValue":"\"cart\"","expandable":false,"children":[]},{"name":"payment","type":"[Payment](../../entities/classes/entities.Payment.mdx)","description":"The details of the payment associated with the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"payment_authorized_at","type":"`Date`","description":"The date with timezone at which the payment was authorized.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_id","type":"`string`","description":"The payment's ID if available","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_session","type":"`null` \\| [PaymentSession](../../entities/classes/entities.PaymentSession.mdx)","description":"The details of the selected payment session in the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"payment_sessions","type":"[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)[]","description":"The details of all payment sessions created on the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"region","type":"[Region](../../entities/classes/entities.Region.mdx)","description":"The details of the region associated with the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"region_id","type":"`string`","description":"The region's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sales_channel","type":"[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)","description":"The details of the sales channel associated with the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"sales_channel_id","type":"`null` \\| `string`","description":"The sales channel ID the cart is associated with.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_address","type":"`null` \\| [Address](../../entities/classes/entities.Address.mdx)","description":"The details of the shipping address associated with the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"shipping_address_id","type":"`string`","description":"The shipping address's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_methods","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]","description":"The details of the shipping methods added to the cart.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"type","type":"[CartType](../../entities/enums/entities.CartType.mdx)","description":"The cart's type.","optional":false,"defaultValue":"default","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The date with timezone at which the resource was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discount_total","type":"`number`","description":"The total of discount rounded","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gift_card_tax_total","type":"`number`","description":"The total of gift cards with taxes","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gift_card_total","type":"`number`","description":"The total of gift cards","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"item_tax_total","type":"`null` \\| `number`","description":"The total of items with taxes","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_discount_total","type":"`number`","description":"The total of discount","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"refundable_amount","type":"`number`","description":"The amount that can be refunded","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"refunded_total","type":"`number`","description":"The total amount refunded if the order associated with this cart is returned.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"sales_channels","type":"[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)[]","description":"The associated sales channels.","optional":true,"defaultValue":"","expandable":true,"children":[]},{"name":"shipping_tax_total","type":"`null` \\| `number`","description":"The total of shipping with taxes","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_total","type":"`number`","description":"The total of shipping","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"subtotal","type":"`number`","description":"The subtotal of the cart","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_total","type":"`null` \\| `number`","description":"The total of tax","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"total","type":"`number`","description":"The total amount of the cart","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62;&#62;","optional":false,"defaultValue":"","description":"The data that will be stored in the `data` property of the shipping method to be created.\nMake sure the value you return contains everything you need to fulfill the shipment later on. The returned value may also be used to calculate the price of the shipping method\nif it doesn't have a set price. It will be passed along to the [calculatePrice](medusa.AbstractFulfillmentService.mdx#calculateprice) method.","expandable":false,"children":[{"name":"Record","type":"`Record<string, unknown>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
-
-___
-
-### validateOption
-
-Once the admin creates the shipping option, the data of the shipping option will be validated first using this method. This method is called when the [Create Shipping Option API Route](https://docs.medusajs.com/api/admin#shipping-options\_postshippingoptions) is used.
-
-#### Example
-
-For example, you can use this method to ensure that the `id` in the `data` object is correct:
-
-```ts
-class MyFulfillmentService extends AbstractFulfillmentService {
-  // ...
-  async validateOption(
-    data: Record<string, unknown>
-  ): Promise<boolean> {
-    return data.id == "my-fulfillment"
-  }
-}
-```
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"data","type":"[ShippingOptionData](../types/medusa.ShippingOptionData.mdx)","description":"the data object that is sent in the body of the request, basically, the data object of the shipping option. You can use this data to validate the shipping option before it is saved.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"Whether the fulfillment option is valid. If the returned value is false, an error is thrown and the shipping option will not be saved.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
-
-___
-
-### withTransaction
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[{"name":"TResult","type":"TResult","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>

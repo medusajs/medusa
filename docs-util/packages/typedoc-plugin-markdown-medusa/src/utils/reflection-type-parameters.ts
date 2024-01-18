@@ -52,6 +52,20 @@ export function getReflectionTypeParameters({
   })
 
   const formatParameter = () => {
+    let description = ""
+
+    if (comment) {
+      if (isReturn) {
+        description = getReturnComment(comment)
+      }
+
+      if (!description.length) {
+        description = Handlebars.helpers.comment(comment.summary)
+      }
+    } else if (!isReturn) {
+      description = loadComment(typeName, project)
+    }
+
     return {
       name: "name" in reflectionType ? reflectionType.name : typeName,
       type,
@@ -65,13 +79,7 @@ export function getReflectionTypeParameters({
               reflectionType.declaration as DeclarationReflection
             ) || ""
           : "",
-      description: comment
-        ? isReturn
-          ? getReturnComment(comment)
-          : Handlebars.helpers.comment(comment.summary)
-        : !comment && !isReturn
-          ? loadComment(typeName, project)
-          : "",
+      description,
       expandable: comment?.hasModifier(`@expandable`) || false,
       featureFlag: Handlebars.helpers.featureFlag(comment),
       children: [],
@@ -106,6 +114,7 @@ export function getReflectionTypeParameters({
               project,
               level: level + 1,
               maxLevel,
+              isReturn: false,
             })
           )
         })
@@ -167,6 +176,7 @@ export function getReflectionTypeParameters({
         project,
         level: level + 1,
         maxLevel,
+        isReturn: false,
       })
       componentItem[parentKey - 1].children?.push(...elementTypeItem)
     }
@@ -190,6 +200,7 @@ export function getReflectionTypeParameters({
           project,
           level: level + 1,
           maxLevel,
+          isReturn: false,
         })
         pushTo.push(...elementTypeItem)
       })
@@ -204,6 +215,7 @@ export function getReflectionTypeParameters({
         project,
         level: level + 1,
         maxLevel,
+        isReturn: false,
       })
 
       parentKey
