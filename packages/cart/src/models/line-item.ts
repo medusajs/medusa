@@ -94,13 +94,13 @@ export default class LineItem {
   @Property({ columnType: "jsonb", nullable: true })
   variant_option_values?: Record<string, unknown> | null
 
-  @Property({ columnType: "boolean", default: true })
+  @Property({ columnType: "boolean" })
   requires_shipping = true
 
-  @Property({ columnType: "boolean", default: true })
+  @Property({ columnType: "boolean" })
   is_discountable = true
 
-  @Property({ columnType: "boolean", default: false })
+  @Property({ columnType: "boolean" })
   is_tax_inclusive = false
 
   @Property({ columnType: "numeric", nullable: true })

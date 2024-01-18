@@ -18,4 +18,9 @@ export default class LineItemAdjustmentService<
     create: CreateLineItemAdjustmentDTO
     update: UpdateLineItemAdjustmentDTO
   }
->(LineItemAdjustmentLine)<TEntity> {}
+>(LineItemAdjustmentLine)<TEntity> {
+  constructor(container: InjectedDependencies) {
+    // @ts-ignore
+    super(...arguments)
+  }
+}
