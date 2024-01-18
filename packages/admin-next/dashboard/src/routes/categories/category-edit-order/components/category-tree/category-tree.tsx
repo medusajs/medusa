@@ -1,9 +1,10 @@
-import { DotsSix, Folder, Swatch, TriangleDownMini } from "@medusajs/icons"
+import { DotsSix, Folder, Swatch, TriangleRightMini } from "@medusajs/icons"
 import type { ProductCategory } from "@medusajs/medusa"
-import { IconButton } from "@medusajs/ui"
+import { Button, FocusModal, IconButton, clx } from "@medusajs/ui"
 import { ReactNode } from "react"
 import Nestable from "react-nestable"
 
+import { useTranslation } from "react-i18next"
 import "react-nestable/dist/styles/index.css"
 import "./styles.css"
 
@@ -14,24 +15,48 @@ type CategoryTreeProps = {
 const MAX_DEPTH = 99
 
 export const CategoryTree = ({ categories }: CategoryTreeProps) => {
+  const { t } = useTranslation()
+
   return (
-    <div className="txt-compact-small relative">
-      <Nestable
-        items={categories}
-        childrenProp="category_children"
-        maxDepth={MAX_DEPTH}
-        renderItem={({ index, item, ...props }) => {
-          return <Leaf key={index} item={item as ProductCategory} {...props} />
-        }}
-        handler={<DragHandle />}
-        renderCollapseIcon={({ isCollapsed }) => {
-          return (
-            <IconButton size="small" variant="transparent">
-              <TriangleDownMini />
-            </IconButton>
-          )
-        }}
-      />
+    <div className="flex flex-col">
+      <FocusModal.Header>
+        <div className="flex items-center gap-x-2 justify-end">
+          <FocusModal.Close asChild>
+            <Button size="small" variant="secondary">
+              {t("general.cancel")}
+            </Button>
+          </FocusModal.Close>
+          <Button size="small" variant="primary">
+            {t("general.save")}
+          </Button>
+        </div>
+      </FocusModal.Header>
+      <FocusModal.Body>
+        <div className="txt-compact-small relative">
+          <Nestable
+            items={categories}
+            childrenProp="category_children"
+            maxDepth={MAX_DEPTH}
+            renderItem={({ index, item, ...props }) => {
+              return (
+                <Leaf key={index} item={item as ProductCategory} {...props} />
+              )
+            }}
+            handler={<DragHandle />}
+            renderCollapseIcon={({ isCollapsed }) => {
+              return (
+                <IconButton size="small" variant="transparent">
+                  <TriangleRightMini
+                    className={clx({
+                      "transform rotate-90 transition-transform": !isCollapsed,
+                    })}
+                  />
+                </IconButton>
+              )
+            }}
+          />
+        </div>
+      </FocusModal.Body>
     </div>
   )
 }
@@ -44,13 +69,7 @@ type LeafProps = {
   handler: ReactNode
 }
 
-const Leaf = ({
-  item,
-  depth,
-  isDraggable,
-  collapseIcon,
-  handler,
-}: LeafProps) => {
+const Leaf = ({ item, depth, collapseIcon, handler }: LeafProps) => {
   const hasChildren = !!item.category_children?.length
 
   return (
