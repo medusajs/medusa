@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from "class-validator"
+import { IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 
 export class AdminGetCampaignsCampaignParams extends FindParams {}
@@ -14,4 +14,30 @@ export class AdminGetCampaignsParams extends extendedFindParamsMixin({
   @IsString()
   @IsOptional()
   currency?: string
+}
+
+export class AdminPostCampaignsCampaignReq {
+  @IsNotEmpty()
+  @IsString()
+  name: string
+
+  @IsOptional()
+  @IsNotEmpty()
+  campaign_identifier: string
+
+  @IsOptional()
+  @IsString()
+  description: string
+
+  @IsOptional()
+  @IsString()
+  currency: string
+
+  @IsOptional()
+  @IsDate()
+  starts_at: Date
+
+  @IsOptional()
+  @IsDate()
+  ends_at: Date
 }

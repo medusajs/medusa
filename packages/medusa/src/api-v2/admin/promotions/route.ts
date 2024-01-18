@@ -1,5 +1,6 @@
+import { createPromotionsWorkflow } from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPromotionModuleService } from "@medusajs/types"
+import { CreatePromotionDTO, IPromotionModuleService } from "@medusajs/types"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
@@ -20,4 +21,17 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     offset,
     limit,
   })
+}
+
+export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+  const createPromotions = createPromotionsWorkflow(req.scope)
+  const manager = req.scope.resolve("manager")
+  const promotionsData = [req.validatedBody as CreatePromotionDTO]
+
+  const { result } = await createPromotions.run({
+    input: { promotionsData },
+    context: { manager },
+  })
+
+  res.status(200).json({ promotion: result[0] })
 }

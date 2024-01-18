@@ -789,7 +789,10 @@ export default class PromotionModuleService<
         promotion_rule: createdPromotionRule,
       }))
 
-      await this.promotionRuleValueService_.create(promotionRuleValuesData)
+      await this.promotionRuleValueService_.create(
+        promotionRuleValuesData,
+        sharedContext
+      )
     }
   }
 
