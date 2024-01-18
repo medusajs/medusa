@@ -23,7 +23,7 @@ export default class CustomerGroup {
   id!: string
 
   @Property({ columnType: "text", nullable: true })
-  name?: string | null
+  name: string | null = null
 
   @ManyToMany({
     entity: () => Customer,
@@ -32,7 +32,7 @@ export default class CustomerGroup {
   customers = new Collection<Customer>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
-  metadata?: Record<string, unknown> | null
+  metadata: Record<string, unknown> | null = null
 
   @Property({
     onCreate: () => new Date(),

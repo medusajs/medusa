@@ -33,42 +33,42 @@ export default class Customer {
   id: string
 
   @Property({ columnType: "text", nullable: true })
-  company_name?: string | null
+  company_name: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  first_name?: string | null
+  first_name: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  last_name?: string | null
+  last_name: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  email?: string | null
+  email: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  phone?: string | null
+  phone: string | null = null
 
   @Index({ name: "IDX_customer_default_shipping_address_id" })
   @Property({ columnType: "text", nullable: true })
-  default_shipping_address_id?: string | null
+  default_shipping_address_id: string | null = null
 
   @ManyToOne(() => Address, {
     fieldName: "shipping_address_id",
     nullable: true,
   })
-  default_shipping_address?: Address | null
+  default_shipping_address: Address | null = null
 
   @Index({ name: "IDX_customer_default_billing_address_id" })
   @Property({ columnType: "text", nullable: true })
-  default_billing_address_id?: string | null
+  default_billing_address_id: string | null = null
 
   @ManyToOne(() => Address, {
     fieldName: "default_billing_address_id",
     nullable: true,
   })
-  default_billing_address?: Address | null
+  default_billing_address: Address | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  metadata?: Record<string, unknown> | null
+  metadata: Record<string, unknown> | null = null
 
   @ManyToMany({
     inversedBy: (group) => group.customers,
@@ -87,7 +87,7 @@ export default class Customer {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at?: Date
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -95,13 +95,13 @@ export default class Customer {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at?: Date
+  updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date
+  deleted_at: Date | null = null
 
   @Property({ columnType: "text", nullable: true })
-  created_by?: string | null
+  created_by: string | null = null
 
   @BeforeCreate()
   onCreate() {
