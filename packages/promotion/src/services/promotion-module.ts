@@ -558,7 +558,7 @@ export default class PromotionModuleService<
         }
       }
 
-      await this.createPromotionRulesAndValues(
+      await this.createPromotionRulesAndValues_(
         promotionCodeRulesDataMap.get(promotion.code) || [],
         "promotions",
         promotion,
@@ -577,7 +577,7 @@ export default class PromotionModuleService<
     }
 
     for (const applicationMethod of createdApplicationMethods) {
-      await this.createPromotionRulesAndValues(
+      await this.createPromotionRulesAndValues_(
         applicationMethodRuleMap.get(applicationMethod.promotion.id) || [],
         "application_methods",
         applicationMethod,
@@ -705,7 +705,6 @@ export default class PromotionModuleService<
   }
 
   @InjectManager("baseRepository_")
-  @InjectTransactionManager("baseRepository_")
   async addPromotionRules(
     promotionId: string,
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
@@ -713,20 +712,21 @@ export default class PromotionModuleService<
   ): Promise<PromotionTypes.PromotionDTO> {
     const promotion = await this.promotionService_.retrieve(promotionId)
 
-    await this.createPromotionRulesAndValues(
+    await this.createPromotionRulesAndValues_(
       rulesData,
       "promotions",
       promotion,
       sharedContext
     )
 
-    return this.retrieve(promotionId, {
-      relations: ["rules", "rules.values"],
-    })
+    return this.retrieve(
+      promotionId,
+      { relations: ["rules", "rules.values"] },
+      sharedContext
+    )
   }
 
   @InjectManager("baseRepository_")
-  @InjectTransactionManager("baseRepository_")
   async addPromotionTargetRules(
     promotionId: string,
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
@@ -745,29 +745,34 @@ export default class PromotionModuleService<
       )
     }
 
-    await this.createPromotionRulesAndValues(
+    await this.createPromotionRulesAndValues_(
       rulesData,
       "application_methods",
       applicationMethod,
       sharedContext
     )
 
-    return this.retrieve(promotionId, {
-      relations: [
-        "rules",
-        "rules.values",
-        "application_method",
-        "application_method.target_rules",
-        "application_method.target_rules.values",
-      ],
-    })
+    return this.retrieve(
+      promotionId,
+      {
+        relations: [
+          "rules",
+          "rules.values",
+          "application_method",
+          "application_method.target_rules",
+          "application_method.target_rules.values",
+        ],
+      },
+      sharedContext
+    )
   }
 
-  protected async createPromotionRulesAndValues(
+  @InjectTransactionManager("baseRepository_")
+  protected async createPromotionRulesAndValues_(
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
     relationName: "promotions" | "application_methods",
     relation: Promotion | ApplicationMethod,
-    sharedContext: Context
+    @MedusaContext() sharedContext: Context = {}
   ) {
     validatePromotionRuleAttributes(rulesData)
 

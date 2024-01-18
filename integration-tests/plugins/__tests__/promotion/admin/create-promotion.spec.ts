@@ -80,6 +80,13 @@ describe("POST /admin/promotions", () => {
           allocation: "each",
           value: "100",
           max_quantity: 100,
+          target_rules: [
+            {
+              attribute: "test.test",
+              operator: "eq",
+              values: ["test1", "test2"],
+            },
+          ],
         },
         rules: [
           {
@@ -109,6 +116,16 @@ describe("POST /admin/promotions", () => {
           type: "fixed",
           target_type: "items",
           allocation: "each",
+          target_rules: [
+            expect.objectContaining({
+              operator: "eq",
+              attribute: "test.test",
+              values: expect.arrayContaining([
+                expect.objectContaining({ value: "test1" }),
+                expect.objectContaining({ value: "test2" }),
+              ]),
+            }),
+          ],
         }),
         rules: [
           expect.objectContaining({
