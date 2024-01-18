@@ -8,4 +8,9 @@ export class ShippingMethodRepository extends DALUtils.mikroOrmBaseRepositoryFac
     create: CreateShippingMethodDTO
     update: UpdateShippingMethodDTO
   }
->(ShippingMethod) {}
+>(ShippingMethod) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
+  }
+}

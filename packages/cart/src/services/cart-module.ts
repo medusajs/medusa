@@ -559,7 +559,7 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<CartTypes.CartShippingMethodDTO[]>
   async addShippingMethods(
     cartId: string,
-    items: CartTypes.CreateShippingMethodDTO[],
+    methods: CartTypes.CreateShippingMethodDTO[],
     sharedContext?: Context
   ): Promise<CartTypes.CartShippingMethodDTO[]>
 
@@ -643,7 +643,9 @@ export default class CartModuleService implements ICartModuleService {
     let toDelete: string[] = []
     if (isObject(methodIdsOrSelector)) {
       const methods = await this.listShippingMethods(
-        { ...methodIdsOrSelector },
+        {
+          ...(methodIdsOrSelector as Partial<CartTypes.CartShippingMethodDTO>),
+        },
         {},
         sharedContext
       )

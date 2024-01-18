@@ -29,7 +29,7 @@ export default class ShippingMethod {
     index: "IDX_shipping_method_cart_id",
     nullable: true,
   })
-  cart?: Cart | null
+  cart: Cart | null = null
 
   @Property({ columnType: "text" })
   name: string
