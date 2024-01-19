@@ -186,7 +186,7 @@ export function abstractServiceFactory<
       )) as [TEntity[], number]
     }
 
-    @InjectTransactionManager(shouldForceTransaction, propertyRepositoryName)
+    @InjectManager(propertyRepositoryName) // TODO: REVERT TO USE TX MANAGER AFTER FIX
     async create(
       data: TDTOs["create"][],
       @MedusaContext() sharedContext: Context = {}

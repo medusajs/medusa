@@ -57,8 +57,9 @@ export default class PaymentSession {
     entity: () => Payment,
     mappedBy: (payment) => payment.session,
     cascade: ["soft-remove"] as any,
+    nullable: true,
   })
-  payment!: Payment
+  payment?: Payment | null
 
   @BeforeCreate()
   onCreate() {

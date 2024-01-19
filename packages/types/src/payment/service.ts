@@ -75,8 +75,14 @@ export interface IPaymentModuleService extends IModuleService {
 
   /* ********** PAYMENT ********** */
 
-  createPayment(data: CreatePaymentDTO): Promise<PaymentDTO>
-  createPayment(data: CreatePaymentDTO[]): Promise<PaymentDTO[]>
+  createPayment(
+    data: CreatePaymentDTO,
+    sharedContext?: Context
+  ): Promise<PaymentDTO>
+  createPayment(
+    data: CreatePaymentDTO[],
+    sharedContext?: Context
+  ): Promise<PaymentDTO[]>
 
   capturePayment(
     paymentId: string,

@@ -240,7 +240,7 @@ describe("Payment Module Service", () => {
 
     describe("create", () => {
       it("should create a payment session successfully", async () => {
-        const createdSession = await service.createPaymentSession(
+        const paymentCollection = await service.createPaymentSession(
           "pay-col-id-1",
           {
             amount: 200,
@@ -249,11 +249,25 @@ describe("Payment Module Service", () => {
           }
         )
 
-        console.log(createdSession)
-
-        expect(createdSession).toEqual(
+        expect(paymentCollection).toEqual(
           expect.objectContaining({
-            id: expect.any(String),
+            id: "pay-col-id-1",
+            status: "not_paid",
+            payment_sessions: [
+              {
+                id: expect.any(String),
+                currency_code: "usd",
+                amount: 200,
+                provider_id: "manual",
+                status: "pending",
+                payment_collection: expect.objectContaining({
+                  id: "pay-col-id-1",
+                }),
+                authorized_at: null,
+                payment: null,
+                data: null,
+              },
+            ],
           })
         )
       })
@@ -273,8 +287,6 @@ describe("Payment Module Service", () => {
           schema: process.env.MEDUSA_PAYMNET_DB_SCHEMA,
         },
       })
-
-      await createPaymentCollections(repositoryManager)
     })
 
     afterEach(async () => {
@@ -283,25 +295,48 @@ describe("Payment Module Service", () => {
 
     describe("create", () => {
       it("should create a payment successfully", async () => {
-        const coll = await service.createPaymentCollection({
+        let paymentCollection = await service.createPaymentCollection({
           currency_code: "usd",
           amount: 200,
           region_id: "reg",
         })
-        const [createdPayment] = await service.createPayment({
+
+        paymentCollection = await service.createPaymentSession(
+          paymentCollection.id,
+          {
+            amount: 200,
+            provider_id: "manual",
+            currency_code: "usd",
+          }
+        )
+
+        const createdPayment = await service.createPayment({
           data: {},
           amount: 200,
           provider_id: "manual",
           currency_code: "usd",
-          payment_collection_id: coll.id,
-          payment_session_id: "ses_123",
+          payment_collection_id: paymentCollection.id,
+          payment_session_id: paymentCollection.payment_sessions[0].id,
         })
-
-        console.log(createdPayment)
 
         expect(createdPayment).toEqual(
           expect.objectContaining({
             id: expect.any(String),
+            authorized_amount: null,
+            cart_id: null,
+            order_id: null,
+            order_edit_id: null,
+            customer_id: null,
+            data: {},
+            deleted_at: null,
+            captured_at: null,
+            canceled_at: null,
+            refunds: [],
+            captures: [],
+            amount: 200,
+            currency_code: "usd",
+            provider_id: "manual",
+            payment_collection: paymentCollection.id,
           })
         )
       })

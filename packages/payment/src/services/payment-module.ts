@@ -195,8 +195,17 @@ export default class PaymentModule implements IPaymentModuleService {
       count,
     ]
   }
-  createPayment(data: CreatePaymentDTO): Promise<PaymentDTO>
-  createPayment(data: CreatePaymentDTO[]): Promise<PaymentDTO[]>
+
+  createPayment(
+    data: CreatePaymentDTO,
+    sharedContext?: Context
+  ): Promise<PaymentDTO>
+  createPayment(
+    data: CreatePaymentDTO[],
+    sharedContext?: Context
+  ): Promise<PaymentDTO[]>
+
+  @InjectManager("baseRepository_") // TODO: USE TX MANAGER AFTER FIX
   async createPayment(
     data: CreatePaymentDTO | CreatePaymentDTO[],
     @MedusaContext() sharedContext?: Context
@@ -229,6 +238,8 @@ export default class PaymentModule implements IPaymentModuleService {
     data: CreatePaymentSessionDTO[],
     sharedContext?: Context | undefined
   ): Promise<PaymentCollectionDTO>
+
+  @InjectTransactionManager("baseRepository_")
   async createPaymentSession(
     paymentCollectionId: string,
     data: CreatePaymentSessionDTO | CreatePaymentSessionDTO[],
@@ -243,9 +254,13 @@ export default class PaymentModule implements IPaymentModuleService {
 
     await this.paymentSessionService_.create(input, sharedContext)
 
-    return await this.retrievePaymentCollection(paymentCollectionId, {
-      relations: ["payment_sessions"],
-    })
+    return await this.retrievePaymentCollection(
+      paymentCollectionId,
+      {
+        relations: ["payment_sessions"],
+      },
+      sharedContext
+    )
   }
 
   /**

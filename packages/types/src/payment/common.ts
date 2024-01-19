@@ -36,6 +36,8 @@ export interface PaymentCollectionDTO {
    * The ID of the Payment Collection
    */
   id: string
+
+  payment_sessions: PaymentSessionDTO[]
 }
 
 export interface FilterablePaymentCollectionProps
@@ -52,7 +54,16 @@ export interface FilterablePaymentCollectionProps
 
 export interface PaymentDTO {
   /**
-   * The ID of the Payment Collection
+   * The ID of the Payment
+   */
+  id: string
+}
+
+/* ********** PAYMENT ********** */
+
+export interface PaymentSessionDTO {
+  /**
+   * The ID of the Payment Session
    */
   id: string
 }
