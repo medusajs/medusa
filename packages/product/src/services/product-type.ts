@@ -1,23 +1,17 @@
 import { ProductType } from "@models"
 import {
   Context,
-  CreateProductTypeDTO,
   DAL,
   FindConfig,
   ProductTypes,
-  UpdateProductTypeDTO,
   UpsertProductTypeDTO,
 } from "@medusajs/types"
-import { ProductTypeRepository } from "@repositories"
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  retrieveEntity,
 } from "@medusajs/utils"
-
-import { shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productTypeRepository: DAL.RepositoryService
@@ -25,63 +19,54 @@ type InjectedDependencies = {
 
 export default class ProductTypeService<
   TEntity extends ProductType = ProductType
-> {
-  protected readonly productTypeRepository_: DAL.RepositoryService
+> extends ModulesSdkUtils.abstractServiceFactory<
+  InjectedDependencies,
+  {
+    create: ProductTypes.CreateProductTypeDTO
+    update: ProductTypes.UpdateProductTypeDTO
+  }
+>(ProductType)<TEntity> {
+  protected readonly productTypeRepository_: DAL.RepositoryService<TEntity>
 
-  constructor({ productTypeRepository }: InjectedDependencies) {
-    this.productTypeRepository_ = productTypeRepository
+  constructor(container: InjectedDependencies) {
+    super(container)
+    this.productTypeRepository_ = container.productTypeRepository
   }
 
   @InjectManager("productTypeRepository_")
-  async retrieve(
-    productTypeId: string,
-    config: FindConfig<ProductTypes.ProductTypeDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity> {
-    return (await retrieveEntity<ProductType, ProductTypes.ProductTypeDTO>({
-      id: productTypeId,
-      entityName: ProductType.name,
-      repository: this.productTypeRepository_,
-      config,
-      sharedContext,
-    })) as TEntity
-  }
-
-  @InjectManager("productTypeRepository_")
-  async list(
+  async list<TEntityMethod = ProductTypes.ProductTypeDTO>(
     filters: ProductTypes.FilterableProductTypeProps = {},
-    config: FindConfig<ProductTypes.ProductTypeDTO> = {},
+    config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await this.productTypeRepository_.find(
+    return await this.productTypeRepository_.find(
       this.buildQueryForList(filters, config),
       sharedContext
-    )) as TEntity[]
+    )
   }
 
   @InjectManager("productTypeRepository_")
-  async listAndCount(
+  async listAndCount<TEntityMethod = ProductTypes.ProductOptionDTO>(
     filters: ProductTypes.FilterableProductTypeProps = {},
-    config: FindConfig<ProductTypes.ProductTypeDTO> = {},
+    config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
-    return (await this.productTypeRepository_.findAndCount(
+    return await this.productTypeRepository_.findAndCount(
       this.buildQueryForList(filters, config),
       sharedContext
-    )) as [TEntity[], number]
+    )
   }
 
-  private buildQueryForList(
+  private buildQueryForList<TEntityMethod = ProductTypes.ProductTypeDTO>(
     filters: ProductTypes.FilterableProductTypeProps = {},
-    config: FindConfig<ProductTypes.ProductTypeDTO> = {}
-  ) {
-    const queryOptions = ModulesSdkUtils.buildQuery<ProductType>(
-      filters,
-      config
-    )
+    config: FindConfig<TEntityMethod> = {}
+  ): DAL.FindOptions<TEntity> {
+    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
 
     if (filters.value) {
-      queryOptions.where["value"] = { $ilike: filters.value }
+      queryOptions.where.value = {
+        $ilike: filters.value,
+      } as DAL.FindOptions<TEntity>["where"]["value"]
     }
 
     return queryOptions
@@ -92,37 +77,6 @@ export default class ProductTypeService<
     types: UpsertProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await (this.productTypeRepository_ as ProductTypeRepository)
-      .upsert!(types, sharedContext)) as TEntity[]
-  }
-
-  @InjectTransactionManager("productTypeRepository_")
-  async create(
-    data: CreateProductTypeDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return (await (this.productTypeRepository_ as ProductTypeRepository).create(
-      data,
-      sharedContext
-    )) as TEntity[]
-  }
-
-  @InjectTransactionManager("productTypeRepository_")
-  async update(
-    data: UpdateProductTypeDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return (await (this.productTypeRepository_ as ProductTypeRepository).update(
-      data,
-      sharedContext
-    )) as TEntity[]
-  }
-
-  @InjectTransactionManager("productTypeRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.productTypeRepository_.delete(ids, sharedContext)
+    return await this.productTypeRepository_.upsert!(types, sharedContext)
   }
 }

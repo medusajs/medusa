@@ -5,8 +5,10 @@ import {
   CartAddressDTO,
   CartDTO,
   CartLineItemDTO,
+  CartShippingMethodDTO,
   FilterableAddressProps,
   FilterableCartProps,
+  FilterableShippingMethodProps,
   LineItemTaxLineDTO,
   ShippingMethodTaxLineDTO,
 } from "./common"
@@ -16,6 +18,7 @@ import {
   CreateLineItemDTO,
   CreateLineItemForCartDTO,
   CreateLineItemTaxLineDTO,
+  CreateShippingMethodDTO,
   CreateShippingMethodTaxLineDTO,
   UpdateAddressDTO,
   UpdateCartDTO,
@@ -109,6 +112,37 @@ export interface ICartModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
 
+  listShippingMethods(
+    filters: FilterableShippingMethodProps,
+    config: FindConfig<CartShippingMethodDTO>,
+    sharedContext: Context
+  ): Promise<CartShippingMethodDTO[]>
+
+  addShippingMethods(
+    data: CreateShippingMethodDTO
+  ): Promise<CartShippingMethodDTO>
+  addShippingMethods(
+    data: CreateShippingMethodDTO[]
+  ): Promise<CartShippingMethodDTO[]>
+  addShippingMethods(
+    cartId: string,
+    methods: CreateShippingMethodDTO[],
+    sharedContext?: Context
+  ): Promise<CartShippingMethodDTO[]>
+
+  removeShippingMethods(
+    methodIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  removeShippingMethods(
+    methodIds: string,
+    sharedContext?: Context
+  ): Promise<void>
+  removeShippingMethods(
+    selector: Partial<CartShippingMethodDTO>,
+    sharedContext?: Context
+  ): Promise<void>
+
   listLineItemTaxLines(
     filters: any,
     config?: FindConfig<LineItemTaxLineDTO>,
@@ -166,7 +200,10 @@ export interface ICartModuleService extends IModuleService {
 
   setShippingMethodTaxLines(
     cartId: string,
-    taxLines: (CreateShippingMethodTaxLineDTO | UpdateShippingMethodTaxLineDTO)[],
+    taxLines: (
+      | CreateShippingMethodTaxLineDTO
+      | UpdateShippingMethodTaxLineDTO
+    )[],
     sharedContext?: Context
   ): Promise<ShippingMethodTaxLineDTO[]>
 

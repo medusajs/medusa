@@ -1,4 +1,5 @@
 import { ICartModuleService } from "@medusajs/types"
+import { CheckConstraintViolationException } from "@mikro-orm/core"
 import { initialize } from "../../../../src/initialize"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
@@ -121,6 +122,91 @@ describe("Cart Module Service", () => {
             last_name: "Doe",
           }),
         })
+      )
+    })
+
+    it("should create a cart with items", async () => {
+      const createdCart = await service.create({
+        currency_code: "eur",
+        items: [
+          {
+            title: "test",
+            quantity: 1,
+            unit_price: 100,
+          },
+        ],
+      })
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["items"],
+      })
+
+      expect(cart).toEqual(
+        expect.objectContaining({
+          id: createdCart.id,
+          currency_code: "eur",
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              title: "test",
+              unit_price: 100,
+            }),
+          ]),
+        })
+      )
+    })
+
+    it("should create multiple carts with items", async () => {
+      const createdCarts = await service.create([
+        {
+          currency_code: "eur",
+          items: [
+            {
+              title: "test",
+              quantity: 1,
+              unit_price: 100,
+            },
+          ],
+        },
+        {
+          currency_code: "usd",
+          items: [
+            {
+              title: "test-2",
+              quantity: 2,
+              unit_price: 200,
+            },
+          ],
+        },
+      ])
+
+      const carts = await service.list(
+        { id: createdCarts.map((c) => c.id) },
+        {
+          relations: ["items"],
+        }
+      )
+
+      expect(carts).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            currency_code: "eur",
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                title: "test",
+                unit_price: 100,
+              }),
+            ]),
+          }),
+          expect.objectContaining({
+            currency_code: "usd",
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                title: "test-2",
+                unit_price: 200,
+              }),
+            ]),
+          }),
+        ])
       )
     })
   })
@@ -601,14 +687,20 @@ describe("Cart Module Service", () => {
     })
   })
 
+<<<<<<< HEAD
   describe("setLineItemTaxLines", () => {
     it("should set line item tax lines for a cart", async () => {
+=======
+  describe("addShippingMethods", () => {
+    it("should add a shipping method to cart succesfully", async () => {
+>>>>>>> develop
       const [createdCart] = await service.create([
         {
           currency_code: "eur",
         },
       ])
 
+<<<<<<< HEAD
       const [itemOne] = await service.addLineItems(createdCart.id, [
         {
           quantity: 1,
@@ -692,10 +784,17 @@ describe("Cart Module Service", () => {
           item_id: itemOne.id,
           rate: 25,
           code: "TX-2",
+=======
+      const [method] = await service.addShippingMethods(createdCart.id, [
+        {
+          amount: 100,
+          name: "Test",
+>>>>>>> develop
         },
       ])
 
       const cart = await service.retrieve(createdCart.id, {
+<<<<<<< HEAD
         relations: ["items.tax_lines"],
       })
 
@@ -719,12 +818,22 @@ describe("Cart Module Service", () => {
     })
 
     it("should remove all line item tax lines for a cart", async () => {
+=======
+        relations: ["shipping_methods"],
+      })
+
+      expect(method.id).toBe(cart.shipping_methods![0].id)
+    })
+
+    it("should throw when amount is negative", async () => {
+>>>>>>> develop
       const [createdCart] = await service.create([
         {
           currency_code: "eur",
         },
       ])
 
+<<<<<<< HEAD
       const [itemOne] = await service.addLineItems(createdCart.id, [
         {
           quantity: 1,
@@ -873,11 +982,28 @@ describe("Cart Module Service", () => {
 
     it("should add multiple line item tax lines for multiple line items", async () => {
       const [createdCart] = await service.create([
+=======
+      const error = await service
+        .addShippingMethods(createdCart.id, [
+          {
+            amount: -100,
+            name: "Test",
+          },
+        ])
+        .catch((e) => e)
+
+      expect(error.name).toBe(CheckConstraintViolationException.name)
+    })
+
+    it("should add multiple shipping methods to multiple carts succesfully", async () => {
+      let [eurCart] = await service.create([
+>>>>>>> develop
         {
           currency_code: "eur",
         },
       ])
 
+<<<<<<< HEAD
       const [itemOne] = await service.addLineItems(createdCart.id, [
         {
           quantity: 1,
@@ -929,11 +1055,15 @@ describe("Cart Module Service", () => {
         },
       ])
       const [cartTwo] = await service.create([
+=======
+      let [usdCart] = await service.create([
+>>>>>>> develop
         {
           currency_code: "usd",
         },
       ])
 
+<<<<<<< HEAD
       const [itemOne] = await service.addLineItems(cartOne.id, [
         {
           quantity: 1,
@@ -1074,12 +1204,49 @@ describe("Cart Module Service", () => {
     })
 
     it("should remove line item tax lines succesfully with selector", async () => {
+=======
+      const methods = await service.addShippingMethods([
+        {
+          cart_id: eurCart.id,
+          amount: 100,
+          name: "Test One",
+        },
+        {
+          cart_id: usdCart.id,
+          amount: 100,
+          name: "Test One",
+        },
+      ])
+
+      const carts = await service.list(
+        { id: [eurCart.id, usdCart.id] },
+        { relations: ["shipping_methods"] }
+      )
+
+      eurCart = carts.find((c) => c.currency_code === "eur")!
+      usdCart = carts.find((c) => c.currency_code === "usd")!
+
+      const eurMethods = methods.filter((m) => m.cart_id === eurCart.id)
+      const usdMethods = methods.filter((m) => m.cart_id === usdCart.id)
+
+      expect(eurCart.shipping_methods![0].id).toBe(eurMethods[0].id)
+      expect(usdCart.shipping_methods![0].id).toBe(usdMethods[0].id)
+
+      expect(eurCart.shipping_methods?.length).toBe(1)
+      expect(usdCart.shipping_methods?.length).toBe(1)
+    })
+  })
+
+  describe("removeShippingMethods", () => {
+    it("should remove a line item succesfully", async () => {
+>>>>>>> develop
       const [createdCart] = await service.create([
         {
           currency_code: "eur",
         },
       ])
 
+<<<<<<< HEAD
       const [item] = await service.addLineItems(createdCart.id, [
         {
           quantity: 1,
@@ -1105,6 +1272,24 @@ describe("Cart Module Service", () => {
       })
 
       expect(taxLines?.length).toBe(0)
+=======
+      const [method] = await service.addShippingMethods(createdCart.id, [
+        {
+          amount: 100,
+          name: "test",
+        },
+      ])
+
+      expect(method.id).not.toBe(null)
+
+      await service.removeShippingMethods(method.id)
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["shipping_methods"],
+      })
+
+      expect(cart.shipping_methods?.length).toBe(0)
+>>>>>>> develop
     })
   })
 })

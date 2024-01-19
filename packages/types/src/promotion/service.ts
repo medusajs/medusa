@@ -51,6 +51,12 @@ export interface IPromotionModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PromotionDTO[]>
 
+  listAndCount(
+    filters?: FilterablePromotionProps,
+    config?: FindConfig<PromotionDTO>,
+    sharedContext?: Context
+  ): Promise<[PromotionDTO[], number]>
+
   retrieve(
     id: string,
     config?: FindConfig<PromotionDTO>,
