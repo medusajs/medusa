@@ -11,21 +11,37 @@ import { asClass } from "awilix"
 import { abstractServiceFactory } from "../abstract-service-factory"
 import { mikroOrmBaseRepositoryFactory } from "../../dal"
 
+type RepositoryLoaderOptions = {
+  moduleModels: Record<string, any>
+  moduleRepositories?: Record<string, any>
+  customRepositories: Record<string, any>
+  container: MedusaContainer
+}
+
+type ServiceLoaderOptions = {
+  moduleModels: Record<string, any>
+  moduleServices: Record<string, any>
+  container: MedusaContainer
+}
+
 /**
  * Factory for creating a container loader for a module.
  *
  * @param moduleModels
  * @param moduleServices
  * @param moduleRepositories
+ * @param customRepositoryLoader The default repository loader is based on mikro orm. If you want to use a custom repository loader, you can pass it here.
  */
 export function moduleContainerLoaderFactory({
   moduleModels,
   moduleServices,
-  moduleRepositories,
+  moduleRepositories = {},
+  customRepositoryLoader = loadModuleRepositories,
 }: {
   moduleModels: Record<string, any>
   moduleServices: Record<string, any>
-  moduleRepositories: Record<string, any>
+  moduleRepositories?: Record<string, any>
+  customRepositoryLoader?: (options: RepositoryLoaderOptions) => void
 }): ({ container, options }: LoaderOptions) => Promise<void> {
   return async ({
     container,
@@ -44,7 +60,8 @@ export function moduleContainerLoaderFactory({
       container,
     })
 
-    loadModuleRepositories({
+    const repositoryLoader = customRepositoryLoader ?? loadModuleRepositories
+    repositoryLoader({
       moduleModels,
       moduleRepositories,
       customRepositories: customRepositories ?? {},
@@ -65,11 +82,7 @@ export function loadModuleServices({
   moduleModels,
   moduleServices,
   container,
-}: {
-  moduleModels: Record<string, any>
-  moduleServices: Record<string, any>
-  container: MedusaContainer
-}) {
+}: ServiceLoaderOptions) {
   const moduleServicesMap = new Map(
     Object.entries(moduleServices).map(([key, repository]) => [
       lowerCaseFirst(key),
@@ -108,15 +121,10 @@ export function loadModuleServices({
  */
 export function loadModuleRepositories({
   moduleModels,
-  moduleRepositories,
+  moduleRepositories = {},
   customRepositories,
   container,
-}: {
-  moduleModels: Record<string, any>
-  moduleRepositories: Record<string, any>
-  customRepositories: Record<string, any>
-  container: MedusaContainer
-}) {
+}: RepositoryLoaderOptions) {
   const customRepositoriesMap = new Map(
     Object.entries(customRepositories).map(([key, repository]) => [
       lowerCaseFirst(key),
