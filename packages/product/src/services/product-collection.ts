@@ -7,7 +7,10 @@ import {
 } from "@medusajs/utils"
 
 import { ProductCollection } from "@models"
-import { ProductCollectionServiceTypes } from "@types"
+import {
+  IProductCollectionRepository,
+  ProductCollectionServiceTypes,
+} from "@types"
 import {
   CreateProductCollection,
   UpdateProductCollection,
@@ -27,7 +30,7 @@ export default class ProductCollectionService<
   }
 >(ProductCollection)<TEntity> {
   // eslint-disable-next-line max-len
-  protected readonly productCollectionRepository_: DAL.RepositoryService<TEntity>
+  protected readonly productCollectionRepository_: IProductCollectionRepository<TEntity>
 
   constructor(container: InjectedDependencies) {
     super(container)

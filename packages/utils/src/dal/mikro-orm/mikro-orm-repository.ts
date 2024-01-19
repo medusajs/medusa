@@ -2,6 +2,7 @@ import {
   Context,
   DAL,
   FilterQuery as InternalFilterQuery,
+  RepositoryService,
   RepositoryTransformOptions,
 } from "@medusajs/types"
 import {
@@ -232,7 +233,10 @@ export function mikroOrmBaseRepositoryFactory<
     [K in DtoBasedMutationMethods]?: any
   }
 >(entity: EntityClass<T> | EntitySchema<T>) {
-  class MikroOrmAbstractBaseRepository_ extends MikroOrmBaseRepository<T> {
+  class MikroOrmAbstractBaseRepository_
+    extends MikroOrmBaseRepository<T>
+    implements RepositoryService<T, TDTOs>
+  {
     // @ts-ignore
     constructor(...args: any[]) {
       // @ts-ignore
