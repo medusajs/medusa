@@ -1,5 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPromotionModuleService, UpdateCampaignDTO } from "@medusajs/types"
+import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateCampaignsStep = createStep(
@@ -9,11 +10,25 @@ export const updateCampaignsStep = createStep(
       ModuleRegistrationName.PROMOTION
     )
 
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray(data)
+    const dataBeforeUpdate = await promotionModule.listCampaigns(
+      { id: data.map((d) => d.id) },
+      { relations, select: selects }
+    )
+
     const updatedCampaigns = await promotionModule.updateCampaigns(data)
 
-    return new StepResponse(updatedCampaigns, data)
+    return new StepResponse(updatedCampaigns, dataBeforeUpdate)
   },
   async (dataBeforeUpdate, { container }) => {
-    // TODO: reset the data before an update was performed
+    if (!dataBeforeUpdate) {
+      return
+    }
+
+    const promotionModule = container.resolve<IPromotionModuleService>(
+      ModuleRegistrationName.PROMOTION
+    )
+
+    await promotionModule.updateCampaigns(dataBeforeUpdate)
   }
 )
