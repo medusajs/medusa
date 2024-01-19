@@ -16,7 +16,6 @@ import {
   MedusaError,
   isObject,
   isString,
-  promiseAll,
 } from "@medusajs/utils"
 import { LineItem, ShippingMethod, ShippingMethodAdjustment } from "@models"
 import { UpdateLineItemDTO } from "@types"
@@ -733,10 +732,24 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
 
-    const [result] = await promiseAll([
-      this.shippingMethodAdjustmentService_.create(toCreate, sharedContext),
-      this.shippingMethodAdjustmentService_.update(toUpdate, sharedContext),
-    ])
+    let result: ShippingMethodAdjustment[] = []
+
+    if (toCreate.length) {
+      const created = await this.shippingMethodAdjustmentService_.create(
+        toCreate,
+        sharedContext
+      )
+
+      result.push(...created)
+    }
+
+    if (toUpdate.length) {
+      const updated = await this.shippingMethodAdjustmentService_.update(
+        toUpdate,
+        sharedContext
+      )
+      result.push(...updated)
+    }
 
     return await this.baseRepository_.serialize<
       CartTypes.ShippingMethodAdjustmentDTO[]
@@ -787,6 +800,13 @@ export default class CartModuleService implements ICartModuleService {
 
       addedAdjustments = await this.shippingMethodAdjustmentService_.create(
         adjustments as CartTypes.CreateShippingMethodAdjustmentDTO[],
+        sharedContext
+      )
+    } else {
+      const data = Array.isArray(cartIdOrData) ? cartIdOrData : [cartIdOrData]
+
+      addedAdjustments = await this.shippingMethodAdjustmentService_.create(
+        data as CartTypes.CreateShippingMethodAdjustmentDTO[],
         sharedContext
       )
     }

@@ -22,7 +22,7 @@ export default abstract class AdjustmentLine {
   @Property({ columnType: "text" })
   code: string
 
-  @Property({ columnType: "numeric" })
+  @Property({ columnType: "numeric", serializer: Number })
   amount: number
 
   @Property({ columnType: "text", nullable: true })

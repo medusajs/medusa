@@ -24,6 +24,9 @@ export default async ({
       defaultServices.ShippingMethodService
     ).singleton(),
     lineItemService: asClass(defaultServices.LineItemService).singleton(),
+    shippingMethodAdjustmentService: asClass(
+      defaultServices.ShippingMethodAdjustmentService
+    ).singleton(),
   })
 
   if (customRepositories) {
@@ -49,6 +52,9 @@ function loadDefaultRepositories({ container }) {
     ).singleton(),
     shippingMethodRepository: asClass(
       defaultRepositories.ShippingMethodRepository
+    ).singleton(),
+    shippingMethodAdjustmentRepository: asClass(
+      defaultRepositories.ShippingMethodAdjustmentRepository
     ).singleton(),
   })
 }

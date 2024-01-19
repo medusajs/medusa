@@ -2,8 +2,8 @@ import { DAL } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import { ShippingMethodAdjustment } from "@models"
 import {
-    CreateShippingMethodAdjustmentDTO,
-    UpdateShippingMethodAdjustmentDTO,
+  CreateShippingMethodAdjustmentDTO,
+  UpdateShippingMethodAdjustmentDTO,
 } from "@types"
 
 type InjectedDependencies = {

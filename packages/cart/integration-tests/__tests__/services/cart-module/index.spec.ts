@@ -828,13 +828,14 @@ describe("Cart Module Service", () => {
       ])
 
       const cart = await service.retrieve(createdCart.id, {
-        relations: ["items.adjustments"],
+        relations: ["shipping_methods.adjustments"],
       })
 
-      expect(cart.items).toEqual(
+      expect(cart.shipping_methods).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: shippingMethodOne.id,
+            cart_id: createdCart.id,
             adjustments: expect.arrayContaining([
               expect.objectContaining({
                 shipping_method_id: shippingMethodOne.id,
@@ -846,8 +847,8 @@ describe("Cart Module Service", () => {
         ])
       )
 
-      expect(cart.items?.length).toBe(1)
-      expect(cart.items?.[0].adjustments?.length).toBe(1)
+      expect(cart.shipping_methods?.length).toBe(1)
+      expect(cart.shipping_methods?.[0].adjustments?.length).toBe(1)
     })
 
     it("should remove all shipping method adjustments for a cart", async () => {
@@ -892,10 +893,10 @@ describe("Cart Module Service", () => {
       await service.setShippingMethodAdjustments(createdCart.id, [])
 
       const cart = await service.retrieve(createdCart.id, {
-        relations: ["items.adjustments"],
+        relations: ["shipping_methods.adjustments"],
       })
 
-      expect(cart.items).toEqual(
+      expect(cart.shipping_methods).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: shippingMethodOne.id,
@@ -904,8 +905,8 @@ describe("Cart Module Service", () => {
         ])
       )
 
-      expect(cart.items?.length).toBe(1)
-      expect(cart.items?.[0].adjustments?.length).toBe(0)
+      expect(cart.shipping_methods?.length).toBe(1)
+      expect(cart.shipping_methods?.[0].adjustments?.length).toBe(0)
     })
 
     it("should update shipping method adjustments for a cart", async () => {
@@ -956,10 +957,10 @@ describe("Cart Module Service", () => {
       ])
 
       const cart = await service.retrieve(createdCart.id, {
-        relations: ["items.adjustments"],
+        relations: ["shipping_methods.adjustments"],
       })
 
-      expect(cart.items).toEqual(
+      expect(cart.shipping_methods).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: shippingMethodOne.id,
@@ -975,13 +976,13 @@ describe("Cart Module Service", () => {
         ])
       )
 
-      expect(cart.items?.length).toBe(1)
-      expect(cart.items?.[0].adjustments?.length).toBe(1)
+      expect(cart.shipping_methods?.length).toBe(1)
+      expect(cart.shipping_methods?.[0].adjustments?.length).toBe(1)
     })
   })
 
   describe("addShippingMethodAdjustments", () => {
-    it("should add shipping method adjustments for items in a cart", async () => {
+    it("should add shipping method adjustments in a cart", async () => {
       const [createdCart] = await service.create([
         {
           currency_code: "eur",
@@ -1123,16 +1124,17 @@ describe("Cart Module Service", () => {
         },
       ])
 
-      const cartOneItems = await service.listShippingMethods(
+      const cartOneMethods = await service.listShippingMethods(
         { cart_id: cartOne.id },
         { relations: ["adjustments"] }
       )
-      const cartTwoItems = await service.listShippingMethods(
+
+      const cartTwoMethods = await service.listShippingMethods(
         { cart_id: cartTwo.id },
         { relations: ["adjustments"] }
       )
 
-      expect(cartOneItems).toEqual(
+      expect(cartOneMethods).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             adjustments: expect.arrayContaining([
@@ -1145,7 +1147,7 @@ describe("Cart Module Service", () => {
           }),
         ])
       )
-      expect(cartTwoItems).toEqual(
+      expect(cartTwoMethods).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             adjustments: expect.arrayContaining([
@@ -1192,7 +1194,7 @@ describe("Cart Module Service", () => {
         .catch((e) => e)
 
       expect(error.message).toBe(
-        `Line item with id ${shippingMethodOne.id} does not exist on cart with id ${cartTwo.id}`
+        `Shipping method with id ${shippingMethodOne.id} does not exist on cart with id ${cartTwo.id}`
       )
     })
   })
@@ -1224,7 +1226,7 @@ describe("Cart Module Service", () => {
         ]
       )
 
-      expect(adjustment.shipping_method.id).toBe(method.id)
+      expect(adjustment.shipping_method_id).toBe(method.id)
 
       await service.removeShippingMethodAdjustments(adjustment.id)
 
@@ -1264,7 +1266,7 @@ describe("Cart Module Service", () => {
         ]
       )
 
-      expect(adjustment.shipping_method).toBe(shippingMethod.id)
+      expect(adjustment.shipping_method_id).toBe(shippingMethod.id)
 
       await service.removeShippingMethodAdjustments({
         shipping_method_id: shippingMethod.id,
