@@ -21,7 +21,6 @@ import {
   MedusaContext,
 } from "@medusajs/utils"
 
-import { Payment } from "@models"
 import * as services from "@services"
 
 import { joinerConfig } from "../joiner-config"
@@ -29,20 +28,30 @@ import { joinerConfig } from "../joiner-config"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   paymentCollectionService: services.PaymentCollection
+  paymentService: services.Payment
+  paymentSessionService: services.PaymentSession
 }
 
-export default class PaymentModule<TPayment extends Payment = Payment>
-  implements IPaymentModuleService
-{
+export default class PaymentModule implements IPaymentModuleService {
   protected baseRepository_: DAL.RepositoryService
+
+  protected paymentService_: services.Payment
+  protected paymentSessionService_: services.PaymentSession
   protected paymentCollectionService_: services.PaymentCollection
 
   constructor(
-    { baseRepository, paymentCollectionService }: InjectedDependencies,
+    {
+      baseRepository,
+      paymentService,
+      paymentSessionService,
+      paymentCollectionService,
+    }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
 
+    this.paymentService_ = paymentService
+    this.paymentSessionService_ = paymentSessionService
     this.paymentCollectionService_ = paymentCollectionService
   }
 
@@ -186,6 +195,58 @@ export default class PaymentModule<TPayment extends Payment = Payment>
       count,
     ]
   }
+  createPayment(data: CreatePaymentDTO): Promise<PaymentDTO>
+  createPayment(data: CreatePaymentDTO[]): Promise<PaymentDTO[]>
+  async createPayment(
+    data: CreatePaymentDTO | CreatePaymentDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentDTO | PaymentDTO[]> {
+    let input = Array.isArray(data) ? data : [data]
+
+    input = input.map((inputData) => ({
+      payment_collection: inputData.payment_collection_id,
+      payment_session: inputData.payment_session_id,
+      ...inputData,
+    }))
+
+    const payments = await this.paymentService_.create(input, sharedContext)
+
+    return await this.baseRepository_.serialize<PaymentDTO[]>(
+      Array.isArray(data) ? payments : payments[0],
+      {
+        populate: true,
+      }
+    )
+  }
+
+  createPaymentSession(
+    paymentCollectionId: string,
+    data: CreatePaymentSessionDTO,
+    sharedContext?: Context | undefined
+  ): Promise<PaymentCollectionDTO>
+  createPaymentSession(
+    paymentCollectionId: string,
+    data: CreatePaymentSessionDTO[],
+    sharedContext?: Context | undefined
+  ): Promise<PaymentCollectionDTO>
+  async createPaymentSession(
+    paymentCollectionId: string,
+    data: CreatePaymentSessionDTO | CreatePaymentSessionDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentCollectionDTO> {
+    let input = Array.isArray(data) ? data : [data]
+
+    input = input.map((inputData) => ({
+      payment_collection: paymentCollectionId,
+      ...inputData,
+    }))
+
+    await this.paymentSessionService_.create(input, sharedContext)
+
+    return await this.retrievePaymentCollection(paymentCollectionId, {
+      relations: ["payment_sessions"],
+    })
+  }
 
   /**
    * TODO
@@ -203,15 +264,7 @@ export default class PaymentModule<TPayment extends Payment = Payment>
   ): Promise<PaymentCollectionDTO> {
     throw new Error("Method not implemented.")
   }
-  createPayment(data: CreatePaymentDTO): Promise<PaymentDTO>
-  createPayment(data: CreatePaymentDTO[]): Promise<PaymentDTO[]>
-  createPayment(
-    data: unknown
-  ):
-    | Promise<import("@medusajs/types").PaymentDTO>
-    | Promise<import("@medusajs/types").PaymentDTO[]> {
-    throw new Error("Method not implemented.")
-  }
+
   capturePayment(
     paymentId: string,
     amount: number,
@@ -242,23 +295,7 @@ export default class PaymentModule<TPayment extends Payment = Payment>
     | Promise<import("@medusajs/types").PaymentDTO[]> {
     throw new Error("Method not implemented.")
   }
-  createPaymentSession(
-    paymentCollectionId: string,
-    data: CreatePaymentSessionDTO,
-    sharedContext?: Context | undefined
-  ): Promise<PaymentCollectionDTO>
-  createPaymentSession(
-    paymentCollectionId: string,
-    data: CreatePaymentSessionDTO[],
-    sharedContext?: Context | undefined
-  ): Promise<PaymentCollectionDTO>
-  createPaymentSession(
-    paymentCollectionId: unknown,
-    data: unknown,
-    sharedContext?: unknown
-  ): Promise<PaymentCollectionDTO> {
-    throw new Error("Method not implemented.")
-  }
+
   authorizePaymentSessions(
     paymentCollectionId: string,
     sessionIds: string[],

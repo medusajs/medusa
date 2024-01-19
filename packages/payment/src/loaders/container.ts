@@ -21,6 +21,8 @@ export default async ({
     paymentCollectionService: asClass(
       defaultServices.PaymentCollection
     ).singleton(),
+    paymentService: asClass(defaultServices.Payment).singleton(),
+    paymentSessionService: asClass(defaultServices.PaymentSession).singleton(),
   })
 
   if (customRepositories) {
@@ -39,6 +41,12 @@ function loadDefaultRepositories({ container }) {
     baseRepository: asClass(defaultRepositories.BaseRepository).singleton(),
     paymentCollectionRepository: asClass(
       defaultRepositories.PaymentCollectionRepository
+    ).singleton(),
+    paymentRepository: asClass(
+      defaultRepositories.PaymentRepository
+    ).singleton(),
+    paymentSessionRepository: asClass(
+      defaultRepositories.PaymentSessionRepository
     ).singleton(),
   })
 }

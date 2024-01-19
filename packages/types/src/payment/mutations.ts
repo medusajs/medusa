@@ -31,6 +31,9 @@ export interface CreatePaymentDTO {
   provider_id: string
   data: Record<string, unknown>
 
+  payment_session_id: string
+  payment_collection_id: string
+
   cart_id?: string
   order_id?: string
   order_edit_id?: string
