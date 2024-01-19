@@ -1857,7 +1857,7 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "development/search/create",
+              id: "references/search/classes/search.AbstractSearchService",
               label: "Create a Search Service",
             },
           ],
