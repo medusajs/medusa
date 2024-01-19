@@ -8426,8 +8426,6 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   bin:
-    medusa-pricing-migrations-down: dist/scripts/bin/run-migration-down.js
-    medusa-pricing-migrations-up: dist/scripts/bin/run-migration-up.js
     medusa-pricing-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
@@ -8485,8 +8483,6 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   bin:
-    medusa-promotion-migrations-down: dist/scripts/bin/run-migration-down.js
-    medusa-promotion-migrations-up: dist/scripts/bin/run-migration-up.js
     medusa-promotion-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
