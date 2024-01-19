@@ -11,20 +11,9 @@ export const updateCampaignsStep = createStep(
 
     const updatedCampaigns = await promotionModule.updateCampaigns(data)
 
-    return new StepResponse(
-      updatedCampaigns,
-      updatedCampaigns.map((updatedCampaigns) => updatedCampaigns.id)
-    )
+    return new StepResponse(updatedCampaigns, data)
   },
-  async (updatedCampaignIds, { container }) => {
-    if (!updatedCampaignIds?.length) {
-      return
-    }
-
-    const promotionModule = container.resolve<IPromotionModuleService>(
-      ModuleRegistrationName.PROMOTION
-    )
-
-    await promotionModule.delete(updatedCampaignIds)
+  async (dataBeforeUpdate, { container }) => {
+    // TODO: reset the data before an update was performed
   }
 )
