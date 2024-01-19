@@ -341,5 +341,68 @@ describe("Payment Module Service", () => {
         )
       })
     })
+
+    describe("update", () => {
+      it("should update a payment successfully", async () => {
+        // TODO: refactor when factory is added
+
+        let paymentCollection = await service.createPaymentCollection({
+          currency_code: "usd",
+          amount: 200,
+          region_id: "reg",
+        })
+
+        paymentCollection = await service.createPaymentSession(
+          paymentCollection.id,
+          {
+            amount: 200,
+            provider_id: "manual",
+            currency_code: "usd",
+          }
+        )
+
+        const createdPayment = await service.createPayment({
+          data: {},
+          amount: 200,
+          provider_id: "manual",
+          currency_code: "usd",
+          payment_collection_id: paymentCollection.id,
+          payment_session_id: paymentCollection.payment_sessions[0].id,
+        })
+
+        expect(createdPayment).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            authorized_amount: null,
+            cart_id: null,
+            order_id: null,
+            order_edit_id: null,
+            customer_id: null,
+            data: {},
+            deleted_at: null,
+            captured_at: null,
+            canceled_at: null,
+            refunds: [],
+            captures: [],
+            amount: 200,
+            currency_code: "usd",
+            provider_id: "manual",
+            payment_collection: paymentCollection.id,
+          })
+        )
+
+        const updatedPayment = await service.updatePayment({
+          id: createdPayment.id,
+          cart_id: "new-cart",
+        })
+
+        expect(updatedPayment).toEqual(
+          expect.objectContaining({
+            id: createdPayment.id,
+            cart_id: "new-cart",
+          })
+        )
+      })
+    })
   })
 })

@@ -41,10 +41,14 @@ export interface CreatePaymentDTO {
 }
 
 export interface UpdatePaymentDTO {
+  id: string
+
   cart_id?: string
   order_id?: string
   order_edit_id?: string
   customer_id?: string
+
+  data?: Record<string, unknown>
 }
 
 /**

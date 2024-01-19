@@ -89,11 +89,14 @@ export interface IPaymentModuleService extends IModuleService {
     amount: number,
     sharedContext?: Context
   ): Promise<PaymentDTO>
+
   refundPayment(
     paymentId: string,
     amount: number,
     sharedContext?: Context
   ): Promise<PaymentDTO>
+
+  cancelPayment(paymentId: string, sharedContext?: Context): Promise<PaymentDTO>
 
   updatePayment(
     data: UpdatePaymentDTO,

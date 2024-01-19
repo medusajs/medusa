@@ -228,6 +228,31 @@ export default class PaymentModule implements IPaymentModuleService {
     )
   }
 
+  updatePayment(
+    data: UpdatePaymentDTO,
+    sharedContext?: Context | undefined
+  ): Promise<PaymentDTO>
+  updatePayment(
+    data: UpdatePaymentDTO[],
+    sharedContext?: Context | undefined
+  ): Promise<PaymentDTO[]>
+
+  @InjectTransactionManager("baseRepository_")
+  async updatePayment(
+    data: UpdatePaymentDTO | UpdatePaymentDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentDTO | PaymentDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+    const result = await this.paymentService_.update(input, sharedContext)
+
+    return await this.baseRepository_.serialize<PaymentDTO[]>(
+      Array.isArray(data) ? result : result[0],
+      {
+        populate: true,
+      }
+    )
+  }
+
   createPaymentSession(
     paymentCollectionId: string,
     data: CreatePaymentSessionDTO,
@@ -292,22 +317,6 @@ export default class PaymentModule implements IPaymentModuleService {
     amount: number,
     sharedContext?: Context | undefined
   ): Promise<PaymentDTO> {
-    throw new Error("Method not implemented.")
-  }
-  updatePayment(
-    data: UpdatePaymentDTO,
-    sharedContext?: Context | undefined
-  ): Promise<PaymentDTO>
-  updatePayment(
-    data: UpdatePaymentDTO[],
-    sharedContext?: Context | undefined
-  ): Promise<PaymentDTO[]>
-  updatePayment(
-    data: unknown,
-    sharedContext?: unknown
-  ):
-    | Promise<import("@medusajs/types").PaymentDTO>
-    | Promise<import("@medusajs/types").PaymentDTO[]> {
     throw new Error("Method not implemented.")
   }
 
