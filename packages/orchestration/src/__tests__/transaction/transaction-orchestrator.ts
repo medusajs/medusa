@@ -1098,7 +1098,7 @@ describe("Transaction Orchestrator", () => {
       expect(transaction.getState()).toBe(TransactionState.REVERTED)
     })
 
-    it("should continue the transaction and skip children steps when the Transaction Timeout is reached but the step is set to 'continueOnPermanentFailure'", async () => {
+    it("should continue the transaction and skip children steps when the Transaction Step Timeout is reached but the step is set to 'continueOnPermanentFailure'", async () => {
       const mocks = {
         f1: jest.fn(() => {
           return "content f1"
@@ -1163,6 +1163,7 @@ describe("Transaction Orchestrator", () => {
           action: "action1",
           next: [
             {
+              timeout: 0.1, // 100ms
               action: "action2",
               continueOnPermanentFailure: true,
               next: {
@@ -1176,9 +1177,7 @@ describe("Transaction Orchestrator", () => {
         },
       }
 
-      const strategy = new TransactionOrchestrator("transaction-name", flow, {
-        timeout: 0.1, // 100ms
-      })
+      const strategy = new TransactionOrchestrator("transaction-name", flow)
 
       const transaction = await strategy.beginTransaction(
         "transaction_id_123",
@@ -1318,6 +1317,125 @@ describe("Transaction Orchestrator", () => {
         TransactionStepTimeoutError
       )
       expect(transaction.getErrors()[0].action).toBe("action2")
+
+      expect(transaction.getState()).toBe(TransactionState.REVERTED)
+    })
+
+    it("should fail the current steps and revert the transaction if the Transaction Timeout is reached event if the step is set as 'continueOnPermanentFailure'", async () => {
+      const mocks = {
+        f1: jest.fn(() => {
+          return "content f1"
+        }),
+        f2: jest.fn(async () => {
+          await setTimeout(200)
+          return "delayed content f2"
+        }),
+        f3: jest.fn(async () => {
+          await setTimeout(2000)
+          return "content f3"
+        }),
+        f4: jest.fn(() => {
+          return "content f4"
+        }),
+      }
+
+      async function handler(
+        actionId: string,
+        functionHandlerType: TransactionHandlerType,
+        payload: TransactionPayload
+      ) {
+        const command = {
+          action1: {
+            [TransactionHandlerType.INVOKE]: () => {
+              return mocks.f1()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f1()
+            },
+          },
+          action2: {
+            [TransactionHandlerType.INVOKE]: async () => {
+              return await mocks.f2()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f2()
+            },
+          },
+          action3: {
+            [TransactionHandlerType.INVOKE]: async () => {
+              return await mocks.f3()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f3()
+            },
+          },
+          action4: {
+            [TransactionHandlerType.INVOKE]: () => {
+              return mocks.f4()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f4()
+            },
+          },
+        }
+
+        return command[actionId][functionHandlerType]()
+      }
+
+      const flow: TransactionStepsDefinition = {
+        next: {
+          action: "action1",
+          next: [
+            {
+              action: "action2",
+              continueOnPermanentFailure: true,
+            },
+            {
+              action: "action3",
+              continueOnPermanentFailure: true,
+              next: {
+                action: "action4",
+              },
+            },
+          ],
+        },
+      }
+
+      const strategy = new TransactionOrchestrator("transaction-name", flow, {
+        timeout: 0.1, // 100ms
+      })
+
+      const transaction = await strategy.beginTransaction(
+        "transaction_id_123",
+        handler
+      )
+
+      await strategy.resume(transaction)
+
+      expect(transaction.transactionId).toBe("transaction_id_123")
+      expect(mocks.f1).toBeCalledTimes(2)
+      expect(mocks.f2).toBeCalledTimes(2)
+      expect(mocks.f3).toBeCalledTimes(2)
+      expect(mocks.f4).toBeCalledTimes(0)
+      expect(transaction.getContext().invoke.action1).toBe("content f1")
+      expect(transaction.getContext().invoke.action2).toBe("delayed content f2")
+      expect(transaction.getContext().invoke.action3).toBe("content f3")
+      expect(transaction.getContext().invoke.action4).toBe(undefined)
+
+      expect(transaction.getErrors()).toHaveLength(2)
+      expect(
+        TransactionTimeoutError.isTransactionTimeoutError(
+          transaction.getErrors()[0].error
+        )
+      ).toBe(true)
+      expect(transaction.getErrors()[0].action).toBe("action2")
+
+      expect(
+        TransactionTimeoutError.isTransactionTimeoutError(
+          transaction.getErrors()[1].error
+        )
+      ).toBe(true)
+      expect(transaction.getErrors()[1].action).toBe("action3")
 
       expect(transaction.getState()).toBe(TransactionState.REVERTED)
     })

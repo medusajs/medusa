@@ -4,7 +4,7 @@ export class PermanentStepFailureError extends Error {
   ): error is PermanentStepFailureError {
     return (
       error instanceof PermanentStepFailureError ||
-      error.name === "PermanentStepFailure"
+      error?.name === "PermanentStepFailure"
     )
   }
 
@@ -20,7 +20,7 @@ export class TransactionStepTimeoutError extends Error {
   ): error is TransactionStepTimeoutError {
     return (
       error instanceof TransactionStepTimeoutError ||
-      error.name === "TransactionStepTimeoutError"
+      error?.name === "TransactionStepTimeoutError"
     )
   }
 
@@ -36,7 +36,7 @@ export class TransactionTimeoutError extends Error {
   ): error is TransactionTimeoutError {
     return (
       error instanceof TransactionTimeoutError ||
-      error.name === "TransactionTimeoutError"
+      error?.name === "TransactionTimeoutError"
     )
   }
 

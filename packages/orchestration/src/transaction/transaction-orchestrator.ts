@@ -438,9 +438,15 @@ export class TransactionOrchestrator extends EventEmitter {
   private static async setStepTimeout(
     transaction: DistributedTransaction,
     step: TransactionStep,
-    error: Error | any
+    error: TransactionStepTimeoutError | TransactionTimeoutError
   ): Promise<void> {
-    if (step.getStates().state === TransactionStepState.TIMEOUT) {
+    if (
+      [
+        TransactionStepState.TIMEOUT,
+        TransactionStepState.DONE,
+        TransactionStepState.REVERTED,
+      ].includes(step.getStates().state)
+    ) {
       return
     }
 
@@ -457,7 +463,8 @@ export class TransactionOrchestrator extends EventEmitter {
       step,
       undefined,
       0,
-      true
+      true,
+      error
     )
 
     await transaction.clearStepTimeout(step)
@@ -468,11 +475,15 @@ export class TransactionOrchestrator extends EventEmitter {
     step: TransactionStep,
     error: Error | any,
     maxRetries: number = TransactionOrchestrator.DEFAULT_RETRIES,
-    isTimeout = false
+    isTimeout = false,
+    timeoutError?: TransactionStepTimeoutError | TransactionTimeoutError
   ): Promise<void> {
     step.failures++
 
-    if (!isTimeout) {
+    if (
+      !isTimeout &&
+      step.getStates().status !== TransactionStepStatus.PERMANENT_FAILURE
+    ) {
       step.changeStatus(TransactionStepStatus.TEMPORARY_FAILURE)
     }
 
@@ -498,7 +509,10 @@ export class TransactionOrchestrator extends EventEmitter {
       }
 
       if (!step.isCompensating()) {
-        if (step.definition.continueOnPermanentFailure) {
+        if (
+          step.definition.continueOnPermanentFailure &&
+          !TransactionTimeoutError.isTransactionTimeoutError(timeoutError!)
+        ) {
           for (const childStep of step.next) {
             const child = flow.steps[childStep]
             child.changeState(TransactionStepState.SKIPPED)
@@ -642,7 +656,10 @@ export class TransactionOrchestrator extends EventEmitter {
               .then(async (response: any) => {
                 if (this.hasExpired({ transaction, step }, Date.now())) {
                   await this.checkStepTimeout(transaction, step)
-                  await this.checkTransactionTimeout(transaction, [step])
+                  await this.checkTransactionTimeout(
+                    transaction,
+                    nextSteps.next.includes(step) ? nextSteps.next : [step]
+                  )
                 }
 
                 await TransactionOrchestrator.setStepSuccess(
@@ -654,7 +671,10 @@ export class TransactionOrchestrator extends EventEmitter {
               .catch(async (error) => {
                 if (this.hasExpired({ transaction, step }, Date.now())) {
                   await this.checkStepTimeout(transaction, step)
-                  await this.checkTransactionTimeout(transaction, [step])
+                  await this.checkTransactionTimeout(
+                    transaction,
+                    nextSteps.next.includes(step) ? nextSteps.next : [step]
+                  )
                 }
 
                 if (
