@@ -3,4 +3,4 @@
 "@medusajs/medusa": patch
 ---
 
-feat(core-flows,medusa): campaign create endpoint
+feat(core-flows,medusa): promotion create/update endpoint

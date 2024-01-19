@@ -11,6 +11,7 @@ import {
   AdminGetPromotionsParams,
   AdminGetPromotionsPromotionParams,
   AdminPostPromotionsPromotionReq,
+  AdminPostPromotionsReq,
 } from "./validators"
 
 export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
@@ -31,7 +32,7 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/promotions",
-    middlewares: [transformBody(AdminPostPromotionsPromotionReq)],
+    middlewares: [transformBody(AdminPostPromotionsReq)],
   },
   {
     method: ["GET"],
@@ -42,5 +43,10 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id",
+    middlewares: [transformBody(AdminPostPromotionsPromotionReq)],
   },
 ]

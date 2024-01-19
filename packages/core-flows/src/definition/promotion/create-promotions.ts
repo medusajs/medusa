@@ -2,10 +2,7 @@ import { CreatePromotionDTO, PromotionDTO } from "@medusajs/types"
 import { createWorkflow } from "@medusajs/workflows-sdk"
 import { createPromotionsStep } from "../../handlers/promotion"
 
-type WorkflowInput = {
-  promotionsData: CreatePromotionDTO[]
-}
-
+type WorkflowInput = { promotionsData: CreatePromotionDTO[] }
 type WorkflowOutput = PromotionDTO[]
 
 export const createPromotionsWorkflow = createWorkflow<

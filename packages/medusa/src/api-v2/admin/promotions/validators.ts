@@ -30,7 +30,7 @@ export class AdminGetPromotionsParams extends extendedFindParamsMixin({
   code?: string
 }
 
-export class AdminPostPromotionsPromotionReq {
+export class AdminPostPromotionsReq {
   @IsNotEmpty()
   @IsString()
   code: string
@@ -112,4 +112,38 @@ export class ApplicationMethod {
   @ValidateNested({ each: true })
   @Type(() => PromotionRule)
   target_rules: PromotionRule[]
+}
+
+export class AdminPostPromotionsPromotionReq {
+  @IsOptional()
+  @IsString()
+  code: string
+
+  @IsBoolean()
+  @IsOptional()
+  is_automatic: boolean
+
+  @IsOptional()
+  @IsEnum(PromotionType)
+  type: PromotionType
+
+  @IsOptional()
+  @IsString()
+  campaign_id: string
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => AdminPostCampaignsCampaignReq)
+  campaign: AdminPostCampaignsCampaignReq
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => ApplicationMethod)
+  application_method: ApplicationMethod
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PromotionRule)
+  rules: PromotionRule[]
 }

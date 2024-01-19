@@ -615,9 +615,11 @@ export default class PromotionModuleService<
         relations: [
           "application_method",
           "application_method.target_rules",
+          "application_method.target_rules.values",
           "rules",
           "rules.values",
           "campaign",
+          "campaign.budget",
         ],
       },
       sharedContext
@@ -687,7 +689,10 @@ export default class PromotionModuleService<
           existingApplicationMethod.max_quantity,
       })
 
-      applicationMethodsData.push(applicationMethodData)
+      applicationMethodsData.push({
+        ...applicationMethodData,
+        id: existingApplicationMethod.id,
+      })
     }
 
     const updatedPromotions = this.promotionService_.update(
