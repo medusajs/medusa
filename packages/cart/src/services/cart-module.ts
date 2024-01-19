@@ -17,8 +17,13 @@ import {
   isObject,
   isString,
 } from "@medusajs/utils"
-import { LineItem, ShippingMethod, ShippingMethodAdjustment } from "@models"
-import { UpdateLineItemDTO } from "@types"
+import {
+  Cart,
+  LineItem,
+  ShippingMethod,
+  ShippingMethodAdjustment,
+} from "@models"
+import { CreateLineItemDTO, UpdateLineItemDTO } from "@types"
 import { joinerConfig } from "../joiner-config"
 import * as services from "../services"
 
@@ -145,7 +150,30 @@ export default class CartModuleService implements ICartModuleService {
     data: CartTypes.CreateCartDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    return await this.cartService_.create(data, sharedContext)
+    const lineItemsToCreate: CreateLineItemDTO[] = []
+    const createdCarts: Cart[] = []
+    for (const { items, ...cart } of data) {
+      const [created] = await this.cartService_.create([cart], sharedContext)
+
+      createdCarts.push(created)
+
+      if (items?.length) {
+        const cartItems = items.map((item) => {
+          return {
+            ...item,
+            cart_id: created.id,
+          }
+        })
+
+        lineItemsToCreate.push(...cartItems)
+      }
+    }
+
+    if (lineItemsToCreate.length) {
+      await this.addLineItemsBulk_(lineItemsToCreate, sharedContext)
+    }
+
+    return createdCarts
   }
 
   async update(
@@ -328,7 +356,7 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<LineItem[]> {
     const cart = await this.retrieve(cartId, { select: ["id"] }, sharedContext)
 
-    const toUpdate = items.map((item) => {
+    const toUpdate: CreateLineItemDTO[] = items.map((item) => {
       return {
         ...item,
         cart_id: cart.id,
@@ -340,7 +368,7 @@ export default class CartModuleService implements ICartModuleService {
 
   @InjectTransactionManager("baseRepository_")
   protected async addLineItemsBulk_(
-    data: CartTypes.CreateLineItemForCartDTO[],
+    data: CreateLineItemDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<LineItem[]> {
     return await this.lineItemService_.create(data, sharedContext)

@@ -1,18 +1,11 @@
-import {
-  BuildingTax,
-  EllipsisHorizontal,
-  PencilSquare,
-  Trash,
-} from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { Country, Region } from "@medusajs/medusa"
 import {
   Badge,
   Button,
   Container,
   Drawer,
-  DropdownMenu,
   Heading,
-  IconButton,
   StatusBadge,
   Text,
   Tooltip,
@@ -21,8 +14,8 @@ import {
 import { useAdminDeleteRegion, useAdminUpdateRegion } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
 import * as zod from "zod"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 
 type RegionGeneralSectionProps = {
   region: Region
@@ -113,38 +106,28 @@ const RegionActions = ({ region }: { region: Region }) => {
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
-        <IconButton variant="transparent">
-          <EllipsisHorizontal />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <Link to="edit" relative="route">
-          <DropdownMenu.Item>
-            <div className="flex items-center gap-x-2">
-              <PencilSquare className="text-ui-fg-subtle" />
-              <span>{t("general.edit")}</span>
-            </div>
-          </DropdownMenu.Item>
-        </Link>
-        <Link to={`/settings/taxes/${region.id}`}>
-          <DropdownMenu.Item>
-            <div className="flex items-center gap-x-2">
-              <BuildingTax className="text-ui-fg-subtle" />
-              <span>Tax settings</span>
-            </div>
-          </DropdownMenu.Item>
-        </Link>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Item onClick={handleDelete}>
-          <div className="flex items-center gap-x-2">
-            <Trash className="text-ui-fg-subtle" />
-            <span>Delete</span>
-          </div>
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
-    </DropdownMenu>
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: t("general.edit"),
+              to: `/settings/regions/${region.id}/edit`,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              icon: <Trash />,
+              label: t("general.delete"),
+              onClick: handleDelete,
+            },
+          ],
+        },
+      ]}
+    />
   )
 }
 
