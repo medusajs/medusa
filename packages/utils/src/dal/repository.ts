@@ -1,5 +1,6 @@
 import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
 import { MedusaContext } from "../decorators"
+import { transactionWrapper } from "./utils"
 
 class AbstractBase<T = any> {
   protected readonly manager_: any
@@ -48,6 +49,8 @@ export abstract class AbstractBaseRepository<T = any>
   abstract update(data: unknown[], context?: Context): Promise<T[]>
 
   abstract delete(ids: string[], context?: Context): Promise<void>
+
+  abstract upsert(data: unknown[], context?: Context): Promise<T[]>
 
   abstract softDelete(
     ids: string[],

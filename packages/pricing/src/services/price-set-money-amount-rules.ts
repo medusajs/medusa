@@ -14,6 +14,10 @@ export default class PriceSetMoneyAmountRulesService<
   {
     create: ServiceTypes.CreatePriceSetMoneyAmountRulesDTO
     update: ServiceTypes.UpdatePriceSetMoneyAmountRulesDTO
+  },
+  {
+    list: ServiceTypes.FilterablePriceSetMoneyAmountRulesProps
+    listAndCount: ServiceTypes.FilterablePriceSetMoneyAmountRulesProps
   }
 >(PriceSetMoneyAmountRules)<TEntity> {
   constructor({ priceSetMoneyAmountRulesRepository }: InjectedDependencies) {

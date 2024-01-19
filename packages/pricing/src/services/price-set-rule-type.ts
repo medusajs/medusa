@@ -1,5 +1,5 @@
-import { Context, DAL, FindConfig } from "@medusajs/types"
-import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
+import { DAL } from "@medusajs/types"
+import { ModulesSdkUtils } from "@medusajs/utils"
 import { PriceSetRuleType } from "@models"
 import { ServiceTypes } from "@types"
 
@@ -14,46 +14,14 @@ export default class PriceSetRuleTypeService<
   {
     create: ServiceTypes.CreatePriceSetRuleTypeDTO
     update: ServiceTypes.UpdatePriceSetRuleTypeDTO
+  },
+  {
+    list: ServiceTypes.FilterablePriceSetRuleTypeProps
+    listAndCount: ServiceTypes.FilterablePriceSetRuleTypeProps
   }
 >(PriceSetRuleType)<TEntity> {
-  protected readonly priceSetRuleTypeRepository_: DAL.RepositoryService<TEntity>
-
-  constructor({ priceSetRuleTypeRepository }: InjectedDependencies) {
+  constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
-    this.priceSetRuleTypeRepository_ = priceSetRuleTypeRepository
-  }
-
-  @InjectManager("priceSetRuleTypeRepository_")
-  async list<TEntityMethod = ServiceTypes.PriceSetMoneyAmountDTO>(
-    filters: ServiceTypes.FilterablePriceSetRuleTypeProps = {},
-    config: FindConfig<TEntityMethod> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return await this.priceSetRuleTypeRepository_.find(
-      this.buildQueryForList(filters, config),
-      sharedContext
-    )
-  }
-
-  @InjectManager("priceSetRuleTypeRepository_")
-  async listAndCount<TEntityMethod = ServiceTypes.PriceSetMoneyAmountDTO>(
-    filters: ServiceTypes.FilterablePriceSetRuleTypeProps = {},
-    config: FindConfig<TEntityMethod> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TEntity[], number]> {
-    return await this.priceSetRuleTypeRepository_.findAndCount(
-      this.buildQueryForList(filters, config),
-      sharedContext
-    )
-  }
-
-  private buildQueryForList<
-    TEntityMethod = ServiceTypes.PriceSetMoneyAmountDTO
-  >(
-    filters: ServiceTypes.FilterablePriceSetRuleTypeProps = {},
-    config: FindConfig<TEntityMethod> = {}
-  ) {
-    return ModulesSdkUtils.buildQuery<TEntity>(filters, config)
   }
 }
