@@ -1,9 +1,10 @@
-import { PromotionType } from "@medusajs/utils"
+import { createMedusaContainer, PromotionType } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { PromotionRepository } from "@repositories"
 import { PromotionService } from "@services"
 import { createPromotions } from "../../../__fixtures__/promotion"
 import { MikroOrmWrapper } from "../../../utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -17,13 +18,12 @@ describe("Promotion Service", () => {
     repositoryManager = await MikroOrmWrapper.forkManager()
     testManager = await MikroOrmWrapper.forkManager()
 
-    const promotionRepository = new PromotionRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new PromotionService({
-      promotionRepository: promotionRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("promotionService")
 
     await createPromotions(testManager)
   })

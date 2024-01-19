@@ -16,7 +16,7 @@ export default class CurrencyService<
     update: ServiceTypes.UpdateCurrencyDTO
   }
 >(Currency)<TEntity> {
-  constructor({ currencyRepository }: InjectedDependencies) {
+  constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
   }
