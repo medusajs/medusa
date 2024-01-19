@@ -1,17 +1,7 @@
 import { ProductTag } from "@models"
-import {
-  Context,
-  DAL,
-  FindConfig,
-  ProductTypes,
-  UpsertProductTagDTO,
-} from "@medusajs/types"
-import {
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-} from "@medusajs/utils"
+import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
+import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
+import { IProductTagRepository } from "@types"
 
 type InjectedDependencies = {
   productTagRepository: DAL.RepositoryService
@@ -26,7 +16,7 @@ export default class ProductTagService<
     update: ProductTypes.UpdateProductTagDTO
   }
 >(ProductTag)<TEntity> {
-  protected readonly productTagRepository_: DAL.RepositoryService<TEntity>
+  protected readonly productTagRepository_: IProductTagRepository<TEntity>
 
   constructor(container: InjectedDependencies) {
     super(container)
@@ -69,13 +59,5 @@ export default class ProductTagService<
     }
 
     return queryOptions
-  }
-
-  @InjectTransactionManager("productTagRepository_")
-  async upsert(
-    data: UpsertProductTagDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return await this.productTagRepository_.upsert!(data, sharedContext)
   }
 }

@@ -1,11 +1,7 @@
 import { ProductOption } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import {
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-} from "@medusajs/utils"
+import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
+import { IProductOptionRepository } from "@types"
 
 type InjectedDependencies = {
   productOptionRepository: DAL.RepositoryService
@@ -20,7 +16,7 @@ export default class ProductOptionService<
     update: ProductTypes.UpdateProductOptionDTO
   }
 >(ProductOption)<TEntity> {
-  protected readonly productOptionRepository_: DAL.RepositoryService<TEntity>
+  protected readonly productOptionRepository_: IProductOptionRepository<TEntity>
 
   constructor(container: InjectedDependencies) {
     super(container)
@@ -64,15 +60,5 @@ export default class ProductOptionService<
     }
 
     return queryOptions
-  }
-
-  @InjectTransactionManager("productOptionRepository_")
-  async upsert(
-    data:
-      | ProductTypes.CreateProductOptionDTO[]
-      | ProductTypes.UpdateProductOptionDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return await this.productOptionRepository_.upsert!(data, sharedContext)
   }
 }
