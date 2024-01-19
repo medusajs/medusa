@@ -10,7 +10,7 @@ import AdjustmentLine from "./adjustment-line"
 import ShippingMethod from "./shipping-method"
 
 @Entity({ tableName: "cart_shipping_method_adjustment_line" })
-export default class ShippingMethodAdjustmentLine extends AdjustmentLine {
+export default class ShippingMethodAdjustment extends AdjustmentLine {
   @ManyToOne(() => ShippingMethod, {
     onDelete: "cascade",
     nullable: true,

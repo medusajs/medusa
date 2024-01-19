@@ -36,7 +36,7 @@ export interface AdjustmentLineDTO {
   updated_at: Date | string
 }
 
-export interface ShippingMethodAdjustmentLineDTO extends AdjustmentLineDTO {
+export interface ShippingMethodAdjustmentDTO extends AdjustmentLineDTO {
   /**
    * The associated shipping method
    */
@@ -222,7 +222,7 @@ export interface CartShippingMethodDTO {
    *
    * @expandable
    */
-  adjustments?: ShippingMethodAdjustmentLineDTO[]
+  adjustments?: ShippingMethodAdjustmentDTO[]
 
   /**
    * When the shipping method was created.

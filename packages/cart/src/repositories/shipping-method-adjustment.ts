@@ -1,17 +1,17 @@
 import { DALUtils } from "@medusajs/utils"
-import { ShippingMethodAdjustmentLine } from "@models"
+import { ShippingMethodAdjustment } from "@models"
 import {
-  CreateShippingMethodAdjustmentDTO,
-  UpdateShippingMethodAdjustmentDTO,
+    CreateShippingMethodAdjustmentDTO,
+    UpdateShippingMethodAdjustmentDTO,
 } from "@types"
 
 export class ShippingMethodAdjustmentRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
-  ShippingMethodAdjustmentLine,
+  ShippingMethodAdjustment,
   {
     create: CreateShippingMethodAdjustmentDTO
     update: UpdateShippingMethodAdjustmentDTO
   }
->(ShippingMethodAdjustmentLine) {
+>(ShippingMethodAdjustment) {
   constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)

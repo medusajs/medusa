@@ -1,9 +1,9 @@
 import { DAL } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
-import { ShippingMethodAdjustmentLine } from "@models"
+import { ShippingMethodAdjustment } from "@models"
 import {
-  CreateShippingMethodAdjustmentDTO,
-  UpdateShippingMethodAdjustmentDTO,
+    CreateShippingMethodAdjustmentDTO,
+    UpdateShippingMethodAdjustmentDTO,
 } from "@types"
 
 type InjectedDependencies = {
@@ -11,14 +11,14 @@ type InjectedDependencies = {
 }
 
 export default class ShippingMethodAdjustmentService<
-  TEntity extends ShippingMethodAdjustmentLine = ShippingMethodAdjustmentLine
+  TEntity extends ShippingMethodAdjustment = ShippingMethodAdjustment
 > extends ModulesSdkUtils.abstractServiceFactory<
   InjectedDependencies,
   {
     create: CreateShippingMethodAdjustmentDTO
     update: UpdateShippingMethodAdjustmentDTO
   }
->(ShippingMethodAdjustmentLine)<TEntity> {
+>(ShippingMethodAdjustment)<TEntity> {
   constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)

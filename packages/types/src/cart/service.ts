@@ -2,27 +2,27 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
-  CartAddressDTO,
-  CartDTO,
-  CartLineItemDTO,
-  CartShippingMethodDTO,
-  FilterableAddressProps,
-  FilterableCartProps,
-  FilterableShippingMethodProps,
-  ShippingMethodAdjustmentLineDTO,
+    CartAddressDTO,
+    CartDTO,
+    CartLineItemDTO,
+    CartShippingMethodDTO,
+    FilterableAddressProps,
+    FilterableCartProps,
+    FilterableShippingMethodProps,
+    ShippingMethodAdjustmentDTO,
 } from "./common"
 import {
-  CreateAddressDTO,
-  CreateCartDTO,
-  CreateLineItemDTO,
-  CreateLineItemForCartDTO,
-  CreateShippingMethodAdjustmentDTO,
-  CreateShippingMethodDTO,
-  UpdateAddressDTO,
-  UpdateCartDTO,
-  UpdateLineItemDTO,
-  UpdateLineItemWithSelectorDTO,
-  UpdateShippingMethodAdjustmentDTO,
+    CreateAddressDTO,
+    CreateCartDTO,
+    CreateLineItemDTO,
+    CreateLineItemForCartDTO,
+    CreateShippingMethodAdjustmentDTO,
+    CreateShippingMethodDTO,
+    UpdateAddressDTO,
+    UpdateCartDTO,
+    UpdateLineItemDTO,
+    UpdateLineItemWithSelectorDTO,
+    UpdateShippingMethodAdjustmentDTO,
 } from "./mutations"
 
 export interface ICartModuleService extends IModuleService {
@@ -142,21 +142,21 @@ export interface ICartModuleService extends IModuleService {
 
   listShippingMethodAdjustments(
     filters: FilterableShippingMethodProps,
-    config?: FindConfig<ShippingMethodAdjustmentLineDTO>,
+    config?: FindConfig<ShippingMethodAdjustmentDTO>,
     sharedContext?: Context
-  ): Promise<ShippingMethodAdjustmentLineDTO[]>
+  ): Promise<ShippingMethodAdjustmentDTO[]>
 
   addShippingMethodAdjustments(
     data: CreateShippingMethodAdjustmentDTO[]
-  ): Promise<ShippingMethodAdjustmentLineDTO[]>
+  ): Promise<ShippingMethodAdjustmentDTO[]>
   addShippingMethodAdjustments(
     data: CreateShippingMethodAdjustmentDTO
-  ): Promise<ShippingMethodAdjustmentLineDTO[]>
+  ): Promise<ShippingMethodAdjustmentDTO[]>
   addShippingMethodAdjustments(
     cartId: string,
     data: CreateShippingMethodAdjustmentDTO[],
     sharedContext?: Context
-  ): Promise<ShippingMethodAdjustmentLineDTO[]>
+  ): Promise<ShippingMethodAdjustmentDTO[]>
 
   setShippingMethodAdjustments(
     cartId: string,
@@ -165,7 +165,7 @@ export interface ICartModuleService extends IModuleService {
       | UpdateShippingMethodAdjustmentDTO
     )[],
     sharedContext?: Context
-  ): Promise<ShippingMethodAdjustmentLineDTO[]>
+  ): Promise<ShippingMethodAdjustmentDTO[]>
 
   removeShippingMethodAdjustments(
     adjustmentIds: string[],
@@ -176,7 +176,7 @@ export interface ICartModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
   removeShippingMethodAdjustments(
-    selector: Partial<ShippingMethodAdjustmentLineDTO>,
+    selector: Partial<ShippingMethodAdjustmentDTO>,
     sharedContext?: Context
   ): Promise<void>
 }

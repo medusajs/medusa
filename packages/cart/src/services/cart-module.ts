@@ -18,7 +18,7 @@ import {
   isString,
   promiseAll,
 } from "@medusajs/utils"
-import { LineItem, ShippingMethod, ShippingMethodAdjustmentLine } from "@models"
+import { LineItem, ShippingMethod, ShippingMethodAdjustment } from "@models"
 import { UpdateLineItemDTO } from "@types"
 import { joinerConfig } from "../joiner-config"
 import * as services from "../services"
@@ -666,7 +666,7 @@ export default class CartModuleService implements ICartModuleService {
   @InjectManager("baseRepository_")
   async listShippingMethodAdjustments(
     filters: CartTypes.FilterableShippingMethodAdjustmentProps = {},
-    config: FindConfig<CartTypes.ShippingMethodAdjustmentLineDTO> = {},
+    config: FindConfig<CartTypes.ShippingMethodAdjustmentDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ) {
     const adjustments = await this.shippingMethodAdjustmentService_.list(
@@ -676,7 +676,7 @@ export default class CartModuleService implements ICartModuleService {
     )
 
     return await this.baseRepository_.serialize<
-      CartTypes.ShippingMethodAdjustmentLineDTO[]
+      CartTypes.ShippingMethodAdjustmentDTO[]
     >(adjustments, {
       populate: true,
     })
@@ -690,7 +690,7 @@ export default class CartModuleService implements ICartModuleService {
       | CartTypes.UpdateShippingMethodAdjustmentDTO
     )[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartTypes.ShippingMethodAdjustmentLineDTO[]> {
+  ): Promise<CartTypes.ShippingMethodAdjustmentDTO[]> {
     const cart = await this.retrieve(
       cartId,
       { select: ["id"], relations: ["shipping_methods.adjustments"] },
@@ -717,11 +717,11 @@ export default class CartModuleService implements ICartModuleService {
 
     const adjustmentsSet = new Set(toUpdate.map((a) => a.id))
 
-    const toDelete: CartTypes.ShippingMethodAdjustmentLineDTO[] = []
+    const toDelete: CartTypes.ShippingMethodAdjustmentDTO[] = []
 
     // From the existing adjustments, find the ones that are not passed in adjustments
     existingAdjustments.forEach(
-      (adj: CartTypes.ShippingMethodAdjustmentLineDTO) => {
+      (adj: CartTypes.ShippingMethodAdjustmentDTO) => {
         if (!adjustmentsSet.has(adj.id)) {
           toDelete.push(adj)
         }
@@ -739,7 +739,7 @@ export default class CartModuleService implements ICartModuleService {
     ])
 
     return await this.baseRepository_.serialize<
-      CartTypes.ShippingMethodAdjustmentLineDTO[]
+      CartTypes.ShippingMethodAdjustmentDTO[]
     >(result, {
       populate: true,
     })
@@ -747,15 +747,15 @@ export default class CartModuleService implements ICartModuleService {
 
   async addShippingMethodAdjustments(
     adjustments: CartTypes.CreateShippingMethodAdjustmentDTO[]
-  ): Promise<CartTypes.ShippingMethodAdjustmentLineDTO[]>
+  ): Promise<CartTypes.ShippingMethodAdjustmentDTO[]>
   async addShippingMethodAdjustments(
     adjustment: CartTypes.CreateShippingMethodAdjustmentDTO
-  ): Promise<CartTypes.ShippingMethodAdjustmentLineDTO[]>
+  ): Promise<CartTypes.ShippingMethodAdjustmentDTO[]>
   async addShippingMethodAdjustments(
     cartId: string,
     adjustments: CartTypes.CreateShippingMethodAdjustmentDTO[],
     sharedContext?: Context
-  ): Promise<CartTypes.ShippingMethodAdjustmentLineDTO[]>
+  ): Promise<CartTypes.ShippingMethodAdjustmentDTO[]>
 
   @InjectTransactionManager("baseRepository_")
   async addShippingMethodAdjustments(
@@ -765,8 +765,8 @@ export default class CartModuleService implements ICartModuleService {
       | CartTypes.CreateShippingMethodAdjustmentDTO,
     adjustments?: CartTypes.CreateShippingMethodAdjustmentDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartTypes.ShippingMethodAdjustmentLineDTO[]> {
-    let addedAdjustments: ShippingMethodAdjustmentLine[] = []
+  ): Promise<CartTypes.ShippingMethodAdjustmentDTO[]> {
+    let addedAdjustments: ShippingMethodAdjustment[] = []
     if (isString(cartIdOrData)) {
       const cart = await this.retrieve(
         cartIdOrData,
@@ -792,7 +792,7 @@ export default class CartModuleService implements ICartModuleService {
     }
 
     return await this.baseRepository_.serialize<
-      CartTypes.ShippingMethodAdjustmentLineDTO[]
+      CartTypes.ShippingMethodAdjustmentDTO[]
     >(addedAdjustments, {
       populate: true,
     })
@@ -807,7 +807,7 @@ export default class CartModuleService implements ICartModuleService {
     sharedContext?: Context
   ): Promise<void>
   async removeShippingMethodAdjustments(
-    selector: Partial<CartTypes.ShippingMethodAdjustmentLineDTO>,
+    selector: Partial<CartTypes.ShippingMethodAdjustmentDTO>,
     sharedContext?: Context
   ): Promise<void>
 
@@ -815,7 +815,7 @@ export default class CartModuleService implements ICartModuleService {
     adjustmentIdsOrSelector:
       | string
       | string[]
-      | Partial<CartTypes.ShippingMethodAdjustmentLineDTO>,
+      | Partial<CartTypes.ShippingMethodAdjustmentDTO>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     let ids: string[] = []
@@ -823,7 +823,7 @@ export default class CartModuleService implements ICartModuleService {
       const adjustments = await this.listShippingMethodAdjustments(
         {
           ...adjustmentIdsOrSelector,
-        } as Partial<CartTypes.ShippingMethodAdjustmentLineDTO>,
+        } as Partial<CartTypes.ShippingMethodAdjustmentDTO>,
         { select: ["id"] },
         sharedContext
       )
