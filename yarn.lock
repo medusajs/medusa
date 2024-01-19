@@ -8718,7 +8718,7 @@ __metadata:
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
-    bullmq: ^5.1.1
+    bullmq: ^5.1.3
     cross-env: ^5.2.1
     dotenv: ^16.1.4
     ioredis: ^5.3.2
@@ -21812,20 +21812,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bullmq@npm:^5.1.1":
-  version: 5.1.1
-  resolution: "bullmq@npm:5.1.1"
+"bullmq@npm:^5.1.3":
+  version: 5.1.3
+  resolution: "bullmq@npm:5.1.3"
   dependencies:
     cron-parser: ^4.6.0
     glob: ^8.0.3
     ioredis: ^5.3.2
     lodash: ^4.17.21
-    msgpackr: ^1.6.2
+    msgpackr: ^1.10.1
     node-abort-controller: ^3.1.1
     semver: ^7.5.4
     tslib: ^2.0.0
     uuid: ^9.0.0
-  checksum: f93d56a0647095c482ce55e68b7d4b78b9a9a9071ecae3efe382b1b9a913ecc0e33681bb8260c42613d128589c9ca44d75bb501d3559f7aba4ef53d8171e3046
+  checksum: dc2177dfd736b2d008ccab1ba9f77f80cc730ce6197c9ffa0f37327e1cf34bd8b97d83ee9f9008253ef0c0854bbd04f8c925889a3370a0899e8f5c7a34fd3ab3
   languageName: node
   linkType: hard
 
@@ -38574,6 +38574,18 @@ __metadata:
   bin:
     download-msgpackr-prebuilds: bin/download-prebuilds.js
   checksum: f14727e0121c241a11cf75824f87822c0a08d65e6b8eba8a3fbf26c7d7287ea3f8ca3ab76887fda781a203bd16e51705207d82593ba6f06abca3181c743a352d
+  languageName: node
+  linkType: hard
+
+"msgpackr@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "msgpackr@npm:1.10.1"
+  dependencies:
+    msgpackr-extract: ^3.0.2
+  dependenciesMeta:
+    msgpackr-extract:
+      optional: true
+  checksum: 2e6ed91af89ec15d1e5595c5b837a4adcbb185b0fbd4773d728ced89ab4abbdd3401f6777b193d487d9807e1cb0cf3da1ba9a0bd2d5a553e22355cea84a36bab
   languageName: node
   linkType: hard
 
