@@ -27,9 +27,11 @@ const badgeSizeVariants = cva({
   base: "inline-flex items-center gap-x-0.5 border",
   variants: {
     size: {
+      "2xsmall": "txt-compact-xsmall-plus px-1.5",
+      xsmall: "txt-compact-small-plus px-1.5 py-px",
       small: "txt-compact-xsmall-plus px-1.5",
       base: "txt-compact-small-plus px-2 py-0.5",
-      large: "txt-compact-medium-plus px-2.5 py-1",
+      large: "txt-compact-medium-plus px-2.5 py-[9px]",
     },
     rounded: {
       base: "rounded-md",
@@ -37,7 +39,7 @@ const badgeSizeVariants = cva({
     },
   },
   defaultVariants: {
-    size: "base",
+    size: "xsmall",
     rounded: "base",
   },
 })
@@ -59,7 +61,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       /**
        * The badge's size.
        */
-      size = "base",
+      size = "xsmall",
       /**
        * The style of the badge's border radius.
        */

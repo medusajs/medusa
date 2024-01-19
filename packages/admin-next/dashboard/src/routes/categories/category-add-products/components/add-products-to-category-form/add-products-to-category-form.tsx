@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { Product, ProductCollection } from "@medusajs/medusa"
+import type { Product, ProductCategory } from "@medusajs/medusa"
 import {
   Button,
   Checkbox,
@@ -19,7 +19,7 @@ import {
 } from "@tanstack/react-table"
 import {
   adminProductKeys,
-  useAdminAddProductsToCollection,
+  useAdminAddProductsToCategory,
   useAdminProducts,
 } from "medusa-react"
 import { Fragment, useEffect, useMemo, useState } from "react"
@@ -45,30 +45,30 @@ import { useHandleTableScroll } from "../../../../../hooks/use-handle-table-scro
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 import { queryClient } from "../../../../../lib/medusa"
 
-type AddProductsToCollectionFormProps = {
-  collection: ProductCollection
+type AddProductsToCategoryFormProps = {
+  category: ProductCategory
   subscribe: (state: boolean) => void
   onSuccessfulSubmit: () => void
 }
 
-const AddProductsToCollectionSchema = zod.object({
+const AddProductsToCategorySchema = zod.object({
   product_ids: zod.array(zod.string()).min(1),
 })
 
 const PAGE_SIZE = 50
 
-export const AddProductsToCollectionForm = ({
-  collection,
+export const AddProductsToCategoryForm = ({
+  category,
   subscribe,
   onSuccessfulSubmit,
-}: AddProductsToCollectionFormProps) => {
+}: AddProductsToCategoryFormProps) => {
   const { t } = useTranslation()
 
-  const form = useForm<zod.infer<typeof AddProductsToCollectionSchema>>({
+  const form = useForm<zod.infer<typeof AddProductsToCategorySchema>>({
     defaultValues: {
       product_ids: [],
     },
-    resolver: zodResolver(AddProductsToCollectionSchema),
+    resolver: zodResolver(AddProductsToCategorySchema),
   })
 
   const {
@@ -79,8 +79,9 @@ export const AddProductsToCollectionForm = ({
     subscribe(isDirty)
   }, [isDirty])
 
-  const { mutateAsync, isLoading: isMutating } =
-    useAdminAddProductsToCollection(collection.id)
+  const { mutateAsync, isLoading: isMutating } = useAdminAddProductsToCategory(
+    category.id
+  )
 
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -108,7 +109,7 @@ export const AddProductsToCollectionForm = ({
 
   const { products, count, isLoading, isError, error } = useAdminProducts(
     {
-      expand: "variants,sales_channels",
+      expand: "variants,sales_channels,categories",
       ...params,
     },
     {
@@ -132,17 +133,19 @@ export const AddProductsToCollectionForm = ({
     manualPagination: true,
     getRowId: (row) => row.id,
     enableRowSelection(row) {
-      return row.original.collection_id !== collection.id
+      return !row.original.categories
+        .map((pcat) => pcat.id)
+        .includes(category.id)
     },
     meta: {
-      collectionId: collection.id,
+      categoryId: category.id,
     },
   })
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
       {
-        product_ids: values.product_ids.map((p) => p),
+        product_ids: values.product_ids.map((id) => ({ id })),
       },
       {
         onSuccess: () => {
@@ -254,7 +257,9 @@ export const AddProductsToCollectionForm = ({
                             },
                             {
                               "bg-ui-bg-disabled hover:bg-ui-bg-disabled":
-                                row.original.collection_id === collection.id,
+                                row.original.categories
+                                  .map((pcat) => pcat.id)
+                                  .includes(category.id),
                             }
                           )}
                         >
@@ -288,7 +293,6 @@ export const AddProductsToCollectionForm = ({
           ) : (
             <div className="flex-1 flex items-center justify-center">
               <NoRecords />
-              {/* TODO: fix this, and add NoRecords as well */}
             </div>
           )}
         </FocusModal.Body>
@@ -321,11 +325,13 @@ const useColumns = () => {
           )
         },
         cell: ({ row, table }) => {
-          const { collectionId } = table.options.meta as {
-            collectionId: string
+          const { categoryId } = table.options.meta as {
+            categoryId: string
           }
 
-          const isAdded = row.original.collection_id === collectionId
+          const isAdded = row.original.categories
+            .map((pcat) => pcat.id)
+            .includes(categoryId)
 
           const isSelected = row.getIsSelected() || isAdded
 

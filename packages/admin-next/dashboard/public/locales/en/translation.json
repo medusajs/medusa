@@ -74,7 +74,14 @@
   "categories": {
     "domain": "Categories",
     "createCategory": "Create Category",
-    "createCategoryHint": "Create a new category to organize your products."
+    "createCategoryHint": "Create a new category to organize your products.",
+    "editCategory": "Edit Category",
+    "handleTooltip": "The handle is used to reference the category in your storefront. If not specified, the handle will be generated from the category title.",
+    "deleteCategoryWarning": "You are about to delete the category {{name}}. This action cannot be undone.",
+    "removeSingleProductWarning": "You are about to remove the product {{title}} from the category. This action cannot be undone.",
+    "removeProductsWarning_one": "You are about to remove {{count}} product from the category. This action cannot be undone.",
+    "removeProductsWarning_other": "You are about to remove {{count}} products from the category. This action cannot be undone.",
+    "subcategories": "Subcategories"
   },
   "inventory": {
     "domain": "Inventory"

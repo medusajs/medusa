@@ -1,5 +1,5 @@
 import { PencilSquare, Trash, TriangleRightMini } from "@medusajs/icons"
-import { ProductCategory } from "@medusajs/medusa"
+import type { ProductCategory } from "@medusajs/medusa"
 import {
   Button,
   Container,
@@ -25,7 +25,6 @@ import {
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
-
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import {
   NoRecords,
@@ -35,9 +34,15 @@ import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
-const PAGE_SIZE = 50
+type CategorySubcategorySectionProps = {
+  category: ProductCategory
+}
 
-export const CategoryListTable = () => {
+const PAGE_SIZE = 10
+
+export const CategorySubcategorySection = ({
+  category,
+}: CategorySubcategorySectionProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
@@ -60,7 +65,7 @@ export const CategoryListTable = () => {
       {
         limit: PAGE_SIZE,
         offset: pageIndex * PAGE_SIZE,
-        parent_category_id: params.q ? undefined : "null",
+        parent_category_id: category.id,
         include_descendants_tree: true,
         ...params,
       },
@@ -97,19 +102,12 @@ export const CategoryListTable = () => {
   return (
     <Container className="p-0 divide-y">
       <div className="px-6 py-4 flex items-center justify-between">
-        <Heading>{t("categories.domain")}</Heading>
-        <div className="gap-x-2 flex items-center">
-          <Link to="/categories/edit-order">
-            <Button size="small" variant="secondary">
-              Edit order
-            </Button>
-          </Link>
-          <Link to="/categories/create">
-            <Button size="small" variant="secondary">
-              {t("general.create")}
-            </Button>
-          </Link>
-        </div>
+        <Heading level="h2">{t("categories.subcategories")}</Heading>
+        <Link to={`/categories/${category.id}/create`}>
+          <Button size="small" variant="secondary">
+            {t("general.create")}
+          </Button>
+        </Link>
       </div>
       {!noRecords && (
         <div className="px-6 py-4 flex items-center justify-between">
@@ -149,39 +147,28 @@ export const CategoryListTable = () => {
                 })}
               </Table.Header>
               <Table.Body className="border-b-0">
-                {table.getRowModel().rows.map((row) => {
-                  const isExpanded = row.getIsExpanded()
-                  const isEven = row.depth % 2 === 0
-
-                  return (
-                    <Table.Row
-                      key={row.id}
-                      className={clx(
-                        "transition-fg cursor-pointer [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
-                        {
-                          "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                            row.getIsSelected(),
-                        },
-                        {
-                          "bg-ui-bg-base-hover": !isEven,
-                        },
-                        {
-                          "bg-ui-bg-base-pressed": isExpanded,
-                        }
-                      )}
-                      onClick={() => navigate(`/categories/${row.original.id}`)}
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <Table.Cell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </Table.Cell>
-                      ))}
-                    </Table.Row>
-                  )
-                })}
+                {table.getRowModel().rows.map((row) => (
+                  <Table.Row
+                    key={row.id}
+                    className={clx(
+                      "transition-fg cursor-pointer [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
+                      {
+                        "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
+                          row.getIsSelected(),
+                      }
+                    )}
+                    onClick={() => navigate(`/categories/${row.original.id}`)}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <Table.Cell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Table.Cell>
+                    ))}
+                  </Table.Row>
+                ))}
               </Table.Body>
             </Table>
           )}

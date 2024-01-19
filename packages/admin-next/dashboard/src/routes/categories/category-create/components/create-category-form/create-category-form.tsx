@@ -18,6 +18,7 @@ import { Form } from "../../../../../components/common/form"
 
 type CreateCategoryFormProps = {
   subscribe: (state: boolean) => void
+  parentId?: string
 }
 
 const CreateCategorySchema = zod.object({
@@ -29,7 +30,10 @@ const CreateCategorySchema = zod.object({
   parent_category_id: zod.string().optional(),
 })
 
-export const CreateCategoryForm = ({ subscribe }: CreateCategoryFormProps) => {
+export const CreateCategoryForm = ({
+  subscribe,
+  parentId,
+}: CreateCategoryFormProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
@@ -63,6 +67,7 @@ export const CreateCategoryForm = ({ subscribe }: CreateCategoryFormProps) => {
         ...rest,
         is_active: status === "active",
         is_internal: visibility === "internal",
+        parent_category_id: parentId,
       },
       {
         onSuccess: ({ product_category }) => {
@@ -124,7 +129,7 @@ export const CreateCategoryForm = ({ subscribe }: CreateCategoryFormProps) => {
                     <Form.Item>
                       <Form.Label
                         optional
-                        // tooltip={t("collections.handleTooltip")}
+                        tooltip={t("categories.handleTooltip")}
                       >
                         {t("fields.handle")}
                       </Form.Label>

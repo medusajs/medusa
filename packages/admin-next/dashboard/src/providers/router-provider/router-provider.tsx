@@ -145,6 +145,11 @@ const router = createBrowserRouter([
                     lazy: () => import("../../routes/categories/category-edit"),
                   },
                   {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/categories/category-create"),
+                  },
+                  {
                     path: "add-products",
                     lazy: () =>
                       import("../../routes/categories/category-add-products"),
