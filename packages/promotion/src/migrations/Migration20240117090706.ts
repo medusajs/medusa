@@ -1,9 +1,26 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20240102130345 extends Migration {
+export class Migration20240117090706 extends Migration {
   async up(): Promise<void> {
     this.addSql(
-      'create table "promotion" ("id" text not null, "code" text not null, "is_automatic" boolean not null default false, "type" text check ("type" in (\'standard\', \'buyget\')) not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_pkey" primary key ("id"));'
+      'create table "campaign" ("id" text not null, "name" text not null, "description" text null, "currency" text null, "campaign_identifier" text not null, "starts_at" timestamptz null, "ends_at" timestamptz null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "campaign_pkey" primary key ("id"));'
+    )
+    this.addSql(
+      'alter table "campaign" add constraint "IDX_campaign_identifier_unique" unique ("campaign_identifier");'
+    )
+
+    this.addSql(
+      'create table "campaign_budget" ("id" text not null, "type" text check ("type" in (\'spend\', \'usage\')) not null, "campaign_id" text not null, "limit" numeric null default null, "used" numeric not null default 0, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "campaign_budget_pkey" primary key ("id"));'
+    )
+    this.addSql(
+      'create index "IDX_campaign_budget_type" on "campaign_budget" ("type");'
+    )
+    this.addSql(
+      'alter table "campaign_budget" add constraint "campaign_budget_campaign_id_unique" unique ("campaign_id");'
+    )
+
+    this.addSql(
+      'create table "promotion" ("id" text not null, "code" text not null, "campaign_id" text null, "is_automatic" boolean not null default false, "type" text check ("type" in (\'standard\', \'buyget\')) not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_pkey" primary key ("id"));'
     )
     this.addSql('create index "IDX_promotion_code" on "promotion" ("code");')
     this.addSql('create index "IDX_promotion_type" on "promotion" ("type");')
@@ -12,7 +29,7 @@ export class Migration20240102130345 extends Migration {
     )
 
     this.addSql(
-      'create table "application_method" ("id" text not null, "value" numeric null, "max_quantity" numeric null, "type" text check ("type" in (\'fixed\', \'percentage\')) not null, "target_type" text check ("target_type" in (\'order\', \'shipping\', \'item\')) not null, "allocation" text check ("allocation" in (\'each\', \'across\')) null, "promotion_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "application_method_pkey" primary key ("id"));'
+      'create table "application_method" ("id" text not null, "value" numeric null, "max_quantity" numeric null, "type" text check ("type" in (\'fixed\', \'percentage\')) not null, "target_type" text check ("target_type" in (\'order\', \'shipping_methods\', \'items\')) not null, "allocation" text check ("allocation" in (\'each\', \'across\')) null, "promotion_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "application_method_pkey" primary key ("id"));'
     )
     this.addSql(
       'create index "IDX_application_method_type" on "application_method" ("type");'
@@ -50,6 +67,14 @@ export class Migration20240102130345 extends Migration {
     )
     this.addSql(
       'create index "IDX_promotion_rule_promotion_rule_value_id" on "promotion_rule_value" ("promotion_rule_id");'
+    )
+
+    this.addSql(
+      'alter table "campaign_budget" add constraint "campaign_budget_campaign_id_foreign" foreign key ("campaign_id") references "campaign" ("id") on update cascade;'
+    )
+
+    this.addSql(
+      'alter table "promotion" add constraint "promotion_campaign_id_foreign" foreign key ("campaign_id") references "campaign" ("id") on update cascade on delete set null;'
     )
 
     this.addSql(

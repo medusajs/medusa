@@ -1,8 +1,8 @@
+import { AwilixContainer } from "awilix"
+import bodyParser from "body-parser"
 import { Express } from "express"
 import qs from "qs"
-import bodyParser from "body-parser"
 import routes from "../api"
-import { AwilixContainer } from "awilix"
 import { ConfigModule } from "../types/global"
 
 type Options = {
