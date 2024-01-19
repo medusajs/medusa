@@ -50,7 +50,7 @@ describe("Workflow Orchestrator module", function () {
             options: {
               database: {
                 clientUrl: DB_URL,
-                schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+                schema: process.env.MEDUSA_WORKFLOW_ORCHESTRATOR_DB_SCHEMA,
                 // debug: true,
               },
               redis: {
