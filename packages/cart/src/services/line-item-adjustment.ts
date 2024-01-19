@@ -1,6 +1,6 @@
 import { DAL } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
-import { LineItemAdjustmentLine } from "@models"
+import { LineItemAdjustment } from "@models"
 import {
   CreateLineItemAdjustmentDTO,
   UpdateLineItemAdjustmentDTO,
@@ -11,14 +11,14 @@ type InjectedDependencies = {
 }
 
 export default class LineItemAdjustmentService<
-  TEntity extends LineItemAdjustmentLine = LineItemAdjustmentLine
+  TEntity extends LineItemAdjustment = LineItemAdjustment
 > extends ModulesSdkUtils.abstractServiceFactory<
   InjectedDependencies,
   {
     create: CreateLineItemAdjustmentDTO
     update: UpdateLineItemAdjustmentDTO
   }
->(LineItemAdjustmentLine)<TEntity> {
+>(LineItemAdjustment)<TEntity> {
   constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)

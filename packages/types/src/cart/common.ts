@@ -47,7 +47,7 @@ export interface ShippingMethodAdjustmentLineDTO extends AdjustmentLineDTO {
   shipping_method: CartShippingMethodDTO
 }
 
-export interface LineItemAdjustmentLineDTO extends AdjustmentLineDTO {
+export interface LineItemAdjustmentDTO extends AdjustmentLineDTO {
   /**
    * The associated line item
    * @expandable
@@ -349,7 +349,7 @@ export interface CartLineItemDTO {
    *
    * @expandable
    */
-  adjustments?: LineItemAdjustmentLineDTO[]
+  adjustments?: LineItemAdjustmentDTO[]
   /**
    * The associated cart.
    *

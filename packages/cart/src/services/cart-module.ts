@@ -14,9 +14,8 @@ import {
   MedusaError,
   isObject,
   isString,
-  promiseAll,
 } from "@medusajs/utils"
-import { Cart, LineItem, LineItemAdjustmentLine, ShippingMethod } from "@models"
+import { Cart, LineItem, LineItemAdjustment, ShippingMethod } from "@models"
 import { CreateLineItemDTO, UpdateLineItemDTO } from "@types"
 import { joinerConfig } from "../joiner-config"
 import * as services from "../services"
@@ -693,7 +692,7 @@ export default class CartModuleService implements ICartModuleService {
   @InjectManager("baseRepository_")
   async listLineItemAdjustments(
     filters: CartTypes.FilterableLineItemAdjustmentProps = {},
-    config: FindConfig<CartTypes.LineItemAdjustmentLineDTO> = {},
+    config: FindConfig<CartTypes.LineItemAdjustmentDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ) {
     const adjustments = await this.lineItemAdjustmentService_.list(
@@ -703,7 +702,7 @@ export default class CartModuleService implements ICartModuleService {
     )
 
     return await this.baseRepository_.serialize<
-      CartTypes.LineItemAdjustmentLineDTO[]
+      CartTypes.LineItemAdjustmentDTO[]
     >(adjustments, {
       populate: true,
     })
@@ -711,15 +710,15 @@ export default class CartModuleService implements ICartModuleService {
 
   async addLineItemAdjustments(
     adjustments: CartTypes.CreateLineItemAdjustmentDTO[]
-  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]>
+  ): Promise<CartTypes.LineItemAdjustmentDTO[]>
   async addLineItemAdjustments(
     adjustment: CartTypes.CreateLineItemAdjustmentDTO
-  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]>
+  ): Promise<CartTypes.LineItemAdjustmentDTO[]>
   async addLineItemAdjustments(
     cartId: string,
     adjustments: CartTypes.CreateLineItemAdjustmentDTO[],
     sharedContext?: Context
-  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]>
+  ): Promise<CartTypes.LineItemAdjustmentDTO[]>
 
   @InjectTransactionManager("baseRepository_")
   async addLineItemAdjustments(
@@ -729,8 +728,8 @@ export default class CartModuleService implements ICartModuleService {
       | CartTypes.CreateLineItemAdjustmentDTO,
     adjustments?: CartTypes.CreateLineItemAdjustmentDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]> {
-    let addedAdjustments: LineItemAdjustmentLine[] = []
+  ): Promise<CartTypes.LineItemAdjustmentDTO[]> {
+    let addedAdjustments: LineItemAdjustment[] = []
     if (isString(cartIdOrData)) {
       const cart = await this.retrieve(
         cartIdOrData,
@@ -763,7 +762,7 @@ export default class CartModuleService implements ICartModuleService {
     }
 
     return await this.baseRepository_.serialize<
-      CartTypes.LineItemAdjustmentLineDTO[]
+      CartTypes.LineItemAdjustmentDTO[]
     >(addedAdjustments, {
       populate: true,
     })
@@ -777,7 +776,7 @@ export default class CartModuleService implements ICartModuleService {
       | CartTypes.UpdateLineItemAdjustmentDTO
     )[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartTypes.LineItemAdjustmentLineDTO[]> {
+  ): Promise<CartTypes.LineItemAdjustmentDTO[]> {
     const cart = await this.retrieve(
       cartId,
       { select: ["id"], relations: ["items.adjustments"] },
@@ -804,10 +803,10 @@ export default class CartModuleService implements ICartModuleService {
 
     const adjustmentsSet = new Set(toUpdate.map((a) => a.id))
 
-    const toDelete: CartTypes.LineItemAdjustmentLineDTO[] = []
+    const toDelete: CartTypes.LineItemAdjustmentDTO[] = []
 
     // From the existing adjustments, find the ones that are not passed in adjustments
-    existingAdjustments.forEach((adj: CartTypes.LineItemAdjustmentLineDTO) => {
+    existingAdjustments.forEach((adj: CartTypes.LineItemAdjustmentDTO) => {
       if (!adjustmentsSet.has(adj.id)) {
         toDelete.push(adj)
       }
@@ -818,13 +817,27 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
 
-    const [result] = await promiseAll([
-      this.lineItemAdjustmentService_.update(toUpdate, sharedContext),
-      this.lineItemAdjustmentService_.create(toCreate, sharedContext),
-    ])
+    let result: LineItemAdjustment[] = []
+
+    // TODO: Replace the following two calls with a single bulk upsert call
+    if (toUpdate?.length) {
+      const updated = await this.lineItemAdjustmentService_.update(
+        toUpdate,
+        sharedContext
+      )
+      result.push(...updated)
+    }
+
+    if (toCreate?.length) {
+      const created = await this.lineItemAdjustmentService_.create(
+        toCreate,
+        sharedContext
+      )
+      result.push(...created)
+    }
 
     return await this.baseRepository_.serialize<
-      CartTypes.LineItemAdjustmentLineDTO[]
+      CartTypes.LineItemAdjustmentDTO[]
     >(result, {
       populate: true,
     })
@@ -839,7 +852,7 @@ export default class CartModuleService implements ICartModuleService {
     sharedContext?: Context
   ): Promise<void>
   async removeLineItemAdjustments(
-    selector: Partial<CartTypes.LineItemAdjustmentLineDTO>,
+    selector: Partial<CartTypes.LineItemAdjustmentDTO>,
     sharedContext?: Context
   ): Promise<void>
 
@@ -847,7 +860,7 @@ export default class CartModuleService implements ICartModuleService {
     adjustmentIdsOrSelector:
       | string
       | string[]
-      | Partial<CartTypes.LineItemAdjustmentLineDTO>,
+      | Partial<CartTypes.LineItemAdjustmentDTO>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     let ids: string[] = []
@@ -855,7 +868,7 @@ export default class CartModuleService implements ICartModuleService {
       const adjustments = await this.listLineItemAdjustments(
         {
           ...adjustmentIdsOrSelector,
-        } as Partial<CartTypes.LineItemAdjustmentLineDTO>,
+        } as Partial<CartTypes.LineItemAdjustmentDTO>,
         { select: ["id"] },
         sharedContext
       )

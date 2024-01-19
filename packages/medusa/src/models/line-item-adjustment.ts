@@ -40,10 +40,7 @@ export class LineItemAdjustment {
   @Column({ nullable: true })
   discount_id: string
 
-  @Column({
-    type: "numeric",
-    transformer: { to: (value) => value, from: (value) => parseFloat(value) },
-  })
+  @Column({ type: "numeric", transformer: { to: (value) => value, from: (value) => parseFloat(value) } })
   amount: number
 
   @DbAwareColumn({ type: "jsonb", nullable: true })

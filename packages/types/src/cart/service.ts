@@ -2,29 +2,29 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
-  CartAddressDTO,
-  CartDTO,
-  CartLineItemDTO,
-  CartShippingMethodDTO,
-  FilterableAddressProps,
-  FilterableCartProps,
-  FilterableLineItemAdjustmentProps,
-  FilterableLineItemProps,
-  FilterableShippingMethodProps,
-  LineItemAdjustmentLineDTO,
+    CartAddressDTO,
+    CartDTO,
+    CartLineItemDTO,
+    CartShippingMethodDTO,
+    FilterableAddressProps,
+    FilterableCartProps,
+    FilterableLineItemAdjustmentProps,
+    FilterableLineItemProps,
+    FilterableShippingMethodProps,
+    LineItemAdjustmentDTO,
 } from "./common"
 import {
-  CreateAddressDTO,
-  CreateAdjustmentDTO,
-  CreateCartDTO,
-  CreateLineItemDTO,
-  CreateLineItemForCartDTO,
-  CreateShippingMethodDTO,
-  UpdateAddressDTO,
-  UpdateCartDTO,
-  UpdateLineItemDTO,
-  UpdateLineItemWithSelectorDTO,
-  UpsertLineItemAdjustmentDTO
+    CreateAddressDTO,
+    CreateAdjustmentDTO,
+    CreateCartDTO,
+    CreateLineItemDTO,
+    CreateLineItemForCartDTO,
+    CreateShippingMethodDTO,
+    UpdateAddressDTO,
+    UpdateCartDTO,
+    UpdateLineItemDTO,
+    UpdateLineItemWithSelectorDTO,
+    UpsertLineItemAdjustmentDTO
 } from "./mutations"
 
 export interface ICartModuleService extends IModuleService {
@@ -156,26 +156,26 @@ export interface ICartModuleService extends IModuleService {
 
   listLineItemAdjustments(
     filters: FilterableLineItemAdjustmentProps,
-    config?: FindConfig<LineItemAdjustmentLineDTO>,
+    config?: FindConfig<LineItemAdjustmentDTO>,
     sharedContext?: Context
-  ): Promise<LineItemAdjustmentLineDTO[]>
+  ): Promise<LineItemAdjustmentDTO[]>
 
   addLineItemAdjustments(
     data: CreateAdjustmentDTO[]
-  ): Promise<LineItemAdjustmentLineDTO[]>
+  ): Promise<LineItemAdjustmentDTO[]>
   addLineItemAdjustments(
     data: CreateAdjustmentDTO
-  ): Promise<LineItemAdjustmentLineDTO[]>
+  ): Promise<LineItemAdjustmentDTO[]>
   addLineItemAdjustments(
     cartId: string,
     data: CreateAdjustmentDTO[]
-  ): Promise<LineItemAdjustmentLineDTO[]>
+  ): Promise<LineItemAdjustmentDTO[]>
 
   setLineItemAdjustments(
     cartId: string,
     data: UpsertLineItemAdjustmentDTO[],
     sharedContext?: Context
-  ): Promise<LineItemAdjustmentLineDTO[]>
+  ): Promise<LineItemAdjustmentDTO[]>
 
   removeLineItemAdjustments(
     adjustmentIds: string[],
@@ -186,7 +186,7 @@ export interface ICartModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
   removeLineItemAdjustments(
-    selector: Partial<LineItemAdjustmentLineDTO>,
+    selector: Partial<LineItemAdjustmentDTO>,
     sharedContext?: Context
   ): Promise<void>
 }

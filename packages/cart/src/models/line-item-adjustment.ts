@@ -11,10 +11,10 @@ import AdjustmentLine from "./adjustment-line"
 import LineItem from "./line-item"
 
 @Entity({ tableName: "cart_line_item_adjustment_line" })
-@Check<LineItemAdjustmentLine>({
+@Check<LineItemAdjustment>({
   expression: (columns) => `${columns.amount} >= 0`,
 })
-export default class LineItemAdjustmentLine extends AdjustmentLine {
+export default class LineItemAdjustment extends AdjustmentLine {
   @ManyToOne(() => LineItem, {
     onDelete: "cascade",
     nullable: true,

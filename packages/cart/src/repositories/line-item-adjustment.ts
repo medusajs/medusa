@@ -1,17 +1,17 @@
 import { DALUtils } from "@medusajs/utils"
-import { LineItemAdjustmentLine } from "@models"
+import { LineItemAdjustment } from "@models"
 import {
   CreateLineItemAdjustmentDTO,
   UpdateLineItemAdjustmentDTO,
 } from "@types"
 
 export class LineItemAdjustmentRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
-  LineItemAdjustmentLine,
+  LineItemAdjustment,
   {
     create: CreateLineItemAdjustmentDTO
     update: UpdateLineItemAdjustmentDTO
   }
->(LineItemAdjustmentLine) {
+>(LineItemAdjustment) {
   constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)

@@ -14,7 +14,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 import Cart from "./cart"
-import LineItemAdjustmentLine from "./line-item-adjustment-line"
+import LineItemAdjustment from "./line-item-adjustment"
 import LineItemTaxLine from "./line-item-tax-line"
 
 type OptionalLineItemProps =
@@ -116,13 +116,13 @@ export default class LineItem {
   tax_lines = new Collection<LineItemTaxLine>(this)
 
   @OneToMany(
-    () => LineItemAdjustmentLine,
+    () => LineItemAdjustment,
     (adjustment) => adjustment.item,
     {
       cascade: [Cascade.REMOVE],
     }
   )
-  adjustments = new Collection<LineItemAdjustmentLine>(this)
+  adjustments = new Collection<LineItemAdjustment>(this)
 
   /** COMPUTED PROPERTIES - START */
 
