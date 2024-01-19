@@ -1,8 +1,10 @@
 import {
   Context,
+  CreateCaptureDTO,
   CreatePaymentCollectionDTO,
   CreatePaymentDTO,
   CreatePaymentSessionDTO,
+  CreateRefundDTO,
   DAL,
   FilterablePaymentCollectionProps,
   FindConfig,
@@ -253,6 +255,53 @@ export default class PaymentModule implements IPaymentModuleService {
     )
   }
 
+  @InjectTransactionManager("baseRepository_")
+  async capturePayment(
+    data: CreateCaptureDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentDTO> {
+    // TODO 1. check if (payment.captured_amount + amount > payment.authorized_amount) {}
+
+    // TODO: 2. set captured_at if fully captured?
+    // TODO: 3. set PaymentCollection status
+
+    await this.paymentService_.capture(data, sharedContext)
+
+    const payment = await this.paymentService_.retrieve(
+      data.payment_id,
+      {
+        relations: ["captures"],
+      },
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<PaymentDTO>(payment, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async refund(
+    data: CreateRefundDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentDTO> {
+    // TODO 1. check if (payment.captured_amount - amount > 0) {}
+
+    await this.paymentService_.refund(data, sharedContext)
+
+    const payment = await this.paymentService_.retrieve(
+      data.payment_id,
+      {
+        relations: ["refunds"],
+      },
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<PaymentDTO>(payment, {
+      populate: true,
+    })
+  }
+
   createPaymentSession(
     paymentCollectionId: string,
     data: CreatePaymentSessionDTO,
@@ -305,17 +354,9 @@ export default class PaymentModule implements IPaymentModuleService {
     throw new Error("Method not implemented.")
   }
 
-  capturePayment(
+  cancelPayment(
     paymentId: string,
-    amount: number,
-    sharedContext?: Context | undefined
-  ): Promise<PaymentDTO> {
-    throw new Error("Method not implemented.")
-  }
-  refundPayment(
-    paymentId: string,
-    amount: number,
-    sharedContext?: Context | undefined
+    sharedContext?: Context
   ): Promise<PaymentDTO> {
     throw new Error("Method not implemented.")
   }

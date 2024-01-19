@@ -277,6 +277,8 @@ describe("Payment Module Service", () => {
   describe("Payment", () => {
     let repositoryManager: SqlEntityManager
 
+    let testPayment
+
     beforeEach(async () => {
       await MikroOrmWrapper.setupDatabase()
       repositoryManager = await MikroOrmWrapper.forkManager()
@@ -286,6 +288,30 @@ describe("Payment Module Service", () => {
           clientUrl: DB_URL,
           schema: process.env.MEDUSA_PAYMNET_DB_SCHEMA,
         },
+      })
+
+      let paymentCollection = await service.createPaymentCollection({
+        currency_code: "usd",
+        amount: 200,
+        region_id: "reg",
+      })
+
+      paymentCollection = await service.createPaymentSession(
+        paymentCollection.id,
+        {
+          amount: 200,
+          provider_id: "manual",
+          currency_code: "usd",
+        }
+      )
+
+      testPayment = await service.createPayment({
+        data: {},
+        amount: 200,
+        provider_id: "manual",
+        currency_code: "usd",
+        payment_collection_id: paymentCollection.id,
+        payment_session_id: paymentCollection.payment_sessions[0].id,
       })
     })
 
@@ -402,6 +428,15 @@ describe("Payment Module Service", () => {
             cart_id: "new-cart",
           })
         )
+      })
+    })
+
+    describe("capture", () => {
+      it("should capture a payment successfully", async () => {
+        const capturedPayment = await service.capturePayment({
+          amount: 100,
+          payment_id: testPayment.id,
+        })
       })
     })
   })

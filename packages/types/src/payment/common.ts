@@ -57,6 +57,46 @@ export interface PaymentDTO {
    * The ID of the Payment
    */
   id: string
+
+  captures: CaptureDTO[]
+
+  refunds: RefundDTO[]
+}
+
+export interface CaptureDTO {
+  /**
+   * The ID of the Capture
+   */
+  id: string
+
+  /**
+   * Captured amount
+   */
+  amount: number
+
+  created_at: Date
+
+  created_by?: string
+
+  payment: PaymentDTO
+}
+
+export interface RefundDTO {
+  /**
+   * The ID of the Refund
+   */
+  id: string
+
+  /**
+   * Refunded amount
+   */
+  amount: number
+
+  created_at: Date
+
+  created_by?: string
+
+  payment: PaymentDTO
 }
 
 /* ********** PAYMENT ********** */

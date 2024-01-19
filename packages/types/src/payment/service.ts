@@ -1,9 +1,11 @@
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
+  CreateCaptureDTO,
   CreatePaymentCollectionDTO,
   CreatePaymentDTO,
   CreatePaymentSessionDTO,
+  CreateRefundDTO,
   SetPaymentSessionsDTO,
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
@@ -85,14 +87,12 @@ export interface IPaymentModuleService extends IModuleService {
   ): Promise<PaymentDTO[]>
 
   capturePayment(
-    paymentId: string,
-    amount: number,
+    data: CreateCaptureDTO,
     sharedContext?: Context
   ): Promise<PaymentDTO>
 
   refundPayment(
-    paymentId: string,
-    amount: number,
+    data: CreateRefundDTO,
     sharedContext?: Context
   ): Promise<PaymentDTO>
 

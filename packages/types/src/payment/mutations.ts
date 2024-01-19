@@ -51,6 +51,20 @@ export interface UpdatePaymentDTO {
   data?: Record<string, unknown>
 }
 
+export interface CreateCaptureDTO {
+  amount: number
+  payment_id: string
+
+  captured_by?: string
+}
+
+export interface CreateRefundDTO {
+  amount: number
+  payment_id: string
+
+  captured_by?: string
+}
+
 /**
  * Payment Session
  */

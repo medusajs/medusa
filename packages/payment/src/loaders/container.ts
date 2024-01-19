@@ -48,5 +48,9 @@ function loadDefaultRepositories({ container }) {
     paymentSessionRepository: asClass(
       defaultRepositories.PaymentSessionRepository
     ).singleton(),
+    captureRepository: asClass(
+      defaultRepositories.CaptureRepository
+    ).singleton(),
+    refundRepository: asClass(defaultRepositories.RefundRepository).singleton(),
   })
 }
