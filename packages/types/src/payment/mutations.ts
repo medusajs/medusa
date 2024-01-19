@@ -1,5 +1,3 @@
-import { PaymentCollectionStatus } from "@medusajs/utils"
-
 /**
  * Payment Collection
  */
