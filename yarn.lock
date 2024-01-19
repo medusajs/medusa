@@ -7862,8 +7862,6 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   bin:
-    medusa-authentication-migrations-down: dist/scripts/bin/run-migration-down.js
-    medusa-authentication-migrations-up: dist/scripts/bin/run-migration-up.js
     medusa-authentication-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
@@ -7921,8 +7919,6 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   bin:
-    medusa-cart-migrations-down: dist/scripts/bin/run-migration-down.js
-    medusa-cart-migrations-up: dist/scripts/bin/run-migration-up.js
     medusa-cart-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
