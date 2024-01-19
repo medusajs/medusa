@@ -48,8 +48,6 @@ Option value must be of type string or number.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductOptionValue](../../entities/classes/entities.ProductOptionValue.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the update operation.","expandable":false,"children":[]}]} />
 
-___
-
 ### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
@@ -68,8 +66,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### create
 
 Creates an unpublished product variant. Will validate against parent product
@@ -87,8 +83,6 @@ to ensure that the variant can in fact be created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TOutput&#62;","optional":false,"defaultValue":"","description":"resolves to the creation result.","expandable":false,"children":[]}]} />
 
-___
-
 ### delete
 
 Deletes variant or variants.
@@ -101,8 +95,6 @@ Will never fail due to delete being idempotent.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"empty promise","expandable":false,"children":[]}]} />
-
-___
 
 ### deleteOptionValue
 
@@ -117,8 +109,6 @@ Will never fail due to delete being idempotent.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"empty promise","expandable":false,"children":[]}]} />
 
-___
-
 ### getFreeTextQueryBuilder\_
 
 Lists variants based on the provided parameters and includes the count of
@@ -131,8 +121,6 @@ variants that match the query.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"SelectQueryBuilder","type":"SelectQueryBuilder&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;","optional":false,"defaultValue":"","description":"an array containing the products as the first element and the total\n  count of products that matches the query as the second element.","expandable":false,"children":[]}]} />
-
-___
 
 ### getRegionPrice
 
@@ -148,8 +136,6 @@ currency price exists the function will throw an error.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;null \\| number&#62;","optional":false,"defaultValue":"","description":"the price specific to the region","expandable":false,"children":[]}]} />
 
-___
-
 ### isVariantInSalesChannels
 
 Check if the variant is assigned to at least one of the provided sales channels.
@@ -162,8 +148,6 @@ Check if the variant is assigned to at least one of the provided sales channels.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"Check if the variant is assigned to at least one of the provided sales channels.","expandable":false,"children":[]}]} />
 
-___
-
 ### list
 
 #### Parameters
@@ -174,8 +158,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
 
-___
-
 ### listAndCount
 
 #### Parameters
@@ -185,8 +167,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieve
 
@@ -200,8 +180,6 @@ Gets a product variant by id.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;","optional":false,"defaultValue":"","description":"the product document.","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieveBySKU
 
 Gets a product variant by id.
@@ -213,8 +191,6 @@ Gets a product variant by id.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;","optional":false,"defaultValue":"","description":"the product document.","expandable":false,"children":[]}]} />
-
-___
 
 ### setCurrencyPrice
 
@@ -231,8 +207,6 @@ ___
 use addOrUpdateCurrencyPrices instead
 Sets the default price for the given currency.
 
-___
-
 ### setRegionPrice
 
 #### Parameters
@@ -248,8 +222,6 @@ ___
 use addOrUpdateRegionPrices instead
 Sets the default price of a specific region
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -259,8 +231,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### update
 
@@ -300,8 +270,6 @@ The function will throw, if price updates are attempted.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### updateBatch
 
 #### Parameters
@@ -311,8 +279,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### updateOptionValue
 
@@ -326,8 +292,6 @@ Option value must be of type string or number.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductOptionValue](../../entities/classes/entities.ProductOptionValue.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the update operation.","expandable":false,"children":[]}]} />
-
-___
 
 ### updateVariantPrices
 
@@ -357,8 +321,6 @@ Deletes any prices that are not in the update object, and is not associated with
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"empty promise","expandable":false,"children":[]}]} />
 
-___
-
 ### updateVariantPricesBatch
 
 #### Parameters
@@ -368,8 +330,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### upsertCurrencyPrices
 
@@ -381,8 +341,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### upsertRegionPrices
 
 #### Parameters
@@ -393,8 +351,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### validateVariantsToCreate\_
 
 #### Parameters
@@ -404,8 +360,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

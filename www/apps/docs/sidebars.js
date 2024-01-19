@@ -1314,7 +1314,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "development/backend/configurations",
+          id: "references/medusa_config/interfaces/medusa_config.ConfigModule",
           label: "Configurations",
         },
       ],

@@ -20,8 +20,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[AuthProviderDTO](../types/types.AuthProviderDTO.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthProviderDTO","type":"[AuthProviderDTO](../types/types.AuthProviderDTO.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"domain","type":"[ProviderDomain](../enums/types.ProviderDomain.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ALL","type":"`\"all\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"STORE","type":"`\"store\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ADMIN","type":"`\"admin\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"is_active","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} />
 
-___
-
 ### listAuthProviders
 
 #### Parameters
@@ -32,8 +30,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[AuthProviderDTO](../types/types.AuthProviderDTO.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthProviderDTO[]","type":"[AuthProviderDTO](../types/types.AuthProviderDTO.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthProviderDTO","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} />
 
-___
-
 ### listAndCountAuthProviders
 
 #### Parameters
@@ -43,8 +39,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[AuthProviderDTO](../types/types.AuthProviderDTO.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthProviderDTO[]","type":"[AuthProviderDTO](../types/types.AuthProviderDTO.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### createAuthProvider
 
@@ -68,8 +62,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[AuthProviderDTO](../types/types.AuthProviderDTO.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthProviderDTO","type":"[AuthProviderDTO](../types/types.AuthProviderDTO.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"domain","type":"[ProviderDomain](../enums/types.ProviderDomain.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ALL","type":"`\"all\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"STORE","type":"`\"store\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ADMIN","type":"`\"admin\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"is_active","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} />
 
-___
-
 ### updateAuthProvider
 
 `**updateAuthProvider**(data, sharedContext?): Promise&#60;[AuthProviderDTO](../types/types.AuthProviderDTO.mdx)[]&#62;`
@@ -92,8 +84,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[AuthProviderDTO](../types/types.AuthProviderDTO.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthProviderDTO","type":"[AuthProviderDTO](../types/types.AuthProviderDTO.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"domain","type":"[ProviderDomain](../enums/types.ProviderDomain.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ALL","type":"`\"all\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"STORE","type":"`\"store\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ADMIN","type":"`\"admin\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"is_active","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} />
 
-___
-
 ### deleteAuthProvider
 
 #### Parameters
@@ -103,8 +93,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveAuthUser
 
@@ -116,8 +104,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[AuthUserDTO](../types/types.AuthUserDTO.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthUserDTO","type":"[AuthUserDTO](../types/types.AuthUserDTO.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthProviderDTO](../types/types.AuthProviderDTO.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"domain","type":"[ProviderDomain](../enums/types.ProviderDomain.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"user_metadata","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"app_metadata","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_metadata","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} />
 
-___
-
 ### listAuthUsers
 
 #### Parameters
@@ -128,8 +114,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[AuthUserDTO](../types/types.AuthUserDTO.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthUserDTO[]","type":"[AuthUserDTO](../types/types.AuthUserDTO.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthUserDTO","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} />
 
-___
-
 ### listAndCountAuthUsers
 
 #### Parameters
@@ -139,8 +123,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[AuthUserDTO](../types/types.AuthUserDTO.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthUserDTO[]","type":"[AuthUserDTO](../types/types.AuthUserDTO.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### createAuthUser
 
@@ -164,8 +146,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[AuthUserDTO](../types/types.AuthUserDTO.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthUserDTO","type":"[AuthUserDTO](../types/types.AuthUserDTO.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthProviderDTO](../types/types.AuthProviderDTO.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"domain","type":"[ProviderDomain](../enums/types.ProviderDomain.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"user_metadata","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"app_metadata","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_metadata","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} />
 
-___
-
 ### updateAuthUser
 
 `**updateAuthUser**(data, sharedContext?): Promise&#60;[AuthUserDTO](../types/types.AuthUserDTO.mdx)[]&#62;`
@@ -188,8 +168,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[AuthUserDTO](../types/types.AuthUserDTO.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthUserDTO","type":"[AuthUserDTO](../types/types.AuthUserDTO.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthProviderDTO](../types/types.AuthProviderDTO.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"domain","type":"[ProviderDomain](../enums/types.ProviderDomain.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"user_metadata","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"app_metadata","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_metadata","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} />
 
-___
-
 ### deleteAuthUser
 
 #### Parameters
@@ -199,8 +177,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### \_\_joinerConfig
 

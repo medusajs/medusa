@@ -30,8 +30,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### paymentService\_
 
 #### Returns
@@ -60,8 +58,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### authorizePayment
 
 #### Parameters
@@ -71,8 +67,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;undefined \\| [PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### buildPaymentProcessorContext
 
@@ -86,8 +80,6 @@ Build the create session context for both legacy and new API
 
 <ParameterTypes parameters={[{"name":"Cart","type":"`object`","description":"A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"PaymentContext","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
-___
-
 ### cancelPayment
 
 #### Parameters
@@ -97,8 +89,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### capturePayment
 
@@ -110,8 +100,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### createPayment
 
 #### Parameters
@@ -121,8 +109,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### createSession
 
@@ -150,8 +136,6 @@ Creates a payment session with the given provider.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;","optional":false,"defaultValue":"","description":"Creates a payment session with the given provider.","expandable":false,"children":[]}]} />
 
-___
-
 ### deleteSession
 
 #### Parameters
@@ -161,8 +145,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;undefined \\| [PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### getStatus
 
@@ -174,15 +156,11 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentSessionStatus](../../entities/enums/entities.PaymentSessionStatus.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### list
 
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentProvider](../../entities/classes/entities.PaymentProvider.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### listPayments
 
@@ -196,8 +174,6 @@ List all the payments according to the given selector and config.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Payment](../../entities/classes/entities.Payment.mdx)[]&#62;","optional":false,"defaultValue":"","description":"List all the payments according to the given selector and config.","expandable":false,"children":[]}]} />
 
-___
-
 ### processUpdateRequestsData
 
 Process the collected data. Can be used every time we need to process some collected data returned by the provider
@@ -209,8 +185,6 @@ Process the collected data. Can be used every time we need to process some colle
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Process the collected data. Can be used every time we need to process some collected data returned by the provider","expandable":false,"children":[]}]} />
-
-___
 
 ### refreshSession
 
@@ -225,8 +199,6 @@ This means, that we delete the current one and create a new.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment session","expandable":false,"children":[]}]} />
 
-___
-
 ### refundFromPayment
 
 #### Parameters
@@ -236,8 +208,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Refund](../../entities/classes/entities.Refund.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### refundPayment
 
@@ -249,8 +219,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Refund](../../entities/classes/entities.Refund.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### registerInstalledProviders
 
 #### Parameters
@@ -260,8 +228,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### retrievePayment
 
@@ -274,8 +240,6 @@ Retrieve a payment entity with the given id.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;","optional":false,"defaultValue":"","description":"Retrieve a payment entity with the given id.","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveProvider
 
@@ -293,8 +257,6 @@ Finds a provider given an id
 
 <ParameterTypes parameters={[{"name":"TProvider extends AbstractPaymentService ? AbstractPaymentService : TProvider extends AbstractPaymentProcessor ? AbstractPaymentProcessor : any","type":"TProvider extends [AbstractPaymentService](../../medusa/classes/medusa.AbstractPaymentService.mdx) ? [AbstractPaymentService](../../medusa/classes/medusa.AbstractPaymentService.mdx) : TProvider extends [AbstractPaymentProcessor](../../medusa/classes/medusa.AbstractPaymentProcessor.mdx) ? [AbstractPaymentProcessor](../../medusa/classes/medusa.AbstractPaymentProcessor.mdx) : `any`","optional":false,"defaultValue":"","description":"the payment provider","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieveRefund
 
 #### Parameters
@@ -304,8 +266,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Refund](../../entities/classes/entities.Refund.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveSession
 
@@ -319,8 +279,6 @@ Return the payment session for the given id.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;","optional":false,"defaultValue":"","description":"Return the payment session for the given id.","expandable":false,"children":[]}]} />
 
-___
-
 ### saveSession
 
 Create or update a Payment session data.
@@ -333,8 +291,6 @@ Create or update a Payment session data.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;","optional":false,"defaultValue":"","description":"Create or update a Payment session data.","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -344,8 +300,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### throwFromPaymentProcessorError
 
@@ -357,8 +311,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### updatePayment
 
 #### Parameters
@@ -368,8 +320,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### updateSession
 
@@ -383,8 +333,6 @@ Update a payment session with the given provider.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment session","expandable":false,"children":[]}]} />
 
-___
-
 ### updateSessionData
 
 #### Parameters
@@ -394,8 +342,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

@@ -46,8 +46,6 @@ medusa.admin.orders.addShippingMethod(orderId, {
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
 
-___
-
 ### archive
 
 Archive an order and change its status.
@@ -71,8 +69,6 @@ medusa.admin.orders.archive(orderId)
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### cancel
 
@@ -99,8 +95,6 @@ medusa.admin.orders.cancel(orderId)
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
 
-___
-
 ### cancelClaim
 
 Cancel a claim and change its status. A claim can't be canceled if it has a refund, if its fulfillments haven't been canceled, of if its associated return hasn't been canceled.
@@ -124,8 +118,6 @@ medusa.admin.orders.cancelClaim(orderId, claimId)
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `claims` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### cancelClaimFulfillment
 
@@ -151,8 +143,6 @@ medusa.admin.orders.cancelClaimFulfillment(orderId, claimId, fulfillmentId)
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
 
-___
-
 ### cancelFulfillment
 
 Cancel an order's fulfillment and change its fulfillment status to `canceled`.
@@ -176,8 +166,6 @@ medusa.admin.orders.cancelFulfillment(orderId, fulfillmentId)
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### cancelSwap
 
@@ -203,8 +191,6 @@ medusa.admin.orders.cancelSwap(orderId, swapId)
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `swaps` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
 
-___
-
 ### cancelSwapFulfillment
 
 Cancel a swap's fulfillment and change its fulfillment status to `canceled`.
@@ -228,8 +214,6 @@ medusa.admin.orders.cancelSwapFulfillment(orderId, swapId, fulfillmentId)
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### capturePayment
 
@@ -255,8 +239,6 @@ medusa.admin.orders.capturePayment(orderId)
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
 
-___
-
 ### complete
 
 Complete an order and change its status. A canceled order can't be completed.
@@ -280,8 +262,6 @@ medusa.admin.orders.complete(orderId)
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### createClaim
 
@@ -316,8 +296,6 @@ medusa.admin.orders.createClaim(orderId, {
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the claim under the `claims` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
 
-___
-
 ### createClaimShipment
 
 Create a shipment for the claim and mark its fulfillment as shipped. If the shipment is created successfully, this changes the claim's fulfillment status
@@ -344,8 +322,6 @@ medusa.admin.orders.createClaimShipment(orderId, claimId, {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `claims` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### createFulfillment
 
@@ -379,8 +355,6 @@ medusa.admin.orders.createFulfillment(orderId, {
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
 
-___
-
 ### createShipment
 
 Create a shipment and mark a fulfillment as shipped. This changes the order's fulfillment status to either `partially_shipped` or `shipped`, depending on
@@ -407,8 +381,6 @@ medusa.admin.orders.createShipment(order_id, {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### createSwap
 
@@ -441,8 +413,6 @@ medusa.admin.orders.createSwap(orderId, {
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `swaps` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
 
-___
-
 ### createSwapShipment
 
 Create a shipment for a swap and mark its fulfillment as shipped. This changes the swap's fulfillment status to either `shipped` or `partially_shipped`, depending on
@@ -470,8 +440,6 @@ medusa.admin.orders.createSwapShipment(orderId, swapId, {
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `swaps` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
 
-___
-
 ### fulfillClaim
 
 Create a Fulfillment for a Claim, and change its fulfillment status to `partially_fulfilled` or `fulfilled` depending on whether all the items were fulfilled.
@@ -497,8 +465,6 @@ medusa.admin.orders.fulfillClaim(orderId, claimId, {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `claims` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### fulfillSwap
 
@@ -526,8 +492,6 @@ medusa.admin.orders.fulfillSwap(orderId, swapId, {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `swaps` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### list
 
@@ -585,8 +549,6 @@ medusa.admin.orders.list({
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersListRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the list of orders with pagination fields.","expandable":false,"children":[{"name":"AdminOrdersListRes","type":"[PaginatedResponse](../../medusa/interfaces/medusa.PaginatedResponse.mdx) & `object`","description":"The list of orders with pagination fields.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
 
-___
-
 ### processSwapPayment
 
 Process a swap's payment either by refunding or issuing a payment. This depends on the `difference_due` of the swap. If `difference_due` is negative, the amount is refunded.
@@ -611,8 +573,6 @@ medusa.admin.orders.processSwapPayment(orderId, swapId)
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `swaps` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### refundPayment
 
@@ -640,8 +600,6 @@ medusa.admin.orders.refundPayment(orderId, {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### requestReturn
 
@@ -673,8 +631,6 @@ medusa.admin.orders.requestReturn(orderId, {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the return under the `returns` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### retrieve
 
@@ -716,8 +672,6 @@ medusa.admin.orders.retrieve(orderId, {
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
 
-___
-
 ### update
 
 Update an order's details.
@@ -743,8 +697,6 @@ medusa.admin.orders.update(orderId, {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### updateClaim
 

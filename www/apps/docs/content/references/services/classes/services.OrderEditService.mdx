@@ -28,8 +28,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### inventoryService\_
 
 #### Returns
@@ -50,8 +48,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
@@ -70,8 +66,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### cancel
 
 #### Parameters
@@ -81,8 +75,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### confirm
 
@@ -94,8 +86,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### create
 
 #### Parameters
@@ -105,8 +95,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### decline
 
@@ -118,8 +106,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### decorateTotals
 
 #### Parameters
@@ -129,8 +115,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### delete
 
@@ -142,8 +126,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### deleteClonedItems
 
 #### Parameters
@@ -153,8 +135,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### deleteItemChange
 
@@ -166,8 +146,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### list
 
 #### Parameters
@@ -177,8 +155,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### listAndCount
 
@@ -190,8 +166,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### refreshAdjustments
 
 #### Parameters
@@ -201,8 +175,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### removeLineItem
 
@@ -214,8 +186,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### requestConfirmation
 
 #### Parameters
@@ -225,8 +195,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieve
 
@@ -238,8 +206,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieveActive
 
 #### Parameters
@@ -249,8 +215,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;undefined \\| null \\| [OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### shouldRetryTransaction\_
 
@@ -262,8 +226,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### update
 
 #### Parameters
@@ -273,8 +235,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### updateLineItem
 
@@ -290,8 +250,6 @@ Create or update order edit item change line item and apply the quantity
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Create or update order edit item change line item and apply the quantity\n- If the item change already exists then update the quantity of the line item as well as the line adjustments\n- If the item change does not exist then create the item change of type update and apply the quantity as well as update the line adjustments","expandable":false,"children":[]}]} />
 
-___
-
 ### withTransaction
 
 #### Parameters
@@ -301,8 +259,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### isOrderEditActive
 

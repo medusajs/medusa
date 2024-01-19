@@ -30,15 +30,11 @@ ___
 
 <ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### pricingModuleService
 
 #### Returns
 
 <ParameterTypes parameters={[{"name":"IPricingModuleService","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-___
 
 ### remoteQuery
 
@@ -68,8 +64,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### calculateTaxes
 
 Gets the prices for a product variant
@@ -81,8 +75,6 @@ Gets the prices for a product variant
 #### Returns
 
 <ParameterTypes parameters={[{"name":"TaxedPricing","type":"`object`","description":"Pricing fields related to taxes.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-___
 
 ### collectPricingContext
 
@@ -97,8 +89,6 @@ selection.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;PricingContext&#62;","optional":false,"defaultValue":"","description":"The pricing context","expandable":false,"children":[]}]} />
 
-___
-
 ### getPricingModuleVariantMoneyAmounts
 
 #### Parameters
@@ -108,8 +98,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Map&#60;string, [MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)[]&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### getProductPricing
 
@@ -124,8 +112,6 @@ be fetched.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;&#62;","optional":false,"defaultValue":"","description":"A map of variant ids to their corresponding prices","expandable":false,"children":[]}]} />
 
-___
-
 ### getProductPricingById
 
 Gets all the variant prices for a product by the product id
@@ -138,8 +124,6 @@ Gets all the variant prices for a product by the product id
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;&#62;","optional":false,"defaultValue":"","description":"A map of variant ids to their corresponding prices","expandable":false,"children":[]}]} />
 
-___
-
 ### getProductPricing\_
 
 #### Parameters
@@ -149,8 +133,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Map&#60;string, Record&#60;string, [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### getProductVariantPricing
 
@@ -163,8 +145,6 @@ Gets the prices for a product variant.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;","optional":false,"defaultValue":"","description":"The product variant prices","expandable":false,"children":[]}]} />
-
-___
 
 ### getProductVariantPricingById
 
@@ -182,8 +162,6 @@ Gets the prices for a product variant by a variant id.
 
 Use [getProductVariantsPricing](services.PricingService.mdx#getproductvariantspricing) instead.
 
-___
-
 ### getProductVariantPricingModulePricing\_
 
 #### Parameters
@@ -194,8 +172,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Map&#60;any, any&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### getProductVariantPricing\_
 
 #### Parameters
@@ -205,8 +181,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Map&#60;string, [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### getProductVariantsPricing
 
@@ -220,8 +194,6 @@ Gets the prices for a collection of variants.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"The product variant prices","expandable":false,"children":[]}]} />
 
-___
-
 ### getShippingOptionPricing
 
 Gets the prices for a shipping option.
@@ -234,8 +206,6 @@ Gets the prices for a shipping option.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PricedShippingOption](../../medusa/types/medusa.PricedShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"The shipping option prices","expandable":false,"children":[]}]} />
 
-___
-
 ### setAdminProductPricing
 
 #### Parameters
@@ -246,8 +216,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;([Product](../../entities/classes/entities.Product.mdx) \\| [PricedProduct](../../medusa/types/medusa.PricedProduct.mdx))[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### setAdminVariantPricing
 
 #### Parameters
@@ -257,8 +225,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PricedVariant](../../medusa/types/medusa.PricedVariant.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### setProductPrices
 
@@ -272,8 +238,6 @@ Set additional prices on a list of products.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;([Product](../../entities/classes/entities.Product.mdx) \\| [PricedProduct](../../medusa/types/medusa.PricedProduct.mdx))[]&#62;","optional":false,"defaultValue":"","description":"A list of products with variants decorated with prices","expandable":false,"children":[]}]} />
 
-___
-
 ### setShippingOptionPrices
 
 Set additional prices on a list of shipping options.
@@ -285,8 +249,6 @@ Set additional prices on a list of shipping options.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PricedShippingOption](../../medusa/types/medusa.PricedShippingOption.mdx)[]&#62;","optional":false,"defaultValue":"","description":"A list of shipping options with prices","expandable":false,"children":[]}]} />
-
-___
 
 ### setVariantPrices
 
@@ -300,8 +262,6 @@ Set additional prices on a list of product variants.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PricedVariant](../../medusa/types/medusa.PricedVariant.mdx)[]&#62;","optional":false,"defaultValue":"","description":"A list of products with variants decorated with prices","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -311,8 +271,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

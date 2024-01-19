@@ -391,6 +391,10 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [DeleteResponse](../medusa/interfaces/medusa.DeleteResponse.mdx)
 - [MedusaRequest](../medusa/interfaces/medusa.MedusaRequest.mdx)
 - [SubscriberContext](../medusa/interfaces/medusa.SubscriberContext.mdx)
+- [SessionOptions](../medusa/interfaces/medusa.SessionOptions.mdx)
+- [HttpCompressionOptions](../medusa/interfaces/medusa.HttpCompressionOptions.mdx)
+- [ProjectConfigOptions](../medusa/interfaces/medusa.ProjectConfigOptions.mdx)
+- [ConfigModule](../medusa/interfaces/medusa.ConfigModule-1.mdx)
 - [FileServiceUploadResult](../medusa/interfaces/medusa.FileServiceUploadResult.mdx)
 - [FileServiceGetUploadStreamResult](../medusa/interfaces/medusa.FileServiceGetUploadStreamResult.mdx)
 - [GetUploadedFileType](../medusa/interfaces/medusa.GetUploadedFileType.mdx)
@@ -643,10 +647,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [LineAllocationsMap](../medusa/types/medusa.LineAllocationsMap.mdx)
 - [PaginatedResponse](../medusa/types/medusa.PaginatedResponse-1.mdx)
 - [DeleteResponse](../medusa/types/medusa.DeleteResponse-1.mdx)
-- [SessionOptions](../medusa/types/medusa.SessionOptions.mdx)
-- [HttpCompressionOptions](../medusa/types/medusa.HttpCompressionOptions.mdx)
-- [ProjectConfigOptions](../medusa/types/medusa.ProjectConfigOptions.mdx)
-- [ConfigModule](../medusa/types/medusa.ConfigModule-1.mdx)
 - [MedusaContainer](../medusa/types/medusa.MedusaContainer-2.mdx)
 - [InventoryItemDTO](../medusa/types/medusa.InventoryItemDTO.mdx)
 - [ReservationItemDTO](../medusa/types/medusa.ReservationItemDTO.mdx)
@@ -673,13 +673,9 @@ ___
 
 The `calculatedPrice` is the original price.
 
-___
-
 ### INTERNAL
 
  **INTERNAL**: `"internal"`
-
-___
 
 ### EXTERNAL
 
@@ -693,243 +689,165 @@ ___
 
  `Const` **defaultAdminBatchFields**: `string`[]
 
-___
-
 ### defaultAdminCollectionsFields
 
  `Const` **defaultAdminCollectionsFields**: `string`[]
-
-___
 
 ### defaultAdminCollectionsRelations
 
  `Const` **defaultAdminCollectionsRelations**: `string`[]
 
-___
-
 ### defaultAdminCustomerGroupsRelations
 
  `Const` **defaultAdminCustomerGroupsRelations**: `never`[] = `[]`
-
-___
 
 ### defaultAdminCustomersRelations
 
  `Const` **defaultAdminCustomersRelations**: `string`[]
 
-___
-
 ### defaultAdminDiscountsFields
 
  `Const` **defaultAdminDiscountsFields**: keyof [Discount](../entities/classes/entities.Discount.mdx)[]
-
-___
 
 ### defaultAdminDiscountsRelations
 
  `Const` **defaultAdminDiscountsRelations**: `string`[]
 
-___
-
 ### defaultAdminDiscountConditionFields
 
  `Const` **defaultAdminDiscountConditionFields**: keyof [DiscountCondition](../entities/classes/entities.DiscountCondition.mdx)[]
-
-___
 
 ### defaultAdminDiscountConditionRelations
 
  `Const` **defaultAdminDiscountConditionRelations**: `string`[]
 
-___
-
 ### defaultAdminDraftOrdersRelations
 
  `Const` **defaultAdminDraftOrdersRelations**: `string`[]
-
-___
 
 ### defaultAdminDraftOrdersCartRelations
 
  `Const` **defaultAdminDraftOrdersCartRelations**: `string`[]
 
-___
-
 ### defaultAdminDraftOrdersCartFields
 
  `Const` **defaultAdminDraftOrdersCartFields**: keyof [Cart](../entities/classes/entities.Cart.mdx)[]
-
-___
 
 ### defaultAdminDraftOrdersFields
 
  `Const` **defaultAdminDraftOrdersFields**: keyof [DraftOrder](../entities/classes/entities.DraftOrder.mdx)[]
 
-___
-
 ### defaultAdminGiftCardFields
 
  `Const` **defaultAdminGiftCardFields**: keyof [GiftCard](../entities/classes/entities.GiftCard.mdx)[]
-
-___
 
 ### defaultAdminGiftCardRelations
 
  `Const` **defaultAdminGiftCardRelations**: `string`[]
 
-___
-
 ### defaultAdminInventoryItemFields
 
  `Const` **defaultAdminInventoryItemFields**: keyof [InventoryItemDTO](../medusa/types/medusa.InventoryItemDTO.mdx)[]
-
-___
 
 ### defaultAdminLocationLevelFields
 
  `Const` **defaultAdminLocationLevelFields**: keyof [InventoryLevelDTO](../medusa/types/medusa.InventoryLevelDTO.mdx)[]
 
-___
-
 ### defaultAdminInventoryItemRelations
 
  `Const` **defaultAdminInventoryItemRelations**: `never`[] = `[]`
-
-___
 
 ### defaultAdminNotificationsRelations
 
  `Const` **defaultAdminNotificationsRelations**: `string`[]
 
-___
-
 ### defaultAdminNotificationsFields
 
  `Const` **defaultAdminNotificationsFields**: `string`[]
-
-___
 
 ### filterableAdminOrdersFields
 
  `Const` **filterableAdminOrdersFields**: `string`[]
 
-___
-
 ### AvailableOrderIncludes
 
  `Const` **AvailableOrderIncludes**: `Object`
 
-#### Type declaration
+#### Properties
 
 <ParameterTypes parameters={[{"name":"RETURNABLE_ITEMS","type":"`string`","description":"","optional":false,"defaultValue":"\"returnable_items\"","expandable":false,"children":[]}]} />
-
-___
 
 ### allowedOrderIncludes
 
  `Const` **allowedOrderIncludes**: `string`[]
 
-___
-
 ### defaultPaymentCollectionFields
 
  `Const` **defaultPaymentCollectionFields**: `string`[]
-
-___
 
 ### defaulPaymentCollectionRelations
 
  `Const` **defaulPaymentCollectionRelations**: `string`[]
 
-___
-
 ### defaultPaymentFields
 
  `Const` **defaultPaymentFields**: `string`[]
-
-___
 
 ### defaultAdminPriceListRemoteQueryObject
 
  `Const` **defaultAdminPriceListRemoteQueryObject**: `Object`
 
-#### Type declaration
+#### Properties
 
 <ParameterTypes parameters={[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"price_list_rules","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"price_list_rule_values","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"rule_type","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"price_set_money_amounts","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"money_amount","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"price_rules","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rule_type","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"price_set","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"variant_link","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} />
-
-___
 
 ### defaultAdminPriceListFields
 
  `Const` **defaultAdminPriceListFields**: `string`[]
 
-___
-
 ### defaultAdminPriceListRelations
 
  `Const` **defaultAdminPriceListRelations**: `string`[]
-
-___
 
 ### defaultAdminProductCategoryRelations
 
  `Const` **defaultAdminProductCategoryRelations**: `string`[]
 
-___
-
 ### allowedAdminProductCategoryRelations
 
  `Const` **allowedAdminProductCategoryRelations**: `string`[]
-
-___
 
 ### defaultProductCategoryFields
 
  `Const` **defaultProductCategoryFields**: `string`[]
 
-___
-
 ### defaultAdminProductTagsFields
 
  `Const` **defaultAdminProductTagsFields**: `string`[]
-
-___
 
 ### defaultAdminProductTagsRelations
 
  `Const` **defaultAdminProductTagsRelations**: `never`[] = `[]`
 
-___
-
 ### defaultAdminProductTypeFields
 
  `Const` **defaultAdminProductTypeFields**: `string`[]
-
-___
 
 ### defaultAdminProductTypeRelations
 
  `Const` **defaultAdminProductTypeRelations**: `never`[] = `[]`
 
-___
-
 ### defaultAdminProductRelations
 
  `Const` **defaultAdminProductRelations**: `string`[]
-
-___
 
 ### defaultAdminProductFields
 
  `Const` **defaultAdminProductFields**: keyof [Product](../entities/classes/entities.Product.mdx)[]
 
-___
-
 ### defaultAdminGetProductsVariantsFields
 
  `Const` **defaultAdminGetProductsVariantsFields**: `string`[]
-
-___
 
 ### defaultAdminProductRemoteQueryObject
 
@@ -937,333 +855,225 @@ ___
 
 This is temporary.
 
-#### Type declaration
+#### Properties
 
 <ParameterTypes parameters={[{"name":"fields","type":"keyof [Product](../entities/classes/entities.Product.mdx)[]","description":"","optional":false,"defaultValue":"defaultAdminProductFields","expandable":false,"children":[]},{"name":"images","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"tags","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"type","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"collection","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"categories","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"options","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"values","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"variants","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"profile","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sales_channels","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### defaultAdminRegionFields
 
  `Const` **defaultAdminRegionFields**: keyof [Region](../entities/classes/entities.Region.mdx)[]
 
-___
-
 ### defaultAdminRegionRelations
 
  `Const` **defaultAdminRegionRelations**: `string`[]
-
-___
 
 ### defaultAdminReservationRelations
 
  `Const` **defaultAdminReservationRelations**: `never`[] = `[]`
 
-___
-
 ### defaultReservationFields
 
  `Const` **defaultReservationFields**: `string`[]
-
-___
 
 ### defaultAdminReturnReasonsFields
 
  `Const` **defaultAdminReturnReasonsFields**: keyof [ReturnReason](../entities/classes/entities.ReturnReason.mdx)[]
 
-___
-
 ### defaultAdminReturnReasonsRelations
 
  `Const` **defaultAdminReturnReasonsRelations**: keyof [ReturnReason](../entities/classes/entities.ReturnReason.mdx)[]
-
-___
 
 ### defaultRelations
 
  `Const` **defaultRelations**: `string`[]
 
-___
-
 ### defaultRelationsList
 
  `Const` **defaultRelationsList**: `string`[]
-
-___
 
 ### defaultReturnCancelRelations
 
  `Const` **defaultReturnCancelRelations**: `string`[]
 
-___
-
 ### defaultReturnCancelFields
 
  `Const` **defaultReturnCancelFields**: keyof [Order](../entities/classes/entities.Order.mdx)[]
-
-___
 
 ### defaultFields
 
  `Const` **defaultFields**: keyof [ShippingOption](../entities/classes/entities.ShippingOption.mdx)[]
 
-___
-
 ### defaultAdminShippingProfilesFields
 
  `Const` **defaultAdminShippingProfilesFields**: keyof [ShippingProfile](../entities/classes/entities.ShippingProfile.mdx)[]
-
-___
 
 ### defaultAdminShippingProfilesRelations
 
  `Const` **defaultAdminShippingProfilesRelations**: `string`[]
 
-___
-
 ### defaultAdminStockLocationFields
 
  `Const` **defaultAdminStockLocationFields**: keyof [StockLocationDTO](../medusa/types/medusa.StockLocationDTO.mdx)[]
-
-___
 
 ### defaultAdminStockLocationRelations
 
  `Const` **defaultAdminStockLocationRelations**: `never`[] = `[]`
 
-___
-
 ### defaultRelationsExtended
 
  `Const` **defaultRelationsExtended**: `string`[]
-
-___
 
 ### defaultAdminSwapRelations
 
  `Const` **defaultAdminSwapRelations**: `string`[]
 
-___
-
 ### defaultAdminSwapFields
 
  `Const` **defaultAdminSwapFields**: `string`[]
-
-___
 
 ### defaultAdminTaxRatesRelations
 
  `Const` **defaultAdminTaxRatesRelations**: `never`[] = `[]`
 
-___
-
 ### defaultAdminTaxRatesFields
 
  `Const` **defaultAdminTaxRatesFields**: keyof [TaxRate](../entities/classes/entities.TaxRate.mdx)[]
-
-___
 
 ### defaultAdminVariantRelations
 
  `Const` **defaultAdminVariantRelations**: `string`[]
 
-___
-
 ### defaultAdminVariantFields
 
  `Const` **defaultAdminVariantFields**: keyof [ProductVariant](../entities/classes/entities.ProductVariant.mdx)[]
-
-___
 
 ### defaultStoreCartFields
 
  `Const` **defaultStoreCartFields**: keyof [Cart](../entities/classes/entities.Cart.mdx)[] = `[]`
 
-___
-
 ### defaultStoreCartRelations
 
  `Const` **defaultStoreCartRelations**: `string`[]
-
-___
 
 ### defaultStoreCollectionRelations
 
  `Const` **defaultStoreCollectionRelations**: `never`[] = `[]`
 
-___
-
 ### allowedFields
 
  `Const` **allowedFields**: `string`[]
-
-___
 
 ### defaultStoreCustomersRelations
 
  `Const` **defaultStoreCustomersRelations**: `string`[]
 
-___
-
 ### defaultStoreCustomersFields
 
  `Const` **defaultStoreCustomersFields**: keyof [Customer](../entities/classes/entities.Customer.mdx)[]
-
-___
 
 ### allowedStoreCustomersRelations
 
  `Const` **allowedStoreCustomersRelations**: `string`[]
 
-___
-
 ### allowedStoreCustomersFields
 
  `Const` **allowedStoreCustomersFields**: `string`[]
-
-___
 
 ### defaultStoreGiftCardRelations
 
  `Const` **defaultStoreGiftCardRelations**: `string`[]
 
-___
-
 ### defaultStoreGiftCardFields
 
  `Const` **defaultStoreGiftCardFields**: keyof [GiftCard](../entities/classes/entities.GiftCard.mdx)[]
-
-___
 
 ### allowedStoreGiftCardRelations
 
  `Const` **allowedStoreGiftCardRelations**: `string`[]
 
-___
-
 ### allowedStoreGiftCardFields
 
  `Const` **allowedStoreGiftCardFields**: `string`[]
-
-___
 
 ### defaultStoreOrdersRelations
 
  `Const` **defaultStoreOrdersRelations**: `string`[]
 
-___
-
 ### allowedStoreOrdersRelations
 
  `Const` **allowedStoreOrdersRelations**: `string`[]
-
-___
 
 ### defaultStoreOrdersFields
 
  `Const` **defaultStoreOrdersFields**: keyof [Order](../entities/classes/entities.Order.mdx)[]
 
-___
-
 ### allowedStoreOrdersFields
 
  `Const` **allowedStoreOrdersFields**: `string`[]
-
-___
 
 ### defaultPaymentCollectionRelations
 
  `Const` **defaultPaymentCollectionRelations**: `string`[]
 
-___
-
 ### defaultStoreProductCategoryRelations
 
  `Const` **defaultStoreProductCategoryRelations**: `string`[]
-
-___
 
 ### defaultStoreCategoryScope
 
  `Const` **defaultStoreCategoryScope**: `Object`
 
-#### Type declaration
+#### Properties
 
 <ParameterTypes parameters={[{"name":"is_internal","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]}]} />
-
-___
 
 ### defaultStoreProductCategoryFields
 
  `Const` **defaultStoreProductCategoryFields**: `string`[]
 
-___
-
 ### allowedStoreProductCategoryFields
 
  `Const` **allowedStoreProductCategoryFields**: `string`[]
-
-___
 
 ### defaultStoreProductTagFields
 
  `Const` **defaultStoreProductTagFields**: `string`[]
 
-___
-
 ### allowedStoreProductTagFields
 
  `Const` **allowedStoreProductTagFields**: `string`[]
-
-___
 
 ### defaultStoreProductTagRelations
 
  `Const` **defaultStoreProductTagRelations**: `never`[] = `[]`
 
-___
-
 ### allowedStoreProductTypeFields
 
  `Const` **allowedStoreProductTypeFields**: `string`[]
-
-___
 
 ### defaultStoreProductTypeFields
 
  `Const` **defaultStoreProductTypeFields**: `string`[]
 
-___
-
 ### defaultStoreProductTypeRelations
 
  `Const` **defaultStoreProductTypeRelations**: `never`[] = `[]`
-
-___
 
 ### defaultStoreProductsRelations
 
  `Const` **defaultStoreProductsRelations**: `string`[]
 
-___
-
 ### defaultStoreProductsFields
 
  `Const` **defaultStoreProductsFields**: keyof [Product](../entities/classes/entities.Product.mdx)[]
-
-___
 
 ### allowedStoreProductsFields
 
  `Const` **allowedStoreProductsFields**: `string`[]
 
-___
-
 ### allowedStoreProductsRelations
 
  `Const` **allowedStoreProductsRelations**: `string`[]
-
-___
 
 ### defaultStoreProductRemoteQueryObject
 
@@ -1271,75 +1081,53 @@ ___
 
 This is temporary.
 
-#### Type declaration
+#### Properties
 
 <ParameterTypes parameters={[{"name":"fields","type":"keyof [Product](../entities/classes/entities.Product.mdx)[]","description":"","optional":false,"defaultValue":"defaultStoreProductsFields","expandable":false,"children":[]},{"name":"images","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"tags","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"type","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"collection","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"options","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"values","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"variants","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"profile","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sales_channels","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### defaultStoreRegionRelations
 
  `Const` **defaultStoreRegionRelations**: `string`[]
 
-___
-
 ### defaultStoreRegionFields
 
  `Const` **defaultStoreRegionFields**: `string`[]
-
-___
 
 ### defaultStoreReturnReasonFields
 
  `Const` **defaultStoreReturnReasonFields**: keyof [ReturnReason](../entities/classes/entities.ReturnReason.mdx)[]
 
-___
-
 ### defaultStoreReturnReasonRelations
 
  `Const` **defaultStoreReturnReasonRelations**: keyof [ReturnReason](../entities/classes/entities.ReturnReason.mdx)[]
-
-___
 
 ### defaultStoreSwapRelations
 
  `Const` **defaultStoreSwapRelations**: `string`[]
 
-___
-
 ### defaultStoreSwapFields
 
  `Const` **defaultStoreSwapFields**: [FindConfig](../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Swap](../entities/classes/entities.Swap.mdx)&#62;[`"select"`]
-
-___
 
 ### defaultStoreVariantRelations
 
  `Const` **defaultStoreVariantRelations**: `string`[]
 
-___
-
 ### allowedStoreVariantRelations
 
  `Const` **allowedStoreVariantRelations**: `string`[]
-
-___
 
 ### PriceType
 
  **PriceType**: `Object`
 
-#### Type declaration
+#### Properties
 
 <ParameterTypes parameters={[{"name":"DEFAULT","type":"[DEFAULT](medusa.mdx#default)","description":"","optional":false,"defaultValue":"\"default\"","expandable":false,"children":[]},{"name":"SALE","type":"[SALE](../medusa/enums/medusa.PriceListType.mdx#sale)","description":"","optional":false,"defaultValue":"\"sale\"","expandable":false,"children":[]},{"name":"OVERRIDE","type":"[OVERRIDE](../medusa/enums/medusa.PriceListType.mdx#override)","description":"","optional":false,"defaultValue":"\"override\"","expandable":false,"children":[]}]} />
-
-___
 
 ### joinerConfig
 
  `Const` **joinerConfig**: [ModuleJoinerConfig](../medusa/types/medusa.ModuleJoinerConfig.mdx)[]
-
-___
 
 ### HTTP\_METHODS
 
@@ -1357,15 +1145,11 @@ ___
 
 <ParameterTypes parameters={[{"name":"RequestHandler","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"Record","type":"`Record<string, any>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} />
 
-___
-
 ### authenticate
 
 #### Returns
 
 <ParameterTypes parameters={[{"name":"RequestHandler","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"Record","type":"`Record<string, any>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} />
-
-___
 
 ### wrapHandler
 
@@ -1381,8 +1165,6 @@ ___
 
 use `import { wrapHandler } from "@medusajs/utils"`
 
-___
-
 ### canAccessBatchJob
 
 #### Parameters
@@ -1392,8 +1174,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### getRequestedBatchJob
 
@@ -1405,8 +1185,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### doesConditionBelongToDiscount
 
 #### Parameters
@@ -1416,8 +1194,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### errorHandler
 
@@ -1432,8 +1208,6 @@ ___
 ##### Returns
 
 <ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### normalizeQuery
 
@@ -1452,15 +1226,11 @@ e.g: /admin/orders/?fields[]=id,status,cart\_id becomes &#123; fields: ["id", "s
 
 <ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### requireCustomerAuthentication
 
 #### Returns
 
 <ParameterTypes parameters={[{"name":"RequestHandler","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ParamsDictionary","type":"`ParamsDictionary`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"ParsedQs","type":"`ParsedQs`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"Record","type":"`Record<string, any>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} />
-
-___
 
 ### transformBody
 
@@ -1484,8 +1254,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### transformIncludesOptions
 
 Retrieve the includes options from the fields query param.
@@ -1506,8 +1274,6 @@ If the include option is present then assigned it to includes on req
 ##### Returns
 
 <ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### transformQuery
 
@@ -1533,8 +1299,6 @@ Middleware that transform the query input for the admin end points
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### transformStoreQuery
 
 Middleware that transform the query input for the store endpoints
@@ -1559,8 +1323,6 @@ Middleware that transform the query input for the store endpoints
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### reserveQuantityForDraftOrder
 
 #### Parameters
@@ -1570,8 +1332,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### unauthenticatedInviteRoutes
 
@@ -1583,8 +1343,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### adjustInventoryForCancelledFulfillment
 
 #### Parameters
@@ -1594,8 +1352,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### updateInventoryAndReservations
 
@@ -1607,8 +1363,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### unauthenticatedUserRoutes
 
 #### Parameters
@@ -1618,8 +1372,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### isPaymentProcessorError
 
@@ -1631,8 +1383,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"obj","type":"obj is PaymentProcessorError","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### extendedFindParamsMixin
 
 #### Parameters
@@ -1642,8 +1392,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ClassConstructor","type":"[ClassConstructor](../medusa/types/medusa.ClassConstructor.mdx)&#60;[FindParams](../medusa/classes/medusa.FindParams.mdx) & [FindPaginationParams](../medusa/classes/medusa.FindPaginationParams.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"FindParams","type":"`object`","description":"Parameters that can be used to configure how data is retrieved.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"FindPaginationParams","type":"`object`","description":"Parameters that can be used to configure how a list of data is paginated.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### buildQuery
 
@@ -1660,8 +1408,6 @@ Used to build TypeORM queries.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ExtendedFindConfig","type":"[ExtendedFindConfig](../medusa/types/medusa.ExtendedFindConfig.mdx)&#60;TEntity&#62;","optional":false,"defaultValue":"","description":"The QueryBuilderConfig","expandable":false,"children":[{"name":"TEntity","type":"TEntity","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### buildLegacyFieldsListFrom
 
@@ -1699,8 +1445,6 @@ output: ['test.test1', 'test.test2', 'test.test3.test4', 'test2']
 
 in favor of import &#123; objectToStringPath &#125; from "@medusajs/utils"
 
-___
-
 ### addOrderToSelect
 
 #### Type Parameters
@@ -1715,8 +1459,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### nullableValue
 
 #### Parameters
@@ -1726,8 +1468,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"FindOperator","type":"FindOperator&#60;any&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### calculatePriceTaxAmount
 
@@ -1743,8 +1483,6 @@ Return the tax amount that
 #### Returns
 
 <ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"Return the tax amount that\n\n- is includes in the price if it is tax inclusive\n- will be applied on to the price if it is tax exclusive","expandable":false,"children":[]}]} />
-
-___
 
 ### cleanResponseData
 
@@ -1763,8 +1501,6 @@ You can read more in the transformQuery middleware utility methods.
 
 <ParameterTypes parameters={[{"name":"T extends [] ? Partial&#60;T&#62;[] : Partial&#60;T&#62;","type":"T extends [] ? Partial&#60;T&#62;[] : Partial&#60;T&#62;","optional":false,"defaultValue":"","description":"Filter response data to contain props specified in the `allowedProperties`.\nYou can read more in the transformQuery middleware utility methods.","expandable":false,"children":[]}]} />
 
-___
-
 ### csvCellContentFormatter
 
 #### Parameters
@@ -1774,8 +1510,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### csvRevertCellContentFormatter
 
@@ -1787,8 +1521,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### resolveDbType
 
 #### Parameters
@@ -1798,8 +1530,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ColumnType","type":"`ColumnType`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### resolveDbGenerationStrategy
 
@@ -1811,8 +1541,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"\"increment\" \\| \"uuid\" \\| \"rowid\"","type":"`\"increment\"` \\| `\"uuid\"` \\| `\"rowid\"`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### DbAwareColumn
 
 #### Parameters
@@ -1823,8 +1551,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"PropertyDecorator","type":"`PropertyDecorator`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### formatException
 
 #### Parameters
@@ -1834,8 +1560,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"type","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"message","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"date","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Types","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"DB_ERROR","type":"`string`","description":"Errors stemming from the database","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"DUPLICATE_ERROR","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"INVALID_ARGUMENT","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"INVALID_DATA","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"UNAUTHORIZED","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"NOT_FOUND","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"NOT_ALLOWED","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"UNEXPECTED_STATE","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"CONFLICT","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"PAYMENT_AUTHORIZATION_ERROR","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"Codes","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"INSUFFICIENT_INVENTORY","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"CART_INCOMPATIBLE_STATE","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"constructor","type":"(`type`: `string`, `message`: `string`, `code?`: `string`, ...`params`: `any`) => [MedusaError](../medusa/classes/medusa.MedusaError.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
-
-___
 
 ### generateEntityId
 
@@ -1848,8 +1572,6 @@ Generate a composed id based on the input parameters and return either the is if
 #### Returns
 
 <ParameterTypes parameters={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"Generate a composed id based on the input parameters and return either the is if it exists or the generated one.","expandable":false,"children":[]}]} />
-
-___
 
 ### hasChanges
 
@@ -1867,8 +1589,6 @@ Compare two objects and return true if there is changes detected from obj2 compa
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"Compare two objects and return true if there is changes detected from obj2 compared to obj1","expandable":false,"children":[]}]} />
 
-___
-
 ### isDate
 
 #### Parameters
@@ -1878,8 +1598,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"value","type":"value is Date","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### isObject
 
@@ -1891,8 +1609,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"obj","type":"obj is object","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### isString
 
 #### Parameters
@@ -1902,8 +1618,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"val","type":"val is string","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### omitDeep
 
@@ -1919,8 +1633,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"T","type":"T","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### categoryMatchesScope
 
 #### Parameters
@@ -1930,8 +1642,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### fetchCategoryDescendantsIds
 
@@ -1943,8 +1653,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"string[]","type":"`string`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### getVariantsFromPriceList
 
 #### Parameters
@@ -1954,8 +1662,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductVariantDTO](../medusa/interfaces/medusa.ProductVariantDTO.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ProductVariantDTO[]","type":"[ProductVariantDTO](../medusa/interfaces/medusa.ProductVariantDTO.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ProductVariantDTO","type":"`object`","description":"A product variant's data.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} />
-
-___
 
 ### listProducts
 
@@ -1967,8 +1673,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"any[]","type":"`any`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]} />
 
-___
-
 ### retrieveProduct
 
 #### Parameters
@@ -1978,8 +1682,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### remoteQueryFetchData
 
@@ -1999,8 +1701,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### removeUndefinedProperties
 
 #### Type Parameters
@@ -2015,8 +1715,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"T","type":"T","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### setMetadata
 
 Dedicated method to set metadata.
@@ -2029,8 +1727,6 @@ Dedicated method to set metadata.
 
 <ParameterTypes parameters={[{"name":"Record","type":"`Record<string, unknown>`","optional":false,"defaultValue":"","description":"resolves to the updated result.","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### validateId
 
 #### Parameters
@@ -2040,8 +1736,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### registerOverriddenValidators
 
@@ -2072,8 +1766,6 @@ registerOverriddenValidators(AdminPostProductsReq)
 
 <ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"When overriding a validator, you can register it to be used instead of the original one.\nFor example, the place where you are overriding the core validator, you can call this function","expandable":false,"children":[]}]} />
 
-___
-
 ### validator
 
 #### Type Parameters
@@ -2087,8 +1779,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;T&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"T","type":"T","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### IsType
 

@@ -28,15 +28,11 @@ ___
 
 <ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### inventoryService\_
 
 #### Returns
 
 <ParameterTypes parameters={[{"name":"IInventoryService","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-___
 
 ### stockLocationService\_
 
@@ -60,8 +56,6 @@ Adjusts inventory of a variant on a location
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Adjusts inventory of a variant on a location","expandable":false,"children":[]}]} />
 
-___
-
 ### adjustReservationsQuantityByLineItem
 
 Adjusts the quantity of reservations for a line item by a given amount.
@@ -73,8 +67,6 @@ Adjusts the quantity of reservations for a line item by a given amount.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Adjusts the quantity of reservations for a line item by a given amount.","expandable":false,"children":[]}]} />
-
-___
 
 ### atomicPhase\_
 
@@ -93,8 +85,6 @@ transaction manager is created.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
-
-___
 
 ### attachInventoryItem
 
@@ -120,8 +110,6 @@ Attach a variant to an inventory item
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductVariantInventoryItem](../../entities/classes/entities.ProductVariantInventoryItem.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### confirmInventory
 
 confirms if requested inventory is available
@@ -133,8 +121,6 @@ confirms if requested inventory is available
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Boolean&#62;","optional":false,"defaultValue":"","description":"boolean indicating if inventory is available","expandable":false,"children":[]}]} />
-
-___
 
 ### deleteReservationsByLineItem
 
@@ -148,8 +134,6 @@ delete a reservation of variant quantity
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"delete a reservation of variant quantity","expandable":false,"children":[]}]} />
 
-___
-
 ### detachInventoryItem
 
 Remove a variant from an inventory item
@@ -162,8 +146,6 @@ Remove a variant from an inventory item
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Remove a variant from an inventory item","expandable":false,"children":[]}]} />
 
-___
-
 ### getAvailabilityContext
 
 #### Parameters
@@ -173,8 +155,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Required&#60;AvailabilityContext&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### getVariantQuantityFromVariantInventoryItems
 
@@ -191,8 +171,6 @@ the given variant.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"The available quantity of the variant from the inventoryItems","expandable":false,"children":[]}]} />
 
-___
-
 ### listByItem
 
 list registered inventory items
@@ -204,8 +182,6 @@ list registered inventory items
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductVariantInventoryItem](../../entities/classes/entities.ProductVariantInventoryItem.mdx)[]&#62;","optional":false,"defaultValue":"","description":"list of inventory items","expandable":false,"children":[]}]} />
-
-___
 
 ### listByVariant
 
@@ -219,8 +195,6 @@ List inventory items for a specific variant
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductVariantInventoryItem](../../entities/classes/entities.ProductVariantInventoryItem.mdx)[]&#62;","optional":false,"defaultValue":"","description":"variant inventory items for the variant id","expandable":false,"children":[]}]} />
 
-___
-
 ### listInventoryItemsByVariant
 
 lists inventory items for a given variant
@@ -232,8 +206,6 @@ lists inventory items for a given variant
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[InventoryItemDTO](../../medusa/types/medusa.InventoryItemDTO.mdx)[]&#62;","optional":false,"defaultValue":"","description":"lidt of inventory items for the variant","expandable":false,"children":[]}]} />
-
-___
 
 ### listVariantsByItem
 
@@ -247,8 +219,6 @@ lists variant by inventory item id
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]&#62;","optional":false,"defaultValue":"","description":"a list of product variants that are associated with the item id","expandable":false,"children":[]}]} />
 
-___
-
 ### reserveQuantity
 
 Reserves a quantity of a variant
@@ -260,8 +230,6 @@ Reserves a quantity of a variant
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [ReservationItemDTO](../../medusa/types/medusa.ReservationItemDTO.mdx)[]&#62;","optional":false,"defaultValue":"","description":"Reserves a quantity of a variant","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieve
 
@@ -275,8 +243,6 @@ Retrieves a product variant inventory item by its inventory item ID and variant 
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductVariantInventoryItem](../../entities/classes/entities.ProductVariantInventoryItem.mdx)&#62;","optional":false,"defaultValue":"","description":"A promise that resolves with the product variant inventory item.","expandable":false,"children":[]}]} />
 
-___
-
 ### setProductAvailability
 
 #### Parameters
@@ -286,8 +252,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;([Product](../../entities/classes/entities.Product.mdx) \\| [PricedProduct](../../medusa/types/medusa.PricedProduct.mdx))[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### setVariantAvailability
 
@@ -299,8 +263,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[] \\| [PricedVariant](../../medusa/types/medusa.PricedVariant.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -310,8 +272,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### validateInventoryAtLocation
 
@@ -324,8 +284,6 @@ Validate stock at a location for fulfillment items
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"nothing if successful, throws error if not","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

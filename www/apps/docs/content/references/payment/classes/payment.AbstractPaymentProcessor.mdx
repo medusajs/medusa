@@ -212,8 +212,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| object&#62;","optional":false,"defaultValue":"","description":"The authorization details or an error object.","expandable":false,"children":[{"name":"PaymentProcessorError \\| object","type":"[PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| `object`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### cancelPayment
 
 This method is used to cancel an order’s payment. This method is typically triggered by one of the following situations:
@@ -260,8 +258,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or a value that's stored in the `data` field of the Payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### capturePayment
 
 This method is used to capture the payment amount of an order. This is typically triggered manually by the store operator from the admin.
@@ -306,8 +302,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or a value that's stored in the `data` field of the Payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### deletePayment
 
 This method is used to perform any actions necessary before a Payment Session is deleted. The Payment Session is deleted in one of the following cases:
@@ -349,8 +343,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or an empty object.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### getPaymentStatus
 
 This method is used to get the status of a Payment or a Payment Session. Its main usage is within the place order and create swap flows.
@@ -386,8 +378,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentSessionStatus](../../entities/enums/entities.PaymentSessionStatus.mdx)&#62;","optional":false,"defaultValue":"","description":"The status of the Payment or Payment Session.","expandable":false,"children":[{"name":"PaymentSessionStatus","type":"`object`","description":"The status of a payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### initiatePayment
 
@@ -432,8 +422,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../interfaces/payment.PaymentProcessorSessionResponse.mdx)&#62;","optional":false,"defaultValue":"","description":"Either the payment's data or an error object.","expandable":false,"children":[{"name":"PaymentProcessorError \\| PaymentProcessorSessionResponse","type":"[PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../interfaces/payment.PaymentProcessorSessionResponse.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### refundPayment
 
@@ -480,8 +468,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or a value that's stored in the `data` field of the Payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### retrievePayment
 
 This method is used to provide a uniform way of retrieving the payment information from the third-party provider.
@@ -517,8 +503,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"The payment's data, typically retrieved from a third-party provider.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### updatePayment
 
@@ -566,8 +550,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../interfaces/payment.PaymentProcessorSessionResponse.mdx)&#62;","optional":false,"defaultValue":"","description":"Either the payment's data or an error object.","expandable":false,"children":[{"name":"void \\| PaymentProcessorError \\| PaymentProcessorSessionResponse","type":"`void` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../interfaces/payment.PaymentProcessorSessionResponse.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### updatePaymentData
 
@@ -621,8 +603,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"the data to store in the `data` field of the payment session.\nYou can keep the data as-is, or make changes to it by communicating with the third-party provider.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### isPaymentProcessor
 

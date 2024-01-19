@@ -29,7 +29,7 @@ Add the following environment variable to your application:
 POSTGRES_URL=<DATABASE_URL>
 ```
 
-Where `<DATABASE_URL>` is your database connection URL of the format `postgres://[user][:password]@[host][:port]/[dbname]`. You can learn more about the connection URL format in [this guide](../../development/backend/configurations.md#database_url).
+Where `<DATABASE_URL>` is your database connection URL of the format `postgres://[user][:password]@[host][:port]/[dbname]`. You can learn more about the connection URL format in [this guide](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx#database_url).
 
 You can also set the following optional environment variables:
 

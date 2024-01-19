@@ -52,8 +52,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### clearLineItemsTaxLines
 
 #### Parameters
@@ -64,8 +62,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### clearTaxLines
 
 #### Parameters
@@ -75,8 +71,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### createShippingTaxLines
 
@@ -91,8 +85,6 @@ for return shipping methods.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;","optional":false,"defaultValue":"","description":"the newly created tax lines","expandable":false,"children":[]}]} />
 
-___
-
 ### createTaxLines
 
 Persists the tax lines relevant for an order to the database.
@@ -105,8 +97,6 @@ Persists the tax lines relevant for an order to the database.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;","optional":false,"defaultValue":"","description":"the newly created tax lines","expandable":false,"children":[]}]} />
 
-___
-
 ### getCacheKey
 
 The cache key to get cache hits by.
@@ -118,8 +108,6 @@ The cache key to get cache hits by.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"the cache key to use for the id set","expandable":false,"children":[]}]} />
-
-___
 
 ### getRegionRatesForProduct
 
@@ -134,8 +122,6 @@ calls.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Map&#60;string, [TaxServiceRate](../../medusa/types/medusa.TaxServiceRate.mdx)[]&#62;&#62;","optional":false,"defaultValue":"","description":"the tax rates configured for the shipping option. A map by product id","expandable":false,"children":[]}]} />
 
-___
-
 ### getRegionRatesForShipping
 
 Gets the tax rates configured for a shipping option. The rates are cached
@@ -148,8 +134,6 @@ between calls.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[TaxServiceRate](../../medusa/types/medusa.TaxServiceRate.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the tax rates configured for the shipping option.","expandable":false,"children":[]}]} />
-
-___
 
 ### getShippingTaxLines
 
@@ -164,8 +148,6 @@ persist the tax lines to the DB layer.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the computed tax lines","expandable":false,"children":[]}]} />
-
-___
 
 ### getTaxLines
 
@@ -183,8 +165,6 @@ wish to persist the tax lines to the DB layer.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;","optional":false,"defaultValue":"","description":"the computed tax lines","expandable":false,"children":[]}]} />
 
-___
-
 ### getTaxLinesMap
 
 Return a map of tax lines for line items and shipping methods
@@ -197,15 +177,11 @@ Return a map of tax lines for line items and shipping methods
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TaxLinesMaps&#62;","optional":false,"defaultValue":"","description":"Return a map of tax lines for line items and shipping methods","expandable":false,"children":[]}]} />
 
-___
-
 ### list
 
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[TaxProvider](../../entities/classes/entities.TaxProvider.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### registerInstalledProviders
 
@@ -216,8 +192,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveProvider
 
@@ -231,8 +205,6 @@ Retrieves the relevant tax provider for the given region.
 
 <ParameterTypes parameters={[{"name":"ITaxService","type":"`object`","description":"## Overview\n\nA tax provider is used to retrieve the tax lines in a cart. The Medusa backend provides a default `system` provider. You can create your own tax provider,\neither in a plugin or directly in your Medusa backend, then use it in any region.\n\nA tax provider class is defined in a TypeScript or JavaScript file under the `src/services` directory and the class must extend the\n`AbstractTaxService` class imported from `@medusajs/medusa`. The file's name is the tax provider's class name as a slug and without the word `Service`.\n\nFor example, you can create the file `src/services/my-tax.ts` with the following content:\n\n```ts title=\"src/services/my-tax.ts\"\nimport {\n  AbstractTaxService,\n  ItemTaxCalculationLine,\n  ShippingTaxCalculationLine,\n  TaxCalculationContext,\n} from \"@medusajs/medusa\"\nimport {\n  ProviderTaxLine,\n} from \"@medusajs/medusa/dist/types/tax-service\"\n\nclass MyTaxService extends AbstractTaxService {\n  async getTaxLines(\n    itemLines: ItemTaxCalculationLine[],\n    shippingLines: ShippingTaxCalculationLine[],\n    context: TaxCalculationContext):\n    Promise<ProviderTaxLine[]> {\n    throw new Error(\"Method not implemented.\")\n  }\n}\n\nexport default MyTaxService\n```\n\n---\n\n## Identifier Property\n\nThe `TaxProvider` entity has 2 properties: `identifier` and `is_installed`. The `identifier` property in the tax provider service is used when the tax provider is added to the database.\n\nThe value of this property is also used to reference the tax provider throughout Medusa. For example, it is used to [change the tax provider](https://docs.medusajs.com/modules/taxes/admin/manage-tax-settings#change-tax-provider-of-a-region) to a region.\n\n```ts title=\"src/services/my-tax.ts\"\nclass MyTaxService extends AbstractTaxService {\n  static identifier = \"my-tax\"\n  // ...\n}\n```\n\n---","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -242,8 +214,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

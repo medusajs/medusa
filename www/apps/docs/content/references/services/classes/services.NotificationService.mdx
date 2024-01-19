@@ -50,8 +50,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### handleEvent
 
 Handles an event by relaying the event data to the subscribing providers.
@@ -66,8 +64,6 @@ order to allow for resends. Will log any errors that are encountered.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;undefined \\| void \\| [Notification](../../entities/classes/entities.Notification.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of notification subscribed","expandable":false,"children":[]}]} />
 
-___
-
 ### list
 
 Retrieves a list of notifications.
@@ -80,8 +76,6 @@ Retrieves a list of notifications.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Notification](../../entities/classes/entities.Notification.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the notifications that satisfy the query.","expandable":false,"children":[]}]} />
 
-___
-
 ### listAndCount
 
 Retrieves a list of notifications and total count.
@@ -93,8 +87,6 @@ Retrieves a list of notifications and total count.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[Notification](../../entities/classes/entities.Notification.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the notifications that satisfy the query as well as the count.","expandable":false,"children":[]}]} />
-
-___
 
 ### registerAttachmentGenerator
 
@@ -109,8 +101,6 @@ used to generate on demand invoices or other documents.
 
 <ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Registers an attachment generator to the service. The generator can be\nused to generate on demand invoices or other documents.","expandable":false,"children":[]}]} />
 
-___
-
 ### registerInstalledProviders
 
 Takes a list of notification provider ids and persists them in the database.
@@ -122,8 +112,6 @@ Takes a list of notification provider ids and persists them in the database.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Takes a list of notification provider ids and persists them in the database.","expandable":false,"children":[]}]} />
-
-___
 
 ### resend
 
@@ -138,8 +126,6 @@ underlying provider's resendNotification method.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;","optional":false,"defaultValue":"","description":"the newly created notification","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieve
 
 Retrieves a notification with a given id
@@ -151,8 +137,6 @@ Retrieves a notification with a given id
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;","optional":false,"defaultValue":"","description":"the notification","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveProvider\_
 
@@ -167,8 +151,6 @@ resolution fails.
 
 <ParameterTypes parameters={[{"name":"AbstractNotificationService","type":"`object`","description":"## Overview\n\n:::note[Prerequisites]\n\nBefore creating a Notification Provider, [install an event bus module](https://docs.medusajs.com/development/events/modules/redis).\n\n:::\n\nA Notification Provider is a provider that handles sending and resending of notifications.\n\nTo create a Notification Provider, create a TypeScript or JavaScript file in `src/services`. The name of the file is the name of the provider\n(for example, `sendgrid.ts`). The file must export a class that extends the `AbstractNotificationService` class imported from `@medusajs/medusa`.\n\nFor example, create the file `src/services/email-sender.ts` with the following content:\n\n```ts title=\"src/services/email-sender.ts\"\nimport { AbstractNotificationService } from \"@medusajs/medusa\"\nimport { EntityManager } from \"typeorm\"\n\nclass EmailSenderService extends AbstractNotificationService {\n  protected manager_: EntityManager\n  protected transactionManager_: EntityManager\n\n  sendNotification(\n    event: string,\n    data: unknown,\n    attachmentGenerator: unknown\n  ): Promise<{\n      to: string;\n      status: string;\n      data: Record<string, unknown>;\n    }> {\n    throw new Error(\"Method not implemented.\")\n  }\n  resendNotification(\n    notification: unknown,\n    config: unknown,\n    attachmentGenerator: unknown\n  ): Promise<{\n      to: string;\n      status: string;\n      data: Record<string, unknown>;\n    }> {\n    throw new Error(\"Method not implemented.\")\n  }\n\n}\n\nexport default EmailSenderService\n```\n\n---\n\n## Identifier Property\n\nThe `NotificationProvider` entity has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the notification provider\nclass is used when the Notification Provider is created in the database.\n\nThe value of this property is also used later when you want to subscribe the Notification Provider to events in a [Loader](https://docs.medusajs.com/development/loaders/overview).\n\nFor example:\n\n```ts\nclass EmailSenderService extends AbstractNotificationService {\n  static identifier = \"email-sender\"\n  // ...\n}\n```\n\n---","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
-___
-
 ### send
 
 Sends a notification, by calling the given provider's sendNotification
@@ -182,8 +164,6 @@ method. Persists the Notification in the database.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;undefined \\| [Notification](../../entities/classes/entities.Notification.mdx)&#62;","optional":false,"defaultValue":"","description":"the created notification","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -193,8 +173,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### subscribe
 
@@ -207,8 +185,6 @@ Subscribes a given provider to an event.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Subscribes a given provider to an event.","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

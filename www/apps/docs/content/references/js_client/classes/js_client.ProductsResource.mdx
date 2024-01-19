@@ -83,8 +83,6 @@ medusa.products.list({
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreProductsListRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the list of products with pagination fields.","expandable":false,"children":[{"name":"StoreProductsListRes","type":"[StoreProductsListRes](../../medusa/types/medusa.StoreProductsListRes.mdx)","optional":false,"defaultValue":"","description":"The list of products with pagination fields.","expandable":false,"children":[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"products","type":"[PricedProduct](../../medusa/types/medusa.PricedProduct.mdx)[]","description":"An array of products details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"variants","type":"[PricedVariant](../../medusa/types/medusa.PricedVariant.mdx)[]","description":"The product variants and their prices.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
 
-___
-
 ### retrieve
 
 Retrieve a Product's details. For accurate and correct pricing of the product based on the customer's context, it's highly recommended to pass fields such as
@@ -111,8 +109,6 @@ medusa.products.retrieve(productId)
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreProductsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the product's details.","expandable":false,"children":[{"name":"StoreProductsRes","type":"[StoreProductsRes](../../medusa/types/medusa.StoreProductsRes.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"product","type":"[PricedProduct](../../medusa/types/medusa.PricedProduct.mdx)","description":"Product details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"variants","type":"[PricedVariant](../../medusa/types/medusa.PricedVariant.mdx)[]","description":"The product variants and their prices.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### search
 

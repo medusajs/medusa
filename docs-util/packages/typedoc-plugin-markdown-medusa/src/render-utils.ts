@@ -16,7 +16,7 @@ import ifShowReturnsHelper from "./resources/helpers/if-show-returns"
 import ifShowTypeHierarchyHelper from "./resources/helpers/if-show-type-hierarchy"
 import indexSignatureTitleHelper from "./resources/helpers/index-signature-title"
 import parameterTableHelper from "./resources/helpers/parameter-table"
-import objectLiteralMemberHelper from "./resources/helpers/type-declaration-object-literal"
+import objectLiteralMemberHelper from "./resources/helpers/type-declaration-members"
 import referenceMember from "./resources/helpers/reference-member"
 import reflectionPathHelper from "./resources/helpers/reflection-path"
 import reflectionTitleHelper from "./resources/helpers/reflection-title"
@@ -59,6 +59,10 @@ import reactQueryMutationReturnHelper from "./resources/helpers/react-query-muta
 import ifHasQueryReturnHelper from "./resources/helpers/if-has-query-return"
 import reactQueryQueryReturnHelper from "./resources/helpers/react-query-query-return"
 import endSectionsHelper from "./resources/helpers/end-sections"
+import getDeclarationChildrenHelper from "./resources/helpers/get-declaration-children"
+import ifShowSeparatorForTitleLevelHelper from "./resources/helpers/if-show-separator-for-title-level"
+import shouldExpandPropertiesHelper from "./resources/helpers/should-expand-properties"
+import shouldExpandDeclarationChildrenHelper from "./resources/helpers/should-expand-declaration-children"
 import { MarkdownTheme } from "./theme"
 
 const TEMPLATE_PATH = path.join(__dirname, "resources", "templates")
@@ -146,4 +150,8 @@ export function registerHelpers(theme: MarkdownTheme) {
   ifHasQueryReturnHelper(theme)
   reactQueryQueryReturnHelper(theme)
   endSectionsHelper(theme)
+  getDeclarationChildrenHelper(theme)
+  ifShowSeparatorForTitleLevelHelper(theme)
+  shouldExpandPropertiesHelper(theme)
+  shouldExpandDeclarationChildrenHelper(theme)
 }

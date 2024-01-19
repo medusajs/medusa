@@ -151,8 +151,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentProcessorError](medusa.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](medusa.PaymentProcessorSessionResponse.mdx)&#62;","optional":false,"defaultValue":"","description":"Either the payment's data or an error object.","expandable":false,"children":[{"name":"PaymentProcessorError \\| PaymentProcessorSessionResponse","type":"[PaymentProcessorError](medusa.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](medusa.PaymentProcessorSessionResponse.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
-___
-
 ### updatePayment
 
 This method is used to update the payment session when the payment amount changes. It's called whenever the cart or any of its related data is updated.
@@ -200,8 +198,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [PaymentProcessorError](medusa.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](medusa.PaymentProcessorSessionResponse.mdx)&#62;","optional":false,"defaultValue":"","description":"Either the payment's data or an error object.","expandable":false,"children":[{"name":"void \\| PaymentProcessorError \\| PaymentProcessorSessionResponse","type":"`void` \\| [PaymentProcessorError](medusa.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](medusa.PaymentProcessorSessionResponse.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
-___
-
 ### refundPayment
 
 This method is used to refund an order’s payment. This is typically triggered manually by the store operator from the admin. The refund amount might be the total order amount or part of it.
@@ -246,8 +242,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](medusa.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or a value that's stored in the `data` field of the Payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](medusa.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
-
-___
 
 ### authorizePayment
 
@@ -318,8 +312,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentProcessorError](medusa.PaymentProcessorError.mdx) \\| object&#62;","optional":false,"defaultValue":"","description":"The authorization details or an error object.","expandable":false,"children":[{"name":"PaymentProcessorError \\| object","type":"[PaymentProcessorError](medusa.PaymentProcessorError.mdx) \\| `object`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
-___
-
 ### capturePayment
 
 This method is used to capture the payment amount of an order. This is typically triggered manually by the store operator from the admin.
@@ -364,8 +356,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](medusa.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or a value that's stored in the `data` field of the Payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](medusa.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
-___
-
 ### deletePayment
 
 This method is used to perform any actions necessary before a Payment Session is deleted. The Payment Session is deleted in one of the following cases:
@@ -407,8 +397,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](medusa.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or an empty object.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](medusa.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
-___
-
 ### retrievePayment
 
 This method is used to provide a uniform way of retrieving the payment information from the third-party provider.
@@ -444,8 +432,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](medusa.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"The payment's data, typically retrieved from a third-party provider.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](medusa.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
-
-___
 
 ### cancelPayment
 
@@ -493,8 +479,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](medusa.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or a value that's stored in the `data` field of the Payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](medusa.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
-___
-
 ### getPaymentStatus
 
 This method is used to get the status of a Payment or a Payment Session. Its main usage is within the place order and create swap flows.
@@ -530,8 +514,6 @@ class MyPaymentService extends AbstractPaymentProcessor {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentSessionStatus](../../entities/enums/entities.PaymentSessionStatus.mdx)&#62;","optional":false,"defaultValue":"","description":"The status of the Payment or Payment Session.","expandable":false,"children":[{"name":"PaymentSessionStatus","type":"`object`","description":"The status of a payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
-
-___
 
 ### updatePaymentData
 

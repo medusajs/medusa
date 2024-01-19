@@ -15,6 +15,7 @@ const baseSectionsOptions = {
   member_signature_title: false,
   member_signature_returns: false,
   title_reflectionPath: false,
+  member_declaration_children: false,
 }
 
 const modulesSectionsOptions = {
@@ -263,6 +264,36 @@ npx medusa develop
     },
     "^js_client/.*LineItemsResource": {
       maxLevel: 3,
+    },
+
+    // MEDUSA CONFIG CONFIG
+    "^medusa_config": {
+      frontmatterData: {
+        displayed_sidebar: "core",
+      },
+      expandMembers: true,
+    },
+    "^medusa_config/.*ConfigModule": {
+      frontmatterData: {
+        displayed_sidebar: "core",
+        slug: "/development/backend/configurations",
+      },
+      reflectionDescription: `In this document, you’ll learn how to create a file service in the Medusa backend and the methods you must implement in it.
+
+## Prerequisites
+
+This document assumes you already followed along with the [Prepare Environment documentation](https://docs.medusajs.com/development/backend/prepare-environment) and have a Medusa backend installed.
+      
+---`,
+      reflectionTitle: "Configure Medusa Backend",
+      expandMembers: true,
+      expandProperties: true,
+      // parameterStyle: "list",
+      sections: {
+        ...baseSectionsOptions,
+        member_declaration_title: false,
+        member_declaration_children: true,
+      },
     },
 
     // MEDUSA REACT CONFIG

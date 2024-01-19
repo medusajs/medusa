@@ -62,6 +62,7 @@ export type FormattingOptionType = {
   }
   reflectionDescription?: string
   expandMembers?: boolean
+  expandProperties?: boolean
   showCommentsAsHeader?: boolean
   showCommentsAsDetails?: boolean
   parameterStyle?: ParameterStyle
