@@ -16,7 +16,7 @@ export default class CartService<
     update: UpdateCartDTO
   }
 >(Cart)<TEntity> {
-  constructor({ cartRepository }: InjectedDependencies) {
+  constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
   }
