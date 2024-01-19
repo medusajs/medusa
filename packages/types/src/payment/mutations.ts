@@ -1,3 +1,5 @@
+import { PaymentCollectionStatus } from "@medusajs/utils"
+
 /**
  * Payment Collection
  */
@@ -15,6 +17,8 @@ export interface UpdatePaymentCollectionDTO
 
   authorized_amount?: number
   refunded_amount?: number
+  completed_at?: number
+  status?: PaymentCollectionStatus
 }
 
 /**
