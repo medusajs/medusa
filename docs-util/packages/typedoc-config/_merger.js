@@ -742,7 +742,7 @@ npx medusa develop
     },
 
     // TAX PROVIDER CONFIG
-    "^tax": {
+    "^tax/": {
       frontmatterData: {
         displayed_sidebar: "modules",
       },
