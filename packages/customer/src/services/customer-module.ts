@@ -102,7 +102,7 @@ export default class CustomerModuleService implements ICustomerModuleService {
     }
 
     return await this.baseRepository_.serialize<CustomerTypes.CustomerDTO>(
-      customer,
+      customer[0],
       {
         populate: true,
       }
