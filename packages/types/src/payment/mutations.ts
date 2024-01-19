@@ -1,3 +1,5 @@
+import { PaymentCollectionStatus } from "./common"
+
 /**
  * Payment Collection
  */
