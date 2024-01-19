@@ -29,6 +29,8 @@ export const updatePromotionsStep = createStep(
       ModuleRegistrationName.PROMOTION
     )
 
+    // TODO: This still requires some sanitation of data and transformation of
+    // shapes for manytomany and oneToMany relations. Create a common util.
     await promotionModule.update(dataBeforeUpdate)
   }
 )
