@@ -1,7 +1,8 @@
 import { CampaignBudgetType } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import {
-  IsDate,
+  IsArray,
+  IsDateString,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -26,7 +27,7 @@ export class AdminGetCampaignsParams extends extendedFindParamsMixin({
   currency?: string
 }
 
-export class AdminPostCampaignsCampaignReq {
+export class AdminPostCampaignsReq {
   @IsNotEmpty()
   @IsString()
   name: string
@@ -49,12 +50,24 @@ export class AdminPostCampaignsCampaignReq {
   budget: CampaignBudget
 
   @IsOptional()
-  @IsDate()
-  starts_at: Date
+  @IsDateString()
+  starts_at: string
 
   @IsOptional()
-  @IsDate()
-  ends_at: Date
+  @IsDateString()
+  ends_at: string
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => IdObject)
+  promotions: IdObject[]
+}
+
+export class IdObject {
+  @IsString()
+  @IsNotEmpty()
+  id: string
 }
 
 export class CampaignBudget {
@@ -69,4 +82,41 @@ export class CampaignBudget {
   @IsOptional()
   @IsNumber()
   used: number
+}
+
+export class AdminPostCampaignsCampaignReq {
+  @IsOptional()
+  @IsString()
+  name: string
+
+  @IsOptional()
+  @IsNotEmpty()
+  campaign_identifier: string
+
+  @IsOptional()
+  @IsString()
+  description: string
+
+  @IsOptional()
+  @IsString()
+  currency: string
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CampaignBudget)
+  budget: CampaignBudget
+
+  @IsOptional()
+  @IsDateString()
+  starts_at: string
+
+  @IsOptional()
+  @IsDateString()
+  ends_at: string
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => IdObject)
+  promotions: IdObject[]
 }

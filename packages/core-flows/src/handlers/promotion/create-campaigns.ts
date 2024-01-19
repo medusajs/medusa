@@ -1,0 +1,30 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { CreateCampaignDTO, IPromotionModuleService } from "@medusajs/types"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+
+export const createCampaignsStep = createStep(
+  "create-campaigns",
+  async (data: CreateCampaignDTO[], { container }) => {
+    const promotionModule = container.resolve<IPromotionModuleService>(
+      ModuleRegistrationName.PROMOTION
+    )
+
+    const createdCampaigns = await promotionModule.createCampaigns(data)
+
+    return new StepResponse(
+      createdCampaigns,
+      createdCampaigns.map((createdCampaigns) => createdCampaigns.id)
+    )
+  },
+  async (createdCampaignIds, { container }) => {
+    if (!createdCampaignIds?.length) {
+      return
+    }
+
+    const promotionModule = container.resolve<IPromotionModuleService>(
+      ModuleRegistrationName.PROMOTION
+    )
+
+    await promotionModule.delete(createdCampaignIds)
+  }
+)

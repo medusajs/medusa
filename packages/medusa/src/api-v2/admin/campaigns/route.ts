@@ -1,5 +1,6 @@
+import { createCampaignsWorkflow } from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPromotionModuleService } from "@medusajs/types"
+import { CreateCampaignDTO, IPromotionModuleService } from "@medusajs/types"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
@@ -20,4 +21,22 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     offset,
     limit,
   })
+}
+
+export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+  const createCampaigns = createCampaignsWorkflow(req.scope)
+  const manager = req.scope.resolve("manager")
+  const campaignsData = [req.validatedBody as CreateCampaignDTO]
+
+  const { result, errors } = await createCampaigns.run({
+    input: { campaignsData },
+    context: { manager },
+    throwOnError: false,
+  })
+
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
+
+  res.status(200).json({ campaign: result[0] })
 }

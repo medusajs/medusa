@@ -17,7 +17,7 @@ import {
   ValidateNested,
 } from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
-import { AdminPostCampaignsCampaignReq } from "../campaigns/validators"
+import { AdminPostCampaignsReq } from "../campaigns/validators"
 
 export class AdminGetPromotionsPromotionParams extends FindParams {}
 
@@ -49,8 +49,8 @@ export class AdminPostPromotionsReq {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => AdminPostCampaignsCampaignReq)
-  campaign: AdminPostCampaignsCampaignReq
+  @Type(() => AdminPostCampaignsReq)
+  campaign: AdminPostCampaignsReq
 
   @IsNotEmpty()
   @ValidateNested()
@@ -133,8 +133,8 @@ export class AdminPostPromotionsPromotionReq {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => AdminPostCampaignsCampaignReq)
-  campaign: AdminPostCampaignsCampaignReq
+  @Type(() => AdminPostCampaignsReq)
+  campaign: AdminPostCampaignsReq
 
   @IsOptional()
   @ValidateNested()

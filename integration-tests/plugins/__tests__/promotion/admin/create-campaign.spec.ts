@@ -1,6 +1,5 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
-import { PromotionType } from "@medusajs/utils"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
@@ -13,7 +12,7 @@ const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("POST /admin/promotions/:id", () => {
+describe("POST /admin/campaigns", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -44,58 +43,60 @@ describe("POST /admin/promotions/:id", () => {
     await db.teardown()
   })
 
-  it("should throw an error if id does not exist", async () => {
+  it("should throw an error if required params are not passed", async () => {
     const api = useApi() as any
     const { response } = await api
-      .post(
-        `/admin/promotions/does-not-exist`,
-        {
-          type: PromotionType.STANDARD,
-        },
-        adminHeaders
-      )
+      .post(`/admin/campaigns`, {}, adminHeaders)
       .catch((e) => e)
 
-    expect(response.status).toEqual(404)
+    expect(response.status).toEqual(400)
     expect(response.data.message).toEqual(
-      `Promotion with id "does-not-exist" not found`
+      "name must be a string, name should not be empty"
     )
   })
 
-  it("should update a promotion successfully", async () => {
+  it("should create a campaign successfully", async () => {
     const createdPromotion = await promotionModuleService.create({
       code: "TEST",
-      type: PromotionType.STANDARD,
-      is_automatic: true,
-      application_method: {
-        target_type: "items",
-        type: "fixed",
-        allocation: "each",
-        value: "100",
-        max_quantity: 100,
-      },
+      type: "standard",
     })
 
     const api = useApi() as any
     const response = await api.post(
-      `/admin/promotions/${createdPromotion.id}`,
+      `/admin/campaigns`,
       {
-        code: "TEST_TWO",
-        application_method: {
-          value: "200",
+        name: "test",
+        campaign_identifier: "test",
+        starts_at: new Date("01/01/2024").toISOString(),
+        ends_at: new Date("01/01/2029").toISOString(),
+        promotions: [{ id: createdPromotion.id }],
+        budget: {
+          limit: 1000,
+          type: "usage",
+          used: 10,
         },
       },
       adminHeaders
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.promotion).toEqual(
+    expect(response.data.campaign).toEqual(
       expect.objectContaining({
         id: expect.any(String),
-        code: "TEST_TWO",
-        application_method: expect.objectContaining({
-          value: 200,
+        name: "test",
+        campaign_identifier: "test",
+        starts_at: expect.any(String),
+        ends_at: expect.any(String),
+        budget: expect.objectContaining({
+          limit: 1000,
+          type: "usage",
+          used: 10,
         }),
+        promotions: [
+          expect.objectContaining({
+            id: createdPromotion.id,
+          }),
+        ],
       })
     )
   })
