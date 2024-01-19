@@ -1,6 +1,6 @@
 import { ProductOptionValue } from "@models"
-import { Context, DAL } from "@medusajs/types"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import { DAL } from "@medusajs/types"
+import { ModulesSdkUtils } from "@medusajs/utils"
 import { ProductOptionValueServiceTypes } from "@types"
 
 type InjectedDependencies = {
@@ -9,30 +9,15 @@ type InjectedDependencies = {
 
 export default class ProductOptionValueService<
   TEntity extends ProductOptionValue = ProductOptionValue
-> {
-  // eslint-disable-next-line max-len
-  protected readonly productOptionValueRepository_: DAL.RepositoryService<TEntity>
-
-  constructor({ productOptionValueRepository }: InjectedDependencies) {
-    this.productOptionValueRepository_ = productOptionValueRepository
+> extends ModulesSdkUtils.abstractServiceFactory<
+  InjectedDependencies,
+  {
+    create: ProductOptionValueServiceTypes.CreateProductOptionValueDTO
+    update: ProductOptionValueServiceTypes.UpdateProductOptionValueDTO
   }
-
-  @InjectTransactionManager("productOptionValueRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    return await this.productOptionValueRepository_.delete(ids, sharedContext)
-  }
-
-  @InjectTransactionManager("productOptionValueRepository_")
-  async upsert(
-    data: (
-      | ProductOptionValueServiceTypes.UpdateProductOptionValueDTO
-      | ProductOptionValueServiceTypes.CreateProductOptionValueDTO
-    )[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return await this.productOptionValueRepository_.upsert!(data, sharedContext)
+>(ProductOptionValue)<TEntity> {
+  constructor(container: InjectedDependencies) {
+    // @ts-ignore
+    super(...arguments)
   }
 }
