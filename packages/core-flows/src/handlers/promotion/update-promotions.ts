@@ -11,7 +11,7 @@ export const updatePromotionsStep = createStep(
     )
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data)
-    const dataBeforeUpdate = await promotionModule.listCampaigns(
+    const dataBeforeUpdate = await promotionModule.list(
       { id: data.map((d) => d.id) },
       { relations, select: selects }
     )
