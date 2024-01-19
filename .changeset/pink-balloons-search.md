@@ -1,5 +1,6 @@
 ---
 "@medusajs/workflows-engine-inmemory": patch
+"@medusajs/workflows-engine-redis": patch
 "@medusajs/orchestration": patch
 "@medusajs/workflows-sdk": patch
 "@medusajs/modules-sdk": patch
@@ -7,4 +8,4 @@
 "@medusajs/utils": patch
 ---
 
-Workflows Engine in-memory Module
+Modules: Workflows Engine in-memory and Redis
