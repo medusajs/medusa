@@ -37,6 +37,8 @@ export default async function (
       get(target, methodName: string) {
         if (["then", "catch", "finally"].includes(methodName)) {
           return target
+        } else if (methodName in target) {
+          return target[methodName]
         }
 
         return async (...args) => {
