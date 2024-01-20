@@ -1,8 +1,10 @@
+import { mergeTypeDefs } from "@graphql-tools/merge"
+import { makeExecutableSchema } from "@graphql-tools/schema"
+import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   LoadedModule,
-  LoaderOptions,
   MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
@@ -15,21 +17,19 @@ import {
   ContainerRegistrationKeys,
   createMedusaContainer,
   isObject,
+  isString,
   ModulesSdkUtils,
 } from "@medusajs/utils"
+import { asValue } from "awilix"
 import {
   MODULE_PACKAGE_NAMES,
   ModuleRegistrationName,
   Modules,
 } from "./definitions"
 import { MedusaModule } from "./medusa-module"
-import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { cleanGraphQLSchema } from "./utils"
-import { asValue } from "awilix"
-import { makeExecutableSchema } from "@graphql-tools/schema"
-import { mergeTypeDefs } from "@graphql-tools/merge"
 
 const LinkModulePackage = "@medusajs/link-modules"
 
@@ -172,6 +172,7 @@ export type MedusaAppOutput = {
   entitiesMap?: Record<string, any>
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
+  listen: (port: number, options?: Record<string, any>) => Promise<void>
 }
 
 export async function MedusaApp(
@@ -199,17 +200,7 @@ export async function MedusaApp(
   } = {
     injectedDependencies: {},
   }
-): Promise<{
-  modules: Record<string, LoadedModule | LoadedModule[]>
-  link: RemoteLink | undefined
-  query: (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any>
-  entitiesMap?: Record<string, any>
-  notFound?: Record<string, Record<string, string>>
-  runMigrations: RunMigrationFn
-}> {
+): Promise<MedusaAppOutput> {
   const sharedContainer_ = createMedusaContainer({}, sharedContainer)
 
   const modules: MedusaModuleConfig =
@@ -316,8 +307,85 @@ export async function MedusaApp(
       entitiesMap: schema.getTypeMap(),
       notFound,
       runMigrations,
+      listen: webServer(sharedContainer_, query),
     }
   } finally {
     await MedusaModule.onApplicationStart()
+  }
+}
+
+function webServer(
+  container: MedusaContainer,
+  remoteQuery: MedusaAppOutput["query"]
+) {
+  return async (port: number, options?: Record<string, any>) => {
+    let serverDependency
+
+    try {
+      serverDependency = await import("fastify")
+    } catch (err) {
+      throw new Error(
+        "Fastify is not installed. Please install it to serve MedusaApp as a web server."
+      )
+    }
+
+    const fastify = serverDependency({
+      logger: true,
+      keepAliveTimeout: 1000 * 60 * 2,
+      connectionTimeout: 1000 * 60 * 1,
+      ...(options ?? {}),
+    })
+
+    fastify.post("/modules/:module/:method", async (request, response) => {
+      const { module, method } = request.params as {
+        module: string
+        method: string
+      }
+      const args = request.body
+
+      const resolvedModule = container.resolve(module, {
+        allowUnregistered: true,
+      })
+
+      if (!resolvedModule) {
+        return response.status(500).send("Module not found.")
+      }
+
+      if (typeof resolvedModule[method] !== "function") {
+        return response
+          .status(500)
+          .send(`Method "${method}" not found in "${module}"`)
+      }
+
+      try {
+        return await resolvedModule[method].apply(resolvedModule, args)
+      } catch (err) {
+        return response.status(500).send(err.message)
+      }
+    })
+
+    fastify.post("/query", async (request, response) => {
+      const input = request.body
+
+      let query
+      let variables = {}
+      if (isString(input.query)) {
+        query = input.query
+        variables = input.variables ?? {}
+      } else {
+        query = input
+      }
+
+      try {
+        return await remoteQuery(query, variables)
+      } catch (err) {
+        return response.status(500).send(err.message)
+      }
+    })
+
+    await fastify.listen({
+      port,
+      host: "0.0.0.0",
+    })
   }
 }
