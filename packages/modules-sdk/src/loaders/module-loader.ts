@@ -7,7 +7,7 @@ import {
 
 import { asValue } from "awilix"
 import { EOL } from "os"
-import { loadInternalModule } from "./utils"
+import { loadExternalModule, loadInternalModule } from "./utils"
 
 export const moduleLoader = async ({
   container,
@@ -47,15 +47,8 @@ async function loadModule(
 
   const { scope, resources } = resolution.moduleDeclaration ?? ({} as any)
 
-  const canSkip =
-    !resolution.resolutionPath &&
-    !modDefinition.isRequired &&
-    !modDefinition.defaultPackage
-
-  if (scope === MODULE_SCOPE.EXTERNAL && !canSkip) {
-    // TODO: implement external Resolvers
-    // return loadExternalModule(...)
-    throw new Error("External Modules are not supported yet.")
+  if (scope === MODULE_SCOPE.EXTERNAL) {
+    return await loadExternalModule(container, resolution, logger)
   }
 
   if (!scope || (scope === MODULE_SCOPE.INTERNAL && !resources)) {

@@ -51,12 +51,16 @@ export type InternalModuleDeclaration = {
 export type ExternalModuleDeclaration = {
   scope: MODULE_SCOPE.EXTERNAL
   definition?: ModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
-  server?: {
+  server: {
     type: "http"
+    /*
+    Base URL for the module. 
+    */
     url: string
-    keepAlive: boolean
+    keepAlive?: boolean
+    keepAliveTimeout?: number
+    options?: Record<string, unknown>
   }
-  options?: Record<string, unknown>
   /**
    * If multiple modules are registered with the same key, the alias can be used to differentiate them
    */

@@ -40,15 +40,17 @@ export const registerMedusaModule = (
     isObject(modDeclaration) &&
     modDeclaration?.scope === MODULE_SCOPE.EXTERNAL
   ) {
-    // TODO: getExternalModuleResolution(...)
-    throw new Error("External Modules are not supported yet.")
+    moduleResolutions[moduleKey] = getExternalModuleResolution(
+      modDefinition,
+      modDeclaration as ExternalModuleDeclaration
+    )
+  } else {
+    moduleResolutions[moduleKey] = getInternalModuleResolution(
+      modDefinition,
+      moduleDeclaration as InternalModuleDeclaration,
+      moduleExports
+    )
   }
-
-  moduleResolutions[moduleKey] = getInternalModuleResolution(
-    modDefinition,
-    moduleDeclaration as InternalModuleDeclaration,
-    moduleExports
-  )
 
   return moduleResolutions
 }
@@ -119,5 +121,22 @@ function getInternalModuleResolution(
     },
     moduleExports,
     options: isObj ? moduleConfig.options ?? {} : {},
+  }
+}
+
+function getExternalModuleResolution(
+  definition: ModuleDefinition,
+  moduleConfig: ExternalModuleDeclaration
+): ModuleResolution {
+  if (!moduleConfig.server) {
+    throw new Error(
+      `Module: External module ${definition.label} is missing server configuration.`
+    )
+  }
+
+  return {
+    resolutionPath: false,
+    definition,
+    moduleDeclaration: moduleConfig,
   }
 }

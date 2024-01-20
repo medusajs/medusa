@@ -175,32 +175,29 @@ export type MedusaAppOutput = {
   listen: (port: number, options?: Record<string, any>) => Promise<void>
 }
 
-export async function MedusaApp(
-  {
-    sharedContainer,
-    sharedResourcesConfig,
-    servicesConfig,
-    modulesConfigPath,
-    modulesConfigFileName,
-    modulesConfig,
-    linkModules,
-    remoteFetchData,
-    injectedDependencies,
-  }: {
-    sharedContainer?: MedusaContainer
-    sharedResourcesConfig?: SharedResources
-    loadedModules?: LoadedModule[]
-    servicesConfig?: ModuleJoinerConfig[]
-    modulesConfigPath?: string
-    modulesConfigFileName?: string
-    modulesConfig?: MedusaModuleConfig
-    linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
-    remoteFetchData?: RemoteFetchDataCallback
-    injectedDependencies?: any
-  } = {
-    injectedDependencies: {},
-  }
-): Promise<MedusaAppOutput> {
+export async function MedusaApp({
+  sharedContainer,
+  sharedResourcesConfig,
+  servicesConfig,
+  modulesConfigPath,
+  modulesConfigFileName,
+  modulesConfig,
+  linkModules,
+  remoteFetchData,
+  injectedDependencies,
+}: {
+  sharedContainer?: MedusaContainer
+  sharedResourcesConfig?: SharedResources
+  loadedModules?: LoadedModule[]
+  servicesConfig?: ModuleJoinerConfig[]
+  modulesConfigPath?: string
+  modulesConfigFileName?: string
+  modulesConfig?: MedusaModuleConfig
+  linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
+  remoteFetchData?: RemoteFetchDataCallback
+  injectedDependencies?: any
+} = {}): Promise<MedusaAppOutput> {
+  injectedDependencies ??= {}
   const sharedContainer_ = createMedusaContainer({}, sharedContainer)
 
   const modules: MedusaModuleConfig =
@@ -307,7 +304,7 @@ export async function MedusaApp(
       entitiesMap: schema.getTypeMap(),
       notFound,
       runMigrations,
-      listen: webServer(sharedContainer_, query),
+      listen: webServer(sharedContainer_, allModules, query),
     }
   } finally {
     await MedusaModule.onApplicationStart()
@@ -316,6 +313,7 @@ export async function MedusaApp(
 
 function webServer(
   container: MedusaContainer,
+  loadedModules: Record<string, LoadedModule | LoadedModule[]>,
   remoteQuery: MedusaAppOutput["query"]
 ) {
   return async (port: number, options?: Record<string, any>) => {
@@ -329,7 +327,7 @@ function webServer(
       )
     }
 
-    const fastify = serverDependency({
+    const fastify = serverDependency.default({
       logger: true,
       keepAliveTimeout: 1000 * 60 * 2,
       connectionTimeout: 1000 * 60 * 1,
@@ -343,18 +341,25 @@ function webServer(
       }
       const args = request.body
 
-      const resolvedModule = container.resolve(module, {
+      const modName = module ?? ""
+      const resolutionName =
+        ModuleRegistrationName[modName.toUpperCase()] ??
+        loadModules[modName]?.__definition?.registrationName
+
+      const resolvedModule = container.resolve(resolutionName, {
         allowUnregistered: true,
       })
 
       if (!resolvedModule) {
-        return response.status(500).send("Module not found.")
+        return response.status(500).send(`Module ${modName} not found.`)
       }
 
-      if (typeof resolvedModule[method] !== "function") {
+      if (method === "__joinerConfig" || method == "__definition") {
+        return resolvedModule[method]
+      } else if (typeof resolvedModule[method] !== "function") {
         return response
           .status(500)
-          .send(`Method "${method}" not found in "${module}"`)
+          .send(`Method "${method}" not found in "${modName}"`)
       }
 
       try {

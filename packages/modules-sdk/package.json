@@ -45,6 +45,7 @@
     "watch": "tsc --build --watch"
   },
   "optionalDependencies": {
-    "fastify": "^4.25.2"
+    "fastify": "^4.25.2",
+    "undici": "^6.4.0"
   }
 }
