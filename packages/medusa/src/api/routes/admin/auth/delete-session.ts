@@ -1,3 +1,5 @@
+import { Request, Response } from "express"
+
 /**
  * @oas [delete] /admin/auth
  * operationId: "DeleteAuth"
@@ -64,7 +66,7 @@
  *  "500":
  *    $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   if (req.session.customer_id) {
     // if we are also logged in as a customer, persist that session
     delete req.session.user_id

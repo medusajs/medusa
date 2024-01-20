@@ -4,7 +4,7 @@ import { defaultRelations } from "."
 import AuthService from "../../../../services/auth"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
-
+import { Request, Response } from "express"
 /**
  * @oas [post] /store/auth
  * operationId: "PostAuth"
@@ -62,7 +62,7 @@ import { validator } from "../../../../utils/validator"
  *  "500":
  *    $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const validated = await validator(StorePostAuthReq, req.body)
 
   const authService: AuthService = req.scope.resolve("authService")

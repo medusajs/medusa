@@ -6,7 +6,7 @@ import { EntityManager } from "typeorm"
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
-
+import { Request, Response } from "express"
 /**
  * @oas [post] /store/customers
  * operationId: PostCustomers
@@ -115,7 +115,7 @@ import { validator } from "../../../../utils/validator"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const validated = await validator(StorePostCustomersReq, req.body)
 
   const customerService: CustomerService = req.scope.resolve("customerService")

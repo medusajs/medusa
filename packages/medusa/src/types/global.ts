@@ -18,6 +18,11 @@ declare global {
       allowedProperties: string[]
       includes?: Record<string, boolean>
       errors: string[]
+      session: {
+        customer_id?: string
+        user_id?: string
+        destroy(callback?: (err: any) => void): any
+      } & Record<string, unknown>
     }
   }
 }

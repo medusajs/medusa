@@ -6,7 +6,7 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import AuthService from "../../../../services/auth"
 import { validator } from "../../../../utils/validator"
-
+import { Request, Response } from "express"
 /**
  * @oas [post] /admin/auth
  * operationId: "PostAuth"
@@ -90,7 +90,7 @@ import { validator } from "../../../../utils/validator"
  *  "500":
  *    $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const validated = await validator(AdminPostAuthReq, req.body)
 
   const authService: AuthService = req.scope.resolve("authService")

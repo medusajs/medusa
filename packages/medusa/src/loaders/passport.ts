@@ -47,9 +47,7 @@ export default async ({
   passport.use(
     "admin-session",
     new CustomStrategy(async (req, done) => {
-      // @ts-ignore
       if (req.session?.user_id) {
-        // @ts-ignore
         return done(null, { userId: req.session.user_id })
       }
 
@@ -60,9 +58,7 @@ export default async ({
   passport.use(
     "store-session",
     new CustomStrategy(async (req, done) => {
-      // @ts-ignore
       if (req.session?.customer_id) {
-        // @ts-ignore
         return done(null, { customer_id: req.session.customer_id })
       }
 
