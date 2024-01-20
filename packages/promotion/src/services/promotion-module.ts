@@ -368,9 +368,7 @@ export default class PromotionModuleService<
 
     return await this.baseRepository_.serialize<PromotionTypes.PromotionDTO>(
       promotion,
-      {
-        populate: true,
-      }
+      { populate: true }
     )
   }
 
@@ -388,10 +386,29 @@ export default class PromotionModuleService<
 
     return await this.baseRepository_.serialize<PromotionTypes.PromotionDTO[]>(
       promotions,
-      {
-        populate: true,
-      }
+      { populate: true }
     )
+  }
+
+  @InjectManager("baseRepository_")
+  async listAndCount(
+    filters: PromotionTypes.FilterablePromotionProps = {},
+    config: FindConfig<PromotionTypes.PromotionDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[PromotionTypes.PromotionDTO[], number]> {
+    const [promotions, count] = await this.promotionService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [
+      await this.baseRepository_.serialize<PromotionTypes.PromotionDTO[]>(
+        promotions,
+        { populate: true }
+      ),
+      count,
+    ]
   }
 
   async create(
@@ -899,9 +916,7 @@ export default class PromotionModuleService<
 
     return await this.baseRepository_.serialize<PromotionTypes.CampaignDTO>(
       campaign,
-      {
-        populate: true,
-      }
+      { populate: true }
     )
   }
 
@@ -919,10 +934,29 @@ export default class PromotionModuleService<
 
     return await this.baseRepository_.serialize<PromotionTypes.CampaignDTO[]>(
       campaigns,
-      {
-        populate: true,
-      }
+      { populate: true }
     )
+  }
+
+  @InjectManager("baseRepository_")
+  async listAndCountCampaigns(
+    filters: PromotionTypes.FilterableCampaignProps = {},
+    config: FindConfig<PromotionTypes.CampaignDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[PromotionTypes.CampaignDTO[], number]> {
+    const [campaigns, count] = await this.campaignService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [
+      await this.baseRepository_.serialize<PromotionTypes.CampaignDTO[]>(
+        campaigns,
+        { populate: true }
+      ),
+      count,
+    ]
   }
 
   async createCampaigns(

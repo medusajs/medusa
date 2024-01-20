@@ -21,12 +21,13 @@ import {
 } from "../../../__fixtures__/product/data"
 
 import { ProductDTO, ProductTypes } from "@medusajs/types"
-import { kebabCase } from "@medusajs/utils"
+import { createMedusaContainer, kebabCase } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductRepository } from "@repositories"
 import { ProductService } from "@services"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import { TestDatabase } from "../../../utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -44,13 +45,12 @@ describe("Product Service", () => {
     await TestDatabase.setupDatabase()
     repositoryManager = await TestDatabase.forkManager()
 
-    const productRepository = new ProductRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new ProductService({
-      productRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("productService")
   })
 
   afterEach(async () => {

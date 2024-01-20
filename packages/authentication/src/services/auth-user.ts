@@ -16,7 +16,7 @@ export default class AuthUserService<
     create: ServiceTypes.CreateAuthUserDTO
   }
 >(AuthUser)<TEntity> {
-  constructor({ authUserRepository }: InjectedDependencies) {
+  constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
   }
