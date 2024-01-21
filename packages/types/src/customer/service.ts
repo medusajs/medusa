@@ -23,6 +23,29 @@ export interface ICustomerModuleService extends IModuleService {
 
   create(data: CreateCustomerDTO, sharedContext?: Context): Promise<CustomerDTO>
 
+  update(
+    customerId: string,
+    data: Partial<CreateCustomerDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerDTO>
+  update(
+    customerIds: string[],
+    data: Partial<CreateCustomerDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerDTO[]>
+  update(
+    selector: FilterableCustomerProps,
+    data: Partial<CreateCustomerDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerDTO[]>
+
+  delete(customerId: string, sharedContext?: Context): Promise<void>
+  delete(customerIds: string[], sharedContext?: Context): Promise<void>
+  delete(
+    selector: FilterableCustomerProps,
+    sharedContext?: Context
+  ): Promise<void>
+
   createCustomerGroup(
     data: CreateCustomerGroupDTO[],
     sharedContext?: Context

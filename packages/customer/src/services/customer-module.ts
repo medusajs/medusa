@@ -109,6 +109,101 @@ export default class CustomerModuleService implements ICustomerModuleService {
     )
   }
 
+  update(
+    customerId: string,
+    data: Partial<CustomerTypes.CreateCustomerDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerTypes.CustomerDTO>
+  update(
+    customerIds: string[],
+    data: Partial<CustomerTypes.CreateCustomerDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerTypes.CustomerDTO[]>
+  update(
+    selector: CustomerTypes.FilterableCustomerProps,
+    data: Partial<CustomerTypes.CreateCustomerDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerTypes.CustomerDTO[]>
+
+  @InjectManager("baseRepository_")
+  async update(
+    idsOrSelector: string | string[] | CustomerTypes.FilterableCustomerProps,
+    data: Partial<CustomerTypes.CreateCustomerDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    let updateData: CustomerTypes.UpdateCustomerDTO[] = []
+    if (typeof idsOrSelector === "string") {
+      updateData = [
+        {
+          id: idsOrSelector,
+          ...data,
+        },
+      ]
+    } else if (Array.isArray(idsOrSelector)) {
+      updateData = idsOrSelector.map((id) => ({
+        id,
+        ...data,
+      }))
+    } else {
+      const ids = await this.customerService_.list(
+        idsOrSelector,
+        { select: ["id"] },
+        sharedContext
+      )
+      updateData = ids.map(({ id }) => ({
+        id,
+        ...data,
+      }))
+    }
+
+    const customers = await this.customerService_.update(
+      updateData,
+      sharedContext
+    )
+
+    if (typeof idsOrSelector === "string") {
+      return await this.baseRepository_.serialize<CustomerTypes.CustomerDTO>(
+        customers[0],
+        { populate: true }
+      )
+    }
+
+    return await this.baseRepository_.serialize<CustomerTypes.CustomerDTO[]>(
+      customers,
+      { populate: true }
+    )
+  }
+
+  delete(customerId: string, sharedContext?: Context): Promise<void>
+  delete(customerIds: string[], sharedContext?: Context): Promise<void>
+  delete(
+    selector: CustomerTypes.FilterableCustomerProps,
+    sharedContext?: Context
+  ): Promise<void>
+
+  async delete(
+    idsOrSelector: string | string[] | CustomerTypes.FilterableCustomerProps,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    let toDelete: string[] = []
+    if (typeof idsOrSelector === "string") {
+      toDelete.push(idsOrSelector)
+    } else if (Array.isArray(idsOrSelector)) {
+      toDelete = idsOrSelector
+    } else {
+      const ids = await this.customerService_.list(
+        idsOrSelector,
+        {
+          select: ["id"],
+        },
+        sharedContext
+      )
+      toDelete = ids.map(({ id }) => id)
+    }
+
+    return await this.customerService_.delete(toDelete, sharedContext)
+  }
+
   @InjectManager("baseRepository_")
   async list(
     filters: CustomerTypes.FilterableCustomerProps = {},

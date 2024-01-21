@@ -9,6 +9,7 @@ export interface CreateCustomerDTO {
 }
 
 export interface UpdateCustomerDTO {
+  id: string
   company_name?: string
   first_name?: string
   last_name?: string
