@@ -12,6 +12,7 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  isString,
 } from "@medusajs/utils"
 import { joinerConfig } from "../joiner-config"
 import * as services from "../services"
@@ -91,22 +92,12 @@ export default class CustomerModuleService implements ICustomerModuleService {
   ) {
     const data = Array.isArray(dataOrArray) ? dataOrArray : [dataOrArray]
     const customer = await this.customerService_.create(data, sharedContext)
-
-    if (Array.isArray(dataOrArray)) {
-      return await this.baseRepository_.serialize<CustomerTypes.CustomerDTO[]>(
-        customer,
-        {
-          populate: true,
-        }
-      )
-    }
-
-    return await this.baseRepository_.serialize<CustomerTypes.CustomerDTO>(
-      customer[0],
-      {
-        populate: true,
-      }
-    )
+    const serialized = await this.baseRepository_.serialize<
+      CustomerTypes.CustomerDTO[]
+    >(customer, {
+      populate: true,
+    })
+    return Array.isArray(dataOrArray) ? serialized : serialized[0]
   }
 
   update(
@@ -160,18 +151,13 @@ export default class CustomerModuleService implements ICustomerModuleService {
       updateData,
       sharedContext
     )
+    const serialized = await this.baseRepository_.serialize<
+      CustomerTypes.CustomerDTO[]
+    >(customers, {
+      populate: true,
+    })
 
-    if (typeof idsOrSelector === "string") {
-      return await this.baseRepository_.serialize<CustomerTypes.CustomerDTO>(
-        customers[0],
-        { populate: true }
-      )
-    }
-
-    return await this.baseRepository_.serialize<CustomerTypes.CustomerDTO[]>(
-      customers,
-      { populate: true }
-    )
+    return isString(idsOrSelector) ? serialized[0] : serialized
   }
 
   delete(customerId: string, sharedContext?: Context): Promise<void>
@@ -270,19 +256,13 @@ export default class CustomerModuleService implements ICustomerModuleService {
       : [dataOrArrayOfData]
 
     const groups = await this.customerGroupService_.create(data, sharedContext)
+    const serialized = await this.baseRepository_.serialize<
+      CustomerTypes.CustomerGroupDTO[]
+    >(groups, {
+      populate: true,
+    })
 
-    if (Array.isArray(dataOrArrayOfData)) {
-      return await this.baseRepository_.serialize<
-        CustomerTypes.CustomerGroupDTO[]
-      >(groups, {
-        populate: true,
-      })
-    }
-
-    return await this.baseRepository_.serialize<CustomerTypes.CustomerGroupDTO>(
-      groups[0],
-      { populate: true }
-    )
+    return Array.isArray(dataOrArrayOfData) ? serialized : serialized[0]
   }
 
   async addCustomerToGroup(
