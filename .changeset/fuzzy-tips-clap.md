@@ -7,7 +7,6 @@
 "@medusajs/payment": patch
 "@medusajs/pricing": patch
 "@medusajs/product": patch
-"@medusajs/product": patch
 ---
 
 Medusa App loading modules reference
