@@ -46,7 +46,15 @@ export default class PaymentService<
     data: CreateCaptureDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<CaptureDTO> {
-    const created = await this.captureRepository_.create([data])
+    const created = await this.captureRepository_.create(
+      [
+        {
+          payment: data.payment_id,
+          ...data,
+        },
+      ],
+      sharedContext
+    )
 
     return created[0]
   }
@@ -56,7 +64,15 @@ export default class PaymentService<
     data: CreateRefundDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<RefundDTO> {
-    const created = await this.refundRepository_.create([data])
+    const created = await this.refundRepository_.create(
+      [
+        {
+          payment: data.payment_id,
+          ...data,
+        },
+      ],
+      sharedContext
+    )
 
     return created[0]
   }

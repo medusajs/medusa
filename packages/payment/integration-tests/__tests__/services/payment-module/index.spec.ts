@@ -283,8 +283,6 @@ describe("Payment Module Service", () => {
   describe("Payment", () => {
     let repositoryManager: SqlEntityManager
 
-    let testPayment
-
     beforeEach(async () => {
       await MikroOrmWrapper.setupDatabase()
       repositoryManager = await MikroOrmWrapper.forkManager()
@@ -375,8 +373,72 @@ describe("Payment Module Service", () => {
       it("should capture a payment successfully", async () => {
         const capturedPayment = await service.capturePayment({
           amount: 100,
-          payment_id: testPayment.id,
+          payment_id: "pay-id-1",
         })
+
+        expect(capturedPayment).toEqual(
+          expect.objectContaining({
+            id: "pay-id-1",
+            amount: 100,
+            currency_code: "usd",
+            provider_id: "manual",
+            data: {},
+
+            captures: [
+              expect.objectContaining({
+                created_by: null,
+                amount: 100,
+              }),
+            ],
+
+            // TODO
+            authorized_amount: null,
+            captured_at: null,
+
+            cart_id: null,
+            order_id: null,
+            order_edit_id: null,
+            customer_id: null,
+            deleted_at: null,
+            canceled_at: null,
+          })
+        )
+      })
+    })
+
+    describe("refund", () => {
+      it("should refund a payment successfully", async () => {
+        const refundedPayment = await service.refundPayment({
+          amount: 100,
+          payment_id: "pay-id-1",
+        })
+
+        expect(refundedPayment).toEqual(
+          expect.objectContaining({
+            id: "pay-id-1",
+            amount: 100,
+            currency_code: "usd",
+            provider_id: "manual",
+            data: {},
+
+            refunds: [
+              expect.objectContaining({
+                created_by: null,
+                amount: 100,
+              }),
+            ],
+
+            authorized_amount: null,
+            captured_at: null,
+
+            cart_id: null,
+            order_id: null,
+            order_edit_id: null,
+            customer_id: null,
+            deleted_at: null,
+            canceled_at: null,
+          })
+        )
       })
     })
   })
