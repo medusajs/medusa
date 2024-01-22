@@ -1,11 +1,12 @@
 import { DAL, PromotionRuleOperatorValues } from "@medusajs/types"
-import { PromotionUtils, generateEntityId } from "@medusajs/utils"
+import { DALUtils, PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
   Enum,
+  Filter,
   Index,
   ManyToMany,
   OnInit,
@@ -18,10 +19,11 @@ import ApplicationMethod from "./application-method"
 import Promotion from "./promotion"
 import PromotionRuleValue from "./promotion-rule-value"
 
-type OptionalFields = "description" | "deleted_at" | DAL.EntityDateColumns
+type OptionalFields = "description" | DAL.SoftDeletableEntityDateColumns
 type OptionalRelations = "values" | "promotions"
 
-@Entity()
+@Entity({ tableName: "promotion_rule" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class PromotionRule {
   [OptionalProps]?: OptionalFields | OptionalRelations
 
@@ -29,7 +31,7 @@ export default class PromotionRule {
   id!: string
 
   @Property({ columnType: "text", nullable: true })
-  description: string | null
+  description?: string | null
 
   @Index({ name: "IDX_promotion_rule_attribute" })
   @Property({ columnType: "text" })
@@ -69,7 +71,7 @@ export default class PromotionRule {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date | null
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

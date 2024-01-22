@@ -40,7 +40,7 @@ Defines an entry file, which is useful when starting the Medusa backend with a p
 
 Defines the Medusa backend’s configurations, including the database configurations, plugins used, modules used, and more.
 
-**Read more:** [Medusa backend configurations](./configurations.md).
+**Read more:** [Medusa backend configurations](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx).
 
 ### package.json
 

@@ -44,8 +44,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
@@ -64,8 +62,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### cancel
 
 Cancels a given swap if possible. A swap can only be canceled if all
@@ -80,8 +76,6 @@ is associated with a refund, it cannot be canceled.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Swap](../../entities/classes/entities.Swap.mdx)&#62;","optional":false,"defaultValue":"","description":"the canceled swap.","expandable":false,"children":[]}]} />
 
-___
-
 ### cancelFulfillment
 
 Cancels a fulfillment (if related to a swap)
@@ -93,8 +87,6 @@ Cancels a fulfillment (if related to a swap)
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Swap](../../entities/classes/entities.Swap.mdx)&#62;","optional":false,"defaultValue":"","description":"updated swap","expandable":false,"children":[]}]} />
-
-___
 
 ### create
 
@@ -108,8 +100,6 @@ and an optional return shipping method.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Swap](../../entities/classes/entities.Swap.mdx)&#62;","optional":false,"defaultValue":"","description":"the newly created swap","expandable":false,"children":[]}]} />
-
-___
 
 ### createCart
 
@@ -126,8 +116,6 @@ swap.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Swap](../../entities/classes/entities.Swap.mdx)&#62;","optional":false,"defaultValue":"","description":"the swap with its cart\\_id prop set to the id of the new cart.","expandable":false,"children":[]}]} />
 
-___
-
 ### createFulfillment
 
 Fulfills the additional items associated with the swap. Will call the
@@ -141,8 +129,6 @@ fulfillment providers associated with the shipping methods.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Swap](../../entities/classes/entities.Swap.mdx)&#62;","optional":false,"defaultValue":"","description":"the updated swap with new status and fulfillments.","expandable":false,"children":[]}]} />
 
-___
-
 ### createShipment
 
 Marks a fulfillment as shipped and attaches tracking numbers.
@@ -154,8 +140,6 @@ Marks a fulfillment as shipped and attaches tracking numbers.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Swap](../../entities/classes/entities.Swap.mdx)&#62;","optional":false,"defaultValue":"","description":"the updated swap with new fulfillments and status.","expandable":false,"children":[]}]} />
-
-___
 
 ### deleteMetadata
 
@@ -169,8 +153,6 @@ Dedicated method to delete metadata for a swap.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Swap](../../entities/classes/entities.Swap.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the updated result.","expandable":false,"children":[]}]} />
 
-___
-
 ### list
 
 List swaps.
@@ -182,8 +164,6 @@ List swaps.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Swap](../../entities/classes/entities.Swap.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-___
 
 ### listAndCount
 
@@ -197,8 +177,6 @@ List swaps.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[Swap](../../entities/classes/entities.Swap.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
 
-___
-
 ### processDifference
 
 Process difference for the requested swap.
@@ -211,8 +189,6 @@ Process difference for the requested swap.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Swap](../../entities/classes/entities.Swap.mdx)&#62;","optional":false,"defaultValue":"","description":"processed swap","expandable":false,"children":[]}]} />
 
-___
-
 ### registerCartCompletion
 
 Register a cart completion
@@ -224,8 +200,6 @@ Register a cart completion
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Swap](../../entities/classes/entities.Swap.mdx)&#62;","optional":false,"defaultValue":"","description":"swap related to the cart","expandable":false,"children":[]}]} />
-
-___
 
 ### registerReceived
 
@@ -240,8 +214,6 @@ as a part of other swaps/returns.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Swap](../../entities/classes/entities.Swap.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting order","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieve
 
 Retrieves a swap with the given id.
@@ -253,8 +225,6 @@ Retrieves a swap with the given id.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Swap](../../entities/classes/entities.Swap.mdx)&#62;","optional":false,"defaultValue":"","description":"the swap","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveByCartId
 
@@ -268,8 +238,6 @@ Retrieves a swap based on its associated cart id
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Swap](../../entities/classes/entities.Swap.mdx)&#62;","optional":false,"defaultValue":"","description":"the swap","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -279,8 +247,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### transformQueryForCart
 
@@ -294,8 +260,6 @@ Transform find config object for retrieval.
 
 <ParameterTypes parameters={[{"name":"Omit","type":"Omit&#60;[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Swap](../../entities/classes/entities.Swap.mdx)&#62;, \"select\"&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"cartRelations","type":"`undefined` \\| `string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cartSelects","type":"`undefined` \\| keyof [Cart](../../entities/classes/entities.Cart.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"select","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
-___
-
 ### update
 
 Update the swap record.
@@ -307,8 +271,6 @@ Update the swap record.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Swap](../../entities/classes/entities.Swap.mdx)&#62;","optional":false,"defaultValue":"","description":"updated swap record","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 
