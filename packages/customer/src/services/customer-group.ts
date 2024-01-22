@@ -1,7 +1,7 @@
 import { DAL } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import { CustomerGroup } from "@models"
-import { CreateCustomerGroupDTO, UpdateCustomerGroupDTO } from "@types"
+import { CreateCustomerGroupDTO, UpdateCustomerGroupDTO } from "@medusajs/types"
 
 type InjectedDependencies = {
   customerGroupRepository: DAL.RepositoryService
