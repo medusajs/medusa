@@ -25,7 +25,7 @@ export default class SalesChannel {
   name!: string
 
   @Property({ columnType: "text", nullable: true })
-  description?: string | null
+  description: string | null = null
 
   @Property({ columnType: "boolean", default: false })
   is_disabled = false
@@ -47,7 +47,7 @@ export default class SalesChannel {
 
   @Index({ name: "IDX_sales_channel_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date | null
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {
