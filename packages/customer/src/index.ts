@@ -1,6 +1,10 @@
-import { moduleDefinition } from "./module-definition"
+import {
+  moduleDefinition,
+  revertMigration,
+  runMigrations,
+} from "./module-definition"
 
 export default moduleDefinition
+export { revertMigration, runMigrations }
 
 export * from "./initialize"
-export * from "./loaders"

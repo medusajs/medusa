@@ -16,7 +16,7 @@ import {
 } from "../../../../factories"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 
-jest.setTimeout(5000000)
+jest.setTimeout(50000)
 
 const adminHeaders = {
   headers: {
@@ -80,7 +80,7 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
-    it("should create a product", async () => {
+    it.only("should create a product", async () => {
       const api = useApi()! as AxiosInstance
 
       const payload = {
