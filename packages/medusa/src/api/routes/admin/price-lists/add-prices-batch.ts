@@ -1,5 +1,6 @@
-import { MedusaV2Flag } from "@medusajs/utils"
 import { updatePriceLists } from "@medusajs/core-flows"
+import { MedusaContainer } from "@medusajs/types"
+import { MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { IsArray, IsBoolean, IsOptional, ValidateNested } from "class-validator"
 import { EntityManager } from "typeorm"
@@ -8,7 +9,6 @@ import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
 import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { validator } from "../../../../utils/validator"
-import { MedusaContainer } from "@medusajs/types"
 import { getPriceListPricingModule } from "./modules-queries"
 
 /**
@@ -45,6 +45,42 @@ import { getPriceListPricingModule } from "./modules-queries"
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreatePriceListPrices } from "medusa-react"
+ *
+ *       type PriceData = {
+ *         amount: number
+ *         variant_id: string
+ *         currency_code: string
+ *       }
+ *
+ *       type Props = {
+ *         priceListId: string
+ *       }
+ *
+ *       const PriceList = ({
+ *         priceListId
+ *       }: Props) => {
+ *         const addPrices = useAdminCreatePriceListPrices(priceListId)
+ *         // ...
+ *
+ *         const handleAddPrices = (prices: PriceData[]) => {
+ *           addPrices.mutate({
+ *             prices
+ *           }, {
+ *             onSuccess: ({ price_list }) => {
+ *               console.log(price_list.prices)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -137,6 +173,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostPriceListPricesPricesReq
  * type: object
+ * description: "The details of the prices to add."
  * properties:
  *   prices:
  *     description: The prices to update or add.

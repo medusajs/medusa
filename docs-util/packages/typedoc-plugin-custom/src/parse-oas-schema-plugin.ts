@@ -178,10 +178,13 @@ function addComments(schema: Schema, reflection: Reflection) {
   }
   const children =
     "type" in reflection
-      ? getTypeChildren(reflection.type as SomeType, reflection.project)
+      ? getTypeChildren({
+          reflectionType: reflection.type as SomeType,
+          project: reflection.project,
+        })
       : "children" in reflection
-      ? (reflection.children as DeclarationReflection[])
-      : []
+        ? (reflection.children as DeclarationReflection[])
+        : []
 
   Object.entries(schema.properties).forEach(([key, value]) => {
     const childItem =

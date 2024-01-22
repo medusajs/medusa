@@ -1,9 +1,10 @@
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva, type VariantProps } from "cva"
 import * as React from "react"
 
 import { clx } from "@/utils/clx"
 
-const headingVariants = cva("font-sans font-medium", {
+const headingVariants = cva({
+  base: "font-sans font-medium",
   variants: {
     level: {
       h1: "h1-core",
@@ -16,11 +17,22 @@ const headingVariants = cva("font-sans font-medium", {
   },
 })
 
-type HeadingProps = VariantProps<typeof headingVariants> &
-  React.HTMLAttributes<HTMLHeadingElement>
+interface HeadingProps extends VariantProps<typeof headingVariants>,
+  React.HTMLAttributes<HTMLHeadingElement> {}
 
-const Heading = ({ level, className, ...props }: HeadingProps) => {
-  const Component = level ? level : "h1"
+/**
+ * This component is based on the heading element (`h1`, `h2`, etc...) depeneding on the specified level
+ * and supports all of its props
+ */
+const Heading = ({ 
+  /**
+   * The heading level which specifies which heading element is used.
+   */
+  level = "h1", 
+  className, 
+  ...props
+}: HeadingProps) => {
+  const Component = level || "h1"
 
   return (
     <Component

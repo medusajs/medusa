@@ -3,23 +3,30 @@ import { ReflectionParameterType } from "../../types"
 import { parseParams } from "../../utils/params-utils"
 import { MarkdownTheme } from "../../theme"
 import { reflectionComponentFormatter } from "../../utils/reflection-formatter"
+import { formatParameterComponent } from "../../utils/format-parameter-component"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
     "parameterComponent",
     function (this: ReflectionParameterType[]) {
-      const { parameterComponent, maxLevel } =
+      const { parameterComponent, maxLevel, parameterComponentExtraProps } =
         theme.getFormattingOptionsForLocation()
       const parameters = this.reduce(
         (acc: ReflectionParameterType[], current) => parseParams(current, acc),
         []
-      ).map((parameter) => reflectionComponentFormatter(parameter, 1, maxLevel))
+      ).map((parameter) =>
+        reflectionComponentFormatter({
+          reflection: parameter,
+          level: 1,
+          maxLevel,
+        })
+      )
 
-      return `<${parameterComponent} parameters={${JSON.stringify(
-        parameters,
-        null,
-        2
-      )}} />`
+      return formatParameterComponent({
+        parameterComponent,
+        componentItems: parameters,
+        extraProps: parameterComponentExtraProps,
+      })
     }
   )
 }

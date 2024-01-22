@@ -29,7 +29,6 @@ export interface IFileService extends TransactionBaseService {
   /**
    * upload file to fileservice from stream
    * @param fileData file metadata relevant for fileservice to create and upload the file
-   * @param fileStream readable stream of the file to upload
    * */
   getUploadStreamDescriptor(
     fileData: UploadStreamDescriptorType
@@ -55,6 +54,12 @@ export abstract class AbstractFileService
   extends TransactionBaseService
   implements IFileService
 {
+  static _isFileService = true
+
+  static isFileService(object): object is AbstractFileService {
+    return object?.constructor?._isFileService
+  }
+
   abstract upload(
     fileData: Express.Multer.File
   ): Promise<FileServiceUploadResult>
@@ -76,8 +81,4 @@ export abstract class AbstractFileService
   abstract getPresignedDownloadUrl(
     fileData: GetUploadedFileType
   ): Promise<string>
-}
-
-export const isFileService = (object: unknown): boolean => {
-  return object instanceof AbstractFileService
 }

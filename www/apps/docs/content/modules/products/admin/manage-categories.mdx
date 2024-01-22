@@ -69,12 +69,12 @@ You can retrieve available categories by sending a request to the [List Categori
 
     ```tsx
     import { useAdminProductCategories } from "medusa-react"
-    import { ProductCategory } from "@medusajs/medusa"
 
     function Categories() {
       const { 
         product_categories,
-        isLoading } = useAdminProductCategories()
+        isLoading 
+      } = useAdminProductCategories()
 
       return (
         <div>
@@ -85,7 +85,7 @@ You can retrieve available categories by sending a request to the [List Categori
           {product_categories && product_categories.length > 0 && (
             <ul>
               {product_categories.map(
-                (category: ProductCategory) => (
+                (category) => (
                   <li key={category.id}>{category.name}</li>
                 )
               )}
@@ -155,9 +155,15 @@ You can create a category by sending a request to the [Create a Category API Rou
       const createCategory = useAdminCreateProductCategory()
       // ...
 
-      const handleCreate = () => {
+      const handleCreate = (
+        name: string
+      ) => {
         createCategory.mutate({
-          name: "Skinny Jeans",
+          name,
+        }, {
+          onSuccess: ({ product_category }) => {
+            console.log(product_category.id)
+          }
         })
       }
 
@@ -233,7 +239,13 @@ You can retrieve a product category by sending a request to the [Get a Product C
     ```tsx
     import { useAdminProductCategory } from "medusa-react"
 
-    const Category = () => {
+    type Props = {
+      productCategoryId: string
+    }
+
+    const Category = ({
+      productCategoryId
+    }: Props) => {
       const { 
         product_category, 
         isLoading, 
@@ -305,22 +317,34 @@ You can edit a product category by sending a request to the [Update a Product Ca
     ```tsx
     import { useAdminUpdateProductCategory } from "medusa-react"
 
-    const UpdateCategory = () => {
+    type Props = {
+      productCategoryId: string
+    }
+
+    const Category = ({
+      productCategoryId
+    }: Props) => {
       const updateCategory = useAdminUpdateProductCategory(
         productCategoryId
       )
       // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (
+        name: string
+      ) => {
         updateCategory.mutate({
-          name: "Skinny Jeans",
+          name,
+        }, {
+          onSuccess: ({ product_category }) => {
+            console.log(product_category.id)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateCategory
+    export default Category
     ```
 
   </TabItem>
@@ -407,29 +431,34 @@ You can add more than one product to a category using the [Add Products to a Cat
     ```tsx
     import { useAdminAddProductsToCategory } from "medusa-react"
 
-    const UpdateProductsInCategory = () => {
-      const addProductsToCategory = useAdminAddProductsToCategory(
+    type Props = {
+      productCategoryId: string
+    }
+
+    const Category = ({
+      productCategoryId
+    }: Props) => {
+      const addProducts = useAdminAddProductsToCategory(
         productCategoryId
       )
       // ...
 
-      const handleAdd = () => {
-        addProductsToCategory.mutate({
-          product_ids: [
-            {
-              id: productId1,
-            },
-            {
-              id: productId2,
-            },
-          ],
+      const handleAddProducts = (
+        productIds: ProductsData[]
+      ) => {
+        addProducts.mutate({
+          product_ids: productIds
+        }, {
+          onSuccess: ({ product_category }) => {
+            console.log(product_category.products)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateProductsInCategory
+    export default Category
     ```
 
   </TabItem>
@@ -519,32 +548,40 @@ You can remove products from a category by sending a request to the [Delete Prod
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { 
-      useAdminDeleteProductsFromCategory,
-    } from "medusa-react"
+    import { useAdminDeleteProductsFromCategory } from "medusa-react"
 
-    const DeleteProductsFromCategory = () => {
-      const deleteProductsFromCategory = 
-        useAdminDeleteProductsFromCategory(productCategoryId)
+    type ProductsData = {
+      id: string
+    }
+
+    type Props = {
+      productCategoryId: string
+    }
+
+    const Category = ({
+      productCategoryId
+    }: Props) => {
+      const deleteProducts = useAdminDeleteProductsFromCategory(
+        productCategoryId
+      )
       // ...
 
-      const handleDelete = () => {
-        deleteProductsFromCategory.mutate({
-          product_ids: [
-            {
-              id: productId1,
-            },
-            {
-              id: productId2,
-            },
-          ],
+      const handleDeleteProducts = (
+        productIds: ProductsData[]
+      ) => {
+        deleteProducts.mutate({
+          product_ids: productIds
+        }, {
+          onSuccess: ({ product_category }) => {
+            console.log(product_category.products)
+          }
         })
       }
 
       // ...
     }
 
-    export default DeleteProductsFromCategory
+    export default Category
     ```
 
   </TabItem>
@@ -626,14 +663,24 @@ You can delete a product category by sending a request to the [Delete a Product 
     ```tsx
     import { useAdminDeleteProductCategory } from "medusa-react"
 
-    const Category = () => {
+    type Props = {
+      productCategoryId: string
+    }
+
+    const Category = ({
+      productCategoryId
+    }: Props) => {
       const deleteCategory = useAdminDeleteProductCategory(
         productCategoryId
       )
       // ...
 
       const handleDelete = () => {
-        deleteCategory.mutate()
+        deleteCategory.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...

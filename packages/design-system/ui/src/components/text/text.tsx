@@ -1,10 +1,10 @@
 import { Slot } from "@radix-ui/react-slot"
-import { VariantProps, cva } from "class-variance-authority"
+import { VariantProps, cva } from "cva"
 import * as React from "react"
 
 import { clx } from "@/utils/clx"
 
-const textVariants = cva("", {
+const textVariants = cva({
   variants: {
     size: {
       xsmall: "",
@@ -93,19 +93,41 @@ interface TextProps
   as?: "p" | "span" | "div"
 }
 
+/**
+ * This component is based on the `p` element and supports all of its props
+ */
 const Text = React.forwardRef<HTMLParagraphElement, TextProps>(
   (
     {
       className,
+      /**
+       * Whether to remove the wrapper `button` element and use the
+       * passed child element instead.
+       */
       asChild = false,
+      /**
+       * The wrapper element to use when `asChild` is disabled.
+       */
       as = "p",
+      /**
+       * The text's size.
+       */
       size = "base",
+      /**
+       * The text's font weight.
+       */
       weight = "regular",
+      /**
+       * The text's font family.
+       */
       family = "sans",
+      /**
+       * The text's line height.
+       */
       leading = "normal",
       children,
       ...props
-    },
+    }: TextProps,
     ref
   ) => {
     const Component = asChild ? Slot : as

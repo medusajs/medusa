@@ -1,3 +1,4 @@
+import { MedusaError } from "@medusajs/utils"
 import {
   DistributedTransaction,
   TransactionPayload,
@@ -5,8 +6,8 @@ import {
 import {
   TransactionHandlerType,
   TransactionState,
-  TransactionStepStatus,
   TransactionStepsDefinition,
+  TransactionStepStatus,
 } from "./types"
 
 export type TransactionStepHandler = (
@@ -30,6 +31,8 @@ export class TransactionStep {
    * @member attempts - The number of attempts made to execute the step
    * @member failures - The number of failures encountered while executing the step
    * @member lastAttempt - The timestamp of the last attempt made to execute the step
+   * @member hasScheduledRetry - A flag indicating if a retry has been scheduled
+   * @member retryRescheduledAt - The timestamp of the last retry scheduled
    * @member next - The ids of the next steps in the flow
    * @member saveResponse - A flag indicating if the response of a step should be shared in the transaction context and available to subsequent steps - default is true
    */
@@ -48,6 +51,10 @@ export class TransactionStep {
   attempts: number
   failures: number
   lastAttempt: number | null
+  retryRescheduledAt: number | null
+  hasScheduledRetry: boolean
+  timedOutAt: number | null
+  startedAt?: number
   next: string[]
   saveResponse: boolean
 
@@ -68,6 +75,10 @@ export class TransactionStep {
 
   public isCompensating() {
     return this.stepFailed
+  }
+
+  public isInvoking() {
+    return !this.stepFailed
   }
 
   public changeState(toState: TransactionState) {
@@ -99,7 +110,8 @@ export class TransactionStep {
       return
     }
 
-    throw new Error(
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
       `Updating State from "${curState.state}" to "${toState}" is not allowed.`
     )
   }
@@ -128,16 +140,49 @@ export class TransactionStep {
       return
     }
 
-    throw new Error(
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
       `Updating Status from "${curState.status}" to "${toStatus}" is not allowed.`
     )
   }
 
+  hasRetryScheduled(): boolean {
+    return !!this.hasScheduledRetry
+  }
+
+  hasRetryInterval(): boolean {
+    return !!this.definition.retryInterval
+  }
+
+  hasTimeout(): boolean {
+    return !!this.definition.timeout
+  }
+
+  getTimeoutInterval(): number | undefined {
+    return this.definition.timeout
+  }
+
   canRetry(): boolean {
+    return (
+      !this.definition.retryInterval ||
+      !!(
+        this.lastAttempt &&
+        this.definition.retryInterval &&
+        Date.now() - this.lastAttempt > this.definition.retryInterval * 1e3
+      )
+    )
+  }
+
+  hasAwaitingRetry(): boolean {
+    return !!this.definition.retryIntervalAwaiting
+  }
+
+  canRetryAwaiting(): boolean {
     return !!(
+      this.hasAwaitingRetry() &&
       this.lastAttempt &&
-      this.definition.retryInterval &&
-      Date.now() - this.lastAttempt > this.definition.retryInterval * 1e3
+      Date.now() - this.lastAttempt >
+        this.definition.retryIntervalAwaiting! * 1e3
     )
   }
 
@@ -156,6 +201,16 @@ export class TransactionStep {
       this.isCompensating() &&
       this.getStates().state === TransactionState.NOT_STARTED &&
       flowState === TransactionState.COMPENSATING
+    )
+  }
+
+  canCancel(): boolean {
+    return (
+      !this.isCompensating() &&
+      [
+        TransactionStepStatus.WAITING,
+        TransactionStepStatus.TEMPORARY_FAILURE,
+      ].includes(this.getStates().status)
     )
   }
 }

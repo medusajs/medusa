@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronLeftMini, ChevronRightMini } from "@medusajs/icons"
+import { TriangleLeftMini, TriangleRightMini } from "@medusajs/icons"
 import * as React from "react"
 import {
   DayPicker,
@@ -22,6 +22,9 @@ type KeysToOmit = "showWeekNumber" | "captionLayout" | "mode"
 type SingleProps = OmitKeys<DayPickerSingleProps, KeysToOmit>
 type RangeProps = OmitKeys<DayPickerRangeProps, KeysToOmit>
 
+/**
+ * @interface
+ */
 type CalendarProps =
   | ({
       mode: "single"
@@ -33,11 +36,36 @@ type CalendarProps =
       mode: "range"
     } & RangeProps)
 
+/**
+ * This component is based on the [react-date-picker](https://www.npmjs.com/package/react-date-picker) package.
+ *
+ * @excludeExternal
+ */
 const Calendar = ({
+  /**
+   * @ignore
+   */
   className,
+  /**
+   * @ignore
+   */
   classNames,
+  /**
+   * The calendar's mode.
+   */
   mode = "single",
+  /**
+   * Whether to show days of previous and next months.
+   *
+   * @keep
+   */
   showOutsideDays = true,
+  /**
+   * The locale to use for formatting dates. To change the locale pass a date-fns locale object.
+   *
+   * @keep
+   */
+  locale,
   ...props
 }: CalendarProps) => {
   return (
@@ -48,12 +76,12 @@ const Calendar = ({
       classNames={{
         months: "flex flex-col sm:flex-row",
         month: "space-y-2 p-3",
-        caption: "flex justify-center relative items-center h-9",
+        caption: "flex justify-center relative items-center h-8",
         caption_label:
-          "txt-compact-small-plus absolute bottom-0 left-0 right-0 top-1 flex items-center justify-center text-ui-fg-base",
+          "txt-compact-small-plus absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center text-ui-fg-base",
         nav: "space-x-1 flex items-center bg-ui-bg-base-pressed rounded-md w-full h-full justify-between p-0.5",
         nav_button: clx(
-          iconButtonVariants({ variant: "primary", size: "base" })
+          iconButtonVariants({ variant: "transparent", size: "small" })
         ),
         nav_button_previous: "!absolute left-0.5",
         nav_button_next: "!absolute right-0.5",
@@ -64,9 +92,9 @@ const Calendar = ({
         ),
         row: "flex w-full mt-2 gap-x-2",
         cell: "txt-compact-small-plus relative rounded-md p-0 text-center focus-within:relative",
-        day: "txt-compact-small-plus text-ui-fg-base bg-ui-bg-base hover:bg-ui-bg-base-hover focus:shadow-borders-interactive-with-focus h-8 w-8 rounded-md p-0 text-center outline-none transition-all",
+        day: "txt-compact-small-plus text-ui-fg-base bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:shadow-borders-interactive-with-focus h-8 w-8 rounded-md p-0 text-center outline-none transition-all",
         day_selected:
-          "bg-ui-bg-interactive text-ui-fg-on-color hover:bg-ui-bg-interactive focus:bg-ui-bg-interactive",
+          "bg-ui-bg-interactive text-ui-fg-on-color hover:bg-ui-bg-interactive focus-visible:bg-ui-bg-interactive",
         day_outside: "text-ui-fg-disabled aria-selected:text-ui-fg-on-color",
         day_disabled: "text-ui-fg-disabled",
         day_range_middle:
@@ -74,9 +102,10 @@ const Calendar = ({
         day_hidden: "invisible",
         ...classNames,
       }}
+      locale={locale}
       components={{
-        IconLeft: () => <ChevronLeftMini />,
-        IconRight: () => <ChevronRightMini />,
+        IconLeft: () => <TriangleLeftMini />,
+        IconRight: () => <TriangleRightMini />,
         Day: Day,
       }}
       {...(props as SingleProps & RangeProps)}

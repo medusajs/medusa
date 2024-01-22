@@ -41,7 +41,7 @@ The batch job strategy class must extend the `AbstractBatchJobStrategy` class wh
 
 For example, you can define the following class in the file you created:
 
-```ts title=src/strategies/import.ts
+```ts title="src/strategies/import.ts"
 import { 
   AbstractBatchJobStrategy, 
   BatchJobService,

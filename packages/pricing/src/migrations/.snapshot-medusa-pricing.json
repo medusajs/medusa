@@ -264,8 +264,8 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "number_rules": {
-          "name": "number_rules",
+        "rules_count": {
+          "name": "rules_count",
           "type": "integer",
           "unsigned": false,
           "autoincrement": false,
@@ -398,8 +398,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "number_rules": {
-          "name": "number_rules",
+        "rules_count": {
+          "name": "rules_count",
           "type": "integer",
           "unsigned": false,
           "autoincrement": false,
@@ -416,6 +416,38 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "price_set_money_amount",
@@ -454,6 +486,15 @@
           ],
           "composite": false,
           "keyName": "IDX_price_rule_price_list_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_set_money_amount_deleted_at",
           "primary": false,
           "unique": false
         },
@@ -505,8 +546,7 @@
             "id"
           ],
           "referencedTableName": "public.price_list",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
+          "deleteRule": "cascade"
         }
       }
     },
@@ -793,16 +833,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "is_dynamic": {
-          "name": "is_dynamic",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "false",
-          "mappedType": "boolean"
-        },
         "value": {
           "name": "value",
           "type": "text",
@@ -830,6 +860,38 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "price_rule",
@@ -859,6 +921,15 @@
           ],
           "composite": false,
           "keyName": "IDX_price_rule_price_set_money_amount_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_rule_deleted_at",
           "primary": false,
           "unique": false
         },
@@ -925,8 +996,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "rule_type_id": {
-          "name": "rule_type_id",
+        "price_list_id": {
+          "name": "price_list_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -934,8 +1005,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "price_list_id": {
-          "name": "price_list_id",
+        "rule_type_id": {
+          "name": "rule_type_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -949,19 +1020,19 @@
       "indexes": [
         {
           "columnNames": [
-            "rule_type_id"
+            "price_list_id"
           ],
           "composite": false,
-          "keyName": "IDX_price_list_rule_rule_type_id",
+          "keyName": "IDX_price_list_rule_price_list_id",
           "primary": false,
           "unique": false
         },
         {
           "columnNames": [
-            "price_list_id"
+            "rule_type_id"
           ],
           "composite": false,
-          "keyName": "IDX_price_list_rule_price_list_id",
+          "keyName": "IDX_price_list_rule_rule_type_id",
           "primary": false,
           "unique": false
         },
@@ -987,18 +1058,6 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "price_list_rule_rule_type_id_foreign": {
-          "constraintName": "price_list_rule_rule_type_id_foreign",
-          "columnNames": [
-            "rule_type_id"
-          ],
-          "localTableName": "public.price_list_rule",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.rule_type",
-          "updateRule": "cascade"
-        },
         "price_list_rule_price_list_id_foreign": {
           "constraintName": "price_list_rule_price_list_id_foreign",
           "columnNames": [
@@ -1009,6 +1068,18 @@
             "id"
           ],
           "referencedTableName": "public.price_list",
+          "updateRule": "cascade"
+        },
+        "price_list_rule_rule_type_id_foreign": {
+          "constraintName": "price_list_rule_rule_type_id_foreign",
+          "columnNames": [
+            "rule_type_id"
+          ],
+          "localTableName": "public.price_list_rule",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.rule_type",
           "updateRule": "cascade"
         }
       }

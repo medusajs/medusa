@@ -1,5 +1,47 @@
 # @medusajs/admin-ui
 
+## 2.1.11
+
+### Patch Changes
+
+- [#5822](https://github.com/medusajs/medusa/pull/5822) [`7ecea3448`](https://github.com/medusajs/medusa/commit/7ecea34487972bc05aae46918d5caebce607594b) Thanks [@hexrw](https://github.com/hexrw)! - feat(admin-ui): Add Czech translation
+
+- [#6001](https://github.com/medusajs/medusa/pull/6001) [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8) Thanks [@abusaidm](https://github.com/abusaidm)! - Add missing country in admin region and set Libya to formal name
+
+- Updated dependencies [[`7d650771d`](https://github.com/medusajs/medusa/commit/7d650771d1c1d3e5d77ff95c12e4970743b64303), [`925feea04`](https://github.com/medusajs/medusa/commit/925feea04a8222285175c33577548e50516069a7)]:
+  - medusa-react@9.0.13
+
+## 2.1.10
+
+### Patch Changes
+
+- [#5769](https://github.com/medusajs/medusa/pull/5769) [`f20d484b2`](https://github.com/medusajs/medusa/commit/f20d484b2381d07aac3e86d02f424f16b532c302) Thanks [@iweurman](https://github.com/iweurman)! - feat(admin): Add Korean language support
+
+- [#5701](https://github.com/medusajs/medusa/pull/5701) [`6975eacb3`](https://github.com/medusajs/medusa/commit/6975eacb338874b976c14aae030c74362d57410c) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa, medusa-cli): Improve add line item + cluster starting with medusa cli
+
+- Updated dependencies [[`4e9d95454`](https://github.com/medusajs/medusa/commit/4e9d954549916ea260583a6b5e36f0c6c02d4d22), [`591ba2388`](https://github.com/medusajs/medusa/commit/591ba2388d9768f70ca2faf48d353e5a65e4e123)]:
+  - medusa-react@9.0.12
+  - @medusajs/ui@2.2.4
+
+## 2.1.9
+
+### Patch Changes
+
+- [#5710](https://github.com/medusajs/medusa/pull/5710) [`07934cdaa`](https://github.com/medusajs/medusa/commit/07934cdaac2f3b49a935e9701ffa7d5cf1381847) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Ensure that the prices step is disabled until at least one product is selected in PriceList forms
+
+- [#5737](https://github.com/medusajs/medusa/pull/5737) [`d5526736e`](https://github.com/medusajs/medusa/commit/d5526736ecffab19dd4633ed64e08e097e433abe) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Fix height of Bulk Editor cells when product has few variants"
+
+- [#5707](https://github.com/medusajs/medusa/pull/5707) [`f4c489fb8`](https://github.com/medusajs/medusa/commit/f4c489fb85aaee605b60c527817f62cfdb2f3140) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Fix an issue where if product.categories was null the details page would crash
+
+- [#5676](https://github.com/medusajs/medusa/pull/5676) [`02ea9ac3a`](https://github.com/medusajs/medusa/commit/02ea9ac3ac87f1091c6f21c689ccfc55080b17cc) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): delete edit variant prices in favor of bulk editor
+
+- [#5726](https://github.com/medusajs/medusa/pull/5726) [`5f6751a61`](https://github.com/medusajs/medusa/commit/5f6751a61f11b901e4916d16b62607cda6d42032) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Makes it possible to scroll overflow on the Y-axis in the /products/:id bulk editor
+
+- [#5727](https://github.com/medusajs/medusa/pull/5727) [`3bcf08c0c`](https://github.com/medusajs/medusa/commit/3bcf08c0cb3a00799d61c127a2f3c192790c982f) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): delete inventory items when removing product
+
+- Updated dependencies [[`b25b29fe7`](https://github.com/medusajs/medusa/commit/b25b29fe7ba3bc9fca8da7a6b10461437a3e4d2d)]:
+  - @medusajs/ui@2.2.3
+
 ## 2.1.8
 
 ### Patch Changes

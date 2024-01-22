@@ -4,6 +4,9 @@ import { Copy } from "@/components/copy"
 import { clx } from "@/utils/clx"
 import React from "react"
 
+/**
+ * This component is based on the div element and supports all of its props
+ */
 const CommandComponent = ({
   className,
   ...props
@@ -19,6 +22,7 @@ const CommandComponent = ({
     />
   )
 }
+CommandComponent.displayName = "Command"
 
 const Command = Object.assign(CommandComponent, { Copy })
 

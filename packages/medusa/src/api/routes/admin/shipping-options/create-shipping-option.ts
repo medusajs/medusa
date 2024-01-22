@@ -1,19 +1,23 @@
 import {
   IsArray,
   IsBoolean,
+  IsEnum,
   IsNumber,
   IsObject,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
+import { RequirementType, ShippingOptionPriceType } from "../../../../models"
 import { defaultFields, defaultRelations } from "."
 
-import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { ShippingOptionService } from "../../../../services"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { CreateShippingOptionInput } from "../../../../types/shipping-options"
 
 /**
  * @oas [post] /admin/shipping-options
@@ -46,6 +50,45 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateShippingOption } from "medusa-react"
+ *
+ *       type CreateShippingOption = {
+ *         name: string
+ *         provider_id: string
+ *         data: Record<string, unknown>
+ *         price_type: string
+ *         amount: number
+ *       }
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({ regionId }: Props) => {
+ *         const createShippingOption = useAdminCreateShippingOption()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           data: CreateShippingOption
+ *         ) => {
+ *           createShippingOption.mutate({
+ *             ...data,
+ *             region_id: regionId
+ *           }, {
+ *             onSuccess: ({ shipping_option }) => {
+ *               console.log(shipping_option.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -88,7 +131,9 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostShippingOptionsReq, req.body)
 
-  const optionService = req.scope.resolve("shippingOptionService")
+  const optionService: ShippingOptionService = req.scope.resolve(
+    "shippingOptionService"
+  )
   const shippingProfileService = req.scope.resolve("shippingProfileService")
 
   // Add to default shipping profile
@@ -101,7 +146,7 @@ export default async (req, res) => {
   const result = await manager.transaction(async (transactionManager) => {
     return await optionService
       .withTransaction(transactionManager)
-      .create(validated)
+      .create(validated as CreateShippingOptionInput)
   })
 
   const data = await optionService.retrieve(result.id, {
@@ -113,8 +158,11 @@ export default async (req, res) => {
 }
 
 class OptionRequirement {
-  @IsString()
-  type: string
+  @IsEnum(RequirementType, {
+    message: `Invalid option type, must be one of "min_subtotal" or "max_subtotal"`,
+  })
+  type: RequirementType
+
   @IsNumber()
   amount: number
 }
@@ -122,6 +170,7 @@ class OptionRequirement {
 /**
  * @schema AdminPostShippingOptionsReq
  * type: object
+ * description: "The details of the shipping option to create."
  * required:
  *   - name
  *   - region_id
@@ -203,15 +252,17 @@ export class AdminPostShippingOptionsReq {
   @IsString()
   provider_id: string
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
   profile_id?: string
 
   @IsObject()
-  data: object
+  data: Record<string, unknown>
 
-  @IsString()
-  price_type: string
+  @IsEnum(ShippingOptionPriceType, {
+    message: `Invalid price type, must be one of "flat_rate" or "calculated"`,
+  })
+  price_type: ShippingOptionPriceType
 
   @IsOptional()
   @IsNumber()

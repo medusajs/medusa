@@ -1,5 +1,5 @@
-import { MedusaError } from "../common"
 import { ModulesSdkTypes } from "@medusajs/types"
+import { MedusaError } from "../common"
 
 function getEnv(key: string, moduleName: string): string {
   const value =
@@ -45,10 +45,12 @@ function getDatabaseUrl(
   config: ModulesSdkTypes.ModuleServiceInitializeOptions
 ): string {
   const { clientUrl, host, port, user, password, database } = config.database!
-  if (clientUrl) {
-    return clientUrl
+
+  if (host) {
+    return `postgres://${user}:${password}@${host}:${port}/${database}`
   }
-  return `postgres://${user}:${password}@${host}:${port}/${database}`
+
+  return clientUrl!
 }
 
 /**
@@ -65,8 +67,9 @@ export function loadDatabaseConfig(
   ModulesSdkTypes.ModuleServiceInitializeOptions["database"],
   "clientUrl" | "schema" | "driverOptions" | "debug"
 > {
-  const clientUrl = getEnv("POSTGRES_URL", moduleName)
-  
+  const clientUrl =
+    options?.database?.clientUrl ?? getEnv("POSTGRES_URL", moduleName)
+
   const database = {
     clientUrl,
     schema: getEnv("POSTGRES_SCHEMA", moduleName) ?? "public",
@@ -74,16 +77,20 @@ export function loadDatabaseConfig(
       getEnv("POSTGRES_DRIVER_OPTIONS", moduleName) ||
         JSON.stringify(getDefaultDriverOptions(clientUrl))
     ),
-    debug: process.env.NODE_ENV?.startsWith("dev") ?? false,
+    debug: false,
+    connection: undefined,
   }
 
   if (isModuleServiceInitializeOptions(options)) {
-    database.clientUrl = getDatabaseUrl(options)
+    database.clientUrl = getDatabaseUrl({
+      database: { ...options.database, clientUrl },
+    })
     database.schema = options.database!.schema ?? database.schema
     database.driverOptions =
       options.database!.driverOptions ??
       getDefaultDriverOptions(database.clientUrl)
     database.debug = options.database!.debug ?? database.debug
+    database.connection = options.database!.connection
   }
 
   if (!database.clientUrl && !silent) {

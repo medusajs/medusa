@@ -44,7 +44,7 @@ Where `<YOUR_ACCESS_KEY>` is your ipstack account’s access key. It’s availab
 
 Finally, add the IP lookup plugin into the plugins array exported as part of the Medusa configuration in `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // other plugins...
   {
@@ -80,7 +80,7 @@ You can learn more about creating an API Route [here](../../development/api-rout
 
 :::
 
-```ts title=src/api/store/customer-region/route.ts
+```ts title="src/api/store/customer-region/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse, 
@@ -124,7 +124,7 @@ For example, you can attach it to all `/store` routes to ensure the customer’s
 
 <!-- eslint-disable @typescript-eslint/no-var-requires -->
 
-```ts title=src/api/middlewares.ts
+```ts title="src/api/middlewares.ts"
 import type { MiddlewaresConfig } from "@medusajs/medusa"
 const { preCartCreation } = require(
   "medusa-plugin-ip-lookup/api/medusa-middleware"

@@ -1,42 +1,101 @@
 "use client"
 
 import * as Primitives from "@radix-ui/react-avatar"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva, type VariantProps } from "cva"
 import * as React from "react"
 
 import { clx } from "@/utils/clx"
 
-const avatarVariants = cva(
-  "border-ui-border-strong flex shrink-0 items-center justify-center overflow-hidden border",
-  {
-    variants: {
-      variant: {
-        squared: "rounded-lg",
-        rounded: "rounded-full",
-      },
-      size: {
-        base: "h-8 w-8",
-        large: "h-10 w-10",
-      },
-    },
-    defaultVariants: {
-      variant: "rounded",
-      size: "base",
-    },
-  }
-)
-
-const innerVariants = cva("aspect-square object-cover object-center", {
+const avatarVariants = cva({
+  base: "border-ui-border-strong flex shrink-0 items-center justify-center overflow-hidden border",
   variants: {
     variant: {
-      squared: "rounded-lg",
+      squared: "",
       rounded: "rounded-full",
     },
     size: {
-      base: "txt-compact-small-plus h-6 w-6",
-      large: "txt-compact-medium-plus h-8 w-8",
+      xsmall: "h-5 w-5",
+      small: "h-6 w-6",
+      base: "h-8 w-8",
+      large: "h-10 w-10",
+      xlarge: "h-12 w-12",
     },
   },
+  compoundVariants: [
+    {
+      variant: "squared",
+      size: "xsmall",
+      className: "rounded-[4px]",
+    },
+    {
+      variant: "squared",
+      size: "small",
+      className: "rounded-md",
+    },
+    {
+      variant: "squared",
+      size: "base",
+      className: "rounded-md",
+    },
+    {
+      variant: "squared",
+      size: "large",
+      className: "rounded-lg",
+    },
+    {
+      variant: "squared",
+      size: "xlarge",
+      className: "rounded-xl",
+    },
+  ],
+  defaultVariants: {
+    variant: "rounded",
+    size: "base",
+  },
+})
+
+const innerVariants = cva({
+  base: "aspect-square object-cover object-center",
+  variants: {
+    variant: {
+      squared: "",
+      rounded: "rounded-full",
+    },
+    size: {
+      xsmall: "txt-compact-xsmall-plus h-4 w-4",
+      small: "txt-compact-xsmall-plus h-5 w-5",
+      base: "txt-compact-small-plus h-7 w-7",
+      large: "txt-compact-medium-plus h-9 w-9",
+      xlarge: "txt-compact-large-plus h-11 w-11",
+    },
+  },
+  compoundVariants: [
+    {
+      variant: "squared",
+      size: "xsmall",
+      className: "rounded-sm",
+    },
+    {
+      variant: "squared",
+      size: "small",
+      className: "rounded-[4px]",
+    },
+    {
+      variant: "squared",
+      size: "base",
+      className: "rounded-[4px]",
+    },
+    {
+      variant: "squared",
+      size: "large",
+      className: "rounded-md",
+    },
+    {
+      variant: "squared",
+      size: "xlarge",
+      className: "rounded-[10px]",
+    },
+  ],
   defaultVariants: {
     variant: "rounded",
     size: "base",
@@ -53,19 +112,45 @@ interface AvatarProps
   fallback: string
 }
 
+/**
+ * This component is based on the [Radix UI Avatar](https://www.radix-ui.com/primitives/docs/components/avatar) primitive.
+ */
 const Avatar = React.forwardRef<
   React.ElementRef<typeof Primitives.Root>,
   AvatarProps
 >(
   (
-    { src, fallback, variant = "rounded", size = "base", className, ...props },
+    {
+      /**
+       * The URL of the image used in the Avatar.
+       */
+      src,
+      /**
+       * Text to show in the avatar if the URL provided in `src` can't be opened.
+       */
+      fallback,
+      /**
+       * The style of the avatar.
+       */
+      variant = "rounded",
+      /**
+       * The size of the avatar's border radius.
+       */
+      size = "base",
+      className,
+      ...props
+    }: AvatarProps,
     ref
   ) => {
     return (
       <Primitives.Root
         ref={ref}
         {...props}
-        className={clx(avatarVariants({ variant, size }), className)}
+        className={clx(
+          "rounded-x",
+          avatarVariants({ variant, size }),
+          className
+        )}
       >
         {src && (
           <Primitives.Image

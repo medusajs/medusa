@@ -35,24 +35,11 @@ import {
 import ProductImageService from "./product-image"
 
 import {
-  CreateProductCategoryDTO,
-  ProductCategoryEventData,
-  ProductCategoryEvents,
-  UpdateProductCategoryDTO,
-} from "../types/services/product-category"
-
-import { UpdateProductVariantDTO } from "../types/services/product-variant"
-
-import {
-  ProductCollectionEventData,
-  ProductCollectionEvents,
-} from "../types/services/product-collection"
-
-import {
-  ProductEventData,
-  ProductEvents,
-  UpdateProductDTO,
-} from "../types/services/product"
+  ProductCategoryServiceTypes,
+  ProductCollectionServiceTypes,
+  ProductServiceTypes,
+  ProductVariantServiceTypes,
+} from "@types"
 
 import {
   arrayDifference,
@@ -68,14 +55,19 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 import {
+  CreateProductOptionValueDTO,
+  UpdateProductOptionValueDTO,
+} from "../types/services/product-option-value"
+import {
   entityNameToLinkableKeysMap,
   joinerConfig,
   LinkableKeys,
 } from "./../joiner-config"
 import {
-  CreateProductOptionValueDTO,
-  UpdateProductOptionValueDTO,
-} from "../types/services/product-option-value"
+  ProductCategoryEventData,
+  ProductCategoryEvents,
+} from "../types/services/product-category"
+import { ProductEventData, ProductEvents } from "../types/services/product"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -373,7 +365,7 @@ export default class ProductModuleService<
     const toUpdate = data.map(({ id, options, ...rest }) => {
       const variant = variantsMap.get(id)!
 
-      const toUpdate: UpdateProductVariantDTO = {
+      const toUpdate: ProductVariantServiceTypes.UpdateProductVariantDTO = {
         id,
         product_id: variant.product_id,
       }
@@ -749,9 +741,12 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
+    // eslint-disable-next-line max-len
+    await this.eventBusModuleService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
       productCollections.map(({ id }) => ({
-        eventName: ProductCollectionEvents.COLLECTION_CREATED,
+        eventName:
+          ProductCollectionServiceTypes.ProductCollectionEvents
+            .COLLECTION_CREATED,
         data: { id },
       }))
     )
@@ -769,9 +764,12 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
+    // eslint-disable-next-line max-len
+    await this.eventBusModuleService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
       productCollections.map(({ id }) => ({
-        eventName: ProductCollectionEvents.COLLECTION_UPDATED,
+        eventName:
+          ProductCollectionServiceTypes.ProductCollectionEvents
+            .COLLECTION_UPDATED,
         data: { id },
       }))
     )
@@ -789,9 +787,12 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
+    // eslint-disable-next-line max-len
+    await this.eventBusModuleService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
       productCollectionIds.map((id) => ({
-        eventName: ProductCollectionEvents.COLLECTION_DELETED,
+        eventName:
+          ProductCollectionServiceTypes.ProductCollectionEvents
+            .COLLECTION_DELETED,
         data: { id },
       }))
     )
@@ -829,7 +830,7 @@ export default class ProductModuleService<
 
   @InjectTransactionManager("baseRepository_")
   async createCategory(
-    data: CreateProductCategoryDTO,
+    data: ProductCategoryServiceTypes.CreateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
   ) {
     const productCategory = await this.productCategoryService_.create(
@@ -848,7 +849,7 @@ export default class ProductModuleService<
   @InjectTransactionManager("baseRepository_")
   async updateCategory(
     categoryId: string,
-    data: UpdateProductCategoryDTO,
+    data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
   ) {
     const productCategory = await this.productCategoryService_.update(
@@ -1063,6 +1064,10 @@ export default class ProductModuleService<
 
     const existingProductVariantsMap = new Map<string, ProductVariant[]>(
       data.map((productData) => {
+        if (productData.variants === undefined) {
+          return [productData.id, []]
+        }
+
         const productVariantsForProduct = existingProductVariants.filter(
           (variant) => variant.product_id === productData.id
         )
@@ -1120,7 +1125,7 @@ export default class ProductModuleService<
           (productData.options ?? []) as TProductOption[]
         )
 
-        return productData as UpdateProductDTO
+        return productData as ProductServiceTypes.UpdateProductDTO
       })
     )
 
@@ -1199,10 +1204,13 @@ export default class ProductModuleService<
     })
 
     productVariantsToUpdateMap.forEach((variants, productId) => {
+      const variants_ =
+        // eslint-disable-next-line max-len
+        variants as unknown as ProductVariantServiceTypes.UpdateProductVariantDTO[]
       promises.push(
         this.productVariantService_.update(
           productByIdMap.get(productId)!,
-          variants as unknown as UpdateProductVariantDTO[],
+          variants_,
           sharedContext
         )
       )

@@ -4,7 +4,7 @@
   import InboxSolid from "../inbox-solid"
 
   describe("InboxSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<InboxSolid data-testid="icon" />)
 
 

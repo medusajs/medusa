@@ -1,17 +1,7 @@
-import { Context, DAL, FindConfig, PricingTypes } from "@medusajs/types"
-import {
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-  doNotForceTransaction,
-  retrieveEntity,
-  shouldForceTransaction,
-} from "@medusajs/utils"
+import { Context, DAL } from "@medusajs/types"
+import { ModulesSdkUtils } from "@medusajs/utils"
 import { PriceListRuleValue } from "@models"
-import { PriceListRuleValueRepository } from "@repositories"
-
-import { CreatePriceListRuleValueDTO } from "../types"
+import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   priceListRuleValueRepository: DAL.RepositoryService
@@ -19,99 +9,36 @@ type InjectedDependencies = {
 
 export default class PriceListRuleValueService<
   TEntity extends PriceListRuleValue = PriceListRuleValue
-> {
-  protected readonly priceListRuleValueRepository_: DAL.RepositoryService
-
-  constructor({ priceListRuleValueRepository }: InjectedDependencies) {
-    this.priceListRuleValueRepository_ = priceListRuleValueRepository
+> extends ModulesSdkUtils.abstractServiceFactory<
+  InjectedDependencies,
+  {
+    update: ServiceTypes.UpdatePriceListRuleValueDTO
+  },
+  {
+    list: ServiceTypes.FilterablePriceListRuleValueProps
+    listAndCount: ServiceTypes.FilterablePriceListRuleValueProps
+  }
+>(PriceListRuleValue)<TEntity> {
+  constructor(container: InjectedDependencies) {
+    // @ts-ignore
+    super(...arguments)
   }
 
-  @InjectManager("priceListRuleValueRepository_")
-  async retrieve(
-    priceSetId: string,
-    config: FindConfig<PricingTypes.PriceListRuleValueDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity> {
-    return (await retrieveEntity<
-      PriceListRuleValue,
-      PricingTypes.PriceListRuleValueDTO
-    >({
-      id: priceSetId,
-      entityName: PriceListRuleValue.name,
-      repository: this.priceListRuleValueRepository_,
-      config,
-      sharedContext,
-    })) as TEntity
-  }
-
-  @InjectManager("priceListRuleValueRepository_")
-  async list(
-    filters: PricingTypes.FilterablePriceListRuleValueProps = {},
-    config: FindConfig<PricingTypes.PriceListRuleValueDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<PriceListRuleValue>(
-      filters,
-      config
-    )
-
-    return (await this.priceListRuleValueRepository_.find(
-      queryOptions,
-      sharedContext
-    )) as TEntity[]
-  }
-
-  @InjectManager("priceListRuleValueRepository_")
-  async listAndCount(
-    filters: PricingTypes.FilterablePriceListRuleValueProps = {},
-    config: FindConfig<PricingTypes.PriceListRuleValueDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TEntity[], number]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<PriceListRuleValue>(
-      filters,
-      config
-    )
-
-    return (await this.priceListRuleValueRepository_.findAndCount(
-      queryOptions,
-      sharedContext
-    )) as [TEntity[], number]
-  }
-
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "priceListRuleValueRepository_"
-  )
   async create(
-    data: CreatePriceListRuleValueDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    data: ServiceTypes.CreatePriceListRuleValueDTO[],
+    context: Context = {}
   ): Promise<TEntity[]> {
-    return (await (
-      this.priceListRuleValueRepository_ as PriceListRuleValueRepository
-    ).create(data, sharedContext)) as TEntity[]
-  }
+    const priceListRuleValues = data.map((priceRuleValueData) => {
+      const { price_list_rule_id: priceListRuleId, ...priceRuleValue } =
+        priceRuleValueData
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "priceListRuleValueRepository_"
-  )
-  async update(
-    data: PricingTypes.UpdatePriceListRuleValueDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return (await (
-      this.priceListRuleValueRepository_ as PriceListRuleValueRepository
-    ).update(data, sharedContext)) as TEntity[]
-  }
+      if (priceListRuleId) {
+        priceRuleValue.price_list_rule = priceListRuleId
+      }
 
-  @InjectTransactionManager(
-    doNotForceTransaction,
-    "priceListRuleValueRepository_"
-  )
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.priceListRuleValueRepository_.delete(ids, sharedContext)
+      return priceRuleValue
+    })
+
+    return await super.create(priceListRuleValues, context)
   }
 }

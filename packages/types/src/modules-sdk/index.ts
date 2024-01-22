@@ -271,7 +271,22 @@ export type ModuleServiceInitializeCustomDataLayerOptions = {
   }
 }
 
+export type ModuleBootstrapDeclaration =
+  | InternalModuleDeclaration
+  | ExternalModuleDeclaration
+// TODO: These should be added back when the chain of types are fixed
+// | ModuleServiceInitializeOptions
+// | ModuleServiceInitializeCustomDataLayerOptions
+
 export type RemoteQueryFunction = (
   query: string | RemoteJoinerQuery | object,
   variables?: Record<string, unknown>
 ) => Promise<any> | null
+
+export interface IModuleService {
+  __joinerConfig?(): ModuleJoinerConfig
+
+  __hooks?: {
+    onApplicationStart?: () => Promise<void>
+  }
+}

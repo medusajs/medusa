@@ -20,7 +20,9 @@ export default function () {
       const headers = getTableHeaders(parameters)
 
       const rows = parameters.map((parameter) =>
-        reflectionTableFormatter(parameter)
+        reflectionTableFormatter({
+          reflection: parameter,
+        })
       )
 
       return `\n| ${headers.join(" | ")} |\n| ${headers

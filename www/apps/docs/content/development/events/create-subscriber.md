@@ -21,7 +21,7 @@ The subscriber file exports a default handler function, and the subscriber's con
 
 For example:
 
-```ts title=src/subscribers/product-update-handler.ts
+```ts title="src/subscribers/product-update-handler.ts"
 import { 
   ProductService,
   type SubscriberConfig, 
@@ -59,7 +59,7 @@ The exported configuration object of type `SubscriberConfig` must include the fo
 
 ### Subscriber Handler Function
 
-The default-export of the subscriber file is a handler function that is executed when the events specified in the exported configuration is triggerd.
+The default-export of the subscriber file is a handler function that is executed when the events specified in the exported configuration is triggered.
 
 The function accepts a parameter of type `SubscriberArgs`, which has the following properties:
 
@@ -88,7 +88,7 @@ If you don't pass a subscriber ID to the subscriber configurations, the name of 
 
 ## Caveats for Local Event Bus
 
-If you use the `event-bus-local` as your event bus sevice, note the following:
+If you use the `event-bus-local` as your event bus service, note the following:
 
 - The `subscriberId` passed in the context is overwritten to a random ID when using `event-bus-local`. So, setting the subscriber ID in the context won't have any effect in this case.
 - The `eventName` passed to the handler function will be `undefined` when using `event-bus-local` as it doesn't pass the event name properly.
@@ -107,7 +107,7 @@ Within your subscriber, you may need to access the Medusa configuration exported
 
 For example:
 
-```ts title=src/subscribers/product-update-handler.ts
+```ts title="src/subscribers/product-update-handler.ts"
 import { 
   ProductService,
   type SubscriberConfig, 

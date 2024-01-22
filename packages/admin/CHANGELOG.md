@@ -1,5 +1,35 @@
 # @medusajs/admin
 
+## 7.1.10
+
+### Patch Changes
+
+- [#6001](https://github.com/medusajs/medusa/pull/6001) [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8) Thanks [@abusaidm](https://github.com/abusaidm)! - Add missing country in admin region and set Libya to formal name
+
+- Updated dependencies [[`7ecea3448`](https://github.com/medusajs/medusa/commit/7ecea34487972bc05aae46918d5caebce607594b), [`f86877586`](https://github.com/medusajs/medusa/commit/f86877586147ecedbf7f56a1c57f37ef0c33286c), [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8)]:
+  - @medusajs/admin-ui@2.1.11
+  - medusa-core-utils@1.2.1
+
+## 7.1.9
+
+### Patch Changes
+
+- [#5769](https://github.com/medusajs/medusa/pull/5769) [`f20d484b2`](https://github.com/medusajs/medusa/commit/f20d484b2381d07aac3e86d02f424f16b532c302) Thanks [@iweurman](https://github.com/iweurman)! - feat(admin): Add Korean language support
+
+- [#5723](https://github.com/medusajs/medusa/pull/5723) [`fd317f1a6`](https://github.com/medusajs/medusa/commit/fd317f1a6ba0952999e2de5c4e649376e6afab21) Thanks [@driver005](https://github.com/driver005)! - feat(medusa): add monorepo support command develop
+
+- Updated dependencies [[`f20d484b2`](https://github.com/medusajs/medusa/commit/f20d484b2381d07aac3e86d02f424f16b532c302), [`6975eacb3`](https://github.com/medusajs/medusa/commit/6975eacb338874b976c14aae030c74362d57410c)]:
+  - @medusajs/admin-ui@2.1.10
+
+## 7.1.8
+
+### Patch Changes
+
+- [#5676](https://github.com/medusajs/medusa/pull/5676) [`02ea9ac3a`](https://github.com/medusajs/medusa/commit/02ea9ac3ac87f1091c6f21c689ccfc55080b17cc) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): delete edit variant prices in favor of bulk editor
+
+- Updated dependencies [[`07934cdaa`](https://github.com/medusajs/medusa/commit/07934cdaac2f3b49a935e9701ffa7d5cf1381847), [`d5526736e`](https://github.com/medusajs/medusa/commit/d5526736ecffab19dd4633ed64e08e097e433abe), [`f4c489fb8`](https://github.com/medusajs/medusa/commit/f4c489fb85aaee605b60c527817f62cfdb2f3140), [`02ea9ac3a`](https://github.com/medusajs/medusa/commit/02ea9ac3ac87f1091c6f21c689ccfc55080b17cc), [`5f6751a61`](https://github.com/medusajs/medusa/commit/5f6751a61f11b901e4916d16b62607cda6d42032), [`3bcf08c0c`](https://github.com/medusajs/medusa/commit/3bcf08c0cb3a00799d61c127a2f3c192790c982f)]:
+  - @medusajs/admin-ui@2.1.9
+
 ## 7.1.7
 
 ### Patch Changes

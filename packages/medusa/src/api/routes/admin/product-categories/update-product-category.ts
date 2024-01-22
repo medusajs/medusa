@@ -1,17 +1,17 @@
 import {
-  IsOptional,
-  IsString,
   IsInt,
-  Min,
   IsNotEmpty,
   IsObject,
+  IsOptional,
+  IsString,
+  Min,
 } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
 import { ProductCategoryService } from "../../../../services"
-import { AdminProductCategoriesReqBase } from "../../../../types/product-category"
 import { FindParams } from "../../../../types/common"
+import { AdminProductCategoriesReqBase } from "../../../../types/product-category"
 
 /**
  * @oas [post] /admin/product-categories/{id}
@@ -45,6 +45,40 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateProductCategory } from "medusa-react"
+ *
+ *       type Props = {
+ *         productCategoryId: string
+ *       }
+ *
+ *       const Category = ({
+ *         productCategoryId
+ *       }: Props) => {
+ *         const updateCategory = useAdminUpdateProductCategory(
+ *           productCategoryId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           name: string
+ *         ) => {
+ *           updateCategory.mutate({
+ *             name,
+ *           }, {
+ *             onSuccess: ({ product_category }) => {
+ *               console.log(product_category.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Category
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -108,6 +142,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostProductCategoriesCategoryReq
  * type: object
+ * description: "The details to update of the product category."
  * properties:
  *   name:
  *     type: string

@@ -5,8 +5,7 @@ const pathPrefix = path.join(__dirname, "..", "..", "..")
 
 /** @type {import('typedoc').TypeDocOptions} */
 module.exports = {
-  // extends: [typedocConfig],
-  plugin: ["typedoc-plugin-markdown-medusa", "typedoc-plugin-custom"],
+  plugin: ["typedoc-plugin-custom"],
   readme: "none",
   eslintPathName: path.join(
     pathPrefix,
@@ -15,6 +14,14 @@ module.exports = {
   pluginsResolvePath: path.join(pathPrefix, "www"),
   exclude: [path.join(pathPrefix, "node_modules/**")],
   excludeInternal: true,
+  excludeExternals: true,
+  excludeReferences: true,
+  disableSources: true,
+  validation: {
+    notExported: false,
+    // invalidLink: false,
+  },
+  // logLevel: "Error",
   // Uncomment this when debugging
   // showConfig: true,
 }

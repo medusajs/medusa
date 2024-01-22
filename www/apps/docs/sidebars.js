@@ -75,6 +75,14 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "recipes/integrate-ecommerce-stack",
+          label: "Integrate Ecommerce Stack",
+          customProps: {
+            iconName: "puzzle-solid",
+          },
+        },
+        {
+          type: "doc",
           id: "recipes/commerce-automation",
           label: "Commerce Automation",
           customProps: {
@@ -641,18 +649,6 @@ module.exports = {
         },
         {
           type: "html",
-          value: "References",
-          customProps: {
-            sidebar_is_group_divider: true,
-          },
-        },
-        {
-          type: "ref",
-          id: "references/product/interfaces/IProductModuleService",
-          label: "Product Module Interface Reference",
-        },
-        {
-          type: "html",
           value: "How-to",
           customProps: {
             sidebar_is_group_divider: true,
@@ -672,11 +668,6 @@ module.exports = {
           type: "doc",
           id: "modules/products/admin/import-products",
           label: "Admin: Import Products",
-        },
-        {
-          type: "doc",
-          id: "modules/products/serverless-module",
-          label: "Storefront: Serverless Module",
         },
         {
           type: "doc",
@@ -734,12 +725,12 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "modules/carts-and-checkout/backend/add-fulfillment-provider",
+          id: "references/fulfillment/classes/fulfillment.AbstractFulfillmentService",
           label: "Backend: Create Fulfillment Provider",
         },
         {
           type: "doc",
-          id: "modules/carts-and-checkout/backend/add-payment-provider",
+          id: "references/payment/classes/payment.AbstractPaymentProcessor",
           label: "Backend: Create Payment Processor",
         },
         {
@@ -927,12 +918,12 @@ module.exports = {
         },
         {
           type: "ref",
-          id: "references/inventory/interfaces/IInventoryService",
+          id: "references/inventory/interfaces/inventory.IInventoryService",
           label: "Inventory Module Interface Reference",
         },
         {
           type: "ref",
-          id: "references/stock-location/interfaces/IStockLocationService",
+          id: "references/stock_location/interfaces/stock_location.IStockLocationService",
           label: "Stock Location Module Interface Reference",
         },
         {
@@ -1163,18 +1154,6 @@ module.exports = {
         },
         {
           type: "html",
-          value: "References",
-          customProps: {
-            sidebar_is_group_divider: true,
-          },
-        },
-        {
-          type: "ref",
-          id: "references/pricing/interfaces/IPricingModuleService",
-          label: "Pricing Module Interface Reference",
-        },
-        {
-          type: "html",
           value: "How-to",
           customProps: {
             sidebar_is_group_divider: true,
@@ -1380,6 +1359,29 @@ module.exports = {
       items: [
         {
           type: "category",
+          label: "Workflows",
+          items: [
+            {
+              type: "doc",
+              id: "development/workflows/index",
+              label: "Introduction",
+            },
+            {
+              type: "html",
+              value: "References",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "ref",
+              id: "references/modules/workflows",
+              label: "API Reference",
+            },
+          ],
+        },
+        {
+          type: "category",
           label: "Entity",
           items: [
             {
@@ -1394,7 +1396,7 @@ module.exports = {
             },
             {
               type: "ref",
-              id: "references/entities/classes/Address",
+              id: "references/entities/classes/entities.Address",
               label: "Entities Reference",
             },
             {
@@ -1502,7 +1504,7 @@ module.exports = {
             },
             {
               type: "ref",
-              id: "references/services/classes/AbstractBatchJobStrategy",
+              id: "references/services/classes/services.AnalyticsConfigService",
               label: "Services Reference",
             },
             {
@@ -1526,7 +1528,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Event",
+          label: "Subscribers and Events",
           items: [
             {
               type: "doc",
@@ -1968,6 +1970,14 @@ module.exports = {
           label: "Transaction Orchestrator",
         },
       ],
+    },
+    {
+      type: "ref",
+      label: "Experimental Features",
+      id: "experimental/index",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
     },
   ],
   upgradeGuides: [
@@ -2646,6 +2656,129 @@ module.exports = {
       dirName: "user-guide",
     },
   ],
+  experimentalSidebar: [
+    {
+      type: "ref",
+      id: "development/overview",
+      label: "Back to Medusa Development",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "experimental/index",
+      label: "Experimental",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "beaker",
+      },
+    },
+    {
+      type: "category",
+      label: "Pricing Module",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "experimental/pricing/overview",
+        },
+        {
+          type: "doc",
+          label: "Install in Medusa",
+          id: "experimental/pricing/install-medusa",
+        },
+        {
+          type: "doc",
+          label: "Install in Node.js",
+          id: "experimental/pricing/install-nodejs",
+        },
+        {
+          type: "doc",
+          label: "Examples",
+          id: "experimental/pricing/examples",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          label: "Pricing Concepts",
+          id: "experimental/pricing/concepts",
+        },
+        {
+          type: "doc",
+          label: "Prices Calculation",
+          id: "experimental/pricing/prices-calculation",
+        },
+        {
+          type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/pricing/interfaces/pricing.IPricingModuleService",
+          label: "Interface Reference",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Product Module",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "experimental/product/overview",
+        },
+        {
+          type: "doc",
+          label: "Install in Medusa",
+          id: "experimental/product/install-medusa",
+        },
+        {
+          type: "doc",
+          label: "Install in Node.js",
+          id: "experimental/product/install-nodejs",
+        },
+        {
+          type: "doc",
+          label: "Examples",
+          id: "experimental/product/examples",
+        },
+        {
+          type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/product/interfaces/product.IProductModuleService",
+          label: "Interface Reference",
+        },
+      ],
+    },
+  ],
   servicesSidebar: [
     {
       type: "ref",
@@ -2702,204 +2835,204 @@ module.exports = {
           collapsed: true,
           link: {
             type: "doc",
-            id: "references/js-client/classes/Admin",
+            id: "references/js_client/classes/js_client.Admin",
           },
           items: [
             {
               type: "doc",
-              id: "references/js-client/classes/AdminAuthResource",
+              id: "references/js_client/classes/js_client.AdminAuthResource",
               label: "auth",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminBatchJobsResource",
+              id: "references/js_client/classes/js_client.AdminBatchJobsResource",
               label: "batchJobs",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminCollectionsResource",
+              id: "references/js_client/classes/js_client.AdminCollectionsResource",
               label: "collections",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminCurrenciesResource",
+              id: "references/js_client/classes/js_client.AdminCurrenciesResource",
               label: "currencies",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminCustomResource",
+              id: "references/js_client/classes/js_client.AdminCustomResource",
               label: "custom",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminCustomerGroupsResource",
+              id: "references/js_client/classes/js_client.AdminCustomerGroupsResource",
               label: "customerGroups",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminCustomersResource",
+              id: "references/js_client/classes/js_client.AdminCustomersResource",
               label: "customers",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminDiscountsResource",
+              id: "references/js_client/classes/js_client.AdminDiscountsResource",
               label: "discounts",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminDraftOrdersResource",
+              id: "references/js_client/classes/js_client.AdminDraftOrdersResource",
               label: "draftOrders",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminGiftCardsResource",
+              id: "references/js_client/classes/js_client.AdminGiftCardsResource",
               label: "giftCards",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminInventoryItemsResource",
+              id: "references/js_client/classes/js_client.AdminInventoryItemsResource",
               label: "inventoryItems",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminInvitesResource",
+              id: "references/js_client/classes/js_client.AdminInvitesResource",
               label: "invites",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminNotesResource",
+              id: "references/js_client/classes/js_client.AdminNotesResource",
               label: "notes",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminNotificationsResource",
+              id: "references/js_client/classes/js_client.AdminNotificationsResource",
               label: "notifications",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminOrderEditsResource",
+              id: "references/js_client/classes/js_client.AdminOrderEditsResource",
               label: "orderEdits",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminOrdersResource",
+              id: "references/js_client/classes/js_client.AdminOrdersResource",
               label: "orders",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminPaymentCollectionsResource",
+              id: "references/js_client/classes/js_client.AdminPaymentCollectionsResource",
               label: "paymentCollections",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminPaymentsResource",
+              id: "references/js_client/classes/js_client.AdminPaymentsResource",
               label: "payments",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminPriceListResource",
+              id: "references/js_client/classes/js_client.AdminPriceListResource",
               label: "priceLists",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminProductCategoriesResource",
+              id: "references/js_client/classes/js_client.AdminProductCategoriesResource",
               label: "productCategories",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminProductTagsResource",
+              id: "references/js_client/classes/js_client.AdminProductTagsResource",
               label: "productTags",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminProductTypesResource",
+              id: "references/js_client/classes/js_client.AdminProductTypesResource",
               label: "productTypes",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminProductsResource",
+              id: "references/js_client/classes/js_client.AdminProductsResource",
               label: "products",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminPublishableApiKeyResource",
+              id: "references/js_client/classes/js_client.AdminPublishableApiKeyResource",
               label: "publishableApiKeys",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminRegionsResource",
+              id: "references/js_client/classes/js_client.AdminRegionsResource",
               label: "regions",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminReservationsResource",
+              id: "references/js_client/classes/js_client.AdminReservationsResource",
               label: "reservations",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminReturnReasonsResource",
+              id: "references/js_client/classes/js_client.AdminReturnReasonsResource",
               label: "returnReasons",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminReturnsResource",
+              id: "references/js_client/classes/js_client.AdminReturnsResource",
               label: "returns",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminSalesChannelsResource",
+              id: "references/js_client/classes/js_client.AdminSalesChannelsResource",
               label: "salesChannels",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminShippingOptionsResource",
+              id: "references/js_client/classes/js_client.AdminShippingOptionsResource",
               label: "shippingOptions",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminShippingProfilesResource",
+              id: "references/js_client/classes/js_client.AdminShippingProfilesResource",
               label: "shippingProfiles",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminStockLocationsResource",
+              id: "references/js_client/classes/js_client.AdminStockLocationsResource",
               label: "stockLocations",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminStoresResource",
+              id: "references/js_client/classes/js_client.AdminStoresResource",
               label: "store",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminSwapsResource",
+              id: "references/js_client/classes/js_client.AdminSwapsResource",
               label: "swaps",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminTaxRatesResource",
+              id: "references/js_client/classes/js_client.AdminTaxRatesResource",
               label: "taxRates",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminUploadsResource",
+              id: "references/js_client/classes/js_client.AdminUploadsResource",
               label: "uploads",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminUsersResource",
+              id: "references/js_client/classes/js_client.AdminUsersResource",
               label: "users",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminVariantsResource",
+              id: "references/js_client/classes/js_client.AdminVariantsResource",
               label: "variants",
             },
           ],
         },
         {
           type: "doc",
-          id: "references/js-client/classes/AuthResource",
+          id: "references/js_client/classes/js_client.AuthResource",
           label: "auth",
         },
         {
@@ -2907,20 +3040,20 @@ module.exports = {
           label: "carts",
           link: {
             type: "doc",
-            id: "references/js-client/classes/CartsResource",
+            id: "references/js_client/classes/js_client.CartsResource",
           },
           collapsed: true,
           items: [
             {
               type: "doc",
-              id: "references/js-client/classes/LineItemsResource",
+              id: "references/js_client/classes/js_client.LineItemsResource",
               label: "lineItems",
             },
           ],
         },
         {
           type: "doc",
-          id: "references/js-client/classes/CollectionsResource",
+          id: "references/js_client/classes/js_client.CollectionsResource",
           label: "collections",
         },
         {
@@ -2929,64 +3062,64 @@ module.exports = {
           collapsed: true,
           link: {
             type: "doc",
-            id: "references/js-client/classes/CustomersResource",
+            id: "references/js_client/classes/js_client.CustomersResource",
           },
           items: [
             {
               type: "doc",
-              id: "references/js-client/classes/AddressesResource",
+              id: "references/js_client/classes/js_client.AddressesResource",
               label: "addresses",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/PaymentMethodsResource",
+              id: "references/js_client/classes/js_client.PaymentMethodsResource",
               label: "paymentMethods",
             },
           ],
         },
         {
           type: "doc",
-          id: "references/js-client/classes/GiftCardsResource",
+          id: "references/js_client/classes/js_client.GiftCardsResource",
           label: "giftCards",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/OrderEditsResource",
+          id: "references/js_client/classes/js_client.OrderEditsResource",
           label: "orderEdits",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/OrdersResource",
+          id: "references/js_client/classes/js_client.OrdersResource",
           label: "orders",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/PaymentCollectionsResource",
+          id: "references/js_client/classes/js_client.PaymentCollectionsResource",
           label: "paymentCollections",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/PaymentMethodsResource",
+          id: "references/js_client/classes/js_client.PaymentMethodsResource",
           label: "paymentMethods",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/ProductCategoriesResource",
+          id: "references/js_client/classes/js_client.ProductCategoriesResource",
           label: "productCategories",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/ProductTagsResource",
+          id: "references/js_client/classes/js_client.ProductTagsResource",
           label: "productTags",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/ProductTypesResource",
+          id: "references/js_client/classes/js_client.ProductTypesResource",
           label: "productTypes",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/ProductTypesResource",
+          id: "references/js_client/classes/js_client.ProductTypesResource",
           label: "productTypes",
         },
         {
@@ -2994,40 +3127,40 @@ module.exports = {
           label: "products",
           link: {
             type: "doc",
-            id: "references/js-client/classes/ProductsResource",
+            id: "references/js_client/classes/js_client.ProductsResource",
           },
           collapsed: true,
           items: [
             {
               type: "doc",
-              id: "references/js-client/classes/ProductVariantsResource",
+              id: "references/js_client/classes/js_client.ProductVariantsResource",
               label: "variants",
             },
           ],
         },
         {
           type: "doc",
-          id: "references/js-client/classes/RegionsResource",
+          id: "references/js_client/classes/js_client.RegionsResource",
           label: "regions",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/ReturnReasonsResource",
+          id: "references/js_client/classes/js_client.ReturnReasonsResource",
           label: "returnReasons",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/ReturnsResource",
+          id: "references/js_client/classes/js_client.ReturnsResource",
           label: "returns",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/ShippingOptionsResource",
+          id: "references/js_client/classes/js_client.ShippingOptionsResource",
           label: "shippingOptions",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/SwapsResource",
+          id: "references/js_client/classes/js_client.SwapsResource",
           label: "swaps",
         },
       ],
@@ -3059,8 +3192,8 @@ module.exports = {
   pricingReference: [
     {
       type: "ref",
-      id: "modules/overview",
-      label: "Back to Commerce Modules",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: "back-arrow",
@@ -3068,7 +3201,7 @@ module.exports = {
     },
     {
       type: "doc",
-      id: "references/pricing/interfaces/IPricingModuleService",
+      id: "references/pricing/interfaces/pricing.IPricingModuleService",
       label: "Pricing Module Interface Reference",
       customProps: {
         sidebar_is_title: true,
@@ -3093,8 +3226,8 @@ module.exports = {
   productReference: [
     {
       type: "ref",
-      id: "modules/overview",
-      label: "Back to Commerce Modules",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: "back-arrow",
@@ -3102,7 +3235,7 @@ module.exports = {
     },
     {
       type: "doc",
-      id: "references/product/interfaces/IProductModuleService",
+      id: "references/product/interfaces/product.IProductModuleService",
       label: "Product Module Interface Reference",
       customProps: {
         sidebar_is_title: true,
@@ -3136,7 +3269,7 @@ module.exports = {
     },
     {
       type: "doc",
-      id: "references/inventory/interfaces/IInventoryService",
+      id: "references/inventory/interfaces/inventory.IInventoryService",
       label: "Inventory Module Interface Reference",
       customProps: {
         sidebar_is_title: true,
@@ -3170,7 +3303,7 @@ module.exports = {
     },
     {
       type: "doc",
-      id: "references/stock-location/interfaces/IStockLocationService",
+      id: "references/stock_location/interfaces/stock_location.IStockLocationService",
       label: "Stock Location Module Interface Reference",
       customProps: {
         sidebar_is_title: true,
@@ -3187,7 +3320,141 @@ module.exports = {
       items: [
         {
           type: "autogenerated",
-          dirName: "references/stock-location/IStockLocationService/methods",
+          dirName: "references/stock_location/IStockLocationService/methods",
+        },
+      ],
+    },
+  ],
+  workflowsSidebar: [
+    {
+      type: "ref",
+      id: "development/overview",
+      label: "Back to Medusa Development",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/modules/workflows",
+      label: "Workflows API Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Functions",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/workflows/functions",
+        },
+      ],
+    },
+  ],
+  medusaReactSidebar: [
+    {
+      type: "ref",
+      id: "homepage",
+      label: "Back to home",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "medusa-react/overview",
+      label: "Medusa React Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Hooks",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      link: {
+        type: "doc",
+        id: "references/medusa_react/medusa_react.Hooks",
+      },
+      items: [
+        {
+          type: "category",
+          label: "Admin",
+          collapsible: true,
+          link: {
+            type: "doc",
+            id: "references/medusa_react/Hooks/medusa_react.Hooks.Admin",
+          },
+          items: [
+            {
+              type: "autogenerated",
+              dirName: "references/medusa_react/Hooks/Admin",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Store",
+          collapsible: true,
+          link: {
+            type: "doc",
+            id: "references/medusa_react/Hooks/medusa_react.Hooks.Store",
+          },
+          items: [
+            {
+              type: "autogenerated",
+              dirName: "references/medusa_react/Hooks/Store",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Providers",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      link: {
+        type: "doc",
+        id: "references/medusa_react/medusa_react.Providers",
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/medusa_react/Providers",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Utilities",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      link: {
+        type: "doc",
+        id: "references/medusa_react/medusa_react.Utilities",
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/medusa_react/Utilities/functions",
         },
       ],
     },

@@ -4,7 +4,7 @@
   import EllipsisVertical from "../ellipsis-vertical"
 
   describe("EllipsisVertical", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<EllipsisVertical data-testid="icon" />)
 
 

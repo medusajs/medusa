@@ -6,7 +6,7 @@ import {
   PriceListType,
 } from "@medusajs/utils"
 import { createPriceLists } from "@medusajs/core-flows"
-import { Type } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -27,6 +27,7 @@ import {
 } from "../../../../types/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { getPriceListPricingModule } from "./modules-queries"
+import { transformOptionalDate } from "../../../../utils/validators/date-transform"
 
 /**
  * @oas [post] /admin/price-lists
@@ -64,6 +65,47 @@ import { getPriceListPricingModule } from "./modules-queries"
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         PriceListStatus,
+ *         PriceListType,
+ *       } from "@medusajs/medusa"
+ *       import { useAdminCreatePriceList } from "medusa-react"
+ *
+ *       type CreateData = {
+ *         name: string
+ *         description: string
+ *         type: PriceListType
+ *         status: PriceListStatus
+ *         prices: {
+ *           amount: number
+ *           variant_id: string
+ *           currency_code: string
+ *           max_quantity: number
+ *         }[]
+ *       }
+ *
+ *       const CreatePriceList = () => {
+ *         const createPriceList = useAdminCreatePriceList()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           data: CreateData
+ *         ) => {
+ *           createPriceList.mutate(data, {
+ *             onSuccess: ({ price_list }) => {
+ *               console.log(price_list.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreatePriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -176,6 +218,7 @@ class CustomerGroup {
 /**
  * @schema AdminPostPriceListsPriceListReq
  * type: object
+ * description: "The details of the price list to create."
  * required:
  *   - name
  *   - description
@@ -263,9 +306,11 @@ export class AdminPostPriceListsPriceListReq {
   description: string
 
   @IsOptional()
+  @Transform(transformOptionalDate)
   starts_at?: Date
 
   @IsOptional()
+  @Transform(transformOptionalDate)
   ends_at?: Date
 
   @IsOptional()

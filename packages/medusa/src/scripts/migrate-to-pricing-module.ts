@@ -138,8 +138,6 @@ const migratePriceLists = async (container: AwilixContainer) => {
             ({ name: title, prices, customer_groups, ...priceList }) => {
               const createData: PricingTypes.CreatePriceListDTO = {
                 ...priceList,
-                starts_at: priceList.starts_at?.toISOString(),
-                ends_at: priceList.ends_at?.toISOString(),
                 title,
               }
 

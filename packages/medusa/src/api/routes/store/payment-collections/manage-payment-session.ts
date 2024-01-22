@@ -29,6 +29,39 @@ import { PaymentCollectionService } from "../../../../services"
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useManagePaymentSession } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentCollectionId: string
+ *       }
+ *
+ *       const PaymentCollection = ({
+ *         paymentCollectionId
+ *       }: Props) => {
+ *         const managePaymentSession = useManagePaymentSession(
+ *           paymentCollectionId
+ *         )
+ *
+ *         const handleManagePaymentSession = (
+ *           providerId: string
+ *         ) => {
+ *           managePaymentSession.mutate({
+ *             provider_id: providerId
+ *           }, {
+ *             onSuccess: ({ payment_collection }) => {
+ *               console.log(payment_collection.payment_sessions)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PaymentCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -88,6 +121,7 @@ export default async (req, res) => {
 /**
  * @schema StorePaymentCollectionSessionsReq
  * type: object
+ * description: "The details of the payment session to manage."
  * required:
  *   - provider_id
  * properties:

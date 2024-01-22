@@ -16,7 +16,7 @@ To log a message, resolve the `logger` registration name using dependency inject
 
 For example, to log a message in a [loader](../loaders/overview.mdx):
 
-```ts title=src/loaders/my-loader.ts
+```ts title="src/loaders/my-loader.ts"
 import { 
   ProductService, 
   ConfigModule, 
@@ -85,7 +85,7 @@ If you configured the `LOG_LEVEL` environment variable to a level higher than th
 
 For example:
 
-```ts title=src/loaders/my-loader.ts
+```ts title="src/loaders/my-loader.ts"
 import { 
   ProductService, 
   ConfigModule, 
@@ -110,7 +110,7 @@ export default async (
       await productService.count()
     }`)
   } catch (e) {
-    logger.failure(activityId, `An error occurrect: ${e}`)
+    logger.failure(activityId, `An error occurred: ${e}`)
   }
   
   logger.success(activityId, "Ending loader")

@@ -8,7 +8,6 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
-import { handleAddOrUpdateLineItem } from "./create-line-item/utils/handler-steps"
 
 /**
  * @oas [post] /store/carts/{id}/line-items/{line_id}
@@ -37,6 +36,37 @@ import { handleAddOrUpdateLineItem } from "./create-line-item/utils/handler-step
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useUpdateLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const updateLineItem = useUpdateLineItem(cartId)
+ *
+ *         const handleUpdateItem = (
+ *           lineItemId: string,
+ *           quantity: number
+ *         ) => {
+ *           updateLineItem.mutate({
+ *             lineId: lineItemId,
+ *             quantity,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.items)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -132,6 +162,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCartsCartLineItemsItemReq
  * type: object
+ * description: "The details to update of the line item."
  * required:
  *   - quantity
  * properties:

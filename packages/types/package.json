@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/types",
-  "version": "1.11.7",
+  "version": "1.11.10",
   "description": "Medusa Types definition",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/types"
+  },
+  "engines": {
+    "node": ">=16"
   },
   "publishConfig": {
     "access": "public"

@@ -36,17 +36,15 @@ import { Table } from "@medusajs/ui"
 
 ---
 
-This component is based on the `table` element and its various children, and supports all props of those elements.
+<ComponentReference mainComponent="Table" componentsToShow={[
+  "Table",
+  "Table.Pagination"
+]} />
 
-- `Table`: `table`
-- `Table.Header`: `thead`
-- `Table.Row`: `tr`
-- `Table.HeaderCell`: `th`
-- `Table.Body`: `tbody`
-- `Table.Cell`: `td`
+## Examples
 
-### Pagination
+---
 
-This component is based on the `div` element and supports all props of this element.
+### Table with Pagination
 
-<ComponentProps component="table-pagination" />
+<ComponentExample name="table-pagination" />

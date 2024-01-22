@@ -4,7 +4,7 @@
   import GatsbyEx from "../gatsby-ex"
 
   describe("GatsbyEx", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<GatsbyEx data-testid="icon" />)
 
 

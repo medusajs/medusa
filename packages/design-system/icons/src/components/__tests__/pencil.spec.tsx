@@ -4,7 +4,7 @@
   import Pencil from "../pencil"
 
   describe("Pencil", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Pencil data-testid="icon" />)
 
 

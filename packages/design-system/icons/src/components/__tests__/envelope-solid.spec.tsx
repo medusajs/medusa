@@ -4,7 +4,7 @@
   import EnvelopeSolid from "../envelope-solid"
 
   describe("EnvelopeSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<EnvelopeSolid data-testid="icon" />)
 
 

@@ -8,6 +8,8 @@ A Typedoc plugin that combines utility plugins for documenting references.
 
 The [`resolve-reference-plugin`](./src/resolve-references-plugin.ts) imitates the [`typedoc-plugin-missing-exports`](https://www.npmjs.com/package/typedoc-plugin-missing-exports) plugin. So, it accepts the same options as the [`typedoc-plugin-missing-exports`](https://www.npmjs.com/package/typedoc-plugin-missing-exports) plugin.
 
+This plugin only runs if the `enableInternalResolve` option is enabled.
+
 ### Frontmatter
 
 `frontmatterData` is an object of key-value pairs. If none provided, no frontmatter variables will be added to the Markdown files.
@@ -32,6 +34,15 @@ The following options are useful for linting:
 
 - `eslintPathName`: The path to the ESLint configuration file.
 - `pluginsResolvePath`: The path to resolve plugins used in the ESLint configuration files.
+
+### Generate Namespace Plugin
+
+If the `generateNamespaces` option is enabled, Namespaces are created from reflections having the `@customNamespace` tag. It also attaches categories (using the `@category` tag) of the same reflection to its generated parent namespace.
+
+It also accepts the following options:
+
+- `parentNamespace`: The name of a parent namespace to make the generated namespaces as its children.
+- `namePrefix`: A prefix to add to the name of the generated namespaces.
 
 ---
 

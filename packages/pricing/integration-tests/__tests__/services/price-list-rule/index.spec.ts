@@ -1,12 +1,13 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
-import { PriceListRuleRepository } from "@repositories"
 import { PriceListRuleService } from "@services"
 
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { MikroOrmWrapper } from "../../../utils"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -19,13 +20,12 @@ describe("PriceListRule Service", () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = await MikroOrmWrapper.forkManager()
 
-    const priceListRuleRepository = new PriceListRuleRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new PriceListRuleService({
-      priceListRuleRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("priceListRuleService")
 
     testManager = await MikroOrmWrapper.forkManager()
     await createRuleTypes(testManager)
@@ -212,7 +212,7 @@ describe("PriceListRule Service", () => {
       }
 
       expect(error.message).toEqual(
-        'PriceListRule with id(s) "does-not-exist" not found'
+        'PriceListRule with id "does-not-exist" not found'
       )
     })
   })

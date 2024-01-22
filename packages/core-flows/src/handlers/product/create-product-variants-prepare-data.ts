@@ -23,7 +23,6 @@ export async function createProductVariantsPrepareData({
   container,
   data,
 }: WorkflowArguments<WorkflowTypes.ProductWorkflow.CreateProductVariantsWorkflowInputDTO>): Promise<CreateProductVariantsPreparedData> {
-  const featureFlagRouter = container.resolve("featureFlagRouter")
   const productVariants: ProductWorkflow.CreateProductVariantsInputDTO[] =
     data.productVariants || []
 

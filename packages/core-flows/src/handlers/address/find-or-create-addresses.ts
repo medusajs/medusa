@@ -5,7 +5,9 @@ import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type AddressesDTO = {
   shipping_address_id?: string
+  shipping_address?: AddressDTO
   billing_address_id?: string
+  billing_address?: AddressDTO
 }
 
 type HandlerInputData = {
@@ -48,6 +50,7 @@ export async function findOrCreateAddresses({
         country_code: regionCountries[0],
       })
 
+      addressesDTO.shipping_address = shippingAddress
       addressesDTO.shipping_address_id = shippingAddress?.id
     }
   } else {
@@ -75,6 +78,7 @@ export async function findOrCreateAddresses({
         )
       }
 
+      addressesDTO.shipping_address = address
       addressesDTO.shipping_address_id = address.id
     }
   }
@@ -103,6 +107,7 @@ export async function findOrCreateAddresses({
       )
     }
 
+    addressesDTO.billing_address = address
     addressesDTO.billing_address_id = billingAddressId
   }
 

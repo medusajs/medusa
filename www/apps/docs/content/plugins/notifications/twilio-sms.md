@@ -55,7 +55,7 @@ Make sure to replace `<YOUR_ACCOUNT_SID>`, `<YOUR_AUTH_TOKEN>`, and `<YOUR_TWILI
 
 Finally, add the plugin and its options in the `medusa-config.js` file to the `plugins` array:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -85,7 +85,7 @@ For this example to work, you'll need to have an [event bus module](../../develo
 
 Create the file `src/subscriber/sms.ts` in your Medusa backend with the following content:
 
-```ts title=src/subscriber/sms.ts
+```ts title="src/subscriber/sms.ts"
 import { 
   type SubscriberConfig, 
   type SubscriberArgs,

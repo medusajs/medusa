@@ -16,6 +16,40 @@ describe("Workflow composer", function () {
       jest.clearAllMocks()
     })
 
+    it("should compose a new workflow composed retryable steps", async () => {
+      const maxRetries = 1
+
+      const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
+        const attempt = context.metadata.attempt || 0
+        if (attempt <= maxRetries) {
+          throw new Error("test error")
+        }
+
+        return { inputs: [input], obj: "return from 1" }
+      })
+
+      const step1 = createStep({ name: "step1", maxRetries }, mockStep1Fn)
+
+      const workflow = createWorkflow("workflow1", function (input) {
+        return step1(input)
+      })
+
+      const workflowInput = { test: "payload1" }
+      const { result: workflowResult } = await workflow().run({
+        input: workflowInput,
+      })
+
+      expect(mockStep1Fn).toHaveBeenCalledTimes(2)
+      expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
+      expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
+      expect(mockStep1Fn.mock.calls[1][0]).toEqual(workflowInput)
+
+      expect(workflowResult).toEqual({
+        inputs: [{ test: "payload1" }],
+        obj: "return from 1",
+      })
+    })
+
     it("should compose a new workflow and execute it", async () => {
       const mockStep1Fn = jest.fn().mockImplementation((input) => {
         return { inputs: [input], obj: "return from 1" }
@@ -926,6 +960,73 @@ describe("Workflow composer", function () {
   describe("Using steps returning StepResponse", function () {
     afterEach(async () => {
       jest.clearAllMocks()
+    })
+
+    it("should compose a new workflow composed of retryable steps", async () => {
+      const maxRetries = 1
+
+      const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
+        const attempt = context.metadata.attempt || 0
+        if (attempt <= maxRetries) {
+          throw new Error("test error")
+        }
+
+        return new StepResponse({ inputs: [input], obj: "return from 1" })
+      })
+
+      const step1 = createStep({ name: "step1", maxRetries }, mockStep1Fn)
+
+      const workflow = createWorkflow("workflow1", function (input) {
+        return step1(input)
+      })
+
+      const workflowInput = { test: "payload1" }
+      const { result: workflowResult } = await workflow().run({
+        input: workflowInput,
+      })
+
+      expect(mockStep1Fn).toHaveBeenCalledTimes(2)
+      expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
+      expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
+      expect(mockStep1Fn.mock.calls[1][0]).toEqual(workflowInput)
+
+      expect(workflowResult).toEqual({
+        inputs: [{ test: "payload1" }],
+        obj: "return from 1",
+      })
+    })
+
+    it("should compose a new workflow composed of retryable steps that should stop retries on permanent failure", async () => {
+      const maxRetries = 1
+
+      const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
+        return StepResponse.permanentFailure("fail permanently")
+      })
+
+      const step1 = createStep({ name: "step1", maxRetries }, mockStep1Fn)
+
+      const workflow = createWorkflow("workflow1", function (input) {
+        return step1(input)
+      })
+
+      const workflowInput = { test: "payload1" }
+      const { errors } = await workflow().run({
+        input: workflowInput,
+        throwOnError: false,
+      })
+
+      expect(mockStep1Fn).toHaveBeenCalledTimes(1)
+      expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
+      expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
+
+      expect(errors).toHaveLength(1)
+      expect(errors[0]).toEqual({
+        action: "step1",
+        handlerType: "invoke",
+        error: expect.objectContaining({
+          message: "fail permanently",
+        }),
+      })
     })
 
     it("should compose a new workflow and execute it", async () => {
@@ -1878,5 +1979,111 @@ describe("Workflow composer", function () {
 
     expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
     expect(mockCompensateSte1.mock.calls[0][0]).toEqual(undefined)
+  })
+
+  it("should compose a workflow that returns destructured properties", async () => {
+    const step = function () {
+      return new StepResponse({
+        propertyNotReturned: 1234,
+        property: {
+          complex: {
+            nested: 123,
+          },
+          a: "bc",
+        },
+        obj: "return from 2",
+      })
+    }
+
+    const step1 = createStep("step1", step)
+
+    const workflow = createWorkflow("workflow1", function () {
+      const { property, obj } = step1()
+
+      return { someOtherName: property, obj }
+    })
+
+    const { result } = await workflow().run({
+      throwOnError: false,
+    })
+
+    expect(result).toEqual({
+      someOtherName: {
+        complex: {
+          nested: 123,
+        },
+        a: "bc",
+      },
+      obj: "return from 2",
+    })
+  })
+
+  it("should compose a workflow that returns an array of steps", async () => {
+    const step1 = createStep("step1", () => {
+      return new StepResponse({
+        obj: "return from 1",
+      })
+    })
+    const step2 = createStep("step2", () => {
+      return new StepResponse({
+        obj: "returned from 2**",
+      })
+    })
+
+    const workflow = createWorkflow("workflow1", function () {
+      const s1 = step1()
+      const s2 = step2()
+
+      return [s1, s2]
+    })
+
+    const { result } = await workflow().run({
+      throwOnError: false,
+    })
+
+    expect(result).toEqual([
+      {
+        obj: "return from 1",
+      },
+      {
+        obj: "returned from 2**",
+      },
+    ])
+  })
+
+  it("should compose a workflow that returns an object mixed of steps and properties", async () => {
+    const step1 = createStep("step1", () => {
+      return new StepResponse({
+        obj: {
+          nested: "nested",
+        },
+      })
+    })
+
+    const step2 = createStep("step2", () => {
+      return new StepResponse({
+        obj: "returned from 2**",
+      })
+    })
+
+    const workflow = createWorkflow("workflow1", function () {
+      const { obj } = step1()
+      const s2 = step2()
+
+      return [{ step1_nested_obj: obj.nested }, s2]
+    })
+
+    const { result } = await workflow().run({
+      throwOnError: false,
+    })
+
+    expect(result).toEqual([
+      {
+        step1_nested_obj: "nested",
+      },
+      {
+        obj: "returned from 2**",
+      },
+    ])
   })
 })

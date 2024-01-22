@@ -28,8 +28,8 @@ class AdminUploadsResource extends BaseResource {
   }
 
   /**
-   * Upload a file to a public bucket or storage. The file upload is handled by the file service installed on the Medusa backend.
-   * @param {AdminCreateUploadPayload} file - The file to upload.
+   * Upload a file or multiple files to a public bucket or storage. The file upload is handled by the file service installed on the Medusa backend.
+   * @param {AdminCreateUploadPayload} file - The file(s) to upload.
    * @returns {ResponsePromise<AdminUploadsRes>} Resolves to the uploaded file details.
    * 
    * @example

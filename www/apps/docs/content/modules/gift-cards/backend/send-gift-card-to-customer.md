@@ -35,13 +35,13 @@ To send an email or another type of notification method, you must have a notific
 
 ---
 
-## Methed 1: Using a Subscriber
+## Method 1: Using a Subscriber
 
 To subscribe to and handle an event, you must create a [subscriber](../../../development/events/subscribers.mdx).
 
 Create the file `src/subscribers/gift-card.ts` with the following content:
 
-```ts title=src/subscribers/gift-card.ts
+```ts title="src/subscribers/gift-card.ts"
 import { 
   type SubscriberConfig, 
   type SubscriberArgs,
@@ -72,7 +72,7 @@ In this method, you should typically send an email to the customer. You can plac
 
 For example, you can implement this subscriber to send emails using [SendGrid](../../../plugins/notifications/sendgrid.mdx):
 
-```ts title=src/subscribers/gift-card.ts
+```ts title="src/subscribers/gift-card.ts"
 import { 
   type SubscriberConfig, 
   type SubscriberArgs,
@@ -125,7 +125,7 @@ If the notification provider you’re using already implements the logic to hand
 
 For example:
 
-```ts title=src/loaders/gift-card-event.ts
+```ts title="src/loaders/gift-card-event.ts"
 import { 
   MedusaContainer, 
   NotificationService,

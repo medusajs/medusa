@@ -1,12 +1,16 @@
+import { RemoteQueryFunction } from "@medusajs/types"
 import {
   buildRelations,
   buildSelects,
   FlagRouter,
+  MedusaV2Flag,
   objectToStringPath,
   promiseAll,
+  selectorConstraintsToString,
 } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
+
 import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
@@ -39,9 +43,10 @@ import {
   ProductSelector,
   UpdateProductInput,
 } from "../types/product"
+import { CreateProductVariantInput } from "../types/product-variant"
 import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
-import { CreateProductVariantInput } from "../types/product-variant"
+import SalesChannelService from "./sales-channel"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -54,8 +59,10 @@ type InjectedDependencies = {
   productCategoryRepository: typeof ProductCategoryRepository
   productVariantService: ProductVariantService
   searchService: SearchService
+  salesChannelService: SalesChannelService
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
+  remoteQuery: RemoteQueryFunction
 }
 
 class ProductService extends TransactionBaseService {
@@ -69,8 +76,10 @@ class ProductService extends TransactionBaseService {
   protected readonly productCategoryRepository_: typeof ProductCategoryRepository
   protected readonly productVariantService_: ProductVariantService
   protected readonly searchService_: SearchService
+  protected readonly salesChannelService_: SalesChannelService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
+  protected remoteQuery_: RemoteQueryFunction
 
   static readonly IndexName = `products`
   static readonly Events = {
@@ -90,6 +99,8 @@ class ProductService extends TransactionBaseService {
     productCategoryRepository,
     imageRepository,
     searchService,
+    remoteQuery,
+    salesChannelService,
     featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
@@ -105,7 +116,9 @@ class ProductService extends TransactionBaseService {
     this.productTagRepository_ = productTagRepository
     this.imageRepository_ = imageRepository
     this.searchService_ = searchService
+    this.salesChannelService_ = salesChannelService
     this.featureFlagRouter_ = featureFlagRouter
+    this.remoteQuery_ = remoteQuery
   }
 
   /**
@@ -167,17 +180,42 @@ class ProductService extends TransactionBaseService {
     const manager = this.activeManager_
     const productRepo = manager.withRepository(this.productRepository_)
 
+    const hasSalesChannelsRelation =
+      config.relations?.includes("sales_channels")
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key) &&
+      hasSalesChannelsRelation
+    ) {
+      config.relations = config.relations?.filter((r) => r !== "sales_channels")
+    }
+
     const { q, query, relations } = this.prepareListQuery_(selector, config)
 
+    let count: number
+    let products: Product[]
+
     if (q) {
-      return await productRepo.getFreeTextSearchResultsAndCount(
+      ;[products, count] = await productRepo.getFreeTextSearchResultsAndCount(
         q,
         query,
         relations
       )
+    } else {
+      ;[products, count] = await productRepo.findWithRelationsAndCount(
+        relations,
+        query
+      )
     }
 
-    return await productRepo.findWithRelationsAndCount(relations, query)
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key) &&
+      hasSalesChannelsRelation
+    ) {
+      await this.decorateProductsWithSalesChannels(products)
+    }
+
+    return [products, count]
   }
 
   /**
@@ -298,6 +336,16 @@ class ProductService extends TransactionBaseService {
     const manager = this.activeManager_
     const productRepo = manager.withRepository(this.productRepository_)
 
+    const hasSalesChannelsRelation =
+      config.relations?.includes("sales_channels")
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key) &&
+      hasSalesChannelsRelation
+    ) {
+      config.relations = config.relations?.filter((r) => r !== "sales_channels")
+    }
+
     const { relations, ...query } = buildQuery(selector, config)
 
     const product = await productRepo.findOneWithRelations(
@@ -306,14 +354,19 @@ class ProductService extends TransactionBaseService {
     )
 
     if (!product) {
-      const selectorConstraints = Object.entries(selector)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(", ")
+      const selectorConstraints = selectorConstraintsToString(selector)
 
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Product with ${selectorConstraints} was not found`
       )
+    }
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key) &&
+      hasSalesChannelsRelation
+    ) {
+      await this.decorateProductsWithSalesChannels([product])
     }
 
     return product
@@ -467,7 +520,8 @@ class ProductService extends TransactionBaseService {
       }
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
+        !this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
       ) {
         if (isDefined(salesChannels)) {
           product.sales_channels = []
@@ -494,6 +548,20 @@ class ProductService extends TransactionBaseService {
       }
 
       product = await productRepo.save(product)
+
+      if (
+        isDefined(salesChannels) &&
+        this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
+      ) {
+        if (salesChannels?.length) {
+          await Promise.all(
+            salesChannels?.map(
+              async (sc) =>
+                await this.salesChannelService_.addProducts(sc.id, [product.id])
+            )
+          )
+        }
+      }
 
       product.options = await promiseAll(
         (options ?? []).map(async (option) => {
@@ -527,7 +595,7 @@ class ProductService extends TransactionBaseService {
           )
       }
 
-      const result = await this.retrieve(product.id, {
+      const result = await this.withTransaction(manager).retrieve(product.id, {
         relations: ["options"],
       })
 
@@ -578,7 +646,7 @@ class ProductService extends TransactionBaseService {
         }
       }
 
-      const product = await this.retrieve(productId, {
+      const product = await this.withTransaction(manager).retrieve(productId, {
         relations,
       })
 
@@ -640,7 +708,8 @@ class ProductService extends TransactionBaseService {
       }
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
+        !this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
       ) {
         if (isDefined(salesChannels)) {
           product.sales_channels = []
@@ -662,6 +731,17 @@ class ProductService extends TransactionBaseService {
       await promiseAll(promises)
 
       const result = await productRepo.save(product)
+
+      if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
+        if (salesChannels?.length) {
+          await promiseAll(
+            salesChannels?.map(
+              async (sc) =>
+                await this.salesChannelService_.addProducts(sc.id, [product.id])
+            )
+          )
+        }
+      }
 
       await this.eventBus_
         .withTransaction(manager)
@@ -726,7 +806,7 @@ class ProductService extends TransactionBaseService {
         this.productOptionRepository_
       )
 
-      const product = await this.retrieve(productId, {
+      const product = await this.withTransaction(manager).retrieve(productId, {
         relations: ["options", "variants"],
       })
 
@@ -754,7 +834,7 @@ class ProductService extends TransactionBaseService {
         )
       }
 
-      const result = await this.retrieve(productId)
+      const result = await this.withTransaction(manager).retrieve(productId)
 
       await this.eventBus_
         .withTransaction(manager)
@@ -770,7 +850,7 @@ class ProductService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.withRepository(this.productRepository_)
 
-      const product = await this.retrieve(productId, {
+      const product = await this.withTransaction(manager).retrieve(productId, {
         relations: ["variants"],
       })
 
@@ -819,7 +899,9 @@ class ProductService extends TransactionBaseService {
         this.productOptionRepository_
       )
 
-      const product = await this.retrieve(productId, { relations: ["options"] })
+      const product = await this.withTransaction(manager).retrieve(productId, {
+        relations: ["options"],
+      })
 
       const { title, values } = data
 
@@ -894,7 +976,7 @@ class ProductService extends TransactionBaseService {
         this.productOptionRepository_
       )
 
-      const product = await this.retrieve(productId, {
+      const product = await this.withTransaction(manager).retrieve(productId, {
         relations: ["variants", "variants.options"],
       })
 
@@ -1026,6 +1108,63 @@ class ProductService extends TransactionBaseService {
       relations: rels as (keyof Product)[],
       q,
     }
+  }
+
+  /**
+   * Temporary method to join sales channels of a product using RemoteQuery while
+   * MedusaV2 FF is on.
+   *
+   * @param products
+   * @private
+   */
+  private async decorateProductsWithSalesChannels(products: Product[]) {
+    const productIdSalesChannelMapMap =
+      await this.getSalesChannelModuleChannels(products.map((p) => p.id))
+
+    products.forEach(
+      (product) =>
+        (product.sales_channels = productIdSalesChannelMapMap[product.id] ?? [])
+    )
+
+    return products
+  }
+
+  /**
+   * Temporary method to fetch sales channels of a product using RemoteQuery while
+   * MedusaV2 FF is on.
+   *
+   * @param productIds
+   * @private
+   */
+  private async getSalesChannelModuleChannels(
+    productIds: string[]
+  ): Promise<Record<string, SalesChannel[]>> {
+    const query = {
+      product: {
+        __args: { filters: { id: productIds } },
+        fields: ["id"],
+        sales_channels: {
+          fields: [
+            "id",
+            "name",
+            "description",
+            "is_disabled",
+            "created_at",
+            "updated_at",
+            "deleted_at",
+          ],
+        },
+      },
+    }
+
+    const ret = {}
+    const data = (await this.remoteQuery_(query)) as {
+      id: string
+      sales_channels: SalesChannel[]
+    }[]
+    data.forEach((record) => (ret[record.id] = record.sales_channels))
+
+    return ret
   }
 }
 

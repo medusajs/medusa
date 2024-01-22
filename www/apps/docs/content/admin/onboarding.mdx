@@ -50,7 +50,7 @@ If you're using TypeScript in your project, it's highly recommended to setup you
 To install Medusa React and its required dependencies, run the following command in the root directory of the Medusa backend:
 
 ```bash npm2yarn
-npm install medusa-react @tanstack/react-query
+npm install medusa-react @tanstack/react-query@4.22
 ```
 
 ### Implement Helper Resources
@@ -62,7 +62,7 @@ Each of the collapsible elements below hold the path to the file that you should
 <Details>
   <Summary>src/admin/types/icon-type.ts</Summary>
 
-  ```tsx title=src/admin/types/icon-type.ts
+  ```tsx title="src/admin/types/icon-type.ts"
   import React from "react"
 
   type IconProps = {
@@ -80,7 +80,7 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/shared/icons/get-started.tsx
+  ```tsx title="src/admin/components/shared/icons/get-started.tsx"
   import React from "react"
   import IconProps from "../../../types/icon-type"
 
@@ -115,7 +115,7 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/shared/icons/dollar-sign-icon.tsx
+  ```tsx title="src/admin/components/shared/icons/dollar-sign-icon.tsx"
   import React from "react"
   import IconProps from "../../../types/icon-type"
 
@@ -162,7 +162,7 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/shared/accordion.tsx
+  ```tsx title="src/admin/components/shared/accordion.tsx"
   import * as AccordionPrimitive from "@radix-ui/react-accordion"
   import React from "react"
   import { CheckCircleSolid, CircleMiniSolid } from "@medusajs/icons"
@@ -295,7 +295,7 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/shared/card.tsx
+  ```tsx title="src/admin/components/shared/card.tsx"
   import { Text, clx } from "@medusajs/ui"
 
   type CardProps = {
@@ -348,7 +348,7 @@ An [entity](../development/entities/overview.mdx) represents a table in the data
 
 To create the entity, create the file `src/models/onboarding.ts` with the following content:
 
-```ts title=src/models/onboarding.ts
+```ts title="src/models/onboarding.ts"
 import { BaseEntity } from "@medusajs/medusa"
 import { Column, Entity } from "typeorm"
 
@@ -367,7 +367,7 @@ export class OnboardingState extends BaseEntity {
 
 Then, create the file `src/repositories/onboarding.ts` that holds the repository of the entity with the following content:
 
-```ts title=src/repositories/onboarding.ts
+```ts title="src/repositories/onboarding.ts"
 import {
   dataSource,
 } from "@medusajs/medusa/dist/loaders/database"
@@ -450,7 +450,7 @@ Start by creating the file `src/types/onboarding.ts` with the following content:
 
 <!-- eslint-disable @typescript-eslint/no-empty-interface -->
 
-```ts title=src/types/onboarding.ts
+```ts title="src/types/onboarding.ts"
 import { OnboardingState } from "../models/onboarding"
 
 export type UpdateOnboardingStateInput = {
@@ -472,7 +472,7 @@ Then, create the file `src/services/onboarding.ts` with the following content:
 
 <!-- eslint-disable prefer-rest-params -->
 
-```ts title=src/services/onboarding.ts
+```ts title="src/services/onboarding.ts"
 import { TransactionBaseService } from "@medusajs/medusa"
 import OnboardingRepository from "../repositories/onboarding"
 import { OnboardingState } from "../models/onboarding"
@@ -540,7 +540,7 @@ The last part of this step is to create the [API Routes](../development/api-rout
 
 To add these API Routes, create the file `src/api/admin/onboarding/route.ts` with the following content:
 
-```ts title=src/api/admin/onboarding/route.ts
+```ts title="src/api/admin/onboarding/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,
@@ -597,7 +597,7 @@ Create the file `src/admin/widgets/onboarding-flow/onboarding-flow.tsx` with the
 
 <!-- eslint-disable @typescript-eslint/ban-types -->
 
-```tsx title=src/admin/widgets/onboarding-flow/onboarding-flow.tsx
+```tsx title="src/admin/widgets/onboarding-flow/onboarding-flow.tsx"
 import { OrderDetailsWidgetProps, ProductDetailsWidgetProps, WidgetConfig, WidgetProps } from "@medusajs/admin"
 import { useAdminCustomPost, useAdminCustomQuery, useMedusa } from "medusa-react"
 import React, { useEffect, useState, useMemo, useCallback } from "react"
@@ -1059,7 +1059,7 @@ const OnboardingFlow = (props: OnboardingWidgetProps) => {
                 const isCurrent = currentStep === step.id
                 return (
                   <Accordion.Item
-                    title={step.title}
+                    title="{step.title}"
                     value={step.id}
                     headingSize="medium"
                     active={isCurrent}
@@ -1135,7 +1135,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/default/products/products-list.tsx
+  ```tsx title="src/admin/components/onboarding-flow/default/products/products-list.tsx"
   import React, { useMemo } from "react"
   import { 
     useAdminCreateProduct,
@@ -1221,7 +1221,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/default/products/product-detail.tsx
+  ```tsx title="src/admin/components/onboarding-flow/default/products/product-detail.tsx"
   import React, { useEffect, useMemo } from "react"
   import { 
     useAdminPublishableApiKeys,
@@ -1240,7 +1240,7 @@ Notice that as there are two types of flows, you'll be creating the components f
     const api_key = useMemo(() => keys?.[0]?.id || "", [keys])
     const backendUrl = process.env.MEDUSA_BACKEND_URL === "/" || process.env.MEDUSA_ADMIN_BACKEND_URL === "/" ? 
       location.origin :
-      process.env.MEDUSA_BACKEND_URL || process.env.MEDUSA_ADMIN_BACKEND_URL || "http://location:9000"
+      process.env.MEDUSA_BACKEND_URL || process.env.MEDUSA_ADMIN_BACKEND_URL || "http://localhost:9000"
 
     useEffect(() => {
       if (!isLoading && !keys?.length) {
@@ -1325,7 +1325,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/default/orders/orders-list.tsx
+  ```tsx title="src/admin/components/onboarding-flow/default/orders/orders-list.tsx"
   import React from "react"
   import { 
     useAdminProduct,
@@ -1420,7 +1420,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/default/orders/order-detail.tsx
+  ```tsx title="src/admin/components/onboarding-flow/default/orders/order-detail.tsx"
   import React from "react"
   import {
     ComputerDesktopSolid,
@@ -1571,7 +1571,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/nextjs/products/products-list.tsx
+  ```tsx title="src/admin/components/onboarding-flow/nextjs/products/products-list.tsx"
   import React from "react"
   import { 
     useAdminCreateProduct,
@@ -1633,7 +1633,7 @@ Notice that as there are two types of flows, you'll be creating the components f
     return (
       <div>
         <Text className="mb-2">
-          Products is Medusa represent the products you sell. You can set their general details including a
+          Products in Medusa represent the products you sell. You can set their general details including a
           title and description. Each product has options and variants, and you can set a price for each variant.
         </Text>
         <Text>
@@ -1669,7 +1669,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/nextjs/products/product-detail.tsx
+  ```tsx title="src/admin/components/onboarding-flow/nextjs/products/product-detail.tsx"
   import { useAdminProduct } from "medusa-react"
   import { StepContentProps } from "../../../../widgets/onboarding-flow/onboarding-flow"
   import { Button, Text } from "@medusajs/ui"
@@ -1737,7 +1737,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/nextjs/orders/orders-list.tsx
+  ```tsx title="src/admin/components/onboarding-flow/nextjs/orders/orders-list.tsx"
   import React from "react"
   import { 
     useAdminProduct,
@@ -1817,7 +1817,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/nextjs/orders/order-detail.tsx
+  ```tsx title="src/admin/components/onboarding-flow/nextjs/orders/order-detail.tsx"
   import React from "react"
   import { CurrencyDollarSolid, NextJs, SquaresPlusSolid } from "@medusajs/icons"
   import { IconBadge, Heading, Text } from "@medusajs/ui"

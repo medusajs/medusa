@@ -54,6 +54,9 @@ import EventBusService from "./event-bus"
  * @implements {BaseService}
  */
 class DiscountService extends TransactionBaseService {
+  static readonly Events = {
+    CREATED: "discount.created",
+  }
   protected readonly discountRepository_: typeof DiscountRepository
   protected readonly customerService_: CustomerService
   protected readonly discountRuleRepository_: typeof DiscountRuleRepository
@@ -207,7 +210,7 @@ class DiscountService extends TransactionBaseService {
       if (!discount.regions?.length) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          "Discount must have atleast 1 region"
+          "Discount must have at least 1 region"
         )
       }
 
@@ -230,6 +233,10 @@ class DiscountService extends TransactionBaseService {
           })
         )
       }
+
+      await this.eventBus_
+          .withTransaction(manager)
+          .emit(DiscountService.Events.CREATED, { id: result.id })
 
       return result
     })

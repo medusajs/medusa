@@ -19,7 +19,7 @@ import { pickBy } from "lodash"
 import { ProductStatus } from "../../../../models"
 import PriceListService from "../../../../services/price-list"
 import { FilterableProductProps } from "../../../../types/product"
-import { listAndCountProductWithIsolatedProductModule } from "../products/list-products"
+import { listProducts } from "../../../../utils"
 
 /**
  * @oas [get] /admin/price-lists/{id}/products
@@ -149,6 +149,41 @@ import { listAndCountProductWithIsolatedProductModule } from "../products/list-p
  *       .then(({ products, limit, offset, count }) => {
  *         console.log(products.length);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminPriceListProducts } from "medusa-react"
+ *
+ *       type Props = {
+ *         priceListId: string
+ *       }
+ *
+ *       const PriceListProducts = ({
+ *         priceListId
+ *       }: Props) => {
+ *         const { products, isLoading } = useAdminPriceListProducts(
+ *           priceListId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {products && !products.length && (
+ *               <span>No Price Lists</span>
+ *             )}
+ *             {products && products.length > 0 && (
+ *               <ul>
+ *                 {products.map((product) => (
+ *                   <li key={product.id}>{product.title}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default PriceListProducts
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -196,8 +231,8 @@ export default async (req: Request, res) => {
   }
 
   if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-    ;[products, count] = await listAndCountProductWithIsolatedProductModule(
-      req,
+    ;[products, count] = await listProducts(
+      req.scope,
       filterableFields,
       req.listConfig
     )

@@ -4,7 +4,7 @@
   import SunSolid from "../sun-solid"
 
   describe("SunSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<SunSolid data-testid="icon" />)
 
 

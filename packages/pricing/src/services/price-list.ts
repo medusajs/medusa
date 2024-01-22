@@ -1,98 +1,56 @@
-import { Context, DAL, FindConfig, PricingTypes } from "@medusajs/types"
-import {
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-  doNotForceTransaction,
-  retrieveEntity,
-  shouldForceTransaction,
-} from "@medusajs/utils"
+import { Context, DAL } from "@medusajs/types"
+import { GetIsoStringFromDate, ModulesSdkUtils } from "@medusajs/utils"
 import { PriceList } from "@models"
-import { PriceListRepository } from "@repositories"
-import { CreatePriceListDTO } from "../types"
+import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   priceListRepository: DAL.RepositoryService
 }
 
-export default class PriceListService<TEntity extends PriceList = PriceList> {
-  protected readonly priceListRepository_: DAL.RepositoryService
-
-  constructor({ priceListRepository }: InjectedDependencies) {
-    this.priceListRepository_ = priceListRepository
+export default class PriceListService<
+  TEntity extends PriceList = PriceList
+> extends ModulesSdkUtils.abstractServiceFactory<
+  InjectedDependencies,
+  {},
+  {
+    list: ServiceTypes.FilterablePriceListProps
+    listAndCount: ServiceTypes.FilterablePriceListProps
+  }
+>(PriceList)<TEntity> {
+  constructor(container: InjectedDependencies) {
+    // @ts-ignore
+    super(...arguments)
   }
 
-  @InjectManager("priceListRepository_")
-  async retrieve(
-    priceListId: string,
-    config: FindConfig<PricingTypes.PriceListDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity> {
-    return (await retrieveEntity<PriceList, PricingTypes.PriceListDTO>({
-      id: priceListId,
-      entityName: PriceList.name,
-      repository: this.priceListRepository_,
-      config,
-      sharedContext,
-    })) as TEntity
-  }
-
-  @InjectManager("priceListRepository_")
-  async list(
-    filters: PricingTypes.FilterablePriceListProps = {},
-    config: FindConfig<PricingTypes.PriceListDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<PriceList>(filters, config)
-
-    return (await this.priceListRepository_.find(
-      queryOptions,
-      sharedContext
-    )) as TEntity[]
-  }
-
-  @InjectManager("priceListRepository_")
-  async listAndCount(
-    filters: PricingTypes.FilterablePriceListProps = {},
-    config: FindConfig<PricingTypes.PriceListDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TEntity[], number]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<PriceList>(filters, config)
-
-    return (await this.priceListRepository_.findAndCount(
-      queryOptions,
-      sharedContext
-    )) as [TEntity[], number]
-  }
-
-  @InjectTransactionManager(shouldForceTransaction, "priceListRepository_")
   async create(
-    data: CreatePriceListDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    data: ServiceTypes.CreatePriceListDTO[],
+    sharedContext?: Context
   ): Promise<TEntity[]> {
-    return (await (this.priceListRepository_ as PriceListRepository).create(
-      data,
-      sharedContext
-    )) as TEntity[]
+    const priceLists = this.normalizePriceListDate(data)
+    return await super.create(priceLists, sharedContext)
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "priceListRepository_")
   async update(
-    data: Omit<PricingTypes.UpdatePriceListDTO, "rules">[],
-    @MedusaContext() sharedContext: Context = {}
+    data: ServiceTypes.UpdatePriceListDTO[],
+    sharedContext?: Context
   ): Promise<TEntity[]> {
-    return (await (this.priceListRepository_ as PriceListRepository).update(
-      data,
-      sharedContext
-    )) as TEntity[]
+    const priceLists = this.normalizePriceListDate(data)
+    return await super.update(priceLists, sharedContext)
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "priceListRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.priceListRepository_.delete(ids, sharedContext)
+  protected normalizePriceListDate(
+    data: (ServiceTypes.UpdatePriceListDTO | ServiceTypes.CreatePriceListDTO)[]
+  ) {
+    return data.map((priceListData: any) => {
+      if (!!priceListData.starts_at) {
+        priceListData.starts_at = GetIsoStringFromDate(priceListData.starts_at)
+      }
+
+      if (!!priceListData.ends_at) {
+        priceListData.ends_at = GetIsoStringFromDate(priceListData.ends_at)
+      }
+
+      return priceListData
+    })
   }
 }

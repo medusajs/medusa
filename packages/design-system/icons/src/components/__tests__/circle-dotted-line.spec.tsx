@@ -4,7 +4,7 @@
   import CircleDottedLine from "../circle-dotted-line"
 
   describe("CircleDottedLine", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CircleDottedLine data-testid="icon" />)
 
 

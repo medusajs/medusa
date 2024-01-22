@@ -4,7 +4,7 @@
   import CheckMini from "../check-mini"
 
   describe("CheckMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CheckMini data-testid="icon" />)
 
 

@@ -3,6 +3,7 @@ import { AbstractCartCompletionStrategy } from "../../../../interfaces"
 import { IdempotencyKey } from "../../../../models"
 import { IdempotencyKeyService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { Logger } from "@medusajs/types"
 
 /**
  * @oas [post] /store/carts/{id}/complete
@@ -32,6 +33,31 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCompleteCart } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const completeCart = useCompleteCart(cartId)
+ *
+ *         const handleComplete = () => {
+ *           completeCart.mutate(void 0, {
+ *             onSuccess: ({ data, type }) => {
+ *               console.log(data.id, type)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -66,6 +92,7 @@ export default async (req, res) => {
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
   )
+  const logger: Logger = req.scope.resolve("logger")
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -77,7 +104,7 @@ export default async (req, res) => {
         .initializeRequest(headerKey, req.method, req.params, req.path)
     })
   } catch (error) {
-    console.log(error)
+    logger.log(error)
     res.status(409).send("Failed to create idempotency key")
     return
   }

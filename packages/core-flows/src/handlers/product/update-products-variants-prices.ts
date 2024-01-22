@@ -65,7 +65,6 @@ export async function updateProductsVariantsPrices({
         const obj = {
           amount: price.amount,
           currency_code: price.currency_code,
-          rules: {},
         }
 
         if (price.region_id) {

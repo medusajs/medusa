@@ -4,7 +4,7 @@
   import BugAntSolid from "../bug-ant-solid"
 
   describe("BugAntSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<BugAntSolid data-testid="icon" />)
 
 

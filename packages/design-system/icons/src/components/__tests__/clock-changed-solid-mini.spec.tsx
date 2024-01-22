@@ -4,7 +4,7 @@
   import ClockChangedSolidMini from "../clock-changed-solid-mini"
 
   describe("ClockChangedSolidMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ClockChangedSolidMini data-testid="icon" />)
 
 

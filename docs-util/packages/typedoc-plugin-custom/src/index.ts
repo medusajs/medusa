@@ -5,6 +5,8 @@ import { load as parseOasSchemaPlugin } from "./parse-oas-schema-plugin"
 import { load as apiIgnorePlugin } from "./api-ignore"
 import { load as eslintExamplePlugin } from "./eslint-example"
 import { load as signatureModifierPlugin } from "./signature-modifier"
+import { load as parentIgnorePlugin } from "./parent-ignore"
+import { GenerateNamespacePlugin } from "./generate-namespace"
 
 export function load(app: Application) {
   resolveReferencesPluginLoad(app)
@@ -13,4 +15,7 @@ export function load(app: Application) {
   apiIgnorePlugin(app)
   eslintExamplePlugin(app)
   signatureModifierPlugin(app)
+  parentIgnorePlugin(app)
+
+  new GenerateNamespacePlugin(app)
 }

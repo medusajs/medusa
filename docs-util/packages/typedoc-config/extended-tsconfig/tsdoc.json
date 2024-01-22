@@ -25,6 +25,30 @@
     {
       "tagName": "@docHideSignature",
       "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@keep",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@excludeExternal",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@customNamespace",
+      "syntaxKind": "block"
+    },
+    {
+      "tagName": "@namespaceMember",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@typeParamDefinition",
+      "syntaxKind": "block"
+    },
+    {
+      "tagName": "@parentIgnore",
+      "syntaxKind": "block"
     }
   ]
 }

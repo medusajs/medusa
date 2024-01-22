@@ -1,58 +1,138 @@
+/* eslint-disable no-case-declarations */
 import { DeclarationReflection, ProjectReflection, SomeType } from "typedoc"
 import { getProjectChild } from "./get-project-child"
 
-export function getTypeChildren(
-  reflectionType: SomeType,
+type GetTypeChildrenOptions = {
+  reflectionType: SomeType
   project: ProjectReflection | undefined
-): DeclarationReflection[] {
+  level?: number
+  maxLevel?: number
+}
+
+export function getTypeChildren({
+  reflectionType,
+  project,
+  level = 1,
+  maxLevel = 3,
+}: GetTypeChildrenOptions): DeclarationReflection[] {
   let children: DeclarationReflection[] = []
+
+  if (level > maxLevel) {
+    return children
+  }
 
   switch (reflectionType.type) {
     case "intersection":
       reflectionType.types.forEach((intersectionType) => {
-        children.push(...getTypeChildren(intersectionType, project))
+        children.push(
+          ...getTypeChildren({
+            reflectionType: intersectionType,
+            project,
+            level: level + 1,
+            maxLevel,
+          })
+        )
       })
       break
     case "reference":
       // eslint-disable-next-line no-case-declarations
-      const referencedReflection =
-        reflectionType.reflection && "children" in reflectionType.reflection
+      const referencedReflection = reflectionType.reflection
+        ? "children" in reflectionType.reflection
           ? reflectionType.reflection
           : project
+            ? project.getReflectionById(reflectionType.reflection.id)
+            : undefined
+        : project
           ? getProjectChild(project, reflectionType.name)
           : undefined
 
       if (referencedReflection instanceof DeclarationReflection) {
         if (referencedReflection.children) {
           children = referencedReflection.children
-        } else if (reflectionType.typeArguments?.length) {
-          reflectionType.typeArguments.forEach((typeArgument, index) => {
-            if (reflectionType.name === "Omit" && index > 0) {
+        } else if (referencedReflection.type) {
+          children = getTypeChildren({
+            reflectionType: referencedReflection.type,
+            project,
+            level: level + 1,
+            maxLevel,
+          })
+        }
+      } else if (reflectionType.typeArguments?.length) {
+        // Only useful if the reflection type is `Pick<...>`.
+        const toKeepChildren: string[] = []
+        reflectionType.typeArguments.forEach((typeArgument, index) => {
+          if (reflectionType.name === "Omit" && index > 0) {
+            switch (typeArgument.type) {
+              case "literal":
+                removeChild(typeArgument.value?.toString(), children)
+                break
+              case "union":
+                typeArgument.types.forEach((childItem) => {
+                  if (childItem.type === "literal") {
+                    removeChild(childItem.value?.toString(), children)
+                  } else {
+                    getTypeChildren({
+                      reflectionType: childItem,
+                      project,
+                      level: level + 1,
+                      maxLevel,
+                    }).forEach((child) => {
+                      removeChild(child.name, children)
+                    })
+                  }
+                })
+            }
+          } else if (reflectionType.name === "Pick") {
+            if (index === 0 && !children.length) {
+              children = getTypeChildren({
+                reflectionType: typeArgument,
+                project,
+                level: level + 1,
+                maxLevel,
+              })
+            } else {
               switch (typeArgument.type) {
                 case "literal":
-                  removeChild(typeArgument.value?.toString(), children)
+                  if (typeArgument.value) {
+                    toKeepChildren.push(typeArgument.value?.toString())
+                  }
                   break
                 case "union":
                   typeArgument.types.forEach((childItem) => {
                     if (childItem.type === "literal") {
-                      removeChild(childItem.value?.toString(), children)
+                      if (childItem.value) {
+                        toKeepChildren.push(childItem.value?.toString())
+                      }
                     } else {
-                      getTypeChildren(childItem, project).forEach((child) => {
-                        removeChild(child.name, children)
+                      getTypeChildren({
+                        reflectionType: childItem,
+                        project,
+                        level: level + 1,
+                        maxLevel,
+                      }).forEach((child) => {
+                        if (child.name) {
+                          toKeepChildren.push(child.name)
+                        }
                       })
                     }
                   })
               }
-            } else {
-              const typeArgumentChildren = getTypeChildren(
-                typeArgument,
-                project
-              )
-              children.push(...typeArgumentChildren)
             }
-          })
-        } else if (referencedReflection.type) {
-          children = getTypeChildren(referencedReflection.type, project)
+          } else {
+            const typeArgumentChildren = getTypeChildren({
+              reflectionType: typeArgument,
+              project,
+              level: level + 1,
+              maxLevel,
+            })
+            children.push(...typeArgumentChildren)
+          }
+        })
+
+        if (toKeepChildren.length) {
+          children = children.filter((child) =>
+            toKeepChildren.includes(child.name)
+          )
         }
       }
       break
@@ -62,7 +142,12 @@ export function getTypeChildren(
       ]
       break
     case "array":
-      children = getTypeChildren(reflectionType.elementType, project)
+      children = getTypeChildren({
+        reflectionType: reflectionType.elementType,
+        project,
+        level: level + 1,
+        maxLevel,
+      })
   }
 
   return filterChildren(children)

@@ -4,7 +4,7 @@
   import LightBulbSolid from "../light-bulb-solid"
 
   describe("LightBulbSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<LightBulbSolid data-testid="icon" />)
 
 
