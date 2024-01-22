@@ -62,6 +62,11 @@ class DTOPropertyGenerator extends DefaultKindGenerator<ts.PropertySignature> {
         str += `The associated ${this.formatInterfaceName(
           this.checker.typeToString(propertyType)
         )}.`
+      } else if (
+        "intrinsicName" in propertyType &&
+        propertyType.intrinsicName === "boolean"
+      ) {
+        str += `Whether the ${parentName} ${snakeToWords(node.name.getText())}.`
       } else {
         // format summary
         str += `The ${snakeToWords(node.name.getText())} of the ${parentName}.`

@@ -208,7 +208,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
       }
 
       // do some formatting if the encapsulating type is an array
-      return `The list of ${capitalize(typeArgumentDoc)}`
+      return `The list of ${capitalize(typeArgumentDoc) || this.defaultSummary}`
     }
 
     return (
