@@ -34,6 +34,9 @@ export default class CustomerGroup {
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
+  @Property({ columnType: "text", nullable: true })
+  created_by: string | null = null
+
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",

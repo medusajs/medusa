@@ -1,10 +1,11 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { MapToConfig } from "@medusajs/utils"
-import { Payment } from "@models"
+import { Payment, PaymentCollection } from "@models"
 
 export const LinkableKeys = {
   payment_id: Payment.name,
+  payment_collection_id: PaymentCollection.name,
 }
 
 const entityLinkableKeysMap: MapToConfig = {}
