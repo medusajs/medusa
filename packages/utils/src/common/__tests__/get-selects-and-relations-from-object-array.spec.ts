@@ -54,10 +54,6 @@ describe("getSelectsAndRelationsFromObjectArray", function () {
     ]
 
     expectations.forEach((expectation) => {
-      console.log(
-        "getSelectsAndRelationsFromObjectArray(expectation.input) - ",
-        getSelectsAndRelationsFromObjectArray(expectation.input)
-      )
       expect(getSelectsAndRelationsFromObjectArray(expectation.input)).toEqual(
         expectation.output
       )

@@ -49,9 +49,7 @@ describe("POST /admin/promotions/:id", () => {
     const { response } = await api
       .post(
         `/admin/promotions/does-not-exist`,
-        {
-          type: PromotionType.STANDARD,
-        },
+        { type: PromotionType.STANDARD },
         adminHeaders
       )
       .catch((e) => e)
@@ -59,6 +57,41 @@ describe("POST /admin/promotions/:id", () => {
     expect(response.status).toEqual(404)
     expect(response.data.message).toEqual(
       `Promotion with id "does-not-exist" not found`
+    )
+  })
+
+  it("should throw an error when both campaign and campaign_id params are passed", async () => {
+    const createdPromotion = await promotionModuleService.create({
+      code: "TEST",
+      type: PromotionType.STANDARD,
+      is_automatic: true,
+      application_method: {
+        target_type: "items",
+        type: "fixed",
+        allocation: "each",
+        value: "100",
+        max_quantity: 100,
+      },
+    })
+
+    const api = useApi() as any
+
+    const { response } = await api
+      .post(
+        `/admin/promotions/${createdPromotion.id}`,
+        {
+          campaign: {
+            name: "test campaign",
+          },
+          campaign_id: "test",
+        },
+        adminHeaders
+      )
+      .catch((e) => e)
+
+    expect(response.status).toEqual(400)
+    expect(response.data.message).toContain(
+      `Failed XOR relation between "campaign_id" and "campaign"`
     )
   })
 

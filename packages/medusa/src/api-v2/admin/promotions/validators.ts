@@ -14,9 +14,11 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  Validate,
   ValidateNested,
 } from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
+import { XorConstraint } from "../../../types/validators/xor"
 import { AdminPostCampaignsReq } from "../campaigns/validators"
 
 export class AdminGetPromotionsPromotionParams extends FindParams {}
@@ -127,10 +129,12 @@ export class AdminPostPromotionsPromotionReq {
   type?: PromotionType
 
   @IsOptional()
+  @Validate(XorConstraint, ["campaign"])
   @IsString()
   campaign_id?: string
 
   @IsOptional()
+  @Validate(XorConstraint, ["campaign_id"])
   @ValidateNested()
   @Type(() => AdminPostCampaignsReq)
   campaign?: AdminPostCampaignsReq
