@@ -36,6 +36,7 @@ import {
   PromotionService,
 } from "@services"
 import {
+  ApplicationMethodRuleTypes,
   CreateApplicationMethodDTO,
   CreateCampaignBudgetDTO,
   CreateCampaignDTO,
@@ -1022,10 +1023,10 @@ export default class PromotionModuleService<
     rulesData: PromotionTypes.RemovePromotionRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PromotionTypes.PromotionDTO> {
-    await this.removeApplicationMethodTargetRules_(
+    await this.removeApplicationMethodRules_(
       promotionId,
       rulesData,
-      "target_rules",
+      ApplicationMethodRuleTypes.TARGET_RULES,
       sharedContext
     )
 
@@ -1050,10 +1051,10 @@ export default class PromotionModuleService<
     rulesData: PromotionTypes.RemovePromotionRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PromotionTypes.PromotionDTO> {
-    await this.removeApplicationMethodTargetRules_(
+    await this.removeApplicationMethodRules_(
       promotionId,
       rulesData,
-      "buy_rules",
+      ApplicationMethodRuleTypes.BUY_RULES,
       sharedContext
     )
 
@@ -1073,10 +1074,12 @@ export default class PromotionModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  protected async removeApplicationMethodTargetRules_(
+  protected async removeApplicationMethodRules_(
     promotionId: string,
     rulesData: PromotionTypes.RemovePromotionRuleDTO[],
-    relation: "target_rules" | "buy_rules",
+    relation:
+      | ApplicationMethodRuleTypes.TARGET_RULES
+      | ApplicationMethodRuleTypes.BUY_RULES,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     const promotionRuleIds = rulesData.map((ruleData) => ruleData.id)
