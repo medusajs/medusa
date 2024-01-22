@@ -3,4 +3,4 @@ if (typeof process.env.DB_TEMP_NAME === "undefined") {
   process.env.DB_TEMP_NAME = `medusa-workflow-engine-redis-${tempName}`
 }
 
-process.env.MEDUSA_WORKFLOW_ENGINE_ORCHESTRATOR_DB_SCHEMA = "public"
+process.env.MEDUSA_WORKFLOW_ENGINE_DB_SCHEMA = "public"

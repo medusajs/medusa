@@ -13,7 +13,7 @@ import { DB_URL, TestDatabase } from "../utils"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
-  searchPath: process.env.MEDUSA_WORKFLOW_ENGINE_ORCHESTRATOR_DB_SCHEMA,
+  searchPath: process.env.MEDUSA_WORKFLOW_ENGINE_DB_SCHEMA,
   connection: {
     connectionString: DB_URL,
   },
@@ -50,8 +50,7 @@ describe("Workflow Orchestrator module", function () {
             options: {
               database: {
                 clientUrl: DB_URL,
-                schema:
-                  process.env.MEDUSA_WORKFLOW_ENGINE_ORCHESTRATOR_DB_SCHEMA,
+                schema: process.env.MEDUSA_WORKFLOW_ENGINE_DB_SCHEMA,
                 // debug: true,
               },
               redis: {
