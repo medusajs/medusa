@@ -1159,6 +1159,103 @@ describe("Promotion Service", () => {
     })
   })
 
+  describe("addPromotionBuyRules", () => {
+    let promotion
+
+    beforeEach(async () => {
+      ;[promotion] = await service.create([
+        {
+          code: "TEST",
+          type: PromotionType.BUYGET,
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "each",
+            value: "100",
+            max_quantity: 500,
+            apply_to_quantity: 1,
+            buy_rules_min_quantity: 1,
+            target_rules: [
+              {
+                attribute: "product.id",
+                operator: "in",
+                values: ["prod_1", "prod_2"],
+              },
+            ],
+            buy_rules: [
+              {
+                attribute: "product_collection.id",
+                operator: "eq",
+                values: ["pcol_towel"],
+              },
+            ],
+          },
+        },
+      ])
+    })
+
+    it("should throw an error when promotion with id does not exist", async () => {
+      let error
+
+      try {
+        await service.addPromotionBuyRules("does-not-exist", [])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual(
+        "Promotion with id: does-not-exist was not found"
+      )
+    })
+
+    it("should throw an error when a id is not provided", async () => {
+      let error
+
+      try {
+        await service.addPromotionBuyRules(undefined as unknown as string, [])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual('"promotionId" must be defined')
+    })
+
+    it("should successfully create buy rules for a buyget promotion", async () => {
+      promotion = await service.addPromotionBuyRules(promotion.id, [
+        {
+          attribute: "product.id",
+          operator: "in",
+          values: ["prod_3", "prod_4"],
+        },
+      ])
+
+      expect(promotion).toEqual(
+        expect.objectContaining({
+          id: promotion.id,
+          application_method: expect.objectContaining({
+            buy_rules: expect.arrayContaining([
+              expect.objectContaining({
+                attribute: "product_collection.id",
+                operator: "eq",
+                values: expect.arrayContaining([
+                  expect.objectContaining({ value: "pcol_towel" }),
+                ]),
+              }),
+              expect.objectContaining({
+                attribute: "product.id",
+                operator: "in",
+                values: expect.arrayContaining([
+                  expect.objectContaining({ value: "prod_3" }),
+                  expect.objectContaining({ value: "prod_4" }),
+                ]),
+              }),
+            ]),
+          }),
+        })
+      )
+    })
+  })
+
   describe("removePromotionRules", () => {
     let promotion
 
@@ -1296,6 +1393,90 @@ describe("Promotion Service", () => {
           id: promotion.id,
           application_method: expect.objectContaining({
             target_rules: [],
+          }),
+        })
+      )
+    })
+  })
+
+  describe("removePromotionBuyRules", () => {
+    let promotion
+
+    beforeEach(async () => {
+      ;[promotion] = await service.create([
+        {
+          code: "TEST",
+          type: PromotionType.BUYGET,
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "each",
+            value: "100",
+            max_quantity: 500,
+            apply_to_quantity: 1,
+            buy_rules_min_quantity: 1,
+            target_rules: [
+              {
+                attribute: "product.id",
+                operator: "in",
+                values: ["prod_1", "prod_2"],
+              },
+            ],
+            buy_rules: [
+              {
+                attribute: "product_collection",
+                operator: "eq",
+                values: ["pcol_towel"],
+              },
+            ],
+          },
+        },
+      ])
+    })
+
+    it("should throw an error when promotion with id does not exist", async () => {
+      let error
+
+      try {
+        await service.removePromotionBuyRules("does-not-exist", [])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual(
+        "Promotion with id: does-not-exist was not found"
+      )
+    })
+
+    it("should throw an error when a id is not provided", async () => {
+      let error
+
+      try {
+        await service.removePromotionBuyRules(
+          undefined as unknown as string,
+          []
+        )
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual('"promotionId" must be defined')
+    })
+
+    it("should successfully remove rules for a promotion", async () => {
+      const [ruleId] = promotion.application_method.buy_rules.map(
+        (rule) => rule.id
+      )
+
+      promotion = await service.removePromotionBuyRules(promotion.id, [
+        { id: ruleId },
+      ])
+
+      expect(promotion).toEqual(
+        expect.objectContaining({
+          id: promotion.id,
+          application_method: expect.objectContaining({
+            buy_rules: [],
           }),
         })
       )
