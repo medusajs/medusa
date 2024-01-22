@@ -82,7 +82,7 @@ export default class CustomerModuleService implements ICustomerModuleService {
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async create(
     dataOrArray:
       | CustomerTypes.CreateCustomerDTO
@@ -125,7 +125,7 @@ export default class CustomerModuleService implements ICustomerModuleService {
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async update(
     idsOrSelector: string | string[] | CustomerTypes.FilterableCustomerProps,
     data: Partial<CustomerTypes.CreateCustomerDTO>,
@@ -181,6 +181,7 @@ export default class CustomerModuleService implements ICustomerModuleService {
     sharedContext?: Context
   ): Promise<void>
 
+  @InjectTransactionManager("baseRepository_")
   async delete(
     idsOrSelector: string | string[] | CustomerTypes.FilterableCustomerProps,
     @MedusaContext() sharedContext: Context = {}
