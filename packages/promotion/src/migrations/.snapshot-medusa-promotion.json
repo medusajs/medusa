@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -109,18 +107,14 @@
       "indexes": [
         {
           "keyName": "IDX_campaign_identifier_unique",
-          "columnNames": [
-            "campaign_identifier"
-          ],
+          "columnNames": ["campaign_identifier"],
           "composite": false,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "campaign_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -147,10 +141,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "spend",
-            "usage"
-          ],
+          "enumItems": ["spend", "usage"],
           "mappedType": "enum"
         },
         "campaign_id": {
@@ -219,18 +210,14 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "type"
-          ],
+          "columnNames": ["type"],
           "composite": false,
           "keyName": "IDX_campaign_budget_type",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "campaign_id"
-          ],
+          "columnNames": ["campaign_id"],
           "composite": false,
           "keyName": "campaign_budget_campaign_id_unique",
           "primary": false,
@@ -238,9 +225,7 @@
         },
         {
           "keyName": "campaign_budget_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -250,13 +235,9 @@
       "foreignKeys": {
         "campaign_budget_campaign_id_foreign": {
           "constraintName": "campaign_budget_campaign_id_foreign",
-          "columnNames": [
-            "campaign_id"
-          ],
+          "columnNames": ["campaign_id"],
           "localTableName": "public.campaign_budget",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.campaign",
           "updateRule": "cascade"
         }
@@ -308,10 +289,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "standard",
-            "buyget"
-          ],
+          "enumItems": ["standard", "buyget"],
           "mappedType": "enum"
         },
         "created_at": {
@@ -351,18 +329,14 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "code"
-          ],
+          "columnNames": ["code"],
           "composite": false,
           "keyName": "IDX_promotion_code",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "type"
-          ],
+          "columnNames": ["type"],
           "composite": false,
           "keyName": "IDX_promotion_type",
           "primary": false,
@@ -370,18 +344,14 @@
         },
         {
           "keyName": "IDX_promotion_code_unique",
-          "columnNames": [
-            "code"
-          ],
+          "columnNames": ["code"],
           "composite": false,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "promotion_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -391,13 +361,9 @@
       "foreignKeys": {
         "promotion_campaign_id_foreign": {
           "constraintName": "promotion_campaign_id_foreign",
-          "columnNames": [
-            "campaign_id"
-          ],
+          "columnNames": ["campaign_id"],
           "localTableName": "public.promotion",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.campaign",
           "deleteRule": "set null"
         }
@@ -457,10 +423,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "fixed",
-            "percentage"
-          ],
+          "enumItems": ["fixed", "percentage"],
           "mappedType": "enum"
         },
         "target_type": {
@@ -470,11 +433,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "order",
-            "shipping_methods",
-            "items"
-          ],
+          "enumItems": ["order", "shipping_methods", "items"],
           "mappedType": "enum"
         },
         "allocation": {
@@ -484,10 +443,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "enumItems": [
-            "each",
-            "across"
-          ],
+          "enumItems": ["each", "across"],
           "mappedType": "enum"
         },
         "promotion_id": {
@@ -536,36 +492,28 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "type"
-          ],
+          "columnNames": ["type"],
           "composite": false,
           "keyName": "IDX_application_method_type",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "target_type"
-          ],
+          "columnNames": ["target_type"],
           "composite": false,
           "keyName": "IDX_application_method_target_type",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "allocation"
-          ],
+          "columnNames": ["allocation"],
           "composite": false,
           "keyName": "IDX_application_method_allocation",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "promotion_id"
-          ],
+          "columnNames": ["promotion_id"],
           "composite": false,
           "keyName": "application_method_promotion_id_unique",
           "primary": false,
@@ -573,9 +521,7 @@
         },
         {
           "keyName": "application_method_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -585,13 +531,9 @@
       "foreignKeys": {
         "application_method_promotion_id_foreign": {
           "constraintName": "application_method_promotion_id_foreign",
-          "columnNames": [
-            "promotion_id"
-          ],
+          "columnNames": ["promotion_id"],
           "localTableName": "public.application_method",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.promotion",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -634,15 +576,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "gte",
-            "lte",
-            "gt",
-            "lt",
-            "eq",
-            "ne",
-            "in"
-          ],
+          "enumItems": ["gte", "lte", "gt", "lt", "eq", "ne", "in"],
           "mappedType": "enum"
         },
         "created_at": {
@@ -682,18 +616,14 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "attribute"
-          ],
+          "columnNames": ["attribute"],
           "composite": false,
           "keyName": "IDX_promotion_rule_attribute",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "operator"
-          ],
+          "columnNames": ["operator"],
           "composite": false,
           "keyName": "IDX_promotion_rule_operator",
           "primary": false,
@@ -701,9 +631,7 @@
         },
         {
           "keyName": "promotion_rule_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -738,10 +666,7 @@
       "indexes": [
         {
           "keyName": "promotion_promotion_rule_pkey",
-          "columnNames": [
-            "promotion_id",
-            "promotion_rule_id"
-          ],
+          "columnNames": ["promotion_id", "promotion_rule_id"],
           "composite": true,
           "primary": true,
           "unique": true
@@ -751,26 +676,18 @@
       "foreignKeys": {
         "promotion_promotion_rule_promotion_id_foreign": {
           "constraintName": "promotion_promotion_rule_promotion_id_foreign",
-          "columnNames": [
-            "promotion_id"
-          ],
+          "columnNames": ["promotion_id"],
           "localTableName": "public.promotion_promotion_rule",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.promotion",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "promotion_promotion_rule_promotion_rule_id_foreign": {
           "constraintName": "promotion_promotion_rule_promotion_rule_id_foreign",
-          "columnNames": [
-            "promotion_rule_id"
-          ],
+          "columnNames": ["promotion_rule_id"],
           "localTableName": "public.promotion_promotion_rule",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.promotion_rule",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -803,10 +720,7 @@
       "indexes": [
         {
           "keyName": "application_method_target_rules_pkey",
-          "columnNames": [
-            "application_method_id",
-            "promotion_rule_id"
-          ],
+          "columnNames": ["application_method_id", "promotion_rule_id"],
           "composite": true,
           "primary": true,
           "unique": true
@@ -816,26 +730,18 @@
       "foreignKeys": {
         "application_method_target_rules_application_method_id_foreign": {
           "constraintName": "application_method_target_rules_application_method_id_foreign",
-          "columnNames": [
-            "application_method_id"
-          ],
+          "columnNames": ["application_method_id"],
           "localTableName": "public.application_method_target_rules",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.application_method",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "application_method_target_rules_promotion_rule_id_foreign": {
           "constraintName": "application_method_target_rules_promotion_rule_id_foreign",
-          "columnNames": [
-            "promotion_rule_id"
-          ],
+          "columnNames": ["promotion_rule_id"],
           "localTableName": "public.application_method_target_rules",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.promotion_rule",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -868,10 +774,7 @@
       "indexes": [
         {
           "keyName": "application_method_buy_rules_pkey",
-          "columnNames": [
-            "application_method_id",
-            "promotion_rule_id"
-          ],
+          "columnNames": ["application_method_id", "promotion_rule_id"],
           "composite": true,
           "primary": true,
           "unique": true
@@ -881,26 +784,18 @@
       "foreignKeys": {
         "application_method_buy_rules_application_method_id_foreign": {
           "constraintName": "application_method_buy_rules_application_method_id_foreign",
-          "columnNames": [
-            "application_method_id"
-          ],
+          "columnNames": ["application_method_id"],
           "localTableName": "public.application_method_buy_rules",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.application_method",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "application_method_buy_rules_promotion_rule_id_foreign": {
           "constraintName": "application_method_buy_rules_promotion_rule_id_foreign",
-          "columnNames": [
-            "promotion_rule_id"
-          ],
+          "columnNames": ["promotion_rule_id"],
           "localTableName": "public.application_method_buy_rules",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.promotion_rule",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -973,9 +868,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "promotion_rule_id"
-          ],
+          "columnNames": ["promotion_rule_id"],
           "composite": false,
           "keyName": "IDX_promotion_rule_promotion_rule_value_id",
           "primary": false,
@@ -983,9 +876,7 @@
         },
         {
           "keyName": "promotion_rule_value_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -995,13 +886,9 @@
       "foreignKeys": {
         "promotion_rule_value_promotion_rule_id_foreign": {
           "constraintName": "promotion_rule_value_promotion_rule_id_foreign",
-          "columnNames": [
-            "promotion_rule_id"
-          ],
+          "columnNames": ["promotion_rule_id"],
           "localTableName": "public.promotion_rule_value",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.promotion_rule",
           "deleteRule": "cascade",
           "updateRule": "cascade"
