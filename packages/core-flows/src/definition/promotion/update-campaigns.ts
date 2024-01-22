@@ -5,9 +5,10 @@ import { updateCampaignsStep } from "../../handlers/promotion"
 type WorkflowInput = { campaignsData: UpdateCampaignDTO[] }
 type WorkflowOutput = CampaignDTO[]
 
+export const updateCampaignsWorkflowId = "update-campaigns"
 export const updateCampaignsWorkflow = createWorkflow<
   WorkflowInput,
   WorkflowOutput
->("update-campaigns", (input) => {
+>(updateCampaignsWorkflowId, (input) => {
   return updateCampaignsStep(input.campaignsData)
 })

@@ -34,34 +34,34 @@ export class AdminPostCampaignsReq {
 
   @IsOptional()
   @IsNotEmpty()
-  campaign_identifier: string
+  campaign_identifier?: string
 
   @IsOptional()
   @IsString()
-  description: string
+  description?: string
 
   @IsOptional()
   @IsString()
-  currency: string
+  currency?: string
 
   @IsOptional()
   @ValidateNested()
   @Type(() => CampaignBudget)
-  budget: CampaignBudget
+  budget?: CampaignBudget
 
   @IsOptional()
   @IsDateString()
-  starts_at: string
+  starts_at?: string
 
   @IsOptional()
   @IsDateString()
-  ends_at: string
+  ends_at?: string
 
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => IdObject)
-  promotions: IdObject[]
+  promotions?: IdObject[]
 }
 
 export class IdObject {
@@ -73,50 +73,46 @@ export class IdObject {
 export class CampaignBudget {
   @IsOptional()
   @IsEnum(CampaignBudgetType)
-  type: CampaignBudgetType
+  type?: CampaignBudgetType
 
   @IsOptional()
   @IsNumber()
-  limit: number
-
-  @IsOptional()
-  @IsNumber()
-  used: number
+  limit?: number
 }
 
 export class AdminPostCampaignsCampaignReq {
   @IsOptional()
   @IsString()
-  name: string
+  name?: string
 
   @IsOptional()
   @IsNotEmpty()
-  campaign_identifier: string
+  campaign_identifier?: string
 
   @IsOptional()
   @IsString()
-  description: string
+  description?: string
 
   @IsOptional()
   @IsString()
-  currency: string
+  currency?: string
 
   @IsOptional()
   @ValidateNested()
   @Type(() => CampaignBudget)
-  budget: CampaignBudget
+  budget?: CampaignBudget
 
   @IsOptional()
   @IsDateString()
-  starts_at: string
+  starts_at?: string
 
   @IsOptional()
   @IsDateString()
-  ends_at: string
+  ends_at?: string
 
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => IdObject)
-  promotions: IdObject[]
+  promotions?: IdObject[]
 }

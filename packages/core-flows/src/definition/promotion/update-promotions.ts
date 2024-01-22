@@ -5,9 +5,10 @@ import { updatePromotionsStep } from "../../handlers/promotion"
 type WorkflowInput = { promotionsData: UpdatePromotionDTO[] }
 type WorkflowOutput = PromotionDTO[]
 
+export const updatePromotionsWorkflowId = "update-promotions"
 export const updatePromotionsWorkflow = createWorkflow<
   WorkflowInput,
   WorkflowOutput
->("update-promotions", (input) => {
+>(updatePromotionsWorkflowId, (input) => {
   return updatePromotionsStep(input.promotionsData)
 })

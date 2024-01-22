@@ -37,20 +37,20 @@ export class AdminPostPromotionsReq {
 
   @IsBoolean()
   @IsOptional()
-  is_automatic: boolean
+  is_automatic?: boolean
 
   @IsOptional()
   @IsEnum(PromotionType)
-  type: PromotionType
+  type?: PromotionType
 
   @IsOptional()
   @IsString()
-  campaign_id: string
+  campaign_id?: string
 
   @IsOptional()
   @ValidateNested()
   @Type(() => AdminPostCampaignsReq)
-  campaign: AdminPostCampaignsReq
+  campaign?: AdminPostCampaignsReq
 
   @IsNotEmpty()
   @ValidateNested()
@@ -61,17 +61,16 @@ export class AdminPostPromotionsReq {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => PromotionRule)
-  rules: PromotionRule[]
+  rules?: PromotionRule[]
 }
 
 export class PromotionRule {
-  @IsOptional()
   @IsEnum(PromotionRuleOperator)
   operator: PromotionRuleOperator
 
   @IsOptional()
   @IsString()
-  description: string | null
+  description?: string | null
 
   @IsNotEmpty()
   @IsString()
@@ -85,23 +84,23 @@ export class PromotionRule {
 export class ApplicationMethod {
   @IsOptional()
   @IsString()
-  description: string
+  description?: string
 
   @IsOptional()
   @IsString()
-  value: string
+  value?: string
 
   @IsOptional()
   @IsNumber()
-  max_quantity: number
+  max_quantity?: number
 
   @IsOptional()
   @IsEnum(ApplicationMethodType)
-  type: ApplicationMethodType
+  type?: ApplicationMethodType
 
   @IsOptional()
   @IsEnum(ApplicationMethodTargetType)
-  target_type: ApplicationMethodTargetType
+  target_type?: ApplicationMethodTargetType
 
   @IsOptional()
   @IsEnum(ApplicationMethodAllocation)
@@ -111,39 +110,39 @@ export class ApplicationMethod {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => PromotionRule)
-  target_rules: PromotionRule[]
+  target_rules?: PromotionRule[]
 }
 
 export class AdminPostPromotionsPromotionReq {
   @IsOptional()
   @IsString()
-  code: string
+  code?: string
 
-  @IsBoolean()
   @IsOptional()
-  is_automatic: boolean
+  @IsBoolean()
+  is_automatic?: boolean
 
   @IsOptional()
   @IsEnum(PromotionType)
-  type: PromotionType
+  type?: PromotionType
 
   @IsOptional()
   @IsString()
-  campaign_id: string
+  campaign_id?: string
 
   @IsOptional()
   @ValidateNested()
   @Type(() => AdminPostCampaignsReq)
-  campaign: AdminPostCampaignsReq
+  campaign?: AdminPostCampaignsReq
 
   @IsOptional()
   @ValidateNested()
   @Type(() => ApplicationMethod)
-  application_method: ApplicationMethod
+  application_method?: ApplicationMethod
 
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => PromotionRule)
-  rules: PromotionRule[]
+  rules?: PromotionRule[]
 }
