@@ -3,7 +3,11 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 import { initialize } from "../../../../src"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
-import { createPaymentCollections } from "../../../__fixtures__/payment-collection"
+import {
+  createPaymentCollections,
+  createPaymentSessions,
+  createPayments,
+} from "../../../__fixtures__"
 
 jest.setTimeout(30000)
 
@@ -25,6 +29,8 @@ describe("Payment Module Service", () => {
       })
 
       await createPaymentCollections(repositoryManager)
+      await createPaymentSessions(repositoryManager)
+      await createPayments(repositoryManager)
     })
 
     afterEach(async () => {
@@ -232,6 +238,7 @@ describe("Payment Module Service", () => {
       })
 
       await createPaymentCollections(repositoryManager)
+      await createPaymentSessions(repositoryManager)
     })
 
     afterEach(async () => {
@@ -253,21 +260,20 @@ describe("Payment Module Service", () => {
           expect.objectContaining({
             id: "pay-col-id-1",
             status: "not_paid",
-            payment_sessions: [
+            payment_sessions: expect.arrayContaining([
               {
                 id: expect.any(String),
+                data: null,
+                status: "pending",
+                authorized_at: null,
                 currency_code: "usd",
                 amount: 200,
                 provider_id: "manual",
-                status: "pending",
                 payment_collection: expect.objectContaining({
-                  id: "pay-col-id-1",
+                  id: paymentCollection.id,
                 }),
-                authorized_at: null,
-                payment: null,
-                data: null,
               },
-            ],
+            ]),
           })
         )
       })
@@ -290,29 +296,9 @@ describe("Payment Module Service", () => {
         },
       })
 
-      // let paymentCollection = await service.createPaymentCollection({
-      //   currency_code: "usd",
-      //   amount: 200,
-      //   region_id: "reg",
-      // })
-      //
-      // paymentCollection = await service.createPaymentSession(
-      //   paymentCollection.id,
-      //   {
-      //     amount: 200,
-      //     provider_id: "manual",
-      //     currency_code: "usd",
-      //   }
-      // )
-      //
-      // testPayment = await service.createPayment({
-      //   data: {},
-      //   amount: 200,
-      //   provider_id: "manual",
-      //   currency_code: "usd",
-      //   payment_collection_id: paymentCollection.id,
-      //   payment_session_id: paymentCollection.payment_sessions[0].id,
-      // })
+      await createPaymentCollections(repositoryManager)
+      await createPaymentSessions(repositoryManager)
+      await createPayments(repositoryManager)
     })
 
     afterEach(async () => {
@@ -371,61 +357,14 @@ describe("Payment Module Service", () => {
 
     describe("update", () => {
       it("should update a payment successfully", async () => {
-        // TODO: refactor when factory is added
-
-        let paymentCollection = await service.createPaymentCollection({
-          currency_code: "usd",
-          amount: 200,
-          region_id: "reg",
-        })
-
-        paymentCollection = await service.createPaymentSession(
-          paymentCollection.id,
-          {
-            amount: 200,
-            provider_id: "manual",
-            currency_code: "usd",
-          }
-        )
-
-        const createdPayment = await service.createPayment({
-          data: {},
-          amount: 200,
-          provider_id: "manual",
-          currency_code: "usd",
-          payment_collection_id: paymentCollection.id,
-          payment_session_id: paymentCollection.payment_sessions[0].id,
-        })
-
-        expect(createdPayment).toEqual(
-          expect.objectContaining({
-            id: expect.any(String),
-            authorized_amount: null,
-            cart_id: null,
-            order_id: null,
-            order_edit_id: null,
-            customer_id: null,
-            data: {},
-            deleted_at: null,
-            captured_at: null,
-            canceled_at: null,
-            refunds: [],
-            captures: [],
-            amount: 200,
-            currency_code: "usd",
-            provider_id: "manual",
-            payment_collection: paymentCollection.id,
-          })
-        )
-
         const updatedPayment = await service.updatePayment({
-          id: createdPayment.id,
+          id: "pay-id-1",
           cart_id: "new-cart",
         })
 
         expect(updatedPayment).toEqual(
           expect.objectContaining({
-            id: createdPayment.id,
+            id: "pay-id-1",
             cart_id: "new-cart",
           })
         )

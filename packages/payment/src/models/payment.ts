@@ -115,6 +115,7 @@ export default class Payment {
   @ManyToOne({
     index: "IDX_payment_payment_collection_id",
     fieldName: "payment_collection_id",
+    onDelete: "cascade",
   })
   payment_collection!: PaymentCollection
 

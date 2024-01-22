@@ -50,6 +50,7 @@ export default class PaymentSession {
   @ManyToOne({
     index: "IDX_payment_session_payment_collection_id",
     fieldName: "payment_collection_id",
+    onDelete: "cascade",
   })
   payment_collection!: PaymentCollection
 
