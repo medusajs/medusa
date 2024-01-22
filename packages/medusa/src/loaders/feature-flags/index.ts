@@ -53,7 +53,7 @@ export default (
 
       const parsedFromEnv = isString(envVal) ? envVal.split(",") : []
 
-      // MEDUSA_FF_WORKFLOW_ENGINES=createProducts,deleteProducts
+      // MEDUSA_FF_WORKFLOWS=createProducts,deleteProducts
       if (parsedFromEnv.length > 1) {
         flagConfig[flagSettings.key] = objectFromStringPath(parsedFromEnv)
       }
