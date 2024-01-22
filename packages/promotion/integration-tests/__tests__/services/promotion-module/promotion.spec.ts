@@ -1,5 +1,9 @@
 import { IPromotionModuleService } from "@medusajs/types"
-import { CampaignBudgetType, PromotionType } from "@medusajs/utils"
+import {
+  ApplicationMethodType,
+  CampaignBudgetType,
+  PromotionType,
+} from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { initialize } from "../../../../src"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
@@ -680,21 +684,136 @@ describe("Promotion Service", () => {
     })
   })
 
-  describe("delete", () => {
+  describe("listAndCount", () => {
     beforeEach(async () => {
-      await createPromotions(repositoryManager)
+      await createPromotions(repositoryManager, [
+        {
+          id: "promotion-id-1",
+          code: "PROMOTION_1",
+          type: PromotionType.STANDARD,
+          application_method: {
+            type: ApplicationMethodType.FIXED,
+            value: "200",
+            target_type: "items",
+          },
+        },
+        {
+          id: "promotion-id-2",
+          code: "PROMOTION_2",
+          type: PromotionType.STANDARD,
+        },
+      ])
     })
 
-    const id = "promotion-id-1"
+    it("should return all promotions and count", async () => {
+      const [promotions, count] = await service.listAndCount()
 
-    it("should delete the promotions given an id successfully", async () => {
-      await service.delete([id])
+      expect(count).toEqual(2)
+      expect(promotions).toEqual([
+        {
+          id: "promotion-id-1",
+          code: "PROMOTION_1",
+          campaign: null,
+          is_automatic: false,
+          type: "standard",
+          application_method: expect.any(String),
+          created_at: expect.any(Date),
+          updated_at: expect.any(Date),
+          deleted_at: null,
+        },
+        {
+          id: "promotion-id-2",
+          code: "PROMOTION_2",
+          campaign: null,
+          is_automatic: false,
+          type: "standard",
+          application_method: null,
+          created_at: expect.any(Date),
+          updated_at: expect.any(Date),
+          deleted_at: null,
+        },
+      ])
+    })
+
+    it("should return all promotions based on config select and relations param", async () => {
+      const [promotions, count] = await service.listAndCount(
+        {
+          id: ["promotion-id-1"],
+        },
+        {
+          relations: ["application_method"],
+          select: ["code", "application_method.type"],
+        }
+      )
+
+      expect(count).toEqual(1)
+      expect(promotions).toEqual([
+        {
+          id: "promotion-id-1",
+          code: "PROMOTION_1",
+          application_method: {
+            id: expect.any(String),
+            promotion: expect.any(Object),
+            type: "fixed",
+          },
+        },
+      ])
+    })
+  })
+
+  describe("delete", () => {
+    it("should soft delete the promotions given an id successfully", async () => {
+      const createdPromotion = await service.create({
+        code: "TEST",
+        type: "standard",
+      })
+
+      await service.delete([createdPromotion.id])
+
+      const promotions = await service.list(
+        {
+          id: [createdPromotion.id],
+        },
+        { withDeleted: true }
+      )
+
+      expect(promotions).toHaveLength(0)
+    })
+  })
+
+  describe("softDelete", () => {
+    it("should soft delete the promotions given an id successfully", async () => {
+      const createdPromotion = await service.create({
+        code: "TEST",
+        type: "standard",
+      })
+
+      await service.softDelete([createdPromotion.id])
 
       const promotions = await service.list({
-        id: [id],
+        id: [createdPromotion.id],
       })
 
       expect(promotions).toHaveLength(0)
+    })
+  })
+
+  describe("restore", () => {
+    it("should restore the promotions given an id successfully", async () => {
+      const createdPromotion = await service.create({
+        code: "TEST",
+        type: "standard",
+      })
+
+      await service.softDelete([createdPromotion.id])
+
+      let promotions = await service.list({ id: [createdPromotion.id] })
+
+      expect(promotions).toHaveLength(0)
+      await service.restore([createdPromotion.id])
+
+      promotions = await service.list({ id: [createdPromotion.id] })
+      expect(promotions).toHaveLength(1)
     })
   })
 

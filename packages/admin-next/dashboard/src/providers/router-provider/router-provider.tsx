@@ -1,4 +1,6 @@
 import type {
+  AdminCollectionsRes,
+  AdminCustomerGroupsRes,
   AdminCustomersRes,
   AdminProductsRes,
   AdminRegionsRes,
@@ -135,12 +137,37 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/collections/list"),
+                path: "",
+                lazy: () => import("../../routes/collections/collection-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/collections/collection-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/collections/details"),
+                handle: {
+                  crumb: (data: AdminCollectionsRes) => data.collection.title,
+                },
+                lazy: () =>
+                  import("../../routes/collections/collection-detail"),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../routes/collections/collection-edit"),
+                  },
+                  {
+                    path: "add-products",
+                    lazy: () =>
+                      import(
+                        "../../routes/collections/collection-add-products"
+                      ),
+                  },
+                ],
               },
             ],
           },
@@ -183,12 +210,43 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/customer-groups/list"),
+                path: "",
+                lazy: () =>
+                  import("../../routes/customer-groups/customer-group-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-create"
+                      ),
+                  },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/customer-groups/details"),
+                lazy: () =>
+                  import("../../routes/customer-groups/customer-group-detail"),
+                handle: {
+                  crumb: (data: AdminCustomerGroupsRes) =>
+                    data.customer_group.name,
+                },
+                children: [
+                  {
+                    path: "add-customers",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-add-customers"
+                      ),
+                  },
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-edit"
+                      ),
+                  },
+                ],
               },
             ],
           },

@@ -1528,7 +1528,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Event",
+          label: "Subscribers and Events",
           items: [
             {
               type: "doc",

@@ -14,7 +14,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 import Cart from "./cart"
-import LineItemAdjustmentLine from "./line-item-adjustment-line"
+import LineItemAdjustment from "./line-item-adjustment"
 import LineItemTaxLine from "./line-item-tax-line"
 
 type OptionalLineItemProps =
@@ -94,13 +94,13 @@ export default class LineItem {
   @Property({ columnType: "jsonb", nullable: true })
   variant_option_values?: Record<string, unknown> | null
 
-  @Property({ columnType: "boolean", default: true })
+  @Property({ columnType: "boolean" })
   requires_shipping = true
 
-  @Property({ columnType: "boolean", default: true })
+  @Property({ columnType: "boolean" })
   is_discountable = true
 
-  @Property({ columnType: "boolean", default: false })
+  @Property({ columnType: "boolean" })
   is_tax_inclusive = false
 
   @Property({ columnType: "numeric", nullable: true })
@@ -116,13 +116,13 @@ export default class LineItem {
   tax_lines = new Collection<LineItemTaxLine>(this)
 
   @OneToMany(
-    () => LineItemAdjustmentLine,
-    (adjustment) => adjustment.line_item,
+    () => LineItemAdjustment,
+    (adjustment) => adjustment.item,
     {
       cascade: [Cascade.REMOVE],
     }
   )
-  adjustments = new Collection<LineItemAdjustmentLine>(this)
+  adjustments = new Collection<LineItemAdjustment>(this)
 
   /** COMPUTED PROPERTIES - START */
 

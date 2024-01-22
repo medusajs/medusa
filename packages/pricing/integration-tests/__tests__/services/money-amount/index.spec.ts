@@ -1,12 +1,14 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 import { Currency, MoneyAmount } from "@models"
-import { MoneyAmountRepository } from "@repositories"
 import { MoneyAmountService } from "@services"
 
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { MikroOrmWrapper } from "../../../utils"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -21,13 +23,12 @@ describe("MoneyAmount Service", () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = await MikroOrmWrapper.forkManager()
 
-    const moneyAmountRepository = new MoneyAmountRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new MoneyAmountService({
-      moneyAmountRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("moneyAmountService")
 
     testManager = await MikroOrmWrapper.forkManager()
     currencyData = await createCurrencies(testManager)

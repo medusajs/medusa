@@ -1,13 +1,11 @@
-import { BuildingTax, EllipsisHorizontal, Trash } from "@medusajs/icons"
+import { Trash } from "@medusajs/icons"
 import { Currency, Store } from "@medusajs/medusa"
 import {
   Button,
   Checkbox,
   CommandBar,
   Container,
-  DropdownMenu,
   Heading,
-  IconButton,
   StatusBadge,
   Table,
   clx,
@@ -25,6 +23,7 @@ import { useAdminUpdateStore } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
+import { ActionMenu } from "../../../../../../components/common/action-menu"
 import { LocalizedTablePagination } from "../../../../../../components/localization/localized-table-pagination"
 
 type StoreCurrencySectionProps = {
@@ -180,12 +179,14 @@ const CurrencyActions = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const handleDeleteCurrency = async () => {
+  const handleRemove = async () => {
     const result = await prompt({
       title: t("general.areYouSure"),
       description: t("store.removeCurrencyWarning", {
         count: 1,
       }),
+      verificationInstruction: t("general.typeToConfirm"),
+      verificationText: currency.name,
       confirmText: t("general.remove"),
       cancelText: t("general.cancel"),
     })
@@ -200,28 +201,19 @@ const CurrencyActions = ({
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
-        <IconButton variant="transparent">
-          <EllipsisHorizontal />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <DropdownMenu.Item>
-          <div className="flex items-center gap-x-2">
-            <BuildingTax className="text-ui-fg-subtle" />
-            <span>{t("general.remove")}</span>
-          </div>
-        </DropdownMenu.Item>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Item onClick={handleDeleteCurrency}>
-          <div className="flex items-center gap-x-2">
-            <Trash className="text-ui-fg-subtle" />
-            <span>{t("general.remove")}</span>
-          </div>
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
-    </DropdownMenu>
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <Trash />,
+              label: t("general.remove"),
+              onClick: handleRemove,
+            },
+          ],
+        },
+      ]}
+    />
   )
 }
 

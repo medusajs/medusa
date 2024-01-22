@@ -1,7 +1,8 @@
 import {
   Context,
   DAL,
-  FilterQuery as InternalFilerQuery,
+  FilterQuery as InternalFilterQuery,
+  RepositoryService,
   RepositoryTransformOptions,
 } from "@medusajs/types"
 import {
@@ -16,9 +17,9 @@ import {
   EntityName,
   FilterQuery as MikroFilterQuery,
 } from "@mikro-orm/core/typings"
-import { isString, MedusaError } from "../../common"
+import { MedusaError, isString } from "../../common"
 import { MedusaContext } from "../../decorators"
-import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
+import { InjectTransactionManager, buildQuery } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
@@ -104,9 +105,13 @@ export class MikroOrmBaseRepository<
     throw new Error("Method not implemented.")
   }
 
+  upsert(data: unknown[], context: Context = {}): Promise<T[]> {
+    throw new Error("Method not implemented.")
+  }
+
   @InjectTransactionManager()
   async softDelete(
-    idsOrFilter: string[] | InternalFilerQuery,
+    idsOrFilter: string[] | InternalFilterQuery,
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
@@ -138,7 +143,7 @@ export class MikroOrmBaseRepository<
 
   @InjectTransactionManager()
   async restore(
-    idsOrFilter: string[] | InternalFilerQuery,
+    idsOrFilter: string[] | InternalFilterQuery,
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
@@ -224,11 +229,14 @@ type DtoBasedMutationMethods = "create" | "update"
 
 export function mikroOrmBaseRepositoryFactory<
   T extends object = object,
-  TDTos extends { [K in DtoBasedMutationMethods]?: any } = {
+  TDTOs extends { [K in DtoBasedMutationMethods]?: any } = {
     [K in DtoBasedMutationMethods]?: any
   }
 >(entity: EntityClass<T> | EntitySchema<T>) {
-  class MikroOrmAbstractBaseRepository_ extends MikroOrmBaseRepository<T> {
+  class MikroOrmAbstractBaseRepository_
+    extends MikroOrmBaseRepository<T>
+    implements RepositoryService<T, TDTOs>
+  {
     // @ts-ignore
     constructor(...args: any[]) {
       // @ts-ignore
@@ -242,11 +250,11 @@ export function mikroOrmBaseRepositoryFactory<
     static retrievePrimaryKeys(entity: EntityClass<T> | EntitySchema<T>) {
       return (
         (entity as EntitySchema<T>).meta?.primaryKeys ??
-        (entity as EntityClass<T>).prototype.__meta.primaryKeys
+        (entity as EntityClass<T>).prototype.__meta.primaryKeys ?? ["id"]
       )
     }
 
-    async create(data: TDTos["create"][], context?: Context): Promise<T[]> {
+    async create(data: TDTOs["create"][], context?: Context): Promise<T[]> {
       const manager = this.getActiveManager<EntityManager>(context)
 
       const entities = data.map((data_) => {
@@ -261,7 +269,8 @@ export function mikroOrmBaseRepositoryFactory<
       return entities
     }
 
-    async update(data: TDTos["update"][], context?: Context): Promise<T[]> {
+    async update(data: TDTOs["update"][], context?: Context): Promise<T[]> {
+      // TODO: Move this logic to the service packages/utils/src/modules-sdk/abstract-service-factory.ts
       const manager = this.getActiveManager<EntityManager>(context)
 
       const primaryKeys =
@@ -409,6 +418,83 @@ export function mikroOrmBaseRepositoryFactory<
         findOptions_.where as MikroFilterQuery<T>,
         findOptions_.options as MikroOptions<T>
       )
+    }
+
+    async upsert(
+      data: (TDTOs["create"] | TDTOs["update"])[],
+      context: Context = {}
+    ): Promise<T[]> {
+      // TODO: Move this logic to the service packages/utils/src/modules-sdk/abstract-service-factory.ts
+      const manager = this.getActiveManager<EntityManager>(context)
+
+      const primaryKeys =
+        MikroOrmAbstractBaseRepository_.retrievePrimaryKeys(entity)
+
+      let primaryKeysCriteria: { [key: string]: any }[] = []
+      if (primaryKeys.length === 1) {
+        primaryKeysCriteria.push({
+          [primaryKeys[0]]: data.map((d) => d[primaryKeys[0]]),
+        })
+      } else {
+        primaryKeysCriteria = data.map((d) => ({
+          $and: primaryKeys.map((key) => ({ [key]: d[key] })),
+        }))
+      }
+
+      const allEntities = await Promise.all(
+        primaryKeysCriteria.map(
+          async (criteria) =>
+            await this.find({ where: criteria } as DAL.FindOptions<T>, context)
+        )
+      )
+
+      const existingEntities = allEntities.flat()
+
+      const existingEntitiesMap = new Map<string, T>()
+      existingEntities.forEach((entity) => {
+        if (entity) {
+          const key =
+            MikroOrmAbstractBaseRepository_.buildUniqueCompositeKeyValue(
+              primaryKeys,
+              entity
+            )
+          existingEntitiesMap.set(key, entity)
+        }
+      })
+
+      const upsertedEntities: T[] = []
+      const createdEntities: T[] = []
+      const updatedEntities: T[] = []
+
+      data.forEach((data_) => {
+        // In case the data provided are just strings, then we build an object with the primary key as the key and the data as the valuecd -
+        const key =
+          MikroOrmAbstractBaseRepository_.buildUniqueCompositeKeyValue(
+            primaryKeys,
+            data_
+          )
+
+        const existingEntity = existingEntitiesMap.get(key)
+        if (existingEntity) {
+          const updatedType = manager.assign(existingEntity, data_)
+          updatedEntities.push(updatedType)
+        } else {
+          const newEntity = manager.create(entity, data_)
+          createdEntities.push(newEntity)
+        }
+      })
+
+      if (createdEntities.length) {
+        manager.persist(createdEntities)
+        upsertedEntities.push(...createdEntities)
+      }
+
+      if (updatedEntities.length) {
+        manager.persist(updatedEntities)
+        upsertedEntities.push(...updatedEntities)
+      }
+
+      return upsertedEntities
     }
   }
 

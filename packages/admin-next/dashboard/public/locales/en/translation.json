@@ -35,6 +35,7 @@
     "areYouSure": "Are you sure?",
     "noRecordsFound": "No records found",
     "typeToConfirm": "Please type {val} to confirm:",
+    "noResultsTitle": "No results",
     "noResultsMessage": "Try changing the filters or search query",
     "noRecordsTitle": "No records",
     "noRecordsMessage": "There are no records to show",
@@ -55,7 +56,16 @@
     }
   },
   "collections": {
-    "domain": "Collections"
+    "domain": "Collections",
+    "createCollection": "Create Collection",
+    "createCollectionHint": "Create a new collection to organize your products.",
+    "editCollection": "Edit Collection",
+    "handleTooltip": "The handle is used to reference the collection in your storefront. If not specified, the handle will be generated from the collection title.",
+    "deleteWarning_one": "You are about to delete {{count}} collection. This action cannot be undone.",
+    "deleteWarning_other": "You are about to delete {{count}} collections. This action cannot be undone.",
+    "removeSingleProductWarning": "You are about to remove the product {{title}} from the collection. This action cannot be undone.",
+    "removeProductsWarning_one": "You are about to remove {{count}} product from the collection. This action cannot be undone.",
+    "removeProductsWarning_other": "You are about to remove {{count}} products from the collection. This action cannot be undone."
   },
   "categories": {
     "domain": "Categories"
@@ -77,10 +87,19 @@
     "changePasswordPromptDescription": "You are about to change the password for {{email}}. Make sure that you have communicated the new password to the customer before proceeding.",
     "guest": "Guest",
     "registered": "Registered",
-    "firstSeen": "First seen"
+    "firstSeen": "First seen",
+    "viewOrder": "View order"
   },
   "customerGroups": {
-    "domain": "Customer Groups"
+    "domain": "Customer Groups",
+    "createGroup": "Create group",
+    "createCustomerGroup": "Create Customer Group",
+    "createCustomerGroupHint": "Create a new customer group to segment your customers.",
+    "customerAlreadyAdded": "The customer has already been added to the group.",
+    "editCustomerGroup": "Edit Customer Group",
+    "removeCustomersWarning_one": "You are about to remove {{count}} customer from the customer group. This action cannot be undone.",
+    "removeCustomersWarning_other": "You are about to remove {{count}} customers from the customer group. This action cannot be undone.",
+    "deleteCustomerGroupWarning": "You are about to delete the customer group {{name}}. This action cannot be undone."
   },
   "orders": {
     "domain": "Orders"
@@ -129,10 +148,13 @@
   "regions": {
     "domain": "Regions",
     "createRegion": "Create Region",
+    "createRegionHint": "Manage tax rates and providers for a set of countries.",
     "editRegion": "Edit Region",
     "deleteRegionWarning": "You are about to delete the region {{name}}. This action cannot be undone.",
     "taxInclusiveHint": "When enabled all prices in the region will be tax inclusive.",
-    "providersHint": "The providers that are available in the region."
+    "providersHint": "The providers that are available in the region.",
+    "shippingOptions": "Shipping Options",
+    "returnShippingOptions": "Return Shipping Options"
   },
   "locations": {
     "domain": "Locations",
@@ -141,7 +163,9 @@
     "addSalesChannels": "Add sales channels",
     "detailsHint": "Specify the details of the location.",
     "noLocationsFound": "No locations found",
-    "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone."
+    "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone.",
+    "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the location.",
+    "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location."
   },
   "salesChannels": {
     "domain": "Sales Channels",
@@ -206,6 +230,7 @@
     "phone": "Phone",
     "metadata": "Metadata",
     "selectCountry": "Select country",
+    "products": "Products",
     "variants": "Variants",
     "orders": "Orders",
     "account": "Account",
