@@ -21,21 +21,18 @@ import {
   MedusaContext,
 } from "@medusajs/utils"
 
-import { Payment } from "@models"
 import * as services from "@services"
 
 import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  paymentCollectionService: services.PaymentCollection
+  paymentCollectionService: services.PaymentCollectionService
 }
 
-export default class PaymentModule<TPayment extends Payment = Payment>
-  implements IPaymentModuleService
-{
+export default class PaymentModuleService implements IPaymentModuleService {
   protected baseRepository_: DAL.RepositoryService
-  protected paymentCollectionService_: services.PaymentCollection
+  protected paymentCollectionService_: services.PaymentCollectionService
 
   constructor(
     { baseRepository, paymentCollectionService }: InjectedDependencies,
@@ -121,7 +118,7 @@ export default class PaymentModule<TPayment extends Payment = Payment>
   async deletePaymentCollection(
     ids: string | string[],
     @MedusaContext() sharedContext?: Context
-  ) {
+  ): Promise<void> {
     const paymentCollectionIds = Array.isArray(ids) ? ids : [ids]
     await this.paymentCollectionService_.delete(
       paymentCollectionIds,
@@ -205,11 +202,7 @@ export default class PaymentModule<TPayment extends Payment = Payment>
   }
   createPayment(data: CreatePaymentDTO): Promise<PaymentDTO>
   createPayment(data: CreatePaymentDTO[]): Promise<PaymentDTO[]>
-  createPayment(
-    data: unknown
-  ):
-    | Promise<import("@medusajs/types").PaymentDTO>
-    | Promise<import("@medusajs/types").PaymentDTO[]> {
+  createPayment(data: unknown): Promise<PaymentDTO | PaymentDTO[]> {
     throw new Error("Method not implemented.")
   }
   capturePayment(
@@ -237,9 +230,7 @@ export default class PaymentModule<TPayment extends Payment = Payment>
   updatePayment(
     data: unknown,
     sharedContext?: unknown
-  ):
-    | Promise<import("@medusajs/types").PaymentDTO>
-    | Promise<import("@medusajs/types").PaymentDTO[]> {
+  ): Promise<PaymentDTO | PaymentDTO[]> {
     throw new Error("Method not implemented.")
   }
   createPaymentSession(
