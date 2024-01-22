@@ -82,7 +82,7 @@ export default class CustomerModuleService implements ICustomerModuleService {
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async create(
     dataOrArray:
       | CustomerTypes.CreateCustomerDTO
@@ -190,20 +190,18 @@ export default class CustomerModuleService implements ICustomerModuleService {
   }
 
   async addCustomerToGroup(
-    groupCustomerPair: { customer_id: string; customer_group_id: string },
+    groupCustomerPair: CustomerTypes.GroupCustomerPair,
     sharedContext?: Context
   ): Promise<{ id: string }>
 
   async addCustomerToGroup(
-    groupCustomerPairs: { customer_id: string; customer_group_id: string }[],
+    groupCustomerPairs: CustomerTypes.GroupCustomerPair[],
     sharedContext?: Context
   ): Promise<{ id: string }[]>
 
   @InjectTransactionManager("baseRepository_")
   async addCustomerToGroup(
-    data:
-      | { customer_id: string; customer_group_id: string }
-      | { customer_id: string; customer_group_id: string }[],
+    data: CustomerTypes.GroupCustomerPair | CustomerTypes.GroupCustomerPair[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<{ id: string } | { id: string }[]> {
     const groupCustomers = await this.customerGroupCustomerService_.create(
@@ -212,10 +210,10 @@ export default class CustomerModuleService implements ICustomerModuleService {
     )
 
     if (Array.isArray(data)) {
-      return groupCustomers.map((gc) => ({ id: gc.customer_group_id }))
+      return groupCustomers.map((gc) => ({ id: gc.id }))
     }
 
-    return { id: groupCustomers[0].customer_group_id }
+    return { id: groupCustomers[0].id }
   }
 
   @InjectManager("baseRepository_")

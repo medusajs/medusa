@@ -31,6 +31,5 @@ export interface CustomerGroupUpdatableFileds {
 export interface UpdateCustomerGroupDTO {
   id?: string
   name?: string
-  customer_ids?: string[]
   metadata?: Record<string, unknown> | null
 }
