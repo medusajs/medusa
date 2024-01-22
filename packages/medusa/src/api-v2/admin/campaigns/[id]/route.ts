@@ -21,7 +21,6 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const updateCampaigns = updateCampaignsWorkflow(req.scope)
-  const manager = req.scope.resolve("manager")
   const campaignsData = [
     {
       id: req.params.id,
@@ -31,7 +30,6 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
   const { result, errors } = await updateCampaigns.run({
     input: { campaignsData },
-    context: { manager },
     throwOnError: false,
   })
 

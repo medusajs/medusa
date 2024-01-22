@@ -25,12 +25,10 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const createCampaigns = createCampaignsWorkflow(req.scope)
-  const manager = req.scope.resolve("manager")
   const campaignsData = [req.validatedBody as CreateCampaignDTO]
 
   const { result, errors } = await createCampaigns.run({
     input: { campaignsData },
-    context: { manager },
     throwOnError: false,
   })
 

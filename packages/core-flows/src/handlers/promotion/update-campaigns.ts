@@ -3,8 +3,9 @@ import { IPromotionModuleService, UpdateCampaignDTO } from "@medusajs/types"
 import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
+export const updateCampaignsStepId = "update-campaigns"
 export const updateCampaignsStep = createStep(
-  "update-campaigns",
+  updateCampaignsStepId,
   async (data: UpdateCampaignDTO[], { container }) => {
     const promotionModule = container.resolve<IPromotionModuleService>(
       ModuleRegistrationName.PROMOTION

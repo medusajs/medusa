@@ -2,8 +2,9 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CreatePromotionDTO, IPromotionModuleService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
+export const createPromotionsStepId = "create-promotions"
 export const createPromotionsStep = createStep(
-  "create-promotions",
+  createPromotionsStepId,
   async (data: CreatePromotionDTO[], { container }) => {
     const promotionModule = container.resolve<IPromotionModuleService>(
       ModuleRegistrationName.PROMOTION

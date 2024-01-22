@@ -25,13 +25,16 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const createPromotions = createPromotionsWorkflow(req.scope)
-  const manager = req.scope.resolve("manager")
   const promotionsData = [req.validatedBody as CreatePromotionDTO]
 
-  const { result } = await createPromotions.run({
+  const { result, errors } = await createPromotions.run({
     input: { promotionsData },
-    context: { manager },
+    throwOnError: false,
   })
+
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
 
   res.status(200).json({ promotion: result[0] })
 }
