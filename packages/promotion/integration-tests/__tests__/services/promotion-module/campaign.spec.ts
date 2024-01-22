@@ -385,20 +385,70 @@ describe("Promotion Module Service: Campaigns", () => {
   })
 
   describe("deleteCampaigns", () => {
-    beforeEach(async () => {
-      await createCampaigns(repositoryManager)
-    })
-
-    const id = "campaign-id-1"
-
     it("should delete the campaigns given an id successfully", async () => {
-      await service.deleteCampaigns([id])
+      const [createdCampaign] = await service.createCampaigns([
+        {
+          name: "test",
+          campaign_identifier: "test",
+          starts_at: new Date("01/01/2024"),
+          ends_at: new Date("01/01/2025"),
+        },
+      ])
 
-      const campaigns = await service.list({
-        id: [id],
+      await service.deleteCampaigns([createdCampaign.id])
+
+      const campaigns = await service.listCampaigns(
+        {
+          id: [createdCampaign.id],
+        },
+        { withDeleted: true }
+      )
+
+      expect(campaigns).toHaveLength(0)
+    })
+  })
+
+  describe("softDeleteCampaigns", () => {
+    it("should soft delete the campaigns given an id successfully", async () => {
+      const [createdCampaign] = await service.createCampaigns([
+        {
+          name: "test",
+          campaign_identifier: "test",
+          starts_at: new Date("01/01/2024"),
+          ends_at: new Date("01/01/2025"),
+        },
+      ])
+
+      await service.softDeleteCampaigns([createdCampaign.id])
+
+      const campaigns = await service.listCampaigns({
+        id: [createdCampaign.id],
       })
 
       expect(campaigns).toHaveLength(0)
+    })
+  })
+
+  describe("restoreCampaigns", () => {
+    it("should restore the campaigns given an id successfully", async () => {
+      const [createdCampaign] = await service.createCampaigns([
+        {
+          name: "test",
+          campaign_identifier: "test",
+          starts_at: new Date("01/01/2024"),
+          ends_at: new Date("01/01/2025"),
+        },
+      ])
+
+      await service.softDeleteCampaigns([createdCampaign.id])
+
+      let campaigns = await service.listCampaigns({ id: [createdCampaign.id] })
+
+      expect(campaigns).toHaveLength(0)
+      await service.restoreCampaigns([createdCampaign.id])
+
+      campaigns = await service.listCampaigns({ id: [createdCampaign.id] })
+      expect(campaigns).toHaveLength(1)
     })
   })
 })

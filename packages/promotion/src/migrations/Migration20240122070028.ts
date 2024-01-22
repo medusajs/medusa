@@ -1,6 +1,6 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20240117090706 extends Migration {
+export class Migration20240122070028 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table "campaign" ("id" text not null, "name" text not null, "description" text null, "currency" text null, "campaign_identifier" text not null, "starts_at" timestamptz null, "ends_at" timestamptz null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "campaign_pkey" primary key ("id"));'
@@ -63,7 +63,7 @@ export class Migration20240117090706 extends Migration {
     )
 
     this.addSql(
-      'create table "promotion_rule_value" ("id" text not null, "promotion_rule_id" text not null, "value" text not null, constraint "promotion_rule_value_pkey" primary key ("id"));'
+      'create table "promotion_rule_value" ("id" text not null, "promotion_rule_id" text not null, "value" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_rule_value_pkey" primary key ("id"));'
     )
     this.addSql(
       'create index "IDX_promotion_rule_promotion_rule_value_id" on "promotion_rule_value" ("promotion_rule_id");'
@@ -74,11 +74,11 @@ export class Migration20240117090706 extends Migration {
     )
 
     this.addSql(
-      'alter table "promotion" add constraint "promotion_campaign_id_foreign" foreign key ("campaign_id") references "campaign" ("id") on update cascade on delete set null;'
+      'alter table "promotion" add constraint "promotion_campaign_id_foreign" foreign key ("campaign_id") references "campaign" ("id") on delete set null;'
     )
 
     this.addSql(
-      'alter table "application_method" add constraint "application_method_promotion_id_foreign" foreign key ("promotion_id") references "promotion" ("id") on update cascade;'
+      'alter table "application_method" add constraint "application_method_promotion_id_foreign" foreign key ("promotion_id") references "promotion" ("id") on update cascade on delete cascade;'
     )
 
     this.addSql(
