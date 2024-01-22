@@ -73,7 +73,6 @@ describe("POST /admin/campaigns", () => {
         budget: {
           limit: 1000,
           type: "usage",
-          used: 10,
         },
       },
       adminHeaders
@@ -90,7 +89,6 @@ describe("POST /admin/campaigns", () => {
         budget: expect.objectContaining({
           limit: 1000,
           type: "usage",
-          used: 10,
         }),
         promotions: [
           expect.objectContaining({
