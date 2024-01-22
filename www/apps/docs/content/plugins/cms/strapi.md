@@ -132,17 +132,17 @@ const plugins = [
           email: process.env.STRAPI_MEDUSA_EMAIL,
           confirmed: true,
           blocked: false,
-          provider: "local"
+          provider: "local",
       },
       strapi_admin: {
           username: process.env.STRAPI_SUPER_USERNAME,
           password: process.env.STRAPI_SUPER_PASSWORD,
-          email: process.env.STRAPI_SUPER_USER_EMAIL
+          email: process.env.STRAPI_SUPER_USER_EMAIL,
       },
-      auto_start: true
-    }
-  }
-];
+      auto_start: true,
+    },
+  },
+]
 ```
 
 The plugin accepts the following options:
