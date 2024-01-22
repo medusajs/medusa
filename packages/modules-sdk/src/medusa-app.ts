@@ -31,7 +31,7 @@ import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { cleanGraphQLSchema } from "./utils"
 
-const LinkModulePackage = "@medusajs/link-modules"
+const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
 
 export type RunMigrationFn = (
   options?: ModuleServiceInitializeOptions,
