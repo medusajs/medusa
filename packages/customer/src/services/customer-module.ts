@@ -124,7 +124,7 @@ export default class CustomerModuleService implements ICustomerModuleService {
     @MedusaContext() sharedContext: Context = {}
   ) {
     let updateData: CustomerTypes.UpdateCustomerDTO[] = []
-    if (typeof idsOrSelector === "string") {
+    if (isString(idsOrSelector)) {
       updateData = [
         {
           id: idsOrSelector,
@@ -280,7 +280,7 @@ export default class CustomerModuleService implements ICustomerModuleService {
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerGroupDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updateCustomerGroup(
     groupIdOrSelector:
       | string
@@ -290,7 +290,7 @@ export default class CustomerModuleService implements ICustomerModuleService {
     @MedusaContext() sharedContext: Context = {}
   ) {
     let updateData: CustomerTypes.UpdateCustomerGroupDTO[] = []
-    if (typeof groupIdOrSelector === "string") {
+    if (isString(groupIdOrSelector)) {
       updateData = [
         {
           id: groupIdOrSelector,
@@ -319,7 +319,7 @@ export default class CustomerModuleService implements ICustomerModuleService {
       sharedContext
     )
 
-    if (typeof groupIdOrSelector === "string") {
+    if (isString(groupIdOrSelector)) {
       return await this.baseRepository_.serialize<CustomerTypes.CustomerGroupDTO>(
         groups[0],
         { populate: true }
@@ -359,19 +359,17 @@ export default class CustomerModuleService implements ICustomerModuleService {
   }
 
   async removeCustomerFromGroup(
-    groupCustomerPair: { customer_id: string; customer_group_id: string },
+    groupCustomerPair: CustomerTypes.GroupCustomerPair,
     sharedContext?: Context
   ): Promise<void>
   async removeCustomerFromGroup(
-    groupCustomerPairs: { customer_id: string; customer_group_id: string }[],
+    groupCustomerPairs: CustomerTypes.GroupCustomerPair[],
     sharedContext?: Context
   ): Promise<void>
 
   @InjectTransactionManager("baseRepository_")
   async removeCustomerFromGroup(
-    data:
-      | { customer_id: string; customer_group_id: string }
-      | { customer_id: string; customer_group_id: string }[],
+    data: CustomerTypes.GroupCustomerPair | CustomerTypes.GroupCustomerPair[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     const pairs = Array.isArray(data) ? data : [data]
