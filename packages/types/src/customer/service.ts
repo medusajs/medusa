@@ -57,6 +57,22 @@ export interface ICustomerModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<CustomerGroupDTO>
 
+  updateCustomerGroup(
+    groupId: string,
+    data: Partial<CreateCustomerGroupDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerGroupDTO>
+  updateCustomerGroup(
+    groupIds: string[],
+    data: Partial<CreateCustomerGroupDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerGroupDTO[]>
+  updateCustomerGroup(
+    selector: FilterableCustomerGroupProps,
+    data: Partial<CreateCustomerGroupDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerGroupDTO[]>
+
   addCustomerToGroup(
     groupCustomerPair: GroupCustomerPair,
     sharedContext?: Context
@@ -66,6 +82,15 @@ export interface ICustomerModuleService extends IModuleService {
     groupCustomerPairs: GroupCustomerPair[],
     sharedContext?: Context
   ): Promise<{ id: string }[]>
+
+  removeCustomerFromGroup(
+    groupCustomerPair: { customer_id: string; customer_group_id: string },
+    sharedContext?: Context
+  ): Promise<void>
+  removeCustomerFromGroup(
+    groupCustomerPairs: { customer_id: string; customer_group_id: string }[],
+    sharedContext?: Context
+  ): Promise<void>
 
   list(
     filters?: FilterableCustomerProps,
