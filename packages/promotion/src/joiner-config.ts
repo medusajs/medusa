@@ -21,7 +21,7 @@ export const joinerConfig: ModuleJoinerConfig = {
       },
     },
     {
-      name: ["line_item", "line_items"],
+      name: ["campaign", "campaigns"],
       args: {
         entity: Campaign.name,
         methodSuffix: "Campaigns",
