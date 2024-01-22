@@ -40,8 +40,6 @@ export function validateApplicationMethodAttributes(
   const applicationMethodType = data.type || applicationMethod?.type
   const maxQuantity = data.max_quantity || applicationMethod.max_quantity
   const allocation = data.allocation || applicationMethod.allocation
-
-  data.buy_rules_min_quantity ?? applicationMethod.buy_rules_min_quantity
   const allTargetTypes: string[] = Object.values(ApplicationMethodTargetType)
 
   if (promotion?.type === PromotionType.BUYGET) {
