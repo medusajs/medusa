@@ -1,9 +1,10 @@
 import { DAL } from "@medusajs/types"
-import { generateEntityId } from "@medusajs/utils"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
   Entity,
+  Filter,
   OnInit,
   OneToMany,
   OneToOne,
@@ -15,17 +16,16 @@ import {
 import CampaignBudget from "./campaign-budget"
 import Promotion from "./promotion"
 
+type OptionalRelations = "budget"
 type OptionalFields =
   | "description"
   | "currency"
   | "starts_at"
   | "ends_at"
-  | "deleted_at"
-  | DAL.EntityDateColumns
+  | DAL.SoftDeletableEntityDateColumns
 
-type OptionalRelations = "budget"
-
-@Entity()
+@Entity({ tableName: "campaign" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Campaign {
   [OptionalProps]?: OptionalFields | OptionalRelations
 

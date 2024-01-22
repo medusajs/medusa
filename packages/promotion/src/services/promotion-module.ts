@@ -809,12 +809,32 @@ export default class PromotionModuleService<
 
   @InjectTransactionManager("baseRepository_")
   async delete(
+    ids: string[] | string,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const idsToDelete = Array.isArray(ids) ? ids : [ids]
+
+    await this.promotionService_.delete(idsToDelete, sharedContext)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async softDelete(
     ids: string | string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     const promotionIds = Array.isArray(ids) ? ids : [ids]
 
-    await this.promotionService_.delete(promotionIds, sharedContext)
+    await this.promotionService_.softDelete(promotionIds, sharedContext)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async restore(
+    ids: string | string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const idsToRestore = Array.isArray(ids) ? ids : [ids]
+
+    await this.promotionService_.restore(idsToRestore, sharedContext)
   }
 
   @InjectManager("baseRepository_")
@@ -1149,8 +1169,28 @@ export default class PromotionModuleService<
     ids: string | string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    const campaignIds = Array.isArray(ids) ? ids : [ids]
+    const idsToDelete = Array.isArray(ids) ? ids : [ids]
 
-    await this.promotionService_.delete(campaignIds, sharedContext)
+    await this.campaignService_.delete(idsToDelete, sharedContext)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async softDeleteCampaigns(
+    ids: string | string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const idsToDelete = Array.isArray(ids) ? ids : [ids]
+
+    await this.campaignService_.softDelete(idsToDelete, sharedContext)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async restoreCampaigns(
+    ids: string | string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const idsToRestore = Array.isArray(ids) ? ids : [ids]
+
+    await this.campaignService_.restore(idsToRestore, sharedContext)
   }
 }

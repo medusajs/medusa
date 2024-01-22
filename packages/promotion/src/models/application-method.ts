@@ -4,12 +4,13 @@ import {
   ApplicationMethodTypeValues,
   DAL,
 } from "@medusajs/types"
-import { PromotionUtils, generateEntityId } from "@medusajs/utils"
+import { DALUtils, PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
   Entity,
   Enum,
+  Filter,
   Index,
   ManyToMany,
   OnInit,
@@ -25,10 +26,10 @@ type OptionalFields =
   | "value"
   | "max_quantity"
   | "allocation"
-  | "deleted_at"
-  | DAL.EntityDateColumns
+  | DAL.SoftDeletableEntityDateColumns
 
-@Entity()
+@Entity({ tableName: "application_method" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ApplicationMethod {
   [OptionalProps]?: OptionalFields
 
@@ -58,6 +59,7 @@ export default class ApplicationMethod {
 
   @OneToOne({
     entity: () => Promotion,
+    onDelete: "cascade",
   })
   promotion: Promotion
 

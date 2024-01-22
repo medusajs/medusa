@@ -1,10 +1,11 @@
 import { DAL, PromotionType } from "@medusajs/types"
-import { PromotionUtils, generateEntityId } from "@medusajs/utils"
+import { DALUtils, PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
   Entity,
   Enum,
+  Filter,
   Index,
   ManyToMany,
   ManyToOne,
@@ -19,10 +20,11 @@ import ApplicationMethod from "./application-method"
 import Campaign from "./campaign"
 import PromotionRule from "./promotion-rule"
 
-type OptionalFields = "is_automatic" | "deleted_at" | DAL.EntityDateColumns
+type OptionalFields = "is_automatic" | DAL.SoftDeletableEntityDateColumns
 type OptionalRelations = "application_method" | "campaign"
 
-@Entity()
+@Entity({ tableName: "promotion" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Promotion {
   [OptionalProps]?: OptionalFields | OptionalRelations
 
@@ -41,6 +43,7 @@ export default class Promotion {
     joinColumn: "campaign",
     fieldName: "campaign_id",
     nullable: true,
+    cascade: ["soft-remove"] as any,
   })
   campaign: Campaign
 

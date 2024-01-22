@@ -66,6 +66,12 @@ export interface IPromotionModuleService extends IModuleService {
   delete(ids: string[], sharedContext?: Context): Promise<void>
   delete(ids: string, sharedContext?: Context): Promise<void>
 
+  softDelete(ids: string[], sharedContext?: Context): Promise<void>
+  softDelete(ids: string, sharedContext?: Context): Promise<void>
+
+  restore(ids: string[], sharedContext?: Context): Promise<void>
+  restore(ids: string, sharedContext?: Context): Promise<void>
+
   addPromotionRules(
     promotionId: string,
     rulesData: CreatePromotionRuleDTO[],
@@ -130,4 +136,10 @@ export interface IPromotionModuleService extends IModuleService {
 
   deleteCampaigns(ids: string[], sharedContext?: Context): Promise<void>
   deleteCampaigns(ids: string, sharedContext?: Context): Promise<void>
+
+  softDeleteCampaigns(ids: string[], sharedContext?: Context): Promise<void>
+  softDeleteCampaigns(ids: string, sharedContext?: Context): Promise<void>
+
+  restoreCampaigns(ids: string[], sharedContext?: Context): Promise<void>
+  restoreCampaigns(ids: string, sharedContext?: Context): Promise<void>
 }
