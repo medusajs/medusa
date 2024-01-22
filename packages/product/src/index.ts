@@ -5,7 +5,6 @@ import * as ProductModels from "@models"
 
 export default moduleDefinition
 
-
 const migrationScriptOptions = {
   moduleName: Modules.PRODUCT,
   models: ProductModels,
@@ -19,9 +18,8 @@ export const revertMigration = ModulesSdkUtils.buildRevertMigrationScript(
   migrationScriptOptions
 )
 
-
 export * from "./initialize"
+export * from "./types"
 export * from "./loaders"
 export * from "./models"
 export * from "./services"
-export * from "./types"

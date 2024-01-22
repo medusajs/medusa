@@ -5,7 +5,6 @@ import { ModulesSdkUtils } from "@medusajs/utils"
 
 export default moduleDefinition
 
-
 const migrationScriptOptions = {
   moduleName: Modules.PRICING,
   models: Models,
@@ -20,7 +19,7 @@ export const revertMigration = ModulesSdkUtils.buildRevertMigrationScript(
 )
 
 export * from "./initialize"
+export * from "./types"
 export * from "./loaders"
 export * from "./models"
 export * from "./services"
-export * from "./types"
