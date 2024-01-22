@@ -309,4 +309,104 @@ describe("Customer Module Service", () => {
       }
     })
   })
+
+  describe("update", () => {
+    it("should update a single customer", async () => {
+      const [customer] = await service.create([
+        { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
+      ])
+
+      const updateData = { first_name: "Jonathan" }
+      const updatedCustomer = await service.update(customer.id, updateData)
+
+      expect(updatedCustomer).toEqual(
+        expect.objectContaining({ id: customer.id, first_name: "Jonathan" })
+      )
+    })
+
+    it("should update multiple customers by IDs", async () => {
+      const customers = await service.create([
+        { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
+        {
+          first_name: "Jane",
+          last_name: "Smith",
+          email: "jane.smith@example.com",
+        },
+      ])
+
+      const updateData = { last_name: "Updated" }
+      const customerIds = customers.map((customer) => customer.id)
+      const updatedCustomers = await service.update(customerIds, updateData)
+
+      updatedCustomers.forEach((updatedCustomer) => {
+        expect(updatedCustomer).toEqual(
+          expect.objectContaining({ last_name: "Updated" })
+        )
+      })
+    })
+
+    it("should update customers using a selector", async () => {
+      await service.create([
+        { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
+        { first_name: "Jane", last_name: "Doe", email: "jane.doe@example.com" },
+      ])
+
+      const selector = { last_name: "Doe" }
+      const updateData = { last_name: "Updated" }
+      const updatedCustomers = await service.update(selector, updateData)
+
+      updatedCustomers.forEach((updatedCustomer) => {
+        expect(updatedCustomer).toEqual(
+          expect.objectContaining({ last_name: "Updated" })
+        )
+      })
+    })
+  })
+
+  describe("delete", () => {
+    it("should delete a single customer", async () => {
+      const [customer] = await service.create([
+        { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
+      ])
+
+      await service.delete(customer.id)
+
+      await expect(service.retrieve(customer.id)).rejects.toThrow(
+        `Customer with id: ${customer.id} was not found`
+      )
+    })
+
+    it("should delete multiple customers by IDs", async () => {
+      const customers = await service.create([
+        { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
+        {
+          first_name: "Jane",
+          last_name: "Smith",
+          email: "jane.smith@example.com",
+        },
+      ])
+
+      const customerIds = customers.map((customer) => customer.id)
+      await service.delete(customerIds)
+
+      for (const customer of customers) {
+        await expect(service.retrieve(customer.id)).rejects.toThrow(
+          `Customer with id: ${customer.id} was not found`
+        )
+      }
+    })
+
+    it("should delete customers using a selector", async () => {
+      await service.create([
+        { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
+        { first_name: "Jane", last_name: "Doe", email: "jane.doe@example.com" },
+      ])
+
+      const selector = { last_name: "Doe" }
+      await service.delete(selector)
+
+      const remainingCustomers = await service.list({ last_name: "Doe" })
+      expect(remainingCustomers.length).toBe(0)
+    })
+  })
 })
