@@ -12,10 +12,10 @@ export const deletePromotionsStep = createStep(
 
     await promotionModule.softDelete(ids)
 
-    return new StepResponse(null, ids)
+    return new StepResponse(void 0, ids)
   },
   async (idsToRestore, { container }) => {
-    if (!idsToRestore) {
+    if (!idsToRestore?.length) {
       return
     }
 

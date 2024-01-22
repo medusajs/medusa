@@ -86,7 +86,7 @@ export default class ApplicationMethod {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date | null
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

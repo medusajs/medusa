@@ -35,7 +35,7 @@ export default class CampaignBudget {
   @OneToOne({
     entity: () => Campaign,
   })
-  campaign?: Campaign
+  campaign?: Campaign | null
 
   @Property({
     columnType: "numeric",
@@ -43,7 +43,7 @@ export default class CampaignBudget {
     serializer: Number,
     default: null,
   })
-  limit: number | null
+  limit?: number | null
 
   @Property({
     columnType: "numeric",
@@ -68,7 +68,7 @@ export default class CampaignBudget {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date | null
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

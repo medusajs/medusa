@@ -31,7 +31,7 @@ export default class PromotionRule {
   id!: string
 
   @Property({ columnType: "text", nullable: true })
-  description: string | null
+  description?: string | null
 
   @Index({ name: "IDX_promotion_rule_attribute" })
   @Property({ columnType: "text" })
@@ -71,7 +71,7 @@ export default class PromotionRule {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date | null
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

@@ -45,10 +45,10 @@ export default class Promotion {
     nullable: true,
     cascade: ["soft-remove"] as any,
   })
-  campaign: Campaign
+  campaign?: Campaign | null
 
   @Property({ columnType: "boolean", default: false })
-  is_automatic?: boolean = false
+  is_automatic: boolean = false
 
   @Index({ name: "IDX_promotion_type" })
   @Enum(() => PromotionUtils.PromotionType)
@@ -84,7 +84,7 @@ export default class Promotion {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date | null
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {
