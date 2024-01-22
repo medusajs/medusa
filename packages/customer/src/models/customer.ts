@@ -71,7 +71,7 @@ export default class Customer {
   metadata: Record<string, unknown> | null = null
 
   @ManyToMany({
-    inversedBy: (group) => group.customers,
+    mappedBy: "customers",
     entity: () => CustomerGroup,
     pivotEntity: () => CustomerGroupCustomer,
   })
