@@ -50,8 +50,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### create
 
 Creates a note associated with a given author
@@ -64,8 +62,6 @@ Creates a note associated with a given author
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the creation result","expandable":false,"children":[]}]} />
 
-___
-
 ### delete
 
 Deletes a given note
@@ -76,9 +72,7 @@ Deletes a given note
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Deletes a given note","expandable":false,"children":[]}]} />
 
 ### list
 
@@ -92,8 +86,6 @@ Fetches all notes related to the given selector
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Note](../../entities/classes/entities.Note.mdx)[]&#62;","optional":false,"defaultValue":"","description":"notes related to the given search.","expandable":false,"children":[]}]} />
 
-___
-
 ### listAndCount
 
 Fetches all notes related to the given selector
@@ -105,8 +97,6 @@ Fetches all notes related to the given selector
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[Note](../../entities/classes/entities.Note.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"notes related to the given search.","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieve
 
@@ -120,8 +110,6 @@ Retrieves a specific note.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;","optional":false,"defaultValue":"","description":"which resolves to the requested note.","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -131,8 +119,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### update
 
@@ -145,8 +131,6 @@ Updates a given note with a new value
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the updated element","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

@@ -44,8 +44,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx) \\| [Address](../../entities/classes/entities.Address.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
@@ -64,8 +62,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### count
 
 Return the total number of documents in database
@@ -73,8 +69,6 @@ Return the total number of documents in database
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the result of the count operation","expandable":false,"children":[]}]} />
-
-___
 
 ### create
 
@@ -91,8 +85,6 @@ used to hold details of customers.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of create","expandable":false,"children":[]}]} />
 
-___
-
 ### delete
 
 Deletes a customer from a given customer id.
@@ -104,8 +96,6 @@ Deletes a customer from a given customer id.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation.","expandable":false,"children":[]}]} />
-
-___
 
 ### generateResetPasswordToken
 
@@ -123,8 +113,6 @@ which is always 15 minutes.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"the generated JSON web token","expandable":false,"children":[]}]} />
 
-___
-
 ### hashPassword\_
 
 Hashes a password
@@ -137,8 +125,6 @@ Hashes a password
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"hashed password","expandable":false,"children":[]}]} />
 
-___
-
 ### list
 
 #### Parameters
@@ -148,8 +134,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-___
 
 ### listAndCount
 
@@ -161,8 +145,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[Customer](../../entities/classes/entities.Customer.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
 
-___
-
 ### listByEmail
 
 #### Parameters
@@ -173,8 +155,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### removeAddress
 
 #### Parameters
@@ -184,8 +164,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieve
 
@@ -198,8 +176,6 @@ Gets a customer by id.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the customer document.","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveByEmail
 
@@ -215,8 +191,6 @@ Gets a registered customer by email.
 
 #### Deprecated
 
-___
-
 ### retrieveByPhone
 
 Gets a customer by phone.
@@ -229,8 +203,6 @@ Gets a customer by phone.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the customer document.","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieveRegisteredByEmail
 
 #### Parameters
@@ -240,8 +212,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveUnregisteredByEmail
 
@@ -253,8 +223,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieve\_
 
 #### Parameters
@@ -265,8 +233,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -276,8 +242,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### update
 
@@ -291,8 +255,6 @@ Updates a customer.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the update result.","expandable":false,"children":[]}]} />
 
-___
-
 ### updateAddress
 
 #### Parameters
@@ -302,8 +264,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### updateBillingAddress\_
 
@@ -316,8 +276,6 @@ Updates the customers' billing address.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

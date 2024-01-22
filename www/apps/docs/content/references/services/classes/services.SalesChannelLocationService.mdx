@@ -30,8 +30,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### stockLocationService\_
 
 #### Returns
@@ -54,8 +52,6 @@ Associates a sales channel with a stock location.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"A promise that resolves when the association has been created.","expandable":false,"children":[]}]} />
 
-___
-
 ### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
@@ -74,8 +70,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### listLocationIds
 
 Lists the stock locations associated with a sales channel.
@@ -87,8 +81,6 @@ Lists the stock locations associated with a sales channel.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;string[]&#62;","optional":false,"defaultValue":"","description":"A promise that resolves with an array of location IDs.","expandable":false,"children":[]}]} />
-
-___
 
 ### listSalesChannelIds
 
@@ -102,8 +94,6 @@ Lists the sales channels associated with a stock location.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;string[]&#62;","optional":false,"defaultValue":"","description":"A promise that resolves with an array of sales channel IDs.","expandable":false,"children":[]}]} />
 
-___
-
 ### removeLocation
 
 Removes an association between a sales channel and a stock location.
@@ -116,8 +106,6 @@ Removes an association between a sales channel and a stock location.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"A promise that resolves when the association has been removed.","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -127,8 +115,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 
