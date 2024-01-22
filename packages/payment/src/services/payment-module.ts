@@ -146,8 +146,8 @@ export default class PaymentModuleService implements IPaymentModuleService {
 
   @InjectManager("baseRepository_")
   async listPaymentCollections(
-    filters?: FilterablePaymentCollectionProps,
-    config?: FindConfig<PaymentCollectionDTO>,
+    filters: FilterablePaymentCollectionProps = {},
+    config: FindConfig<PaymentCollectionDTO> = {},
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]> {
     const paymentCollections = await this.paymentCollectionService_.list(
@@ -164,8 +164,8 @@ export default class PaymentModuleService implements IPaymentModuleService {
 
   @InjectManager("baseRepository_")
   async listAndCountPaymentCollections(
-    filters?: FilterablePaymentCollectionProps,
-    config?: FindConfig<PaymentCollectionDTO>,
+    filters: FilterablePaymentCollectionProps = {},
+    config: FindConfig<PaymentCollectionDTO> = {},
     @MedusaContext() sharedContext?: Context
   ): Promise<[PaymentCollectionDTO[], number]> {
     const [paymentCollections, count] =
