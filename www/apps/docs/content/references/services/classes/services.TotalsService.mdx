@@ -54,8 +54,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### calculateDiscount\_
 
 Calculates either fixed or percentage discount of a variant
@@ -71,8 +69,6 @@ Calculates either fixed or percentage discount of a variant
 #### Deprecated
 
 - in favour of DiscountService.calculateDiscountForLineItem
-
-___
 
 ### getAllocationItemDiscounts
 
@@ -90,8 +86,6 @@ alongside the variant on which the discount was applied.
 
 <ParameterTypes parameters={[{"name":"LineDiscount[]","type":"`LineDiscount`[]","optional":false,"defaultValue":"","description":"array of triples of lineitem, variant and applied discount","expandable":false,"children":[]}]} />
 
-___
-
 ### getAllocationMap
 
 Gets a map of discounts and gift cards that apply to line items in an
@@ -106,8 +100,6 @@ applies to a specific line item.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineAllocationsMap](../../medusa/types/medusa.LineAllocationsMap.mdx)&#62;","optional":false,"defaultValue":"","description":"the allocation map for the line items in the cart or order.","expandable":false,"children":[]}]} />
 
-___
-
 ### getCalculationContext
 
 Prepares the calculation context for a tax total calculation.
@@ -119,8 +111,6 @@ Prepares the calculation context for a tax total calculation.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)&#62;","optional":false,"defaultValue":"","description":"the tax calculation context","expandable":false,"children":[]}]} />
-
-___
 
 ### getDiscountTotal
 
@@ -135,8 +125,6 @@ discount types. If discounts aren't present or invalid returns 0.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the total discounts amount","expandable":false,"children":[]}]} />
 
-___
-
 ### getGiftCardTotal
 
 Gets the gift card amount on a cart or order.
@@ -148,8 +136,6 @@ Gets the gift card amount on a cart or order.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"the gift card amount applied to the cart or order","expandable":false,"children":[]}]} />
-
-___
 
 ### getGiftCardableAmount
 
@@ -164,8 +150,6 @@ cards are taxable this amount should exclude taxes.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the gift card amount applied to the cart or order","expandable":false,"children":[]}]} />
 
-___
-
 ### getLineDiscounts
 
 Returns the discount amount allocated to the line items of an order.
@@ -178,8 +162,6 @@ Returns the discount amount allocated to the line items of an order.
 
 <ParameterTypes parameters={[{"name":"LineDiscountAmount[]","type":"`LineDiscountAmount`[]","optional":false,"defaultValue":"","description":"the allocations that the discount has on the items in the cart or\n  order","expandable":false,"children":[]}]} />
 
-___
-
 ### getLineItemAdjustmentsTotal
 
 #### Parameters
@@ -190,8 +172,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### getLineItemDiscountAdjustment
 
 #### Parameters
@@ -201,8 +181,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### getLineItemRefund
 
@@ -216,8 +194,6 @@ The amount that can be refunded for a given line item.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the line item refund amount.","expandable":false,"children":[]}]} />
 
-___
-
 ### getLineItemTotal
 
 Gets a total for a line item. The total can take gift cards, discounts and
@@ -230,8 +206,6 @@ taxes into account. This can be controlled through the options.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the line item total","expandable":false,"children":[]}]} />
-
-___
 
 ### getLineItemTotals
 
@@ -247,8 +221,6 @@ applied to a line item and the amount of tax applied to a line item.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;LineItemTotals&#62;","optional":false,"defaultValue":"","description":"the breakdown of the line item totals","expandable":false,"children":[]}]} />
 
-___
-
 ### getPaidTotal
 
 Gets the total payments made on an order
@@ -260,8 +232,6 @@ Gets the total payments made on an order
 #### Returns
 
 <ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"the total paid amount","expandable":false,"children":[]}]} />
-
-___
 
 ### getRefundTotal
 
@@ -277,8 +247,6 @@ apply the discount again before refunding them.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the calculated subtotal","expandable":false,"children":[]}]} />
 
-___
-
 ### getRefundedTotal
 
 Gets the total refund amount for an order.
@@ -290,8 +258,6 @@ Gets the total refund amount for an order.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"the total refunded amount for an order.","expandable":false,"children":[]}]} />
-
-___
 
 ### getShippingMethodTotals
 
@@ -306,8 +272,6 @@ already provided.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;ShippingMethodTotals&#62;","optional":false,"defaultValue":"","description":"An object that breaks down the totals for the shipping method","expandable":false,"children":[]}]} />
 
-___
-
 ### getShippingTotal
 
 Calculates shipping total
@@ -320,8 +284,6 @@ Calculates shipping total
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"shipping total","expandable":false,"children":[]}]} />
 
-___
-
 ### getSubtotal
 
 Calculates subtotal of a given cart or order.
@@ -333,8 +295,6 @@ Calculates subtotal of a given cart or order.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the calculated subtotal","expandable":false,"children":[]}]} />
-
-___
 
 ### getSwapTotal
 
@@ -349,8 +309,6 @@ difference.
 
 <ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"the swap total","expandable":false,"children":[]}]} />
 
-___
-
 ### getTaxTotal
 
 Calculates tax total
@@ -364,8 +322,6 @@ Currently based on the Danish tax system
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;null \\| number&#62;","optional":false,"defaultValue":"","description":"tax total","expandable":false,"children":[]}]} />
 
-___
-
 ### getTotal
 
 Calculates total of a given cart or order.
@@ -377,8 +333,6 @@ Calculates total of a given cart or order.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the calculated subtotal","expandable":false,"children":[]}]} />
-
-___
 
 ### rounded
 
@@ -392,8 +346,6 @@ Rounds a number using Math.round.
 
 <ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"the rounded value","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -403,8 +355,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 
