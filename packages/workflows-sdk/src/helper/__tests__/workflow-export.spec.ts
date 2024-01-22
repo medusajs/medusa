@@ -83,4 +83,39 @@ describe("Export Workflow", function () {
 
     expect(result).toEqual("invoke_test")
   })
+
+  describe("Using the exported workflow run", function () {
+    it("should prepare the input data before initializing the transaction", async function () {
+      let transformedInput
+      const prepare = jest.fn().mockImplementation(async (data) => {
+        data.__transformed = true
+        transformedInput = data
+
+        return data
+      })
+
+      const work = exportWorkflow("id" as any, "result_step", prepare)
+
+      const wfHandler = work
+
+      const input = {
+        test: "payload",
+      }
+
+      const { result } = await wfHandler.run({
+        input,
+      })
+
+      expect(input).toEqual({
+        test: "payload",
+      })
+
+      expect(transformedInput).toEqual({
+        test: "payload",
+        __transformed: true,
+      })
+
+      expect(result).toEqual("invoke_test")
+    })
+  })
 })
