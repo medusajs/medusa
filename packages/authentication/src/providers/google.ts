@@ -3,11 +3,12 @@ import {
   AuthenticationResponse,
 } from "@medusajs/types"
 import { AuthProviderService, AuthUserService } from "@services"
-
-import { OAuth2 } from "oauth"
-import url, { UrlWithParsedQuery } from "url"
 import jwt, { JwtPayload } from "jsonwebtoken"
+import url, { UrlWithParsedQuery } from "url"
+
+import { AuthProvider } from "@models"
 import { MedusaError } from "@medusajs/utils"
+import { OAuth2 } from "oauth"
 import { TreeLevelColumn } from "typeorm"
 
 type InjectedDependencies = {
@@ -25,8 +26,9 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
   public static PROVIDER = "google"
   public static DISPLAY_NAME = "Google Authentication"
 
-  private authorizationUrl_ = "https://accounts.google.com/o/oauth2/v2/auth"
-  private tokenUrl_ = "https://www.googleapis.com/oauth2/v4/token"
+  // TODO: abstract
+  private readonly authorizationUrl_ = "https://accounts.google.com/o/oauth2/v2/auth"
+  private readonly tokenUrl_ = "https://www.googleapis.com/oauth2/v4/token"
 
   protected readonly authUserSerivce_: AuthUserService
   protected readonly authProviderService_: AuthProviderService
@@ -53,7 +55,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
   }
 
   private originalURL(req) {
-    var tls = req.connection.encrypted,
+    const tls = req.connection.encrypted,
       host = req.headers.host,
       protocol = tls ? "https" : "http",
       path = req.url || ""
@@ -63,26 +65,24 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
   async getProviderConfig(
     req: Record<string, unknown>
   ): Promise<GoogleProviderConfig> {
-    const { config } = await this.authProviderService_.retrieve(
+    const { config } = (await this.authProviderService_.retrieve(
       GoogleProvider.PROVIDER
-    )
+    )) as AuthProvider & { config: GoogleProviderConfig }
 
     this.validateConfig(config || {})
 
-    const { callbackURL } = config as GoogleProviderConfig
+    const { callbackURL } = config
 
-    const cbUrl = !url.parse(callbackURL).protocol
+    const parsedCallbackUrl = !url.parse(callbackURL).protocol
       ? url.resolve(this.originalURL(req), callbackURL)
       : callbackURL
 
-    return {...config, callbackURL: cbUrl } as GoogleProviderConfig
+    return {...config, callbackURL: parsedCallbackUrl }
   }
 
   async authenticate(
-    userData: Record<string, any>
+    req: Record<string, any>
   ): Promise<AuthenticationResponse> {
-    const req = userData
-
     if (req.query && req.query.error) {
       return {
         success: false,
@@ -100,7 +100,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
 
     let { callbackURL, clientID, clientSecret } = config
 
-    var meta = {
+    const meta = {
       authorizationURL: this.authorizationUrl_,
       tokenURL: this.tokenUrl_,
       clientID,
@@ -141,6 +141,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     )
 
     let state = null
+    
     const setState = (newState) => {
       state = newState
     }
@@ -151,6 +152,22 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
         { grant_type: "authorization_code", redirect_uri: callbackURL },
         this.getOAuthAccessTokenCallback(setState)
       )
+    //   await new Promise<void>((resolve, reject) => {
+    //     oauth2.getOAuthAccessToken(
+    //       code,
+    //       { grant_type: "authorization_code", redirect_uri: callbackURL },
+    //       (err, accessToken, refreshToken, params) => {
+    //         return this.getOAuthAccessTokenCallback(setState)(
+    //           err,
+    //           accessToken,
+    //           refreshToken,
+    //           params
+    //         )
+    //           .catch(reject)
+    //           .finally(() => resolve())
+    //       }
+    //     )
+    //   })
     } catch (ex) {
       return { success: false, error: ex }
     }
@@ -168,9 +185,8 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
       // decode email from jwt
       const jwtData = (await jwt.decode(refreshToken.id_token, {
         complete: true,
-      })) as JwtPayload | null
-      // const email = jwtData!.email
-      const entity_id = jwtData!.payload.email
+      })) as JwtPayload
+      const entity_id = jwtData.payload.email
   
       let authUser
   
@@ -199,7 +215,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
 
   private getOAuthAccessTokenCallback(setResult) {
     return async (err, accessToken, refreshToken, params) => {
-      const result = await this.oathAccessTokenCallback(
+      const result = await this.oAuthAccessTokenCallback(
         err,
         accessToken,
         refreshToken,
@@ -210,7 +226,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
   }
 
   // abstractable
-  private async oathAccessTokenCallback(
+  private async oAuthAccessTokenCallback(
     err,
     accessToken,
     refreshToken,
@@ -263,7 +279,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
 
       delete parsed.search
 
-      var location = url.format(parsed)
+      const location = url.format(parsed)
 
       return { success: true, location }
     } catch (ex) {
