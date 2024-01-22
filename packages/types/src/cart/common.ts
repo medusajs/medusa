@@ -40,11 +40,15 @@ export interface AdjustmentLineDTO {
   updated_at: Date | string
 }
 
-export interface ShippingMethodAdjustmentLineDTO extends AdjustmentLineDTO {
+export interface ShippingMethodAdjustmentDTO extends AdjustmentLineDTO {
   /**
    * The associated shipping method
    */
   shipping_method: CartShippingMethodDTO
+  /**
+   * The ID of the associated shipping method
+   */
+  shipping_method_id: string
 }
 
 export interface LineItemAdjustmentDTO extends AdjustmentLineDTO {
@@ -227,7 +231,7 @@ export interface CartShippingMethodDTO {
    *
    * @expandable
    */
-  adjustments?: ShippingMethodAdjustmentLineDTO[]
+  adjustments?: ShippingMethodAdjustmentDTO[]
 
   /**
    * When the shipping method was created.
@@ -516,6 +520,14 @@ export interface FilterableShippingMethodProps
   cart_id?: string | string[]
   name?: string
   shipping_option_id?: string | string[]
+}
+
+export interface FilterableShippingMethodAdjustmentProps
+  extends BaseFilterable<FilterableShippingMethodAdjustmentProps> {
+  id?: string | string[]
+  shipping_method_id?: string | string[]
+  promotion_id?: string | string[]
+  provider_id?: string | string[]
 }
 
 /**

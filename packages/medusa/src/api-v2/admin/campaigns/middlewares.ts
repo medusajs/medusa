@@ -1,10 +1,16 @@
 import { MedusaV2Flag } from "@medusajs/utils"
-import { isFeatureFlagEnabled, transformQuery } from "../../../api/middlewares"
+import {
+  isFeatureFlagEnabled,
+  transformBody,
+  transformQuery,
+} from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import * as QueryConfig from "./query-config"
 import {
   AdminGetCampaignsCampaignParams,
   AdminGetCampaignsParams,
+  AdminPostCampaignsCampaignReq,
+  AdminPostCampaignsReq,
 } from "./validators"
 
 export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
@@ -23,6 +29,11 @@ export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["POST"],
+    matcher: "/admin/campaigns",
+    middlewares: [transformBody(AdminPostCampaignsReq)],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/campaigns/:id",
     middlewares: [
@@ -31,5 +42,10 @@ export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/campaigns/:id",
+    middlewares: [transformBody(AdminPostCampaignsCampaignReq)],
   },
 ]
