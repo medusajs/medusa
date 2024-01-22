@@ -2,29 +2,34 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
-    CartAddressDTO,
-    CartDTO,
-    CartLineItemDTO,
-    CartShippingMethodDTO,
-    FilterableAddressProps,
-    FilterableCartProps,
-    FilterableLineItemAdjustmentProps,
-    FilterableLineItemProps,
-    FilterableShippingMethodProps,
-    LineItemAdjustmentDTO,
+  CartAddressDTO,
+  CartDTO,
+  CartLineItemDTO,
+  CartShippingMethodDTO,
+  FilterableAddressProps,
+  FilterableCartProps,
+  FilterableLineItemAdjustmentProps,
+  FilterableLineItemProps,
+  FilterableShippingMethodAdjustmentProps,
+  FilterableShippingMethodProps,
+  LineItemAdjustmentDTO,
+  ShippingMethodAdjustmentDTO,
 } from "./common"
 import {
-    CreateAddressDTO,
-    CreateAdjustmentDTO,
-    CreateCartDTO,
-    CreateLineItemDTO,
-    CreateLineItemForCartDTO,
-    CreateShippingMethodDTO,
-    UpdateAddressDTO,
-    UpdateCartDTO,
-    UpdateLineItemDTO,
-    UpdateLineItemWithSelectorDTO,
-    UpsertLineItemAdjustmentDTO
+  CreateAddressDTO,
+  CreateAdjustmentDTO,
+  CreateCartDTO,
+  CreateLineItemDTO,
+  CreateLineItemForCartDTO,
+  CreateShippingMethodAdjustmentDTO,
+  CreateShippingMethodDTO,
+  CreateShippingMethodForSingleCartDTO,
+  UpdateAddressDTO,
+  UpdateCartDTO,
+  UpdateLineItemDTO,
+  UpdateLineItemWithSelectorDTO,
+  UpdateShippingMethodAdjustmentDTO,
+  UpsertLineItemAdjustmentDTO,
 } from "./mutations"
 
 export interface ICartModuleService extends IModuleService {
@@ -126,7 +131,7 @@ export interface ICartModuleService extends IModuleService {
   listShippingMethods(
     filters: FilterableShippingMethodProps,
     config: FindConfig<CartShippingMethodDTO>,
-    sharedContext: Context
+    sharedContext?: Context
   ): Promise<CartShippingMethodDTO[]>
 
   addShippingMethods(
@@ -137,7 +142,7 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<CartShippingMethodDTO[]>
   addShippingMethods(
     cartId: string,
-    methods: CreateShippingMethodDTO[],
+    methods: CreateShippingMethodForSingleCartDTO[],
     sharedContext?: Context
   ): Promise<CartShippingMethodDTO[]>
 
@@ -187,6 +192,46 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<void>
   removeLineItemAdjustments(
     selector: Partial<LineItemAdjustmentDTO>,
+    sharedContext?: Context
+  ): Promise<void>
+
+  listShippingMethodAdjustments(
+    filters: FilterableShippingMethodAdjustmentProps,
+    config?: FindConfig<ShippingMethodAdjustmentDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingMethodAdjustmentDTO[]>
+
+  addShippingMethodAdjustments(
+    data: CreateShippingMethodAdjustmentDTO[]
+  ): Promise<ShippingMethodAdjustmentDTO[]>
+  addShippingMethodAdjustments(
+    data: CreateShippingMethodAdjustmentDTO
+  ): Promise<ShippingMethodAdjustmentDTO>
+  addShippingMethodAdjustments(
+    cartId: string,
+    data: CreateShippingMethodAdjustmentDTO[],
+    sharedContext?: Context
+  ): Promise<ShippingMethodAdjustmentDTO[]>
+
+  setShippingMethodAdjustments(
+    cartId: string,
+    data: (
+      | CreateShippingMethodAdjustmentDTO
+      | UpdateShippingMethodAdjustmentDTO
+    )[],
+    sharedContext?: Context
+  ): Promise<ShippingMethodAdjustmentDTO[]>
+
+  removeShippingMethodAdjustments(
+    adjustmentIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  removeShippingMethodAdjustments(
+    adjustmentId: string,
+    sharedContext?: Context
+  ): Promise<void>
+  removeShippingMethodAdjustments(
+    selector: Partial<ShippingMethodAdjustmentDTO>,
     sharedContext?: Context
   ): Promise<void>
 }
