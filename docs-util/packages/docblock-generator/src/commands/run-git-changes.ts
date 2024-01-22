@@ -2,6 +2,7 @@ import path from "path"
 import DocblockGenerator from "../classes/docblock-generator.js"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
 import promiseExec from "../utils/promise-exec.js"
+import filterFiles from "../utils/filter-files.js"
 
 export default async function runGitChanges() {
   const monorepoPath = getMonorepoRoot()
@@ -13,7 +14,9 @@ export default async function runGitChanges() {
     }
   )
 
-  let files = childProcess.stdout.toString().split("\n").filter(Boolean)
+  let files = filterFiles(
+    childProcess.stdout.toString().split("\n").filter(Boolean)
+  )
 
   if (!files.length) {
     console.log(`No file changes detected.`)
