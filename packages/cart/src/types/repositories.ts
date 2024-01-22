@@ -1,12 +1,26 @@
 import { DAL } from "@medusajs/types"
-import { Cart, LineItem, ShippingMethod } from "@models"
+import {
+  Cart,
+  LineItem,
+  LineItemAdjustment,
+  ShippingMethod,
+  ShippingMethodAdjustment,
+} from "@models"
 import { CreateAddressDTO, UpdateAddressDTO } from "./address"
 import { CreateCartDTO, UpdateCartDTO } from "./cart"
 import { CreateLineItemDTO, UpdateLineItemDTO } from "./line-item"
 import {
+  CreateLineItemAdjustmentDTO,
+  UpdateLineItemAdjustmentDTO,
+} from "./line-item-adjustment"
+import {
   CreateShippingMethodDTO,
   UpdateShippingMethodDTO,
 } from "./shipping-method"
+import {
+  CreateShippingMethodAdjustmentDTO,
+  UpdateShippingMethodAdjustmentDTO,
+} from "./shipping-method-adjustment"
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAddressRepository<TEntity extends Cart = Cart>
@@ -46,5 +60,25 @@ export interface IShippingMethodRepository<
     {
       create: CreateShippingMethodDTO
       update: UpdateShippingMethodDTO
+    }
+  > {}
+
+export interface ILineItemAdjustmentRepository<
+  TEntity extends LineItemAdjustment = LineItemAdjustment
+> extends DAL.RepositoryService<
+    TEntity,
+    {
+      create: CreateLineItemAdjustmentDTO
+      update: UpdateLineItemAdjustmentDTO
+    }
+  > {}
+
+export interface IShippingMethodAdjustmentRepository<
+  TEntity extends ShippingMethodAdjustment = ShippingMethodAdjustment
+> extends DAL.RepositoryService<
+    TEntity,
+    {
+      create: CreateShippingMethodAdjustmentDTO
+      update: UpdateShippingMethodAdjustmentDTO
     }
   > {}

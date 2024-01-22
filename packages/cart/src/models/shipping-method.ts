@@ -12,7 +12,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 import Cart from "./cart"
-import ShippingMethodAdjustmentLine from "./shipping-method-adjustment-line"
+import ShippingMethodAdjustment from "./shipping-method-adjustment"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"
 
 @Entity({ tableName: "cart_shipping_method" })
@@ -62,13 +62,13 @@ export default class ShippingMethod {
   tax_lines = new Collection<ShippingMethodTaxLine>(this)
 
   @OneToMany(
-    () => ShippingMethodAdjustmentLine,
+    () => ShippingMethodAdjustment,
     (adjustment) => adjustment.shipping_method,
     {
       cascade: [Cascade.REMOVE],
     }
   )
-  adjustments = new Collection<ShippingMethodAdjustmentLine>(this)
+  adjustments = new Collection<ShippingMethodAdjustment>(this)
 
   /** COMPUTED PROPERTIES - START */
 

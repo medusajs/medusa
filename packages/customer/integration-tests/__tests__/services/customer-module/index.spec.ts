@@ -33,9 +33,9 @@ describe("Customer Module Service", () => {
         created_by: "admin",
         metadata: { membership: "gold" },
       }
-      const customerPromise = service.create(customerData)
+      const customer = await service.create(customerData)
 
-      await expect(customerPromise).resolves.toEqual(
+      expect(customer).toEqual(
         expect.objectContaining({
           id: expect.any(String),
           company_name: "Acme Corp",
@@ -68,9 +68,9 @@ describe("Customer Module Service", () => {
           metadata: { membership: "silver" },
         },
       ]
-      const customersPromise = service.create(customersData)
+      const customer = await service.create(customersData)
 
-      await expect(customersPromise).resolves.toEqual(
+      expect(customer).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: expect.any(String),
@@ -97,13 +97,13 @@ describe("Customer Module Service", () => {
 
   describe("createCustomerGroup", () => {
     it("should create a single customer group", async () => {
-      const groupPromise = service.createCustomerGroup({
+      const group = await service.createCustomerGroup({
         name: "VIP Customers",
         metadata: { priority: "high" },
         created_by: "admin",
       })
 
-      await expect(groupPromise).resolves.toEqual(
+      expect(group).toEqual(
         expect.objectContaining({
           id: expect.any(String),
           name: "VIP Customers",
@@ -114,7 +114,7 @@ describe("Customer Module Service", () => {
     })
 
     it("should create multiple customer groups", async () => {
-      const groupsPromise = service.createCustomerGroup([
+      const groups = await service.createCustomerGroup([
         {
           name: "VIP Customers",
           metadata: { priority: "high" },
@@ -127,7 +127,7 @@ describe("Customer Module Service", () => {
         },
       ])
 
-      await expect(groupsPromise).resolves.toEqual(
+      expect(groups).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: expect.any(String),
@@ -148,7 +148,6 @@ describe("Customer Module Service", () => {
 
   describe("list", () => {
     it("should list all customers when no filters are applied", async () => {
-      // Creating customers
       await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
         {
@@ -158,10 +157,8 @@ describe("Customer Module Service", () => {
         },
       ])
 
-      // Listing customers
       const customers = await service.list()
 
-      // Assertions
       expect(customers.length).toBeGreaterThanOrEqual(2)
       expect(customers).toEqual(
         expect.arrayContaining([
@@ -180,7 +177,6 @@ describe("Customer Module Service", () => {
     })
 
     it("should list customers filtered by a specific email", async () => {
-      // Creating customers
       await service.create([
         {
           first_name: "John",
@@ -194,11 +190,9 @@ describe("Customer Module Service", () => {
         },
       ])
 
-      // Listing customers with a specific email
       const filter = { email: "unique.email@example.com" }
       const customers = await service.list(filter)
 
-      // Assertions
       expect(customers.length).toBe(1)
       expect(customers[0]).toEqual(
         expect.objectContaining({
@@ -210,10 +204,8 @@ describe("Customer Module Service", () => {
     })
 
     it("should list customers by a specific customer group", async () => {
-      // Creating customer groups
       const vipGroup = await service.createCustomerGroup({ name: "VIP" })
 
-      // Creating customers and assigning to groups
       const [john] = await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
         {
@@ -228,11 +220,9 @@ describe("Customer Module Service", () => {
         customer_group_id: vipGroup.id,
       })
 
-      // Listing customers in the VIP group
       const filter = { groups: vipGroup.id }
       const customers = await service.list(filter)
 
-      // Assertions
       expect(customers).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -256,19 +246,16 @@ describe("Customer Module Service", () => {
 
   describe("addCustomerToGroup", () => {
     it("should add a single customer to a customer group", async () => {
-      // Creating a customer and a customer group in bulk (even though it's just one of each for this test)
       const [customer] = await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
       ])
       const [group] = await service.createCustomerGroup([{ name: "VIP" }])
 
-      // Adding the customer to the group
       const result = await service.addCustomerToGroup({
         customer_id: customer.id,
         customer_group_id: group.id,
       })
 
-      // Assertions
       expect(result).toEqual(
         expect.objectContaining({ id: expect.any(String) })
       )
@@ -283,7 +270,6 @@ describe("Customer Module Service", () => {
     })
 
     it("should add multiple customers to customer groups", async () => {
-      // Creating multiple customers and customer groups in bulk
       const customers = await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
         {
@@ -297,16 +283,13 @@ describe("Customer Module Service", () => {
         { name: "Regular" },
       ])
 
-      // Preparing pairs of customer IDs and group IDs
       const pairs = customers.map((customer, index) => ({
         customer_id: customer.id,
         customer_group_id: groups[index % groups.length].id,
       }))
 
-      // Adding customers to groups
       const results = await service.addCustomerToGroup(pairs)
 
-      // Assertions
       expect(results).toEqual(
         expect.arrayContaining([
           expect.objectContaining({ id: expect.any(String) }),
@@ -314,7 +297,6 @@ describe("Customer Module Service", () => {
         ])
       )
 
-      // Additional validation (optional): retrieve the customers and check if the groups are assigned
       for (const customer of customers) {
         const updatedCustomer = await service.retrieve(customer.id, {
           relations: ["groups"],
@@ -330,25 +312,19 @@ describe("Customer Module Service", () => {
 
   describe("update", () => {
     it("should update a single customer", async () => {
-      // Creating a customer
       const [customer] = await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
       ])
 
-      // Data to update
       const updateData = { first_name: "Jonathan" }
-
-      // Updating the customer
       const updatedCustomer = await service.update(customer.id, updateData)
 
-      // Assertions
       expect(updatedCustomer).toEqual(
         expect.objectContaining({ id: customer.id, first_name: "Jonathan" })
       )
     })
 
     it("should update multiple customers by IDs", async () => {
-      // Creating multiple customers
       const customers = await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
         {
@@ -358,14 +334,10 @@ describe("Customer Module Service", () => {
         },
       ])
 
-      // Data to update
       const updateData = { last_name: "Updated" }
-
-      // Updating the customers
       const customerIds = customers.map((customer) => customer.id)
       const updatedCustomers = await service.update(customerIds, updateData)
 
-      // Assertions
       updatedCustomers.forEach((updatedCustomer) => {
         expect(updatedCustomer).toEqual(
           expect.objectContaining({ last_name: "Updated" })
@@ -374,20 +346,15 @@ describe("Customer Module Service", () => {
     })
 
     it("should update customers using a selector", async () => {
-      // Creating multiple customers
       await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
         { first_name: "Jane", last_name: "Doe", email: "jane.doe@example.com" },
       ])
 
-      // Selector and data to update
       const selector = { last_name: "Doe" }
       const updateData = { last_name: "Updated" }
-
-      // Updating the customers
       const updatedCustomers = await service.update(selector, updateData)
 
-      // Assertions
       updatedCustomers.forEach((updatedCustomer) => {
         expect(updatedCustomer).toEqual(
           expect.objectContaining({ last_name: "Updated" })
@@ -398,22 +365,18 @@ describe("Customer Module Service", () => {
 
   describe("delete", () => {
     it("should delete a single customer", async () => {
-      // Creating a customer
       const [customer] = await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
       ])
 
-      // Deleting the customer
       await service.delete(customer.id)
 
-      // Verification (Assuming you have a method to retrieve or check if customer exists)
       await expect(service.retrieve(customer.id)).rejects.toThrow(
         `Customer with id: ${customer.id} was not found`
       )
     })
 
     it("should delete multiple customers by IDs", async () => {
-      // Creating multiple customers
       const customers = await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
         {
@@ -423,11 +386,9 @@ describe("Customer Module Service", () => {
         },
       ])
 
-      // Deleting the customers
       const customerIds = customers.map((customer) => customer.id)
       await service.delete(customerIds)
 
-      // Verification for each customer
       for (const customer of customers) {
         await expect(service.retrieve(customer.id)).rejects.toThrow(
           `Customer with id: ${customer.id} was not found`
@@ -436,20 +397,14 @@ describe("Customer Module Service", () => {
     })
 
     it("should delete customers using a selector", async () => {
-      // Creating multiple customers
       await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
         { first_name: "Jane", last_name: "Doe", email: "jane.doe@example.com" },
       ])
 
-      // Selector for deletion
       const selector = { last_name: "Doe" }
-
-      // Deleting the customers
       await service.delete(selector)
 
-      // Verification
-      // Assuming you have a method to list customers, check that no customers with the last name "Doe" exist
       const remainingCustomers = await service.list({ last_name: "Doe" })
       expect(remainingCustomers.length).toBe(0)
     })

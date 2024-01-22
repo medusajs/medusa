@@ -12,6 +12,8 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  isString,
+  isObject,
 } from "@medusajs/utils"
 import { joinerConfig } from "../joiner-config"
 import * as services from "../services"
@@ -82,7 +84,7 @@ export default class CustomerModuleService implements ICustomerModuleService {
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async create(
     dataOrArray:
       | CustomerTypes.CreateCustomerDTO
@@ -91,22 +93,12 @@ export default class CustomerModuleService implements ICustomerModuleService {
   ) {
     const data = Array.isArray(dataOrArray) ? dataOrArray : [dataOrArray]
     const customer = await this.customerService_.create(data, sharedContext)
-
-    if (Array.isArray(dataOrArray)) {
-      return await this.baseRepository_.serialize<CustomerTypes.CustomerDTO[]>(
-        customer,
-        {
-          populate: true,
-        }
-      )
-    }
-
-    return await this.baseRepository_.serialize<CustomerTypes.CustomerDTO>(
-      customer[0],
-      {
-        populate: true,
-      }
-    )
+    const serialized = await this.baseRepository_.serialize<
+      CustomerTypes.CustomerDTO[]
+    >(customer, {
+      populate: true,
+    })
+    return Array.isArray(dataOrArray) ? serialized : serialized[0]
   }
 
   update(
@@ -125,7 +117,7 @@ export default class CustomerModuleService implements ICustomerModuleService {
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async update(
     idsOrSelector: string | string[] | CustomerTypes.FilterableCustomerProps,
     data: Partial<CustomerTypes.CreateCustomerDTO>,
@@ -160,18 +152,13 @@ export default class CustomerModuleService implements ICustomerModuleService {
       updateData,
       sharedContext
     )
+    const serialized = await this.baseRepository_.serialize<
+      CustomerTypes.CustomerDTO[]
+    >(customers, {
+      populate: true,
+    })
 
-    if (typeof idsOrSelector === "string") {
-      return await this.baseRepository_.serialize<CustomerTypes.CustomerDTO>(
-        customers[0],
-        { populate: true }
-      )
-    }
-
-    return await this.baseRepository_.serialize<CustomerTypes.CustomerDTO[]>(
-      customers,
-      { populate: true }
-    )
+    return isString(idsOrSelector) ? serialized[0] : serialized
   }
 
   delete(customerId: string, sharedContext?: Context): Promise<void>
@@ -181,16 +168,15 @@ export default class CustomerModuleService implements ICustomerModuleService {
     sharedContext?: Context
   ): Promise<void>
 
+  @InjectTransactionManager("baseRepository_")
   async delete(
     idsOrSelector: string | string[] | CustomerTypes.FilterableCustomerProps,
     @MedusaContext() sharedContext: Context = {}
   ) {
-    let toDelete: string[] = []
-    if (typeof idsOrSelector === "string") {
-      toDelete.push(idsOrSelector)
-    } else if (Array.isArray(idsOrSelector)) {
-      toDelete = idsOrSelector
-    } else {
+    let toDelete = Array.isArray(idsOrSelector)
+      ? idsOrSelector
+      : [idsOrSelector as string]
+    if (isObject(idsOrSelector)) {
       const ids = await this.customerService_.list(
         idsOrSelector,
         {
@@ -269,19 +255,13 @@ export default class CustomerModuleService implements ICustomerModuleService {
       : [dataOrArrayOfData]
 
     const groups = await this.customerGroupService_.create(data, sharedContext)
+    const serialized = await this.baseRepository_.serialize<
+      CustomerTypes.CustomerGroupDTO[]
+    >(groups, {
+      populate: true,
+    })
 
-    if (Array.isArray(dataOrArrayOfData)) {
-      return await this.baseRepository_.serialize<
-        CustomerTypes.CustomerGroupDTO[]
-      >(groups, {
-        populate: true,
-      })
-    }
-
-    return await this.baseRepository_.serialize<CustomerTypes.CustomerGroupDTO>(
-      groups[0],
-      { populate: true }
-    )
+    return Array.isArray(dataOrArrayOfData) ? serialized : serialized[0]
   }
 
   async updateCustomerGroup(
@@ -352,20 +332,18 @@ export default class CustomerModuleService implements ICustomerModuleService {
   }
 
   async addCustomerToGroup(
-    groupCustomerPair: { customer_id: string; customer_group_id: string },
+    groupCustomerPair: CustomerTypes.GroupCustomerPair,
     sharedContext?: Context
   ): Promise<{ id: string }>
 
   async addCustomerToGroup(
-    groupCustomerPairs: { customer_id: string; customer_group_id: string }[],
+    groupCustomerPairs: CustomerTypes.GroupCustomerPair[],
     sharedContext?: Context
   ): Promise<{ id: string }[]>
 
   @InjectTransactionManager("baseRepository_")
   async addCustomerToGroup(
-    data:
-      | { customer_id: string; customer_group_id: string }
-      | { customer_id: string; customer_group_id: string }[],
+    data: CustomerTypes.GroupCustomerPair | CustomerTypes.GroupCustomerPair[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<{ id: string } | { id: string }[]> {
     const groupCustomers = await this.customerGroupCustomerService_.create(
@@ -374,10 +352,10 @@ export default class CustomerModuleService implements ICustomerModuleService {
     )
 
     if (Array.isArray(data)) {
-      return groupCustomers.map((gc) => ({ id: gc.customer_group_id }))
+      return groupCustomers.map((gc) => ({ id: gc.id }))
     }
 
-    return { id: groupCustomers[0].customer_group_id }
+    return { id: groupCustomers[0].id }
   }
 
   async removeCustomerFromGroup(

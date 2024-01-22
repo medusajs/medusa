@@ -57,6 +57,11 @@ export interface CustomerDTO {
   updated_at?: Date | string
 }
 
+export type GroupCustomerPair = {
+  customer_id: string
+  customer_group_id: string
+}
+
 export type legacy_CustomerDTO = {
   id: string
   email: string

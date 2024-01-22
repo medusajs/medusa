@@ -6,6 +6,7 @@ import {
   CustomerGroupDTO,
   FilterableCustomerProps,
   FilterableCustomerGroupProps,
+  GroupCustomerPair,
 } from "./common"
 import { CreateCustomerDTO, CreateCustomerGroupDTO } from "./mutations"
 
@@ -73,12 +74,12 @@ export interface ICustomerModuleService extends IModuleService {
   ): Promise<CustomerGroupDTO[]>
 
   addCustomerToGroup(
-    groupCustomerPair: { customer_id: string; customer_group_id: string },
+    groupCustomerPair: GroupCustomerPair,
     sharedContext?: Context
   ): Promise<{ id: string }>
 
   addCustomerToGroup(
-    groupCustomerPairs: { customer_id: string; customer_group_id: string }[],
+    groupCustomerPairs: GroupCustomerPair[],
     sharedContext?: Context
   ): Promise<{ id: string }[]>
 
