@@ -44,7 +44,7 @@ export class AdminPostPromotionsReq {
 
   @IsOptional()
   @IsEnum(PromotionType)
-  type: PromotionTypeValues
+  type?: PromotionTypeValues
 
   @IsOptional()
   @IsString()
