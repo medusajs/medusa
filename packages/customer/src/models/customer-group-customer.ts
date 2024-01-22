@@ -33,7 +33,7 @@ export default class CustomerGroupCustomer {
     index: "IDX_customer_group_customer_customer_id",
     nullable: true,
   })
-  customer?: Customer
+  customer: Customer | null
 
   @ManyToOne({
     entity: () => CustomerGroup,
@@ -41,7 +41,7 @@ export default class CustomerGroupCustomer {
     index: "IDX_customer_group_customer_group_id",
     nullable: true,
   })
-  customer_group?: CustomerGroup
+  customer_group: CustomerGroup | null
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

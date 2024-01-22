@@ -1,20 +1,29 @@
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Check,
   Entity,
   ManyToOne,
-  OnInit
+  OnInit,
+  Property,
 } from "@mikro-orm/core"
 import AdjustmentLine from "./adjustment-line"
 import LineItem from "./line-item"
 
-@Entity({ tableName: "cart_line_item_adjustment_line" })
-export default class LineItemAdjustmentLine extends AdjustmentLine {
+@Entity({ tableName: "cart_line_item_adjustment" })
+@Check<LineItemAdjustment>({
+  expression: (columns) => `${columns.amount} >= 0`,
+})
+export default class LineItemAdjustment extends AdjustmentLine {
   @ManyToOne(() => LineItem, {
-    joinColumn: "line_item",
-    fieldName: "line_item_id",
+    onDelete: "cascade",
+    nullable: true,
+    index: "IDX_adjustment_item_id",
   })
-  line_item: LineItem
+  item?: LineItem | null
+
+  @Property({ columnType: "text" })
+  item_id: string
 
   @BeforeCreate()
   onCreate() {

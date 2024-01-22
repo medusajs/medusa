@@ -35,3 +35,20 @@ export interface UpdateCustomerGroupDTO {
   customer_ids?: string[]
   metadata?: Record<string, unknown> | null
 }
+
+export interface CreateCustomerGroupDTO {
+  name: string
+  metadata?: Record<string, unknown> | null
+  created_by?: string
+}
+
+export interface CustomerGroupUpdatableFileds {
+  name?: string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface UpdateCustomerGroupDTO {
+  id?: string
+  name?: string
+  metadata?: Record<string, unknown> | null
+}
