@@ -17,6 +17,7 @@ export enum Modules {
   AUTHENTICATION = "authentication",
   SALES_CHANNEL = "salesChannel",
   CART = "cart",
+  CUSTOMER = "customer",
   PAYMENT = "payment",
 }
 
@@ -31,6 +32,7 @@ export enum ModuleRegistrationName {
   AUTHENTICATION = "authenticationModuleService",
   SALES_CHANNEL = "salesChannelModuleService",
   CART = "cartModuleService",
+  CUSTOMER = "customerModuleService",
   PAYMENT = "paymentModuleService",
 }
 
@@ -45,6 +47,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.AUTHENTICATION]: "@medusajs/authentication",
   [Modules.SALES_CHANNEL]: "@medusajs/sales-channel",
   [Modules.CART]: "@medusajs/cart",
+  [Modules.CUSTOMER]: "@medusajs/customer",
   [Modules.PAYMENT]: "@medusajs/payment",
 }
 
@@ -182,6 +185,20 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       registrationName: ModuleRegistrationName.CART,
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.CART),
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.CUSTOMER]: {
+      key: Modules.CUSTOMER,
+      registrationName: ModuleRegistrationName.CUSTOMER,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.CUSTOMER),
       isRequired: false,
       canOverride: true,
       isQueryable: true,
