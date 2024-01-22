@@ -4,8 +4,9 @@ export * from "./address"
 export * from "./cart"
 export * from "./line-item"
 export * from "./line-item-adjustment"
-export * from "./shipping-method"
 export * from "./repositories"
+export * from "./shipping-method"
+export * from "./shipping-method-adjustment"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger
