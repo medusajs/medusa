@@ -7,7 +7,7 @@ import {
 } from "@medusajs/utils"
 import { Product, ProductVariant } from "@models"
 
-import { ProductVariantServiceTypes } from "@types"
+import { IProductVariantRepository, ProductVariantServiceTypes } from "@types"
 import ProductService from "./product"
 
 type InjectedDependencies = {
@@ -25,7 +25,7 @@ export default class ProductVariantService<
     update: ProductVariantServiceTypes.UpdateProductVariantDTO
   }
 >(ProductVariant)<TEntity> {
-  protected readonly productVariantRepository_: DAL.RepositoryService<TEntity>
+  protected readonly productVariantRepository_: IProductVariantRepository<TEntity>
   protected readonly productService_: ProductService<TProduct>
 
   constructor({
