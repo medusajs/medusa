@@ -538,6 +538,26 @@ export interface FilterableShippingMethodAdjustmentProps
   provider_id?: string | string[]
 }
 
+export interface FilterableLineItemTaxLineProps
+  extends BaseFilterable<FilterableLineItemTaxLineProps> {
+  id?: string | string[]
+  description?: string
+  code?: string | string[]
+  tax_rate_id?: string | string[]
+  provider_id?: string | string[]
+  item_id?: string | string[]
+}
+
+export interface FilterableShippingMethodTaxLineProps
+  extends BaseFilterable<FilterableShippingMethodTaxLineProps> {
+  id?: string | string[]
+  description?: string
+  code?: string | string[]
+  tax_rate_id?: string | string[]
+  provider_id?: string | string[]
+  shipping_method_id?: string | string[]
+}
+
 /**
  * TODO: Remove this in favor of CartDTO, when module is released
  * @deprecated Use CartDTO instead

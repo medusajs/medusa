@@ -1,10 +1,6 @@
-import { DAL } from "@medusajs/types"
+import { CreateShippingMethodTaxLineDTO, DAL, UpdateShippingMethodTaxLineDTO } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import { ShippingMethodTaxLine } from "@models"
-import {
-  CreateShippingMethodTaxLineDTO,
-  UpdateShippingMethodTaxLineDTO,
-} from "@types"
 
 type InjectedDependencies = {
   shippingMethodTaxLineRepository: DAL.RepositoryService

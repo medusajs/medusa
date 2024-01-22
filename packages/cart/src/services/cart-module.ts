@@ -1114,7 +1114,7 @@ export default class CartModuleService implements ICartModuleService {
 
   @InjectManager("baseRepository_")
   async listLineItemTaxLines(
-    filters = {},
+    filters: CartTypes.FilterableLineItemTaxLineProps = {},
     config: FindConfig<CartTypes.LineItemTaxLineDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ) {
@@ -1137,7 +1137,7 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<CartTypes.LineItemTaxLineDTO[]>
   addLineItemTaxLines(
     taxLine: CartTypes.CreateLineItemTaxLineDTO
-  ): Promise<CartTypes.LineItemTaxLineDTO[]>
+  ): Promise<CartTypes.LineItemTaxLineDTO>
   addLineItemTaxLines(
     cartId: string,
     taxLines: CartTypes.CreateLineItemTaxLineDTO[],
@@ -1152,25 +1152,11 @@ export default class CartModuleService implements ICartModuleService {
       | CartTypes.CreateLineItemTaxLineDTO,
     taxLines?: CartTypes.CreateLineItemTaxLineDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartTypes.LineItemTaxLineDTO[]> {
+  ): Promise<CartTypes.LineItemTaxLineDTO[] | CartTypes.LineItemTaxLineDTO> {
     let addedTaxLines: LineItemTaxLine[] = []
     if (isString(cartIdOrData)) {
-      const cart = await this.retrieve(
-        cartIdOrData,
-        { select: ["id"], relations: ["items"] },
-        sharedContext
-      )
-
-      const lineIds = cart.items?.map((item) => item.id)
-
-      for (const taxLine of taxLines || []) {
-        if (!lineIds?.includes(taxLine.item_id)) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Line item with id ${taxLine.item_id} does not exist on cart with id ${cartIdOrData}`
-          )
-        }
-      }
+      // existence check
+      await this.retrieve(cartIdOrData, { select: ["id"] }, sharedContext)
 
       addedTaxLines = await this.lineItemTaxLineService_.create(
         taxLines as CartTypes.CreateLineItemTaxLineDTO[],
@@ -1182,6 +1168,15 @@ export default class CartModuleService implements ICartModuleService {
       addedTaxLines = await this.lineItemTaxLineService_.create(
         data as CartTypes.CreateLineItemTaxLineDTO[],
         sharedContext
+      )
+    }
+
+    if (isObject(cartIdOrData)) {
+      return await this.baseRepository_.serialize<CartTypes.LineItemTaxLineDTO>(
+        addedTaxLines[0],
+        {
+          populate: true,
+        }
       )
     }
 
@@ -1297,7 +1292,7 @@ export default class CartModuleService implements ICartModuleService {
 
   @InjectManager("baseRepository_")
   async listShippingMethodTaxLines(
-    filters = {},
+    filters: CartTypes.FilterableShippingMethodTaxLineProps = {},
     config: FindConfig<CartTypes.ShippingMethodTaxLineDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ) {
@@ -1319,7 +1314,7 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<CartTypes.ShippingMethodTaxLineDTO[]>
   addShippingMethodTaxLines(
     taxLine: CartTypes.CreateShippingMethodTaxLineDTO
-  ): Promise<CartTypes.ShippingMethodTaxLineDTO[]>
+  ): Promise<CartTypes.ShippingMethodTaxLineDTO>
   addShippingMethodTaxLines(
     cartId: string,
     taxLines: CartTypes.CreateShippingMethodTaxLineDTO[],
@@ -1334,29 +1329,31 @@ export default class CartModuleService implements ICartModuleService {
       | CartTypes.CreateShippingMethodTaxLineDTO,
     taxLines?: CartTypes.CreateShippingMethodTaxLineDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartTypes.ShippingMethodTaxLineDTO[]> {
+  ): Promise<
+    CartTypes.ShippingMethodTaxLineDTO[] | CartTypes.ShippingMethodTaxLineDTO
+  > {
     let addedTaxLines: ShippingMethodTaxLine[] = []
     if (isString(cartIdOrData)) {
-      const cart = await this.retrieve(
-        cartIdOrData,
-        { select: ["id"], relations: ["shipping_methods"] },
+      // existence check
+      await this.retrieve(cartIdOrData, { select: ["id"] }, sharedContext)
+
+      addedTaxLines = await this.shippingMethodTaxLineService_.create(
+        taxLines as CartTypes.CreateShippingMethodTaxLineDTO[],
         sharedContext
       )
-
-      const methodIds = cart.shipping_methods?.map((method) => method.id)
-
-      for (const taxLine of taxLines || []) {
-        if (!methodIds?.includes(taxLine.shipping_method_id)) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Shipping method with id ${taxLine.shipping_method_id} does not exist on cart with id ${cartIdOrData}`
-          )
-        }
-      }
     } else {
       addedTaxLines = await this.shippingMethodTaxLineService_.create(
         taxLines as CartTypes.CreateShippingMethodTaxLineDTO[],
         sharedContext
+      )
+    }
+
+    if (isObject(cartIdOrData)) {
+      return await this.baseRepository_.serialize<CartTypes.ShippingMethodTaxLineDTO>(
+        addedTaxLines[0],
+        {
+          populate: true,
+        }
       )
     }
 

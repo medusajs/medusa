@@ -1200,42 +1200,6 @@ describe("Cart Module Service", () => {
         ])
       )
     })
-
-    it("should throw if line item is not associated with cart", async () => {
-      const [cartOne] = await service.create([
-        {
-          currency_code: "eur",
-        },
-      ])
-
-      const [cartTwo] = await service.create([
-        {
-          currency_code: "eur",
-        },
-      ])
-
-      const [itemOne] = await service.addLineItems(cartOne.id, [
-        {
-          quantity: 1,
-          unit_price: 100,
-          title: "test",
-        },
-      ])
-
-      const error = await service
-        .addLineItemAdjustments(cartTwo.id, [
-          {
-            item_id: itemOne.id,
-            amount: 100,
-            code: "FREE",
-          },
-        ])
-        .catch((e) => e)
-
-      expect(error.message).toBe(
-        `Line item with id ${itemOne.id} does not exist on cart with id ${cartTwo.id}`
-      )
-    })
   })
 
   describe("removeLineItemAdjustments", () => {
@@ -2259,42 +2223,6 @@ describe("Cart Module Service", () => {
             ]),
           }),
         ])
-      )
-    })
-
-    it("should throw if line item is not associated with cart", async () => {
-      const [cartOne] = await service.create([
-        {
-          currency_code: "eur",
-        },
-      ])
-
-      const [cartTwo] = await service.create([
-        {
-          currency_code: "eur",
-        },
-      ])
-
-      const [itemOne] = await service.addLineItems(cartOne.id, [
-        {
-          quantity: 1,
-          unit_price: 100,
-          title: "test",
-        },
-      ])
-
-      const error = await service
-        .addLineItemTaxLines(cartTwo.id, [
-          {
-            item_id: itemOne.id,
-            rate: 20,
-            code: "TX",
-          },
-        ])
-        .catch((e) => e)
-
-      expect(error.message).toBe(
-        `Line item with id ${itemOne.id} does not exist on cart with id ${cartTwo.id}`
       )
     })
   })

@@ -1,7 +1,10 @@
-import { DAL } from "@medusajs/types"
+import {
+  CreateLineItemTaxLineDTO,
+  DAL,
+  UpdateLineItemTaxLineDTO,
+} from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import { LineItemTaxLine } from "@models"
-import { CreateLineItemTaxLineDTO, UpdateLineItemTaxLineDTO } from "@types"
 
 type InjectedDependencies = {
   lineItemTaxLineRepository: DAL.RepositoryService
