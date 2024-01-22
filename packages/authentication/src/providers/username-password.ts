@@ -24,14 +24,14 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
   ): Promise<AuthenticationResponse> {
     const { email, password } = userData.body
 
-    if (isString(password)) {
+    if (!password || !isString(password)) {
       return {
         success: false,
         error: "Password should be a string",
       }
     }
 
-    if (isString(email)) {
+    if (!email || !isString(email)) {
       return {
         success: false,
         error: "Email should be a string",

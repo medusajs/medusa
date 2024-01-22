@@ -48,9 +48,8 @@ export default class AuthenticationModuleService<
   }
 
   __hooks = {
-    onApplicationStart: this.createProvidersOnLoad,
+    onApplicationStart: async () => await this.createProvidersOnLoad(),
   }
-
 
   protected __container__: MedusaContainer
   protected baseRepository_: DAL.RepositoryService
