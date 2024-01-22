@@ -6,6 +6,7 @@ import {
   ModuleJoinerConfig,
   PromotionTypes,
   RestoreReturn,
+  SoftDeleteReturn,
 } from "@medusajs/types"
 import {
   ApplicationMethodTargetType,
@@ -834,14 +835,40 @@ export default class PromotionModuleService<
     await this.promotionService_.delete(idsToDelete, sharedContext)
   }
 
-  @InjectTransactionManager("baseRepository_")
-  async softDelete(
+  @InjectManager("baseRepository_")
+  async softDelete<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
     ids: string | string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    const promotionIds = Array.isArray(ids) ? ids : [ids]
+    { returnLinkableKeys }: SoftDeleteReturn<TReturnableLinkableKeys> = {},
+    sharedContext: Context = {}
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    const idsToDelete = Array.isArray(ids) ? ids : [ids]
+    let [_, cascadedEntitiesMap] = await this.softDelete_(
+      idsToDelete,
+      sharedContext
+    )
 
-    await this.promotionService_.softDelete(promotionIds, sharedContext)
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async softDelete_(
+    promotionIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TPromotion[], Record<string, unknown[]>]> {
+    return await this.promotionService_.softDelete(promotionIds, sharedContext)
   }
 
   @InjectManager("baseRepository_")
@@ -1217,14 +1244,36 @@ export default class PromotionModuleService<
     await this.campaignService_.delete(idsToDelete, sharedContext)
   }
 
-  @InjectTransactionManager("baseRepository_")
-  async softDeleteCampaigns(
+  @InjectManager("baseRepository_")
+  async softDeleteCampaigns<TReturnableLinkableKeys extends string>(
     ids: string | string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
+    { returnLinkableKeys }: SoftDeleteReturn<TReturnableLinkableKeys> = {},
+    sharedContext: Context = {}
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const idsToDelete = Array.isArray(ids) ? ids : [ids]
+    let [_, cascadedEntitiesMap] = await this.softDeleteCampaigns_(
+      idsToDelete,
+      sharedContext
+    )
 
-    await this.campaignService_.softDelete(idsToDelete, sharedContext)
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async softDeleteCampaigns_(
+    campaignIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TCampaign[], Record<string, unknown[]>]> {
+    return await this.campaignService_.softDelete(campaignIds, sharedContext)
   }
 
   @InjectManager("baseRepository_")
