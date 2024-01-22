@@ -160,15 +160,14 @@ export class TransactionOrchestrator extends EventEmitter {
       step &&
       step.hasTimeout() &&
       !step.isCompensating() &&
-      dateNow > step.startedAt! + step.getTimeoutInterval()! * 1e3
+      dateNow > step.startedAt! + step.getTimeout()! * 1e3
 
     const hasTransactionTimedOut =
       transaction &&
       transaction.hasTimeout() &&
       transaction.getFlow().state !== TransactionState.COMPENSATING &&
       dateNow >
-        transaction.getFlow().startedAt! +
-          transaction.getTimeoutInterval()! * 1e3
+        transaction.getFlow().startedAt! + transaction.getTimeout()! * 1e3
 
     return !!hasStepTimedOut || !!hasTransactionTimedOut
   }
@@ -753,9 +752,7 @@ export class TransactionOrchestrator extends EventEmitter {
       }
 
       if (transaction.hasTimeout()) {
-        await transaction.scheduleTransactionTimeout(
-          transaction.getTimeoutInterval()!
-        )
+        await transaction.scheduleTransactionTimeout(transaction.getTimeout()!)
       }
 
       this.emit(DistributedTransactionEvent.BEGIN, { transaction })

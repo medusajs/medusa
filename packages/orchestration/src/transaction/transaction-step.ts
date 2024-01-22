@@ -157,10 +157,10 @@ export class TransactionStep {
   }
 
   hasTimeout(): boolean {
-    return !!this.definition.timeout
+    return !!this.getTimeout()
   }
 
-  getTimeoutInterval(): number | undefined {
+  getTimeout(): number | undefined {
     return this.definition.timeout
   }
 

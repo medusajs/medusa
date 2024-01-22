@@ -177,10 +177,10 @@ export class DistributedTransaction extends EventEmitter {
   }
 
   public hasTimeout(): boolean {
-    return !!this.getFlow().options?.timeout
+    return !!this.getTimeout()
   }
 
-  public getTimeoutInterval(): number | undefined {
+  public getTimeout(): number | undefined {
     return this.getFlow().options?.timeout
   }
 

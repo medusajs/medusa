@@ -467,7 +467,7 @@ module.exports = {
       },
     },
 
-    // WORKFLOWS CONFIG
+    // WORKFLOW_ENGINES CONFIG
     "^workflows": {
       expandMembers: true,
       sections: {

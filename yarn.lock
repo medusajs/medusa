@@ -8698,9 +8698,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows-engine-inmemory@workspace:packages/workflows-engine-inmemory":
+"@medusajs/workflow-engine-inmemory@workspace:packages/workflow-engine-inmemory":
   version: 0.0.0-use.local
-  resolution: "@medusajs/workflows-engine-inmemory@workspace:packages/workflows-engine-inmemory"
+  resolution: "@medusajs/workflow-engine-inmemory@workspace:packages/workflow-engine-inmemory"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
@@ -8724,9 +8724,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows-engine-redis@workspace:packages/workflows-engine-redis":
+"@medusajs/workflow-engine-redis@workspace:packages/workflow-engine-redis":
   version: 0.0.0-use.local
-  resolution: "@medusajs/workflows-engine-redis@workspace:packages/workflows-engine-redis"
+  resolution: "@medusajs/workflow-engine-redis@workspace:packages/workflow-engine-redis"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
