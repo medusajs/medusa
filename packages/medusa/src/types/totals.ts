@@ -37,7 +37,16 @@ export type DiscountAllocation = {
  * allocations
  */
 export type LineAllocationsMap = {
-  [K: string]: { gift_card?: GiftCardAllocation; discount?: DiscountAllocation }
+  [K: string]: {
+    /**
+     * The gift card applied on the line item.
+     */
+    gift_card?: GiftCardAllocation
+    /**
+     * The discount applied on the line item.
+     */
+    discount?: DiscountAllocation
+  }
 }
 
 /**
