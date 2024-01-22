@@ -2,8 +2,9 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
+export const deletePromotionsStepId = "delete-promotions"
 export const deletePromotionsStep = createStep(
-  "delete-promotions",
+  deletePromotionsStepId,
   async (ids: string[], { container }) => {
     const promotionModule = container.resolve<IPromotionModuleService>(
       ModuleRegistrationName.PROMOTION

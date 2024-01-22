@@ -4,9 +4,10 @@ import { deleteCampaignsStep } from "../../handlers/promotion"
 type WorkflowInput = { ids: string[] }
 type WorkflowOutput = void
 
+export const deleteCampaignsWorkflowId = "delete-campaigns"
 export const deleteCampaignsWorkflow = createWorkflow<
   WorkflowInput,
   WorkflowOutput
->("delete-promotions", (input) => {
+>(deleteCampaignsWorkflowId, (input) => {
   return deleteCampaignsStep(input.ids)
 })
