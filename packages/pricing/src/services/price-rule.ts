@@ -1,4 +1,4 @@
-import { DAL } from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import { PriceRule } from "@models"
 
@@ -13,7 +13,6 @@ export default class PriceRuleService<
 > extends ModulesSdkUtils.abstractServiceFactory<
   InjectedDependencies,
   {
-    create: ServiceTypes.CreatePriceRuleDTO
     update: ServiceTypes.UpdatePriceRuleDTO
   },
   {
@@ -24,5 +23,23 @@ export default class PriceRuleService<
   constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
+  }
+
+  async create(
+    data: ServiceTypes.CreatePriceRuleDTO[],
+    sharedContext?: Context
+  ): Promise<TEntity[]> {
+    const toCreate = data.map((ruleData) => {
+      const ruleDataClone = { ...ruleData } as any
+
+      ruleDataClone.rule_type ??= ruleData.rule_type_id
+      ruleDataClone.price_set ??= ruleData.price_set_id
+      ruleDataClone.price_set_money_amount ??=
+        ruleData.price_set_money_amount_id
+
+      return ruleDataClone
+    })
+
+    return await super.create(toCreate, sharedContext)
   }
 }
