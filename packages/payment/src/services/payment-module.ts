@@ -29,17 +29,17 @@ import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  paymentCollectionService: services.PaymentCollection
-  paymentService: services.Payment
-  paymentSessionService: services.PaymentSession
+  paymentCollectionService: services.PaymentCollectionService
+  paymentService: services.PaymentService
+  paymentSessionService: services.PaymentSessionService
 }
 
-export default class PaymentModule implements IPaymentModuleService {
+export default class PaymentModuleService implements IPaymentModuleService {
   protected baseRepository_: DAL.RepositoryService
 
-  protected paymentService_: services.Payment
-  protected paymentSessionService_: services.PaymentSession
-  protected paymentCollectionService_: services.PaymentCollection
+  protected paymentService_: services.PaymentService
+  protected paymentSessionService_: services.PaymentSessionService
+  protected paymentCollectionService_: services.PaymentCollectionService
 
   constructor(
     {
