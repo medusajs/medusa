@@ -18,6 +18,7 @@ import {
   ContainerRegistrationKeys,
   createMedusaContainer,
   isObject,
+  isString,
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
@@ -79,7 +80,9 @@ async function loadModules(modulesConfig, sharedContainer) {
         const mod_ = mod as unknown as InternalModuleDeclaration
         path = mod_.resolve ?? MODULE_PACKAGE_NAMES[moduleName]
         definition = mod_.definition
-        moduleExports = mod_.resolve as ModuleExports
+        moduleExports = !isString(mod_.resolve)
+          ? (mod_.resolve as ModuleExports)
+          : undefined
         declaration = { ...mod }
         delete declaration.definition
       } else {
