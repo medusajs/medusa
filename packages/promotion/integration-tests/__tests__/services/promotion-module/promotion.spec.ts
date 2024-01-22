@@ -428,6 +428,199 @@ describe("Promotion Service", () => {
         "rules[].operator (doesnotexist) is invalid. It should be one of gte, lte, gt, lt, eq, ne, in"
       )
     })
+
+    it("should create a basic buyget promotion successfully", async () => {
+      const createdPromotion = await service
+        .create({
+          code: "PROMOTION_TEST",
+          type: PromotionType.BUYGET,
+        })
+        .catch((e) => e)
+
+      const [promotion] = await service.list({
+        id: [createdPromotion.id],
+      })
+
+      expect(promotion).toEqual(
+        expect.objectContaining({
+          code: "PROMOTION_TEST",
+          is_automatic: false,
+          type: PromotionType.BUYGET,
+        })
+      )
+    })
+
+    it("should throw an error when target_rules are not present for buyget promotion", async () => {
+      const error = await service
+        .create({
+          code: "PROMOTION_TEST",
+          type: PromotionType.BUYGET,
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "across",
+            value: "100",
+            buy_rules: [
+              {
+                attribute: "product_collection",
+                operator: "eq",
+                values: ["pcol_towel"],
+              },
+            ],
+          },
+        })
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "Target rules are required for buyget promotion type"
+      )
+    })
+
+    it("should throw an error when buy_rules are not present for buyget promotion", async () => {
+      const error = await service
+        .create({
+          code: "PROMOTION_TEST",
+          type: PromotionType.BUYGET,
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "across",
+            value: "100",
+          },
+        })
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "Buy rules are required for buyget promotion type"
+      )
+    })
+
+    it("should throw an error when apply_to_quantity is not present for buyget promotion", async () => {
+      const error = await service
+        .create({
+          code: "PROMOTION_TEST",
+          type: PromotionType.BUYGET,
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "across",
+            value: "100",
+            buy_rules_min_quantity: 1,
+            buy_rules: [
+              {
+                attribute: "product_collection.id",
+                operator: "eq",
+                values: ["pcol_towel"],
+              },
+            ],
+            target_rules: [
+              {
+                attribute: "product.id",
+                operator: "eq",
+                values: ["prod_mat"],
+              },
+            ],
+          },
+        })
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "apply_to_quantity is a required field for Promotion type of buyget"
+      )
+    })
+
+    it("should throw an error when buy_rules_min_quantity is not present for buyget promotion", async () => {
+      const error = await service
+        .create({
+          code: "PROMOTION_TEST",
+          type: PromotionType.BUYGET,
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "across",
+            value: "100",
+            apply_to_quantity: 1,
+            buy_rules: [
+              {
+                attribute: "product_collection.id",
+                operator: "eq",
+                values: ["pcol_towel"],
+              },
+            ],
+            target_rules: [
+              {
+                attribute: "product.id",
+                operator: "eq",
+                values: ["prod_mat"],
+              },
+            ],
+          },
+        })
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "buy_rules_min_quantity is a required field for Promotion type of buyget"
+      )
+    })
+
+    it("should create a buyget promotion with rules successfully", async () => {
+      const createdPromotion = await service.create({
+        code: "PROMOTION_TEST",
+        type: PromotionType.BUYGET,
+        application_method: {
+          type: "fixed",
+          target_type: "items",
+          allocation: "across",
+          value: "100",
+          apply_to_quantity: 1,
+          buy_rules_min_quantity: 1,
+          buy_rules: [
+            {
+              attribute: "product_collection.id",
+              operator: "eq",
+              values: ["pcol_towel"],
+            },
+          ],
+          target_rules: [
+            {
+              attribute: "product.id",
+              operator: "eq",
+              values: "prod_mat",
+            },
+          ],
+        },
+      })
+
+      expect(createdPromotion).toEqual(
+        expect.objectContaining({
+          code: "PROMOTION_TEST",
+          is_automatic: false,
+          type: PromotionType.BUYGET,
+          application_method: expect.objectContaining({
+            type: "fixed",
+            target_type: "items",
+            allocation: "across",
+            value: 100,
+            apply_to_quantity: 1,
+            buy_rules_min_quantity: 1,
+            target_rules: [
+              expect.objectContaining({
+                attribute: "product.id",
+                operator: "eq",
+                values: [expect.objectContaining({ value: "prod_mat" })],
+              }),
+            ],
+            buy_rules: [
+              expect.objectContaining({
+                attribute: "product_collection.id",
+                operator: "eq",
+                values: [expect.objectContaining({ value: "pcol_towel" })],
+              }),
+            ],
+          }),
+        })
+      )
+    })
   })
 
   describe("update", () => {
