@@ -13,6 +13,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
   isString,
+  isObject,
 } from "@medusajs/utils"
 import { joinerConfig } from "../joiner-config"
 import * as services from "../services"
@@ -172,12 +173,10 @@ export default class CustomerModuleService implements ICustomerModuleService {
     idsOrSelector: string | string[] | CustomerTypes.FilterableCustomerProps,
     @MedusaContext() sharedContext: Context = {}
   ) {
-    let toDelete: string[] = []
-    if (typeof idsOrSelector === "string") {
-      toDelete.push(idsOrSelector)
-    } else if (Array.isArray(idsOrSelector)) {
-      toDelete = idsOrSelector
-    } else {
+    let toDelete = Array.isArray(idsOrSelector)
+      ? idsOrSelector
+      : [idsOrSelector as string]
+    if (isObject(idsOrSelector)) {
       const ids = await this.customerService_.list(
         idsOrSelector,
         {
