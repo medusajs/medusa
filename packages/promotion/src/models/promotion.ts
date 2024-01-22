@@ -1,4 +1,4 @@
-import { DAL, PromotionType } from "@medusajs/types"
+import { DAL, PromotionTypeValues } from "@medusajs/types"
 import { DALUtils, PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -52,7 +52,7 @@ export default class Promotion {
 
   @Index({ name: "IDX_promotion_type" })
   @Enum(() => PromotionUtils.PromotionType)
-  type: PromotionType
+  type: PromotionTypeValues
 
   @OneToOne({
     entity: () => ApplicationMethod,

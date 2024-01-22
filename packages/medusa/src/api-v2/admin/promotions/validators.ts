@@ -1,3 +1,4 @@
+import { PromotionTypeValues } from "@medusajs/types"
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
@@ -43,7 +44,7 @@ export class AdminPostPromotionsReq {
 
   @IsOptional()
   @IsEnum(PromotionType)
-  type?: PromotionType
+  type: PromotionTypeValues
 
   @IsOptional()
   @IsString()
