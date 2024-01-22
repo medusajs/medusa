@@ -24,6 +24,7 @@ export default class AuthUserService<
   constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
+    this.authUserRepository_ = container.authUserRepository
   }
 
   @InjectManager("authUserRepository_")
