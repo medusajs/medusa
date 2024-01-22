@@ -80,7 +80,7 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
-    it.only("should create a product", async () => {
+    it("should create a product", async () => {
       const api = useApi()! as AxiosInstance
 
       const payload = {
