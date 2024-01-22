@@ -697,7 +697,6 @@ describe("Cart Module Service", () => {
 
       const [method] = await service.addShippingMethods(createdCart.id, [
         {
-          cart_id: createdCart.id,
           amount: 100,
           name: "Test",
         },
@@ -720,7 +719,6 @@ describe("Cart Module Service", () => {
       const error = await service
         .addShippingMethods(createdCart.id, [
           {
-            cart_id: createdCart.id,
             amount: -100,
             name: "Test",
           },
@@ -785,7 +783,6 @@ describe("Cart Module Service", () => {
 
       const [method] = await service.addShippingMethods(createdCart.id, [
         {
-          cart_id: createdCart.id,
           amount: 100,
           name: "test",
         },
@@ -1008,6 +1005,7 @@ describe("Cart Module Service", () => {
       await service.setLineItemAdjustments(createdCart.id, [
         {
           id: adjustments[0].id,
+          item_id: itemOne.id,
           amount: 50,
           code: "50%",
         },
@@ -1328,7 +1326,6 @@ describe("Cart Module Service", () => {
           {
             amount: 100,
             name: "test",
-            cart_id: createdCart.id,
           },
         ]
       )
@@ -1339,7 +1336,6 @@ describe("Cart Module Service", () => {
           {
             amount: 200,
             name: "test-2",
-            cart_id: createdCart.id,
           },
         ]
       )
@@ -1389,7 +1385,6 @@ describe("Cart Module Service", () => {
           {
             amount: 100,
             name: "test",
-            cart_id: createdCart.id,
           },
         ]
       )
@@ -1460,7 +1455,6 @@ describe("Cart Module Service", () => {
           {
             amount: 100,
             name: "test",
-            cart_id: createdCart.id,
           },
         ]
       )
@@ -1518,7 +1512,6 @@ describe("Cart Module Service", () => {
           {
             amount: 100,
             name: "test",
-            cart_id: createdCart.id,
           },
         ]
       )
@@ -1591,7 +1584,6 @@ describe("Cart Module Service", () => {
           {
             amount: 100,
             name: "test",
-            cart_id: createdCart.id,
           },
         ]
       )
@@ -1631,7 +1623,6 @@ describe("Cart Module Service", () => {
           {
             amount: 100,
             name: "test",
-            cart_id: createdCart.id,
           },
         ]
       )
@@ -1641,7 +1632,6 @@ describe("Cart Module Service", () => {
           {
             amount: 200,
             name: "test-2",
-            cart_id: createdCart.id,
           },
         ]
       )
@@ -1694,14 +1684,12 @@ describe("Cart Module Service", () => {
         {
           amount: 100,
           name: "test",
-          cart_id: cartOne.id,
         },
       ])
       const [shippingMethodTwo] = await service.addShippingMethods(cartTwo.id, [
         {
           amount: 200,
           name: "test-2",
-          cart_id: cartTwo.id,
         },
       ])
 
@@ -1775,7 +1763,6 @@ describe("Cart Module Service", () => {
         {
           amount: 100,
           name: "test",
-          cart_id: cartOne.id,
         },
       ])
 
@@ -1807,7 +1794,6 @@ describe("Cart Module Service", () => {
         {
           amount: 100,
           name: "test",
-          cart_id: createdCart.id,
         },
       ])
 
@@ -1846,7 +1832,6 @@ describe("Cart Module Service", () => {
           {
             amount: 100,
             name: "test",
-            cart_id: createdCart.id,
           },
         ]
       )

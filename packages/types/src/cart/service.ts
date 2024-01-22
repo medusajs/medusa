@@ -10,6 +10,7 @@ import {
   FilterableCartProps,
   FilterableLineItemAdjustmentProps,
   FilterableLineItemProps,
+  FilterableShippingMethodAdjustmentProps,
   FilterableShippingMethodProps,
   LineItemAdjustmentDTO,
   ShippingMethodAdjustmentDTO,
@@ -22,6 +23,7 @@ import {
   CreateLineItemForCartDTO,
   CreateShippingMethodAdjustmentDTO,
   CreateShippingMethodDTO,
+  CreateShippingMethodForSingleCartDTO,
   UpdateAddressDTO,
   UpdateCartDTO,
   UpdateLineItemDTO,
@@ -140,7 +142,7 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<CartShippingMethodDTO[]>
   addShippingMethods(
     cartId: string,
-    methods: CreateShippingMethodDTO[],
+    methods: CreateShippingMethodForSingleCartDTO[],
     sharedContext?: Context
   ): Promise<CartShippingMethodDTO[]>
 
@@ -194,7 +196,7 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<void>
 
   listShippingMethodAdjustments(
-    filters: FilterableShippingMethodProps,
+    filters: FilterableShippingMethodAdjustmentProps,
     config?: FindConfig<ShippingMethodAdjustmentDTO>,
     sharedContext?: Context
   ): Promise<ShippingMethodAdjustmentDTO[]>
@@ -204,7 +206,7 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<ShippingMethodAdjustmentDTO[]>
   addShippingMethodAdjustments(
     data: CreateShippingMethodAdjustmentDTO
-  ): Promise<ShippingMethodAdjustmentDTO[]>
+  ): Promise<ShippingMethodAdjustmentDTO>
   addShippingMethodAdjustments(
     cartId: string,
     data: CreateShippingMethodAdjustmentDTO[],
@@ -225,7 +227,7 @@ export interface ICartModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
   removeShippingMethodAdjustments(
-    adjustmentIds: string,
+    adjustmentId: string,
     sharedContext?: Context
   ): Promise<void>
   removeShippingMethodAdjustments(

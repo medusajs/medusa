@@ -594,7 +594,7 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<CartTypes.CartShippingMethodDTO[]>
   async addShippingMethods(
     cartId: string,
-    methods: CartTypes.CreateShippingMethodDTO[],
+    methods: CartTypes.CreateShippingMethodForSingleCartDTO[],
     sharedContext?: Context
   ): Promise<CartTypes.CartShippingMethodDTO[]>
 
@@ -928,7 +928,7 @@ export default class CartModuleService implements ICartModuleService {
     const methodIds = cart.shipping_methods?.map((method) => method.id)
 
     const existingAdjustments = await this.listShippingMethodAdjustments(
-      { shipping_method_id: methodIds },
+      { shipping_method_id: methodIds ?? [] },
       { select: ["id"] },
       sharedContext
     )
@@ -956,10 +956,12 @@ export default class CartModuleService implements ICartModuleService {
       }
     )
 
-    await this.shippingMethodAdjustmentService_.delete(
-      toDelete.map((adj) => adj!.id),
-      sharedContext
-    )
+    if (toDelete.length) {
+      await this.shippingMethodAdjustmentService_.delete(
+        toDelete.map((adj) => adj!.id),
+        sharedContext
+      )
+    }
 
     let result: ShippingMethodAdjustment[] = []
 
@@ -992,7 +994,7 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<CartTypes.ShippingMethodAdjustmentDTO[]>
   async addShippingMethodAdjustments(
     adjustment: CartTypes.CreateShippingMethodAdjustmentDTO
-  ): Promise<CartTypes.ShippingMethodAdjustmentDTO[]>
+  ): Promise<CartTypes.ShippingMethodAdjustmentDTO>
   async addShippingMethodAdjustments(
     cartId: string,
     adjustments: CartTypes.CreateShippingMethodAdjustmentDTO[],
@@ -1007,7 +1009,10 @@ export default class CartModuleService implements ICartModuleService {
       | CartTypes.CreateShippingMethodAdjustmentDTO,
     adjustments?: CartTypes.CreateShippingMethodAdjustmentDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<CartTypes.ShippingMethodAdjustmentDTO[]> {
+  ): Promise<
+    | CartTypes.ShippingMethodAdjustmentDTO[]
+    | CartTypes.ShippingMethodAdjustmentDTO
+  > {
     let addedAdjustments: ShippingMethodAdjustment[] = []
     if (isString(cartIdOrData)) {
       const cart = await this.retrieve(
@@ -1037,6 +1042,15 @@ export default class CartModuleService implements ICartModuleService {
       addedAdjustments = await this.shippingMethodAdjustmentService_.create(
         data as CartTypes.CreateShippingMethodAdjustmentDTO[],
         sharedContext
+      )
+    }
+
+    if (isObject(cartIdOrData)) {
+      return await this.baseRepository_.serialize<CartTypes.ShippingMethodAdjustmentDTO>(
+        addedAdjustments[0],
+        {
+          populate: true,
+        }
       )
     }
 
