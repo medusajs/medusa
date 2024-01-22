@@ -701,7 +701,7 @@ export class AdminPostProductsProductReq {
 
   @IsOptional()
   @IsString()
-  collection_id?: string
+  collection_id?: string | null
 
   @IsOptional()
   @Type(() => ProductTagReq)
