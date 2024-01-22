@@ -127,7 +127,7 @@ describe("Customer Module Service", () => {
         },
       ])
 
-      expect(group).toEqual(
+      expect(groups).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: expect.any(String),
