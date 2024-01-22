@@ -324,7 +324,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
     })
   }
 
-  const runnerFn = <
+  const buildRunnerFn = <
     TAction extends "run" | "registerStepSuccess" | "registerStepFailure",
     TDataOverride,
     TResultOverride
@@ -373,7 +373,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
       TDataOverride extends undefined ? TData : TDataOverride
     >
 
-    return await runnerFn<"run", TDataOverride, TResultOverride>(
+    return await buildRunnerFn<"run", TDataOverride, TResultOverride>(
       "run",
       container
     )(inputArgs)
@@ -399,7 +399,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
       TDataOverride extends undefined ? TData : TDataOverride
     >
 
-    return await runnerFn<
+    return await buildRunnerFn<
       "registerStepSuccess",
       TDataOverride,
       TResultOverride
@@ -429,7 +429,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
       TDataOverride extends undefined ? TData : TDataOverride
     >
 
-    return await runnerFn<
+    return await buildRunnerFn<
       "registerStepFailure",
       TDataOverride,
       TResultOverride
