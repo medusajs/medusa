@@ -34,7 +34,7 @@ If you also don't have a Medusa project, you can deploy to Railway instantly wit
 
 It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../development/backend/install.mdx).
 
-Furthermore, your Medusa backend should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Backend documentation](./../../development/backend/configurations.md) to learn how to do that.
+Furthermore, your Medusa backend should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Backend documentation](./../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx) to learn how to do that.
 
 ### Production Modules
 
@@ -221,7 +221,7 @@ You can access `/health` to get health status of your deployed backend.
 
 :::note
 
-Make sure to either set the `autoRebuild` option of the admin plugin to `true` or add its [build](../../admin/configuration.md#build-command-options) command as part of the start command of your backend.
+Make sure to either set the `autoRebuild` option of the admin plugin to `true` or add its [build](../../admin/configuration.mdx#build-command-options) command as part of the start command of your backend.
 
 :::
 

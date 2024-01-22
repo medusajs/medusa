@@ -4,6 +4,26 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Methods
 
+### subscribe
+
+#### Parameters
+
+<ParameterTypes parameters={[{"name":"eventName","type":"`string` \\| `symbol`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subscriber","type":"[Subscriber](../types/types.EventBusTypes.Subscriber.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[SubscriberContext](../types/types.EventBusTypes.SubscriberContext.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"subscriberId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} />
+
+#### Returns
+
+<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+
+### unsubscribe
+
+#### Parameters
+
+<ParameterTypes parameters={[{"name":"eventName","type":"`string` \\| `symbol`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subscriber","type":"[Subscriber](../types/types.EventBusTypes.Subscriber.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[SubscriberContext](../types/types.EventBusTypes.SubscriberContext.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"subscriberId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} />
+
+#### Returns
+
+<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+
 ### emit
 
 #### Type Parameters
@@ -17,32 +37,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;unknown&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
-
-### subscribe
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"eventName","type":"`string` \\| `symbol`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subscriber","type":"[Subscriber](../types/types.EventBusTypes.Subscriber.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[SubscriberContext](../types/types.EventBusTypes.SubscriberContext.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"subscriberId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### unsubscribe
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"eventName","type":"`string` \\| `symbol`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"subscriber","type":"[Subscriber](../types/types.EventBusTypes.Subscriber.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[SubscriberContext](../types/types.EventBusTypes.SubscriberContext.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"subscriberId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 
