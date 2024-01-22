@@ -1,7 +1,7 @@
-import { moduleDefinition } from "./module-definition"
 import { Modules } from "@medusajs/modules-sdk"
-import * as Models from "@models"
 import { ModulesSdkUtils } from "@medusajs/utils"
+import * as Models from "@models"
+import { moduleDefinition } from "./module-definition"
 
 export default moduleDefinition
 
@@ -20,3 +20,4 @@ export const revertMigration = ModulesSdkUtils.buildRevertMigrationScript(
 
 export * from "./initialize"
 export * from "./loaders"
+
