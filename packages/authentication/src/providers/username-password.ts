@@ -5,6 +5,7 @@ import {
 
 import { AuthUserService } from "@services"
 import Scrypt from "scrypt-kdf"
+import { isString } from "@medusajs/utils"
 
 class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
   public static PROVIDER = "usernamePassword"
@@ -23,14 +24,14 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
   ): Promise<AuthenticationResponse> {
     const { email, password } = userData.body
 
-    if (typeof password !== "string") {
+    if (isString(password)) {
       return {
         success: false,
         error: "Password should be a string",
       }
     }
 
-    if (typeof email !== "string") {
+    if (isString(email)) {
       return {
         success: false,
         error: "Email should be a string",
@@ -44,7 +45,7 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
 
     const password_hash = authUser.provider_metadata?.password
 
-    if (password_hash && typeof password_hash === "string") {
+    if (isString(password_hash)) {
       const buf = Buffer.from(password_hash, "base64")
 
       const success = await Scrypt.verify(buf, password)

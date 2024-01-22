@@ -48,31 +48,9 @@ export default class AuthenticationModuleService<
   }
 
   __hooks = {
-    onApplicationStart: async () => {
-      const providersToLoad = this.__container__["auth_providers"]
-
-      const providers = await this.authProviderService_.list({
-        provider: providersToLoad.map((p) => p.provider),
-      })
-
-      const loadedProvidersMap = new Map(providers.map((p) => [p.provider, p]))
-
-      const providersToCreate: ServiceTypes.CreateAuthProviderDTO[] = []
-
-      for (const provider of providersToLoad) {
-        if (loadedProvidersMap.has(provider.provider)) {
-          continue
-        }
-
-        providersToCreate.push({
-          provider: provider.provider,
-          name: provider.displayName,
-        })
-      }
-
-      await this.authProviderService_.create(providersToCreate)
-    },
+    onApplicationStart: this.createProvidersOnLoad,
   }
+
 
   protected __container__: MedusaContainer
   protected baseRepository_: DAL.RepositoryService
@@ -408,5 +386,31 @@ export default class AuthenticationModuleService<
     } catch (error) {
       return { success: false, error: error.message }
     }
+  }
+
+
+  private async createProvidersOnLoad() { 
+    const providersToLoad = this.__container__["auth_providers"]
+
+    const providers = await this.authProviderService_.list({
+      provider: providersToLoad.map((p) => p.provider),
+    })
+
+    const loadedProvidersMap = new Map(providers.map((p) => [p.provider, p]))
+
+    const providersToCreate: ServiceTypes.CreateAuthProviderDTO[] = []
+
+    for (const provider of providersToLoad) {
+      if (loadedProvidersMap.has(provider.provider)) {
+        continue
+      }
+
+      providersToCreate.push({
+        provider: provider.provider,
+        name: provider.displayName,
+      })
+    }
+
+    await this.authProviderService_.create(providersToCreate)
   }
 }
