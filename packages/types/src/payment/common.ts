@@ -37,7 +37,75 @@ export interface PaymentCollectionDTO {
    */
   id: string
 
-  payment_sessions: PaymentSessionDTO[]
+  /**
+   * The currency of the payments/sessions associated with payment collection
+   */
+  currency_code: string
+  /**
+   * The id of the region
+   */
+  region_id: string
+
+  /**
+   * The amount
+   */
+  amount: number
+
+  /**
+   * The amount authorized within associated payment sessions
+   */
+  authorized_amount?: number
+
+  /**
+   * The amount refunded from associated payments
+   */
+  refunded_amount?: number
+
+  /**
+   * When the payment collection was completed
+   */
+  completed_at?: string | Date
+
+  /**
+   * When the payment collection was created
+   */
+  created_at?: string | Date
+
+  /**
+   * When the payment collection was updated
+   */
+  updated_at?: string | Date
+
+  /**
+   * Holds custom data in key-value pairs
+   */
+  metadata?: Record<string, unknown> | null
+
+  /**
+   * The status of the payment collection
+   */
+  status: PaymentCollectionStatus
+
+  /**
+   * The payment provider for the payments
+   *
+   * @expandable
+   */
+  payment_providers: PaymentProviderDTO[]
+
+  /**
+   * The associated payment sessions
+   *
+   * @expandable
+   */
+  payment_sessions?: PaymentSessionDTO[]
+
+  /**
+   * The associated payments
+   *
+   * @expandable
+   */
+  payments?: PaymentDTO[]
 }
 
 export interface FilterablePaymentCollectionProps
@@ -58,9 +126,90 @@ export interface PaymentDTO {
    */
   id: string
 
-  captures: CaptureDTO[]
+  /**
+   * The payment amount
+   */
+  amount: number
 
-  refunds: RefundDTO[]
+  authorized_amount?: number
+
+  /**
+   * Payment currency
+   */
+  currency_code: string
+
+  /**
+   * The ID of payment provider
+   */
+  provider_id: string
+
+  cart_id?: string
+  order_id?: string
+  order_edit_id?: string
+  customer_id?: string
+
+  /**
+   * Payment provider data
+   */
+  data?: Record<string, unknown>
+
+  /**
+   * When the payment collection was created
+   */
+  created_at?: string | Date
+
+  /**
+   * When the payment collection was updated
+   */
+  updated_at?: string | Date
+
+  /**
+   * When the payment was captured
+   */
+  captured_at?: string | Date
+
+  /**
+   * When the payment was canceled
+   */
+  canceled_at?: string | Date
+
+  /**
+   * The sum of the associated captures
+   */
+  captured_amount?: number
+
+  /**
+   * The sum of the associated refunds
+   */
+  refunded_amount?: number
+
+  /**
+   * The associated payment captures
+   *
+   * @expandable
+   */
+  captures?: CaptureDTO[]
+
+  /**
+   * The associated refunds of the payment
+   *
+   * @expandable
+   */
+  refunds?: RefundDTO[]
+
+  /**
+   * The payment collection the payment is associated with
+   *
+   * @expandable
+   */
+  payment_collection?: PaymentCollectionDTO
+
+  /**
+   * The payment session from which the payment is created
+   *
+   * @expandable
+   */
+  payment_session?: PaymentSessionDTO
 }
 
 export interface CaptureDTO {
@@ -106,4 +255,9 @@ export interface PaymentSessionDTO {
    * The ID of the Payment Session
    */
   id: string
+}
+
+export interface PaymentProviderDTO {
+  id: string
+  is_enabled: string
 }
