@@ -192,6 +192,7 @@ describe("Customer Module Service", () => {
 
       const filter = { email: "unique.email@example.com" }
       const customers = await service.list(filter)
+
       expect(customers.length).toBe(1)
       expect(customers[0]).toEqual(
         expect.objectContaining({
@@ -204,6 +205,7 @@ describe("Customer Module Service", () => {
 
     it("should list customers by a specific customer group", async () => {
       const vipGroup = await service.createCustomerGroup({ name: "VIP" })
+
       const [john] = await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
         {
@@ -220,6 +222,7 @@ describe("Customer Module Service", () => {
 
       const filter = { groups: vipGroup.id }
       const customers = await service.list(filter)
+
       expect(customers).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -305,30 +308,23 @@ describe("Customer Module Service", () => {
         )
       }
     })
-    // HEAD
   })
 
   describe("update", () => {
     it("should update a single customer", async () => {
-      // Creating a customer
       const [customer] = await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
       ])
 
-      // Data to update
       const updateData = { first_name: "Jonathan" }
-
-      // Updating the customer
       const updatedCustomer = await service.update(customer.id, updateData)
 
-      // Assertions
       expect(updatedCustomer).toEqual(
         expect.objectContaining({ id: customer.id, first_name: "Jonathan" })
       )
     })
 
     it("should update multiple customers by IDs", async () => {
-      // Creating multiple customers
       const customers = await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
         {
@@ -338,14 +334,10 @@ describe("Customer Module Service", () => {
         },
       ])
 
-      // Data to update
       const updateData = { last_name: "Updated" }
-
-      // Updating the customers
       const customerIds = customers.map((customer) => customer.id)
       const updatedCustomers = await service.update(customerIds, updateData)
 
-      // Assertions
       updatedCustomers.forEach((updatedCustomer) => {
         expect(updatedCustomer).toEqual(
           expect.objectContaining({ last_name: "Updated" })
@@ -354,20 +346,15 @@ describe("Customer Module Service", () => {
     })
 
     it("should update customers using a selector", async () => {
-      // Creating multiple customers
       await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
         { first_name: "Jane", last_name: "Doe", email: "jane.doe@example.com" },
       ])
 
-      // Selector and data to update
       const selector = { last_name: "Doe" }
       const updateData = { last_name: "Updated" }
-
-      // Updating the customers
       const updatedCustomers = await service.update(selector, updateData)
 
-      // Assertions
       updatedCustomers.forEach((updatedCustomer) => {
         expect(updatedCustomer).toEqual(
           expect.objectContaining({ last_name: "Updated" })
@@ -378,22 +365,18 @@ describe("Customer Module Service", () => {
 
   describe("delete", () => {
     it("should delete a single customer", async () => {
-      // Creating a customer
       const [customer] = await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
       ])
 
-      // Deleting the customer
       await service.delete(customer.id)
 
-      // Verification (Assuming you have a method to retrieve or check if customer exists)
       await expect(service.retrieve(customer.id)).rejects.toThrow(
         `Customer with id: ${customer.id} was not found`
       )
     })
 
     it("should delete multiple customers by IDs", async () => {
-      // Creating multiple customers
       const customers = await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
         {
@@ -403,11 +386,9 @@ describe("Customer Module Service", () => {
         },
       ])
 
-      // Deleting the customers
       const customerIds = customers.map((customer) => customer.id)
       await service.delete(customerIds)
 
-      // Verification for each customer
       for (const customer of customers) {
         await expect(service.retrieve(customer.id)).rejects.toThrow(
           `Customer with id: ${customer.id} was not found`
@@ -416,20 +397,14 @@ describe("Customer Module Service", () => {
     })
 
     it("should delete customers using a selector", async () => {
-      // Creating multiple customers
       await service.create([
         { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
         { first_name: "Jane", last_name: "Doe", email: "jane.doe@example.com" },
       ])
 
-      // Selector for deletion
       const selector = { last_name: "Doe" }
-
-      // Deleting the customers
       await service.delete(selector)
 
-      // Verification
-      // Assuming you have a method to list customers, check that no customers with the last name "Doe" exist
       const remainingCustomers = await service.list({ last_name: "Doe" })
       expect(remainingCustomers.length).toBe(0)
     })
