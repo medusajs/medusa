@@ -290,29 +290,29 @@ describe("Payment Module Service", () => {
         },
       })
 
-      let paymentCollection = await service.createPaymentCollection({
-        currency_code: "usd",
-        amount: 200,
-        region_id: "reg",
-      })
-
-      paymentCollection = await service.createPaymentSession(
-        paymentCollection.id,
-        {
-          amount: 200,
-          provider_id: "manual",
-          currency_code: "usd",
-        }
-      )
-
-      testPayment = await service.createPayment({
-        data: {},
-        amount: 200,
-        provider_id: "manual",
-        currency_code: "usd",
-        payment_collection_id: paymentCollection.id,
-        payment_session_id: paymentCollection.payment_sessions[0].id,
-      })
+      // let paymentCollection = await service.createPaymentCollection({
+      //   currency_code: "usd",
+      //   amount: 200,
+      //   region_id: "reg",
+      // })
+      //
+      // paymentCollection = await service.createPaymentSession(
+      //   paymentCollection.id,
+      //   {
+      //     amount: 200,
+      //     provider_id: "manual",
+      //     currency_code: "usd",
+      //   }
+      // )
+      //
+      // testPayment = await service.createPayment({
+      //   data: {},
+      //   amount: 200,
+      //   provider_id: "manual",
+      //   currency_code: "usd",
+      //   payment_collection_id: paymentCollection.id,
+      //   payment_session_id: paymentCollection.payment_sessions[0].id,
+      // })
     })
 
     afterEach(async () => {
@@ -363,6 +363,7 @@ describe("Payment Module Service", () => {
             currency_code: "usd",
             provider_id: "manual",
             payment_collection: paymentCollection.id,
+            payment_session: paymentCollection.payment_sessions[0].id,
           })
         )
       })

@@ -119,7 +119,7 @@ export default class Payment {
   payment_collection!: PaymentCollection
 
   @OneToOne({ owner: true, fieldName: "session_id" })
-  session!: PaymentSession
+  payment_session!: PaymentSession
 
   /** COMPUTED PROPERTIES START **/
 

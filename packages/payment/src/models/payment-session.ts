@@ -55,7 +55,7 @@ export default class PaymentSession {
 
   @OneToOne({
     entity: () => Payment,
-    mappedBy: (payment) => payment.session,
+    mappedBy: (payment) => payment.payment_session,
     cascade: ["soft-remove"] as any,
     nullable: true,
   })

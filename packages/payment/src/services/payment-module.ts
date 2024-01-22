@@ -207,7 +207,7 @@ export default class PaymentModule implements IPaymentModuleService {
     sharedContext?: Context
   ): Promise<PaymentDTO[]>
 
-  @InjectManager("baseRepository_") // TODO: USE TX MANAGER AFTER FIX
+  @InjectTransactionManager("baseRepository_")
   async createPayment(
     data: CreatePaymentDTO | CreatePaymentDTO[],
     @MedusaContext() sharedContext?: Context
@@ -281,7 +281,7 @@ export default class PaymentModule implements IPaymentModuleService {
   }
 
   @InjectTransactionManager("baseRepository_")
-  async refund(
+  async refundPayment(
     data: CreateRefundDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentDTO> {
