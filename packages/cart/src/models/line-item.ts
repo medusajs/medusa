@@ -14,7 +14,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 import Cart from "./cart"
-import LineItemAdjustmentLine from "./line-item-adjustment-line"
+import LineItemAdjustment from "./line-item-adjustment"
 import LineItemTaxLine from "./line-item-tax-line"
 
 type OptionalLineItemProps =
@@ -110,19 +110,15 @@ export default class LineItem {
   @Check({ expression: "unit_price >= 0" }) // TODO: Validate that numeric types work with the expression
   unit_price: number
 
-  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.line_item, {
+  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
     cascade: [Cascade.REMOVE],
   })
   tax_lines = new Collection<LineItemTaxLine>(this)
 
-  @OneToMany(
-    () => LineItemAdjustmentLine,
-    (adjustment) => adjustment.line_item,
-    {
-      cascade: [Cascade.REMOVE],
-    }
-  )
-  adjustments = new Collection<LineItemAdjustmentLine>(this)
+  @OneToMany(() => LineItemAdjustment, (adjustment) => adjustment.item, {
+    cascade: [Cascade.REMOVE],
+  })
+  adjustments = new Collection<LineItemAdjustment>(this)
 
   /** COMPUTED PROPERTIES - START */
 

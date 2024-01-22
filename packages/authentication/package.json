@@ -11,8 +11,6 @@
     "node": ">=16"
   },
   "bin": {
-    "medusa-authentication-migrations-down": "dist/scripts/bin/run-migration-down.js",
-    "medusa-authentication-migrations-up": "dist/scripts/bin/run-migration-up.js",
     "medusa-authentication-seed": "dist/scripts/bin/run-seed.js"
   },
   "repository": {

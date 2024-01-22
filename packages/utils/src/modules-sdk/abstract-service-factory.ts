@@ -1,16 +1,16 @@
 import {
   Context,
-  FilterQuery as InternalFilterQuery,
   FindConfig,
+  FilterQuery as InternalFilterQuery,
 } from "@medusajs/types"
 import { EntitySchema } from "@mikro-orm/core"
 import { EntityClass } from "@mikro-orm/core/typings"
 import {
+  MedusaError,
   doNotForceTransaction,
   isDefined,
   isString,
   lowerCaseFirst,
-  MedusaError,
   shouldForceTransaction,
   upperCaseFirst,
 } from "../common"
@@ -64,6 +64,10 @@ export interface AbstractService<
     idsOrFilter: string[] | InternalFilterQuery,
     sharedContext?: Context
   ): Promise<[TEntity[], Record<string, unknown[]>]>
+  upsert(
+    data: (TDTOs["create"] | TDTOs["update"])[],
+    sharedContext?: Context
+  ): Promise<TEntity[]>
 }
 
 export function abstractServiceFactory<
@@ -75,7 +79,7 @@ export function abstractServiceFactory<
 >(
   model: new (...args: any[]) => any
 ): {
-  new <TEntity extends {}>(container: TContainer): AbstractService<
+  new <TEntity extends object = any>(container: TContainer): AbstractService<
     TEntity,
     TContainer,
     TDTOs,
@@ -236,6 +240,14 @@ export function abstractServiceFactory<
         idsOrFilter,
         sharedContext
       )
+    }
+
+    @InjectTransactionManager(propertyRepositoryName)
+    async upsert(
+      data: (TDTOs["create"] | TDTOs["update"])[],
+      @MedusaContext() sharedContext: Context = {}
+    ): Promise<TEntity[]> {
+      return await this[propertyRepositoryName].upsert(data, sharedContext)
     }
   }
 
