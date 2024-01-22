@@ -9,11 +9,15 @@ export interface AdjustmentLineDTO {
   /**
    * The code of the adjustment line
    */
-  code: string
+  code?: string
   /**
    * The amount of the adjustment line
    */
   amount: number
+  /**
+   * The ID of the associated cart
+   */
+  cart_id: string
   /**
    * The description of the adjustment line
    */
@@ -43,11 +47,16 @@ export interface ShippingMethodAdjustmentLineDTO extends AdjustmentLineDTO {
   shipping_method: CartShippingMethodDTO
 }
 
-export interface LineItemAdjustmentLineDTO extends AdjustmentLineDTO {
+export interface LineItemAdjustmentDTO extends AdjustmentLineDTO {
+  /**
+   * The associated line item
+   * @expandable
+   */
+  item: CartLineItemDTO
   /**
    * The associated line item
    */
-  line_item: CartLineItemDTO
+  item_id: string
 }
 
 export interface TaxLineDTO {
@@ -340,7 +349,7 @@ export interface CartLineItemDTO {
    *
    * @expandable
    */
-  adjustments?: LineItemAdjustmentLineDTO[]
+  adjustments?: LineItemAdjustmentDTO[]
   /**
    * The associated cart.
    *
@@ -494,6 +503,13 @@ export interface FilterableLineItemProps
   product_id?: string | string[]
 }
 
+export interface FilterableLineItemAdjustmentProps
+  extends BaseFilterable<FilterableLineItemAdjustmentProps> {
+  id?: string | string[]
+  item_id?: string | string[]
+  promotion_id?: string | string[]
+  provider_id?: string | string[]
+}
 export interface FilterableShippingMethodProps
   extends BaseFilterable<FilterableShippingMethodProps> {
   id?: string | string[]
