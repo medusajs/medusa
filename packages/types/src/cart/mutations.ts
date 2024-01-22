@@ -117,21 +117,13 @@ export interface UpdateTaxLineDTO {
   provider_id?: string
 }
 
-export interface CreateShippingMethodTaxLineDTO extends CreateTaxLineDTO {
-  shipping_method_id: string
-}
+export interface CreateShippingMethodTaxLineDTO extends CreateTaxLineDTO {}
 
-export interface UpdateShippingMethodTaxLineDTO extends UpdateTaxLineDTO {
-  shipping_method_id: string
-}
+export interface UpdateShippingMethodTaxLineDTO extends UpdateTaxLineDTO {}
 
-export interface CreateLineItemTaxLineDTO extends CreateTaxLineDTO {
-  item_id: string
-}
+export interface CreateLineItemTaxLineDTO extends CreateTaxLineDTO {}
 
-export interface UpdateLineItemTaxLineDTO extends UpdateTaxLineDTO {
-  item_id: string
-}
+export interface UpdateLineItemTaxLineDTO extends UpdateTaxLineDTO {}
 
 /** TAX LINES END */
 
