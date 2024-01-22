@@ -187,7 +187,7 @@ module.exports = {
       items: [
         {
           type: "doc",
-          label: "Admin Custom Configuration",
+          label: "Admin Configuration",
           id: "admin/configuration",
         },
         {
