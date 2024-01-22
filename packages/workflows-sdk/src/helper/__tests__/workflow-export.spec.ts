@@ -98,15 +98,13 @@ describe("Export Workflow", function () {
 
       const work = exportWorkflow("id" as any, "result_step", prepare)
 
-      const wfHandler = work
-
       const input = {
         test: "payload",
       }
 
       const container = createMedusaContainer()
 
-      const { result } = await wfHandler.run({
+      const { result } = await work.run({
         input,
         container,
       })
