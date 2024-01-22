@@ -1,4 +1,5 @@
 import { exportWorkflow } from "../workflow-export"
+import { createMedusaContainer } from "@medusajs/utils"
 
 jest.mock("@medusajs/orchestration", () => {
   return {
@@ -62,7 +63,8 @@ describe("Export Workflow", function () {
 
     const work = exportWorkflow("id" as any, "result_step", prepare)
 
-    const wfHandler = work()
+    const container = createMedusaContainer()
+    const wfHandler = work(container)
 
     const input = {
       test: "payload",
@@ -102,8 +104,11 @@ describe("Export Workflow", function () {
         test: "payload",
       }
 
+      const container = createMedusaContainer()
+
       const { result } = await wfHandler.run({
         input,
+        container,
       })
 
       expect(input).toEqual({
