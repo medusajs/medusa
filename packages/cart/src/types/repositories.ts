@@ -2,12 +2,17 @@ import { DAL } from "@medusajs/types"
 import {
   Cart,
   LineItem,
+  LineItemAdjustment,
   ShippingMethod,
   ShippingMethodAdjustment,
 } from "@models"
 import { CreateAddressDTO, UpdateAddressDTO } from "./address"
 import { CreateCartDTO, UpdateCartDTO } from "./cart"
 import { CreateLineItemDTO, UpdateLineItemDTO } from "./line-item"
+import {
+  CreateLineItemAdjustmentDTO,
+  UpdateLineItemAdjustmentDTO,
+} from "./line-item-adjustment"
 import {
   CreateShippingMethodDTO,
   UpdateShippingMethodDTO,
@@ -55,6 +60,16 @@ export interface IShippingMethodRepository<
     {
       create: CreateShippingMethodDTO
       update: UpdateShippingMethodDTO
+    }
+  > {}
+
+export interface ILineItemAdjustmentRepository<
+  TEntity extends LineItemAdjustment = LineItemAdjustment
+> extends DAL.RepositoryService<
+    TEntity,
+    {
+      create: CreateLineItemAdjustmentDTO
+      update: UpdateLineItemAdjustmentDTO
     }
   > {}
 
