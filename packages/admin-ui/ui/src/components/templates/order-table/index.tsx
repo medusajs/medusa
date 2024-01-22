@@ -12,6 +12,7 @@ import TableContainer from "../../organisms/table-container"
 import OrderFilters from "../order-filter-dropdown"
 import useOrderTableColums from "./use-order-column"
 import { useOrderFilters } from "./use-order-filters"
+import { useTranslation } from "react-i18next"
 
 const DEFAULT_PAGE_SIZE = 15
 
@@ -164,6 +165,8 @@ const OrderTable = ({ setContextFilters }: OrderTableProps) => {
     refreshWithFilters()
   }, [representationObject])
 
+  const { t } = useTranslation()
+
   return (
     <div>
       <TableContainer
@@ -174,7 +177,7 @@ const OrderTable = ({ setContextFilters }: OrderTableProps) => {
           count: count!,
           offset: queryObject.offset,
           pageSize: queryObject.offset + rows.length,
-          title: "Orders",
+          title: t("customer-orders-table-orders", "Orders"),
           currentPage: pageIndex + 1,
           pageCount: pageCount,
           nextPage: handleNext,
