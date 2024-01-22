@@ -1,12 +1,14 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 import { ProductOptionService } from "@services"
-import { ProductOptionRepository } from "@repositories"
 import { Product } from "@models"
 
 import { TestDatabase } from "../../../utils"
 import { createOptions } from "../../../__fixtures__/product"
 import { ProductTypes } from "@medusajs/types"
+import { asValue } from "awilix"
+import { createMedusaContainer } from "@medusajs/utils"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -34,13 +36,12 @@ describe("ProductOption Service", () => {
     await TestDatabase.setupDatabase()
     repositoryManager = await TestDatabase.forkManager()
 
-    const productOptionRepository = new ProductOptionRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new ProductOptionService({
-      productOptionRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("productOptionService")
 
     testManager = await TestDatabase.forkManager()
     productOne = testManager.create(Product, productOneData)

@@ -1,5 +1,5 @@
-import { Context, DAL, FindConfig } from "@medusajs/types"
-import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
+import { DAL } from "@medusajs/types"
+import { ModulesSdkUtils } from "@medusajs/utils"
 import { PriceSetMoneyAmount } from "@models"
 import { ServiceTypes } from "@types"
 
@@ -14,46 +14,14 @@ export default class PriceSetMoneyAmountService<
   {
     create: ServiceTypes.CreatePriceSetMoneyAmountDTO
     update: ServiceTypes.UpdatePriceSetMoneyAmountDTO
+  },
+  {
+    list: ServiceTypes.FilterablePriceSetMoneyAmountProps
+    listAndCount: ServiceTypes.FilterablePriceSetMoneyAmountProps
   }
 >(PriceSetMoneyAmount)<TEntity> {
-  protected readonly priceSetMoneyAmountRepository_: DAL.RepositoryService<TEntity>
-
-  constructor({ priceSetMoneyAmountRepository }: InjectedDependencies) {
+  constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
-    this.priceSetMoneyAmountRepository_ = priceSetMoneyAmountRepository
-  }
-
-  @InjectManager("priceSetMoneyAmountRepository_")
-  async list<TEntityMethod = ServiceTypes.PriceSetMoneyAmountDTO>(
-    filters: ServiceTypes.FilterablePriceSetMoneyAmountProps = {},
-    config: FindConfig<TEntityMethod> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return await this.priceSetMoneyAmountRepository_.find(
-      this.buildQueryForList(filters, config),
-      sharedContext
-    )
-  }
-
-  @InjectManager("priceSetMoneyAmountRepository_")
-  async listAndCount<TEntityMethod = ServiceTypes.PriceSetMoneyAmountDTO>(
-    filters: ServiceTypes.FilterablePriceSetMoneyAmountProps = {},
-    config: FindConfig<TEntityMethod> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TEntity[], number]> {
-    return await this.priceSetMoneyAmountRepository_.findAndCount(
-      this.buildQueryForList(filters, config),
-      sharedContext
-    )
-  }
-
-  private buildQueryForList<
-    TEntityMethod = ServiceTypes.PriceSetMoneyAmountDTO
-  >(
-    filters: ServiceTypes.FilterablePriceSetMoneyAmountProps = {},
-    config: FindConfig<TEntityMethod> = {}
-  ) {
-    return ModulesSdkUtils.buildQuery<TEntity>(filters, config)
   }
 }

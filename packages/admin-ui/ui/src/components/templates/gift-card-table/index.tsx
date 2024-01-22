@@ -184,7 +184,7 @@ const GiftCardTable = () => {
                   className="group"
                 >
                   {row.cells.map((cell, index) => {
-                    return cell.render("Cell", { index })
+                    return cell.render("Cell", { index, key: index })
                   })}
                 </Table.Row>
               )

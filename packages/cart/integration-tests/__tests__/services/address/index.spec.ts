@@ -1,7 +1,9 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { AddressRepository } from "../../../../src/repositories"
 import { AddressService } from "../../../../src/services"
 import { MikroOrmWrapper } from "../../../utils"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -15,13 +17,12 @@ describe("Address Service", () => {
     repositoryManager = await MikroOrmWrapper.forkManager()
     testManager = await MikroOrmWrapper.forkManager()
 
-    const addressRepository = new AddressRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new AddressService({
-      addressRepository: addressRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("addressService")
   })
 
   afterEach(async () => {

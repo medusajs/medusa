@@ -187,7 +187,7 @@ module.exports = {
       items: [
         {
           type: "doc",
-          label: "Admin Custom Configuration",
+          label: "Admin Configuration",
           id: "admin/configuration",
         },
         {
@@ -1528,7 +1528,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Event",
+          label: "Subscribers and Events",
           items: [
             {
               type: "doc",
