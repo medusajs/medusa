@@ -15,8 +15,7 @@ import {
   composeMessage,
 } from "@medusajs/utils"
 import { Product } from "@models"
-import { ProductEvents } from "../types"
-import { ProductServiceTypes } from "../types/services"
+import { IProductRepository, ProductServiceTypes } from "@types"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
@@ -31,7 +30,7 @@ export default class ProductService<
     update: ProductServiceTypes.UpdateProductDTO
   }
 >(Product)<TEntity> {
-  protected readonly productRepository_: DAL.RepositoryService<TEntity>
+  protected readonly productRepository_: IProductRepository<TEntity>
 
   constructor({ productRepository }: InjectedDependencies) {
     // @ts-ignore

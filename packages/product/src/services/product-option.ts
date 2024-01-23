@@ -1,15 +1,6 @@
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import {
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-  composeMessage,
-} from "@medusajs/utils"
-import { ProductOption } from "@models"
-
-import { Modules } from "@medusajs/modules-sdk"
-import { ProductOptionEvents } from "../types"
+import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
+import { IProductOptionRepository } from "@types"
 
 type InjectedDependencies = {
   productOptionRepository: DAL.RepositoryService
@@ -24,7 +15,7 @@ export default class ProductOptionService<
     update: ProductTypes.UpdateProductOptionDTO
   }
 >(ProductOption)<TEntity> {
-  protected readonly productOptionRepository_: DAL.RepositoryService<TEntity>
+  protected readonly productOptionRepository_: IProductOptionRepository<TEntity>
 
   constructor(container: InjectedDependencies) {
     super(container)
@@ -68,82 +59,5 @@ export default class ProductOptionService<
     }
 
     return queryOptions
-  }
-
-  @InjectTransactionManager("productOptionRepository_")
-  async create(
-    data: ProductTypes.CreateProductOptionOnlyDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    const options = await this.productOptionRepository_.create(
-      data,
-      sharedContext
-    )
-
-    sharedContext.messageAggregator?.save(
-      options.map(({ id }) => {
-        return composeMessage(ProductOptionEvents.PRODUCT_OPTION_CREATED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductOption.name,
-          context: sharedContext,
-        })
-      })
-    )
-
-    return options as TEntity[]
-  }
-
-  @InjectTransactionManager("productOptionRepository_")
-  async update(
-    data: ProductTypes.UpdateProductOptionDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    const options = await this.productOptionRepository_.update(
-      data,
-      sharedContext
-    )
-
-    sharedContext.messageAggregator?.save(
-      options.map(({ id }) => {
-        return composeMessage(ProductOptionEvents.PRODUCT_OPTION_UPDATED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductOption.name,
-          context: sharedContext,
-        })
-      })
-    )
-
-    return options as TEntity[]
-  }
-
-  @InjectTransactionManager("productOptionRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.productOptionRepository_.delete(ids, sharedContext)
-
-    sharedContext.messageAggregator?.save(
-      ids.map((id) => {
-        return composeMessage(ProductOptionEvents.PRODUCT_OPTION_DELETED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductOption.name,
-          context: sharedContext,
-        })
-      })
-    )
-  }
-
-  @InjectTransactionManager("productOptionRepository_")
-  async upsert(
-    data:
-      | ProductTypes.CreateProductOptionDTO[]
-      | ProductTypes.UpdateProductOptionDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TEntity[], TEntity[], TEntity[]]> {
-    return await this.productOptionRepository_.upsert!(data, sharedContext)
   }
 }

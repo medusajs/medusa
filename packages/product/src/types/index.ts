@@ -1,5 +1,3 @@
-export * from "./services"
-
 import { IEventBusModuleService, Logger } from "@medusajs/types"
 
 export type InitializeModuleInjectableDependencies = {
@@ -9,3 +7,4 @@ export type InitializeModuleInjectableDependencies = {
 
 export * from "./events"
 export * from "./services"
+export * from "./repositories"

@@ -11,8 +11,6 @@
     "node": ">=16"
   },
   "bin": {
-    "medusa-authentication-migrations-down": "dist/scripts/bin/run-migration-down.js",
-    "medusa-authentication-migrations-up": "dist/scripts/bin/run-migration-up.js",
     "medusa-authentication-seed": "dist/scripts/bin/run-seed.js"
   },
   "repository": {
@@ -58,6 +56,7 @@
     "@mikro-orm/postgresql": "5.9.7",
     "awilix": "^8.0.0",
     "dotenv": "^16.1.4",
-    "knex": "2.4.2"
+    "knex": "2.4.2",
+    "scrypt-kdf": "^2.0.1"
   }
 }

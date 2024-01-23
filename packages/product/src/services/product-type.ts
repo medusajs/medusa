@@ -1,22 +1,7 @@
-import {
-  Context,
-  DAL,
-  FindConfig,
-  ProductTypes,
-  UpsertProductTypeDTO,
-} from "@medusajs/types"
-import {
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-  composeMessage,
-} from "@medusajs/utils"
+import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
+import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
 import { ProductType } from "@models"
-
-import { Modules } from "@medusajs/modules-sdk"
-import { CreateProductTypeDTO, UpdateProductTypeDTO } from "@medusajs/types"
-import { ProductTypeEvents } from "../types"
+import { IProductTypeRepository } from "@types"
 
 type InjectedDependencies = {
   productTypeRepository: DAL.RepositoryService
@@ -31,7 +16,7 @@ export default class ProductTypeService<
     update: ProductTypes.UpdateProductTypeDTO
   }
 >(ProductType)<TEntity> {
-  protected readonly productTypeRepository_: DAL.RepositoryService<TEntity>
+  protected readonly productTypeRepository_: IProductTypeRepository<TEntity>
 
   constructor(container: InjectedDependencies) {
     super(container)
@@ -75,103 +60,5 @@ export default class ProductTypeService<
     }
 
     return queryOptions
-  }
-
-  @InjectTransactionManager("productTypeRepository_")
-  async upsert(
-    data: UpsertProductTypeDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TEntity[], TEntity[], TEntity[]]> {
-    const [types, updatedTypes, insertedTypes] = await this
-      .productTypeRepository_.upsert!(data, sharedContext)
-
-    sharedContext.messageAggregator?.save(
-      updatedTypes.map(({ id }) => {
-        return composeMessage(ProductTypeEvents.PRODUCT_TYPE_UPDATED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductType.name,
-          context: sharedContext,
-        })
-      })
-    )
-
-    sharedContext.messageAggregator?.save(
-      insertedTypes.map(({ id }) => {
-        return composeMessage(ProductTypeEvents.PRODUCT_TYPE_CREATED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductType.name,
-          context: sharedContext,
-        })
-      })
-    )
-
-    return [types, updatedTypes, insertedTypes] as [
-      TEntity[],
-      TEntity[],
-      TEntity[]
-    ]
-  }
-
-  @InjectTransactionManager("productTypeRepository_")
-  async create(
-    data: CreateProductTypeDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    const types = await this.productTypeRepository_.create(data, sharedContext)
-
-    sharedContext.messageAggregator?.save(
-      types.map(({ id }) => {
-        return composeMessage(ProductTypeEvents.PRODUCT_TYPE_CREATED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductType.name,
-          context: sharedContext,
-        })
-      })
-    )
-
-    return types as TEntity[]
-  }
-
-  @InjectTransactionManager("productTypeRepository_")
-  async update(
-    data: UpdateProductTypeDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    const types = await this.productTypeRepository_.update(data, sharedContext)
-
-    sharedContext.messageAggregator?.save(
-      types.map(({ id }) => {
-        return composeMessage(ProductTypeEvents.PRODUCT_TYPE_UPDATED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductType.name,
-          context: sharedContext,
-        })
-      })
-    )
-
-    return types as TEntity[]
-  }
-
-  @InjectTransactionManager("productTypeRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.productTypeRepository_.delete(ids, sharedContext)
-
-    sharedContext.messageAggregator?.save(
-      ids.map((id) => {
-        return composeMessage(ProductTypeEvents.PRODUCT_TYPE_DELETED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductType.name,
-          context: sharedContext,
-        })
-      })
-    )
   }
 }

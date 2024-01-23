@@ -1,21 +1,7 @@
-import {
-  Context,
-  DAL,
-  FindConfig,
-  ProductTypes,
-  UpsertProductTagDTO,
-} from "@medusajs/types"
-import {
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-  composeMessage,
-} from "@medusajs/utils"
+import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
+import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
 import { ProductTag } from "@models"
-
-import { Modules } from "@medusajs/modules-sdk"
-import { ProductTagEvents } from "../types"
+import { IProductTagRepository } from "@types"
 
 type InjectedDependencies = {
   productTagRepository: DAL.RepositoryService
@@ -30,7 +16,7 @@ export default class ProductTagService<
     update: ProductTypes.UpdateProductTagDTO
   }
 >(ProductTag)<TEntity> {
-  protected readonly productTagRepository_: DAL.RepositoryService<TEntity>
+  protected readonly productTagRepository_: IProductTagRepository<TEntity>
 
   constructor(container: InjectedDependencies) {
     super(container)
@@ -73,99 +59,5 @@ export default class ProductTagService<
     }
 
     return queryOptions
-  }
-
-  @InjectTransactionManager("productTagRepository_")
-  async create(
-    data: ProductTypes.CreateProductTagDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    const tags = await this.productTagRepository_.create(data, sharedContext)
-
-    sharedContext.messageAggregator?.save(
-      tags.map(({ id }) => {
-        return composeMessage(ProductTagEvents.PRODUCT_TAG_CREATED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductTag.name,
-          context: sharedContext,
-        })
-      })
-    )
-
-    return tags as TEntity[]
-  }
-
-  @InjectTransactionManager("productTagRepository_")
-  async update(
-    data: ProductTypes.UpdateProductTagDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    const tags = await this.productTagRepository_.update(data, sharedContext)
-
-    sharedContext.messageAggregator?.save(
-      tags.map(({ id }) => {
-        return composeMessage(ProductTagEvents.PRODUCT_TAG_UPDATED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductTag.name,
-          context: sharedContext,
-        })
-      })
-    )
-
-    return tags as TEntity[]
-  }
-
-  @InjectTransactionManager("productTagRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.productTagRepository_.delete(ids, sharedContext)
-
-    sharedContext.messageAggregator?.save(
-      ids.map((id) => {
-        return composeMessage(ProductTagEvents.PRODUCT_TAG_DELETED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductTag.name,
-          context: sharedContext,
-        })
-      })
-    )
-  }
-
-  @InjectTransactionManager("productTagRepository_")
-  async upsert(
-    data: UpsertProductTagDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TEntity[], TEntity[], TEntity[]]> {
-    const [tags, updatedTags, insertedTags] = await this.productTagRepository_
-      .upsert!(data, sharedContext)
-
-    sharedContext.messageAggregator?.save(
-      updatedTags.map(({ id }) => {
-        return composeMessage(ProductTagEvents.PRODUCT_TAG_UPDATED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductTag.name,
-          context: sharedContext,
-        })
-      })
-    )
-
-    sharedContext.messageAggregator?.save(
-      insertedTags.map(({ id }) => {
-        return composeMessage(ProductTagEvents.PRODUCT_TAG_CREATED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductTag.name,
-          context: sharedContext,
-        })
-      })
-    )
-
-    return [tags, updatedTags, insertedTags]
   }
 }

@@ -1,15 +1,20 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  composeMessage,
 } from "@medusajs/utils"
 
 import { ProductCollection } from "@models"
-import { ProductCollectionEvents } from "../types"
+import {
+  IProductCollectionRepository,
+  ProductCollectionServiceTypes,
+} from "@types"
+import {
+  CreateProductCollection,
+  UpdateProductCollection,
+} from "../types/services/product-collection"
 
 type InjectedDependencies = {
   productCollectionRepository: DAL.RepositoryService
@@ -20,12 +25,12 @@ export default class ProductCollectionService<
 > extends ModulesSdkUtils.abstractServiceFactory<
   InjectedDependencies,
   {
-    create: ProductTypes.CreateProductCollectionDTO
-    update: ProductTypes.UpdateProductCollectionDTO
+    create: CreateProductCollection
+    update: UpdateProductCollection
   }
 >(ProductCollection)<TEntity> {
   // eslint-disable-next-line max-len
-  protected readonly productCollectionRepository_: DAL.RepositoryService<TEntity>
+  protected readonly productCollectionRepository_: IProductCollectionRepository<TEntity>
 
   constructor(container: InjectedDependencies) {
     super(container)
@@ -77,68 +82,37 @@ export default class ProductCollectionService<
 
   @InjectTransactionManager("productCollectionRepository_")
   async create(
-    data: ProductTypes.CreateProductCollectionDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    data: ProductCollectionServiceTypes.CreateProductCollection[],
+    context: Context = {}
   ): Promise<TEntity[]> {
-    const collections = await this.productCollectionRepository_.create(
-      data,
-      sharedContext
-    )
+    const productCollections = data.map((collectionData) => {
+      if (collectionData.product_ids) {
+        collectionData.products = collectionData.product_ids
 
-    sharedContext.messageAggregator?.save(
-      collections.map(({ id }) => {
-        return composeMessage(ProductCollectionEvents.COLLECTION_CREATED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductCollection.name,
-          context: sharedContext,
-        })
-      })
-    )
+        delete collectionData.product_ids
+      }
 
-    return collections as TEntity[]
+      return collectionData
+    })
+
+    return super.create(productCollections, context)
   }
 
   @InjectTransactionManager("productCollectionRepository_")
   async update(
-    data: ProductTypes.UpdateProductCollectionDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    data: ProductCollectionServiceTypes.UpdateProductCollection[],
+    context: Context = {}
   ): Promise<TEntity[]> {
-    const collections = await this.productCollectionRepository_.update(
-      data,
-      sharedContext
-    )
+    const productCollections = data.map((collectionData) => {
+      if (collectionData.product_ids) {
+        collectionData.products = collectionData.product_ids
 
-    sharedContext.messageAggregator?.save(
-      collections.map(({ id }) => {
-        return composeMessage(ProductCollectionEvents.COLLECTION_UPDATED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductCollection.name,
-          context: sharedContext,
-        })
-      })
-    )
+        delete collectionData.product_ids
+      }
 
-    return collections as TEntity[]
-  }
+      return collectionData
+    })
 
-  @InjectTransactionManager("productCollectionRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.productCollectionRepository_.delete(ids, sharedContext)
-
-    sharedContext.messageAggregator?.save(
-      ids.map((id) => {
-        return composeMessage(ProductCollectionEvents.COLLECTION_DELETED, {
-          data: { id },
-          service: Modules.PRODUCT,
-          entity: ProductCollection.name,
-          context: sharedContext,
-        })
-      })
-    )
+    return super.update(productCollections, context)
   }
 }

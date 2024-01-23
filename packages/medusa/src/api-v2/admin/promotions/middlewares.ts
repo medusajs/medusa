@@ -1,10 +1,17 @@
 import { MedusaV2Flag } from "@medusajs/utils"
-import { isFeatureFlagEnabled, transformQuery } from "../../../api/middlewares"
+
+import {
+  isFeatureFlagEnabled,
+  transformBody,
+  transformQuery,
+} from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import * as QueryConfig from "./query-config"
 import {
   AdminGetPromotionsParams,
   AdminGetPromotionsPromotionParams,
+  AdminPostPromotionsPromotionReq,
+  AdminPostPromotionsReq,
 } from "./validators"
 
 export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
@@ -23,6 +30,11 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["POST"],
+    matcher: "/admin/promotions",
+    middlewares: [transformBody(AdminPostPromotionsReq)],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/promotions/:id",
     middlewares: [
@@ -31,5 +43,10 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/promotions/:id",
+    middlewares: [transformBody(AdminPostPromotionsPromotionReq)],
   },
 ]

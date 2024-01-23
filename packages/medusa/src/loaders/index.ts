@@ -51,7 +51,7 @@ async function loadLegacyModulesEntities(configModules, container) {
       continue
     }
 
-    let modulePath = isString(moduleConfig)
+    const modulePath = isString(moduleConfig)
       ? moduleConfig
       : (moduleConfig as InternalModuleDeclaration).resolve ??
         (definition.defaultPackage as string)
@@ -69,7 +69,7 @@ async function loadLegacyModulesEntities(configModules, container) {
         continue
       }
 
-      const module = await import(modulePath)
+      const module = await import(modulePath as string)
 
       if (module.default?.models) {
         module.default.models.map((model) =>

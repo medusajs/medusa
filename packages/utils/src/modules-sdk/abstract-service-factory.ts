@@ -65,9 +65,9 @@ export interface AbstractService<
     sharedContext?: Context
   ): Promise<[TEntity[], Record<string, unknown[]>]>
   upsert(
-    data: TDTOs["create"][] | TDTOs["update"][],
+    data: (TDTOs["create"] | TDTOs["update"])[],
     sharedContext?: Context
-  ): Promise<[TEntity[], TEntity[], TEntity[]]>
+  ): Promise<TEntity[]>
 }
 
 export function abstractServiceFactory<
@@ -79,7 +79,7 @@ export function abstractServiceFactory<
 >(
   model: new (...args: any[]) => any
 ): {
-  new <TEntity extends {}>(container: TContainer): AbstractService<
+  new <TEntity extends object = any>(container: TContainer): AbstractService<
     TEntity,
     TContainer,
     TDTOs,
@@ -244,42 +244,10 @@ export function abstractServiceFactory<
 
     @InjectTransactionManager(propertyRepositoryName)
     async upsert(
-      data: TDTOs["create"][] | TDTOs["update"][],
+      data: (TDTOs["create"] | TDTOs["update"])[],
       @MedusaContext() sharedContext: Context = {}
-    ): Promise<[TEntity[], TEntity[], TEntity[]]> {
-      const [allEntries, updatedEntries, insertedEntries] = await this[
-        propertyRepositoryName
-      ].upsert!(data, sharedContext)
-
-      /*
-      sharedContext.messageAggregator?.save(
-        updatedEntries.map(({ id }) => {
-          return composeMessage(ProductTypeEvents.PRODUCT_TYPE_UPDATED, {
-            data: { id },
-            service: Modules.PRODUCT,
-            entity: ProductType.name,
-            context: sharedContext,
-          })
-        })
-      )
-
-      sharedContext.messageAggregator?.save(
-        insertedEntries.map(({ id }) => {
-          return composeMessage(ProductTypeEvents.PRODUCT_TYPE_CREATED, {
-            data: { id },
-            service: Modules.PRODUCT,
-            entity: ProductType.name,
-            context: sharedContext,
-          })
-        })
-      )
-      */
-
-      return [allEntries, updatedEntries, insertedEntries] as [
-        TEntity[],
-        TEntity[],
-        TEntity[]
-      ]
+    ): Promise<TEntity[]> {
+      return await this[propertyRepositoryName].upsert(data, sharedContext)
     }
   }
 
