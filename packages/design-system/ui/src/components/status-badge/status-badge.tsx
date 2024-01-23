@@ -4,20 +4,6 @@ import { clx } from "@/utils/clx"
 import { VariantProps, cva } from "cva"
 
 const statusBadgeVariants = cva({
-  base: "txt-compact-xsmall-plus leading-none bg-ui-bg-subtle text-ui-fg-subtle border border-ui-border-base flex items-center select-none w-fit box-border overflow-hidden",
-  variants: {
-    size: {
-      small: "pl-0.5 pr-2 py-[3px] rounded-md gap-x-0.5",
-      xsmall: "pl-0 pr-1.5 py-px rounded-md",
-      "2xsmall": "pl-0 pr-1 rounded-md",
-    },
-  },
-  defaultVariants: {
-    size: "2xsmall",
-  },
-})
-
-const dotVariants = cva({
   base: "flex items-center justify-center w-5 h-[18px] [&_div]:w-2 [&_div]:h-2 [&_div]:rounded-sm",
   variants: {
     color: {
@@ -36,8 +22,7 @@ const dotVariants = cva({
 
 interface StatusBadgeProps
   extends Omit<React.ComponentPropsWithoutRef<"span">, "color">,
-    VariantProps<typeof statusBadgeVariants>,
-    VariantProps<typeof dotVariants> {}
+    VariantProps<typeof statusBadgeVariants> {}
 
 /**
  * This component is based on the span element and supports all of its props
@@ -51,10 +36,6 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
        * The status's color.
        */
       color = "grey",
-      /**
-       * The size of the badge.
-       */
-      size = "2xsmall",
       ...props
     }: StatusBadgeProps,
     ref
@@ -62,10 +43,13 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
     return (
       <span
         ref={ref}
-        className={clx(statusBadgeVariants({ size }), className)}
+        className={clx(
+          "txt-compact-xsmall-plus bg-ui-bg-subtle text-ui-fg-subtle border-ui-border-base box-border flex w-fit select-none items-center overflow-hidden rounded-md border pl-0 pr-1 leading-none",
+          className
+        )}
         {...props}
       >
-        <div role="presentation" className={dotVariants({ color })}>
+        <div role="presentation" className={statusBadgeVariants({ color })}>
           <div />
         </div>
         {children}
