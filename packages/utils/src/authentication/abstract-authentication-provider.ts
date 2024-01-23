@@ -1,4 +1,4 @@
-import { AuthUserDTO } from "@medusajs/types"
+import { AuthenticationResponse } from "@medusajs/types";
 
 export abstract class AbstractAuthenticationModuleProvider {
   public static PROVIDER: string
@@ -16,10 +16,4 @@ export abstract class AbstractAuthenticationModuleProvider {
   abstract authenticate(
     data: Record<string, unknown>
   ): Promise<AuthenticationResponse>
-}
-
-export type AuthenticationResponse = {
-  success: boolean
-  authUser?: AuthUserDTO
-  error?: string
 }

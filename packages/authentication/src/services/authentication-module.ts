@@ -1,5 +1,4 @@
 import {
-  AbstractAuthenticationModuleProvider,
   AuthenticationResponse,
   AuthenticationTypes,
   Context,
@@ -16,6 +15,7 @@ import { joinerConfig } from "../joiner-config"
 import { AuthProviderService, AuthUserService } from "@services"
 
 import {
+  AbstractAuthenticationModuleProvider,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
@@ -380,15 +380,14 @@ export default class AuthenticationModuleService<
       await this.retrieveAuthProvider(provider, {})
 
       registeredProvider = this.getRegisteredAuthenticationProvider(provider)
-      
+
       return await registeredProvider.authenticate(authenticationData)
     } catch (error) {
       return { success: false, error: error.message }
     }
   }
 
-
-  private async createProvidersOnLoad() { 
+  private async createProvidersOnLoad() {
     const providersToLoad = this.__container__["auth_providers"]
 
     const providers = await this.authProviderService_.list({

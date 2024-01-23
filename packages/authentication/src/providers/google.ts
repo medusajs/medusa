@@ -1,13 +1,13 @@
-import {
-  AbstractAuthenticationModuleProvider,
-  AuthenticationResponse,
-} from "@medusajs/types"
+import { AuthenticationResponse } from "@medusajs/types"
 import { AuthProviderService, AuthUserService } from "@services"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import url from "url"
 
 import { AuthProvider } from "@models"
-import { MedusaError } from "@medusajs/utils"
+import {
+  AbstractAuthenticationModuleProvider,
+  MedusaError,
+} from "@medusajs/utils"
 import { AuthorizationCode } from "simple-oauth2"
 
 type InjectedDependencies = {
