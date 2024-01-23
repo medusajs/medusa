@@ -1,4 +1,11 @@
+import { Type } from "class-transformer"
+import { IsOptional, IsString, ValidateNested } from "class-validator"
 import UserService from "../../../../services/user"
+import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
+import { IsType } from "../../../../utils"
 
 /**
  * @oas [get] /admin/users
@@ -80,4 +87,46 @@ export default async (req, res) => {
   const users = await userService.list({})
 
   res.status(200).json({ users })
+}
+
+export class AdminGetUsersParams extends extendedFindParamsMixin({
+  limit: 20,
+  offset: 0,
+}) {
+  /**
+   * IDs to filter inventory items by.
+   */
+  @IsOptional()
+  @IsType([String, [String]])
+  id?: string | string[]
+
+  /**
+   * Search terms to search inventory items' sku, title, and description.
+   */
+  @IsOptional()
+  @IsString()
+  q?: string
+
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
+  @IsString()
+  @IsOptional()
+  order?: string
+
+  /**
+   * Date filters to apply on the users' `update_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
+
+  /**
+   * Date filters to apply on the customer users' `created_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
 }
