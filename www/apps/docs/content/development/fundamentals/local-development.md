@@ -54,7 +54,7 @@ yarn --version
 3.2.1
 ```
 
-::
+:::
 
 In the directory of the forked GitHub repository, run the following commands to install necessary dependencies then build all packages in the repository:
 
