@@ -1,34 +1,52 @@
 import {
+  CopyButton,
   DetailsSummary,
   ExpandableNotice,
   FeatureFlagNotice,
   InlineCode,
   MarkdownContent,
 } from "docs-ui"
-import React from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import Details from "../../../theme/Details"
 import clsx from "clsx"
 import { Parameter } from ".."
 import {
   ArrowDownLeftMini,
   ArrowsPointingOutMini,
+  Link,
   TriangleRightMini,
 } from "@medusajs/icons"
 import IconFlagMini from "../../../theme/Icon/FlagMini"
 import decodeStr from "../../../utils/decode-str"
+import { useHistory, useLocation } from "@docusaurus/router"
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
+import isInView from "../../../utils/is-in-view"
 
-type ParameterTypesItemsProps = {
-  parameters: Parameter[]
+type CommonProps = {
   level?: number
   expandUrl?: string
 }
 
-const ParameterTypesItems = ({
-  parameters,
+type ParameterTypesItemProps = {
+  parameter: Parameter
+  elementKey: number
+} & CommonProps &
+  React.AllHTMLAttributes<HTMLDivElement>
+
+const ParameterTypesItem = ({
+  parameter,
   level = 1,
   expandUrl,
-}: ParameterTypesItemsProps) => {
-  function getGroupName() {
+  elementKey,
+}: ParameterTypesItemProps) => {
+  const location = useLocation()
+  const history = useHistory()
+
+  const {
+    siteConfig: { url },
+  } = useDocusaurusContext()
+
+  const groupName = useMemo(() => {
     switch (level) {
       case 1:
         return "group/parameterOne"
@@ -39,8 +57,8 @@ const ParameterTypesItems = ({
       case 4:
         return "group/parameterFour"
     }
-  }
-  function getBorderForGroupName() {
+  }, [level])
+  const borderForGroupName = useMemo(() => {
     switch (level) {
       case 1:
         return "group-open/parameterOne:border-solid group-open/parameterOne:border-0 group-open/parameterOne:border-b"
@@ -51,8 +69,8 @@ const ParameterTypesItems = ({
       case 4:
         return "group-open/parameterFour:border-solid group-open/parameterFour:border-0 group-open/parameterFour:border-b"
     }
-  }
-  function getRotateForGroupName() {
+  }, [level])
+  const rotateForGroupName = useMemo(() => {
     switch (level) {
       case 1:
         return "group-open/parameterOne:rotate-90"
@@ -63,16 +81,43 @@ const ParameterTypesItems = ({
       case 4:
         return "group-open/parameterFour:rotate-90"
     }
-  }
+  }, [level])
   function getItemClassNames(details = true) {
     return clsx(
       "odd:[&:not(:first-child):not(:last-child)]:!border-y last:not(:first-child):!border-t",
       "first:!border-t-0 first:not(:last-child):!border-b last:!border-b-0 even:!border-y-0",
-      details && getGroupName(),
-      !details && getBorderForGroupName()
+      details && groupName,
+      !details && borderForGroupName
     )
   }
-  function getSummary(parameter: Parameter, nested = true) {
+  const parameterId = useMemo(
+    () => `#${parameter.name}-${elementKey}`,
+    [parameter, elementKey]
+  )
+  const parameterPath = useMemo(
+    () => `${location.pathname}${parameterId}`,
+    [location, parameterId]
+  )
+  const parameterUrl = useMemo(
+    () => `${url}${parameterPath}`,
+    [url, parameterPath]
+  )
+
+  const ref = useRef<HTMLDivElement>()
+  const [isSelected, setIsSelected] = useState(false)
+
+  useEffect(() => {
+    const shouldScroll = location.hash === parameterId
+    if (shouldScroll && !isSelected && ref.current && !isInView(ref.current)) {
+      ref.current.scrollIntoView({
+        block: "center",
+      })
+    }
+
+    setIsSelected(shouldScroll)
+  }, [location.hash, isSelected])
+
+  function getSummary(parameter: Parameter, key: number, nested = true) {
     return (
       <DetailsSummary
         subtitle={
@@ -102,7 +147,9 @@ const ParameterTypesItems = ({
           level === 2 && "pl-3",
           level === 3 && "pl-[120px]",
           level === 4 && "pl-[160px]",
-          !nested && "cursor-default"
+          !nested && "cursor-default",
+          isSelected && "bg-medusa-bg-subtle-pressed",
+          "transition-fg duration-300"
         )}
         onClick={(e) => {
           const targetElm = e.target as HTMLElement
@@ -118,7 +165,7 @@ const ParameterTypesItems = ({
             <TriangleRightMini
               className={clsx(
                 "text-medusa-fg-subtle transition-transform",
-                getRotateForGroupName()
+                rotateForGroupName
               )}
             />
           )}
@@ -126,6 +173,24 @@ const ParameterTypesItems = ({
             <ArrowDownLeftMini
               className={clsx("text-medusa-fg-subtle flip-y")}
             />
+          )}
+          {level === 1 && (
+            <CopyButton
+              text={parameterUrl}
+              onCopy={(e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+                e.preventDefault()
+                e.stopPropagation()
+                history.replace({
+                  hash: parameterId,
+                })
+              }}
+            >
+              <Link
+                className={clsx(
+                  "text-medusa-fg-interactive hover:text-medusa-fg-interactive-hover"
+                )}
+              />
+            </CopyButton>
           )}
           <div className="flex gap-0.75 flex-wrap">
             <InlineCode>{decodeStr(parameter.name)}</InlineCode>
@@ -169,31 +234,46 @@ const ParameterTypesItems = ({
   }
 
   return (
+    <div id={parameterId} ref={ref}>
+      {parameter.children?.length > 0 && (
+        <Details
+          summary={getSummary(parameter, elementKey)}
+          className={clsx(getItemClassNames())}
+          heightAnimation={true}
+        >
+          {parameter.children && (
+            <ParameterTypesItems
+              parameters={parameter.children}
+              level={level + 1}
+              expandUrl={expandUrl}
+            />
+          )}
+        </Details>
+      )}
+      {(parameter.children?.length || 0) === 0 &&
+        getSummary(parameter, elementKey, false)}
+    </div>
+  )
+}
+
+type ParameterTypesItemsProps = {
+  parameters: Parameter[]
+} & CommonProps
+
+const ParameterTypesItems = ({
+  parameters,
+  ...rest
+}: ParameterTypesItemsProps) => {
+  return (
     <div>
-      {parameters.map((parameter, key) => {
-        return (
-          <>
-            {parameter.children?.length > 0 && (
-              <Details
-                summary={getSummary(parameter)}
-                key={key}
-                className={clsx(getItemClassNames())}
-                heightAnimation={true}
-              >
-                {parameter.children && (
-                  <ParameterTypesItems
-                    parameters={parameter.children}
-                    level={level + 1}
-                    expandUrl={expandUrl}
-                  />
-                )}
-              </Details>
-            )}
-            {(parameter.children?.length || 0) === 0 &&
-              getSummary(parameter, false)}
-          </>
-        )
-      })}
+      {parameters.map((parameter, key) => (
+        <ParameterTypesItem
+          parameter={parameter}
+          key={key}
+          elementKey={key}
+          {...rest}
+        />
+      ))}
     </div>
   )
 }
