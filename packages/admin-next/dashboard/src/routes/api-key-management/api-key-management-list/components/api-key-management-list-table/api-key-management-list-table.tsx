@@ -263,10 +263,10 @@ const useColumns = () => {
 
           return (
             <div
-              className="bg-ui-tag-neutral-bg border border-ui-tag-neutral-border text-ui-tag-neutral-text flex items-center gap-x-0.5 w-fit max-w-[200px] rounded-full pl-2 pr-1 py-px cursor-default overflow-hidden"
+              className="bg-ui-tag-neutral-bg border border-ui-tag-neutral-border text-ui-tag-neutral-text flex items-center gap-x-0.5 w-fit max-w-[200px] rounded-full pl-2 pr-1 box-border cursor-default overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              <Text size="small" leading="compact" className="truncate">
+              <Text size="xsmall" leading="compact" className="truncate">
                 {token}
               </Text>
               <Copy content={token} variant="mini" />
