@@ -16,7 +16,7 @@ export default class LineItemTaxLine extends TaxLine {
     nullable: true,
     index: "IDX_tax_line_item_id",
   })
-  item?: LineItem | null
+  item: LineItem | null
 
   @Property({ columnType: "text" })
   item_id: string

@@ -2059,6 +2059,96 @@ describe("Cart Module Service", () => {
       expect(cart.items?.length).toBe(1)
       expect(cart.items?.[0].tax_lines?.length).toBe(1)
     })
+
+    it("should remove, update, and create line item tax lines for a cart", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [itemOne] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+
+      const taxLines = await service.setLineItemTaxLines(createdCart.id, [
+        {
+          item_id: itemOne.id,
+          rate: 20,
+          code: "TX",
+        },
+        {
+          item_id: itemOne.id,
+          rate: 25,
+          code: "TX",
+        },
+      ])
+
+      expect(taxLines).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            item_id: itemOne.id,
+            rate: 20,
+            code: "TX",
+          }),
+          expect.objectContaining({
+            item_id: itemOne.id,
+            rate: 25,
+            code: "TX",
+          }),
+        ])
+      )
+
+      const taxLine = taxLines.find((tx) => tx.item_id === itemOne.id)
+
+      await service.setLineItemTaxLines(createdCart.id, [
+        // update
+        {
+          id: taxLine.id,
+          rate: 40,
+          code: "TX",
+        },
+        // create
+        {
+          item_id: itemOne.id,
+          rate: 25,
+          code: "TX-2",
+        },
+        // remove: should remove the initial tax line for itemOne
+      ])
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["items.tax_lines"],
+      })
+
+      expect(cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: itemOne.id,
+            tax_lines: [
+              expect.objectContaining({
+                id: taxLine!.id,
+                item_id: itemOne.id,
+                rate: 40,
+                code: "TX",
+              }),
+              expect.objectContaining({
+                item_id: itemOne.id,
+                rate: 25,
+                code: "TX-2",
+              }),
+            ],
+          }),
+        ])
+      )
+
+      expect(cart.items?.length).toBe(1)
+      expect(cart.items?.[0].tax_lines?.length).toBe(2)
+    })
   })
 
   describe("addLineItemAdjustments", () => {

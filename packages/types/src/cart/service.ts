@@ -276,7 +276,7 @@ export interface ICartModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
   removeLineItemTaxLines(
-    selector: Partial<LineItemTaxLineDTO>,
+    selector: FilterableLineItemTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
 
@@ -316,7 +316,7 @@ export interface ICartModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
   removeShippingMethodTaxLines(
-    selector: Partial<ShippingMethodTaxLineDTO>,
+    selector: FilterableShippingMethodTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
 }

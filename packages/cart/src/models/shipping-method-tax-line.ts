@@ -16,7 +16,7 @@ export default class ShippingMethodTaxLine extends TaxLine {
     nullable: true,
     index: "IDX_tax_line_shipping_method_id",
   })
-  shipping_method?: ShippingMethod | null
+  shipping_method: ShippingMethod | null
 
   @Property({ columnType: "text" })
   shipping_method_id: string

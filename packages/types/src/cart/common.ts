@@ -106,7 +106,7 @@ export interface ShippingMethodTaxLineDTO extends TaxLineDTO {
   /**
    * The ID of the associated shipping method
    */
-  shipping_item_id: string
+  shipping_method_id: string
 }
 
 export interface LineItemTaxLineDTO extends TaxLineDTO {

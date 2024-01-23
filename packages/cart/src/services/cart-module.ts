@@ -2,6 +2,7 @@ import {
   CartTypes,
   Context,
   DAL,
+  FilterableLineItemTaxLineProps,
   FindConfig,
   ICartModuleService,
   InternalModuleDeclaration,
@@ -14,7 +15,6 @@ import {
   MedusaError,
   isObject,
   isString,
-  promiseAll,
 } from "@medusajs/utils"
 import {
   Cart,
@@ -1140,7 +1140,9 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<CartTypes.LineItemTaxLineDTO>
   addLineItemTaxLines(
     cartId: string,
-    taxLines: CartTypes.CreateLineItemTaxLineDTO[],
+    taxLines:
+      | CartTypes.CreateLineItemTaxLineDTO[]
+      | CartTypes.CreateShippingMethodTaxLineDTO,
     sharedContext?: Context
   ): Promise<CartTypes.LineItemTaxLineDTO[]>
 
@@ -1150,7 +1152,9 @@ export default class CartModuleService implements ICartModuleService {
       | string
       | CartTypes.CreateLineItemTaxLineDTO[]
       | CartTypes.CreateLineItemTaxLineDTO,
-    taxLines?: CartTypes.CreateLineItemTaxLineDTO[],
+    taxLines?:
+      | CartTypes.CreateLineItemTaxLineDTO[]
+      | CartTypes.CreateLineItemTaxLineDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.LineItemTaxLineDTO[] | CartTypes.LineItemTaxLineDTO> {
     let addedTaxLines: LineItemTaxLine[] = []
@@ -1158,8 +1162,10 @@ export default class CartModuleService implements ICartModuleService {
       // existence check
       await this.retrieve(cartIdOrData, { select: ["id"] }, sharedContext)
 
+      const lines = Array.isArray(taxLines) ? taxLines : [taxLines]
+
       addedTaxLines = await this.lineItemTaxLineService_.create(
-        taxLines as CartTypes.CreateLineItemTaxLineDTO[],
+        lines,
         sharedContext
       )
     } else {
@@ -1171,21 +1177,17 @@ export default class CartModuleService implements ICartModuleService {
       )
     }
 
+    const serialized = await this.baseRepository_.serialize<
+      CartTypes.LineItemTaxLineDTO[]
+    >(addedTaxLines, {
+      populate: true,
+    })
+
     if (isObject(cartIdOrData)) {
-      return await this.baseRepository_.serialize<CartTypes.LineItemTaxLineDTO>(
-        addedTaxLines[0],
-        {
-          populate: true,
-        }
-      )
+      return serialized[0]
     }
 
-    return await this.baseRepository_.serialize<CartTypes.LineItemTaxLineDTO[]>(
-      addedTaxLines,
-      {
-        populate: true,
-      }
-    )
+    return serialized
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -1203,25 +1205,15 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
 
-    const lineIds = cart.items?.map((item) => item.id)
-
     const existingTaxLines = await this.listLineItemTaxLines(
-      { item_id: lineIds },
+      { item: { cart_id: cart.id } },
       { select: ["id"] },
       sharedContext
     )
 
-    let toUpdate: CartTypes.UpdateLineItemTaxLineDTO[] = []
-    let toCreate: CartTypes.CreateLineItemTaxLineDTO[] = []
-    for (const taxLine of taxLines) {
-      if ("id" in taxLine) {
-        toUpdate.push(taxLine as CartTypes.UpdateLineItemTaxLineDTO)
-      } else {
-        toCreate.push(taxLine as CartTypes.CreateLineItemTaxLineDTO)
-      }
-    }
-
-    const taxLinesSet = new Set(toUpdate.map((taxLine) => taxLine.id))
+    const taxLinesSet = new Set(
+      taxLines.map((taxLine) => taxLine.id).filter(Boolean)
+    )
 
     const toDelete: CartTypes.LineItemTaxLineDTO[] = []
 
@@ -1237,10 +1229,10 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
 
-    const [result] = await promiseAll([
-      this.lineItemTaxLineService_.create(toCreate, sharedContext),
-      this.lineItemTaxLineService_.update(toUpdate, sharedContext),
-    ])
+    const result = await this.lineItemTaxLineService_.upsert(
+      taxLines,
+      sharedContext
+    )
 
     return await this.baseRepository_.serialize<CartTypes.LineItemTaxLineDTO[]>(
       result,
@@ -1259,7 +1251,7 @@ export default class CartModuleService implements ICartModuleService {
     sharedContext?: Context
   ): Promise<void>
   removeLineItemTaxLines(
-    selector: Partial<CartTypes.LineItemTaxLineDTO>,
+    selector: FilterableLineItemTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
 
@@ -1267,7 +1259,7 @@ export default class CartModuleService implements ICartModuleService {
     taxLineIdsOrSelector:
       | string
       | string[]
-      | Partial<CartTypes.LineItemTaxLineDTO>,
+      | CartTypes.FilterableShippingMethodTaxLineProps,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     let ids: string[] = []
@@ -1275,7 +1267,7 @@ export default class CartModuleService implements ICartModuleService {
       const taxLines = await this.listLineItemTaxLines(
         {
           ...taxLineIdsOrSelector,
-        } as Partial<CartTypes.LineItemTaxLineDTO>,
+        },
         { select: ["id"] },
         sharedContext
       )
@@ -1317,7 +1309,9 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<CartTypes.ShippingMethodTaxLineDTO>
   addShippingMethodTaxLines(
     cartId: string,
-    taxLines: CartTypes.CreateShippingMethodTaxLineDTO[],
+    taxLines:
+      | CartTypes.CreateShippingMethodTaxLineDTO[]
+      | CartTypes.CreateShippingMethodTaxLineDTO,
     sharedContext?: Context
   ): Promise<CartTypes.ShippingMethodTaxLineDTO[]>
 
@@ -1327,7 +1321,9 @@ export default class CartModuleService implements ICartModuleService {
       | string
       | CartTypes.CreateShippingMethodTaxLineDTO[]
       | CartTypes.CreateShippingMethodTaxLineDTO,
-    taxLines?: CartTypes.CreateShippingMethodTaxLineDTO[],
+    taxLines?:
+      | CartTypes.CreateShippingMethodTaxLineDTO[]
+      | CartTypes.CreateShippingMethodTaxLineDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     CartTypes.ShippingMethodTaxLineDTO[] | CartTypes.ShippingMethodTaxLineDTO
@@ -1337,8 +1333,10 @@ export default class CartModuleService implements ICartModuleService {
       // existence check
       await this.retrieve(cartIdOrData, { select: ["id"] }, sharedContext)
 
+      const lines = Array.isArray(taxLines) ? taxLines : [taxLines]
+
       addedTaxLines = await this.shippingMethodTaxLineService_.create(
-        taxLines as CartTypes.CreateShippingMethodTaxLineDTO[],
+        lines,
         sharedContext
       )
     } else {
@@ -1348,18 +1346,19 @@ export default class CartModuleService implements ICartModuleService {
       )
     }
 
-    if (isObject(cartIdOrData)) {
-      return await this.baseRepository_.serialize<CartTypes.ShippingMethodTaxLineDTO>(
+    const serialized =
+      await this.baseRepository_.serialize<CartTypes.ShippingMethodTaxLineDTO>(
         addedTaxLines[0],
         {
           populate: true,
         }
       )
+
+    if (isObject(cartIdOrData)) {
+      return serialized[0]
     }
 
-    return await this.baseRepository_.serialize<
-      CartTypes.ShippingMethodTaxLineDTO[]
-    >(addedTaxLines, {})
+    return serialized
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -1377,25 +1376,15 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
 
-    const methodIds = cart.shipping_methods?.map((method) => method.id)
-
     const existingTaxLines = await this.listShippingMethodTaxLines(
-      { shipping_method_id: methodIds },
+      { shipping_method: { cart_id: cart.id } },
       { select: ["id"] },
       sharedContext
     )
 
-    let toUpdate: CartTypes.UpdateShippingMethodTaxLineDTO[] = []
-    let toCreate: CartTypes.CreateShippingMethodTaxLineDTO[] = []
-    for (const taxLine of taxLines) {
-      if ("id" in taxLine) {
-        toUpdate.push(taxLine as CartTypes.UpdateShippingMethodTaxLineDTO)
-      } else {
-        toCreate.push(taxLine as CartTypes.CreateShippingMethodTaxLineDTO)
-      }
-    }
-
-    const taxLinesSet = new Set(toUpdate.map((taxLine) => taxLine.id))
+    const taxLinesSet = new Set(
+      taxLines.map((taxLine) => taxLine.id).filter(Boolean)
+    )
 
     const toDelete: CartTypes.ShippingMethodTaxLineDTO[] = []
 
@@ -1411,10 +1400,7 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
 
-    const [result] = await promiseAll([
-      this.shippingMethodTaxLineService_.create(toCreate, sharedContext),
-      this.shippingMethodTaxLineService_.update(toUpdate, sharedContext),
-    ])
+    const result = await this.lineItemTaxLineService_.upsert(taxLines)
 
     return await this.baseRepository_.serialize<
       CartTypes.ShippingMethodTaxLineDTO[]
@@ -1440,7 +1426,7 @@ export default class CartModuleService implements ICartModuleService {
     taxLineIdsOrSelector:
       | string
       | string[]
-      | Partial<CartTypes.ShippingMethodTaxLineDTO>,
+      | CartTypes.FilterableShippingMethodTaxLineProps,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     let ids: string[] = []
@@ -1448,7 +1434,7 @@ export default class CartModuleService implements ICartModuleService {
       const taxLines = await this.listShippingMethodTaxLines(
         {
           ...taxLineIdsOrSelector,
-        } as Partial<CartTypes.ShippingMethodTaxLineDTO>,
+        },
         { select: ["id"] },
         sharedContext
       )
