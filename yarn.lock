@@ -7898,7 +7898,6 @@ __metadata:
     jsonwebtoken: ^9.0.2
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
-    oauth: ^0.10.0
     rimraf: ^3.0.2
     scrypt-kdf: ^2.0.1
     simple-oauth2: ^5.0.0
@@ -39512,13 +39511,6 @@ __metadata:
   version: 0.9.0
   resolution: "oauth-sign@npm:0.9.0"
   checksum: fc92a516f6ddbb2699089a2748b04f55c47b6ead55a77cd3a2cbbce5f7af86164cb9425f9ae19acfd066f1ad7d3a96a67b8928c6ea946426f6d6c29e448497c2
-  languageName: node
-  linkType: hard
-
-"oauth@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "oauth@npm:0.10.0"
-  checksum: 76f3e186cfd76cb33e5d5d442861c86680a5c3b71b2db1b854212087532c265a69de1a2ab9db683e6c6df733e17cfc67476527b81b224a19c1917de2bc3f75fa
   languageName: node
   linkType: hard
 
