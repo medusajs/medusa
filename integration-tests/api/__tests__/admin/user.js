@@ -28,7 +28,7 @@ describe("/admin/users", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -75,25 +75,72 @@ describe("/admin/users", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.users).toMatchSnapshot([
-        {
-          id: "admin_user",
-          email: "admin@medusa.js",
-          api_token: "test_token",
-          role: "admin",
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-        },
-        {
-          id: "member-user",
-          role: "member",
-          email: "member@test.com",
-          first_name: "member",
-          last_name: "user",
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-        },
-      ])
+      expect(response.data.users).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "admin_user",
+            email: "admin@medusa.js",
+            api_token: "test_token",
+            role: "admin",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          }),
+          expect.objectContaining({
+            id: "member-user",
+            role: "member",
+            email: "member@test.com",
+            first_name: "member",
+            last_name: "user",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          }),
+        ])
+      )
+    })
+
+    it("lists users that match the free text search", async () => {
+      const api = useApi()
+
+      const response = await api.get("/admin/users?q=member", adminReqConfig)
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.users.length).toEqual(1)
+      expect(response.data.users).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "member-user",
+            role: "member",
+            email: "member@test.com",
+            first_name: "member",
+            last_name: "user",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          }),
+        ])
+      )
+    })
+
+    it("orders users by created_at", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/users?order=created_at",
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.users.length).toBeGreaterThan(0)
+
+      for (let i = 0; i < response.data.users.length - 1; i++) {
+        const user1 = response.data.users[i]
+        const user2 = response.data.users[i + 1]
+
+        const date1 = new Date(user1.created_at)
+        const date2 = new Date(user2.created_at)
+
+        expect(date1.getTime()).toBeLessThanOrEqual(date2.getTime())
+      }
     })
   })
 

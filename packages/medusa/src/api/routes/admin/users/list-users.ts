@@ -1,10 +1,12 @@
 import { Type } from "class-transformer"
-import { IsOptional, IsString, ValidateNested } from "class-validator"
+import { IsEnum, IsOptional, IsString, ValidateNested } from "class-validator"
+import { Request, Response } from "express"
 import UserService from "../../../../services/user"
 import {
   DateComparisonOperator,
   extendedFindParamsMixin,
 } from "../../../../types/common"
+import { UserRole } from "../../../../types/user"
 import { IsType } from "../../../../utils"
 
 /**
@@ -82,26 +84,32 @@ import { IsType } from "../../../../utils"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const userService: UserService = req.scope.resolve("userService")
-  const users = await userService.list({})
 
-  res.status(200).json({ users })
+  const listConfig = req.listConfig
+  const filterableFields = req.filterableFields
+
+  const [users, count] = await userService.listAndCount(
+    filterableFields,
+    listConfig
+  )
+
+  res
+    .status(200)
+    .json({ users, count, offset: listConfig.skip, limit: listConfig.take })
 }
 
-export class AdminGetUsersParams extends extendedFindParamsMixin({
-  limit: 20,
-  offset: 0,
-}) {
+export class AdminGetUsersParams extends extendedFindParamsMixin() {
   /**
-   * IDs to filter inventory items by.
+   * IDs to filter users by.
    */
   @IsOptional()
   @IsType([String, [String]])
   id?: string | string[]
 
   /**
-   * Search terms to search inventory items' sku, title, and description.
+   * Search terms to search users' first name, last name, and email.
    */
   @IsOptional()
   @IsString()
@@ -129,4 +137,11 @@ export class AdminGetUsersParams extends extendedFindParamsMixin({
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
+
+  /**
+   * Filter to apply on the users' `role` field.
+   */
+  @IsOptional()
+  @IsEnum(UserRole, { each: true })
+  role?: UserRole
 }
