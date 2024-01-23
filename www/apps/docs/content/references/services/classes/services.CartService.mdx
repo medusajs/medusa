@@ -48,8 +48,6 @@ Adds a line item to the cart.
 
 Use [addOrUpdateLineItems](services.CartService.mdx#addorupdatelineitems) instead.
 
-___
-
 ### addOrUpdateLineItems
 
 Adds or update one or multiple line items to the cart. It also update all existing items in the cart
@@ -62,8 +60,6 @@ to have has\_shipping to false. Finally, the adjustments will be updated.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
-
-___
 
 ### addShippingMethod
 
@@ -81,8 +77,6 @@ shop.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
 
-___
-
 ### adjustFreeShipping\_
 
 Ensures shipping total on cart is correct in regards to a potential free
@@ -98,8 +92,6 @@ if a free shipping was present, we set shipping methods to original amount
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"void","expandable":false,"children":[]}]} />
 
-___
-
 ### applyDiscount
 
 Updates the cart's discounts.
@@ -113,9 +105,7 @@ Throws if discount regions does not include the cart region
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Updates the cart's discounts.\nIf discount besides free shipping is already applied, this\nwill be overwritten\nThrows if discount regions does not include the cart region","expandable":false,"children":[]}]} />
 
 ### applyDiscounts
 
@@ -130,9 +120,7 @@ Throws if discount regions does not include the cart region
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Updates the cart's discounts.\nIf discount besides free shipping is already applied, this\nwill be overwritten\nThrows if discount regions does not include the cart region","expandable":false,"children":[]}]} />
 
 ### applyGiftCard\_
 
@@ -143,8 +131,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### atomicPhase\_
 
@@ -164,8 +150,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### authorizePayment
 
 Authorizes a payment for a cart.
@@ -182,8 +166,6 @@ set the payment on the cart.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting cart","expandable":false,"children":[]}]} />
 
-___
-
 ### create
 
 Creates a cart.
@@ -195,8 +177,6 @@ Creates a cart.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]} />
-
-___
 
 ### createOrFetchGuestCustomerFromEmail\_
 
@@ -210,8 +190,6 @@ Creates or fetches a user based on an email.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the resultign customer object","expandable":false,"children":[]}]} />
 
-___
-
 ### createTaxLines
 
 #### Parameters
@@ -222,8 +200,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### decorateTotals
 
 #### Parameters
@@ -233,8 +209,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"total\"&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### decorateTotals\_
 
@@ -250,8 +224,6 @@ ___
 
 Use decorateTotals instead
 
-___
-
 ### delete
 
 Deletes a cart from the database. Completed carts cannot be deleted.
@@ -263,8 +235,6 @@ Deletes a cart from the database. Completed carts cannot be deleted.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the deleted cart or undefined if the cart was not found.","expandable":false,"children":[]}]} />
-
-___
 
 ### deletePaymentSession
 
@@ -278,8 +248,6 @@ Removes a payment session from the cart.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the resulting cart.","expandable":false,"children":[]}]} />
 
-___
-
 ### deleteTaxLines
 
 #### Parameters
@@ -289,8 +257,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### findCustomShippingOption
 
@@ -305,8 +271,6 @@ throws if custom options is not empty and no shipping option corresponds to opti
 
 <ParameterTypes parameters={[{"name":"undefined \\| CustomShippingOption","type":"`undefined` \\| [CustomShippingOption](../../entities/classes/entities.CustomShippingOption.mdx)","optional":false,"defaultValue":"","description":"custom shipping option","expandable":false,"children":[]}]} />
 
-___
-
 ### getTotalsRelations
 
 #### Parameters
@@ -316,8 +280,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"string[]","type":"`string`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### getValidatedSalesChannel
 
@@ -329,8 +291,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### list
 
 #### Parameters
@@ -340,8 +300,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-___
 
 ### onSalesChannelChange
 
@@ -355,8 +313,6 @@ Remove the cart line item that does not belongs to the newly assigned sales chan
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"void","expandable":false,"children":[]}]} />
 
-___
-
 ### refreshAdjustments\_
 
 #### Parameters
@@ -366,8 +322,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### refreshPaymentSession
 
@@ -381,8 +335,6 @@ Refreshes a payment session on a cart
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the resulting cart.","expandable":false,"children":[]}]} />
 
-___
-
 ### removeDiscount
 
 Removes a discount based on a discount code.
@@ -394,8 +346,6 @@ Removes a discount based on a discount code.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting cart","expandable":false,"children":[]}]} />
-
-___
 
 ### removeLineItem
 
@@ -409,8 +359,6 @@ Removes a line item from the cart.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieve
 
 Gets a cart by id.
@@ -422,8 +370,6 @@ Gets a cart by id.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the cart document.","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveLegacy
 
@@ -437,8 +383,6 @@ ___
 
 #### Deprecated
 
-___
-
 ### retrieveWithTotals
 
 #### Parameters
@@ -448,8 +392,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"total\"&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### setMetadata
 
@@ -465,8 +407,6 @@ others metadata fields, setMetadata is provided.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the updated result.","expandable":false,"children":[]}]} />
 
-___
-
 ### setPaymentSession
 
 Selects a payment session for a cart and creates a payment object in the external provider system
@@ -477,9 +417,7 @@ Selects a payment session for a cart and creates a payment object in the externa
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Selects a payment session for a cart and creates a payment object in the external provider system","expandable":false,"children":[]}]} />
 
 ### setPaymentSessions
 
@@ -497,8 +435,6 @@ that are not available for the cart's region.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation.","expandable":false,"children":[]}]} />
 
-___
-
 ### setRegion\_
 
 Set's the region of a cart.
@@ -511,8 +447,6 @@ Set's the region of a cart.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -522,8 +456,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### transformQueryForTotals\_
 
@@ -535,8 +467,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"FindConfig","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"totalsToSelect","type":"[TotalField](../../medusa/types/medusa.TotalField.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
-___
-
 ### update
 
 #### Parameters
@@ -546,8 +476,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### updateBillingAddress\_
 
@@ -561,8 +489,6 @@ Updates the cart's billing address.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
 
-___
-
 ### updateCustomerId\_
 
 Sets the customer id of a cart
@@ -574,8 +500,6 @@ Sets the customer id of a cart
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
-
-___
 
 ### updateLineItem
 
@@ -589,8 +513,6 @@ Updates a cart's existing line item.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
 
-___
-
 ### updatePaymentSession
 
 Updates the currently selected payment session.
@@ -602,8 +524,6 @@ Updates the currently selected payment session.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting cart","expandable":false,"children":[]}]} />
-
-___
 
 ### updateShippingAddress\_
 
@@ -617,8 +537,6 @@ Updates the cart's shipping address.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
 
-___
-
 ### updateUnitPrices\_
 
 #### Parameters
@@ -628,8 +546,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### validateLineItem
 
@@ -642,8 +558,6 @@ Check if line item's variant belongs to the cart's sales channel.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"a boolean indicating validation result","expandable":false,"children":[]}]} />
-
-___
 
 ### validateLineItemShipping\_
 
@@ -658,8 +572,6 @@ shipping methods.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"boolean representing whether shipping method is validated","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

@@ -4,9 +4,11 @@
 
 {{#each categories}}
 
+{{#ifShowSeparatorForTitleLevel}}
 {{#unless @first}}
 ___
 {{/unless}}
+{{/ifShowSeparatorForTitleLevel}}
 
 {{#unless allChildrenHaveOwnDocument}}
 
@@ -44,9 +46,11 @@ ___
 
 {{#unless allChildrenHaveOwnDocument}}
 
+{{#ifShowSeparatorForTitleLevel}}
 {{#unless @first}}
 ___
 {{/unless}}
+{{/ifShowSeparatorForTitleLevel}}
 
 {{> members.group}}
 

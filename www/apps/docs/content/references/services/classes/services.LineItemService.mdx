@@ -50,8 +50,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### cloneTo
 
 #### Parameters
@@ -61,8 +59,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### create
 
@@ -80,8 +76,6 @@ Create a line item
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the created line item","expandable":false,"children":[]}]} />
 
-___
-
 ### createReturnLines
 
 Creates return line items for a given cart based on the return items in a
@@ -95,8 +89,6 @@ return.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the created line items","expandable":false,"children":[]}]} />
 
-___
-
 ### createTaxLine
 
 Create a line item tax line.
@@ -108,8 +100,6 @@ Create a line item tax line.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"LineItemTaxLine","type":"`object`","description":"A Line Item Tax Line represents the taxes applied on a line item.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-___
 
 ### delete
 
@@ -137,8 +127,6 @@ Deletes a line item.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [LineItem](../../entities/classes/entities.LineItem.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation","expandable":false,"children":[]}]} />
 
-___
-
 ### deleteWithTaxLines
 
 #### Parameters
@@ -154,8 +142,6 @@ ___
 no the cascade on the entity takes care of it
 Deletes a line item with the tax lines.
 
-___
-
 ### generate
 
 Generate a single or multiple line item without persisting the data into the db
@@ -170,9 +156,7 @@ Generate a single or multiple line item without persisting the data into the db
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"Generate a single or multiple line item without persisting the data into the db","expandable":false,"children":[]}]} />
 
 ### generateLineItem
 
@@ -184,8 +168,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### list
 
 #### Parameters
@@ -195,8 +177,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieve
 
@@ -210,8 +190,6 @@ Retrieves a line item by its id.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;","optional":false,"defaultValue":"","description":"the line item","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -221,8 +199,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### update
 
@@ -235,8 +211,6 @@ Updates a line item
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the updated line item(s)","expandable":false,"children":[]}]} />
-
-___
 
 ### validateGenerateArguments
 
@@ -251,8 +225,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

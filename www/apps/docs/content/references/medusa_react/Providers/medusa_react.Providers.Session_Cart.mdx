@@ -50,7 +50,7 @@ export default App
 
 ### Returns
 
-<ParameterTypes parameters={[{"name":"Element","type":"`Element`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields"/>
+<ParameterTypes parameters={[{"name":"Element","type":"`Element`","optional":false,"defaultValue":"","description":"Unlike the [CartProvider](medusa_react.Providers.Cart.mdx#cartprovider), `SessionProvider` never interacts with the Medusa backend. It can be used to implement the user experience related to managing a cart’s items. \nIts state variables are JavaScript objects living in the browser, but are in no way communicated with the backend.\n\nYou can use the `SessionProvider` as a lightweight client-side cart functionality. It’s not stored in any database or on the Medusa backend.\n\nTo use `SessionProvider`, you first have to insert it somewhere in your component tree below the [MedusaProvider](medusa_react.Providers.Medusa.mdx#medusaprovider). Then, in any of the child components, \nyou can use the [useSessionCart](medusa_react.Providers.Session_Cart.mdx#usesessioncart) hook to get access to client-side cart item functionalities.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields"/>
 
 ___
 
