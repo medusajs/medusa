@@ -43,13 +43,6 @@ describe("Workflow Orchestrator module", function () {
         modulesConfig: {
           workflows: {
             resolve: __dirname + "/../..",
-            options: {
-              database: {
-                clientUrl: DB_URL,
-                schema: process.env.MEDUSA_WORKFLOW_ENGINE_DB_SCHEMA,
-                // debug: true,
-              },
-            },
           },
         },
       })

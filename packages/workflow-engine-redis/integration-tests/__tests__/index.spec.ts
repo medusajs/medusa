@@ -48,11 +48,6 @@ describe("Workflow Orchestrator module", function () {
           workflows: {
             resolve: __dirname + "/../..",
             options: {
-              database: {
-                clientUrl: DB_URL,
-                schema: process.env.MEDUSA_WORKFLOW_ENGINE_DB_SCHEMA,
-                // debug: true,
-              },
               redis: {
                 url: "localhost:6379",
               },
