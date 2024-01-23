@@ -7,6 +7,7 @@ import {
   OnInit,
   Property,
 } from "@mikro-orm/core"
+import BigNumber from "bignumber.js"
 import AdjustmentLine from "./adjustment-line"
 import LineItem from "./line-item"
 
@@ -28,6 +29,13 @@ export default class LineItemAdjustment extends AdjustmentLine {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "caliadj")
+
+    if (!this.amount) {
+      this.raw_amount = {
+        value: BigNumber(this.amount).multipliedBy(0.01).toFixed(8), // TODO: add sensible default for scale and decimal?
+        scale: 8, // TODO: make configurable
+      }
+    }
   }
 
   @OnInit()

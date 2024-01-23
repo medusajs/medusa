@@ -112,7 +112,6 @@ export default class LineItem {
   unit_price: number
 
   @Property({ columnType: "jsonb" })
-  @Check({ expression: "unit_price >= 0" }) // TODO: Validate that numeric types work with the expression
   raw_unit_price: Record<string, unknown>
 
   @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.line_item, {
