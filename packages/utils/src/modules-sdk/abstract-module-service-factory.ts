@@ -31,7 +31,7 @@ const methods: BaseMethods[] = [
   "restore",
 ]
 
-type OtherModelsConfig = {
+type OtherModelsConfigTemplate = {
   [ModelName: string]: { singular?: string; plural?: string; dto: object }
 }
 
@@ -88,7 +88,7 @@ type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
 export type AbstractModuleService<
   TContainer,
   TMainModelDTO,
-  TOtherModelNamesAndAssociatedDTO extends OtherModelsConfig
+  TOtherModelNamesAndAssociatedDTO extends OtherModelsConfigTemplate
 > = AbstractModuleServiceBase<TContainer, TMainModelDTO> & {
   [K in keyof TOtherModelNamesAndAssociatedDTO as `retrieve${ExtractSingularName<
     TOtherModelNamesAndAssociatedDTO,
@@ -156,6 +156,10 @@ export type AbstractModuleService<
   }
 }
 
+type OtherModelConfig =
+  | Constructor<any>
+  | { singular?: string; plural?: string; model: Constructor<any> }
+
 /**
  * Factory function for creating an abstract module service
  *
@@ -199,10 +203,10 @@ export type AbstractModuleService<
 export function abstractModuleServiceFactory<
   TContainer,
   TMainModelDTO,
-  TOtherModelNamesAndAssociatedDTO extends OtherModelsConfig
+  TOtherModelNamesAndAssociatedDTO extends OtherModelsConfigTemplate
 >(
   mainModel: Constructor<any>,
-  otherModels: Constructor<any>[],
+  otherModels: OtherModelConfig[],
   entityNameToLinkableKeysMap: MapToConfig = {}
 ): {
   new (container: TContainer): AbstractModuleService<
@@ -212,11 +216,28 @@ export function abstractModuleServiceFactory<
   >
 } {
   const buildMethodNamesFromModel = (
-    model: Constructor<any>,
+    model:
+      | Constructor<any>
+      | { singular?: string; plural?: string; model: Constructor<any> },
     suffixed: boolean = true
   ): Record<string, string> => {
     return methods.reduce((acc, method) => {
-      const methodName = suffixed ? `${method}${model.name}` : method
+      let modelName: string = ""
+
+      if (method === "retrieve") {
+        modelName =
+          "singular" in model && model.singular
+            ? model.singular
+            : (model as Constructor<any>).name
+      } else {
+        modelName =
+          "plural" in model && model.plural
+            ? model.plural
+            : pluralize((model as Constructor<any>).name)
+      }
+
+      const methodName = suffixed ? `${method}${modelName}` : method
+
       return { ...acc, [method]: methodName }
     }, {})
   }
@@ -427,17 +448,24 @@ export function abstractModuleServiceFactory<
 
       const mainModelMethods = buildMethodNamesFromModel(mainModel, false)
 
+      /**
+       * Build the main retrieve/list/listAndCount/delete/softDelete/restore methods for the main model
+       */
+
       for (let [method, methodName] of Object.entries(mainModelMethods)) {
         buildAndAssignMethodImpl(this, method, methodName, mainModel)
       }
 
-      const otherModelsMethods: [Constructor<any>, Record<string, string>][] =
+      /**
+       * Build the retrieve/list/listAndCount/delete/softDelete/restore methods for all the other models
+       */
+
+      const otherModelsMethods: [OtherModelConfig, Record<string, string>][] =
         otherModels.map((model) => [model, buildMethodNamesFromModel(model)])
 
-      for (const [model, modelsMethods] of otherModelsMethods) {
+      for (let [model, modelsMethods] of otherModelsMethods) {
         Object.entries(modelsMethods).forEach(([method, methodName]) => {
-          methodName =
-            method === "retrieve" ? methodName : pluralize(methodName)
+          model = "model" in model ? model.model : model
           buildAndAssignMethodImpl(this, method, methodName, model)
         })
       }
