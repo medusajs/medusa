@@ -16,6 +16,7 @@ import {
   IsOptional,
   IsString,
   Validate,
+  ValidateIf,
   ValidateNested,
 } from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
@@ -114,6 +115,22 @@ export class ApplicationMethod {
   @ValidateNested({ each: true })
   @Type(() => PromotionRule)
   target_rules?: PromotionRule[]
+
+  @ValidateIf((data) => data.type === PromotionType.BUYGET)
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PromotionRule)
+  buy_rules?: PromotionRule[]
+
+  @ValidateIf((data) => data.type === PromotionType.BUYGET)
+  @IsNotEmpty()
+  @IsNumber()
+  apply_to_quantity?: number
+
+  @ValidateIf((data) => data.type === PromotionType.BUYGET)
+  @IsNotEmpty()
+  @IsNumber()
+  buy_rules_min_quantity: number
 }
 
 export class AdminPostPromotionsPromotionReq {

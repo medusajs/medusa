@@ -39,16 +39,16 @@ export default class ApplicationMethod {
   id!: string
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
-  value?: string | null
+  value?: string | null = null
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
-  max_quantity?: number | null
+  max_quantity?: number | null = null
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
-  apply_to_quantity?: number | null
+  apply_to_quantity?: number | null = null
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
-  buy_rules_min_quantity?: number | null
+  buy_rules_min_quantity?: number | null = null
 
   @Index({ name: "IDX_application_method_type" })
   @Enum(() => PromotionUtils.ApplicationMethodType)

@@ -45,7 +45,7 @@ export default class Promotion {
     nullable: true,
     cascade: ["soft-remove"] as any,
   })
-  campaign?: Campaign | null
+  campaign: Campaign | null = null
 
   @Property({ columnType: "boolean", default: false })
   is_automatic: boolean = false
