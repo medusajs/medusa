@@ -1,6 +1,6 @@
 import { CampaignDTO, UpdateCampaignDTO } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
-import { updateCampaignsStep } from "../../handlers/promotion"
+import { updateCampaignsStep } from "../handlers"
 
 type WorkflowInput = { campaignsData: UpdateCampaignDTO[] }
 
