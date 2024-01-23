@@ -1331,7 +1331,7 @@ describe("Transaction Orchestrator", () => {
           return "delayed content f2"
         }),
         f3: jest.fn(async () => {
-          await setTimeout(2000)
+          await setTimeout(200)
           return "content f3"
         }),
         f4: jest.fn(() => {
