@@ -113,14 +113,15 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
         <Text size="small" leading="compact" weight="plus">
           {t("fields.key")}
         </Text>
-        <div
-          className="bg-ui-tag-neutral-bg border border-ui-tag-neutral-border text-ui-tag-neutral-text flex items-center gap-x-0.5 w-fit rounded-full pl-2 pr-1 py-px cursor-default overflow-hidden"
-          onClick={(e) => e.stopPropagation()}
-        >
+        <div className="bg-ui-bg-subtle border border-ui-border-base flex items-center gap-x-0.5 w-fit rounded-full pl-2 pr-1 box-border cursor-default overflow-hidden">
           <Text size="xsmall" leading="compact" className="truncate">
             {apiKey.id}
           </Text>
-          <Copy content={apiKey.id} variant="mini" />
+          <Copy
+            content={apiKey.id}
+            variant="mini"
+            className="text-ui-fg-subtle"
+          />
         </div>
       </div>
       <div className="grid grid-cols-2 px-6 py-4 items-center">
