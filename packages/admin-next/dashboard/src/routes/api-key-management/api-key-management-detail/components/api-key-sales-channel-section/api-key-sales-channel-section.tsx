@@ -139,11 +139,9 @@ export const ApiKeySalesChannelSection = ({
     <Container className="p-0 divide-y">
       <div className="px-6 py-4 flex items-center justify-between">
         <Heading level="h2">{t("salesChannels.domain")}</Heading>
-        <Link to="add-sales-channels">
-          <Button variant="secondary" size="small">
-            {t("general.add")}
-          </Button>
-        </Link>
+        <Button variant="secondary" size="small" asChild>
+          <Link to="add-sales-channels">{t("general.add")}</Link>
+        </Button>
       </div>
       {!noRecords && (
         <div className="px-6 py-4 flex items-center justify-between">
@@ -256,7 +254,7 @@ const SalesChannelActions = ({
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("locations.removeSalesChannelsWarning", { count: 1 }),
+      description: t("apiKeyManagement.removeSalesChannelWarning"),
       confirmText: t("general.delete"),
       cancelText: t("general.cancel"),
     })

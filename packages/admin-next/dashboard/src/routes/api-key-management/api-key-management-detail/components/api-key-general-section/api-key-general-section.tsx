@@ -1,9 +1,4 @@
-import {
-  ArrowUpRightOnBox,
-  PencilSquare,
-  Trash,
-  XCircle,
-} from "@medusajs/icons"
+import { PencilSquare, Trash, XCircle } from "@medusajs/icons"
 import { PublishableApiKey } from "@medusajs/medusa"
 import {
   Container,
@@ -19,9 +14,9 @@ import {
   useAdminUser,
 } from "medusa-react"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
+import { UserLink } from "../../../../../components/common/user-link"
 
 type ApiKeyGeneralSectionProps = {
   apiKey: PublishableApiKey
@@ -72,6 +67,22 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
     await revokeAsync()
   }
 
+  const dangerousActions = [
+    {
+      icon: <Trash />,
+      label: t("general.delete"),
+      onClick: handleDelete,
+    },
+  ]
+
+  if (!apiKey.revoked_at) {
+    dangerousActions.unshift({
+      icon: <XCircle />,
+      label: t("apiKeyManagement.revoke"),
+      onClick: handleRevoke,
+    })
+  }
+
   return (
     <Container className="p-0 divide-y">
       <div className="px-6 py-4 flex items-center justify-between">
@@ -92,24 +103,13 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
                 ],
               },
               {
-                actions: [
-                  {
-                    icon: <XCircle />,
-                    label: t("apiKeyManagement.revoke"),
-                    onClick: handleRevoke,
-                  },
-                  {
-                    icon: <Trash />,
-                    label: t("general.delete"),
-                    onClick: handleDelete,
-                  },
-                ],
+                actions: dangerousActions,
               },
             ]}
           />
         </div>
       </div>
-      <div className="grid grid-cols-2 px-6 py-4">
+      <div className="grid grid-cols-2 px-6 py-4 items-center">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.key")}
         </Text>
@@ -117,25 +117,20 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
           className="bg-ui-tag-neutral-bg border border-ui-tag-neutral-border text-ui-tag-neutral-text flex items-center gap-x-0.5 w-fit rounded-full pl-2 pr-1 py-px cursor-default overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
-          <Text
-            size="small"
-            weight="plus"
-            leading="compact"
-            className="truncate"
-          >
+          <Text size="small" leading="compact" className="truncate">
             {apiKey.id}
           </Text>
           <Copy content={apiKey.id} variant="mini" />
         </div>
       </div>
-      <div className="grid grid-cols-2 px-6 py-4">
+      <div className="grid grid-cols-2 px-6 py-4 items-center">
         <Text size="small" leading="compact" weight="plus">
           {t("apiKeyManagement.createdBy")}
         </Text>
         <ActionBy userId={apiKey.created_by} />
       </div>
       {apiKey.revoked_at && (
-        <div className="grid grid-cols-2 px-6 py-4">
+        <div className="grid grid-cols-2 px-6 py-4 items-center">
           <Text size="small" leading="compact" weight="plus">
             {t("apiKeyManagement.revokedBy")}
           </Text>
@@ -164,7 +159,12 @@ const ActionBy = ({ userId }: { userId: string | null }) => {
   }
 
   if (isLoading) {
-    return <Skeleton className="max-w-[220px] w-full" />
+    return (
+      <div className="grid grid-cols-[20px_1fr]">
+        <Skeleton className="w-5 h-5 rounded-full" />
+        <Skeleton className="max-w-[220px] w-full" />
+      </div>
+    )
   }
 
   if (!user) {
@@ -175,15 +175,5 @@ const ActionBy = ({ userId }: { userId: string | null }) => {
     )
   }
 
-  const name = [user.first_name, user.last_name].filter(Boolean).join(" ")
-
-  return (
-    <Link
-      to={`/settings/users/${user.id}`}
-      className="flex items-center gap-x-2 text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg w-fit outline-none focus-visible:text-ui-fg-interactive-hover focus-visible:underline underline-offset-2"
-    >
-      <Text size="small">{name || user.email}</Text>
-      <ArrowUpRightOnBox />
-    </Link>
-  )
+  return <UserLink {...user} />
 }
