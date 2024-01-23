@@ -78,7 +78,8 @@ type UserQueryKeys = typeof adminUserKeys
  *   )
  * }
  *
- * export default Products
+ * export default Users
+ * ```
  *
  * @customNamespace Hooks.Admin.Users
  * @category Queries
@@ -88,12 +89,12 @@ export const useAdminUsers = (
   options?: UseQueryOptionsWrapper<
     Response<AdminUsersListRes>,
     Error,
-    ReturnType<UserQueryKeys["lists"]>
+    ReturnType<UserQueryKeys["list"]>
   >
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    adminUserKeys.lists(),
+    adminUserKeys.list(query),
     () => client.admin.users.list(query),
     options
   )
