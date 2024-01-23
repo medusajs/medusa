@@ -297,16 +297,17 @@ function PublishableApiKeysTable(props: PublishableApiKeysTableProps) {
     >
       <Table {...table.getTableProps()}>
         {/* === HEADER === */}
-        {table.headerGroups.map((headerGroup) => (
-          <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((col) => (
-              <Table.HeadCell {...col.getHeaderProps()}>
-                {col.render("Header")}
-              </Table.HeadCell>
-            ))}
-          </Table.HeadRow>
-        ))}
-
+        <Table.Head>
+          {table.headerGroups.map((headerGroup) => (
+            <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((col) => (
+                <Table.HeadCell {...col.getHeaderProps()}>
+                  {col.render("Header")}
+                </Table.HeadCell>
+              ))}
+            </Table.HeadRow>
+          ))}
+        </Table.Head>
         {/* === BODY === */}
         <Table.Body {...table.getTableBodyProps()}>
           {table.rows.map((row) => {
