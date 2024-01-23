@@ -4,40 +4,34 @@ import {
 } from "@medusajs/types"
 import { AuthProviderService, AuthUserService } from "@services"
 import jwt, { JwtPayload } from "jsonwebtoken"
-import url, { UrlWithParsedQuery } from "url"
+import url from "url"
 
 import { AuthProvider } from "@models"
 import { MedusaError } from "@medusajs/utils"
-import { OAuth2 } from "oauth"
-import { TreeLevelColumn } from "typeorm"
+import { AuthorizationCode } from "simple-oauth2"
 
 type InjectedDependencies = {
   authUserService: AuthUserService
   authProviderService: AuthProviderService
 }
 
-type GoogleProviderConfig = {
-  callbackURL: string
-  clientID: string
-  clientSecret: string
-}
-
 type AuthenticationInput = {
   connection: { encrypted: boolean }
   url: string
-  headers:{ host: string }
+  headers: { host: string }
   query: Record<string, string>
   body: Record<string, string>
+}
+
+type ProviderConfig = {
+  clientID: string
+  clientSecret: string
+  callbackURL: string
 }
 
 class GoogleProvider extends AbstractAuthenticationModuleProvider {
   public static PROVIDER = "google"
   public static DISPLAY_NAME = "Google Authentication"
-
-  // TODO: abstract
-  private readonly authorizationUrl_ =
-    "https://accounts.google.com/o/oauth2/v2/auth"
-  private readonly tokenUrl_ = "https://www.googleapis.com/oauth2/v4/token"
 
   protected readonly authUserSerivce_: AuthUserService
   protected readonly authProviderService_: AuthProviderService
@@ -49,7 +43,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     this.authProviderService_ = authProviderService
   }
 
-  private async validateConfig(config: Partial<GoogleProviderConfig>) {
+  private async validateConfig(config: Partial<ProviderConfig>) {
     if (!config.clientID) {
       throw new Error("Google clientID is required")
     }
@@ -71,12 +65,10 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     return protocol + "://" + host + path
   }
 
-  async getProviderConfig(
-    req: AuthenticationInput
-  ): Promise<GoogleProviderConfig> {
+  async getProviderConfig(req: AuthenticationInput): Promise<ProviderConfig> {
     const { config } = (await this.authProviderService_.retrieve(
       GoogleProvider.PROVIDER
-    )) as AuthProvider & { config: GoogleProviderConfig }
+    )) as AuthProvider & { config: ProviderConfig }
 
     this.validateConfig(config || {})
 
@@ -109,9 +101,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
 
     let { callbackURL, clientID, clientSecret } = config
 
-    const meta = {
-      authorizationURL: this.authorizationUrl_,
-      tokenURL: this.tokenUrl_,
+    const meta: ProviderConfig = {
       clientID,
       callbackURL,
       clientSecret,
@@ -130,66 +120,27 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
   // abstractable
   private async validateCallback(
     code: string,
-    {
-      authorizationURL,
-      tokenURL,
-      clientID,
-      callbackURL,
-      clientSecret,
-    }: {
-      authorizationURL: string
-      tokenURL: string
-      clientID: string
-      callbackURL: string
-      clientSecret: string
-    }
+    { clientID, callbackURL, clientSecret }: ProviderConfig
   ) {
-    const oauth2 = new OAuth2(
-      clientID,
-      clientSecret,
-      "",
-      authorizationURL,
-      tokenURL
-    )
+    const client = this.getAuthorizationCodeHandler({ clientID, clientSecret })
 
-    let state = null
-
-    const setState = (newState) => {
-      state = newState
+    const tokenParams = {
+      code,
+      redirect_uri: callbackURL,
     }
 
     try {
-        await new Promise<void>((resolve, reject) => {
-          oauth2.getOAuthAccessToken(
-            code,
-            { grant_type: "authorization_code", redirect_uri: callbackURL },
-            (err, accessToken, refreshToken, params) => {
-              return this.getOAuthAccessTokenCallback(setState)(
-                err,
-                accessToken,
-                refreshToken,
-                params
-              )
-                .catch(reject)
-                .finally(() => resolve())
-            }
-          )
-        })
-    } catch (ex) {
-      return { success: false, error: ex }
-    }
+      const accessToken = await client.getToken(tokenParams)
 
-    if(!state) { 
-      return { success: false, error: "Authentication failed"}
+      return await this.verify_(accessToken.id_token)
+    } catch (error) {
+      return { success: false, error: error.message }
     }
-
-    return state
   }
 
   // abstractable
-  async verify_(request, accessToken, refreshToken) {
-    // decode email from jwt
-    const jwtData = (await jwt.decode(refreshToken.id_token, {
+  async verify_(refreshToken: string) {
+    const jwtData = (await jwt.decode(refreshToken, {
       complete: true,
     })) as JwtPayload
     const entity_id = jwtData.payload.email
@@ -218,78 +169,40 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     return { success: true, authUser }
   }
 
-  private getOAuthAccessTokenCallback(setResult) {
-    return async (err, accessToken, refreshToken, params) => {
-      const result = await this.oAuthAccessTokenCallback(
-        err,
-        accessToken,
-        refreshToken,
-        params
-      )
-      setResult(result)
-    }
-  }
-
-  // abstractable
-  private async oAuthAccessTokenCallback(
-    err,
-    accessToken,
-    refreshToken,
-    params
-  ) {
-    if (err || !accessToken) {
-      return {
-        success: false,
-        error: "Failed to obtain access token",
-      }
-    }
-
-    try {
-      return await this.verify_(accessToken, refreshToken, params)
-    } catch (ex) {
-      return { error: ex.message, success: false }
-    }
-  }
-
   // Abstractable
-  private getRedirect({
-    authorizationURL,
-    clientID,
-    callbackURL,
-  }: {
-    authorizationURL: string
-    clientID: string
-    callbackURL: string
-  }) {
-    const params: {
-      response_type: string
-      redirect_uri: string
-      scope?: string
-    } = {
-      response_type: "code",
-      scope: "email profile",
+  private getRedirect({ clientID, callbackURL, clientSecret }: ProviderConfig) {
+    const client = this.getAuthorizationCodeHandler({ clientID, clientSecret })
+
+    const location = client.authorizeURL({
       redirect_uri: callbackURL,
+      scope: "email profile",
+    })
+
+    return { success: true, location }
+  }
+
+  private getAuthorizationCodeHandler({
+    clientID,
+    clientSecret,
+  }: {
+    clientID: string
+    clientSecret: string
+  }) {
+    const config = {
+      client: {
+        id: clientID,
+        secret: clientSecret,
+      },
+      auth: {
+        // TODO: abstract to not be google specific
+        authorizeHost: "https://accounts.google.com",
+        authorizePath: "/o/oauth2/v2/auth",
+        tokenHost: "https://www.googleapis.com",
+        tokenPath: "/oauth2/v4/token",
+      },
     }
 
-    try {
-      const parsed: Omit<UrlWithParsedQuery, "search"> & {
-        search?: string | null
-      } = url.parse(authorizationURL, true)
-
-      for (const key in params) {
-        parsed.query[key] = params[key]
-      }
-
-      parsed.query["client_id"] = clientID
-
-      delete parsed.search
-
-      const location = url.format(parsed)
-
-      return { success: true, location }
-    } catch (ex) {
-      return { success: false, error: ex.message }
-    }
+    return new AuthorizationCode(config)
   }
 }
 
