@@ -50,8 +50,6 @@ ___
 
 use [addProducts](services.ShippingProfileService.mdx#addproducts) instead
 
-___
-
 ### addProducts
 
 Adds a product or an array of products to the profile.
@@ -63,8 +61,6 @@ Adds a product or an array of products to the profile.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of update","expandable":false,"children":[]}]} />
-
-___
 
 ### addShippingOption
 
@@ -78,8 +74,6 @@ fulfill the products in the products field.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the model update operation","expandable":false,"children":[]}]} />
-
-___
 
 ### atomicPhase\_
 
@@ -99,8 +93,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### create
 
 Creates a new shipping profile.
@@ -113,8 +105,6 @@ Creates a new shipping profile.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]} />
 
-___
-
 ### createDefault
 
 Creates a default shipping profile, if this does not already exist.
@@ -122,8 +112,6 @@ Creates a default shipping profile, if this does not already exist.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the shipping profile","expandable":false,"children":[]}]} />
-
-___
 
 ### createGiftCardDefault
 
@@ -133,8 +121,6 @@ exists.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the shipping profile","expandable":false,"children":[]}]} />
-
-___
 
 ### delete
 
@@ -147,8 +133,6 @@ Deletes a profile with a given profile id.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation.","expandable":false,"children":[]}]} />
-
-___
 
 ### fetchCartOptions
 
@@ -163,8 +147,6 @@ validates all options that are available for the cart.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;","optional":false,"defaultValue":"","description":"a list of the available shipping options","expandable":false,"children":[]}]} />
 
-___
-
 ### getMapProfileIdsByProductIds
 
 #### Parameters
@@ -174,8 +156,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Map&#60;string, string&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### getProfilesInCart
 
@@ -189,8 +169,6 @@ Returns a list of all the productIds in the cart.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;string[]&#62;","optional":false,"defaultValue":"","description":"a list of product ids","expandable":false,"children":[]}]} />
 
-___
-
 ### list
 
 #### Parameters
@@ -200,8 +178,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-___
 
 ### removeProducts
 
@@ -214,8 +190,6 @@ Removes a product or an array of products from the profile.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of update","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieve
 
@@ -230,15 +204,11 @@ Throws in case of DB Error and if profile was not found.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the profile document.","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieveDefault
 
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;null \\| [ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveForProducts
 
@@ -250,8 +220,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieveGiftCardDefault
 
 Retrieves the default gift card profile
@@ -259,8 +227,6 @@ Retrieves the default gift card profile
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;null \\| [ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"the shipping profile for gift cards","expandable":false,"children":[]}]} />
-
-___
 
 ### shouldRetryTransaction\_
 
@@ -271,8 +237,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### update
 
@@ -287,8 +251,6 @@ will throw errors if metadata or product updates are attempted.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingProfile](../../entities/classes/entities.ShippingProfile.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the update result.","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

@@ -229,6 +229,7 @@ describe("AuthUser Service", () => {
         {
           id: "test",
           provider_id: "manual",
+          entity_id: "test"
         },
       ])
 

@@ -44,8 +44,6 @@ Add a batch of customers to a customer group at once
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"the customer group after insertion","expandable":false,"children":[]}]} />
 
-___
-
 ### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
@@ -64,8 +62,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### create
 
 Creates a customer group with the provided data.
@@ -77,8 +73,6 @@ Creates a customer group with the provided data.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]} />
-
-___
 
 ### delete
 
@@ -92,8 +86,6 @@ Remove customer group
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"a promise","expandable":false,"children":[]}]} />
 
-___
-
 ### handleCreationFail
 
 #### Parameters
@@ -103,8 +95,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;never&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### list
 
@@ -118,8 +108,6 @@ List customer groups.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
 
-___
-
 ### listAndCount
 
 Retrieve a list of customer groups and total count of records that match the query.
@@ -131,8 +119,6 @@ Retrieve a list of customer groups and total count of records that match the que
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-___
 
 ### removeCustomer
 
@@ -146,8 +132,6 @@ Remove list of customers from a customergroup
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"the customergroup with the provided id","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieve
 
 #### Parameters
@@ -158,8 +142,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -169,8 +151,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### update
 
@@ -183,8 +163,6 @@ Update a customer group.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"resulting customer group","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 
