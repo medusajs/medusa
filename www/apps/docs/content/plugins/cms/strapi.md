@@ -99,8 +99,8 @@ cd medusa-backend
 
 You must then configure your backend to:
 
-- Connect to a PostgreSQL database, as explained [here](../../development/backend/configurations.md#database-configuration)
-- Install and configure an event-bus module, as explained [here](../../development/backend/configurations.md#recommended-event-bus-modules)
+- Connect to a PostgreSQL database, as explained [here](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx#database-configuration)
+- Install and configure an event-bus module, as explained [here](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx#recommended-event-bus-modules)
 
 ### Run Migrations
 

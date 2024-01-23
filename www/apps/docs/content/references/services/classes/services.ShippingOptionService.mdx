@@ -47,8 +47,6 @@ is allowed.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of update","expandable":false,"children":[]}]} />
 
-___
-
 ### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
@@ -67,8 +65,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### create
 
 Creates a new shipping option. Used both for outbound and inbound shipping
@@ -83,8 +79,6 @@ defaults to false.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]} />
 
-___
-
 ### createShippingMethod
 
 Creates a shipping method for a given cart.
@@ -96,8 +90,6 @@ Creates a shipping method for a given cart.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting shipping method.","expandable":false,"children":[]}]} />
-
-___
 
 ### delete
 
@@ -111,8 +103,6 @@ Deletes a profile with a given profile id.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation.","expandable":false,"children":[]}]} />
 
-___
-
 ### deleteShippingMethods
 
 Removes a given shipping method
@@ -124,8 +114,6 @@ Removes a given shipping method
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]&#62;","optional":false,"defaultValue":"","description":"removed shipping methods","expandable":false,"children":[]}]} />
-
-___
 
 ### getPrice\_
 
@@ -141,8 +129,6 @@ price type "calculated".
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the price of the shipping option.","expandable":false,"children":[]}]} />
 
-___
-
 ### list
 
 #### Parameters
@@ -153,8 +139,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
 
-___
-
 ### listAndCount
 
 #### Parameters
@@ -164,8 +148,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-___
 
 ### removeRequirement
 
@@ -178,8 +160,6 @@ Removes a requirement from a shipping option
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of update","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieve
 
@@ -194,8 +174,6 @@ Throws in case of DB Error and if profile was not found.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the profile document.","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -205,8 +183,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### update
 
@@ -222,8 +198,6 @@ will throw errors if metadata or product updates are attempted.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the update result.","expandable":false,"children":[]}]} />
 
-___
-
 ### updateShippingMethod
 
 Updates a shipping method's associations. Useful when a cart is completed
@@ -237,8 +211,6 @@ and its methods should be copied to an order/swap entity.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;undefined \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting shipping method","expandable":false,"children":[]}]} />
 
-___
-
 ### updateShippingProfile
 
 #### Parameters
@@ -249,8 +221,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;","optional":false,"defaultValue":"","description":"updated shipping options","expandable":false,"children":[]}]} />
 
-___
-
 ### validateAndMutatePrice
 
 #### Parameters
@@ -260,8 +230,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;CreateShippingOptionInput \\| Omit&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx), \"beforeInsert\"&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### validateCartOption
 
@@ -277,8 +245,6 @@ match, or when the shipping option requirements are not satisfied.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;null \\| [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;","optional":false,"defaultValue":"","description":"the validated shipping option","expandable":false,"children":[]}]} />
 
-___
-
 ### validatePriceType\_
 
 Validates a shipping option price
@@ -291,8 +257,6 @@ Validates a shipping option price
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOptionPriceType](../../entities/enums/entities.ShippingOptionPriceType.mdx)&#62;","optional":false,"defaultValue":"","description":"the validated price","expandable":false,"children":[]}]} />
 
-___
-
 ### validateRequirement\_
 
 Validates a requirement
@@ -304,8 +268,6 @@ Validates a requirement
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;","optional":false,"defaultValue":"","description":"a validated shipping requirement","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

@@ -365,8 +365,7 @@
           "localTableName": "public.promotion",
           "referencedColumnNames": ["id"],
           "referencedTableName": "public.campaign",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
+          "deleteRule": "set null"
         }
       }
     },
@@ -518,6 +517,7 @@
           "localTableName": "public.application_method",
           "referencedColumnNames": ["id"],
           "referencedTableName": "public.promotion",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -758,6 +758,38 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "promotion_rule_value",
