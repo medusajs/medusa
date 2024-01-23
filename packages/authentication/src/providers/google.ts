@@ -159,11 +159,6 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     }
 
     try {
-      // oauth2.getOAuthAccessToken(
-      //   code,
-      //   { grant_type: "authorization_code", redirect_uri: callbackURL },
-      //   this.getOAuthAccessTokenCallback(setState)
-      // )
         await new Promise<void>((resolve, reject) => {
           oauth2.getOAuthAccessToken(
             code,
@@ -187,11 +182,6 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     if(!state) { 
       return { success: false, error: "Authentication failed"}
     }
-
-    // // wait for callback to resolve
-    // while (state === null) {
-    //   await new Promise((resolve) => setTimeout(resolve, 50))
-    // }
 
     return state
   }
