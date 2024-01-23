@@ -9,7 +9,7 @@
   "filter-menu-date-item-after": "之后",
   "filter-menu-date-item-between": "之间",
   "sales-channels-display-available-count": "在销售渠道中，有<2>{{availableChannelsCount}}</2>个可用，共<6>{{totalChannelsCount}}</6>个销售渠道",
-  "activity-drawer-activity": "活动",
+  "activity-drawer-activity": "通知",
   "activity-drawer-no-notifications-title": "这里很安静...",
   "activity-drawer-no-notifications-description": "您目前没有任何通知，但一旦有通知，它们将显示在这里。",
   "activity-drawer-error-title": "哦，不好...",
