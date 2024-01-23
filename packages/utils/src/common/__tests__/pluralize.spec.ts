@@ -19,7 +19,7 @@ describe("pluralize", function () {
       "days",
       "countries",
       "babies",
-      "knifes",
+      "knives",
       "heroes",
       "potatoes",
     ]

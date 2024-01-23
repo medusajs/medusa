@@ -13,6 +13,8 @@ export function pluralize(word: string): string {
     return word.slice(0, -1) + "ies"
   } else if (word.endsWith("es")) {
     return word
+  } else if (word.endsWith("fe")) {
+    return word.slice(0, -2) + "ves"
   } else {
     return word + "s"
   }
