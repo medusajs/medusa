@@ -6,13 +6,16 @@ export async function createAuthUsers(
   userData: any[] = [
     {
       id: "test-id",
+      entity_id: "test-id",
       provider: "manual",
     },
     {
       id: "test-id-1",
+      entity_id: "test-id-1",
       provider: "manual",
     },
     {
+      entity_id: "test-id-2",
       provider: "store",
     },
   ]

@@ -54,7 +54,9 @@ export const ProductRepository = dataSource
   .extend({
     // it is important to spread the existing repository here.
     //  Otherwise you will end up losing core properties
-    ...MedusaProductRepository,
+    ...Object.assign(MedusaProductRepository, {
+      target: Product,
+    }),
 
     /**
      * Here you can create your custom function
