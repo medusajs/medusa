@@ -62,6 +62,7 @@ export type FormattingOptionType = {
   }
   reflectionDescription?: string
   expandMembers?: boolean
+  expandProperties?: boolean
   showCommentsAsHeader?: boolean
   showCommentsAsDetails?: boolean
   parameterStyle?: ParameterStyle
@@ -71,6 +72,7 @@ export type FormattingOptionType = {
   mdxImports?: string[]
   maxLevel?: number
   fileNameSeparator?: string
+  endSections?: string[]
 }
 
 export declare module "typedoc" {

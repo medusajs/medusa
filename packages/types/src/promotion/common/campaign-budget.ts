@@ -5,8 +5,8 @@ export type CampaignBudgetTypeValues = "spend" | "usage"
 export interface CampaignBudgetDTO {
   id: string
   type?: CampaignBudgetTypeValues
-  limit?: string | null
-  used?: string
+  limit?: number | null
+  used?: number
 }
 
 export interface FilterableCampaignBudgetProps

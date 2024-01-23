@@ -13,17 +13,25 @@ import {
   WithRequiredProperty,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { DALUtils, isDefined, MedusaError, promiseAll } from "@medusajs/utils"
+import {
+  DALUtils,
+  isDefined,
+  MedusaError,
+  promiseAll,
+  ProductUtils,
+} from "@medusajs/utils"
 
 import { ProductServiceTypes } from "../types/services"
 
 // eslint-disable-next-line max-len
-export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
-  Product,
-  {
-    create: WithRequiredProperty<ProductTypes.CreateProductOnlyDTO, "status">
+export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Product>(
+  Product
+) {
+  constructor(...args: any[]) {
+    // @ts-ignore
+    super(...arguments)
   }
->(Product) {
+
   async find(
     findOptions: DAL.FindOptions<Product & { q?: string }> = { where: {} },
     context: Context = {}
@@ -96,6 +104,17 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
         }
       }
     }
+  }
+
+  async create(
+    data: WithRequiredProperty<ProductTypes.CreateProductOnlyDTO, "status">[],
+    context: Context = {}
+  ): Promise<Product[]> {
+    data.forEach((productData) => {
+      productData.status ??= ProductUtils.ProductStatus.DRAFT
+    })
+
+    return await super.create(data, context)
   }
 
   async update(

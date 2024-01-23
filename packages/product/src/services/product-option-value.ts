@@ -1,14 +1,7 @@
 import { ProductOptionValue } from "@models"
-import { Context, DAL } from "@medusajs/types"
-import {
-  ProductOptionRepository,
-  ProductOptionValueRepository,
-} from "@repositories"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
-import {
-  CreateProductOptionValueDTO,
-  UpdateProductOptionValueDTO,
-} from "../types/services/product-option-value"
+import { DAL } from "@medusajs/types"
+import { ModulesSdkUtils } from "@medusajs/utils"
+import { ProductOptionValueServiceTypes } from "@types"
 
 type InjectedDependencies = {
   productOptionValueRepository: DAL.RepositoryService
@@ -16,29 +9,15 @@ type InjectedDependencies = {
 
 export default class ProductOptionValueService<
   TEntity extends ProductOptionValue = ProductOptionValue
-> {
-  protected readonly productOptionValueRepository_: DAL.RepositoryService
-
-  constructor({ productOptionValueRepository }: InjectedDependencies) {
-    this.productOptionValueRepository_ =
-      productOptionValueRepository as ProductOptionRepository
+> extends ModulesSdkUtils.abstractServiceFactory<
+  InjectedDependencies,
+  {
+    create: ProductOptionValueServiceTypes.CreateProductOptionValueDTO
+    update: ProductOptionValueServiceTypes.UpdateProductOptionValueDTO
   }
-
-  @InjectTransactionManager("productOptionValueRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    return await this.productOptionValueRepository_.delete(ids, sharedContext)
-  }
-
-  @InjectTransactionManager("productOptionValueRepository_")
-  async upsert(
-    data: (UpdateProductOptionValueDTO | CreateProductOptionValueDTO)[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return (await (
-      this.productOptionValueRepository_ as ProductOptionValueRepository
-    ).upsert!(data, sharedContext)) as TEntity[]
+>(ProductOptionValue)<TEntity> {
+  constructor(container: InjectedDependencies) {
+    // @ts-ignore
+    super(...arguments)
   }
 }

@@ -13,6 +13,7 @@ import { asValue } from "awilix"
 import { createMedusaContainer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
+import path from "path"
 import requestIp from "request-ip"
 import { Connection } from "typeorm"
 import { MedusaContainer } from "../types/global"
@@ -21,6 +22,7 @@ import loadConfig from "./config"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
+import { RoutesLoader } from "./helpers/routing"
 import Logger from "./logger"
 import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
 import modelsLoader from "./models"
@@ -49,7 +51,7 @@ async function loadLegacyModulesEntities(configModules, container) {
       continue
     }
 
-    let modulePath = isString(moduleConfig)
+    const modulePath = isString(moduleConfig)
       ? moduleConfig
       : (moduleConfig as InternalModuleDeclaration).resolve ??
         (definition.defaultPackage as string)
@@ -67,7 +69,7 @@ async function loadLegacyModulesEntities(configModules, container) {
         continue
       }
 
-      const module = await import(modulePath)
+      const module = await import(modulePath as string)
 
       if (module.default?.models) {
         module.default.models.map((model) =>
@@ -194,6 +196,22 @@ export default async ({
     ;(req as any).scope = container.createScope()
     next()
   })
+
+  // TODO: Figure out why this is causing issues with test when placed inside ./api.ts
+  // Adding this here temporarily
+  // Test: (packages/medusa/src/api/routes/admin/currencies/update-currency.ts)
+  try {
+    /**
+     * Register the Medusa CORE API routes using the file based routing.
+     */
+    await new RoutesLoader({
+      app: expressApp,
+      rootDir: path.join(__dirname, "../api-v2"),
+      configModule,
+    }).load()
+  } catch (err) {
+    throw Error("An error occurred while registering Medusa Core API Routes")
+  }
 
   const pluginsActivity = Logger.activity(`Initializing plugins${EOL}`)
   track("PLUGINS_INIT_STARTED")

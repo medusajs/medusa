@@ -11,8 +11,6 @@
     "node": ">=16"
   },
   "bin": {
-    "medusa-promotion-migrations-down": "dist/scripts/bin/run-migration-down.js",
-    "medusa-promotion-migrations-up": "dist/scripts/bin/run-migration-up.js",
     "medusa-promotion-seed": "dist/scripts/bin/run-seed.js"
   },
   "repository": {

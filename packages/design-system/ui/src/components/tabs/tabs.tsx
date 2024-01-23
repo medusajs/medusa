@@ -22,9 +22,9 @@ const TabsTrigger = React.forwardRef<
   <TabsPrimitives.Trigger
     ref={ref}
     className={clx(
-      "txt-compact-small-plus transition-fg text-ui-fg-subtle inline-flex items-center justify-center rounded-full border border-transparent bg-transparent px-3 py-1.5 outline-none",
+      "txt-compact-small-plus transition-fg text-ui-fg-subtle inline-flex items-center justify-center rounded-full border border-transparent bg-transparent px-2.5 py-1 outline-none",
       "hover:text-ui-fg-base",
-      "focus:border-ui-border-interactive focus:!shadow-borders-focus focus:bg-ui-bg-base",
+      "focus-visible:border-ui-border-interactive focus-visible:!shadow-borders-focus focus-visible:bg-ui-bg-base",
       "data-[state=active]:text-ui-fg-base data-[state=active]:bg-ui-bg-base data-[state=active]:shadow-elevation-card-rest",
       className
     )}

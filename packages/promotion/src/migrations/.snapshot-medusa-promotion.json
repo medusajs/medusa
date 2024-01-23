@@ -13,6 +13,247 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "currency": {
+          "name": "currency",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "campaign_identifier": {
+          "name": "campaign_identifier",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "starts_at": {
+          "name": "starts_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "ends_at": {
+          "name": "ends_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "campaign",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_campaign_identifier_unique",
+          "columnNames": ["campaign_identifier"],
+          "composite": false,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "campaign_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": ["spend", "usage"],
+          "mappedType": "enum"
+        },
+        "campaign_id": {
+          "name": "campaign_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "limit": {
+          "name": "limit",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "null",
+          "mappedType": "decimal"
+        },
+        "used": {
+          "name": "used",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "0",
+          "mappedType": "decimal"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "campaign_budget",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": ["type"],
+          "composite": false,
+          "keyName": "IDX_campaign_budget_type",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": ["campaign_id"],
+          "composite": false,
+          "keyName": "campaign_budget_campaign_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "campaign_budget_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "campaign_budget_campaign_id_foreign": {
+          "constraintName": "campaign_budget_campaign_id_foreign",
+          "columnNames": ["campaign_id"],
+          "localTableName": "public.campaign_budget",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.campaign",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "code": {
           "name": "code",
           "type": "text",
@@ -20,6 +261,15 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "mappedType": "text"
+        },
+        "campaign_id": {
+          "name": "campaign_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "is_automatic": {
@@ -108,7 +358,16 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {
+        "promotion_campaign_id_foreign": {
+          "constraintName": "promotion_campaign_id_foreign",
+          "columnNames": ["campaign_id"],
+          "localTableName": "public.promotion",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.campaign",
+          "deleteRule": "set null"
+        }
+      }
     },
     {
       "columns": {
@@ -156,7 +415,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["order", "shipping", "item"],
+          "enumItems": ["order", "shipping_methods", "items"],
           "mappedType": "enum"
         },
         "allocation": {
@@ -258,6 +517,7 @@
           "localTableName": "public.application_method",
           "referencedColumnNames": ["id"],
           "referencedTableName": "public.promotion",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -498,6 +758,38 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "promotion_rule_value",

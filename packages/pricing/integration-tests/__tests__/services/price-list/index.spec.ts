@@ -1,8 +1,10 @@
 import { MikroOrmWrapper } from "../../../utils"
-import { PriceListRepository } from "@repositories"
 import { PriceListService } from "@services"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createPriceLists } from "../../../__fixtures__/price-list"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -15,13 +17,12 @@ describe("PriceList Service", () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = await MikroOrmWrapper.forkManager()
 
-    const priceListRepository = new PriceListRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new PriceListService({
-      priceListRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("priceListService")
 
     testManager = await MikroOrmWrapper.forkManager()
     await createPriceLists(testManager)
