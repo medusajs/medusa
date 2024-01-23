@@ -13,10 +13,88 @@ import { IsType } from "../../../../utils"
  * @oas [get] /admin/users
  * operationId: "GetUsers"
  * summary: "List Users"
- * description: "Retrieve all admin users."
+ * description: "Retrieves a list of users. The users can be filtered by fields such as `q` or `email`. The users can also be sorted or paginated."
  * x-authenticated: true
+ * parameters:
+ *   - (query) id {string} Filter by a user ID.
+ *   - (query) email {string} Filter by email.
+ *   - (query) first_name {string} Filter by first name.
+ *   - (query) last_name {string} Filter by last name.
+ *   - (query) q {string} term used to search users' first name, last name, and email.
+ *   - (query) order {string} A user field to sort-order the retrieved users by.
+ *   - in: query
+ *     name: created_at
+ *     description: Filter by a creation date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Filter by an update date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: deleted_at
+ *     description: Filter by a deletion date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - (query) offset=0 {integer} The number of users to skip when retrieving the users.
+ *   - (query) limit=20 {integer} Limit the number of users returned.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned users.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned users.
  * x-codegen:
  *   method: list
+ *   queryParams: AdminGetUsersParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -25,7 +103,7 @@ import { IsType } from "../../../../utils"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.users.list()
- *       .then(({ users }) => {
+ *       .then(({ users, limit, offset, count }) => {
  *         console.log(users.length);
  *       })
  *   - lang: tsx
@@ -100,6 +178,9 @@ export default async (req: Request, res: Response) => {
     .json({ users, count, offset: listConfig.skip, limit: listConfig.take })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved users.
+ */
 export class AdminGetUsersParams extends extendedFindParamsMixin() {
   /**
    * IDs to filter users by.
@@ -137,6 +218,27 @@ export class AdminGetUsersParams extends extendedFindParamsMixin() {
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
+
+  /**
+   * Filter to apply on the users' `email` field.
+   */
+  @IsOptional()
+  @IsString()
+  email?: string
+
+  /**
+   * Filter to apply on the users' `first_name` field.
+   */
+  @IsOptional()
+  @IsString()
+  first_name?: string
+
+  /**
+   * Filter to apply on the users' `last_name` field.
+   */
+  @IsOptional()
+  @IsString()
+  last_name?: string
 
   /**
    * Filter to apply on the users' `role` field.
