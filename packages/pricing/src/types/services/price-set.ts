@@ -1,9 +1,25 @@
 import {
   BaseFilterable,
+  DAL,
   FilterableMoneyAmountProps,
   MoneyAmountDTO,
   RuleTypeDTO,
 } from "@medusajs/types"
+import { AbstractService } from "@medusajs/utils"
+
+export interface IPriceSetService<TEntity extends object>
+  extends AbstractService<
+    TEntity,
+    { priceSetRepository: DAL.RepositoryService },
+    {
+      create: Omit<CreatePriceSetDTO, "rules">
+      update: Omit<UpdatePriceSetDTO, "rules">
+    },
+    {
+      list: FilterablePriceSetProps
+      listAndCount: FilterablePriceSetProps
+    }
+  > {}
 
 export interface CreatePriceSetDTO {}
 

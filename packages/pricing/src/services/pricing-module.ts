@@ -41,34 +41,36 @@ import {
 } from "@models"
 
 import {
-  CurrencyService,
-  MoneyAmountService,
   PriceListRuleService,
   PriceListRuleValueService,
   PriceListService,
   PriceRuleService,
-  PriceSetMoneyAmountRulesService,
-  PriceSetMoneyAmountService,
-  PriceSetRuleTypeService,
-  PriceSetService,
   RuleTypeService,
 } from "@services"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { validatePriceListDates } from "@utils"
 import { ServiceTypes } from "@types"
-import { CreatePriceListRuleValueDTO } from "src/types/services"
+import {
+  CreatePriceListRuleValueDTO,
+  ICurrencyService,
+  IMoneyAmountService,
+  IPriceSetMoneyAmountRuleService,
+  IPriceSetMoneyAmountService,
+  IPriceSetRuleTypeService,
+  IPriceSetService,
+} from "src/types/services"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   pricingRepository: PricingRepositoryService
-  currencyService: CurrencyService<any>
-  moneyAmountService: MoneyAmountService<any>
-  priceSetService: PriceSetService<any>
-  priceSetMoneyAmountRulesService: PriceSetMoneyAmountRulesService<any>
+  currencyService: ICurrencyService<any>
+  moneyAmountService: IMoneyAmountService<any>
+  priceSetService: IPriceSetService<any>
+  priceSetMoneyAmountRulesService: IPriceSetMoneyAmountRuleService<any>
   ruleTypeService: RuleTypeService<any>
   priceRuleService: PriceRuleService<any>
-  priceSetRuleTypeService: PriceSetRuleTypeService<any>
-  priceSetMoneyAmountService: PriceSetMoneyAmountService<any>
+  priceSetRuleTypeService: IPriceSetRuleTypeService<any>
+  priceSetMoneyAmountService: IPriceSetMoneyAmountService<any>
   priceListService: PriceListService<any>
   priceListRuleService: PriceListRuleService<any>
   priceListRuleValueService: PriceListRuleValueService<any>
@@ -120,14 +122,14 @@ export default class PricingModuleService<
 {
   protected baseRepository_: DAL.RepositoryService
   protected readonly pricingRepository_: PricingRepositoryService
-  protected readonly currencyService_: CurrencyService<TCurrency>
-  protected readonly moneyAmountService_: MoneyAmountService<TMoneyAmount>
+  protected readonly currencyService_: ICurrencyService<TCurrency>
+  protected readonly moneyAmountService_: IMoneyAmountService<TMoneyAmount>
   protected readonly ruleTypeService_: RuleTypeService<TRuleType>
-  protected readonly priceSetService_: PriceSetService<TPriceSet>
-  protected readonly priceSetMoneyAmountRulesService_: PriceSetMoneyAmountRulesService<TPriceSetMoneyAmountRules>
+  protected readonly priceSetService_: IPriceSetService<TPriceSet>
+  protected readonly priceSetMoneyAmountRulesService_: IPriceSetMoneyAmountRuleService<TPriceSetMoneyAmountRules>
   protected readonly priceRuleService_: PriceRuleService<TPriceRule>
-  protected readonly priceSetRuleTypeService_: PriceSetRuleTypeService<TPriceSetRuleType>
-  protected readonly priceSetMoneyAmountService_: PriceSetMoneyAmountService<TPriceSetMoneyAmount>
+  protected readonly priceSetRuleTypeService_: IPriceSetRuleTypeService<TPriceSetRuleType>
+  protected readonly priceSetMoneyAmountService_: IPriceSetMoneyAmountService<TPriceSetMoneyAmount>
   protected readonly priceListService_: PriceListService<TPriceList>
   protected readonly priceListRuleService_: PriceListRuleService<TPriceListRule>
   protected readonly priceListRuleValueService_: PriceListRuleValueService<TPriceListRuleValue>

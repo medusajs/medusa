@@ -2,8 +2,24 @@ import {
   BaseFilterable,
   CreateCurrencyDTO,
   CurrencyDTO,
+  DAL,
   PriceSetMoneyAmountDTO,
 } from "@medusajs/types"
+import { AbstractService } from "@medusajs/utils"
+
+export interface IMoneyAmountService<TEntity extends object>
+  extends AbstractService<
+    TEntity,
+    { moneyAmountRepository: DAL.RepositoryService },
+    {
+      create: CreateMoneyAmountDTO
+      update: UpdateMoneyAmountDTO
+    },
+    {
+      list: FilterableMoneyAmountProps
+      listAndCount: FilterableMoneyAmountProps
+    }
+  > {}
 
 export interface CreateMoneyAmountDTO {
   id?: string
