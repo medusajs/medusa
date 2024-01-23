@@ -1,14 +1,14 @@
-import { AuthenticationResponse } from "@medusajs/types"
-import { AuthProviderService, AuthUserService } from "@services"
-import jwt, { JwtPayload } from "jsonwebtoken"
-import url from "url"
-
-import { AuthProvider } from "@models"
 import {
   AbstractAuthenticationModuleProvider,
   MedusaError,
 } from "@medusajs/utils"
+import { AuthProviderService, AuthUserService } from "@services"
+import jwt, { JwtPayload } from "jsonwebtoken"
+
+import { AuthProvider } from "@models"
+import { AuthenticationResponse } from "@medusajs/types"
 import { AuthorizationCode } from "simple-oauth2"
+import url from "url"
 
 type InjectedDependencies = {
   authUserService: AuthUserService
@@ -43,45 +43,28 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     this.authProviderService_ = authProviderService
   }
 
-  private async validateConfig(config: Partial<ProviderConfig>) {
-    if (!config.clientID) {
-      throw new Error("Google clientID is required")
+  async initiateAuthentication(
+    req: AuthenticationInput
+  ): Promise<AuthenticationResponse> {
+    if (req.query?.error) {
+      return {
+        success: false,
+        error: `${req.query.error_description}, read more at: ${req.query.error_uri}`,
+      }
     }
 
-    if (!config.clientSecret) {
-      throw new Error("Google clientSecret is required")
+    let config: ProviderConfig
+
+    try {
+      config = await this.getProviderConfig(req)
+    } catch (error) {
+      return { success: false, error: error.message }
     }
 
-    if (!config.callbackURL) {
-      throw new Error("Google callbackUrl is required")
-    }
+    return this.getRedirect(config)
   }
 
-  private originalURL(req: AuthenticationInput) {
-    const tls = req.connection.encrypted,
-      host = req.headers.host,
-      protocol = tls ? "https" : "http",
-      path = req.url || ""
-    return protocol + "://" + host + path
-  }
-
-  async getProviderConfig(req: AuthenticationInput): Promise<ProviderConfig> {
-    const { config } = (await this.authProviderService_.retrieve(
-      GoogleProvider.PROVIDER
-    )) as AuthProvider & { config: ProviderConfig }
-
-    this.validateConfig(config || {})
-
-    const { callbackURL } = config
-
-    const parsedCallbackUrl = !url.parse(callbackURL).protocol
-      ? url.resolve(this.originalURL(req), callbackURL)
-      : callbackURL
-
-    return { ...config, callbackURL: parsedCallbackUrl }
-  }
-
-  async authenticate(
+  async authenticateCallback(
     req: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     if (req.query && req.query.error) {
@@ -91,7 +74,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
       }
     }
 
-    let config
+    let config: ProviderConfig
 
     try {
       config = await this.getProviderConfig(req)
@@ -99,43 +82,9 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
       return { success: false, error: error.message }
     }
 
-    let { callbackURL, clientID, clientSecret } = config
-
-    const meta: ProviderConfig = {
-      clientID,
-      callbackURL,
-      clientSecret,
-    }
-
     const code = (req.query && req.query.code) || (req.body && req.body.code)
 
-    // Redirect to google
-    if (!code) {
-      return this.getRedirect(meta)
-    }
-
-    return await this.validateCallback(code, meta)
-  }
-
-  // abstractable
-  private async validateCallback(
-    code: string,
-    { clientID, callbackURL, clientSecret }: ProviderConfig
-  ) {
-    const client = this.getAuthorizationCodeHandler({ clientID, clientSecret })
-
-    const tokenParams = {
-      code,
-      redirect_uri: callbackURL,
-    }
-
-    try {
-      const accessToken = await client.getToken(tokenParams)
-
-      return await this.verify_(accessToken.id_token)
-    } catch (error) {
-      return { success: false, error: error.message }
-    }
+    return await this.validateCallback(code, config)
   }
 
   // abstractable
@@ -143,6 +92,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     const jwtData = (await jwt.decode(refreshToken, {
       complete: true,
     })) as JwtPayload
+
     const entity_id = jwtData.payload.email
 
     let authUser
@@ -167,6 +117,67 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     }
 
     return { success: true, authUser }
+  }
+
+  // abstractable
+  private async validateCallback(
+    code: string,
+    { clientID, callbackURL, clientSecret }: ProviderConfig
+  ) {
+    const client = this.getAuthorizationCodeHandler({ clientID, clientSecret })
+
+    const tokenParams = {
+      code,
+      redirect_uri: callbackURL,
+    }
+
+    try {
+      const accessToken = await client.getToken(tokenParams)
+
+      return await this.verify_(accessToken.token.id_token)
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  }
+
+  private async validateConfig(config: Partial<ProviderConfig>) {
+    if (!config.clientID) {
+      throw new Error("Google clientID is required")
+    }
+
+    if (!config.clientSecret) {
+      throw new Error("Google clientSecret is required")
+    }
+
+    if (!config.callbackURL) {
+      throw new Error("Google callbackUrl is required")
+    }
+  }
+
+  private originalURL(req: AuthenticationInput) {
+    const tls = req.connection.encrypted,
+      host = req.headers.host,
+      protocol = tls ? "https" : "http",
+      path = req.url || ""
+    return protocol + "://" + host + path
+  }
+
+  private async getProviderConfig(
+    req: AuthenticationInput
+  ): Promise<ProviderConfig> {
+    const { config } = (await this.authProviderService_.retrieve(
+      GoogleProvider.PROVIDER
+    )) as AuthProvider & { config: ProviderConfig }
+
+    this.validateConfig(config || {})
+
+    const { callbackURL } = config
+
+    const parsedCallbackUrl = !url.parse(callbackURL).protocol
+      ? url.resolve(this.originalURL(req), callbackURL)
+      : callbackURL
+
+    return { ...config, callbackURL: parsedCallbackUrl }
   }
 
   // Abstractable

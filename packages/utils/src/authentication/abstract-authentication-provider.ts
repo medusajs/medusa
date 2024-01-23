@@ -1,4 +1,4 @@
-import { AuthenticationResponse } from "@medusajs/types";
+import { AuthenticationResponse } from "@medusajs/types"
 
 export abstract class AbstractAuthenticationModuleProvider {
   public static PROVIDER: string
@@ -13,7 +13,15 @@ export abstract class AbstractAuthenticationModuleProvider {
       .DISPLAY_NAME
   }
 
-  abstract authenticate(
+  abstract initiateAuthentication(
     data: Record<string, unknown>
   ): Promise<AuthenticationResponse>
+
+  public authenticateCallback(
+    data: Record<string, unknown>
+  ): Promise<AuthenticationResponse> {
+    throw new Error(
+      `Callback authentication not implemented for provider ${this.provider}`
+    )
+  }
 }

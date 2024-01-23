@@ -15,7 +15,12 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 
 export interface IAuthenticationModuleService extends IModuleService {
-  authenticate(
+  initializeAuthentication(
+    provider: string,
+    providerData: Record<string, unknown>
+  ): Promise<AuthenticationResponse>
+
+  authenticateCallback(
     provider: string,
     providerData: Record<string, unknown>
   ): Promise<AuthenticationResponse>

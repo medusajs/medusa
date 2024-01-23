@@ -387,6 +387,38 @@ export default class AuthenticationModuleService<
     }
   }
 
+  async authenticateCallback(
+    provider: string,
+    authenticationData: Record<string, unknown>
+  ): Promise<AuthenticationResponse> {
+    try {
+      await this.retrieveAuthProvider(provider, {})
+
+      const registeredProvider =
+        this.getRegisteredAuthenticationProvider(provider)
+
+      return await registeredProvider.authenticateCallback(authenticationData)
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  }
+
+  async initializeAuthentication(
+    provider: string,
+    authenticationData: Record<string, unknown>
+  ): Promise<AuthenticationResponse> {
+    try {
+      await this.retrieveAuthProvider(provider, {})
+
+      const registeredProvider =
+        this.getRegisteredAuthenticationProvider(provider)
+
+      return await registeredProvider.initiateAuthentication(authenticationData)
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  }
+
   private async createProvidersOnLoad() {
     const providersToLoad = this.__container__["auth_providers"]
 

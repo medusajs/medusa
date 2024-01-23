@@ -16,7 +16,7 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
     this.authUserSerivce_ = AuthUserService
   }
 
-  async authenticate(
+  async initiateAuthentication(
     userData: Record<string, any>
   ): Promise<AuthenticationResponse> {
     const { email, password } = userData.body
