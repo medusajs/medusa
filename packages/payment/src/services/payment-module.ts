@@ -21,6 +21,7 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
 } from "@medusajs/utils"
 
 import * as services from "@services"
@@ -260,16 +261,59 @@ export default class PaymentModuleService implements IPaymentModuleService {
     data: CreateCaptureDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentDTO> {
-    // TODO 1. check if (payment.captured_amount + amount > payment.authorized_amount) {}
+    let payment = await this.paymentService_.retrieve(
+      data.payment_id,
+      {
+        select: [
+          "amount",
+          "authorized_amount",
+          "captured_amount",
+          "captured_at",
+        ],
+        relations: ["captures"],
+      },
+      sharedContext
+    )
 
-    // TODO: 2. set captured_at if fully captured?
-    // TODO: 3. set PaymentCollection status
+    if (payment.captured_at) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The payment is already fully captured."
+      )
+    }
+
+    if (
+      Number(payment.captured_amount) + data.amount >
+      Number(payment.authorized_amount)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Total captured amount exceeds authorised amount."
+      )
+    }
 
     await this.paymentService_.capture(data, sharedContext)
 
-    const payment = await this.paymentService_.retrieve(
+    if (
+      Number(payment.captured_amount) + data.amount ===
+      Number(payment.amount)
+    ) {
+      await this.paymentService_.update([
+        { id: payment.id, captured_at: new Date() },
+      ])
+
+      // TODO: set PaymentCollection status if fully captured
+    }
+
+    payment = await this.paymentService_.retrieve(
       data.payment_id,
       {
+        select: [
+          "amount",
+          "authorized_amount",
+          "captured_amount",
+          "captured_at",
+        ],
         relations: ["captures"],
       },
       sharedContext
@@ -285,13 +329,27 @@ export default class PaymentModuleService implements IPaymentModuleService {
     data: CreateRefundDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentDTO> {
-    // TODO 1. check if (payment.captured_amount - amount > 0) {}
+    let payment = await this.paymentService_.retrieve(
+      data.payment_id,
+      {
+        select: ["captured_amount"],
+      },
+      sharedContext
+    )
+
+    if (payment.captured_amount < data.amount) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Refund amount cannot be greater than the amount captured on the payment."
+      )
+    }
 
     await this.paymentService_.refund(data, sharedContext)
 
-    const payment = await this.paymentService_.retrieve(
+    payment = await this.paymentService_.retrieve(
       data.payment_id,
       {
+        select: ["amount", "refunded_amount"],
         relations: ["refunds"],
       },
       sharedContext

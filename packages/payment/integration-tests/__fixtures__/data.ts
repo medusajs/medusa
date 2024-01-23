@@ -51,11 +51,13 @@ export const defaultPaymentData = [
     payment_collection: "pay-col-id-1",
     payment_session: "pay-sess-id-1",
     provider_id: "manual",
+    authorized_amount: 100,
     data: {},
   },
   {
     id: "pay-id-2",
     amount: 100,
+    authorized_amount: 100,
     currency_code: "usd",
     payment_collection: "pay-col-id-2",
     payment_session: "pay-sess-id-2",

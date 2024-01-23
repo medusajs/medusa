@@ -380,9 +380,6 @@ describe("Payment Module Service", () => {
           expect.objectContaining({
             id: "pay-id-1",
             amount: 100,
-            currency_code: "usd",
-            provider_id: "manual",
-            data: {},
 
             captures: [
               expect.objectContaining({
@@ -391,23 +388,49 @@ describe("Payment Module Service", () => {
               }),
             ],
 
-            // TODO
-            authorized_amount: null,
-            captured_at: null,
-
-            cart_id: null,
-            order_id: null,
-            order_edit_id: null,
-            customer_id: null,
-            deleted_at: null,
-            canceled_at: null,
+            captured_amount: 100,
+            captured_at: expect.any(Date),
           })
         )
+      })
+
+      it("should fail to capture amount greater than authorized", async () => {
+        const error = await service
+          .capturePayment({
+            amount: 200,
+            payment_id: "pay-id-1",
+          })
+          .catch((e) => e)
+
+        expect(error.message).toEqual(
+          "Total captured amount exceeds authorised amount."
+        )
+      })
+
+      it("should fail to capture already captured payment", async () => {
+        await service.capturePayment({
+          amount: 100,
+          payment_id: "pay-id-1",
+        })
+
+        const error = await service
+          .capturePayment({
+            amount: 100,
+            payment_id: "pay-id-1",
+          })
+          .catch((e) => e)
+
+        expect(error.message).toEqual("The payment is already fully captured.")
       })
     })
 
     describe("refund", () => {
       it("should refund a payment successfully", async () => {
+        await service.capturePayment({
+          amount: 100,
+          payment_id: "pay-id-1",
+        })
+
         const refundedPayment = await service.refundPayment({
           amount: 100,
           payment_id: "pay-id-1",
@@ -417,27 +440,33 @@ describe("Payment Module Service", () => {
           expect.objectContaining({
             id: "pay-id-1",
             amount: 100,
-            currency_code: "usd",
-            provider_id: "manual",
-            data: {},
-
             refunds: [
               expect.objectContaining({
                 created_by: null,
                 amount: 100,
               }),
             ],
-
-            authorized_amount: null,
-            captured_at: null,
-
-            cart_id: null,
-            order_id: null,
-            order_edit_id: null,
-            customer_id: null,
-            deleted_at: null,
-            canceled_at: null,
+            captured_amount: 100,
+            refunded_amount: 100,
           })
+        )
+      })
+
+      it("should throw if refund is greater than captured amount", async () => {
+        await service.capturePayment({
+          amount: 50,
+          payment_id: "pay-id-1",
+        })
+
+        const error = await service
+          .refundPayment({
+            amount: 100,
+            payment_id: "pay-id-1",
+          })
+          .catch((e) => e)
+
+        expect(error.message).toEqual(
+          "Refund amount cannot be greater than the amount captured on the payment."
         )
       })
     })

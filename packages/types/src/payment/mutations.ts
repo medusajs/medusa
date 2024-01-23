@@ -48,6 +48,8 @@ export interface UpdatePaymentDTO {
   order_edit_id?: string
   customer_id?: string
 
+  captured_at?: Date
+
   data?: Record<string, unknown>
 }
 

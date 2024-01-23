@@ -124,8 +124,8 @@ export default class Payment {
 
   /** COMPUTED PROPERTIES START **/
 
-  // captured_amount: number // sum of the associated captures
-  // refunded_amount: number // sum of the associated refunds
+  captured_amount: number // sum of the associated captures
+  refunded_amount: number // sum of the associated refunds
 
   /** COMPUTED PROPERTIES END **/
 
