@@ -18,8 +18,8 @@ export async function mikroOrmCreateConnection(
     // It is important that the knex package version is the same as the one used by MikroORM knex package
     driverOptions = database.connection
     clientUrl =
-      database.connection.context.client.config.connection.connectionString
-    schema = database.connection.context.client.config.searchPath
+      database.connection.context?.client?.config?.connection?.connectionString
+    schema = database.connection.context?.client?.config?.searchPath
   }
 
   const { MikroORM } = await import("@mikro-orm/postgresql")
