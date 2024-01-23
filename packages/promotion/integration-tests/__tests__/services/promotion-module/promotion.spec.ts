@@ -762,20 +762,58 @@ describe("Promotion Service", () => {
   })
 
   describe("delete", () => {
-    beforeEach(async () => {
-      await createPromotions(repositoryManager)
+    it("should soft delete the promotions given an id successfully", async () => {
+      const createdPromotion = await service.create({
+        code: "TEST",
+        type: "standard",
+      })
+
+      await service.delete([createdPromotion.id])
+
+      const promotions = await service.list(
+        {
+          id: [createdPromotion.id],
+        },
+        { withDeleted: true }
+      )
+
+      expect(promotions).toHaveLength(0)
     })
+  })
 
-    const id = "promotion-id-1"
+  describe("softDelete", () => {
+    it("should soft delete the promotions given an id successfully", async () => {
+      const createdPromotion = await service.create({
+        code: "TEST",
+        type: "standard",
+      })
 
-    it("should delete the promotions given an id successfully", async () => {
-      await service.delete([id])
+      await service.softDelete([createdPromotion.id])
 
       const promotions = await service.list({
-        id: [id],
+        id: [createdPromotion.id],
       })
 
       expect(promotions).toHaveLength(0)
+    })
+  })
+
+  describe("restore", () => {
+    it("should restore the promotions given an id successfully", async () => {
+      const createdPromotion = await service.create({
+        code: "TEST",
+        type: "standard",
+      })
+
+      await service.softDelete([createdPromotion.id])
+
+      let promotions = await service.list({ id: [createdPromotion.id] })
+
+      expect(promotions).toHaveLength(0)
+      await service.restore([createdPromotion.id])
+
+      promotions = await service.list({ id: [createdPromotion.id] })
+      expect(promotions).toHaveLength(1)
     })
   })
 

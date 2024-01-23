@@ -187,7 +187,7 @@ module.exports = {
       items: [
         {
           type: "doc",
-          label: "Admin Custom Configuration",
+          label: "Admin Configuration",
           id: "admin/configuration",
         },
         {
@@ -1004,12 +1004,12 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "modules/taxes/backend/create-tax-provider",
+          id: "references/tax/classes/tax.AbstractTaxService",
           label: "Backend: Create Tax Provider",
         },
         {
           type: "doc",
-          id: "modules/taxes/backend/tax-calculation-strategy",
+          id: "references/tax_calculation/classes/tax_calculation.AbstractTaxCalculationStrategy",
           label: "Backend: Override Tax Calculation",
         },
         {
@@ -1148,11 +1148,6 @@ module.exports = {
           label: "Price Lists",
         },
         {
-          type: "doc",
-          id: "modules/price-lists/price-selection-strategy",
-          label: "Price Selection Strategy",
-        },
-        {
           type: "html",
           value: "How-to",
           customProps: {
@@ -1161,7 +1156,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "modules/price-lists/backend/override-price-selection-strategy",
+          id: "references/price_selection/classes/price_selection.AbstractPriceSelectionStrategy",
           label: "Backend: Override Price Selection",
         },
         {
@@ -1319,7 +1314,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "development/backend/configurations",
+          id: "references/medusa_config/interfaces/medusa_config.ConfigModule",
           label: "Configurations",
         },
       ],
@@ -1816,7 +1811,7 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "development/notification/create-notification-provider",
+              id: "references/notification/classes/notification.AbstractNotificationService",
               label: "Create a Notification Provider",
             },
           ],
@@ -1839,7 +1834,7 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "development/file-service/create-file-service",
+              id: "references/file/classes/file.AbstractFileService",
               label: "Create a File Service",
             },
           ],
@@ -1862,7 +1857,7 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "development/search/create",
+              id: "references/search/classes/search.AbstractSearchService",
               label: "Create a Search Service",
             },
           ],
