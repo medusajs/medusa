@@ -6,11 +6,12 @@ import {
   Context,
   FindConfig,
   Pluralize,
-  PricingTypes,
   RepositoryService,
+  RestoreReturn,
+  SoftDeleteReturn,
 } from "@medusajs/types"
-import { lowerCaseFirst, pluralize } from "../common"
-import { InjectManager } from "./decorators"
+import { lowerCaseFirst, mapObjectTo, MapToConfig, pluralize } from "../common"
+import { InjectManager, InjectTransactionManager } from "./decorators"
 import { MedusaContext } from "../decorators"
 
 type BaseMethods =
@@ -29,6 +30,10 @@ const methods: BaseMethods[] = [
   "softDelete",
   "restore",
 ]
+
+type OtherModelsConfig = {
+  [ModelName: string]: { singular?: string; plural?: string; dto: object }
+}
 
 export interface AbstractModuleServiceBase<TContainer, TMainModelDTO> {
   get __container__(): TContainer
@@ -50,43 +55,155 @@ export interface AbstractModuleServiceBase<TContainer, TMainModelDTO> {
     config?: FindConfig<any>,
     sharedContext?: Context
   ): Promise<[TMainModelDTO[], number]>
+
+  delete(
+    primaryKeyValues: string[] | object[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  softDelete<TReturnableLinkableKeys extends string>(
+    primaryKeyValues: string[] | object[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restore<TReturnableLinkableKeys extends string>(
+    primaryKeyValues: string[] | object[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }
+
+type ExtractSingularName<
+  T extends Record<any, any>,
+  K = keyof T
+> = T[K] extends { singular?: string } ? T[K]["singular"] : K
+
+type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
+  plural?: string
+}
+  ? T[K]["plural"]
+  : Pluralize<K & string>
 
 export type AbstractModuleService<
   TContainer,
   TMainModelDTO,
-  TOtherModelNamesAndAssociatedDTO extends { [ModelName: string]: object }
+  TOtherModelNamesAndAssociatedDTO extends OtherModelsConfig
 > = AbstractModuleServiceBase<TContainer, TMainModelDTO> & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `retrieve${K & string}`]: (
+  [K in keyof TOtherModelNamesAndAssociatedDTO as `retrieve${ExtractSingularName<
+    TOtherModelNamesAndAssociatedDTO,
+    K
+  > &
+    string}`]: (
     id: string,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ) => Promise<TOtherModelNamesAndAssociatedDTO[K & string]>
+  ) => Promise<TOtherModelNamesAndAssociatedDTO[K & string]["dto"]>
 } & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `list${Pluralize<
-    K & string
-  >}`]: (
-    filters?: any,
-    config?: FindConfig<any>,
-    sharedContext?: Context
-  ) => Promise<TOtherModelNamesAndAssociatedDTO[K & string][]>
-} & {
-  [K in keyof TOtherModelNamesAndAssociatedDTO as `listAndCount${Pluralize<
-    K & string
-  >}`]: {
+  [K in keyof TOtherModelNamesAndAssociatedDTO as `list${ExtractPluralName<
+    TOtherModelNamesAndAssociatedDTO,
+    K
+  > &
+    string}`]: {
     (filters?: any, config?: FindConfig<any>, sharedContext?: Context): Promise<
-      [TOtherModelNamesAndAssociatedDTO[K & string][], number]
+      TOtherModelNamesAndAssociatedDTO[K & string]["dto"][]
     >
+  }
+} & {
+  [K in keyof TOtherModelNamesAndAssociatedDTO as `listAndCount${ExtractPluralName<
+    TOtherModelNamesAndAssociatedDTO,
+    K
+  > &
+    string}`]: {
+    (filters?: any, config?: FindConfig<any>, sharedContext?: Context): Promise<
+      [TOtherModelNamesAndAssociatedDTO[K & string]["dto"][], number]
+    >
+  }
+} & {
+  [K in keyof TOtherModelNamesAndAssociatedDTO as `delete${ExtractPluralName<
+    TOtherModelNamesAndAssociatedDTO,
+    K
+  > &
+    string}`]: {
+    (
+      primaryKeyValues: string[] | object[],
+      sharedContext?: Context
+    ): Promise<void>
+  }
+} & {
+  [K in keyof TOtherModelNamesAndAssociatedDTO as `softDelete${ExtractPluralName<
+    TOtherModelNamesAndAssociatedDTO,
+    K
+  > &
+    string}`]: {
+    <TReturnableLinkableKeys extends string>(
+      primaryKeyValues: string[] | object[],
+      config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+      sharedContext?: Context
+    ): Promise<Record<string, string[]> | void>
+  }
+} & {
+  [K in keyof TOtherModelNamesAndAssociatedDTO as `restore${ExtractPluralName<
+    TOtherModelNamesAndAssociatedDTO,
+    K
+  > &
+    string}`]: {
+    <TReturnableLinkableKeys extends string>(
+      productIds: string[] | object[],
+      config?: RestoreReturn<TReturnableLinkableKeys>,
+      sharedContext?: Context
+    ): Promise<Record<string, string[]> | void>
   }
 }
 
+/**
+ * Factory function for creating an abstract module service
+ *
+ * @example
+ *
+ * const otherModels = new Set([
+ *   Currency,
+ *   MoneyAmount,
+ *   PriceList,
+ *   PriceListRule,
+ *   PriceListRuleValue,
+ *   PriceRule,
+ *   PriceSetMoneyAmount,
+ *   PriceSetMoneyAmountRules,
+ *   PriceSetRuleType,
+ *   RuleType,
+ * ])
+ *
+ * const AbstractModuleService = ModulesSdkUtils.abstractModuleServiceFactory<
+ *   InjectedDependencies,
+ *   PricingTypes.PriceSetDTO,
+ *   // The configuration of each entity also accept singular/plural properties, if not provided then it is using english pluralization
+ *   {
+ *     Currency: { dto: PricingTypes.CurrencyDTO }
+ *     MoneyAmount: { dto: PricingTypes.MoneyAmountDTO }
+ *     PriceSetMoneyAmount: { dto: PricingTypes.PriceSetMoneyAmountDTO }
+ *     PriceSetMoneyAmountRules: {
+ *       dto: PricingTypes.PriceSetMoneyAmountRulesDTO
+ *     }
+ *     PriceRule: { dto: PricingTypes.PriceRuleDTO }
+ *     RuleType: { dto: PricingTypes.RuleTypeDTO }
+ *     PriceList: { dto: PricingTypes.PriceListDTO }
+ *     PriceListRule: { dto: PricingTypes.PriceListRuleDTO }
+ *   }
+ * >(PriceSet, [...otherModels], entityNameToLinkableKeysMap)
+ *
+ * @param mainModel
+ * @param otherModels
+ * @param entityNameToLinkableKeysMap
+ */
 export function abstractModuleServiceFactory<
   TContainer,
   TMainModelDTO,
-  TOtherModelNamesAndAssociatedDTO extends { [ModelName: string]: object }
+  TOtherModelNamesAndAssociatedDTO extends OtherModelsConfig
 >(
   mainModel: Constructor<any>,
-  otherModels: Constructor<any>[]
+  otherModels: Constructor<any>[],
+  entityNameToLinkableKeysMap: MapToConfig = {}
 ): {
   new (container: TContainer): AbstractModuleService<
     TContainer,
@@ -104,21 +221,22 @@ export function abstractModuleServiceFactory<
     }, {})
   }
 
-  const buildAndAssignMethodImpl = function <T extends object>(
+  const buildAndAssignMethodImpl = function (
     klassPrototype: any,
     method: string,
     methodName: string,
     model: Constructor<any>
   ) {
+    const serviceRegistrationName = `${lowerCaseFirst(model.name)}Service`
+
     switch (method) {
       case "retrieve":
-        klassPrototype[methodName] = async function (
+        klassPrototype[methodName] = async function <T extends object>(
           this: AbstractModuleService_,
           id: string,
           config?: FindConfig<any>,
           sharedContext: Context = {}
         ): Promise<T> {
-          const serviceRegistrationName = `${lowerCaseFirst(model.name)}Service`
           const entities = await this.__container__[
             serviceRegistrationName
           ].retrieve(id, config, sharedContext)
@@ -138,13 +256,12 @@ export function abstractModuleServiceFactory<
         )
         break
       case "list":
-        klassPrototype[methodName] = async function (
+        klassPrototype[methodName] = async function <T extends object>(
           this: AbstractModuleService_,
           filters = {},
           config: FindConfig<any> = {},
           sharedContext: Context = {}
         ): Promise<T[]> {
-          const serviceRegistrationName = `${lowerCaseFirst(model.name)}Service`
           const entities = await this.__container__[
             serviceRegistrationName
           ].list(filters, config, sharedContext)
@@ -164,24 +281,20 @@ export function abstractModuleServiceFactory<
         )
         break
       case "listAndCount":
-        klassPrototype[methodName] = async function (
+        klassPrototype[methodName] = async function <T extends object>(
           this: AbstractModuleService_,
           filters = {},
           config: FindConfig<any> = {},
           sharedContext: Context = {}
         ): Promise<T[]> {
-          const serviceRegistrationName = `${lowerCaseFirst(model.name)}Service`
           const [entities, count] = await this.__container__[
             serviceRegistrationName
           ].listAndCount(filters, config, sharedContext)
 
           return [
-            await this.baseRepository_.serialize<PricingTypes.PriceSetDTO[]>(
-              entities,
-              {
-                populate: true,
-              }
-            ),
+            await this.baseRepository_.serialize<T[]>(entities, {
+              populate: true,
+            }),
             count,
           ]
         }.bind(klassPrototype)
@@ -190,6 +303,106 @@ export function abstractModuleServiceFactory<
         MedusaContext()(klassPrototype, methodName, 2)
 
         return InjectManager("baseRepository_")(
+          klassPrototype,
+          method,
+          Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
+        )
+        break
+      case "delete":
+        klassPrototype[methodName] = async function (
+          this: AbstractModuleService_,
+          primaryKeyValues: string[] | object[],
+          sharedContext: Context = {}
+        ): Promise<void> {
+          await this.__container__[serviceRegistrationName].delete(
+            primaryKeyValues,
+            sharedContext
+          )
+        }.bind(klassPrototype)
+
+        // Apply MedusaContext decorator
+        MedusaContext()(klassPrototype, methodName, 1)
+
+        return InjectTransactionManager("baseRepository_")(
+          klassPrototype,
+          method,
+          Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
+        )
+        break
+      case "softDelete":
+        klassPrototype[methodName] = async function <T extends { id: string }>(
+          this: AbstractModuleService_,
+          primaryKeyValues: string[] | object[],
+          config: SoftDeleteReturn<string> = {},
+          sharedContext: Context = {}
+        ): Promise<Record<string, string[]> | void> {
+          const [entities, cascadedEntitiesMap] = await this.__container__[
+            serviceRegistrationName
+          ].softDelete(primaryKeyValues, sharedContext)
+
+          const softDeletedEntities = await this.baseRepository_.serialize<T[]>(
+            entities,
+            {
+              populate: true,
+            }
+          )
+
+          let mappedCascadedEntitiesMap
+          if (config.returnLinkableKeys) {
+            // Map internal table/column names to their respective external linkable keys
+            // eg: product.id = product_id, variant.id = variant_id
+            mappedCascadedEntitiesMap = mapObjectTo(
+              cascadedEntitiesMap,
+              entityNameToLinkableKeysMap,
+              {
+                pick: config.returnLinkableKeys,
+              }
+            )
+          }
+
+          return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+        }.bind(klassPrototype)
+
+        // Apply MedusaContext decorator
+        MedusaContext()(klassPrototype, methodName, 2)
+
+        return InjectTransactionManager("baseRepository_")(
+          klassPrototype,
+          method,
+          Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
+        )
+        break
+      case "restore":
+        klassPrototype[methodName] = async function <T extends object>(
+          this: AbstractModuleService_,
+          primaryKeyValues: string[] | object[],
+          config: RestoreReturn<string> = {},
+          sharedContext: Context = {}
+        ): Promise<Record<string, string[]> | void> {
+          const [_, cascadedEntitiesMap] = await this.__container__[
+            serviceRegistrationName
+          ].restore(primaryKeyValues, sharedContext)
+
+          let mappedCascadedEntitiesMap
+          if (config.returnLinkableKeys) {
+            // Map internal table/column names to their respective external linkable keys
+            // eg: product.id = product_id, variant.id = variant_id
+            mappedCascadedEntitiesMap = mapObjectTo(
+              cascadedEntitiesMap,
+              entityNameToLinkableKeysMap,
+              {
+                pick: config.returnLinkableKeys,
+              }
+            )
+          }
+
+          return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+        }.bind(klassPrototype)
+
+        // Apply MedusaContext decorator
+        MedusaContext()(klassPrototype, methodName, 2)
+
+        return InjectTransactionManager("baseRepository_")(
           klassPrototype,
           method,
           Object.getOwnPropertyDescriptor(klassPrototype, methodName)!

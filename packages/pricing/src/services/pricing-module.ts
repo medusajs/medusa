@@ -11,7 +11,6 @@ import {
   PricingFilters,
   PricingRepositoryService,
   PricingTypes,
-  RestoreReturn,
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
@@ -20,7 +19,6 @@ import {
   groupBy,
   InjectManager,
   InjectTransactionManager,
-  mapObjectTo,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
@@ -28,7 +26,6 @@ import {
   removeNullish,
 } from "@medusajs/utils"
 
-import * as Models from "@models"
 import {
   Currency,
   MoneyAmount,
@@ -56,11 +53,7 @@ import {
   PriceSetService,
   RuleTypeService,
 } from "@services"
-import {
-  entityNameToLinkableKeysMap,
-  joinerConfig,
-  LinkableKeys,
-} from "../joiner-config"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { validatePriceListDates } from "@utils"
 import { ServiceTypes } from "@types"
 import { CreatePriceListRuleValueDTO } from "src/types/services"
@@ -81,8 +74,18 @@ type InjectedDependencies = {
   priceListRuleValueService: PriceListRuleValueService<any>
 }
 
-const otherModels = new Set(Object.values(Models))
-otherModels.delete(PriceSet)
+const otherModels = new Set([
+  Currency,
+  MoneyAmount,
+  PriceList,
+  PriceListRule,
+  PriceListRuleValue,
+  PriceRule,
+  PriceSetMoneyAmount,
+  PriceSetMoneyAmountRules,
+  PriceSetRuleType,
+  RuleType,
+])
 
 export default class PricingModuleService<
     TPriceSet extends PriceSet = PriceSet,
@@ -101,16 +104,18 @@ export default class PricingModuleService<
     InjectedDependencies,
     PricingTypes.PriceSetDTO,
     {
-      Currency: PricingTypes.CurrencyDTO
-      MoneyAmount: PricingTypes.MoneyAmountDTO
-      PriceSetMoneyAmount: PricingTypes.PriceSetMoneyAmountDTO
-      PriceSetMoneyAmountRules: PricingTypes.PriceSetMoneyAmountRulesDTO
-      PriceRule: PricingTypes.PriceRuleDTO
-      RuleType: PricingTypes.RuleTypeDTO
-      PriceList: PricingTypes.PriceListDTO
-      PriceListRule: PricingTypes.PriceListRuleDTO
+      Currency: { dto: PricingTypes.CurrencyDTO }
+      MoneyAmount: { dto: PricingTypes.MoneyAmountDTO }
+      PriceSetMoneyAmount: { dto: PricingTypes.PriceSetMoneyAmountDTO }
+      PriceSetMoneyAmountRules: {
+        dto: PricingTypes.PriceSetMoneyAmountRulesDTO
+      }
+      PriceRule: { dto: PricingTypes.PriceRuleDTO }
+      RuleType: { dto: PricingTypes.RuleTypeDTO }
+      PriceList: { dto: PricingTypes.PriceListDTO }
+      PriceListRule: { dto: PricingTypes.PriceListRuleDTO }
     }
-  >(PriceSet, [...otherModels])
+  >(PriceSet, [...otherModels], entityNameToLinkableKeysMap)
   implements PricingTypes.IPricingModuleService
 {
   protected baseRepository_: DAL.RepositoryService
@@ -715,14 +720,6 @@ export default class PricingModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.priceSetService_.delete(ids, sharedContext)
-  }
-
-  @InjectTransactionManager("baseRepository_")
   async createMoneyAmounts(
     data: PricingTypes.CreateMoneyAmountDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -759,49 +756,6 @@ export default class PricingModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  async deleteMoneyAmounts(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.moneyAmountService_.delete(ids, sharedContext)
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async softDeleteMoneyAmounts(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.moneyAmountService_.softDelete(ids, sharedContext)
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async restoreDeletedMoneyAmounts<
-    TReturnableLinkableKeys extends string = Lowercase<
-      keyof typeof LinkableKeys
-    >
-  >(
-    ids: string[],
-    { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
-    const [_, cascadedEntitiesMap] = await this.moneyAmountService_.restore(
-      ids,
-      sharedContext
-    )
-
-    let mappedCascadedEntitiesMap
-    if (returnLinkableKeys) {
-      mappedCascadedEntitiesMap = mapObjectTo<
-        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
-      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
-        pick: returnLinkableKeys,
-      })
-    }
-
-    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
-  }
-
-  @InjectTransactionManager("baseRepository_")
   async createCurrencies(
     data: PricingTypes.CreateCurrencyDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -832,14 +786,6 @@ export default class PricingModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  async deleteCurrencies(
-    currencyCodes: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.currencyService_.delete(currencyCodes, sharedContext)
-  }
-
-  @InjectTransactionManager("baseRepository_")
   async createRuleTypes(
     data: PricingTypes.CreateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -867,14 +813,6 @@ export default class PricingModuleService<
         populate: true,
       }
     )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async deleteRuleTypes(
-    ruleTypeIds: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.ruleTypeService_.delete(ruleTypeIds, sharedContext)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -912,14 +850,6 @@ export default class PricingModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  async deletePriceSetMoneyAmountRules(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.priceSetMoneyAmountRulesService_.delete(ids, sharedContext)
-  }
-
-  @InjectTransactionManager("baseRepository_")
   async createPriceRules(
     data: PricingTypes.CreatePriceRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -950,14 +880,6 @@ export default class PricingModuleService<
         populate: true,
       }
     )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async deletePriceRules(
-    priceRuleIds: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.priceRuleService_.delete(priceRuleIds, sharedContext)
   }
 
   @InjectManager("baseRepository_")
@@ -1244,14 +1166,6 @@ export default class PricingModuleService<
     return updatedPriceLists
   }
 
-  @InjectTransactionManager("baseRepository_")
-  async deletePriceLists(
-    priceListIds: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.priceListService_.delete(priceListIds, sharedContext)
-  }
-
   @InjectManager("baseRepository_")
   async createPriceListRules(
     data: PricingTypes.CreatePriceListRuleDTO[],
@@ -1291,14 +1205,6 @@ export default class PricingModuleService<
         populate: true,
       }
     )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async deletePriceListRules(
-    priceListRuleIds: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.priceListRuleService_.delete(priceListRuleIds, sharedContext)
   }
 
   @InjectManager("baseRepository_")
