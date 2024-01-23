@@ -1,14 +1,14 @@
-import { AuthenticationResponse } from "@medusajs/types"
-import { AuthProviderService, AuthUserService } from "@services"
-import jwt, { JwtPayload } from "jsonwebtoken"
-import url from "url"
-
-import { AuthProvider } from "@models"
 import {
   AbstractAuthenticationModuleProvider,
   MedusaError,
 } from "@medusajs/utils"
+import { AuthProviderService, AuthUserService } from "@services"
+import jwt, { JwtPayload } from "jsonwebtoken"
+
+import { AuthProvider } from "@models"
+import { AuthenticationResponse } from "@medusajs/types"
 import { AuthorizationCode } from "simple-oauth2"
+import url from "url"
 
 type InjectedDependencies = {
   authUserService: AuthUserService
@@ -132,7 +132,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     try {
       const accessToken = await client.getToken(tokenParams)
 
-      return await this.verify_(accessToken.id_token)
+      return await this.verify_(accessToken.token.id_token)
     } catch (error) {
       return { success: false, error: error.message }
     }
