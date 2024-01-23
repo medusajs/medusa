@@ -1,6 +1,6 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20240122070028 extends Migration {
+export class Migration20240122084316 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table "campaign" ("id" text not null, "name" text not null, "description" text null, "currency" text null, "campaign_identifier" text not null, "starts_at" timestamptz null, "ends_at" timestamptz null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "campaign_pkey" primary key ("id"));'
@@ -29,7 +29,7 @@ export class Migration20240122070028 extends Migration {
     )
 
     this.addSql(
-      'create table "application_method" ("id" text not null, "value" numeric null, "max_quantity" numeric null, "type" text check ("type" in (\'fixed\', \'percentage\')) not null, "target_type" text check ("target_type" in (\'order\', \'shipping_methods\', \'items\')) not null, "allocation" text check ("allocation" in (\'each\', \'across\')) null, "promotion_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "application_method_pkey" primary key ("id"));'
+      'create table "application_method" ("id" text not null, "value" numeric null, "max_quantity" numeric null, "apply_to_quantity" numeric null, "buy_rules_min_quantity" numeric null, "type" text check ("type" in (\'fixed\', \'percentage\')) not null, "target_type" text check ("target_type" in (\'order\', \'shipping_methods\', \'items\')) not null, "allocation" text check ("allocation" in (\'each\', \'across\')) null, "promotion_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "application_method_pkey" primary key ("id"));'
     )
     this.addSql(
       'create index "IDX_application_method_type" on "application_method" ("type");'
@@ -59,7 +59,11 @@ export class Migration20240122070028 extends Migration {
     )
 
     this.addSql(
-      'create table "application_method_promotion_rule" ("application_method_id" text not null, "promotion_rule_id" text not null, constraint "application_method_promotion_rule_pkey" primary key ("application_method_id", "promotion_rule_id"));'
+      'create table "application_method_target_rules" ("application_method_id" text not null, "promotion_rule_id" text not null, constraint "application_method_target_rules_pkey" primary key ("application_method_id", "promotion_rule_id"));'
+    )
+
+    this.addSql(
+      'create table "application_method_buy_rules" ("application_method_id" text not null, "promotion_rule_id" text not null, constraint "application_method_buy_rules_pkey" primary key ("application_method_id", "promotion_rule_id"));'
     )
 
     this.addSql(
@@ -89,10 +93,17 @@ export class Migration20240122070028 extends Migration {
     )
 
     this.addSql(
-      'alter table "application_method_promotion_rule" add constraint "application_method_promotion_rule_application_method_id_foreign" foreign key ("application_method_id") references "application_method" ("id") on update cascade on delete cascade;'
+      'alter table "application_method_target_rules" add constraint "application_method_target_rules_application_method_id_foreign" foreign key ("application_method_id") references "application_method" ("id") on update cascade on delete cascade;'
     )
     this.addSql(
-      'alter table "application_method_promotion_rule" add constraint "application_method_promotion_rule_promotion_rule_id_foreign" foreign key ("promotion_rule_id") references "promotion_rule" ("id") on update cascade on delete cascade;'
+      'alter table "application_method_target_rules" add constraint "application_method_target_rules_promotion_rule_id_foreign" foreign key ("promotion_rule_id") references "promotion_rule" ("id") on update cascade on delete cascade;'
+    )
+
+    this.addSql(
+      'alter table "application_method_buy_rules" add constraint "application_method_buy_rules_application_method_id_foreign" foreign key ("application_method_id") references "application_method" ("id") on update cascade on delete cascade;'
+    )
+    this.addSql(
+      'alter table "application_method_buy_rules" add constraint "application_method_buy_rules_promotion_rule_id_foreign" foreign key ("promotion_rule_id") references "promotion_rule" ("id") on update cascade on delete cascade;'
     )
 
     this.addSql(
