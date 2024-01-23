@@ -180,11 +180,11 @@ class KnowledgeBaseFactory {
   private examplesKnowledgeBase: KnowledgeBase[] = [
     {
       startsWith: "list",
-      template: `To retrieve a list of prices sets using their IDs: ${this.exampleCodeBlockLine}To specify relations that should be retrieved within the price sets: ${this.exampleCodeBlockLine}By default, only the first \`{default limit}\` records are retrieved. You can control pagination by specifying the \`skip\` and \`take\` properties of the \`config\` parameter: ${this.exampleCodeBlockLine}`,
+      template: `To retrieve a list of {type name} using their IDs: ${this.exampleCodeBlockLine}To specify relations that should be retrieved within the {type name}: ${this.exampleCodeBlockLine}By default, only the first \`{default limit}\` records are retrieved. You can control pagination by specifying the \`skip\` and \`take\` properties of the \`config\` parameter: ${this.exampleCodeBlockLine}`,
     },
     {
       startsWith: "retrieve",
-      template: `A simple example that retrieves a price set by its ID: ${this.exampleCodeBlockLine}To specify relations that should be retrieved: ${this.exampleCodeBlockLine}`,
+      template: `A simple example that retrieves a {type name} by its ID: ${this.exampleCodeBlockLine}To specify relations that should be retrieved: ${this.exampleCodeBlockLine}`,
     },
   ]
   private functionReturnKnowledgeBase: KnowledgeBase[] = [
