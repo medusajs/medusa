@@ -124,7 +124,7 @@ class KnowledgeBaseFactory {
       exact: "id",
       template: (str, options) => {
         if (options?.rawParentName?.startsWith("Filterable")) {
-          return `The IDs to filter ${options?.parentName || `{name}`} by.`
+          return `The IDs to filter the ${options?.parentName || `{name}`} by.`
         }
         return `The ID of the ${options?.parentName || `{name}`}.`
       },
