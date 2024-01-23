@@ -72,9 +72,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: [
-    "packages/admin-next/dashboard/**/dist"
-  ],
+  ignorePatterns: ["packages/admin-next/dashboard/**/dist"],
   overrides: [
     {
       files: ["*.ts"],
@@ -101,6 +99,8 @@ module.exports = {
           "./packages/orchestration/tsconfig.json",
           "./packages/workflows-sdk/tsconfig.spec.json",
           "./packages/core-flows/tsconfig.spec.json",
+          "./packages/workflow-engine-redis/tsconfig.spec.json",
+          "./packages/workflow-engine-inmemory/tsconfig.spec.json",
         ],
       },
       rules: {
