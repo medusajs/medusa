@@ -90,6 +90,12 @@ export interface IPromotionModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PromotionDTO>
 
+  addPromotionBuyRules(
+    promotionId: string,
+    rulesData: CreatePromotionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<PromotionDTO>
+
   removePromotionRules(
     promotionId: string,
     rulesData: RemovePromotionRuleDTO[],
@@ -97,6 +103,12 @@ export interface IPromotionModuleService extends IModuleService {
   ): Promise<PromotionDTO>
 
   removePromotionTargetRules(
+    promotionId: string,
+    rulesData: RemovePromotionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<PromotionDTO>
+
+  removePromotionBuyRules(
     promotionId: string,
     rulesData: RemovePromotionRuleDTO[],
     sharedContext?: Context

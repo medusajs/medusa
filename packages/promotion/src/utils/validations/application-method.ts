@@ -1,16 +1,17 @@
 import {
-  ApplicationMethodAllocationValues,
-  ApplicationMethodTargetTypeValues,
-  ApplicationMethodTypeValues,
-} from "@medusajs/types"
-import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
   ApplicationMethodType,
   MedusaError,
+  PromotionType,
   isDefined,
   isPresent,
 } from "@medusajs/utils"
+import { Promotion } from "@models"
+import {
+  CreateApplicationMethodDTO,
+  UpdateApplicationMethodDTO,
+} from "../../types"
 
 export const allowedAllocationTargetTypes: string[] = [
   ApplicationMethodTargetType.SHIPPING_METHODS,
@@ -26,17 +27,40 @@ export const allowedAllocationForQuantity: string[] = [
   ApplicationMethodAllocation.EACH,
 ]
 
-export function validateApplicationMethodAttributes(data: {
-  type: ApplicationMethodTypeValues
-  target_type: ApplicationMethodTargetTypeValues
-  allocation?: ApplicationMethodAllocationValues
-  max_quantity?: number | null
-}) {
+export function validateApplicationMethodAttributes(
+  data: UpdateApplicationMethodDTO | CreateApplicationMethodDTO,
+  promotion: Promotion
+) {
+  const applicationMethod = promotion?.application_method || {}
+  const buyRulesMinQuantity =
+    data.buy_rules_min_quantity || applicationMethod?.buy_rules_min_quantity
+  const applyToQuantity =
+    data.apply_to_quantity || applicationMethod?.apply_to_quantity
+  const targetType = data.target_type || applicationMethod?.target_type
+  const applicationMethodType = data.type || applicationMethod?.type
+  const maxQuantity = data.max_quantity || applicationMethod.max_quantity
+  const allocation = data.allocation || applicationMethod.allocation
   const allTargetTypes: string[] = Object.values(ApplicationMethodTargetType)
 
+  if (promotion?.type === PromotionType.BUYGET) {
+    if (!isPresent(applyToQuantity)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `apply_to_quantity is a required field for Promotion type of ${PromotionType.BUYGET}`
+      )
+    }
+
+    if (!isPresent(buyRulesMinQuantity)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `buy_rules_min_quantity is a required field for Promotion type of ${PromotionType.BUYGET}`
+      )
+    }
+  }
+
   if (
-    data.allocation === ApplicationMethodAllocation.ACROSS &&
-    isPresent(data.max_quantity)
+    allocation === ApplicationMethodAllocation.ACROSS &&
+    isPresent(maxQuantity)
   ) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
@@ -44,7 +68,7 @@ export function validateApplicationMethodAttributes(data: {
     )
   }
 
-  if (!allTargetTypes.includes(data.target_type)) {
+  if (!allTargetTypes.includes(targetType)) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `application_method.target_type should be one of ${allTargetTypes.join(
@@ -55,7 +79,7 @@ export function validateApplicationMethodAttributes(data: {
 
   const allTypes: string[] = Object.values(ApplicationMethodType)
 
-  if (!allTypes.includes(data.type)) {
+  if (!allTypes.includes(applicationMethodType)) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `application_method.type should be one of ${allTypes.join(", ")}`
@@ -63,8 +87,8 @@ export function validateApplicationMethodAttributes(data: {
   }
 
   if (
-    allowedAllocationTargetTypes.includes(data.target_type) &&
-    !allowedAllocationTypes.includes(data.allocation || "")
+    allowedAllocationTargetTypes.includes(targetType) &&
+    !allowedAllocationTypes.includes(allocation || "")
   ) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
@@ -80,7 +104,7 @@ export function validateApplicationMethodAttributes(data: {
     ApplicationMethodAllocation
   )
 
-  if (data.allocation && !allAllocationTypes.includes(data.allocation)) {
+  if (allocation && !allAllocationTypes.includes(allocation)) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `application_method.allocation should be one of ${allAllocationTypes.join(
@@ -90,9 +114,9 @@ export function validateApplicationMethodAttributes(data: {
   }
 
   if (
-    data.allocation &&
-    allowedAllocationForQuantity.includes(data.allocation) &&
-    !isDefined(data.max_quantity)
+    allocation &&
+    allowedAllocationForQuantity.includes(allocation) &&
+    !isDefined(maxQuantity)
   ) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
