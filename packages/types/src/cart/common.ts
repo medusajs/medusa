@@ -470,7 +470,11 @@ export interface CartDTO {
   subtotal: number
   tax_total: number
   discount_total: number
+  raw_discount_total: number
   discount_tax_total: number
+
+  gift_card_total: number
+  gift_card_tax_total: number
 
   shipping_total: number
   shipping_subtotal: number

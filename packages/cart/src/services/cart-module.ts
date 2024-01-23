@@ -12,6 +12,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
+  decorateTotals,
   isObject,
   isString,
 } from "@medusajs/utils"
@@ -76,11 +77,25 @@ export default class CartModuleService implements ICartModuleService {
     config: FindConfig<CartTypes.CartDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartDTO> {
+    return this.retrieveWithTotals(id, config, sharedContext)
+    // const cart = await this.cartService_.retrieve(id, config, sharedContext)
+
+    // return await this.baseRepository_.serialize<CartTypes.CartDTO>(cart, {
+    //   populate: true,
+    // })
+  }
+
+  @InjectManager("baseRepository_")
+  async retrieveWithTotals(
+    id: string,
+    config: FindConfig<CartTypes.CartDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<CartTypes.CartDTO> {
     const cart = await this.cartService_.retrieve(id, config, sharedContext)
 
-    return await this.baseRepository_.serialize<CartTypes.CartDTO>(cart, {
-      populate: true,
-    })
+    const serialized = await this.baseRepository_.serialize<CartTypes.CartDTO>(cart, { populate: true })
+
+    return decorateTotals(serialized)
   }
 
   @InjectManager("baseRepository_")

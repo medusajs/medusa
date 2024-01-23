@@ -38,6 +38,32 @@ describe("Cart Module Service", () => {
       )
     })
 
+    it.only("should retrieve a cart with totals successfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+          items: [
+            {
+              title: "test",
+              quantity: 1,
+              unit_price: 100,
+            },
+          ],
+        },
+      ])
+
+      const cart = await service.retrieve(createdCart.id, {relations: ["items", "items.adjustments"]})
+
+      console.log(cart)
+
+      // expect(cart).toEqual(
+      //   expect.objectContaining({
+      //     id: createdCart.id,
+      //     currency_code: "eur",
+      //   })
+      // )
+    })
+
     it("should create a cart successfully", async () => {
       const [createdCart] = await service.create([
         {
