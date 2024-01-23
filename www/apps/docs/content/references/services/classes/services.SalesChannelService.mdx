@@ -44,8 +44,6 @@ Add a batch of product to a sales channel
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)&#62;","optional":false,"defaultValue":"","description":"the sales channel on which the products have been added","expandable":false,"children":[]}]} />
 
-___
-
 ### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
@@ -64,8 +62,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### create
 
 Creates a SalesChannel
@@ -81,8 +77,6 @@ To use this feature please enable the corresponding feature flag in your medusa 
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)&#62;","optional":false,"defaultValue":"","description":"the created channel","expandable":false,"children":[]}]} />
 
-___
-
 ### createDefault
 
 Creates a default sales channel, if this does not already exist.
@@ -90,8 +84,6 @@ Creates a default sales channel, if this does not already exist.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)&#62;","optional":false,"defaultValue":"","description":"the sales channel","expandable":false,"children":[]}]} />
-
-___
 
 ### delete
 
@@ -105,9 +97,7 @@ To use this feature please enable the corresponding feature flag in your medusa 
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Deletes a sales channel from\n This feature is under development and may change in the future.\nTo use this feature please enable the corresponding feature flag in your medusa backend project.","expandable":false,"children":[]}]} />
 
 ### list
 
@@ -120,8 +110,6 @@ Lists sales channels based on the provided parameters.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)[]&#62;","optional":false,"defaultValue":"","description":"an array containing the sales channels","expandable":false,"children":[]}]} />
-
-___
 
 ### listAndCount
 
@@ -136,8 +124,6 @@ sales channels that match the query.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"an array containing the sales channels as\n  the first element and the total count of sales channels that matches the query\n  as the second element.","expandable":false,"children":[]}]} />
 
-___
-
 ### listProductIdsBySalesChannelIds
 
 List all product ids that belongs to the sales channels ids
@@ -148,9 +134,7 @@ List all product ids that belongs to the sales channels ids
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"List all product ids that belongs to the sales channels ids","expandable":false,"children":[]}]} />
 
 ### removeProducts
 
@@ -164,8 +148,6 @@ Remove a batch of product from a sales channel
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)&#62;","optional":false,"defaultValue":"","description":"the sales channel on which the products have been removed","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieve
 
 Retrieve a SalesChannel by id
@@ -177,8 +159,6 @@ Retrieve a SalesChannel by id
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)&#62;","optional":false,"defaultValue":"","description":"a sales channel","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveByName
 
@@ -192,8 +172,6 @@ Find a sales channel by name.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;unknown&#62;","optional":false,"defaultValue":"","description":"a sales channel with matching name","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieveDefault
 
 Retrieves the default sales channel.
@@ -201,8 +179,6 @@ Retrieves the default sales channel.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)&#62;","optional":false,"defaultValue":"","description":"the sales channel","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieve\_
 
@@ -216,8 +192,6 @@ A generic retrieve used to find a sales channel by different attributes.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)&#62;","optional":false,"defaultValue":"","description":"a single SC matching the query or throws","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -228,8 +202,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### update
 
 #### Parameters
@@ -239,8 +211,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

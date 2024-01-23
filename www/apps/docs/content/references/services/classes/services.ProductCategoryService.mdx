@@ -46,8 +46,6 @@ Add a batch of product to a product category
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the product category on which the products have been added","expandable":false,"children":[]}]} />
 
-___
-
 ### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
@@ -66,8 +64,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### create
 
 Creates a product category
@@ -79,8 +75,6 @@ Creates a product category
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductCategory](../../entities/classes/entities.ProductCategory.mdx)&#62;","optional":false,"defaultValue":"","description":"created product category","expandable":false,"children":[]}]} />
-
-___
 
 ### delete
 
@@ -94,8 +88,6 @@ Deletes a product category
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"a promise","expandable":false,"children":[]}]} />
 
-___
-
 ### fetchReorderConditions
 
 #### Parameters
@@ -105,8 +97,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"ReorderConditions","type":"`ReorderConditions`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### listAndCount
 
@@ -121,8 +111,6 @@ product category that match the query.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[ProductCategory](../../entities/classes/entities.ProductCategory.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"an array containing the product category as\n  the first element and the total count of product category that matches the query\n  as the second element.","expandable":false,"children":[]}]} />
 
-___
-
 ### performReordering
 
 #### Parameters
@@ -132,8 +120,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### removeProducts
 
@@ -147,8 +133,6 @@ Remove a batch of product from a product category
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the product category on which the products have been removed","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieve
 
 Retrieves a product category by id.
@@ -160,8 +144,6 @@ Retrieves a product category by id.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductCategory](../../entities/classes/entities.ProductCategory.mdx)&#62;","optional":false,"defaultValue":"","description":"the product category.","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveByHandle
 
@@ -175,8 +157,6 @@ Retrieves a product category by handle.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductCategory](../../entities/classes/entities.ProductCategory.mdx)&#62;","optional":false,"defaultValue":"","description":"the product category.","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieve\_
 
 A generic retrieve for fining product categories by different attributes.
@@ -189,8 +169,6 @@ A generic retrieve for fining product categories by different attributes.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductCategory](../../entities/classes/entities.ProductCategory.mdx)&#62;","optional":false,"defaultValue":"","description":"the product category.","expandable":false,"children":[]}]} />
 
-___
-
 ### shiftSiblings
 
 #### Parameters
@@ -201,8 +179,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -212,8 +188,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### transformParentIdToEntity
 
@@ -228,8 +202,6 @@ into product\_category entity.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;CreateProductCategoryInput \\| UpdateProductCategoryInput&#62;","optional":false,"defaultValue":"","description":"transformed productCategoryInput","expandable":false,"children":[]}]} />
 
-___
-
 ### update
 
 Updates a product category
@@ -241,8 +213,6 @@ Updates a product category
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[ProductCategory](../../entities/classes/entities.ProductCategory.mdx)&#62;","optional":false,"defaultValue":"","description":"updated product category","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

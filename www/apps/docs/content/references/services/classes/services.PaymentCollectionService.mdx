@@ -50,8 +50,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### authorizePaymentSessions
 
 Authorizes the payment sessions of a payment collection.
@@ -63,8 +61,6 @@ Authorizes the payment sessions of a payment collection.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection and its payment session.","expandable":false,"children":[]}]} />
-
-___
 
 ### create
 
@@ -78,8 +74,6 @@ Creates a new payment collection.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection created.","expandable":false,"children":[]}]} />
 
-___
-
 ### delete
 
 Deletes a payment collection.
@@ -92,8 +86,6 @@ Deletes a payment collection.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;undefined \\| [PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection removed.","expandable":false,"children":[]}]} />
 
-___
-
 ### isValidTotalAmount
 
 #### Parameters
@@ -103,8 +95,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### markAsAuthorized
 
@@ -118,8 +108,6 @@ Marks a payment collection as authorized bypassing the payment flow.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment session authorized.","expandable":false,"children":[]}]} />
 
-___
-
 ### refreshPaymentSession
 
 Removes and recreate a payment session of a payment collection.
@@ -131,8 +119,6 @@ Removes and recreate a payment session of a payment collection.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;","optional":false,"defaultValue":"","description":"the new payment session created.","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieve
 
@@ -146,8 +132,6 @@ Retrieves a payment collection by id.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection.","expandable":false,"children":[]}]} />
 
-___
-
 ### setPaymentSession
 
 Manages a single payment sessions of a payment collection.
@@ -159,8 +143,6 @@ Manages a single payment sessions of a payment collection.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection and its payment session.","expandable":false,"children":[]}]} />
-
-___
 
 ### setPaymentSessionsBatch
 
@@ -174,8 +156,6 @@ Manages multiple payment sessions of a payment collection.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection and its payment sessions.","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -185,8 +165,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### update
 
@@ -199,8 +177,6 @@ Updates a payment collection.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;","optional":false,"defaultValue":"","description":"the payment collection updated.","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 
