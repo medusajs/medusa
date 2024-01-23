@@ -16,7 +16,7 @@ const sharedPgConnection = knex<any, any>({
   searchPath: process.env.MEDUSA_WORKFLOW_ENGINE_DB_SCHEMA,
   connection: {
     connectionString: DB_URL,
-    debug: true,
+    debug: false,
   },
 })
 
