@@ -46,7 +46,7 @@ export interface RepositoryService<
 
   update(data: TDTOs["update"][], context?: Context): Promise<T[]>
 
-  delete(ids: string[], context?: Context): Promise<void>
+  delete(idsOrPKs: string[] | object[], context?: Context): Promise<void>
 
   /**
    * Soft delete entities and cascade to related entities if configured.

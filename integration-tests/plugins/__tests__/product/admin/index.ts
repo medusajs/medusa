@@ -16,7 +16,7 @@ import {
 } from "../../../../factories"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 
-jest.setTimeout(5000000)
+jest.setTimeout(50000)
 
 const adminHeaders = {
   headers: {
