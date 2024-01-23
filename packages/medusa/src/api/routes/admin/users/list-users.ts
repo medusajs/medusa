@@ -220,6 +220,14 @@ export class AdminGetUsersParams extends extendedFindParamsMixin() {
   created_at?: DateComparisonOperator
 
   /**
+   * Date filters to apply on the users' `deleted_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  deleted_at?: DateComparisonOperator
+
+  /**
    * Filter to apply on the users' `email` field.
    */
   @IsOptional()
