@@ -36,4 +36,4 @@ REDIS_URL=<YOUR_REDIS_URL>
 ## See Also
 
 - [Set up your development environment](../development/backend/prepare-environment.mdx)
-- [Configure the Medusa backend](../development/backend/configurations.md)
+- [Configure the Medusa backend](../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx)

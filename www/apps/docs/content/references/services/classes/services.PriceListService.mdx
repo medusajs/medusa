@@ -50,8 +50,6 @@ Add `currency_code` to an MA record if `region_id`is passed.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;T[]&#62;","optional":false,"defaultValue":"","description":"updated `prices` list","expandable":false,"children":[]}]} />
 
-___
-
 ### addPrices
 
 Adds prices to a price list in bulk, optionally replacing all existing prices
@@ -63,8 +61,6 @@ Adds prices to a price list in bulk, optionally replacing all existing prices
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PriceList](../../entities/classes/entities.PriceList.mdx)&#62;","optional":false,"defaultValue":"","description":"updated Price List","expandable":false,"children":[]}]} />
-
-___
 
 ### atomicPhase\_
 
@@ -84,8 +80,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### clearPrices
 
 Removes all prices from a price list and deletes the removed prices in bulk
@@ -98,8 +92,6 @@ Removes all prices from a price list and deletes the removed prices in bulk
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"updated Price List","expandable":false,"children":[]}]} />
 
-___
-
 ### create
 
 Creates a Price List
@@ -111,8 +103,6 @@ Creates a Price List
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PriceList](../../entities/classes/entities.PriceList.mdx)&#62;","optional":false,"defaultValue":"","description":"created Price List","expandable":false,"children":[]}]} />
-
-___
 
 ### delete
 
@@ -127,8 +117,6 @@ Will never fail due to delete being idempotent.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"empty promise","expandable":false,"children":[]}]} />
 
-___
-
 ### deletePrices
 
 Removes prices from a price list and deletes the removed prices in bulk
@@ -141,8 +129,6 @@ Removes prices from a price list and deletes the removed prices in bulk
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"updated Price List","expandable":false,"children":[]}]} />
 
-___
-
 ### deleteProductPrices
 
 #### Parameters
@@ -153,8 +139,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[string[], number]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### deleteVariantPrices
 
 #### Parameters
@@ -164,8 +148,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[string[], number]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### list
 
@@ -179,8 +161,6 @@ Lists Price Lists
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PriceList](../../entities/classes/entities.PriceList.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
 
-___
-
 ### listAndCount
 
 Lists Price Lists and adds count
@@ -193,8 +173,6 @@ Lists Price Lists and adds count
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[PriceList](../../entities/classes/entities.PriceList.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
 
-___
-
 ### listPriceListsVariantIdsMap
 
 #### Parameters
@@ -204,8 +182,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### listProducts
 
@@ -217,8 +193,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[Product](../../entities/classes/entities.Product.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### listVariants
 
 #### Parameters
@@ -228,8 +202,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieve
 
@@ -243,8 +215,6 @@ Retrieves a product tag by id.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PriceList](../../entities/classes/entities.PriceList.mdx)&#62;","optional":false,"defaultValue":"","description":"the collection.","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -254,8 +224,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### update
 
@@ -269,8 +237,6 @@ Updates a Price List
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PriceList](../../entities/classes/entities.PriceList.mdx)&#62;","optional":false,"defaultValue":"","description":"updated Price List","expandable":false,"children":[]}]} />
 
-___
-
 ### upsertCustomerGroups\_
 
 #### Parameters
@@ -280,8 +246,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

@@ -7,6 +7,7 @@ import {
 import { upperCaseFirst } from "@medusajs/utils"
 
 export enum Modules {
+  LINK = "linkModules",
   EVENT_BUS = "eventBus",
   STOCK_LOCATION = "stockLocationService",
   INVENTORY = "inventoryService",
@@ -37,6 +38,7 @@ export enum ModuleRegistrationName {
 }
 
 export const MODULE_PACKAGE_NAMES = {
+  [Modules.LINK]: "@medusajs/link-modules",
   [Modules.PRODUCT]: "@medusajs/product",
   [Modules.EVENT_BUS]: "@medusajs/event-bus-local",
   [Modules.STOCK_LOCATION]: "@medusajs/stock-location",

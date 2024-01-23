@@ -86,7 +86,7 @@
 
 {{#with type.declaration}}
 
-{{{titleLevel}}} Type declaration
+{{{titleLevel}}} Properties
 
 {{/with}}
 
@@ -97,6 +97,30 @@
 {{/with}}
 
 {{/if}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_declaration_children")}}
+
+{{#if (shouldExpandDeclarationChildren)}}
+
+{{#each (getDeclarationChildren)}}
+
+{{> member}}
+
+{{/each}}
+
+{{else}}
+
+{{#with (getDeclarationChildren)}}
+
+{{{titleLevel}}} Properties
+
+{{{typeDeclarationMembers}}}
+
+{{/with}}
 
 {{/if}}
 
