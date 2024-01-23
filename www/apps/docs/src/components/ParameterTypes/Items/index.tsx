@@ -18,13 +18,14 @@ import {
 } from "@medusajs/icons"
 import IconFlagMini from "../../../theme/Icon/FlagMini"
 import decodeStr from "../../../utils/decode-str"
-import { useHistory, useLocation } from "@docusaurus/router"
+import { useLocation } from "@docusaurus/router"
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
 import isInView from "../../../utils/is-in-view"
 
 type CommonProps = {
   level?: number
   expandUrl?: string
+  sectionTitle?: string
 }
 
 type ParameterTypesItemProps = {
@@ -38,9 +39,9 @@ const ParameterTypesItem = ({
   level = 1,
   expandUrl,
   elementKey,
+  sectionTitle,
 }: ParameterTypesItemProps) => {
   const location = useLocation()
-  const history = useHistory()
 
   const {
     siteConfig: { url },
@@ -90,10 +91,16 @@ const ParameterTypesItem = ({
       !details && borderForGroupName
     )
   }
-  const parameterId = useMemo(
-    () => `#${parameter.name}-${elementKey}`,
-    [parameter, elementKey]
-  )
+  const formatId = (str: string) => {
+    return str.replaceAll(" ", "_")
+  }
+  const parameterId = useMemo(() => {
+    return sectionTitle
+      ? `#${formatId(sectionTitle)}-${formatId(
+          parameter.name
+        )}-${level}-${elementKey}`
+      : ""
+  }, [sectionTitle, parameter, elementKey])
   const parameterPath = useMemo(
     () => `${location.pathname}${parameterId}`,
     [location, parameterId]
@@ -107,6 +114,10 @@ const ParameterTypesItem = ({
   const [isSelected, setIsSelected] = useState(false)
 
   useEffect(() => {
+    if (!parameterId.length) {
+      return
+    }
+
     const shouldScroll = location.hash === parameterId
     if (shouldScroll && !isSelected && ref.current && !isInView(ref.current)) {
       ref.current.scrollIntoView({
@@ -115,9 +126,9 @@ const ParameterTypesItem = ({
     }
 
     setIsSelected(shouldScroll)
-  }, [location.hash, isSelected])
+  }, [parameterId])
 
-  function getSummary(parameter: Parameter, key: number, nested = true) {
+  function getSummary(parameter: Parameter, nested = true) {
     return (
       <DetailsSummary
         subtitle={
@@ -148,8 +159,7 @@ const ParameterTypesItem = ({
           level === 3 && "pl-[120px]",
           level === 4 && "pl-[160px]",
           !nested && "cursor-default",
-          isSelected && "bg-medusa-bg-subtle-pressed",
-          "transition-fg duration-300"
+          isSelected && "animate-flash animate-bg-surface"
         )}
         onClick={(e) => {
           const targetElm = e.target as HTMLElement
@@ -159,6 +169,8 @@ const ParameterTypesItem = ({
             return
           }
         }}
+        summaryRef={!nested ? ref : undefined}
+        id={!nested && parameterId ? parameterId : ""}
       >
         <div className="flex gap-0.5">
           {nested && (
@@ -174,15 +186,12 @@ const ParameterTypesItem = ({
               className={clsx("text-medusa-fg-subtle flip-y")}
             />
           )}
-          {level === 1 && (
+          {level === 1 && parameterId.length > 0 && (
             <CopyButton
               text={parameterUrl}
               onCopy={(e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
                 e.preventDefault()
                 e.stopPropagation()
-                history.replace({
-                  hash: parameterId,
-                })
               }}
             >
               <Link
@@ -234,12 +243,14 @@ const ParameterTypesItem = ({
   }
 
   return (
-    <div id={parameterId} ref={ref}>
+    <>
       {parameter.children?.length > 0 && (
         <Details
-          summary={getSummary(parameter, elementKey)}
+          summary={getSummary(parameter)}
           className={clsx(getItemClassNames())}
           heightAnimation={true}
+          ref={ref}
+          id={parameterId ? parameterId : ""}
         >
           {parameter.children && (
             <ParameterTypesItems
@@ -250,9 +261,8 @@ const ParameterTypesItem = ({
           )}
         </Details>
       )}
-      {(parameter.children?.length || 0) === 0 &&
-        getSummary(parameter, elementKey, false)}
-    </div>
+      {(parameter.children?.length || 0) === 0 && getSummary(parameter, false)}
+    </>
   )
 }
 
