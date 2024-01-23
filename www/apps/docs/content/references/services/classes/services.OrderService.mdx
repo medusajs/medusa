@@ -42,8 +42,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### archive
 
 Archives an order. It only alloved, if the order has been fulfilled
@@ -56,8 +54,6 @@ and payment has been captured.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
-
-___
 
 ### atomicPhase\_
 
@@ -77,8 +73,6 @@ transaction manager is created.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
 
-___
-
 ### cancel
 
 Cancels an order.
@@ -93,8 +87,6 @@ Throws if payment process has been initiated.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"result of the update operation.","expandable":false,"children":[]}]} />
 
-___
-
 ### cancelFulfillment
 
 Cancels a fulfillment (if related to an order)
@@ -106,8 +98,6 @@ Cancels a fulfillment (if related to an order)
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"updated order","expandable":false,"children":[]}]} />
-
-___
 
 ### capturePayment
 
@@ -121,8 +111,6 @@ Captures payment for an order.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"result of the update operation.","expandable":false,"children":[]}]} />
 
-___
-
 ### completeOrder
 
 #### Parameters
@@ -132,8 +120,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-___
 
 ### createFromCart
 
@@ -146,8 +132,6 @@ Creates an order from a cart
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the creation result.","expandable":false,"children":[]}]} />
-
-___
 
 ### createFulfillment
 
@@ -164,8 +148,6 @@ to their respective fulfillment provider.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"result of the update operation.","expandable":false,"children":[]}]} />
 
-___
-
 ### createGiftCardsFromLineItem\_
 
 #### Parameters
@@ -175,8 +157,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise&#60;GiftCard&#62;[]","type":"Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### createRefund
 
@@ -189,8 +169,6 @@ Refunds a given amount back to the customer.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the refund operation.","expandable":false,"children":[]}]} />
-
-___
 
 ### createShipment
 
@@ -206,8 +184,6 @@ have been created in regards to the shipment.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting order following the update.","expandable":false,"children":[]}]} />
 
-___
-
 ### decorateTotals
 
 `**decorateTotals**(order, totalsFields?): Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;`
@@ -220,7 +196,7 @@ Calculate and attach the different total fields on the object
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"Calculate and attach the different total fields on the object","expandable":false,"children":[]}]} />
 
 `**decorateTotals**(order, context?): Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;`
 
@@ -232,9 +208,7 @@ Calculate and attach the different total fields on the object
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"Calculate and attach the different total fields on the object","expandable":false,"children":[]}]} />
 
 ### decorateTotalsLegacy
 
@@ -245,8 +219,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### getFulfillmentItems
 
@@ -260,8 +232,6 @@ Retrieves the order line items, given an array of items.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the line items generated by the transformer.","expandable":false,"children":[]}]} />
 
-___
-
 ### getTotalsRelations
 
 #### Parameters
@@ -271,8 +241,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"string[]","type":"`string`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### list
 
@@ -284,8 +252,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
 
-___
-
 ### listAndCount
 
 #### Parameters
@@ -295,8 +261,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[Order](../../entities/classes/entities.Order.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-___
 
 ### registerReturnReceived
 
@@ -316,8 +280,6 @@ mismatches.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieve
 
 Gets an order by id.
@@ -329,8 +291,6 @@ Gets an order by id.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"the order document","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveByCartId
 
@@ -344,8 +304,6 @@ Gets an order by cart id.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"the order document","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieveByCartIdWithTotals
 
 #### Parameters
@@ -355,8 +313,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveByExternalId
 
@@ -370,8 +326,6 @@ Gets an order by id.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"the order document","expandable":false,"children":[]}]} />
 
-___
-
 ### retrieveLegacy
 
 #### Parameters
@@ -381,8 +335,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### retrieveWithTotals
 
@@ -394,8 +346,6 @@ ___
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
 
-___
-
 ### shouldRetryTransaction\_
 
 #### Parameters
@@ -405,8 +355,6 @@ ___
 #### Returns
 
 <ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
 
 ### transformQueryForTotals
 
@@ -419,8 +367,6 @@ ___
 <ParameterTypes parameters={[{"name":"relations","type":"`undefined` \\| `string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"select","type":"`undefined` \\| keyof [Order](../../entities/classes/entities.Order.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"totalsToSelect","type":"`undefined` \\| keyof [Order](../../entities/classes/entities.Order.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 <ParameterTypes parameters={[{"name":"relations","type":"`undefined` \\| `string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"select","type":"`undefined` \\| keyof [Order](../../entities/classes/entities.Order.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"totalsToSelect","type":"`undefined` \\| keyof [Order](../../entities/classes/entities.Order.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-___
 
 ### update
 
@@ -436,8 +382,6 @@ will throw errors if metadata updates are attempted.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the update result.","expandable":false,"children":[]}]} />
 
-___
-
 ### updateBillingAddress
 
 Updates the order's billing address.
@@ -450,8 +394,6 @@ Updates the order's billing address.
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
 
-___
-
 ### updateShippingAddress
 
 Updates the order's shipping address.
@@ -463,8 +405,6 @@ Updates the order's shipping address.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
-
-___
 
 ### validateFulfillmentLineItem
 
@@ -480,8 +420,6 @@ quantity from the quantity that was originally purchased.
 #### Returns
 
 <ParameterTypes parameters={[{"name":"null \\| LineItem","type":"`null` \\| [LineItem](../../entities/classes/entities.LineItem.mdx)","optional":false,"defaultValue":"","description":"a line item that has the requested fulfillment quantity\n  set.","expandable":false,"children":[]}]} />
-
-___
 
 ### withTransaction
 

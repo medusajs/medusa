@@ -7,6 +7,7 @@ import {
 import { upperCaseFirst } from "@medusajs/utils"
 
 export enum Modules {
+  LINK = "linkModules",
   EVENT_BUS = "eventBus",
   STOCK_LOCATION = "stockLocationService",
   INVENTORY = "inventoryService",
@@ -15,6 +16,7 @@ export enum Modules {
   PRICING = "pricingService",
   PROMOTION = "promotion",
   AUTHENTICATION = "authentication",
+  WORKFLOW_ENGINE = "workflows",
   SALES_CHANNEL = "salesChannel",
   CART = "cart",
   CUSTOMER = "customer",
@@ -30,6 +32,7 @@ export enum ModuleRegistrationName {
   PRICING = "pricingModuleService",
   PROMOTION = "promotionModuleService",
   AUTHENTICATION = "authenticationModuleService",
+  WORKFLOW_ENGINE = "workflowsModuleService",
   SALES_CHANNEL = "salesChannelModuleService",
   CART = "cartModuleService",
   CUSTOMER = "customerModuleService",
@@ -37,6 +40,7 @@ export enum ModuleRegistrationName {
 }
 
 export const MODULE_PACKAGE_NAMES = {
+  [Modules.LINK]: "@medusajs/link-modules",
   [Modules.PRODUCT]: "@medusajs/product",
   [Modules.EVENT_BUS]: "@medusajs/event-bus-local",
   [Modules.STOCK_LOCATION]: "@medusajs/stock-location",
@@ -45,6 +49,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.PRICING]: "@medusajs/pricing",
   [Modules.PROMOTION]: "@medusajs/promotion",
   [Modules.AUTHENTICATION]: "@medusajs/authentication",
+  [Modules.WORKFLOW_ENGINE]: "@medusajs/workflow-engine-inmemory",
   [Modules.SALES_CHANNEL]: "@medusajs/sales-channel",
   [Modules.CART]: "@medusajs/cart",
   [Modules.CUSTOMER]: "@medusajs/customer",
@@ -157,6 +162,20 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       registrationName: ModuleRegistrationName.AUTHENTICATION,
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.AUTHENTICATION),
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.WORKFLOW_ENGINE]: {
+      key: Modules.WORKFLOW_ENGINE,
+      registrationName: ModuleRegistrationName.WORKFLOW_ENGINE,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.WORKFLOW_ENGINE),
       isRequired: false,
       canOverride: true,
       isQueryable: true,

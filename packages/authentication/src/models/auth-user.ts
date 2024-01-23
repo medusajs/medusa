@@ -1,24 +1,31 @@
-import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Entity,
+  Index,
   ManyToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
+  Unique,
 } from "@mikro-orm/core"
+
 import AuthProvider from "./auth-provider"
+import { generateEntityId } from "@medusajs/utils"
 
 type OptionalFields = "provider_metadata" | "app_metadata" | "user_metadata"
 
 @Entity()
+@Unique({ properties: ["provider","entity_id" ], name: "IDX_auth_user_provider_entity_id" })
 export default class AuthUser {
   [OptionalProps]: OptionalFields
 
   @PrimaryKey({ columnType: "text" })
   id!: string
+
+  @Property({ columnType: "text" })
+  entity_id: string
 
   @ManyToOne(() => AuthProvider, {
     joinColumn: "provider",
