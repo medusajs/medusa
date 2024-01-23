@@ -58,8 +58,8 @@ export class AdminPostPromotionsReq {
 
   @IsNotEmpty()
   @ValidateNested()
-  @Type(() => ApplicationMethod)
-  application_method: ApplicationMethod
+  @Type(() => ApplicationMethodsPostReq)
+  application_method: ApplicationMethodsPostReq
 
   @IsOptional()
   @IsArray()
@@ -85,7 +85,7 @@ export class PromotionRule {
   values: string[]
 }
 
-export class ApplicationMethod {
+export class ApplicationMethodsPostReq {
   @IsOptional()
   @IsString()
   description?: string
@@ -130,7 +130,53 @@ export class ApplicationMethod {
   @ValidateIf((data) => data.type === PromotionType.BUYGET)
   @IsNotEmpty()
   @IsNumber()
-  buy_rules_min_quantity: number
+  buy_rules_min_quantity?: number
+}
+
+export class ApplicationMethodsMethodPostReq {
+  @IsOptional()
+  @IsString()
+  description?: string
+
+  @IsOptional()
+  @IsString()
+  value?: string
+
+  @IsOptional()
+  @IsNumber()
+  max_quantity?: number
+
+  @IsOptional()
+  @IsEnum(ApplicationMethodType)
+  type?: ApplicationMethodType
+
+  @IsOptional()
+  @IsEnum(ApplicationMethodTargetType)
+  target_type?: ApplicationMethodTargetType
+
+  @IsOptional()
+  @IsEnum(ApplicationMethodAllocation)
+  allocation?: ApplicationMethodAllocation
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PromotionRule)
+  target_rules?: PromotionRule[]
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PromotionRule)
+  buy_rules?: PromotionRule[]
+
+  @IsOptional()
+  @IsNumber()
+  apply_to_quantity?: number
+
+  @IsOptional()
+  @IsNumber()
+  buy_rules_min_quantity?: number
 }
 
 export class AdminPostPromotionsPromotionReq {
@@ -159,8 +205,8 @@ export class AdminPostPromotionsPromotionReq {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => ApplicationMethod)
-  application_method?: ApplicationMethod
+  @Type(() => ApplicationMethodsMethodPostReq)
+  application_method?: ApplicationMethodsMethodPostReq
 
   @IsOptional()
   @IsArray()
