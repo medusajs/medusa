@@ -58,7 +58,7 @@
     "dotenv": "^16.1.4",
     "jsonwebtoken": "^9.0.2",
     "knex": "2.4.2",
-    "oauth": "^0.10.0",
-    "scrypt-kdf": "^2.0.1"
+    "scrypt-kdf": "^2.0.1",
+    "simple-oauth2": "^5.0.0"
   }
 }
