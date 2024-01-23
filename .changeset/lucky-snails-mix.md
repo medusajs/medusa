@@ -1,7 +1,7 @@
 ---
 "@medusajs/medusa": patch
 "@medusajs/medusa-js": patch
-"@medusajs/medusa-react": patch
+"medusa-react": patch
 ---
 
 fix(medusa): Implements `listAndCount` method for UserService, and updates list endpoint to accept the expected params.
