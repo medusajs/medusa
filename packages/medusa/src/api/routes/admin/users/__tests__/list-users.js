@@ -27,7 +27,7 @@ describe("GET /admin/users", () => {
         expect.objectContaining({
           order: { created_at: "DESC" },
           skip: 0,
-          take: 20,
+          take: 50,
         })
       )
     })
