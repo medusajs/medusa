@@ -1,6 +1,16 @@
 import { PencilSquare, Trash, XCircle } from "@medusajs/icons"
 import { PublishableApiKey } from "@medusajs/medusa"
-import { Button, Container, Heading, Table, clx, usePrompt } from "@medusajs/ui"
+import {
+  Button,
+  Container,
+  Copy,
+  Heading,
+  StatusBadge,
+  Table,
+  Text,
+  clx,
+  usePrompt,
+} from "@medusajs/ui"
 import {
   PaginationState,
   RowSelectionState,
@@ -9,6 +19,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
+import { format } from "date-fns"
 import {
   useAdminDeletePublishableApiKey,
   useAdminPublishableApiKeys,
@@ -71,7 +82,7 @@ export const ApiKeyManagementListTable = () => {
   }
 
   return (
-    <Container className="p-0">
+    <Container className="p-0 divide-y">
       <div className="px-6 py-4 flex items-center justify-between">
         <Heading level="h2">{t("apiKeyManagement.domain")}</Heading>
         <Link to="create">
@@ -89,7 +100,7 @@ export const ApiKeyManagementListTable = () => {
                   return (
                     <Table.Row
                       key={headerGroup.id}
-                      className="[&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th]:w-1/3"
+                      className="[&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th]:w-1/4"
                     >
                       {headerGroup.headers.map((header) => {
                         return (
@@ -247,7 +258,45 @@ const useColumns = () => {
       }),
       columnHelper.accessor("id", {
         header: "Key",
-        cell: ({ getValue }) => getValue(),
+        cell: ({ getValue }) => {
+          const token = getValue()
+
+          return (
+            <div
+              className="bg-ui-bg-subtle border border-ui-border-base flex items-center gap-x-0.5 w-fit max-w-[220px] rounded-full pl-2 pr-1 box-border cursor-default overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Text size="xsmall" leading="compact" className="truncate">
+                {token}
+              </Text>
+              <Copy
+                content={token}
+                variant="mini"
+                className="text-ui-fg-subtle"
+              />
+            </div>
+          )
+        },
+      }),
+      columnHelper.accessor("revoked_at", {
+        header: t("fields.status"),
+        cell: ({ getValue }) => {
+          const revokedAt = getValue()
+
+          return (
+            <StatusBadge color={revokedAt ? "red" : "green"}>
+              {revokedAt ? t("general.revoked") : t("general.active")}
+            </StatusBadge>
+          )
+        },
+      }),
+      columnHelper.accessor("created_at", {
+        header: t("fields.created"),
+        cell: ({ getValue }) => {
+          const date = getValue()
+
+          return format(new Date(date), "dd MMM, yyyy")
+        },
       }),
       columnHelper.display({
         id: "actions",

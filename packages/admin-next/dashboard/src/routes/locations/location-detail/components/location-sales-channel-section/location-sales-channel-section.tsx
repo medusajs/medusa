@@ -29,7 +29,7 @@ type LocationSalesChannelSectionProps = {
   location: StockLocationExpandedDTO
 }
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 10
 
 export const LocationSalesChannelSection = ({
   location,
