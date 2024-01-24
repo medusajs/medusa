@@ -1,3 +1,4 @@
+export * from "./authentication"
 export * from "./bundles"
 export * from "./common"
 export * from "./dal"

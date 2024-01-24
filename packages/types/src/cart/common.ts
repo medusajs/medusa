@@ -103,13 +103,21 @@ export interface ShippingMethodTaxLineDTO extends TaxLineDTO {
    * The associated shipping method
    */
   shipping_method: CartShippingMethodDTO
+  /**
+   * The ID of the associated shipping method
+   */
+  shipping_method_id: string
 }
 
 export interface LineItemTaxLineDTO extends TaxLineDTO {
   /**
    * The associated line item
    */
-  line_item: CartLineItemDTO
+  item: CartLineItemDTO
+  /**
+   * The ID of the associated line item
+   */
+  item_id: string
 }
 
 export interface CartAddressDTO {
@@ -517,6 +525,7 @@ export interface FilterableLineItemAdjustmentProps
   item_id?: string | string[]
   promotion_id?: string | string[]
   provider_id?: string | string[]
+  item?: FilterableLineItemProps
 }
 export interface FilterableShippingMethodProps
   extends BaseFilterable<FilterableShippingMethodProps> {
@@ -532,6 +541,29 @@ export interface FilterableShippingMethodAdjustmentProps
   shipping_method_id?: string | string[]
   promotion_id?: string | string[]
   provider_id?: string | string[]
+  shipping_method?: FilterableShippingMethodProps
+}
+
+export interface FilterableLineItemTaxLineProps
+  extends BaseFilterable<FilterableLineItemTaxLineProps> {
+  id?: string | string[]
+  description?: string
+  code?: string | string[]
+  tax_rate_id?: string | string[]
+  provider_id?: string | string[]
+  item_id?: string | string[]
+  item?: FilterableLineItemProps
+}
+
+export interface FilterableShippingMethodTaxLineProps
+  extends BaseFilterable<FilterableShippingMethodTaxLineProps> {
+  id?: string | string[]
+  description?: string
+  code?: string | string[]
+  tax_rate_id?: string | string[]
+  provider_id?: string | string[]
+  shipping_method_id?: string | string[]
+  shipping_method?: FilterableShippingMethodProps
 }
 
 /**

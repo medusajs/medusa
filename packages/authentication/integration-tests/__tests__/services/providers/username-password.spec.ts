@@ -1,13 +1,12 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-import Scrypt from "scrypt-kdf"
-
-import { MikroOrmWrapper } from "../../../utils"
-import { initialize } from "../../../../src"
 import { DB_URL } from "@medusajs/pricing/integration-tests/utils"
-import { MedusaModule } from "@medusajs/modules-sdk"
 import { IAuthenticationModuleService } from "@medusajs/types"
-import { createAuthUsers } from "../../../__fixtures__/auth-user"
+import { MedusaModule } from "@medusajs/modules-sdk"
+import { MikroOrmWrapper } from "../../../utils"
+import Scrypt from "scrypt-kdf"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createAuthProviders } from "../../../__fixtures__/auth-provider"
+import { createAuthUsers } from "../../../__fixtures__/auth-user"
+import { initialize } from "../../../../src"
 
 jest.setTimeout(30000)
 const seedDefaultData = async (testManager) => {

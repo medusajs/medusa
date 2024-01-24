@@ -111,10 +111,7 @@ export default class LineItem {
   @Check({ expression: "unit_price >= 0" }) // TODO: Validate that numeric types work with the expression
   unit_price: number
 
-  @Property({ columnType: "jsonb" })
-  raw_unit_price: Record<string, unknown>
-
-  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.line_item, {
+  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
     cascade: [Cascade.REMOVE],
   })
   tax_lines = new Collection<LineItemTaxLine>(this)

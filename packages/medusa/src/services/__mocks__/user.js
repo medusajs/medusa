@@ -1,6 +1,5 @@
-import Scrypt from "scrypt-kdf"
 import { IdMap } from "medusa-test-utils"
-import _ from "lodash"
+import Scrypt from "scrypt-kdf"
 
 export const users = {
   testUser: {
@@ -29,7 +28,7 @@ export const UserServiceMock = {
   withTransaction: function () {
     return this
   },
-  create: jest.fn().mockImplementation(data => {
+  create: jest.fn().mockImplementation((data) => {
     if (data.email === "oliver@test.dk") {
       return Promise.resolve(users.testUser)
     }
@@ -37,7 +36,8 @@ export const UserServiceMock = {
   }),
   update: jest.fn().mockReturnValue(Promise.resolve()),
   list: jest.fn().mockReturnValue(Promise.resolve([])),
-  delete: jest.fn().mockImplementation(data => {
+  listAndCount: jest.fn().mockReturnValue(Promise.resolve([[], 0])),
+  delete: jest.fn().mockImplementation((data) => {
     if (data === IdMap.getId("delete-user")) {
       return Promise.resolve({
         id: IdMap.getId("delete-user"),
@@ -47,7 +47,7 @@ export const UserServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  retrieve: jest.fn().mockImplementation(userId => {
+  retrieve: jest.fn().mockImplementation((userId) => {
     if (userId === IdMap.getId("test-user")) {
       return Promise.resolve(users.testUser)
     }
@@ -60,7 +60,7 @@ export const UserServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  setPassword_: jest.fn().mockImplementation(userId => {
+  setPassword_: jest.fn().mockImplementation((userId) => {
     if (userId === IdMap.getId("test-user")) {
       return Promise.resolve(users.testUser)
     }
@@ -80,13 +80,13 @@ export const UserServiceMock = {
   generateResetPasswordToken: jest
     .fn()
     .mockReturnValue(Promise.resolve("JSONWEBTOKEN")),
-  retrieveByApiToken: jest.fn().mockImplementation(token => {
+  retrieveByApiToken: jest.fn().mockImplementation((token) => {
     if (token === "123456789") {
       return Promise.resolve(users.user1)
     }
     return Promise.resolve(undefined)
   }),
-  retrieveByEmail: jest.fn().mockImplementation(email => {
+  retrieveByEmail: jest.fn().mockImplementation((email) => {
     if (email === "vandijk@test.dk") {
       return Promise.resolve({
         id: IdMap.getId("vandijk"),
@@ -95,7 +95,7 @@ export const UserServiceMock = {
       })
     }
     if (email === "oliver@test.dk") {
-      return Scrypt.kdf("123456789", { logN: 1, r: 1, p: 1 }).then(hash => ({
+      return Scrypt.kdf("123456789", { logN: 1, r: 1, p: 1 }).then((hash) => ({
         email,
         password_hash: hash.toString("base64"),
       }))
