@@ -144,12 +144,12 @@ class KnowledgeBaseFactory {
     {
       startsWith: "listAndCount",
       template:
-        "retrieves a paginated list of {return type} along with the total count of available {return type} satisfying the provided filters.",
+        "retrieves a paginated list of {return type} along with the total count of available {return type}(s) satisfying the provided filters.",
     },
     {
       startsWith: "list",
       template:
-        "retrieves a paginated list of {return type} based on optional filters and configuration.",
+        "retrieves a paginated list of {return type}(s) based on optional filters and configuration.",
     },
     {
       startsWith: "retrieve",
@@ -169,11 +169,11 @@ class KnowledgeBaseFactory {
     },
     {
       startsWith: "softDelete",
-      template: "soft deletes {return type} by their IDs.",
+      template: "soft deletes {return type}(s) by their IDs.",
     },
     {
       startsWith: "restore",
-      template: "restores soft deleted {return type} by their IDs.",
+      template: "restores soft deleted {return type}(s) by their IDs.",
     },
   ]
   private exampleCodeBlockLine = `${DOCBLOCK_DOUBLE_LINES}\`\`\`ts${DOCBLOCK_NEW_LINE}{example-code}${DOCBLOCK_NEW_LINE}\`\`\`${DOCBLOCK_DOUBLE_LINES}`
@@ -190,23 +190,23 @@ class KnowledgeBaseFactory {
   private functionReturnKnowledgeBase: KnowledgeBase[] = [
     {
       startsWith: "listAndCount",
-      template: "The list of {return type} along with their total count.",
+      template: "The list of {return type}(s) along with their total count.",
     },
     {
       startsWith: "list",
-      template: "The list of {return type}.",
+      template: "The list of {return type}(s).",
     },
     {
       startsWith: "retrieve",
-      template: "The retrieved {return type}.",
+      template: "The retrieved {return type}(s).",
     },
     {
       startsWith: "create",
-      template: "The created {return type}.",
+      template: "The created {return type}(s).",
     },
     {
       startsWith: "update",
-      template: "The updated {return type}.",
+      template: "The updated {return type}(s).",
     },
     {
       startsWith: "restore",
