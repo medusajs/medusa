@@ -77,6 +77,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "entity_id": {
+          "name": "entity_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "provider_id": {
           "name": "provider_id",
           "type": "text",
@@ -117,6 +126,16 @@
       "name": "auth_user",
       "schema": "public",
       "indexes": [
+        {
+          "keyName": "IDX_auth_user_provider_entity_id",
+          "columnNames": [
+            "provider_id",
+            "entity_id"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": true
+        },
         {
           "keyName": "auth_user_pkey",
           "columnNames": [

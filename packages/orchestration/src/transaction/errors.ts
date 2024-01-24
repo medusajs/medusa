@@ -4,7 +4,7 @@ export class PermanentStepFailureError extends Error {
   ): error is PermanentStepFailureError {
     return (
       error instanceof PermanentStepFailureError ||
-      error.name === "PermanentStepFailure"
+      error?.name === "PermanentStepFailure"
     )
   }
 
@@ -14,16 +14,19 @@ export class PermanentStepFailureError extends Error {
   }
 }
 
-export class StepTimeoutError extends Error {
-  static isStepTimeoutError(error: Error): error is StepTimeoutError {
+export class TransactionStepTimeoutError extends Error {
+  static isTransactionStepTimeoutError(
+    error: Error
+  ): error is TransactionStepTimeoutError {
     return (
-      error instanceof StepTimeoutError || error.name === "StepTimeoutError"
+      error instanceof TransactionStepTimeoutError ||
+      error?.name === "TransactionStepTimeoutError"
     )
   }
 
   constructor(message?: string) {
     super(message)
-    this.name = "StepTimeoutError"
+    this.name = "TransactionStepTimeoutError"
   }
 }
 
@@ -33,7 +36,7 @@ export class TransactionTimeoutError extends Error {
   ): error is TransactionTimeoutError {
     return (
       error instanceof TransactionTimeoutError ||
-      error.name === "TransactionTimeoutError"
+      error?.name === "TransactionTimeoutError"
     )
   }
 

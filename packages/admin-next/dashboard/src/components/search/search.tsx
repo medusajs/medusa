@@ -1,5 +1,5 @@
 import { MagnifyingGlass } from "@medusajs/icons"
-import { clx } from "@medusajs/ui"
+import { Kbd, Text, clx } from "@medusajs/ui"
 import * as Dialog from "@radix-ui/react-dialog"
 import { Command } from "cmdk"
 import {
@@ -10,6 +10,7 @@ import {
   useMemo,
 } from "react"
 import { useTranslation } from "react-i18next"
+
 import { useSearch } from "../../providers/search-provider"
 
 export const Search = () => {
@@ -100,6 +101,18 @@ const useLinks = (): CommandGroupProps[] => {
           {
             label: t("users.domain"),
           },
+          {
+            label: t("regions.domain"),
+          },
+          {
+            label: t("locations.domain"),
+          },
+          {
+            label: t("salesChannels.domain"),
+          },
+          {
+            label: t("apiKeyManagement.domain"),
+          },
         ],
       },
     ],
@@ -129,11 +142,30 @@ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
     <Dialog.Root {...props}>
       <Dialog.Portal>
         <Dialog.Overlay className="bg-ui-bg-overlay fixed inset-0" />
-        <Dialog.Content className="bg-ui-bg-subtle shadow-elevation-modal fixed left-[50%] top-[50%] w-full max-w-2xl translate-x-[-50%] translate-y-[-50%] overflow-hidden rounded-xl p-0">
+        <Dialog.Content className="bg-ui-bg-base shadow-elevation-modal fixed left-[50%] top-[50%] w-full max-w-2xl translate-x-[-50%] translate-y-[-50%] overflow-hidden rounded-xl p-0">
           <CommandPalette className="[&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
             {children}
           </CommandPalette>
-          <div className="border-t px-4 pb-4 pt-3"></div>
+          <div className="flex items-center justify-between border-t px-4 pb-4 pt-3">
+            <div></div>
+            <div className="flex items-center gap-x-3">
+              <div className="flex items-center gap-x-2">
+                <Text size="xsmall" leading="compact">
+                  Navigation
+                </Text>
+                <div className="flex items-center gap-x-1">
+                  <Kbd>↓</Kbd>
+                  <Kbd>↑</Kbd>
+                </div>
+              </div>
+              <div className="flex items-center gap-x-2">
+                <Text size="xsmall" leading="compact">
+                  Open Result
+                </Text>
+                <Kbd>↵</Kbd>
+              </div>
+            </div>
+          </div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
@@ -149,7 +181,7 @@ const CommandInput = forwardRef<
     <Command.Input
       ref={ref}
       className={clx(
-        "placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50",
+        "placeholder:text-ui-fg-muted flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}
@@ -166,7 +198,7 @@ const CommandList = forwardRef<
   <Command.List
     ref={ref}
     className={clx(
-      "max-h-[300px] overflow-y-auto overflow-x-hidden",
+      "max-h-[300px] overflow-y-auto overflow-x-hidden pb-4",
       className
     )}
     {...props}
@@ -219,7 +251,7 @@ const CommandItem = forwardRef<
   <Command.Item
     ref={ref}
     className={clx(
-      "aria-selected:bg-accent aria-selected:text-accent-foreground txt-compact-small relative flex cursor-default select-none items-center rounded-sm p-2 outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "aria-selected:bg-ui-bg-base-hover hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-hover txt-compact-small relative flex cursor-default select-none items-center rounded-md p-2 outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
     {...props}

@@ -11,8 +11,6 @@
     "node": ">=16"
   },
   "bin": {
-    "medusa-cart-migrations-down": "dist/scripts/bin/run-migration-down.js",
-    "medusa-cart-migrations-up": "dist/scripts/bin/run-migration-up.js",
     "medusa-cart-seed": "dist/scripts/bin/run-seed.js"
   },
   "repository": {

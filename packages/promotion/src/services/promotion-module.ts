@@ -5,16 +5,27 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   PromotionTypes,
+  RestoreReturn,
+  SoftDeleteReturn,
 } from "@medusajs/types"
 import {
   ApplicationMethodTargetType,
+  CampaignBudgetType,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   isString,
+  mapObjectTo,
 } from "@medusajs/utils"
-import { ApplicationMethod, Promotion } from "@models"
+import {
+  ApplicationMethod,
+  Campaign,
+  CampaignBudget,
+  Promotion,
+  PromotionRule,
+  PromotionRuleValue,
+} from "@models"
 import {
   ApplicationMethodService,
   CampaignBudgetService,
@@ -41,29 +52,37 @@ import {
   validateApplicationMethodAttributes,
   validatePromotionRuleAttributes,
 } from "@utils"
-import { joinerConfig } from "../joiner-config"
+import {
+  LinkableKeys,
+  entityNameToLinkableKeysMap,
+  joinerConfig,
+} from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  promotionService: PromotionService
-  applicationMethodService: ApplicationMethodService
-  promotionRuleService: PromotionRuleService
-  promotionRuleValueService: PromotionRuleValueService
-  campaignService: CampaignService
-  campaignBudgetService: CampaignBudgetService
+  promotionService: PromotionService<any>
+  applicationMethodService: ApplicationMethodService<any>
+  promotionRuleService: PromotionRuleService<any>
+  promotionRuleValueService: PromotionRuleValueService<any>
+  campaignService: CampaignService<any>
+  campaignBudgetService: CampaignBudgetService<any>
 }
 
 export default class PromotionModuleService<
-  TPromotion extends Promotion = Promotion
+  TPromotion extends Promotion = Promotion,
+  TPromotionRule extends PromotionRule = PromotionRule,
+  TPromotionRuleValue extends PromotionRuleValue = PromotionRuleValue,
+  TCampaign extends Campaign = Campaign,
+  TCampaignBudget extends CampaignBudget = CampaignBudget
 > implements PromotionTypes.IPromotionModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected promotionService_: PromotionService
+  protected promotionService_: PromotionService<TPromotion>
   protected applicationMethodService_: ApplicationMethodService
-  protected promotionRuleService_: PromotionRuleService
-  protected promotionRuleValueService_: PromotionRuleValueService
-  protected campaignService_: CampaignService
-  protected campaignBudgetService_: CampaignBudgetService
+  protected promotionRuleService_: PromotionRuleService<TPromotionRule>
+  protected promotionRuleValueService_: PromotionRuleValueService<TPromotionRuleValue>
+  protected campaignService_: CampaignService<TCampaign>
+  protected campaignBudgetService_: CampaignBudgetService<TCampaignBudget>
 
   constructor(
     {
@@ -88,6 +107,110 @@ export default class PromotionModuleService<
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  @InjectManager("baseRepository_")
+  async registerUsage(
+    computedActions: PromotionTypes.UsageComputedActions[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const promotionCodes = computedActions
+      .map((computedAction) => computedAction.code)
+      .filter(Boolean)
+
+    const promotionCodeCampaignBudgetMap = new Map<
+      string,
+      UpdateCampaignBudgetDTO
+    >()
+    const promotionCodeUsageMap = new Map<string, boolean>()
+
+    const existingPromotions = await this.list(
+      { code: promotionCodes },
+      { relations: ["application_method", "campaign", "campaign.budget"] },
+      sharedContext
+    )
+
+    const existingPromotionsMap = new Map<string, PromotionTypes.PromotionDTO>(
+      existingPromotions.map((promotion) => [promotion.code!, promotion])
+    )
+
+    for (let computedAction of computedActions) {
+      if (!ComputeActionUtils.canRegisterUsage(computedAction)) {
+        continue
+      }
+
+      const promotion = existingPromotionsMap.get(computedAction.code)
+
+      if (!promotion) {
+        continue
+      }
+
+      const campaignBudget = promotion.campaign?.budget
+
+      if (!campaignBudget) {
+        continue
+      }
+
+      if (campaignBudget.type === CampaignBudgetType.SPEND) {
+        const campaignBudgetData = promotionCodeCampaignBudgetMap.get(
+          campaignBudget.id
+        ) || { id: campaignBudget.id, used: campaignBudget.used || 0 }
+
+        campaignBudgetData.used =
+          (campaignBudgetData.used || 0) + computedAction.amount
+
+        if (
+          campaignBudget.limit &&
+          campaignBudgetData.used > campaignBudget.limit
+        ) {
+          continue
+        }
+
+        promotionCodeCampaignBudgetMap.set(
+          campaignBudget.id,
+          campaignBudgetData
+        )
+      }
+
+      if (campaignBudget.type === CampaignBudgetType.USAGE) {
+        const promotionAlreadyUsed =
+          promotionCodeUsageMap.get(promotion.code!) || false
+
+        if (promotionAlreadyUsed) {
+          continue
+        }
+
+        const campaignBudgetData = {
+          id: campaignBudget.id,
+          used: (campaignBudget.used || 0) + 1,
+        }
+
+        if (
+          campaignBudget.limit &&
+          campaignBudgetData.used > campaignBudget.limit
+        ) {
+          continue
+        }
+
+        promotionCodeCampaignBudgetMap.set(
+          campaignBudget.id,
+          campaignBudgetData
+        )
+
+        promotionCodeUsageMap.set(promotion.code!, true)
+      }
+
+      const campaignBudgetsData: UpdateCampaignBudgetDTO[] = []
+
+      for (const [_, campaignBudgetData] of promotionCodeCampaignBudgetMap) {
+        campaignBudgetsData.push(campaignBudgetData)
+      }
+
+      await this.campaignBudgetService_.update(
+        campaignBudgetsData,
+        sharedContext
+      )
+    }
   }
 
   async computeActions(
@@ -140,6 +263,8 @@ export default class PromotionModuleService<
           "application_method.target_rules.values",
           "rules",
           "rules.values",
+          "campaign",
+          "campaign.budget",
         ],
       }
     )
@@ -166,6 +291,7 @@ export default class PromotionModuleService<
         computedActions.push({
           action: "removeItemAdjustment",
           adjustment_id: codeAdjustmentMap.get(appliedCode)!.id,
+          code: appliedCode,
         })
       }
 
@@ -173,6 +299,7 @@ export default class PromotionModuleService<
         computedActions.push({
           action: "removeShippingMethodAdjustment",
           adjustment_id: codeAdjustmentMap.get(appliedCode)!.id,
+          code: appliedCode,
         })
       }
     }
@@ -259,9 +386,7 @@ export default class PromotionModuleService<
 
     return await this.baseRepository_.serialize<PromotionTypes.PromotionDTO>(
       promotion,
-      {
-        populate: true,
-      }
+      { populate: true }
     )
   }
 
@@ -279,10 +404,29 @@ export default class PromotionModuleService<
 
     return await this.baseRepository_.serialize<PromotionTypes.PromotionDTO[]>(
       promotions,
-      {
-        populate: true,
-      }
+      { populate: true }
     )
+  }
+
+  @InjectManager("baseRepository_")
+  async listAndCount(
+    filters: PromotionTypes.FilterablePromotionProps = {},
+    config: FindConfig<PromotionTypes.PromotionDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[PromotionTypes.PromotionDTO[], number]> {
+    const [promotions, count] = await this.promotionService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [
+      await this.baseRepository_.serialize<PromotionTypes.PromotionDTO[]>(
+        promotions,
+        { populate: true }
+      ),
+      count,
+    ]
   }
 
   async create(
@@ -314,6 +458,8 @@ export default class PromotionModuleService<
           "application_method.target_rules.values",
           "rules",
           "rules.values",
+          "campaign",
+          "campaign.budget",
         ],
       },
       sharedContext
@@ -329,12 +475,12 @@ export default class PromotionModuleService<
   ) {
     const promotionsData: CreatePromotionDTO[] = []
     const applicationMethodsData: CreateApplicationMethodDTO[] = []
+    const campaignsData: CreateCampaignDTO[] = []
 
     const promotionCodeApplicationMethodDataMap = new Map<
       string,
       PromotionTypes.CreateApplicationMethodDTO
     >()
-
     const promotionCodeRulesDataMap = new Map<
       string,
       PromotionTypes.CreatePromotionRuleDTO[]
@@ -343,10 +489,16 @@ export default class PromotionModuleService<
       string,
       PromotionTypes.CreatePromotionRuleDTO[]
     >()
+    const promotionCodeCampaignMap = new Map<
+      string,
+      PromotionTypes.CreateCampaignDTO
+    >()
 
     for (const {
       application_method: applicationMethodData,
       rules: rulesData,
+      campaign: campaignData,
+      campaign_id: campaignId,
       ...promotionData
     } of data) {
       if (applicationMethodData) {
@@ -360,7 +512,21 @@ export default class PromotionModuleService<
         promotionCodeRulesDataMap.set(promotionData.code, rulesData)
       }
 
-      promotionsData.push(promotionData)
+      if (campaignData && campaignId) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Provide either the 'campaign' or 'campaign_id' parameter; both cannot be used simultaneously.`
+        )
+      }
+
+      if (campaignData) {
+        promotionCodeCampaignMap.set(promotionData.code, campaignData)
+      }
+
+      promotionsData.push({
+        ...promotionData,
+        campaign: campaignId,
+      })
     }
 
     const createdPromotions = await this.promotionService_.create(
@@ -372,6 +538,15 @@ export default class PromotionModuleService<
       const applMethodData = promotionCodeApplicationMethodDataMap.get(
         promotion.code
       )
+
+      const campaignData = promotionCodeCampaignMap.get(promotion.code)
+
+      if (campaignData) {
+        campaignsData.push({
+          ...campaignData,
+          promotions: [promotion],
+        })
+      }
 
       if (applMethodData) {
         const {
@@ -402,7 +577,7 @@ export default class PromotionModuleService<
         }
       }
 
-      await this.createPromotionRulesAndValues(
+      await this.createPromotionRulesAndValues_(
         promotionCodeRulesDataMap.get(promotion.code) || [],
         "promotions",
         promotion,
@@ -416,8 +591,12 @@ export default class PromotionModuleService<
         sharedContext
       )
 
+    if (campaignsData.length) {
+      await this.createCampaigns(campaignsData, sharedContext)
+    }
+
     for (const applicationMethod of createdApplicationMethods) {
-      await this.createPromotionRulesAndValues(
+      await this.createPromotionRulesAndValues_(
         applicationMethodRuleMap.get(applicationMethod.promotion.id) || [],
         "application_methods",
         applicationMethod,
@@ -454,8 +633,11 @@ export default class PromotionModuleService<
         relations: [
           "application_method",
           "application_method.target_rules",
+          "application_method.target_rules.values",
           "rules",
           "rules.values",
+          "campaign",
+          "campaign.budget",
         ],
       },
       sharedContext
@@ -471,13 +653,10 @@ export default class PromotionModuleService<
   ) {
     const promotionIds = data.map((d) => d.id)
     const existingPromotions = await this.promotionService_.list(
-      {
-        id: promotionIds,
-      },
-      {
-        relations: ["application_method"],
-      }
+      { id: promotionIds },
+      { relations: ["application_method"] }
     )
+
     const existingPromotionsMap = new Map<string, Promotion>(
       existingPromotions.map((promotion) => [promotion.id, promotion])
     )
@@ -487,9 +666,14 @@ export default class PromotionModuleService<
 
     for (const {
       application_method: applicationMethodData,
+      campaign_id: campaignId,
       ...promotionData
     } of data) {
-      promotionsData.push(promotionData)
+      if (campaignId) {
+        promotionsData.push({ ...promotionData, campaign: campaignId })
+      } else {
+        promotionsData.push(promotionData)
+      }
 
       if (!applicationMethodData) {
         continue
@@ -507,6 +691,7 @@ export default class PromotionModuleService<
         !allowedAllocationForQuantity.includes(applicationMethodData.allocation)
       ) {
         applicationMethodData.max_quantity = null
+        existingApplicationMethod.max_quantity = null
       }
 
       validateApplicationMethodAttributes({
@@ -522,7 +707,10 @@ export default class PromotionModuleService<
           existingApplicationMethod.max_quantity,
       })
 
-      applicationMethodsData.push(applicationMethodData)
+      applicationMethodsData.push({
+        ...applicationMethodData,
+        id: existingApplicationMethod.id,
+      })
     }
 
     const updatedPromotions = this.promotionService_.update(
@@ -541,7 +729,6 @@ export default class PromotionModuleService<
   }
 
   @InjectManager("baseRepository_")
-  @InjectTransactionManager("baseRepository_")
   async addPromotionRules(
     promotionId: string,
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
@@ -549,20 +736,21 @@ export default class PromotionModuleService<
   ): Promise<PromotionTypes.PromotionDTO> {
     const promotion = await this.promotionService_.retrieve(promotionId)
 
-    await this.createPromotionRulesAndValues(
+    await this.createPromotionRulesAndValues_(
       rulesData,
       "promotions",
       promotion,
       sharedContext
     )
 
-    return this.retrieve(promotionId, {
-      relations: ["rules", "rules.values"],
-    })
+    return this.retrieve(
+      promotionId,
+      { relations: ["rules", "rules.values"] },
+      sharedContext
+    )
   }
 
   @InjectManager("baseRepository_")
-  @InjectTransactionManager("baseRepository_")
   async addPromotionTargetRules(
     promotionId: string,
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
@@ -581,29 +769,34 @@ export default class PromotionModuleService<
       )
     }
 
-    await this.createPromotionRulesAndValues(
+    await this.createPromotionRulesAndValues_(
       rulesData,
       "application_methods",
       applicationMethod,
       sharedContext
     )
 
-    return this.retrieve(promotionId, {
-      relations: [
-        "rules",
-        "rules.values",
-        "application_method",
-        "application_method.target_rules",
-        "application_method.target_rules.values",
-      ],
-    })
+    return this.retrieve(
+      promotionId,
+      {
+        relations: [
+          "rules",
+          "rules.values",
+          "application_method",
+          "application_method.target_rules",
+          "application_method.target_rules.values",
+        ],
+      },
+      sharedContext
+    )
   }
 
-  protected async createPromotionRulesAndValues(
+  @InjectTransactionManager("baseRepository_")
+  protected async createPromotionRulesAndValues_(
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
     relationName: "promotions" | "application_methods",
     relation: Promotion | ApplicationMethod,
-    sharedContext: Context
+    @MedusaContext() sharedContext: Context = {}
   ) {
     validatePromotionRuleAttributes(rulesData)
 
@@ -625,18 +818,93 @@ export default class PromotionModuleService<
         promotion_rule: createdPromotionRule,
       }))
 
-      await this.promotionRuleValueService_.create(promotionRuleValuesData)
+      await this.promotionRuleValueService_.create(
+        promotionRuleValuesData,
+        sharedContext
+      )
     }
   }
 
   @InjectTransactionManager("baseRepository_")
   async delete(
-    ids: string | string[],
+    ids: string[] | string,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    const promotionIds = Array.isArray(ids) ? ids : [ids]
+    const idsToDelete = Array.isArray(ids) ? ids : [ids]
 
-    await this.promotionService_.delete(promotionIds, sharedContext)
+    await this.promotionService_.delete(idsToDelete, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
+  async softDelete<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
+    ids: string | string[],
+    { returnLinkableKeys }: SoftDeleteReturn<TReturnableLinkableKeys> = {},
+    sharedContext: Context = {}
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    const idsToDelete = Array.isArray(ids) ? ids : [ids]
+    let [_, cascadedEntitiesMap] = await this.softDelete_(
+      idsToDelete,
+      sharedContext
+    )
+
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async softDelete_(
+    promotionIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TPromotion[], Record<string, unknown[]>]> {
+    return await this.promotionService_.softDelete(promotionIds, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
+  async restore<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
+    ids: string | string[],
+    { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
+    sharedContext: Context = {}
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    const idsToRestore = Array.isArray(ids) ? ids : [ids]
+    const [_, cascadedEntitiesMap] = await this.restore_(
+      idsToRestore,
+      sharedContext
+    )
+
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async restore_(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TPromotion[], Record<string, unknown[]>]> {
+    return await this.promotionService_.restore(ids, sharedContext)
   }
 
   @InjectManager("baseRepository_")
@@ -752,9 +1020,7 @@ export default class PromotionModuleService<
 
     return await this.baseRepository_.serialize<PromotionTypes.CampaignDTO>(
       campaign,
-      {
-        populate: true,
-      }
+      { populate: true }
     )
   }
 
@@ -772,10 +1038,29 @@ export default class PromotionModuleService<
 
     return await this.baseRepository_.serialize<PromotionTypes.CampaignDTO[]>(
       campaigns,
-      {
-        populate: true,
-      }
+      { populate: true }
     )
+  }
+
+  @InjectManager("baseRepository_")
+  async listAndCountCampaigns(
+    filters: PromotionTypes.FilterableCampaignProps = {},
+    config: FindConfig<PromotionTypes.CampaignDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[PromotionTypes.CampaignDTO[], number]> {
+    const [campaigns, count] = await this.campaignService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [
+      await this.baseRepository_.serialize<PromotionTypes.CampaignDTO[]>(
+        campaigns,
+        { populate: true }
+      ),
+      count,
+    ]
   }
 
   async createCampaigns(
@@ -799,7 +1084,7 @@ export default class PromotionModuleService<
     const campaigns = await this.listCampaigns(
       { id: createdCampaigns.map((p) => p!.id) },
       {
-        relations: ["budget"],
+        relations: ["budget", "promotions"],
       },
       sharedContext
     )
@@ -820,7 +1105,19 @@ export default class PromotionModuleService<
     >()
 
     for (const createCampaignData of data) {
-      const { budget: campaignBudgetData, ...campaignData } = createCampaignData
+      const {
+        budget: campaignBudgetData,
+        promotions,
+        ...campaignData
+      } = createCampaignData
+
+      const promotionsToAdd = promotions
+        ? await this.list(
+            { id: promotions.map((p) => p.id) },
+            {},
+            sharedContext
+          )
+        : []
 
       if (campaignBudgetData) {
         campaignIdentifierBudgetMap.set(
@@ -829,7 +1126,10 @@ export default class PromotionModuleService<
         )
       }
 
-      campaignsData.push(campaignData)
+      campaignsData.push({
+        ...campaignData,
+        promotions: promotionsToAdd,
+      })
     }
 
     const createdCampaigns = await this.campaignService_.create(
@@ -882,7 +1182,7 @@ export default class PromotionModuleService<
     const campaigns = await this.listCampaigns(
       { id: updatedCampaigns.map((p) => p!.id) },
       {
-        relations: ["budget"],
+        relations: ["budget", "promotions"],
       },
       sharedContext
     )
@@ -900,12 +1200,8 @@ export default class PromotionModuleService<
     const campaignBudgetsData: UpdateCampaignBudgetDTO[] = []
 
     const existingCampaigns = await this.listCampaigns(
-      {
-        id: campaignIds,
-      },
-      {
-        relations: ["budget"],
-      },
+      { id: campaignIds },
+      { relations: ["budget"] },
       sharedContext
     )
 
@@ -943,8 +1239,76 @@ export default class PromotionModuleService<
     ids: string | string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    const campaignIds = Array.isArray(ids) ? ids : [ids]
+    const idsToDelete = Array.isArray(ids) ? ids : [ids]
 
-    await this.promotionService_.delete(campaignIds, sharedContext)
+    await this.campaignService_.delete(idsToDelete, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
+  async softDeleteCampaigns<TReturnableLinkableKeys extends string>(
+    ids: string | string[],
+    { returnLinkableKeys }: SoftDeleteReturn<TReturnableLinkableKeys> = {},
+    sharedContext: Context = {}
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    const idsToDelete = Array.isArray(ids) ? ids : [ids]
+    let [_, cascadedEntitiesMap] = await this.softDeleteCampaigns_(
+      idsToDelete,
+      sharedContext
+    )
+
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async softDeleteCampaigns_(
+    campaignIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TCampaign[], Record<string, unknown[]>]> {
+    return await this.campaignService_.softDelete(campaignIds, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
+  async restoreCampaigns<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
+    ids: string | string[],
+    { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
+    sharedContext: Context = {}
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    const idsToRestore = Array.isArray(ids) ? ids : [ids]
+    const [_, cascadedEntitiesMap] = await this.restoreCampaigns_(
+      idsToRestore,
+      sharedContext
+    )
+
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async restoreCampaigns_(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TCampaign[], Record<string, unknown[]>]> {
+    return await this.campaignService_.restore(ids, sharedContext)
   }
 }

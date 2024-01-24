@@ -31,7 +31,7 @@ export function getReflectionTypeParameters({
   comment,
   level = 1,
   maxLevel,
-  wrapObject = false,
+  wrapObject,
   isReturn = true,
 }: GetReflectionTypeParametersParams): Parameter[] {
   const typeName = getType({
@@ -52,6 +52,20 @@ export function getReflectionTypeParameters({
   })
 
   const formatParameter = () => {
+    let description = ""
+
+    if (comment) {
+      if (isReturn) {
+        description = getReturnComment(comment)
+      }
+
+      if (!description.length) {
+        description = Handlebars.helpers.comment(comment.summary)
+      }
+    } else if (!isReturn) {
+      description = loadComment(typeName, project)
+    }
+
     return {
       name: "name" in reflectionType ? reflectionType.name : typeName,
       type,
@@ -65,13 +79,7 @@ export function getReflectionTypeParameters({
               reflectionType.declaration as DeclarationReflection
             ) || ""
           : "",
-      description: comment
-        ? isReturn
-          ? getReturnComment(comment)
-          : Handlebars.helpers.comment(comment.summary)
-        : !comment && !isReturn
-          ? loadComment(typeName, project)
-          : "",
+      description,
       expandable: comment?.hasModifier(`@expandable`) || false,
       featureFlag: Handlebars.helpers.featureFlag(comment),
       children: [],
@@ -99,20 +107,25 @@ export function getReflectionTypeParameters({
           if (!reflectionTypeArg) {
             return
           }
-          const typeArgComponent = getReflectionTypeParameters({
-            reflectionType: reflectionTypeArg,
-            project,
-            level: level + 1,
-            maxLevel,
-          })
 
-          componentItem[parentKey - 1].children?.push(...typeArgComponent)
+          componentItem[parentKey - 1].children?.push(
+            ...getReflectionTypeParameters({
+              reflectionType: reflectionTypeArg,
+              project,
+              level: level + 1,
+              maxLevel,
+              isReturn: false,
+            })
+          )
         })
       }
     } else {
       const reflection = (reflectionType.reflection ||
         getProjectChild(project, reflectionType.name)) as DeclarationReflection
-      const parentKey = wrapObject
+      const shouldWrapObject =
+        wrapObject ||
+        (wrapObject === undefined && level > 1 && canRetrieveChildren)
+      const parentKey = shouldWrapObject
         ? componentItem.push(formatParameter())
         : undefined
       if (reflection) {
@@ -149,10 +162,8 @@ export function getReflectionTypeParameters({
             ? componentItem[parentKey - 1].children?.push(childParameter)
             : componentItem.push(childParameter)
         }
-      } else {
-        parentKey
-          ? componentItem[parentKey - 1].children?.push(formatParameter())
-          : componentItem.push(formatParameter())
+      } else if (!parentKey) {
+        componentItem.push(formatParameter())
       }
     }
   } else if (reflectionType.type === "array") {
@@ -163,6 +174,7 @@ export function getReflectionTypeParameters({
         project,
         level: level + 1,
         maxLevel,
+        isReturn: false,
       })
       componentItem[parentKey - 1].children?.push(...elementTypeItem)
     }
@@ -186,6 +198,7 @@ export function getReflectionTypeParameters({
           project,
           level: level + 1,
           maxLevel,
+          isReturn: false,
         })
         pushTo.push(...elementTypeItem)
       })
@@ -200,6 +213,7 @@ export function getReflectionTypeParameters({
         project,
         level: level + 1,
         maxLevel,
+        isReturn: false,
       })
 
       parentKey

@@ -7,7 +7,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # How to Create a Fulfillment Provider
 
-In this document, you’ll learn how to create a fulfillment provider to a Medusa backend and the methods you must implement in it. If you’re unfamiliar with the Shipping architecture in Medusa, make sure to [check out the overview first](https://docs.medusajs.com/modules/carts-and-checkout/shipping).
+In this document, you’ll learn how to create a fulfillment provider in the Medusa backend and the methods you must implement in it. If you’re unfamiliar with the Shipping architecture in Medusa, make sure to [check out the overview first](https://docs.medusajs.com/modules/carts-and-checkout/shipping).
 
 ## Overview
 
@@ -71,7 +71,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"container","type":"[MedusaContainer](../../medusa/types/medusa.MedusaContainer-1.mdx)","description":"An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`Record<string, unknown>`","description":"If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"container","type":"[MedusaContainer](../../medusa/types/medusa.MedusaContainer-2.mdx)","description":"An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`Record<string, unknown>`","description":"If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 ___
 
@@ -125,8 +125,6 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"Used to set the price of the shipping method or option, based on the context the method is used in.","expandable":false,"children":[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### canCalculate
 
 This method is used to determine whether a shipping option is calculated dynamically or flat rate. It is called if the `price_type` of the shipping option being created is set to calculated.
@@ -151,8 +149,6 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"If this method returns `true`, that means that the price can be calculated dynamically and the shipping option can have the `price_type` set to calculated.\nThe amount property of the shipping option will then be set to null. The amount will be created later when the shipping method is created on checkout using the [calculatePrice](fulfillment.AbstractFulfillmentService.mdx#calculateprice) method.\nIf the method returns `false`, an error is thrown as it means the selected shipping option is invalid and it can only have the `flat_rate` price type.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### cancelFulfillment
 
@@ -181,8 +177,6 @@ class MyFulfillmentService extends FulfillmentService {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"The method isn't expected to return any specific data.","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### createFulfillment
 
 This method is used when a fulfillment is created for an order, a claim, or a swap.
@@ -196,7 +190,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
   // ...
   async createFulfillment(
     data: Record<string, unknown>,
-    items: LineItem,
+    items: LineItem[],
     order: Order,
     fulfillment: Fulfillment
   ) {
@@ -214,8 +208,6 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[FulfillmentProviderData](../../medusa/types/medusa.FulfillmentProviderData.mdx)&#62;","optional":false,"defaultValue":"","description":"The data that will be stored in the `data` attribute of the created fulfillment.","expandable":false,"children":[{"name":"FulfillmentProviderData","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### createReturn
 
@@ -247,8 +239,6 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62;&#62;","optional":false,"defaultValue":"","description":"Used to set the value of the `shipping_data` attribute of the return being created.","expandable":false,"children":[{"name":"Record","type":"`Record<string, unknown>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### getFulfillmentDocuments
 
 This method is used to retrieve any documents associated with a fulfillment. This method isn't used by default in the backend, but you can use it for custom use cases such as allowing admins to download these documents.
@@ -275,8 +265,6 @@ class MyFulfillmentService extends FulfillmentService {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"There are no restrictions on the returned response. If your fulfillment provider doesn't provide this functionality, you can leave the method empty or through an error.","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### getFulfillmentOptions
 
@@ -305,8 +293,6 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any[]&#62;","optional":false,"defaultValue":"","description":"The list of fulfillment options. These options don't have any required format. Later on, these options can be used when creating a shipping option,\nsuch as when using the [Create Shipping Option API Route](https://docs.medusajs.com/api/admin#shipping-options\\_postshippingoptions). The chosen fulfillment option, which is one of the\nitems in the array returned by this method, will be set in the `data` object of the shipping option.","expandable":false,"children":[{"name":"any[]","type":"`any`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### getReturnDocuments
 
 This method is used to retrieve any documents associated with a return. This method isn't used by default in the backend, but you can use it for custom use cases such as allowing admins to download these documents.
@@ -334,8 +320,6 @@ class MyFulfillmentService extends FulfillmentService {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"There are no restrictions on the returned response. If your fulfillment provider doesn't provide this functionality, you can leave the method empty or through an error.","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### getShipmentDocuments
 
 This method is used to retrieve any documents associated with a shipment. This method isn't used by default in the backend, but you can use it for custom use cases such as allowing admins to download these documents.
@@ -362,8 +346,6 @@ class MyFulfillmentService extends FulfillmentService {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"There are no restrictions on the returned response. If your fulfillment provider doesn't provide this functionality, you can leave the method empty or through an error.","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### retrieveDocuments
 
@@ -393,8 +375,6 @@ class MyFulfillmentService extends FulfillmentService {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"There are no restrictions on the returned response. If your fulfillment provider doesn't provide this functionality, you can leave the method empty or through an error.","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-___
 
 ### validateFulfillmentData
 
@@ -435,8 +415,6 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62;&#62;","optional":false,"defaultValue":"","description":"The data that will be stored in the `data` property of the shipping method to be created.\nMake sure the value you return contains everything you need to fulfill the shipment later on. The returned value may also be used to calculate the price of the shipping method\nif it doesn't have a set price. It will be passed along to the [calculatePrice](fulfillment.AbstractFulfillmentService.mdx#calculateprice) method.","expandable":false,"children":[{"name":"Record","type":"`Record<string, unknown>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
-___
-
 ### validateOption
 
 Once the admin creates the shipping option, the data of the shipping option will be validated first using this method. This method is called when the [Create Shipping Option API Route](https://docs.medusajs.com/api/admin#shipping-options\_postshippingoptions) is used.
@@ -463,3 +441,31 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 #### Returns
 
 <ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"Whether the fulfillment option is valid. If the returned value is false, an error is thrown and the shipping option will not be saved.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
+
+---
+
+## Test Implementation
+
+:::note
+
+If you created your fulfillment provider in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
+
+:::
+
+After finishing your fulfillment provider implementation:
+
+1\. Run the `build` command in the root of your Medusa backend:
+
+```bash npm2yarn
+npm run build
+```
+
+2\. Start the backend with the `develop` command:
+
+```bash
+npx medusa develop
+```
+
+3\. Enable your fulfillment provider in one or more regions. You can do that either using the [Admin APIs](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) or the [Medusa Admin](https://docs.medusajs.com/user-guide/regions/providers#manage-fulfillment-providers).
+
+4\. To test out your fulfillment provider implementation, create a cart and complete an order. You can do that either using the [Next.js starter](https://docs.medusajs.com/starters/nextjs-medusa-starter) or [using Medusa's APIs and clients](https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart).

@@ -1,8 +1,10 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { CartRepository } from "../../../../src/repositories"
 import { CartService } from "../../../../src/services"
 import { createCarts } from "../../../__fixtures__/cart"
 import { MikroOrmWrapper } from "../../../utils"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -16,13 +18,12 @@ describe("Cart Service", () => {
     repositoryManager = await MikroOrmWrapper.forkManager()
     testManager = await MikroOrmWrapper.forkManager()
 
-    const cartRepository = new CartRepository({
-      manager: repositoryManager
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new CartService({
-      cartRepository: cartRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("cartService")
 
     await createCarts(testManager)
   })
