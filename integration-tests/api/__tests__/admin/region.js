@@ -138,6 +138,20 @@ describe("/admin/regions", () => {
         tax_rate: 0,
         updated_at: new Date("10/10/2000"),
       })
+      await manager.insert(Region, {
+        id: "us-region",
+        name: "United States",
+        currency_code: "usd",
+        tax_rate: 0,
+        updated_at: new Date("10/10/2000"),
+      })
+      await manager.insert(Region, {
+        id: "uk-region",
+        name: "United Kingdom",
+        currency_code: "gbp",
+        tax_rate: 0,
+        updated_at: new Date("10/10/2000"),
+      })
     })
 
     afterEach(async () => {
@@ -160,6 +174,28 @@ describe("/admin/regions", () => {
           code: "usd",
         })
       )
+    })
+
+    it("should list the regions with q and order params", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/regions?q=united&order=currency_code",
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.regions).toEqual([
+        expect.objectContaining({
+          name: "United Kingdom",
+          currency_code: "gbp",
+        }),
+        expect.objectContaining({
+          name: "United States",
+          currency_code: "usd",
+        }),
+      ])
     })
 
     it("should only return non-deleted regions", async () => {
