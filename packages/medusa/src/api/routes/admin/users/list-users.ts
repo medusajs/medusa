@@ -19,7 +19,7 @@ import { IsType } from "../../../../utils"
  *   - (query) email {string} Filter by email.
  *   - (query) first_name {string} Filter by first name.
  *   - (query) last_name {string} Filter by last name.
- *   - (query) q {string} term used to search users' first name, last name, and email.
+ *   - (query) q {string} Term used to search users' first name, last name, and email.
  *   - (query) order {string} A user field to sort-order the retrieved users by.
  *   - in: query
  *     name: id

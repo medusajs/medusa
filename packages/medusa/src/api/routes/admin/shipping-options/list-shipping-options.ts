@@ -232,14 +232,14 @@ export class AdminGetShippingOptionsParams extends extendedFindParamsMixin({
   name?: string
 
   /**
-   * Filter shipping options by the ID of the region they belong to.
+   * Filter by a region ID.
    */
   @IsOptional()
   @IsString()
   region_id?: string
 
   /**
-   * Filter shipping options by whether they're return shipping options.
+   * Filter by whether the shipping option is used for returns or orders.
    */
   @IsOptional()
   @IsBoolean()
@@ -247,7 +247,7 @@ export class AdminGetShippingOptionsParams extends extendedFindParamsMixin({
   is_return?: boolean
 
   /**
-   * Filter shipping options by whether they're available for admin users only.
+   * Filter by whether the shipping options are available for admin users only.
    */
   @IsOptional()
   @IsBoolean()
