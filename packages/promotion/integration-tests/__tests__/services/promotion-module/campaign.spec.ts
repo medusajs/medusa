@@ -17,11 +17,11 @@ describe("Promotion Module Service: Campaigns", () => {
   beforeAll(async () => {
     const initModulesConfig = getInitModuleConfig()
 
-    const { modules, shutdown } = await initModules(initModulesConfig)
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PROMOTION]
 
     shutdownFunc = shutdown
-
-    service = modules[Modules.PROMOTION]
   })
 
   afterAll(async () => {

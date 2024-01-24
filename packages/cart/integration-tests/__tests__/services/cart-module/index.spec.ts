@@ -14,9 +14,9 @@ describe("Cart Module Service", () => {
   beforeAll(async () => {
     const initModulesConfig = getInitModuleConfig()
 
-    const { modules, shutdown } = await initModules(initModulesConfig)
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
 
-    service = modules[Modules.CART]
+    service = medusaApp.modules[Modules.CART]
 
     shutdownFunc = shutdown
   })

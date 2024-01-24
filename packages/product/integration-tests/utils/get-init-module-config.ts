@@ -3,7 +3,10 @@ import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import { DB_URL } from "./database"
 import { EventBusService } from "../__fixtures__/event-bus"
 
-export function getInitModuleConfig(additionalOptions: any = {}) {
+export function getInitModuleConfig(
+  additionalOptions: any = {},
+  injectedDependencies: null | Record<string, any> = null
+) {
   const moduleOptions = {
     defaultAdapterOptions: {
       database: {
@@ -21,10 +24,12 @@ export function getInitModuleConfig(additionalOptions: any = {}) {
     },
   }
 
-  const injectedDependencies = { eventBustModuleService: new EventBusService() }
+  const defaultInjectedDependencies = {
+    eventBusModuleService: new EventBusService(),
+  }
 
   return {
-    injectedDependencies,
+    injectedDependencies: injectedDependencies ?? defaultInjectedDependencies,
     modulesConfig: modulesConfig_,
     databaseConfig: {
       clientUrl: DB_URL,

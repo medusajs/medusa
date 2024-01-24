@@ -2,8 +2,6 @@ import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
 import { kebabCase } from "@medusajs/utils"
 import { knex } from "knex"
-import { initialize } from "../../src"
-import { EventBusService } from "../__fixtures__/event-bus"
 import * as CustomRepositories from "../__fixtures__/module"
 import {
   buildProductAndRelationsData,
@@ -32,26 +30,28 @@ const afterEach_ = async () => {
 }
 
 describe("Product module", function () {
-  const eventBus = new EventBusService()
-
   describe("Using built-in data access layer", function () {
     let module: IProductModuleService
+    let shutdownFunc: () => Promise<void>
+
+    beforeAll(async () => {
+      MedusaModule.clearInstances()
+      const initModulesConfig = getInitModuleConfig()
+
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+      module = medusaApp.modules[Modules.PRODUCT]
+
+      shutdownFunc = shutdown
+    })
+
+    afterAll(async () => {
+      await shutdownFunc()
+    })
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
       await createProductAndTags(testManager, productsData)
-
-      module = await initialize(
-        {
-          database: {
-            clientUrl: DB_URL,
-            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-          },
-        },
-        {
-          eventBusModuleService: eventBus,
-        }
-      )
     })
 
     afterEach(afterEach_)
@@ -77,13 +77,14 @@ describe("Product module", function () {
     let shutdownFunc: () => Promise<void>
 
     beforeAll(async () => {
+      MedusaModule.clearInstances()
       const initModulesConfig = getInitModuleConfig({
         repositories: CustomRepositories,
       })
 
-      const { modules, shutdown } = await initModules(initModulesConfig)
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
 
-      module = modules[Modules.PRODUCT]
+      module = medusaApp.modules[Modules.PRODUCT]
 
       shutdownFunc = shutdown
     })
@@ -135,9 +136,9 @@ describe("Product module", function () {
         repositories: CustomRepositories,
       })
 
-      const { modules, shutdown } = await initModules(initModulesConfig)
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
 
-      module = modules[Modules.PRODUCT]
+      module = medusaApp.modules[Modules.PRODUCT]
 
       shutdownFunc = shutdown
     })
@@ -181,9 +182,9 @@ describe("Product module", function () {
         },
       })
 
-      const { modules, shutdown } = await initModules(initModulesConfig)
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
 
-      module = modules[Modules.PRODUCT]
+      module = medusaApp.modules[Modules.PRODUCT]
 
       shutdownFunc = shutdown
     })
@@ -222,9 +223,9 @@ describe("Product module", function () {
         },
       })
 
-      const { modules, shutdown } = await initModules(initModulesConfig)
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
 
-      module = modules[Modules.PRODUCT]
+      module = medusaApp.modules[Modules.PRODUCT]
 
       shutdownFunc = shutdown
     })
@@ -324,9 +325,9 @@ describe("Product module", function () {
 
       const initModulesConfig = getInitModuleConfig()
 
-      const { modules, shutdown } = await initModules(initModulesConfig)
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
 
-      module = modules[Modules.PRODUCT]
+      module = medusaApp.modules[Modules.PRODUCT]
 
       shutdownFunc = shutdown
     })
@@ -400,11 +401,11 @@ describe("Product module", function () {
 
       const initModulesConfig = getInitModuleConfig()
 
-      const { modules, shutdown } = await initModules(initModulesConfig)
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+      module = medusaApp.modules[Modules.PRODUCT]
 
       shutdownFunc = shutdown
-
-      module = modules[Modules.PRODUCT]
     })
 
     afterEach(afterEach_)

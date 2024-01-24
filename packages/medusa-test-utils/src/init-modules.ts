@@ -41,7 +41,7 @@ export async function initModules({
       sharedPgConnection
   }
 
-  const { modules } = await MedusaApp({
+  const medusaApp = await MedusaApp({
     modulesConfig,
     servicesConfig: joinerConfig,
     injectedDependencies,
@@ -53,7 +53,7 @@ export async function initModules({
   }
 
   return {
-    modules,
+    medusaApp,
     shutdown,
   }
 }

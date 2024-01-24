@@ -16,9 +16,9 @@ describe("AuthenticationModuleService - AuthProvider", () => {
   beforeAll(async () => {
     const initModulesConfig = getInitModuleConfig()
 
-    const { modules, shutdown } = await initModules(initModulesConfig)
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
 
-    service = modules[Modules.AUTHENTICATION]
+    service = medusaApp.modules[Modules.AUTHENTICATION]
 
     shutdownFunc = shutdown
   })

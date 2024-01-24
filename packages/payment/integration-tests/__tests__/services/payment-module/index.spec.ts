@@ -18,9 +18,9 @@ describe("Payment Module Service", () => {
   beforeAll(async () => {
     const initModulesConfig = getInitModuleConfig()
 
-    const { modules, shutdown } = await initModules(initModulesConfig)
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
 
-    service = modules[Modules.PAYMENT]
+    service = medusaApp.modules[Modules.PAYMENT]
 
     shutdownFunc = shutdown
   })

@@ -20,9 +20,9 @@ describe("PriceListRule Service", () => {
   beforeAll(async () => {
     const initModulesConfig = getInitModuleConfig()
 
-    const { modules, shutdown } = await initModules(initModulesConfig)
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
 
-    service = modules[Modules.PRICING]
+    service = medusaApp.modules[Modules.PRICING]
 
     shutdownFunc = shutdown
   })

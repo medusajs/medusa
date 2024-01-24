@@ -1,28 +1,38 @@
 import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Product, ProductOption } from "@models"
-import { initialize } from "../../../../src"
-import { DB_URL, TestDatabase } from "../../../utils"
+import { getInitModuleConfig, TestDatabase } from "../../../utils"
+import { MedusaModule, Modules } from "@medusajs/modules-sdk"
+import { initModules } from "medusa-test-utils"
 
 describe("ProductModuleService product options", () => {
   let service: IProductModuleService
   let testManager: SqlEntityManager
-  let repositoryManager: SqlEntityManager
   let optionOne: ProductOption
   let optionTwo: ProductOption
   let productOne: Product
   let productTwo: Product
 
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    MedusaModule.clearInstances()
+
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PRODUCT]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
+
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
-    repositoryManager = await TestDatabase.forkManager()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-      },
-    })
 
     testManager = await TestDatabase.forkManager()
     productOne = testManager.create(Product, {
