@@ -281,7 +281,7 @@ export function abstractModuleServiceFactory<
           return this.baseRepository_.serialize<T>(entities, {
             populate: true,
           })
-        }.bind(klassPrototype)
+        }
 
         // Apply MedusaContext decorator
         MedusaContext()(klassPrototype, methodName, 2)
@@ -291,7 +291,6 @@ export function abstractModuleServiceFactory<
           method,
           Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
         )
-        break
       case "list":
         klassPrototype[methodName] = async function <T extends object>(
           this: AbstractModuleService_,
@@ -306,7 +305,7 @@ export function abstractModuleServiceFactory<
           return await this.baseRepository_.serialize<T[]>(entities, {
             populate: true,
           })
-        }.bind(klassPrototype)
+        }
 
         // Apply MedusaContext decorator
         MedusaContext()(klassPrototype, methodName, 2)
@@ -316,7 +315,6 @@ export function abstractModuleServiceFactory<
           method,
           Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
         )
-        break
       case "listAndCount":
         klassPrototype[methodName] = async function <T extends object>(
           this: AbstractModuleService_,
@@ -334,7 +332,7 @@ export function abstractModuleServiceFactory<
             }),
             count,
           ]
-        }.bind(klassPrototype)
+        }
 
         // Apply MedusaContext decorator
         MedusaContext()(klassPrototype, methodName, 2)
@@ -344,7 +342,6 @@ export function abstractModuleServiceFactory<
           method,
           Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
         )
-        break
       case "delete":
         klassPrototype[methodName] = async function (
           this: AbstractModuleService_,
@@ -364,7 +361,7 @@ export function abstractModuleServiceFactory<
                 : primaryKeyValue,
             }))
           )
-        }.bind(klassPrototype)
+        }
 
         // Apply MedusaContext decorator
         MedusaContext()(klassPrototype, methodName, 1)
@@ -374,7 +371,6 @@ export function abstractModuleServiceFactory<
           method,
           Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
         )
-        break
       case "softDelete":
         klassPrototype[methodName] = async function <T extends { id: string }>(
           this: AbstractModuleService_,
@@ -414,7 +410,7 @@ export function abstractModuleServiceFactory<
           }
 
           return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
-        }.bind(klassPrototype)
+        }
 
         // Apply MedusaContext decorator
         MedusaContext()(klassPrototype, methodName, 2)
@@ -424,7 +420,6 @@ export function abstractModuleServiceFactory<
           method,
           Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
         )
-        break
       case "restore":
         klassPrototype[methodName] = async function <T extends object>(
           this: AbstractModuleService_,
@@ -450,7 +445,7 @@ export function abstractModuleServiceFactory<
           }
 
           return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
-        }.bind(klassPrototype)
+        }
 
         // Apply MedusaContext decorator
         MedusaContext()(klassPrototype, methodName, 2)
@@ -460,7 +455,6 @@ export function abstractModuleServiceFactory<
           method,
           Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
         )
-        break
       default:
         return function () {
           return void 0
@@ -484,31 +478,41 @@ export function abstractModuleServiceFactory<
       } catch {
         /* ignore */
       }
-
-      const mainModelMethods = buildMethodNamesFromModel(mainModel, false)
-
-      /**
-       * Build the main retrieve/list/listAndCount/delete/softDelete/restore methods for the main model
-       */
-
-      for (let [method, methodName] of Object.entries(mainModelMethods)) {
-        buildAndAssignMethodImpl(this, method, methodName, mainModel)
-      }
-
-      /**
-       * Build the retrieve/list/listAndCount/delete/softDelete/restore methods for all the other models
-       */
-
-      const otherModelsMethods: [ModelConfiguration, Record<string, string>][] =
-        otherModels.map((model) => [model, buildMethodNamesFromModel(model)])
-
-      for (let [model, modelsMethods] of otherModelsMethods) {
-        Object.entries(modelsMethods).forEach(([method, methodName]) => {
-          model = "model" in model ? model.model : model
-          buildAndAssignMethodImpl(this, method, methodName, model)
-        })
-      }
     }
+  }
+
+  const mainModelMethods = buildMethodNamesFromModel(mainModel, false)
+
+  /**
+   * Build the main retrieve/list/listAndCount/delete/softDelete/restore methods for the main model
+   */
+
+  for (let [method, methodName] of Object.entries(mainModelMethods)) {
+    buildAndAssignMethodImpl(
+      AbstractModuleService_.prototype,
+      method,
+      methodName,
+      mainModel
+    )
+  }
+
+  /**
+   * Build the retrieve/list/listAndCount/delete/softDelete/restore methods for all the other models
+   */
+
+  const otherModelsMethods: [ModelConfiguration, Record<string, string>][] =
+    otherModels.map((model) => [model, buildMethodNamesFromModel(model)])
+
+  for (let [model, modelsMethods] of otherModelsMethods) {
+    Object.entries(modelsMethods).forEach(([method, methodName]) => {
+      model = "model" in model ? model.model : model
+      buildAndAssignMethodImpl(
+        AbstractModuleService_.prototype,
+        method,
+        methodName,
+        model
+      )
+    })
   }
 
   return AbstractModuleService_ as unknown as new (
