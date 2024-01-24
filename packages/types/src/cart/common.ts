@@ -521,6 +521,7 @@ export interface FilterableLineItemAdjustmentProps
   item_id?: string | string[]
   promotion_id?: string | string[]
   provider_id?: string | string[]
+  item?: FilterableLineItemProps
 }
 export interface FilterableShippingMethodProps
   extends BaseFilterable<FilterableShippingMethodProps> {
@@ -536,6 +537,7 @@ export interface FilterableShippingMethodAdjustmentProps
   shipping_method_id?: string | string[]
   promotion_id?: string | string[]
   provider_id?: string | string[]
+  shipping_method?: FilterableShippingMethodProps
 }
 
 export interface FilterableLineItemTaxLineProps
@@ -546,6 +548,7 @@ export interface FilterableLineItemTaxLineProps
   tax_rate_id?: string | string[]
   provider_id?: string | string[]
   item_id?: string | string[]
+  item?: FilterableLineItemProps
 }
 
 export interface FilterableShippingMethodTaxLineProps
@@ -556,6 +559,7 @@ export interface FilterableShippingMethodTaxLineProps
   tax_rate_id?: string | string[]
   provider_id?: string | string[]
   shipping_method_id?: string | string[]
+  shipping_method?: FilterableShippingMethodProps
 }
 
 /**

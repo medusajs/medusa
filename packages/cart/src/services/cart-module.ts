@@ -802,25 +802,17 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
 
-    const lineIds = cart.items?.map((item) => item.id)
-
     const existingAdjustments = await this.listLineItemAdjustments(
-      { item_id: lineIds },
+      { item: { cart_id: cart.id } },
       { select: ["id"] },
       sharedContext
     )
 
-    let toUpdate: CartTypes.UpdateLineItemAdjustmentDTO[] = []
-    let toCreate: CartTypes.CreateLineItemAdjustmentDTO[] = []
-    for (const adj of adjustments) {
-      if ("id" in adj) {
-        toUpdate.push(adj as CartTypes.UpdateLineItemAdjustmentDTO)
-      } else {
-        toCreate.push(adj as CartTypes.CreateLineItemAdjustmentDTO)
-      }
-    }
-
-    const adjustmentsSet = new Set(toUpdate.map((a) => a.id))
+    const adjustmentsSet = new Set(
+      adjustments
+        .map((a) => (a as CartTypes.UpdateLineItemAdjustmentDTO).id)
+        .filter(Boolean)
+    )
 
     const toDelete: CartTypes.LineItemAdjustmentDTO[] = []
 
@@ -831,29 +823,17 @@ export default class CartModuleService implements ICartModuleService {
       }
     })
 
-    await this.lineItemAdjustmentService_.delete(
-      toDelete.map((adj) => adj!.id),
+    if (toDelete.length) {
+      await this.lineItemAdjustmentService_.delete(
+        toDelete.map((adj) => adj!.id),
+        sharedContext
+      )
+    }
+
+    let result = await this.lineItemAdjustmentService_.upsert(
+      adjustments,
       sharedContext
     )
-
-    let result: LineItemAdjustment[] = []
-
-    // TODO: Replace the following two calls with a single bulk upsert call
-    if (toUpdate?.length) {
-      const updated = await this.lineItemAdjustmentService_.update(
-        toUpdate,
-        sharedContext
-      )
-      result.push(...updated)
-    }
-
-    if (toCreate?.length) {
-      const created = await this.lineItemAdjustmentService_.create(
-        toCreate,
-        sharedContext
-      )
-      result.push(...created)
-    }
 
     return await this.baseRepository_.serialize<
       CartTypes.LineItemAdjustmentDTO[]
@@ -936,25 +916,17 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
 
-    const methodIds = cart.shipping_methods?.map((method) => method.id)
-
     const existingAdjustments = await this.listShippingMethodAdjustments(
-      { shipping_method_id: methodIds ?? [] },
+      { shipping_method: { cart_id: cart.id } },
       { select: ["id"] },
       sharedContext
     )
 
-    let toUpdate: CartTypes.UpdateShippingMethodAdjustmentDTO[] = []
-    let toCreate: CartTypes.CreateShippingMethodAdjustmentDTO[] = []
-    for (const adj of adjustments) {
-      if ("id" in adj) {
-        toUpdate.push(adj as CartTypes.UpdateShippingMethodAdjustmentDTO)
-      } else {
-        toCreate.push(adj as CartTypes.CreateShippingMethodAdjustmentDTO)
-      }
-    }
-
-    const adjustmentsSet = new Set(toUpdate.map((a) => a.id))
+    const adjustmentsSet = new Set(
+      adjustments
+        .map((a) => (a as CartTypes.UpdateShippingMethodAdjustmentDTO)?.id)
+        .filter(Boolean)
+    )
 
     const toDelete: CartTypes.ShippingMethodAdjustmentDTO[] = []
 
@@ -974,24 +946,10 @@ export default class CartModuleService implements ICartModuleService {
       )
     }
 
-    let result: ShippingMethodAdjustment[] = []
-
-    if (toCreate.length) {
-      const created = await this.shippingMethodAdjustmentService_.create(
-        toCreate,
-        sharedContext
-      )
-
-      result.push(...created)
-    }
-
-    if (toUpdate.length) {
-      const updated = await this.shippingMethodAdjustmentService_.update(
-        toUpdate,
-        sharedContext
-      )
-      result.push(...updated)
-    }
+    const result = await this.shippingMethodAdjustmentService_.upsert(
+      adjustments,
+      sharedContext
+    )
 
     return await this.baseRepository_.serialize<
       CartTypes.ShippingMethodAdjustmentDTO[]
@@ -1165,7 +1123,7 @@ export default class CartModuleService implements ICartModuleService {
       const lines = Array.isArray(taxLines) ? taxLines : [taxLines]
 
       addedTaxLines = await this.lineItemTaxLineService_.create(
-        lines,
+        lines as CartTypes.CreateLineItemTaxLineDTO[],
         sharedContext
       )
     } else {
@@ -1212,7 +1170,9 @@ export default class CartModuleService implements ICartModuleService {
     )
 
     const taxLinesSet = new Set(
-      taxLines.map((taxLine) => taxLine.id).filter(Boolean)
+      taxLines
+        .map((taxLine) => (taxLine as CartTypes.UpdateLineItemTaxLineDTO)?.id)
+        .filter(Boolean)
     )
 
     const toDelete: CartTypes.LineItemTaxLineDTO[] = []
@@ -1266,7 +1226,7 @@ export default class CartModuleService implements ICartModuleService {
     if (isObject(taxLineIdsOrSelector)) {
       const taxLines = await this.listLineItemTaxLines(
         {
-          ...taxLineIdsOrSelector,
+          ...(taxLineIdsOrSelector as CartTypes.FilterableLineItemTaxLineProps),
         },
         { select: ["id"] },
         sharedContext
@@ -1336,7 +1296,7 @@ export default class CartModuleService implements ICartModuleService {
       const lines = Array.isArray(taxLines) ? taxLines : [taxLines]
 
       addedTaxLines = await this.shippingMethodTaxLineService_.create(
-        lines,
+        lines as CartTypes.CreateShippingMethodTaxLineDTO[],
         sharedContext
       )
     } else {
@@ -1383,7 +1343,11 @@ export default class CartModuleService implements ICartModuleService {
     )
 
     const taxLinesSet = new Set(
-      taxLines.map((taxLine) => taxLine.id).filter(Boolean)
+      taxLines
+        .map(
+          (taxLine) => (taxLine as CartTypes.UpdateShippingMethodTaxLineDTO)?.id
+        )
+        .filter(Boolean)
     )
 
     const toDelete: CartTypes.ShippingMethodTaxLineDTO[] = []
@@ -1395,12 +1359,17 @@ export default class CartModuleService implements ICartModuleService {
       }
     })
 
-    await this.shippingMethodTaxLineService_.delete(
-      toDelete.map((taxLine) => taxLine!.id),
+    if (toDelete.length) {
+      await this.shippingMethodTaxLineService_.delete(
+        toDelete.map((taxLine) => taxLine!.id),
+        sharedContext
+      )
+    }
+
+    const result = await this.shippingMethodTaxLineService_.upsert(
+      taxLines,
       sharedContext
     )
-
-    const result = await this.lineItemTaxLineService_.upsert(taxLines)
 
     return await this.baseRepository_.serialize<
       CartTypes.ShippingMethodTaxLineDTO[]
@@ -1433,7 +1402,7 @@ export default class CartModuleService implements ICartModuleService {
     if (isObject(taxLineIdsOrSelector)) {
       const taxLines = await this.listShippingMethodTaxLines(
         {
-          ...taxLineIdsOrSelector,
+          ...(taxLineIdsOrSelector as CartTypes.FilterableShippingMethodTaxLineProps),
         },
         { select: ["id"] },
         sharedContext
