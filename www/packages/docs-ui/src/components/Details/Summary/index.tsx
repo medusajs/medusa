@@ -11,6 +11,7 @@ export type DetailsSummaryProps = {
   className?: string
   titleClassName?: string
   hideExpandableIcon?: boolean
+  summaryRef?: React.LegacyRef<HTMLDivElement>
 } & Omit<React.HTMLAttributes<HTMLElement>, "title">
 
 export const DetailsSummary = ({
@@ -23,6 +24,7 @@ export const DetailsSummary = ({
   className,
   titleClassName,
   hideExpandableIcon = false,
+  summaryRef,
   ...rest
 }: DetailsSummaryProps) => {
   return (
@@ -36,6 +38,7 @@ export const DetailsSummary = ({
         "no-marker",
         className
       )}
+      ref={summaryRef}
       {...rest}
     >
       <span className="gap-docs_0.25 flex flex-col">

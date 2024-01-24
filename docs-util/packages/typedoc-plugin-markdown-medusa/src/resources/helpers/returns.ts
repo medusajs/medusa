@@ -13,7 +13,7 @@ export default function (theme: MarkdownTheme) {
       if (reflection.variant === "signature" && "type" in reflection) {
         return getReturnFromType(theme, reflection)
       } else if (reflection.comment) {
-        return getReturnFromComment(theme, reflection.comment)
+        return getReturnFromComment(theme, reflection.comment, reflection.name)
       } else {
         return ""
       }
@@ -49,6 +49,7 @@ function getReturnFromType(
       parameterComponent,
       componentItems,
       extraProps: parameterComponentExtraProps,
+      sectionTitle: reflection.name,
     })
   } else {
     return formatReturnAsList(componentItems)
@@ -77,7 +78,11 @@ function formatReturnAsList(componentItems: Parameter[], level = 1): string {
     .join("\n")
 }
 
-function getReturnFromComment(theme: MarkdownTheme, comment: Comment) {
+function getReturnFromComment(
+  theme: MarkdownTheme,
+  comment: Comment,
+  reflectionName: string
+) {
   const md: string[] = []
   const {
     parameterStyle,
@@ -113,6 +118,7 @@ function getReturnFromComment(theme: MarkdownTheme, comment: Comment) {
                       ...parameterComponentExtraProps,
                       title: commentPart.target.name,
                     },
+                    sectionTitle: reflectionName,
                   })}\n\n`
                 : `\n\n<details>\n<summary>\n${
                     commentPart.target.name

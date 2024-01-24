@@ -1,11 +1,10 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-
-import { MikroOrmWrapper } from "../../../utils"
-import { initialize } from "../../../../src"
 import { DB_URL } from "@medusajs/pricing/integration-tests/utils"
-import { MedusaModule } from "@medusajs/modules-sdk"
 import { IAuthenticationModuleService } from "@medusajs/types"
+import { MedusaModule } from "@medusajs/modules-sdk"
+import { MikroOrmWrapper } from "../../../utils"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createAuthProviders } from "../../../__fixtures__/auth-provider"
+import { initialize } from "../../../../src"
 
 jest.setTimeout(30000)
 
@@ -24,7 +23,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
       },
     })
 
-    if(service.__hooks?.onApplicationStart) {
+    if (service.__hooks?.onApplicationStart) {
       await service.__hooks.onApplicationStart()
     }
   })
@@ -39,12 +38,18 @@ describe("AuthenticationModuleService - AuthProvider", () => {
       const authProviders = await service.listAuthProviders()
       const serialized = JSON.parse(JSON.stringify(authProviders))
 
-      expect(serialized).toEqual([
-        expect.objectContaining({
-          provider: "usernamePassword",
-          name: "Username/Password Authentication",
-        }),
-      ])
+      expect(serialized).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            provider: "usernamePassword",
+            name: "Username/Password Authentication",
+          }),
+          expect.objectContaining({
+            provider: "google",
+            name: "Google Authentication",
+          }),
+        ])
+      )
     })
   })
 

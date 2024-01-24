@@ -7,7 +7,10 @@ import { formatParameterComponent } from "../../utils/format-parameter-component
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
     "typeParameterComponent",
-    function (this: TypeParameterReflection[]) {
+    function (
+      this: TypeParameterReflection[],
+      options: Handlebars.HelperOptions
+    ) {
       const { parameterComponent, maxLevel, parameterComponentExtraProps } =
         theme.getFormattingOptionsForLocation()
       const parameters = this.map((parameter) =>
@@ -18,10 +21,15 @@ export default function (theme: MarkdownTheme) {
         })
       )
 
+      // if (typeof options.hash.sectionTitle !== "string") {
+      //   console.log("here3")
+      // }
+
       return formatParameterComponent({
         parameterComponent,
         componentItems: parameters,
         extraProps: parameterComponentExtraProps,
+        sectionTitle: options.hash.sectionTitle,
       })
     }
   )
