@@ -65,7 +65,7 @@ class UserService extends TransactionBaseService {
    */
   async list(
     selector: Selector<FilterableUserProps> & { q?: string } = {},
-    config: FindConfig<FilterableUserProps> = { skip: 0, take: 20 }
+    config: FindConfig<FilterableUserProps> = { skip: 0, take: 50 }
   ): Promise<User[]> {
     const userRepo = this.activeManager_.withRepository(this.userRepository_)
 
@@ -106,7 +106,7 @@ class UserService extends TransactionBaseService {
 
   async listAndCount(
     selector: Selector<FilterableUserProps> & { q?: string } = {},
-    config: FindConfig<FilterableUserProps> = { skip: 0, take: 20 }
+    config: FindConfig<FilterableUserProps> = { skip: 0, take: 50 }
   ) {
     const userRepo = this.activeManager_.withRepository(this.userRepository_)
 
