@@ -17,7 +17,7 @@ export interface AdminGetCurrenciesParams {
    */
   order?: string
   /**
-   * term used to search currencies' name and code.
+   * Term used to search currencies' name and code.
    */
   q?: string
   /**
