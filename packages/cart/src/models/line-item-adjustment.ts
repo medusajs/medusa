@@ -30,10 +30,10 @@ export default class LineItemAdjustment extends AdjustmentLine {
   onCreate() {
     this.id = generateEntityId(this.id, "caliadj")
 
-    if (!this.amount) {
+    if (!this.raw_amount) {
       this.raw_amount = {
-        value: BigNumber(this.amount).multipliedBy(0.01).toFixed(8), // TODO: add sensible default for scale and decimal?
-        scale: 8, // TODO: make configurable
+        value: BigNumber(this.amount),
+        precision: 2,
       }
     }
   }
@@ -41,5 +41,12 @@ export default class LineItemAdjustment extends AdjustmentLine {
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "caliadj")
+
+    if (!this.raw_amount) {
+      this.raw_amount = {
+        value: BigNumber(this.amount),
+        precision: 2,
+      }
+    }
   }
 }

@@ -111,6 +111,9 @@ export default class LineItem {
   @Check({ expression: "unit_price >= 0" }) // TODO: Validate that numeric types work with the expression
   unit_price: number
 
+  @Property({ columnType: "jsonb" })
+  raw_unit_price: Record<string, unknown>
+
   @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
     cascade: [Cascade.REMOVE],
   })
@@ -164,8 +167,8 @@ export default class LineItem {
 
     if (!this.raw_unit_price) {
       this.raw_unit_price = {
-        value: BigNumber(this.unit_price).multipliedBy(0.01).toFixed(8), // TODO: add sensible default for scale and decimal?
-        scale: 8, // TODO: make configurable
+        value: BigNumber(this.unit_price),
+        precision: 2,
       }
     }
   }
@@ -173,5 +176,12 @@ export default class LineItem {
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "cali")
+
+    if (!this.raw_unit_price) {
+      this.raw_unit_price = {
+        value: BigNumber(this.unit_price),
+        precision: 2,
+      }
+    }
   }
 }

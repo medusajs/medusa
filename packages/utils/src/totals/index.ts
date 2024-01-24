@@ -1,4 +1,5 @@
 import { CartDTO } from "@medusajs/types"
+import BigNumber from "bignumber.js"
 
 type CalculateLineItemInput = {
   id: string
@@ -21,7 +22,7 @@ type LineItemTotals = {
   tax_lines: any[] // TODO: Define type
   discount_total: number
 
-  raw_discount_total: number
+  raw_discount_total: string
 }
 
 type GetLineItemTotalsContext = {
@@ -31,6 +32,15 @@ type GetLineItemTotalsContext = {
 
 type GetLineItemTotalsResult = {
   [lineItemId: string]: LineItemTotals
+}
+
+type RawValue = { value: string; precision: number; currency?: string }
+class BigNum {
+  raw: RawValue
+
+  constructor(value: number, raw: RawValue) {
+    this.raw = raw
+  }
 }
 
 /**
@@ -59,10 +69,12 @@ export function getLineItemTotals(
   return itemsTotals
 }
 
-function getAdjustmentTotals(item: CalculateLineItemInput) {
-  return item.adjustments.reduce((acc, next) => {
-    return acc + next.amount
-  }, 0)
+function getAdjustmentTotals(item: CalculateLineItemInput): BigNumber {
+  return item.adjustments.reduce((sum, adjustment) => {
+    const rawAmount = BigNumber(adjustment.raw_amount.value)
+
+    return sum.plus(rawAmount)
+  }, BigNumber(0))
 }
 
 function getLineItemTotals_(
@@ -71,13 +83,10 @@ function getLineItemTotals_(
 ): LineItemTotals {
   let subtotal = item.unit_price * item.quantity
 
-  const isTaxInclusive = context.includeTax ?? item.is_tax_inclusive
-  if (isTaxInclusive) {
-    subtotal = 0 // in that case we need to know the tax rate to compute it later
-  }
+  // const isTaxInclusive = context.includeTax ?? item.is_tax_inclusive
 
   const raw_discount_total = getAdjustmentTotals(item)
-  const discount_total = Math.round(raw_discount_total)
+  const discount_total = raw_discount_total.toNumber()
 
   const totals: LineItemTotals = {
     unit_price: item.unit_price,
@@ -88,7 +97,7 @@ function getLineItemTotals_(
     total: subtotal - discount_total,
 
     discount_total,
-    raw_discount_total: raw_discount_total,
+    raw_discount_total: raw_discount_total.toString(),
 
     original_total: subtotal,
     original_tax_total: 0,
