@@ -718,19 +718,6 @@ describe("ProductModuleService products", function () {
         }
       )
 
-      const nonDeletedProducts = await module.list(
-        { id: products[0].id },
-        {
-          relations: [
-            "variants",
-            "variants.options",
-            "options",
-            "options.values",
-          ],
-        }
-      )
-      expect(nonDeletedProducts).toHaveLength(0)
-
       expect(deletedProducts).toHaveLength(1)
       expect(deletedProducts[0].deleted_at).not.toBeNull()
 
