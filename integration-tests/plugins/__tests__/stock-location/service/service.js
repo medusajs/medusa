@@ -9,7 +9,7 @@ const { useExpressServer } = require("../../../environment-helpers/use-api")
 
 jest.setTimeout(30000)
 
-describe("Inventory Module", () => {
+describe("Stock Location Module", () => {
   let appContainer
   let dbConnection
   let shutdownServer

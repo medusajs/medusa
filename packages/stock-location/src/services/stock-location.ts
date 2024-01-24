@@ -12,9 +12,9 @@ import {
 } from "@medusajs/types"
 import {
   InjectEntityManager,
+  isDefined,
   MedusaContext,
   MedusaError,
-  isDefined,
   setMetadata,
 } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
