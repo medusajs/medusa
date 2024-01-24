@@ -3,7 +3,9 @@ import type {
   AdminCustomerGroupsRes,
   AdminCustomersRes,
   AdminProductsRes,
+  AdminPublishableApiKeysRes,
   AdminRegionsRes,
+  AdminSalesChannelsRes,
 } from "@medusajs/medusa"
 import {
   Outlet,
@@ -487,6 +489,10 @@ const router = createBrowserRouter([
                 path: ":id",
                 lazy: () =>
                   import("../../routes/sales-channels/sales-channel-detail"),
+                handle: {
+                  crumb: (data: AdminSalesChannelsRes) =>
+                    data.sales_channel.name,
+                },
                 children: [
                   {
                     path: "edit",
@@ -533,12 +539,23 @@ const router = createBrowserRouter([
                   import(
                     "../../routes/api-key-management/api-key-management-detail"
                   ),
+                handle: {
+                  crumb: (data: AdminPublishableApiKeysRes) =>
+                    data.publishable_api_key.title,
+                },
                 children: [
                   {
                     path: "edit",
                     lazy: () =>
                       import(
                         "../../routes/api-key-management/api-key-management-edit"
+                      ),
+                  },
+                  {
+                    path: "add-sales-channels",
+                    lazy: () =>
+                      import(
+                        "../../routes/api-key-management/api-key-management-add-sales-channels"
                       ),
                   },
                 ],

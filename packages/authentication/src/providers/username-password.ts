@@ -1,5 +1,8 @@
+import { AuthenticationResponse } from "@medusajs/types"
+
 import { AuthUserService } from "@services"
-import { AbstractAuthenticationModuleProvider } from "@medusajs/types"
+import Scrypt from "scrypt-kdf"
+import { AbstractAuthenticationModuleProvider, isString } from "@medusajs/utils"
 
 class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
   public static PROVIDER = "usernamePassword"
@@ -13,8 +16,48 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
     this.authUserSerivce_ = AuthUserService
   }
 
-  async authenticate(userData: Record<string, unknown>) {
-    return {}
+  async authenticate(
+    userData: Record<string, any>
+  ): Promise<AuthenticationResponse> {
+    const { email, password } = userData.body
+
+    if (!password || !isString(password)) {
+      return {
+        success: false,
+        error: "Password should be a string",
+      }
+    }
+
+    if (!email || !isString(email)) {
+      return {
+        success: false,
+        error: "Email should be a string",
+      }
+    }
+
+    const authUser = await this.authUserSerivce_.retrieveByProviderAndEntityId(
+      email,
+      UsernamePasswordProvider.PROVIDER
+    )
+
+    const password_hash = authUser.provider_metadata?.password
+
+    if (isString(password_hash)) {
+      const buf = Buffer.from(password_hash, "base64")
+
+      const success = await Scrypt.verify(buf, password)
+
+      if (success) {
+        delete authUser.provider_metadata!.password
+
+        return { success, authUser: JSON.parse(JSON.stringify(authUser)) }
+      }
+    }
+
+    return {
+      success: false,
+      error: "Invalid email or password",
+    }
   }
 }
 
