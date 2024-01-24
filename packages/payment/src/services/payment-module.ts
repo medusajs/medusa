@@ -133,7 +133,7 @@ export default class PaymentModuleService implements IPaymentModuleService {
   async deletePaymentCollection(
     ids: string | string[],
     @MedusaContext() sharedContext?: Context
-  ) {
+  ): Promise<void> {
     const paymentCollectionIds = Array.isArray(ids) ? ids : [ids]
     await this.paymentCollectionService_.delete(
       paymentCollectionIds,
