@@ -18,7 +18,7 @@ export interface AdminUsersListRes {
    */
   count: number
   /**
-   * The number of stock locations skipped when retrieving the stock locations.
+   * The number of users skipped when retrieving the users.
    */
   offset: number
   /**

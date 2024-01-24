@@ -92,7 +92,7 @@ export type AdminUserRes = {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of stock locations skipped when retrieving the stock locations.
+ *     description: The number of users skipped when retrieving the users.
  *   limit:
  *     type: integer
  *     description: The number of items per page
