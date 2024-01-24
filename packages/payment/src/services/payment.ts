@@ -99,7 +99,7 @@ export default class PaymentService<
   @InjectManager("paymentRepository_")
   async retrieve(
     id: string,
-    config: FindConfig<TEntity> = {},
+    config: FindConfig<any> = {}, // TODO: fix type when overriding
     @MedusaContext() sharedContext?: Context
   ): Promise<TEntity> {
     const { select, relations, amountsSelect } =
@@ -111,7 +111,7 @@ export default class PaymentService<
       sharedContext
     )
 
-    return this.decorateAmounts(result, amountsSelect) as unknown as TEntity
+    return this.decorateAmounts(result, amountsSelect)
   }
 
   @InjectTransactionManager("captureRepository_")
