@@ -326,7 +326,7 @@ describe("Payment Module Service", () => {
           provider_id: "manual",
           currency_code: "usd",
           payment_collection_id: paymentCollection.id,
-          payment_session_id: paymentCollection.payment_sessions[0].id,
+          payment_session_id: paymentCollection.payment_sessions![0].id,
         })
 
         expect(createdPayment).toEqual(
@@ -347,7 +347,7 @@ describe("Payment Module Service", () => {
             currency_code: "usd",
             provider_id: "manual",
             payment_collection: paymentCollection.id,
-            payment_session: paymentCollection.payment_sessions[0].id,
+            payment_session: paymentCollection.payment_sessions![0].id,
           })
         )
       })

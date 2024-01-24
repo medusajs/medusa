@@ -1,8 +1,8 @@
+import { EntityName } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { Payment, PaymentSession } from "@models"
+import { Payment, PaymentSession, PaymentCollection } from "@models"
 
-import { PaymentCollection } from "../../src/models"
 import {
   defaultPaymentCollectionData,
   defaultPaymentData,
@@ -11,47 +11,43 @@ import {
 
 export * from "./data"
 
+async function createEntities<
+  T extends EntityName<Payment | PaymentCollection | PaymentSession>
+>(manager: SqlEntityManager, entity: T, data: any[]) {
+  const created: T[] = []
+  for (let record of data) {
+    created.push(manager.create(entity, record))
+  }
+
+  await manager.persistAndFlush(created)
+  return created
+}
+
 export async function createPaymentCollections(
   manager: SqlEntityManager,
   paymentCollectionData = defaultPaymentCollectionData
 ): Promise<PaymentCollection[]> {
-  const collections: PaymentCollection[] = []
-
-  for (let data of paymentCollectionData) {
-    let collection = manager.create(PaymentCollection, data)
-
-    await manager.persistAndFlush(collection)
-  }
-
-  return collections
+  return await createEntities<PaymentCollection>(
+    manager,
+    PaymentCollection,
+    paymentCollectionData
+  )
 }
 
 export async function createPaymentSessions(
   manager: SqlEntityManager,
-  paymentCollectionData = defaultPaymentSessionData
-): Promise<PaymentSession[]> {
-  const collections: PaymentSession[] = []
-
-  for (let data of paymentCollectionData) {
-    let collection = manager.create(PaymentSession, data)
-
-    await manager.persistAndFlush(collection)
-  }
-
-  return collections
+  paymentSessionData = defaultPaymentSessionData
+): Promise<PaymentCollection[]> {
+  return await createEntities<PaymentSession>(
+    manager,
+    PaymentSession,
+    paymentSessionData
+  )
 }
 
 export async function createPayments(
   manager: SqlEntityManager,
-  paymentCollectionData = defaultPaymentData
-): Promise<PaymentSession[]> {
-  const collections: Payment[] = []
-
-  for (let data of paymentCollectionData) {
-    let collection = manager.create(Payment, data)
-
-    await manager.persistAndFlush(collection)
-  }
-
-  return collections
+  paymentData = defaultPaymentData
+): Promise<PaymentCollection[]> {
+  return await createEntities<Payment>(manager, Payment, paymentData)
 }
