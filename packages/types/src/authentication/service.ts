@@ -1,5 +1,5 @@
-import { IModuleService } from "../modules-sdk"
 import {
+  AuthenticationResponse,
   AuthProviderDTO,
   AuthUserDTO,
   CreateAuthProviderDTO,
@@ -9,9 +9,10 @@ import {
   UpdateAuthProviderDTO,
   UpdateAuthUserDTO,
 } from "./common"
-import { FindConfig } from "../common"
+
 import { Context } from "../shared-context"
-import { AuthenticationResponse } from "./provider"
+import { FindConfig } from "../common"
+import { IModuleService } from "../modules-sdk"
 
 export interface IAuthenticationModuleService extends IModuleService {
   authenticate(
