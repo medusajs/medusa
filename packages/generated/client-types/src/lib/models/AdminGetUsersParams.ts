@@ -5,10 +5,6 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetUsersParams {
   /**
-   * Filter by a user ID.
-   */
-  id?: string
-  /**
    * Filter by email.
    */
   email?: string
@@ -28,6 +24,10 @@ export interface AdminGetUsersParams {
    * A user field to sort-order the retrieved users by.
    */
   order?: string
+  /**
+   * Filter by user IDs.
+   */
+  id?: string | Array<string>
   /**
    * Filter by a creation date range.
    */
@@ -99,10 +99,6 @@ export interface AdminGetUsersParams {
    * Limit the number of users returned.
    */
   limit?: number
-  /**
-   * Comma-separated relations that should be expanded in the returned users.
-   */
-  expand?: string
   /**
    * Comma-separated fields that should be included in the returned users.
    */

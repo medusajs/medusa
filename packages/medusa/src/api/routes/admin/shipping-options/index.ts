@@ -1,9 +1,10 @@
 import { FlagRouter } from "@medusajs/utils"
 import { Router } from "express"
-import { ShippingOption } from "../../../.."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { ShippingOption } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { AdminGetShippingOptionsParams } from "./list-shipping-options"
 
 const route = Router()
 
@@ -14,7 +15,15 @@ export default (app, featureFlagRouter: FlagRouter) => {
     defaultFields.push("includes_tax")
   }
 
-  route.get("/", middlewares.wrap(require("./list-shipping-options").default))
+  route.get(
+    "/",
+    transformQuery(AdminGetShippingOptionsParams, {
+      defaultFields: defaultFields,
+      defaultRelations: defaultRelations,
+      isList: true,
+    }),
+    middlewares.wrap(require("./list-shipping-options").default)
+  )
   route.post("/", middlewares.wrap(require("./create-shipping-option").default))
 
   route.get(
