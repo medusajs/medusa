@@ -7,7 +7,7 @@ export function getInitModuleConfig() {
     defaultAdapterOptions: {
       database: {
         clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
+        schema: process.env.MEDUSA_AUTHENTICATION_DB_SCHEMA,
       },
     },
   }
@@ -26,7 +26,7 @@ export function getInitModuleConfig() {
     modulesConfig: modulesConfig_,
     databaseConfig: {
       clientUrl: DB_URL,
-      schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
+      schema: process.env.MEDUSA_AUTHENTICATION_DB_SCHEMA,
     },
     joinerConfig: [],
   }
