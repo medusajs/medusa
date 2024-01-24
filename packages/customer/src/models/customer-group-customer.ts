@@ -13,7 +13,7 @@ import {
 import Customer from "./customer"
 import CustomerGroup from "./customer-group"
 
-type OptionalGroupProps = "customer_group" | "customer" | DAL.EntityDateColumns
+type OptionalGroupProps = "customer_group" | "customer" | DAL.EntityDateColumns // TODO: To be revisited when more clear
 
 @Entity({ tableName: "customer_group_customer" })
 export default class CustomerGroupCustomer {
