@@ -1,5 +1,6 @@
+import { PencilSquare } from "@medusajs/icons"
 import { User } from "@medusajs/medusa"
-import { Checkbox, Container, Heading, Table, clx } from "@medusajs/ui"
+import { Button, Container, Heading, Table, clx } from "@medusajs/ui"
 import {
   RowSelectionState,
   createColumnHelper,
@@ -10,7 +11,8 @@ import {
 import { useAdminUsers } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 
 export const UserListTable = () => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
@@ -40,6 +42,9 @@ export const UserListTable = () => {
     <Container className="p-0 divide-y">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("users.domain")}</Heading>
+        <Button size="small" variant="secondary" asChild>
+          <Link to="invite">{t("general.invite")}</Link>
+        </Button>
       </div>
       <Table>
         <Table.Header className="border-t-0">
@@ -47,7 +52,7 @@ export const UserListTable = () => {
             return (
               <Table.Row
                 key={headerGroup.id}
-                className="[&_th]:w-1/3 [&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap"
+                className="[&_th]:w-1/3 [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap"
               >
                 {headerGroup.headers.map((header) => {
                   return (
@@ -90,6 +95,26 @@ export const UserListTable = () => {
   )
 }
 
+const UserActions = ({ user }: { user: Omit<User, "password_hash"> }) => {
+  const { t } = useTranslation()
+
+  return (
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: t("general.edit"),
+              to: `${user.id}/edit`,
+            },
+          ],
+        },
+      ]}
+    />
+  )
+}
+
 const columnHelper = createColumnHelper<Omit<User, "password_hash">>()
 
 const useColumns = () => {
@@ -97,58 +122,36 @@ const useColumns = () => {
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          return (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-        },
-      }),
-      columnHelper.display({
-        id: "name",
-        header: t("fields.name"),
-        cell: ({ row }) => {
-          const { first_name, last_name } = row.original
-
-          if (!first_name && !last_name) {
-            return <span className="text-ui-fg-muted">-</span>
-          }
-
-          return `${first_name || ""} ${last_name || ""}`.trim()
-        },
-      }),
       columnHelper.accessor("email", {
         header: t("fields.email"),
         cell: ({ row }) => {
           return row.original.email
         },
       }),
+      columnHelper.display({
+        id: "name",
+        header: t("fields.name"),
+        cell: ({ row }) => {
+          const name = [row.original.first_name, row.original.last_name]
+            .filter(Boolean)
+            .join(" ")
+
+          if (!name) {
+            return <span className="text-ui-fg-muted">-</span>
+          }
+
+          return name
+        },
+      }),
       columnHelper.accessor("role", {
-        header: t("users.role"),
+        header: t("fields.role"),
         cell: ({ row }) => {
           return t(`users.roles.${row.original.role}`)
         },
+      }),
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => <UserActions user={row.original} />,
       }),
     ],
     [t]

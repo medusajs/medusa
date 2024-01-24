@@ -7,6 +7,7 @@
     "save": "Save",
     "create": "Create",
     "delete": "Delete",
+    "invite": "Invite",
     "edit": "Edit",
     "confirm": "Confirm",
     "add": "Add",
@@ -126,7 +127,9 @@
   },
   "users": {
     "domain": "Users",
-    "role": "Role",
+    "editUser": "Edit User",
+    "inviteUser": "Invite User",
+    "inviteUserHint": "Invite a new user to your store.",
     "roles": {
       "admin": "Admin",
       "developer": "Developer",
@@ -244,6 +247,7 @@
     "account": "Account",
     "total": "Total",
     "created": "Created",
-    "key": "Key"
+    "key": "Key",
+    "role": "Role"
   }
 }
