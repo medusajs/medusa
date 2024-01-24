@@ -185,7 +185,7 @@ class SendGridService extends NotificationService {
 
   getTemplateId(event) {
     const templates = Object.keys(this.options_ ?? {})
-    const normalizedEvent = event.toLowerCase().replace(".", "_")
+    const normalizedEvent = event.toLowerCase().replaceAll(".", "_")
     const key = templates.find((template) => {
       return (
         normalizedEvent === template ||
