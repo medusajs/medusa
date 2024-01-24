@@ -10,7 +10,11 @@ export default function () {
       const hookParameters = getHookParams(this)
 
       if (hookParameters?.length) {
-        parametersStr = Handlebars.helpers.parameter.call(hookParameters)
+        parametersStr = Handlebars.helpers.parameter.call(hookParameters, {
+          hash: {
+            sectionTitle: this.name,
+          },
+        })
       }
 
       return parametersStr
