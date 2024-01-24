@@ -121,11 +121,13 @@ export async function loadInternalModule(
 }
 
 export async function loadModuleMigrations(
-  resolution: ModuleResolution
+  resolution: ModuleResolution,
+  moduleExports?: ModuleExports
 ): Promise<[Function | undefined, Function | undefined]> {
   let loadedModule: ModuleExports
   try {
-    loadedModule = await import(resolution.resolutionPath as string)
+    loadedModule =
+      moduleExports ?? (await import(resolution.resolutionPath as string))
 
     return [loadedModule.runMigrations, loadedModule.revertMigration]
   } catch {
