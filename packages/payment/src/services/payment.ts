@@ -1,4 +1,3 @@
-import { Payment } from "@models"
 import {
   CaptureDTO,
   Context,
@@ -16,6 +15,8 @@ import {
   MedusaContext,
   ModulesSdkUtils,
 } from "@medusajs/utils"
+import { Payment } from "@models"
+import BigNumber from "bignumber.js"
 
 type InjectedDependencies = {
   paymentRepository: DAL.RepositoryService
@@ -86,16 +87,19 @@ export default class PaymentService<
 
     for (const amountName of amountsSelected) {
       if (amountName === "captured_amount") {
-        amounts["captured_amount"] = payment.captures.reduce(
-          (sum, capture) => sum + Number(capture.amount),
-          0
-        )
+        const capturedAmount = payment.captures.reduce((sum, capture) => {
+          const rawAmount = BigNumber(capture.raw_amount.value as string)
+          return sum.plus(rawAmount)
+        }, BigNumber(0))
+
+        amounts["captured_amount"] = capturedAmount.toNumber()
       }
       if (amountName === "refunded_amount") {
-        amounts["refunded_amount"] = payment.refunds.reduce(
-          (sum, refund) => sum + Number(refund.amount),
-          0
-        )
+        const refundedAmount = payment.refunds.reduce((sum, refund) => {
+          const rawAmount = BigNumber(refund.raw_amount.value as string)
+          return sum.plus(rawAmount)
+        }, BigNumber(0))
+        amounts["refunded_amount"] = refundedAmount.toNumber()
       }
     }
 

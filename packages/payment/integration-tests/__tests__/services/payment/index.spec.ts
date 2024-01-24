@@ -1,19 +1,19 @@
+import { createMedusaContainer } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { PaymentService } from "@services"
 import { asValue } from "awilix"
 import {
   createPaymentCollections,
   createPaymentSessions,
   createPayments,
 } from "../../../__fixtures__"
-import { createMedusaContainer } from "@medusajs/utils"
-import { PaymentService } from "@services"
 
-import { MikroOrmWrapper } from "../../../utils"
 import ContainerLoader from "../../../../src/loaders/container"
+import { MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 
-describe("Payment Service", () => {
+describe.only("Payment Service", () => {
   let service: PaymentService
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
