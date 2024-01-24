@@ -6,7 +6,7 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createAuthProviders } from "../../../__fixtures__/auth-provider"
 import { createAuthUsers } from "../../../__fixtures__/auth-user"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
-import { initModules } from "medusa-test-utils/dist"
+import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 const seedDefaultData = async (testManager) => {
@@ -29,6 +29,10 @@ describe("AuthenticationModuleService - AuthProvider", () => {
     shutdownFunc = shutdown
   })
 
+  afterAll(async () => {
+    await shutdownFunc()
+  })
+
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     testManager = MikroOrmWrapper.forkManager()
@@ -41,10 +45,6 @@ describe("AuthenticationModuleService - AuthProvider", () => {
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
     MedusaModule.clearInstances()
-  })
-
-  afterAll(async () => {
-    await shutdownFunc()
   })
 
   describe("authenticate", () => {
