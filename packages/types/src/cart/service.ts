@@ -257,7 +257,7 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<LineItemTaxLineDTO>
   addLineItemTaxLines(
     cartId: string,
-    taxLines: CreateLineItemTaxLineDTO[],
+    taxLines: CreateLineItemTaxLineDTO[] | CreateLineItemTaxLineDTO,
     sharedContext?: Context
   ): Promise<LineItemTaxLineDTO[]>
 
@@ -294,7 +294,7 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<ShippingMethodTaxLineDTO>
   addShippingMethodTaxLines(
     cartId: string,
-    taxLines: CreateShippingMethodTaxLineDTO[],
+    taxLines: CreateShippingMethodTaxLineDTO[] | CreateShippingMethodTaxLineDTO,
     sharedContext?: Context
   ): Promise<ShippingMethodTaxLineDTO[]>
 
