@@ -31,6 +31,7 @@ export default function (theme: MarkdownTheme) {
         parameterComponent,
         componentItems: mutationParameters,
         extraProps: parameterComponentExtraProps,
+        sectionTitle: this.name,
       })
     }
   )
