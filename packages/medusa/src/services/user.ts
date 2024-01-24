@@ -67,8 +67,41 @@ class UserService extends TransactionBaseService {
     selector: Selector<FilterableUserProps> & { q?: string } = {},
     config: FindConfig<FilterableUserProps> = { skip: 0, take: 20 }
   ): Promise<User[]> {
-    const [users] = await this.listAndCount(selector, config)
-    return users
+    const userRepo = this.activeManager_.withRepository(this.userRepository_)
+
+    let q: string | undefined
+
+    if (selector.q) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = buildQuery(selector, config)
+
+    if (q) {
+      const where = query.where as FindOptionsWhere<FilterableUserProps>
+
+      delete where.email
+      delete where.first_name
+      delete where.last_name
+
+      query.where = [
+        {
+          ...where,
+          email: ILike(`%${q}%`),
+        },
+        {
+          ...where,
+          first_name: ILike(`%${q}%`),
+        },
+        {
+          ...where,
+          last_name: ILike(`%${q}%`),
+        },
+      ]
+    }
+
+    return await userRepo.find(query)
   }
 
   async listAndCount(
