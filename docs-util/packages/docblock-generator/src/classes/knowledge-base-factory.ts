@@ -165,7 +165,7 @@ class KnowledgeBaseFactory {
     },
     {
       startsWith: "update",
-      template: "updates existing {return type}.",
+      template: "updates existing {return type}(s).",
     },
     {
       startsWith: "softDelete",
