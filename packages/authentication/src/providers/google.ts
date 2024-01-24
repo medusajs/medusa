@@ -82,7 +82,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
       return { success: false, error: error.message }
     }
 
-    const code = (req.query && req.query.code) || (req.body && req.body.code)
+    const code = req.query?.code ?? req.body?.code
 
     return await this.validateCallback(code, config)
   }
@@ -155,10 +155,11 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
   }
 
   private originalURL(req: AuthenticationInput) {
-    const tls = req.connection.encrypted,
-      host = req.headers.host,
-      protocol = tls ? "https" : "http",
-      path = req.url || ""
+    const tls = req.connection.encrypted
+    const host = req.headers.host
+    const protocol = tls ? "https" : "http"
+    const path = req.url || ""
+
     return protocol + "://" + host + path
   }
 
