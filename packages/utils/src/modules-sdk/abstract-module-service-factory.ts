@@ -5,12 +5,21 @@ import {
   Constructor,
   Context,
   FindConfig,
+  IEventBusModuleService,
   Pluralize,
   RepositoryService,
   RestoreReturn,
   SoftDeleteReturn,
 } from "@medusajs/types"
-import { lowerCaseFirst, mapObjectTo, MapToConfig, pluralize } from "../common"
+import {
+  isString,
+  kebabCase,
+  lowerCaseFirst,
+  mapObjectTo,
+  MapToConfig,
+  pluralize,
+  upperCaseFirst,
+} from "../common"
 import { InjectManager, InjectTransactionManager } from "./decorators"
 import { MedusaContext } from "../decorators"
 
@@ -34,6 +43,21 @@ const methods: BaseMethods[] = [
 type OtherModelsConfigTemplate = {
   [ModelName: string]: { singular?: string; plural?: string; dto: object }
 }
+
+type ExtractSingularName<
+  T extends Record<any, any>,
+  K = keyof T
+> = T[K] extends { singular?: string } ? T[K]["singular"] : K
+
+type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
+  plural?: string
+}
+  ? T[K]["plural"]
+  : Pluralize<K & string>
+
+type ModelConfiguration =
+  | Constructor<any>
+  | { singular?: string; plural?: string; model: Constructor<any> }
 
 export interface AbstractModuleServiceBase<TContainer, TMainModelDTO> {
   get __container__(): TContainer
@@ -74,17 +98,13 @@ export interface AbstractModuleServiceBase<TContainer, TMainModelDTO> {
   ): Promise<Record<string, string[]> | void>
 }
 
-type ExtractSingularName<
-  T extends Record<any, any>,
-  K = keyof T
-> = T[K] extends { singular?: string } ? T[K]["singular"] : K
-
-type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
-  plural?: string
-}
-  ? T[K]["plural"]
-  : Pluralize<K & string>
-
+/**
+ * Multiple issues on typescript around mapped types function are open, so
+ * when overriding a method from the base class that is mapped dynamically from the
+ * other models, we will have to ignore the error (2425)
+ *
+ * see: https://github.com/microsoft/TypeScript/issues/48125
+ */
 export type AbstractModuleService<
   TContainer,
   TMainModelDTO,
@@ -104,11 +124,11 @@ export type AbstractModuleService<
     TOtherModelNamesAndAssociatedDTO,
     K
   > &
-    string}`]: {
-    (filters?: any, config?: FindConfig<any>, sharedContext?: Context): Promise<
-      TOtherModelNamesAndAssociatedDTO[K & string]["dto"][]
-    >
-  }
+    string}`]: (
+    filters?: any,
+    config?: FindConfig<any>,
+    sharedContext?: Context
+  ) => Promise<TOtherModelNamesAndAssociatedDTO[K & string]["dto"][]>
 } & {
   [K in keyof TOtherModelNamesAndAssociatedDTO as `listAndCount${ExtractPluralName<
     TOtherModelNamesAndAssociatedDTO,
@@ -156,10 +176,6 @@ export type AbstractModuleService<
   }
 }
 
-type OtherModelConfig =
-  | Constructor<any>
-  | { singular?: string; plural?: string; model: Constructor<any> }
-
 /**
  * Factory function for creating an abstract module service
  *
@@ -206,7 +222,7 @@ export function abstractModuleServiceFactory<
   TOtherModelNamesAndAssociatedDTO extends OtherModelsConfigTemplate
 >(
   mainModel: Constructor<any>,
-  otherModels: OtherModelConfig[],
+  otherModels: ModelConfiguration[],
   entityNameToLinkableKeysMap: MapToConfig = {}
 ): {
   new (container: TContainer): AbstractModuleService<
@@ -216,9 +232,7 @@ export function abstractModuleServiceFactory<
   >
 } {
   const buildMethodNamesFromModel = (
-    model:
-      | Constructor<any>
-      | { singular?: string; plural?: string; model: Constructor<any> },
+    model: ModelConfiguration,
     suffixed: boolean = true
   ): Record<string, string> => {
     return methods.reduce((acc, method) => {
@@ -236,7 +250,9 @@ export function abstractModuleServiceFactory<
             : pluralize((model as Constructor<any>).name)
       }
 
-      const methodName = suffixed ? `${method}${modelName}` : method
+      const methodName = suffixed
+        ? `${method}${upperCaseFirst(modelName)}`
+        : method
 
       return { ...acc, [method]: methodName }
     }, {})
@@ -339,6 +355,15 @@ export function abstractModuleServiceFactory<
             primaryKeyValues,
             sharedContext
           )
+
+          await this.eventBusModuleService_?.emit(
+            primaryKeyValues.map((primaryKeyValue) => ({
+              eventName: `${kebabCase(model.name)}.deleted`,
+              data: isString(primaryKeyValue)
+                ? { id: primaryKeyValue }
+                : primaryKeyValue,
+            }))
+          )
         }.bind(klassPrototype)
 
         // Apply MedusaContext decorator
@@ -366,6 +391,13 @@ export function abstractModuleServiceFactory<
             {
               populate: true,
             }
+          )
+
+          await this.eventBusModuleService_?.emit(
+            softDeletedEntities.map(({ id }) => ({
+              eventName: `${kebabCase(model.name)}.deleted`,
+              data: { id },
+            }))
           )
 
           let mappedCascadedEntitiesMap
@@ -438,13 +470,15 @@ export function abstractModuleServiceFactory<
 
   class AbstractModuleService_ {
     readonly __container__: Record<string, any>
-    readonly baseRepository_: RepositoryService;
+    readonly baseRepository_: RepositoryService
+    readonly eventBusModuleService_: IEventBusModuleService;
 
     [key: string]: any
 
     constructor(container: Record<string, any>) {
       this.__container__ = container
       this.baseRepository_ = container.baseRepository
+      this.eventBusModuleService_ = container.eventBusModuleService
 
       const mainModelMethods = buildMethodNamesFromModel(mainModel, false)
 
@@ -460,7 +494,7 @@ export function abstractModuleServiceFactory<
        * Build the retrieve/list/listAndCount/delete/softDelete/restore methods for all the other models
        */
 
-      const otherModelsMethods: [OtherModelConfig, Record<string, string>][] =
+      const otherModelsMethods: [ModelConfiguration, Record<string, string>][] =
         otherModels.map((model) => [model, buildMethodNamesFromModel(model)])
 
       for (let [model, modelsMethods] of otherModelsMethods) {

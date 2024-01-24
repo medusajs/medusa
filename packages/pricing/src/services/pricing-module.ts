@@ -76,7 +76,7 @@ type InjectedDependencies = {
   priceListRuleValueService: PriceListRuleValueService<any>
 }
 
-const otherModels = new Set([
+const generateMethodForModels = [
   Currency,
   MoneyAmount,
   PriceList,
@@ -87,7 +87,7 @@ const otherModels = new Set([
   PriceSetMoneyAmountRules,
   PriceSetRuleType,
   RuleType,
-])
+]
 
 export default class PricingModuleService<
     TPriceSet extends PriceSet = PriceSet,
@@ -117,7 +117,7 @@ export default class PricingModuleService<
       PriceList: { dto: PricingTypes.PriceListDTO }
       PriceListRule: { dto: PricingTypes.PriceListRuleDTO }
     }
-  >(PriceSet, [...otherModels], entityNameToLinkableKeysMap)
+  >(PriceSet, generateMethodForModels, entityNameToLinkableKeysMap)
   implements PricingTypes.IPricingModuleService
 {
   protected baseRepository_: DAL.RepositoryService
