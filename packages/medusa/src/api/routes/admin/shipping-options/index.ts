@@ -12,14 +12,14 @@ export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/shipping-options", route)
 
   if (featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)) {
-    defaultFields.push("includes_tax")
+    shippingOptionsDefaultFields.push("includes_tax")
   }
 
   route.get(
     "/",
     transformQuery(AdminGetShippingOptionsParams, {
-      defaultFields: defaultFields,
-      defaultRelations: defaultRelations,
+      defaultFields: shippingOptionsDefaultFields,
+      defaultRelations: shippingOptionsDefaultRelations,
       isList: true,
     }),
     middlewares.wrap(require("./list-shipping-options").default)
@@ -42,7 +42,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
   return app
 }
 
-export const defaultFields: (keyof ShippingOption)[] = [
+export const shippingOptionsDefaultFields: (keyof ShippingOption)[] = [
   "id",
   "name",
   "region_id",
@@ -59,7 +59,11 @@ export const defaultFields: (keyof ShippingOption)[] = [
   "metadata",
 ]
 
-export const defaultRelations = ["region", "profile", "requirements"]
+export const shippingOptionsDefaultRelations = [
+  "region",
+  "profile",
+  "requirements",
+]
 
 /**
  * @schema AdminShippingOptionsListRes
