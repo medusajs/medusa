@@ -1,3 +1,4 @@
+import { PaginatedResponse } from "@medusajs/types"
 import { Router } from "express"
 import { User } from "../../../../models/user"
 import { DeleteResponse } from "../../../../types/common"
@@ -77,14 +78,26 @@ export type AdminUserRes = {
  * description: "The list of users."
  * required:
  *   - users
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   users:
  *     type: array
  *     description: "An array of users details."
  *     items:
  *       $ref: "#/components/schemas/User"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of users skipped when retrieving the users.
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
  */
-export type AdminUsersListRes = {
+export type AdminUsersListRes = PaginatedResponse & {
   users: Omit<User, "password_hash">[]
 }
 
