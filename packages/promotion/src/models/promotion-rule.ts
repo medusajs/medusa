@@ -31,7 +31,7 @@ export default class PromotionRule {
   id!: string
 
   @Property({ columnType: "text", nullable: true })
-  description?: string | null
+  description: string | null = null
 
   @Index({ name: "IDX_promotion_rule_attribute" })
   @Property({ columnType: "text" })
@@ -53,7 +53,13 @@ export default class PromotionRule {
     () => ApplicationMethod,
     (applicationMethod) => applicationMethod.target_rules
   )
-  application_methods = new Collection<ApplicationMethod>(this)
+  method_target_rules = new Collection<ApplicationMethod>(this)
+
+  @ManyToMany(
+    () => ApplicationMethod,
+    (applicationMethod) => applicationMethod.buy_rules
+  )
+  method_buy_rules = new Collection<ApplicationMethod>(this)
 
   @Property({
     onCreate: () => new Date(),

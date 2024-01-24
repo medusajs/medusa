@@ -26,3 +26,16 @@ workflow()
   .then((res) => {
     console.log(res.result) // result: { step2: { test: "test", test2: "step1" } }
   })
+
+/*type type0 = typeof workflow extends ReturnWorkflow<infer T, infer R, infer X>
+  ? T
+  : never
+
+function run<
+  TWorkflow extends ReturnWorkflow<any, any, any>,
+  TData = TWorkflow extends ReturnWorkflow<infer T, infer R, infer X>
+    ? T
+    : never
+>(name: string, options: FlowRunOptions<TData>) {}
+
+const test = run<typeof workflow>("workflow", { input: "string" })*/
