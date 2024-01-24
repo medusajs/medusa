@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { Form } from "../../../../../components/common/form"
 
 type CreatePublishableApiKeyFormProps = {
@@ -37,9 +38,16 @@ export const CreatePublishableApiKeyForm = ({
   }, [isDirty])
 
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    await mutateAsync(values)
+    await mutateAsync(values, {
+      onSuccess: ({ publishable_api_key }) => {
+        navigate(`/settings/api-key-management/${publishable_api_key.id}`, {
+          replace: true,
+        })
+      },
+    })
   })
 
   return (
