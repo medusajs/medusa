@@ -40,7 +40,7 @@ const methods: BaseMethods[] = [
   "restore",
 ]
 
-type OtherModelsConfigTemplate = {
+type ModelsConfigTemplate = {
   [ModelName: string]: { singular?: string; plural?: string; dto: object }
 }
 
@@ -108,7 +108,7 @@ export interface AbstractModuleServiceBase<TContainer, TMainModelDTO> {
 export type AbstractModuleService<
   TContainer,
   TMainModelDTO,
-  TOtherModelNamesAndAssociatedDTO extends OtherModelsConfigTemplate
+  TOtherModelNamesAndAssociatedDTO extends ModelsConfigTemplate
 > = AbstractModuleServiceBase<TContainer, TMainModelDTO> & {
   [K in keyof TOtherModelNamesAndAssociatedDTO as `retrieve${ExtractSingularName<
     TOtherModelNamesAndAssociatedDTO,
@@ -219,7 +219,7 @@ export type AbstractModuleService<
 export function abstractModuleServiceFactory<
   TContainer,
   TMainModelDTO,
-  TOtherModelNamesAndAssociatedDTO extends OtherModelsConfigTemplate
+  TOtherModelNamesAndAssociatedDTO extends ModelsConfigTemplate
 >(
   mainModel: Constructor<any>,
   otherModels: ModelConfiguration[],

@@ -100,12 +100,36 @@ export default class ProductModuleService<
     InjectedDependencies,
     ProductTypes.ProductDTO,
     {
-      Category: { dto: ProductTypes.ProductCategoryDTO }
-      Collection: { dto: ProductTypes.ProductCollectionDTO }
-      Option: { dto: ProductTypes.ProductOptionDTO }
-      Tag: { dto: ProductTypes.ProductTagDTO }
-      Type: { dto: ProductTypes.ProductTypeDTO }
-      Variant: { dto: ProductTypes.ProductVariantDTO }
+      ProductCategory: {
+        dto: ProductTypes.ProductCategoryDTO
+        singular: "Category"
+        plural: "Categories"
+      }
+      ProductCollection: {
+        dto: ProductTypes.ProductCollectionDTO
+        singular: "Collection"
+        plural: "Collections"
+      }
+      ProductOption: {
+        dto: ProductTypes.ProductOptionDTO
+        singular: "Option"
+        plural: "Options"
+      }
+      ProductTag: {
+        dto: ProductTypes.ProductTagDTO
+        singular: "Tag"
+        plural: "Tags"
+      }
+      ProductType: {
+        dto: ProductTypes.ProductTypeDTO
+        singular: "Type"
+        plural: "Types"
+      }
+      ProductVariant: {
+        dto: ProductTypes.ProductVariantDTO
+        singular: "Variant"
+        plural: "Variants"
+      }
     }
   >(Product, generateMethodForModels, entityNameToLinkableKeysMap)
   implements ProductTypes.IProductModuleService
