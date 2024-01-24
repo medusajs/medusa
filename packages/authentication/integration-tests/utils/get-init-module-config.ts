@@ -1,5 +1,4 @@
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
-import { modulesConfig } from "../__fixtures__"
 
 import { DB_URL } from "./database"
 
@@ -16,7 +15,6 @@ export function getInitModuleConfig() {
   const injectedDependencies = {}
 
   const modulesConfig_ = {
-    ...modulesConfig,
     [Modules.AUTHENTICATION]: {
       definition: ModulesDefinition[Modules.AUTHENTICATION],
       options: authenticationModuleOptions,
@@ -28,7 +26,7 @@ export function getInitModuleConfig() {
     modulesConfig: modulesConfig_,
     databaseConfig: {
       clientUrl: DB_URL,
-      schema: process.env.MEDUSA_SEARCH_DB_SCHEMA,
+      schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
     },
     joinerConfig: [],
   }
