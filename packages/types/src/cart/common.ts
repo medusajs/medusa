@@ -103,13 +103,21 @@ export interface ShippingMethodTaxLineDTO extends TaxLineDTO {
    * The associated shipping method
    */
   shipping_method: CartShippingMethodDTO
+  /**
+   * The ID of the associated shipping method
+   */
+  shipping_method_id: string
 }
 
 export interface LineItemTaxLineDTO extends TaxLineDTO {
   /**
    * The associated line item
    */
-  line_item: CartLineItemDTO
+  item: CartLineItemDTO
+  /**
+   * The ID of the associated line item
+   */
+  item_id: string
 }
 
 export interface CartAddressDTO {
@@ -470,7 +478,11 @@ export interface CartDTO {
   subtotal: number
   tax_total: number
   discount_total: number
+  raw_discount_total: number
   discount_tax_total: number
+
+  gift_card_total: number
+  gift_card_tax_total: number
 
   shipping_total: number
   shipping_subtotal: number
@@ -513,6 +525,7 @@ export interface FilterableLineItemAdjustmentProps
   item_id?: string | string[]
   promotion_id?: string | string[]
   provider_id?: string | string[]
+  item?: FilterableLineItemProps
 }
 export interface FilterableShippingMethodProps
   extends BaseFilterable<FilterableShippingMethodProps> {
@@ -528,6 +541,29 @@ export interface FilterableShippingMethodAdjustmentProps
   shipping_method_id?: string | string[]
   promotion_id?: string | string[]
   provider_id?: string | string[]
+  shipping_method?: FilterableShippingMethodProps
+}
+
+export interface FilterableLineItemTaxLineProps
+  extends BaseFilterable<FilterableLineItemTaxLineProps> {
+  id?: string | string[]
+  description?: string
+  code?: string | string[]
+  tax_rate_id?: string | string[]
+  provider_id?: string | string[]
+  item_id?: string | string[]
+  item?: FilterableLineItemProps
+}
+
+export interface FilterableShippingMethodTaxLineProps
+  extends BaseFilterable<FilterableShippingMethodTaxLineProps> {
+  id?: string | string[]
+  description?: string
+  code?: string | string[]
+  tax_rate_id?: string | string[]
+  provider_id?: string | string[]
+  shipping_method_id?: string | string[]
+  shipping_method?: FilterableShippingMethodProps
 }
 
 /**

@@ -25,6 +25,9 @@ export default abstract class AdjustmentLine {
   @Property({ columnType: "numeric", serializer: Number })
   amount: number
 
+  @Property({ columnType: "jsonb" })
+  raw_amount: Record<string, unknown>
+
   @Property({ columnType: "text", nullable: true })
   provider_id: string | null = null
 

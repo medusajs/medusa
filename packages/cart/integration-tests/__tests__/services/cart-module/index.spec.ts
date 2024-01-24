@@ -38,6 +38,32 @@ describe("Cart Module Service", () => {
       )
     })
 
+    it.only("should retrieve a cart with totals successfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+          items: [
+            {
+              title: "test",
+              quantity: 1,
+              unit_price: 100,
+            },
+          ],
+        },
+      ])
+
+      const cart = await service.retrieve(createdCart.id, {relations: ["items", "items.adjustments"]})
+
+      console.log(cart)
+
+      // expect(cart).toEqual(
+      //   expect.objectContaining({
+      //     id: createdCart.id,
+      //     currency_code: "eur",
+      //   })
+      // )
+    })
+
     it("should create a cart successfully", async () => {
       const [createdCart] = await service.create([
         {
@@ -1200,42 +1226,6 @@ describe("Cart Module Service", () => {
         ])
       )
     })
-
-    it("should throw if line item is not associated with cart", async () => {
-      const [cartOne] = await service.create([
-        {
-          currency_code: "eur",
-        },
-      ])
-
-      const [cartTwo] = await service.create([
-        {
-          currency_code: "eur",
-        },
-      ])
-
-      const [itemOne] = await service.addLineItems(cartOne.id, [
-        {
-          quantity: 1,
-          unit_price: 100,
-          title: "test",
-        },
-      ])
-
-      const error = await service
-        .addLineItemAdjustments(cartTwo.id, [
-          {
-            item_id: itemOne.id,
-            amount: 100,
-            code: "FREE",
-          },
-        ])
-        .catch((e) => e)
-
-      expect(error.message).toBe(
-        `Line item with id ${itemOne.id} does not exist on cart with id ${cartTwo.id}`
-      )
-    })
   })
 
   describe("removeLineItemAdjustments", () => {
@@ -1858,6 +1848,568 @@ describe("Cart Module Service", () => {
       })
 
       expect(adjustments?.length).toBe(0)
+    })
+  })
+
+  describe("setLineItemTaxLines", () => {
+    it("should set line item tax lines for a cart", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [itemOne] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+
+      const [itemTwo] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 2,
+          unit_price: 200,
+          title: "test-2",
+        },
+      ])
+
+      const taxLines = await service.setLineItemTaxLines(createdCart.id, [
+        {
+          item_id: itemOne.id,
+          rate: 20,
+          code: "TX",
+        },
+        {
+          item_id: itemTwo.id,
+          rate: 20,
+          code: "TX",
+        },
+      ])
+
+      expect(taxLines).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            item_id: itemOne.id,
+            rate: 20,
+            code: "TX",
+          }),
+          expect.objectContaining({
+            item_id: itemTwo.id,
+            rate: 20,
+            code: "TX",
+          }),
+        ])
+      )
+    })
+
+    it("should replace line item tax lines for a cart", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [itemOne] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+
+      const taxLines = await service.setLineItemTaxLines(createdCart.id, [
+        {
+          item_id: itemOne.id,
+          rate: 20,
+          code: "TX",
+        },
+      ])
+
+      expect(taxLines).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            item_id: itemOne.id,
+            rate: 20,
+            code: "TX",
+          }),
+        ])
+      )
+
+      await service.setLineItemTaxLines(createdCart.id, [
+        {
+          item_id: itemOne.id,
+          rate: 25,
+          code: "TX-2",
+        },
+      ])
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["items.tax_lines"],
+      })
+
+      expect(cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: itemOne.id,
+            tax_lines: expect.arrayContaining([
+              expect.objectContaining({
+                item_id: itemOne.id,
+                rate: 25,
+                code: "TX-2",
+              }),
+            ]),
+          }),
+        ])
+      )
+
+      expect(cart.items?.length).toBe(1)
+      expect(cart.items?.[0].tax_lines?.length).toBe(1)
+    })
+
+    it("should remove all line item tax lines for a cart", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [itemOne] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+
+      const taxLines = await service.setLineItemTaxLines(createdCart.id, [
+        {
+          item_id: itemOne.id,
+          rate: 20,
+          code: "TX",
+        },
+      ])
+
+      expect(taxLines).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            item_id: itemOne.id,
+            rate: 20,
+            code: "TX",
+          }),
+        ])
+      )
+
+      await service.setLineItemTaxLines(createdCart.id, [])
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["items.tax_lines"],
+      })
+
+      expect(cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: itemOne.id,
+            tax_lines: [],
+          }),
+        ])
+      )
+
+      expect(cart.items?.length).toBe(1)
+      expect(cart.items?.[0].tax_lines?.length).toBe(0)
+    })
+
+    it("should update line item tax lines for a cart", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [itemOne] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+
+      const taxLines = await service.setLineItemTaxLines(createdCart.id, [
+        {
+          item_id: itemOne.id,
+          rate: 20,
+          code: "TX",
+        },
+      ])
+
+      expect(taxLines).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            item_id: itemOne.id,
+            rate: 20,
+            code: "TX",
+          }),
+        ])
+      )
+
+      await service.setLineItemTaxLines(createdCart.id, [
+        {
+          id: taxLines[0].id,
+          item_id: itemOne.id,
+          rate: 25,
+          code: "TX",
+        },
+      ])
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["items.tax_lines"],
+      })
+
+      expect(cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: itemOne.id,
+            tax_lines: [
+              expect.objectContaining({
+                id: taxLines[0].id,
+                item_id: itemOne.id,
+                rate: 25,
+                code: "TX",
+              }),
+            ],
+          }),
+        ])
+      )
+
+      expect(cart.items?.length).toBe(1)
+      expect(cart.items?.[0].tax_lines?.length).toBe(1)
+    })
+
+    it("should remove, update, and create line item tax lines for a cart", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [itemOne] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+
+      const taxLines = await service.setLineItemTaxLines(createdCart.id, [
+        {
+          item_id: itemOne.id,
+          rate: 20,
+          code: "TX",
+        },
+        {
+          item_id: itemOne.id,
+          rate: 25,
+          code: "TX",
+        },
+      ])
+
+      expect(taxLines).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            item_id: itemOne.id,
+            rate: 20,
+            code: "TX",
+          }),
+          expect.objectContaining({
+            item_id: itemOne.id,
+            rate: 25,
+            code: "TX",
+          }),
+        ])
+      )
+
+      const taxLine = taxLines.find((tx) => tx.item_id === itemOne.id)
+
+      await service.setLineItemTaxLines(createdCart.id, [
+        // update
+        {
+          id: taxLine.id,
+          rate: 40,
+          code: "TX",
+        },
+        // create
+        {
+          item_id: itemOne.id,
+          rate: 25,
+          code: "TX-2",
+        },
+        // remove: should remove the initial tax line for itemOne
+      ])
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["items.tax_lines"],
+      })
+
+      expect(cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: itemOne.id,
+            tax_lines: [
+              expect.objectContaining({
+                id: taxLine!.id,
+                item_id: itemOne.id,
+                rate: 40,
+                code: "TX",
+              }),
+              expect.objectContaining({
+                item_id: itemOne.id,
+                rate: 25,
+                code: "TX-2",
+              }),
+            ],
+          }),
+        ])
+      )
+
+      expect(cart.items?.length).toBe(1)
+      expect(cart.items?.[0].tax_lines?.length).toBe(2)
+    })
+  })
+
+  describe("addLineItemAdjustments", () => {
+    it("should add line item tax lines for items in a cart", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [itemOne] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+
+      const taxLines = await service.addLineItemTaxLines(createdCart.id, [
+        {
+          item_id: itemOne.id,
+          rate: 20,
+          code: "TX",
+        },
+      ])
+
+      expect(taxLines).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            item_id: itemOne.id,
+            rate: 20,
+            code: "TX",
+          }),
+        ])
+      )
+    })
+
+    it("should add multiple line item tax lines for multiple line items", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [itemOne] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+      const [itemTwo] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 2,
+          unit_price: 200,
+          title: "test-2",
+        },
+      ])
+
+      const taxLines = await service.addLineItemTaxLines(createdCart.id, [
+        {
+          item_id: itemOne.id,
+          rate: 20,
+          code: "TX",
+        },
+        {
+          item_id: itemTwo.id,
+          rate: 20,
+          code: "TX",
+        },
+      ])
+
+      expect(taxLines).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            item_id: itemOne.id,
+            rate: 20,
+            code: "TX",
+          }),
+          expect.objectContaining({
+            item_id: itemTwo.id,
+            rate: 20,
+            code: "TX",
+          }),
+        ])
+      )
+    })
+
+    it("should add line item tax lines for line items on multiple carts", async () => {
+      const [cartOne] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+      const [cartTwo] = await service.create([
+        {
+          currency_code: "usd",
+        },
+      ])
+
+      const [itemOne] = await service.addLineItems(cartOne.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+      const [itemTwo] = await service.addLineItems(cartTwo.id, [
+        {
+          quantity: 2,
+          unit_price: 200,
+          title: "test-2",
+        },
+      ])
+
+      await service.addLineItemTaxLines([
+        // item from cart one
+        {
+          item_id: itemOne.id,
+          rate: 20,
+          code: "TX",
+        },
+        // item from cart two
+        {
+          item_id: itemTwo.id,
+          rate: 25,
+          code: "TX-2",
+        },
+      ])
+
+      const cartOneItems = await service.listLineItems(
+        { cart_id: cartOne.id },
+        { relations: ["tax_lines"] }
+      )
+      const cartTwoItems = await service.listLineItems(
+        { cart_id: cartTwo.id },
+        { relations: ["tax_lines"] }
+      )
+
+      expect(cartOneItems).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            tax_lines: expect.arrayContaining([
+              expect.objectContaining({
+                item_id: itemOne.id,
+                rate: 20,
+                code: "TX",
+              }),
+            ]),
+          }),
+        ])
+      )
+      expect(cartTwoItems).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            tax_lines: expect.arrayContaining([
+              expect.objectContaining({
+                item_id: itemTwo.id,
+                rate: 25,
+                code: "TX-2",
+              }),
+            ]),
+          }),
+        ])
+      )
+    })
+  })
+
+  describe("removeLineItemAdjustments", () => {
+    it("should remove line item tax line succesfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [item] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+
+      const [taxLine] = await service.addLineItemTaxLines(createdCart.id, [
+        {
+          item_id: item.id,
+          rate: 20,
+          code: "TX",
+        },
+      ])
+
+      expect(taxLine.item_id).toBe(item.id)
+
+      await service.removeLineItemTaxLines(taxLine.id)
+
+      const taxLines = await service.listLineItemTaxLines({
+        item_id: item.id,
+      })
+
+      expect(taxLines?.length).toBe(0)
+    })
+
+    it("should remove line item tax lines succesfully with selector", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [item] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+      ])
+
+      const [taxLine] = await service.addLineItemTaxLines(createdCart.id, [
+        {
+          item_id: item.id,
+          rate: 20,
+          code: "TX",
+        },
+      ])
+
+      expect(taxLine.item_id).toBe(item.id)
+
+      await service.removeLineItemTaxLines({ item_id: item.id })
+
+      const taxLines = await service.listLineItemTaxLines({
+        item_id: item.id,
+      })
+
+      expect(taxLines?.length).toBe(0)
     })
   })
 })

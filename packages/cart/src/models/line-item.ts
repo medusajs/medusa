@@ -13,6 +13,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import BigNumber from "bignumber.js"
 import Cart from "./cart"
 import LineItemAdjustment from "./line-item-adjustment"
 import LineItemTaxLine from "./line-item-tax-line"
@@ -110,18 +111,14 @@ export default class LineItem {
   @Check({ expression: "unit_price >= 0" }) // TODO: Validate that numeric types work with the expression
   unit_price: number
 
-  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.line_item, {
+  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
     cascade: [Cascade.REMOVE],
   })
   tax_lines = new Collection<LineItemTaxLine>(this)
 
-  @OneToMany(
-    () => LineItemAdjustment,
-    (adjustment) => adjustment.item,
-    {
-      cascade: [Cascade.REMOVE],
-    }
-  )
+  @OneToMany(() => LineItemAdjustment, (adjustment) => adjustment.item, {
+    cascade: [Cascade.REMOVE],
+  })
   adjustments = new Collection<LineItemAdjustment>(this)
 
   /** COMPUTED PROPERTIES - START */
@@ -164,6 +161,13 @@ export default class LineItem {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "cali")
+
+    if (!this.raw_unit_price) {
+      this.raw_unit_price = {
+        value: BigNumber(this.unit_price).multipliedBy(0.01).toFixed(8), // TODO: add sensible default for scale and decimal?
+        scale: 8, // TODO: make configurable
+      }
+    }
   }
 
   @OnInit()
