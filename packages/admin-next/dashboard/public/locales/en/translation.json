@@ -27,6 +27,8 @@
     "details": "Details",
     "enabled": "Enabled",
     "disabled": "Disabled",
+    "active": "Active",
+    "revoked": "Revoked",
     "remove": "Remove",
     "admin": "Admin",
     "store": "Store",
@@ -183,10 +185,16 @@
     "domain": "API Key Management",
     "createKey": "Create key",
     "createPublishableApiKey": "Create Publishable API Key",
+    "editKey": "Edit key",
     "revoke": "Revoke",
     "publishableApiKeyHint": "Publishable API keys are used to limit the scope of requests to specific sales channels.",
     "deleteKeyWarning": "You are about to delete the API key {{title}}. This action cannot be undone.",
-    "revokeKeyWarning": "You are about to revoke the API key {{title}}."
+    "revokeKeyWarning": "You are about to revoke the API key {{title}}. This action cannot be undone, and the key cannot be used in future requests.",
+    "removeSalesChannelWarning": "You are about to remove the sales channel {{name}} from the API key. This action cannot be undone.",
+    "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the API key. This action cannot be undone.",
+    "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
+    "createdBy": "Created by",
+    "revokedBy": "Revoked by"
   },
   "fields": {
     "name": "Name",
@@ -234,6 +242,8 @@
     "variants": "Variants",
     "orders": "Orders",
     "account": "Account",
-    "total": "Total"
+    "total": "Total",
+    "created": "Created",
+    "key": "Key"
   }
 }
