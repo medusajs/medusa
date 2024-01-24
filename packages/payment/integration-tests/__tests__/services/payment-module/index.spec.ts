@@ -4,12 +4,30 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { initialize } from "../../../../src/initialize"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 import { createPaymentCollections } from "../../../__fixtures__/payment-collection"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { initModules } from "medusa-test-utils"
+import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
 describe("Payment Module Service", () => {
   let service: IPaymentModuleService
   let repositoryManager: SqlEntityManager
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { modules, shutdown } = await initModules(initModulesConfig)
+
+    service = modules[Modules.PAYMENT]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
