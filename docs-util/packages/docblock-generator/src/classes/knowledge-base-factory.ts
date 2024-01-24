@@ -157,7 +157,7 @@ class KnowledgeBaseFactory {
     },
     {
       startsWith: "create",
-      template: "creates a new {return type}",
+      template: "creates {return type}(s)",
     },
     {
       startsWith: "delete",
