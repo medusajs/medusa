@@ -1,27 +1,31 @@
-import { DB_URL } from "@medusajs/pricing/integration-tests/utils"
 import { IAuthenticationModuleService } from "@medusajs/types"
-import { MedusaModule } from "@medusajs/modules-sdk"
+import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 import { MikroOrmWrapper } from "../../../utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createAuthProviders } from "../../../__fixtures__/auth-provider"
-import { initialize } from "../../../../src"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { initModules } from "medusa-test-utils/dist"
 
 jest.setTimeout(30000)
 
 describe("AuthenticationModuleService - AuthProvider", () => {
   let service: IAuthenticationModuleService
   let testManager: SqlEntityManager
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { modules, shutdown } = await initModules(initModulesConfig)
+
+    service = modules[Modules.AUTHENTICATION]
+
+    shutdownFunc = shutdown
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     testManager = MikroOrmWrapper.forkManager()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
-      },
-    })
 
     if (service.__hooks?.onApplicationStart) {
       await service.__hooks.onApplicationStart()
@@ -31,6 +35,10 @@ describe("AuthenticationModuleService - AuthProvider", () => {
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
     MedusaModule.clearInstances()
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
   })
 
   describe("listAuthProviders", () => {

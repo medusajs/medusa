@@ -1,31 +1,39 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-
-import { MikroOrmWrapper } from "../../../utils"
-import { createAuthProviders } from "../../../__fixtures__/auth-provider"
 import { IAuthenticationModuleService } from "@medusajs/types"
-import { initialize } from "../../../../src"
-import { DB_URL } from "@medusajs/pricing/integration-tests/utils"
+import { MikroOrmWrapper } from "../../../utils"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { createAuthProviders } from "../../../__fixtures__/auth-provider"
 import { createAuthUsers } from "../../../__fixtures__/auth-user"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { initModules } from "medusa-test-utils/dist"
+import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
 describe("AuthenticationModuleService - AuthProvider", () => {
   let service: IAuthenticationModuleService
   let testManager: SqlEntityManager
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { modules, shutdown } = await initModules(initModulesConfig)
+
+    service = modules[Modules.AUTHENTICATION]
+
+    shutdownFunc = shutdown
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     testManager = MikroOrmWrapper.forkManager()
 
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
-      },
-    })
-
     await createAuthProviders(testManager)
     await createAuthUsers(testManager)
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
   })
 
   afterEach(async () => {
