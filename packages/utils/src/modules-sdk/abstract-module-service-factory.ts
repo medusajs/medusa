@@ -478,7 +478,12 @@ export function abstractModuleServiceFactory<
     constructor(container: Record<string, any>) {
       this.__container__ = container
       this.baseRepository_ = container.baseRepository
-      this.eventBusModuleService_ = container.eventBusModuleService
+
+      try {
+        this.eventBusModuleService_ = container.eventBusModuleService
+      } catch {
+        /* ignore */
+      }
 
       const mainModelMethods = buildMethodNamesFromModel(mainModel, false)
 
