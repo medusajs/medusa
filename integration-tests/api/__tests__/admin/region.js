@@ -207,7 +207,7 @@ describe("/admin/regions", () => {
           console.log(err)
         })
 
-      expect(response.data.regions).toHaveLength(3)
+      expect(response.data.regions).toHaveLength(5)
       expect(response.data.regions).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -230,7 +230,7 @@ describe("/admin/regions", () => {
       const response = await api.get(`/admin/regions?limit=2`, adminReqConfig)
 
       expect(response.data.regions).toHaveLength(2)
-      expect(response.data.count).toEqual(3)
+      expect(response.data.count).toEqual(5)
       expect(response.status).toEqual(200)
     })
 

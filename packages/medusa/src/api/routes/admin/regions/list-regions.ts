@@ -13,7 +13,7 @@ import {
  * description: "Retrieve a list of Regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated."
  * x-authenticated: true
  * parameters:
- *  - (query) q {string} term used to search currencies' name and code.
+ *  - (query) q {string} Term used to search regions' name.
  *  - (query) order {string} A field to sort-order the retrieved regions by.
  *  - in: query
  *    name: limit
