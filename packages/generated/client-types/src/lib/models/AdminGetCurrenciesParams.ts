@@ -17,6 +17,10 @@ export interface AdminGetCurrenciesParams {
    */
   order?: string
   /**
+   * term used to search currencies' name and code.
+   */
+  q?: string
+  /**
    * The number of currencies to skip when retrieving the currencies.
    */
   offset?: number

@@ -5,6 +5,7 @@ const startServerWithEnvironment =
 const { useApi } = require("../../../environment-helpers/use-api")
 const { useDb, initDb } = require("../../../environment-helpers/use-db")
 const adminSeeder = require("../../../helpers/admin-seeder")
+const e = require("express")
 
 const adminReqConfig = {
   headers: {
@@ -20,7 +21,7 @@ describe("/admin/currencies", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -52,6 +53,35 @@ describe("/admin/currencies", () => {
       )
 
       expect(response.data).toMatchSnapshot()
+    })
+
+    it("should retrieve the currencies filtered with q param", async () => {
+      const api = useApi()
+      const response = await api.get(
+        `/admin/currencies?q=us&order=code`,
+        adminReqConfig
+      )
+
+      const { currencies } = response.data
+
+      expect(currencies).toEqual([
+        expect.objectContaining({
+          code: "aud",
+          name: "Australian Dollar",
+        }),
+        expect.objectContaining({
+          code: "byn",
+          name: "Belarusian Ruble",
+        }),
+        expect.objectContaining({
+          code: "rub",
+          name: "Russian Ruble",
+        }),
+        expect.objectContaining({
+          code: "usd",
+          name: "US Dollar",
+        }),
+      ])
     })
   })
 })
