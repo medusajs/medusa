@@ -115,13 +115,9 @@ export default class LineItem {
   })
   tax_lines = new Collection<LineItemTaxLine>(this)
 
-  @OneToMany(
-    () => LineItemAdjustment,
-    (adjustment) => adjustment.item,
-    {
-      cascade: [Cascade.REMOVE],
-    }
-  )
+  @OneToMany(() => LineItemAdjustment, (adjustment) => adjustment.item, {
+    cascade: [Cascade.REMOVE],
+  })
   adjustments = new Collection<LineItemAdjustment>(this)
 
   /** COMPUTED PROPERTIES - START */
