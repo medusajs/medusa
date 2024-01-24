@@ -21,7 +21,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *       type: boolean
  *       x-featureFlag: "tax_inclusive_pricing"
  *   - (query) order {string} A field to sort order the retrieved currencies by.
- *   - (query) q {string} term used to search currencies' name and code.
+ *   - (query) q {string} Term used to search currencies' name and code.
  *   - (query) offset=0 {number} The number of currencies to skip when retrieving the currencies.
  *   - (query) limit=20 {number} The number of currencies to return.
  * x-codegen:
