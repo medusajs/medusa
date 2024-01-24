@@ -45,6 +45,9 @@ export default class PaymentService<
     this.refundRepository_ = container.refundRepository
   }
 
+  /**
+   * NOTE TODO - TEMP IMPL. THAT WILL CHANGE
+   */
   protected transformQueryForAmounts(config: FindConfig<TEntity>) {
     const select = config?.select
     let relations = config?.relations
@@ -75,19 +78,22 @@ export default class PaymentService<
     return { select, relations, amountsSelect }
   }
 
+  /**
+   * NOTE TODO - TEMP IMPL. THAT WILL CHANGE
+   */
   protected decorateAmounts(payment: TEntity, amountsSelected: string[]) {
     const amounts = {}
 
     for (const amountName of amountsSelected) {
       if (amountName === "captured_amount") {
         amounts["captured_amount"] = payment.captures.reduce(
-          (sum, capture) => sum + Number(capture.amount), // TODO: revisit this
+          (sum, capture) => sum + Number(capture.amount),
           0
         )
       }
       if (amountName === "refunded_amount") {
         amounts["refunded_amount"] = payment.refunds.reduce(
-          (sum, refund) => sum + Number(refund.amount), // TODO: revisit this
+          (sum, refund) => sum + Number(refund.amount),
           0
         )
       }
@@ -96,6 +102,9 @@ export default class PaymentService<
     return Object.assign(payment, amounts) as TEntity
   }
 
+  /**
+   * NOTE TODO - TEMP IMPL. THAT WILL CHANGE
+   */
   @InjectManager("paymentRepository_")
   async retrieve(
     id: string,
