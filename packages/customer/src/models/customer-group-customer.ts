@@ -1,6 +1,7 @@
 import { DAL } from "@medusajs/types"
 import { generateEntityId } from "@medusajs/utils"
 import {
+  Cascade,
   BeforeCreate,
   ManyToOne,
   Entity,
@@ -12,7 +13,7 @@ import {
 import Customer from "./customer"
 import CustomerGroup from "./customer-group"
 
-type OptionalGroupProps = "customer_group" | "customer" | DAL.EntityDateColumns // TODO: To be revisited when more clear
+type OptionalGroupProps = "customer_group" | "customer" | DAL.EntityDateColumns
 
 @Entity({ tableName: "customer_group_customer" })
 export default class CustomerGroupCustomer {
@@ -32,6 +33,7 @@ export default class CustomerGroupCustomer {
     fieldName: "customer_id",
     index: "IDX_customer_group_customer_customer_id",
     nullable: true,
+    cascade: [Cascade.REMOVE],
   })
   customer: Customer | null
 
@@ -40,6 +42,7 @@ export default class CustomerGroupCustomer {
     fieldName: "customer_group_id",
     index: "IDX_customer_group_customer_group_id",
     nullable: true,
+    cascade: [Cascade.REMOVE],
   })
   customer_group: CustomerGroup | null
 

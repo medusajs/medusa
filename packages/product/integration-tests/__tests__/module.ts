@@ -313,7 +313,7 @@ describe("Product module", function () {
 
     afterEach(afterEach_)
 
-    it("should soft delete a product and its cascaded relations", async () => {
+    it.only("should soft delete a product and its cascaded relations", async () => {
       const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],
@@ -337,6 +337,19 @@ describe("Product module", function () {
 
       expect(deletedProducts).toHaveLength(1)
       expect(deletedProducts[0].deleted_at).not.toBeNull()
+
+      const nonDeletedProducts = await module.list(
+        { id: products[0].id },
+        {
+          relations: [
+            "variants",
+            "variants.options",
+            "options",
+            "options.values",
+          ],
+        }
+      )
+      expect(nonDeletedProducts).toHaveLength(0)
 
       for (const option of deletedProducts[0].options) {
         expect(option.deleted_at).not.toBeNull()

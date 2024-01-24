@@ -408,6 +408,91 @@ describe("Customer Module Service", () => {
       const remainingCustomers = await service.list({ last_name: "Doe" })
       expect(remainingCustomers.length).toBe(0)
     })
+
+    it("should cascade relationship when deleting customer", async () => {
+      // Creating a customer and a group
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      const group = await service.createCustomerGroup({ name: "VIP" })
+
+      // Adding the customer to the groups
+      await service.addCustomerToGroup({
+        customer_id: customer.id,
+        customer_group_id: group.id,
+      })
+
+      await service.delete(customer.id)
+
+      const res = await service.listCustomerGroupRelations({
+        customer_id: customer.id,
+        customer_group_id: group.id,
+      })
+      expect(res.length).toBe(0)
+    })
+  })
+
+  describe("deleteCustomerGroup", () => {
+    it("should delete a single customer group", async () => {
+      const [group] = await service.createCustomerGroup([{ name: "VIP" }])
+      await service.deleteCustomerGroup(group.id)
+
+      await expect(
+        service.retrieveCustomerGroup(group.id)
+      ).rejects.toThrowError(`CustomerGroup with id: ${group.id} was not found`)
+    })
+
+    it("should delete multiple customer groups by IDs", async () => {
+      const groups = await service.createCustomerGroup([
+        { name: "VIP" },
+        { name: "Regular" },
+      ])
+
+      const groupIds = groups.map((group) => group.id)
+      await service.deleteCustomerGroup(groupIds)
+
+      for (const group of groups) {
+        await expect(
+          service.retrieveCustomerGroup(group.id)
+        ).rejects.toThrowError(
+          `CustomerGroup with id: ${group.id} was not found`
+        )
+      }
+    })
+
+    it("should delete customer groups using a selector", async () => {
+      await service.createCustomerGroup([{ name: "VIP" }, { name: "Regular" }])
+
+      const selector = { name: "VIP" }
+      await service.deleteCustomerGroup(selector)
+
+      const remainingGroups = await service.listCustomerGroups({ name: "VIP" })
+      expect(remainingGroups.length).toBe(0)
+    })
+
+    it("should cascade relationship when deleting customer group", async () => {
+      // Creating a customer and a group
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      const group = await service.createCustomerGroup({ name: "VIP" })
+
+      // Adding the customer to the groups
+      await service.addCustomerToGroup({
+        customer_id: customer.id,
+        customer_group_id: group.id,
+      })
+
+      await service.deleteCustomerGroup(group.id)
+
+      const res = await service.listCustomerGroupRelations({
+        customer_id: customer.id,
+        customer_group_id: group.id,
+      })
+      expect(res.length).toBe(0)
+    })
   })
 
   describe("removeCustomerFromGroup", () => {
@@ -484,6 +569,174 @@ describe("Customer Module Service", () => {
           expect.objectContaining({ id: pair.customer_group_id })
         )
       }
+    })
+  })
+
+  describe("softDelete", () => {
+    it("should soft delete a single customer", async () => {
+      const [customer] = await service.create([
+        { first_name: "John", last_name: "Doe" },
+      ])
+      await service.softDelete([customer.id])
+
+      const res = await service.list({ id: customer.id })
+      expect(res.length).toBe(0)
+
+      const deletedCustomer = await service.retrieve(customer.id, {
+        withDeleted: true,
+      })
+
+      expect(deletedCustomer.deleted_at).not.toBeNull()
+    })
+
+    it("should soft delete multiple customers", async () => {
+      const customers = await service.create([
+        { first_name: "John", last_name: "Doe" },
+        { first_name: "Jane", last_name: "Smith" },
+      ])
+      const customerIds = customers.map((customer) => customer.id)
+      await service.softDelete(customerIds)
+
+      const res = await service.list({ id: customerIds })
+      expect(res.length).toBe(0)
+
+      const deletedCustomers = await service.list(
+        { id: customerIds },
+        { withDeleted: true }
+      )
+      expect(deletedCustomers.length).toBe(2)
+    })
+
+    it("should remove customer in group relation", async () => {
+      // Creating a customer and a group
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      const group = await service.createCustomerGroup({ name: "VIP" })
+
+      // Adding the customer to the group
+      await service.addCustomerToGroup({
+        customer_id: customer.id,
+        customer_group_id: group.id,
+      })
+
+      await service.softDelete([customer.id])
+
+      const resGroup = await service.retrieveCustomerGroup(group.id, {
+        relations: ["customers"],
+      })
+      expect(resGroup.customers?.length).toBe(0)
+    })
+  })
+
+  describe("restore", () => {
+    it("should restore a single customer", async () => {
+      const [customer] = await service.create([
+        { first_name: "John", last_name: "Doe" },
+      ])
+      await service.softDelete([customer.id])
+
+      const res = await service.list({ id: customer.id })
+      expect(res.length).toBe(0)
+
+      await service.restore([customer.id])
+
+      const restoredCustomer = await service.retrieve(customer.id, {
+        withDeleted: true,
+      })
+      expect(restoredCustomer.deleted_at).toBeNull()
+    })
+
+    it("should restore multiple customers", async () => {
+      const customers = await service.create([
+        { first_name: "John", last_name: "Doe" },
+        { first_name: "Jane", last_name: "Smith" },
+      ])
+      const customerIds = customers.map((customer) => customer.id)
+      await service.softDelete(customerIds)
+
+      const res = await service.list({ id: customerIds })
+      expect(res.length).toBe(0)
+
+      await service.restore(customerIds)
+
+      const restoredCustomers = await service.list(
+        { id: customerIds },
+        { withDeleted: true }
+      )
+      expect(restoredCustomers.length).toBe(2)
+    })
+  })
+
+  describe("softDeleteCustomerGroup", () => {
+    it("should soft delete a single customer group", async () => {
+      const [group] = await service.createCustomerGroup([{ name: "VIP" }])
+      await service.softDeleteCustomerGroup([group.id])
+
+      const res = await service.listCustomerGroups({ id: group.id })
+      expect(res.length).toBe(0)
+
+      const deletedGroup = await service.retrieveCustomerGroup(group.id, {
+        withDeleted: true,
+      })
+
+      expect(deletedGroup.deleted_at).not.toBeNull()
+    })
+
+    it("should soft delete multiple customer groups", async () => {
+      const groups = await service.createCustomerGroup([
+        { name: "VIP" },
+        { name: "Regular" },
+      ])
+      const groupIds = groups.map((group) => group.id)
+      await service.softDeleteCustomerGroup(groupIds)
+
+      const res = await service.listCustomerGroups({ id: groupIds })
+      expect(res.length).toBe(0)
+
+      const deletedGroups = await service.listCustomerGroups(
+        { id: groupIds },
+        { withDeleted: true }
+      )
+      expect(deletedGroups.length).toBe(2)
+    })
+  })
+
+  describe("restoreCustomerGroup", () => {
+    it("should restore a single customer group", async () => {
+      const [group] = await service.createCustomerGroup([{ name: "VIP" }])
+      await service.softDeleteCustomerGroup([group.id])
+
+      const res = await service.listCustomerGroups({ id: group.id })
+      expect(res.length).toBe(0)
+
+      await service.restoreCustomerGroup([group.id])
+
+      const restoredGroup = await service.retrieveCustomerGroup(group.id, {
+        withDeleted: true,
+      })
+      expect(restoredGroup.deleted_at).toBeNull()
+    })
+
+    it("should restore multiple customer groups", async () => {
+      const groups = await service.createCustomerGroup([
+        { name: "VIP" },
+        { name: "Regular" },
+      ])
+      const groupIds = groups.map((group) => group.id)
+      await service.softDeleteCustomerGroup(groupIds)
+
+      const res = await service.listCustomerGroups({ id: groupIds })
+      expect(res.length).toBe(0)
+
+      await service.restoreCustomerGroup(groupIds)
+
+      const restoredGroups = await service.listCustomerGroups(
+        { id: groupIds },
+        { withDeleted: true }
+      )
+      expect(restoredGroups.length).toBe(2)
     })
   })
 })

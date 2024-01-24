@@ -2,22 +2,23 @@ import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
 import { AddressDTO } from "../address"
 
-export interface CustomerGroupDTO {
-  id: string
-  name: string
-  customers?: Partial<CustomerDTO>[]
-  metadata?: Record<string, unknown>
-  created_by?: string | null
-  deleted_at?: Date | string | null
-  created_at?: Date | string
-  updated_at?: Date | string
-}
-
 export interface FilterableCustomerGroupProps
   extends BaseFilterable<FilterableCustomerGroupProps> {
   id?: string | string[]
-  name?: OperatorMap<string>
+  name?: string | OperatorMap<string>
   customers?: FilterableCustomerProps | string | string[]
+  created_by?: string | string[] | null
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+}
+
+export interface FilterableCustomerGroupCustomerProps
+  extends BaseFilterable<FilterableCustomerGroupCustomerProps> {
+  id?: string | string[]
+  customer_id?: string | string[]
+  customer_group_id?: string | string[]
+  customer?: FilterableCustomerProps | string | string[]
+  group?: FilterableCustomerGroupProps | string | string[]
   created_by?: string | string[] | null
   created_at?: OperatorMap<string>
   updated_at?: OperatorMap<string>
@@ -38,6 +39,29 @@ export interface FilterableCustomerProps
   updated_at?: OperatorMap<string>
 }
 
+export interface CustomerGroupDTO {
+  id: string
+  name: string
+  customers?: Partial<CustomerDTO>[]
+  metadata?: Record<string, unknown>
+  created_by?: string | null
+  deleted_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
+export interface CustomerGroupCustomerDTO {
+  id: string
+  customer_id: string
+  customer_group_id: string
+  customer?: Partial<CustomerDTO>
+  group?: Partial<CustomerGroupDTO>
+  created_by?: string | null
+  deleted_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
 export interface CustomerDTO {
   id: string
   email: string
@@ -52,6 +76,7 @@ export interface CustomerDTO {
   phone?: string | null
   groups?: { id: string }[]
   metadata?: Record<string, unknown>
+  created_by?: string | null
   deleted_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
