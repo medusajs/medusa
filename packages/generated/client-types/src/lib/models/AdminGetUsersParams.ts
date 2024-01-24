@@ -17,7 +17,7 @@ export interface AdminGetUsersParams {
    */
   last_name?: string
   /**
-   * term used to search users' first name, last name, and email.
+   * Term used to search users' first name, last name, and email.
    */
   q?: string
   /**
