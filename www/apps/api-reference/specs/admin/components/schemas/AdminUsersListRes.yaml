@@ -2,9 +2,21 @@ type: object
 description: The list of users.
 required:
   - users
+  - count
+  - offset
+  - limit
 properties:
   users:
     type: array
     description: An array of users details.
     items:
       $ref: ./User.yaml
+  count:
+    type: integer
+    description: The total number of items available
+  offset:
+    type: integer
+    description: The number of users skipped when retrieving the users.
+  limit:
+    type: integer
+    description: The number of items per page
