@@ -506,30 +506,55 @@ describe("Payment Module Service", () => {
     })
 
     describe("refund", () => {
-      it("should refund a payment successfully", async () => {
+      it("should refund a payments in bulk successfully", async () => {
         await service.capturePayment({
           amount: 100,
           payment_id: "pay-id-1",
         })
 
-        const refundedPayment = await service.refundPayment({
+        await service.capturePayment({
           amount: 100,
-          payment_id: "pay-id-1",
+          payment_id: "pay-id-2",
         })
 
-        expect(refundedPayment).toEqual(
-          expect.objectContaining({
-            id: "pay-id-1",
+        const refundedPayment = await service.refundPayment([
+          {
             amount: 100,
-            refunds: [
-              expect.objectContaining({
-                created_by: null,
-                amount: 100,
-              }),
-            ],
-            captured_amount: 100,
-            refunded_amount: 100,
-          })
+            payment_id: "pay-id-1",
+          },
+          {
+            amount: 100,
+            payment_id: "pay-id-2",
+          },
+        ])
+
+        expect(refundedPayment).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: "pay-id-1",
+              amount: 100,
+              refunds: [
+                expect.objectContaining({
+                  created_by: null,
+                  amount: 100,
+                }),
+              ],
+              captured_amount: 100,
+              refunded_amount: 100,
+            }),
+            expect.objectContaining({
+              id: "pay-id-2",
+              amount: 100,
+              refunds: [
+                expect.objectContaining({
+                  created_by: null,
+                  amount: 100,
+                }),
+              ],
+              captured_amount: 100,
+              refunded_amount: 100,
+            }),
+          ])
         )
       })
 
@@ -547,7 +572,7 @@ describe("Payment Module Service", () => {
           .catch((e) => e)
 
         expect(error.message).toEqual(
-          "Refund amount cannot be greater than the amount captured on the payment."
+          "Refund amount for payment: pay-id-1 cannot be greater than the amount captured on the payment."
         )
       })
     })

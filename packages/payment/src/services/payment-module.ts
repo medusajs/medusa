@@ -299,9 +299,10 @@ export default class PaymentModuleService implements IPaymentModuleService {
       },
       sharedContext
     )
+    const inputMap = new Map(data.map((d) => [d.payment_id, d]))
 
     for (const payment of payments) {
-      const input = data.find((d) => d.payment_id === payment.id)!
+      const input = inputMap.get(payment.id)!
 
       if (payment.captured_at) {
         throw new MedusaError(
@@ -325,7 +326,8 @@ export default class PaymentModuleService implements IPaymentModuleService {
 
     let fullyCapturedPaymentsId: string[] = []
     for (const payment of payments) {
-      const input = data.find((d) => d.payment_id === payment.id)!
+      const input = inputMap.get(payment.id)!
+
       if (
         Number(payment.captured_amount) + input.amount ===
         Number(payment.amount)
@@ -359,52 +361,66 @@ export default class PaymentModuleService implements IPaymentModuleService {
     )
   }
 
-  // refundPayment(
-  //   data: CreateRefundDTO,
-  //   sharedContext?: Context
-  // ): Promise<PaymentDTO>
-  // refundPayment(
-  //   data: CreateRefundDTO[],
-  //   sharedContext?: Context
-  // ): Promise<PaymentDTO[]>
+  refundPayment(
+    data: CreateRefundDTO,
+    sharedContext?: Context
+  ): Promise<PaymentDTO>
+  refundPayment(
+    data: CreateRefundDTO[],
+    sharedContext?: Context
+  ): Promise<PaymentDTO[]>
+
+  @InjectManager("baseRepository_")
+  async refundPayment(
+    data: CreateRefundDTO | CreateRefundDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentDTO | PaymentDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+
+    const payments = await this.refundPaymentBulk_(input, sharedContext)
+
+    return await this.baseRepository_.serialize(
+      Array.isArray(data) ? payments : payments[0],
+      { populate: true }
+    )
+  }
 
   @InjectTransactionManager("baseRepository_")
-  async refundPayment(
-    data: CreateRefundDTO,
+  async refundPaymentBulk_(
+    data: CreateRefundDTO[],
     @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentDTO> {
-    let payment = await this.paymentService_.retrieve(
-      data.payment_id,
+  ): Promise<Payment[]> {
+    const payments = await this.paymentService_.list(
+      { id: data.map(({ payment_id }) => payment_id) },
+      // TODO: temp - will be removed
       {
         select: ["captured_amount"],
       },
       sharedContext
     )
 
-    if (payment.captured_amount < data.amount) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Refund amount cannot be greater than the amount captured on the payment."
-      )
+    const inputMap = new Map(data.map((d) => [d.payment_id, d]))
+
+    for (const payment of payments) {
+      const input = inputMap.get(payment.id)!
+      if (payment.captured_amount < input.amount) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Refund amount for payment: ${payment.id} cannot be greater than the amount captured on the payment.`
+        )
+      }
     }
 
-    await this.paymentService_.refund(
-      data as unknown as CreateRefundDTO[], // TODO
-      sharedContext
-    )
+    await this.paymentService_.refund(data, sharedContext)
 
-    payment = await this.paymentService_.retrieve(
-      data.payment_id,
+    return await this.paymentService_.list(
+      { id: data.map(({ payment_id }) => payment_id) },
       {
         select: ["amount", "refunded_amount"],
         relations: ["refunds"],
       },
       sharedContext
     )
-
-    return await this.baseRepository_.serialize<PaymentDTO>(payment, {
-      populate: true,
-    })
   }
 
   createPaymentSession(
