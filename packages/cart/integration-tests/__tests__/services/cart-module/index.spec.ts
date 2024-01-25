@@ -52,16 +52,23 @@ describe("Cart Module Service", () => {
         },
       ])
 
-      const cart = await service.retrieve(createdCart.id, {relations: ["items", "items.adjustments"]})
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["items", "items.adjustments"],
+      })
 
-      console.log(cart)
-
-      // expect(cart).toEqual(
-      //   expect.objectContaining({
-      //     id: createdCart.id,
-      //     currency_code: "eur",
-      //   })
-      // )
+      expect(cart).toEqual(
+        expect.objectContaining({
+          id: createdCart.id,
+          currency_code: "eur",
+          total: 100,
+          items: [
+            expect.objectContaining({
+              title: "test",
+              unit_price: 100,
+            }),
+          ],
+        })
+      )
     })
 
     it("should create a cart successfully", async () => {

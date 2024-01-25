@@ -14,7 +14,6 @@ import {
   MedusaContext,
   MedusaError,
   decorateTotals,
-  // decorateTotals,
   isObject,
   isString,
 } from "@medusajs/utils"
@@ -100,7 +99,10 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<CartTypes.CartDTO> {
     const cart = await this.cartService_.retrieve(id, config, sharedContext)
 
-    const serialized = await this.baseRepository_.serialize<CartTypes.CartDTO>(cart, { populate: true })
+    const serialized = await this.baseRepository_.serialize<CartTypes.CartDTO>(
+      cart,
+      { populate: true }
+    )
 
     return decorateTotals(serialized)
   }
