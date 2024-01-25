@@ -4,8 +4,6 @@ import {
   CreatePaymentDTO,
   CreatePaymentSessionDTO,
   DAL,
-  FilterablePaymentCollectionProps,
-  FindConfig,
   InternalModuleDeclaration,
   IPaymentModuleService,
   ModuleJoinerConfig,
@@ -16,28 +14,65 @@ import {
   UpdatePaymentDTO,
 } from "@medusajs/types"
 import {
-  InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
 
-import * as services from "@services"
-
-import { joinerConfig } from "../joiner-config"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { IPaymentCollectionService } from "../types"
+import {
+  Capture,
+  Payment,
+  PaymentCollection,
+  PaymentMethodToken,
+  PaymentProvider,
+  PaymentSession,
+  Refund,
+} from "@models"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  paymentCollectionService: services.PaymentCollectionService
+  paymentCollectionService: IPaymentCollectionService<any>
 }
 
-export default class PaymentModuleService implements IPaymentModuleService {
+const generateMethodForModels = [
+  Capture,
+  PaymentCollection,
+  PaymentMethodToken,
+  PaymentProvider,
+  PaymentSession,
+  Refund,
+]
+
+export default class PaymentModuleService<
+    TPaymentCollection extends PaymentCollection = PaymentCollection
+  >
+  extends ModulesSdkUtils.abstractModuleServiceFactory<
+    // TODO revisit when moving forward frane
+    InjectedDependencies,
+    PaymentDTO,
+    {
+      Capture: { dto: any }
+      PaymentCollection: { dto: any }
+      PaymentMethodToken: { dto: any }
+      PaymentProvider: { dto: any }
+      PaymentSession: { dto: any }
+      Refund: { dto: any }
+    }
+  >(Payment, generateMethodForModels, entityNameToLinkableKeysMap)
+  implements IPaymentModuleService
+{
   protected baseRepository_: DAL.RepositoryService
-  protected paymentCollectionService_: services.PaymentCollectionService
+  protected paymentCollectionService_: IPaymentCollectionService<TPaymentCollection>
 
   constructor(
     { baseRepository, paymentCollectionService }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
+    // @ts-ignore
+    super(...arguments)
+
     this.baseRepository_ = baseRepository
 
     this.paymentCollectionService_ = paymentCollectionService
@@ -103,85 +138,6 @@ export default class PaymentModuleService implements IPaymentModuleService {
         populate: true,
       }
     )
-  }
-
-  deletePaymentCollection(
-    paymentCollectionId: string[],
-    sharedContext?: Context
-  ): Promise<void>
-  deletePaymentCollection(
-    paymentCollectionId: string,
-    sharedContext?: Context
-  ): Promise<void>
-
-  @InjectTransactionManager("baseRepository_")
-  async deletePaymentCollection(
-    ids: string | string[],
-    @MedusaContext() sharedContext?: Context
-  ): Promise<void> {
-    const paymentCollectionIds = Array.isArray(ids) ? ids : [ids]
-    await this.paymentCollectionService_.delete(
-      paymentCollectionIds,
-      sharedContext
-    )
-  }
-
-  @InjectManager("baseRepository_")
-  async retrievePaymentCollection(
-    paymentCollectionId: string,
-    config: FindConfig<PaymentCollectionDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PaymentCollectionDTO> {
-    const paymentCollection = await this.paymentCollectionService_.retrieve(
-      paymentCollectionId,
-      config,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<PaymentCollectionDTO>(
-      paymentCollection,
-      { populate: true }
-    )
-  }
-
-  @InjectManager("baseRepository_")
-  async listPaymentCollections(
-    filters: FilterablePaymentCollectionProps = {},
-    config: FindConfig<PaymentCollectionDTO> = {},
-    @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentCollectionDTO[]> {
-    const paymentCollections = await this.paymentCollectionService_.list(
-      filters,
-      config,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<PaymentCollectionDTO[]>(
-      paymentCollections,
-      { populate: true }
-    )
-  }
-
-  @InjectManager("baseRepository_")
-  async listAndCountPaymentCollections(
-    filters: FilterablePaymentCollectionProps = {},
-    config: FindConfig<PaymentCollectionDTO> = {},
-    @MedusaContext() sharedContext?: Context
-  ): Promise<[PaymentCollectionDTO[], number]> {
-    const [paymentCollections, count] =
-      await this.paymentCollectionService_.listAndCount(
-        filters,
-        config,
-        sharedContext
-      )
-
-    return [
-      await this.baseRepository_.serialize<PaymentCollectionDTO[]>(
-        paymentCollections,
-        { populate: true }
-      ),
-      count,
-    ]
   }
 
   /**

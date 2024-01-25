@@ -116,7 +116,7 @@ describe("Payment Module Service", () => {
 
       expect(collection.length).toEqual(1)
 
-      await service.deletePaymentCollection(["pay-col-id-1"])
+      await service.deletePaymentCollections(["pay-col-id-1"])
 
       collection = await service.listPaymentCollections({
         id: ["pay-col-id-1"],
