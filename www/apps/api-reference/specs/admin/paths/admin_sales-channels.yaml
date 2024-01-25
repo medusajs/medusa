@@ -135,7 +135,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_sales-channels/getundefined
+        $ref: ../code_samples/tsx/admin_sales-channels/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -185,7 +185,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_sales-channels/postundefined
+        $ref: ../code_samples/tsx/admin_sales-channels/post.tsx
     - lang: Shell
       label: cURL
       source:

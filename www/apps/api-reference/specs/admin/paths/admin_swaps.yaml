@@ -27,7 +27,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_swaps/getundefined
+        $ref: ../code_samples/tsx/admin_swaps/get.tsx
     - lang: Shell
       label: cURL
       source:
