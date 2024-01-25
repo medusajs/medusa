@@ -8,6 +8,7 @@ export function pluralize(word: string): string {
   if (
     //word.endsWith("s") ||
     word.endsWith("sh") ||
+    word.endsWith("ss") ||
     word.endsWith("ch") ||
     word.endsWith("x") ||
     word.endsWith("o") ||

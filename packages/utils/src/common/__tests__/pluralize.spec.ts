@@ -11,6 +11,7 @@ describe("pluralize", function () {
       "knife",
       "hero",
       "potato",
+      "address",
     ]
 
     const expectedOutput = [
@@ -22,6 +23,7 @@ describe("pluralize", function () {
       "knives",
       "heroes",
       "potatoes",
+      "addresses",
     ]
 
     words.forEach((word, index) => {

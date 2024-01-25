@@ -236,6 +236,7 @@ export type Pluralize<Singular extends string> = Singular extends `${infer R}y`
   : Singular extends `${infer R}es`
   ? `${Singular}`
   : Singular extends
+      | `${infer R}ss`
       | `${infer R}sh`
       | `${infer R}ch`
       | `${infer R}x`
