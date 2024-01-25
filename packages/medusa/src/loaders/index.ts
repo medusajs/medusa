@@ -22,7 +22,6 @@ import loadConfig from "./config"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
-import { RoutesLoader } from "./helpers/routing"
 import Logger from "./logger"
 import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
 import modelsLoader from "./models"
@@ -197,22 +196,6 @@ export default async ({
     next()
   })
 
-  // TODO: Figure out why this is causing issues with test when placed inside ./api.ts
-  // Adding this here temporarily
-  // Test: (packages/medusa/src/api/routes/admin/currencies/update-currency.ts)
-  try {
-    /**
-     * Register the Medusa CORE API routes using the file based routing.
-     */
-    await new RoutesLoader({
-      app: expressApp,
-      rootDir: path.join(__dirname, "../api-v2"),
-      configModule,
-    }).load()
-  } catch (err) {
-    throw Error("An error occurred while registering Medusa Core API Routes")
-  }
-
   const pluginsActivity = Logger.activity(`Initializing plugins${EOL}`)
   track("PLUGINS_INIT_STARTED")
   await pluginsLoader({
@@ -233,7 +216,12 @@ export default async ({
 
   const apiActivity = Logger.activity(`Initializing API${EOL}`)
   track("API_INIT_STARTED")
-  await apiLoader({ container, app: expressApp, configModule })
+  await apiLoader({
+    container,
+    app: expressApp,
+    configModule,
+    featureFlagRouter,
+  })
   const apiAct = Logger.success(apiActivity, "API initialized") || {}
   track("API_INIT_COMPLETED", { duration: apiAct.duration })
 
