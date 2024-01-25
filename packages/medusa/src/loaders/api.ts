@@ -12,7 +12,7 @@ type Options = {
   app: Express
   container: AwilixContainer
   configModule: ConfigModule
-  featureFlagRouter: FlagRouter
+  featureFlagRouter?: FlagRouter
 }
 
 export default async ({
@@ -35,7 +35,7 @@ export default async ({
 
   app.use(bodyParser.json())
 
-  if (featureFlagRouter.isFeatureEnabled(FeatureFlagUtils.MedusaV2Flag.key)) {
+  if (featureFlagRouter?.isFeatureEnabled(FeatureFlagUtils.MedusaV2Flag.key)) {
     // TODO: Figure out why this is causing issues with test when placed inside ./api.ts
     // Adding this here temporarily
     // Test: (packages/medusa/src/api/routes/admin/currencies/update-currency.ts)
