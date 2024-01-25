@@ -32,6 +32,7 @@
     "remove": "Remove",
     "admin": "Admin",
     "store": "Store",
+    "logout": "Logout",
     "countSelected": "{{count}} selected",
     "plusCountMore": "+ {{count}} more",
     "areYouSure": "Are you sure?",
@@ -135,6 +136,7 @@
   },
   "store": {
     "domain": "Store",
+    "storeSettings": "Store Settings",
     "manageYourStoresDetails": "Manage your store's details",
     "editStore": "Edit store",
     "defaultCurrency": "Default currency",

@@ -55,7 +55,7 @@ export const NavItem = ({
             : undefined
         }
         className={clx(
-          "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex items-center gap-x-2 rounded-md px-2 py-2.5 outline-none md:py-1.5",
+          "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex items-center gap-x-2 rounded-md px-2 py-1 outline-none",
           {
             "bg-ui-bg-base hover:bg-ui-bg-base-hover shadow-elevation-card-rest":
               location.pathname.startsWith(to),
@@ -72,7 +72,7 @@ export const NavItem = ({
         <Collapsible.Root open={open} onOpenChange={setOpen}>
           <Collapsible.Trigger
             className={clx(
-              "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex w-full items-center gap-x-2 rounded-md px-2 py-2.5 outline-none md:hidden md:py-1.5"
+              "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex w-full items-center gap-x-2 rounded-md px-2 py-1 outline-none md:hidden"
             )}
           >
             <Icon icon={icon} type={type} />
@@ -80,18 +80,15 @@ export const NavItem = ({
               {label}
             </Text>
           </Collapsible.Trigger>
-          <Collapsible.Content className="flex flex-col pt-1">
-            <div className="flex h-[36px] w-full items-center gap-x-1 pl-2 md:hidden">
-              <div
-                role="presentation"
-                className="flex h-full w-5 items-center justify-center"
-              >
-                <div className="bg-ui-border-strong h-full w-px" />
-              </div>
+          <Collapsible.Content className="grid grid-cols-[28px_1fr] pt-0.5">
+            <div className="flex-1 flex items-center justify-center pl-2">
+              <span className="bg-ui-border-strong h-full w-px" />
+            </div>
+            <div className="flex flex-col gap-y-0.5">
               <Link
                 to={to}
                 className={clx(
-                  "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover mb-2 mt-1 flex h-8 flex-1 items-center gap-x-2 rounded-md px-2 py-2.5 outline-none md:py-1.5",
+                  "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex flex-1 items-center gap-x-2 rounded-md px-2 py-1 outline-none md:hidden",
                   {
                     "bg-ui-bg-base hover:bg-ui-bg-base text-ui-fg-base shadow-elevation-card-rest":
                       location.pathname.startsWith(to),
@@ -102,38 +99,29 @@ export const NavItem = ({
                   {label}
                 </Text>
               </Link>
+              <ul className="pb-2 flex flex-col gap-y-0.5">
+                {items.map((item) => {
+                  return (
+                    <li key={item.to}>
+                      <Link
+                        to={item.to}
+                        className={clx(
+                          "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex flex-1 items-center gap-x-2 rounded-md px-2 py-1 outline-none",
+                          {
+                            "bg-ui-bg-base text-ui-fg-base hover:bg-ui-bg-base shadow-elevation-card-rest":
+                              location.pathname.startsWith(item.to),
+                          }
+                        )}
+                      >
+                        <Text size="small" weight="plus" leading="compact">
+                          {item.label}
+                        </Text>
+                      </Link>
+                    </li>
+                  )
+                })}
+              </ul>
             </div>
-            <ul>
-              {items.map((item) => {
-                return (
-                  <li
-                    key={item.to}
-                    className="flex h-[36px] items-center gap-x-1 pl-2"
-                  >
-                    <div
-                      role="presentation"
-                      className="flex h-full w-5 items-center justify-center"
-                    >
-                      <div className="bg-ui-border-strong h-full w-px" />
-                    </div>
-                    <Link
-                      to={item.to}
-                      className={clx(
-                        "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex h-8 flex-1 items-center gap-x-2 rounded-md px-2 py-2.5 outline-none first-of-type:mt-1 last-of-type:mb-2 md:py-1.5",
-                        {
-                          "bg-ui-bg-base text-ui-fg-base hover:bg-ui-bg-base shadow-elevation-card-rest":
-                            location.pathname.startsWith(item.to),
-                        }
-                      )}
-                    >
-                      <Text size="small" weight="plus" leading="compact">
-                        {item.label}
-                      </Text>
-                    </Link>
-                  </li>
-                )
-              })}
-            </ul>
           </Collapsible.Content>
         </Collapsible.Root>
       )}

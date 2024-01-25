@@ -24,6 +24,7 @@ import {
 
 import { Skeleton } from "../../common/skeleton"
 
+import { useTranslation } from "react-i18next"
 import { useSearch } from "../../../providers/search-provider"
 import { useSidebar } from "../../../providers/sidebar-provider"
 import { useTheme } from "../../../providers/theme-provider"
@@ -193,6 +194,7 @@ const ThemeToggle = () => {
 const Logout = () => {
   const navigate = useNavigate()
   const { mutateAsync: logoutMutation } = useAdminDeleteSession()
+  const { t } = useTranslation()
 
   const handleLayout = async () => {
     await logoutMutation(undefined, {
@@ -206,7 +208,7 @@ const Logout = () => {
     <DropdownMenu.Item onClick={handleLayout}>
       <div className="flex items-center gap-x-2">
         <ArrowRightOnRectangle className="text-ui-fg-subtle" />
-        <span>Logout</span>
+        <span>{t("general.logout")}</span>
       </div>
     </DropdownMenu.Item>
   )
@@ -227,29 +229,31 @@ const Profile = () => {
 
 const LoggedInUser = () => {
   return (
-    <DropdownMenu>
-      <UserBadge />
-      <DropdownMenu.Content align="center">
-        <Profile />
-        <DropdownMenu.Separator />
-        <Link to="https://docs.medusajs.com/user-guide" target="_blank">
-          <DropdownMenu.Item>
-            <BookOpen className="text-ui-fg-subtle mr-2" />
-            Documentation
-          </DropdownMenu.Item>
-        </Link>
-        <Link to="https://medusajs.com/changelog/" target="_blank">
-          <DropdownMenu.Item>
-            <Calendar className="text-ui-fg-subtle mr-2" />
-            Changelog
-          </DropdownMenu.Item>
-        </Link>
-        <DropdownMenu.Separator />
-        <ThemeToggle />
-        <DropdownMenu.Separator />
-        <Logout />
-      </DropdownMenu.Content>
-    </DropdownMenu>
+    <div className="hidden md:block">
+      <DropdownMenu>
+        <UserBadge />
+        <DropdownMenu.Content align="center">
+          <Profile />
+          <DropdownMenu.Separator />
+          <Link to="https://docs.medusajs.com/user-guide" target="_blank">
+            <DropdownMenu.Item>
+              <BookOpen className="text-ui-fg-subtle mr-2" />
+              Documentation
+            </DropdownMenu.Item>
+          </Link>
+          <Link to="https://medusajs.com/changelog/" target="_blank">
+            <DropdownMenu.Item>
+              <Calendar className="text-ui-fg-subtle mr-2" />
+              Changelog
+            </DropdownMenu.Item>
+          </Link>
+          <DropdownMenu.Separator />
+          <ThemeToggle />
+          <DropdownMenu.Separator />
+          <Logout />
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    </div>
   )
 }
 
@@ -257,19 +261,16 @@ const SettingsLink = () => {
   const location = useLocation()
 
   return (
-    <Link
-      to="/settings"
-      className="flex items-center justify-center"
-      state={{ from: location.pathname }}
+    <IconButton
+      size="small"
+      variant="transparent"
+      className="text-ui-fg-muted transition-fg hover:text-ui-fg-subtle hidden md:flex"
+      asChild
     >
-      <IconButton
-        size="small"
-        variant="transparent"
-        className="text-ui-fg-muted transition-fg hover:text-ui-fg-subtle"
-      >
+      <Link to="/settings" state={{ from: location.pathname }}>
         <CogSixTooth />
-      </IconButton>
-    </Link>
+      </Link>
+    </IconButton>
   )
 }
 
@@ -312,6 +313,7 @@ const ToggleSidebar = () => {
       <IconButton
         className="hidden lg:flex"
         variant="transparent"
+        size="small"
         onClick={() => toggle("desktop")}
       >
         <Sidebar className="text-ui-fg-muted" />
@@ -319,6 +321,7 @@ const ToggleSidebar = () => {
       <IconButton
         className="hidden max-lg:flex"
         variant="transparent"
+        size="small"
         onClick={() => toggle("mobile")}
       >
         <Sidebar className="text-ui-fg-muted" />
@@ -327,18 +330,34 @@ const ToggleSidebar = () => {
   )
 }
 
+const ToggleSearch = () => {
+  const { toggleSearch } = useSearch()
+
+  return (
+    <IconButton
+      className="md:hidden"
+      variant="transparent"
+      size="small"
+      onClick={toggleSearch}
+    >
+      <MagnifyingGlass className="text-ui-fg-muted" />
+    </IconButton>
+  )
+}
+
 const Topbar = () => {
   return (
-    <div className="w-full grid-cols-3 border-b p-3 grid">
+    <div className="w-full md:grid-cols-3 border-b p-3 md:grid flex items-center justify-between">
       <div className="flex items-center gap-x-1.5">
         <ToggleSidebar />
         <Breadcrumbs />
       </div>
-      <div className="flex items-center justify-center">
+      <div className="md:flex items-center justify-center hidden">
         <Searchbar />
       </div>
       <div className="flex items-center justify-end gap-x-3">
         <div className="text-ui-fg-muted flex items-center gap-x-1">
+          <ToggleSearch />
           <ToggleNotifications />
           <SettingsLink />
         </div>

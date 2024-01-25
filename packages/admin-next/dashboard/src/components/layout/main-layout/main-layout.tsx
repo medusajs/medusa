@@ -1,6 +1,9 @@
 import {
+  ArrowRightOnRectangle,
+  BuildingStorefront,
   ChevronDownMini,
   CurrencyDollar,
+  EllipsisHorizontal,
   MinusMini,
   ReceiptPercent,
   ShoppingCart,
@@ -8,7 +11,7 @@ import {
   Tag,
   Users,
 } from "@medusajs/icons"
-import { Avatar, Text } from "@medusajs/ui"
+import { Avatar, DropdownMenu, Text, clx } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import { useAdminStore } from "medusa-react"
 import { useTranslation } from "react-i18next"
@@ -18,6 +21,7 @@ import { NavItem, NavItemProps } from "../nav-item"
 import { Shell } from "../shell"
 
 import extensions from "medusa-admin:routes/links"
+import { Link } from "react-router-dom"
 
 export const MainLayout = () => {
   return (
@@ -46,6 +50,7 @@ const MainSidebar = () => {
 
 const Header = () => {
   const { store, isError, error } = useAdminStore()
+  const { t } = useTranslation()
 
   const name = store?.name
   const fallback = store?.name?.slice(0, 1).toUpperCase()
@@ -55,23 +60,54 @@ const Header = () => {
   }
 
   return (
-    <div className="w-full px-3 py-2">
-      <div className="flex items-center p-1 md:pr-2">
-        <div className="flex items-center gap-x-3">
-          {fallback ? (
-            <Avatar variant="squared" fallback={fallback} />
-          ) : (
-            <Skeleton className="w-8 h-8 rounded-md" />
-          )}
-          {name ? (
-            <Text size="small" weight="plus" leading="compact">
-              {store.name}
-            </Text>
-          ) : (
-            <Skeleton className="w-[120px] h-[9px]" />
-          )}
-        </div>
-      </div>
+    <div className="w-full p-3">
+      <DropdownMenu>
+        <DropdownMenu.Trigger asChild>
+          <button
+            disabled={!store}
+            className={clx(
+              "flex items-center pl-1 py-1 pr-2 justify-between w-full rounded-md outline-none transition-fg",
+              "focus-visible:shadow-borders-focus",
+              "hover:bg-ui-bg-subtle-hover",
+              "active:bg-ui-bg-subtle-pressed"
+            )}
+          >
+            <div className="flex items-center gap-x-3">
+              {fallback ? (
+                <Avatar size="xsmall" variant="squared" fallback={fallback} />
+              ) : (
+                <Skeleton className="w-8 h-8 rounded-md" />
+              )}
+              {name ? (
+                <Text
+                  size="small"
+                  weight="plus"
+                  leading="compact"
+                  className="select-none"
+                >
+                  {store.name}
+                </Text>
+              ) : (
+                <Skeleton className="w-[120px] h-[9px]" />
+              )}
+            </div>
+            <EllipsisHorizontal className="text-ui-fg-muted" />
+          </button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item asChild className="flex items-center gap-x-2">
+            <Link to="/settings/store">
+              <BuildingStorefront className="text-ui-fg-subtle" />
+              <span>{t("store.storeSettings")}</span>
+            </Link>
+          </DropdownMenu.Item>
+          <DropdownMenu.Separator />
+          <DropdownMenu.Item className="flex items-center gap-x-2">
+            <ArrowRightOnRectangle className="text-ui-fg-subtle" />
+            <span>{t("general.logout")}</span>
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
     </div>
   )
 }

@@ -100,7 +100,7 @@ export const CustomerGroupListTable = () => {
           />
         ) : (
           <div className="divide-y">
-            <div className="flex items-center px-6 py-2 justify-between">
+            <div className="flex items-center px-6 py-4 justify-between">
               <div className="flex items-center gap-x-2"></div>
               <div className="flex items-center gap-x-2">
                 <Query />
