@@ -43,7 +43,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     this.authProviderService_ = authProviderService
   }
 
-  async initiateAuthentication(
+  async authenticate(
     req: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     if (req.query?.error) {
@@ -64,7 +64,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     return this.getRedirect(config)
   }
 
-  async authenticateCallback(
+  async validateCallback(
     req: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     if (req.query && req.query.error) {
@@ -84,7 +84,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
 
     const code = req.query?.code ?? req.body?.code
 
-    return await this.validateCallback(code, config)
+    return await this.validateCallbackToken(code, config)
   }
 
   // abstractable
@@ -119,7 +119,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
   }
 
   // abstractable
-  private async validateCallback(
+  private async validateCallbackToken(
     code: string,
     { clientID, callbackURL, clientSecret }: ProviderConfig
   ) {

@@ -1,8 +1,8 @@
-import { AuthenticationResponse } from "@medusajs/types"
+import { AbstractAuthenticationModuleProvider, isString } from "@medusajs/utils"
 
 import { AuthUserService } from "@services"
+import { AuthenticationResponse } from "@medusajs/types"
 import Scrypt from "scrypt-kdf"
-import { AbstractAuthenticationModuleProvider, isString } from "@medusajs/utils"
 
 class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
   public static PROVIDER = "usernamePassword"
@@ -16,7 +16,7 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
     this.authUserSerivce_ = AuthUserService
   }
 
-  async initiateAuthentication(
+  async authenticate(
     userData: Record<string, any>
   ): Promise<AuthenticationResponse> {
     const { email, password } = userData.body

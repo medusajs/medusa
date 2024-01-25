@@ -1,7 +1,7 @@
 import {
-  AuthenticationResponse,
   AuthProviderDTO,
   AuthUserDTO,
+  AuthenticationResponse,
   CreateAuthProviderDTO,
   CreateAuthUserDTO,
   FilterableAuthProviderProps,
@@ -15,12 +15,12 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 
 export interface IAuthenticationModuleService extends IModuleService {
-  initializeAuthentication(
+  authenticate(
     provider: string,
     providerData: Record<string, unknown>
   ): Promise<AuthenticationResponse>
 
-  authenticateCallback(
+  validateCallback(
     provider: string,
     providerData: Record<string, unknown>
   ): Promise<AuthenticationResponse>

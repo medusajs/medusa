@@ -13,11 +13,11 @@ export abstract class AbstractAuthenticationModuleProvider {
       .DISPLAY_NAME
   }
 
-  abstract initiateAuthentication(
+  abstract authenticate(
     data: Record<string, unknown>
   ): Promise<AuthenticationResponse>
 
-  public authenticateCallback(
+  public validateCallback(
     data: Record<string, unknown>
   ): Promise<AuthenticationResponse> {
     throw new Error(
