@@ -500,9 +500,12 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(tags, {
-      populate: true,
-    })
+    return [
+      await this.baseRepository_.serialize(tags, {
+        populate: true,
+      }),
+      count,
+    ]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -952,7 +955,7 @@ export default class ProductModuleService<
   @InjectManager("baseRepository_")
   async create(
     data: ProductTypes.CreateProductDTO[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext?: Context
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.create_(data, sharedContext)
     const createdProducts = await this.baseRepository_.serialize<
@@ -1293,6 +1296,11 @@ export default class ProductModuleService<
       productData.options = await this.productOptionService_.upsert(
         productData.options,
         sharedContext
+      )
+
+      console.log(
+        "++++++productData.options++++++++++++++++++++++++++++++",
+        productData.options
       )
     }
   }

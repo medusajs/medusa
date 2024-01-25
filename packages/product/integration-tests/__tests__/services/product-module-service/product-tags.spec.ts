@@ -3,7 +3,7 @@ import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Product, ProductTag } from "@models"
 import { initModules } from "medusa-test-utils"
-import { getInitModuleConfig, TestDatabase } from "../../../utils"
+import { TestDatabase, getInitModuleConfig } from "../../../utils"
 
 describe("ProductModuleService product tags", () => {
   let service: IProductModuleService
