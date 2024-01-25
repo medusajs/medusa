@@ -36,10 +36,20 @@ const plugins = [
     options: {
       upload_dir: 'uploads/images', // optional
       backend_url: 'http://localhost:9000' // optional
+      storageType: "flat", // optional, you can set 'flat' or 'byDate', default is 'flat'
     }
   },
 ]
 ```
+
+### storageType
+
+you can set 'flat' or 'byDate'
+
+- flat: all files will be stored in the root of the upload_dir
+- byDate: files will be stored in a folder structure based on the date of upload, e.g. `[upload_dir]/2024/01/25/Filename.jpg`
+
+---
 
 ---
 
@@ -52,4 +62,3 @@ npm run start
 ```
 
 2\. Upload an image for a product using the admin dashboard or using [the Admin APIs](https://docs.medusajs.com/api/admin#tag/Upload).
-
