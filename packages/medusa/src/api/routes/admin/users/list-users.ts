@@ -16,12 +16,24 @@ import { IsType } from "../../../../utils"
  * description: "Retrieves a list of users. The users can be filtered by fields such as `q` or `email`. The users can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) id {string} Filter by a user ID.
  *   - (query) email {string} Filter by email.
  *   - (query) first_name {string} Filter by first name.
  *   - (query) last_name {string} Filter by last name.
- *   - (query) q {string} term used to search users' first name, last name, and email.
+ *   - (query) q {string} Term used to search users' first name, last name, and email.
  *   - (query) order {string} A user field to sort-order the retrieved users by.
+ *   - in: query
+ *     name: id
+ *     style: form
+ *     explode: false
+ *     description: Filter by user IDs.
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           description: ID of the user.
+ *         - type: array
+ *           items:
+ *             type: string
+ *             description: ID of a user.
  *   - in: query
  *     name: created_at
  *     description: Filter by a creation date range.
@@ -90,7 +102,6 @@ import { IsType } from "../../../../utils"
  *            format: date
  *   - (query) offset=0 {integer} The number of users to skip when retrieving the users.
  *   - (query) limit=20 {integer} Limit the number of users returned.
- *   - (query) expand {string} Comma-separated relations that should be expanded in the returned users.
  *   - (query) fields {string} Comma-separated fields that should be included in the returned users.
  * x-codegen:
  *   method: list
@@ -181,7 +192,10 @@ export default async (req: Request, res: Response) => {
 /**
  * Parameters used to filter and configure the pagination of the retrieved users.
  */
-export class AdminGetUsersParams extends extendedFindParamsMixin() {
+export class AdminGetUsersParams extends extendedFindParamsMixin({
+  limit: 50,
+  offset: 0,
+}) {
   /**
    * IDs to filter users by.
    */
@@ -254,4 +268,11 @@ export class AdminGetUsersParams extends extendedFindParamsMixin() {
   @IsOptional()
   @IsEnum(UserRole, { each: true })
   role?: UserRole
+
+  /**
+   * Comma-separated fields that should be included in the returned users.
+   */
+  @IsOptional()
+  @IsString()
+  fields?: string
 }
