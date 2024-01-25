@@ -31,14 +31,10 @@ type BaseMethods =
   | "softDelete"
   | "restore"
 
-const methods: BaseMethods[] = [
-  "retrieve",
-  "list",
-  "listAndCount",
-  "delete",
-  "softDelete",
-  "restore",
-]
+const readMethods = ["retrieve", "list", "listAndCount"] as BaseMethods[]
+const writeMethods = ["delete", "softDelete", "restore"] as BaseMethods[]
+
+const methods: BaseMethods[] = [...readMethods, ...writeMethods]
 
 type ModelsConfigTemplate = {
   [ModelName: string]: { singular?: string; plural?: string; dto: object }
@@ -263,12 +259,31 @@ export function abstractModuleServiceFactory<
     method: string,
     methodName: string,
     model: Constructor<any>
-  ) {
+  ): void {
     const serviceRegistrationName = `${lowerCaseFirst(model.name)}Service`
+
+    const applyMethod = function (impl: Function, contextIndex) {
+      klassPrototype[methodName] = impl
+
+      MedusaContext()(klassPrototype, methodName, contextIndex)
+
+      const ManagerDecorator = readMethods.includes(method as BaseMethods)
+        ? InjectManager
+        : InjectTransactionManager
+      ManagerDecorator("baseRepository_")(
+        klassPrototype,
+        method,
+        Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
+      )
+    }
+
+    let methodImplementation: any = function () {
+      void 0
+    }
 
     switch (method) {
       case "retrieve":
-        klassPrototype[methodName] = async function <T extends object>(
+        methodImplementation = async function <T extends object>(
           this: AbstractModuleService_,
           id: string,
           config?: FindConfig<any>,
@@ -283,16 +298,11 @@ export function abstractModuleServiceFactory<
           })
         }
 
-        // Apply MedusaContext decorator
-        MedusaContext()(klassPrototype, methodName, 2)
+        applyMethod(methodImplementation, 2)
 
-        return InjectManager("baseRepository_")(
-          klassPrototype,
-          method,
-          Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
-        )
+        break
       case "list":
-        klassPrototype[methodName] = async function <T extends object>(
+        methodImplementation = async function <T extends object>(
           this: AbstractModuleService_,
           filters = {},
           config: FindConfig<any> = {},
@@ -307,16 +317,11 @@ export function abstractModuleServiceFactory<
           })
         }
 
-        // Apply MedusaContext decorator
-        MedusaContext()(klassPrototype, methodName, 2)
+        applyMethod(methodImplementation, 2)
 
-        return InjectManager("baseRepository_")(
-          klassPrototype,
-          method,
-          Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
-        )
+        break
       case "listAndCount":
-        klassPrototype[methodName] = async function <T extends object>(
+        methodImplementation = async function <T extends object>(
           this: AbstractModuleService_,
           filters = {},
           config: FindConfig<any> = {},
@@ -334,16 +339,11 @@ export function abstractModuleServiceFactory<
           ]
         }
 
-        // Apply MedusaContext decorator
-        MedusaContext()(klassPrototype, methodName, 2)
+        applyMethod(methodImplementation, 2)
 
-        return InjectManager("baseRepository_")(
-          klassPrototype,
-          method,
-          Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
-        )
+        break
       case "delete":
-        klassPrototype[methodName] = async function (
+        methodImplementation = async function (
           this: AbstractModuleService_,
           primaryKeyValues: string | object | string[] | object[],
           sharedContext: Context = {}
@@ -366,16 +366,11 @@ export function abstractModuleServiceFactory<
           )
         }
 
-        // Apply MedusaContext decorator
-        MedusaContext()(klassPrototype, methodName, 1)
+        applyMethod(methodImplementation, 1)
 
-        return InjectTransactionManager("baseRepository_")(
-          klassPrototype,
-          method,
-          Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
-        )
+        break
       case "softDelete":
-        klassPrototype[methodName] = async function <T extends { id: string }>(
+        methodImplementation = async function <T extends { id: string }>(
           this: AbstractModuleService_,
           primaryKeyValues: string | object | string[] | object[],
           config: SoftDeleteReturn<string> = {},
@@ -419,16 +414,11 @@ export function abstractModuleServiceFactory<
           return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
         }
 
-        // Apply MedusaContext decorator
-        MedusaContext()(klassPrototype, methodName, 2)
+        applyMethod(methodImplementation, 2)
 
-        return InjectTransactionManager("baseRepository_")(
-          klassPrototype,
-          method,
-          Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
-        )
+        break
       case "restore":
-        klassPrototype[methodName] = async function <T extends object>(
+        methodImplementation = async function <T extends object>(
           this: AbstractModuleService_,
           primaryKeyValues: string | object | string[] | object[],
           config: RestoreReturn<string> = {},
@@ -458,18 +448,9 @@ export function abstractModuleServiceFactory<
           return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
         }
 
-        // Apply MedusaContext decorator
-        MedusaContext()(klassPrototype, methodName, 2)
+        applyMethod(methodImplementation, 2)
 
-        return InjectTransactionManager("baseRepository_")(
-          klassPrototype,
-          method,
-          Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
-        )
-      default:
-        return function () {
-          return void 0
-        }
+        break
     }
   }
 

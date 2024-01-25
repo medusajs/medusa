@@ -301,6 +301,44 @@ export default class CustomerModuleService<
     >(groups, { populate: true })
   }
 
+  // @ts-ignore
+  deleteCustomerGroups(groupId: string, sharedContext?: Context): Promise<void>
+  // @ts-ignore
+  deleteCustomerGroups(
+    groupIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  // @ts-ignore
+  deleteCustomerGroups(
+    selector: CustomerTypes.FilterableCustomerGroupProps,
+    sharedContext?: Context
+  ): Promise<void>
+
+  @InjectTransactionManager("baseRepository_")
+  // @ts-ignore
+  async deleteCustomerGroups(
+    groupIdOrSelector:
+      | string
+      | string[]
+      | CustomerTypes.FilterableCustomerGroupProps,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    let toDelete = Array.isArray(groupIdOrSelector)
+      ? groupIdOrSelector
+      : [groupIdOrSelector as string]
+
+    if (isObject(groupIdOrSelector)) {
+      const ids = await this.customerGroupService_.list(
+        groupIdOrSelector,
+        { select: ["id"] },
+        sharedContext
+      )
+      toDelete = ids.map(({ id }) => id)
+    }
+
+    return await this.customerGroupService_.delete(toDelete, sharedContext)
+  }
+
   async addCustomerToGroup(
     groupCustomerPair: CustomerTypes.GroupCustomerPair,
     sharedContext?: Context
