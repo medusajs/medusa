@@ -5,27 +5,37 @@ import {
   PromotionType,
 } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { initialize } from "../../../../src"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { createPromotions } from "../../../__fixtures__/promotion"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MikroOrmWrapper } from "../../../utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { Modules } from "@medusajs/modules-sdk"
+import { initModules } from "medusa-test-utils/dist"
 
 jest.setTimeout(30000)
 
 describe("Promotion Service", () => {
   let service: IPromotionModuleService
   let repositoryManager: SqlEntityManager
+  let shutdownFunc: () => void
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PROMOTION]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = MikroOrmWrapper.forkManager()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PROMOTION_DB_SCHEMA,
-      },
-    })
   })
 
   afterEach(async () => {

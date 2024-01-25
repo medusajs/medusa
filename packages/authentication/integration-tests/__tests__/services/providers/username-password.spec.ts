@@ -1,12 +1,12 @@
-import { DB_URL } from "@medusajs/pricing/integration-tests/utils"
 import { IAuthenticationModuleService } from "@medusajs/types"
-import { MedusaModule } from "@medusajs/modules-sdk"
+import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 import { MikroOrmWrapper } from "../../../utils"
 import Scrypt from "scrypt-kdf"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createAuthProviders } from "../../../__fixtures__/auth-provider"
 import { createAuthUsers } from "../../../__fixtures__/auth-user"
-import { initialize } from "../../../../src"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 const seedDefaultData = async (testManager) => {
@@ -17,19 +17,27 @@ const seedDefaultData = async (testManager) => {
 describe("AuthenticationModuleService - AuthProvider", () => {
   let service: IAuthenticationModuleService
   let testManager: SqlEntityManager
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.AUTHENTICATION]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     testManager = MikroOrmWrapper.forkManager()
 
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
-      },
-    })
-    
-    if(service.__hooks?.onApplicationStart) {
+    if (service.__hooks?.onApplicationStart) {
       await service.__hooks.onApplicationStart()
     }
   })
@@ -70,8 +78,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
         success: true,
         authUser: expect.objectContaining({
           entity_id: email,
-          provider_metadata: {
-          },
+          provider_metadata: {},
         }),
       })
     })
