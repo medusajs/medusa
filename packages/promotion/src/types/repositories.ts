@@ -1,6 +1,5 @@
 import {
   ApplicationMethod,
-  Campaign,
   CampaignBudget,
   Promotion,
   PromotionRule,
@@ -11,7 +10,6 @@ import {
   CreateApplicationMethodDTO,
   UpdateApplicationMethodDTO,
 } from "./application-method"
-import { CreateCampaignDTO, UpdateCampaignDTO } from "./campaign"
 import {
   CreateCampaignBudgetDTO,
   UpdateCampaignBudgetDTO,
@@ -34,16 +32,6 @@ export interface IApplicationMethodRepository<
     {
       create: CreateApplicationMethodDTO
       update: UpdateApplicationMethodDTO
-    }
-  > {}
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ICampaignRepository<TEntity extends Campaign = Campaign>
-  extends DAL.RepositoryService<
-    TEntity,
-    {
-      create: CreateCampaignDTO
-      update: UpdateCampaignDTO
     }
   > {}
 

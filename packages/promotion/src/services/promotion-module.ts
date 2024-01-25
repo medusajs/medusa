@@ -24,19 +24,17 @@ import {
   PromotionRuleValue,
 } from "@models"
 import {
-  ApplicationMethodService,
-  CampaignBudgetService,
-  CampaignService,
-  PromotionRuleService,
-  PromotionRuleValueService,
-  PromotionService,
-} from "@services"
-import {
   CreateApplicationMethodDTO,
   CreateCampaignBudgetDTO,
   CreateCampaignDTO,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
+  IApplicationMethodService,
+  ICampaignBudgetService,
+  ICampaignService,
+  IPromotionRuleService,
+  IPromotionRuleValueService,
+  IPromotionService,
   UpdateApplicationMethodDTO,
   UpdateCampaignBudgetDTO,
   UpdateCampaignDTO,
@@ -53,12 +51,12 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  promotionService: PromotionService<any>
-  applicationMethodService: ApplicationMethodService<any>
-  promotionRuleService: PromotionRuleService<any>
-  promotionRuleValueService: PromotionRuleValueService<any>
-  campaignService: CampaignService<any>
-  campaignBudgetService: CampaignBudgetService<any>
+  promotionService: IPromotionService<any>
+  applicationMethodService: IApplicationMethodService<any>
+  promotionRuleService: IPromotionRuleService<any>
+  promotionRuleValueService: IPromotionRuleValueService<any>
+  campaignService: ICampaignService<any>
+  campaignBudgetService: ICampaignBudgetService<any>
 }
 
 const generateMethodForModels = [
@@ -70,6 +68,7 @@ const generateMethodForModels = [
 ]
 
 export default class PromotionModuleService<
+    TApplicationMethod extends ApplicationMethod = ApplicationMethod,
     TPromotion extends Promotion = Promotion,
     TPromotionRule extends PromotionRule = PromotionRule,
     TPromotionRuleValue extends PromotionRuleValue = PromotionRuleValue,
@@ -90,12 +89,12 @@ export default class PromotionModuleService<
   implements PromotionTypes.IPromotionModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected promotionService_: PromotionService<TPromotion>
-  protected applicationMethodService_: ApplicationMethodService
-  protected promotionRuleService_: PromotionRuleService<TPromotionRule>
-  protected promotionRuleValueService_: PromotionRuleValueService<TPromotionRuleValue>
-  protected campaignService_: CampaignService<TCampaign>
-  protected campaignBudgetService_: CampaignBudgetService<TCampaignBudget>
+  protected promotionService_: IPromotionService<TPromotion>
+  protected applicationMethodService_: IApplicationMethodService<TApplicationMethod>
+  protected promotionRuleService_: IPromotionRuleService<TPromotionRule>
+  protected promotionRuleValueService_: IPromotionRuleValueService<TPromotionRuleValue>
+  protected campaignService_: ICampaignService<TCampaign>
+  protected campaignBudgetService_: ICampaignBudgetService<TCampaignBudget>
 
   constructor(
     {
