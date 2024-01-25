@@ -27,6 +27,7 @@ import {
 import * as services from "@services"
 
 import { joinerConfig } from "../joiner-config"
+import { Payment } from "@models"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -256,13 +257,37 @@ export default class PaymentModuleService implements IPaymentModuleService {
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
-  async capturePayment(
+  capturePayment(
     data: CreateCaptureDTO,
+    sharedContext?: Context
+  ): Promise<PaymentDTO>
+  capturePayment(
+    data: CreateCaptureDTO[],
+    sharedContext?: Context
+  ): Promise<PaymentDTO[]>
+
+  @InjectManager("baseRepository_")
+  async capturePayment(
+    data: CreateCaptureDTO | CreateCaptureDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PaymentDTO | PaymentDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+
+    const payments = await this.capturePaymentBulk_(input, sharedContext)
+
+    return await this.baseRepository_.serialize(
+      Array.isArray(data) ? payments : payments[0],
+      { populate: true }
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async capturePaymentBulk_(
+    data: CreateCaptureDTO[],
     @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentDTO> {
-    let payment = await this.paymentService_.retrieve(
-      data.payment_id,
+  ): Promise<Payment[]> {
+    let payments = await this.paymentService_.list(
+      { id: data.map((d) => d.payment_id) },
       {
         select: [
           "amount",
@@ -275,38 +300,52 @@ export default class PaymentModuleService implements IPaymentModuleService {
       sharedContext
     )
 
-    if (payment.captured_at) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The payment is already fully captured."
-      )
-    }
+    for (const payment of payments) {
+      const input = data.find((d) => d.payment_id === payment.id)!
 
-    if (
-      Number(payment.captured_amount) + data.amount >
-      Number(payment.authorized_amount)
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Total captured amount exceeds authorised amount."
-      )
+      if (payment.captured_at) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "The payment is already fully captured."
+        )
+      }
+
+      if (
+        Number(payment.captured_amount) + input.amount >
+        Number(payment.authorized_amount)
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Total captured amount for payment: ${payment.id} exceeds authorised amount.`
+        )
+      }
     }
 
     await this.paymentService_.capture(data, sharedContext)
 
-    if (
-      Number(payment.captured_amount) + data.amount ===
-      Number(payment.amount)
-    ) {
-      await this.paymentService_.update([
-        { id: payment.id, captured_at: new Date() },
-      ])
-
-      // TODO: set PaymentCollection status if fully captured
+    let fullyCapturedPaymentsId: string[] = []
+    for (const payment of payments) {
+      const input = data.find((d) => d.payment_id === payment.id)!
+      if (
+        Number(payment.captured_amount) + input.amount ===
+        Number(payment.amount)
+      ) {
+        fullyCapturedPaymentsId.push(payment.id)
+      }
     }
 
-    payment = await this.paymentService_.retrieve(
-      data.payment_id,
+    if (fullyCapturedPaymentsId.length) {
+      await this.paymentService_.update(
+        fullyCapturedPaymentsId.map((id) => ({ id, captured_at: new Date() })),
+        sharedContext
+      )
+    }
+
+    // TODO: set PaymentCollection status if fully captured
+
+    return await this.paymentService_.list(
+      { id: data.map((d) => d.payment_id) },
+      // TODO: temp - will be removed
       {
         select: [
           "amount",
@@ -318,11 +357,16 @@ export default class PaymentModuleService implements IPaymentModuleService {
       },
       sharedContext
     )
-
-    return await this.baseRepository_.serialize<PaymentDTO>(payment, {
-      populate: true,
-    })
   }
+
+  // refundPayment(
+  //   data: CreateRefundDTO,
+  //   sharedContext?: Context
+  // ): Promise<PaymentDTO>
+  // refundPayment(
+  //   data: CreateRefundDTO[],
+  //   sharedContext?: Context
+  // ): Promise<PaymentDTO[]>
 
   @InjectTransactionManager("baseRepository_")
   async refundPayment(
@@ -344,7 +388,10 @@ export default class PaymentModuleService implements IPaymentModuleService {
       )
     }
 
-    await this.paymentService_.refund(data, sharedContext)
+    await this.paymentService_.refund(
+      data as unknown as CreateRefundDTO[], // TODO
+      sharedContext
+    )
 
     payment = await this.paymentService_.retrieve(
       data.payment_id,
@@ -412,10 +459,16 @@ export default class PaymentModuleService implements IPaymentModuleService {
     throw new Error("Method not implemented.")
   }
 
+  cancelPayment(paymentId: string, sharedContext?: Context): Promise<PaymentDTO>
   cancelPayment(
-    paymentId: string,
+    paymentId: string[],
     sharedContext?: Context
-  ): Promise<PaymentDTO> {
+  ): Promise<PaymentDTO[]>
+
+  cancelPayment(
+    paymentId: string | string[],
+    sharedContext?: Context
+  ): Promise<PaymentDTO | PaymentDTO[]> {
     throw new Error("Method not implemented.")
   }
 

@@ -123,39 +123,52 @@ export default class PaymentService<
     return this.decorateAmounts(result, amountsSelect)
   }
 
-  @InjectTransactionManager("captureRepository_")
-  async capture(
-    data: CreateCaptureDTO,
+  /**
+   * NOTE TODO - TEMP IMPL. THAT WILL CHANGE
+   */
+  @InjectManager("paymentRepository_")
+  async list(
+    filters: {} = {},
+    config: FindConfig<any> = {},
     @MedusaContext() sharedContext?: Context
-  ): Promise<CaptureDTO> {
-    const created = await this.captureRepository_.create(
-      [
-        {
-          payment: data.payment_id,
-          ...data,
-        },
-      ],
+  ): Promise<TEntity[]> {
+    const { select, relations, amountsSelect } =
+      this.transformQueryForAmounts(config)
+
+    const result = await super.list(
+      filters,
+      { ...config, select, relations },
       sharedContext
     )
 
-    return created[0]
+    return result.map((r) => this.decorateAmounts(r, amountsSelect))
+  }
+
+  @InjectTransactionManager("captureRepository_")
+  async capture(
+    data: CreateCaptureDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<CaptureDTO[]> {
+    return await this.captureRepository_.create(
+      data.map((input) => ({
+        payment: input.payment_id,
+        ...input,
+      })),
+      sharedContext
+    )
   }
 
   @InjectTransactionManager("refundRepository_")
   async refund(
-    data: CreateRefundDTO,
+    data: CreateRefundDTO[],
     @MedusaContext() sharedContext?: Context
-  ): Promise<RefundDTO> {
-    const created = await this.refundRepository_.create(
-      [
-        {
-          payment: data.payment_id,
-          ...data,
-        },
-      ],
+  ): Promise<RefundDTO[]> {
+    return await this.refundRepository_.create(
+      data.map((input) => ({
+        payment: input.payment_id,
+        ...input,
+      })),
       sharedContext
     )
-
-    return created[0]
   }
 }
