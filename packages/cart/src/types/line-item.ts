@@ -1,3 +1,19 @@
+import { LineItem } from "@models"
+import { AbstractService } from "@medusajs/utils"
+import { ILineItemRepository } from "./repositories"
+
+export interface ILineItemService<TEntity extends LineItem = LineItem>
+  extends AbstractService<
+    TEntity,
+    {
+      lineItemRepository: ILineItemRepository<TEntity>
+    },
+    {
+      create: CreateLineItemDTO
+      update: UpdateLineItemDTO
+    }
+  > {}
+
 interface PartialUpsertLineItemDTO {
   subtitle?: string
   thumbnail?: string

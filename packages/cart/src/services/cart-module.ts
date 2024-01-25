@@ -26,20 +26,35 @@ import {
   ShippingMethodAdjustment,
   ShippingMethodTaxLine,
 } from "@models"
-import { CreateLineItemDTO, UpdateLineItemDTO } from "@types"
+import {
+  CreateLineItemDTO,
+  CreateLineItemTaxLineDTO,
+  CreateShippingMethodDTO,
+  CreateShippingMethodTaxLineDTO,
+  IAddressService,
+  ICartService,
+  ILineItemAdjustmentService,
+  ILineItemService,
+  ILineItemTaxLineService,
+  IShippingMethodAdjustmentService,
+  IShippingMethodService,
+  IShippingMethodTaxLineService,
+  UpdateLineItemDTO,
+  UpdateLineItemTaxLineDTO,
+  UpdateShippingMethodTaxLineDTO,
+} from "@types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import * as services from "../services"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  cartService: services.CartService
-  addressService: services.AddressService
-  lineItemService: services.LineItemService
-  shippingMethodAdjustmentService: services.ShippingMethodAdjustmentService
-  shippingMethodService: services.ShippingMethodService
-  lineItemAdjustmentService: services.LineItemAdjustmentService
-  lineItemTaxLineService: services.LineItemTaxLineService
-  shippingMethodTaxLineService: services.ShippingMethodTaxLineService
+  cartService: ICartService<any>
+  addressService: IAddressService<any>
+  lineItemService: ILineItemService<any>
+  shippingMethodAdjustmentService: IShippingMethodAdjustmentService<any>
+  shippingMethodService: IShippingMethodService<any>
+  lineItemAdjustmentService: ILineItemAdjustmentService<any>
+  lineItemTaxLineService: ILineItemTaxLineService<any>
+  shippingMethodTaxLineService: IShippingMethodTaxLineService<any>
 }
 
 const generateMethodForModels = [
@@ -52,7 +67,16 @@ const generateMethodForModels = [
   ShippingMethodTaxLine,
 ]
 
-export default class CartModuleService
+export default class CartModuleService<
+    TCart extends Cart = Cart,
+    TAddress extends Address = Address,
+    TLineItem extends LineItem = LineItem,
+    TLineItemAdjustment extends LineItemAdjustment = LineItemAdjustment,
+    TLineItemTaxLine extends LineItemTaxLine = LineItemTaxLine,
+    TShippingMethodAdjustment extends ShippingMethodAdjustment = ShippingMethodAdjustment,
+    TShippingMethodTaxLine extends ShippingMethodTaxLine = ShippingMethodTaxLine,
+    TShippingMethod extends ShippingMethod = ShippingMethod
+  >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
     CartTypes.CartDTO,
@@ -69,14 +93,14 @@ export default class CartModuleService
   implements ICartModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected cartService_: services.CartService
-  protected addressService_: services.AddressService
-  protected lineItemService_: services.LineItemService
-  protected shippingMethodAdjustmentService_: services.ShippingMethodAdjustmentService
-  protected shippingMethodService_: services.ShippingMethodService
-  protected lineItemAdjustmentService_: services.LineItemAdjustmentService
-  protected lineItemTaxLineService_: services.LineItemTaxLineService
-  protected shippingMethodTaxLineService_: services.ShippingMethodTaxLineService
+  protected cartService_: ICartService<TCart>
+  protected addressService_: IAddressService<TAddress>
+  protected lineItemService_: ILineItemService<TLineItem>
+  protected shippingMethodAdjustmentService_: IShippingMethodAdjustmentService<TShippingMethodAdjustment>
+  protected shippingMethodService_: IShippingMethodService<TShippingMethod>
+  protected lineItemAdjustmentService_: ILineItemAdjustmentService<TLineItemAdjustment>
+  protected lineItemTaxLineService_: ILineItemTaxLineService<TLineItemTaxLine>
+  protected shippingMethodTaxLineService_: IShippingMethodTaxLineService<TShippingMethodTaxLine>
 
   constructor(
     {
@@ -544,7 +568,10 @@ export default class CartModuleService
     data: CartTypes.CreateShippingMethodDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ShippingMethod[]> {
-    return await this.shippingMethodService_.create(data, sharedContext)
+    return await this.shippingMethodService_.create(
+      data as unknown as CreateShippingMethodDTO[],
+      sharedContext
+    )
   }
 
   async removeShippingMethods(
@@ -944,14 +971,14 @@ export default class CartModuleService
       const lines = Array.isArray(taxLines) ? taxLines : [taxLines]
 
       addedTaxLines = await this.lineItemTaxLineService_.create(
-        lines as CartTypes.CreateLineItemTaxLineDTO[],
+        lines as CreateLineItemTaxLineDTO[],
         sharedContext
       )
     } else {
       const data = Array.isArray(cartIdOrData) ? cartIdOrData : [cartIdOrData]
 
       addedTaxLines = await this.lineItemTaxLineService_.create(
-        data as CartTypes.CreateLineItemTaxLineDTO[],
+        data as CreateLineItemTaxLineDTO[],
         sharedContext
       )
     }
@@ -1011,7 +1038,7 @@ export default class CartModuleService
     )
 
     const result = await this.lineItemTaxLineService_.upsert(
-      taxLines,
+      taxLines as UpdateLineItemTaxLineDTO[],
       sharedContext
     )
 
@@ -1098,12 +1125,12 @@ export default class CartModuleService
       const lines = Array.isArray(taxLines) ? taxLines : [taxLines]
 
       addedTaxLines = await this.shippingMethodTaxLineService_.create(
-        lines as CartTypes.CreateShippingMethodTaxLineDTO[],
+        lines as CreateShippingMethodTaxLineDTO[],
         sharedContext
       )
     } else {
       addedTaxLines = await this.shippingMethodTaxLineService_.create(
-        taxLines as CartTypes.CreateShippingMethodTaxLineDTO[],
+        taxLines as CreateShippingMethodTaxLineDTO[],
         sharedContext
       )
     }
@@ -1169,7 +1196,7 @@ export default class CartModuleService
     }
 
     const result = await this.shippingMethodTaxLineService_.upsert(
-      taxLines,
+      taxLines as UpdateShippingMethodTaxLineDTO[],
       sharedContext
     )
 

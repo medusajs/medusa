@@ -1,5 +1,6 @@
 import { DAL } from "@medusajs/types"
 import {
+  Address,
   Cart,
   LineItem,
   LineItemAdjustment,
@@ -33,7 +34,7 @@ import {
 } from "./shipping-method-tax-line"
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IAddressRepository<TEntity extends Cart = Cart>
+export interface IAddressRepository<TEntity extends Address = Address>
   extends DAL.RepositoryService<
     TEntity,
     {

@@ -1,3 +1,20 @@
+import { ShippingMethodAdjustment } from "@models"
+import { AbstractService } from "@medusajs/utils"
+import { IShippingMethodAdjustmentRepository } from "./repositories"
+
+export interface IShippingMethodAdjustmentService<
+  TEntity extends ShippingMethodAdjustment = ShippingMethodAdjustment
+> extends AbstractService<
+    TEntity,
+    {
+      shippingMethodAdjustmentRepository: IShippingMethodAdjustmentRepository<TEntity>
+    },
+    {
+      create: CreateShippingMethodAdjustmentDTO
+      update: UpdateShippingMethodAdjustmentDTO
+    }
+  > {}
+
 export interface CreateShippingMethodAdjustmentDTO {
   shipping_method_id: string
   code: string
