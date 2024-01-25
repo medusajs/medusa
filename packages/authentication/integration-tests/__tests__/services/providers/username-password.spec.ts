@@ -68,7 +68,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
         },
       ])
 
-      const res = await service.initializeAuthentication("usernamePassword", {
+      const res = await service.authenticate("usernamePassword", {
         body: {
           email: "test@test.com",
           password: password,
@@ -89,7 +89,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
 
       await seedDefaultData(testManager)
 
-      const res = await service.initializeAuthentication("usernamePassword", {
+      const res = await service.authenticate("usernamePassword", {
         body: { email: "test@test.com" },
       })
 
@@ -102,7 +102,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
     it("fails when no email is given", async () => {
       await seedDefaultData(testManager)
 
-      const res = await service.initializeAuthentication("usernamePassword", {
+      const res = await service.authenticate("usernamePassword", {
         body: { password: "supersecret" },
       })
 
@@ -131,7 +131,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
         },
       ])
 
-      const res = await service.initializeAuthentication("usernamePassword", {
+      const res = await service.authenticate("usernamePassword", {
         body: {
           email: "test@test.com",
           password: "password",
