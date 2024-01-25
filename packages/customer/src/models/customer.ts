@@ -49,6 +49,9 @@ export default class Customer {
   @Property({ columnType: "text", nullable: true })
   phone: string | null = null
 
+  @Property({ columnType: "boolean", default: false })
+  has_account: boolean = false
+
   @Index({ name: "IDX_customer_default_shipping_address_id" })
   @Property({ columnType: "text", nullable: true })
   default_shipping_address_id: string | null = null
