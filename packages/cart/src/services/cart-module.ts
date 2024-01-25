@@ -90,11 +90,6 @@ export default class CartModuleService implements ICartModuleService {
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartDTO> {
     return this.retrieveWithTotals(id, config, sharedContext)
-    // const cart = await this.cartService_.retrieve(id, config, sharedContext)
-
-    // return await this.baseRepository_.serialize<CartTypes.CartDTO>(cart, {
-    //   populate: true,
-    // })
   }
 
   @InjectManager("baseRepository_")
@@ -106,8 +101,6 @@ export default class CartModuleService implements ICartModuleService {
     const cart = await this.cartService_.retrieve(id, config, sharedContext)
 
     const serialized = await this.baseRepository_.serialize<CartTypes.CartDTO>(cart, { populate: true })
-
-    // return serialized
 
     return decorateTotals(serialized)
   }
