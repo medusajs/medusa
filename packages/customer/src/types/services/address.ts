@@ -1,3 +1,19 @@
+import { AbstractService } from "@medusajs/utils"
+import { DAL } from "@medusajs/types"
+import { Address } from "@models"
+
+export interface IAddressService<TEntity extends Address = Address>
+  extends AbstractService<
+    TEntity,
+    {
+      addressRepository: DAL.RepositoryService<TEntity>
+    },
+    {
+      create: CreateAddressDTO
+      update: UpdateAddressDTO
+    }
+  > {}
+
 export type CreateAddressDTO = {
   customer_id: string
   company?: string | null

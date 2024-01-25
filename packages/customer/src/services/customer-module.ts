@@ -1,37 +1,67 @@
 import {
   Context,
+  CustomerDTO,
+  CustomerTypes,
   DAL,
-  FindConfig,
   ICustomerModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
-  CustomerTypes,
 } from "@medusajs/types"
 
 import {
-  InjectManager,
   InjectTransactionManager,
-  MedusaContext,
-  isString,
   isObject,
+  isString,
+  MedusaContext,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
-import { joinerConfig } from "../joiner-config"
-import * as services from "../services"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import {
+  IAddressService,
+  ICustomerGroupCustomerService,
+  ICustomerGroupService,
+  ICustomerService,
+} from "@types"
+import {
+  Address,
+  Customer,
+  CustomerGroup,
+  CustomerGroupCustomer,
+} from "@models"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  customerService: services.CustomerService
-  addressService: services.AddressService
-  customerGroupService: services.CustomerGroupService
-  customerGroupCustomerService: services.CustomerGroupCustomerService
+  customerService: ICustomerService<any>
+  addressService: IAddressService<any>
+  customerGroupService: ICustomerGroupService<any>
+  customerGroupCustomerService: ICustomerGroupCustomerService<any>
 }
 
-export default class CustomerModuleService implements ICustomerModuleService {
+const generateMethodForModels = [Address, CustomerGroup, CustomerGroupCustomer]
+
+export default class CustomerModuleService<
+    TAddress extends Address = Address,
+    TCustomer extends Customer = Customer,
+    TCustomerGroup extends CustomerGroup = CustomerGroup,
+    TCustomerGroupCustomer extends CustomerGroupCustomer = CustomerGroupCustomer
+  >
+  // TODO seb I let you manage that when you are moving forward
+  extends ModulesSdkUtils.abstractModuleServiceFactory<
+    InjectedDependencies,
+    CustomerDTO,
+    {
+      Address: { dto: any }
+      CustomerGroup: { dto: any }
+      CustomerGroupCustomer: { dto: any }
+    }
+  >(Customer, generateMethodForModels, entityNameToLinkableKeysMap)
+  implements ICustomerModuleService
+{
   protected baseRepository_: DAL.RepositoryService
-  protected customerService_: services.CustomerService
-  protected addressService_: services.AddressService
-  protected customerGroupService_: services.CustomerGroupService
-  protected customerGroupCustomerService_: services.CustomerGroupCustomerService
+  protected customerService_: ICustomerService<TCustomer>
+  protected addressService_: IAddressService<TAddress>
+  protected customerGroupService_: ICustomerGroupService<TCustomerGroup>
+  protected customerGroupCustomerService_: ICustomerGroupCustomerService<TCustomerGroupCustomer>
 
   constructor(
     {
@@ -43,6 +73,9 @@ export default class CustomerModuleService implements ICustomerModuleService {
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
+    // @ts-ignore
+    super(...arguments)
+
     this.baseRepository_ = baseRepository
     this.customerService_ = customerService
     this.addressService_ = addressService
@@ -52,26 +85,6 @@ export default class CustomerModuleService implements ICustomerModuleService {
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
-  }
-
-  @InjectManager("baseRepository_")
-  async retrieve(
-    id: string,
-    config: FindConfig<CustomerTypes.CustomerDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<CustomerTypes.CustomerDTO> {
-    const customer = await this.customerService_.retrieve(
-      id,
-      config,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<CustomerTypes.CustomerDTO>(
-      customer,
-      {
-        populate: true,
-      }
-    )
   }
 
   async create(
@@ -188,49 +201,6 @@ export default class CustomerModuleService implements ICustomerModuleService {
     }
 
     return await this.customerService_.delete(toDelete, sharedContext)
-  }
-
-  @InjectManager("baseRepository_")
-  async list(
-    filters: CustomerTypes.FilterableCustomerProps = {},
-    config: FindConfig<CustomerTypes.CustomerDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    const customers = await this.customerService_.list(
-      filters,
-      config,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<CustomerTypes.CustomerDTO[]>(
-      customers,
-      {
-        populate: true,
-      }
-    )
-  }
-
-  @InjectManager("baseRepository_")
-  async listAndCount(
-    filters: CustomerTypes.FilterableCustomerProps = {},
-    config: FindConfig<CustomerTypes.CustomerDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[CustomerTypes.CustomerDTO[], number]> {
-    const [customers, count] = await this.customerService_.listAndCount(
-      filters,
-      config,
-      sharedContext
-    )
-
-    return [
-      await this.baseRepository_.serialize<CustomerTypes.CustomerDTO[]>(
-        customers,
-        {
-          populate: true,
-        }
-      ),
-      count,
-    ]
   }
 
   async createCustomerGroup(
@@ -380,47 +350,5 @@ export default class CustomerModuleService implements ICustomerModuleService {
       groupCustomers.map((gc) => gc.id),
       sharedContext
     )
-  }
-
-  @InjectManager("baseRepository_")
-  async listCustomerGroups(
-    filters: CustomerTypes.FilterableCustomerGroupProps = {},
-    config: FindConfig<CustomerTypes.CustomerGroupDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    const groups = await this.customerGroupService_.list(
-      filters,
-      config,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<
-      CustomerTypes.CustomerGroupDTO[]
-    >(groups, {
-      populate: true,
-    })
-  }
-
-  @InjectManager("baseRepository_")
-  async listAndCountCustomerGroups(
-    filters: CustomerTypes.FilterableCustomerGroupProps = {},
-    config: FindConfig<CustomerTypes.CustomerGroupDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[CustomerTypes.CustomerGroupDTO[], number]> {
-    const [groups, count] = await this.customerGroupService_.listAndCount(
-      filters,
-      config,
-      sharedContext
-    )
-
-    return [
-      await this.baseRepository_.serialize<CustomerTypes.CustomerGroupDTO[]>(
-        groups,
-        {
-          populate: true,
-        }
-      ),
-      count,
-    ]
   }
 }

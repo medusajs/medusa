@@ -46,7 +46,10 @@ export interface RepositoryService<
 
   update(data: TDTOs["update"][], context?: Context): Promise<T[]>
 
-  delete(idsOrPKs: string[] | object[], context?: Context): Promise<void>
+  delete(
+    idsOrPKs: string | object | string[] | object[],
+    context?: Context
+  ): Promise<void>
 
   /**
    * Soft delete entities and cascade to related entities if configured.
@@ -57,12 +60,12 @@ export interface RepositoryService<
    * @returns [T[], Record<string, string[]>] the second value being the map of the entity names and ids that were soft deleted
    */
   softDelete(
-    ids: string[],
+    ids: string | object | string[] | object[],
     context?: Context
   ): Promise<[T[], Record<string, unknown[]>]>
 
   restore(
-    ids: string[],
+    ids: string | object | string[] | object[],
     context?: Context
   ): Promise<[T[], Record<string, unknown[]>]>
 
