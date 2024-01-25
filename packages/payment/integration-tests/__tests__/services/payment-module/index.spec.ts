@@ -265,13 +265,15 @@ describe("Payment Module Service", () => {
 
     describe("create", () => {
       it("should create a payment session successfully", async () => {
-        const paymentCollection = await service.createPaymentSession(
+        await service.createPaymentSession("pay-col-id-1", {
+          amount: 200,
+          provider_id: "manual",
+          currency_code: "usd",
+        })
+
+        const paymentCollection = await service.retrievePaymentCollection(
           "pay-col-id-1",
-          {
-            amount: 200,
-            provider_id: "manual",
-            currency_code: "usd",
-          }
+          { relations: ["payment_sessions"] }
         )
 
         expect(paymentCollection).toEqual(
@@ -279,7 +281,7 @@ describe("Payment Module Service", () => {
             id: "pay-col-id-1",
             status: "not_paid",
             payment_sessions: expect.arrayContaining([
-              {
+              expect.objectContaining({
                 id: expect.any(String),
                 data: null,
                 status: "pending",
@@ -287,10 +289,73 @@ describe("Payment Module Service", () => {
                 currency_code: "usd",
                 amount: 200,
                 provider_id: "manual",
-                payment_collection: expect.objectContaining({
-                  id: paymentCollection.id,
+              }),
+            ]),
+          })
+        )
+      })
+    })
+
+    describe("authorize", () => {
+      it("should authorize payment sessions successfully", async () => {
+        const collection = await service.createPaymentCollection({
+          amount: 200,
+          region_id: "test-region",
+          currency_code: "usd",
+        })
+
+        const sessions = await service.createPaymentSession(collection.id, [
+          {
+            amount: 100,
+            currency_code: "usd",
+            provider_id: "manual",
+          },
+          {
+            amount: 100,
+            currency_code: "usd",
+            provider_id: "manual",
+          },
+        ])
+
+        await service.authorizePaymentCollection(
+          collection.id,
+          sessions.map(({ id }) => id)
+        )
+
+        const authorizedCollection = await service.retrievePaymentCollection(
+          collection.id,
+          { relations: ["payment_sessions", "payments"] }
+        )
+
+        expect(authorizedCollection).toEqual(
+          expect.objectContaining({
+            id: collection.id,
+            amount: 200,
+            authorized_amount: 200,
+            payment_sessions: expect.arrayContaining([
+              expect.objectContaining({
+                id: sessions[0].id,
+                amount: 100,
+              }),
+              expect.objectContaining({
+                id: sessions[1].id,
+                amount: 100,
+              }),
+            ]),
+            payments: expect.arrayContaining([
+              // Payments were created from the sessions
+              expect.objectContaining({
+                payment_session: expect.objectContaining({
+                  id: sessions[0].id,
                 }),
-              },
+                amount: 100,
+              }),
+              expect.objectContaining({
+                payment_session: expect.objectContaining({
+                  id: sessions[1].id,
+                }),
+                amount: 100,
+              }),
             ]),
           })
         )

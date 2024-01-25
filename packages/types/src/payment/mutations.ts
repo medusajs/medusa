@@ -1,4 +1,4 @@
-import { PaymentCollectionStatus } from "./common"
+import { PaymentCollectionStatus, PaymentSessionStatus } from "./common"
 
 /**
  * Payment Collection
@@ -75,6 +75,21 @@ export interface CreatePaymentSessionDTO {
   amount: number
   currency_code: string
   provider_id: string
+
+  authorized_at?: Date
+
+  cart_id?: string
+  resource_id?: string
+  customer_id?: string
+}
+
+export interface UpdatePaymentSessionDTO {
+  id: string
+
+  data?: Record<string, unknown>
+  status?: PaymentSessionStatus
+
+  authorized_at?: Date
 
   cart_id?: string
   resource_id?: string
