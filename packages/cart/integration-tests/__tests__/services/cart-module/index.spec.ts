@@ -51,7 +51,12 @@ describe("Cart Module Service", () => {
             {
               title: "test",
               quantity: 1,
-              unit_price: { value: "1234.1234", precision: 18, currency_code: "eur" },
+              unit_price: { value: "1234.1234" },
+            },
+            {
+              title: "test",
+              quantity: 1,
+              unit_price: "200",
             },
           ],
         },
@@ -61,13 +66,12 @@ describe("Cart Module Service", () => {
         relations: ["items", "items.adjustments"],
       })
 
-      console.log(cart.items[1].raw_unit_price)
-
       expect(cart).toEqual(
         expect.objectContaining({
           id: createdCart.id,
           currency_code: "eur",
-          total: 1334.1234,
+          // 1234.1234 + 100 + 200
+          total: 1534.1234,
           items: [
             expect.objectContaining({
               title: "test",
@@ -76,6 +80,10 @@ describe("Cart Module Service", () => {
             expect.objectContaining({
               title: "test",
               unit_price: 1234.1234,
+            }),
+            expect.objectContaining({
+              title: "test",
+              unit_price: 200,
             }),
           ],
         })

@@ -3,8 +3,6 @@ import { isObject, isString } from "../common"
 
 export type BigNumberRawValue = {
   value: string
-  precision: number
-  multiplier?: number
   [key: string]: unknown
 }
 
@@ -14,48 +12,35 @@ export class BigNumber {
   private numeric_: number
   private raw_?: BigNumberRawValue
 
-  constructor(
-    rawPrice: BigNumberRawValue | number | string | BigNumberJS,
-    precision: number = BigNumber.DEFAULT_PRECISION,
-    extraProperties: Record<string, unknown> = {}
-  ) {
+  constructor(rawPrice: BigNumberRawValue | number | string | BigNumberJS) {
     if (BigNumberJS.isBigNumber(rawPrice)) {
       this.numeric_ = rawPrice.toNumber()
       this.raw_ = {
-        ...extraProperties,
-        value: rawPrice.toPrecision(precision),
-        precision,
+        value: rawPrice.toPrecision(BigNumber.DEFAULT_PRECISION),
       }
     } else if (isString(rawPrice)) {
-      console.log("Raw price here2: ", rawPrice)
       const bigNum = new BigNumberJS(rawPrice)
 
       this.numeric_ = bigNum.toNumber()
       this.raw_ = this.raw_ = {
-        ...extraProperties,
-        value: bigNum.toPrecision(precision),
-        precision,
+        value: bigNum.toPrecision(BigNumber.DEFAULT_PRECISION),
       }
     } else if (isObject(rawPrice)) {
       this.numeric_ = BigNumberJS(rawPrice.value).toNumber()
 
-      const pricePrecision =
-        rawPrice.precision ?? extraProperties.precision ?? precision
-
       this.raw_ = {
         ...rawPrice,
-        ...extraProperties,
-        precision: pricePrecision,
       }
-    } else if (!Number.isNaN(+rawPrice)) {
+    } else if (typeof rawPrice === `number` && !Number.isNaN(rawPrice)) {
       this.numeric_ = rawPrice as number
+
       this.raw_ = {
-        ...extraProperties,
         value: BigNumberJS(rawPrice as number).toString(),
-        precision,
       }
     } else {
-      throw new Error("Invalid BigNumber value")
+      throw new Error(
+        "Invalid BigNumber value. Should be one of: string, number, BigNumber (bignumber.js), BigNumberRawValue"
+      )
     }
   }
 
