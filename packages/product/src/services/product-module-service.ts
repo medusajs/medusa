@@ -22,14 +22,11 @@ import {
   ProductCategoryService,
   ProductCollectionService,
   ProductOptionService,
-  ProductOptionValueService,
   ProductService,
   ProductTagService,
   ProductTypeService,
   ProductVariantService,
 } from "@services"
-
-import ProductImageService from "./product-image"
 
 import {
   ProductCategoryServiceTypes,
@@ -53,6 +50,7 @@ import {
 } from "@medusajs/utils"
 import {
   CreateProductOptionValueDTO,
+  IProductOptionValueService,
   UpdateProductOptionValueDTO,
 } from "../types/services/product-option-value"
 import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
@@ -61,6 +59,7 @@ import {
   ProductCategoryEvents,
 } from "../types/services/product-category"
 import { ProductEventData, ProductEvents } from "../types/services/product"
+import { IProductImageService } from "../types/services/product-image"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -69,10 +68,10 @@ type InjectedDependencies = {
   productTagService: ProductTagService<any>
   productCategoryService: ProductCategoryService<any>
   productCollectionService: ProductCollectionService<any>
-  productImageService: ProductImageService<any>
+  productImageService: IProductImageService<any>
   productTypeService: ProductTypeService<any>
   productOptionService: ProductOptionService<any>
-  productOptionValueService: ProductOptionValueService<any>
+  productOptionValueService: IProductOptionValueService<any>
   eventBusModuleService?: IEventBusModuleService
 }
 
@@ -146,11 +145,11 @@ export default class ProductModuleService<
   protected readonly productTagService_: ProductTagService<TProductTag>
   // eslint-disable-next-line max-len
   protected readonly productCollectionService_: ProductCollectionService<TProductCollection>
-  protected readonly productImageService_: ProductImageService<TProductImage>
+  protected readonly productImageService_: IProductImageService<TProductImage>
   protected readonly productTypeService_: ProductTypeService<TProductType>
   protected readonly productOptionService_: ProductOptionService<TProductOption>
   // eslint-disable-next-line max-len
-  protected readonly productOptionValueService_: ProductOptionValueService<TProductOptionValue>
+  protected readonly productOptionValueService_: IProductOptionValueService<TProductOptionValue>
   protected readonly eventBusModuleService_?: IEventBusModuleService
 
   constructor(
