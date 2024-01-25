@@ -398,6 +398,24 @@
           "nullable": true,
           "mappedType": "decimal"
         },
+        "apply_to_quantity": {
+          "name": "apply_to_quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "decimal"
+        },
+        "buy_rules_min_quantity": {
+          "name": "buy_rules_min_quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "decimal"
+        },
         "type": {
           "name": "type",
           "type": "text",
@@ -697,11 +715,11 @@
           "mappedType": "text"
         }
       },
-      "name": "application_method_promotion_rule",
+      "name": "application_method_target_rules",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "application_method_promotion_rule_pkey",
+          "keyName": "application_method_target_rules_pkey",
           "columnNames": ["application_method_id", "promotion_rule_id"],
           "composite": true,
           "primary": true,
@@ -710,19 +728,73 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "application_method_promotion_rule_application_method_id_foreign": {
-          "constraintName": "application_method_promotion_rule_application_method_id_foreign",
+        "application_method_target_rules_application_method_id_foreign": {
+          "constraintName": "application_method_target_rules_application_method_id_foreign",
           "columnNames": ["application_method_id"],
-          "localTableName": "public.application_method_promotion_rule",
+          "localTableName": "public.application_method_target_rules",
           "referencedColumnNames": ["id"],
           "referencedTableName": "public.application_method",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "application_method_promotion_rule_promotion_rule_id_foreign": {
-          "constraintName": "application_method_promotion_rule_promotion_rule_id_foreign",
+        "application_method_target_rules_promotion_rule_id_foreign": {
+          "constraintName": "application_method_target_rules_promotion_rule_id_foreign",
           "columnNames": ["promotion_rule_id"],
-          "localTableName": "public.application_method_promotion_rule",
+          "localTableName": "public.application_method_target_rules",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.promotion_rule",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "application_method_id": {
+          "name": "application_method_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "promotion_rule_id": {
+          "name": "promotion_rule_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "application_method_buy_rules",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "application_method_buy_rules_pkey",
+          "columnNames": ["application_method_id", "promotion_rule_id"],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "application_method_buy_rules_application_method_id_foreign": {
+          "constraintName": "application_method_buy_rules_application_method_id_foreign",
+          "columnNames": ["application_method_id"],
+          "localTableName": "public.application_method_buy_rules",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.application_method",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "application_method_buy_rules_promotion_rule_id_foreign": {
+          "constraintName": "application_method_buy_rules_promotion_rule_id_foreign",
+          "columnNames": ["promotion_rule_id"],
+          "localTableName": "public.application_method_buy_rules",
           "referencedColumnNames": ["id"],
           "referencedTableName": "public.promotion_rule",
           "deleteRule": "cascade",
