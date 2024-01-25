@@ -47,7 +47,7 @@ describe("Payment Service", () => {
 
       expect(payment.captured_amount).toEqual(0)
 
-      await service.capture({ amount: 50, payment_id: "pay-id-1" })
+      await service.capture([{ amount: 50, payment_id: "pay-id-1" }])
 
       payment = await service.retrieve("pay-id-1", {
         select: ["captured_amount"],
@@ -55,7 +55,7 @@ describe("Payment Service", () => {
 
       expect(payment.captured_amount).toEqual(50)
 
-      await service.capture({ amount: 25, payment_id: "pay-id-1" })
+      await service.capture([{ amount: 25, payment_id: "pay-id-1" }])
 
       payment = await service.retrieve("pay-id-1", {
         select: ["captured_amount", "refunded_amount"],
