@@ -159,11 +159,7 @@ function buildWhere<TWhereKeys extends object, TEntity>(
       continue
     }
 
-    if (key === "q") {
-      where["name"] = ILike(`%${value}%`)
-    } else {
-      where[key] = value
-    }
+    where[key] = value
   }
 
   return where
