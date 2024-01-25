@@ -51,11 +51,16 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           {t("store.swapLinkTemplate")}
         </Text>
         {store.swap_link_template ? (
-          <Copy content={store.swap_link_template} asChild>
-            <Badge className="w-fit cursor-pointer" rounded="full">
-              <span>{store.swap_link_template}</span>
-            </Badge>
-          </Copy>
+          <div className="bg-ui-bg-subtle border border-ui-border-base flex items-center gap-x-0.5 w-fit rounded-full pl-2 pr-1 box-border cursor-default overflow-hidden">
+            <Text size="xsmall" leading="compact" className="truncate">
+              {store.swap_link_template}
+            </Text>
+            <Copy
+              content={store.swap_link_template}
+              variant="mini"
+              className="text-ui-fg-subtle"
+            />
+          </div>
         ) : (
           <Text size="small" leading="compact">
             -
@@ -67,11 +72,16 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           {t("store.paymentLinkTemplate")}
         </Text>
         {store.payment_link_template ? (
-          <Copy content={store.payment_link_template} asChild>
-            <Badge className="w-fit cursor-pointer" rounded="full">
-              <span>{store.payment_link_template}</span>
-            </Badge>
-          </Copy>
+          <div className="bg-ui-bg-subtle border border-ui-border-base flex items-center gap-x-0.5 w-fit rounded-full pl-2 pr-1 box-border cursor-default overflow-hidden">
+            <Text size="xsmall" leading="compact" className="truncate">
+              {store.payment_link_template}
+            </Text>
+            <Copy
+              content={store.payment_link_template}
+              variant="mini"
+              className="text-ui-fg-subtle"
+            />
+          </div>
         ) : (
           <Text size="small" leading="compact">
             -
@@ -83,11 +93,16 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           {t("store.inviteLinkTemplate")}
         </Text>
         {store.invite_link_template ? (
-          <Copy content={store.invite_link_template} asChild>
-            <Badge className="w-fit cursor-pointer" rounded="full">
-              <span>{store.invite_link_template}</span>
-            </Badge>
-          </Copy>
+          <div className="bg-ui-bg-subtle border border-ui-border-base flex items-center gap-x-0.5 w-fit rounded-full pl-2 pr-1 box-border cursor-default overflow-hidden">
+            <Text size="xsmall" leading="compact" className="truncate">
+              {store.invite_link_template}
+            </Text>
+            <Copy
+              content={store.invite_link_template}
+              variant="mini"
+              className="text-ui-fg-subtle"
+            />
+          </div>
         ) : (
           <Text size="small" leading="compact">
             -

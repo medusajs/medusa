@@ -14,6 +14,7 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  PromotionType,
 } from "@medusajs/utils"
 import {
   ApplicationMethod,
@@ -24,6 +25,7 @@ import {
   PromotionRuleValue,
 } from "@models"
 import {
+  ApplicationMethodRuleTypes,
   CreateApplicationMethodDTO,
   CreateCampaignBudgetDTO,
   CreateCampaignDTO,
@@ -414,6 +416,8 @@ export default class PromotionModuleService<
           "application_method",
           "application_method.target_rules",
           "application_method.target_rules.values",
+          "application_method.buy_rules",
+          "application_method.buy_rules.values",
           "rules",
           "rules.values",
           "campaign",
@@ -443,7 +447,11 @@ export default class PromotionModuleService<
       string,
       PromotionTypes.CreatePromotionRuleDTO[]
     >()
-    const applicationMethodRuleMap = new Map<
+    const methodTargetRulesMap = new Map<
+      string,
+      PromotionTypes.CreatePromotionRuleDTO[]
+    >()
+    const methodBuyRulesMap = new Map<
       string,
       PromotionTypes.CreatePromotionRuleDTO[]
     >()
@@ -509,6 +517,7 @@ export default class PromotionModuleService<
       if (applMethodData) {
         const {
           target_rules: targetRulesData = [],
+          buy_rules: buyRulesData = [],
           ...applicationMethodWithoutRules
         } = applMethodData
         const applicationMethodData = {
@@ -527,11 +536,33 @@ export default class PromotionModuleService<
           )
         }
 
-        validateApplicationMethodAttributes(applicationMethodData)
+        if (promotion.type === PromotionType.BUYGET && !buyRulesData.length) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Buy rules are required for ${PromotionType.BUYGET} promotion type`
+          )
+        }
+
+        if (
+          promotion.type === PromotionType.BUYGET &&
+          !targetRulesData.length
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Target rules are required for ${PromotionType.BUYGET} promotion type`
+          )
+        }
+
+        validateApplicationMethodAttributes(applicationMethodData, promotion)
+
         applicationMethodsData.push(applicationMethodData)
 
         if (targetRulesData.length) {
-          applicationMethodRuleMap.set(promotion.id, targetRulesData)
+          methodTargetRulesMap.set(promotion.id, targetRulesData)
+        }
+
+        if (buyRulesData.length) {
+          methodBuyRulesMap.set(promotion.id, buyRulesData)
         }
       }
 
@@ -555,8 +586,15 @@ export default class PromotionModuleService<
 
     for (const applicationMethod of createdApplicationMethods) {
       await this.createPromotionRulesAndValues_(
-        applicationMethodRuleMap.get(applicationMethod.promotion.id) || [],
-        "application_methods",
+        methodTargetRulesMap.get(applicationMethod.promotion.id) || [],
+        "method_target_rules",
+        applicationMethod,
+        sharedContext
+      )
+
+      await this.createPromotionRulesAndValues_(
+        methodBuyRulesMap.get(applicationMethod.promotion.id) || [],
+        "method_buy_rules",
         applicationMethod,
         sharedContext
       )
@@ -652,18 +690,10 @@ export default class PromotionModuleService<
         existingApplicationMethod.max_quantity = null
       }
 
-      validateApplicationMethodAttributes({
-        type: applicationMethodData.type || existingApplicationMethod.type,
-        target_type:
-          applicationMethodData.target_type ||
-          existingApplicationMethod.target_type,
-        allocation:
-          applicationMethodData.allocation ||
-          existingApplicationMethod.allocation,
-        max_quantity:
-          applicationMethodData.max_quantity ||
-          existingApplicationMethod.max_quantity,
-      })
+      validateApplicationMethodAttributes(
+        applicationMethodData,
+        existingPromotion
+      )
 
       applicationMethodsData.push({
         ...applicationMethodData,
@@ -729,7 +759,7 @@ export default class PromotionModuleService<
 
     await this.createPromotionRulesAndValues_(
       rulesData,
-      "application_methods",
+      "method_target_rules",
       applicationMethod,
       sharedContext
     )
@@ -749,10 +779,51 @@ export default class PromotionModuleService<
     )
   }
 
+  @InjectManager("baseRepository_")
+  async addPromotionBuyRules(
+    promotionId: string,
+    rulesData: PromotionTypes.CreatePromotionRuleDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.PromotionDTO> {
+    const promotion = await this.promotionService_.retrieve(promotionId, {
+      relations: ["application_method"],
+    })
+
+    const applicationMethod = promotion.application_method
+
+    if (!applicationMethod) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `application_method for promotion not found`
+      )
+    }
+
+    await this.createPromotionRulesAndValues_(
+      rulesData,
+      "method_buy_rules",
+      applicationMethod,
+      sharedContext
+    )
+
+    return this.retrieve(
+      promotionId,
+      {
+        relations: [
+          "rules",
+          "rules.values",
+          "application_method",
+          "application_method.buy_rules",
+          "application_method.buy_rules.values",
+        ],
+      },
+      sharedContext
+    )
+  }
+
   @InjectTransactionManager("baseRepository_")
   protected async createPromotionRulesAndValues_(
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
-    relationName: "promotions" | "application_methods",
+    relationName: "promotions" | "method_target_rules" | "method_buy_rules",
     relation: Promotion | ApplicationMethod,
     @MedusaContext() sharedContext: Context = {}
   ) {
@@ -828,9 +899,10 @@ export default class PromotionModuleService<
     rulesData: PromotionTypes.RemovePromotionRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PromotionTypes.PromotionDTO> {
-    await this.removePromotionTargetRules_(
+    await this.removeApplicationMethodRules_(
       promotionId,
       rulesData,
+      ApplicationMethodRuleTypes.TARGET_RULES,
       sharedContext
     )
 
@@ -849,16 +921,47 @@ export default class PromotionModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
-  protected async removePromotionTargetRules_(
+  @InjectManager("baseRepository_")
+  async removePromotionBuyRules(
     promotionId: string,
     rulesData: PromotionTypes.RemovePromotionRuleDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.PromotionDTO> {
+    await this.removeApplicationMethodRules_(
+      promotionId,
+      rulesData,
+      ApplicationMethodRuleTypes.BUY_RULES,
+      sharedContext
+    )
+
+    return this.retrieve(
+      promotionId,
+      {
+        relations: [
+          "rules",
+          "rules.values",
+          "application_method",
+          "application_method.buy_rules",
+          "application_method.buy_rules.values",
+        ],
+      },
+      sharedContext
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async removeApplicationMethodRules_(
+    promotionId: string,
+    rulesData: PromotionTypes.RemovePromotionRuleDTO[],
+    relation:
+      | ApplicationMethodRuleTypes.TARGET_RULES
+      | ApplicationMethodRuleTypes.BUY_RULES,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     const promotionRuleIds = rulesData.map((ruleData) => ruleData.id)
     const promotion = await this.promotionService_.retrieve(
       promotionId,
-      { relations: ["application_method.target_rules"] },
+      { relations: [`application_method.${relation}`] },
       sharedContext
     )
 
@@ -871,7 +974,7 @@ export default class PromotionModuleService<
       )
     }
 
-    const targetRuleIdsToRemove = applicationMethod.target_rules
+    const targetRuleIdsToRemove = applicationMethod[relation]
       .toArray()
       .filter((rule) => promotionRuleIds.includes(rule.id))
       .map((rule) => rule.id)

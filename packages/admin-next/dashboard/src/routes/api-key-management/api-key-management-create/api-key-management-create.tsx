@@ -8,7 +8,7 @@ export const ApiKeyManagementCreate = () => {
   return (
     <FocusModal open={open} onOpenChange={onOpenChange}>
       <FocusModal.Content>
-        <CreatePublishableApiKeyForm />
+        <CreatePublishableApiKeyForm subscribe={subscribe} />
       </FocusModal.Content>
     </FocusModal>
   )

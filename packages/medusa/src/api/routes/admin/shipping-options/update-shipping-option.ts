@@ -8,15 +8,18 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultFields, defaultRelations } from "."
+import {
+  shippingOptionsDefaultFields,
+  shippingOptionsDefaultRelations,
+} from "."
 
+import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { ShippingOptionPriceType } from "../../../../models"
 import { ShippingOptionService } from "../../../../services"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
-import { Type } from "class-transformer"
 import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -152,8 +155,8 @@ export default async (req, res) => {
   })
 
   const data = await optionService.retrieve(option_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: shippingOptionsDefaultFields,
+    relations: shippingOptionsDefaultRelations,
   })
 
   res.status(200).json({ shipping_option: data })
