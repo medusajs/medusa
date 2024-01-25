@@ -92,7 +92,6 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     const jwtData = (await jwt.decode(refreshToken, {
       complete: true,
     })) as JwtPayload
-
     const entity_id = jwtData.payload.email
 
     let authUser

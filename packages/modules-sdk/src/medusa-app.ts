@@ -245,6 +245,12 @@ export async function MedusaApp({
   registerCustomJoinerConfigs(servicesConfig ?? [])
 
   if (
+    sharedResourcesConfig?.database?.connection &&
+    !injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]
+  ) {
+    injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] =
+      sharedResourcesConfig.database.connection
+  } else if (
     dbData.clientUrl &&
     !injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]
   ) {

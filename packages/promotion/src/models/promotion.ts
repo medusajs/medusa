@@ -1,4 +1,4 @@
-import { DAL, PromotionType } from "@medusajs/types"
+import { DAL, PromotionTypeValues } from "@medusajs/types"
 import { DALUtils, PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -45,14 +45,14 @@ export default class Promotion {
     nullable: true,
     cascade: ["soft-remove"] as any,
   })
-  campaign?: Campaign | null
+  campaign: Campaign | null = null
 
   @Property({ columnType: "boolean", default: false })
   is_automatic: boolean = false
 
   @Index({ name: "IDX_promotion_type" })
   @Enum(() => PromotionUtils.PromotionType)
-  type: PromotionType
+  type: PromotionTypeValues
 
   @OneToOne({
     entity: () => ApplicationMethod,
