@@ -27,6 +27,7 @@ export class BigNumber {
         precision,
       }
     } else if (isString(rawPrice)) {
+      console.log("Raw price here2: ", rawPrice)
       const bigNum = new BigNumberJS(rawPrice)
 
       this.numeric_ = bigNum.toNumber()
@@ -36,12 +37,15 @@ export class BigNumber {
         precision,
       }
     } else if (isObject(rawPrice)) {
-      extraProperties.precision ??= precision
-
       this.numeric_ = BigNumberJS(rawPrice.value).toNumber()
+
+      const pricePrecision =
+        rawPrice.precision ?? extraProperties.precision ?? precision
+
       this.raw_ = {
         ...rawPrice,
         ...extraProperties,
+        precision: pricePrecision,
       }
     } else if (!Number.isNaN(+rawPrice)) {
       this.numeric_ = rawPrice as number
