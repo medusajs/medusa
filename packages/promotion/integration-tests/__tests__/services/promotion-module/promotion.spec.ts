@@ -1,3 +1,4 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
 import {
   ApplicationMethodType,
@@ -5,12 +6,11 @@ import {
   PromotionType,
 } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { initModules } from "medusa-test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { createPromotions } from "../../../__fixtures__/promotion"
 import { MikroOrmWrapper } from "../../../utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
-import { Modules } from "@medusajs/modules-sdk"
-import { initModules } from "medusa-test-utils/dist"
 
 jest.setTimeout(30000)
 

@@ -8,6 +8,7 @@ export function getInitModuleConfig() {
       database: {
         clientUrl: DB_URL,
         schema: process.env.MEDUSA_PROMOTION_DB_SCHEMA,
+        debug: true,
       },
     },
   }
@@ -27,6 +28,7 @@ export function getInitModuleConfig() {
     databaseConfig: {
       clientUrl: DB_URL,
       schema: process.env.MEDUSA_PROMOTION_DB_SCHEMA,
+      debug: true,
     },
     joinerConfig: [],
   }

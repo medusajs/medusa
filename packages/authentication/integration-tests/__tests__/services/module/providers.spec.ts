@@ -1,10 +1,10 @@
-import { IAuthenticationModuleService } from "@medusajs/types"
 import { MedusaModule, Modules } from "@medusajs/modules-sdk"
-import { MikroOrmWrapper } from "../../../utils"
+import { IAuthenticationModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { initModules } from "medusa-test-utils"
 import { createAuthProviders } from "../../../__fixtures__/auth-provider"
+import { MikroOrmWrapper } from "../../../utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
-import { initModules } from "medusa-test-utils/dist"
 
 jest.setTimeout(30000)
 
