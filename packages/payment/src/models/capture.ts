@@ -8,7 +8,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import BigNumber from "bignumber.js"
 import Payment from "./payment"
 
 type OptionalCaptureProps = "created_at"
@@ -25,15 +24,6 @@ export default class Capture {
     serializer: Number,
   })
   amount: number
-
-  @Property({
-    columnType: "jsonb",
-    serializer: (val) => ({
-      ...val,
-      value: BigNumber(val.value),
-    }),
-  })
-  raw_amount: Record<string, unknown>
 
   @ManyToOne(() => Payment, {
     onDelete: "cascade",
@@ -55,24 +45,10 @@ export default class Capture {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "capt")
-
-    if (!this.raw_amount) {
-      this.raw_amount = {
-        value: BigNumber(this.amount),
-        precision: 2,
-      }
-    }
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "capt")
-
-    if (!this.raw_amount) {
-      this.raw_amount = {
-        value: BigNumber(this.amount),
-        precision: 2,
-      }
-    }
   }
 }

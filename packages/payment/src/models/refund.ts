@@ -8,7 +8,6 @@ import {
 } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
-import BigNumber from "bignumber.js"
 import Payment from "./payment"
 
 @Entity({ tableName: "refund" })
@@ -21,9 +20,6 @@ export default class Refund {
     serializer: Number,
   })
   amount: number
-
-  @Property({ columnType: "jsonb" })
-  raw_amount: Record<string, unknown>
 
   @ManyToOne(() => Payment, {
     onDelete: "cascade",
@@ -45,24 +41,10 @@ export default class Refund {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ref")
-
-    if (!this.raw_amount) {
-      this.raw_amount = {
-        value: BigNumber(this.amount),
-        precision: 2,
-      }
-    }
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ref")
-
-    if (!this.raw_amount) {
-      this.raw_amount = {
-        value: BigNumber(this.amount),
-        precision: 2,
-      }
-    }
   }
 }
