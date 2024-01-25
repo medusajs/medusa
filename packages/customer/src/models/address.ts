@@ -8,17 +8,31 @@ import {
   PrimaryKey,
   Property,
   ManyToOne,
+  Unique,
+  Cascade,
 } from "@mikro-orm/core"
 import Customer from "./customer"
 
 type OptionalAddressProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
 
 @Entity({ tableName: "customer_address" })
+// set a unique constraint so that only one address can be the default address
+@Unique({ properties: ["customer_id", "is_default_shipping"] })
+@Unique({ properties: ["customer_id", "is_default_billing"] })
 export default class Address {
   [OptionalProps]: OptionalAddressProps
 
   @PrimaryKey({ columnType: "text" })
   id!: string
+
+  @Property({ columnType: "text", nullable: true })
+  address_name: string
+
+  @Property({ columnType: "boolean", default: false })
+  is_default_shipping: boolean = false
+
+  @Property({ columnType: "boolean", default: false })
+  is_default_billing: boolean = false
 
   @Property({ columnType: "text" })
   customer_id: string
@@ -26,6 +40,7 @@ export default class Address {
   @ManyToOne(() => Customer, {
     fieldName: "customer_id",
     index: "IDX_customer_address_customer_id",
+    cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
   customer: Customer
 

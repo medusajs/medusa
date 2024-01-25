@@ -59,6 +59,51 @@ describe("Customer Module Service", () => {
       )
     })
 
+    it("should create address", async () => {
+      const customerData = {
+        company_name: "Acme Corp",
+        first_name: "John",
+        last_name: "Doe",
+        addresses: [
+          {
+            address_1: "Testvej 1",
+            address_2: "Testvej 2",
+            city: "Testby",
+            country_code: "DK",
+            province: "Test",
+            postal_code: "8000",
+            phone: "123456789",
+            metadata: { membership: "gold" },
+            is_default_shipping: true,
+          },
+        ],
+      }
+      const customer = await service.create(customerData)
+
+      expect(customer).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          company_name: "Acme Corp",
+          first_name: "John",
+          last_name: "Doe",
+          addresses: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              address_1: "Testvej 1",
+              address_2: "Testvej 2",
+              city: "Testby",
+              country_code: "DK",
+              province: "Test",
+              postal_code: "8000",
+              phone: "123456789",
+              metadata: expect.objectContaining({ membership: "gold" }),
+              is_default_shipping: true,
+            }),
+          ]),
+        })
+      )
+    })
+
     it("should create multiple customers", async () => {
       const customersData = [
         {
@@ -417,6 +462,34 @@ describe("Customer Module Service", () => {
 
       const remainingCustomers = await service.list({ last_name: "Doe" })
       expect(remainingCustomers.length).toBe(0)
+    })
+
+    it("should cascade address relationship when deleting customer", async () => {
+      // Creating a customer and an address
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      await service.addAddresses({
+        customer_id: customer.id,
+        first_name: "John",
+        last_name: "Doe",
+        postal_code: "10001",
+        country_code: "US",
+      })
+
+      // verify that the address was added
+      const customerWithAddress = await service.retrieve(customer.id, {
+        relations: ["addresses"],
+      })
+      expect(customerWithAddress.addresses?.length).toBe(1)
+
+      await service.delete(customer.id)
+
+      const res = await service.listAddresses({
+        customer_id: customer.id,
+      })
+      expect(res.length).toBe(0)
     })
 
     it("should cascade relationship when deleting customer", async () => {

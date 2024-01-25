@@ -10,8 +10,15 @@ import {
   FilterableCustomerProps,
   FilterableCustomerGroupProps,
   GroupCustomerPair,
+  FilterableCustomerAddressProps,
+  CustomerAddressDTO,
 } from "./common"
-import { CreateCustomerDTO, CreateCustomerGroupDTO } from "./mutations"
+import {
+  CreateCustomerAddressDTO,
+  CreateCustomerDTO,
+  CreateCustomerGroupDTO,
+  UpdateCustomerAddressDTO,
+} from "./mutations"
 
 export interface ICustomerModuleService extends IModuleService {
   retrieve(
@@ -109,6 +116,37 @@ export interface ICustomerModuleService extends IModuleService {
     groupCustomerPairs: GroupCustomerPair[],
     sharedContext?: Context
   ): Promise<void>
+
+  addAddresses(
+    addresses: CreateCustomerAddressDTO[],
+    sharedContext?: Context
+  ): Promise<CustomerAddressDTO[]>
+  addAddresses(
+    address: CreateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerAddressDTO>
+
+  updateAddress(
+    addressId: string,
+    data: UpdateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerAddressDTO>
+  updateAddress(
+    addressIds: string[],
+    data: UpdateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerAddressDTO[]>
+  updateAddress(
+    selector: FilterableCustomerAddressProps,
+    data: UpdateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerAddressDTO[]>
+
+  listAddresses(
+    filters?: FilterableCustomerAddressProps,
+    config?: FindConfig<CustomerAddressDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerAddressDTO[]>
 
   listCustomerGroupRelations(
     filters?: FilterableCustomerGroupCustomerProps,
