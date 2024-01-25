@@ -1,21 +1,31 @@
 import { ICustomerModuleService } from "@medusajs/types"
-import { initialize } from "../../../../src/initialize"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MikroOrmWrapper } from "../../../utils"
+import { Modules } from "@medusajs/modules-sdk"
+import { initModules } from "medusa-test-utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 
 jest.setTimeout(30000)
 
 describe("Customer Module Service", () => {
   let service: ICustomerModuleService
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.CUSTOMER]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_CUSTOMER_DB_SCHEMA,
-      },
-    })
   })
 
   afterEach(async () => {
