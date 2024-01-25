@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsOptional, ValidateNested } from "class-validator"
+import { IsOptional, IsString, ValidateNested } from "class-validator"
 import RegionService from "../../../../services/region"
 import {
   DateComparisonOperator,
@@ -13,6 +13,8 @@ import {
  * description: "Retrieve a list of Regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated."
  * x-authenticated: true
  * parameters:
+ *  - (query) q {string} Term used to search regions' name.
+ *  - (query) order {string} A field to sort-order the retrieved regions by.
  *  - in: query
  *    name: limit
  *    schema:
@@ -190,6 +192,20 @@ export class AdminGetRegionsParams extends extendedFindParamsMixin({
   limit: 50,
   offset: 0,
 }) {
+  /**
+   * Search parameter for regions.
+   */
+  @IsString()
+  @IsOptional()
+  q?: string
+
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
+  @IsString()
+  @IsOptional()
+  order?: string
+
   /**
    * Date filters to apply on the regions' `created_at` date.
    */

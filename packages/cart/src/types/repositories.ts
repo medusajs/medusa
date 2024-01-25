@@ -3,8 +3,10 @@ import {
   Cart,
   LineItem,
   LineItemAdjustment,
+  LineItemTaxLine,
   ShippingMethod,
   ShippingMethodAdjustment,
+  ShippingMethodTaxLine,
 } from "@models"
 import { CreateAddressDTO, UpdateAddressDTO } from "./address"
 import { CreateCartDTO, UpdateCartDTO } from "./cart"
@@ -14,6 +16,10 @@ import {
   UpdateLineItemAdjustmentDTO,
 } from "./line-item-adjustment"
 import {
+  CreateLineItemTaxLineDTO,
+  UpdateLineItemTaxLineDTO,
+} from "./line-item-tax-line"
+import {
   CreateShippingMethodDTO,
   UpdateShippingMethodDTO,
 } from "./shipping-method"
@@ -21,6 +27,10 @@ import {
   CreateShippingMethodAdjustmentDTO,
   UpdateShippingMethodAdjustmentDTO,
 } from "./shipping-method-adjustment"
+import {
+  CreateShippingMethodTaxLineDTO,
+  UpdateShippingMethodTaxLineDTO,
+} from "./shipping-method-tax-line"
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAddressRepository<TEntity extends Cart = Cart>
@@ -80,5 +90,25 @@ export interface IShippingMethodAdjustmentRepository<
     {
       create: CreateShippingMethodAdjustmentDTO
       update: UpdateShippingMethodAdjustmentDTO
+    }
+  > {}
+
+export interface IShippingMethodTaxLineRepository<
+  TEntity extends ShippingMethodTaxLine = ShippingMethodTaxLine
+> extends DAL.RepositoryService<
+    TEntity,
+    {
+      create: CreateShippingMethodTaxLineDTO
+      update: UpdateShippingMethodTaxLineDTO
+    }
+  > {}
+
+export interface ILineItemTaxLineRepository<
+  TEntity extends LineItemTaxLine = LineItemTaxLine
+> extends DAL.RepositoryService<
+    TEntity,
+    {
+      create: CreateLineItemTaxLineDTO
+      update: UpdateLineItemTaxLineDTO
     }
   > {}
