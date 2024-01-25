@@ -3,7 +3,7 @@ import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import { DB_URL } from "./database"
 
 export function getInitModuleConfig() {
-  const authenticationModuleOptions = {
+  const moduleOptions = {
     defaultAdapterOptions: {
       database: {
         clientUrl: DB_URL,
@@ -17,7 +17,7 @@ export function getInitModuleConfig() {
   const modulesConfig_ = {
     [Modules.CUSTOMER]: {
       definition: ModulesDefinition[Modules.CUSTOMER],
-      options: authenticationModuleOptions,
+      options: moduleOptions,
     },
   }
 
