@@ -6,16 +6,23 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   CustomerTypes,
+  SoftDeleteReturn,
+  RestoreReturn,
 } from "@medusajs/types"
 
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  mapObjectTo,
   isString,
   isObject,
 } from "@medusajs/utils"
-import { joinerConfig } from "../joiner-config"
+import {
+  entityNameToLinkableKeysMap,
+  LinkableKeys,
+  joinerConfig,
+} from "../joiner-config"
 import * as services from "../services"
 
 type InjectedDependencies = {
@@ -264,6 +271,23 @@ export default class CustomerModuleService implements ICustomerModuleService {
     return Array.isArray(dataOrArrayOfData) ? serialized : serialized[0]
   }
 
+  @InjectManager("baseRepository_")
+  async retrieveCustomerGroup(
+    groupId: string,
+    config: FindConfig<CustomerTypes.CustomerGroupDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const group = await this.customerGroupService_.retrieve(
+      groupId,
+      config,
+      sharedContext
+    )
+    return await this.baseRepository_.serialize<CustomerTypes.CustomerGroupDTO>(
+      group,
+      { populate: true }
+    )
+  }
+
   async updateCustomerGroup(
     groupId: string,
     data: Partial<CustomerTypes.CreateCustomerGroupDTO>,
@@ -331,6 +355,39 @@ export default class CustomerModuleService implements ICustomerModuleService {
     >(groups, { populate: true })
   }
 
+  deleteCustomerGroup(groupId: string, sharedContext?: Context): Promise<void>
+  deleteCustomerGroup(
+    groupIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  deleteCustomerGroup(
+    selector: CustomerTypes.FilterableCustomerGroupProps,
+    sharedContext?: Context
+  ): Promise<void>
+
+  @InjectTransactionManager("baseRepository_")
+  async deleteCustomerGroup(
+    groupIdOrSelector:
+      | string
+      | string[]
+      | CustomerTypes.FilterableCustomerGroupProps,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    let toDelete = Array.isArray(groupIdOrSelector)
+      ? groupIdOrSelector
+      : [groupIdOrSelector as string]
+    if (isObject(groupIdOrSelector)) {
+      const ids = await this.customerGroupService_.list(
+        groupIdOrSelector,
+        { select: ["id"] },
+        sharedContext
+      )
+      toDelete = ids.map(({ id }) => id)
+    }
+
+    return await this.customerGroupService_.delete(toDelete, sharedContext)
+  }
+
   async addCustomerToGroup(
     groupCustomerPair: CustomerTypes.GroupCustomerPair,
     sharedContext?: Context
@@ -383,6 +440,25 @@ export default class CustomerModuleService implements ICustomerModuleService {
   }
 
   @InjectManager("baseRepository_")
+  async listCustomerGroupRelations(
+    filters?: CustomerTypes.FilterableCustomerGroupCustomerProps,
+    config?: FindConfig<CustomerTypes.CustomerGroupCustomerDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const groupCustomers = await this.customerGroupCustomerService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      CustomerTypes.CustomerGroupCustomerDTO[]
+    >(groupCustomers, {
+      populate: true,
+    })
+  }
+
+  @InjectManager("baseRepository_")
   async listCustomerGroups(
     filters: CustomerTypes.FilterableCustomerGroupProps = {},
     config: FindConfig<CustomerTypes.CustomerGroupDTO> = {},
@@ -422,5 +498,91 @@ export default class CustomerModuleService implements ICustomerModuleService {
       ),
       count,
     ]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async softDeleteCustomerGroup<
+    TReturnableLinkableKeys extends string = string
+  >(
+    groupIds: string[],
+    config: SoftDeleteReturn<TReturnableLinkableKeys> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const [_, cascadedEntitiesMap] =
+      await this.customerGroupService_.softDelete(groupIds, sharedContext)
+    return config.returnLinkableKeys
+      ? mapObjectTo<Record<TReturnableLinkableKeys, string[]>>(
+          cascadedEntitiesMap,
+          entityNameToLinkableKeysMap,
+          {
+            pick: config.returnLinkableKeys,
+          }
+        )
+      : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async restoreCustomerGroup<TReturnableLinkableKeys extends string = string>(
+    groupIds: string[],
+    config: RestoreReturn<TReturnableLinkableKeys> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const [_, cascadedEntitiesMap] = await this.customerGroupService_.restore(
+      groupIds,
+      sharedContext
+    )
+    return config.returnLinkableKeys
+      ? mapObjectTo<Record<TReturnableLinkableKeys, string[]>>(
+          cascadedEntitiesMap,
+          entityNameToLinkableKeysMap,
+          {
+            pick: config.returnLinkableKeys,
+          }
+        )
+      : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async softDelete<TReturnableLinkableKeys extends string = string>(
+    customerIds: string[],
+    config: SoftDeleteReturn<TReturnableLinkableKeys> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const [_, cascadedEntitiesMap] = await this.customerService_.softDelete(
+      customerIds,
+      sharedContext
+    )
+
+    return config.returnLinkableKeys
+      ? mapObjectTo<Record<TReturnableLinkableKeys, string[]>>(
+          cascadedEntitiesMap,
+          entityNameToLinkableKeysMap,
+          {
+            pick: config.returnLinkableKeys,
+          }
+        )
+      : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async restore<TReturnableLinkableKeys extends string = string>(
+    customerIds: string[],
+    config: RestoreReturn<TReturnableLinkableKeys> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const [_, cascadedEntitiesMap] = await this.customerService_.restore(
+      customerIds,
+      sharedContext
+    )
+
+    return config.returnLinkableKeys
+      ? mapObjectTo<Record<TReturnableLinkableKeys, string[]>>(
+          cascadedEntitiesMap,
+          entityNameToLinkableKeysMap,
+          {
+            pick: config.returnLinkableKeys,
+          }
+        )
+      : void 0
   }
 }

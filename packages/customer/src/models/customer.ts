@@ -1,10 +1,11 @@
 import { DAL } from "@medusajs/types"
-import { generateEntityId } from "@medusajs/utils"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
+  Filter,
   Index,
   ManyToMany,
   ManyToOne,
@@ -23,9 +24,10 @@ type OptionalCustomerProps =
   | "addresses"
   | "default_shipping_address"
   | "default_billing_address"
-  | DAL.EntityDateColumns
+  | DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "customer" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Customer {
   [OptionalProps]?: OptionalCustomerProps
 
