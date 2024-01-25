@@ -226,7 +226,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_orders/getundefined
+        $ref: ../code_samples/tsx/admin_orders/get.tsx
     - lang: Shell
       label: cURL
       source:
