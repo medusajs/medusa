@@ -18,22 +18,22 @@ describe("Payment Module Service", () => {
   let service: IPaymentModuleService
 
   describe("PaymentCollection", () => {
-  let repositoryManager: SqlEntityManager
-  let shutdownFunc: () => Promise<void>
+    let repositoryManager: SqlEntityManager
+    let shutdownFunc: () => Promise<void>
 
-  beforeAll(async () => {
-    const initModulesConfig = getInitModuleConfig()
+    beforeAll(async () => {
+      const initModulesConfig = getInitModuleConfig()
 
-    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
 
-    service = medusaApp.modules[Modules.PAYMENT]
+      service = medusaApp.modules[Modules.PAYMENT]
 
-    shutdownFunc = shutdown
-  })
+      shutdownFunc = shutdown
+    })
 
-  afterAll(async () => {
-    await shutdownFunc()
-  })
+    afterAll(async () => {
+      await shutdownFunc()
+    })
 
     beforeEach(async () => {
       await MikroOrmWrapper.setupDatabase()
