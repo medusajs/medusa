@@ -262,9 +262,7 @@ export default class ProductModuleService<
 
     const updatedVariants = await this.baseRepository_.serialize<
       ProductTypes.ProductVariantDTO[]
-    >(productVariants, {
-      populate: true,
-    })
+    >(productVariants)
 
     return updatedVariants
   }
@@ -442,9 +440,7 @@ export default class ProductModuleService<
 
     return await this.baseRepository_.serialize<
       ProductTypes.ProductOptionDTO[]
-    >(productOptions, {
-      populate: true,
-    })
+    >(productOptions)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -459,9 +455,7 @@ export default class ProductModuleService<
 
     return await this.baseRepository_.serialize<
       ProductTypes.ProductOptionDTO[]
-    >(productOptions, {
-      populate: true,
-    })
+    >(productOptions)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -556,9 +550,7 @@ export default class ProductModuleService<
     const products = await this.create_(data, sharedContext)
     const createdProducts = await this.baseRepository_.serialize<
       ProductTypes.ProductDTO[]
-    >(products, {
-      populate: true,
-    })
+    >(products)
 
     await this.eventBusModuleService_?.emit<ProductEventData>(
       createdProducts.map(({ id }) => ({
@@ -579,9 +571,7 @@ export default class ProductModuleService<
 
     const updatedProducts = await this.baseRepository_.serialize<
       ProductTypes.ProductDTO[]
-    >(products, {
-      populate: true,
-    })
+    >(products)
 
     await this.eventBusModuleService_?.emit<ProductEventData>(
       updatedProducts.map(({ id }) => ({

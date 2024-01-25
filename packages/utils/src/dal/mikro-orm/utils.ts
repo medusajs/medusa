@@ -53,6 +53,10 @@ export const mikroOrmSerializer = async <TOutput extends object>(
 ): Promise<TOutput> => {
   options ??= {}
   const { serialize } = await import("@mikro-orm/core")
-  const result = serialize(data, options)
+  const result = serialize(data, {
+    forceObject: true,
+    populate: true,
+    ...options,
+  })
   return result as unknown as Promise<TOutput>
 }
