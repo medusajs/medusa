@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/workflow-engine-inmemory",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Medusa Workflow Orchestrator module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -45,10 +45,10 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.12.5",
-    "@medusajs/types": "^1.11.9",
-    "@medusajs/utils": "^1.11.2",
-    "@medusajs/workflows-sdk": "^0.1.0",
+    "@medusajs/modules-sdk": "^1.12.7",
+    "@medusajs/types": "^1.11.11",
+    "@medusajs/utils": "^1.11.4",
+    "@medusajs/workflows-sdk": "^0.1.2",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",
     "@mikro-orm/postgresql": "5.9.7",
