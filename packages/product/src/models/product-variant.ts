@@ -1,3 +1,4 @@
+import { DAL } from "@medusajs/types"
 import {
   DALUtils,
   generateEntityId,
@@ -11,6 +12,7 @@ import {
   Filter,
   Index,
   ManyToOne,
+  OnInit,
   OneToMany,
   OptionalProps,
   PrimaryKey,
@@ -19,7 +21,6 @@ import {
 } from "@mikro-orm/core"
 import { Product } from "@models"
 import ProductOptionValue from "./product-option-value"
-import { DAL } from "@medusajs/types"
 
 type OptionalFields =
   | "allow_backorder"
@@ -151,6 +152,11 @@ class ProductVariant {
     cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove" as any],
   })
   options = new Collection<ProductOptionValue>(this)
+
+  @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "variant")
+  }
 
   @BeforeCreate()
   onCreate() {

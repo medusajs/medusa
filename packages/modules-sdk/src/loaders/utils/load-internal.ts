@@ -19,7 +19,7 @@ export async function loadInternalModule(
 ): Promise<{ error?: Error } | void> {
   const registrationName = resolution.definition.registrationName
 
-  const { scope, resources } =
+  const { resources } =
     resolution.moduleDeclaration as InternalModuleDeclaration
 
   let loadedModule: ModuleExports

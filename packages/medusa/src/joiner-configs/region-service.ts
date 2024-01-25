@@ -6,10 +6,10 @@ export default {
   linkableKeys: { region_id: "Region" },
   alias: [
     {
-      name: "region",
-    },
-    {
-      name: "regions",
+      name: ["region", "regions"],
+      args: {
+        entity: "Region",
+      },
     },
   ],
 } as ModuleJoinerConfig

@@ -21,12 +21,10 @@ export default {
     `,
   alias: [
     {
-      name: "sales_channel",
-      args: { entity: "SalesChannel" },
-    },
-    {
-      name: "sales_channels",
-      args: { entity: "SalesChannel" },
+      name: ["sales_channel", "sales_channels"],
+      args: {
+        entity: "SalesChannel",
+      },
     },
   ],
 } as ModuleJoinerConfig

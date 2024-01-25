@@ -54,6 +54,11 @@ import {
   MedusaError,
   promiseAll,
 } from "@medusajs/utils"
+import { ProductEventData, ProductEvents } from "../types/services/product"
+import {
+  ProductCategoryEventData,
+  ProductCategoryEvents,
+} from "../types/services/product-category"
 import {
   CreateProductOptionValueDTO,
   UpdateProductOptionValueDTO,
@@ -63,11 +68,6 @@ import {
   joinerConfig,
   LinkableKeys,
 } from "./../joiner-config"
-import {
-  ProductCategoryEventData,
-  ProductCategoryEvents,
-} from "../types/services/product-category"
-import { ProductEventData, ProductEvents } from "../types/services/product"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -174,7 +174,9 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(product))
+    return await this.baseRepository_.serialize(product, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")
@@ -189,7 +191,12 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return [JSON.parse(JSON.stringify(products)), count]
+    return [
+      await this.baseRepository_.serialize(products, {
+        populate: true,
+      }),
+      count,
+    ]
   }
 
   @InjectManager("baseRepository_")
@@ -204,7 +211,9 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productVariant))
+    return await this.baseRepository_.serialize(productVariant, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")
@@ -219,7 +228,9 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(variants))
+    return await this.baseRepository_.serialize(variants, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")
@@ -234,7 +245,12 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return [JSON.parse(JSON.stringify(variants)), count]
+    return [
+      await this.baseRepository_.serialize(variants, {
+        populate: true,
+      }),
+      count,
+    ]
   }
 
   async createVariants(
@@ -452,7 +468,9 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productTag))
+    return await this.baseRepository_.serialize(productTag, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")
@@ -482,33 +500,35 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return [JSON.parse(JSON.stringify(tags)), count]
+    return await this.baseRepository_.serialize(tags, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager("baseRepository_")
   async createTags(
     data: ProductTypes.CreateProductTagDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<ProductTypes.ProductTagDTO[]> {
     const productTags = await this.productTagService_.create(
       data,
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productTags))
+    return await this.baseRepository_.serialize(productTags, { populate: true })
   }
 
   @InjectTransactionManager("baseRepository_")
   async updateTags(
     data: ProductTypes.UpdateProductTagDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<ProductTypes.ProductTagDTO[]> {
     const productTags = await this.productTagService_.update(
       data,
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productTags))
+    return await this.baseRepository_.serialize(productTags, { populate: true })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -531,7 +551,7 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productType))
+    return await this.baseRepository_.serialize(productType, { populate: true })
   }
 
   @InjectManager("baseRepository_")
@@ -546,7 +566,7 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(types))
+    return await this.baseRepository_.serialize(types, { populate: true })
   }
 
   @InjectManager("baseRepository_")
@@ -561,33 +581,40 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return [JSON.parse(JSON.stringify(types)), count]
+    return [
+      await this.baseRepository_.serialize(types, { populate: true }),
+      count,
+    ]
   }
 
   @InjectTransactionManager("baseRepository_")
   async createTypes(
     data: ProductTypes.CreateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<ProductTypes.ProductTypeDTO[]> {
     const productTypes = await this.productTypeService_.create(
       data,
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productTypes))
+    return await this.baseRepository_.serialize(productTypes, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager("baseRepository_")
   async updateTypes(
     data: ProductTypes.UpdateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<ProductTypes.ProductTypeDTO[]> {
     const productTypes = await this.productTypeService_.update(
       data,
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productTypes))
+    return await this.baseRepository_.serialize(productTypes, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -610,7 +637,9 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productOptions))
+    return await this.baseRepository_.serialize(productOptions, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")
@@ -625,7 +654,9 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productOptions))
+    return await this.baseRepository_.serialize(productOptions, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")
@@ -641,7 +672,10 @@ export default class ProductModuleService<
         sharedContext
       )
 
-    return [JSON.parse(JSON.stringify(productOptions)), count]
+    return [
+      await this.baseRepository_.serialize(productOptions, { populate: true }),
+      count,
+    ]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -698,7 +732,9 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productCollection))
+    return await this.baseRepository_.serialize(productCollection, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")
@@ -713,7 +749,7 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(collections))
+    return await this.baseRepository_.serialize(collections, { populate: true })
   }
 
   @InjectManager("baseRepository_")
@@ -722,13 +758,17 @@ export default class ProductModuleService<
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[ProductTypes.ProductCollectionDTO[], number]> {
-    const collections = await this.productCollectionService_.listAndCount(
-      filters,
-      config,
-      sharedContext
-    )
+    const [collections, count] =
+      await this.productCollectionService_.listAndCount(
+        filters,
+        config,
+        sharedContext
+      )
 
-    return JSON.parse(JSON.stringify(collections))
+    return [
+      await this.baseRepository_.serialize(collections, { populate: true }),
+      count,
+    ]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -758,7 +798,7 @@ export default class ProductModuleService<
   async updateCollections(
     data: ProductTypes.UpdateProductCollectionDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<ProductTypes.ProductCollectionDTO[]> {
     const productCollections = await this.productCollectionService_.update(
       data,
       sharedContext
@@ -774,7 +814,9 @@ export default class ProductModuleService<
       }))
     )
 
-    return JSON.parse(JSON.stringify(productCollections))
+    return await this.baseRepository_.serialize(productCollections, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -810,7 +852,9 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productCategory))
+    return await this.baseRepository_.serialize(productCategory, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")
@@ -825,14 +869,36 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(categories))
+    return await this.baseRepository_.serialize(categories, {
+      populate: true,
+    })
+  }
+
+  @InjectManager("baseRepository_")
+  async listAndCountCategories(
+    filters: ProductTypes.FilterableProductCategoryProps = {},
+    config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[ProductTypes.ProductCategoryDTO[], number]> {
+    const [categories, count] = await this.productCategoryService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [
+      await this.baseRepository_.serialize(categories, {
+        populate: true,
+      }),
+      count,
+    ]
   }
 
   @InjectTransactionManager("baseRepository_")
   async createCategory(
     data: ProductCategoryServiceTypes.CreateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<ProductTypes.ProductCategoryDTO> {
     const productCategory = await this.productCategoryService_.create(
       data,
       sharedContext
@@ -843,7 +909,9 @@ export default class ProductModuleService<
       { id: productCategory.id }
     )
 
-    return JSON.parse(JSON.stringify(productCategory))
+    return await this.baseRepository_.serialize(productCategory, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -851,7 +919,7 @@ export default class ProductModuleService<
     categoryId: string,
     data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<ProductTypes.ProductCategoryDTO> {
     const productCategory = await this.productCategoryService_.update(
       categoryId,
       data,
@@ -863,7 +931,9 @@ export default class ProductModuleService<
       { id: productCategory.id }
     )
 
-    return JSON.parse(JSON.stringify(productCategory))
+    return await this.baseRepository_.serialize(productCategory, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -877,21 +947,6 @@ export default class ProductModuleService<
       ProductCategoryEvents.CATEGORY_DELETED,
       { id: categoryId }
     )
-  }
-
-  @InjectManager("baseRepository_")
-  async listAndCountCategories(
-    filters: ProductTypes.FilterableProductCategoryProps = {},
-    config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[ProductTypes.ProductCategoryDTO[], number]> {
-    const categories = await this.productCategoryService_.listAndCount(
-      filters,
-      config,
-      sharedContext
-    )
-
-    return JSON.parse(JSON.stringify(categories))
   }
 
   @InjectManager("baseRepository_")
@@ -1319,7 +1374,7 @@ export default class ProductModuleService<
   >(
     productIds: string[],
     { returnLinkableKeys }: SoftDeleteReturn<TReturnableLinkableKeys> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const [products, cascadedEntitiesMap] = await this.softDelete_(
       productIds,
@@ -1369,7 +1424,7 @@ export default class ProductModuleService<
   >(
     productIds: string[],
     { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const [_, cascadedEntitiesMap] = await this.restore_(
       productIds,
