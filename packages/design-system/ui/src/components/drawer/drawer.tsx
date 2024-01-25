@@ -97,7 +97,7 @@ const DrawerHeader = React.forwardRef<
       <div className={clx("flex flex-col gap-y-1", className)}>{children}</div>
       <div className="flex items-center gap-x-2">
         <Kbd>esc</Kbd>
-        <DrawerPrimitives.Close asChild>
+        <DrawerPrimitives.Close asChild autoFocus={false}>
           <IconButton size="small" type="button" variant="transparent">
             <XMark />
           </IconButton>
