@@ -1,11 +1,13 @@
-import { BaseFilterable, DAL } from "@medusajs/types"
+import { BaseFilterable } from "@medusajs/types"
 import { AbstractService } from "@medusajs/utils"
+import { ICurrencyRepository } from "../repositories"
+import { Currency } from "@models"
 
-export interface ICurrencyService<TEntity extends object>
+export interface ICurrencyService<TEntity extends Currency = Currency>
   extends AbstractService<
     TEntity,
     {
-      currencyRepository: DAL.RepositoryService
+      currencyRepository: ICurrencyRepository<TEntity>
     },
     {
       create: CreateCurrencyDTO

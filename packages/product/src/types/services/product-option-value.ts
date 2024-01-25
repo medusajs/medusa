@@ -1,9 +1,13 @@
 import { AbstractService } from "@medusajs/utils"
+import { IProductOptionValueRepository } from "../repositories"
+import { ProductOptionValue } from "@models"
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IProductOptionValueService<TEntity extends object>
-  extends AbstractService<
+export interface IProductOptionValueService<
+  TEntity extends ProductOptionValue = ProductOptionValue
+> extends AbstractService<
     TEntity,
+    { productOptionValueRepository: IProductOptionValueRepository<TEntity> },
     {
       create: CreateProductOptionValueDTO
       update: UpdateProductOptionValueDTO
