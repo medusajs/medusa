@@ -12,12 +12,14 @@ import stream from "stream"
 class LocalService extends AbstractFileService implements IFileService {
   protected uploadDir_: string
   protected backendUrl_: string
+  protected storageType_: "flat" | "byDate"
 
   constructor({}, options) {
     super(arguments[0], options)
 
     this.uploadDir_ = options.upload_dir || "uploads"
     this.backendUrl_ = options.backend_url || "http://localhost:9000"
+    this.storageType_ = options.storageType || "flat"
   }
 
   async upload(file: Express.Multer.File): Promise<FileServiceUploadResult> {
@@ -33,15 +35,7 @@ class LocalService extends AbstractFileService implements IFileService {
     options = {}
   ): Promise<FileServiceUploadResult> {
     const parsedFilename = path.parse(file.originalname)
-
-    if (parsedFilename.dir) {
-      this.ensureDirExists(parsedFilename.dir)
-    }
-
-    const fileKey = path.join(
-      parsedFilename.dir,
-      `${Date.now()}-${parsedFilename.base}`
-    )
+    const fileKey = this.genFileKey(parsedFilename)
 
     return new Promise((resolve, reject) => {
       fs.copyFile(file.path, `${this.uploadDir_}/${fileKey}`, (err) => {
@@ -70,15 +64,7 @@ class LocalService extends AbstractFileService implements IFileService {
     const parsedFilename = path.parse(
       fileData.name + (fileData.ext ? `.${fileData.ext}` : "")
     )
-
-    if (parsedFilename.dir) {
-      this.ensureDirExists(parsedFilename.dir)
-    }
-
-    const fileKey = path.join(
-      parsedFilename.dir,
-      `${Date.now()}-${parsedFilename.base}`
-    )
+    const fileKey = this.genFileKey(parsedFilename)
 
     const fileUrl = `${this.backendUrl_}/${this.uploadDir_}/${fileKey}`
 
@@ -116,6 +102,26 @@ class LocalService extends AbstractFileService implements IFileService {
     if (!fs.existsSync(relativePath)) {
       fs.mkdirSync(relativePath, { recursive: true })
     }
+  }
+
+  genFileKey(parsedFilename: path.ParsedPath) {
+    const extraDir =
+      this.storageType_ === "byDate" ? this.getFileDirByDate() : ""
+
+    const dirPath = path.join(parsedFilename.dir, extraDir)
+    this.ensureDirExists(dirPath)
+    const fileKey = path.join(dirPath, `${Date.now()}-${parsedFilename.base}`)
+    return fileKey
+  }
+
+  getFileDirByDate() {
+    const now = new Date()
+    const year = now.getFullYear().toString()
+    const month = (now.getMonth() + 1).toString().padStart(2, "0")
+    const day = now.getDate().toString().padStart(2, "0")
+
+    const formattedDate = `${year}/${month}/${day}/`
+    return formattedDate
   }
 }
 
