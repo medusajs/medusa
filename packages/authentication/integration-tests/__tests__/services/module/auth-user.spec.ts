@@ -39,13 +39,13 @@ describe("AuthenticationModuleService - AuthUser", () => {
 
       expect(serialized).toEqual([
         expect.objectContaining({
-          provider: "manual",
+          provider: { provider: "manual" },
         }),
         expect.objectContaining({
-          provider: "manual",
+          provider: { provider: "manual" },
         }),
         expect.objectContaining({
-          provider: "store",
+          provider: { provider: "store" },
         }),
       ])
     })
@@ -88,13 +88,13 @@ describe("AuthenticationModuleService - AuthUser", () => {
       expect(count).toEqual(3)
       expect(serialized).toEqual([
         expect.objectContaining({
-          provider: "manual",
+          provider: { provider: "manual" },
         }),
         expect.objectContaining({
-          provider: "manual",
+          provider: { provider: "manual" },
         }),
         expect.objectContaining({
-          provider: "store",
+          provider: { provider: "store" },
         }),
       ])
     })
@@ -237,7 +237,7 @@ describe("AuthenticationModuleService - AuthUser", () => {
         {
           id: "test",
           provider_id: "manual",
-          entity_id: "test"
+          entity_id: "test",
         },
       ])
 

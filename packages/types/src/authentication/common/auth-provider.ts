@@ -29,7 +29,8 @@ export enum ProviderDomain {
 
 export interface FilterableAuthProviderProps
   extends BaseFilterable<FilterableAuthProviderProps> {
-  provider?: string[]
+  id?: string | string[]
+  provider_id?: string[]
   is_active?: boolean
   domain?: ProviderDomain[]
   name?: string[]
