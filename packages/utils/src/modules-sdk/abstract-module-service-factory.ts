@@ -81,18 +81,18 @@ export interface AbstractModuleServiceBase<TContainer, TMainModelDTO> {
   ): Promise<[TMainModelDTO[], number]>
 
   delete(
-    primaryKeyValues: string[] | object[],
+    primaryKeyValues: string | object | string[] | object[],
     sharedContext?: Context
   ): Promise<void>
 
   softDelete<TReturnableLinkableKeys extends string>(
-    primaryKeyValues: string[] | object[],
+    primaryKeyValues: string | object | string[] | object[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
   restore<TReturnableLinkableKeys extends string>(
-    primaryKeyValues: string[] | object[],
+    primaryKeyValues: string | object | string[] | object[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
@@ -146,7 +146,7 @@ export type AbstractModuleService<
   > &
     string}`]: {
     (
-      primaryKeyValues: string[] | object[],
+      primaryKeyValues: string | object | string[] | object[],
       sharedContext?: Context
     ): Promise<void>
   }
@@ -157,7 +157,7 @@ export type AbstractModuleService<
   > &
     string}`]: {
     <TReturnableLinkableKeys extends string>(
-      primaryKeyValues: string[] | object[],
+      primaryKeyValues: string | object | string[] | object[],
       config?: SoftDeleteReturn<TReturnableLinkableKeys>,
       sharedContext?: Context
     ): Promise<Record<string, string[]> | void>
@@ -169,7 +169,7 @@ export type AbstractModuleService<
   > &
     string}`]: {
     <TReturnableLinkableKeys extends string>(
-      productIds: string[] | object[],
+      primaryKeyValues: string | object | string[] | object[],
       config?: RestoreReturn<TReturnableLinkableKeys>,
       sharedContext?: Context
     ): Promise<Record<string, string[]> | void>
@@ -345,16 +345,19 @@ export function abstractModuleServiceFactory<
       case "delete":
         klassPrototype[methodName] = async function (
           this: AbstractModuleService_,
-          primaryKeyValues: string[] | object[],
+          primaryKeyValues: string | object | string[] | object[],
           sharedContext: Context = {}
         ): Promise<void> {
+          const primaryKeyValues_ = Array.isArray(primaryKeyValues)
+            ? primaryKeyValues
+            : [primaryKeyValues]
           await this.__container__[serviceRegistrationName].delete(
-            primaryKeyValues,
+            primaryKeyValues_,
             sharedContext
           )
 
           await this.eventBusModuleService_?.emit(
-            primaryKeyValues.map((primaryKeyValue) => ({
+            primaryKeyValues_.map((primaryKeyValue) => ({
               eventName: `${kebabCase(model.name)}.deleted`,
               data: isString(primaryKeyValue)
                 ? { id: primaryKeyValue }
@@ -374,13 +377,17 @@ export function abstractModuleServiceFactory<
       case "softDelete":
         klassPrototype[methodName] = async function <T extends { id: string }>(
           this: AbstractModuleService_,
-          primaryKeyValues: string[] | object[],
+          primaryKeyValues: string | object | string[] | object[],
           config: SoftDeleteReturn<string> = {},
           sharedContext: Context = {}
         ): Promise<Record<string, string[]> | void> {
+          const primaryKeyValues_ = Array.isArray(primaryKeyValues)
+            ? primaryKeyValues
+            : [primaryKeyValues]
+
           const [entities, cascadedEntitiesMap] = await this.__container__[
             serviceRegistrationName
-          ].softDelete(primaryKeyValues, sharedContext)
+          ].softDelete(primaryKeyValues_, sharedContext)
 
           const softDeletedEntities = await this.baseRepository_.serialize<T[]>(
             entities,
@@ -423,13 +430,17 @@ export function abstractModuleServiceFactory<
       case "restore":
         klassPrototype[methodName] = async function <T extends object>(
           this: AbstractModuleService_,
-          primaryKeyValues: string[] | object[],
+          primaryKeyValues: string | object | string[] | object[],
           config: RestoreReturn<string> = {},
           sharedContext: Context = {}
         ): Promise<Record<string, string[]> | void> {
+          const primaryKeyValues_ = Array.isArray(primaryKeyValues)
+            ? primaryKeyValues
+            : [primaryKeyValues]
+
           const [_, cascadedEntitiesMap] = await this.__container__[
             serviceRegistrationName
-          ].restore(primaryKeyValues, sharedContext)
+          ].restore(primaryKeyValues_, sharedContext)
 
           let mappedCascadedEntitiesMap
           if (config.returnLinkableKeys) {

@@ -716,7 +716,7 @@ describe("Promotion Service", () => {
           campaign: null,
           is_automatic: false,
           type: "standard",
-          application_method: expect.any(String),
+          application_method: expect.any(Object),
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
           deleted_at: null,
