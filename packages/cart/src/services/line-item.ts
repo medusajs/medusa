@@ -1,5 +1,7 @@
 import { DAL } from "@medusajs/types"
-import { ModulesSdkUtils } from "@medusajs/utils"
+import {
+  ModulesSdkUtils
+} from "@medusajs/utils"
 import { LineItem } from "@models"
 import { CreateLineItemDTO, UpdateLineItemDTO } from "@types"
 

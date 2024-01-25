@@ -1,9 +1,8 @@
 import { DAL } from "@medusajs/types"
-import { generateEntityId } from "@medusajs/utils"
+import { BigNumber, BigNumberRawValue, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
-  Check,
   Collection,
   Entity,
   ManyToOne,
@@ -13,7 +12,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import BigNumber from "bignumber.js"
 import Cart from "./cart"
 import LineItemAdjustment from "./line-item-adjustment"
 import LineItemTaxLine from "./line-item-tax-line"
@@ -107,12 +105,11 @@ export default class LineItem {
   @Property({ columnType: "numeric", nullable: true })
   compare_at_unit_price?: number
 
-  @Property({ columnType: "numeric", serializer: Number })
-  @Check({ expression: "unit_price >= 0" }) // TODO: Validate that numeric types work with the expression
-  unit_price: number
+  @Property({ columnType: "jsonb" })
+  unit_price: BigNumber | number
 
   @Property({ columnType: "jsonb" })
-  raw_unit_price: Record<string, unknown>
+  raw_unit_price: BigNumberRawValue
 
   @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
     cascade: [Cascade.REMOVE],
@@ -123,28 +120,6 @@ export default class LineItem {
     cascade: [Cascade.REMOVE],
   })
   adjustments = new Collection<LineItemAdjustment>(this)
-
-  /** COMPUTED PROPERTIES - START */
-
-  // compare_at_total?: number
-  // compare_at_subtotal?: number
-  // compare_at_tax_total?: number
-
-  // original_total: number
-  // original_subtotal: number
-  // original_tax_total: number
-
-  // item_total: number
-  // item_subtotal: number
-  // item_tax_total: number
-
-  // total: number
-  // subtotal: number
-  // tax_total: number
-  // discount_total: number
-  // discount_tax_total: number
-
-  /** COMPUTED PROPERTIES - END */
 
   @Property({
     onCreate: () => new Date(),
@@ -165,11 +140,10 @@ export default class LineItem {
   onCreate() {
     this.id = generateEntityId(this.id, "cali")
 
+    this.unit_price = new BigNumber(this.unit_price as number)
+
     if (!this.raw_unit_price) {
-      this.raw_unit_price = {
-        value: BigNumber(this.unit_price),
-        precision: 2,
-      }
+      this.raw_unit_price = this.unit_price.raw as BigNumberRawValue
     }
   }
 
@@ -178,10 +152,8 @@ export default class LineItem {
     this.id = generateEntityId(this.id, "cali")
 
     if (!this.raw_unit_price) {
-      this.raw_unit_price = {
-        value: BigNumber(this.unit_price),
-        precision: 2,
-      }
+      this.raw_unit_price = (this.unit_price as BigNumber)
+        .raw as BigNumberRawValue
     }
   }
 }

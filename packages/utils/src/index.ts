@@ -14,4 +14,5 @@ export * from "./promotion"
 export * from "./search"
 export * from "./shipping"
 export * from "./totals"
+export * from "./totals/bignum"
 

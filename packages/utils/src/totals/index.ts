@@ -1,8 +1,9 @@
+import { CartDTO, CartShippingMethodDTO } from "@medusajs/types"
 import { BigNumber } from "./bignum"
 
 type CalculateLineItemInput = {
   id: string
-  unit_price: number
+  unit_price: number | BigNumber
   raw_unit_price: Record<string, any>
   quantity: number
   tax_lines: any[]
@@ -12,29 +13,34 @@ type CalculateLineItemInput = {
 
 type LineItemTotals = {
   unit_price: number
-  raw_unit_price: BigNumber
-
-  subtotal: number
-  raw_subtotal: BigNumber
-
-  total: number
-  raw_total: BigNumber
-  original_total: number
-  raw_original_total: BigNumber
-
-  tax_total?: number
-  raw_tax_total?: BigNumber
-  original_tax_total?: number
-  raw_original_tax_total?: BigNumber
-
   quantity: number
-
+  subtotal: number
+  tax_total: number
+  total: number
+  original_total: number
+  original_tax_total: number
+  tax_lines: any[]
   discount_total: number
-  raw_discount_total?: string | BigNumber
-  tax_lines: any[] // TODO: Define type
+
+  raw_discount_total: number
+}
+
+type ShippingMethodTotals = {
+  price: number
+  tax_total: number
+  total: number
+  subtotal: number
+  original_total: number
+  original_tax_total: number
+  tax_lines: any[]
 }
 
 type GetLineItemTotalsContext = {
+  includeTax?: boolean
+  taxRate?: number | null
+}
+
+type GetShippingMethodTotalsContext = {
   includeTax?: boolean
   taxRate?: number | null
 }
@@ -43,12 +49,81 @@ type GetLineItemTotalsResult = {
   [lineItemId: string]: LineItemTotals
 }
 
-/**
- * Calculate and return the totals for an item
- * @param item
- * @param param1
- * @returns
- */
+type GetShippingMethodTotalsResult = {
+  [shippingMethodId: string]: ShippingMethodTotals
+}
+
+export function getShippingMethodTotals(
+  shippingMethods: CartShippingMethodDTO | CartShippingMethodDTO[],
+  context: GetShippingMethodTotalsContext
+  // {
+  //   includeTax,
+  //   discounts,
+  //   taxRate,
+  //   calculationContext,
+  // }: {
+  //   includeTax?: boolean
+  //   calculationContext: TaxCalculationContext
+  //   discounts?: Discount[]
+  //   taxRate?: number | null
+  // }
+): GetShippingMethodTotalsResult {
+  const { includeTax, taxRate } = context
+
+  shippingMethods = Array.isArray(shippingMethods)
+    ? shippingMethods
+    : [shippingMethods]
+
+  // TODO: Account for tax lines
+
+  const shippingMethodsTotals: GetShippingMethodTotalsResult = {}
+
+  for (const shippingMethod of shippingMethods) {
+    shippingMethodsTotals[shippingMethod.id] = getShippingMethodTotals_(
+      shippingMethod,
+      {
+        includeTax,
+        taxRate,
+      }
+    )
+  }
+
+  return shippingMethodsTotals
+}
+
+export function getShippingMethodTotals_(
+  shippingMethod: CartShippingMethodDTO,
+  context: GetShippingMethodTotalsContext
+): ShippingMethodTotals {
+  const totals: ShippingMethodTotals = {
+    price: shippingMethod.unit_price,
+    original_total: shippingMethod.unit_price,
+    total: shippingMethod.unit_price,
+    subtotal: shippingMethod.unit_price,
+    original_tax_total: 0,
+    tax_total: 0,
+    tax_lines: shippingMethod.tax_lines ?? [],
+  }
+
+  if (totals.tax_lines.length) {
+    // TODO: Account for tax lines
+    // - Calculate tax total
+    // - Calculate original tax total
+  }
+
+  // const hasFreeShipping = discounts?.some(
+  //   (d) => d.rule.type === DiscountRuleType.FREE_SHIPPING
+  // )
+
+  // if (hasFreeShipping) {
+  //   totals.total = 0
+  //   totals.subtotal = 0
+  //   totals.tax_total = 0
+  // }
+
+  return totals
+}
+
 export function getLineItemTotals(
   items: CalculateLineItemInput | CalculateLineItemInput[],
   context: GetLineItemTotalsContext
@@ -69,44 +144,28 @@ export function getLineItemTotals(
   return itemsTotals
 }
 
-// function getRawAdjustmentTotal(item: CalculateLineItemInput) {
-//   return BigNumber(0)
-// }
-
-// function getRawTaxTotal() {
-//   return BigNumber(0)
-// }
-
 function getLineItemTotals_(
   item: CalculateLineItemInput,
   context: GetLineItemTotalsContext
 ): LineItemTotals {
-  // const rawDiscountTotal = getRawAdjustmentTotal(item)
-  const rawUnitPrice = item.raw_unit_price as any
+  const unitPrice = item.unit_price as number
+  const subtotal = unitPrice * item.quantity
 
-  const discountTotal = 0
-
-  const rawSubtotal = rawUnitPrice.multipliedBy(item.quantity)
-  const rawTotal = rawSubtotal
+  const raw_discount_total = 0
+  const discount_total = Math.round(raw_discount_total)
 
   const totals: LineItemTotals = {
-    unit_price: item.unit_price,
-    raw_unit_price: rawUnitPrice,
-
-    subtotal: rawSubtotal.toNumber(),
-    raw_subtotal: rawSubtotal,
-
-    total: rawTotal.toNumber(),
-    original_total: rawSubtotal.toNumber(),
-    raw_original_total: rawSubtotal,
-    raw_total: rawTotal,
-
-    discount_total: discountTotal,
-    // raw_discount_total: rawDiscountTotal,
-
+    unit_price: unitPrice,
+    quantity: item.quantity,
+    subtotal,
+    discount_total,
+    total: subtotal - discount_total,
+    original_total: subtotal,
+    original_tax_total: 0,
+    tax_total: 0,
     tax_lines: item.tax_lines ?? [],
 
-    quantity: item.quantity,
+    raw_discount_total: raw_discount_total,
   }
 
   if (totals.tax_lines?.length > 0) {
@@ -121,11 +180,11 @@ function getLineItemTotals_(
 
     const rawTaxTotal = 0
 
-    // totals.tax_total = rawTaxTotal.toNumber()
-    // totals.raw_tax_total = rawTaxTotal
+    // totals.tax_total = 0
+    // totals.raw_tax_total = 0
 
-    // totals.original_tax_total = rawTaxTotal.toNumber() // TODO: Should exclude discounts
-    // totals.raw_original_tax_total = rawTaxTotal // TODO: Should exclude discounts
+    // totals.original_tax_total = 0 // TODO: Should exclude discounts
+    // totals.raw_original_tax_total = 0 // TODO: Should exclude discounts
 
     if (isTaxInclusive) {
       // TODO: Account for tax inclusivity
@@ -135,75 +194,87 @@ function getLineItemTotals_(
   return totals
 }
 
-// export function decorateTotals(
-//   cart: CartDTO & { raw_total: BigNumber },
-//   totalsConfig: { includeTaxes?: boolean } = {}
-// ): CartDTO {
-//   const includeTax = totalsConfig?.includeTaxes
-//   const cartItems = [...(cart.items ?? [])]
-//   const cartShippingMethods = [...(cart.shipping_methods ?? [])]
+export function decorateTotals(
+  cart: CartDTO,
+  totalsConfig: { includeTaxes?: boolean } = {}
+): CartDTO {
+  const includeTax = totalsConfig?.includeTaxes
+  const cartItems = [...(cart.items ?? [])]
+  const cartShippingMethods = [...(cart.shipping_methods ?? [])]
 
-//   if (includeTax) {
-//     // TODO: Account for tax lines
-//     // - get tax lines for line items
-//     // - get tax lines for shipping methods
-//   }
+  if (includeTax) {
+    // TODO: Account for tax lines
+    // - get tax lines for line items
+    // - get tax lines for shipping methods
+  }
 
-//   const itemsTotals = getLineItemTotals(
-//     cartItems as unknown as CalculateLineItemInput[],
-//     {
-//       includeTax,
-//     }
-//   )
+  const itemsTotals = getLineItemTotals(
+    cartItems as unknown as CalculateLineItemInput[],
+    {
+      includeTax,
+    }
+  )
 
-//   // TODO: Account for shipping methods
-//   // - get shipping method toals (similar to line items)
+  // TODO: Account for shipping methods
+  // - get shipping method toals (similar to line items)
 
-//   const rawSubtotal = BigNumber(0)
-//   const rawDiscountTotal = BigNumber(0)
-//   const rawItemTaxTotal = BigNumber(0)
-//   const rawShippingTotal = BigNumber(0)
-//   const rawShippingTaxTotal = BigNumber(0)
+  cart.subtotal = 0
+  cart.discount_total = 0
+  cart.item_tax_total = 0
+  cart.shipping_total = 0
+  cart.shipping_tax_total = 0
 
-//   cart.items = (cart.items || []).map((item) => {
-//     const itemWithTotals = Object.assign(item, itemsTotals[item.id] ?? {})
+  cart.items = (cart.items || []).map((item) => {
+    const itemWithTotals = Object.assign(item, itemsTotals[item.id] ?? {})
 
-//     rawSubtotal.plus(itemWithTotals.raw_subtotal)
-//     rawDiscountTotal.plus(itemWithTotals.raw_discount_total)
+    cart.subtotal! += itemWithTotals.subtotal ?? 0
+    cart.discount_total! += itemWithTotals.raw_discount_total ?? 0
+    cart.item_tax_total! += itemWithTotals.tax_total ?? 0
 
-//     if (itemWithTotals.raw_tax_total) {
-//       rawItemTaxTotal.plus(itemWithTotals.raw_tax_total)
-//     }
+    return itemWithTotals
+  })
 
-//     return itemWithTotals
-//   })
+  cart.shipping_methods = (cart.shipping_methods || []).map(
+    (shippingMethod) => {
+      const methodWithTotals = Object.assign(
+        shippingMethod,
+        // shippingTotals[shippingMethod.id] ?? {}
+        {}
+      )
 
-//   // TODO: Do the same exercise with shipping method totals
+      cart.shipping_total! += 0
+      cart.shipping_tax_total! += 0
 
-//   cart.subtotal = rawSubtotal.toNumber()
-//   cart.discount_total = rawDiscountTotal.toNumber()
-//   cart.item_tax_total = rawItemTaxTotal.toNumber()
-//   cart.shipping_total = 0
-//   cart.shipping_tax_total = 0
+      return methodWithTotals
+    }
+  )
 
-//   cart.tax_total = rawItemTaxTotal.plus(rawShippingTaxTotal).toNumber()
-//   // cart.raw_tax_total = rawItemTaxTotal.plus(rawShippingTaxTotal)
+  cart.tax_total = cart.item_tax_total + cart.shipping_tax_total
 
-//   cart.raw_discount_total = rawDiscountTotal
-//   cart.discount_total = rawDiscountTotal.toNumber()
+  cart.raw_discount_total = cart.discount_total
+  cart.discount_total = Math.round(cart.discount_total)
 
-//   // TODO: Calculate gift card totals
+  // const giftCardableAmount = this.newTotalsService_.getGiftCardableAmount({
+  //   gift_cards_taxable: cart.region?.gift_cards_taxable,
+  //   subtotal: cart.subtotal,
+  //   discount_total: cart.discount_total,
+  //   shipping_total: cart.shipping_total,
+  //   tax_total: cart.tax_total,
+  // })
 
-//   const rawGiftCardTotal = BigNumber(0)
-//   const rawGiftCardTaxTotal = BigNumber(0)
+  // const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
+  //   giftCardableAmount,
+  //   {
+  //     region: cart.region,
+  //     giftCards: cart.gift_cards,
+  //   }
+  // )
 
-//   const toSubtract = rawGiftCardTotal
-//     .plus(rawDiscountTotal)
-//     .plus(rawGiftCardTotal)
-//   const total = rawSubtotal.plus(rawShippingTotal).plus(rawItemTaxTotal)
+  // cart.gift_card_total = giftCardTotal.total || 0
+  // cart.gift_card_tax_total = giftCardTotal.tax_total || 0
 
-//   cart.total = total.minus(toSubtract).toNumber()
-//   cart.raw_total = total.minus(toSubtract)
+  cart.total = cart.subtotal + cart.shipping_total + cart.tax_total
+  // -> subtract (cart.gift_card_total + cart.discount_total + cart.gift_card_tax_total)
 
-//   return cart as CartDTO
-// }
+  return cart as CartDTO
+}
