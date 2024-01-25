@@ -1,4 +1,4 @@
-import { StringComparisonOperator } from "../common/common";
+import { StringComparisonOperator } from "../common/common"
 
 /**
  * @schema StockLocationAddressDTO
