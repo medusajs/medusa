@@ -8,6 +8,9 @@ import {
   createPaymentSessions,
   createPayments,
 } from "../../../__fixtures__"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { initModules } from "medusa-test-utils"
+import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
@@ -15,7 +18,22 @@ describe("Payment Module Service", () => {
   let service: IPaymentModuleService
 
   describe("PaymentCollection", () => {
-    let repositoryManager: SqlEntityManager
+  let repositoryManager: SqlEntityManager
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PAYMENT]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
     beforeEach(async () => {
       await MikroOrmWrapper.setupDatabase()
