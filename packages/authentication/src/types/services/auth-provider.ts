@@ -1,3 +1,20 @@
+import { AbstractService } from "@medusajs/utils"
+import { IAuthProviderRepository } from "../repositories"
+import { AuthProvider } from "@models"
+
+export interface IAuthProviderService<
+  TEntity extends AuthProvider = AuthProvider
+> extends AbstractService<
+    TEntity,
+    {
+      authProviderRepository: IAuthProviderRepository<TEntity>
+    },
+    {
+      create: CreateAuthProviderDTO
+      update: UpdateAuthProviderDTO
+    }
+  > {}
+
 export type AuthProviderDTO = {
   provider: string
   name: string

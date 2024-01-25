@@ -2,17 +2,18 @@ import {
   AbstractAuthenticationModuleProvider,
   MedusaError,
 } from "@medusajs/utils"
-import { AuthProviderService, AuthUserService } from "@services"
+import { AuthUserService } from "@services"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
 import { AuthProvider } from "@models"
 import { AuthenticationResponse } from "@medusajs/types"
 import { AuthorizationCode } from "simple-oauth2"
 import url from "url"
+import { IAuthProviderService } from "../types/services"
 
 type InjectedDependencies = {
   authUserService: AuthUserService
-  authProviderService: AuthProviderService
+  authProviderService: IAuthProviderService
 }
 
 type AuthenticationInput = {
@@ -33,13 +34,13 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
   public static PROVIDER = "google"
   public static DISPLAY_NAME = "Google Authentication"
 
-  protected readonly authUserSerivce_: AuthUserService
-  protected readonly authProviderService_: AuthProviderService
+  protected readonly authUserService_: AuthUserService
+  protected readonly authProviderService_: IAuthProviderService
 
   constructor({ authUserService, authProviderService }: InjectedDependencies) {
     super()
 
-    this.authUserSerivce_ = authUserService
+    this.authUserService_ = authUserService
     this.authProviderService_ = authProviderService
   }
 
@@ -148,13 +149,13 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     let authUser
 
     try {
-      authUser = await this.authUserSerivce_.retrieveByProviderAndEntityId(
+      authUser = await this.authUserService_.retrieveByProviderAndEntityId(
         entity_id,
         GoogleProvider.PROVIDER
       )
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
-        authUser = await this.authUserSerivce_.create([
+        authUser = await this.authUserService_.create([
           {
             entity_id,
             provider_id: GoogleProvider.PROVIDER,

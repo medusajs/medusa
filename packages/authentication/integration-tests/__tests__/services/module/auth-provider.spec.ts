@@ -43,9 +43,8 @@ describe("AuthenticationModuleService - AuthProvider", () => {
   describe("listAuthProviders", () => {
     it("should list AuthProviders", async () => {
       const authProviders = await service.listAuthProviders()
-      const serialized = JSON.parse(JSON.stringify(authProviders))
 
-      expect(serialized).toEqual(
+      expect(authProviders).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             provider: "manual",
@@ -80,9 +79,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
         is_active: true,
       })
 
-      const serialized = JSON.parse(JSON.stringify(authProviders))
-
-      expect(serialized).toEqual([
+      expect(authProviders).toEqual([
         expect.objectContaining({
           provider: "manual",
         }),
@@ -99,10 +96,9 @@ describe("AuthenticationModuleService - AuthProvider", () => {
   describe("listAndCountAuthProviders", () => {
     it("should list and count AuthProviders", async () => {
       const [authProviders, count] = await service.listAndCountAuthProviders()
-      const serialized = JSON.parse(JSON.stringify(authProviders))
 
       expect(count).toEqual(4)
-      expect(serialized).toEqual([
+      expect(authProviders).toEqual([
         expect.objectContaining({
           provider: "manual",
         }),
@@ -136,10 +132,8 @@ describe("AuthenticationModuleService - AuthProvider", () => {
         is_active: true,
       })
 
-      const serialized = JSON.parse(JSON.stringify(authProviders))
-
       expect(count).toEqual(3)
-      expect(serialized).toEqual([
+      expect(authProviders).toEqual([
         expect.objectContaining({
           provider: "manual",
         }),
@@ -171,9 +165,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
         select: ["provider"],
       })
 
-      const serialized = JSON.parse(JSON.stringify(authProvider))
-
-      expect(serialized).toEqual({
+      expect(authProvider).toEqual({
         provider,
       })
     })
@@ -209,7 +201,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
     const provider = "manual"
 
     it("should delete the authProviders given a provider successfully", async () => {
-      await service.deleteAuthProvider([provider])
+      await service.deleteAuthProviders([provider])
 
       const authProviders = await service.listAuthProviders({
         provider: [provider],

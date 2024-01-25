@@ -44,9 +44,8 @@ describe("AuthenticationModuleService - AuthUser", () => {
   describe("listAuthUsers", () => {
     it("should list authUsers", async () => {
       const authUsers = await service.listAuthUsers()
-      const serialized = JSON.parse(JSON.stringify(authUsers))
 
-      expect(serialized).toEqual([
+      expect(authUsers).toEqual([
         expect.objectContaining({
           provider: { provider: "manual" },
         }),
@@ -76,9 +75,7 @@ describe("AuthenticationModuleService - AuthUser", () => {
         provider_id: "manual",
       })
 
-      const serialized = JSON.parse(JSON.stringify(authUsers))
-
-      expect(serialized).toEqual([
+      expect(authUsers).toEqual([
         expect.objectContaining({
           id: "test-id",
         }),
@@ -92,10 +89,9 @@ describe("AuthenticationModuleService - AuthUser", () => {
   describe("listAndCountAuthUsers", () => {
     it("should list and count authUsers", async () => {
       const [authUsers, count] = await service.listAndCountAuthUsers()
-      const serialized = JSON.parse(JSON.stringify(authUsers))
 
       expect(count).toEqual(3)
-      expect(serialized).toEqual([
+      expect(authUsers).toEqual([
         expect.objectContaining({
           provider: { provider: "manual" },
         }),
@@ -180,9 +176,7 @@ describe("AuthenticationModuleService - AuthUser", () => {
         select: ["id"],
       })
 
-      const serialized = JSON.parse(JSON.stringify(authUser))
-
-      expect(serialized).toEqual({
+      expect(authUser).toEqual({
         id,
       })
     })
@@ -192,7 +186,7 @@ describe("AuthenticationModuleService - AuthUser", () => {
     const id = "test-id"
 
     it("should delete the authUsers given an id successfully", async () => {
-      await service.deleteAuthUser([id])
+      await service.deleteAuthUsers([id])
 
       const authUsers = await service.listAuthUsers({
         id: [id],

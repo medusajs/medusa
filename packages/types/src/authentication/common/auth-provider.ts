@@ -13,7 +13,7 @@ export type CreateAuthProviderDTO = {
   name: string
   domain?: ProviderDomain
   is_active?: boolean
-  config?: Record<string, unknown> 
+  config?: Record<string, unknown>
 }
 
 export type UpdateAuthProviderDTO = {
@@ -33,7 +33,7 @@ export enum ProviderDomain {
 export interface FilterableAuthProviderProps
   extends BaseFilterable<FilterableAuthProviderProps> {
   id?: string | string[]
-  provider_id?: string[]
+  provider?: string[]
   is_active?: boolean
   domain?: ProviderDomain[]
   name?: string[]

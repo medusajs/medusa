@@ -44,9 +44,8 @@ describe("AuthenticationModuleService - AuthProvider", () => {
   describe("listAuthProviders", () => {
     it("should list default AuthProviders registered by loaders", async () => {
       const authProviders = await service.listAuthProviders()
-      const serialized = JSON.parse(JSON.stringify(authProviders))
 
-      expect(serialized).toEqual(
+      expect(authProviders).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             provider: "usernamePassword",

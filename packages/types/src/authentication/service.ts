@@ -58,7 +58,7 @@ export interface IAuthenticationModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<AuthProviderDTO>
 
-  deleteAuthProvider(ids: string[], sharedContext?: Context): Promise<void>
+  deleteAuthProviders(ids: string[], sharedContext?: Context): Promise<void>
 
   retrieveAuthUser(
     id: string,
@@ -98,5 +98,5 @@ export interface IAuthenticationModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<AuthUserDTO>
 
-  deleteAuthUser(ids: string[], sharedContext?: Context): Promise<void>
+  deleteAuthUsers(ids: string[], sharedContext?: Context): Promise<void>
 }
