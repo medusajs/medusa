@@ -1,4 +1,4 @@
-import { IsEmail, IsObject, IsOptional, IsString } from "class-validator";
+import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 
 export class StorePostCustomersReq {
   @IsString()
