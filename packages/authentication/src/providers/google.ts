@@ -135,18 +135,28 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     }
   }
 
-  private validateConfig(config: AuthProviderScope) {
-    if (!config.clientID) {
+  private getConfigFromScope(config: AuthProviderScope): ProviderConfig {
+    const providerConfig: Partial<ProviderConfig> = {}
+
+    if (config.clientId) {
+      providerConfig.clientID = config.clientId
+    } else {
       throw new Error("Google clientID is required")
     }
 
-    if (!config.clientSecret) {
+    if (config.clientSecret) {
+      providerConfig.clientSecret = config.clientSecret
+    } else {
       throw new Error("Google clientSecret is required")
     }
 
-    if (!config.callbackURL) {
+    if (config.callbackURL) {
+      providerConfig.callbackURL = config.callbackUrl
+    } else {
       throw new Error("Google callbackUrl is required")
     }
+
+    return providerConfig as ProviderConfig
   }
 
   private originalURL(req: AuthenticationInput) {
@@ -165,9 +175,8 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
 
     const scopeConfig = this.scopes_[req.scope]
 
-    this.validateConfig(scopeConfig || {})
+    const config = this.getConfigFromScope(scopeConfig)
 
-    const config = scopeConfig as unknown as ProviderConfig
     const { callbackURL } = config
 
     const parsedCallbackUrl = !url.parse(callbackURL).protocol
