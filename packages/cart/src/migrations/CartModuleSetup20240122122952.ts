@@ -3,96 +3,179 @@ import { Migration } from "@mikro-orm/migrations"
 export class CartModuleSetup20240122122952 extends Migration {
   async up(): Promise<void> {
     this.addSql(
-      'create table "cart_address" ("id" text not null, "customer_id" text null, "company" text null, "first_name" text null, "last_name" text null, "address_1" text null, "address_2" text null, "city" text null, "country_code" text null, "province" text null, "postal_code" text null, "phone" text null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), constraint "cart_address_pkey" primary key ("id"));'
-    )
+      `
+      CREATE TABLE IF NOT EXISTS "cart" (
+        "id" TEXT NOT NULL,
+        "region_id" TEXT NULL,
+        "customer_id" TEXT NULL,
+        "sales_channel_id" TEXT NULL,
+        "email" TEXT NULL,
+        "currency_code" TEXT NOT NULL,
+        "shipping_address_id" TEXT NULL,
+        "billing_address_id" TEXT NULL,
+        "metadata" JSONB NULL,
+        "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        "deleted_at" TIMESTAMPTZ NULL,
+        CONSTRAINT "cart_pkey" PRIMARY KEY ("id")
+    );
+    
+    ALTER TABLE "cart" ADD COLUMN IF NOT EXISTS "currency_code" TEXT NOT NULL;
+    
+    ALTER TABLE "cart" DROP CONSTRAINT IF EXISTS "FK_242205c81c1152fab1b6e848470";
+    ALTER TABLE "cart" DROP CONSTRAINT IF EXISTS "FK_484c329f4783be4e18e5e2ff090";
+    ALTER TABLE "cart" DROP CONSTRAINT IF EXISTS "FK_6b9c66b5e36f7c827dfaa092f94";
+    ALTER TABLE "cart" DROP CONSTRAINT IF EXISTS "FK_9d1a161434c610aae7c3df2dc7e";
+    ALTER TABLE "cart" DROP CONSTRAINT IF EXISTS "FK_a2bd3c26f42e754b9249ba78fd6";
+    ALTER TABLE "cart" DROP CONSTRAINT IF EXISTS "FK_ced15a9a695d2b5db9dabce763d";
+    
+    CREATE INDEX IF NOT EXISTS "IDX_cart_customer_id" ON "cart" ("customer_id");
+    CREATE INDEX IF NOT EXISTS "IDX_cart_shipping_address_id" ON "cart" ("shipping_address_id");
+    CREATE INDEX IF NOT EXISTS "IDX_cart_billing_address_id" ON "cart" ("billing_address_id");
+    
+    CREATE TABLE IF NOT EXISTS "cart_address" (
+      "id" TEXT NOT NULL,
+      "customer_id" TEXT NULL,
+      "company" TEXT NULL,
+      "first_name" TEXT NULL,
+      "last_name" TEXT NULL,
+      "address_1" TEXT NULL,
+      "address_2" TEXT NULL,
+      "city" TEXT NULL,
+      "country_code" TEXT NULL,
+      "province" TEXT NULL,
+      "postal_code" TEXT NULL,
+      "phone" TEXT NULL,
+      "metadata" JSONB NULL,
+      "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      CONSTRAINT "cart_address_pkey" PRIMARY KEY ("id")
+    );
+    
+    CREATE TABLE IF NOT EXISTS "cart_line_item" (
+      "id" TEXT NOT NULL,
+      "cart_id" TEXT NOT NULL,
+      "title" TEXT NOT NULL,
+      "subtitle" TEXT NULL,
+      "thumbnail" TEXT NULL,
+      "quantity" INTEGER NOT NULL,
+      "variant_id" TEXT NULL,
+      "product_id" TEXT NULL,
+      "product_title" TEXT NULL,
+      "product_description" TEXT NULL,
+      "product_subtitle" TEXT NULL,
+      "product_type" TEXT NULL,
+      "product_collection" TEXT NULL,
+      "product_handle" TEXT NULL,
+      "variant_sku" TEXT NULL,
+      "variant_barcode" TEXT NULL,
+      "variant_title" TEXT NULL,
+      "variant_option_values" JSONB NULL,
+      "requires_shipping" BOOLEAN NOT NULL DEFAULT TRUE,
+      "is_discountable" BOOLEAN NOT NULL DEFAULT TRUE,
+      "is_tax_inclusive" BOOLEAN NOT NULL DEFAULT FALSE,
+      "compare_at_unit_price" NUMERIC NULL,
+      "unit_price" NUMERIC NOT NULL,
+      "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      CONSTRAINT "cart_line_item_pkey" PRIMARY KEY ("id"),
+      CONSTRAINT cart_line_item_unit_price_check CHECK (unit_price >= 0)
+    );
+    
+    ALTER TABLE "cart" ADD CONSTRAINT "cart_shipping_address_id_foreign" FOREIGN KEY ("shipping_address_id") REFERENCES "cart_address" ("id") ON UPDATE CASCADE ON DELETE SET NULL;
+    ALTER TABLE "cart" ADD CONSTRAINT "cart_billing_address_id_foreign" FOREIGN KEY ("billing_address_id") REFERENCES "cart_address" ("id") ON UPDATE CASCADE ON DELETE SET NULL;
+    
+    CREATE INDEX IF NOT EXISTS "IDX_line_item_cart_id" ON "cart_line_item" ("cart_id");
+    
+    CREATE INDEX IF NOT EXISTS "IDX_line_item_variant_id" ON "cart_line_item" ("variant_id");
+    
+    
+    CREATE TABLE IF NOT EXISTS "cart_line_item_adjustment" (
+        "id" TEXT NOT NULL,
+        "description" TEXT NULL,
+        "promotion_id" TEXT NULL,
+        "code" TEXT NULL,
+        "amount" NUMERIC NOT NULL,
+        "provider_id" TEXT NULL,
+        "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        "item_id" TEXT NULL,
+        CONSTRAINT "cart_line_item_adjustment_pkey" PRIMARY KEY ("id"),
+        CONSTRAINT cart_line_item_adjustment_check CHECK (amount >= 0)
+    );
+    
+    CREATE INDEX IF NOT EXISTS "IDX_adjustment_item_id" ON "cart_line_item_adjustment" ("item_id");
+    
+    CREATE TABLE IF NOT EXISTS "cart_line_item_tax_line" (
+      "id" TEXT NOT NULL,
+      "description" TEXT NULL,
+      "tax_rate_id" TEXT NULL,
+      "code" TEXT NOT NULL,
+      "rate" NUMERIC NOT NULL,
+      "provider_id" TEXT NULL,
+      "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "item_id" TEXT NULL,
+      CONSTRAINT "cart_line_item_tax_line_pkey" PRIMARY KEY ("id")
+  );
+    
+    CREATE INDEX IF NOT EXISTS "IDX_tax_line_item_id" ON "cart_line_item_tax_line" ("item_id");
+    
+    CREATE TABLE IF NOT EXISTS "cart_shipping_method" (
+      "id" TEXT NOT NULL,
+      "cart_id" TEXT NOT NULL,
+      "name" TEXT NOT NULL,
+      "description" JSONB NULL,
+      "amount" NUMERIC NOT NULL,
+      "is_tax_inclusive" BOOLEAN NOT NULL DEFAULT FALSE,
+      "shipping_option_id" TEXT NULL,
+      "data" JSONB NULL,
+      "metadata" JSONB NULL,
+      "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      CONSTRAINT "cart_shipping_method_pkey" PRIMARY KEY ("id"),
+      CONSTRAINT cart_shipping_method_check CHECK (amount >= 0)
+  );
+    
+    CREATE INDEX IF NOT EXISTS "IDX_shipping_method_cart_id" ON "cart_shipping_method" ("cart_id");
 
-    this.addSql(
-      'create table "cart" ("id" text not null, "region_id" text null, "customer_id" text null, "sales_channel_id" text null, "email" text null, "currency_code" text not null, "shipping_address_id" text null, "billing_address_id" text null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "cart_pkey" primary key ("id"));'
-    )
-    this.addSql(
-      'create index "IDX_cart_customer_id" on "cart" ("customer_id");'
-    )
-    this.addSql(
-      'create index "IDX_cart_shipping_address_id" on "cart" ("shipping_address_id");'
-    )
-    this.addSql(
-      'create index "IDX_cart_billing_address_id" on "cart" ("billing_address_id");'
-    )
+    CREATE TABLE IF NOT EXISTS "cart_shipping_method_adjustment" (
+      "id" TEXT NOT NULL,
+      "description" TEXT NULL,
+      "promotion_id" TEXT NULL,
+      "code" TEXT NULL,
+      "amount" NUMERIC NOT NULL,
+      "provider_id" TEXT NULL,
+      "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "shipping_method_id" TEXT NULL,
+      CONSTRAINT "cart_shipping_method_adjustment_pkey" PRIMARY KEY ("id")
+    );
 
-    this.addSql(
-      'create table "cart_line_item" ("id" text not null, "cart_id" text not null, "title" text not null, "subtitle" text null, "thumbnail" text null, "quantity" integer not null, "variant_id" text null, "product_id" text null, "product_title" text null, "product_description" text null, "product_subtitle" text null, "product_type" text null, "product_collection" text null, "product_handle" text null, "variant_sku" text null, "variant_barcode" text null, "variant_title" text null, "variant_option_values" jsonb null, "requires_shipping" boolean not null default true, "is_discountable" boolean not null default true, "is_tax_inclusive" boolean not null default false, "compare_at_unit_price" numeric null, "unit_price" numeric not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), constraint "cart_line_item_pkey" primary key ("id"), constraint cart_line_item_unit_price_check check (unit_price >= 0));'
-    )
-    this.addSql(
-      'create index "IDX_line_item_cart_id" on "cart_line_item" ("cart_id");'
-    )
-    this.addSql(
-      'create index "IDX_line_item_variant_id" on "cart_line_item" ("variant_id");'
-    )
+    CREATE INDEX IF NOT EXISTS "IDX_adjustment_shipping_method_id" ON "cart_shipping_method_adjustment" ("shipping_method_id");
 
-    this.addSql(
-      'create table "cart_line_item_adjustment" ("id" text not null, "description" text null, "promotion_id" text null, "code" text null, "amount" numeric not null, "provider_id" text null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "item_id" text null, constraint "cart_line_item_adjustment_pkey" primary key ("id"), constraint cart_line_item_adjustment_check check (amount >= 0));'
-    )
-    this.addSql(
-      'create index "IDX_adjustment_item_id" on "cart_line_item_adjustment" ("item_id");'
-    )
+    CREATE TABLE IF NOT EXISTS "cart_shipping_method_tax_line" (
+      "id" TEXT NOT NULL,
+      "description" TEXT NULL,
+      "tax_rate_id" TEXT NULL,
+      "code" TEXT NOT NULL,
+      "rate" NUMERIC NOT NULL,
+      "provider_id" TEXT NULL,
+      "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "shipping_method_id" TEXT NULL,
+      CONSTRAINT "cart_shipping_method_tax_line_pkey" PRIMARY KEY ("id")
+    );
 
-    this.addSql(
-      'create table "cart_line_item_tax_line" ("id" text not null, "description" text null, "tax_rate_id" text null, "code" text not null, "rate" numeric not null, "provider_id" text null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "item_id" text null, constraint "cart_line_item_tax_line_pkey" primary key ("id"));'
-    )
-    this.addSql(
-      'create index "IDX_tax_line_item_id" on "cart_line_item_tax_line" ("item_id");'
-    )
+    CREATE INDEX IF NOT EXISTS "IDX_tax_line_shipping_method_id" ON "cart_shipping_method_tax_line" ("shipping_method_id");
 
-    this.addSql(
-      'create table "cart_shipping_method" ("id" text not null, "cart_id" text not null, "name" text not null, "description" jsonb null, "amount" numeric not null, "is_tax_inclusive" boolean not null default false, "shipping_option_id" text null, "data" jsonb null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), constraint "cart_shipping_method_pkey" primary key ("id"), constraint cart_shipping_method_check check (amount >= 0));'
-    )
-    this.addSql(
-      'create index "IDX_shipping_method_cart_id" on "cart_shipping_method" ("cart_id");'
-    )
-
-    this.addSql(
-      'create table "cart_shipping_method_adjustment" ("id" text not null, "description" text null, "promotion_id" text null, "code" text null, "amount" numeric not null, "provider_id" text null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "shipping_method_id" text null, constraint "cart_shipping_method_adjustment_pkey" primary key ("id"));'
-    )
-    this.addSql(
-      'create index "IDX_adjustment_shipping_method_id" on "cart_shipping_method_adjustment" ("shipping_method_id");'
-    )
-
-    this.addSql(
-      'create table "cart_shipping_method_tax_line" ("id" text not null, "description" text null, "tax_rate_id" text null, "code" text not null, "rate" numeric not null, "provider_id" text null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "shipping_method_id" text null, constraint "cart_shipping_method_tax_line_pkey" primary key ("id"));'
-    )
-    this.addSql(
-      'create index "IDX_tax_line_shipping_method_id" on "cart_shipping_method_tax_line" ("shipping_method_id");'
-    )
-
-    this.addSql(
-      'alter table "cart" add constraint "cart_shipping_address_id_foreign" foreign key ("shipping_address_id") references "cart_address" ("id") on update cascade on delete set null;'
-    )
-    this.addSql(
-      'alter table "cart" add constraint "cart_billing_address_id_foreign" foreign key ("billing_address_id") references "cart_address" ("id") on update cascade on delete set null;'
-    )
-
-    this.addSql(
-      'alter table "cart_line_item" add constraint "cart_line_item_cart_id_foreign" foreign key ("cart_id") references "cart" ("id") on update cascade on delete cascade;'
-    )
-
-    this.addSql(
-      'alter table "cart_line_item_adjustment" add constraint "cart_line_item_adjustment_item_id_foreign" foreign key ("item_id") references "cart_line_item" ("id") on update cascade on delete cascade;'
-    )
-
-    this.addSql(
-      'alter table "cart_line_item_tax_line" add constraint "cart_line_item_tax_line_item_id_foreign" foreign key ("item_id") references "cart_line_item" ("id") on update cascade on delete cascade;'
-    )
-
-    this.addSql(
-      'alter table "cart_shipping_method" add constraint "cart_shipping_method_cart_id_foreign" foreign key ("cart_id") references "cart" ("id") on update cascade on delete cascade;'
-    )
-
-    this.addSql(
-      'alter table "cart_shipping_method_adjustment" add constraint "cart_shipping_method_adjustment_shipping_method_id_foreign" foreign key ("shipping_method_id") references "cart_shipping_method" ("id") on update cascade on delete cascade;'
-    )
-
-    this.addSql(
-      'alter table "cart_shipping_method_tax_line" add constraint "cart_shipping_method_tax_line_shipping_method_id_foreign" foreign key ("shipping_method_id") references "cart_shipping_method" ("id") on update cascade on delete cascade;'
+    ALTER TABLE "cart_line_item" ADD CONSTRAINT "cart_line_item_cart_id_foreign" FOREIGN KEY ("cart_id") REFERENCES "cart" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
+    ALTER TABLE "cart_line_item_adjustment" ADD CONSTRAINT "cart_line_item_adjustment_item_id_foreign" FOREIGN KEY ("item_id") REFERENCES "cart_line_item" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
+    ALTER TABLE "cart_line_item_tax_line" ADD CONSTRAINT "cart_line_item_tax_line_item_id_foreign" FOREIGN KEY ("item_id") REFERENCES "cart_line_item" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
+    ALTER TABLE "cart_shipping_method" ADD CONSTRAINT "cart_shipping_method_cart_id_foreign" FOREIGN KEY ("cart_id") REFERENCES "cart" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
+    ALTER TABLE "cart_shipping_method_adjustment" ADD CONSTRAINT "cart_shipping_method_adjustment_shipping_method_id_foreign" FOREIGN KEY ("shipping_method_id") REFERENCES "cart_shipping_method" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
+    ALTER TABLE "cart_shipping_method_tax_line" ADD CONSTRAINT "cart_shipping_method_tax_line_shipping_method_id_foreign" FOREIGN KEY ("shipping_method_id") REFERENCES "cart_shipping_method" ("id") ON UPDATE CASCADE ON DELETE CASCADE;          
+      `
     )
   }
 }
