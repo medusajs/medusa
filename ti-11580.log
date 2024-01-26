@@ -1,0 +1,78 @@
+[17:19:47.036] Got install request {"projectName":"/dev/null/inferredProject8*","fileNames":[],"compilerOptions":{"target":1,"jsx":1,"allowNonTsExtensions":true,"allowJs":true,"noEmitForJsFiles":true},"typeAcquisition":{"enable":true,"include":[],"exclude":[]},"unresolvedImports":[],"projectRootPath":"/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers","kind":"discover"}
+[17:19:47.038] Explicitly included types: []
+[17:19:47.039] Inferred typings from unresolved imports: []
+[17:19:47.039] Result: {"cachedTypingPaths":[],"newTypingNames":[],"filesToWatch":["/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/bower_components","/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/node_modules"]}
+[17:19:47.039] Finished typings discovery: {"cachedTypingPaths":[],"newTypingNames":[],"filesToWatch":["/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/bower_components","/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/node_modules"]}
+[17:19:47.040] Sending response:
+    {"kind":"action::watchTypingLocations","projectName":"/dev/null/inferredProject8*","files":["/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/bower_components","/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/node_modules"]}
+[17:19:47.040] Response has been sent.
+[17:19:47.040] Sending response:
+    {"projectName":"/dev/null/inferredProject8*","typeAcquisition":{"enable":true,"include":[],"exclude":[]},"compilerOptions":{"target":1,"jsx":1,"allowNonTsExtensions":true,"allowJs":true,"noEmitForJsFiles":true},"typings":[],"unresolvedImports":[],"kind":"action::set"}
+[17:19:47.040] Response has been sent.
+[17:19:47.040] No new typings were requested as a result of typings discovery
+[17:19:50.181] Got install request {"projectName":"/dev/null/inferredProject6*","fileNames":[],"compilerOptions":{"target":1,"jsx":1,"allowNonTsExtensions":true,"allowJs":true,"noEmitForJsFiles":true},"typeAcquisition":{"enable":true,"include":[],"exclude":[]},"unresolvedImports":[],"projectRootPath":"/Users/phko/projects/medusa/repos/medusa/packages/core-flows/src/handlers/customer","kind":"discover"}
+[17:19:50.181] Explicitly included types: []
+[17:19:50.181] Inferred typings from unresolved imports: []
+[17:19:50.181] Result: {"cachedTypingPaths":[],"newTypingNames":[],"filesToWatch":["/Users/phko/projects/medusa/repos/medusa/packages/core-flows/src/handlers/customer/bower_components","/Users/phko/projects/medusa/repos/medusa/packages/core-flows/src/handlers/customer/node_modules"]}
+[17:19:50.181] Finished typings discovery: {"cachedTypingPaths":[],"newTypingNames":[],"filesToWatch":["/Users/phko/projects/medusa/repos/medusa/packages/core-flows/src/handlers/customer/bower_components","/Users/phko/projects/medusa/repos/medusa/packages/core-flows/src/handlers/customer/node_modules"]}
+[17:19:50.182] Sending response:
+    {"kind":"action::watchTypingLocations","projectName":"/dev/null/inferredProject6*","files":["/Users/phko/projects/medusa/repos/medusa/packages/core-flows/src/handlers/customer/bower_components","/Users/phko/projects/medusa/repos/medusa/packages/core-flows/src/handlers/customer/node_modules"]}
+[17:19:50.182] Response has been sent.
+[17:19:50.182] Sending response:
+    {"projectName":"/dev/null/inferredProject6*","typeAcquisition":{"enable":true,"include":[],"exclude":[]},"compilerOptions":{"target":1,"jsx":1,"allowNonTsExtensions":true,"allowJs":true,"noEmitForJsFiles":true},"typings":[],"unresolvedImports":[],"kind":"action::set"}
+[17:19:50.182] Response has been sent.
+[17:19:50.182] No new typings were requested as a result of typings discovery
+[17:19:50.185] Got install request {"projectName":"/dev/null/inferredProject7*","fileNames":[],"compilerOptions":{"target":1,"jsx":1,"allowNonTsExtensions":true,"allowJs":true,"noEmitForJsFiles":true},"typeAcquisition":{"enable":true,"include":[],"exclude":[]},"unresolvedImports":[],"projectRootPath":"/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers","kind":"discover"}
+[17:19:50.185] Explicitly included types: []
+[17:19:50.186] Inferred typings from unresolved imports: []
+[17:19:50.186] Result: {"cachedTypingPaths":[],"newTypingNames":[],"filesToWatch":["/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/bower_components","/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/node_modules"]}
+[17:19:50.186] Finished typings discovery: {"cachedTypingPaths":[],"newTypingNames":[],"filesToWatch":["/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/bower_components","/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/node_modules"]}
+[17:19:50.186] Sending response:
+    {"kind":"action::watchTypingLocations","projectName":"/dev/null/inferredProject7*","files":["/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/bower_components","/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/node_modules"]}
+[17:19:50.186] Response has been sent.
+[17:19:50.186] Sending response:
+    {"projectName":"/dev/null/inferredProject7*","typeAcquisition":{"enable":true,"include":[],"exclude":[]},"compilerOptions":{"target":1,"jsx":1,"allowNonTsExtensions":true,"allowJs":true,"noEmitForJsFiles":true},"typings":[],"unresolvedImports":[],"kind":"action::set"}
+[17:19:50.186] Response has been sent.
+[17:19:50.186] No new typings were requested as a result of typings discovery
+[17:19:50.280] Got install request {"projectName":"/dev/null/inferredProject9*","fileNames":[],"compilerOptions":{"target":1,"jsx":1,"allowNonTsExtensions":true,"allowJs":true,"noEmitForJsFiles":true},"typeAcquisition":{"enable":true,"include":[],"exclude":[]},"unresolvedImports":[],"projectRootPath":"/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/me","kind":"discover"}
+[17:19:50.280] Explicitly included types: []
+[17:19:50.281] Inferred typings from unresolved imports: []
+[17:19:50.281] Result: {"cachedTypingPaths":[],"newTypingNames":[],"filesToWatch":["/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/me/bower_components","/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/me/node_modules"]}
+[17:19:50.281] Finished typings discovery: {"cachedTypingPaths":[],"newTypingNames":[],"filesToWatch":["/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/me/bower_components","/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/me/node_modules"]}
+[17:19:50.281] Sending response:
+    {"kind":"action::watchTypingLocations","projectName":"/dev/null/inferredProject9*","files":["/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/me/bower_components","/Users/phko/projects/medusa/repos/medusa/packages/medusa/src/api-v2/store/customers/me/node_modules"]}
+[17:19:50.282] Response has been sent.
+[17:19:50.282] Sending response:
+    {"projectName":"/dev/null/inferredProject9*","typeAcquisition":{"enable":true,"include":[],"exclude":[]},"compilerOptions":{"target":1,"jsx":1,"allowNonTsExtensions":true,"allowJs":true,"noEmitForJsFiles":true},"typings":[],"unresolvedImports":[],"kind":"action::set"}
+[17:19:50.282] Response has been sent.
+[17:19:50.282] No new typings were requested as a result of typings discovery
+[17:22:48.547] Closing file watchers for project '/Users/phko/projects/medusa/repos/medusa/packages/core-flows/tsconfig.json'
+[17:22:48.548] No watchers are registered for project '/Users/phko/projects/medusa/repos/medusa/packages/core-flows/tsconfig.json'
+[17:22:48.562] Closing file watchers for project '/dev/null/autoImportProviderProject4*'
+[17:22:48.562] No watchers are registered for project '/dev/null/autoImportProviderProject4*'
+[17:22:48.587] Closing file watchers for project '/dev/null/inferredProject6*'
+[17:22:48.587] Sending response:
+    {"kind":"action::watchTypingLocations","projectName":"/dev/null/inferredProject6*","files":[]}
+[17:22:48.587] Response has been sent.
+[17:22:48.587] Closing file watchers for project '/dev/null/inferredProject6*' - done.
+[17:22:48.589] Closing file watchers for project '/dev/null/autoImportProviderProject13*'
+[17:22:48.590] No watchers are registered for project '/dev/null/autoImportProviderProject13*'
+[17:22:48.602] Closing file watchers for project '/dev/null/inferredProject7*'
+[17:22:48.602] Sending response:
+    {"kind":"action::watchTypingLocations","projectName":"/dev/null/inferredProject7*","files":[]}
+[17:22:48.602] Response has been sent.
+[17:22:48.602] Closing file watchers for project '/dev/null/inferredProject7*' - done.
+[17:22:48.604] Closing file watchers for project '/dev/null/inferredProject8*'
+[17:22:48.604] Sending response:
+    {"kind":"action::watchTypingLocations","projectName":"/dev/null/inferredProject8*","files":[]}
+[17:22:48.604] Response has been sent.
+[17:22:48.604] Closing file watchers for project '/dev/null/inferredProject8*' - done.
+[17:22:48.606] Closing file watchers for project '/dev/null/inferredProject9*'
+[17:22:48.606] Sending response:
+    {"kind":"action::watchTypingLocations","projectName":"/dev/null/inferredProject9*","files":[]}
+[17:22:48.606] Response has been sent.
+[17:22:48.606] Closing file watchers for project '/dev/null/inferredProject9*' - done.
+[17:23:16.336] Closing file watchers for project '/Users/phko/projects/medusa/repos/medusa/packages/workflows-sdk/tsconfig.json'
+[17:23:16.339] No watchers are registered for project '/Users/phko/projects/medusa/repos/medusa/packages/workflows-sdk/tsconfig.json'
+[17:23:16.344] Closing file watchers for project '/dev/null/autoImportProviderProject14*'
+[17:23:16.344] No watchers are registered for project '/dev/null/autoImportProviderProject14*'
