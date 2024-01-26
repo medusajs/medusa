@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The detail to update of the shipping profile.
+ */
 export interface AdminPostShippingProfilesProfileReq {
   /**
    * The name of the Shipping Profile
@@ -17,11 +20,11 @@ export interface AdminPostShippingProfilesProfileReq {
    */
   type?: "default" | "gift_card" | "custom"
   /**
-   * An optional array of product ids to associate with the Shipping Profile
+   * product IDs to associate with the Shipping Profile
    */
   products?: any[]
   /**
-   * An optional array of shipping option ids to associate with the Shipping Profile
+   * Shipping option IDs to associate with the Shipping Profile
    */
   shipping_options?: any[]
 }

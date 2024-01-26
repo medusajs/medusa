@@ -18,17 +18,21 @@ import {
 import { FindParams } from "../../../../types/common"
 import { OrdersReturnItem } from "../../../../types/orders"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { Logger } from "@medusajs/types"
 
 /**
  * @oas [post] /admin/orders/{id}/return
  * operationId: "PostOrdersOrderReturns"
  * summary: "Request a Return"
- * description: "Requests a Return. If applicable a return label will be created and other plugins notified."
+ * description: "Request and create a Return for items in an order. If the return shipping method is specified, it will be automatically fulfilled."
  * x-authenticated: true
+ * externalDocs:
+ *   description: Return creation process
+ *   url: https://docs.medusajs.com/modules/orders/returns#returns-process
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
- *   - (query) expand {string} Comma separated list of relations to include in the result.
- *   - (query) fields {string} Comma separated list of fields to include in the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -44,7 +48,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.requestReturn(order_id, {
+ *       medusa.admin.orders.requestReturn(orderId, {
  *         items: [
  *           {
  *             item_id,
@@ -54,13 +58,51 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminRequestReturn } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const requestReturn = useAdminRequestReturn(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleRequestingReturn = (
+ *           itemId: string,
+ *           quantity: number
+ *         ) => {
+ *           requestReturn.mutate({
+ *             items: [
+ *               {
+ *                 item_id: itemId,
+ *                 quantity
+ *               }
+ *             ]
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.returns)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/return' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/orders/{id}/return' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "items": [
  *             {
@@ -72,6 +114,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:
@@ -101,6 +144,7 @@ export default async (req, res) => {
 
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
   const manager: EntityManager = req.scope.resolve("manager")
+  const logger: Logger = req.scope.resolve("logger")
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -280,7 +324,7 @@ export default async (req, res) => {
 
     res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
   } catch (err) {
-    console.log(err)
+    logger.log(err)
     throw err
   }
 }
@@ -298,11 +342,12 @@ type ReturnObj = {
 /**
  * @schema AdminPostOrdersOrderReturnsReq
  * type: object
+ * description: "The details of the requested return."
  * required:
  *   - items
  * properties:
  *   items:
- *     description: The Line Items that will be returned.
+ *     description: The line items that will be returned.
  *     type: array
  *     items:
  *       type: object
@@ -340,11 +385,15 @@ type ReturnObj = {
  *     type: boolean
  *     default: false
  *   no_notification:
- *     description: A flag to indicate if no notifications should be emitted related to the requested Return.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this Return.
  *     type: boolean
  *   refund:
  *     description: The amount to refund.
  *     type: integer
+ *   location_id:
+ *     description: "The ID of the location used for the return."
+ *     type: string
  */
 export class AdminPostOrdersOrderReturnsReq {
   @IsArray()
@@ -378,11 +427,20 @@ export class AdminPostOrdersOrderReturnsReq {
   location_id?: string
 }
 
+/**
+ * The return's shipping method details.
+ */
 class ReturnShipping {
+  /**
+   * The ID of the shipping option used for the return.
+   */
   @IsString()
   @IsOptional()
   option_id?: string
 
+  /**
+   * The shipping method's price.
+   */
   @IsInt()
   @IsOptional()
   price?: number

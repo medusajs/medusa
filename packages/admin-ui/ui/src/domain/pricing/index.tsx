@@ -1,45 +1,16 @@
-import { Route, Routes, useNavigate } from "react-router-dom"
-import PlusIcon from "../../components/fundamentals/icons/plus-icon"
-import BodyCard from "../../components/organisms/body-card"
-import TableViewHeader from "../../components/organisms/custom-table-header"
-import PricingDetails from "./details"
-import New from "./new"
-import PricingTable from "./pricing-table"
+import { Route, Routes } from "react-router-dom"
+import { PriceListEdit } from "./edit"
+import { PriceListNew } from "./new"
+import { PriceListOverview } from "./overview"
 
-const PricingIndex = () => {
-  const navigate = useNavigate()
-
-  const actionables = [
-    {
-      label: "Add price list",
-      onClick: () => navigate(`/a/pricing/new`),
-      icon: <PlusIcon size={20} />,
-    },
-  ]
-
-  return (
-    <div className="flex h-full flex-col">
-      <div className="flex w-full grow flex-col">
-        <BodyCard
-          actionables={actionables}
-          customHeader={<TableViewHeader views={["Price lists"]} />}
-          className="h-fit"
-        >
-          <PricingTable />
-        </BodyCard>
-      </div>
-    </div>
-  )
-}
-
-const Pricing = () => {
+const PriceListRoute = () => {
   return (
     <Routes>
-      <Route index element={<PricingIndex />} />
-      <Route path="/new" element={<New />} />
-      <Route path="/:id" element={<PricingDetails />} />
+      <Route index element={<PriceListOverview />} />
+      <Route path="new" element={<PriceListNew />} />
+      <Route path=":id" element={<PriceListEdit />} />
     </Routes>
   )
 }
 
-export default Pricing
+export default PriceListRoute

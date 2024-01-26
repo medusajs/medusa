@@ -5,15 +5,15 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetNotesParams {
   /**
-   * The number of notes to get
+   * Limit the number of notes returned.
    */
   limit?: number
   /**
-   * The offset at which to get notes
+   * The number of notes to skip when retrieving the notes.
    */
   offset?: number
   /**
-   * The ID which the notes belongs to
+   * Filter by resource ID
    */
   resource_id?: string
 }

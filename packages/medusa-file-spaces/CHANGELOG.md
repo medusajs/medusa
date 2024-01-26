@@ -1,5 +1,32 @@
 # Change Log
 
+## 1.4.0
+
+### Minor Changes
+
+- [`e91bd9e1c`](https://github.com/medusajs/medusa/commit/e91bd9e1c1746ff2fe915d169077bf9bf2710dcf) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor-bumping file plugins
+
+## 1.3.8
+
+### Patch Changes
+
+- [#4771](https://github.com/medusajs/medusa/pull/4771) [`edf9ed4e5`](https://github.com/medusajs/medusa/commit/edf9ed4e593063622aa39cdbebef4810bf2a5fb1) Thanks [@fPolic](https://github.com/fPolic)! - fix(medusa-interfaces, medusa-file-\*): add `ìsPrivate` flag to the streaming methods, fix minio default bucket
+
+## 1.3.7
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
+## 1.3.6
+
+### Patch Changes
+
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0
+  - medusa-interfaces@1.3.7
+  - medusa-test-utils@1.1.40
+
 ## 1.3.6-rc.0
 
 ### Patch Changes

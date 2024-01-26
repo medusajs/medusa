@@ -1,22 +1,6 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
-import {
-  FulfillmentStatus,
-  LineItem,
-  Order,
-  PaymentStatus,
-  Return,
-  ReturnItem,
-  ReturnStatus,
-} from "../models"
-import { ReturnRepository } from "../repositories/return"
-import { ReturnItemRepository } from "../repositories/return-item"
-import { FindConfig, Selector } from "../types/common"
-import { OrdersReturnItem } from "../types/orders"
 import { CreateReturnInput, UpdateReturnInput } from "../types/return"
-import { buildQuery, setMetadata } from "../utils"
-
+import { DeepPartial, EntityManager } from "typeorm"
+import { FindConfig, Selector } from "../types/common"
 import {
   FulfillmentProviderService,
   LineItemService,
@@ -27,6 +11,24 @@ import {
   TaxProviderService,
   TotalsService,
 } from "."
+import {
+  FulfillmentStatus,
+  LineItem,
+  Order,
+  PaymentStatus,
+  Return,
+  ReturnItem,
+  ReturnStatus,
+} from "../models"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { buildQuery, calculatePriceTaxAmount, setMetadata } from "../utils"
+
+import { OrdersReturnItem } from "../types/orders"
+import { ReturnItemRepository } from "../repositories/return-item"
+import { ReturnRepository } from "../repositories/return"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -40,6 +42,7 @@ type InjectedDependencies = {
   fulfillmentProviderService: FulfillmentProviderService
   orderService: OrderService
   productVariantInventoryService: ProductVariantInventoryService
+  featureFlagRouter: FlagRouter
 }
 
 type Transformer = (
@@ -60,6 +63,7 @@ class ReturnService extends TransactionBaseService {
   protected readonly orderService_: OrderService
   // eslint-disable-next-line
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     totalsService,
@@ -72,6 +76,7 @@ class ReturnService extends TransactionBaseService {
     fulfillmentProviderService,
     orderService,
     productVariantInventoryService,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -86,6 +91,7 @@ class ReturnService extends TransactionBaseService {
     this.returnReasonService_ = returnReasonService
     this.orderService_ = orderService
     this.productVariantInventoryService_ = productVariantInventoryService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -123,7 +129,7 @@ class ReturnService extends TransactionBaseService {
       }
     }
 
-    const toReturn = await Promise.all(
+    const toReturn = await promiseAll(
       items.map(async (data) => {
         const item = merged.find((i) => i.id === data.item_id)
         return transformer(item, data.quantity, data)
@@ -146,11 +152,28 @@ class ReturnService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Return[]> {
+    const [returns] = await this.listAndCount(selector, config)
+    return returns
+  }
+
+  /**
+   * @param selector - the query object for find
+   * @param config - the config object for find
+   * @return the result of the find operation
+   */
+  async listAndCount(
+    selector: Selector<Return>,
+    config: FindConfig<Return> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<[Return[], number]> {
     const returnRepo = this.activeManager_.withRepository(
       this.returnRepository_
     )
     const query = buildQuery(selector, config)
-    return returnRepo.find(query)
+    return returnRepo.findAndCount(query)
   }
 
   /**
@@ -469,11 +492,33 @@ class ReturnService extends TransactionBaseService {
           .withTransaction(manager)
           .createShippingTaxLines(shippingMethod, calculationContext)
 
+        const includesTax =
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          ) && shippingMethod.includes_tax
+
+        const taxRate = taxLines.reduce((acc, curr) => {
+          return acc + curr.rate / 100
+        }, 0)
+
+        const taxAmountIncludedInPrice = !includesTax
+          ? 0
+          : Math.round(
+              calculatePriceTaxAmount({
+                price: shippingMethod.price,
+                taxRate,
+                includesTax,
+              })
+            )
+
+        const shippingPriceWithoutTax =
+          shippingMethod.price - taxAmountIncludedInPrice
+
         const shippingTotal =
-          shippingMethod.price +
+          shippingPriceWithoutTax +
           taxLines.reduce(
             (acc, tl) =>
-              acc + Math.round(shippingMethod.price * (tl.rate / 100)),
+              acc + Math.round(shippingPriceWithoutTax * (tl.rate / 100)),
             0
           )
 
@@ -513,7 +558,9 @@ class ReturnService extends TransactionBaseService {
         {
           id: returnOrder.items.map(({ item_id }) => item_id),
         },
-        { relations: ["tax_lines"] }
+        {
+          relations: ["tax_lines", "variant.product.profiles"],
+        }
       )
 
       returnData.items = returnOrder.items.map((item) => {
@@ -547,8 +594,8 @@ class ReturnService extends TransactionBaseService {
    * Registers a previously requested return as received. This will create a
    * refund to the customer. If the returned items don't match the requested
    * items the return status will be updated to requires_action. This behaviour
-   * is useful in sitautions where a custom refund amount is requested, but the
-   * retuned items are not matching the requested items. Setting the
+   * is useful in situations where a custom refund amount is requested, but the
+   * returned items are not matching the requested items. Setting the
    * allowMismatch argument to true, will process the return, ignoring any
    * mismatches.
    * @param returnId - the orderId to return to
@@ -596,6 +643,7 @@ class ReturnService extends TransactionBaseService {
             "discounts.rule",
             "refunds",
             "shipping_methods",
+            "shipping_methods.shipping_option",
             "region",
             "swaps",
             "swaps.additional_items",

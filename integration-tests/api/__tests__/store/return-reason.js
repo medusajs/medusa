@@ -2,9 +2,9 @@ const path = require("path")
 
 const { ReturnReason } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
 jest.setTimeout(30000)
 

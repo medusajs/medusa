@@ -1,4 +1,3 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   Brackets,
   EntityManager,
@@ -8,25 +7,8 @@ import {
   FindOptionsWhere,
   ILike,
   In,
-  IsNull,
   SelectQueryBuilder,
 } from "typeorm"
-import {
-  IPriceSelectionStrategy,
-  PriceSelectionContext,
-  TransactionBaseService,
-} from "../interfaces"
-import {
-  MoneyAmount,
-  Product,
-  ProductOptionValue,
-  ProductVariant,
-} from "../models"
-import {
-  FindWithRelationsOptions,
-  ProductVariantRepository,
-} from "../repositories/product-variant"
-import { FindConfig, WithRequiredProperty } from "../types/common"
 import {
   CreateProductVariantInput,
   FilterableProductVariantProps,
@@ -38,22 +20,39 @@ import {
   UpdateVariantPricesData,
   UpdateVariantRegionPriceData,
 } from "../types/product-variant"
+import { FindConfig, WithRequiredProperty } from "../types/common"
+import {
+  FindWithRelationsOptions,
+  ProductVariantRepository,
+} from "../repositories/product-variant"
+import {
+  IPriceSelectionStrategy,
+  PriceSelectionContext,
+  TransactionBaseService,
+} from "../interfaces"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  MoneyAmount,
+  Product,
+  ProductOptionValue,
+  ProductVariant,
+} from "../models"
 import {
   buildQuery,
-  buildRelations,
   hasChanges,
   isObject,
   isString,
   setMetadata,
 } from "../utils"
 
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { CartRepository } from "../repositories/cart"
-import { MoneyAmountRepository } from "../repositories/money-amount"
-import { ProductRepository } from "../repositories/product"
-import { ProductOptionValueRepository } from "../repositories/product-option-value"
 import EventBusService from "./event-bus"
+import { MoneyAmountRepository } from "../repositories/money-amount"
+import { ProductOptionValueRepository } from "../repositories/product-option-value"
+import { ProductRepository } from "../repositories/product"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import RegionService from "./region"
+import { buildRelations, promiseAll } from "@medusajs/utils"
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {
@@ -162,20 +161,26 @@ class ProductVariantService extends TransactionBaseService {
    * Creates an unpublished product variant. Will validate against parent product
    * to ensure that the variant can in fact be created.
    * @param productOrProductId - the product the variant will be added to
-   * @param variant - the variant to create
+   * @param variants
    * @return resolves to the creation result.
    */
-  async create(
+  async create<
+    TVariants extends CreateProductVariantInput | CreateProductVariantInput[],
+    TOutput = TVariants extends CreateProductVariantInput[]
+      ? CreateProductVariantInput[]
+      : CreateProductVariantInput
+  >(
     productOrProductId: string | Product,
-    variant: CreateProductVariantInput
-  ): Promise<ProductVariant> {
+    variants: CreateProductVariantInput | CreateProductVariantInput[]
+  ): Promise<TOutput> {
+    const isVariantsArray = Array.isArray(variants)
+    const variants_ = isVariantsArray ? variants : [variants]
+
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const productRepo = manager.withRepository(this.productRepository_)
       const variantRepo = manager.withRepository(this.productVariantRepository_)
 
-      const { prices, ...rest } = variant
-
-      let product = productOrProductId
+      let product = productOrProductId as Product
 
       if (isString(product)) {
         product = (await productRepo.findOne({
@@ -195,69 +200,60 @@ class ProductVariantService extends TransactionBaseService {
         )
       }
 
-      if (product.options.length !== variant.options.length) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Product options length does not match variant options length. Product has ${product.options.length} and variant has ${variant.options.length}.`
-        )
-      }
+      this.validateVariantsToCreate_(product, variants_)
 
-      product.options.forEach((option) => {
-        if (!variant.options.find((vo) => option.id === vo.option_id)) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Variant options do not contain value for ${option.title}`
-          )
-        }
-      })
+      let computedRank = product.variants.length
+      const variantPricesToUpdate: {
+        id: string
+        prices: ProductVariantPrice[]
+      }[] = []
 
-      const variantExists = product.variants.find((v) => {
-        return v.options.every((option) => {
-          const variantOption = variant.options.find(
-            (o) => option.option_id === o.option_id
-          )
+      const results = await promiseAll(
+        variants_.map(async (variant) => {
+          const { prices, ...rest } = variant
 
-          return option.value === variantOption?.value
+          if (!rest.variant_rank) {
+            rest.variant_rank = computedRank
+          }
+          ++computedRank
+
+          const toCreate = {
+            ...rest,
+            product_id: product.id,
+          }
+
+          const productVariant = variantRepo.create(toCreate)
+
+          const result = await variantRepo.save(productVariant)
+
+          if (prices?.length) {
+            variantPricesToUpdate.push({ id: result.id, prices })
+          }
+
+          return result
         })
-      })
+      )
 
-      if (variantExists) {
-        throw new MedusaError(
-          MedusaError.Types.DUPLICATE_ERROR,
-          `Variant with title ${variantExists.title} with provided options already exists`
+      if (variantPricesToUpdate.length) {
+        await this.updateVariantPrices(
+          variantPricesToUpdate.map((v) => ({
+            variantId: v.id,
+            prices: v.prices,
+          }))
         )
       }
 
-      if (!rest.variant_rank) {
-        rest.variant_rank = product.variants.length
-      }
-
-      const toCreate = {
-        ...rest,
-        product_id: product.id,
-      }
-
-      const productVariant = variantRepo.create(toCreate)
-
-      const result = await variantRepo.save(productVariant)
-
-      if (prices) {
-        await this.updateVariantPrices([
-          {
-            variantId: result.id,
-            prices,
-          },
-        ])
-      }
-
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(ProductVariantService.Events.CREATED, {
+      const eventsToEmit = results.map((result) => ({
+        eventName: ProductVariantService.Events.CREATED,
+        data: {
           id: result.id,
           product_id: result.product_id,
-        })
+        },
+      }))
 
-      return result
+      await this.eventBus_.withTransaction(manager).emit(eventsToEmit)
+
+      return (isVariantsArray ? results : results[0]) as unknown as TOutput
     })
   }
 
@@ -358,7 +354,7 @@ class ProductVariantService extends TransactionBaseService {
       }
 
       const results: [ProductVariant, UpdateProductVariantInput, boolean][] =
-        await Promise.all(
+        await promiseAll(
           variantData.map(async ({ variant, updateData }) => {
             const { prices, options, ...rest } = updateData
 
@@ -401,6 +397,7 @@ class ProductVariantService extends TransactionBaseService {
                 { id },
                 { id, ...toUpdate }
               )
+
               result = variantRepo.create({
                 ...variant,
                 ...rawResult.generatedMaps[0],
@@ -536,7 +533,7 @@ class ProductVariantService extends TransactionBaseService {
         promises.push(this.upsertCurrencyPrices(dataCurrencyPrices))
       }
 
-      await Promise.all(promises)
+      await promiseAll(promises)
     })
   }
 
@@ -547,16 +544,16 @@ class ProductVariantService extends TransactionBaseService {
       const moneyAmountRepo = manager.withRepository(
         this.moneyAmountRepository_
       )
+      const productVariantRepo = this.activeManager_.withRepository(
+        this.productVariantRepository_
+      )
 
       const where = data.map((data_) => ({
         variant_id: data_.variantId,
         region_id: data_.price.region_id,
-        price_list_id: IsNull(),
       }))
 
-      const moneyAmounts = await moneyAmountRepo.find({
-        where,
-      })
+      const moneyAmounts = await moneyAmountRepo.findRegionMoneyAmounts(where)
 
       const moneyAmountsMapToVariantId = new Map()
       moneyAmounts.map((d) => {
@@ -585,12 +582,11 @@ class ProductVariantService extends TransactionBaseService {
             })
           }
         } else {
-          dataToCreate.push(
-            moneyAmountRepo.create({
-              ...price,
-              variant_id: variantId,
-            }) as QueryDeepPartialEntity<MoneyAmount>
-          )
+          const ma = moneyAmountRepo.create({
+            ...price,
+          }) as QueryDeepPartialEntity<MoneyAmount>
+          ma.variant = { id: variantId }
+          dataToCreate.push(ma)
         }
       })
 
@@ -615,7 +611,7 @@ class ProductVariantService extends TransactionBaseService {
         )
       }
 
-      await Promise.all(promises)
+      await promiseAll(promises)
     })
   }
 
@@ -629,17 +625,16 @@ class ProductVariantService extends TransactionBaseService {
       const moneyAmountRepo = manager.withRepository(
         this.moneyAmountRepository_
       )
+      const productVariantRepo = this.activeManager_.withRepository(
+        this.productVariantRepository_
+      )
 
       const where = data.map((data_) => ({
         variant_id: data_.variantId,
         currency_code: data_.price.currency_code,
-        region_id: IsNull(),
-        price_list_id: IsNull(),
       }))
 
-      const moneyAmounts = await moneyAmountRepo.find({
-        where,
-      })
+      const moneyAmounts = await moneyAmountRepo.findCurrencyMoneyAmounts(where)
 
       const moneyAmountsMapToVariantId = new Map()
       moneyAmounts.map((d) => {
@@ -668,13 +663,12 @@ class ProductVariantService extends TransactionBaseService {
             })
           }
         } else {
-          dataToCreate.push(
-            moneyAmountRepo.create({
-              ...price,
-              variant_id: variantId,
-              currency_code: price.currency_code.toLowerCase(),
-            }) as QueryDeepPartialEntity<MoneyAmount>
-          )
+          const ma = moneyAmountRepo.create({
+            ...price,
+            currency_code: price.currency_code.toLowerCase(),
+          }) as QueryDeepPartialEntity<MoneyAmount>
+          ma.variant = { id: variantId }
+          dataToCreate.push(ma)
         }
       })
 
@@ -699,7 +693,7 @@ class ProductVariantService extends TransactionBaseService {
         )
       }
 
-      await Promise.all(promises)
+      await promiseAll(promises)
     })
   }
 
@@ -722,15 +716,14 @@ class ProductVariantService extends TransactionBaseService {
 
       const prices = await this.priceSelectionStrategy_
         .withTransaction(manager)
-        .calculateVariantPrice(variantId, {
+        .calculateVariantPrice([{ variantId, quantity: context.quantity }], {
           region_id: context.regionId,
           currency_code: region.currency_code,
-          quantity: context.quantity,
           customer_id: context.customer_id,
           include_discount_prices: !!context.include_discount_prices,
         })
 
-      return prices.calculatedPrice
+      return prices.get(variantId)!.calculatedPrice
     })
   }
 
@@ -750,24 +743,34 @@ class ProductVariantService extends TransactionBaseService {
         this.moneyAmountRepository_
       )
 
-      let moneyAmount = await moneyAmountRepo.findOne({
-        where: {
-          variant_id: variantId,
-          region_id: price.region_id,
-          price_list_id: IsNull(),
-        },
-      })
+      let [moneyAmount] = await moneyAmountRepo.getPricesForVariantInRegion(
+        variantId,
+        price.region_id
+      )
+
+      const created = !moneyAmount
 
       if (!moneyAmount) {
         moneyAmount = moneyAmountRepo.create({
           ...price,
-          variant_id: variantId,
+          variant: { id: variantId },
         })
       } else {
         moneyAmount.amount = price.amount
       }
 
-      return await moneyAmountRepo.save(moneyAmount)
+      const createdAmount = await moneyAmountRepo.save(moneyAmount)
+
+      if (created) {
+        await moneyAmountRepo.createProductVariantMoneyAmounts([
+          {
+            variant_id: variantId,
+            money_amount_id: createdAmount.id,
+          },
+        ])
+      }
+
+      return createdAmount
     })
   }
 
@@ -1103,6 +1106,46 @@ class ProductVariantService extends TransactionBaseService {
     }
 
     return qb
+  }
+
+  protected validateVariantsToCreate_(
+    product: Product,
+    variants: CreateProductVariantInput[]
+  ): void {
+    for (const variant of variants) {
+      if (product.options.length !== variant.options.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Product options length does not match variant options length. Product has ${product.options.length} and variant has ${variant.options.length}.`
+        )
+      }
+
+      product.options.forEach((option) => {
+        if (!variant.options.find((vo) => option.id === vo.option_id)) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Variant options do not contain value for ${option.title}`
+          )
+        }
+      })
+
+      const variantExists = product.variants.find((v) => {
+        return v.options.every((option) => {
+          const variantOption = variant.options.find(
+            (o) => option.option_id === o.option_id
+          )
+
+          return option.value === variantOption?.value
+        })
+      })
+
+      if (variantExists) {
+        throw new MedusaError(
+          MedusaError.Types.DUPLICATE_ERROR,
+          `Variant with title ${variantExists.title} with provided options already exists`
+        )
+      }
+    }
   }
 }
 

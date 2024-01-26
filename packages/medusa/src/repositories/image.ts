@@ -11,7 +11,6 @@ export const ImageRepository = dataSource.getRepository(Image).extend({
       .into(Image)
       .values(data)
 
-    // TODO: remove if statement once this issue is resolved https://github.com/typeorm/typeorm/issues/9850
     if (!queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
       const rawImages = await queryBuilder.execute()
       return rawImages.generatedMaps.map((d) => this.create(d)) as Image[]

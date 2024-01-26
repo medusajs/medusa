@@ -10,12 +10,12 @@ import { isDefined } from "medusa-core-utils"
  * @oas [get] /admin/gift-cards
  * operationId: "GetGiftCards"
  * summary: "List Gift Cards"
- * description: "Retrieves a list of Gift Cards."
+ * description: "Retrieve a list of Gift Cards. The gift cards can be filtered by fields such as `q`. The gift cards can also paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) offset=0 {number} The number of items to skip before the results.
- *   - (query) limit=50 {number} Limit the number of items returned.
- *   - (query) q {string} a search term to search by code or display ID
+ *   - (query) offset=0 {number} The number of gift cards to skip when retrieving the gift cards.
+ *   - (query) limit=50 {number} Limit the number of gift cards returned.
+ *   - (query) q {string} a term to search gift cards' code or display ID
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetGiftCardsParams
@@ -29,15 +29,44 @@ import { isDefined } from "medusa-core-utils"
  *       medusa.admin.giftCards.list()
  *       .then(({ gift_cards, limit, offset, count }) => {
  *         console.log(gift_cards.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { GiftCard } from "@medusajs/medusa"
+ *       import { useAdminGiftCards } from "medusa-react"
+ *
+ *       const CustomGiftCards = () => {
+ *         const { gift_cards, isLoading } = useAdminGiftCards()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {gift_cards && !gift_cards.length && (
+ *               <span>No custom gift cards...</span>
+ *             )}
+ *             {gift_cards && gift_cards.length > 0 && (
+ *               <ul>
+ *                 {gift_cards.map((giftCard: GiftCard) => (
+ *                   <li key={giftCard.id}>{giftCard.code}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default CustomGiftCards
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/gift-cards' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/gift-cards' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Gift Cards
  * responses:
@@ -78,17 +107,31 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved gift cards.
+ */
 export class AdminGetGiftCardsParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   limit = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * Search term to search gift cards by their code and display ID.
+   */
   @IsOptional()
   @IsString()
   q?: string

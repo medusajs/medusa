@@ -162,15 +162,20 @@ export interface NotificationEvent extends TimelineEvent {
 export const useBuildTimeline = (orderId: string) => {
   const { orderRelations } = useOrdersExpandParam()
 
-  const { order, refetch } = useAdminOrder(orderId, {
+  const {
+    order,
+    refetch,
+    isLoading: isOrderLoading,
+  } = useAdminOrder(orderId, {
     expand: orderRelations,
   })
 
-  const { order_edits: edits } = useAdminOrderEdits({ order_id: orderId })
+  const { order_edits: edits, isLoading: isOrderEditsLoading } =
+    useAdminOrderEdits({ order_id: orderId })
 
   const { isFeatureEnabled } = useFeatureFlag()
 
-  const { notes } = useAdminNotes({
+  const { notes, isLoading: isNotesLoading } = useAdminNotes({
     resource_id: orderId,
     limit: 100,
     offset: 0,
@@ -182,6 +187,10 @@ export const useBuildTimeline = (orderId: string) => {
 
   const events: TimelineEvent[] | undefined = useMemo(() => {
     if (!order) {
+      return undefined
+    }
+
+    if (isOrderLoading || isNotesLoading || isOrderEditsLoading) {
       return undefined
     }
 
@@ -323,7 +332,9 @@ export const useBuildTimeline = (orderId: string) => {
         id: event.id,
         time: event.created_at,
         type: "fulfilled",
-        items: event.items.map((item) => getFulfilmentItem(allItems, item)),
+        items: event.items.map((item) =>
+          getFulfilmentItem(allItems, edits, item)
+        ),
         noNotification: event.no_notification,
         orderId: order.id,
         locationName: getLocationNameById(event.location_id),
@@ -334,7 +345,9 @@ export const useBuildTimeline = (orderId: string) => {
           id: event.id,
           time: event.shipped_at,
           type: "shipped",
-          items: event.items.map((item) => getFulfilmentItem(allItems, item)),
+          items: event.items.map((item) =>
+            getFulfilmentItem(allItems, edits, item)
+          ),
           noNotification: event.no_notification,
           orderId: order.id,
           locationName: getLocationNameById(event.location_id),
@@ -346,8 +359,8 @@ export const useBuildTimeline = (orderId: string) => {
       events.push({
         id: event.id,
         items: event.items
-          .map((i) => getReturnItems(allItems, i))
-          // After order edit is confirmed, line item that was returned can be deleted
+          .map((i) => getReturnItems(allItems, edits, i))
+          // Can be undefined while `edits` is loading
           .filter((i) => !!i),
         status: event.status,
         currentStatus: event.status,
@@ -364,8 +377,8 @@ export const useBuildTimeline = (orderId: string) => {
         events.push({
           id: event.id,
           items: event.items
-            .map((i) => getReturnItems(allItems, i))
-            // After order edit is confirmed, line item that was returned can be deleted
+            .map((i) => getReturnItems(allItems, edits, i))
+            // Can be undefined while `edits` is loading
             .filter((i) => !!i),
           status: "requested",
           time: event.created_at,
@@ -391,7 +404,7 @@ export const useBuildTimeline = (orderId: string) => {
         type: "exchange",
         newItems: event.additional_items.map((i) => getSwapItem(i)),
         returnItems: event.return_order.items.map((i) =>
-          getReturnItems(allItems, i)
+          getReturnItems(allItems, edits, i)
         ),
         exchangeCartId:
           event.payment_status !== "captured" ? event.cart_id : undefined,
@@ -537,9 +550,21 @@ export const useBuildTimeline = (orderId: string) => {
     events[events.length - 1].first = true
 
     return events
-  }, [order, edits, notes, notifications, isFeatureEnabled])
+  }, [
+    order,
+    edits,
+    notes,
+    notifications,
+    isFeatureEnabled,
+    isOrderLoading,
+    isNotesLoading,
+    isOrderEditsLoading,
+  ])
 
-  return { events, refetch }
+  return {
+    events,
+    refetch,
+  }
 }
 
 function getLineItem(allItems, itemId) {
@@ -557,8 +582,32 @@ function getLineItem(allItems, itemId) {
   }
 }
 
-function getReturnItems(allItems, item) {
-  const line = allItems.find((li) => li.id === item.item_id)
+function findOriginalItemId(edits, originalId) {
+  let currentId = originalId
+
+  edits = edits
+    .filter((e) => !!e.confirmed_at) // only confirmed OEs are cloning line items
+    .sort((a, b) => new Date(a.confirmed_at) - new Date(b.confirmed_at))
+
+  for (const edit of edits) {
+    const clonedItem = edit.items.find((e) => e.original_item_id === currentId)
+    if (clonedItem) {
+      currentId = clonedItem.id
+    } else {
+      break
+    }
+  }
+
+  return currentId
+}
+
+function getReturnItems(allItems, edits, item) {
+  let id = item.item_id
+  if (edits) {
+    id = findOriginalItemId(edits, id)
+  }
+
+  const line = allItems.find((li) => li.id === id)
 
   if (!line) {
     return
@@ -606,8 +655,13 @@ function getWasRefundClaim(claimId, order) {
   return claim.type === "refund"
 }
 
-function getFulfilmentItem(allItems, item) {
-  const line = allItems.find((line) => line.id === item.item_id)
+function getFulfilmentItem(allItems, edits, item) {
+  let id = item.item_id
+  if (edits) {
+    id = findOriginalItemId(edits, id)
+  }
+
+  const line = allItems.find((line) => line.id === id)
 
   if (!line) {
     return

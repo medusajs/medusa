@@ -1,0 +1,16 @@
+type: object
+description: The customers to add to the customer group.
+required:
+  - customer_ids
+properties:
+  customer_ids:
+    description: The ids of the customers to add
+    type: array
+    items:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          description: ID of the customer
+          type: string

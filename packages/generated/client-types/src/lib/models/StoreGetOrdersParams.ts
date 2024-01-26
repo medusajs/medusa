@@ -5,23 +5,23 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StoreGetOrdersParams {
   /**
-   * The display id given to the Order.
+   * Filter by ID.
    */
   display_id: number
   /**
-   * (Comma separated) Which fields should be included in the result.
+   * Comma-separated fields that should be expanded in the returned order.
    */
   fields?: string
   /**
-   * (Comma separated) Which fields should be expanded in the result.
+   * Comma-separated relations that should be expanded in the returned order.
    */
   expand?: string
   /**
-   * The email associated with this order.
+   * Filter by email.
    */
   email: string
   /**
-   * The shipping address associated with this order.
+   * Filter by the shipping address's postal code.
    */
   shipping_address?: {
     /**

@@ -6,7 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { Cart } from "./Cart"
 
 /**
- * Payment Sessions are created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, who is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for capture/refunds/etc.
+ * A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections.
  */
 export interface PaymentSession {
   /**
@@ -14,15 +14,15 @@ export interface PaymentSession {
    */
   id: string
   /**
-   * The id of the Cart that the Payment Session is created for.
+   * The ID of the cart that the payment session was created for.
    */
   cart_id: string | null
   /**
-   * A cart object. Available if the relation `cart` is expanded.
+   * The details of the cart that the payment session was created for.
    */
   cart?: Cart | null
   /**
-   * The id of the Payment Provider that is responsible for the Payment Session
+   * The ID of the Payment Provider that is responsible for the Payment Session
    */
   provider_id: string
   /**

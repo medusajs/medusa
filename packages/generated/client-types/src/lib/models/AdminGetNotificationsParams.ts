@@ -5,35 +5,35 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetNotificationsParams {
   /**
-   * The number of notifications to skip before starting to collect the notifications set
+   * The number of inventory items to skip when retrieving the inventory items.
    */
   offset?: number
   /**
-   * The number of notifications to return
+   * Limit the number of notifications returned.
    */
   limit?: number
   /**
-   * Comma separated fields to include in the result set
+   * Comma-separated fields that should be included in each returned notification.
    */
   fields?: string
   /**
-   * Comma separated fields to populate
+   * Comma-separated relations that should be expanded in each returned notification.
    */
   expand?: string
   /**
-   * The name of the event that the notification was sent for.
+   * Filter by the name of the event that triggered sending this notification.
    */
   event_name?: string
   /**
-   * The type of resource that the Notification refers to.
+   * Filter by the resource type.
    */
   resource_type?: string
   /**
-   * The ID of the resource that the Notification refers to.
+   * Filter by the resource ID.
    */
   resource_id?: string
   /**
-   * The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id
+   * Filter by the address that the Notification was sent to. This will usually be an email address, but it can also represent other addresses such as a chat bot user id.
    */
   to?: string
   /**

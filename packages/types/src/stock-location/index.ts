@@ -1,2 +1,2 @@
 export * from "./common"
-export * from "./stock-location"
+export * from "./service"

@@ -1,5 +1,17 @@
 # Change Log
 
+## 0.0.32
+
+### Patch Changes
+
+- [#4421](https://github.com/medusajs/medusa/pull/4421) [`5a4580b6a`](https://github.com/medusajs/medusa/commit/5a4580b6a8c305b7803c8d929843ca1f39677404) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(medusa-dev-cli): Cleanup plugin setup
+
+## 0.0.31
+
+### Patch Changes
+
+- [#3293](https://github.com/medusajs/medusa/pull/3293) [`e8e7d7bb5`](https://github.com/medusajs/medusa/commit/e8e7d7bb5355877b3d0b85a079b6b57cfe7391c9) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - fix(medusa-dev): include packages/ subdirectories in discovery
+
 ## 0.0.31-rc.0
 
 ### Patch Changes

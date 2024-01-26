@@ -3,9 +3,12 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the batch job to create.
+ */
 export interface AdminPostBatchesReq {
   /**
-   * The type of batch job to start.
+   * The type of batch job to start, which is defined by the `batchType` property of the associated batch job strategy.
    */
   type: string
   /**
@@ -13,7 +16,7 @@ export interface AdminPostBatchesReq {
    */
   context: Record<string, any>
   /**
-   * Set a batch job in dry_run mode to get some information on what will be done without applying any modifications.
+   * Set a batch job in dry_run mode, which would delay executing the batch job until it's confirmed.
    */
   dry_run?: boolean
 }

@@ -14,6 +14,7 @@ import React, {
 } from "react"
 import { useNavigate } from "react-router-dom"
 import { usePagination, useRowSelect, useTable } from "react-table"
+import { useTranslation } from "react-i18next"
 
 import Button from "../../../components/fundamentals/button"
 import DetailsIcon from "../../../components/fundamentals/details-icon"
@@ -98,6 +99,7 @@ export const ProductTable = forwardRef(
     const limit = parseInt(queryObject.limit)
 
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const [query, setQuery] = useState(queryObject.query)
     const [numPages, setNumPages] = useState(0)
@@ -200,12 +202,12 @@ export const ProductTable = forwardRef(
 
     const getActions = (id: string) => [
       {
-        label: "Details",
+        label: t("tables-details", "Details"),
         onClick: () => navigate(`/a/products/${id}`),
         icon: <DetailsIcon size={20} />,
       },
       {
-        label: "Remove from the channel",
+        label: t("tables-remove-from-the-channel", "Remove from the channel"),
         variant: "danger",
         onClick: () => removeProductFromSalesChannel(id),
         icon: <TrashIcon size={20} />,
@@ -221,7 +223,7 @@ export const ProductTable = forwardRef(
           count: count!,
           offset: offs,
           pageSize: offs + rows.length,
-          title: "Products",
+          title: t("tables-products", "Products"),
           currentPage: pageIndex + 1,
           pageCount: pageCount,
           nextPage: handleNext,
@@ -331,6 +333,7 @@ function RemoveProductsPopup({
     "translate-y-1 opacity-0": !total,
     "translate-y-0 opacity-100": total,
   }
+  const { t } = useTranslation()
 
   return (
     <div
@@ -340,10 +343,16 @@ function RemoveProductsPopup({
       )}
     >
       <div className="shadow-toaster pointer-events-auto flex h-[48px] min-w-[224px] items-center justify-around gap-3 rounded-lg border px-4 py-3">
-        <span className="text-small text-grey-50">{total} selected</span>
+        <span className="text-small text-grey-50">
+          {t(
+            "sales-channels-table-placeholder-selected-with-counts",
+            "{{count}}",
+            { count: total }
+          )}
+        </span>
         <div className="bg-grey-20 h-[20px] w-[1px]" />
         <Button variant="danger" size="small" onClick={onRemove}>
-          Remove
+          {t("tables-remove", "Remove")}
         </Button>
         <button onClick={onClose} className="text-grey-50 cursor-pointer">
           <CrossIcon size={20} />

@@ -1,13 +1,16 @@
 import clsx from "clsx"
-import { useAdminRegions } from "medusa-react"
+import { useAdminRegions, useAdminSalesChannels } from "medusa-react"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import FilterDropdownContainer from "../../../components/molecules/filter-dropdown/container"
 import FilterDropdownItem from "../../../components/molecules/filter-dropdown/item"
 import SaveFilterItem from "../../../components/molecules/filter-dropdown/save-field"
 import TabFilter from "../../../components/molecules/filter-tab"
 import PlusIcon from "../../fundamentals/icons/plus-icon"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 
 const REGION_PAGE_SIZE = 10
+const CHANNEL_PAGE_SIZE = 10
 
 const statusFilters = [
   "completed",
@@ -55,8 +58,12 @@ const OrderFilters = ({
   submitFilters,
   clearFilters,
 }) => {
+  const { t } = useTranslation()
   const [tempState, setTempState] = useState(filters)
   const [name, setName] = useState("")
+
+  const { isFeatureEnabled } = useFeatureFlag()
+  const isSalesChannelsEnabled = isFeatureEnabled("sales_channels")
 
   const handleRemoveTab = (val) => {
     if (onRemoveTab) {
@@ -116,6 +123,12 @@ const OrderFilters = ({
     isLoading: isLoadingRegions,
   } = useAdminRegions(regionsPagination)
 
+  const { sales_channels, isLoading: isLoadingSalesChannels } =
+    useAdminSalesChannels(
+      { limit: CHANNEL_PAGE_SIZE },
+      { enabled: isSalesChannelsEnabled }
+    )
+
   const handlePaginateRegions = (direction) => {
     if (direction > 0) {
       setRegionsPagination((prev) => ({
@@ -142,7 +155,7 @@ const OrderFilters = ({
             )}
           >
             <div className="rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold flex h-6 items-center border px-2">
-              Filters
+              {t("order-filter-dropdown-filters", "Filters")}
               <div className="text-grey-40 ml-1 flex items-center rounded">
                 <span className="text-violet-60 inter-small-semibold">
                   {numberOfFilters ? numberOfFilters : "0"}
@@ -156,28 +169,34 @@ const OrderFilters = ({
         }
       >
         <FilterDropdownItem
-          filterTitle="Status"
+          filterTitle={t("order-filter-dropdown-status", "Status")}
           options={statusFilters}
           filters={tempState.status.filter}
           open={tempState.status.open}
           setFilter={(val) => setSingleFilter("status", val)}
         />
         <FilterDropdownItem
-          filterTitle="Payment Status"
+          filterTitle={t(
+            "order-filter-dropdown-payment-status",
+            "Payment Status"
+          )}
           options={paymentFilters}
           filters={tempState.payment.filter}
           open={tempState.payment.open}
           setFilter={(val) => setSingleFilter("payment", val)}
         />
         <FilterDropdownItem
-          filterTitle="Fulfillment Status"
+          filterTitle={t(
+            "order-filter-dropdown-fulfillment-status",
+            "Fulfillment Status"
+          )}
           options={fulfillmentFilters}
           filters={tempState.fulfillment.filter}
           open={tempState.fulfillment.open}
           setFilter={(val) => setSingleFilter("fulfillment", val)}
         />
         <FilterDropdownItem
-          filterTitle="Regions"
+          filterTitle={t("order-filter-dropdown-regions", "Regions")}
           options={
             regions?.map((region) => ({
               value: region.id,
@@ -195,8 +214,26 @@ const OrderFilters = ({
           open={tempState.region.open}
           setFilter={(v) => setSingleFilter("region", v)}
         />
+        {isSalesChannelsEnabled && (
+          <FilterDropdownItem
+            filterTitle={t(
+              "order-filter-dropdown-sales-channel",
+              "Sales Channel"
+            )}
+            options={
+              sales_channels?.map((salesChannel) => ({
+                value: salesChannel.id,
+                label: salesChannel.name,
+              })) || []
+            }
+            isLoading={isLoadingSalesChannels}
+            filters={tempState.salesChannel.filter}
+            open={tempState.salesChannel.open}
+            setFilter={(v) => setSingleFilter("salesChannel", v)}
+          />
+        )}
         <FilterDropdownItem
-          filterTitle="Date"
+          filterTitle={t("order-filter-dropdown-date", "Date")}
           options={dateFilters}
           filters={tempState.date.filter}
           open={tempState.date.open}

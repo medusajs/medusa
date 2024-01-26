@@ -1,0 +1,60 @@
+---
+title: "Focus Modal"
+description: "A modal component that spans the whole screen"
+component: true
+---
+
+<ComponentExample name="focus-modal-demo" />
+
+## Usage
+
+---
+
+```tsx
+import { FocusModal } from "@medusajs/ui"
+```
+
+```tsx
+<FocusModal>
+  <FocusModal.Trigger>Trigger</FocusModal.Trigger>
+  <FocusModal.Content>
+    <FocusModal.Header>Title</FocusModal.Header>
+    <FocusModal.Body>Content</FocusModal.Body>
+  </FocusModal.Content>
+</FocusModal>
+```
+
+### API Reference
+
+---
+
+<ComponentReference mainComponent="FocusModal" componentsToShow={[
+  "FocusModal",
+  "FocusModal.Header",
+  "FocusModal.Body",
+]} />
+
+## Example: Control Open State
+
+---
+
+```tsx
+import { useState } from "react"
+
+const MyModal = () => {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <FocusModal 
+      open={open} 
+      onOpenChange={setOpen}
+    >
+      <FocusModal.Trigger>Trigger</FocusModal.Trigger>
+      <FocusModal.Content>
+        <FocusModal.Header>Title</FocusModal.Header>
+        <FocusModal.Body>Content</FocusModal.Body>
+      </FocusModal.Content>
+    </FocusModal>
+  )
+}
+```

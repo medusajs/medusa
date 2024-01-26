@@ -5,16 +5,17 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "jest --silent=false --runInBand --bail --detectOpenHandles --forceExit",
+    "test:integration": "jest --silent=false --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
-    "@medusajs/cache-inmemory": "1.8.0-rc.2",
-    "@medusajs/event-bus-local": "1.8.0-rc.3",
-    "@medusajs/medusa": "1.8.0-rc.5",
+    "@medusajs/cache-inmemory": "workspace:*",
+    "@medusajs/event-bus-local": "workspace:*",
+    "@medusajs/medusa": "workspace:*",
     "faker": "^5.5.3",
-    "medusa-interfaces": "1.3.7-rc.0",
-    "typeorm": "^0.3.11"
+    "medusa-interfaces": "workspace:*",
+    "pg": "^8.11.0",
+    "typeorm": "^0.3.16"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",

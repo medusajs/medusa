@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
-import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
+import { request } from "../../../../../helpers/test-request"
 
 describe("GET /admin/products/:id", () => {
   describe("successfully gets a product", () => {
@@ -40,7 +40,6 @@ describe("GET /admin/products/:id", () => {
             "is_giftcard",
             "discountable",
             "thumbnail",
-            "profile_id",
             "collection_id",
             "type_id",
             "weight",
@@ -57,15 +56,16 @@ describe("GET /admin/products/:id", () => {
             "metadata",
           ],
           relations: [
-            "variants",
-            "variants.prices",
-            "variants.options",
+            "collection",
             "images",
             "options",
+            "profiles",
+            "sales_channels",
             "tags",
             "type",
-            "collection",
-            "sales_channels",
+            "variants",
+            "variants.options",
+            "variants.prices",
           ],
         }
       )

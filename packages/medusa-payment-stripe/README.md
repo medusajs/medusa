@@ -4,8 +4,6 @@ Receive payments on your Medusa commerce application using Stripe.
 
 [Stripe Plugin Documentation](https://docs.medusajs.com/plugins/payment/stripe) | [Medusa Website](https://medusajs.com/) | [Medusa Repository](https://github.com/medusajs/medusa)
 
-The stripe plugin version `>=1.2.x` requires medusa `>=1.8.x`
-
 ## Features
 
 - Authorize payments on orders from any sales channel.

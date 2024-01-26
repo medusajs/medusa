@@ -1,4 +1,0 @@
-type: object
-properties:
-  customer_group:
-    $ref: ./CustomerGroup.yaml

@@ -80,6 +80,9 @@ export class Discount extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private upperCaseCodeAndTrim(): void {
     this.code = this.code.toUpperCase().trim()
@@ -94,7 +97,7 @@ export class Discount extends SoftDeletableEntity {
 /**
  * @schema Discount
  * title: "Discount"
- * description: "Represents a discount that can be applied to a cart for promotional purposes."
+ * description: "A discount can be applied to a cart for promotional purposes."
  * type: object
  * required:
  *   - code
@@ -126,12 +129,13 @@ export class Discount extends SoftDeletableEntity {
  *     type: boolean
  *     example: false
  *   rule_id:
- *     description: The Discount Rule that governs the behaviour of the Discount
+ *     description: The ID of the discount rule that defines how the discount will be applied to a cart.
  *     nullable: true
  *     type: string
  *     example: dru_01F0YESMVK96HVX7N419E3CJ7C
  *   rule:
- *     description: Available if the relation `rule` is expanded.
+ *     description: The details of the discount rule that defines how the discount will be applied to a cart..
+ *     x-expandable: "rule"
  *     nullable: true
  *     $ref: "#/components/schemas/DiscountRule"
  *   is_disabled:
@@ -144,7 +148,8 @@ export class Discount extends SoftDeletableEntity {
  *     type: string
  *     example: disc_01G8ZH853YPY9B94857DY91YGW
  *   parent_discount:
- *     description: Available if the relation `parent_discount` is expanded.
+ *     description: The details of the parent discount that this discount was created from.
+ *     x-expandable: "parent_discount"
  *     nullable: true
  *     $ref: "#/components/schemas/Discount"
  *   starts_at:
@@ -162,8 +167,9 @@ export class Discount extends SoftDeletableEntity {
  *     type: string
  *     example: P3Y6M4DT12H30M5S
  *   regions:
- *     description: The Regions in which the Discount can be used. Available if the relation `regions` is expanded.
+ *     description: The details of the regions in which the Discount can be used.
  *     type: array
+ *     x-expandable: "regions"
  *     items:
  *       $ref: "#/components/schemas/Region"
  *   usage_limit:
@@ -194,4 +200,7 @@ export class Discount extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

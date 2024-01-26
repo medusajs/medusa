@@ -1,4 +1,0 @@
-type: object
-properties:
-  payment_session:
-    $ref: ./PaymentSession.yaml

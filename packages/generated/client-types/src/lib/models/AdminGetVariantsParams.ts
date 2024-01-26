@@ -5,47 +5,43 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetVariantsParams {
   /**
-   * A Product Variant id to filter by.
+   * Filter by product variant IDs.
    */
-  id?: string
+  id?: string | Array<string>
   /**
-   * A comma separated list of Product Variant ids to filter by.
-   */
-  ids?: string
-  /**
-   * A comma separated list of Product Variant relations to load.
+   * "Comma-separated relations that should be expanded in the returned product variants."
    */
   expand?: string
   /**
-   * A comma separated list of Product Variant fields to include.
+   * "Comma-separated fields that should be included in the returned product variants."
    */
   fields?: string
   /**
-   * How many product variants to skip in the result.
+   * The number of product variants to skip when retrieving the product variants.
    */
   offset?: number
   /**
-   * Maximum number of Product Variants to return.
+   * Limit the number of product variants returned.
    */
   limit?: number
   /**
-   * The id of the cart to use for price selection.
+   * The ID of the cart to use for the price selection context.
    */
   cart_id?: string
   /**
-   * The id of the region to use for price selection.
+   * The ID of the region to use for the price selection context.
    */
   region_id?: string
   /**
-   * The currency code to use for price selection.
+   * The 3 character ISO currency code to use for the price selection context.
    */
   currency_code?: string
   /**
-   * The id of the customer to use for price selection.
+   * The ID of the customer to use for the price selection context.
    */
   customer_id?: string
   /**
-   * product variant title to search for.
+   * Filter by title.
    */
   title?: string | Array<string>
   /**

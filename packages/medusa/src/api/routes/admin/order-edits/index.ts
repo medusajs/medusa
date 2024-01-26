@@ -101,6 +101,7 @@ export default (app) => {
 /**
  * @schema AdminOrderEditsRes
  * type: object
+ * description: "The order edit details."
  * x-expanded-relations:
  *   field: order_edit
  *   relations:
@@ -140,6 +141,7 @@ export default (app) => {
  *   - order_edit
  * properties:
  *   order_edit:
+ *     description: "Order edit details"
  *     $ref: "#/components/schemas/OrderEdit"
  */
 export type AdminOrderEditsRes = {
@@ -149,6 +151,7 @@ export type AdminOrderEditsRes = {
 /**
  * @schema AdminOrderEditsListRes
  * type: object
+ * description: "The list of order edits with pagination fields."
  * x-expanded-relations:
  *   field: order_edits
  *   relations:
@@ -192,6 +195,7 @@ export type AdminOrderEditsRes = {
  * properties:
  *   order_edits:
  *     type: array
+ *     description: "An array of order edit details"
  *     items:
  *       $ref: "#/components/schemas/OrderEdit"
  *   count:
@@ -199,7 +203,7 @@ export type AdminOrderEditsRes = {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of order edits skipped when retrieving the order edits.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -233,6 +237,7 @@ export type AdminOrderEditDeleteRes = DeleteResponse
 /**
  * @schema AdminOrderEditItemChangeDeleteRes
  * type: object
+ * description: "The details of deleting order edit item changes."
  * required:
  *   - id
  *   - object

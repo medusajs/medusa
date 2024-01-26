@@ -1,4 +1,5 @@
 import React, { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 
 import FeatureToggle from "../../../../components/fundamentals/feature-toggle"
 import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
@@ -22,7 +23,7 @@ const CreateFulfillmentItemsTable = ({
   items: LineItem[]
   quantities: Record<string, number>
   setQuantities: (quantities: Record<string, number>) => void
-  locationId: string
+  locationId?: string
   setErrors: (errors: React.SetStateAction<{}>) => void
 }) => {
   const handleQuantityUpdate = React.useCallback(
@@ -70,6 +71,7 @@ const FulfillmentLine = ({
   handleQuantityUpdate: (value: number, id: string) => void
   setErrors: (errors: Record<string, string>) => void
 }) => {
+  const { t } = useTranslation()
   const { isFeatureEnabled } = useFeatureFlag()
   const isLocationFulfillmentEnabled =
     isFeatureEnabled("inventoryService") &&
@@ -79,6 +81,8 @@ const FulfillmentLine = ({
     item.variant_id as string,
     { enabled: isLocationFulfillmentEnabled }
   )
+
+  const hasInventoryItem = !!variant?.inventory.length
 
   React.useEffect(() => {
     if (isLocationFulfillmentEnabled) {
@@ -100,7 +104,7 @@ const FulfillmentLine = ({
 
     const { inventory } = variant
 
-    const locationInventory = inventory[0].location_levels?.find(
+    const locationInventory = inventory[0]?.location_levels?.find(
       (inv) => inv.location_id === locationId
     )
 
@@ -123,7 +127,7 @@ const FulfillmentLine = ({
   const validQuantity =
     !locationId ||
     (locationId &&
-      (!availableQuantity || quantities[item.id] < availableQuantity))
+      (!availableQuantity || quantities[item.id] <= availableQuantity))
 
   React.useEffect(() => {
     setErrors((errors) => {
@@ -132,17 +136,23 @@ const FulfillmentLine = ({
         return errors
       }
 
-      errors[item.id] = "Quantity is not valid"
+      errors[item.id] = t(
+        "create-fulfillment-quantity-is-not-valid",
+        "Quantity is not valid"
+      )
       return errors
     })
   }, [validQuantity, setErrors, item.id])
 
   React.useEffect(() => {
-    if (!availableQuantity) {
+    if (!availableQuantity && hasInventoryItem) {
       handleQuantityUpdate(0, item.id)
     } else {
       handleQuantityUpdate(
-        Math.min(getFulfillableQuantity(item), availableQuantity),
+        Math.min(
+          getFulfillableQuantity(item),
+          ...[hasInventoryItem ? availableQuantity : Number.MAX_VALUE]
+        ),
         item.id
       )
     }
@@ -158,7 +168,9 @@ const FulfillmentLine = ({
       className={clsx(
         "rounded-rounded hover:bg-grey-5 mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]",
         {
-          "pointer-events-none opacity-50": !availableQuantity,
+          "pointer-events-none opacity-50":
+            (!availableQuantity && hasInventoryItem) ||
+            (!locationId && isLocationFulfillmentEnabled),
         }
       )}
     >
@@ -185,10 +197,12 @@ const FulfillmentLine = ({
       </div>
       <div className="flex items-center">
         <FeatureToggle featureFlag="inventoryService">
-          <div className="inter-base-regular text-grey-50 mr-6 flex flex-col items-end whitespace-nowrap">
-            <p>{availableQuantity || 0} available</p>
-            <p>({inStockQuantity || 0} in stock)</p>
-          </div>
+          {hasInventoryItem && (
+            <div className="inter-base-regular text-grey-50 mr-6 flex flex-col items-end whitespace-nowrap">
+              <p>{availableQuantity || 0} available</p>
+              <p>({inStockQuantity || 0} in stock)</p>
+            </div>
+          )}
         </FeatureToggle>
         <InputField
           type="number"
@@ -202,12 +216,22 @@ const FulfillmentLine = ({
             </span>
           }
           value={quantities[item.id]}
-          max={Math.min(availableQuantity || 0, getFulfillableQuantity(item))}
+          max={Math.min(
+            getFulfillableQuantity(item),
+            ...[hasInventoryItem ? availableQuantity || 0 : Number.MAX_VALUE]
+          )}
           onChange={(e) =>
             handleQuantityUpdate(e.target.valueAsNumber, item.id)
           }
           errors={
-            validQuantity ? undefined : { quantity: "Quantity is not valid" }
+            validQuantity
+              ? undefined
+              : {
+                  quantity: t(
+                    "create-fulfillment-quantity-is-not-valid",
+                    "Quantity is not valid"
+                  ),
+                }
           }
         />
       </div>

@@ -1,6 +1,7 @@
 import { useAdminProducts } from "medusa-react"
 import React, { useEffect, useState } from "react"
 import { usePagination, useTable } from "react-table"
+import { useTranslation } from "react-i18next"
 import { useDebounce } from "../../../hooks/use-debounce"
 import Medusa from "../../../services/api"
 import Button from "../../fundamentals/button"
@@ -25,6 +26,7 @@ const ViewProductsTable: React.FC<ViewProductsTableProps> = ({
   const [numPages, setNumPages] = useState(0)
   const [currentPage, setCurrentPage] = useState(0)
   const debouncedSearchTerm = useDebounce(query, 500)
+  const { t } = useTranslation()
 
   const [showDelete, setShowDelete] = useState(false)
   const [idToDelete, setIdToDelete] = useState<string | undefined>(undefined)
@@ -157,7 +159,10 @@ const ViewProductsTable: React.FC<ViewProductsTableProps> = ({
         <Table
           enableSearch
           handleSearch={handleSearch}
-          searchPlaceholder="Search Products"
+          searchPlaceholder={t(
+            "collection-product-table-search-products",
+            "Search Products"
+          )}
           {...getTableProps()}
           className="h-full"
         >
@@ -183,8 +188,14 @@ const ViewProductsTable: React.FC<ViewProductsTableProps> = ({
         <DeletePrompt
           onDelete={async () => handleRemoveProduct()}
           handleClose={() => setShowDelete(!showDelete)}
-          heading="Remove product from collection"
-          successText="Product removed from collection"
+          heading={t(
+            "collection-product-table-remove-product-from-collection",
+            "Remove product from collection"
+          )}
+          successText={t(
+            "collection-product-table-product-removed-from-collection",
+            "Product removed from collection"
+          )}
         />
       )}
     </>

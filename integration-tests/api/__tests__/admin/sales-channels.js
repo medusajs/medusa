@@ -2,28 +2,28 @@ const path = require("path")
 
 const { SalesChannel, Product } = require("@medusajs/medusa")
 
-const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb } = require("../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../helpers/admin-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 const {
   simpleSalesChannelFactory,
   simpleProductFactory,
-} = require("../../factories")
-const { simpleOrderFactory } = require("../../factories")
-const orderSeeder = require("../../helpers/order-seeder")
-const productSeeder = require("../../helpers/product-seeder")
+} = require("../../../factories")
+const { simpleOrderFactory } = require("../../../factories")
+const orderSeeder = require("../../../helpers/order-seeder")
+const productSeeder = require("../../../helpers/product-seeder")
 
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
+  require("../../../environment-helpers/start-server-with-environment").default
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
-jest.setTimeout(50000)
+jest.setTimeout(60000)
 
 describe("sales channels", () => {
   let medusaProcess
@@ -71,13 +71,15 @@ describe("sales channels", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.sales_channel).toBeTruthy()
-      expect(response.data.sales_channel).toMatchSnapshot({
-        id: expect.any(String),
-        name: salesChannel.name,
-        description: salesChannel.description,
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
+      expect(response.data.sales_channel).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: salesChannel.name,
+          description: salesChannel.description,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
     })
   })
 
@@ -135,12 +137,12 @@ describe("sales channels", () => {
       expect(response.status).toEqual(200)
       expect(response.data.sales_channels).toBeTruthy()
       expect(response.data.sales_channels.length).toBe(1)
-      expect(response.data).toMatchSnapshot({
+      expect(response.data).toEqual({
         count: 1,
         limit: 20,
         offset: 0,
         sales_channels: expect.arrayContaining([
-          {
+          expect.objectContaining({
             id: expect.any(String),
             name: salesChannel2.name,
             description: salesChannel2.description,
@@ -148,7 +150,7 @@ describe("sales channels", () => {
             deleted_at: null,
             created_at: expect.any(String),
             updated_at: expect.any(String),
-          },
+          }),
         ]),
       })
     })
@@ -163,12 +165,12 @@ describe("sales channels", () => {
       expect(response.status).toEqual(200)
       expect(response.data.sales_channels).toBeTruthy()
       expect(response.data.sales_channels.length).toBe(1)
-      expect(response.data).toMatchSnapshot({
+      expect(response.data).toEqual({
         count: 1,
         limit: 20,
         offset: 0,
         sales_channels: expect.arrayContaining([
-          {
+          expect.objectContaining({
             id: expect.any(String),
             name: salesChannel1.name,
             description: salesChannel1.description,
@@ -176,7 +178,7 @@ describe("sales channels", () => {
             deleted_at: null,
             created_at: expect.any(String),
             updated_at: expect.any(String),
-          },
+          }),
         ]),
       })
     })
@@ -212,20 +214,22 @@ describe("sales channels", () => {
         payload,
         {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.sales_channel).toMatchSnapshot({
-        id: expect.any(String),
-        name: payload.name,
-        description: payload.description,
-        is_disabled: payload.is_disabled,
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
+      expect(response.data.sales_channel).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: payload.name,
+          description: payload.description,
+          is_disabled: payload.is_disabled,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
     })
   })
 
@@ -428,6 +432,14 @@ describe("sales channels", () => {
           name: "test name",
           description: "test description",
         },
+        payment_status: "captured",
+        fulfillment_status: "fulfilled",
+        line_items: [
+          {
+            id: "line-item",
+            quantity: 2,
+          },
+        ],
       })
     })
 
@@ -445,14 +457,81 @@ describe("sales channels", () => {
       )
 
       expect(response.data.order.sales_channel).toBeTruthy()
-      expect(response.data.order.sales_channel).toMatchSnapshot({
-        id: expect.any(String),
-        name: "test name",
-        description: "test description",
-        is_disabled: false,
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
+      expect(response.data.order.sales_channel).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: "test name",
+          description: "test description",
+          is_disabled: false,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
+    })
+
+    it("creates swap with order sales channel", async () => {
+      const api = useApi()
+
+      const product = await simpleProductFactory(dbConnection, {
+        variants: [{ id: "test-variant", inventory_quantity: 100 }],
       })
+
+      const swap = await api.post(
+        `/admin/orders/${order.id}/swaps`,
+        {
+          return_items: [
+            {
+              item_id: "line-item",
+              quantity: 1,
+            },
+          ],
+          additional_items: [{ variant_id: "test-variant", quantity: 1 }],
+        },
+        adminReqConfig
+      )
+
+      expect(swap.status).toEqual(200)
+
+      const cartId = swap.data.order.swaps[0].cart_id
+
+      const swapCart = await api.get(`/store/carts/${cartId}`)
+
+      expect(swapCart.data.cart.sales_channel_id).toEqual(
+        order.sales_channel_id
+      )
+    })
+
+    it("creates swap with provided sales channel", async () => {
+      const api = useApi()
+
+      const sc = await simpleSalesChannelFactory(dbConnection, {})
+
+      const product = await simpleProductFactory(dbConnection, {
+        variants: [{ id: "test-variant", inventory_quantity: 100 }],
+      })
+
+      const swap = await api.post(
+        `/admin/orders/${order.id}/swaps`,
+        {
+          return_items: [
+            {
+              item_id: "line-item",
+              quantity: 1,
+            },
+          ],
+          sales_channel_id: sc.id,
+          additional_items: [{ variant_id: "test-variant", quantity: 1 }],
+        },
+        adminReqConfig
+      )
+
+      expect(swap.status).toEqual(200)
+
+      const cartId = swap.data.order.swaps[0].cart_id
+
+      const swapCart = await api.get(`/store/carts/${cartId}`)
+
+      expect(swapCart.data.cart.sales_channel_id).toEqual(sc.id)
     })
   })
 
@@ -482,14 +561,16 @@ describe("sales channels", () => {
       )
 
       expect(response.data.orders[0].sales_channel).toBeTruthy()
-      expect(response.data.orders[0].sales_channel).toMatchSnapshot({
-        id: expect.any(String),
-        name: "test name",
-        description: "test description",
-        is_disabled: false,
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
+      expect(response.data.orders[0].sales_channel).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: "test name",
+          description: "test description",
+          is_disabled: false,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
     })
   })
 
@@ -712,15 +793,17 @@ describe("sales channels", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.sales_channel).toEqual({
-        id: expect.any(String),
-        name: "test name",
-        description: "test description",
-        is_disabled: false,
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-        deleted_at: null,
-      })
+      expect(response.data.sales_channel).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: "test name",
+          description: "test description",
+          is_disabled: false,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        })
+      )
 
       const attachedProduct = await dbConnection.manager.findOne(Product, {
         where: { id: product.id },
@@ -773,7 +856,7 @@ describe("sales channels", () => {
           `/admin/orders?sales_channel_id[]=${order.sales_channel_id}`,
           {
             headers: {
-              authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -821,7 +904,7 @@ describe("sales channels", () => {
         const response = await api
           .get(`/admin/products?sales_channel_id[]=${salesChannel.id}`, {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           })
           .catch((err) => {
@@ -881,7 +964,7 @@ describe("sales channels", () => {
         const response = await api
           .post("/admin/products", payload, {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           })
           .catch((err) => {
@@ -922,7 +1005,7 @@ describe("sales channels", () => {
         const response = await api
           .post("/admin/products", payload, {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           })
           .catch((err) => {
@@ -971,7 +1054,7 @@ describe("sales channels", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -994,7 +1077,7 @@ describe("sales channels", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -1020,7 +1103,7 @@ describe("sales channels", () => {
             {},
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -1048,7 +1131,7 @@ describe("sales channels", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -1075,7 +1158,7 @@ describe("sales channels", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )

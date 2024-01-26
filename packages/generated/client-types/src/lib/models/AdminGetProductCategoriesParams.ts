@@ -5,27 +5,31 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetProductCategoriesParams {
   /**
-   * Query used for searching product category names orhandles.
+   * term to search product categories' names and handles.
    */
   q?: string
   /**
-   * Search for only internal categories.
+   * Filter by handle.
+   */
+  handle?: string
+  /**
+   * Filter by whether the category is internal or not.
    */
   is_internal?: boolean
   /**
-   * Search for only active categories
+   * Filter by whether the category is active or not.
    */
   is_active?: boolean
   /**
-   * Include all nested descendants of category
+   * If set to `true`, all nested descendants of a category are included in the response.
    */
   include_descendants_tree?: boolean
   /**
-   * Returns categories scoped by parent
+   * Filter by the ID of a parent category.
    */
   parent_category_id?: string
   /**
-   * How many product categories to skip in the result.
+   * The number of product categories to skip when retrieving the product categories.
    */
   offset?: number
   /**
@@ -33,11 +37,11 @@ export interface AdminGetProductCategoriesParams {
    */
   limit?: number
   /**
-   * (Comma separated) Which fields should be expanded in the product category.
+   * Comma-separated relations that should be expanded in the returned product categories.
    */
   expand?: string
   /**
-   * (Comma separated) Which fields should be included in the product category.
+   * Comma-separated fields that should be included in the returned product categories.
    */
   fields?: string
 }

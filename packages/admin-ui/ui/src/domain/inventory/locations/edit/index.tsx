@@ -4,19 +4,28 @@ import {
   StockLocationAddressInput,
   StockLocationDTO,
 } from "@medusajs/medusa"
-import { useAdminUpdateStockLocation } from "medusa-react"
-import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+
+import GeneralForm, { GeneralFormType } from "../components/general-form"
+import MetadataForm, {
+  MetadataFormType,
+  getMetadataFormValues,
+  getSubmittableMetadata,
+} from "../../../../components/forms/general/metadata-form"
+
+import AddressForm from "../components/address-form"
 import Button from "../../../../components/fundamentals/button"
 import Modal from "../../../../components/molecules/modal"
-import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { nestedForm } from "../../../../utils/nested-form"
-import AddressForm from "../components/address-form"
-import GeneralForm, { GeneralFormType } from "../components/general-form"
+import { useAdminUpdateStockLocation } from "medusa-react"
+import { useForm } from "react-hook-form"
+import useNotification from "../../../../hooks/use-notification"
 
 type EditLocationForm = {
   general: GeneralFormType
   address: StockLocationAddressDTO
+  metadata: MetadataFormType
 }
 
 export type LocationEditModalProps = {
@@ -25,12 +34,14 @@ export type LocationEditModalProps = {
 }
 
 const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
+  const { t } = useTranslation()
   const form = useForm<EditLocationForm>({
     defaultValues: {
       general: {
         name: location.name,
       }, // @ts-ignore
       address: location.address,
+      metadata: getMetadataFormValues(location.metadata),
     },
     reValidateMode: "onBlur",
     mode: "onBlur",
@@ -48,10 +59,17 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
     mutate(payload, {
       onSuccess: () => {
         onClose()
-        notification("Success", "Location edited successfully", "success")
+        notification(
+          t("edit-success", "Success"),
+          t(
+            "edit-location-edited-successfully",
+            "Location edited successfully"
+          ),
+          "success"
+        )
       },
       onError: (err) => {
-        notification("Error", getErrorMessage(err), "error")
+        notification(t("edit-error", "Error"), getErrorMessage(err), "error")
       },
     })
   })
@@ -60,13 +78,21 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
     <Modal handleClose={onClose}>
       <Modal.Body className="top-20">
         <Modal.Header handleClose={onClose}>
-          <h1 className="text-xl font-semibold">Edit Location Details</h1>
+          <h1 className="text-xl font-semibold">
+            {t("edit-edit-location-details", "Edit Location Details")}
+          </h1>
         </Modal.Header>
         <Modal.Content>
           <form className="w-full">
             <div className="mt-xlarge gap-y-xlarge flex flex-col">
               <GeneralForm form={nestedForm(form, "general")} />
               <AddressForm form={nestedForm(form, "address")} />
+              <div>
+                <h2 className="inter-base-semibold mb-base">
+                  {t("edit-metadata", "Metadata")}
+                </h2>
+                <MetadataForm form={nestedForm(form, "metadata")} />
+              </div>
             </div>
           </form>
         </Modal.Content>
@@ -79,7 +105,7 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
             type="button"
             onClick={onClose}
           >
-            Cancel
+            {t("edit-cancel", "Cancel")}
           </Button>
           <Button
             size="small"
@@ -88,7 +114,7 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
             disabled={!isDirty || isLoading}
             onClick={onSubmit}
           >
-            Save and close
+            {t("edit-save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>
@@ -97,7 +123,7 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
 }
 
 const createPayload = (data): AdminPostStockLocationsReq => {
-  const { general, address } = data
+  const { general, address, metadata } = data
 
   let addressInput
   if (address.address_1) {
@@ -113,6 +139,7 @@ const createPayload = (data): AdminPostStockLocationsReq => {
   return {
     name: general.name,
     address: addressInput,
+    metadata: getSubmittableMetadata(metadata),
   }
 }
 

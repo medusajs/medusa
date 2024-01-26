@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "ESNext",
+    "moduleResolution": "node",
+  },
+  "include": ["*.ts"],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node",
+    "transpileOnly": true
+  },
+}

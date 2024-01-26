@@ -1,75 +1,84 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  ModuleDefinition,
-  ModuleResolution,
   MODULE_SCOPE,
+  ModuleDefinition,
+  ModuleExports,
+  ModuleResolution,
 } from "@medusajs/types"
-import resolveCwd from "resolve-cwd"
-import MODULE_DEFINITIONS from "../definitions"
 
-export const registerModules = (
-  modules?: Record<
-    string,
-    | false
-    | string
+import { isObject } from "@medusajs/utils"
+import resolveCwd from "resolve-cwd"
+import { ModulesDefinition } from "../definitions"
+
+export const registerMedusaModule = (
+  moduleKey: string,
+  moduleDeclaration?:
     | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
-  >
+    | string
+    | false,
+  moduleExports?: ModuleExports,
+  definition?: ModuleDefinition
 ): Record<string, ModuleResolution> => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
-  const projectModules = modules ?? {}
 
-  for (const definition of MODULE_DEFINITIONS) {
-    const customConfig = projectModules[definition.key]
-    const isObj = typeof customConfig === "object"
+  const modDefinition = definition ?? ModulesDefinition[moduleKey]
 
-    if (isObj && customConfig.scope === MODULE_SCOPE.EXTERNAL) {
-      // TODO: getExternalModuleResolution(...)
-      throw new Error("External Modules are not supported yet.")
-    }
-
-    moduleResolutions[definition.key] = getInternalModuleResolution(
-      definition,
-      customConfig as InternalModuleDeclaration
-    )
+  if (modDefinition === undefined) {
+    throw new Error(`Module: ${moduleKey} is not defined.`)
   }
+
+  const modDeclaration =
+    moduleDeclaration ??
+    (modDefinition?.defaultModuleDeclaration as InternalModuleDeclaration)
+
+  if (modDeclaration !== false && !modDeclaration) {
+    throw new Error(`Module: ${moduleKey} has no declaration.`)
+  }
+
+  if (
+    isObject(modDeclaration) &&
+    modDeclaration?.scope === MODULE_SCOPE.EXTERNAL
+  ) {
+    // TODO: getExternalModuleResolution(...)
+    throw new Error("External Modules are not supported yet.")
+  }
+
+  moduleResolutions[moduleKey] = getInternalModuleResolution(
+    modDefinition,
+    moduleDeclaration as InternalModuleDeclaration,
+    moduleExports
+  )
 
   return moduleResolutions
 }
 
-export const registerMedusaModule = (
-  moduleKey: string,
-  moduleDeclaration: InternalModuleDeclaration | ExternalModuleDeclaration
+export const registerMedusaLinkModule = (
+  definition: ModuleDefinition,
+  moduleDeclaration: Partial<InternalModuleDeclaration>,
+  moduleExports?: ModuleExports
 ): Record<string, ModuleResolution> => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
 
-  for (const definition of MODULE_DEFINITIONS) {
-    if (definition.key !== moduleKey) {
-      continue
-    }
-
-    if (moduleDeclaration.scope === MODULE_SCOPE.EXTERNAL) {
-      // TODO: getExternalModuleResolution(...)a
-      throw new Error("External Modules are not supported yet.")
-    }
-
-    moduleResolutions[definition.key] = getInternalModuleResolution(
-      definition,
-      moduleDeclaration as InternalModuleDeclaration
-    )
-  }
+  moduleResolutions[definition.key] = getInternalModuleResolution(
+    definition,
+    moduleDeclaration as InternalModuleDeclaration,
+    moduleExports
+  )
 
   return moduleResolutions
 }
 
 function getInternalModuleResolution(
   definition: ModuleDefinition,
-  moduleConfig: InternalModuleDeclaration | false | string
+  moduleConfig: InternalModuleDeclaration | string | false,
+  moduleExports?: ModuleExports
 ): ModuleResolution {
   if (typeof moduleConfig === "boolean") {
     if (!moduleConfig && definition.isRequired) {
       throw new Error(`Module: ${definition.label} is required`)
     }
+
     if (!moduleConfig) {
       return {
         resolutionPath: false,
@@ -86,9 +95,11 @@ function getInternalModuleResolution(
   // If user added a module and it's overridable, we resolve that instead
   const isString = typeof moduleConfig === "string"
   if (definition.canOverride && (isString || (isObj && moduleConfig.resolve))) {
-    resolutionPath = resolveCwd(
-      isString ? moduleConfig : (moduleConfig.resolve as string)
-    )
+    resolutionPath = !moduleExports
+      ? resolveCwd(isString ? moduleConfig : (moduleConfig.resolve as string))
+      : // Explicitly assign an empty string, later, we will check if the value is exactly false.
+        // This allows to continue the module loading while using the module exports instead of re importing the module itself during the process.
+        ""
   }
 
   const moduleDeclaration = isObj ? moduleConfig : {}
@@ -103,9 +114,10 @@ function getInternalModuleResolution(
       ),
     ],
     moduleDeclaration: {
-      ...definition.defaultModuleDeclaration,
+      ...(definition.defaultModuleDeclaration ?? {}),
       ...moduleDeclaration,
     },
+    moduleExports,
     options: isObj ? moduleConfig.options ?? {} : {},
   }
 }

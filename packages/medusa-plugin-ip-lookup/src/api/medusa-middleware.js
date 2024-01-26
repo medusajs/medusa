@@ -7,8 +7,7 @@ export default {
       }
 
       const ipLookupService = req.scope.resolve("ipLookupService")
-      const manager = req.scope.resolve("manager")
-      const countryRepository = req.scope.resolve("countryRepository")
+      const regionService = req.scope.resolve("regionService")
 
       const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
 
@@ -19,16 +18,17 @@ export default {
         return
       }
 
-      const countryRepo = manager.getCustomRepository(countryRepository)
-      const country = await countryRepo.findOne({
-        where: { iso_2: data.country_code.toLowerCase() },
-      })
+      const region = await regionService
+        .retrieveByCountryCode(data.country_code)
+        .catch(() => void 0)
 
-      // If country exists, add it to the body of the cart creation request
-      if (country?.region_id) {
-        req.body.region_id = country.region_id
-        req.body.country_code = country.iso_2
+      if (!region) {
+        next()
+        return
       }
+
+      req.body.region_id = region.id
+      req.body.country_code = data.country_code.toLowerCase()
 
       next()
     } catch (error) {

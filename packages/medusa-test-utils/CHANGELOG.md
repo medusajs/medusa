@@ -1,5 +1,24 @@
 # Change Log
 
+## 1.1.41
+
+### Patch Changes
+
+- [#5985](https://github.com/medusajs/medusa/pull/5985) [`d16d10619`](https://github.com/medusajs/medusa/commit/d16d10619dfbd3966a4709753de3d8cc37c6f2eb) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa-test-utils, utils, link-modules, pricing, product): upgrade mikro-orm version
+
+- Updated dependencies [[`f86877586`](https://github.com/medusajs/medusa/commit/f86877586147ecedbf7f56a1c57f37ef0c33286c), [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8)]:
+  - medusa-core-utils@1.2.1
+
+## 1.1.40
+
+### Patch Changes
+
+- [#3041](https://github.com/medusajs/medusa/pull/3041) [`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724) Thanks [@riqwan](https://github.com/riqwan)! - chore(medusa): Typeorm fixes / enhancements
+  - upgrade typeorm from 0.2.51 to 0.3.11
+  - Plugin repository loader to work with Typeorm update
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0
+
 ## 1.1.40-rc.0
 
 ### Patch Changes
@@ -9,6 +28,7 @@
   - Plugin repository loader to work with Typeorm update
 - Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
   - medusa-core-utils@1.2.0-rc.0
+
 ## 1.1.40
 
 ### Patch Changes

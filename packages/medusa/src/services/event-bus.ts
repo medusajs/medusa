@@ -1,5 +1,5 @@
-import { EventBusTypes } from "@medusajs/types"
-import { EventBusUtils } from "@medusajs/utils"
+import { EventBusTypes, Logger } from "@medusajs/types"
+import { DatabaseErrorCode, EventBusUtils } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { StagedJob } from "../models"
@@ -7,10 +7,13 @@ import { ConfigModule } from "../types/global"
 import { isString } from "../utils"
 import { sleep } from "../utils/sleep"
 import StagedJobService from "./staged-job"
+import { FindConfig } from "../types/common"
+import { EOL } from "os"
 
 type InjectedDependencies = {
   stagedJobService: StagedJobService
   eventBusModuleService: EventBusUtils.AbstractEventBusModuleService
+  logger: Logger
 }
 
 /**
@@ -24,21 +27,25 @@ export default class EventBusService
   protected readonly config_: ConfigModule
   protected readonly stagedJobService_: StagedJobService
   // eslint-disable-next-line max-len
-  protected readonly eventBusModuleService_: EventBusUtils.AbstractEventBusModuleService
+  protected get eventBusModuleService_(): EventBusTypes.IEventBusModuleService {
+    return this.__container__.eventBusModuleService
+  }
+
+  protected readonly logger_: Logger
 
   protected shouldEnqueuerRun: boolean
   protected enqueue_: Promise<void>
 
   constructor(
-    { stagedJobService, eventBusModuleService }: InjectedDependencies,
+    { stagedJobService, logger }: InjectedDependencies,
     config,
     isSingleton = true
   ) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
+    this.logger_ = logger
     this.config_ = config
-    this.eventBusModuleService_ = eventBusModuleService
     this.stagedJobService_ = stagedJobService
 
     if (process.env.NODE_ENV !== "test" && isSingleton) {
@@ -137,7 +144,7 @@ export default class EventBusService
   ): Promise<TResult | void> {
     const manager = this.activeManager_
     const isBulkEmit = !isString(eventNameOrData)
-    const events = isBulkEmit
+    const events: EventBusTypes.EmitData[] = isBulkEmit
       ? eventNameOrData.map((event) => ({
           eventName: event.eventName,
           data: event.data,
@@ -164,6 +171,7 @@ export default class EventBusService
      * In case of a failing transaction, jobs stored in the database are removed
      * as part of the rollback.
      */
+
     const stagedJobs = await this.stagedJobService_
       .withTransaction(manager)
       .create(events)
@@ -189,10 +197,11 @@ export default class EventBusService
     }
 
     while (this.shouldEnqueuerRun) {
-      const jobs = await this.stagedJobService_.list(listConfig)
+      await sleep(3000)
+
+      const jobs = await this.listJobs(listConfig)
 
       if (!jobs.length) {
-        await sleep(3000)
         continue
       }
 
@@ -207,8 +216,18 @@ export default class EventBusService
       await this.eventBusModuleService_.emit(eventsData).then(async () => {
         return await this.stagedJobService_.delete(jobs.map((j) => j.id))
       })
-
-      await sleep(3000)
     }
+  }
+
+  protected async listJobs(listConfig: FindConfig<StagedJob>) {
+    return await this.stagedJobService_.list(listConfig).catch((err) => {
+      if (DatabaseErrorCode.connectionFailure === err.code) {
+        this.logger_.warn(`Database connection failure:${EOL}${err.message}`)
+      } else {
+        this.logger_.warn(`Failed to fetch jobs:${EOL}${err.message}`)
+      }
+
+      return []
+    })
   }
 }

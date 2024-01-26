@@ -1,5 +1,19 @@
 # Change Log
 
+## 1.3.8
+
+### Patch Changes
+
+- [#5869](https://github.com/medusajs/medusa/pull/5869) [`45996d58a2`](https://github.com/medusajs/medusa/commit/45996d58a2665d72335faad11bea958f8da74195) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(medusa, interfaces, utils, webshiper): Uniformise class checks
+
+## 1.3.7
+
+### Patch Changes
+
+- [#3041](https://github.com/medusajs/medusa/pull/3041) [`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724) Thanks [@riqwan](https://github.com/riqwan)! - chore(medusa): Typeorm fixes / enhancements
+  - upgrade typeorm from 0.2.51 to 0.3.11
+  - Plugin repository loader to work with Typeorm update
+
 ## 1.3.7-rc.0
 
 ### Patch Changes

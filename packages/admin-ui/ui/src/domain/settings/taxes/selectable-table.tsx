@@ -6,6 +6,8 @@ import {
   useRowSelect,
   useTable,
 } from "react-table"
+import { useTranslation } from "react-i18next"
+
 import IndeterminateCheckbox from "../../../components/molecules/indeterminate-checkbox"
 import Table from "../../../components/molecules/table"
 import TableContainer from "../../../components/organisms/table-container"
@@ -56,6 +58,8 @@ export const SelectableTable: React.FC<SelectableTableProps> = ({
     }
     return 0
   }, [totalCount, pagination])
+
+  const { t } = useTranslation()
 
   const {
     getTableProps,
@@ -165,7 +169,7 @@ export const SelectableTable: React.FC<SelectableTableProps> = ({
         <Table
           immediateSearchFocus={showSearch}
           enableSearch={showSearch}
-          searchPlaceholder="Search Products.."
+          searchPlaceholder={t("taxes-search-products", "Search Products..")}
           handleSearch={onSearch}
           searchValue={searchValue}
           {...getTableProps()}

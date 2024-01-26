@@ -12,6 +12,9 @@ export class ProductTag extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "ptag")
@@ -21,7 +24,7 @@ export class ProductTag extends SoftDeletableEntity {
 /**
  * @schema ProductTag
  * title: "Product Tag"
- * description: "Product Tags can be added to Products for easy filtering and grouping."
+ * description: "A Product Tag can be added to Products for easy filtering and grouping."
  * type: object
  * required:
  *   - created_at
@@ -57,4 +60,7 @@ export class ProductTag extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

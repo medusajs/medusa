@@ -1,9 +1,11 @@
 import {
+  And,
   FindManyOptions,
   FindOperator,
   FindOptionsRelations,
   FindOptionsSelect,
   FindOptionsWhere,
+  ILike,
   In,
   IsNull,
   LessThan,
@@ -11,9 +13,21 @@ import {
   MoreThan,
   MoreThanOrEqual,
 } from "typeorm"
-import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { ExtendedFindConfig, FindConfig } from "../types/common"
+
+import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { isObject } from "./is-object"
+import { buildOrder, buildRelations, buildSelects } from "@medusajs/utils"
+
+const operatorsMap = {
+  lt: (value) => LessThan(value),
+  gt: (value) => MoreThan(value),
+  lte: (value) => LessThanOrEqual(value),
+  gte: (value) => MoreThanOrEqual(value),
+  contains: (value) => ILike(`%${value}%`),
+  starts_with: (value) => ILike(`${value}%`),
+  ends_with: (value) => ILike(`%${value}`),
+}
 
 /**
  * Used to build TypeORM queries.
@@ -34,23 +48,27 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
   }
 
   if ("skip" in config) {
-    ;(query as FindManyOptions<TEntity>).skip = config.skip
+    ;(query as FindManyOptions<TEntity>).skip = config.skip ?? undefined
   }
 
   if ("take" in config) {
-    ;(query as FindManyOptions<TEntity>).take = config.take
+    ;(query as FindManyOptions<TEntity>).take = config.take ?? undefined
   }
 
   if (config.relations) {
-    query.relations = buildRelations<TEntity>(config.relations)
+    query.relations = buildRelations(
+      config.relations
+    ) as FindOptionsRelations<TEntity>
   }
 
   if (config.select) {
-    query.select = buildSelects<TEntity>(config.select as string[])
+    query.select = buildSelects(
+      config.select as string[]
+    ) as FindOptionsSelect<TEntity>
   }
 
   if (config.order) {
-    query.order = buildOrder<TEntity>(config.order)
+    query.order = buildOrder(config.order) as FindOptionsOrder<TEntity>
   }
 
   return query
@@ -81,8 +99,20 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
  */
 function buildWhere<TWhereKeys extends object, TEntity>(
   constraints: TWhereKeys
-): FindOptionsWhere<TEntity> {
-  const where: FindOptionsWhere<TEntity> = {}
+): FindOptionsWhere<TEntity> | FindOptionsWhere<TEntity>[] {
+  let where: FindOptionsWhere<TEntity> | FindOptionsWhere<TEntity>[] = {}
+
+  if (Array.isArray(constraints)) {
+    where = []
+    constraints.forEach((constraint) => {
+      ;(where as FindOptionsWhere<TEntity>[]).push(
+        buildWhere(constraint) as FindOptionsWhere<TEntity>
+      )
+    })
+
+    return where
+  }
+
   for (const [key, value] of Object.entries(constraints)) {
     if (value === undefined) {
       continue
@@ -105,28 +135,28 @@ function buildWhere<TWhereKeys extends object, TEntity>(
 
     if (typeof value === "object") {
       Object.entries(value).forEach(([objectKey, objectValue]) => {
-        switch (objectKey) {
-          case "lt":
-            where[key] = LessThan(objectValue)
-            break
-          case "gt":
-            where[key] = MoreThan(objectValue)
-            break
-          case "lte":
-            where[key] = LessThanOrEqual(objectValue)
-            break
-          case "gte":
-            where[key] = MoreThanOrEqual(objectValue)
-            break
-          default:
-            if (objectValue != undefined && typeof objectValue === "object") {
-              where[key] = buildWhere<any, TEntity>(objectValue)
-              return
-            }
-            where[key] = value
+        where[key] = where[key] || []
+        if (operatorsMap[objectKey]) {
+          where[key].push(operatorsMap[objectKey](objectValue))
+        } else {
+          if (objectValue != undefined && typeof objectValue === "object") {
+            where[key] = buildWhere<any, TEntity>(objectValue)
+            return
+          }
+          where[key] = value
         }
         return
       })
+
+      if (!Array.isArray(where[key])) {
+        continue
+      }
+
+      if (where[key].length === 1) {
+        where[key] = where[key][0]
+      } else {
+        where[key] = And(...where[key])
+      }
 
       continue
     }
@@ -139,6 +169,7 @@ function buildWhere<TWhereKeys extends object, TEntity>(
 
 /**
  * Revert new object structure of find options to the legacy structure of previous version
+ * @deprecated in favor of import { objectToStringPath } from "@medusajs/utils"
  * @example
  * input: {
  *   test: {
@@ -185,20 +216,6 @@ export function buildLegacyFieldsListFrom<TEntity>(
   return Array.from(output) as (keyof TEntity)[]
 }
 
-export function buildSelects<TEntity>(
-  selectCollection: string[]
-): FindOptionsSelect<TEntity> {
-  return buildRelationsOrSelect(selectCollection) as FindOptionsSelect<TEntity>
-}
-
-export function buildRelations<TEntity>(
-  relationCollection: string[]
-): FindOptionsRelations<TEntity> {
-  return buildRelationsOrSelect(
-    relationCollection
-  ) as FindOptionsRelations<TEntity>
-}
-
 export function addOrderToSelect<TEntity>(
   order: FindOptionsOrder<TEntity>,
   select: FindOptionsSelect<TEntity>
@@ -215,125 +232,6 @@ export function addOrderToSelect<TEntity>(
       ? { ...select[orderBy], id: true, [orderBy]: true }
       : true
   }
-}
-
-/**
- * Convert an collection of dot string into a nested object
- * @example
- * input: [
- *    order,
- *    order.items,
- *    order.swaps,
- *    order.swaps.additional_items,
- *    order.discounts,
- *    order.discounts.rule,
- *    order.claims,
- *    order.claims.additional_items,
- *    additional_items,
- *    additional_items.variant,
- *    return_order,
- *    return_order.items,
- *    return_order.shipping_method,
- *    return_order.shipping_method.tax_lines
- * ]
- * output: {
- *   "order": {
- *     "items": true,
- *     "swaps": {
- *       "additional_items": true
- *     },
- *     "discounts": {
- *       "rule": true
- *     },
- *     "claims": {
- *       "additional_items": true
- *     }
- *   },
- *   "additional_items": {
- *     "variant": true
- *   },
- *   "return_order": {
- *     "items": true,
- *     "shipping_method": {
- *       "tax_lines": true
- *     }
- *   }
- * }
- * @param collection
- */
-function buildRelationsOrSelect<TEntity>(
-  collection: string[]
-): FindOptionsRelations<TEntity> | FindOptionsSelect<TEntity> {
-  const output: FindOptionsRelations<TEntity> | FindOptionsSelect<TEntity> = {}
-
-  for (const relation of collection) {
-    if (relation.indexOf(".") > -1) {
-      const nestedRelations = relation.split(".")
-
-      let parent = output
-
-      while (nestedRelations.length > 1) {
-        const nestedRelation = nestedRelations.shift() as string
-        parent = parent[nestedRelation] =
-          parent[nestedRelation] !== true &&
-          typeof parent[nestedRelation] === "object"
-            ? parent[nestedRelation]
-            : {}
-      }
-
-      parent[nestedRelations[0]] = true
-
-      continue
-    }
-
-    output[relation] = output[relation] ?? true
-  }
-
-  return output
-}
-
-/**
- * Convert an order of dot string into a nested object
- * @example
- * input: { id: "ASC", "items.title": "ASC", "items.variant.title": "ASC" }
- * output: {
- *   "id": "ASC",
- *   "items": {
- *     "id": "ASC",
- *     "variant": {
- *        "title": "ASC"
- *     }
- *   },
- * }
- * @param orderBy
- */
-function buildOrder<TEntity>(orderBy: {
-  [k: string]: "ASC" | "DESC"
-}): FindOptionsOrder<TEntity> {
-  const output: FindOptionsOrder<TEntity> = {}
-
-  const orderKeys = Object.keys(orderBy)
-
-  for (const order of orderKeys) {
-    if (order.indexOf(".") > -1) {
-      const nestedOrder = order.split(".")
-
-      let parent = output
-
-      while (nestedOrder.length > 1) {
-        const nestedRelation = nestedOrder.shift() as string
-        parent = parent[nestedRelation] = parent[nestedRelation] ?? {}
-      }
-
-      parent[nestedOrder[0]] = orderBy[order]
-
-      continue
-    }
-
-    output[order] = orderBy[order]
-  }
-
-  return output
 }
 
 export function nullableValue(value: any): FindOperator<any> {

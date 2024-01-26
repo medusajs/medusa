@@ -1,7 +1,7 @@
 import clsx from "clsx"
 import React from "react"
 
-type SpinnerProps = {
+export type SpinnerProps = {
   size?: "large" | "medium" | "small"
   variant?: "primary" | "secondary"
 }

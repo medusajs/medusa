@@ -11,7 +11,10 @@ export function hasChanges<T1 extends Object, T2 extends Object>(
 ): boolean {
   for (const [key, value] of Object.entries(obj2)) {
     if (isObject(obj1[key])) {
-      return hasChanges(obj1[key], value)
+      if (hasChanges(obj1[key], value)) {
+        return true
+      }
+      continue
     }
 
     if (obj1[key] !== value) {

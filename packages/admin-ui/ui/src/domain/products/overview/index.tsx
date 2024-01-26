@@ -1,7 +1,10 @@
 import { useAdminCreateBatchJob, useAdminCreateCollection } from "medusa-react"
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import Fade from "../../../components/atoms/fade-wrapper"
+import Spacer from "../../../components/atoms/spacer"
+import WidgetContainer from "../../../components/extensions/widget-container"
 import Button from "../../../components/fundamentals/button"
 import ExportIcon from "../../../components/fundamentals/icons/export-icon"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
@@ -14,14 +17,16 @@ import CollectionsTable from "../../../components/templates/collections-table"
 import ProductTable from "../../../components/templates/product-table"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
+import { usePolling } from "../../../providers/polling-provider"
+import { useWidgets } from "../../../providers/widget-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
 import ImportProducts from "../batch-job/import"
 import NewProduct from "../new"
-import { usePolling } from "../../../providers/polling-provider"
 
 const VIEWS = ["products", "collections"]
 
 const Overview = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
   const [view, setView] = useState("products")
@@ -29,7 +34,10 @@ const Overview = () => {
     state: createProductState,
     close: closeProductCreate,
     open: openProductCreate,
-  } = useToggleState()
+  } = useToggleState(
+    !location.search.includes("view=collections") &&
+      location.search.includes("modal=new")
+  )
 
   const { resetInterval } = usePolling()
   const createBatchJob = useAdminCreateBatchJob()
@@ -37,6 +45,8 @@ const Overview = () => {
   const notification = useNotification()
 
   const createCollection = useAdminCreateCollection()
+
+  const { getWidgets } = useWidgets()
 
   useEffect(() => {
     if (location.search.includes("?view=collections")) {
@@ -68,7 +78,7 @@ const Overview = () => {
               onClick={() => openImportModal()}
             >
               <UploadIcon size={20} />
-              Import Products
+              {t("overview-import-products", "Import Products")}
             </Button>
             <Button
               variant="secondary"
@@ -76,7 +86,7 @@ const Overview = () => {
               onClick={() => openExportModal()}
             >
               <ExportIcon size={20} />
-              Export Products
+              {t("overview-export-products", "Export Products")}
             </Button>
             <Button
               variant="secondary"
@@ -84,10 +94,11 @@ const Overview = () => {
               onClick={openProductCreate}
             >
               <PlusIcon size={20} />
-              New Product
+              {t("overview-new-product", "New Product")}
             </Button>
           </div>
         )
+
       default:
         return (
           <div className="flex space-x-2">
@@ -97,7 +108,7 @@ const Overview = () => {
               onClick={() => setShowNewCollection(!showNewCollection)}
             >
               <PlusIcon size={20} />
-              New Collection
+              {t("overview-new-collection", "New Collection")}
             </Button>
           </div>
         )
@@ -109,13 +120,19 @@ const Overview = () => {
     open: openExportModal,
     close: closeExportModal,
     state: exportModalOpen,
-  } = useToggleState(false)
+  } = useToggleState(
+    !location.search.includes("view=collections") &&
+      location.search.includes("modal=export")
+  )
 
   const {
     open: openImportModal,
     close: closeImportModal,
     state: importModalOpen,
-  } = useToggleState(false)
+  } = useToggleState(
+    !location.search.includes("view=collections") &&
+      location.search.includes("modal=import")
+  )
 
   const handleCreateCollection = async (data, colMetadata) => {
     const metadata = colMetadata
@@ -131,11 +148,23 @@ const Overview = () => {
       { ...data, metadata },
       {
         onSuccess: ({ collection }) => {
-          notification("Success", "Successfully created collection", "success")
+          notification(
+            t("overview-success", "Success"),
+            t(
+              "overview-successfully-created-collection",
+              "Successfully created collection"
+            ),
+            "success"
+          )
           navigate(`/a/collections/${collection.id}`)
           setShowNewCollection(false)
         },
-        onError: (err) => notification("Error", getErrorMessage(err), "error"),
+        onError: (err) =>
+          notification(
+            t("overview-error", "Error"),
+            getErrorMessage(err),
+            "error"
+          ),
       }
     )
   }
@@ -150,10 +179,21 @@ const Overview = () => {
     createBatchJob.mutate(reqObj, {
       onSuccess: () => {
         resetInterval()
-        notification("Success", "Successfully initiated export", "success")
+        notification(
+          t("overview-success", "Success"),
+          t(
+            "overview-successfully-initiated-export",
+            "Successfully initiated export"
+          ),
+          "success"
+        )
       },
       onError: (err) => {
-        notification("Error", getErrorMessage(err), "error")
+        notification(
+          t("overview-error", "Error"),
+          getErrorMessage(err),
+          "error"
+        )
       },
     })
 
@@ -162,7 +202,17 @@ const Overview = () => {
 
   return (
     <>
-      <div className="flex h-full grow flex-col">
+      <div className="gap-y-xsmall flex h-full grow flex-col">
+        {getWidgets("product.list.before").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              injectionZone={"product.list.before"}
+              widget={w}
+              entity={undefined}
+            />
+          )
+        })}
         <div className="flex w-full grow flex-col">
           <BodyCard
             forceDropdown={false}
@@ -178,8 +228,20 @@ const Overview = () => {
           >
             <CurrentView />
           </BodyCard>
+          <Spacer />
         </div>
+        {getWidgets("product.list.after").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              injectionZone={"product.list.after"}
+              widget={w}
+              entity={undefined}
+            />
+          )
+        })}
       </div>
+
       {showNewCollection && (
         <AddCollectionModal
           onClose={() => setShowNewCollection(!showNewCollection)}

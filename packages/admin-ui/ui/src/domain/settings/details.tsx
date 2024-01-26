@@ -2,7 +2,8 @@ import { Store } from "@medusajs/medusa"
 import { useAdminStore, useAdminUpdateStore } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import BreadCrumb from "../../components/molecules/breadcrumb"
+import { useTranslation } from "react-i18next"
+import BackButton from "../../components/atoms/back-button"
 import Input from "../../components/molecules/input"
 import BodyCard from "../../components/organisms/body-card"
 import useNotification from "../../hooks/use-notification"
@@ -20,6 +21,7 @@ const AccountDetails = () => {
   const { store } = useAdminStore()
   const { mutate } = useAdminUpdateStore()
   const notification = useNotification()
+  const { t } = useTranslation()
 
   const handleCancel = () => {
     if (store) {
@@ -37,26 +39,49 @@ const AccountDetails = () => {
     const validateInviteLinkTemplate = validateUrl(data.invite_link_template)
 
     if (!validateSwapLinkTemplate) {
-      notification("Error", "Malformed swap url", "error")
+      notification(
+        t("settings-error", "Error"),
+        t("settings-malformed-swap-url", "Malformed swap url"),
+        "error"
+      )
       return
     }
 
     if (!validatePaymentLinkTemplate) {
-      notification("Error", "Malformed payment url", "error")
+      notification(
+        t("settings-error", "Error"),
+        t("settings-malformed-payment-url", "Malformed payment url"),
+        "error"
+      )
       return
     }
 
     if (!validateInviteLinkTemplate) {
-      notification("Error", "Malformed invite url", "error")
+      notification(
+        t("settings-error", "Error"),
+        t("settings-malformed-invite-url", "Malformed invite url"),
+        "error"
+      )
       return
     }
 
     mutate(data, {
       onSuccess: () => {
-        notification("Success", "Successfully updated store", "success")
+        notification(
+          t("settings-success", "Success"),
+          t(
+            "settings-successfully-updated-store",
+            "Successfully updated store"
+          ),
+          "success"
+        )
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification(
+          t("settings-error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
       },
     })
   }
@@ -64,49 +89,70 @@ const AccountDetails = () => {
   return (
     <form className="flex-col py-5">
       <div className="max-w-[632px]">
-        <BreadCrumb
-          previousRoute="/a/settings/"
-          previousBreadcrumb="Settings"
-          currentPage="Store Details"
+        <BackButton
+          path="/a/settings/"
+          label={t("settings-back-to-settings", "Back to settings")}
+          className="mb-xsmall"
         />
         <BodyCard
           events={[
             {
-              label: "Save",
+              label: t("settings-save", "Save"),
               type: "button",
               onClick: handleSubmit(onSubmit),
             },
-            { label: "Cancel changes", type: "button", onClick: handleCancel },
+            {
+              label: t("settings-cancel", "Cancel"),
+              type: "button",
+              onClick: handleCancel,
+            },
           ]}
-          title="Store Details"
-          subtitle="Manage your business details"
+          title={t("settings-store-details", "Store Details")}
+          subtitle={t(
+            "settings-manage-your-business-details",
+            "Manage your business details"
+          )}
         >
-          <h6 className="mt-large inter-base-semibold">General</h6>
-          <Input
-            className="mt-base"
-            label="Store name"
-            {...register("name")}
-            placeholder="Medusa Store"
-          />
-          <h6 className="mt-2xlarge inter-base-semibold">Advanced settings</h6>
-          <Input
-            className="mt-base"
-            label="Swap link template"
-            {...register("swap_link_template")}
-            placeholder="https://acme.inc/swap={swap_id}"
-          />
-          <Input
-            className="mt-base"
-            label="Draft order link template"
-            {...register("payment_link_template")}
-            placeholder="https://acme.inc/payment={payment_id}"
-          />
-          <Input
-            className="mt-base"
-            label="Invite link template"
-            {...register("invite_link_template")}
-            placeholder="https://acme-admin.inc/invite?token={invite_token}"
-          />
+          <div className="gap-y-xlarge mb-large flex flex-col">
+            <div>
+              <h2 className="inter-base-semibold mb-base">
+                {t("settings-general", "General")}
+              </h2>
+              <Input
+                label={t("settings-store-name", "Store name")}
+                {...register("name")}
+                placeholder={t("settings-medusa-store", "Medusa Store")}
+              />
+            </div>
+            <div>
+              <h2 className="inter-base-semibold mb-base">
+                {t("settings-advanced-settings", "Advanced settings")}
+              </h2>
+              <Input
+                label={t("settings-swap-link-template", "Swap link template")}
+                {...register("swap_link_template")}
+                placeholder="https://acme.inc/swap={swap_id}"
+              />
+              <Input
+                className="mt-base"
+                label={t(
+                  "settings-draft-order-link-template",
+                  "Draft order link template"
+                )}
+                {...register("payment_link_template")}
+                placeholder="https://acme.inc/payment={payment_id}"
+              />
+              <Input
+                className="mt-base"
+                label={t(
+                  "settings-invite-link-template",
+                  "Invite link template"
+                )}
+                {...register("invite_link_template")}
+                placeholder="https://acme-admin.inc/invite?token={invite_token}"
+              />
+            </div>
+          </div>
         </BodyCard>
       </div>
     </form>

@@ -4,11 +4,12 @@ import { DiscountServiceMock } from "../../../../../services/__mocks__/discount"
 
 const validRegionId = IdMap.getId("region-france")
 
+jest.setTimeout(30000)
 describe("POST /admin/discounts", () => {
   const adminSession = {
     jwt: {
-      userId: IdMap.getId("admin_user")
-    }
+      userId: IdMap.getId("admin_user"),
+    },
   }
 
   describe("successful creation", () => {
@@ -237,7 +238,7 @@ describe("POST /admin/discounts", () => {
     })
   })
 
-  describe("succesfully creates a dynamic discount without setting valid duration", () => {
+  describe("successfully creates a dynamic discount without setting valid duration", () => {
     let subject
 
     beforeAll(async () => {

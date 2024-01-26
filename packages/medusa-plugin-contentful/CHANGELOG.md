@@ -1,5 +1,39 @@
 # Change Log
 
+## 1.2.11
+
+### Patch Changes
+
+- [#5543](https://github.com/medusajs/medusa/pull/5543) [`f90ba0208`](https://github.com/medusajs/medusa/commit/f90ba02087778d8131aed3a59a6dc9c8ca3c95f4) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(utils): Introduce promiseAll util
+
+- Updated dependencies [[`c39bf69a5`](https://github.com/medusajs/medusa/commit/c39bf69a5e5cae75d7fa12aa6022b10903557a32), [`154c9b43b`](https://github.com/medusajs/medusa/commit/154c9b43bde1fdff562aba9da8a79af2660b29b3)]:
+  - @medusajs/utils@1.10.5
+
+## 1.2.10
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
+## 1.2.9
+
+### Patch Changes
+
+- [#3991](https://github.com/medusajs/medusa/pull/3991) [`eba21d9c5`](https://github.com/medusajs/medusa/commit/eba21d9c5f5fac292013cf1c39ead1d5523414d6) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa-plugin-contentful): include sku from inventory module when syncing variants and products
+
+- [#4026](https://github.com/medusajs/medusa/pull/4026) [`a91987fab`](https://github.com/medusajs/medusa/commit/a91987fab33745f9864eab21bd1c27e8e3e24571) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Remove sqlite support
+
+## 1.2.8
+
+### Patch Changes
+
+- [#3187](https://github.com/medusajs/medusa/pull/3187) [`f97b3d7cc`](https://github.com/medusajs/medusa/commit/f97b3d7ccee381d3491337ab5144bb44520382a7) Thanks [@fPolic](https://github.com/fPolic)! - feat(medusa, cache-redis, cache-inmemory): Added cache modules
+
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0
+  - medusa-interfaces@1.3.7
+  - medusa-test-utils@1.1.40
+
 ## 1.2.8-rc.0
 
 ### Patch Changes

@@ -1,4 +1,0 @@
-type: object
-properties:
-  sales_channel:
-    $ref: ./SalesChannel.yaml

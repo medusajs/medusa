@@ -49,7 +49,7 @@ describe("POST /admin/products/:id", () => {
 
     it("successfully updates variants and create new ones", async () => {
       expect(ProductVariantServiceMock.update).toHaveBeenCalledTimes(1)
-      expect(ProductVariantServiceMock.create).toHaveBeenCalledTimes(2)
+      expect(ProductVariantServiceMock.create).toHaveBeenCalledTimes(1)
     })
   })
 

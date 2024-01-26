@@ -2,9 +2,9 @@ const { Currency, Region } = require("@medusajs/medusa")
 const path = require("path")
 
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+  require("../../../environment-helpers/start-server-with-environment").default
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb } = require("../../../environment-helpers/use-db")
 const {
   simpleProductFactory,
   simpleRegionFactory,
@@ -12,10 +12,10 @@ const {
   simpleProductTaxRateFactory,
   simpleShippingOptionFactory,
   simpleShippingTaxRateFactory,
-} = require("../../factories")
+} = require("../../../factories")
 
-const adminSeeder = require("../../helpers/admin-seeder")
-const promotionsSeeder = require("../../helpers/price-selection-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const promotionsSeeder = require("../../../helpers/price-selection-seeder")
 
 jest.setTimeout(30000)
 
@@ -693,7 +693,7 @@ describe("tax inclusive prices", () => {
 
       const res = await api.get(`/admin/shipping-options`, {
         headers: {
-          Authorization: `Bearer test_token`,
+          "x-medusa-access-token": "test_token",
         },
       })
 
@@ -804,13 +804,13 @@ describe("tax inclusive prices", () => {
       expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-price1",
+            id: "test-price-1",
             region_id: "test-region",
             currency_code: "usd",
             amount: 120,
           }),
           expect.objectContaining({
-            id: "test-price3",
+            id: "test-price-3",
             region_id: "test-region",
             currency_code: "usd",
             price_list_id: "pl",
@@ -859,13 +859,13 @@ describe("tax inclusive prices", () => {
       expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-price1",
+            id: "test-price-1",
             region_id: "test-region",
             currency_code: "usd",
             amount: 120,
           }),
           expect.objectContaining({
-            id: "test-price3",
+            id: "test-price-3",
             region_id: "test-region",
             currency_code: "usd",
             price_list_id: "pl",
@@ -1154,13 +1154,13 @@ describe("tax inclusive prices", () => {
       expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-price1",
+            id: "test-price-1",
             region_id: "test-region",
             currency_code: "usd",
             amount: 120,
           }),
           expect.objectContaining({
-            id: "test-price3",
+            id: "test-price-3",
             region_id: "test-region",
             currency_code: "usd",
             price_list_id: "pl",

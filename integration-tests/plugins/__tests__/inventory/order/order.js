@@ -1,53 +1,46 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const { setPort, useApi } = require("../../../../helpers/use-api")
-
-const adminSeeder = require("../../../helpers/admin-seeder")
-const cartSeeder = require("../../../helpers/cart-seeder")
 const {
+  startBootstrapApp,
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const { useApi } = require("../../../../environment-helpers/use-api")
+
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const {
+  simpleLineItemFactory,
+  simpleSalesChannelFactory,
   simpleProductFactory,
   simpleCustomerFactory,
-} = require("../../../../api/factories")
-const { simpleSalesChannelFactory } = require("../../../../api/factories")
-const {
   simpleOrderFactory,
   simpleRegionFactory,
   simpleCartFactory,
   simpleShippingOptionFactory,
-} = require("../../../factories")
+} = require("../../../../factories")
+const {
+  getContainer,
+} = require("../../../../environment-helpers/use-container")
 
-jest.setTimeout(30000)
+jest.setTimeout(150000)
 
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("/store/carts", () => {
-  let express
+  let shutdownServer
   let appContainer
   let dbConnection
-
-  const doAfterEach = async () => {
-    const db = useDb()
-    return await db.teardown()
-  }
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd })
-    appContainer = container
-
-    setPort(port)
-    express = app.listen(port, (err) => {
-      process.send(port)
-    })
+    shutdownServer = await startBootstrapApp({ cwd })
+    appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   afterEach(async () => {
@@ -162,6 +155,85 @@ describe("/store/carts", () => {
           available_quantity: 100,
         })
       )
+    })
+
+    describe("canceling an order", () => {
+      it("should cancel an order with many items", async () => {
+        const api = useApi()
+
+        const stockLocation = await stockLocationService.create({
+          name: "test-location",
+        })
+        await salesChannelLocationService.associateLocation(
+          "test-channel",
+          stockLocation.id
+        )
+        const inventoryItem = await inventoryService.createInventoryItem({
+          sku: "cancel-me",
+        })
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: inventoryItem.id,
+          location_id: stockLocation.id,
+          stocked_quantity: 100,
+        })
+
+        const customer = await simpleCustomerFactory(dbConnection, {}, 100)
+
+        const cart = await simpleCartFactory(dbConnection, {
+          email: "testme@email.com",
+          region: regionId,
+          line_items: items,
+          sales_channel_id: "test-channel",
+          shipping_address: {},
+          shipping_methods: [
+            {
+              shipping_option: {
+                region_id: regionId,
+              },
+            },
+          ],
+        })
+
+        const items = []
+        for (let i = 0; i < 13; i++) {
+          const product = await simpleProductFactory(dbConnection, {})
+          await prodVarInventoryService.attachInventoryItem(
+            product.variants[0].id,
+            inventoryItem.id
+          )
+          const lineItem = await simpleLineItemFactory(dbConnection, {
+            cart_id: cart.id,
+            fulfilled_quantity: 0,
+            returned_quantity: 0,
+            title: "Line Item",
+            description: "Line Item Desc",
+            thumbnail: "https://test.js/1234",
+            unit_price: 8000,
+            quantity: 1,
+            variant_id: product.variants[0].id,
+          })
+          items.push(lineItem)
+        }
+
+        await appContainer
+          .resolve("cartService")
+          .update(cart.id, { customer_id: customer.id })
+
+        await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+        const completeRes = await api.post(`/store/carts/${cart.id}/complete`)
+
+        const orderId = completeRes.data.data.id
+
+        const response = await api
+          .post(`/admin/orders/${orderId}/cancel`, {}, adminHeaders)
+          .catch((e) => {
+            console.log(e.response.data)
+            throw e
+          })
+
+        expect(response.status).toEqual(200)
+      })
     })
 
     describe("swaps", () => {
@@ -548,11 +620,9 @@ describe("/store/carts", () => {
       it("Deletes multiple reservations on successful fulfillment with reservation", async () => {
         const api = useApi()
 
-        const a = await inventoryService.updateInventoryLevel(
-          invItemId,
-          locationId,
-          { stocked_quantity: 2 }
-        )
+        await inventoryService.updateInventoryLevel(invItemId, locationId, {
+          stocked_quantity: 2,
+        })
 
         await prodVarInventoryService.reserveQuantity(variantId, 1, {
           locationId: locationId,
@@ -669,11 +739,9 @@ describe("/store/carts", () => {
       it("Adjusts single reservation on successful fulfillment with over-reserved line item", async () => {
         const api = useApi()
 
-        const a = await inventoryService.updateInventoryLevel(
-          invItemId,
-          locationId,
-          { stocked_quantity: 3 }
-        )
+        await inventoryService.updateInventoryLevel(invItemId, locationId, {
+          stocked_quantity: 3,
+        })
 
         await prodVarInventoryService.reserveQuantity(variantId, 3, {
           locationId: locationId,
@@ -743,11 +811,9 @@ describe("/store/carts", () => {
           stocked_quantity: 3,
         })
 
-        const a = await inventoryService.updateInventoryLevel(
-          invItemId,
-          locationId,
-          { stocked_quantity: 3 }
-        )
+        await inventoryService.updateInventoryLevel(invItemId, locationId, {
+          stocked_quantity: 3,
+        })
 
         await prodVarInventoryService.reserveQuantity(variantId, 1, {
           locationId: locationId,

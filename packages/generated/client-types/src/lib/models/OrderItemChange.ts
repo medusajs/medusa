@@ -7,7 +7,7 @@ import type { LineItem } from "./LineItem"
 import type { OrderEdit } from "./OrderEdit"
 
 /**
- * Represents an order edit item change
+ * An order item change is a change made within an order edit to an order's items. These changes are not reflected on the original order until the order edit is confirmed.
  */
 export interface OrderItemChange {
   /**
@@ -23,7 +23,7 @@ export interface OrderItemChange {
    */
   order_edit_id: string
   /**
-   * Available if the relation `order_edit` is expanded.
+   * The details of the order edit the item change is associated with.
    */
   order_edit?: OrderEdit | null
   /**
@@ -31,7 +31,7 @@ export interface OrderItemChange {
    */
   original_line_item_id: string | null
   /**
-   * Available if the relation `original_line_item` is expanded.
+   * The details of the original line item this item change references. This is used if the item change updates or deletes the original item.
    */
   original_line_item?: LineItem | null
   /**
@@ -39,7 +39,7 @@ export interface OrderItemChange {
    */
   line_item_id: string | null
   /**
-   * Available if the relation `line_item` is expanded.
+   * The details of the resulting line item after the item change. This line item is then used in the original order once the order edit is confirmed.
    */
   line_item?: LineItem | null
   /**

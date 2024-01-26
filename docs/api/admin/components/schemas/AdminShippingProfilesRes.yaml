@@ -1,4 +1,0 @@
-type: object
-properties:
-  shipping_profile:
-    $ref: ./ShippingProfile.yaml

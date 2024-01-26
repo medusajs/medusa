@@ -7,7 +7,7 @@ import {
   ITaxService,
   ItemTaxCalculationLine,
   TaxCalculationContext,
-  TransactionBaseService
+  TransactionBaseService,
 } from "../interfaces"
 import {
   Cart,
@@ -16,7 +16,7 @@ import {
   Region,
   ShippingMethod,
   ShippingMethodTaxLine,
-  TaxProvider
+  TaxProvider,
 } from "../models"
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
@@ -24,6 +24,7 @@ import { TaxProviderRepository } from "../repositories/tax-provider"
 import { isCart } from "../types/cart"
 import { TaxLinesMaps, TaxServiceRate } from "../types/tax-service"
 import TaxRateService from "./tax-rate"
+import { promiseAll } from "@medusajs/utils"
 
 type RegionDetails = {
   id: string
@@ -101,7 +102,7 @@ class TaxProviderService extends TransactionBaseService {
         this.smTaxLineRepo_
       )
 
-      await Promise.all([
+      await promiseAll([
         taxLineRepo.deleteForCart(cartId),
         shippingTaxRepo.deleteForCart(cartId),
       ])
@@ -153,7 +154,7 @@ class TaxProviderService extends TransactionBaseService {
       )
 
       return (
-        await Promise.all([
+        await promiseAll([
           itemTaxLineRepo.upsertLines(lineItems),
           shippingTaxLineRepo.upsertLines(shipping),
         ])
@@ -247,42 +248,41 @@ class TaxProviderService extends TransactionBaseService {
     lineItems: LineItem[],
     calculationContext: TaxCalculationContext
   ): Promise<(ShippingMethodTaxLine | LineItemTaxLine)[]> {
-    const calculationLines = await Promise.all(
-      lineItems.map(async (l) => {
-        if (l.is_return) {
-          return null
-        }
+    const productIds = [
+      ...new Set(
+        lineItems.map((item) => item?.variant?.product_id).filter((p) => p)
+      ),
+    ]
 
-        if (l.variant_id && !l.variant) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Unable to get the tax lines for the item ${l.id}, it contains a variant_id but the variant is missing.`
-          )
-        }
-
-        if (l.variant?.product_id) {
-          return {
-            item: l,
-            rates: await this.getRegionRatesForProduct(
-              l.variant.product_id,
-              calculationContext.region
-            ),
-          }
-        }
-
-        /*
-         * If the line item is custom and therefore not associated with a
-         * product we assume no taxes - we should consider adding rate overrides
-         * to custom lines at some point
-         */
-        return {
-          item: l,
-          rates: [],
-        }
-      })
+    const productRatesMap = await this.getRegionRatesForProduct(
+      productIds,
+      calculationContext.region
     )
 
-    const shippingCalculationLines = await Promise.all(
+    const calculationLines = lineItems.map((item) => {
+      if (item.is_return) {
+        return null
+      }
+
+      if (item.variant?.product_id) {
+        return {
+          item: item,
+          rates: productRatesMap.get(item.variant?.product_id) ?? [],
+        }
+      }
+
+      /*
+       * If the line item is custom and therefore not associated with a
+       * product we assume no taxes - we should consider adding rate overrides
+       * to custom lines at some point
+       */
+      return {
+        item: item,
+        rates: [],
+      }
+    })
+
+    const shippingCalculationLines = await promiseAll(
       calculationContext.shipping_methods.map(async (sm) => {
         return {
           shipping_method: sm,
@@ -421,50 +421,67 @@ class TaxProviderService extends TransactionBaseService {
   /**
    * Gets the tax rates configured for a product. The rates are cached between
    * calls.
-   * @param productId - the product id to get rates for
+   * @param productIds
    * @param region - the region to get configured rates for.
-   * @return the tax rates configured for the shipping option.
+   * @return the tax rates configured for the shipping option. A map by product id
    */
   async getRegionRatesForProduct(
-    productId: string,
+    productIds: string | string[],
     region: RegionDetails
-  ): Promise<TaxServiceRate[]> {
-    const cacheKey = this.getCacheKey(productId, region.id)
-    const cacheHit = await this.cacheService_.get<TaxServiceRate[]>(cacheKey)
-    if (cacheHit) {
-      return cacheHit
-    }
+  ): Promise<Map<string, TaxServiceRate[]>> {
+    productIds = Array.isArray(productIds) ? productIds : [productIds]
 
-    let toReturn: TaxServiceRate[] = []
-    const productRates = await this.taxRateService_
-      .withTransaction(this.activeManager_)
-      .listByProduct(productId, {
-        region_id: region.id,
-      })
+    const nonCachedProductIds: string[] = []
 
-    if (productRates.length > 0) {
-      toReturn = productRates.map((pr) => {
-        return {
-          rate: pr.rate,
-          name: pr.name,
-          code: pr.code,
+    const cacheKeysMap = new Map(
+      productIds.map((id) => [id, this.getCacheKey(id, region.id)])
+    )
+
+    const productRatesMapResult = new Map<string, TaxServiceRate[]>()
+    await promiseAll(
+      [...cacheKeysMap].map(async ([id, cacheKey]) => {
+        const cacheHit = await this.cacheService_.get<TaxServiceRate[]>(
+          cacheKey
+        )
+
+        if (!cacheHit) {
+          nonCachedProductIds.push(id)
+          return
         }
+
+        productRatesMapResult.set(id, cacheHit)
       })
+    )
+
+    // All products rates are cached so we can return early
+    if (!nonCachedProductIds.length) {
+      return productRatesMapResult
     }
 
-    if (toReturn.length === 0) {
-      toReturn = [
-        {
-          rate: region.tax_rate,
-          name: "default",
-          code: "default",
-        },
-      ]
-    }
+    await promiseAll(
+      nonCachedProductIds.map(async (id) => {
+        const rates = await this.taxRateService_
+          .withTransaction(this.activeManager_)
+          .listByProduct(id, {
+            region_id: region.id,
+          })
 
-    await this.cacheService_.set(cacheKey, toReturn)
+        const toReturn: TaxServiceRate[] = rates.length
+          ? rates
+          : [
+              {
+                rate: region.tax_rate,
+                name: "default",
+                code: "default",
+              },
+            ]
 
-    return toReturn
+        await this.cacheService_.set(cacheKeysMap.get(id)!, toReturn)
+        productRatesMapResult.set(id, toReturn)
+      })
+    )
+
+    return productRatesMapResult
   }
 
   /**

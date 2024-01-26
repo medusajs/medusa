@@ -1,9 +1,10 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import OrderService from "../order"
+import { FlagRouter } from "@medusajs/utils"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
 import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
+import OrderService from "../order"
 
 describe("OrderService", () => {
   const totalsService = {
@@ -151,6 +152,7 @@ describe("OrderService", () => {
       eventBusService,
       cartService,
       productVariantInventoryService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -364,6 +366,7 @@ describe("OrderService", () => {
         subtotal: 100,
         total: 100,
         discount_total: 0,
+        gift_card_total: 100,
       }
 
       orderService.cartService_.retrieveWithTotals = () => {
@@ -519,12 +522,13 @@ describe("OrderService", () => {
     })
   })
 
-  describe("retrieveByCartId", () => {
+  describe("retrieveByCartIdWithTotals", () => {
     const orderRepo = MockRepository({
-      findOne: (q) => {
+      findOneWithRelations: (q) => {
         return Promise.resolve({})
       },
     })
+
     const orderService = new OrderService({
       totalsService,
       newTotalsService: newTotalsServiceMock,
@@ -537,11 +541,15 @@ describe("OrderService", () => {
     })
 
     it("calls order model functions", async () => {
-      await orderService.retrieveByCartId(IdMap.getId("test-cart"))
-      expect(orderRepo.findOne).toHaveBeenCalledTimes(1)
-      expect(orderRepo.findOne).toHaveBeenCalledWith({
-        where: { cart_id: IdMap.getId("test-cart") },
-      })
+      await orderService.retrieveByCartIdWithTotals(IdMap.getId("test-cart"))
+
+      expect(orderRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
+      expect(orderRepo.findOneWithRelations).toHaveBeenCalledWith(
+        expect.any(Object),
+        {
+          where: { cart_id: IdMap.getId("test-cart") },
+        }
+      )
     })
   })
 
@@ -1348,6 +1356,7 @@ describe("OrderService", () => {
             gift_card_total: 0,
             id: IdMap.getId("order"),
             items: [],
+            item_tax_total: 0,
             paid_total: 0,
             raw_discount_total: 0,
             refundable_amount: 0,
@@ -1360,6 +1369,7 @@ describe("OrderService", () => {
               },
             ],
             shipping_total: 0,
+            shipping_tax_total: 0,
             subtotal: 0,
             tax_total: 0,
             total: 0,
@@ -1388,6 +1398,7 @@ describe("OrderService", () => {
             gift_card_total: 0,
             id: IdMap.getId("order"),
             items: [],
+            item_tax_total: 0,
             paid_total: 0,
             raw_discount_total: 0,
             refundable_amount: 0,
@@ -1400,6 +1411,7 @@ describe("OrderService", () => {
               },
             ],
             shipping_total: 0,
+            shipping_tax_total: 0,
             subtotal: 0,
             tax_total: 0,
             total: 0,

@@ -1,4 +1,0 @@
-type: object
-properties:
-  order_edit:
-    $ref: ./OrderEdit.yaml

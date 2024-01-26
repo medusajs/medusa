@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminOrdersOrderLineItemReservationReq {
   /**
-   * The id of the location of the reservation
+   * The ID of the location of the reservation
    */
   location_id: string
   /**

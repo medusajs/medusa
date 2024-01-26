@@ -12,6 +12,7 @@ class RestockNotificationService extends BaseService {
       manager,
       eventBusService,
       productVariantService,
+      productVariantInventoryService,
       restockNotificationModel,
     },
     options
@@ -23,6 +24,8 @@ class RestockNotificationService extends BaseService {
     this.options_ = options
 
     this.productVariantService_ = productVariantService
+
+    this.productVariantInventoryService_ = productVariantInventoryService
 
     this.restockNotificationModel_ = restockNotificationModel
 
@@ -68,9 +71,10 @@ class RestockNotificationService extends BaseService {
    * the variant is not sold out.
    * @param {string} variantId - the variant id to sign up for notifications for
    * @param {string} email - the email to signup
+   * @param {string} salesChannelId - the sales channel id of the variant
    * @return {Promise<RestockNotification>} The resulting restock notification
    */
-  async addEmail(variantId, email) {
+  async addEmail(variantId, email, salesChannelId) {
     return this.atomicPhase_(async (manager) => {
       const restockRepo = manager.getRepository(this.restockNotificationModel_)
       const existing = await this.retrieve(variantId)
@@ -84,7 +88,19 @@ class RestockNotificationService extends BaseService {
 
         return await restockRepo.save(existing)
       } else {
-        const variant = await this.productVariantService_.retrieve(variantId)
+        let variant = await this.productVariantService_.retrieve(variantId)
+
+        if (salesChannelId) {
+          const variants =
+            await this.productVariantInventoryService_.setVariantAvailability(
+              [variant],
+              salesChannelId
+            )
+
+          if (variants.length) {
+            variant = variants[0]
+          }
+        }
 
         if (variant.inventory_quantity > 0) {
           throw new MedusaError(

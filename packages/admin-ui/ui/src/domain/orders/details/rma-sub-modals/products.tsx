@@ -1,6 +1,8 @@
 import { useAdminVariants } from "medusa-react"
 import React, { useContext, useEffect, useMemo, useState } from "react"
 import { usePagination, useRowSelect, useTable } from "react-table"
+import { useTranslation } from "react-i18next"
+
 import Spinner from "../../../../components/atoms/spinner"
 import Button from "../../../../components/fundamentals/button"
 import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
@@ -36,6 +38,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
   selectedItems,
 }) => {
   const PAGE_SIZE = 12
+  const { t } = useTranslation()
   const { pop } = useContext(LayeredModalContext)
   const [query, setQuery] = useState("")
   const [offset, setOffset] = useState(0)
@@ -61,7 +64,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
   const columns = useMemo(() => {
     return [
       {
-        Header: "Name",
+        Header: t("rma-sub-modals-name", "Name"),
         accessor: "title",
         Cell: ({ row: { original } }) => {
           return (
@@ -85,7 +88,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
         },
       },
       {
-        Header: "Status",
+        Header: t("rma-sub-modals-status", "Status"),
         accessor: "status",
         Cell: ({ row: { original } }) => (
           <StatusIndicator
@@ -97,7 +100,11 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
         ),
       },
       {
-        Header: <div className="text-right">In Stock</div>,
+        Header: (
+          <div className="text-right">
+            {t("rma-sub-modals-in-stock", "In Stock")}
+          </div>
+        ),
         accessor: "inventory_quantity",
         Cell: ({ row: { original } }) => (
           <div className="text-right">{original.inventory_quantity}</div>
@@ -218,7 +225,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
             count: count!,
             offset: offset,
             pageSize: offset + rows.length,
-            title: "Products",
+            title: t("rma-sub-modals-products", "Products"),
             currentPage: pageIndex + 1,
             pageCount: pageCount,
             nextPage: handleNext,
@@ -230,7 +237,10 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
           <Table
             immediateSearchFocus
             enableSearch
-            searchPlaceholder="Search Products.."
+            searchPlaceholder={t(
+              "rma-sub-modals-search-products",
+              "Search Products.."
+            )}
             searchValue={query}
             handleSearch={handleSearch}
             {...getTableProps()}
@@ -273,7 +283,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
             className="w-[112px]"
             onClick={() => pop()}
           >
-            Back
+            {t("rma-sub-modals-back", "Back")}
           </Button>
           <Button
             variant="primary"
@@ -281,7 +291,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
             size="small"
             onClick={handleSubmit}
           >
-            Add
+            {t("rma-sub-modals-add", "Add")}
           </Button>
         </div>
       </Modal.Footer>

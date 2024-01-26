@@ -3,13 +3,16 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the return reason to create.
+ */
 export interface AdminPostReturnReasonsReq {
   /**
    * The label to display to the Customer.
    */
   label: string
   /**
-   * The value that the Return Reason will be identified by. Must be unique.
+   * A unique value of the return reason.
    */
   value: string
   /**
@@ -17,7 +20,7 @@ export interface AdminPostReturnReasonsReq {
    */
   parent_return_reason_id?: string
   /**
-   * An optional description to for the Reason.
+   * The description of the Reason.
    */
   description?: string
   /**

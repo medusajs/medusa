@@ -1,12 +1,12 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
 const {
   simpleProductTagFactory,
-} = require("../../factories/simple-product-tag-factory")
+} = require("../../../factories/simple-product-tag-factory")
 
 jest.setTimeout(30000)
 

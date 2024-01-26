@@ -12,14 +12,17 @@ import { validator } from "../../../../utils/validator"
  * @oas [get] /admin/products/{id}/variants
  * operationId: "GetProductsProductVariants"
  * summary: "List a Product's Variants"
- * description: "Retrieves a list of the Product Variants associated with a Product."
+ * description: |
+ *   Retrieve a list of Product Variants associated with a Product. The variants can be paginated.
+ *
+ *   By default, each variant will only have the `id` and `variant_id` fields. You can use the `expand` and `fields` request parameters to retrieve more fields or relations.
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} ID of the product to search for the variants.
- *   - (query) fields {string} Comma separated string of the column to select.
- *   - (query) expand {string} Comma separated string of the relations to include.
- *   - (query) offset=0 {integer} How many items to skip before the results.
- *   - (query) limit=100 {integer} Limit the number of items returned.
+ *   - (path) id=* {string} ID of the product.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned product variants.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned product variants.
+ *   - (query) offset=0 {integer} The number of product variants to skip when retrieving the product variants.
+ *   - (query) limit=100 {integer} Limit the number of product variants returned.
  * x-codegen:
  *   method: listVariants
  *   queryParams: AdminGetProductsVariantsParams
@@ -27,11 +30,12 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/products/{id}/variants' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/products/{id}/variants' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:

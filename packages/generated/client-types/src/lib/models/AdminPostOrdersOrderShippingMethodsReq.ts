@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The shipping method's details.
+ */
 export interface AdminPostOrdersOrderShippingMethodsReq {
   /**
    * The price (excluding VAT) that should be charged for the Shipping Method
@@ -13,7 +16,7 @@ export interface AdminPostOrdersOrderShippingMethodsReq {
    */
   option_id: string
   /**
-   * The data required for the Shipping Option to create a Shipping Method. This will depend on the Fulfillment Provider.
+   * The data required for the Shipping Option to create a Shipping Method. This depends on the Fulfillment Provider.
    */
-  date?: Record<string, any>
+  data?: Record<string, any>
 }

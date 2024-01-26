@@ -1,13 +1,13 @@
-import { useAdminStockLocations } from "medusa-react"
-import Fade from "../../../components/atoms/fade-wrapper"
-import Spinner from "../../../components/atoms/spinner"
-import Button from "../../../components/fundamentals/button"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../../components/organisms/body-card"
-import useToggleState from "../../../hooks/use-toggle-state"
+import Button from "../../../components/fundamentals/button"
+import Fade from "../../../components/atoms/fade-wrapper"
 import InventoryPageTableHeader from "../header"
-import NewLocation from "./new"
 import LocationCard from "./components/location-card"
+import NewLocation from "./new"
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
+import Spinner from "../../../components/atoms/spinner"
+import { useAdminStockLocations } from "medusa-react"
+import useToggleState from "../../../hooks/use-toggle-state"
 
 const Locations = () => {
   const {

@@ -13,7 +13,7 @@ export interface AdminInviteDeleteRes {
    */
   object: string
   /**
-   * Whether or not the Invite was deleted.
+   * Whether or not the invite was deleted.
    */
   deleted: boolean
 }

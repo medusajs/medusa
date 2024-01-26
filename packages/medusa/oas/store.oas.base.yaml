@@ -2,241 +2,114 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: Medusa Storefront API
-  description: |
-    API reference for Medusa's Storefront endpoints. All endpoints are prefixed with `/store`.
-    
-    ## Authentication
-
-    To send requests as an authenticated customer, you must use the Cookie Session ID.
-
-    <!-- ReDoc-Inject: <SecurityDefinitions> -->
-
-    ## Expanding Fields
-
-    In many endpoints you'll find an `expand` query parameter that can be passed to the endpoint. You can use the `expand` query parameter to unpack an entity's relations and return them in the response.
-
-    Please note that the relations you pass to `expand` replace any relations that are expanded by default in the request.
-
-    ### Expanding One Relation
-
-    For example, when you retrieve a product, you can retrieve its collection by passing to the `expand` query parameter the value `collection`:
-
-    ```bash
-    curl "http://localhost:9000/store/products/prod_01GDJGP2XPQT2N3JHZQFMH5V45?expand=collection"
-    ```
-
-    ### Expanding Multiple Relations
-
-    You can expand more than one relation by separating the relations in the `expand` query parameter with a comma.
-    
-    For example, to retrieve both the variants and the collection of a product, pass to the `expand` query parameter the value `variants,collection`:
-
-    ```bash
-    curl "http://localhost:9000/store/products/prod_01GDJGP2XPQT2N3JHZQFMH5V45?expand=variants,collection"
-    ```
-
-    ### Prevent Expanding Relations
-
-    Some requests expand relations by default. You can prevent that by passing an empty expand value to retrieve an entity without any extra relations.
-    
-    For example:
-
-    ```bash
-    curl "http://localhost:9000/store/products/prod_01GDJGP2XPQT2N3JHZQFMH5V45?expand"
-    ```
-
-    This would retrieve the product with only its properties, without any relations like `collection`.
-
-    ## Selecting Fields
-
-    In many endpoints you'll find a `fields` query parameter that can be passed to the endpoint. You can use the `fields` query parameter to specify which fields in the entity should be returned in the response.
-
-    Please note that if you pass a `fields` query parameter, only the fields you pass in the value along with the `id` of the entity will be returned in the response.
-    
-    Also, the `fields` query parameter does not affect the expanded relations. You'll have to use the `expand` parameter instead.
-
-    ### Selecting One Field
-
-    For example, when you retrieve a list of products, you can retrieve only the titles of the products by passing `title` as a value to the `fields` query parameter:
-    
-    ```bash
-    curl "http://localhost:9000/store/products?fields=title"
-    ```
-
-    As mentioned above, the expanded relations such as `variants` will still be returned as they're not affected by the `fields` parameter.
-    
-    You can ensure that only the `title` field is returned by passing an empty value to the `expand` query parameter. For example:
-    
-    ```bash
-    curl "http://localhost:9000/store/products?fields=title&expand"
-    ```
-
-    ### Selecting Multiple Fields
-
-    You can pass more than one field by seperating the field names in the `fields` query parameter with a comma.
-
-    For example, to select the `title` and `handle` of a product:
-
-    ```bash
-    curl "http://localhost:9000/store/products?fields=title,handle"
-    ```
-
-    ### Retrieve Only the ID
-
-    You can pass an empty `fields` query parameter to return only the ID of an entity. For example:
-    
-    ```bash
-    curl "http://localhost:9000/store/products?fields"
-    ```
-
-    You can also pair with an empty `expand` query parameter to ensure that the relations aren't retrieved as well. For example:
-    
-    ```bash
-    curl "http://localhost:9000/store/products?fields&expand"
-    ```
-
-    ## Query Parameter Types
-
-    This section covers how to pass some common data types as query parameters. This is useful if you're sending requests to the API endpoints and not using our JS Client. For example, when using cURL or Postman.
-
-    ### Strings
-
-    You can pass a string value in the form of `<parameter_name>=<value>`.
-
-    For example:
-    
-    ```bash
-    curl "http://localhost:9000/store/products?title=Shirt"
-    ```
-
-    If the string has any characters other than letters and numbers, you must encode them.
-
-    For example, if the string has spaces, you can encode the space with `+` or `%20`:
-
-    ```bash
-    curl "http://localhost:9000/store/products?title=Blue%20Shirt"
-    ```
-
-    You can use tools like [this one](https://www.urlencoder.org/) to learn how a value can be encoded.
-
-    ### Integers
-
-    You can pass an integer value in the form of `<parameter_name>=<value>`.
-
-    For example:
-    
-    ```bash
-    curl "http://localhost:9000/store/products?offset=1"
-    ```
-
-    ### Boolean
-
-    You can pass a boolean value in the form of `<parameter_name>=<value>`.
-
-    For example:
-    
-    ```bash
-    curl "http://localhost:9000/store/products?is_giftcard=true"
-    ```
-
-    ### Date and DateTime
-
-    You can pass a date value in the form `<parameter_name>=<value>`. The date must be in the format `YYYY-MM-DD`.
-
-    For example:
-    
-    ```bash
-    curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17"
-    ```
-    
-    You can also pass the time using the format `YYYY-MM-DDTHH:MM:SSZ`. Please note that the `T` and `Z` here are fixed.
-
-    For example:
-    
-    ```bash
-    curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17T07:22:30Z"
-    ```
-
-    ### Array
-
-    Each array value must be passed as a separate query parameter in the form `<parameter_name>[]=<value>`. You can also specify the index of each parameter in the brackets `<parameter_name>[0]=<value>`.
-
-    For example:
-    
-    ```bash
-    curl -g "http://localhost:9000/store/products?sales_channel_id[]=sc_01GPGVB42PZ7N3YQEP2WDM7PC7&sales_channel_id[]=sc_234PGVB42PZ7N3YQEP2WDM7PC7"
-    ```
-
-    Note that the `-g` parameter passed to `curl` disables errors being thrown for using the brackets. Read more [here](https://curl.se/docs/manpage.html#-g).
-
-    ### Object
-
-    Object parameters must be passed as separate query parameters in the form `<parameter_name>[<key>]=<value>`.
-
-    For example:
-    
-    ```bash
-    curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17&created_at[gt]=2022-09-17"
-    ```
-
-    ## Pagination
-
-    ### Query Parameters
-
-    In listing endpoints, such as list customers or list products, you can control the pagination using the query parameters `limit` and `offset`.
-
-    `limit` is used to specify the maximum number of items that can be return in the response. `offset` is used to specify how many items to skip before returning the resulting entities.
-
-    You can use the `offset` query parameter to change between pages. For example, if the limit is 50, at page 1 the offset should be 0; at page 2 the offset should be 50, and so on.
-
-    For example, to limit the number of products returned in the List Products endpoint:
-    
-    ```bash
-    curl "http://localhost:9000/store/products?limit=5"
-    ```
-
-    ### Response Fields
-
-    In the response of listing endpoints, aside from the entities retrieved, there are three pagination-related fields returned: `count`, `limit`, and `offset`.
-
-    Similar to the query parameters, `limit` is the maximum number of items that can be returned in the response, and `field` is the number of items that were skipped before the entities in the result.
-
-    `count` is the total number of available items of this entity. It can be used to determine how many pages are there.
-    
-    For example, if the `count` is 100 and the `limit` is 50, you can divide the `count` by the `limit` to get the number of pages: `100/50 = 2 pages`.
-
   license:
     name: MIT
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
 tags:
   - name: Auth
-    description: Auth endpoints that allow authorization of customers and manages their
-      sessions.
+    description: |
+      Authentication API Routes allow you to manage a customer's session, such as login or log out.
+      You can send authenticated requests for a customer either using the Cookie header or using the JWT Token.
+    externalDocs:
+      description: How to implement customer profiles in your storefront
+      url: https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles
   - name: Carts
-    description: Cart endpoints that allow handling carts in Medusa.
-  - name: Collections
-    description: Collection endpoints that allow handling collections in Medusa.
+    description: |
+      A cart is a virtual shopping bag that customers can use to add items they want to purchase.
+      A cart is then used to checkout and place an order.
+    externalDocs:
+      description: How to implement cart functionality in your storefront
+      url: https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart
   - name: Customers
-    description: Customer endpoints that allow handling customers in Medusa.
+    description: |
+      A customer can register and manage their information such as addresses, orders, payment methods, and more.
+    externalDocs:
+      description: How to implement customer profiles in your storefront
+      url: https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles
   - name: Gift Cards
-    description: Gift Card endpoints that allow handling gift cards in Medusa.
+    description: |
+      Customers can use gift cards during checkout to deduct the gift card's balance from the checkout total.
+      The Gift Card API Routes allow retrieving a gift card's details by its code. A gift card can be applied to a cart using the Carts API Routes.
+    externalDocs:
+      description: How to use gift cards in a storefront
+      url: https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards
   - name: Orders
-    description: Order endpoints that allow handling orders in Medusa.
+    description: |
+      Orders are purchases made by customers, typically through a storefront.
+      Orders are placed and created using the Carts API Routes. The Orders API Routes allow retrieving and claiming orders.
+    externalDocs:
+      description: How to retrieve order details in a storefront
+      url: https://docs.medusajs.com/modules/orders/storefront/retrieve-order-details
+  - name: Order Edits
+    description: |
+      Order edits are changes made to items in an order such as adding, updating their quantity, or deleting them. Order edits are created by the admin.
+      A customer can review order edit requests created by an admin and confirm or decline them.
+    externalDocs:
+      description: How to handle order edits in a storefront
+      url: https://docs.medusajs.com/modules/orders/storefront/handle-order-edits
+  - name: Payment Collections
+    description: |
+      A payment collection is useful for managing additional payments, such as for Order Edits, or installment payments.
   - name: Products
-    description: Product endpoints that allow handling products in Medusa.
+    description: |
+      Products are saleable items in a store. This also includes [saleable gift cards](https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards) in a store.
+      Using these API Routes, you can filter products by categories, collections, sales channels, and more.
+    externalDocs:
+      description: How to show products in a storefront
+      url: https://docs.medusajs.com/modules/products/storefront/show-products
   - name: Product Variants
-    description: Product Variant endpoints that allow handling product variants in Medusa.
+    description: |
+      Product variants are the actual salable item in your store. Each variant is a combination of the different option values available on the product.
+  - name: Product Categories
+    description: |
+      Products can be categoriezed into categories. A product can be associated more than one category.
+      Using these API Routes, you can list or retrieve a category's details and products.
+    externalDocs:
+      description: How to use product categories in a storefront
+      url: https://docs.medusajs.com/modules/products/storefront/use-categories
+  - name: Product Collections
+    description: |
+      A product collection is used to organize products for different purposes such as marketing or discount purposes. For example, you can create a Summer Collection.
+      Using these API Routes, you can list or retrieve a collection's details and products.
+  - name: Product Tags
+    description: |
+      Product tags are string values that can be used to filter products by.
+      Products can have more than one tag, and products can share tags.
+  - name: Product Types
+    description: |
+      Product types are string values that can be used to filter products by.
+      Products can have more than one tag, and products can share types.
   - name: Regions
-    description: Region endpoints that allow handling regions in Medusa.
-  - name: Return Reasons
-    description: Return Reason endpoints that allow handling return reasons in Medusa.
+    description: |
+      Regions are different countries or geographical regions that the commerce store serves customers in.
+      Customers can choose what region they're in, which can be used to change the prices shown based on the region and its currency.
+    externalDocs:
+      description: How to use regions in a storefront
+      url: https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions
   - name: Returns
-    description: Return endpoints that allow handling returns in Medusa.
+    description: |
+      A return can be created by a customer to return items in an order.
+    externalDocs:
+      description: How to create a return in a storefront
+      url: https://docs.medusajs.com/modules/orders/storefront/create-return
+  - name: Return Reasons
+    description: |
+      Return reasons are key-value pairs that are used to specify why an order return is being created.
   - name: Shipping Options
-    description: Shipping Option endpoints that allow handling shipping options in Medusa.
+    description: |
+      A shipping option is used to define the available shipping methods during checkout or when creating a return.
+    externalDocs:
+      description: Shipping Option architecture
+      url: https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-option
   - name: Swaps
-    description: Swap endpoints that allow handling swaps in Medusa.
+    description: |
+      A swap is created by a customer or an admin to exchange an item with a new one.
+      Creating a swap implicitely includes creating a return for the item being exchanged.
+    externalDocs:
+      description: How to create a swap in a storefront
+      url: https://docs.medusajs.com/modules/orders/storefront/create-swap
 servers:
+  - url: http://localhost:9000
   - url: https://api.medusa-commerce.com
 paths: { }
 components:
@@ -369,6 +242,10 @@ components:
         message: "An unknown error occurred."
         type: "unknown_error"
   securitySchemes:
+    jwt_token:
+      type: http
+      x-displayName: JWT Token
+      scheme: bearer
     cookie_auth:
       type: apiKey
       x-displayName: Cookie Session ID

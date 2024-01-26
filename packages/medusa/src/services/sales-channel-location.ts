@@ -5,7 +5,6 @@ import { TransactionBaseService } from "../interfaces"
 import { SalesChannelLocation } from "../models/sales-channel-location"
 import SalesChannelService from "./sales-channel"
 
-
 type InjectedDependencies = {
   stockLocationService: IStockLocationService
   salesChannelService: SalesChannelService
@@ -20,19 +19,17 @@ type InjectedDependencies = {
 class SalesChannelLocationService extends TransactionBaseService {
   protected readonly salesChannelService_: SalesChannelService
   protected readonly eventBusService_: IEventBusService
-  protected readonly stockLocationService_: IStockLocationService
 
-  constructor({
-    salesChannelService,
-    stockLocationService,
-    eventBusService,
-  }: InjectedDependencies) {
+  protected get stockLocationService_(): IStockLocationService {
+    return this.__container__.stockLocationService
+  }
+
+  constructor({ salesChannelService, eventBusService }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.salesChannelService_ = salesChannelService
     this.eventBusService_ = eventBusService
-    this.stockLocationService_ = stockLocationService
   }
 
   /**
@@ -79,19 +76,21 @@ class SalesChannelLocationService extends TransactionBaseService {
       .retrieve(salesChannelId)
 
     if (this.stockLocationService_) {
-      // trhows error if not found
-      await this.stockLocationService_.retrieve(locationId)
+      // throws error if not found
+      await this.stockLocationService_.retrieve(locationId, undefined, {
+        transactionManager: this.activeManager_,
+      })
     }
 
-    const salesChannelLocation = this.activeManager_.create(
-      SalesChannelLocation,
-      {
-        sales_channel_id: salesChannel.id,
-        location_id: locationId,
-      }
-    )
+    const salesChannelLocationRepo =
+      this.activeManager_.getRepository(SalesChannelLocation)
 
-    await this.activeManager_.save(salesChannelLocation)
+    const salesChannelLocation = salesChannelLocationRepo.create({
+      sales_channel_id: salesChannel.id,
+      location_id: locationId,
+    })
+
+    await salesChannelLocationRepo.save(salesChannelLocation)
   }
 
   /**
@@ -125,14 +124,22 @@ class SalesChannelLocationService extends TransactionBaseService {
 
   /**
    * Lists the sales channels associated with a stock location.
-   * @param {string} salesChannelId - The ID of the stock location.
+   * @param {string} locationId - The ID of the stock location.
    * @returns {Promise<string[]>} A promise that resolves with an array of sales channel IDs.
    */
   async listSalesChannelIds(locationId: string): Promise<string[]> {
-    const manager = this.transactionManager_ || this.manager_
-    const location = await this.stockLocationService_.retrieve(locationId)
+    const location = await this.stockLocationService_.retrieve(
+      locationId,
+      undefined,
+      {
+        transactionManager: this.activeManager_,
+      }
+    )
 
-    const salesChannelLocations = await manager.find(SalesChannelLocation, {
+    const salesChannelRepo =
+      this.activeManager_.getRepository(SalesChannelLocation)
+
+    const salesChannelLocations = await salesChannelRepo.find({
       where: { location_id: location.id },
       select: ["sales_channel_id"],
     })

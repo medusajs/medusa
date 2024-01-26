@@ -1,5 +1,3 @@
-import Stripe from "stripe"
-import { EOL } from "os"
 import {
   AbstractPaymentProcessor,
   isPaymentProcessorError,
@@ -8,6 +6,9 @@ import {
   PaymentProcessorSessionResponse,
   PaymentSessionStatus,
 } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import { EOL } from "os"
+import Stripe from "stripe"
 import {
   ErrorCodes,
   ErrorIntentStatus,
@@ -38,6 +39,14 @@ abstract class StripeBase extends AbstractPaymentProcessor {
   }
 
   abstract get paymentIntentOptions(): PaymentIntentOptions
+
+  get options(): StripeOptions {
+    return this.options_
+  }
+
+  getStripe() {
+    return this.stripe_
+  }
 
   getPaymentIntentOptions(): PaymentIntentOptions {
     const options: PaymentIntentOptions = {}
@@ -281,6 +290,25 @@ abstract class StripeBase extends AbstractPaymentProcessor {
     }
   }
 
+  async updatePaymentData(sessionId: string, data: Record<string, unknown>) {
+    try {
+      // Prevent from updating the amount from here as it should go through
+      // the updatePayment method to perform the correct logic
+      if (data.amount) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Cannot update amount, use updatePayment instead"
+        )
+      }
+
+      return (await this.stripe_.paymentIntents.update(sessionId, {
+        ...data,
+      })) as unknown as PaymentProcessorSessionResponse["session_data"]
+    } catch (e) {
+      return this.buildError("An error occurred in updatePaymentData", e)
+    }
+  }
+
   /**
    * Constructs Stripe Webhook event
    * @param {object} data - the data of the webhook request: req.body
@@ -298,16 +326,16 @@ abstract class StripeBase extends AbstractPaymentProcessor {
 
   protected buildError(
     message: string,
-    e: Stripe.StripeRawError | PaymentProcessorError | Error
+    error: Stripe.StripeRawError | PaymentProcessorError | Error
   ): PaymentProcessorError {
     return {
       error: message,
-      code: "code" in e ? e.code : "",
-      detail: isPaymentProcessorError(e)
-        ? `${e.error}${EOL}${e.detail ?? ""}`
-        : "detail" in e
-        ? e.detail
-        : e.message ?? "",
+      code: "code" in error ? error.code : "unknown",
+      detail: isPaymentProcessorError(error)
+        ? `${error.error}${EOL}${error.detail ?? ""}`
+        : "detail" in error
+        ? error.detail
+        : error.message ?? "",
     }
   }
 }

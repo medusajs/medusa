@@ -5,7 +5,13 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { Region } from "./Region"
 
+/**
+ * The list of regions with pagination fields.
+ */
 export interface AdminRegionsListRes {
+  /**
+   * An array of regions details.
+   */
   regions: Array<
     SetRelation<
       Region,
@@ -17,7 +23,7 @@ export interface AdminRegionsListRes {
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of regions skipped when retrieving the regions.
    */
   offset: number
   /**

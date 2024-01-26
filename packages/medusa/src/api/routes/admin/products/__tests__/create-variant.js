@@ -37,18 +37,20 @@ describe("POST /admin/products/:id/variants", () => {
       expect(ProductVariantServiceMock.create).toHaveBeenCalledTimes(1)
       expect(ProductVariantServiceMock.create).toHaveBeenCalledWith(
         IdMap.getId("productWithOptions"),
-        {
-          inventory_quantity: 0,
-          manage_inventory: true,
-          title: "Test Product Variant",
-          options: [],
-          prices: [
-            {
-              currency_code: "DKK",
-              amount: 1234,
-            },
-          ],
-        }
+        [
+          {
+            inventory_quantity: 0,
+            manage_inventory: true,
+            title: "Test Product Variant",
+            options: [],
+            prices: [
+              {
+                currency_code: "DKK",
+                amount: 1234,
+              },
+            ],
+          },
+        ]
       )
     })
 

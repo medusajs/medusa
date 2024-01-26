@@ -1,10 +1,10 @@
 const path = require("path")
 const { Region, DiscountRule, Discount } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
 const { exportAllDeclaration } = require("@babel/types")
 
 jest.setTimeout(30000)
@@ -46,5 +46,21 @@ describe("/admin/auth", () => {
       created_at: expect.any(String),
       updated_at: expect.any(String),
     })
+  })
+
+  it("creates admin JWT token correctly", async () => {
+    const api = useApi()
+
+    const response = await api
+      .post("/admin/auth/token", {
+        email: "admin@medusa.js",
+        password: "secret_password",
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+    expect(response.status).toEqual(200)
+    expect(response.data.access_token).toEqual(expect.any(String))
   })
 })

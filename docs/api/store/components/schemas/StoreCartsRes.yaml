@@ -1,4 +1,0 @@
-type: object
-properties:
-  cart:
-    $ref: ./Cart.yaml

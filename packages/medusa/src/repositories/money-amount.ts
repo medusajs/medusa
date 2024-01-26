@@ -1,4 +1,3 @@
-import partition from "lodash/partition"
 import {
   Brackets,
   In,
@@ -7,15 +6,23 @@ import {
   ObjectLiteral,
   WhereExpressionBuilder,
 } from "typeorm"
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
-import { dataSource } from "../loaders/database"
-import { MoneyAmount } from "../models"
+import {
+  MoneyAmount,
+  ProductVariant,
+  ProductVariantMoneyAmount,
+} from "../models"
 import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
 } from "../types/price-list"
 import { ProductVariantPrice } from "../types/product-variant"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
+import { dataSource } from "../loaders/database"
+import { groupBy } from "lodash"
 import { isString } from "../utils"
+import partition from "lodash/partition"
+import { ulid } from "ulid"
+import { promiseAll } from "@medusajs/utils"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -34,16 +41,37 @@ export const MoneyAmountRepository = dataSource
         .into(MoneyAmount)
         .values(data)
 
-      // TODO: remove if statement once this issue is resolved https://github.com/typeorm/typeorm/issues/9850
+      let rawMoneyAmounts
       if (!queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
-        const rawMoneyAmounts = await queryBuilder.execute()
-        return rawMoneyAmounts.generatedMaps.map((d) =>
-          this.create(d)
-        ) as MoneyAmount[]
+        rawMoneyAmounts = await queryBuilder.execute()
+      } else {
+        rawMoneyAmounts = await queryBuilder.returning("*").execute()
       }
 
-      const rawMoneyAmounts = await queryBuilder.returning("*").execute()
-      return rawMoneyAmounts.generatedMaps.map((d) => this.create(d))
+      const created = rawMoneyAmounts.generatedMaps.map((d) =>
+        this.create(d)
+      ) as MoneyAmount[]
+
+      const variantMoneyAmounts = this.manager.create(
+        ProductVariantMoneyAmount,
+        data
+          .filter(
+            (
+              d
+            ): d is {
+              variant: QueryDeepPartialEntity<ProductVariant>
+              id: string
+            } => !!d.variant
+          )
+          .map((d) => ({
+            variant_id: d.variant.id,
+            money_amount_id: d.id,
+          }))
+      )
+
+      await this.manager.save(variantMoneyAmounts)
+
+      return created
     },
 
     /**
@@ -56,8 +84,15 @@ export const MoneyAmountRepository = dataSource
       prices: Price[]
     ): Promise<MoneyAmount[]> {
       const pricesNotInPricesPayload = await this.createQueryBuilder()
-        .where({
+        .leftJoinAndSelect(
+          "product_variant_money_amount",
+          "pvma",
+          "pvma.money_amount_id = ma.id"
+        )
+        .where("pvma.variant_id = :variant_id", {
           variant_id: variantId,
+        })
+        .andWhere({
           price_list_id: IsNull(),
         })
         .andWhere(
@@ -86,11 +121,27 @@ export const MoneyAmountRepository = dataSource
           ]
         : variantIdOrData
 
-      const queryBuilder = this.createQueryBuilder().delete()
+      const maDeleteQueryBuilder = this.createQueryBuilder("ma")
+      const mavDeleteQueryBuilder = this.createQueryBuilder()
+        .delete()
+        .from("product_variant_money_amount")
 
       for (const data_ of data) {
+        const maIdsForVariant = await this.createQueryBuilder("ma")
+          .leftJoin(
+            "product_variant_money_amount",
+            "pvma",
+            "pvma.money_amount_id = ma.id"
+          )
+          .addSelect("pvma.variant_id", "variant_id")
+          .addSelect("pvma.money_amount_id", "money_amount_id")
+          .where("pvma.variant_id = :variant_id", {
+            variant_id: data_.variantId,
+          })
+          .getMany()
+
         const where = {
-          variant_id: data_.variantId,
+          id: In(maIdsForVariant.map((ma) => ma.id)),
           price_list_id: IsNull(),
         }
 
@@ -118,40 +169,72 @@ export const MoneyAmountRepository = dataSource
           }
         }
 
-        queryBuilder.orWhere(
+        maDeleteQueryBuilder.orWhere(
           new Brackets((localQueryBuild) => {
             localQueryBuild.where(where).andWhere(orWhere)
           })
         )
       }
+      const deleteAmounts = await maDeleteQueryBuilder.getMany()
 
-      await queryBuilder.execute()
+      if (!deleteAmounts.length) {
+        return
+      }
+
+      await promiseAll([
+        this.delete(deleteAmounts.map((mav) => mav.id)),
+        mavDeleteQueryBuilder
+          .where(
+            deleteAmounts.map((mav) => ({
+              money_amount_id: mav.id,
+            }))
+          )
+          .execute(),
+      ])
     },
 
     async upsertVariantCurrencyPrice(
       variantId: string,
       price: Price
     ): Promise<MoneyAmount> {
-      let moneyAmount = await this.findOne({
-        where: {
-          currency_code: price.currency_code,
-          variant_id: variantId,
-          region_id: IsNull(),
-          price_list_id: IsNull(),
-        },
-      })
+      let moneyAmount = await this.createQueryBuilder()
+        .leftJoinAndSelect(
+          "product_variant_money_amount",
+          "pvma",
+          "pvma.money_amount_id = ma.id"
+        )
+        .where("pvma.variant_id = :variantId", { variantId })
+        .andWhere("ma.currency_code = :currencyCode", {
+          currencyCode: price.currency_code,
+        })
+        .andWhere("ma.region_id IS NULL")
+        .andWhere("ma.price_list_id IS NULL")
+        .getOne()
+
+      const created = !moneyAmount
 
       if (!moneyAmount) {
         moneyAmount = this.create({
           ...price,
           currency_code: price.currency_code?.toLowerCase(),
-          variant_id: variantId,
+          variant: { id: variantId },
         })
       } else {
         moneyAmount.amount = price.amount
       }
 
-      return await this.save(moneyAmount)
+      const createdAmount = await this.save(moneyAmount)
+
+      if (created) {
+        await this.createProductVariantMoneyAmounts([
+          {
+            variant_id: variantId,
+            money_amount_id: createdAmount.id,
+          },
+        ])
+      }
+
+      return createdAmount
     },
 
     async addPriceListPrices(
@@ -159,11 +242,29 @@ export const MoneyAmountRepository = dataSource
       prices: PriceListPriceCreateInput[],
       overrideExisting = false
     ): Promise<MoneyAmount[]> {
-      const toInsert = prices.map((price) =>
-        this.create({
-          ...price,
-          price_list_id: priceListId,
-        })
+      const [toInsert, joinTableValues] = prices.reduce(
+        (acc, price) => {
+          const [prices, joinTableValues] = acc
+          const id = `ma_${ulid()}`
+          const variant = this.create({
+            ...price,
+            id,
+            price_list_id: priceListId,
+          })
+          const joinTableValue = this.manager.create(
+            ProductVariantMoneyAmount,
+            {
+              variant_id: price.variant_id!,
+              money_amount_id: id,
+            }
+          )
+
+          return [
+            [...prices, variant],
+            [...joinTableValues, joinTableValue],
+          ]
+        },
+        [[], []] as [MoneyAmount[], ProductVariantMoneyAmount[]]
       )
 
       const insertResult = await this.createQueryBuilder()
@@ -171,18 +272,30 @@ export const MoneyAmountRepository = dataSource
         .orIgnore(true)
         .into(MoneyAmount)
         .values(toInsert as QueryDeepPartialEntity<MoneyAmount>[])
+        .returning("*")
         .execute()
 
       if (overrideExisting) {
-        await this.createQueryBuilder()
+        const { raw } = await this.createQueryBuilder()
           .delete()
           .from(MoneyAmount)
           .where({
             price_list_id: priceListId,
             id: Not(In(insertResult.identifiers.map((ma) => ma.id))),
           })
+          .returning("id")
+          .execute()
+
+        await this.createQueryBuilder()
+          .delete()
+          .from("product_variant_money_amount")
+          .where({
+            money_amount_id: In(raw.map((deletedMa) => deletedMa.id)),
+          })
           .execute()
       }
+
+      await this.manager.save(joinTableValues)
 
       return await this.manager
         .createQueryBuilder(MoneyAmount, "ma")
@@ -209,7 +322,12 @@ export const MoneyAmountRepository = dataSource
     ): Promise<[MoneyAmount[], number]> {
       const qb = this.createQueryBuilder("ma")
         .leftJoinAndSelect("ma.price_list", "price_list")
-        .where("ma.variant_id = :variant_id", { variant_id })
+        .leftJoin(
+          "product_variant_money_amount",
+          "pvma",
+          "pvma.money_amount_id = ma.id"
+        )
+        .where("pvma.variant_id = :variant_id", { variant_id })
 
       const getAndWhere = (subQb): WhereExpressionBuilder => {
         const andWhere = subQb.where("ma.price_list_id = :price_list_id", {
@@ -226,6 +344,15 @@ export const MoneyAmountRepository = dataSource
       return await qb.getManyAndCount()
     },
 
+    /**
+     * @deprecated in favor of {@link findManyForVariantsInRegion}
+     * @param variant_id
+     * @param region_id
+     * @param currency_code
+     * @param customer_id
+     * @param include_discount_prices
+     * @param include_tax_inclusive_pricing
+     */
     async findManyForVariantInRegion(
       variant_id: string,
       region_id?: string,
@@ -234,11 +361,98 @@ export const MoneyAmountRepository = dataSource
       include_discount_prices?: boolean,
       include_tax_inclusive_pricing = false
     ): Promise<[MoneyAmount[], number]> {
+      const result = await this.findManyForVariantsInRegion(
+        variant_id,
+        region_id,
+        currency_code,
+        customer_id,
+        include_discount_prices,
+        include_tax_inclusive_pricing
+      )
+
+      return [result[0][variant_id], result[1]]
+    },
+
+    async findCurrencyMoneyAmounts(
+      where: { variant_id: string; currency_code: string }[]
+    ) {
+      const qb = this.createQueryBuilder("ma")
+        .leftJoin(
+          "product_variant_money_amount",
+          "pvma",
+          "pvma.money_amount_id = ma.id"
+        )
+        .addSelect("pvma.variant_id", "variant_id")
+
+      where.forEach((variantCurrency, i) =>
+        qb.orWhere(
+          `(pvma.variant_id = :variant_id_${i} AND ma.currency_code = :currency_code_${i} AND ma.region_id IS NULL AND ma.price_list_id IS NULL)`,
+          {
+            [`variant_id_${i}`]: variantCurrency.variant_id,
+            [`currency_code_${i}`]: variantCurrency.currency_code,
+          }
+        )
+      )
+
+      const rawAndEntities = await qb.getRawAndEntities()
+      return rawAndEntities.entities.map((e, i) => {
+        return { ...e, variant_id: rawAndEntities.raw[i].variant_id }
+      })
+    },
+
+    async findRegionMoneyAmounts(
+      where: { variant_id: string; region_id: string }[]
+    ) {
+      const qb = this.createQueryBuilder("ma")
+        .leftJoin(
+          "product_variant_money_amount",
+          "pvma",
+          "pvma.money_amount_id = ma.id"
+        )
+        .addSelect("pvma.variant_id", "variant_id")
+
+      where.forEach((w, i) =>
+        qb.orWhere(
+          `(pvma.variant_id = :variant_id_${i} AND ma.region_id = :region_id_${i} AND ma.price_list_id IS NULL)`,
+          {
+            [`variant_id_${i}`]: w.variant_id,
+            [`region_id_${i}`]: w.region_id,
+          }
+        )
+      )
+
+      const rawAndEntities = await qb.getRawAndEntities()
+      return rawAndEntities.entities.map((e, i) => {
+        return { ...e, variant_id: rawAndEntities.raw[i].variant_id }
+      })
+    },
+
+    async findManyForVariantsInRegion(
+      variant_ids: string | string[],
+      region_id?: string,
+      currency_code?: string,
+      customer_id?: string,
+      include_discount_prices?: boolean,
+      include_tax_inclusive_pricing = false
+    ): Promise<[Record<string, MoneyAmount[]>, number]> {
+      variant_ids = Array.isArray(variant_ids) ? variant_ids : [variant_ids]
+
+      if (!variant_ids.length) {
+        return [{}, 0]
+      }
       const date = new Date()
 
       const qb = this.createQueryBuilder("ma")
         .leftJoinAndSelect("ma.price_list", "price_list")
-        .where({ variant_id: variant_id })
+        .leftJoinAndSelect(
+          "product_variant_money_amount",
+          "pvma",
+          "pvma.money_amount_id = ma.id"
+        )
+        .addSelect("pvma.variant_id", "variant_id")
+        .andWhere("pvma.variant_id IN (:...variantIds)", {
+          variantIds: variant_ids,
+        })
         .andWhere("(ma.price_list_id is null or price_list.status = 'active')")
         .andWhere(
           "(price_list.ends_at is null OR price_list.ends_at > :date)",
@@ -285,18 +499,28 @@ export const MoneyAmountRepository = dataSource
             "cgc",
             "cgc.customer_group_id = cgroup.id"
           )
-          .andWhere(
-            "(cgc.customer_group_id is null OR cgc.customer_id = :customer_id)",
-            {
-              customer_id,
-            }
-          )
+          .andWhere("(cgroup.id is null OR cgc.customer_id = :customer_id)", {
+            customer_id,
+          })
       } else {
         qb.leftJoin("price_list.customer_groups", "cgroup").andWhere(
           "cgroup.id is null"
         )
       }
-      return await qb.getManyAndCount()
+
+      const count = await qb.getCount()
+      const res = await qb.getRawAndEntities()
+
+      const { entities, raw } = res
+
+      const prices = entities.map((p, i) => {
+        p["variant_id"] = raw[i]["variant_id"]
+        return p
+      })
+
+      const groupedPrices = groupBy(prices, "variant_id")
+
+      return [groupedPrices, count]
     },
 
     async updatePriceListPrices(
@@ -308,11 +532,62 @@ export const MoneyAmountRepository = dataSource
         (update) => update.id
       )
 
-      const newPriceEntities = newPrices.map((price) =>
-        this.create({ ...price, price_list_id: priceListId })
+      const [newPriceEntities, joinTableValues] = newPrices.reduce(
+        (acc, price) => {
+          const [prices, joinTableValues] = acc
+          const id = `ma_${ulid()}`
+          const variantPrice = this.create({
+            ...price,
+            id,
+            price_list_id: priceListId,
+          })
+          const joinTableValue = this.manager.create(
+            ProductVariantMoneyAmount,
+            {
+              variant_id: price.variant_id!,
+              money_amount_id: id,
+            }
+          )
+
+          prices.push(variantPrice)
+          joinTableValues.push(joinTableValue)
+
+          return [prices, joinTableValues]
+        },
+        [[], []] as [MoneyAmount[], ProductVariantMoneyAmount[]]
       )
 
-      return await this.save([...existingPrices, ...newPriceEntities])
+      const [prices] = await promiseAll([
+        this.save([...existingPrices, ...newPriceEntities]),
+        await this.manager.save(joinTableValues),
+      ])
+
+      return prices
+    },
+
+    async getPricesForVariantInRegion(
+      variantId: string,
+      regionId: string | undefined
+    ): Promise<MoneyAmount[]> {
+      return this.createQueryBuilder()
+        .leftJoinAndSelect(
+          "product_variant_money_amount",
+          "pvma",
+          "pvma.money_amount_id = ma.id"
+        )
+        .where("pvma.variant_id = :variantId", { variantId })
+        .where("ma.region_id = :regionId", { regionId })
+        .getMany()
+    },
+
+    async createProductVariantMoneyAmounts(
+      toCreate: { variant_id: string; money_amount_id: string }[]
+    ) {
+      return await this.createQueryBuilder()
+        .insert()
+        .into("product_variant_money_amount")
+        .values(toCreate)
+        .execute()
     },
   })
 

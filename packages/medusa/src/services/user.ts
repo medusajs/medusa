@@ -1,7 +1,9 @@
+import { Selector } from "@medusajs/types"
+import { FlagRouter } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
-import { EntityManager } from "typeorm"
+import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import AnalyticsFeatureFlag from "../loaders/feature-flags/analytics"
 import { User } from "../models"
@@ -13,7 +15,6 @@ import {
   UpdateUserInput,
 } from "../types/user"
 import { buildQuery, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 import AnalyticsConfigService from "./analytics-config"
 import EventBusService from "./event-bus"
@@ -62,9 +63,86 @@ class UserService extends TransactionBaseService {
    * @param {Object} config - the configuration object for the query
    * @return {Promise} the result of the find operation
    */
-  async list(selector: FilterableUserProps, config = {}): Promise<User[]> {
+  async list(
+    selector: Selector<FilterableUserProps> & { q?: string } = {},
+    config: FindConfig<FilterableUserProps> = { skip: 0, take: 50 }
+  ): Promise<User[]> {
     const userRepo = this.activeManager_.withRepository(this.userRepository_)
-    return await userRepo.find(buildQuery(selector, config))
+
+    let q: string | undefined
+
+    if (selector.q) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = buildQuery(selector, config)
+
+    if (q) {
+      const where = query.where as FindOptionsWhere<FilterableUserProps>
+
+      delete where.email
+      delete where.first_name
+      delete where.last_name
+
+      query.where = [
+        {
+          ...where,
+          email: ILike(`%${q}%`),
+        },
+        {
+          ...where,
+          first_name: ILike(`%${q}%`),
+        },
+        {
+          ...where,
+          last_name: ILike(`%${q}%`),
+        },
+      ]
+    }
+
+    return await userRepo.find(query)
+  }
+
+  async listAndCount(
+    selector: Selector<FilterableUserProps> & { q?: string } = {},
+    config: FindConfig<FilterableUserProps> = { skip: 0, take: 50 }
+  ) {
+    const userRepo = this.activeManager_.withRepository(this.userRepository_)
+
+    let q: string | undefined
+
+    if (selector.q) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = buildQuery(selector, config)
+
+    if (q) {
+      const where = query.where as FindOptionsWhere<FilterableUserProps>
+
+      delete where.email
+      delete where.first_name
+      delete where.last_name
+
+      query.where = [
+        {
+          ...where,
+          email: ILike(`%${q}%`),
+        },
+        {
+          ...where,
+          first_name: ILike(`%${q}%`),
+        },
+        {
+          ...where,
+          last_name: ILike(`%${q}%`),
+        },
+      ]
+    }
+
+    return await userRepo.findAndCount(query)
   }
 
   /**
@@ -85,16 +163,16 @@ class UserService extends TransactionBaseService {
     const userRepo = this.activeManager_.withRepository(this.userRepository_)
     const query = buildQuery({ id: userId }, config)
 
-    const user = await userRepo.findOne(query)
+    const users = await userRepo.find(query)
 
-    if (!user) {
+    if (!users.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `User with id: ${userId} was not found`
       )
     }
 
-    return user
+    return users[0]
   }
 
   /**
@@ -177,6 +255,18 @@ class UserService extends TransactionBaseService {
       }
 
       const validatedEmail = validateEmail(user.email)
+
+      const userEntity = await userRepo.findOne({
+        where: { email: validatedEmail },
+      })
+
+      if (userEntity) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "A user with the same email already exists."
+        )
+      }
+
       if (password) {
         const hashedPassword = await this.hashPassword_(password)
         createData.password_hash = hashedPassword

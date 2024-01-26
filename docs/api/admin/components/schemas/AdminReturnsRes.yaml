@@ -1,4 +1,0 @@
-type: object
-properties:
-  return:
-    $ref: ./Return.yaml

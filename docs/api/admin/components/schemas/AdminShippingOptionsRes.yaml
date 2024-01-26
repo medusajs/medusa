@@ -1,4 +1,0 @@
-type: object
-properties:
-  shipping_option:
-    $ref: ./ShippingOption.yaml

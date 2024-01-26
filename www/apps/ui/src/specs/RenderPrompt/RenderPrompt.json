@@ -1,0 +1,50 @@
+{
+  "description": "",
+  "methods": [],
+  "displayName": "RenderPrompt",
+  "props": {
+    "title": {
+      "required": true,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The prompt's title."
+    },
+    "description": {
+      "required": true,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The prompt's description."
+    },
+    "verificationText": {
+      "required": false,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The text the user has to input in order to confirm the action."
+    },
+    "cancelText": {
+      "required": false,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The label for the Cancel button.",
+      "defaultValue": {
+        "value": "\"Cancel\"",
+        "computed": false
+      }
+    },
+    "confirmText": {
+      "required": false,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "Label for the Confirm button.",
+      "defaultValue": {
+        "value": "\"Confirm\"",
+        "computed": false
+      }
+    }
+  }
+}

@@ -9,12 +9,12 @@ const {
   MoneyAmount,
 } = require("@medusajs/medusa")
 
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
+const setupServer = require("../../../../environment-helpers/setup-server")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
 
-const cartSeeder = require("../../../helpers/cart-seeder")
-const swapSeeder = require("../../../helpers/swap-seeder")
+const cartSeeder = require("../../../../helpers/cart-seeder")
+const swapSeeder = require("../../../../helpers/swap-seeder")
 const {
   simpleCartFactory,
   simpleRegionFactory,
@@ -22,16 +22,18 @@ const {
   simpleShippingOptionFactory,
   simpleLineItemFactory,
   simpleSalesChannelFactory,
-} = require("../../../factories")
+  simplePriceListFactory,
+} = require("../../../../factories")
 const {
   simpleDiscountFactory,
-} = require("../../../factories/simple-discount-factory")
+} = require("../../../../factories/simple-discount-factory")
 const {
   simpleCustomerFactory,
-} = require("../../../factories/simple-customer-factory")
+} = require("../../../../factories/simple-customer-factory")
 const {
   simpleCustomerGroupFactory,
-} = require("../../../factories/simple-customer-group-factory")
+} = require("../../../../factories/simple-customer-group-factory")
+const { ProductVariantMoneyAmount } = require("@medusajs/medusa")
 
 jest.setTimeout(30000)
 
@@ -144,13 +146,18 @@ describe("/store/carts", () => {
       await dbConnection.manager.save(priceList1)
 
       const ma_sale_1 = dbConnection.manager.create(MoneyAmount, {
-        variant_id: prodSale.variants[0].id,
         currency_code: "usd",
         amount: 800,
         price_list_id: "pl_current",
       })
 
       await dbConnection.manager.save(ma_sale_1)
+
+      await dbConnection.manager.insert(ProductVariantMoneyAmount, {
+        id: `${prodSale.variants[0].id}-${ma_sale_1.id}`,
+        variant_id: prodSale.variants[0].id,
+        money_amount_id: ma_sale_1.id,
+      })
 
       const api = useApi()
 
@@ -556,6 +563,7 @@ describe("/store/carts", () => {
               {
                 id: "test-li",
                 variant_id: "test-variant",
+                product_id: "test-product",
                 quantity: 1,
                 unit_price: 100,
                 adjustments: [
@@ -643,7 +651,8 @@ describe("/store/carts", () => {
           {
             id: "line-item-2",
             cart_id: discountCart.id,
-            variant_id: "test-variant-quantity",
+            variant_id: "test-variant-quantity-1",
+            product_id: "test-product",
             unit_price: 950,
             quantity: 1,
             adjustments: [
@@ -713,6 +722,7 @@ describe("/store/carts", () => {
             id: "line-item-2",
             cart_id: discountCart.id,
             variant_id: "test-variant-quantity",
+            product_id: "test-product",
             unit_price: 1000,
             quantity: 1,
             adjustments: [
@@ -769,6 +779,9 @@ describe("/store/carts", () => {
           "/store/carts/test-cart-3/line-items/test-item3/",
           {
             quantity: 3,
+            metadata: {
+              another: "prop",
+            },
           },
           { withCredentials: true }
         )
@@ -778,10 +791,14 @@ describe("/store/carts", () => {
         expect.arrayContaining([
           expect.objectContaining({
             cart_id: "test-cart-3",
-            unit_price: 8000,
+            unit_price: 500,
             variant_id: "test-variant-sale-cg",
             quantity: 3,
             adjustments: [],
+            metadata: {
+              "some-existing": "prop",
+              another: "prop",
+            },
           }),
         ])
       )
@@ -797,6 +814,7 @@ describe("/store/carts", () => {
         unit_price: 1000,
         quantity: 1,
         variant_id: "test-variant-quantity",
+        product_id: "test-product",
         cart_id: "test-cart-w-total-fixed-discount",
       })
 
@@ -837,9 +855,10 @@ describe("/store/carts", () => {
         allow_discounts: true,
         title: "Line Item Disc",
         thumbnail: "https://test.js/1234",
-        unit_price: 1000,
+        unit_price: 800,
         quantity: 1,
         variant_id: "test-variant-quantity",
+        product_id: "test-product",
         cart_id: "test-cart-w-total-percentage-discount",
       })
 
@@ -858,12 +877,12 @@ describe("/store/carts", () => {
         expect.arrayContaining([
           expect.objectContaining({
             cart_id: "test-cart-w-total-percentage-discount",
-            unit_price: 1000,
+            unit_price: 800,
             variant_id: "test-variant-quantity",
             quantity: 10,
             adjustments: [
               expect.objectContaining({
-                amount: 1000,
+                amount: 800,
                 discount_id: "10Percent",
                 description: "discount",
               }),
@@ -883,6 +902,7 @@ describe("/store/carts", () => {
         unit_price: 1000,
         quantity: 1,
         variant_id: "test-variant-quantity",
+        product_id: "test-product",
         cart_id: "test-cart-w-item-fixed-discount",
       })
 
@@ -926,6 +946,7 @@ describe("/store/carts", () => {
         unit_price: 1000,
         quantity: 1,
         variant_id: "test-variant-quantity",
+        product_id: "test-product",
         cart_id: "test-cart-w-item-percentage-discount",
       })
 
@@ -954,6 +975,149 @@ describe("/store/carts", () => {
                 description: "discount",
               }),
             ],
+          }),
+        ])
+      )
+    })
+
+    it("updates line item quantity with unit price reflected", async () => {
+      const api = useApi()
+
+      await simplePriceListFactory(dbConnection, {
+        id: "pl_current",
+        prices: [
+          {
+            variant_id: "test-variant-sale-cg",
+            amount: 10,
+            min_quantity: 5,
+            currency_code: "usd",
+          },
+        ],
+      })
+
+      const response = await api
+        .post(
+          "/store/carts/test-cart-3/line-items/test-item3/",
+          {
+            quantity: 5,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-3",
+            unit_price: 10,
+            variant_id: "test-variant-sale-cg",
+            quantity: 5,
+          }),
+        ])
+      )
+    })
+
+    it("updates line item quantity with unit price reflected when merging line-items", async () => {
+      const api = useApi()
+
+      await simplePriceListFactory(dbConnection, {
+        id: "pl_current",
+        prices: [
+          {
+            variant_id: "test-variant",
+            amount: 10,
+            min_quantity: 5,
+            currency_code: "usd",
+          },
+        ],
+      })
+
+      const response = await api
+        .post(
+          "/store/carts/test-cart-3/line-items",
+          {
+            variant_id: "test-variant",
+            quantity: 4,
+          },
+          { withCredentials: true }
+        )
+        .catch(console.log)
+
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-3",
+            unit_price: 10,
+            variant_id: "test-variant",
+            quantity: 5,
+          }),
+        ])
+      )
+    })
+
+    it("creates and updates line item quantity with unit price reflected", async () => {
+      const api = useApi()
+
+      await simplePriceListFactory(dbConnection, {
+        id: "pl_current",
+        prices: [
+          {
+            variant_id: "test-variant-sale-cg",
+            amount: 10,
+            min_quantity: 5,
+            currency_code: "usd",
+          },
+        ],
+      })
+
+      const createResponse = await api
+        .post(
+          "/store/carts/test-cart/line-items/",
+          {
+            quantity: 1,
+            variant_id: "test-variant-sale-cg",
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(createResponse.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart",
+            unit_price: 500,
+            variant_id: "test-variant-sale-cg",
+            quantity: 1,
+          }),
+        ])
+      )
+
+      const lineItemId = createResponse.data.cart.items.find(
+        (i) => i.variant_id === "test-variant-sale-cg"
+      ).id
+
+      const response = await api
+        .post(
+          `/store/carts/test-cart/line-items/${lineItemId}`,
+          {
+            quantity: 5,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      const lineItemIdCount = response.data.cart.items.filter(
+        (i) => i.variant_id === "test-variant-sale-cg"
+      )
+
+      expect(lineItemIdCount.length).toEqual(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart",
+            unit_price: 10,
+            variant_id: "test-variant-sale-cg",
+            quantity: 5,
           }),
         ])
       )
@@ -1043,6 +1207,7 @@ describe("/store/carts", () => {
           line_items: [
             {
               variant_id: "test-variant",
+              product_id: "test-product",
               unit_price: 100,
             },
           ],
@@ -1081,6 +1246,64 @@ describe("/store/carts", () => {
         ])
       )
       expect(response.status).toEqual(200)
+    })
+
+    it("throws if no customer is associated with the cart while applying a customer groups discount", async () => {
+      const api = useApi()
+
+      await simpleCustomerGroupFactory(dbConnection, {
+        id: "customer-group-2",
+        name: "Loyal",
+      })
+
+      await simpleCartFactory(
+        dbConnection,
+        {
+          id: "test-customer-discount",
+          region: {
+            id: "test-region",
+            name: "Test region",
+            tax_rate: 12,
+          },
+          line_items: [
+            {
+              variant_id: "test-variant",
+              product_id: "test-product",
+              unit_price: 100,
+            },
+          ],
+        },
+        100
+      )
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        regions: ["test-region"],
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              type: "customer_groups",
+              operator: "in",
+              customer_groups: ["customer-group-2"],
+            },
+          ],
+        },
+      })
+
+      try {
+        await api.post("/store/carts/test-customer-discount", {
+          discounts: [{ code: "TEST" }],
+        })
+      } catch (error) {
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.message).toEqual(
+          "Discount TEST is only valid for specific customer"
+        )
+      }
     })
 
     it("successfully removes adjustments upon update without discounts", async () => {
@@ -1196,6 +1419,7 @@ describe("/store/carts", () => {
           line_items: [
             {
               variant_id: "test-variant",
+              product_id: "test-product",
               unit_price: 100,
             },
           ],
@@ -1263,6 +1487,7 @@ describe("/store/carts", () => {
           line_items: [
             {
               variant_id: "test-variant",
+              product_id: "test-product",
               unit_price: 100,
             },
           ],
@@ -1323,6 +1548,7 @@ describe("/store/carts", () => {
           line_items: [
             {
               variant_id: "test-variant",
+              product_id: "test-product",
               unit_price: 100,
             },
           ],
@@ -1393,6 +1619,7 @@ describe("/store/carts", () => {
           line_items: [
             {
               variant_id: "test-variant",
+              product_id: "test-product",
               unit_price: 100,
             },
           ],
@@ -1559,7 +1786,8 @@ describe("/store/carts", () => {
 
       const cart = response.data.cart
 
-      const shippingAmount = 1000
+      // shipping is 0 because of line item update
+      const shippingAmount = 0
       const expectedTotal =
         quantity * variant1Price +
         quantity * variant2Price +
@@ -1571,7 +1799,7 @@ describe("/store/carts", () => {
       expect(cart.total).toBe(expectedTotal)
       expect(cart.subtotal).toBe(expectedSubtotal)
       expect(cart.discount_total).toBe(discountAmount)
-      expect(cart.shipping_total).toBe(1000)
+      expect(cart.shipping_total).toBe(shippingAmount)
     })
 
     it("updates cart customer id", async () => {
@@ -1582,6 +1810,87 @@ describe("/store/carts", () => {
       })
 
       expect(response.status).toEqual(200)
+    })
+
+    it("should remove shipping on line item remove", async () => {
+      const api = useApi()
+
+      const cartId = "test-cart-2"
+      const lineId = "test-item"
+      const optionId = "test-option"
+
+      await api.post(
+        `/store/carts/${cartId}/shipping-methods`,
+        {
+          option_id: optionId,
+        },
+        { withCredentials: true }
+      )
+
+      const cart = await api.get(`/store/carts/${cartId}`)
+
+      expect(cart.data.cart.shipping_total).toEqual(1000)
+
+      const response = await api.delete(
+        `/store/carts/${cartId}/line-items/${lineId}`
+      )
+
+      expect(response.data.cart.shipping_total).toEqual(0)
+    })
+
+    it("should remove shipping on line item update", async () => {
+      const api = useApi()
+
+      const cartId = "test-cart-2"
+      const lineId = "test-item"
+      const optionId = "test-option"
+
+      await api.post(
+        `/store/carts/${cartId}/shipping-methods`,
+        {
+          option_id: optionId,
+        },
+        { withCredentials: true }
+      )
+
+      const cart = await api.get(`/store/carts/${cartId}`)
+
+      expect(cart.data.cart.shipping_total).toEqual(1000)
+
+      const response = await api.post(
+        `/store/carts/${cartId}/line-items/${lineId}`,
+        {
+          quantity: 2,
+        }
+      )
+
+      expect(response.data.cart.shipping_total).toEqual(0)
+    })
+
+    it("should remove shipping on line item add", async () => {
+      const api = useApi()
+
+      const cartId = "test-cart-2"
+      const optionId = "test-option"
+
+      await api.post(
+        `/store/carts/${cartId}/shipping-methods`,
+        {
+          option_id: optionId,
+        },
+        { withCredentials: true }
+      )
+
+      const cart = await api.get(`/store/carts/${cartId}`)
+
+      expect(cart.data.cart.shipping_total).toEqual(1000)
+
+      const response = await api.post(`/store/carts/${cartId}/line-items`, {
+        variant_id: "test-variant-sale-customer",
+        quantity: 1,
+      })
+
+      expect(response.data.cart.shipping_total).toEqual(0)
     })
 
     it("updates prices when cart customer id is updated", async () => {
@@ -1894,8 +2203,9 @@ describe("/store/carts", () => {
       expect(getRes.status).toEqual(200)
       expect(getRes.data.type).toEqual("order")
 
+      // inventory pre-purchase was 10
       const variantRes = await api.get("/store/variants/test-variant")
-      expect(variantRes.data.variant.inventory_quantity).toEqual(0)
+      expect(variantRes.data.variant.inventory_quantity).toEqual(9)
     })
 
     it("calculates correct payment totals on cart completion taking into account line item adjustments", async () => {
@@ -1924,24 +2234,27 @@ describe("/store/carts", () => {
       expect(createdOrder.status).toEqual(200)
     })
 
-    it("returns early, if cart is already completed", async () => {
-      const manager = dbConnection.manager
+    it("should return early, if cart is already completed", async () => {
       const api = useApi()
-      await manager.query(
-        `UPDATE "cart"
-         SET completed_at=current_timestamp
-         WHERE id = 'test-cart-2'`
+
+      const completedCart = await api.post(
+        `/store/carts/test-cart-2/complete-cart`
       )
-      try {
-        await api.post(`/store/carts/test-cart-2/complete-cart`)
-      } catch (error) {
-        expect(error.response.data).toMatchSnapshot({
-          type: "not_allowed",
-          message: "Cart has already been completed",
-          code: "cart_incompatible_state",
+
+      expect(completedCart.status).toEqual(200)
+
+      const alreadyCompletedCart = await api.post(
+        `/store/carts/test-cart-2/complete-cart`
+      )
+
+      expect(alreadyCompletedCart.data.data).toEqual(
+        expect.objectContaining({
+          cart_id: "test-cart-2",
+          id: expect.any(String),
         })
-        expect(error.response.status).toEqual(409)
-      }
+      )
+      expect(alreadyCompletedCart.data.type).toEqual("order")
+      expect(alreadyCompletedCart.status).toEqual(200)
     })
 
     it("fails to complete cart with items inventory not/partially covered", async () => {
@@ -2044,6 +2357,32 @@ describe("/store/carts", () => {
       expect(res.data.cart.completed_at).not.toBe(null)
     })
 
+    it("should return the swap when cart is already completed", async () => {
+      const manager = dbConnection.manager
+      await manager.query(
+        "UPDATE swap SET cart_id='swap-cart' where id='test-swap'"
+      )
+
+      await manager.query("DELETE FROM payment where swap_id='test-swap'")
+
+      const api = useApi()
+
+      await api.post(`/store/carts/swap-cart/complete-cart`)
+
+      const alreadyCompletedCart = await api.post(
+        `/store/carts/swap-cart/complete-cart`
+      )
+
+      expect(alreadyCompletedCart.data.data).toEqual(
+        expect.objectContaining({
+          cart_id: "swap-cart",
+          id: expect.any(String),
+        })
+      )
+      expect(alreadyCompletedCart.data.type).toEqual("swap")
+      expect(alreadyCompletedCart.status).toEqual(200)
+    })
+
     it("completes cart with a non-customer and for a customer with the same email created later the order doesn't show up", async () => {
       const api = useApi()
       const customerEmail = "test-email-for-non-existent-customer@test.com"
@@ -2060,6 +2399,7 @@ describe("/store/carts", () => {
         line_items: [
           {
             variant_id: product.variants[0].id,
+            product_id: product.id,
             quantity: 1,
             unit_price: 1000,
           },
@@ -2095,12 +2435,40 @@ describe("/store/carts", () => {
     })
   })
 
+  it("complete cart throws if there is no customer on the cart", async () => {
+    const api = useApi()
+    const product = await simpleProductFactory(dbConnection)
+    const region = await simpleRegionFactory(dbConnection, { tax_rate: 10 })
+    const cart = await simpleCartFactory(dbConnection, {
+      region: region.id,
+      line_items: [
+        {
+          variant_id: product.variants[0].id,
+          product_id: product.id,
+          quantity: 1,
+          unit_price: 1000,
+        },
+      ],
+    })
+
+    await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+    try {
+      await api.post(`/store/carts/${cart.id}/complete`)
+    } catch (err) {
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        "Cannot create an order from the cart without a customer"
+      )
+    }
+  })
+
   describe("POST /store/carts/:id/shipping-methods", () => {
     beforeEach(async () => {
       await cartSeeder(dbConnection)
       const manager = dbConnection.manager
 
-      const _cart = await manager.create(Cart, {
+      const _cart = manager.create(Cart, {
         id: "test-cart-with-cso",
         customer_id: "some-customer",
         email: "some-customer@email.com",
@@ -2241,7 +2609,8 @@ describe("/store/carts", () => {
           }),
         ])
       )
-      expect(cartWithGiftcard.data.cart.total).toBe(2900) // 1000 (giftcard) + 900 (standard item with 10% discount) + 1000 Shipping
+      expect(cartWithGiftcard.data.cart.total).toBe(1900) // 1000 (giftcard) + 900 (standard item with 10% discount) - 1000 Shipping (because of line item update)
+      expect(cartWithGiftcard.data.cart.shipping_total).toBe(0) // 0 because of line item update
       expect(cartWithGiftcard.data.cart.discount_total).toBe(100)
       expect(cartWithGiftcard.status).toEqual(200)
     })
@@ -2515,6 +2884,49 @@ describe("/store/carts", () => {
     })
   })
 
+  describe("ignore region update if value didn't change", () => {
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("has no side-effects when updating region with no change", async () => {
+      const region = await simpleRegionFactory(dbConnection, {
+        countries: ["us", "ca"],
+      })
+      const product = await simpleProductFactory(dbConnection)
+      const cart = await simpleCartFactory(dbConnection, {
+        region: region.id,
+        line_items: [
+          {
+            variant_id: product.variants[0].id,
+            product_id: product.id,
+            quantity: 1,
+          },
+        ],
+        shipping_address: {
+          country_code: "us",
+        },
+      })
+
+      const api = useApi()
+
+      const { data: preconditionData } = await api.get(
+        `/store/carts/${cart.id}`
+      )
+      const { data, status } = await api
+        .post(`/store/carts/${cart.id}`, {
+          region_id: region.id,
+        })
+        .catch((err) => {
+          console.log(err)
+          throw err
+        })
+
+      expect(status).toEqual(200)
+      expect(data.cart.shipping_address.country_code).toEqual("us")
+    })
+  })
+
   describe("calculated prices for shipping option", () => {
     afterEach(async () => {
       await doAfterEach()
@@ -2525,7 +2937,13 @@ describe("/store/carts", () => {
       const product = await simpleProductFactory(dbConnection)
       const cart = await simpleCartFactory(dbConnection, {
         region: region.id,
-        line_items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+        line_items: [
+          {
+            variant_id: product.variants[0].id,
+            product_id: product.id,
+            quantity: 1,
+          },
+        ],
       })
       await simpleShippingOptionFactory(dbConnection, {
         region_id: region.id,
@@ -2557,7 +2975,13 @@ describe("/store/carts", () => {
       const product = await simpleProductFactory(dbConnection)
       const cart = await simpleCartFactory(dbConnection, {
         region: region.id,
-        line_items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+        line_items: [
+          {
+            variant_id: product.variants[0].id,
+            product_id: product.id,
+            quantity: 1,
+          },
+        ],
       })
       await simpleShippingOptionFactory(dbConnection, {
         region_id: region.id,

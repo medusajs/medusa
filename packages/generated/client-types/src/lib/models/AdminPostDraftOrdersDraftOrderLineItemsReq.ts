@@ -3,21 +3,24 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the line item to create.
+ */
 export interface AdminPostDraftOrdersDraftOrderLineItemsReq {
   /**
-   * The ID of the Product Variant to generate the Line Item from.
+   * The ID of the Product Variant associated with the line item. If the line item is custom, the `variant_id` should be omitted.
    */
   variant_id?: string
   /**
-   * The potential custom price of the item.
+   * The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.
    */
   unit_price?: number
   /**
-   * The potential custom title of the item.
+   * The title of the line item if `variant_id` is not provided.
    */
   title?: string
   /**
-   * The quantity of the Line Item.
+   * The quantity of the line item.
    */
   quantity: number
   /**

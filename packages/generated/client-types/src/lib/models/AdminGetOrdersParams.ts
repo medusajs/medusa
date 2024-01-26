@@ -5,21 +5,21 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetOrdersParams {
   /**
-   * Query used for searching orders by shipping address first name, orders' email, and orders' display ID
+   * term to search orders' shipping address, first name, email, and display ID
    */
   q?: string
   /**
-   * ID of the order to search for.
+   * Filter by ID.
    */
   id?: string
   /**
-   * Status to search for
+   * Filter by status
    */
   status?: Array<
     "pending" | "completed" | "archived" | "canceled" | "requires_action"
   >
   /**
-   * Fulfillment status to search for.
+   * Filter by fulfillment status
    */
   fulfillment_status?: Array<
     | "not_fulfilled"
@@ -33,7 +33,7 @@ export interface AdminGetOrdersParams {
     | "requires_action"
   >
   /**
-   * Payment status to search for.
+   * Filter by payment status
    */
   payment_status?: Array<
     | "captured"
@@ -45,35 +45,35 @@ export interface AdminGetOrdersParams {
     | "requires_action"
   >
   /**
-   * Display ID to search for.
+   * Filter by display ID
    */
   display_id?: string
   /**
-   * to search for.
+   * Filter by cart ID
    */
   cart_id?: string
   /**
-   * to search for.
+   * Filter by customer ID
    */
   customer_id?: string
   /**
-   * to search for.
+   * Filter by email
    */
   email?: string
   /**
-   * Regions to search orders by
+   * Filter by region IDs.
    */
   region_id?: string | Array<string>
   /**
-   * Currency code to search for
+   * Filter by currency codes.
    */
   currency_code?: string
   /**
-   * to search for.
+   * Filter by tax rate.
    */
   tax_rate?: string
   /**
-   * Date comparison for when resulting orders were created.
+   * Filter by a creation date range.
    */
   created_at?: {
     /**
@@ -94,7 +94,7 @@ export interface AdminGetOrdersParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting orders were updated.
+   * Filter by an update date range.
    */
   updated_at?: {
     /**
@@ -115,7 +115,7 @@ export interface AdminGetOrdersParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting orders were canceled.
+   * Filter by a cancelation date range.
    */
   canceled_at?: {
     /**
@@ -136,11 +136,11 @@ export interface AdminGetOrdersParams {
     gte?: string
   }
   /**
-   * Filter by Sales Channels
+   * Filter by Sales Channel IDs
    */
   sales_channel_id?: Array<string>
   /**
-   * How many orders to skip before the results.
+   * The number of orders to skip when retrieving the orders.
    */
   offset?: number
   /**
@@ -148,11 +148,11 @@ export interface AdminGetOrdersParams {
    */
   limit?: number
   /**
-   * (Comma separated) Which fields should be expanded in each order of the result.
+   * Comma-separated relations that should be expanded in the returned order.
    */
   expand?: string
   /**
-   * (Comma separated) Which fields should be included in each order of the result.
+   * Comma-separated fields that should be included in the returned order.
    */
   fields?: string
 }

@@ -3,13 +3,16 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the dynamic discount to create.
+ */
 export interface AdminPostDiscountsDiscountDynamicCodesReq {
   /**
    * A unique code that will be used to redeem the Discount
    */
   code: string
   /**
-   * Maximum times the discount can be used
+   * Maximum number of times the discount code can be used
    */
   usage_limit?: number
   /**

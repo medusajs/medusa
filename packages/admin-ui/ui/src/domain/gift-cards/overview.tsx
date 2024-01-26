@@ -1,3 +1,4 @@
+import { Product } from "@medusajs/medusa"
 import {
   useAdminDeleteProduct,
   useAdminProducts,
@@ -6,8 +7,11 @@ import {
 } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import PageDescription from "../../components/atoms/page-description"
+import Spacer from "../../components/atoms/spacer"
 import Spinner from "../../components/atoms/spinner"
+import WidgetContainer from "../../components/extensions/widget-container"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
 import BannerCard from "../../components/molecules/banner-card"
 import BodyCard from "../../components/organisms/body-card"
@@ -15,19 +19,20 @@ import DeletePrompt from "../../components/organisms/delete-prompt"
 import GiftCardBanner from "../../components/organisms/gift-card-banner"
 import GiftCardTable from "../../components/templates/gift-card-table"
 import useNotification from "../../hooks/use-notification"
+import useToggleState from "../../hooks/use-toggle-state"
+import { useWidgets } from "../../providers/widget-provider"
 import { ProductStatus } from "../../types/shared"
 import { getErrorMessage } from "../../utils/error-messages"
 import CustomGiftcard from "./custom-giftcard"
 import NewGiftCard from "./new"
 
 const Overview = () => {
+  const { t } = useTranslation()
   const { products, isLoading } = useAdminProducts({
     is_giftcard: true,
   })
   const { store } = useAdminStore()
   const [showCreate, setShowCreate] = useState(false)
-  const [showCreateCustom, setShowCreateCustom] = useState(false)
-  const [showDelete, setShowDelete] = useState(false)
 
   const giftCard = products?.[0]
 
@@ -36,6 +41,20 @@ const Overview = () => {
   const updateGiftCard = useAdminUpdateProduct(giftCard?.id!)
   const deleteGiftCard = useAdminDeleteProduct(giftCard?.id!)
 
+  const {
+    state: stateCustom,
+    close: closeCustom,
+    open: openCustom,
+  } = useToggleState()
+
+  const { state: stateNew, close: closeNew, open: openNew } = useToggleState()
+
+  const {
+    state: stateDelete,
+    close: closeDelete,
+    open: openDelete,
+  } = useToggleState()
+
   const onUpdate = () => {
     let status: ProductStatus = ProductStatus.PUBLISHED
     if (giftCard?.status === "published") {
@@ -43,12 +62,23 @@ const Overview = () => {
     }
 
     updateGiftCard.mutate(
-      // @ts-ignore
       { status },
       {
         onSuccess: () =>
-          notification("Success", "Successfully updated Gift Card", "success"),
-        onError: (err) => notification("Error", getErrorMessage(err), "error"),
+          notification(
+            t("gift-cards-success", "Success"),
+            t(
+              "gift-cards-successfully-updated-gift-card",
+              "Successfully updated Gift Card"
+            ),
+            "success"
+          ),
+        onError: (err) =>
+          notification(
+            t("gift-cards-error", "Error"),
+            getErrorMessage(err),
+            "error"
+          ),
       }
     )
   }
@@ -63,8 +93,8 @@ const Overview = () => {
 
   const actionables = [
     {
-      label: "Custom Gift Card",
-      onClick: () => setShowCreateCustom(true),
+      label: t("gift-cards-custom-gift-card", "Custom Gift Card"),
+      onClick: openCustom,
       icon: <PlusIcon size={20} />,
     },
   ]
@@ -74,69 +104,110 @@ const Overview = () => {
       return null
     }
 
-    return { ...giftCard, defaultCurrency: store.default_currency_code }
+    return {
+      ...(giftCard as Product),
+      defaultCurrency: store.default_currency_code,
+    }
   }, [giftCard, store])
+
+  const { getWidgets } = useWidgets()
 
   return (
     <>
-      <div className="pb-xlarge flex h-full grow flex-col">
+      <div className="flex flex-col">
         <PageDescription
-          title="Gift Cards"
-          subtitle="Manage the Gift Cards of your Medusa store"
+          title={t("gift-cards-gift-cards", "Gift Cards")}
+          subtitle={t(
+            "gift-cards-manage",
+            "Manage the Gift Cards of your Medusa store"
+          )}
         />
         {!isLoading ? (
-          <>
-            <div className="mb-base">
-              {giftCardWithCurrency ? (
-                <GiftCardBanner
-                  {...giftCardWithCurrency}
-                  onDelete={() => setShowDelete(true)}
-                  onEdit={() => navigate("/a/gift-cards/manage")}
-                  onUnpublish={onUpdate}
+          <div className="gap-y-xsmall flex flex-col">
+            {getWidgets("gift_card.list.before").map((w, i) => {
+              return (
+                <WidgetContainer
+                  key={i}
+                  widget={w}
+                  injectionZone="gift_card.list.before"
+                  entity={null}
                 />
-              ) : (
-                <BannerCard title="Are you ready to sell your first Gift Card?">
-                  <BannerCard.Description
-                    cta={{
-                      label: "Create Gift Card",
-                      onClick: () => setShowCreate(true),
-                    }}
-                  >
-                    No Gift Card has been added yet.
-                  </BannerCard.Description>
-                </BannerCard>
-              )}
-            </div>
-            <div className="flex w-full grow flex-col">
-              <BodyCard
-                title="History"
-                subtitle="See the history of purchased Gift Cards"
-                actionables={actionables}
-                className="h-fit"
+              )
+            })}
+            {giftCardWithCurrency ? (
+              <GiftCardBanner
+                {...giftCardWithCurrency}
+                onDelete={openDelete}
+                onEdit={() => navigate("/a/gift-cards/manage")}
+                onUnpublish={onUpdate}
+              />
+            ) : (
+              <BannerCard
+                title={t(
+                  "gift-cards-are-you-ready-to-sell-your-first-gift-card",
+                  "Are you ready to sell your first Gift Card?"
+                )}
               >
-                <GiftCardTable />
-              </BodyCard>
-            </div>
-          </>
+                <BannerCard.Description
+                  cta={{
+                    label: t("gift-cards-create-gift-card", "Create Gift Card"),
+                    onClick: () => setShowCreate(true),
+                  }}
+                >
+                  {t(
+                    "gift-cards-no-gift-card-has-been-added-yet",
+                    "No Gift Card has been added yet."
+                  )}
+                </BannerCard.Description>
+              </BannerCard>
+            )}
+
+            <BodyCard
+              title={t("gift-cards-history", "History")}
+              subtitle={t(
+                "gift-cards-see-the-history-of-purchased-gift-cards",
+                "See the history of purchased Gift Cards"
+              )}
+              actionables={actionables}
+            >
+              <GiftCardTable />
+            </BodyCard>
+
+            {getWidgets("gift_card.list.after").map((w, i) => {
+              return (
+                <WidgetContainer
+                  key={i}
+                  widget={w}
+                  injectionZone="gift_card.list.after"
+                  entity={null}
+                />
+              )
+            })}
+          </div>
         ) : (
           <div className="rounded-rounded border-grey-20 flex h-44 w-full items-center justify-center border">
             <Spinner variant="secondary" size="large" />
           </div>
         )}
       </div>
-      {showCreateCustom && (
-        <CustomGiftcard onDismiss={() => setShowCreateCustom(false)} />
-      )}
+
+      <CustomGiftcard onClose={closeCustom} open={stateCustom} />
+
       {showCreate && <NewGiftCard onClose={() => setShowCreate(!showCreate)} />}
-      {showDelete && (
+
+      {stateDelete && (
         <DeletePrompt
-          handleClose={() => setShowDelete(!showDelete)}
+          handleClose={closeDelete}
           onDelete={async () => onDelete()}
-          successText="Successfully deleted Gift Card"
-          confirmText="Yes, delete"
-          heading="Delete Gift Card"
+          successText={t(
+            "gift-cards-successfully-deleted-gift-card",
+            "Successfully deleted Gift Card"
+          )}
+          confirmText={t("gift-cards-yes-delete", "Yes, delete")}
+          heading={t("gift-cards-delete-gift-card", "Delete Gift Card")}
         />
       )}
+      <Spacer />
     </>
   )
 }

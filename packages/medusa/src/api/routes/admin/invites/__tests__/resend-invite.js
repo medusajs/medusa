@@ -9,7 +9,7 @@ describe("POST /invites/:invite_id/resend", () => {
       subject = await request("POST", `/admin/invites/invite_test/resend`, {
         adminSession: {
           jwt: {
-            id: "test_user",
+            userId: "test_user",
           },
         },
       })

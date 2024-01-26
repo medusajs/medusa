@@ -1,9 +1,10 @@
 import React, { useState } from "react"
+import { useTranslation } from "react-i18next"
 
+import useNotification from "../../hooks/use-notification"
+import { getErrorMessage } from "../../utils/error-messages"
 import Button from "../fundamentals/button"
 import Modal from "../molecules/modal"
-import { getErrorMessage } from "../../utils/error-messages"
-import useNotification from "../../hooks/use-notification"
 
 type DeletePromptProps = {
   heading?: string
@@ -16,14 +17,15 @@ type DeletePromptProps = {
 }
 
 const DeletePrompt: React.FC<DeletePromptProps> = ({
-  heading = "Are you sure you want to delete?",
+  heading,
   text = "",
-  successText = "Delete successful",
-  cancelText = "No, cancel",
-  confirmText = "Yes, remove",
+  successText,
+  cancelText,
+  confirmText,
   handleClose,
   onDelete,
 }) => {
+  const { t } = useTranslation()
   const notification = useNotification()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -34,7 +36,12 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
     onDelete()
       .then(() => {
         if (successText) {
-          notification("Success", successText, "success")
+          notification(
+            t("organisms-success", "Success"),
+            successText ||
+              t("organisms-delete-successful", "Delete successful"),
+            "success"
+          )
         }
       })
       .catch((err) => notification("Error", getErrorMessage(err), "error"))
@@ -49,29 +56,35 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
       <Modal.Body>
         <Modal.Content>
           <div className="flex flex-col">
-            <span className="inter-large-semibold">{heading}</span>
+            <span className="inter-large-semibold">
+              {heading ||
+                t(
+                  "organisms-are-you-sure-you-want-to-delete",
+                  "Are you sure you want to delete?"
+                )}
+            </span>
             <span className="inter-base-regular text-grey-50 mt-1">{text}</span>
           </div>
         </Modal.Content>
         <Modal.Footer>
-          <div className="flex h-8 w-full justify-end">
+          <div className="gap-x-xsmall flex h-8 w-full justify-end">
             <Button
-              variant="ghost"
-              className="text-small min-w-24 mr-2 justify-center"
+              variant="secondary"
+              className="justify-center"
               size="small"
               onClick={handleClose}
             >
-              {cancelText}
+              {cancelText || t("organisms-no-cancel", "No, cancel")}
             </Button>
             <Button
               loading={isLoading}
               size="small"
-              className="text-small w-24 justify-center"
+              className="justify-center"
               variant="nuclear"
               onClick={handleSubmit}
               disabled={isLoading}
             >
-              {confirmText}
+              {confirmText || t("organisms-yes-remove", "Yes, remove")}
             </Button>
           </div>
         </Modal.Footer>

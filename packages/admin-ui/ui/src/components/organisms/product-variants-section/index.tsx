@@ -1,5 +1,6 @@
 import OptionsProvider, { useOptionsContext } from "./options-provider"
 import { Product, ProductVariant, VariantInventory } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 
 import { ActionType } from "../../molecules/actionables"
 import AddVariantModal from "./add-variant-modal"
@@ -18,6 +19,8 @@ import { adminInventoryItemsKeys, useMedusa } from "medusa-react"
 import { useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import useToggleState from "../../../hooks/use-toggle-state"
+import DollarSignIcon from "../../fundamentals/icons/dollar-sign-icon"
+import Index from "./edit-prices-modal"
 
 type Props = {
   product: Product
@@ -26,6 +29,7 @@ type Props = {
 const ProductVariantsSection = ({ product }: Props) => {
   const queryClient = useQueryClient()
   const { client } = useMedusa()
+  const { t } = useTranslation()
 
   const { isFeatureEnabled } = useFeatureFlag()
 
@@ -59,19 +63,30 @@ const ProductVariantsSection = ({ product }: Props) => {
     toggle: toggleEditVariants,
   } = useToggleState()
 
+  const {
+    state: showEditPrices,
+    close: hideEditPrices,
+    toggle: toggleEditPrices,
+  } = useToggleState()
+
   const actions: ActionType[] = [
     {
-      label: "Add Variant",
+      label: t("product-variants-section-add-variant", "Add Variant"),
       onClick: toggleAddVariant,
       icon: <PlusIcon size="20" />,
     },
     {
-      label: "Edit Variants",
+      label: t("product-variants-section-edit-prices", "Edit Prices"),
+      onClick: toggleEditPrices,
+      icon: <DollarSignIcon size="20" />,
+    },
+    {
+      label: t("product-variants-section-edit-variants", "Edit Variants"),
       onClick: toggleEditVariants,
       icon: <EditIcon size="20" />,
     },
     {
-      label: "Edit Options",
+      label: t("product-variants-section-edit-options", "Edit Options"),
       onClick: toggleOptions,
       icon: <GearIcon size="20" />,
     },
@@ -117,7 +132,7 @@ const ProductVariantsSection = ({ product }: Props) => {
         <ProductOptions />
         <div className="mt-xlarge">
           <h2 className="inter-large-semibold mb-base">
-            Product variants{" "}
+            {t("product-variants-section-product-variants", "Product variants")}{" "}
             <span className="inter-large-regular text-grey-50">
               ({product.variants.length})
             </span>
@@ -148,6 +163,7 @@ const ProductVariantsSection = ({ product }: Props) => {
         onClose={closeEditVariants}
         product={product}
       />
+      {showEditPrices && <Index close={hideEditPrices} product={product} />}
       {variantToEdit && (
         <EditVariantModal
           variant={variantToEdit.base}

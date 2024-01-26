@@ -44,6 +44,7 @@ export default (app) => {
 /**
  * @schema StoreOrderEditsRes
  * type: object
+ * description: "The order edit's details."
  * x-expanded-relations:
  *   field: order_edit
  *   relations:
@@ -83,6 +84,7 @@ export default (app) => {
  *   - order_edit
  * properties:
  *   order_edit:
+ *     description: "Order edit details."
  *     $ref: "#/components/schemas/OrderEdit"
  */
 export type StoreOrderEditsRes = {

@@ -8,8 +8,6 @@
     "esModuleInterop": true,
     "declaration": true,
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "sourceMap": true,
     "noImplicitReturns": true,
     "strictNullChecks": true,

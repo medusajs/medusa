@@ -1,27 +1,26 @@
 import { MedusaError } from "medusa-core-utils"
-import { PaymentCollection } from "./../models/payment-collection"
-import { FindConfig } from "../types/common"
+import { PaymentCollection } from "../models"
 import { dataSource } from "../loaders/database"
+import { FindManyOptions } from "typeorm"
 
 export const PaymentCollectionRepository = dataSource
   .getRepository(PaymentCollection)
   .extend({
     async getPaymentCollectionIdBySessionId(
       sessionId: string,
-      config: FindConfig<PaymentCollection> = {}
+      config: FindManyOptions<PaymentCollection> = {}
     ): Promise<PaymentCollection> {
       const paymentCollection = await this.find({
-        join: {
-          alias: "payment_col",
-          innerJoin: { payment_sessions: "payment_col.payment_sessions" },
-        },
         where: {
           payment_sessions: {
             id: sessionId,
           },
         },
-        relations: config.relations,
-        select: config.select,
+        relations: {
+          ...(config.relations ?? {}),
+          payment_sessions: true,
+        },
+        select: config.select ?? {},
       })
 
       if (!paymentCollection.length) {
@@ -36,20 +35,19 @@ export const PaymentCollectionRepository = dataSource
 
     async getPaymentCollectionIdByPaymentId(
       paymentId: string,
-      config: FindConfig<PaymentCollection> = {}
+      config: FindManyOptions<PaymentCollection> = {}
     ): Promise<PaymentCollection> {
       const paymentCollection = await this.find({
-        join: {
-          alias: "payment_col",
-          innerJoin: { payments: "payment_col.payments" },
-        },
         where: {
           payments: {
             id: paymentId,
           },
         },
-        relations: config.relations,
-        select: config.select,
+        relations: {
+          ...(config.relations ?? {}),
+          payment_sessions: true,
+        },
+        select: config.select ?? {},
       })
 
       if (!paymentCollection.length) {

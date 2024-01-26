@@ -1,5 +1,3 @@
-import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
-
 import { OrderService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
@@ -7,7 +5,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [get] /store/orders/cart/{cart_id}
  * operationId: GetOrdersOrderCartId
  * summary: Get by Cart ID
- * description: "Retrieves an Order by the id of the Cart that was used to create the Order."
+ * description: "Retrieve an Order's details by the ID of the Cart that was used to create the Order."
  * parameters:
  *   - (path) cart_id=* {string} The ID of Cart.
  * x-codegen:
@@ -18,14 +16,40 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.orders.retrieveByCartId(cart_id)
+ *       medusa.orders.retrieveByCartId(cartId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCartOrder } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Order = ({ cartId }: Props) => {
+ *         const {
+ *           order,
+ *           isLoading,
+ *         } = useCartOrder(cartId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {order && <span>{order.display_id}</span>}
+ *
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/orders/cart/{id}'
+ *       curl '{backend_url}/store/orders/cart/{cart_id}'
  * tags:
  *   - Orders
  * responses:
@@ -50,10 +74,11 @@ export default async (req, res) => {
   const { cart_id } = req.params
 
   const orderService: OrderService = req.scope.resolve("orderService")
-  const order = await orderService.retrieveByCartId(cart_id, {
-    select: defaultStoreOrdersFields,
-    relations: defaultStoreOrdersRelations,
-  })
+
+  const order = await orderService.retrieveByCartIdWithTotals(
+    cart_id,
+    req.retrieveConfig
+  )
 
   res.json({ order: cleanResponseData(order, []) })
 }

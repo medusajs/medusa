@@ -3,9 +3,12 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the publishable API key.
+ */
 export interface AdminPostPublishableApiKeysPublishableApiKeyReq {
   /**
-   * A title to update for the key.
+   * The title of the Publishable API Key.
    */
   title?: string
 }

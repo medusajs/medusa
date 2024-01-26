@@ -1,3 +1,4 @@
+import { FlagRouter, promiseAll } from "@medusajs/utils"
 import { parse, toSeconds } from "iso8601-duration"
 import { isEmpty, omit } from "lodash"
 import { isDefined, MedusaError } from "medusa-core-utils"
@@ -20,6 +21,7 @@ import {
   Cart,
   Customer,
   Discount,
+  DiscountConditionType,
   LineItem,
   OrderStatus,
   Region,
@@ -45,7 +47,6 @@ import {
 import { CalculationContextData } from "../types/totals"
 import { buildQuery, setMetadata } from "../utils"
 import { isFuture, isPast } from "../utils/date-helpers"
-import { FlagRouter } from "../utils/flag-router"
 import CustomerService from "./customer"
 import DiscountConditionService from "./discount-condition"
 import EventBusService from "./event-bus"
@@ -56,6 +57,9 @@ import { OrderRepository } from "../repositories/order"
  * @implements {BaseService}
  */
 class DiscountService extends TransactionBaseService {
+  static readonly Events = {
+    CREATED: "discount.created",
+  }
   protected readonly discountRepository_: typeof DiscountRepository
   protected readonly customerService_: CustomerService
   protected readonly orderRepository_: typeof OrderRepository
@@ -202,7 +206,7 @@ class DiscountService extends TransactionBaseService {
         )
       }
       if (discount.regions) {
-        discount.regions = (await Promise.all(
+        discount.regions = (await promiseAll(
           discount.regions.map(async (regionId) =>
             this.regionService_.withTransaction(manager).retrieve(regionId)
           )
@@ -212,7 +216,7 @@ class DiscountService extends TransactionBaseService {
       if (!discount.regions?.length) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          "Discount must have atleast 1 region"
+          "Discount must have at least 1 region"
         )
       }
 
@@ -227,7 +231,7 @@ class DiscountService extends TransactionBaseService {
       const result = await discountRepo.save(created)
 
       if (conditions?.length) {
-        await Promise.all(
+        await promiseAll(
           conditions.map(async (cond) => {
             await this.discountConditionService_
               .withTransaction(manager)
@@ -235,6 +239,10 @@ class DiscountService extends TransactionBaseService {
           })
         )
       }
+
+      await this.eventBus_
+          .withTransaction(manager)
+          .emit(DiscountService.Events.CREATED, { id: result.id })
 
       return result
     })
@@ -378,7 +386,7 @@ class DiscountService extends TransactionBaseService {
       }
 
       if (conditions?.length) {
-        await Promise.all(
+        await promiseAll(
           conditions.map(async (cond) => {
             await this.discountConditionService_
               .withTransaction(manager)
@@ -388,7 +396,7 @@ class DiscountService extends TransactionBaseService {
       }
 
       if (regions) {
-        discount.regions = await Promise.all(
+        discount.regions = await promiseAll(
           regions.map(async (regionId) =>
             this.regionService_.retrieve(regionId)
           )
@@ -581,7 +589,7 @@ class DiscountService extends TransactionBaseService {
 
   async validateDiscountForProduct(
     discountRuleId: string,
-    productId: string | undefined
+    productId?: string
   ): Promise<boolean> {
     return await this.atomicPhase_(async (manager) => {
       const discountConditionRepo = manager.withRepository(
@@ -594,15 +602,9 @@ class DiscountService extends TransactionBaseService {
         return false
       }
 
-      const product = await this.productService_
-        .withTransaction(manager)
-        .retrieve(productId, {
-          relations: ["tags"],
-        })
-
       return await discountConditionRepo.isValidForProduct(
         discountRuleId,
-        product.id
+        productId
       )
     })
   }
@@ -686,7 +688,7 @@ class DiscountService extends TransactionBaseService {
   ): Promise<void> {
     const discounts = Array.isArray(discount) ? discount : [discount]
     return await this.atomicPhase_(async () => {
-      await Promise.all(
+      await promiseAll(
         discounts.map(async (disc) => {
           if (this.hasReachedLimit(disc)) {
             throw new MedusaError(
@@ -723,6 +725,13 @@ class DiscountService extends TransactionBaseService {
             )
           }
 
+          if (!cart.customer_id && this.hasCustomersGroupCondition(disc)) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              `Discount ${disc.code} is only valid for specific customer`
+            )
+          }
+
           const isValidForRegion = await this.isValidForRegion(
             disc,
             cart.region_id
@@ -750,6 +759,12 @@ class DiscountService extends TransactionBaseService {
         })
       )
     })
+  }
+
+  hasCustomersGroupCondition(discount: Discount): boolean {
+    return discount.rule.conditions.some(
+      (cond) => cond.type === DiscountConditionType.CUSTOMER_GROUPS
+    )
   }
 
   hasReachedLimit(discount: Discount): boolean {

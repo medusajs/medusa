@@ -3,9 +3,12 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the payment sessions to manage.
+ */
 export interface StorePostPaymentCollectionsBatchSessionsReq {
   /**
-   * An array of payment sessions related to the Payment Collection. If the session_id is not provided, existing sessions not present will be deleted and the provided ones will be created.
+   * Payment sessions related to the Payment Collection. Existing sessions that are not added in this array will be deleted.
    */
   sessions: Array<{
     /**
@@ -13,11 +16,11 @@ export interface StorePostPaymentCollectionsBatchSessionsReq {
      */
     provider_id: string
     /**
-     * The amount .
+     * The payment amount
      */
     amount: number
     /**
-     * The ID of the Payment Session to be updated.
+     * The ID of the Payment Session to be updated. If no ID is provided, a new payment session is created.
      */
     session_id?: string
   }>

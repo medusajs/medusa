@@ -28,7 +28,7 @@ const Topbar: React.FC = () => {
   )
 
   return (
-    <div className="min-h-topbar max-h-topbar pr-xlarge pl-base bg-grey-0 border-grey-20 sticky top-0 z-40 flex w-full items-center justify-between border-b">
+    <div className="min-h-topbar max-h-topbar pr-xlarge pl-base bg-grey-0 border-grey-20 flex w-full items-center justify-between border-b">
       <SearchBar />
       <div className="flex items-center">
         <Button

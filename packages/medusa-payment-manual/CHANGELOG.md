@@ -1,5 +1,18 @@
 # Change Log
 
+## 1.0.24
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
+## 1.0.23
+
+### Patch Changes
+
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724)]:
+  - medusa-interfaces@1.3.7
+
 ## 1.0.23-rc.0
 
 ### Patch Changes

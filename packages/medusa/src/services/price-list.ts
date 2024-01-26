@@ -1,18 +1,3 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import {
-  DeepPartial,
-  EntityManager,
-  FindManyOptions,
-  FindOperator,
-  FindOptionsWhere,
-  ILike,
-  In,
-} from "typeorm"
-import { CustomerGroupService } from "."
-import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
-import { MoneyAmountRepository } from "../repositories/money-amount"
-import { PriceListRepository } from "../repositories/price-list"
-import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import {
   CreatePriceListInput,
   FilterablePriceListProps,
@@ -20,16 +5,24 @@ import {
   PriceListPriceUpdateInput,
   UpdatePriceListInput,
 } from "../types/price-list"
+import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
+import { DeepPartial, EntityManager } from "typeorm"
+import { FindConfig, Selector } from "../types/common"
+import { isDefined, MedusaError } from "medusa-core-utils"
+
+import { CustomerGroupService } from "."
+import { FilterableProductProps } from "../types/product"
+import { FilterableProductVariantProps } from "../types/product-variant"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
+import { MoneyAmountRepository } from "../repositories/money-amount"
+import { PriceListRepository } from "../repositories/price-list"
 import ProductService from "./product"
+import { ProductVariantRepository } from "../repositories/product-variant"
+import ProductVariantService from "./product-variant"
 import RegionService from "./region"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
-import { FilterableProductProps } from "../types/product"
-import ProductVariantService from "./product-variant"
-import { FilterableProductVariantProps } from "../types/product-variant"
-import { ProductVariantRepository } from "../repositories/product-variant"
-import { FlagRouter } from "../utils/flag-router"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 type PriceListConstructorProps = {
   manager: EntityManager
@@ -111,6 +104,35 @@ class PriceListService extends TransactionBaseService {
     }
 
     return priceList
+  }
+
+  async listPriceListsVariantIdsMap(
+    priceListIds: string | string[]
+  ): Promise<{ [priceListId: string]: string[] }> {
+    priceListIds = Array.isArray(priceListIds) ? priceListIds : [priceListIds]
+
+    if (!priceListIds.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"priceListIds" must be defined`
+      )
+    }
+
+    const priceListRepo = this.activeManager_.withRepository(
+      this.priceListRepo_
+    )
+
+    const priceListsVariantIdsMap =
+      await priceListRepo.listPriceListsVariantIdsMap(priceListIds)
+
+    if (!Object.keys(priceListsVariantIdsMap)?.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `No PriceLists found with ids: ${priceListIds.join(", ")}`
+      )
+    }
+
+    return priceListsVariantIdsMap
   }
 
   /**
@@ -293,25 +315,9 @@ class PriceListService extends TransactionBaseService {
    */
   async list(
     selector: FilterablePriceListProps = {},
-    config: FindConfig<FilterablePriceListProps> = { skip: 0, take: 20 }
+    config: FindConfig<PriceList> = { skip: 0, take: 20 }
   ): Promise<PriceList[]> {
-    const priceListRepo = this.activeManager_.withRepository(
-      this.priceListRepo_
-    )
-
-    const { q, ...priceListSelector } = selector
-    const query = buildQuery(
-      priceListSelector,
-      config
-    ) as FindManyOptions<FilterablePriceListProps> & {
-      where: { customer_groups?: FindOperator<string[]> }
-    } & ExtendedFindConfig<FilterablePriceListProps>
-
-    const groups = query.where.customer_groups
-    query.where.customer_groups = undefined
-
-    const [priceLists] = await priceListRepo.listAndCount(query as any)
-
+    const [priceLists] = await this.listAndCount(selector, config)
     return priceLists
   }
 
@@ -333,55 +339,8 @@ class PriceListService extends TransactionBaseService {
     )
     const { q, ...priceListSelector } = selector
     const query = buildQuery(priceListSelector, config)
-    query.where = query.where as FindOptionsWhere<PriceList>
 
-    const groups = query.where.customer_groups as unknown as FindOperator<
-      string[]
-    >
-    delete query.where.customer_groups
-
-    if (groups) {
-      query.relations = query.relations ?? {}
-      query.relations.customer_groups = query.relations.customer_groups ?? true
-
-      query.where.customer_groups = {
-        ...(query.where.customer_groups ?? {}),
-        id: In(groups.value),
-      }
-    }
-
-    if (q) {
-      if (!groups) {
-        query.relations = query.relations ?? {}
-        query.relations.customer_groups =
-          query.relations.customer_groups ?? true
-      }
-
-      const where = [
-        {
-          ...query.where,
-          name: ILike(`%${q}%`),
-        },
-        {
-          ...query.where,
-          description: ILike(`%${q}%`),
-        },
-        {
-          ...query.where,
-          customer_groups: {
-            ...query.where.customer_groups,
-            name: ILike(`%${q}%`),
-          },
-        },
-      ]
-
-      return await priceListRepo.findAndCount({
-        ...query,
-        where,
-      })
-    }
-
-    return await priceListRepo.listAndCount(query)
+    return await priceListRepo.listAndCount(query, q)
   }
 
   protected async upsertCustomerGroups_(
@@ -425,10 +384,10 @@ class PriceListService extends TransactionBaseService {
 
       const moneyAmountRepo = manager.withRepository(this.moneyAmountRepo_)
 
-      const productsWithPrices = await Promise.all(
+      const productsWithPrices = await promiseAll(
         products.map(async (p) => {
           if (p.variants?.length) {
-            p.variants = await Promise.all(
+            p.variants = await promiseAll(
               p.variants.map(async (v) => {
                 const [prices] =
                   await moneyAmountRepo.findManyForVariantInPriceList(
@@ -437,10 +396,12 @@ class PriceListService extends TransactionBaseService {
                     requiresPriceList
                   )
 
-                return productVariantRepo.create({
+                const variant = productVariantRepo.create({
                   ...v,
-                  prices,
                 })
+
+                variant.prices = prices
+                return variant
               })
             )
           }
@@ -470,7 +431,7 @@ class PriceListService extends TransactionBaseService {
 
       const moneyAmountRepo = manager.withRepository(this.moneyAmountRepo_)
 
-      const variantsWithPrices = await Promise.all(
+      const variantsWithPrices = await promiseAll(
         variants.map(async (variant) => {
           const [prices] = await moneyAmountRepo.findManyForVariantInPriceList(
             variant.id,
@@ -568,13 +529,29 @@ class PriceListService extends TransactionBaseService {
     const regionServiceTx = this.regionService_.withTransaction(
       this.activeManager_
     )
+
+    const regions = await regionServiceTx.list(
+      {
+        id: [
+          ...new Set(
+            prices
+              .map((p) => p.region_id)
+              .filter((p: string | undefined): p is string => !!p)
+          ),
+        ],
+      },
+      {}
+    )
+
+    const regionsMap = new Map(regions.map((r) => [r.id, r]))
+
     for (const price of prices) {
       const p = { ...price }
 
       if (p.region_id) {
-        const region = await regionServiceTx.retrieve(p.region_id)
+        const region = regionsMap.get(p.region_id)
 
-        p.currency_code = region.currency_code
+        p.currency_code = region!.currency_code
       }
 
       prices_.push(p)

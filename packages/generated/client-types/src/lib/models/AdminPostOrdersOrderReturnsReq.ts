@@ -3,9 +3,12 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the requested return.
+ */
 export interface AdminPostOrdersOrderReturnsReq {
   /**
-   * The Line Items that will be returned.
+   * The line items that will be returned.
    */
   items: Array<{
     /**
@@ -47,11 +50,15 @@ export interface AdminPostOrdersOrderReturnsReq {
    */
   receive_now?: boolean
   /**
-   * A flag to indicate if no notifications should be emitted related to the requested Return.
+   * If set to `true`, no notification will be sent to the customer related to this Return.
    */
   no_notification?: boolean
   /**
    * The amount to refund.
    */
   refund?: number
+  /**
+   * The ID of the location used for the return.
+   */
+  location_id?: string
 }

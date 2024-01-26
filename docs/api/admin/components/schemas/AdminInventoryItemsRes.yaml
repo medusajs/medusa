@@ -1,4 +1,0 @@
-type: object
-properties:
-  inventory_item:
-    $ref: ./InventoryItemDTO.yaml

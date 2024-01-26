@@ -9,6 +9,7 @@ import {
   mergeBaseIntoOAS,
   mergePathsAndSchemasIntoOAS,
 } from "./utils/merge-oas"
+import { isFile } from "./utils/fs-utils"
 
 /**
  * Constants
@@ -124,9 +125,11 @@ export async function execute(cliParams: OptionValues) {
   }
 
   await validateOAS(oas, apiType, force)
-  if (!dryRun) {
-    await exportOASToJSON(oas, apiType, outDir)
+  if (dryRun) {
+    console.log(`⚫️ Dry run - no files generated`)
+    return
   }
+  await exportOASToJSON(oas, apiType, outDir)
 }
 
 /**
@@ -152,7 +155,7 @@ async function getOASFromCodebase(
       format: ".json",
     }
   )
-  return await OpenAPIParser.parse(JSON.parse(gen))
+  return (await OpenAPIParser.parse(JSON.parse(gen))) as OpenAPIObject
 }
 
 async function getOASFromPaths(
@@ -168,7 +171,7 @@ async function getOASFromPaths(
       console.log(log)
     },
   })
-  return await OpenAPIParser.parse(JSON.parse(gen))
+  return (await OpenAPIParser.parse(JSON.parse(gen))) as OpenAPIObject
 }
 
 async function validateOAS(
@@ -195,21 +198,12 @@ async function exportOASToJSON(
   const json = JSON.stringify(oas, null, 2)
   const filePath = path.resolve(targetDir, `${apiType}.oas.json`)
   await writeFile(filePath, json)
-  console.log(`🔵 Exported OAS - ${apiType} - ${filePath}`)
+  console.log(`⚫️ Exported OAS - ${apiType} - ${filePath}`)
 }
 
 async function isDirectory(dirPath: string): Promise<boolean> {
   try {
     return (await lstat(path.resolve(dirPath))).isDirectory()
-  } catch (err) {
-    console.log(err)
-    return false
-  }
-}
-
-async function isFile(filePath: string): Promise<boolean> {
-  try {
-    return (await lstat(path.resolve(filePath))).isFile()
   } catch (err) {
     console.log(err)
     return false

@@ -4,6 +4,7 @@ import {
   InventoryItemDTO,
   InventoryLevelDTO,
 } from "@medusajs/types"
+import { promiseAll } from "@medusajs/utils"
 import { LevelWithAvailability, ResponseInventoryItem } from "../../variants"
 
 export const buildLevelsByInventoryItemId = (
@@ -35,7 +36,7 @@ export const getLevelsByInventoryItemId = async (
 
   const [levels] = await inventoryService.listInventoryLevels(selector, {})
 
-  const levelsWithAvailability: LevelWithAvailability[] = await Promise.all(
+  const levelsWithAvailability: LevelWithAvailability[] = await promiseAll(
     levels.map(async (level) => {
       const availability = await inventoryService.retrieveAvailableQuantity(
         level.inventory_item_id,
@@ -62,8 +63,22 @@ export const joinLevels = async (
     inventoryService
   )
 
-  return inventoryItems.map((inventoryItem) => ({
-    ...inventoryItem,
-    location_levels: levelsByItemId[inventoryItem.id] || [],
-  }))
+  return inventoryItems.map((inventoryItem) => {
+    const levels = levelsByItemId[inventoryItem.id] ?? []
+    const itemAvailability = levels.reduce(
+      (acc, curr) => {
+        return {
+          reserved_quantity: acc.reserved_quantity + curr.reserved_quantity,
+          stocked_quantity: acc.stocked_quantity + curr.stocked_quantity,
+        }
+      },
+      { reserved_quantity: 0, stocked_quantity: 0 }
+    )
+
+    return {
+      ...inventoryItem,
+      ...itemAvailability,
+      location_levels: levels,
+    }
+  })
 }

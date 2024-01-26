@@ -1,13 +1,15 @@
+import { MedusaContainer } from "@medusajs/types"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
-
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
+import { getPriceListPricingModule } from "./modules-queries"
 
 /**
  * @oas [get] /admin/price-lists/{id}
  * operationId: "GetPriceListsPriceList"
  * summary: "Get a Price List"
- * description: "Retrieves a Price List."
+ * description: "Retrieve a Price List's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Price List.
@@ -20,18 +22,46 @@ import PriceListService from "../../../../services/price-list"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.priceLists.retrieve(price_list_id)
+ *       medusa.admin.priceLists.retrieve(priceListId)
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminPriceList } from "medusa-react"
+ *
+ *       type Props = {
+ *         priceListId: string
+ *       }
+ *
+ *       const PriceList = ({
+ *         priceListId
+ *       }: Props) => {
+ *         const {
+ *           price_list,
+ *           isLoading,
+ *         } = useAdminPriceList(priceListId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {price_list && <span>{price_list.name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default PriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/price-lists/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/price-lists/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Price Lists
  * responses:
@@ -57,13 +87,22 @@ import PriceListService from "../../../../services/price-list"
 export default async (req, res) => {
   const { id } = req.params
 
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  const priceList = await priceListService.retrieve(id, {
-    select: defaultAdminPriceListFields as (keyof PriceList)[],
-    relations: defaultAdminPriceListRelations,
-  })
+  let priceList
+
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    priceList = await getPriceListPricingModule(id, {
+      container: req.scope as MedusaContainer,
+    })
+  } else {
+    priceList = await priceListService.retrieve(id, {
+      select: defaultAdminPriceListFields as (keyof PriceList)[],
+      relations: defaultAdminPriceListRelations,
+    })
+  }
 
   res.status(200).json({ price_list: priceList })
 }

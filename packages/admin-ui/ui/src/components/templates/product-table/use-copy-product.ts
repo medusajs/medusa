@@ -2,6 +2,7 @@ import { AdminPostProductsReq, Product } from "@medusajs/medusa"
 import { omit } from "lodash"
 import { useAdminCreateProduct } from "medusa-react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import useNotification from "../../../hooks/use-notification"
 import { ProductStatus } from "../../../types/shared"
 import { getErrorMessage } from "../../../utils/error-messages"
@@ -37,6 +38,7 @@ const useCopyProduct = () => {
   const navigate = useNavigate()
   const notification = useNotification()
   const { mutate } = useAdminCreateProduct()
+  const { t } = useTranslation()
 
   const handleCopyProduct = (product: Product) => {
     const {
@@ -74,6 +76,22 @@ const useCopyProduct = () => {
       {} as Partial<AdminPostProductsReq>
     )
 
+    const optionRankMap: Record<string, number> = {}
+
+    if (options && options.length) {
+      options.forEach((option, i) => {
+        if (!base.options) {
+          base.options = []
+        }
+
+        optionRankMap[option.id] = i
+
+        base.options.push({
+          title: option.title,
+        })
+      })
+    }
+
     if (variants && variants.length) {
       const copiedVariants: AdminPostProductsReq["variants"] = []
 
@@ -87,6 +105,7 @@ const useCopyProduct = () => {
           "product",
           "product_id",
           "variant_rank",
+          "purchasable",
         ])
 
         const variantBase = Object.entries(rest).reduce((acc, [key, value]) => {
@@ -97,6 +116,8 @@ const useCopyProduct = () => {
           return acc
         }, {} as NonNullable<AdminPostProductsReq["variants"]>[0])
 
+        variantBase.prices = []
+
         if (prices && prices.length) {
           variantBase.prices = prices.map((price) => ({
             amount: price.amount,
@@ -106,7 +127,12 @@ const useCopyProduct = () => {
         }
 
         if (options && options.length) {
-          variantBase.options = options.map((option) => ({
+          // Sort the options by rank by looking up the rank in the optionRankMap
+          const sortedOptions = options.sort(
+            (a, b) => optionRankMap[a.option_id] - optionRankMap[b.option_id]
+          )
+
+          variantBase.options = sortedOptions.map((option) => ({
             value: option.value,
           }))
         }
@@ -115,12 +141,6 @@ const useCopyProduct = () => {
       })
 
       base.variants = copiedVariants
-    }
-
-    if (options && options.length) {
-      base.options = options.map((option) => ({
-        title: option.title,
-      }))
     }
 
     if (images && images.length) {
@@ -163,10 +183,21 @@ const useCopyProduct = () => {
     mutate(base as AdminPostProductsReq, {
       onSuccess: ({ product: copiedProduct }) => {
         navigate(`/a/products/${copiedProduct.id}`)
-        notification("Success", "Created a new product", "success")
+        notification(
+          t("product-table-copy-success", "Success"),
+          t(
+            "product-table-copy-created-a-new-product",
+            "Created a new product"
+          ),
+          "success"
+        )
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification(
+          t("product-table-copy-error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
       },
     })
   }

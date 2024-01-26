@@ -4,7 +4,7 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
- * Publishable API key defines scopes (i.e. resources) that are available within a request.
+ * A Publishable API key defines scopes that resources are available in. Then, it can be used in request to infer the resources without having to directly pass them. For example, a publishable API key can be associated with one or more sales channels. Then, when the publishable API key is passed in the header of a request, it is inferred what sales channel is being used without having to pass the sales channel as a query or body parameter of the request. Publishable API keys can only be used with sales channels, at the moment.
  */
 export interface PublishableApiKey {
   /**

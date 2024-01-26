@@ -1,4 +1,0 @@
-type: object
-properties:
-  discount_condition:
-    $ref: ./DiscountCondition.yaml

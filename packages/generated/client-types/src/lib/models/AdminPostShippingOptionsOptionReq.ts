@@ -3,17 +3,20 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the shipping option.
+ */
 export interface AdminPostShippingOptionsOptionReq {
   /**
    * The name of the Shipping Option
    */
   name?: string
   /**
-   * The amount to charge for the Shipping Option.
+   * The amount to charge for the Shipping Option. If the `price_type` of the shipping option is `calculated`, this amount will not actually be used.
    */
   amount?: number
   /**
-   * If true, the option can be used for draft orders
+   * If set to `true`, the shipping option can only be used when creating draft orders.
    */
   admin_only?: boolean
   /**
@@ -25,7 +28,7 @@ export interface AdminPostShippingOptionsOptionReq {
    */
   requirements: Array<{
     /**
-     * The ID of the requirement
+     * The ID of an existing requirement. If an ID is passed, the existing requirement's details are updated. Otherwise, a new requirement is created.
      */
     id?: string
     /**
@@ -38,7 +41,7 @@ export interface AdminPostShippingOptionsOptionReq {
     amount: number
   }>
   /**
-   * [EXPERIMENTAL] Tax included in prices of shipping option
+   * Tax included in prices of shipping option
    */
   includes_tax?: boolean
 }

@@ -9,6 +9,7 @@ import { UpdateStoreInput } from "../types/store"
 import { buildQuery, setMetadata } from "../utils"
 import { currencies } from "../utils/currencies"
 import EventBusService from "./event-bus"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -88,13 +89,13 @@ class StoreService extends TransactionBaseService {
       },
       config
     )
-    const store = await storeRepo.findOne(query)
+    const stores = await storeRepo.find(query)
 
-    if (!store) {
+    if (!stores.length) {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Store does not exist")
     }
 
-    return store
+    return stores[0]
   }
 
   protected getDefaultCurrency_(code: string): Partial<Currency> {
@@ -151,7 +152,7 @@ class StoreService extends TransactionBaseService {
             )
           }
 
-          store.currencies = await Promise.all(
+          store.currencies = await promiseAll(
             storeCurrencies.map(async (curr) => {
               const currency = await currencyRepository.findOne({
                 where: { code: curr.toLowerCase() },

@@ -3,10 +3,13 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+import type { Cart } from "./Cart"
+import type { Order } from "./Order"
+import type { PublishableApiKey } from "./PublishableApiKey"
 import type { SalesChannelLocation } from "./SalesChannelLocation"
 
 /**
- * A Sales Channel
+ * A Sales Channel is a method a business offers its products for purchase for the customers. For example, a Webshop can be a sales channel, and a mobile app can be another.
  */
 export interface SalesChannel {
   /**
@@ -26,7 +29,7 @@ export interface SalesChannel {
    */
   is_disabled: boolean
   /**
-   * The Stock Locations related to the sales channel. Available if the relation `locations` is expanded.
+   * The details of the stock locations related to the sales channel.
    */
   locations?: Array<SalesChannelLocation>
   /**
@@ -41,4 +44,20 @@ export interface SalesChannel {
    * The date with timezone at which the resource was deleted.
    */
   deleted_at: string | null
+  /**
+   * An optional key-value map with additional details
+   */
+  metadata?: Record<string, any> | null
+  /**
+   * The associated carts.
+   */
+  carts?: Array<Cart> | null
+  /**
+   * The associated orders.
+   */
+  orders?: Array<Order> | null
+  /**
+   * The associated publishable API keys.
+   */
+  publishableKeys?: Array<PublishableApiKey> | null
 }

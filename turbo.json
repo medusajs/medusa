@@ -8,10 +8,16 @@
       "outputs": [
         "!node_modules/**",
         "!src/**",
-        "/*/**"
+        "*/**"
       ]
     },
     "test": {
+      "dependsOn": [
+        "build"
+      ],
+      "outputs": []
+    },
+    "test:integration": {
       "dependsOn": [
         "build"
       ],

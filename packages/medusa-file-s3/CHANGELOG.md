@@ -1,5 +1,63 @@
 # Change Log
 
+## 1.4.1
+
+### Patch Changes
+
+- [#6100](https://github.com/medusajs/medusa/pull/6100) [`4792c5522`](https://github.com/medusajs/medusa/commit/4792c552269c147d3c07da49a175e9038f9260a8) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(@medusajs/medusa): add missing constructor to some services
+  fix(@medusajs/file-local): Fix argument passed to the constructor
+  fix(medusa-file-minio): Fix argument passed to the constructor
+  fix(medusa-file-s3): Fix argument passed to the constructor
+
+## 1.4.0
+
+### Minor Changes
+
+- [#5291](https://github.com/medusajs/medusa/pull/5291) [`bbd9dd408`](https://github.com/medusajs/medusa/commit/bbd9dd408f04dc95eb7d2d57984fb61e5c015bbc) Thanks [@pepijn-vanvlaanderen](https://github.com/pepijn-vanvlaanderen)! - Added config to set S3 prefix
+
+## 1.3.1
+
+### Patch Changes
+
+- [#4884](https://github.com/medusajs/medusa/pull/4884) [`046b0dcfa`](https://github.com/medusajs/medusa/commit/046b0dcfa5acfdbf98f5a5593b42673c7567430d) Thanks [@pevey](https://github.com/pevey)! - Chore(medusa-file-s3): Add cache-control option, fix delete function, update to sdk v3
+
+## 1.3.0
+
+### Minor Changes
+
+- [`e91bd9e1c`](https://github.com/medusajs/medusa/commit/e91bd9e1c1746ff2fe915d169077bf9bf2710dcf) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor-bumping file plugins
+
+## 1.2.2
+
+### Patch Changes
+
+- [#4788](https://github.com/medusajs/medusa/pull/4788) [`d8a6e3e0d`](https://github.com/medusajs/medusa/commit/d8a6e3e0d8a86aba7209f4a767cd08ebe3e49c26) Thanks [@fPolic](https://github.com/fPolic)! - feat(medusa-file-local): local file service streaming methods
+
+- [#4771](https://github.com/medusajs/medusa/pull/4771) [`edf9ed4e5`](https://github.com/medusajs/medusa/commit/edf9ed4e593063622aa39cdbebef4810bf2a5fb1) Thanks [@fPolic](https://github.com/fPolic)! - fix(medusa-interfaces, medusa-file-\*): add `ìsPrivate` flag to the streaming methods, fix minio default bucket
+
+## 1.2.1
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
+## 1.2.0
+
+### Minor Changes
+
+- [#3740](https://github.com/medusajs/medusa/pull/3740) [`8b6464180`](https://github.com/medusajs/medusa/commit/8b6464180a82bcc41197f2a97e58b9555a7072cd) Thanks [@dwene](https://github.com/dwene)! - Migrate medusa-file-minio and medusa-file-s3 to typescript.
+
+## 1.1.12
+
+### Patch Changes
+
+- [#3260](https://github.com/medusajs/medusa/pull/3260) [`13c200ad2`](https://github.com/medusajs/medusa/commit/13c200ad2f394734a126ea8920840a70e61401f7) Thanks [@pevey](https://github.com/pevey)! - fix(medusa-file-s3): update s3 file service to reuse one s3 client
+
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0
+  - medusa-interfaces@1.3.7
+  - medusa-test-utils@1.1.40
+
 ## 1.1.12-rc.0
 
 ### Patch Changes

@@ -21,16 +21,21 @@ export const handleExpandedRelations = (model: Model, allModels: Model[]) => {
     walkSplitRelations(nestedRelation, splitRelation, 0)
   }
 
-  walkNestedRelations(allModels, model, model, nestedRelation)
-  model.imports = [...new Set(model.imports)]
-
   const prop = getPropertyByName(nestedRelation.field, model)
   if (!prop) {
-    throw new Error(`x-expanded-relations error - field not found
+    throw new Error(`x-expanded-relations - field not found
       Schema: ${model.name}
       NestedRelation: ${JSON.stringify(nestedRelation, null, 2)}
       Model: ${JSON.stringify(model.spec, null, 2)}`)
   }
+
+  walkNestedRelations(allModels, model, model, nestedRelation)
+  model.imports = [...new Set(model.imports)]
+  /**
+   * To reduce complexity in the exportInterface template, nestedRelations is
+   * set on the property that is the root of the nested relations instead of
+   * setting it on the model.
+   */
   prop.nestedRelations = [nestedRelation]
 }
 
@@ -63,17 +68,21 @@ const walkNestedRelations = (
   model: Model,
   nestedRelation: NestedRelation,
   parentNestedRelation?: NestedRelation
-) => {
+): void => {
   const prop = ["all-of", "any-of", "one-of"].includes(model.export)
     ? findPropInCombination(nestedRelation.field, model, allModels)
     : getPropertyByName(nestedRelation.field, model)
   if (!prop) {
-    throw new Error(`x-expanded-relations - field not found
+    throw new Error(`x-expanded-relations - relation not found
       Schema: ${rootModel.name}
       NestedRelation: ${JSON.stringify(nestedRelation, null, 2)}
       Model: ${JSON.stringify(model.spec, null, 2)}`)
   }
   if (["all-of", "any-of", "one-of"].includes(prop.export)) {
+    /**
+     * Root property for nested relations can not use combination strategies.
+     * To use combination, they must be defined in referenced models instead.
+     */
     throw new Error(`x-expanded-relations - unsupported - field referencing multiple models
       Schema: ${rootModel.name}
       NestedRelation: ${JSON.stringify(nestedRelation, null, 2)}

@@ -1,4 +1,10 @@
 import {
+  DateComparisonOperator,
+  NumericalComparisonOperator,
+  StringComparisonOperator,
+  WithRequiredProperty,
+} from "./common"
+import {
   IsBoolean,
   IsInt,
   IsOptional,
@@ -7,15 +13,11 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
+
 import { IsType } from "../utils/validators/is-type"
-import {
-  DateComparisonOperator,
-  NumericalComparisonOperator,
-  StringComparisonOperator,
-  WithRequiredProperty,
-} from "./common"
-import { XorConstraint } from "./validators/xor"
+import { PricedVariant } from "./pricing"
 import { ProductVariant } from "../models"
+import { XorConstraint } from "./validators/xor"
 
 export type ProductVariantPrice = {
   id?: string

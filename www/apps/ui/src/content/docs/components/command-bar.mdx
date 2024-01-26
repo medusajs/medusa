@@ -1,0 +1,47 @@
+---
+title: "Command Bar"
+description: "Display a command bar with a list of commands"
+component: true
+---
+
+<ComponentExample name="command-bar-demo" />
+
+## Usage
+
+---
+
+```tsx
+import { CommandBar } from "@medusajs/ui"
+```
+
+```tsx
+<CommandBar open={open}>
+  <CommandBar.Bar>
+    <CommandBar.Value>{count} selected</CommandBar.Value>
+    <CommandBar.Seperator />
+    <CommandBar.Command
+      action={onDelete}
+      label="Delete"
+      shortcut="d"
+    />
+    <CommandBar.Seperator />
+    <CommandBar.Command
+      action={onEdit}
+      label="Edit"
+      shortcut="e"
+    />
+  </CommandBar.Bar>
+</CommandBar>
+```
+
+## API Reference
+
+---
+
+<ComponentReference mainComponent="CommandBar" componentsToShow={[
+  "CommandBar",
+  "CommandBar.Bar",
+  "CommandBar.Value",
+  "CommandBar.Seperator",
+  "CommandBar.Command"
+]} />

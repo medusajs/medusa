@@ -5,33 +5,36 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { AddressPayload } from "./AddressPayload"
 
+/**
+ * The details to update of the customer.
+ */
 export interface StorePostCustomersCustomerReq {
   /**
-   * The Customer's first name.
+   * The customer's first name.
    */
   first_name?: string
   /**
-   * The Customer's last name.
+   * The customer's last name.
    */
   last_name?: string
   /**
-   * The Address to be used for billing purposes.
+   * The address to be used for billing purposes.
    */
   billing_address?: AddressPayload | string
   /**
-   * The Customer's password.
+   * The customer's password.
    */
   password?: string
   /**
-   * The Customer's phone number.
+   * The customer's phone number.
    */
   phone?: string
   /**
-   * The email of the customer.
+   * The customer's email.
    */
   email?: string
   /**
-   * Metadata about the customer.
+   * Additional custom data about the customer.
    */
   metadata?: Record<string, any>
 }

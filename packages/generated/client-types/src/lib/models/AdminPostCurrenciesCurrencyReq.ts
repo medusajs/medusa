@@ -3,9 +3,12 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update in the currency
+ */
 export interface AdminPostCurrenciesCurrencyReq {
   /**
-   * [EXPERIMENTAL] Tax included in prices of currency.
+   * Tax included in prices of currency.
    */
   includes_tax?: boolean
 }

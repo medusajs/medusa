@@ -1,6 +1,0 @@
-type: object
-properties:
-  invites:
-    type: array
-    items:
-      $ref: ./Invite.yaml

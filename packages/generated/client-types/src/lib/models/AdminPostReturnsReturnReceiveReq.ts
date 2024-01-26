@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the received return.
+ */
 export interface AdminPostReturnsReturnReceiveReq {
   /**
    * The Line Items that have been received.
@@ -21,4 +24,8 @@ export interface AdminPostReturnsReturnReceiveReq {
    * The amount to refund.
    */
   refund?: number
+  /**
+   * The ID of the location to return items from.
+   */
+  location_id?: string
 }

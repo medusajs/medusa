@@ -1,5 +1,12 @@
 import { Transform } from "class-transformer"
-import { IsNotEmpty, IsOptional, IsString, IsBoolean } from "class-validator"
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsBoolean,
+  ValidateIf,
+} from "class-validator"
+import { isDefined } from "medusa-core-utils"
 import { ProductCategory } from "../models"
 
 export const tempReorderRank = 99999
@@ -10,6 +17,7 @@ type ProductCategoryInput = {
   parent_category_id?: string | null
   parent_category?: ProductCategory | null
   rank?: number
+  metadata?: Record<string, unknown>
 }
 
 export type CreateProductCategoryInput = ProductCategoryInput & {
@@ -21,6 +29,11 @@ export type UpdateProductCategoryInput = ProductCategoryInput & {
 }
 
 export class AdminProductCategoriesReqBase {
+  @Transform(({ value }) => (value === "null" ? null : value))
+  @ValidateIf((input) => isDefined(input.description))
+  @IsString()
+  description?: string
+
   @IsOptional()
   @IsString()
   handle?: string

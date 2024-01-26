@@ -13,7 +13,7 @@ import type { ProductVariant } from "./ProductVariant"
 import type { Swap } from "./Swap"
 
 /**
- * Line Items represent purchasable units that can be added to a Cart for checkout. When Line Items are purchased they will get copied to the resulting order and can eventually be referenced in Fulfillments and Returns. Line Items may also be created when processing Swaps and Claims.
+ * Line Items are created when a product is added to a Cart. When Line Items are purchased they will get copied to the resulting order, swap, or claim, and can eventually be referenced in Fulfillments and Returns. Line items may also be used for order edits.
  */
 export interface LineItem {
   /**
@@ -21,59 +21,59 @@ export interface LineItem {
    */
   id: string
   /**
-   * The ID of the Cart that the Line Item belongs to.
+   * The ID of the cart that the line item may belongs to.
    */
   cart_id: string | null
   /**
-   * A cart object. Available if the relation `cart` is expanded.
+   * The details of the cart that the line item may belongs to.
    */
   cart?: Cart | null
   /**
-   * The ID of the Order that the Line Item belongs to.
+   * The ID of the order that the line item may belongs to.
    */
   order_id: string | null
   /**
-   * An order object. Available if the relation `order` is expanded.
+   * The details of the order that the line item may belongs to.
    */
   order?: Order | null
   /**
-   * The id of the Swap that the Line Item belongs to.
+   * The ID of the swap that the line item may belong to.
    */
   swap_id: string | null
   /**
-   * A swap object. Available if the relation `swap` is expanded.
+   * The details of the swap that the line item may belong to.
    */
   swap?: Swap | null
   /**
-   * The id of the Claim that the Line Item belongs to.
+   * The ID of the claim that the line item may belong to.
    */
   claim_order_id: string | null
   /**
-   * A claim order object. Available if the relation `claim_order` is expanded.
+   * The details of the claim that the line item may belong to.
    */
   claim_order?: ClaimOrder | null
   /**
-   * Available if the relation `tax_lines` is expanded.
+   * The details of the item's tax lines.
    */
   tax_lines?: Array<LineItemTaxLine>
   /**
-   * Available if the relation `adjustments` is expanded.
+   * The details of the item's adjustments, which are available when a discount is applied on the item.
    */
   adjustments?: Array<LineItemAdjustment>
   /**
-   * The id of the original line item
+   * The ID of the original line item. This is useful if the line item belongs to a resource that references an order, such as a return or an order edit.
    */
   original_item_id: string | null
   /**
-   * The ID of the order edit to which a cloned item belongs
+   * The ID of the order edit that the item may belong to.
    */
   order_edit_id: string | null
   /**
-   * The order edit joined. Available if the relation `order_edit` is expanded.
+   * The details of the order edit.
    */
   order_edit?: OrderEdit | null
   /**
-   * The title of the Line Item, this should be easily identifiable by the Customer.
+   * The title of the Line Item.
    */
   title: string
   /**
@@ -113,7 +113,7 @@ export interface LineItem {
    */
   variant_id: string | null
   /**
-   * A product variant object. The Product Variant contained in the Line Item. Available if the relation `variant` is expanded.
+   * The details of the product variant that this item was created from.
    */
   variant?: ProductVariant | null
   /**
@@ -169,7 +169,7 @@ export interface LineItem {
    */
   gift_card_total?: number
   /**
-   * [EXPERIMENTAL] Indicates if the line item unit_price include tax
+   * Indicates if the line item unit_price include tax
    */
   includes_tax?: boolean
   /**

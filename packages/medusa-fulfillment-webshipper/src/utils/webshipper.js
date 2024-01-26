@@ -16,6 +16,7 @@ class Webshipper {
     this.shippingRates = this.buildShippingRateEndpoints_()
     this.orders = this.buildOrderEndpoints_()
     this.shipments = this.buildShipmentEndpoints_()
+    this.returns = this.buildReturnEndpoints_()
   }
 
   async request(data) {
@@ -114,6 +115,21 @@ class Webshipper {
       },
       create: async (data) => {
         const path = `/v2/shipments`
+        return this.client_({
+          method: "POST",
+          url: path,
+          data: {
+            data,
+          },
+        }).then(({ data }) => data)
+      },
+    }
+  }
+
+  buildReturnEndpoints_ = () => {
+    return {
+      create: async (data) => {
+        const path = `/v2/returns`
         return this.client_({
           method: "POST",
           url: path,

@@ -1,11 +1,11 @@
 const path = require("path")
 const { Note } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../helpers/admin-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
@@ -52,7 +52,7 @@ describe("/admin/notes", () => {
 
       const response = await api.get("/admin/notes/note1", {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       })
 
@@ -91,7 +91,7 @@ describe("/admin/notes", () => {
           },
           {
             headers: {
-              authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -136,7 +136,7 @@ describe("/admin/notes", () => {
       const response = await api
         .get("/admin/notes?resource_id=resource1", {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -163,6 +163,22 @@ describe("/admin/notes", () => {
         ],
       })
     })
+
+    it("should list the notes with correct count in pagination", async () => {
+      const api = useApi()
+      const response = await api
+        .get("/admin/notes?limit=2", {
+          headers: {
+            "x-medusa-access-token": "test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.notes.length).toEqual(2)
+      expect(response.data.count).toEqual(3)
+    })
   })
 
   describe("POST /admin/notes/:id", () => {
@@ -188,7 +204,7 @@ describe("/admin/notes", () => {
           { value: "new text" },
           {
             headers: {
-              authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -199,7 +215,7 @@ describe("/admin/notes", () => {
       const response = await api
         .get("/admin/notes/note1", {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -230,7 +246,7 @@ describe("/admin/notes", () => {
       await api
         .delete("/admin/notes/note1", {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -241,7 +257,7 @@ describe("/admin/notes", () => {
       await api
         .get("/admin/notes/note1", {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => (error = err))

@@ -1,15 +1,14 @@
 import {
-  Brackets,
+  DeleteResult,
+  FindOneOptions,
   FindOptionsWhere,
   ILike,
-  DeleteResult,
   In,
-  FindOneOptions,
 } from "typeorm"
 import { ProductCategory } from "../models/product-category"
 import { ExtendedFindConfig, QuerySelector } from "../types/common"
 import { dataSource } from "../loaders/database"
-import { buildLegacyFieldsListFrom } from "../utils"
+import { objectToStringPath, promiseAll } from "@medusajs/utils"
 import { isEmpty } from "lodash"
 
 export const ProductCategoryRepository = dataSource
@@ -44,14 +43,18 @@ export const ProductCategoryRepository = dataSource
       const options_ = { ...options }
       options_.where = options_.where as FindOptionsWhere<ProductCategory>
 
-      const legacySelect = buildLegacyFieldsListFrom(options_.select)
-      const legacyRelations = buildLegacyFieldsListFrom(options_.relations)
+      const columnsSelected = objectToStringPath(options_.select, {
+        includeParentPropertyFields: false,
+      })
+      const relationsSelected = objectToStringPath(options_.relations)
 
-      const selectStatements = (relationName: string): string[] => {
+      const fetchSelectColumns = (relationName: string): string[] => {
         const modelColumns = this.metadata.ownColumns.map(
           (column) => column.propertyName
         )
-        const selectColumns = legacySelect.length ? legacySelect : modelColumns
+        const selectColumns = columnsSelected.length
+          ? columnsSelected
+          : modelColumns
 
         return selectColumns.map((column) => {
           return `${relationName}.${column}`
@@ -59,7 +62,7 @@ export const ProductCategoryRepository = dataSource
       }
 
       const queryBuilder = this.createQueryBuilder(entityName)
-        .select(selectStatements(entityName))
+        .select(fetchSelectColumns(entityName))
         .skip(options_.skip)
         .take(options_.take)
         .addOrderBy(`${entityName}.rank`, "ASC")
@@ -69,18 +72,21 @@ export const ProductCategoryRepository = dataSource
         delete options_.where?.name
         delete options_.where?.handle
 
-        queryBuilder.where(
-          new Brackets((bracket) => {
-            bracket
-              .where({ name: ILike(`%${q}%`) })
-              .orWhere({ handle: ILike(`%${q}%`) })
-          })
-        )
+        options_.where = [
+          {
+            ...options_.where,
+            name: ILike(`%${q}%`),
+          },
+          {
+            ...options_.where,
+            handle: ILike(`%${q}%`),
+          },
+        ]
       }
 
-      queryBuilder.andWhere(options_.where)
+      queryBuilder.where(options_.where)
 
-      const includedTreeRelations: string[] = legacyRelations.filter((rel) =>
+      const includedTreeRelations: string[] = relationsSelected.filter((rel) =>
         ProductCategory.treeRelations.includes(rel)
       )
 
@@ -96,12 +102,10 @@ export const ProductCategoryRepository = dataSource
             treeWhere,
             treeScope
           )
-          .addSelect(selectStatements(treeRelation))
-          .addOrderBy(`${treeRelation}.rank`, "ASC")
-          .addOrderBy(`${treeRelation}.handle`, "ASC")
+          .addSelect(fetchSelectColumns(treeRelation))
       })
 
-      const nonTreeRelations: string[] = legacyRelations.filter(
+      const nonTreeRelations: string[] = relationsSelected.filter(
         (rel) => !ProductCategory.treeRelations.includes(rel)
       )
 
@@ -111,15 +115,15 @@ export const ProductCategoryRepository = dataSource
 
       let [categories, count] = await queryBuilder.getManyAndCount()
 
-      if (includeTree) {
-        categories = await Promise.all(
-          categories.map(async (productCategory) => {
+      categories = await promiseAll(
+        categories.map(async (productCategory) => {
+          if (includeTree) {
             productCategory = await this.findDescendantsTree(productCategory)
+          }
 
-            return sortChildren(productCategory, treeScope)
-          })
-        )
-      }
+          return sortChildren(productCategory, treeScope)
+        })
+      )
 
       return [categories, count]
     },
@@ -128,15 +132,15 @@ export const ProductCategoryRepository = dataSource
       productCategoryId: string,
       productIds: string[]
     ): Promise<void> {
+      const valuesToInsert = productIds.map((id) => ({
+        product_category_id: productCategoryId,
+        product_id: id,
+      }))
+
       await this.createQueryBuilder()
         .insert()
         .into(ProductCategory.productCategoryProductJoinTable)
-        .values(
-          productIds.map((id) => ({
-            product_category_id: productCategoryId,
-            product_id: id,
-          }))
-        )
+        .values(valuesToInsert)
         .orIgnore()
         .execute()
     },
@@ -166,13 +170,15 @@ const scopeChildren = (
     return category
   }
 
-  category.category_children = category.category_children.filter(
-    (categoryChild) => {
-      return !Object.entries(treeScope).some(
-        ([attribute, value]) => categoryChild[attribute] !== value
-      )
-    }
-  )
+  if (category.category_children) {
+    category.category_children = category.category_children.filter(
+      (categoryChild) => {
+        return !Object.entries(treeScope).some(
+          ([attribute, value]) => categoryChild[attribute] !== value
+        )
+      }
+    )
+  }
 
   return category
 }
@@ -182,13 +188,23 @@ const sortChildren = (
   treeScope: QuerySelector<ProductCategory> = {}
 ): ProductCategory => {
   if (category.category_children) {
-    category.category_children = category?.category_children
+    category.category_children = category.category_children
       .map(
         // Before we sort the children, we need scope the children
         // to conform to treeScope conditions
         (child) => sortChildren(scopeChildren(child, treeScope), treeScope)
       )
-      .sort((a, b) => a.rank - b.rank)
+      .sort((a, b) => {
+        // Sort by rank first
+        const rankDiff = a.rank - b.rank
+
+        // If the ranks are the same, sort by handle in ascending order
+        if (rankDiff === 0) {
+          return a.handle.localeCompare(b.handle)
+        }
+
+        return rankDiff
+      })
   }
 
   return category

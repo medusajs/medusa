@@ -1,5 +1,43 @@
 # Change Log
 
+## 1.3.12
+
+### Patch Changes
+
+- [`43205914c`](https://github.com/medusajs/medusa/commit/43205914cb5ff3587f00ac5cd7202db0e1c3dc97) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix: Support custom template
+
+## 1.3.11
+
+### Patch Changes
+
+- [#4524](https://github.com/medusajs/medusa/pull/4524) [`fe6586e56`](https://github.com/medusajs/medusa/commit/fe6586e560ad20ec59df4727bb8a7f1f42072f4a) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-plugin-sendgrid): Use correct SendGrid client
+
+## 1.3.10
+
+### Patch Changes
+
+- [#4389](https://github.com/medusajs/medusa/pull/4389) [`9dcdc0041`](https://github.com/medusajs/medusa/commit/9dcdc0041a2b08cc0723343dd8d9127d9977b086) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, utils): fix the way selects are consumed alongside the relations
+
+- [#4384](https://github.com/medusajs/medusa/pull/4384) [`f65a501da`](https://github.com/medusajs/medusa/commit/f65a501da5101da75217a2b69a61ccd4fd3a3b4d) Thanks [@pevey](https://github.com/pevey)! - feat(medusa-plugin-sendgrid): Add error messages to SendgridService.sendNotification
+
+## 1.3.9
+
+### Patch Changes
+
+- [#3763](https://github.com/medusajs/medusa/pull/3763) [`4104d9ccb`](https://github.com/medusajs/medusa/commit/4104d9ccb25276c85b5363f85e14b3093e64df85) Thanks [@StephixOne](https://github.com/StephixOne)! - fix(plugin-discount-generator,plugin-economic,plugin-mailchimp,plugin-restock-notification,plugin-sendgrid,plugin-wishlist): Temporarily remove payload validation in some plugins
+
+## 1.3.8
+
+### Patch Changes
+
+- [#3041](https://github.com/medusajs/medusa/pull/3041) [`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724) Thanks [@riqwan](https://github.com/riqwan)! - chore(medusa): Typeorm fixes / enhancements
+  - upgrade typeorm from 0.2.51 to 0.3.11
+  - Plugin repository loader to work with Typeorm update
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0
+  - medusa-interfaces@1.3.7
+  - medusa-test-utils@1.1.40
+
 ## 1.3.8-rc.0
 
 ### Patch Changes

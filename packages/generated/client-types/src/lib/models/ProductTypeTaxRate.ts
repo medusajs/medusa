@@ -7,7 +7,7 @@ import type { ProductType } from "./ProductType"
 import type { TaxRate } from "./TaxRate"
 
 /**
- * Associates a tax rate with a product type to indicate that the product type is taxed in a certain way
+ * This represents the association between a tax rate and a product type to indicate that the product type is taxed in a different way than the default.
  */
 export interface ProductTypeTaxRate {
   /**
@@ -15,7 +15,7 @@ export interface ProductTypeTaxRate {
    */
   product_type_id: string
   /**
-   * Available if the relation `product_type` is expanded.
+   * The details of the product type.
    */
   product_type?: ProductType | null
   /**
@@ -23,7 +23,7 @@ export interface ProductTypeTaxRate {
    */
   rate_id: string
   /**
-   * Available if the relation `tax_rate` is expanded.
+   * The details of the tax rate.
    */
   tax_rate?: TaxRate | null
   /**

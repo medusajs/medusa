@@ -1,4 +1,0 @@
-type: object
-properties:
-  price_list:
-    $ref: ./PriceList.yaml

@@ -35,8 +35,8 @@ container.register(
     withTransaction: function () {
       return this
     },
-    retrieve: jest.fn().mockReturnValue(undefined),
-    create: jest.fn().mockReturnValue({}),
+    retrieve: jest.fn().mockImplementation(async () => undefined),
+    create: jest.fn().mockImplementation(async () => ({})),
   })
 )
 

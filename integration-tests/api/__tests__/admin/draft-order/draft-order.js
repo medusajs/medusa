@@ -1,18 +1,18 @@
 const path = require("path")
 
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
+const setupServer = require("../../../../environment-helpers/setup-server")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
 
-const draftOrderSeeder = require("../../../helpers/draft-order-seeder")
-const adminSeeder = require("../../../helpers/admin-seeder")
-const { simpleDiscountFactory } = require("../../../factories")
+const draftOrderSeeder = require("../../../../helpers/draft-order-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const { simpleDiscountFactory } = require("../../../../factories")
 
 jest.setTimeout(30000)
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -78,6 +78,41 @@ describe("/admin/draft-orders", () => {
         adminReqConfig
       )
       expect(response.status).toEqual(200)
+    })
+
+    it("creates a draft order cart containing variant without prices should fail", async () => {
+      const api = useApi()
+
+      const payload = {
+        email: "oli@test.dk",
+        shipping_address: "oli-shipping",
+        items: [
+          {
+            variant_id: "test-variant-without-prices",
+            quantity: 2,
+            metadata: {},
+          },
+        ],
+        region_id: "test-region",
+        customer_id: "oli-test",
+        shipping_methods: [
+          {
+            option_id: "test-option",
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/draft-orders", payload, adminReqConfig)
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(400)
+      expect(response.data.type).toEqual("invalid_data")
+      expect(response.data.message).toEqual(
+        `Cannot generate line item for variant "test variant without prices" without a price`
+      )
     })
 
     it("creates a draft order with a custom shipping option price", async () => {
@@ -909,6 +944,41 @@ describe("/admin/draft-orders", () => {
 
       expect(item.title).toEqual("Update title")
       expect(item.unit_price).toEqual(1000)
+      expect(updatedDraftOrder.data.draft_order.cart.subtotal).not.toEqual(
+        undefined
+      )
+      expect(updatedDraftOrder.data.draft_order.cart.subtotal).not.toEqual(0)
+    })
+
+    it("updates a line item on the draft order with quantity", async () => {
+      const api = useApi()
+      await api.post(
+        "/admin/draft-orders/test-draft-order/line-items/test-item",
+        {
+          unit_price: 1000,
+        },
+        adminReqConfig
+      )
+
+      const response = await api.post(
+        "/admin/draft-orders/test-draft-order/line-items/test-item",
+        {
+          quantity: 2,
+        },
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+
+      const updatedDraftOrder = await api.get(
+        `/admin/draft-orders/test-draft-order`,
+        adminReqConfig
+      )
+
+      const item = updatedDraftOrder.data.draft_order.cart.items[0]
+
+      expect(item.unit_price).toEqual(1000)
+      expect(item.quantity).toEqual(2)
       expect(updatedDraftOrder.data.draft_order.cart.subtotal).not.toEqual(
         undefined
       )

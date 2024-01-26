@@ -7,7 +7,7 @@ import type { DiscountCondition } from "./DiscountCondition"
 import type { ProductCollection } from "./ProductCollection"
 
 /**
- * Associates a discount condition with a product collection
+ * This represents the association between a discount condition and a product collection
  */
 export interface DiscountConditionProductCollection {
   /**
@@ -19,11 +19,11 @@ export interface DiscountConditionProductCollection {
    */
   condition_id: string
   /**
-   * Available if the relation `product_collection` is expanded.
+   * The details of the product collection.
    */
   product_collection?: ProductCollection | null
   /**
-   * Available if the relation `discount_condition` is expanded.
+   * The details of the discount condition.
    */
   discount_condition?: DiscountCondition | null
   /**

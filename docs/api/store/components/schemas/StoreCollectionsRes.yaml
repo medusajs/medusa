@@ -1,4 +1,0 @@
-type: object
-properties:
-  collection:
-    $ref: ./ProductCollection.yaml

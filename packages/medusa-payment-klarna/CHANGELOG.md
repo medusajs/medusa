@@ -1,5 +1,26 @@
 # Change Log
 
+## 1.4.0
+
+### Minor Changes
+
+- [#4483](https://github.com/medusajs/medusa/pull/4483) [`5d0e9ac00`](https://github.com/medusajs/medusa/commit/5d0e9ac007ecd1a60a4d5b8736024d2627da0b6d) Thanks [@edinskeja](https://github.com/edinskeja)! - Add language support
+
+## 1.3.10
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
+## 1.3.9
+
+### Patch Changes
+
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0
+  - medusa-interfaces@1.3.7
+  - medusa-test-utils@1.1.40
+
 ## 1.3.9-rc.0
 
 ### Patch Changes

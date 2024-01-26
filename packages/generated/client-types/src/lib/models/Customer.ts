@@ -8,7 +8,7 @@ import type { CustomerGroup } from "./CustomerGroup"
 import type { Order } from "./Order"
 
 /**
- * Represents a customer
+ * A customer can make purchases in your store and manage their profile.
  */
 export interface Customer {
   /**
@@ -32,11 +32,11 @@ export interface Customer {
    */
   billing_address_id: string | null
   /**
-   * Available if the relation `billing_address` is expanded.
+   * The details of the billing address associated with the customer.
    */
   billing_address?: Address | null
   /**
-   * Available if the relation `shipping_addresses` is expanded.
+   * The details of the shipping addresses associated with the customer.
    */
   shipping_addresses?: Array<Address>
   /**
@@ -48,11 +48,11 @@ export interface Customer {
    */
   has_account: boolean
   /**
-   * Available if the relation `orders` is expanded.
+   * The details of the orders this customer placed.
    */
   orders?: Array<Order>
   /**
-   * The customer groups the customer belongs to. Available if the relation `groups` is expanded.
+   * The customer groups the customer belongs to.
    */
   groups?: Array<CustomerGroup>
   /**

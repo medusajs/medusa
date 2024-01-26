@@ -2,6 +2,7 @@ import execa from "execa"
 import os from "os"
 import fs from "fs/promises"
 import path from "path"
+import { sep } from "path"
 
 const basePath = path.resolve(__dirname, `../`)
 
@@ -51,7 +52,7 @@ const getTmpDirectory = async () => {
    * RUNNER_TEMP: GitHub action, the path to a temporary directory on the runner.
    */
   const tmpDir = process.env["RUNNER_TEMP"] ?? os.tmpdir()
-  return await fs.mkdtemp(tmpDir)
+  return await fs.mkdtemp(`${tmpDir}${sep}`)
 }
 
 void (async () => {

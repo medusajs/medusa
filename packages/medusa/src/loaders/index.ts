@@ -1,21 +1,32 @@
-import { asValue } from "awilix"
+import {
+  InternalModuleDeclaration,
+  ModulesDefinition,
+} from "@medusajs/modules-sdk"
+import { MODULE_RESOURCE_TYPE } from "@medusajs/types"
 import { Express, NextFunction, Request, Response } from "express"
+
+import databaseLoader, { dataSource } from "./database"
+import pluginsLoader, { registerPluginModels } from "./plugins"
+
+import { ContainerRegistrationKeys, isString } from "@medusajs/utils"
+import { asValue } from "awilix"
+import { createMedusaContainer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
-import "reflect-metadata"
+import path from "path"
 import requestIp from "request-ip"
 import { Connection } from "typeorm"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
-import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import Logger from "./logger"
+import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
-import pluginsLoader, { registerPluginModels } from "./plugins"
+import pgConnectionLoader from "./pg-connection"
 import redisLoader from "./redis"
 import repositoriesLoader from "./repositories"
 import searchIndexLoader from "./search-index"
@@ -23,13 +34,49 @@ import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
 
-import { moduleLoader, registerModules } from "@medusajs/modules-sdk"
-import { createMedusaContainer } from "medusa-core-utils"
-
 type Options = {
   directory: string
   expressApp: Express
   isTest: boolean
+}
+
+async function loadLegacyModulesEntities(configModules, container) {
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
+  for (const [moduleName, moduleConfig] of Object.entries(configModules)) {
+    const definition = ModulesDefinition[moduleName]
+
+    if (!definition?.isLegacy) {
+      continue
+    }
+
+    const modulePath = isString(moduleConfig)
+      ? moduleConfig
+      : (moduleConfig as InternalModuleDeclaration).resolve ??
+        (definition.defaultPackage as string)
+
+    const resources = isString(moduleConfig)
+      ? (definition.defaultModuleDeclaration as InternalModuleDeclaration)
+          .resources
+      : (moduleConfig as InternalModuleDeclaration).resources ??
+        (definition.defaultModuleDeclaration as InternalModuleDeclaration)
+          .resources
+
+    if (resources === MODULE_RESOURCE_TYPE.SHARED) {
+      if (!modulePath) {
+        logger.warn(`Unable to load module entities for ${moduleName}`)
+        continue
+      }
+
+      const module = await import(modulePath as string)
+
+      if (module.default?.models) {
+        module.default.models.map((model) =>
+          container.registerAdd("db_entities", asValue(model))
+        )
+      }
+    }
+  }
 }
 
 export default async ({
@@ -40,11 +87,15 @@ export default async ({
   container: MedusaContainer
   dbConnection: Connection
   app: Express
+  pgConnection: unknown
 }> => {
   const configModule = loadConfig(rootDirectory)
 
   const container = createMedusaContainer()
-  container.register("configModule", asValue(configModule))
+  container.register(
+    ContainerRegistrationKeys.CONFIG_MODULE,
+    asValue(configModule)
+  )
 
   // Add additional information to context of request
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
@@ -59,7 +110,7 @@ export default async ({
   track("FEATURE_FLAGS_LOADED")
 
   container.register({
-    logger: asValue(Logger),
+    [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
@@ -67,7 +118,7 @@ export default async ({
 
   const modelsActivity = Logger.activity(`Initializing models${EOL}`)
   track("MODELS_INIT_STARTED")
-  modelsLoader({ container })
+  modelsLoader({ container, rootDirectory })
   const mAct = Logger.success(modelsActivity, "Models initialized") || {}
   track("MODELS_INIT_COMPLETED", { duration: mAct.duration })
 
@@ -87,15 +138,10 @@ export default async ({
   const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
   track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
 
-  const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
-  track("MODULES_INIT_STARTED")
-  await moduleLoader({
-    container,
-    moduleResolutions: registerModules(configModule?.modules),
-    logger: Logger,
-  })
-  const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
-  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
+  const pgConnection = await pgConnectionLoader({ container, configModule })
+
+  const configModules = mergeDefaultModules(configModule.modules)
+  await loadLegacyModulesEntities(configModules, container)
 
   const dbActivity = Logger.activity(`Initializing database${EOL}`)
   track("DATABASE_INIT_STARTED")
@@ -112,7 +158,11 @@ export default async ({
   const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
   track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
 
-  container.register({ manager: asValue(dataSource.manager) })
+  container.register({
+    [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
+  })
+
+  container.register("remoteQuery", asValue(null)) // ensure remoteQuery is always registered
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")
@@ -120,10 +170,22 @@ export default async ({
   const servAct = Logger.success(servicesActivity, "Services initialized") || {}
   track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })
 
+  const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
+  track("MODULES_INIT_STARTED")
+
+  // Move before services init once all modules are migrated and do not rely on core resources anymore
+  await loadMedusaApp({
+    configModule,
+    container,
+  })
+
+  const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
+  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
+
   const expActivity = Logger.activity(`Initializing express${EOL}`)
   track("EXPRESS_INIT_STARTED")
   await expressLoader({ app: expressApp, configModule })
-  await passportLoader({ app: expressApp, container, configModule })
+  await passportLoader({ app: expressApp, configModule })
   const exAct = Logger.success(expActivity, "Express intialized") || {}
   track("EXPRESS_INIT_COMPLETED", { duration: exAct.duration })
 
@@ -154,7 +216,12 @@ export default async ({
 
   const apiActivity = Logger.activity(`Initializing API${EOL}`)
   track("API_INIT_STARTED")
-  await apiLoader({ container, app: expressApp, configModule })
+  await apiLoader({
+    container,
+    app: expressApp,
+    configModule,
+    featureFlagRouter,
+  })
   const apiAct = Logger.success(apiActivity, "API initialized") || {}
   track("API_INIT_COMPLETED", { duration: apiAct.duration })
 
@@ -173,5 +240,10 @@ export default async ({
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
-  return { container, dbConnection, app: expressApp }
+  return {
+    container,
+    dbConnection,
+    app: expressApp,
+    pgConnection,
+  }
 }

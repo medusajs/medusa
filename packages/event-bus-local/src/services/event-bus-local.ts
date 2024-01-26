@@ -1,7 +1,8 @@
-import { Logger, MedusaContainer } from "@medusajs/modules-sdk"
-import { EmitData, Subscriber } from "@medusajs/types"
+import { MedusaContainer } from "@medusajs/modules-sdk"
+import { EmitData, EventBusTypes, Logger, Subscriber } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
 import { EventEmitter } from "events"
+import { ulid } from "ulid"
 
 type InjectedDependencies = {
   logger: Logger
@@ -12,7 +13,7 @@ eventEmitter.setMaxListeners(Infinity)
 
 // eslint-disable-next-line max-len
 export default class LocalEventBusService extends AbstractEventBusModuleService {
-  protected readonly logger_: Logger
+  protected readonly logger_?: Logger
   protected readonly eventEmitter_: EventEmitter
 
   constructor({ logger }: MedusaContainer & InjectedDependencies) {
@@ -52,7 +53,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         event.eventName
       )
 
-      this.logger_.info(
+      this.logger_?.info(
         `Processing ${event.eventName} which has ${eventListenersCount} subscribers`
       )
 
@@ -65,12 +66,14 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
   }
 
   subscribe(event: string | symbol, subscriber: Subscriber): this {
+    const randId = ulid()
+    this.storeSubscribers({ event, subscriberId: randId, subscriber })
     this.eventEmitter_.on(event, async (...args) => {
       try {
         // @ts-ignore
         await subscriber(...args)
       } catch (e) {
-        this.logger_.error(
+        this.logger_?.error(
           `An error occurred while processing ${event.toString()}: ${e}`
         )
       }
@@ -78,7 +81,23 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     return this
   }
 
-  unsubscribe(event: string | symbol, subscriber: Subscriber): this {
+  unsubscribe(
+    event: string | symbol,
+    subscriber: Subscriber,
+    context?: EventBusTypes.SubscriberContext
+  ): this {
+    const existingSubscribers = this.eventToSubscribersMap_.get(event)
+
+    if (existingSubscribers?.length) {
+      const subIndex = existingSubscribers?.findIndex(
+        (sub) => sub.id === context?.subscriberId
+      )
+
+      if (subIndex !== -1) {
+        this.eventToSubscribersMap_.get(event)?.splice(subIndex as number, 1)
+      }
+    }
+
     this.eventEmitter_.off(event, subscriber)
     return this
   }

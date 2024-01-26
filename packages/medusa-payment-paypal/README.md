@@ -4,8 +4,6 @@ Receive payments on your Medusa commerce application using PayPal.
 
 [PayPal Plugin Documentation](https://docs.medusajs.com/plugins/payment/paypal) | [Medusa Website](https://medusajs.com/) | [Medusa Repository](https://github.com/medusajs/medusa)
 
-The paypal plugin version `>=1.3.x` requires medusa `>=1.8.x`
-
 ## Features
 
 - Authorize payments on orders from any sales channel.

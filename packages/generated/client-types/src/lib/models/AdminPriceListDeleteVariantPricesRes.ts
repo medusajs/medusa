@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPriceListDeleteVariantPricesRes {
   /**
-   * The price ids that have been deleted.
+   * The IDs of the deleted prices.
    */
   ids: Array<string>
   /**
-   * The type of the object that was deleted.
+   * The type of the object that was deleted. A price is also named `money-amount`.
    */
   object: string
   /**

@@ -1,7 +1,8 @@
 import { IdMap } from "medusa-test-utils"
-import { request } from "../../../../../helpers/test-request"
 import { PriceListServiceMock } from "../../../../../services/__mocks__/price-list"
+import { request } from "../../../../../helpers/test-request"
 
+jest.setTimeout(10000)
 describe("POST /price-lists", () => {
   describe("successfully creates a price list", () => {
     let subject
@@ -57,8 +58,8 @@ describe("POST /price-lists", () => {
       expect(PriceListServiceMock.create).toHaveBeenCalledWith({
         name: "My Price List",
         description: "testing",
-        ends_at: "2022-03-14T08:28:38.551Z",
-        starts_at: "2022-03-14T08:28:38.551Z",
+        ends_at: new Date("2022-03-14T08:28:38.551Z"),
+        starts_at: new Date("2022-03-14T08:28:38.551Z"),
         customer_groups: [
           {
             id: "gc_123",
@@ -112,7 +113,7 @@ describe("POST /price-lists", () => {
     it("returns descriptive error that several fields are missing", () => {
       expect(subject.body.type).toEqual("invalid_data")
       expect(subject.body.message).toEqual(
-        "name must be a string, type must be a valid enum value, prices must be an array"
+        "name must be a string, type must be one of the following values: sale, override, prices must be an array"
       )
     })
   })

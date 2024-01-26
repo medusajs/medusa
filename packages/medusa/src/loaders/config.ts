@@ -58,12 +58,6 @@ export default (rootDirectory: string): ConfigModule => {
     )
   }
 
-  if (!configModule?.projectConfig?.database_type) {
-    console.log(
-      `[medusa-config] ⚠️ database_type not found. fallback to default sqlite.`
-    )
-  }
-
   return {
     projectConfig: {
       jwt_secret: jwt_secret ?? "supersecret",

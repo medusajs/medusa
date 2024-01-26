@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StoreGetPaymentCollectionsParams {
   /**
-   * Comma separated list of relations to include in the results.
-   */
-  expand?: string
-  /**
-   * Comma separated list of fields to include in the results.
+   * Comma-separated fields that should be expanded in the returned payment collection.
    */
   fields?: string
+  /**
+   * Comma-separated relations that should be expanded in the returned payment collection.
+   */
+  expand?: string
 }

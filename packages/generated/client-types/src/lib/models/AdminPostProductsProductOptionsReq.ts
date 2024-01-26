@@ -3,9 +3,12 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the product option to create.
+ */
 export interface AdminPostProductsProductOptionsReq {
   /**
-   * The title the Product Option will be identified by i.e. "Size"
+   * The title the Product Option.
    */
   title: string
 }

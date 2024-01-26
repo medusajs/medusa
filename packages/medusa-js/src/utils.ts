@@ -19,3 +19,17 @@ export function stringifyNullProperties<T extends object>(input: T): T {
 
   return convertProperties(input)
 }
+
+export function createAdminPath(path: string) {
+  let formattedPath = path
+
+  if (!formattedPath.startsWith("/")) {
+    formattedPath = `/${formattedPath}`
+  }
+
+  if (!formattedPath.startsWith("/admin")) {
+    formattedPath = `/admin${formattedPath}`
+  }
+
+  return formattedPath
+}

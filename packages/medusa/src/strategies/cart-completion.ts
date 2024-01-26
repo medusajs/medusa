@@ -1,23 +1,28 @@
 import {
+  IEventBusService,
+  IInventoryService,
+  ReservationItemDTO,
+} from "@medusajs/types"
+import {
   AbstractCartCompletionStrategy,
   CartCompletionResponse,
 } from "../interfaces"
-import { IInventoryService, ReservationItemDTO } from "@medusajs/types"
 import { IdempotencyKey, Order } from "../models"
-import OrderService, {
-  ORDER_CART_ALREADY_EXISTS_ERROR,
-} from "../services/order"
 import {
   PaymentProviderService,
   ProductVariantInventoryService,
 } from "../services"
+import OrderService, {
+  ORDER_CART_ALREADY_EXISTS_ERROR,
+} from "../services/order"
 
-import CartService from "../services/cart"
-import { EntityManager } from "typeorm"
-import IdempotencyKeyService from "../services/idempotency-key"
+import { promiseAll } from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
-import { RequestContext } from "../types/request"
+import { EntityManager } from "typeorm"
+import CartService from "../services/cart"
+import IdempotencyKeyService from "../services/idempotency-key"
 import SwapService from "../services/swap"
+import { RequestContext } from "../types/request"
 
 type InjectedDependencies = {
   productVariantInventoryService: ProductVariantInventoryService
@@ -28,6 +33,7 @@ type InjectedDependencies = {
   swapService: SwapService
   manager: EntityManager
   inventoryService: IInventoryService
+  eventBusService: IEventBusService
 }
 
 class CartCompletionStrategy extends AbstractCartCompletionStrategy {
@@ -39,6 +45,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
   protected readonly orderService_: OrderService
   protected readonly swapService_: SwapService
   protected readonly inventoryService_: IInventoryService
+  protected readonly eventBusService_: IEventBusService
 
   constructor({
     productVariantInventoryService,
@@ -48,6 +55,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     orderService,
     swapService,
     inventoryService,
+    eventBusService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -59,6 +67,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     this.orderService_ = orderService
     this.swapService_ = swapService
     this.inventoryService_ = inventoryService
+    this.eventBusService_ = eventBusService
   }
 
   async complete(
@@ -75,7 +84,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       switch (idempotencyKey.recovery_point) {
         case "started": {
           await this.activeManager_
-            .transaction("SERIALIZABLE", async (transactionManager) => {
+            .transaction(async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
                 .workStage(
@@ -92,7 +101,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         }
         case "tax_lines_created": {
           await this.activeManager_
-            .transaction("SERIALIZABLE", async (transactionManager) => {
+            .transaction(async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
                 .workStage(
@@ -113,7 +122,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
         case "payment_authorized": {
           await this.activeManager_
-            .transaction("SERIALIZABLE", async (transactionManager) => {
+            .transaction(async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
                 .workStage(
@@ -181,25 +190,40 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         "discounts",
         "discounts.rule",
         "gift_cards",
-        "items",
-        "items.variant",
-        "items.variant.product",
+        "items.variant.product.profiles",
         "items.adjustments",
         "region",
         "region.tax_rates",
         "shipping_address",
         "shipping_methods",
+        "shipping_methods.shipping_option",
       ],
     })
 
     if (cart.completed_at) {
+      if (cart.type === "swap") {
+        const swapId = cart.metadata?.swap_id as string
+        const swapServiceTx = this.swapService_.withTransaction(manager)
+
+        const swap = await swapServiceTx.retrieve(swapId, {
+          relations: ["shipping_address"],
+        })
+
+        return {
+          response_code: 200,
+          response_body: { data: swap, type: "swap" },
+        }
+      }
+
+      const order = await this.orderService_
+        .withTransaction(manager)
+        .retrieveByCartIdWithTotals(id, {
+          relations: ["shipping_address", "items", "payments"],
+        })
+
       return {
-        response_code: 409,
-        response_body: {
-          code: MedusaError.Codes.CART_INCOMPATIBLE_STATE,
-          message: "Cart has already been completed",
-          type: MedusaError.Types.NOT_ALLOWED,
-        },
+        response_code: 200,
+        response_body: { data: order, type: "order" },
       }
     }
 
@@ -220,20 +244,19 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       return res
     }
 
-    const cart = await this.cartService_
-      .withTransaction(manager)
-      .authorizePayment(id, {
-        ...context,
-        cart_id: id,
-        idempotency_key: idempotencyKey,
-      })
+    const txCartService = this.cartService_.withTransaction(manager)
+
+    const cart = await txCartService.authorizePayment(id, {
+      ...context,
+      idempotency_key: idempotencyKey,
+    })
 
     if (cart.payment_session) {
       if (
         cart.payment_session.status === "requires_more" ||
         cart.payment_session.status === "pending"
       ) {
-        await this.cartService_.withTransaction(manager).deleteTaxLines(id)
+        await txCartService.deleteTaxLines(id)
 
         return {
           response_code: 200,
@@ -253,7 +276,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
   protected async removeReservations(reservations) {
     if (this.inventoryService_) {
-      await Promise.all(
+      await promiseAll(
         reservations.map(async ([reservations]) => {
           if (reservations) {
             return reservations.map(async (reservation) => {
@@ -286,7 +309,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         "region",
         "payment",
         "payment_sessions",
-        "items.variant.product",
+        "items.variant.product.profiles",
       ],
     })
 
@@ -305,7 +328,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       const productVariantInventoryServiceTx =
         this.productVariantInventoryService_.withTransaction(manager)
 
-      reservations = await Promise.all(
+      reservations = await promiseAll(
         cart.items.map(async (item) => {
           if (item.variant_id) {
             try {
@@ -384,6 +407,14 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         } else {
           throw error
         }
+      } else if (this.inventoryService_) {
+        await this.eventBusService_.emit("reservation-items.bulk-created", {
+          ids: reservations
+            .filter(([reservation]) => !!reservation)
+            .flatMap(([reservationItemArr]) =>
+              reservationItemArr!.map((item) => item.id)
+            ),
+        })
       }
     }
 
@@ -433,8 +464,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       await this.removeReservations(reservations)
 
       if (error && error.message === ORDER_CART_ALREADY_EXISTS_ERROR) {
-        order = await orderServiceTx.retrieveByCartId(id, {
-          relations: ["shipping_address", "payments"],
+        order = await orderServiceTx.retrieveByCartIdWithTotals(id, {
+          relations: ["shipping_address", "items", "payments"],
         })
 
         return {

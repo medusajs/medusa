@@ -3,13 +3,16 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The admin's credentials used to log in.
+ */
 export interface AdminPostAuthReq {
   /**
-   * The User's email.
+   * The user's email.
    */
   email: string
   /**
-   * The User's password.
+   * The user's password.
    */
   password: string
 }

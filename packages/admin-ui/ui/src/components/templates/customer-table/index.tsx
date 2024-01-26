@@ -3,6 +3,7 @@ import { useAdminCustomers } from "medusa-react"
 import qs from "qs"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { usePagination, useTable } from "react-table"
 import DetailsIcon from "../../fundamentals/details-icon"
 import EditIcon from "../../fundamentals/icons/edit-icon"
@@ -19,6 +20,7 @@ const defaultQueryProps = {
 
 const CustomerTable = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const {
     reset,
@@ -139,7 +141,7 @@ const CustomerTable = () => {
         count: count!,
         offset: queryObject.offset,
         pageSize: queryObject.offset + rows.length,
-        title: "Customers",
+        title: t("customer-table-customers", "Customers"),
         currentPage: pageIndex + 1,
         pageCount: pageCount,
         nextPage: handleNext,
@@ -174,12 +176,12 @@ const CustomerTable = () => {
                 color={"inherit"}
                 actions={[
                   {
-                    label: "Edit",
+                    label: t("customer-table-edit", "Edit"),
                     onClick: () => navigate(row.original.id),
                     icon: <EditIcon size={20} />,
                   },
                   {
-                    label: "Details",
+                    label: t("customer-table-details", "Details"),
                     onClick: () => navigate(row.original.id),
                     icon: <DetailsIcon size={20} />,
                   },

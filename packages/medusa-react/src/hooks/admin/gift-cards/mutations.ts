@@ -1,6 +1,7 @@
 import {
   AdminGiftCardsDeleteRes,
   AdminGiftCardsRes,
+  AdminPostGiftCardsGiftCardReq,
   AdminPostGiftCardsReq,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
@@ -13,6 +14,39 @@ import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminGiftCardKeys } from "./queries"
 
+/**
+ * This hook creates a gift card that can redeemed by its unique code. The Gift Card is only valid within one region.
+ * 
+ * @example
+ * import React from "react"
+ * import { useAdminCreateGiftCard } from "medusa-react"
+ * 
+ * const CreateCustomGiftCards = () => {
+ *   const createGiftCard = useAdminCreateGiftCard()
+ *   // ...
+ *   
+ *   const handleCreate = (
+ *     regionId: string, 
+ *     value: number
+ *   ) => {
+ *     createGiftCard.mutate({
+ *       region_id: regionId,
+ *       value,
+ *     }, {
+ *       onSuccess: ({ gift_card }) => {
+ *         console.log(gift_card.id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default CreateCustomGiftCards
+ * 
+ * @customNamespace Hooks.Admin.Gift Cards
+ * @category Mutations
+ */
 export const useAdminCreateGiftCard = (
   options?: UseMutationOptions<
     Response<AdminGiftCardsRes>,
@@ -28,19 +62,57 @@ export const useAdminCreateGiftCard = (
   )
 }
 
+/**
+ * This hook updates a gift card's details.
+ * 
+ * @example
+ * import React from "react"
+ * import { useAdminUpdateGiftCard } from "medusa-react"
+ * 
+ * type Props = {
+ *   customGiftCardId: string
+ * }
+ * 
+ * const CustomGiftCard = ({ customGiftCardId }: Props) => {
+ *   const updateGiftCard = useAdminUpdateGiftCard(
+ *     customGiftCardId
+ *   )
+ *   // ...
+ *   
+ *   const handleUpdate = (regionId: string) => {
+ *     updateGiftCard.mutate({
+ *       region_id: regionId,
+ *     }, {
+ *       onSuccess: ({ gift_card }) => {
+ *         console.log(gift_card.id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default CustomGiftCard
+ * 
+ * @customNamespace Hooks.Admin.Gift Cards
+ * @category Mutations
+ */
 export const useAdminUpdateGiftCard = (
+  /**
+   * The gift card's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminGiftCardsRes>,
     Error,
-    AdminPostGiftCardsReq
+    AdminPostGiftCardsGiftCardReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: AdminPostGiftCardsReq) =>
+    (payload: AdminPostGiftCardsGiftCardReq) =>
       client.admin.giftCards.update(id, payload),
     buildOptions(
       queryClient,
@@ -50,7 +122,43 @@ export const useAdminUpdateGiftCard = (
   )
 }
 
+/**
+ * This hook deletes a gift card. Once deleted, it can't be used by customers.
+ * 
+ * @example
+ * import React from "react"
+ * import { useAdminDeleteGiftCard } from "medusa-react"
+ * 
+ * type Props = {
+ *   customGiftCardId: string
+ * }
+ * 
+ * const CustomGiftCard = ({ customGiftCardId }: Props) => {
+ *   const deleteGiftCard = useAdminDeleteGiftCard(
+ *     customGiftCardId
+ *   )
+ *   // ...
+ *   
+ *   const handleDelete = () => {
+ *     deleteGiftCard.mutate(void 0, {
+ *       onSuccess: ({ id, object, deleted}) => {
+ *         console.log(id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default CustomGiftCard
+ * 
+ * @customNamespace Hooks.Admin.Gift Cards
+ * @category Mutations
+ */
 export const useAdminDeleteGiftCard = (
+  /**
+   * The gift card's ID.
+   */
   id: string,
   options?: UseMutationOptions<Response<AdminGiftCardsDeleteRes>, Error, void>
 ) => {

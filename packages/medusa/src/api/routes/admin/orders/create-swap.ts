@@ -18,21 +18,24 @@ import {
 } from "class-validator"
 
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
 import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
-import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /admin/orders/{id}/swaps
  * operationId: "PostOrdersOrderSwaps"
  * summary: "Create a Swap"
- * description: "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously."
+ * description: "Create a Swap. This includes creating a return that is associated with the swap."
  * x-authenticated: true
+ * externalDocs:
+ *   description: How are swaps created
+ *   url: https://docs.medusajs.com/modules/orders/swaps#how-are-swaps-created
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded the order of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included the order of the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -48,7 +51,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.createSwap(order_id, {
+ *       medusa.admin.orders.createSwap(orderId, {
  *         return_items: [
  *           {
  *             item_id,
@@ -58,13 +61,46 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateSwap } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const CreateSwap = ({ orderId }: Props) => {
+ *         const createSwap = useAdminCreateSwap(orderId)
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           returnItems: {
+ *             item_id: string,
+ *             quantity: number
+ *           }[]
+ *         ) => {
+ *           createSwap.mutate({
+ *             return_items: returnItems
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.swaps)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateSwap
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/swaps' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/orders/{id}/swaps' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "return_items": [
  *             {
@@ -76,6 +112,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:
@@ -171,7 +208,9 @@ export default async (req, res) => {
 
                 await swapService
                   .withTransaction(manager)
-                  .createCart(swap.id, validated.custom_shipping_options)
+                  .createCart(swap.id, validated.custom_shipping_options, {
+                    sales_channel_id: validated.sales_channel_id,
+                  })
 
                 const returnOrder = await returnService
                   .withTransaction(manager)
@@ -262,11 +301,12 @@ export default async (req, res) => {
 /**
  * @schema AdminPostOrdersOrderSwapsReq
  * type: object
+ * description: "The details of the swap to create."
  * required:
  *   - return_items
  * properties:
  *   return_items:
- *     description: The Line Items to return as part of the Swap.
+ *     description: The Line Items to associate with the swap's return.
  *     type: array
  *     items:
  *       type: object
@@ -275,7 +315,7 @@ export default async (req, res) => {
  *         - quantity
  *       properties:
  *         item_id:
- *           description: The ID of the Line Item that will be claimed.
+ *           description: The ID of the Line Item that will be returned.
  *           type: string
  *         quantity:
  *           description: The number of items that will be returned
@@ -287,7 +327,7 @@ export default async (req, res) => {
  *           description: An optional note with information about the Return.
  *           type: string
  *   return_shipping:
- *     description: How the Swap will be returned.
+ *     description: The shipping method associated with the swap's return.
  *     type: object
  *     required:
  *       - option_id
@@ -308,13 +348,16 @@ export default async (req, res) => {
  *         - quantity
  *       properties:
  *         variant_id:
- *           description: The ID of the Product Variant to ship.
+ *           description: The ID of the Product Variant.
  *           type: string
  *         quantity:
- *           description: The quantity of the Product Variant to ship.
+ *           description: The quantity of the Product Variant.
  *           type: integer
+ *   sales_channel_id:
+ *     type: string
+ *     description: "The ID of the sales channel associated with the swap."
  *   custom_shipping_options:
- *     description: The custom shipping options to potentially create a Shipping Method from.
+ *     description: An array of custom shipping options to potentially create a Shipping Method from to send the additional items.
  *     type: array
  *     items:
  *       type: object
@@ -323,16 +366,21 @@ export default async (req, res) => {
  *         - price
  *       properties:
  *         option_id:
- *           description: The ID of the Shipping Option to override with a custom price.
+ *           description: The ID of the Shipping Option.
  *           type: string
  *         price:
  *           description: The custom price of the Shipping Option.
  *           type: integer
  *   no_notification:
- *     description: If set to true no notification will be send related to this Swap.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this Swap.
  *     type: boolean
+ *   return_location_id:
+ *     type: string
+ *     description: "The ID of the location used for the associated return."
  *   allow_backorder:
- *     description: If true, swaps can be completed with items out of stock
+ *     description: >-
+ *       If set to `true`, swaps can be completed with items out of stock
  *     type: boolean
  *     default: true
  */
@@ -348,6 +396,10 @@ export class AdminPostOrdersOrderSwapsReq {
   @ValidateNested()
   @Type(() => ReturnShipping)
   return_shipping?: ReturnShipping
+
+  @IsOptional()
+  @IsString()
+  sales_channel_id?: string
 
   @IsArray()
   @IsOptional()
@@ -393,11 +445,20 @@ class ReturnItem {
   note?: string
 }
 
+/**
+ * The return's shipping method details.
+ */
 class ReturnShipping {
+  /**
+   * The ID of the shipping option used for the return.
+   */
   @IsString()
   @IsNotEmpty()
   option_id: string
 
+  /**
+   * The shipping method's price.
+   */
   @IsInt()
   @IsOptional()
   price?: number

@@ -1,20 +1,28 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const { setPort, useApi } = require("../../../../helpers/use-api")
+const {
+  startBootstrapApp,
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const {
+  useApi,
+  useExpressServer,
+} = require("../../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
-const cartSeeder = require("../../../helpers/cart-seeder")
-const { simpleProductFactory } = require("../../../../api/factories")
-const { simpleSalesChannelFactory } = require("../../../../api/factories")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const cartSeeder = require("../../../../helpers/cart-seeder")
+const { simpleProductFactory } = require("../../../../factories")
+const { simpleSalesChannelFactory } = require("../../../../factories")
+const {
+  getContainer,
+} = require("../../../../environment-helpers/use-container")
 
-jest.setTimeout(30000)
+jest.setTimeout(60000)
 
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("/store/carts", () => {
-  let express
+  let shutdownServer
   let appContainer
   let dbConnection
 
@@ -30,19 +38,14 @@ describe("/store/carts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd })
-    appContainer = container
-
-    setPort(port)
-    express = app.listen(port, (err) => {
-      process.send(port)
-    })
+    shutdownServer = await startBootstrapApp({ cwd })
+    appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   afterEach(async () => {
@@ -222,8 +225,7 @@ describe("/store/carts", () => {
       expect(getRes.response.status).toEqual(400)
       expect(getRes.response.data).toEqual({
         type: "invalid_data",
-        message:
-          "Can't insert null value in field customer_id on insert in table order",
+        message: "Cannot create an order from the cart without a customer",
       })
 
       const inventoryService = appContainer.resolve("inventoryService")
@@ -232,6 +234,55 @@ describe("/store/carts", () => {
       })
       expect(count).toEqual(0)
     })
+
+    it("should decorate line item variant inventory_quantity when creating a line-item", async () => {
+      const api = useApi()
+
+      const cartId = "test-cart"
+
+      // Add standard line item to cart
+      const addCart = await api
+        .post(
+          `/store/carts/${cartId}/line-items`,
+          {
+            variant_id: variantId,
+            quantity: 3,
+          },
+          { withCredentials: true }
+        )
+        .catch((e) => e)
+
+      expect(addCart.status).toEqual(200)
+      expect(addCart.data.cart.items[0].variant.inventory_quantity).toEqual(5)
+    })
+
+    it("should decorate line item variant inventory_quantity when getting cart", async () => {
+      const api = useApi()
+
+      const cartId = "test-cart"
+
+      // Add standard line item to cart
+      await api
+        .post(
+          `/store/carts/${cartId}/line-items`,
+          {
+            variant_id: variantId,
+            quantity: 3,
+          },
+          { withCredentials: true }
+        )
+        .catch((e) => e)
+
+      const cartResponse = await api
+        .get(`/store/carts/${cartId}`, { withCredentials: true })
+        .catch((e) => e)
+
+      expect(cartResponse.status).toEqual(200)
+      expect(
+        cartResponse.data.cart.items[0].variant.inventory_quantity
+      ).toEqual(5)
+    })
+
     it("fails to add a item on the cart if the inventory isn't enough", async () => {
       const api = useApi()
 

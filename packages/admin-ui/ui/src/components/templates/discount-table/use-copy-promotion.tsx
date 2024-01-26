@@ -1,10 +1,12 @@
 import { useAdminCreateDiscount } from "medusa-react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
-import { removeNullish } from "../../../utils/remove-nullish"
+import { removeFalsy } from "../../../utils/remove-nullish"
 
 const useCopyPromotion = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const notification = useNotification()
   const createPromotion = useAdminCreateDiscount()
@@ -47,7 +49,7 @@ const useCopyPromotion = () => {
     if (promotion.rule.conditions) {
       copy.rule.conditions = promotion.rule.conditions.map((cond) => ({
         operator: cond.operator,
-        ...removeNullish({
+        ...removeFalsy({
           products: cond.products,
           product_types: cond.product_types,
           product_tags: cond.product_tags,
@@ -60,10 +62,21 @@ const useCopyPromotion = () => {
     await createPromotion.mutate(copy, {
       onSuccess: (result) => {
         navigate(`/a/discounts/${result.discount.id}`)
-        notification("Success", "Successfully copied discount", "success")
+        notification(
+          t("discount-table-success", "Success"),
+          t(
+            "discount-table-successfully-copied-discount",
+            "Successfully copied discount"
+          ),
+          "success"
+        )
       },
       onError: (err) => {
-        notification("Error", getErrorMessage(err), "error")
+        notification(
+          t("discount-table-error", "Error"),
+          getErrorMessage(err),
+          "error"
+        )
       },
     })
   }
