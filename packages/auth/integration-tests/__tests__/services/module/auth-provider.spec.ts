@@ -1,16 +1,16 @@
-import { IAuthenticationModuleService } from "@medusajs/types"
+import { IAuthModuleService } from "@medusajs/types"
 import { MikroOrmWrapper } from "../../../utils"
+import { Modules } from "@medusajs/modules-sdk"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createAuthProviders } from "../../../__fixtures__/auth-provider"
 import { createAuthUsers } from "../../../__fixtures__/auth-user"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
-import { initModules } from "medusa-test-utils/dist"
-import { Modules } from "@medusajs/modules-sdk"
+import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
-describe("AuthenticationModuleService - AuthProvider", () => {
-  let service: IAuthenticationModuleService
+describe("AuthModuleService - AuthProvider", () => {
+  let service: IAuthModuleService
   let testManager: SqlEntityManager
   let shutdownFunc: () => Promise<void>
 
@@ -19,7 +19,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
 
     const { medusaApp, shutdown } = await initModules(initModulesConfig)
 
-    service = medusaApp.modules[Modules.AUTHENTICATION]
+    service = medusaApp.modules[Modules.AUTH]
 
     shutdownFunc = shutdown
   })

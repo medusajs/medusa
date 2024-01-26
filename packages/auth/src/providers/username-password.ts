@@ -1,10 +1,10 @@
-import { AbstractAuthenticationModuleProvider, isString } from "@medusajs/utils"
+import { AbstractAuthModuleProvider, isString } from "@medusajs/utils"
+import { AuthenticationInput, AuthenticationResponse } from "@medusajs/types"
 
 import { AuthUserService } from "@services"
-import { AuthenticationInput, AuthenticationResponse } from "@medusajs/types"
 import Scrypt from "scrypt-kdf"
 
-class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
+class UsernamePasswordProvider extends AbstractAuthModuleProvider {
   public static PROVIDER = "usernamePassword"
   public static DISPLAY_NAME = "Username/Password Authentication"
 

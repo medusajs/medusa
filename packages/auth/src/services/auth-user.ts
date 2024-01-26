@@ -1,4 +1,4 @@
-import { AuthenticationTypes, Context, DAL, FindConfig } from "@medusajs/types"
+import { AuthTypes, Context, DAL, FindConfig } from "@medusajs/types"
 import {
   InjectManager,
   MedusaContext,
@@ -29,7 +29,7 @@ export default class AuthUserService<
 
   @InjectManager("authUserRepository_")
   async retrieveByProviderAndEntityId<
-    TEntityMethod = AuthenticationTypes.AuthUserDTO
+    TEntityMethod = AuthTypes.AuthUserDTO
   >(
     entityId: string,
     provider: string,

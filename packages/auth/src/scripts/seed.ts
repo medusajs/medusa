@@ -1,4 +1,4 @@
-import * as AuthenticationModels from "@models"
+import * as AuthModels from "@models"
 
 import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
@@ -38,7 +38,7 @@ export async function run({
     options
   )!
   const entities = Object.values(
-    AuthenticationModels
+    AuthModels
   ) as unknown as EntitySchema[]
   const pathToMigrations = __dirname + "/../migrations"
 

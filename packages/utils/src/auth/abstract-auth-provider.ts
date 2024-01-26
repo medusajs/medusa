@@ -1,7 +1,8 @@
-import { AuthenticationResponse, AuthProviderScope } from "@medusajs/types"
+import { AuthProviderScope, AuthenticationResponse } from "@medusajs/types"
+
 import { MedusaError } from "../common"
 
-export abstract class AbstractAuthenticationModuleProvider {
+export abstract class AbstractAuthModuleProvider {
   public static PROVIDER: string
   public static DISPLAY_NAME: string
   protected readonly scopes_: Record<string, AuthProviderScope>

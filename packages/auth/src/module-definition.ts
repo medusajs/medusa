@@ -1,6 +1,6 @@
 import * as Models from "@models"
 
-import { AuthenticationModuleService } from "@services"
+import { AuthModuleService } from "@services"
 import { ModuleExports } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
 import { ModulesSdkUtils } from "@medusajs/utils"
@@ -21,7 +21,7 @@ export const revertMigration = ModulesSdkUtils.buildRevertMigrationScript(
   migrationScriptOptions
 )
 
-const service = AuthenticationModuleService
+const service = AuthModuleService
 const loaders = [loadContainer, loadConnection, loadProviders] as any
 
 export const moduleDefinition: ModuleExports = {

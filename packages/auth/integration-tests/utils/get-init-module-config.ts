@@ -7,7 +7,7 @@ export function getInitModuleConfig() {
     defaultAdapterOptions: {
       database: {
         clientUrl: DB_URL,
-        schema: process.env.MEDUSA_AUTHENTICATION_DB_SCHEMA,
+        schema: process.env.MEDUSA_AUTH_DB_SCHEMA,
       },
     },
     providers: [
@@ -24,8 +24,8 @@ export function getInitModuleConfig() {
   const injectedDependencies = {}
 
   const modulesConfig_ = {
-    [Modules.AUTHENTICATION]: {
-      definition: ModulesDefinition[Modules.AUTHENTICATION],
+    [Modules.AUTH]: {
+      definition: ModulesDefinition[Modules.AUTH],
       options: moduleOptions,
     },
   }
@@ -35,7 +35,7 @@ export function getInitModuleConfig() {
     modulesConfig: modulesConfig_,
     databaseConfig: {
       clientUrl: DB_URL,
-      schema: process.env.MEDUSA_AUTHENTICATION_DB_SCHEMA,
+      schema: process.env.MEDUSA_AUTH_DB_SCHEMA,
     },
     joinerConfig: [],
   }

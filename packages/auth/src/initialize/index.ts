@@ -5,7 +5,7 @@ import {
   MedusaModule,
   Modules,
 } from "@medusajs/modules-sdk"
-import { IAuthenticationModuleService, ModulesSdkTypes } from "@medusajs/types"
+import { IAuthModuleService, ModulesSdkTypes } from "@medusajs/types"
 
 import { InitializeModuleInjectableDependencies } from "../types"
 import { moduleDefinition } from "../module-definition"
@@ -16,8 +16,8 @@ export const initialize = async (
     | ModulesSdkTypes.ModuleServiceInitializeOptions
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions,
   injectedDependencies?: InitializeModuleInjectableDependencies
-): Promise<IAuthenticationModuleService> => {
-  const loaded = await MedusaModule.bootstrap<IAuthenticationModuleService>({
+): Promise<IAuthModuleService> => {
+  const loaded = await MedusaModule.bootstrap<IAuthModuleService>({
     moduleKey: Modules.AUTH,
     defaultPath: MODULE_PACKAGE_NAMES[Modules.AUTH],
     declaration: options as

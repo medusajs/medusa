@@ -1,7 +1,7 @@
 import {
   AuthenticationInput,
   AuthenticationResponse,
-  AuthenticationTypes,
+  AuthTypes,
   Context,
   DAL,
   FindConfig,
@@ -16,7 +16,7 @@ import { joinerConfig } from "../joiner-config"
 import { AuthProviderService, AuthUserService } from "@services"
 
 import {
-  AbstractAuthenticationModuleProvider,
+  AbstractAuthModuleProvider,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
@@ -30,7 +30,7 @@ import {
   FilterableAuthProviderProps,
   FilterableAuthUserProps,
   UpdateAuthUserDTO,
-} from "@medusajs/types/dist/authentication/common"
+} from "@medusajs/types"
 import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
@@ -39,10 +39,10 @@ type InjectedDependencies = {
   authProviderService: AuthProviderService<any>
 }
 
-export default class AuthenticationModuleService<
+export default class AuthModuleService<
   TAuthUser extends AuthUser = AuthUser,
   TAuthProvider extends AuthProvider = AuthProvider
-> implements AuthenticationTypes.IAuthenticationModuleService
+> implements AuthTypes.IAuthModuleService
 {
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
@@ -83,7 +83,7 @@ export default class AuthenticationModuleService<
       sharedContext
     )
 
-    return await this.baseRepository_.serialize<AuthenticationTypes.AuthProviderDTO>(
+    return await this.baseRepository_.serialize<AuthTypes.AuthProviderDTO>(
       authProvider,
       { populate: true }
     )
@@ -101,7 +101,7 @@ export default class AuthenticationModuleService<
     )
 
     return await this.baseRepository_.serialize<
-      AuthenticationTypes.AuthProviderDTO[]
+      AuthTypes.AuthProviderDTO[]
     >(authProviders, { populate: true })
   }
 
@@ -110,7 +110,7 @@ export default class AuthenticationModuleService<
     filters: FilterableAuthProviderProps = {},
     config: FindConfig<AuthProviderDTO>,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[AuthenticationTypes.AuthProviderDTO[], number]> {
+  ): Promise<[AuthTypes.AuthProviderDTO[], number]> {
     const [authProviders, count] = await this.authProviderService_.listAndCount(
       filters,
       config,
@@ -119,7 +119,7 @@ export default class AuthenticationModuleService<
 
     return [
       await this.baseRepository_.serialize<
-        AuthenticationTypes.AuthProviderDTO[]
+        AuthTypes.AuthProviderDTO[]
       >(authProviders, { populate: true }),
       count,
     ]
@@ -140,14 +140,14 @@ export default class AuthenticationModuleService<
     data: CreateAuthProviderDTO | CreateAuthProviderDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
-    AuthenticationTypes.AuthProviderDTO | AuthenticationTypes.AuthProviderDTO[]
+    AuthTypes.AuthProviderDTO | AuthTypes.AuthProviderDTO[]
   > {
     const input = Array.isArray(data) ? data : [data]
 
     const providers = await this.createAuthProviders_(input, sharedContext)
 
     const serializedProviders = await this.baseRepository_.serialize<
-      AuthenticationTypes.AuthProviderDTO[]
+      AuthTypes.AuthProviderDTO[]
     >(providers, {
       populate: true,
     })
@@ -164,29 +164,29 @@ export default class AuthenticationModuleService<
   }
 
   updateAuthProvider(
-    data: AuthenticationTypes.UpdateAuthProviderDTO[],
+    data: AuthTypes.UpdateAuthProviderDTO[],
     sharedContext?: Context
   ): Promise<AuthProviderDTO[]>
   updateAuthProvider(
-    data: AuthenticationTypes.UpdateAuthProviderDTO,
+    data: AuthTypes.UpdateAuthProviderDTO,
     sharedContext?: Context
   ): Promise<AuthProviderDTO>
 
   @InjectManager("baseRepository_")
   async updateAuthProvider(
     data:
-      | AuthenticationTypes.UpdateAuthProviderDTO[]
-      | AuthenticationTypes.UpdateAuthProviderDTO,
+      | AuthTypes.UpdateAuthProviderDTO[]
+      | AuthTypes.UpdateAuthProviderDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
-    AuthenticationTypes.AuthProviderDTO | AuthenticationTypes.AuthProviderDTO[]
+    AuthTypes.AuthProviderDTO | AuthTypes.AuthProviderDTO[]
   > {
     const input = Array.isArray(data) ? data : [data]
 
     const providers = await this.updateAuthProvider_(input, sharedContext)
 
     const serializedProviders = await this.baseRepository_.serialize<
-      AuthenticationTypes.AuthProviderDTO[]
+      AuthTypes.AuthProviderDTO[]
     >(providers, {
       populate: true,
     })
@@ -195,7 +195,7 @@ export default class AuthenticationModuleService<
   }
 
   async updateAuthProvider_(
-    data: AuthenticationTypes.UpdateAuthProviderDTO[],
+    data: AuthTypes.UpdateAuthProviderDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TAuthProvider[]> {
     return await this.authProviderService_.update(data, sharedContext)
@@ -221,7 +221,7 @@ export default class AuthenticationModuleService<
       sharedContext
     )
 
-    return await this.baseRepository_.serialize<AuthenticationTypes.AuthUserDTO>(
+    return await this.baseRepository_.serialize<AuthTypes.AuthUserDTO>(
       authUser,
       {
         exclude: ["password_hash"],
@@ -242,7 +242,7 @@ export default class AuthenticationModuleService<
     )
 
     return await this.baseRepository_.serialize<
-      AuthenticationTypes.AuthUserDTO[]
+      AuthTypes.AuthUserDTO[]
     >(authUsers, {
       populate: true,
     })
@@ -261,7 +261,7 @@ export default class AuthenticationModuleService<
     )
 
     return [
-      await this.baseRepository_.serialize<AuthenticationTypes.AuthUserDTO[]>(
+      await this.baseRepository_.serialize<AuthTypes.AuthUserDTO[]>(
         authUsers,
         {
           populate: true,
@@ -285,14 +285,14 @@ export default class AuthenticationModuleService<
     data: CreateAuthUserDTO[] | CreateAuthUserDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
-    AuthenticationTypes.AuthUserDTO | AuthenticationTypes.AuthUserDTO[]
+    AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]
   > {
     const input = Array.isArray(data) ? data : [data]
 
     const authUsers = await this.createAuthUsers_(input, sharedContext)
 
     const serializedUsers = await this.baseRepository_.serialize<
-      AuthenticationTypes.AuthUserDTO[]
+      AuthTypes.AuthUserDTO[]
     >(authUsers, {
       populate: true,
     })
@@ -322,14 +322,14 @@ export default class AuthenticationModuleService<
     data: UpdateAuthUserDTO | UpdateAuthUserDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
-    AuthenticationTypes.AuthUserDTO | AuthenticationTypes.AuthUserDTO[]
+    AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]
   > {
     const input = Array.isArray(data) ? data : [data]
 
     const updatedUsers = await this.updateAuthUsers_(input, sharedContext)
 
     const serializedUsers = await this.baseRepository_.serialize<
-      AuthenticationTypes.AuthUserDTO[]
+      AuthTypes.AuthUserDTO[]
     >(updatedUsers, {
       populate: true,
     })
@@ -356,8 +356,8 @@ export default class AuthenticationModuleService<
   protected getRegisteredAuthenticationProvider(
     provider: string,
     { scope }: AuthenticationInput
-  ): AbstractAuthenticationModuleProvider {
-    let containerProvider: AbstractAuthenticationModuleProvider
+  ): AbstractAuthModuleProvider {
+    let containerProvider: AbstractAuthModuleProvider
     try {
       containerProvider = this.__container__[`auth_provider_${provider}`]
     } catch (error) {

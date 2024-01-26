@@ -1,8 +1,8 @@
 import {
-  AuthenticationInput,
-  AuthenticationResponse,
   AuthProviderDTO,
   AuthUserDTO,
+  AuthenticationInput,
+  AuthenticationResponse,
   CreateAuthProviderDTO,
   CreateAuthUserDTO,
   FilterableAuthProviderProps,
@@ -15,7 +15,7 @@ import { Context } from "../shared-context"
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 
-export interface IAuthenticationModuleService extends IModuleService {
+export interface IAuthModuleService extends IModuleService {
   authenticate(
     provider: string,
     providerData: AuthenticationInput

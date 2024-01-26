@@ -1,14 +1,15 @@
 import {
-  AbstractAuthenticationModuleProvider,
+  AbstractAuthModuleProvider,
   MedusaError,
 } from "@medusajs/utils"
-import { AuthProviderService, AuthUserService } from "@services"
-import jwt, { JwtPayload } from "jsonwebtoken"
 import {
+  AuthProviderScope,
   AuthenticationInput,
   AuthenticationResponse,
-  AuthProviderScope,
 } from "@medusajs/types"
+import { AuthProviderService, AuthUserService } from "@services"
+import jwt, { JwtPayload } from "jsonwebtoken"
+
 import { AuthorizationCode } from "simple-oauth2"
 import url from "url"
 
@@ -23,7 +24,7 @@ type ProviderConfig = {
   callbackURL: string
 }
 
-class GoogleProvider extends AbstractAuthenticationModuleProvider {
+class GoogleProvider extends AbstractAuthModuleProvider {
   public static PROVIDER = "google"
   public static DISPLAY_NAME = "Google Authentication"
 

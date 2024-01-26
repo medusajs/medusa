@@ -3,6 +3,6 @@ import * as entities from "./src/models"
 module.exports = {
   entities: Object.values(entities),
   schema: "public",
-  clientUrl: "postgres://postgres@localhost/medusa-authentication",
+  clientUrl: "postgres://postgres@localhost/medusa-auth",
   type: "postgresql",
 }

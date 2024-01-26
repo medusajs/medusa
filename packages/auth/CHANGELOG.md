@@ -1,4 +1,4 @@
-# @medusajs/authentication
+# @medusajs/auth
 
 ## 0.0.2
 

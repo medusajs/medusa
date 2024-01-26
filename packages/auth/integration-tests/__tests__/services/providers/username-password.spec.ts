@@ -1,6 +1,6 @@
 import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 
-import { IAuthenticationModuleService } from "@medusajs/types"
+import { IAuthModuleService } from "@medusajs/types"
 import { MikroOrmWrapper } from "../../../utils"
 import Scrypt from "scrypt-kdf"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
@@ -15,8 +15,8 @@ const seedDefaultData = async (testManager) => {
   await createAuthUsers(testManager)
 }
 
-describe("AuthenticationModuleService - AuthProvider", () => {
-  let service: IAuthenticationModuleService
+describe("AuthModuleService - AuthProvider", () => {
+  let service: IAuthModuleService
   let testManager: SqlEntityManager
   let shutdownFunc: () => Promise<void>
 
@@ -25,7 +25,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
 
     const { medusaApp, shutdown } = await initModules(initModulesConfig)
 
-    service = medusaApp.modules[Modules.AUTHENTICATION]
+    service = medusaApp.modules[Modules.AUTH]
 
     shutdownFunc = shutdown
   })
