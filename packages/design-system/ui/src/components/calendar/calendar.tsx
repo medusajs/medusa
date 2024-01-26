@@ -61,9 +61,7 @@ const Calendar = ({
    */
   showOutsideDays = true,
   /**
-   * The locale to use for formatting dates. To change the locale pass a 
-   * [`date-fns` locale object](https://github.com/date-fns/date-fns/blob/main/docs/i18n.md). For 
-   * example, `{code: "en-US"}`
+   * The locale to use for formatting dates. To change the locale pass a date-fns locale object.
    *
    * @keep
    */
