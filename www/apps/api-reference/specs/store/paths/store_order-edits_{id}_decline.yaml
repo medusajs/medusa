@@ -24,7 +24,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/store_order-edits_{id}_decline/postundefined
+        $ref: ../code_samples/tsx/store_order-edits_{id}_decline/post.tsx
     - lang: Shell
       label: cURL
       source:
