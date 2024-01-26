@@ -5,7 +5,7 @@ import { MikroOrmWrapper } from "../../../utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createAuthProviders } from "../../../__fixtures__/auth-provider"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
-import { initModules } from "medusa-test-utils/dist"
+import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 

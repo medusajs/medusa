@@ -1,4 +1,4 @@
-import * as AuthenticationModules from "../models"
+import * as AuthModels from "../models"
 
 import {
   InternalModuleDeclaration,
@@ -22,7 +22,7 @@ export default async (
   moduleDeclaration?: InternalModuleDeclaration
 ): Promise<void> => {
   const entities = Object.values(
-    AuthenticationModules
+    AuthModels
   ) as unknown as EntitySchema[]
   const pathToMigrations = __dirname + "/../migrations"
 
