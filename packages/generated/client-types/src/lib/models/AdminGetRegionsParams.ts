@@ -5,6 +5,14 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetRegionsParams {
   /**
+   * Term used to search regions' name.
+   */
+  q?: string
+  /**
+   * A field to sort-order the retrieved regions by.
+   */
+  order?: string
+  /**
    * Limit the number of regions returned.
    */
   limit?: number

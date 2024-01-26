@@ -1,9 +1,10 @@
 import { CampaignBudgetTypeValues, DAL } from "@medusajs/types"
-import { PromotionUtils, generateEntityId } from "@medusajs/utils"
+import { DALUtils, PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
   Enum,
+  Filter,
   Index,
   OnInit,
   OneToOne,
@@ -17,10 +18,10 @@ type OptionalFields =
   | "description"
   | "limit"
   | "used"
-  | "deleted_at"
-  | DAL.EntityDateColumns
+  | DAL.SoftDeletableEntityDateColumns
 
-@Entity()
+@Entity({ tableName: "campaign_budget" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class CampaignBudget {
   [OptionalProps]?: OptionalFields
 
@@ -34,7 +35,7 @@ export default class CampaignBudget {
   @OneToOne({
     entity: () => Campaign,
   })
-  campaign?: Campaign
+  campaign: Campaign | null = null
 
   @Property({
     columnType: "numeric",
@@ -42,7 +43,7 @@ export default class CampaignBudget {
     serializer: Number,
     default: null,
   })
-  limit: number | null
+  limit: number | null = null
 
   @Property({
     columnType: "numeric",
@@ -67,7 +68,7 @@ export default class CampaignBudget {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date | null
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

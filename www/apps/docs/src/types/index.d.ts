@@ -56,6 +56,7 @@ declare module "@medusajs/docs" {
       sidebar_is_divider_line?: boolean
       sidebar_is_back_link?: boolean
       sidebar_badge?: BadgeProps
+      category_id?: string
     }
   }
 

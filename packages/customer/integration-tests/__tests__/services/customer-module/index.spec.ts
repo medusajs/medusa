@@ -1,21 +1,31 @@
 import { ICustomerModuleService } from "@medusajs/types"
-import { initialize } from "../../../../src/initialize"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MikroOrmWrapper } from "../../../utils"
+import { Modules } from "@medusajs/modules-sdk"
+import { initModules } from "medusa-test-utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 
 jest.setTimeout(30000)
 
 describe("Customer Module Service", () => {
   let service: ICustomerModuleService
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.CUSTOMER]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_CUSTOMER_DB_SCHEMA,
-      },
-    })
   })
 
   afterEach(async () => {
@@ -307,6 +317,436 @@ describe("Customer Module Service", () => {
           })
         )
       }
+    })
+  })
+
+  describe("update", () => {
+    it("should update a single customer", async () => {
+      const [customer] = await service.create([
+        { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
+      ])
+
+      const updateData = { first_name: "Jonathan" }
+      const updatedCustomer = await service.update(customer.id, updateData)
+
+      expect(updatedCustomer).toEqual(
+        expect.objectContaining({ id: customer.id, first_name: "Jonathan" })
+      )
+    })
+
+    it("should update multiple customers by IDs", async () => {
+      const customers = await service.create([
+        { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
+        {
+          first_name: "Jane",
+          last_name: "Smith",
+          email: "jane.smith@example.com",
+        },
+      ])
+
+      const updateData = { last_name: "Updated" }
+      const customerIds = customers.map((customer) => customer.id)
+      const updatedCustomers = await service.update(customerIds, updateData)
+
+      updatedCustomers.forEach((updatedCustomer) => {
+        expect(updatedCustomer).toEqual(
+          expect.objectContaining({ last_name: "Updated" })
+        )
+      })
+    })
+
+    it("should update customers using a selector", async () => {
+      await service.create([
+        { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
+        { first_name: "Jane", last_name: "Doe", email: "jane.doe@example.com" },
+      ])
+
+      const selector = { last_name: "Doe" }
+      const updateData = { last_name: "Updated" }
+      const updatedCustomers = await service.update(selector, updateData)
+
+      updatedCustomers.forEach((updatedCustomer) => {
+        expect(updatedCustomer).toEqual(
+          expect.objectContaining({ last_name: "Updated" })
+        )
+      })
+    })
+  })
+
+  describe("delete", () => {
+    it("should delete a single customer", async () => {
+      const [customer] = await service.create([
+        { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
+      ])
+
+      await service.delete(customer.id)
+
+      await expect(service.retrieve(customer.id)).rejects.toThrow(
+        `Customer with id: ${customer.id} was not found`
+      )
+    })
+
+    it("should delete multiple customers by IDs", async () => {
+      const customers = await service.create([
+        { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
+        {
+          first_name: "Jane",
+          last_name: "Smith",
+          email: "jane.smith@example.com",
+        },
+      ])
+
+      const customerIds = customers.map((customer) => customer.id)
+      await service.delete(customerIds)
+
+      for (const customer of customers) {
+        await expect(service.retrieve(customer.id)).rejects.toThrow(
+          `Customer with id: ${customer.id} was not found`
+        )
+      }
+    })
+
+    it("should delete customers using a selector", async () => {
+      await service.create([
+        { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
+        { first_name: "Jane", last_name: "Doe", email: "jane.doe@example.com" },
+      ])
+
+      const selector = { last_name: "Doe" }
+      await service.delete(selector)
+
+      const remainingCustomers = await service.list({ last_name: "Doe" })
+      expect(remainingCustomers.length).toBe(0)
+    })
+
+    it("should cascade relationship when deleting customer", async () => {
+      // Creating a customer and a group
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      const group = await service.createCustomerGroup({ name: "VIP" })
+
+      // Adding the customer to the groups
+      await service.addCustomerToGroup({
+        customer_id: customer.id,
+        customer_group_id: group.id,
+      })
+
+      await service.delete(customer.id)
+
+      const res = await service.listCustomerGroupRelations({
+        customer_id: customer.id,
+        customer_group_id: group.id,
+      })
+      expect(res.length).toBe(0)
+    })
+  })
+
+  describe("deleteCustomerGroup", () => {
+    it("should delete a single customer group", async () => {
+      const [group] = await service.createCustomerGroup([{ name: "VIP" }])
+      await service.deleteCustomerGroup(group.id)
+
+      await expect(
+        service.retrieveCustomerGroup(group.id)
+      ).rejects.toThrowError(`CustomerGroup with id: ${group.id} was not found`)
+    })
+
+    it("should delete multiple customer groups by IDs", async () => {
+      const groups = await service.createCustomerGroup([
+        { name: "VIP" },
+        { name: "Regular" },
+      ])
+
+      const groupIds = groups.map((group) => group.id)
+      await service.deleteCustomerGroup(groupIds)
+
+      for (const group of groups) {
+        await expect(
+          service.retrieveCustomerGroup(group.id)
+        ).rejects.toThrowError(
+          `CustomerGroup with id: ${group.id} was not found`
+        )
+      }
+    })
+
+    it("should delete customer groups using a selector", async () => {
+      await service.createCustomerGroup([{ name: "VIP" }, { name: "Regular" }])
+
+      const selector = { name: "VIP" }
+      await service.deleteCustomerGroup(selector)
+
+      const remainingGroups = await service.listCustomerGroups({ name: "VIP" })
+      expect(remainingGroups.length).toBe(0)
+    })
+
+    it("should cascade relationship when deleting customer group", async () => {
+      // Creating a customer and a group
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      const group = await service.createCustomerGroup({ name: "VIP" })
+
+      // Adding the customer to the groups
+      await service.addCustomerToGroup({
+        customer_id: customer.id,
+        customer_group_id: group.id,
+      })
+
+      await service.deleteCustomerGroup(group.id)
+
+      const res = await service.listCustomerGroupRelations({
+        customer_id: customer.id,
+        customer_group_id: group.id,
+      })
+      expect(res.length).toBe(0)
+    })
+  })
+
+  describe("removeCustomerFromGroup", () => {
+    it("should remove a single customer from a group", async () => {
+      // Creating a customer and a group
+      const [customer] = await service.create([
+        { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
+      ])
+      const [group] = await service.createCustomerGroup([{ name: "VIP" }])
+
+      // Adding the customer to the group
+      await service.addCustomerToGroup({
+        customer_id: customer.id,
+        customer_group_id: group.id,
+      })
+
+      const [customerInGroup] = await service.list(
+        { id: customer.id },
+        { relations: ["groups"] }
+      )
+      expect(customerInGroup.groups).toEqual([
+        expect.objectContaining({ id: group.id }),
+      ])
+
+      // Removing the customer from the group
+      await service.removeCustomerFromGroup({
+        customer_id: customer.id,
+        customer_group_id: group.id,
+      })
+
+      const [updatedCustomer] = await service.list(
+        { id: customer.id },
+        { relations: ["groups"] }
+      )
+      expect(updatedCustomer.groups).toEqual([])
+    })
+
+    it("should remove multiple customers from groups", async () => {
+      // Creating multiple customers and groups
+      const customers = await service.create([
+        { first_name: "John", last_name: "Doe", email: "john.doe@example.com" },
+        {
+          first_name: "Jane",
+          last_name: "Smith",
+          email: "jane.smith@example.com",
+        },
+      ])
+      const groups = await service.createCustomerGroup([
+        { name: "VIP" },
+        { name: "Regular" },
+      ])
+
+      // Adding customers to groups
+      const pairsToAdd = [
+        { customer_id: customers[0].id, customer_group_id: groups[0].id },
+        { customer_id: customers[1].id, customer_group_id: groups[1].id },
+      ]
+      await service.addCustomerToGroup(pairsToAdd)
+
+      // Removing customers from groups
+      const pairsToRemove = [
+        { customer_id: customers[0].id, customer_group_id: groups[0].id },
+        { customer_id: customers[1].id, customer_group_id: groups[1].id },
+      ]
+      await service.removeCustomerFromGroup(pairsToRemove)
+
+      // Verification for each customer
+      for (const pair of pairsToRemove) {
+        const [updatedCustomer] = await service.list(
+          { id: pair.customer_id },
+          { relations: ["groups"] }
+        )
+        expect(updatedCustomer.groups).not.toContainEqual(
+          expect.objectContaining({ id: pair.customer_group_id })
+        )
+      }
+    })
+  })
+
+  describe("softDelete", () => {
+    it("should soft delete a single customer", async () => {
+      const [customer] = await service.create([
+        { first_name: "John", last_name: "Doe" },
+      ])
+      await service.softDelete([customer.id])
+
+      const res = await service.list({ id: customer.id })
+      expect(res.length).toBe(0)
+
+      const deletedCustomer = await service.retrieve(customer.id, {
+        withDeleted: true,
+      })
+
+      expect(deletedCustomer.deleted_at).not.toBeNull()
+    })
+
+    it("should soft delete multiple customers", async () => {
+      const customers = await service.create([
+        { first_name: "John", last_name: "Doe" },
+        { first_name: "Jane", last_name: "Smith" },
+      ])
+      const customerIds = customers.map((customer) => customer.id)
+      await service.softDelete(customerIds)
+
+      const res = await service.list({ id: customerIds })
+      expect(res.length).toBe(0)
+
+      const deletedCustomers = await service.list(
+        { id: customerIds },
+        { withDeleted: true }
+      )
+      expect(deletedCustomers.length).toBe(2)
+    })
+
+    it("should remove customer in group relation", async () => {
+      // Creating a customer and a group
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      const group = await service.createCustomerGroup({ name: "VIP" })
+
+      // Adding the customer to the group
+      await service.addCustomerToGroup({
+        customer_id: customer.id,
+        customer_group_id: group.id,
+      })
+
+      await service.softDelete([customer.id])
+
+      const resGroup = await service.retrieveCustomerGroup(group.id, {
+        relations: ["customers"],
+      })
+      expect(resGroup.customers?.length).toBe(0)
+    })
+  })
+
+  describe("restore", () => {
+    it("should restore a single customer", async () => {
+      const [customer] = await service.create([
+        { first_name: "John", last_name: "Doe" },
+      ])
+      await service.softDelete([customer.id])
+
+      const res = await service.list({ id: customer.id })
+      expect(res.length).toBe(0)
+
+      await service.restore([customer.id])
+
+      const restoredCustomer = await service.retrieve(customer.id, {
+        withDeleted: true,
+      })
+      expect(restoredCustomer.deleted_at).toBeNull()
+    })
+
+    it("should restore multiple customers", async () => {
+      const customers = await service.create([
+        { first_name: "John", last_name: "Doe" },
+        { first_name: "Jane", last_name: "Smith" },
+      ])
+      const customerIds = customers.map((customer) => customer.id)
+      await service.softDelete(customerIds)
+
+      const res = await service.list({ id: customerIds })
+      expect(res.length).toBe(0)
+
+      await service.restore(customerIds)
+
+      const restoredCustomers = await service.list(
+        { id: customerIds },
+        { withDeleted: true }
+      )
+      expect(restoredCustomers.length).toBe(2)
+    })
+  })
+
+  describe("softDeleteCustomerGroup", () => {
+    it("should soft delete a single customer group", async () => {
+      const [group] = await service.createCustomerGroup([{ name: "VIP" }])
+      await service.softDeleteCustomerGroup([group.id])
+
+      const res = await service.listCustomerGroups({ id: group.id })
+      expect(res.length).toBe(0)
+
+      const deletedGroup = await service.retrieveCustomerGroup(group.id, {
+        withDeleted: true,
+      })
+
+      expect(deletedGroup.deleted_at).not.toBeNull()
+    })
+
+    it("should soft delete multiple customer groups", async () => {
+      const groups = await service.createCustomerGroup([
+        { name: "VIP" },
+        { name: "Regular" },
+      ])
+      const groupIds = groups.map((group) => group.id)
+      await service.softDeleteCustomerGroup(groupIds)
+
+      const res = await service.listCustomerGroups({ id: groupIds })
+      expect(res.length).toBe(0)
+
+      const deletedGroups = await service.listCustomerGroups(
+        { id: groupIds },
+        { withDeleted: true }
+      )
+      expect(deletedGroups.length).toBe(2)
+    })
+  })
+
+  describe("restoreCustomerGroup", () => {
+    it("should restore a single customer group", async () => {
+      const [group] = await service.createCustomerGroup([{ name: "VIP" }])
+      await service.softDeleteCustomerGroup([group.id])
+
+      const res = await service.listCustomerGroups({ id: group.id })
+      expect(res.length).toBe(0)
+
+      await service.restoreCustomerGroup([group.id])
+
+      const restoredGroup = await service.retrieveCustomerGroup(group.id, {
+        withDeleted: true,
+      })
+      expect(restoredGroup.deleted_at).toBeNull()
+    })
+
+    it("should restore multiple customer groups", async () => {
+      const groups = await service.createCustomerGroup([
+        { name: "VIP" },
+        { name: "Regular" },
+      ])
+      const groupIds = groups.map((group) => group.id)
+      await service.softDeleteCustomerGroup(groupIds)
+
+      const res = await service.listCustomerGroups({ id: groupIds })
+      expect(res.length).toBe(0)
+
+      await service.restoreCustomerGroup(groupIds)
+
+      const restoredGroups = await service.listCustomerGroups(
+        { id: groupIds },
+        { withDeleted: true }
+      )
+      expect(restoredGroups.length).toBe(2)
     })
   })
 })

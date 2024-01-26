@@ -1,9 +1,12 @@
 import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   CustomerDTO,
   CustomerGroupDTO,
+  CustomerGroupCustomerDTO,
+  FilterableCustomerGroupCustomerProps,
   FilterableCustomerProps,
   FilterableCustomerGroupProps,
   GroupCustomerPair,
@@ -21,8 +24,30 @@ export interface ICustomerModuleService extends IModuleService {
     data: CreateCustomerDTO[],
     sharedContext?: Context
   ): Promise<CustomerDTO[]>
-
   create(data: CreateCustomerDTO, sharedContext?: Context): Promise<CustomerDTO>
+
+  update(
+    customerId: string,
+    data: Partial<CreateCustomerDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerDTO>
+  update(
+    customerIds: string[],
+    data: Partial<CreateCustomerDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerDTO[]>
+  update(
+    selector: FilterableCustomerProps,
+    data: Partial<CreateCustomerDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerDTO[]>
+
+  delete(customerId: string, sharedContext?: Context): Promise<void>
+  delete(customerIds: string[], sharedContext?: Context): Promise<void>
+  delete(
+    selector: FilterableCustomerProps,
+    sharedContext?: Context
+  ): Promise<void>
 
   createCustomerGroup(
     data: CreateCustomerGroupDTO[],
@@ -34,6 +59,38 @@ export interface ICustomerModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<CustomerGroupDTO>
 
+  retrieveCustomerGroup(
+    groupId: string,
+    config?: FindConfig<CustomerGroupDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerGroupDTO>
+
+  updateCustomerGroup(
+    groupId: string,
+    data: Partial<CreateCustomerGroupDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerGroupDTO>
+  updateCustomerGroup(
+    groupIds: string[],
+    data: Partial<CreateCustomerGroupDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerGroupDTO[]>
+  updateCustomerGroup(
+    selector: FilterableCustomerGroupProps,
+    data: Partial<CreateCustomerGroupDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerGroupDTO[]>
+
+  deleteCustomerGroup(groupId: string, sharedContext?: Context): Promise<void>
+  deleteCustomerGroup(
+    groupIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  deleteCustomerGroup(
+    selector: FilterableCustomerGroupProps,
+    sharedContext?: Context
+  ): Promise<void>
+
   addCustomerToGroup(
     groupCustomerPair: GroupCustomerPair,
     sharedContext?: Context
@@ -43,6 +100,21 @@ export interface ICustomerModuleService extends IModuleService {
     groupCustomerPairs: GroupCustomerPair[],
     sharedContext?: Context
   ): Promise<{ id: string }[]>
+
+  removeCustomerFromGroup(
+    groupCustomerPair: GroupCustomerPair,
+    sharedContext?: Context
+  ): Promise<void>
+  removeCustomerFromGroup(
+    groupCustomerPairs: GroupCustomerPair[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  listCustomerGroupRelations(
+    filters?: FilterableCustomerGroupCustomerProps,
+    config?: FindConfig<CustomerGroupCustomerDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerGroupCustomerDTO[]>
 
   list(
     filters?: FilterableCustomerProps,
@@ -67,4 +139,28 @@ export interface ICustomerModuleService extends IModuleService {
     config?: FindConfig<CustomerGroupDTO>,
     sharedContext?: Context
   ): Promise<[CustomerGroupDTO[], number]>
+
+  softDelete<TReturnableLinkableKeys extends string = string>(
+    customerIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  restore<TReturnableLinkableKeys extends string = string>(
+    customerIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteCustomerGroup<TReturnableLinkableKeys extends string = string>(
+    groupIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  restoreCustomerGroup<TReturnableLinkableKeys extends string = string>(
+    groupIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
 }

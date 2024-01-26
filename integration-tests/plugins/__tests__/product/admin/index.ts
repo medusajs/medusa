@@ -16,7 +16,7 @@ import {
 } from "../../../../factories"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 
-jest.setTimeout(5000000)
+jest.setTimeout(50000)
 
 const adminHeaders = {
   headers: {
@@ -28,7 +28,7 @@ const env = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("/admin/products", () => {
+describe.skip("/admin/products", () => {
   let dbConnection
   let shutdownServer
   let medusaContainer

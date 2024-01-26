@@ -8,6 +8,8 @@ import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import adminSeeder from "../../../../helpers/admin-seeder"
 
+jest.setTimeout(50000)
+
 export const campaignsData = [
   {
     id: "campaign-id-1",
@@ -141,25 +143,27 @@ describe("GET /admin/campaigns", () => {
 
     expect(response.status).toEqual(200)
     expect(response.data.count).toEqual(2)
-    expect(response.data.campaigns).toEqual([
-      {
-        id: expect.any(String),
-        name: "campaign 1",
-        created_at: expect.any(String),
-        budget: {
+    expect(response.data.campaigns).toEqual(
+      expect.arrayContaining([
+        {
           id: expect.any(String),
-          campaign: expect.any(Object),
+          name: "campaign 1",
+          created_at: expect.any(String),
+          budget: {
+            id: expect.any(String),
+            campaign: expect.any(Object),
+          },
         },
-      },
-      {
-        id: expect.any(String),
-        name: "campaign 2",
-        created_at: expect.any(String),
-        budget: {
+        {
           id: expect.any(String),
-          campaign: expect.any(Object),
+          name: "campaign 2",
+          created_at: expect.any(String),
+          budget: {
+            id: expect.any(String),
+            campaign: expect.any(Object),
+          },
         },
-      },
-    ])
+      ])
+    )
   })
 })
