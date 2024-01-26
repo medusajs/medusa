@@ -1,4 +1,5 @@
 export * from "./cart"
+export * from "./customer"
 export * from "./inventory"
 export * from "./price-list"
 export * from "./product"
