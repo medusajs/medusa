@@ -2,7 +2,7 @@ import filterFiles from "../utils/filter-files.js"
 import path from "path"
 import DocblockGenerator from "../classes/docblock-generator.js"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
-import { GitManager } from "utils"
+import { GitManager } from "../classes/git-manager.js"
 
 export default async function () {
   const gitManager = new GitManager()
