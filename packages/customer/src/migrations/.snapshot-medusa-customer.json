@@ -321,24 +321,20 @@
           "unique": false
         },
         {
-          "keyName": "customer_address_customer_id_is_default_billing_unique",
-          "columnNames": [
-            "customer_id",
-            "is_default_billing"
-          ],
-          "composite": true,
+          "keyName": "IDX_customer_address_unqiue_customer_billing",
+          "columnNames": [],
+          "composite": false,
           "primary": false,
-          "unique": true
+          "unique": false,
+          "expression": "create unique index \"IDX_customer_address_unqiue_customer_billing\" on \"customer_address\" (\"customer_id\") where \"is_default_billing\" = true"
         },
         {
-          "keyName": "customer_address_customer_id_is_default_shipping_unique",
-          "columnNames": [
-            "customer_id",
-            "is_default_shipping"
-          ],
-          "composite": true,
+          "keyName": "IDX_customer_address_unqiue_customer_shipping",
+          "columnNames": [],
+          "composite": false,
           "primary": false,
-          "unique": true
+          "unique": false,
+          "expression": "create unique index \"IDX_customer_address_unique_customer_shipping\" on \"customer_address\" (\"customer_id\") where \"is_default_shipping\" = true"
         },
         {
           "keyName": "customer_address_pkey",

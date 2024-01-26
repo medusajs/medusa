@@ -8,17 +8,24 @@ import {
   PrimaryKey,
   Property,
   ManyToOne,
-  Unique,
   Cascade,
+  Index,
 } from "@mikro-orm/core"
 import Customer from "./customer"
 
 type OptionalAddressProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
 
 @Entity({ tableName: "customer_address" })
-// set a unique constraint so that only one address can be the default address
-@Unique({ properties: ["customer_id", "is_default_shipping"] })
-@Unique({ properties: ["customer_id", "is_default_billing"] })
+@Index({
+  name: "IDX_customer_address_unqiue_customer_shipping",
+  expression:
+    'create unique index "IDX_customer_address_unique_customer_shipping" on "customer_address" ("customer_id") where "is_default_shipping" = true',
+})
+@Index({
+  name: "IDX_customer_address_unqiue_customer_billing",
+  expression:
+    'create unique index "IDX_customer_address_unqiue_customer_billing" on "customer_address" ("customer_id") where "is_default_billing" = true',
+})
 export default class Address {
   [OptionalProps]: OptionalAddressProps
 

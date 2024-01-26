@@ -578,6 +578,288 @@ describe("Customer Module Service", () => {
     })
   })
 
+  describe("addAddresses", () => {
+    it("should add a single address to a customer", async () => {
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      const address = await service.addAddresses({
+        customer_id: customer.id,
+        first_name: "John",
+        last_name: "Doe",
+        postal_code: "10001",
+        country_code: "US",
+      })
+      const [customerWithAddress] = await service.list(
+        { id: customer.id },
+        { relations: ["addresses"] }
+      )
+
+      expect(customerWithAddress.addresses).toEqual([
+        expect.objectContaining({ id: address.id }),
+      ])
+    })
+
+    it("should add multiple addresses to a customer", async () => {
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      const addresses = await service.addAddresses([
+        {
+          customer_id: customer.id,
+          first_name: "John",
+          last_name: "Doe",
+          postal_code: "10001",
+          country_code: "US",
+        },
+        {
+          customer_id: customer.id,
+          first_name: "John",
+          last_name: "Doe",
+          postal_code: "10002",
+          country_code: "US",
+        },
+      ])
+      const [customerWithAddresses] = await service.list(
+        { id: customer.id },
+        { relations: ["addresses"] }
+      )
+
+      expect(customerWithAddresses.addresses).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: addresses[0].id }),
+          expect.objectContaining({ id: addresses[1].id }),
+        ])
+      )
+    })
+
+    it("should only be possible to add one default shipping address per customer", async () => {
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      await service.addAddresses({
+        customer_id: customer.id,
+        first_name: "John",
+        last_name: "Doe",
+        postal_code: "10001",
+        country_code: "US",
+        is_default_shipping: true,
+      })
+      await service.addAddresses({
+        customer_id: customer.id,
+        first_name: "John",
+        last_name: "Doe",
+        postal_code: "10001",
+        country_code: "US",
+        is_default_shipping: false,
+      })
+
+      await expect(
+        service.addAddresses({
+          customer_id: customer.id,
+          first_name: "John",
+          last_name: "Doe",
+          postal_code: "10002",
+          country_code: "US",
+          is_default_shipping: true,
+        })
+      ).rejects.toThrow()
+    })
+
+    it("should only be possible to add one default billing address per customer", async () => {
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      await service.addAddresses({
+        customer_id: customer.id,
+        first_name: "John",
+        last_name: "Doe",
+        postal_code: "10001",
+        country_code: "US",
+        is_default_billing: true,
+      })
+      await service.addAddresses({
+        customer_id: customer.id,
+        first_name: "John",
+        last_name: "Doe",
+        postal_code: "10001",
+        country_code: "US",
+        is_default_billing: false,
+      })
+
+      await expect(
+        service.addAddresses({
+          customer_id: customer.id,
+          first_name: "John",
+          last_name: "Doe",
+          postal_code: "10002",
+          country_code: "US",
+          is_default_billing: true,
+        })
+      ).rejects.toThrow()
+    })
+  })
+
+  describe("updateAddresses", () => {
+    it("should update a single address", async () => {
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      const address = await service.addAddresses({
+        customer_id: customer.id,
+        address_name: "Home",
+        address_1: "123 Main St",
+      })
+
+      await service.updateAddress(address.id, {
+        address_name: "Work",
+        address_1: "456 Main St",
+      })
+
+      const updatedCustomer = await service.retrieve(customer.id, {
+        select: ["id"],
+        relations: ["addresses"],
+      })
+
+      expect(updatedCustomer.addresses).toEqual([
+        expect.objectContaining({
+          id: address.id,
+          address_name: "Work",
+          address_1: "456 Main St",
+        }),
+      ])
+    })
+
+    it("should update multiple addresses", async () => {
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      const address1 = await service.addAddresses({
+        customer_id: customer.id,
+        address_name: "Home",
+        address_1: "123 Main St",
+      })
+      const address2 = await service.addAddresses({
+        customer_id: customer.id,
+        address_name: "Work",
+        address_1: "456 Main St",
+      })
+
+      await service.updateAddress(
+        { customer_id: customer.id },
+        {
+          address_name: "Under Construction",
+        }
+      )
+
+      const updatedCustomer = await service.retrieve(customer.id, {
+        select: ["id"],
+        relations: ["addresses"],
+      })
+
+      expect(updatedCustomer.addresses).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: address1.id,
+            address_name: "Under Construction",
+          }),
+          expect.objectContaining({
+            id: address2.id,
+            address_name: "Under Construction",
+          }),
+        ])
+      )
+    })
+
+    it("should update multiple addresses with ids", async () => {
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      const [address1, address2] = await service.addAddresses([
+        {
+          customer_id: customer.id,
+          address_name: "Home",
+          address_1: "123 Main St",
+        },
+        {
+          customer_id: customer.id,
+          address_name: "Work",
+          address_1: "456 Main St",
+        },
+      ])
+
+      await service.updateAddress([address1.id, address2.id], {
+        address_name: "Under Construction",
+      })
+
+      const updatedCustomer = await service.retrieve(customer.id, {
+        select: ["id"],
+        relations: ["addresses"],
+      })
+
+      expect(updatedCustomer.addresses).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: address1.id,
+            address_name: "Under Construction",
+          }),
+          expect.objectContaining({
+            id: address2.id,
+            address_name: "Under Construction",
+          }),
+        ])
+      )
+    })
+  })
+
+  describe("listAddresses", () => {
+    it("should list all addresses for a customer", async () => {
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+      })
+      const [address1, address2] = await service.addAddresses([
+        {
+          customer_id: customer.id,
+          address_name: "Home",
+          address_1: "123 Main St",
+        },
+        {
+          customer_id: customer.id,
+          address_name: "Work",
+
+          address_1: "456 Main St",
+        },
+      ])
+
+      const addresses = await service.listAddresses({
+        customer_id: customer.id,
+      })
+
+      expect(addresses).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: address1.id,
+            address_name: "Home",
+            address_1: "123 Main St",
+          }),
+          expect.objectContaining({
+            id: address2.id,
+            address_name: "Work",
+            address_1: "456 Main St",
+          }),
+        ])
+      )
+    })
+  })
+
   describe("removeCustomerFromGroup", () => {
     it("should remove a single customer from a group", async () => {
       // Creating a customer and a group

@@ -22,10 +22,10 @@ export class Migration20240124154000 extends Migration {
       'create index if not exists "IDX_customer_address_customer_id" on "customer_address" ("customer_id");'
     )
     this.addSql(
-      'alter table "customer_address" add constraint "customer_address_customer_id_is_default_billing_unique" unique ("customer_id", "is_default_billing");'
+      'create unique index "IDX_customer_address_unqiue_customer_billing" on "customer_address" ("customer_id") where "is_default_billing" = true;'
     )
     this.addSql(
-      'alter table "customer_address" add constraint "customer_address_customer_id_is_default_shipping_unique" unique ("customer_id", "is_default_shipping");'
+      'create unique index "IDX_customer_address_unique_customer_shipping" on "customer_address" ("customer_id") where "is_default_shipping" = true;'
     )
 
     // Customer Group table modifications
