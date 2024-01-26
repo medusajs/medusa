@@ -17,7 +17,7 @@ type OptionalAddressProps = DAL.EntityDateColumns // TODO: To be revisited when 
 
 @Entity({ tableName: "customer_address" })
 @Index({
-  name: "IDX_customer_address_unqiue_customer_shipping",
+  name: "IDX_customer_address_unique_customer_shipping",
   expression:
     'create unique index "IDX_customer_address_unique_customer_shipping" on "customer_address" ("customer_id") where "is_default_shipping" = true',
 })
