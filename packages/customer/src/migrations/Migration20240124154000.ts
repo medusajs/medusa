@@ -16,7 +16,7 @@ export class Migration20240124154000 extends Migration {
 
     // Customer Address table
     this.addSql(
-      'create table if not exists "customer_address" ("id" text not null, "customer_id" text not null, "address_name" text null, add column "is_default_shipping" boolean not null default false, add column "is_default_billing" boolean not null default false, "company" text null, "first_name" text null, "last_name" text null, "address_1" text null, "address_2" text null, "city" text null, "country_code" text null, "province" text null, "postal_code" text null, "phone" text null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), constraint "customer_address_pkey" primary key ("id"));'
+      'create table if not exists "customer_address" ("id" text not null, "customer_id" text not null, "address_name" text null, "is_default_shipping" boolean not null default false, "is_default_billing" boolean not null default false, "company" text null, "first_name" text null, "last_name" text null, "address_1" text null, "address_2" text null, "city" text null, "country_code" text null, "province" text null, "postal_code" text null, "phone" text null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), constraint "customer_address_pkey" primary key ("id"));'
     )
     this.addSql(
       'create index if not exists "IDX_customer_address_customer_id" on "customer_address" ("customer_id");'
