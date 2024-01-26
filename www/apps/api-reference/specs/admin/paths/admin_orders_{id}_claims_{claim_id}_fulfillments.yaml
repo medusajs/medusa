@@ -52,7 +52,7 @@ post:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_orders_{id}_claims_{claim_id}_fulfillments/postundefined
+          ../code_samples/tsx/admin_orders_{id}_claims_{claim_id}_fulfillments/post.tsx
     - lang: Shell
       label: cURL
       source:
