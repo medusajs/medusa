@@ -24,7 +24,7 @@ type OptionalAddressProps = DAL.EntityDateColumns // TODO: To be revisited when 
 @Index({
   name: "IDX_customer_address_unqiue_customer_billing",
   expression:
-    'create unique index "IDX_customer_address_unqiue_customer_billing" on "customer_address" ("customer_id") where "is_default_billing" = true',
+    'create unique index "IDX_customer_address_unique_customer_billing" on "customer_address" ("customer_id") where "is_default_billing" = true',
 })
 export default class Address {
   [OptionalProps]: OptionalAddressProps
