@@ -33,7 +33,7 @@ export default class Address {
   id!: string
 
   @Property({ columnType: "text", nullable: true })
-  address_name: string
+  address_name: string | null = null
 
   @Property({ columnType: "boolean", default: false })
   is_default_shipping: boolean = false
