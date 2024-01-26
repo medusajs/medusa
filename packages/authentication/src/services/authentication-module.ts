@@ -1,9 +1,11 @@
 import {
+  AuthenticationResponse,
   AuthenticationTypes,
   Context,
   DAL,
   FindConfig,
   InternalModuleDeclaration,
+  MedusaContainer,
   ModuleJoinerConfig,
 } from "@medusajs/types"
 
@@ -11,10 +13,13 @@ import { AuthProvider, AuthUser } from "@models"
 
 import { joinerConfig } from "../joiner-config"
 import { AuthProviderService, AuthUserService } from "@services"
+
 import {
+  AbstractAuthenticationModuleProvider,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
 } from "@medusajs/utils"
 import {
   AuthProviderDTO,
@@ -25,6 +30,7 @@ import {
   FilterableAuthUserProps,
   UpdateAuthUserDTO,
 } from "@medusajs/types/dist/authentication/common"
+import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -37,6 +43,15 @@ export default class AuthenticationModuleService<
   TAuthProvider extends AuthProvider = AuthProvider
 > implements AuthenticationTypes.IAuthenticationModuleService
 {
+  __joinerConfig(): ModuleJoinerConfig {
+    return joinerConfig
+  }
+
+  __hooks = {
+    onApplicationStart: async () => await this.createProvidersOnLoad(),
+  }
+
+  protected __container__: MedusaContainer
   protected baseRepository_: DAL.RepositoryService
 
   protected authUserService_: AuthUserService<TAuthUser>
@@ -50,6 +65,7 @@ export default class AuthenticationModuleService<
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
+    this.__container__ = arguments[0]
     this.baseRepository_ = baseRepository
     this.authUserService_ = authUserService
     this.authProviderService_ = authProviderService
@@ -142,7 +158,7 @@ export default class AuthenticationModuleService<
   protected async createAuthProviders_(
     data: any[],
     @MedusaContext() sharedContext: Context
-  ): Promise<AuthenticationTypes.AuthProviderDTO[]> {
+  ): Promise<TAuthProvider[]> {
     return await this.authProviderService_.create(data, sharedContext)
   }
 
@@ -180,7 +196,7 @@ export default class AuthenticationModuleService<
   async updateAuthProvider_(
     data: AuthenticationTypes.UpdateAuthProviderDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthProviderDTO[]> {
+  ): Promise<TAuthProvider[]> {
     return await this.authProviderService_.update(data, sharedContext)
   }
 
@@ -336,7 +352,76 @@ export default class AuthenticationModuleService<
     await this.authUserService_.delete(ids, sharedContext)
   }
 
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
+  protected getRegisteredAuthenticationProvider(
+    provider: string
+  ): AbstractAuthenticationModuleProvider {
+    let containerProvider: AbstractAuthenticationModuleProvider
+    try {
+      containerProvider = this.__container__[`auth_provider_${provider}`]
+    } catch (error) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `AuthenticationProvider with for provider: ${provider} wasn't registered in the module. Have you configured your options correctly?`
+      )
+    }
+
+    return containerProvider
+  }
+
+  async authenticate(
+    provider: string,
+    authenticationData: Record<string, unknown>
+  ): Promise<AuthenticationResponse> {
+    try {
+      await this.retrieveAuthProvider(provider, {})
+
+      const registeredProvider =
+        this.getRegisteredAuthenticationProvider(provider)
+
+      return await registeredProvider.authenticate(authenticationData)
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  }
+
+  async validateCallback(
+    provider: string,
+    authenticationData: Record<string, unknown>
+  ): Promise<AuthenticationResponse> {
+    try {
+      await this.retrieveAuthProvider(provider, {})
+
+      const registeredProvider =
+        this.getRegisteredAuthenticationProvider(provider)
+
+      return await registeredProvider.validateCallback(authenticationData)
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  }
+
+  private async createProvidersOnLoad() {
+    const providersToLoad = this.__container__["auth_providers"]
+
+    const providers = await this.authProviderService_.list({
+      provider: providersToLoad.map((p) => p.provider),
+    })
+
+    const loadedProvidersMap = new Map(providers.map((p) => [p.provider, p]))
+
+    const providersToCreate: ServiceTypes.CreateAuthProviderDTO[] = []
+
+    for (const provider of providersToLoad) {
+      if (loadedProvidersMap.has(provider.provider)) {
+        continue
+      }
+
+      providersToCreate.push({
+        provider: provider.provider,
+        name: provider.displayName,
+      })
+    }
+
+    await this.authProviderService_.create(providersToCreate)
   }
 }

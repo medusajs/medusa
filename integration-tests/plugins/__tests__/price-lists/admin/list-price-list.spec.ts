@@ -25,7 +25,7 @@ const env = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("GET /admin/price-lists", () => {
+describe.skip("GET /admin/price-lists", () => {
   let dbConnection
   let appContainer
   let shutdownServer

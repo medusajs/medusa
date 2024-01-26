@@ -3,6 +3,7 @@ import { Parameter } from "../types"
 type FormatParameterComponentProps = {
   parameterComponent: string | undefined
   componentItems: Parameter[]
+  sectionTitle: string
   extraProps?: Record<string, unknown>
 }
 
@@ -43,6 +44,7 @@ export function formatParameterComponent({
   parameterComponent,
   componentItems,
   extraProps,
+  sectionTitle,
 }: FormatParameterComponentProps): string {
   let extraPropsArr: string[] = []
   if (extraProps) {
@@ -54,5 +56,5 @@ export function formatParameterComponent({
   componentItems = sortComponentItems(componentItems)
   return `<${parameterComponent} parameters={${JSON.stringify(
     componentItems
-  )}} ${extraPropsArr.join(" ")}/>`
+  )}} ${extraPropsArr.join(" ")} sectionTitle="${sectionTitle}"/>`
 }

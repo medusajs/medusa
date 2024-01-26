@@ -1,9 +1,10 @@
 import { DAL } from "@medusajs/types"
-import { generateEntityId } from "@medusajs/utils"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
   Entity,
+  Filter,
   OnInit,
   OneToMany,
   OneToOne,
@@ -15,17 +16,16 @@ import {
 import CampaignBudget from "./campaign-budget"
 import Promotion from "./promotion"
 
+type OptionalRelations = "budget"
 type OptionalFields =
   | "description"
   | "currency"
   | "starts_at"
   | "ends_at"
-  | "deleted_at"
-  | DAL.EntityDateColumns
+  | DAL.SoftDeletableEntityDateColumns
 
-type OptionalRelations = "budget"
-
-@Entity()
+@Entity({ tableName: "campaign" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Campaign {
   [OptionalProps]?: OptionalFields | OptionalRelations
 
@@ -36,10 +36,10 @@ export default class Campaign {
   name: string
 
   @Property({ columnType: "text", nullable: true })
-  description: string | null
+  description: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  currency: string | null
+  currency: string | null = null
 
   @Property({ columnType: "text" })
   @Unique({
@@ -52,13 +52,13 @@ export default class Campaign {
     columnType: "timestamptz",
     nullable: true,
   })
-  starts_at: Date | null
+  starts_at: Date | null = null
 
   @Property({
     columnType: "timestamptz",
     nullable: true,
   })
-  ends_at: Date | null
+  ends_at: Date | null = null
 
   @OneToOne({
     entity: () => CampaignBudget,
@@ -66,7 +66,7 @@ export default class Campaign {
     cascade: ["soft-remove"] as any,
     nullable: true,
   })
-  budget: CampaignBudget | null
+  budget: CampaignBudget | null = null
 
   @OneToMany(() => Promotion, (promotion) => promotion.campaign, {
     orphanRemoval: true,
@@ -89,7 +89,7 @@ export default class Campaign {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date | null
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {
