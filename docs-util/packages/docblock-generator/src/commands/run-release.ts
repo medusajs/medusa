@@ -1,8 +1,8 @@
-import { GitManager } from "utils"
 import filterFiles from "../utils/filter-files.js"
 import path from "path"
 import DocblockGenerator from "../classes/docblock-generator.js"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
+import { GitManager } from "utils"
 
 export default async function () {
   const gitManager = new GitManager()

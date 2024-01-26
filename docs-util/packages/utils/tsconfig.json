@@ -7,5 +7,5 @@
     "declarationMap": true,
     "esModuleInterop": true
   },
-  "include": ["src"]
+  "include": ["src", "../docblock-generator/src/classes/git-manager.ts"]
 }
