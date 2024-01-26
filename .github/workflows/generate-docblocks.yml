@@ -34,6 +34,10 @@ jobs:
       - name: Run docblock generator
         run: "yarn start run:release"
         working-directory: docs-util/packages/docblock-generator
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_OWNER: medusajs
+          GIT_REPO: medusa
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
