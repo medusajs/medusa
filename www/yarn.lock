@@ -20049,6 +20049,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-day-picker@npm:^8.10.0":
+  version: 8.10.0
+  resolution: "react-day-picker@npm:8.10.0"
+  peerDependencies:
+    date-fns: ^2.28.0 || ^3.0.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: e9868aced1e40b4cb7d6cf8d50e250226b38ec7ebea944b65aa9db20a0f36d0581b8a501297d09dcbf2d812de852168952b3fb27990915381629d6e314c2a4d8
+  languageName: node
+  linkType: hard
+
 "react-day-picker@npm:^8.8.0":
   version: 8.8.2
   resolution: "react-day-picker@npm:8.8.2"
@@ -22754,6 +22764,7 @@ __metadata:
     next-themes: ^0.2.1
     postcss: 8.4.27
     react: 18.2.0
+    react-day-picker: ^8.10.0
     react-docgen: ^7.0.1
     react-dom: 18.2.0
     remark: ^14.0.3
