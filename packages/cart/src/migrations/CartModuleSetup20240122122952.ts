@@ -32,6 +32,9 @@ export class CartModuleSetup20240122122952 extends Migration {
     CREATE INDEX IF NOT EXISTS "IDX_cart_customer_id" ON "cart" ("customer_id");
     CREATE INDEX IF NOT EXISTS "IDX_cart_shipping_address_id" ON "cart" ("shipping_address_id");
     CREATE INDEX IF NOT EXISTS "IDX_cart_billing_address_id" ON "cart" ("billing_address_id");
+    CREATE INDEX IF NOT EXISTS "IDX_cart_region_id" ON "cart" ("region_id");
+    CREATE INDEX IF NOT EXISTS "IDX_cart_sales_channel_id" ON "cart" ("sales_channel_id");
+    CREATE INDEX IF NOT EXISTS "IDX_cart_currency_code" ON "cart" ("currency_code");
     
     CREATE TABLE IF NOT EXISTS "cart_address" (
       "id" TEXT NOT NULL,

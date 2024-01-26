@@ -11,7 +11,7 @@ import {
   OneToMany,
   OptionalProps,
   PrimaryKey,
-  Property
+  Property,
 } from "@mikro-orm/core"
 import Address from "./address"
 import LineItem from "./line-item"
@@ -29,7 +29,11 @@ export default class Cart {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text", nullable: true })
+  @Property({
+    columnType: "text",
+    nullable: true,
+    index: "IDX_cart_customer_id",
+  })
   region_id?: string | null
 
   @Property({
@@ -39,13 +43,17 @@ export default class Cart {
   })
   customer_id?: string | null
 
-  @Property({ columnType: "text", nullable: true })
+  @Property({
+    columnType: "text",
+    nullable: true,
+    index: "IDX_cart_customer_id",
+  })
   sales_channel_id?: string | null
 
   @Property({ columnType: "text", nullable: true })
   email?: string | null
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", index: "IDX_cart_curency_code" })
   currency_code: string
 
   @Index({ name: "IDX_cart_shipping_address_id" })
