@@ -38,7 +38,7 @@ jobs:
         working-directory: docs-util/packages/docblock-generator
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GIT_OWNER: medusajs
+          GIT_OWNER: ${{ github.repository_owner }}
           GIT_REPO: medusa
 
       - name: Create Pull Request
