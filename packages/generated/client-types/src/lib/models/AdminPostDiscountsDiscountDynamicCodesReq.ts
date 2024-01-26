@@ -16,6 +16,10 @@ export interface AdminPostDiscountsDiscountDynamicCodesReq {
    */
   usage_limit?: number
   /**
+   * Maximum number of times the discount code can be used per customer
+   */
+  usage_limit_per_customer?: number
+  /**
    * An optional set of key-value pairs to hold additional information.
    */
   metadata?: Record<string, any>

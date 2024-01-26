@@ -19,6 +19,7 @@ export const MedusaErrorTypes = {
 export const MedusaErrorCodes = {
   INSUFFICIENT_INVENTORY: "insufficient_inventory",
   CART_INCOMPATIBLE_STATE: "cart_incompatible_state",
+  CUSTOMER_DISCOUNT_LIMIT_REACHED: "customer_discount_limit_reached"
 }
 
 /**

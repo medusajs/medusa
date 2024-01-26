@@ -221,6 +221,9 @@ export default async (req: Request, res: Response) => {
  *   usage_limit:
  *     type: number
  *     description: Maximum number of times the discount can be used
+ *   usage_limit_per_customer:
+ *     type: number
+ *     description: Maximum number of times the discount can be used per customer
  *   regions:
  *     description: A list of region IDs representing the Regions in which the Discount can be used.
  *     type: array
@@ -266,6 +269,11 @@ export class AdminPostDiscountsDiscountReq {
   @IsOptional()
   @IsPositive()
   usage_limit?: number | null
+
+  @IsNumber()
+  @IsOptional()
+  @IsPositive()
+  usage_limit_per_customer?: number | null
 
   @IsArray()
   @IsOptional()

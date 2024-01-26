@@ -4,6 +4,7 @@ import DiscountService from "../discount"
 import { TotalsServiceMock } from "../__mocks__/totals"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
 import { In } from "typeorm"
+import {orders} from "../__mocks__/order";
 
 const featureFlagRouter = new FlagRouter({})
 
@@ -1060,7 +1061,10 @@ describe("DiscountService", () => {
   describe("hasCustomerReachedLimit", () => {
     const orderRepository = MockRepository({
       findAndCount: jest.fn().mockImplementation(() => {
-        return Promise.resolve([1, 2])
+        return Promise.resolve([orders, 2])
+      }),
+      count: jest.fn().mockImplementation(() => {
+        return Promise.resolve(2)
       }),
     })
 

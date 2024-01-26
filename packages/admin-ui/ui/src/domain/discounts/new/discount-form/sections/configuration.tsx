@@ -23,6 +23,10 @@ const getActiveTabs = (promotion: Discount) => {
     activeTabs.push("usage_limit")
   }
 
+  if (promotion.usage_limit_per_customer !== null) {
+    activeTabs.push("usage_limit_per_customer")
+  }
+
   if (promotion.starts_at !== null) {
     activeTabs.push("starts_at")
   }
@@ -213,6 +217,34 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                     "sections-number-of-redemptions",
                     "Number of redemptions"
                   )}
+                  type="number"
+                  placeholder="5"
+                  min={1}
+                />
+              </div>
+            </Accordion.Item>
+            <Accordion.Item
+              headingSize="medium"
+              forceMountContent
+              className="border-b-0"
+              title="Limit the number of redemptions per customer?"
+              subtitle="Limit applies per customer."
+              tooltip="If you wish to limit the amount of times a customer can redeem this discount, you can set a limit here."
+              value="usage_limit_per_customer"
+              customTrigger={
+                <Switch
+                  checked={openItems.indexOf("usage_limit_per_customer") > -1}
+                />
+              }
+            >
+              <div
+                className={clsx(marginTransition, {
+                  "mt-4": openItems.indexOf("usage_limit_per_customer") > -1,
+                })}
+              >
+                <InputField
+                  {...register("usage_limit_per_customer", { valueAsNumber: true })}
+                  label="Number of redemptions"
                   type="number"
                   placeholder="5"
                   min={1}

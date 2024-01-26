@@ -116,6 +116,7 @@ Object {
   "updated_at": Any<String>,
   "usage_count": 0,
   "usage_limit": null,
+  "usage_limit_per_customer": 0,
   "valid_duration": null,
 }
 `;
@@ -190,6 +191,7 @@ Object {
   "updated_at": Any<String>,
   "usage_count": 0,
   "usage_limit": null,
+  "usage_limit_per_customer": 0,
   "valid_duration": null,
 }
 `;

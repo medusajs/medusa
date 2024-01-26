@@ -143,6 +143,10 @@ export default async (req: Request, res: Response) => {
  *     type: number
  *     description: Maximum number of times the discount code can be used
  *     default: 1
+ *   usage_limit_per_customer:
+ *     type: number
+ *     description: Maximum number of times the discount code can be used per customer
+ *     default: 0
  *   metadata:
  *     type: object
  *     description: An optional set of key-value pairs to hold additional information.
@@ -158,6 +162,10 @@ export class AdminPostDiscountsDiscountDynamicCodesReq {
   @IsNumber()
   @IsOptional()
   usage_limit = 1
+
+  @IsNumber()
+  @IsOptional()
+  usage_limit_per_customer = 0
 
   @IsObject()
   @IsOptional()

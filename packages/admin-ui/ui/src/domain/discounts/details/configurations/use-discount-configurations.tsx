@@ -124,6 +124,39 @@ const useDiscountConfigurations = (discount: Discount) => {
       ],
     })
   }
+  if (discount.usage_limit_per_customer) {
+    conditions.push({
+      title: "Number of redemptions per customer",
+      description: (
+        <CommonDescription
+          text={discount.usage_limit_per_customer.toLocaleString("en")}
+        />
+      ),
+      actions: [
+        {
+          label: "Delete configuration",
+          icon: <TrashIcon size={20} />,
+          variant: "danger",
+          onClick: async () =>
+            await updateDiscount.mutateAsync(
+              { usage_limit_per_customer: null },
+              {
+                onSuccess: () => {
+                  notification(
+                    "Success",
+                    "Redemption limit per customer removed",
+                    "success"
+                  )
+                },
+                onError: (error) => {
+                  notification("Error", getErrorMessage(error), "error")
+                },
+              }
+            ),
+        },
+      ],
+    })
+  }
   if (discount.valid_duration) {
     conditions.push({
       title: "Duration",

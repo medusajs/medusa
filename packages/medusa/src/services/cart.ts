@@ -1641,11 +1641,20 @@ class CartService extends TransactionBaseService {
           })
         )
 
-        cart.discounts.forEach((discount) => {
-          if (discountsMap.has(discount.id)) {
-            discountsMap.delete(discount.id)
-          }
-        })
+        await promiseAll(
+          cart.discounts.map(async (discount) => {
+            try {
+              await this.discountService_
+                .withTransaction(transactionManager)
+                .validateDiscountForCartOrThrow(cart, discount)
+            } catch {
+              await this.removeDiscount(cart.id, discount.code)
+            }
+            if (discountsMap.has(discount.id)) {
+              discountsMap.delete(discount.id)
+            }
+          })
+        )
 
         const toParse = [...cart.discounts, ...discountsMap.values()]
 

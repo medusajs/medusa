@@ -777,9 +777,16 @@ class DiscountService extends TransactionBaseService {
     discount: Discount,
     customer: Customer
   ): Promise<boolean> {
-    const manager = this.manager_
+    // If customer is empty on the cart, we will allow it
+
+
+    if (!customer) {
+      return false
+    }
+
+    const manager = this.activeManager_
     const orderRepo = manager.withRepository(this.orderRepository_)
-    const [orders, count] = await orderRepo.findAndCount({
+    const count = await orderRepo.count({
       relations: {
         discounts: true,
       },

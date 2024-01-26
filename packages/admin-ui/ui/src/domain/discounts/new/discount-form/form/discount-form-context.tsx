@@ -60,6 +60,9 @@ export const DiscountFormProvider = ({
   const [hasExpiryDate, setHasExpiryDate] = useState(false)
   const [hasStartDate, setHasStartDate] = useState(false)
   const [prevUsageLimit, setPrevUsageLimit] = useState<number | null>(null)
+  const [prevUsagePerCustomerLimit, setPrevUsagePerCustomerLimit] = useState<
+    number | null
+  >(null)
   const [prevValidDuration, setPrevValidDuration] = useState<string | null>(
     null
   )
@@ -90,6 +93,7 @@ export const DiscountFormProvider = ({
   const type = methods.watch("rule.type")
   const isDynamic = methods.watch("is_dynamic")
   const usageLimit = methods.watch("usage_limit")
+  const usageLimitPerCustomer = methods.watch("usage_limit_per_customer")
   const validDuration = methods.watch("valid_duration")
 
   const endsAt = methods.watch("ends_at")
@@ -140,6 +144,23 @@ export const DiscountFormProvider = ({
       }, 300)
     } else if (values.indexOf("usage_limit") > -1 && usageLimit) {
       methods.setValue("usage_limit", prevUsageLimit)
+    }
+
+    // usage_limit_per_customer
+    if (
+      values.indexOf("usage_limit_per_customer") === -1 &&
+      usageLimitPerCustomer
+    ) {
+      setPrevUsagePerCustomerLimit(usageLimitPerCustomer)
+      // debounce the setValue call to not flash an empty field when collapsing the accordion
+      setTimeout(() => {
+        methods.setValue("usage_limit_per_customer", null)
+      }, 300)
+    } else if (
+      values.indexOf("usage_limit_per_customer") > -1 &&
+      usageLimitPerCustomer
+    ) {
+      methods.setValue("usage_limit_per_customer", prevUsagePerCustomerLimit)
     }
 
     // valid duration

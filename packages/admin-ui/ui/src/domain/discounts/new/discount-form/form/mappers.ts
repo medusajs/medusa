@@ -18,6 +18,7 @@ export interface DiscountFormValues extends FieldValues {
   starts_at?: Date
   ends_at?: Date | null
   usage_limit: number | null
+  usage_limit_per_customer: number | null
   is_dynamic: boolean
   valid_duration: string | null
   regions?: Option[]
@@ -74,6 +75,10 @@ export const formValuesToCreateDiscountMapper = (
     usage_limit:
       values.usage_limit && values.usage_limit > 0
         ? values.usage_limit
+        : undefined,
+    usage_limit_per_customer:
+      values.usage_limit_per_customer && values.usage_limit_per_customer > 0
+        ? values.usage_limit_per_customer
         : undefined,
     valid_duration:
       values.is_dynamic && values.valid_duration?.length
