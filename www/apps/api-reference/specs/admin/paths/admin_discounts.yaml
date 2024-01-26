@@ -70,7 +70,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_discounts/getundefined
+        $ref: ../code_samples/tsx/admin_discounts/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -138,7 +138,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_discounts/postundefined
+        $ref: ../code_samples/tsx/admin_discounts/post.tsx
     - lang: Shell
       label: cURL
       source:
