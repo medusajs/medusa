@@ -1,4 +1,6 @@
-export * from "./get-type-children"
-export * from "./get-project-child"
-export * from "./get-type-str"
-export * from "./str-utils"
+export * from "./classes/git-manager"
+
+export * from "./utils/get-type-children"
+export * from "./utils/get-project-child"
+export * from "./utils/get-type-str"
+export * from "./utils/str-utils"
