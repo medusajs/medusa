@@ -1,7 +1,6 @@
 import { ProductType } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
-import { IProductTypeRepository } from "@types"
 
 type InjectedDependencies = {
   productTypeRepository: DAL.RepositoryService
@@ -9,14 +8,10 @@ type InjectedDependencies = {
 
 export default class ProductTypeService<
   TEntity extends ProductType = ProductType
-> extends ModulesSdkUtils.abstractServiceFactory<
-  InjectedDependencies,
-  {
-    create: ProductTypes.CreateProductTypeDTO
-    update: ProductTypes.UpdateProductTypeDTO
-  }
->(ProductType)<TEntity> {
-  protected readonly productTypeRepository_: IProductTypeRepository<TEntity>
+> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+  ProductType
+)<TEntity> {
+  protected readonly productTypeRepository_: DAL.RepositoryService<TEntity>
 
   constructor(container: InjectedDependencies) {
     super(container)
@@ -24,9 +19,9 @@ export default class ProductTypeService<
   }
 
   @InjectManager("productTypeRepository_")
-  async list<TEntityMethod = ProductTypes.ProductTypeDTO>(
+  async list(
     filters: ProductTypes.FilterableProductTypeProps = {},
-    config: FindConfig<TEntityMethod> = {},
+    config: FindConfig<TEntity> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return await this.productTypeRepository_.find(
@@ -36,9 +31,9 @@ export default class ProductTypeService<
   }
 
   @InjectManager("productTypeRepository_")
-  async listAndCount<TEntityMethod = ProductTypes.ProductOptionDTO>(
+  async listAndCount(
     filters: ProductTypes.FilterableProductTypeProps = {},
-    config: FindConfig<TEntityMethod> = {},
+    config: FindConfig<TEntity> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     return await this.productTypeRepository_.findAndCount(
@@ -47,9 +42,9 @@ export default class ProductTypeService<
     )
   }
 
-  private buildQueryForList<TEntityMethod = ProductTypes.ProductTypeDTO>(
+  private buildQueryForList(
     filters: ProductTypes.FilterableProductTypeProps = {},
-    config: FindConfig<TEntityMethod> = {}
+    config: FindConfig<TEntity> = {}
   ): DAL.FindOptions<TEntity> {
     const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
 

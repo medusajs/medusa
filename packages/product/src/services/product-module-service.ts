@@ -5,6 +5,7 @@ import {
   IEventBusModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
+  ModulesSdkTypes,
   ProductTypes,
 } from "@medusajs/types"
 import {
@@ -29,13 +30,6 @@ import {
 } from "@services"
 
 import {
-  ProductCategoryServiceTypes,
-  ProductCollectionServiceTypes,
-  ProductServiceTypes,
-  ProductVariantServiceTypes,
-} from "@types"
-
-import {
   arrayDifference,
   groupBy,
   InjectManager,
@@ -48,18 +42,19 @@ import {
   ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
-import {
-  CreateProductOptionValueDTO,
-  IProductOptionValueService,
-  UpdateProductOptionValueDTO,
-} from "../types/services/product-option-value"
 import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
 import {
   ProductCategoryEventData,
   ProductCategoryEvents,
 } from "../types/services/product-category"
+import {
+  ProductCategoryServiceTypes,
+  ProductCollectionServiceTypes,
+  ProductOptionValueServiceTypes,
+  ProductServiceTypes,
+  ProductVariantServiceTypes,
+} from "@types"
 import { ProductEventData, ProductEvents } from "../types/services/product"
-import { IProductImageService } from "../types/services/product-image"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -68,10 +63,10 @@ type InjectedDependencies = {
   productTagService: ProductTagService<any>
   productCategoryService: ProductCategoryService<any>
   productCollectionService: ProductCollectionService<any>
-  productImageService: IProductImageService<any>
+  productImageService: ModulesSdkTypes.InternalModuleService<any>
   productTypeService: ProductTypeService<any>
   productOptionService: ProductOptionService<any>
-  productOptionValueService: IProductOptionValueService<any>
+  productOptionValueService: ModulesSdkTypes.InternalModuleService<any>
   eventBusModuleService?: IEventBusModuleService
 }
 
@@ -145,11 +140,12 @@ export default class ProductModuleService<
   protected readonly productTagService_: ProductTagService<TProductTag>
   // eslint-disable-next-line max-len
   protected readonly productCollectionService_: ProductCollectionService<TProductCollection>
-  protected readonly productImageService_: IProductImageService<TProductImage>
+  // eslint-disable-next-line max-len
+  protected readonly productImageService_: ModulesSdkTypes.InternalModuleService<TProductImage>
   protected readonly productTypeService_: ProductTypeService<TProductType>
   protected readonly productOptionService_: ProductOptionService<TProductOption>
   // eslint-disable-next-line max-len
-  protected readonly productOptionValueService_: IProductOptionValueService<TProductOptionValue>
+  protected readonly productOptionValueService_: ModulesSdkTypes.InternalModuleService<TProductOptionValue>
   protected readonly eventBusModuleService_?: IEventBusModuleService
 
   constructor(
@@ -292,8 +288,8 @@ export default class ProductModuleService<
     }
 
     const optionValuesToUpsert: (
-      | CreateProductOptionValueDTO
-      | UpdateProductOptionValueDTO
+      | ProductOptionValueServiceTypes.CreateProductOptionValueDTO
+      | ProductOptionValueServiceTypes.UpdateProductOptionValueDTO
     )[] = []
     const optionsValuesToDelete: string[] = []
 
@@ -348,11 +344,7 @@ export default class ProductModuleService<
 
     const groups = groupBy(toUpdate, "product_id")
 
-    const [, , productVariants]: [
-      void,
-      TProductOptionValue[],
-      TProductVariant[][]
-    ] = await promiseAll([
+    const [, , productVariants] = await promiseAll([
       await this.productOptionValueService_.delete(
         optionsValuesToDelete,
         sharedContext
