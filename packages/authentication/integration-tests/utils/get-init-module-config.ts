@@ -14,7 +14,8 @@ export function getInitModuleConfig() {
       {
         name: "usernamePassword",
         scopes: {
-          admin: "test",
+          admin: {},
+          store: {},
         },
       },
     ],

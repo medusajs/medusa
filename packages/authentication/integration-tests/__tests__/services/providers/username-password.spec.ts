@@ -73,6 +73,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
           email: "test@test.com",
           password: password,
         },
+        scope: "store",
       })
 
       expect(res).toEqual({
@@ -91,6 +92,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
 
       const res = await service.authenticate("usernamePassword", {
         body: { email: "test@test.com" },
+        scope: "store",
       })
 
       expect(res).toEqual({
@@ -104,6 +106,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
 
       const res = await service.authenticate("usernamePassword", {
         body: { password: "supersecret" },
+        scope: "store",
       })
 
       expect(res).toEqual({
@@ -136,6 +139,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
           email: "test@test.com",
           password: "password",
         },
+        scope: "store",
       })
 
       expect(res).toEqual({
