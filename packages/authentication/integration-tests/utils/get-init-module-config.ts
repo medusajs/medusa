@@ -10,6 +10,14 @@ export function getInitModuleConfig() {
         schema: process.env.MEDUSA_AUTHENTICATION_DB_SCHEMA,
       },
     },
+    providers: [
+      {
+        name: "usernamePassword",
+        scopes: {
+          admin: "test",
+        },
+      },
+    ],
   }
 
   const injectedDependencies = {}

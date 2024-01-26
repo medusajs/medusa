@@ -6,21 +6,13 @@ import { AuthProviderService, AuthUserService } from "@services"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
 import { AuthProvider } from "@models"
-import { AuthenticationResponse } from "@medusajs/types"
+import { AuthenticationInput, AuthenticationResponse } from "@medusajs/types"
 import { AuthorizationCode } from "simple-oauth2"
 import url from "url"
 
 type InjectedDependencies = {
   authUserService: AuthUserService
   authProviderService: AuthProviderService
-}
-
-type AuthenticationInput = {
-  connection: { encrypted: boolean }
-  url: string
-  headers: { host: string }
-  query: Record<string, string>
-  body: Record<string, string>
 }
 
 type ProviderConfig = {
@@ -37,7 +29,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
   protected readonly authProviderService_: AuthProviderService
 
   constructor({ authUserService, authProviderService }: InjectedDependencies) {
-    super()
+    super(arguments[0])
 
     this.authUserSerivce_ = authUserService
     this.authProviderService_ = authProviderService
@@ -84,11 +76,11 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
 
     const code = req.query?.code ?? req.body?.code
 
-    return await this.validateCallbackToken(code, config)
+    return await this.validateCallbackToken(code, req.scope, config)
   }
 
   // abstractable
-  async verify_(refreshToken: string) {
+  async verify_(refreshToken: string, scope: string) {
     const jwtData = (await jwt.decode(refreshToken, {
       complete: true,
     })) as JwtPayload
@@ -108,6 +100,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
             entity_id,
             provider_id: GoogleProvider.PROVIDER,
             user_metadata: jwtData!.payload,
+            app_metadata: { scope },
           },
         ])
       } else {
@@ -121,6 +114,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
   // abstractable
   private async validateCallbackToken(
     code: string,
+    scope: string,
     { clientID, callbackURL, clientSecret }: ProviderConfig
   ) {
     const client = this.getAuthorizationCodeHandler({ clientID, clientSecret })
@@ -133,7 +127,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     try {
       const accessToken = await client.getToken(tokenParams)
 
-      return await this.verify_(accessToken.token.id_token)
+      return await this.verify_(accessToken.token.id_token, scope)
     } catch (error) {
       return { success: false, error: error.message }
     }

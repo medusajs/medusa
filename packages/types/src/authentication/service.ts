@@ -1,7 +1,8 @@
 import {
+  AuthenticationInput,
+  AuthenticationResponse,
   AuthProviderDTO,
   AuthUserDTO,
-  AuthenticationResponse,
   CreateAuthProviderDTO,
   CreateAuthUserDTO,
   FilterableAuthProviderProps,
@@ -17,12 +18,12 @@ import { IModuleService } from "../modules-sdk"
 export interface IAuthenticationModuleService extends IModuleService {
   authenticate(
     provider: string,
-    providerData: Record<string, unknown>
+    providerData: AuthenticationInput
   ): Promise<AuthenticationResponse>
 
   validateCallback(
     provider: string,
-    providerData: Record<string, unknown>
+    providerData: AuthenticationInput
   ): Promise<AuthenticationResponse>
 
   retrieveAuthProvider(
