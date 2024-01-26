@@ -2,8 +2,8 @@ import { EntityManager } from "typeorm"
 
 /**
  * @interface
- * 
- * A shared context object that is used to share resources between the application and the module.
+ *
+ * A context used to share resources, such as transaction manager, between the application and the module.
  */
 export type SharedContext = {
   /**
@@ -18,8 +18,8 @@ export type SharedContext = {
 
 /**
  * @interface
- * 
- * A shared context object that is used to share resources between the application and the module.
+ *
+ * A context used to share resources, such as transaction manager, between the application and the module.
  */
 export type Context<TManager = unknown> = {
   /**

@@ -110,18 +110,14 @@ export default class LineItem {
   @Check({ expression: "unit_price >= 0" }) // TODO: Validate that numeric types work with the expression
   unit_price: number
 
-  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.line_item, {
+  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
     cascade: [Cascade.REMOVE],
   })
   tax_lines = new Collection<LineItemTaxLine>(this)
 
-  @OneToMany(
-    () => LineItemAdjustment,
-    (adjustment) => adjustment.item,
-    {
-      cascade: [Cascade.REMOVE],
-    }
-  )
+  @OneToMany(() => LineItemAdjustment, (adjustment) => adjustment.item, {
+    cascade: [Cascade.REMOVE],
+  })
   adjustments = new Collection<LineItemAdjustment>(this)
 
   /** COMPUTED PROPERTIES - START */

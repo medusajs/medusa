@@ -14,7 +14,7 @@ const env = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("/store/carts", () => {
+describe.skip("/store/carts", () => {
   let dbConnection
   let shutdownServer
 

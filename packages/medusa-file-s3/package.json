@@ -1,6 +1,6 @@
 {
   "name": "medusa-file-s3",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "AWS s3 file connector for Medusa",
   "main": "dist/index.js",
   "files": [
@@ -17,8 +17,8 @@
   "author": "Sebastian Mateos Nicolajsen",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/medusa": "^1.17.4",
-    "@medusajs/types": "^1.11.6",
+    "@medusajs/medusa": "^1.20.1",
+    "@medusajs/types": "^1.11.11",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "medusa-test-utils": "^1.1.40",

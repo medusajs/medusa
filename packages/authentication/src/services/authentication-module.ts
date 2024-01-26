@@ -368,20 +368,33 @@ export default class AuthenticationModuleService<
     return containerProvider
   }
 
-  @InjectTransactionManager("baseRepository_")
   async authenticate(
     provider: string,
-    authenticationData: Record<string, unknown>,
-    @MedusaContext() sharedContext: Context = {}
+    authenticationData: Record<string, unknown>
   ): Promise<AuthenticationResponse> {
-    let registeredProvider
-
     try {
       await this.retrieveAuthProvider(provider, {})
 
-      registeredProvider = this.getRegisteredAuthenticationProvider(provider)
+      const registeredProvider =
+        this.getRegisteredAuthenticationProvider(provider)
 
       return await registeredProvider.authenticate(authenticationData)
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  }
+
+  async validateCallback(
+    provider: string,
+    authenticationData: Record<string, unknown>
+  ): Promise<AuthenticationResponse> {
+    try {
+      await this.retrieveAuthProvider(provider, {})
+
+      const registeredProvider =
+        this.getRegisteredAuthenticationProvider(provider)
+
+      return await registeredProvider.validateCallback(authenticationData)
     } catch (error) {
       return { success: false, error: error.message }
     }
