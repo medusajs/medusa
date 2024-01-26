@@ -1,9 +1,11 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
-import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
-import { EntitySchema } from "@mikro-orm/core"
 import * as AuthenticationModels from "@models"
+
+import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
+import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
+
 import { EOL } from "os"
+import { EntitySchema } from "@mikro-orm/core"
+import { Modules } from "@medusajs/modules-sdk"
 import { resolve } from "path"
 
 export async function run({
@@ -32,7 +34,7 @@ export async function run({
   })
 
   const dbData = ModulesSdkUtils.loadDatabaseConfig(
-    Modules.AUTHENTICATION,
+    Modules.AUTH,
     options
   )!
   const entities = Object.values(

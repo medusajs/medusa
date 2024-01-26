@@ -1,7 +1,7 @@
 {
-  "name": "@medusajs/authentication",
+  "name": "@medusajs/auth",
   "version": "0.0.2",
-  "description": "Medusa Authentication module",
+  "description": "Medusa Auth module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -11,12 +11,12 @@
     "node": ">=16"
   },
   "bin": {
-    "medusa-authentication-seed": "dist/scripts/bin/run-seed.js"
+    "medusa-auth-seed": "dist/scripts/bin/run-seed.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
-    "directory": "packages/authentication"
+    "directory": "packages/auth"
   },
   "publishConfig": {
     "access": "public"

@@ -1,7 +1,7 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { ModuleJoinerConfig } from "@medusajs/types"
-import { MapToConfig } from "@medusajs/utils"
 import { AuthUser } from "@models"
+import { MapToConfig } from "@medusajs/utils"
+import { ModuleJoinerConfig } from "@medusajs/types"
+import { Modules } from "@medusajs/modules-sdk"
 
 export const LinkableKeys = {
   auth_user_id: AuthUser.name,
@@ -19,7 +19,7 @@ Object.entries(LinkableKeys).forEach(([key, value]) => {
 export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
 
 export const joinerConfig: ModuleJoinerConfig = {
-  serviceName: Modules.AUTHENTICATION,
+  serviceName: Modules.AUTH,
   primaryKeys: ["id"],
   linkableKeys: LinkableKeys,
   alias: {

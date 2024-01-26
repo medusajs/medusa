@@ -18,8 +18,8 @@ export const initialize = async (
   injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<IAuthenticationModuleService> => {
   const loaded = await MedusaModule.bootstrap<IAuthenticationModuleService>({
-    moduleKey: Modules.AUTHENTICATION,
-    defaultPath: MODULE_PACKAGE_NAMES[Modules.AUTHENTICATION],
+    moduleKey: Modules.AUTH,
+    defaultPath: MODULE_PACKAGE_NAMES[Modules.AUTH],
     declaration: options as
       | InternalModuleDeclaration
       | ExternalModuleDeclaration, // TODO: Add provider configuration
@@ -27,5 +27,5 @@ export const initialize = async (
     moduleExports: moduleDefinition,
   })
 
-  return loaded[Modules.AUTHENTICATION]
+  return loaded[Modules.AUTH]
 }

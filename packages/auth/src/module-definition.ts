@@ -1,14 +1,15 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { ModuleExports } from "@medusajs/types"
-import { ModulesSdkUtils } from "@medusajs/utils"
 import * as Models from "@models"
+
 import { AuthenticationModuleService } from "@services"
+import { ModuleExports } from "@medusajs/types"
+import { Modules } from "@medusajs/modules-sdk"
+import { ModulesSdkUtils } from "@medusajs/utils"
 import loadConnection from "./loaders/connection"
 import loadContainer from "./loaders/container"
 import loadProviders from "./loaders/providers"
 
 const migrationScriptOptions = {
-  moduleName: Modules.AUTHENTICATION,
+  moduleName: Modules.AUTH,
   models: Models,
   pathToMigrations: __dirname + "/migrations",
 }

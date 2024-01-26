@@ -7889,9 +7889,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/authentication@workspace:packages/authentication":
+"@medusajs/auth@workspace:packages/auth":
   version: 0.0.0-use.local
-  resolution: "@medusajs/authentication@workspace:packages/authentication"
+  resolution: "@medusajs/auth@workspace:packages/auth"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.7
     "@medusajs/types": ^1.11.11
@@ -7915,7 +7915,7 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   bin:
-    medusa-authentication-seed: dist/scripts/bin/run-seed.js
+    medusa-auth-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 

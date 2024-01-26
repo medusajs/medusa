@@ -1,12 +1,14 @@
+import * as AuthenticationModules from "../models"
+
 import {
   InternalModuleDeclaration,
   LoaderOptions,
   Modules,
 } from "@medusajs/modules-sdk"
+
+import { EntitySchema } from "@mikro-orm/core"
 import { ModulesSdkTypes } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
-import { EntitySchema } from "@mikro-orm/core"
-import * as AuthenticationModules from "../models"
 
 export default async (
   {
@@ -25,7 +27,7 @@ export default async (
   const pathToMigrations = __dirname + "/../migrations"
 
   await ModulesSdkUtils.mikroOrmConnectionLoader({
-    moduleName: Modules.AUTHENTICATION,
+    moduleName: Modules.AUTH,
     entities,
     container,
     options,
