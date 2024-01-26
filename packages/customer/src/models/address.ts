@@ -25,9 +25,9 @@ export default class Address {
 
   @ManyToOne(() => Customer, {
     fieldName: "customer_id",
-    nullable: true,
+    index: "IDX_customer_address_customer_id",
   })
-  customer?: Customer
+  customer: Customer
 
   @Property({ columnType: "text", nullable: true })
   company: string | null = null

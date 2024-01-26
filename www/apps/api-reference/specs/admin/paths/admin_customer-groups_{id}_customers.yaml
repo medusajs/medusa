@@ -47,7 +47,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_customer-groups_{id}_customers/getundefined
+        $ref: ../code_samples/tsx/admin_customer-groups_{id}_customers/get.tsx
     - lang: Shell
       label: cURL
       source:
