@@ -4,9 +4,11 @@ import {
 } from "@medusajs/utils"
 import { AuthProviderService, AuthUserService } from "@services"
 import jwt, { JwtPayload } from "jsonwebtoken"
-
-import { AuthProvider } from "@models"
-import { AuthenticationInput, AuthenticationResponse } from "@medusajs/types"
+import {
+  AuthenticationInput,
+  AuthenticationResponse,
+  AuthProviderScope,
+} from "@medusajs/types"
 import { AuthorizationCode } from "simple-oauth2"
 import url from "url"
 
@@ -133,7 +135,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
     }
   }
 
-  private async validateConfig(config: Partial<ProviderConfig>) {
+  private validateConfig(config: AuthProviderScope) {
     if (!config.clientID) {
       throw new Error("Google clientID is required")
     }
@@ -159,12 +161,13 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
   private async getProviderConfig(
     req: AuthenticationInput
   ): Promise<ProviderConfig> {
-    const { config } = (await this.authProviderService_.retrieve(
-      GoogleProvider.PROVIDER
-    )) as AuthProvider & { config: ProviderConfig }
+    await this.authProviderService_.retrieve(GoogleProvider.PROVIDER)
 
-    this.validateConfig(config || {})
+    const scopeConfig = this.scopes_[req.scope]
 
+    this.validateConfig(scopeConfig || {})
+
+    const config = scopeConfig as unknown as ProviderConfig
     const { callbackURL } = config
 
     const parsedCallbackUrl = !url.parse(callbackURL).protocol
