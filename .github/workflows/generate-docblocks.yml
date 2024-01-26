@@ -1,0 +1,51 @@
+on:
+  pull_request:
+    branches:
+      - changeset-release/develop
+    types:
+      - closed
+  workflow_dispatch:
+
+jobs:
+  generate:
+    if: github.event.pull_request.merged == true
+    name: Generated TSDoc PRs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Install docs-util Dependencies
+        run: yarn
+        working-directory: docs-util
+
+      - name: Build packages
+        run: yarn build
+        working-directory: docs-util
+
+      - name: Run docblock generator
+        run: "yarn start run:release"
+        working-directory: docs-util/packages/docblock-generator
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_OWNER: medusajs
+          GIT_REPO: medusa
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          title: "Generated TSDocs"
+          body: "This PR holds all generated TSDocs for the upcoming release."
+          branch: "chore/generate-tsdocs"
+          team-reviewers: "@medusajs/docs"
+          add-paths: packages/**
