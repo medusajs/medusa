@@ -29,7 +29,7 @@ export default async ({
     AuthModuleProviders
 >): Promise<void> => {
   const providerMap = new Map(
-    options?.providers.map((provider) => [provider.name, provider.scopes])
+    options?.providers?.map((provider) => [provider.name, provider.scopes]) ?? []
   )
   // if(options?.providers?.length) {
   // TODO: implement plugin provider registration
