@@ -513,6 +513,15 @@ export const currencies: Record<string, Currency> = {
     code: "KES",
     name_plural: "Kenyan shillings",
   },
+  KGS:{
+    symbol: "KGS",
+    name: "Kyrgystani Som",
+    symbol_native: "сом",
+    decimal_digits: 2,
+    rounding: 0,
+    code: "KGS",
+    name_plural: "Kyrgystani soms",
+  },
   KHR: {
     symbol: "KHR",
     name: "Cambodian Riel",
