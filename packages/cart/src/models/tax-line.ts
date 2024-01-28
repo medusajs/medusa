@@ -11,7 +11,10 @@ export default abstract class TaxLine {
   @Property({ columnType: "text", nullable: true })
   description?: string | null
 
-  @Property({ columnType: "text", nullable: true })
+  @Property({
+    columnType: "text",
+    nullable: true,
+  })
   tax_rate_id?: string | null
 
   @Property({ columnType: "text" })

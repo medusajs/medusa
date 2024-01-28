@@ -89,7 +89,7 @@ export class CartModuleSetup20240122122952 extends Migration {
     ALTER TABLE "cart" ADD CONSTRAINT "cart_billing_address_id_foreign" FOREIGN KEY ("billing_address_id") REFERENCES "cart_address" ("id") ON UPDATE CASCADE ON DELETE SET NULL;
     
     CREATE INDEX IF NOT EXISTS "IDX_line_item_cart_id" ON "cart_line_item" ("cart_id");
-    
+    CREATE INDEX IF NOT EXISTS "IDX_line_item_product_id" ON "cart_line_item" ("product_id");
     CREATE INDEX IF NOT EXISTS "IDX_line_item_variant_id" ON "cart_line_item" ("variant_id");
     
     
@@ -108,6 +108,7 @@ export class CartModuleSetup20240122122952 extends Migration {
     );
     
     CREATE INDEX IF NOT EXISTS "IDX_adjustment_item_id" ON "cart_line_item_adjustment" ("item_id");
+    CREATE INDEX IF NOT EXISTS "IDX_line_item_adjustment_promotion_id" ON "cart_line_item_adjustment" ("promotion_id");
     
     CREATE TABLE IF NOT EXISTS "cart_line_item_tax_line" (
       "id" TEXT NOT NULL,
@@ -123,6 +124,7 @@ export class CartModuleSetup20240122122952 extends Migration {
   );
     
     CREATE INDEX IF NOT EXISTS "IDX_tax_line_item_id" ON "cart_line_item_tax_line" ("item_id");
+    CREATE INDEX IF NOT EXISTS "IDX_line_item_tax_line_tax_rate_id" ON "cart_line_item_tax_line" ("tax_rate_id");
     
     CREATE TABLE IF NOT EXISTS "cart_shipping_method" (
       "id" TEXT NOT NULL,
@@ -141,6 +143,7 @@ export class CartModuleSetup20240122122952 extends Migration {
   );
     
     CREATE INDEX IF NOT EXISTS "IDX_shipping_method_cart_id" ON "cart_shipping_method" ("cart_id");
+    CREATE INDEX IF NOT EXISTS "IDX_shipping_method_option_id" ON "cart_shipping_method" ("shipping_option_id");
 
     CREATE TABLE IF NOT EXISTS "cart_shipping_method_adjustment" (
       "id" TEXT NOT NULL,
@@ -156,6 +159,7 @@ export class CartModuleSetup20240122122952 extends Migration {
     );
 
     CREATE INDEX IF NOT EXISTS "IDX_adjustment_shipping_method_id" ON "cart_shipping_method_adjustment" ("shipping_method_id");
+    CREATE INDEX IF NOT EXISTS "IDX_shipping_method_adjustment_promotion_id" ON "cart_shipping_method_adjustment" ("promotion_id");
 
     CREATE TABLE IF NOT EXISTS "cart_shipping_method_tax_line" (
       "id" TEXT NOT NULL,
@@ -171,6 +175,7 @@ export class CartModuleSetup20240122122952 extends Migration {
     );
 
     CREATE INDEX IF NOT EXISTS "IDX_tax_line_shipping_method_id" ON "cart_shipping_method_tax_line" ("shipping_method_id");
+    CREATE INDEX IF NOT EXISTS "IDX_shipping_method_tax_line_tax_rate_id" ON "cart_shipping_method_tax_line" ("tax_rate_id");
 
     ALTER TABLE "cart_line_item" ADD CONSTRAINT "cart_line_item_cart_id_foreign" FOREIGN KEY ("cart_id") REFERENCES "cart" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
     ALTER TABLE "cart_line_item_adjustment" ADD CONSTRAINT "cart_line_item_adjustment_item_id_foreign" FOREIGN KEY ("item_id") REFERENCES "cart_line_item" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
