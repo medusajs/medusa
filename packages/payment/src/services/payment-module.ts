@@ -89,7 +89,7 @@ export default class PaymentModuleService implements IPaymentModuleService {
       sharedContext
     )
 
-    return await this.baseRepository_.serialize<PaymentCollectionDTO[]>(
+    return await this.baseRepository_.serialize(
       Array.isArray(data) ? collections : collections[0],
       {
         populate: true,
@@ -682,15 +682,36 @@ export default class PaymentModuleService implements IPaymentModuleService {
     )
   }
 
-  /**
-   * TODO
-   */
-
   completePaymentCollection(
     paymentCollectionId: string,
-    sharedContext?: Context | undefined
-  ): Promise<PaymentCollectionDTO> {
-    throw new Error("Method not implemented.")
+    sharedContext?: Context
+  ): Promise<PaymentCollectionDTO>
+  completePaymentCollection(
+    paymentCollectionId: string[],
+    sharedContext?: Context
+  ): Promise<PaymentCollectionDTO[]>
+
+  @InjectTransactionManager("baseRepository_")
+  async completePaymentCollection(
+    paymentCollectionId: string | string[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentCollectionDTO | PaymentCollectionDTO[]> {
+    const input = Array.isArray(paymentCollectionId)
+      ? paymentCollectionId.map((id) => ({
+          id,
+          completed_at: new Date(),
+        }))
+      : [{ id: paymentCollectionId, completed_at: new Date() }]
+
+    const updated = await this.paymentCollectionService_.update(
+      input,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize(
+      Array.isArray(paymentCollectionId) ? updated : updated[0],
+      { populate: true }
+    )
   }
 
   cancelPayment(paymentId: string, sharedContext?: Context): Promise<PaymentDTO>
@@ -699,10 +720,28 @@ export default class PaymentModuleService implements IPaymentModuleService {
     sharedContext?: Context
   ): Promise<PaymentDTO[]>
 
-  cancelPayment(
+  @InjectTransactionManager("baseRepository_")
+  async cancelPayment(
     paymentId: string | string[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext?: Context
   ): Promise<PaymentDTO | PaymentDTO[]> {
-    throw new Error("Method not implemented.")
+    const input = Array.isArray(paymentId) ? paymentId : [paymentId]
+
+    // TODO: what if there are existing captures/refunds
+
+    // TODO: cancel with the provider
+
+    const updated = await this.paymentService_.update(
+      input.map((id) => ({
+        id,
+        canceled_at: new Date(),
+      })),
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize(
+      Array.isArray(paymentId) ? updated : updated[0],
+      { populate: true }
+    )
   }
 }

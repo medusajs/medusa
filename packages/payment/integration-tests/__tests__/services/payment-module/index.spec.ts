@@ -17,6 +17,101 @@ jest.setTimeout(30000)
 describe("Payment Module Service", () => {
   let service: IPaymentModuleService
 
+  describe("Payment Module Flow", () => {
+    let repositoryManager: SqlEntityManager
+    let shutdownFunc: () => Promise<void>
+
+    beforeAll(async () => {
+      const initModulesConfig = getInitModuleConfig()
+
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+      service = medusaApp.modules[Modules.PAYMENT]
+
+      shutdownFunc = shutdown
+    })
+
+    afterAll(async () => {
+      await shutdownFunc()
+    })
+
+    beforeEach(async () => {
+      await MikroOrmWrapper.setupDatabase()
+      repositoryManager = await MikroOrmWrapper.forkManager()
+
+      service = await initialize({
+        database: {
+          clientUrl: DB_URL,
+          schema: process.env.MEDUSA_PAYMNET_DB_SCHEMA,
+        },
+      })
+
+      await createPaymentCollections(repositoryManager)
+      await createPaymentSessions(repositoryManager)
+      await createPayments(repositoryManager)
+    })
+
+    afterEach(async () => {
+      await MikroOrmWrapper.clearDatabase()
+    })
+
+    it("complete payment flow successfully", async () => {
+      const paymentCollection = await service.createPaymentCollection({
+        currency_code: "USD",
+        amount: 200,
+        region_id: "reg_123",
+      })
+
+      const paymentSession = await service.createPaymentSession(
+        paymentCollection.id,
+        { amount: 200, provider_id: "manual", currency_code: "USD" }
+      )
+
+      await service.authorizePaymentCollection(paymentCollection.id, [
+        paymentSession.id,
+      ])
+
+      await service.completePaymentCollection(paymentCollection.id)
+
+      const finalCollection = await service.retrievePaymentCollection(
+        paymentCollection.id,
+        { relations: ["payment_sessions", "payments"] }
+      )
+
+      expect(finalCollection).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          currency_code: "USD",
+          amount: 200,
+          authorized_amount: 200,
+          refunded_amount: null,
+          region_id: "reg_123",
+          deleted_at: null,
+          completed_at: expect.any(Date),
+          status: "authorized",
+          payment_sessions: [
+            expect.objectContaining({
+              id: expect.any(String),
+              currency_code: "USD",
+              amount: 200,
+              provider_id: "manual",
+              status: "pending",
+              authorized_at: null,
+            }),
+          ],
+          payments: [
+            expect.objectContaining({
+              id: expect.any(String),
+              amount: 200,
+              currency_code: "USD",
+              provider_id: "manual",
+            }),
+          ],
+        })
+      )
+    })
+  })
+
   describe("PaymentCollection", () => {
     let repositoryManager: SqlEntityManager
     let shutdownFunc: () => Promise<void>
@@ -239,6 +334,23 @@ describe("Payment Module Service", () => {
         )
       })
     })
+
+    describe("complete", () => {
+      it("should complete a Payment Collection", async () => {
+        await service.completePaymentCollection("pay-col-id-1")
+
+        const collection = await service.retrievePaymentCollection(
+          "pay-col-id-1"
+        )
+
+        expect(collection).toEqual(
+          expect.objectContaining({
+            id: "pay-col-id-1",
+            completed_at: expect.any(Date),
+          })
+        )
+      })
+    })
   })
 
   describe("PaymentSession", () => {
@@ -388,13 +500,13 @@ describe("Payment Module Service", () => {
 
     describe("create", () => {
       it("should create a payment successfully", async () => {
-        let paymentCollection = await service.createPaymentCollection({
+        const paymentCollection = await service.createPaymentCollection({
           currency_code: "usd",
           amount: 200,
           region_id: "reg",
         })
 
-        paymentCollection = await service.createPaymentSession(
+        const session = await service.createPaymentSession(
           paymentCollection.id,
           {
             amount: 200,
@@ -409,7 +521,7 @@ describe("Payment Module Service", () => {
           provider_id: "manual",
           currency_code: "usd",
           payment_collection_id: paymentCollection.id,
-          payment_session_id: paymentCollection.payment_sessions![0].id,
+          payment_session_id: session.id,
         })
 
         expect(createdPayment).toEqual(
@@ -430,7 +542,7 @@ describe("Payment Module Service", () => {
             currency_code: "usd",
             provider_id: "manual",
             payment_collection: paymentCollection.id,
-            payment_session: paymentCollection.payment_sessions![0].id,
+            payment_session: session.id,
           })
         )
       })

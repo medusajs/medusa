@@ -17,7 +17,7 @@ export interface UpdatePaymentCollectionDTO
 
   authorized_amount?: number
   refunded_amount?: number
-  completed_at?: number
+  completed_at?: Date
   status?: PaymentCollectionStatus
 }
 
@@ -48,6 +48,7 @@ export interface UpdatePaymentDTO {
   order_edit_id?: string
   customer_id?: string
 
+  canceled_at?: Date
   captured_at?: Date
 
   data?: Record<string, unknown>

@@ -77,6 +77,10 @@ export interface IPaymentModuleService extends IModuleService {
     paymentCollectionId: string,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
+  completePaymentCollection(
+    paymentCollectionId: string[],
+    sharedContext?: Context
+  ): Promise<PaymentCollectionDTO[]>
 
   /* ********** PAYMENT ********** */
 
