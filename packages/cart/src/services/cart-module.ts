@@ -88,9 +88,11 @@ export default class CartModuleService implements ICartModuleService {
     config: FindConfig<CartTypes.CartDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartDTO> {
+    // TODO: Will be reworked. This is here for demoing purposes
     return this.retrieveWithTotals(id, config, sharedContext)
   }
 
+  // TODO: Will be reworked. This is here for demoing purposes
   @InjectManager("baseRepository_")
   async retrieveWithTotals(
     id: string,

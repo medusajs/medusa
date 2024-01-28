@@ -103,12 +103,12 @@ export default class LineItem {
   is_tax_inclusive = false
 
   @Property({ columnType: "numeric", nullable: true })
-  compare_at_unit_price?: BigNumber | number
+  compare_at_unit_price?: BigNumber | number | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  raw_compare_at_unit_price?: BigNumberRawValue
+  raw_compare_at_unit_price?: BigNumberRawValue | null = null
 
-  @Property({ columnType: "numeric", serializer: Number })
+  @Property({ columnType: "numeric", serializer: (val) => new BigNumber(val)  })
   unit_price: BigNumber | number
 
   @Property({ columnType: "jsonb" })
@@ -160,6 +160,10 @@ export default class LineItem {
       const asBigNumber = new BigNumber(this.unit_price as number)
 
       this.raw_unit_price = asBigNumber.raw as BigNumberRawValue
+    }
+
+    if (this.raw_unit_price && !("value" in this.raw_unit_price)) {
+      throw Error("Property `value` is required in `raw_unit_price`")
     }
   }
 }
