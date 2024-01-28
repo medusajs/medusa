@@ -145,7 +145,7 @@ export default class LineItem {
 
     const asBigNumber = new BigNumber(this.unit_price as number)
 
-    this.unit_price = asBigNumber.number
+    this.unit_price = asBigNumber.numeric
 
     if (!this.raw_unit_price) {
       this.raw_unit_price = asBigNumber.raw as BigNumberRawValue
