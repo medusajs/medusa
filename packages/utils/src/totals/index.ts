@@ -1,5 +1,5 @@
 import { CartDTO, CartShippingMethodDTO } from "@medusajs/types"
-import { BigNumber } from "./bignum"
+import { BigNumber } from "./big-number"
 
 type CalculateLineItemInput = {
   id: string

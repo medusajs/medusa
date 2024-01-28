@@ -1,5 +1,5 @@
 import { BigNumber as BN } from "bignumber.js"
-import { BigNumber } from "../bignum"
+import { BigNumber } from "../big-number"
 
 describe("BigNumber", function () {
   describe("constructor", function () {
@@ -37,9 +37,15 @@ describe("BigNumber", function () {
       const bn1 = new BigNumber("0.1")
       const bn2 = new BigNumber("0.2")
 
-      const result = BN(bn1.raw).plus(BN(bn2.raw))
-      // @ts-ignore
-      expect(result.toNumber).toBe(0.3)
+      const lossyResult = 0.1 + 0.2
+
+      expect(lossyResult).not.toBe(0.3)
+
+      const rawVal1 = bn1.raw?.value as string
+      const rawVal2 = bn2.raw?.value as string
+
+      const result = BN(rawVal1).plus(BN(rawVal2))
+      expect(result.toNumber()).toBe(0.3)
     })
   })
 })

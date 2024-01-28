@@ -9,19 +9,19 @@ export type BigNumberRawValue = {
 export class BigNumber {
   static DEFAULT_PRECISION = 20
 
-  private number_: number
+  private numeric_: number
   private raw_?: BigNumberRawValue
 
   constructor(rawPrice: BigNumberRawValue | number | string | BigNumberJS) {
     if (BigNumberJS.isBigNumber(rawPrice)) {
-      this.number_ = rawPrice.toNumber()
+      this.numeric_ = rawPrice.toNumber()
       this.raw_ = {
         value: rawPrice.toPrecision(BigNumber.DEFAULT_PRECISION),
       }
     } else if (isString(rawPrice)) {
       const bigNum = new BigNumberJS(rawPrice)
 
-      this.number_ = bigNum.toNumber()
+      this.numeric_ = bigNum.toNumber()
       this.raw_ = this.raw_ = {
         value: bigNum.toPrecision(BigNumber.DEFAULT_PRECISION),
       }
@@ -32,13 +32,13 @@ export class BigNumber {
         )
       }
 
-      this.number_ = BigNumberJS(rawPrice.value).toNumber()
+      this.numeric_ = BigNumberJS(rawPrice.value).toNumber()
 
       this.raw_ = {
         ...rawPrice,
       }
     } else if (typeof rawPrice === `number` && !Number.isNaN(rawPrice)) {
-      this.number_ = rawPrice as number
+      this.numeric_ = rawPrice as number
 
       this.raw_ = {
         value: BigNumberJS(rawPrice as number).toString(),
@@ -50,18 +50,18 @@ export class BigNumber {
     }
   }
 
-  get number(): number {
+  get numeric(): number {
     let raw = this.raw_ as BigNumberRawValue
     if (raw) {
       return new BigNumberJS(raw.value).toNumber()
     } else {
-      return this.number_
+      return this.numeric_
     }
   }
 
-  set number(value: BigNumberRawValue | number | string | BigNumberJS) {
+  set numeric(value: BigNumberRawValue | number | string | BigNumberJS) {
     const newValue = new BigNumber(value)
-    this.number_ = newValue.number_
+    this.numeric_ = newValue.numeric_
     this.raw_ = newValue.raw_
   }
 
@@ -71,19 +71,19 @@ export class BigNumber {
 
   set raw(rawValue: BigNumberRawValue | number | string | BigNumberJS) {
     const newValue = new BigNumber(rawValue)
-    this.number_ = newValue.number_
+    this.numeric_ = newValue.numeric_
     this.raw_ = newValue.raw_
   }
 
   toJSON() {
     return this.raw_
       ? new BigNumberJS(this.raw_.value).toNumber()
-      : this.number_
+      : this.numeric_
   }
 
   valueOf() {
     return this.raw_
       ? new BigNumberJS(this.raw_.value).toNumber()
-      : this.number_
+      : this.numeric_
   }
 }

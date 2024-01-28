@@ -103,9 +103,12 @@ export default class LineItem {
   is_tax_inclusive = false
 
   @Property({ columnType: "numeric", nullable: true })
-  compare_at_unit_price?: number
+  compare_at_unit_price?: BigNumber | number
 
-  @Property({ columnType: "jsonb" })
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_compare_at_unit_price?: BigNumberRawValue
+
+  @Property({ columnType: "numeric", serializer: Number })
   unit_price: BigNumber | number
 
   @Property({ columnType: "jsonb" })
@@ -140,10 +143,12 @@ export default class LineItem {
   onCreate() {
     this.id = generateEntityId(this.id, "cali")
 
-    this.unit_price = new BigNumber(this.unit_price as number)
+    const asBigNumber = new BigNumber(this.unit_price as number)
+
+    this.unit_price = asBigNumber.number
 
     if (!this.raw_unit_price) {
-      this.raw_unit_price = this.unit_price.raw as BigNumberRawValue
+      this.raw_unit_price = asBigNumber.raw as BigNumberRawValue
     }
   }
 
@@ -152,8 +157,9 @@ export default class LineItem {
     this.id = generateEntityId(this.id, "cali")
 
     if (!this.raw_unit_price) {
-      this.raw_unit_price = (this.unit_price as BigNumber)
-        .raw as BigNumberRawValue
+      const asBigNumber = new BigNumber(this.unit_price as number)
+
+      this.raw_unit_price = asBigNumber.raw as BigNumberRawValue
     }
   }
 }

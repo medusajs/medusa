@@ -38,7 +38,8 @@ describe("Cart Module Service", () => {
       )
     })
 
-    it.only("should retrieve a cart with totals successfully", async () => {
+    it("should create a line item with prices in different shapes", async () => {
+      // TODO: Move this test to a more appropriate suite
       const [createdCart] = await service.create([
         {
           currency_code: "eur",
@@ -46,16 +47,19 @@ describe("Cart Module Service", () => {
             {
               title: "test",
               quantity: 1,
+              // proof of backward compatibility
               unit_price: 100,
             },
             {
               title: "test",
               quantity: 1,
+              // raw price creation
               unit_price: { value: "1234.1234" },
             },
             {
               title: "test",
               quantity: 1,
+              // string price creation
               unit_price: "200",
             },
           ],
