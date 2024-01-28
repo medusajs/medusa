@@ -1,6 +1,6 @@
 import { CreatePromotionDTO, PromotionDTO } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
-import { createPromotionsStep } from "../handlers"
+import { createPromotionsStep } from "../steps"
 
 type WorkflowInput = { promotionsData: CreatePromotionDTO[] }
 
