@@ -32,7 +32,7 @@ export default class Cart {
   @Property({
     columnType: "text",
     nullable: true,
-    index: "IDX_cart_customer_id",
+    index: "IDX_cart_region_id",
   })
   region_id?: string | null
 
@@ -46,7 +46,7 @@ export default class Cart {
   @Property({
     columnType: "text",
     nullable: true,
-    index: "IDX_cart_customer_id",
+    index: "IDX_cart_sales_channel_id",
   })
   sales_channel_id?: string | null
 

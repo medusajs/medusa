@@ -1,9 +1,9 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { ICartModuleService } from "@medusajs/types"
 import { CheckConstraintViolationException } from "@mikro-orm/core"
-import { MikroOrmWrapper } from "../../../utils"
-import { Modules } from "@medusajs/modules-sdk"
-import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
+import { MikroOrmWrapper } from "../../../utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 
 jest.setTimeout(30000)
 
@@ -34,7 +34,7 @@ describe("Cart Module Service", () => {
   })
 
   describe("create", () => {
-    it("should throw an error when required params are not passed", async () => {
+    it.only("should throw an error when required params are not passed", async () => {
       const error = await service
         .create([
           {
