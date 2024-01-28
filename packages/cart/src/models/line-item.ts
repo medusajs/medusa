@@ -2,6 +2,7 @@ import { DAL } from "@medusajs/types"
 import { BigNumber, BigNumberRawValue, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  BeforeUpdate,
   Cascade,
   Collection,
   Entity,
@@ -108,7 +109,7 @@ export default class LineItem {
   @Property({ columnType: "jsonb", nullable: true })
   raw_compare_at_unit_price?: BigNumberRawValue | null = null
 
-  @Property({ columnType: "numeric", serializer: (val) => new BigNumber(val)  })
+  @Property({ columnType: "numeric" })
   unit_price: BigNumber | number
 
   @Property({ columnType: "jsonb" })
@@ -143,7 +144,9 @@ export default class LineItem {
   onCreate() {
     this.id = generateEntityId(this.id, "cali")
 
-    const asBigNumber = new BigNumber(this.unit_price as number)
+    const asBigNumber = new BigNumber(
+      this.unit_price as number | string | BigNumberRawValue
+    )
 
     this.unit_price = asBigNumber.numeric
 
@@ -152,12 +155,24 @@ export default class LineItem {
     }
   }
 
+  @BeforeUpdate()
+  onUpdate() {
+    const asBigNumber = new BigNumber(
+      this.unit_price as number | string | BigNumberRawValue
+    )
+
+    this.unit_price = asBigNumber.numeric
+    this.raw_unit_price = asBigNumber.raw as BigNumberRawValue
+  }
+
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "cali")
 
     if (!this.raw_unit_price) {
-      const asBigNumber = new BigNumber(this.unit_price as number)
+      const asBigNumber = new BigNumber(
+        this.unit_price as number | string | BigNumberRawValue
+      )
 
       this.raw_unit_price = asBigNumber.raw as BigNumberRawValue
     }

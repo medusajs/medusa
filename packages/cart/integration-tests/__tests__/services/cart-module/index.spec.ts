@@ -38,7 +38,7 @@ describe("Cart Module Service", () => {
       )
     })
 
-    it.only("should create a line item with prices in different shapes", async () => {
+    it("should create a line item with prices in different shapes", async () => {
       // TODO: Will be removed. This is here for demoing purposes
       const [createdCart] = await service.create([
         {
@@ -78,20 +78,41 @@ describe("Cart Module Service", () => {
         expect.objectContaining({
           unit_price: 100,
           title: "one",
-        }),
+        })
       )
       expect(JSON.parse(JSON.stringify(itemTwo))).toEqual(
         expect.objectContaining({
           unit_price: 1234.1234,
           title: "two",
-        }),
+        })
       )
       expect(JSON.parse(JSON.stringify(itemThree))).toEqual(
         expect.objectContaining({
           unit_price: 200,
           title: "three",
-        }),
+        })
       )
+    })
+
+    it.only("should do something", async () => {
+      // TODO: Will be removed. This is here for demoing purposes
+      let cart = await service.create({ currency_code: "eur" })
+      
+      const [lineItem] = await service.addLineItems(cart.id, [
+        {
+          title: "three",
+          quantity: 1,
+          unit_price: 200,
+        },
+      ])
+
+      console.log("Before: ", lineItem)
+      const [updated] = await service.updateLineItems({ id: lineItem.id }, { unit_price: 500 })
+      console.log("After: ", updated)
+
+      // const cart = await service.retrieve(createdCart.id, {
+      //   relations: ["items", "items.adjustments"],
+      // })
     })
 
     it("should create a cart successfully", async () => {
