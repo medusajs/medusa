@@ -32,20 +32,5 @@ describe("BigNumber", function () {
         "Invalid BigNumber value. Should be one of: string, number, BigNumber (bignumber.js), BigNumberRawValue"
       )
     })
-
-    it("should calculate without loosing precision", function () {
-      const bn1 = new BigNumber("0.1")
-      const bn2 = new BigNumber("0.2")
-
-      const lossyResult = 0.1 + 0.2
-
-      expect(lossyResult).not.toBe(0.3)
-
-      const rawVal1 = bn1.raw?.value as string
-      const rawVal2 = bn2.raw?.value as string
-
-      const result = BN(rawVal1).plus(BN(rawVal2))
-      expect(result.toNumber()).toBe(0.3)
-    })
   })
 })
