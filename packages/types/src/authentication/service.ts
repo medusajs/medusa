@@ -1,7 +1,7 @@
-import { IModuleService } from "../modules-sdk"
 import {
   AuthProviderDTO,
   AuthUserDTO,
+  AuthenticationResponse,
   CreateAuthProviderDTO,
   CreateAuthUserDTO,
   FilterableAuthProviderProps,
@@ -9,12 +9,18 @@ import {
   UpdateAuthProviderDTO,
   UpdateAuthUserDTO,
 } from "./common"
-import { FindConfig } from "../common"
+
 import { Context } from "../shared-context"
-import { AuthenticationResponse } from "./provider"
+import { FindConfig } from "../common"
+import { IModuleService } from "../modules-sdk"
 
 export interface IAuthenticationModuleService extends IModuleService {
   authenticate(
+    provider: string,
+    providerData: Record<string, unknown>
+  ): Promise<AuthenticationResponse>
+
+  validateCallback(
     provider: string,
     providerData: Record<string, unknown>
   ): Promise<AuthenticationResponse>

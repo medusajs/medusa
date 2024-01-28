@@ -28,7 +28,7 @@ post:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_customer-groups_{id}_customers_batch/postundefined
+          ../code_samples/tsx/admin_customer-groups_{id}_customers_batch/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -91,7 +91,7 @@ delete:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_customer-groups_{id}_customers_batch/deleteundefined
+          ../code_samples/tsx/admin_customer-groups_{id}_customers_batch/delete.tsx
     - lang: Shell
       label: cURL
       source:

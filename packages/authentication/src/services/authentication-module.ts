@@ -1,5 +1,4 @@
 import {
-  AbstractAuthenticationModuleProvider,
   AuthenticationResponse,
   AuthenticationTypes,
   Context,
@@ -16,6 +15,7 @@ import { joinerConfig } from "../joiner-config"
 import { AuthProviderService, AuthUserService } from "@services"
 
 import {
+  AbstractAuthenticationModuleProvider,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
@@ -158,7 +158,7 @@ export default class AuthenticationModuleService<
   protected async createAuthProviders_(
     data: any[],
     @MedusaContext() sharedContext: Context
-  ): Promise<AuthenticationTypes.AuthProviderDTO[]> {
+  ): Promise<TAuthProvider[]> {
     return await this.authProviderService_.create(data, sharedContext)
   }
 
@@ -196,7 +196,7 @@ export default class AuthenticationModuleService<
   async updateAuthProvider_(
     data: AuthenticationTypes.UpdateAuthProviderDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthProviderDTO[]> {
+  ): Promise<TAuthProvider[]> {
     return await this.authProviderService_.update(data, sharedContext)
   }
 
@@ -368,27 +368,39 @@ export default class AuthenticationModuleService<
     return containerProvider
   }
 
-  @InjectTransactionManager("baseRepository_")
   async authenticate(
     provider: string,
-    authenticationData: Record<string, unknown>,
-    @MedusaContext() sharedContext: Context = {}
+    authenticationData: Record<string, unknown>
   ): Promise<AuthenticationResponse> {
-    let registeredProvider
-
     try {
       await this.retrieveAuthProvider(provider, {})
 
-      registeredProvider = this.getRegisteredAuthenticationProvider(provider)
-      
+      const registeredProvider =
+        this.getRegisteredAuthenticationProvider(provider)
+
       return await registeredProvider.authenticate(authenticationData)
     } catch (error) {
       return { success: false, error: error.message }
     }
   }
 
+  async validateCallback(
+    provider: string,
+    authenticationData: Record<string, unknown>
+  ): Promise<AuthenticationResponse> {
+    try {
+      await this.retrieveAuthProvider(provider, {})
 
-  private async createProvidersOnLoad() { 
+      const registeredProvider =
+        this.getRegisteredAuthenticationProvider(provider)
+
+      return await registeredProvider.validateCallback(authenticationData)
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  }
+
+  private async createProvidersOnLoad() {
     const providersToLoad = this.__container__["auth_providers"]
 
     const providers = await this.authProviderService_.list({

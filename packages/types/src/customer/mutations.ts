@@ -1,3 +1,40 @@
+export interface CreateCustomerAddressDTO {
+  address_name?: string
+  is_default_shipping?: boolean
+  is_default_billing?: boolean
+  customer_id: string
+  company?: string
+  first_name?: string
+  last_name?: string
+  address_1?: string
+  address_2?: string
+  city?: string
+  country_code?: string
+  province?: string
+  postal_code?: string
+  phone?: string
+  metadata?: Record<string, unknown>
+}
+
+export interface UpdateCustomerAddressDTO {
+  id?: string
+  address_name?: string
+  is_default_shipping?: boolean
+  is_default_billing?: boolean
+  customer_id?: string
+  company?: string
+  first_name?: string
+  last_name?: string
+  address_1?: string
+  address_2?: string
+  city?: string
+  country_code?: string
+  province?: string
+  postal_code?: string
+  phone?: string
+  metadata?: Record<string, unknown>
+}
+
 export interface CreateCustomerDTO {
   company_name?: string
   first_name?: string
@@ -5,6 +42,7 @@ export interface CreateCustomerDTO {
   email?: string
   phone?: string
   created_by?: string
+  addresses?: Omit<CreateCustomerAddressDTO, "customer_id">[]
   metadata?: Record<string, unknown>
 }
 

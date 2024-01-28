@@ -1,6 +1,6 @@
 import { FlagRouter } from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { Currency } from "../models"
@@ -76,7 +76,7 @@ export default class CurrencyService extends TransactionBaseService {
    *   as the second element.
    */
   async listAndCount(
-    selector: Selector<Currency>,
+    selector: Selector<Currency> & { q?: string },
     config: FindConfig<Currency> = {
       skip: 0,
       take: 20,
@@ -86,7 +86,32 @@ export default class CurrencyService extends TransactionBaseService {
       this.currencyRepository_
     )
 
+    let q: string | undefined
+
+    if (selector.q) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = buildQuery(selector, config)
+
+    if (q) {
+      const where = query.where as FindOptionsWhere<Currency>
+
+      delete where.code
+      delete where.name
+
+      query.where = [
+        {
+          ...where,
+          code: ILike(`%${q}%`),
+        },
+        {
+          ...where,
+          name: ILike(`%${q}%`),
+        },
+      ]
+    }
 
     return await productRepo.findAndCount(query)
   }
