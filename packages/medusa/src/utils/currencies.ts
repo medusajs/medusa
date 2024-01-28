@@ -515,12 +515,12 @@ export const currencies: Record<string, Currency> = {
   },
   KGS: {
     symbol: "KGS",
-    name: "Kyrgystani Som",
+    name: "Kyrgyzstani Som",
     symbol_native: "сом",
     decimal_digits: 2,
     rounding: 0,
     code: "KGS",
-    name_plural: "Kyrgystani soms",
+    name_plural: "Kyrgyzstani soms",
   },
   KHR: {
     symbol: "KHR",
