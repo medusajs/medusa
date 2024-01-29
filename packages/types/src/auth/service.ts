@@ -1,8 +1,8 @@
 import {
-  AuthProviderDTO,
-  AuthUserDTO,
   AuthenticationInput,
   AuthenticationResponse,
+  AuthProviderDTO,
+  AuthUserDTO,
   CreateAuthProviderDTO,
   CreateAuthUserDTO,
   FilterableAuthProviderProps,

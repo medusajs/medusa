@@ -2,15 +2,17 @@ const path = require("path")
 
 const {
   startBootstrapApp,
-} = require("../../../environment-helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../environment-helpers/use-db")
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
 const {
   useApi,
   useExpressServer,
-} = require("../../../environment-helpers/use-api")
+} = require("../../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
-const { getContainer } = require("../../../environment-helpers/use-container")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const {
+  getContainer,
+} = require("../../../../environment-helpers/use-container")
 
 jest.setTimeout(30000)
 
@@ -20,7 +22,7 @@ describe("Sales channels", () => {
   let shutdownServer
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
     shutdownServer = await startBootstrapApp({ cwd })
     appContainer = getContainer()
