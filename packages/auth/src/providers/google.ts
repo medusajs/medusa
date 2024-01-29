@@ -79,7 +79,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
 
     const code = req.query?.code ?? req.body?.code
 
-    return await this.validateCallbackToken(code, req.scope, config)
+    return await this.validateCallbackToken(code, req.authScope, config)
   }
 
   // abstractable
@@ -174,7 +174,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
   ): Promise<ProviderConfig> {
     await this.authProviderService_.retrieve(GoogleProvider.PROVIDER)
 
-    const scopeConfig = this.scopes_[req.scope]
+    const scopeConfig = this.scopes_[req.authScope]
 
     const config = this.getConfigFromScope(scopeConfig)
 

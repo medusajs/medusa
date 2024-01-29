@@ -355,7 +355,7 @@ export default class AuthModuleService<
 
   protected getRegisteredAuthenticationProvider(
     provider: string,
-    { scope }: AuthenticationInput
+    { authScope }: AuthenticationInput
   ): AbstractAuthModuleProvider {
     let containerProvider: AbstractAuthModuleProvider
     try {
@@ -367,7 +367,7 @@ export default class AuthModuleService<
       )
     }
 
-    containerProvider.validateScope(scope)
+    containerProvider.validateScope(authScope)
 
     return containerProvider
   }

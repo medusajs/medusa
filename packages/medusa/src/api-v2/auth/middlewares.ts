@@ -1,8 +1,8 @@
+import { IAuthModuleService } from "@medusajs/types"
 import { MiddlewareRoute } from "../../loaders/helpers/routing/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import passport from "passport"
 import passportCustom from "passport-custom"
-import { IAuthModuleService } from "@medusajs/types"
 
 passport.serializeUser((user, done) => {
   done(null, user)
@@ -26,9 +26,10 @@ passport.use(
     }
 
     const service: IAuthModuleService = req.scope.resolve(
-      ModuleRegistrationName.AUTHENTICATION
+      ModuleRegistrationName.AUTH
     )
 
+    req.authScope = scope
     const res = await service.authenticate(auth_provider, req)
 
     const { success, error, authUser, location } = res
@@ -57,8 +58,9 @@ passport.use(
       return (this as passport.Strategy).fail()
     }
 
-    const service = req.scope.resolve(ModuleRegistrationName.AUTHENTICATION)
+    const service = req.scope.resolve(ModuleRegistrationName.AUTH)
 
+    req.authScope = scope
     const res = await service.validateCallback(auth_provider, req)
 
     const { success, error, authUser, location } = res
