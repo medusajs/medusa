@@ -26,7 +26,7 @@ export const ProductSalesChannel: ModuleJoinerConfig = {
       alias: "product",
     },
     {
-      serviceName: "salesChannelService",
+      serviceName: Modules.SALES_CHANNEL,
       isInternalService: true,
       primaryKey: "id",
       foreignKey: "sales_channel_id",
@@ -48,7 +48,7 @@ export const ProductSalesChannel: ModuleJoinerConfig = {
       },
     },
     {
-      serviceName: "salesChannelService",
+      serviceName: Modules.SALES_CHANNEL,
       relationship: {
         serviceName: LINKS.ProductSalesChannel,
         isInternalService: true,

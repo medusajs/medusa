@@ -48,8 +48,16 @@
       "description": "The text's size.",
       "tsType": {
         "name": "union",
-        "raw": "\"base\" \\| \"large\" \\| \"small\" \\| \"xlarge\" \\| \"xsmall\"",
+        "raw": "\"xsmall\" \\| \"small\" \\| \"base\" \\| \"large\" \\| \"xlarge\"",
         "elements": [
+          {
+            "name": "literal",
+            "value": "\"xsmall\""
+          },
+          {
+            "name": "literal",
+            "value": "\"small\""
+          },
           {
             "name": "literal",
             "value": "\"base\""
@@ -60,15 +68,7 @@
           },
           {
             "name": "literal",
-            "value": "\"small\""
-          },
-          {
-            "name": "literal",
             "value": "\"xlarge\""
-          },
-          {
-            "name": "literal",
-            "value": "\"xsmall\""
           }
         ]
       },
