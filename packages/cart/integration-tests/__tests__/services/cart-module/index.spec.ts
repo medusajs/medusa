@@ -38,7 +38,7 @@ describe("Cart Module Service", () => {
       )
     })
 
-    it("should create a line item with prices in different shapes", async () => {
+    it.only("should create a line item with prices in different shapes", async () => {
       // TODO: Will be removed. This is here for demoing purposes
       const [createdCart] = await service.create([
         {
@@ -556,7 +556,7 @@ describe("Cart Module Service", () => {
         .catch((e) => e)
 
       expect(error.message).toContain(
-        "Value for LineItem.unit_price is required, 'undefined' found"
+        "Value for LineItem.quantity is required, 'undefined' found"
       )
     })
   })

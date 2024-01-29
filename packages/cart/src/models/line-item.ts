@@ -145,9 +145,10 @@ export default class LineItem {
   onCreate() {
     this.id = generateEntityId(this.id, "cali")
 
-    const val = (this.raw_unit_price ?? this.unit_price) as BigNumberRawValue
+    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
 
-    this.raw_unit_price = new BigNumber(val).raw!
+    this.unit_price = val.numeric
+    this.raw_unit_price = val.raw!
   }
 
   @BeforeUpdate()
@@ -167,12 +168,9 @@ export default class LineItem {
   onInit() {
     this.id = generateEntityId(this.id, "cali")
 
-    const val = (this.raw_unit_price ?? this.unit_price) as BigNumberRawValue
+    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
 
-    this.raw_unit_price = new BigNumber(val).raw!
-
-    if (this.raw_unit_price && !("value" in this.raw_unit_price)) {
-      throw Error("Property `value` is required in `raw_unit_price`")
-    }
+    this.unit_price = val.numeric
+    this.raw_unit_price = val.raw!
   }
 }
