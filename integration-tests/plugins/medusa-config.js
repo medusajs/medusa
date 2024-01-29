@@ -71,5 +71,10 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/promotion",
     },
+    [Modules.SALES_CHANNEL]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/sales-channel",
+    },
   },
 }
