@@ -17,7 +17,7 @@ import {
   CreateCustomerAddressDTO,
   CreateCustomerDTO,
   CreateCustomerGroupDTO,
-  CustomerUpdateableFields,
+  CustomerUpdatableFields,
   UpdateCustomerAddressDTO,
 } from "./mutations"
 
@@ -36,17 +36,17 @@ export interface ICustomerModuleService extends IModuleService {
 
   update(
     customerId: string,
-    data: CustomerUpdateableFields,
+    data: CustomerUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerDTO>
   update(
     customerIds: string[],
-    data: CustomerUpdateableFields,
+    data: CustomerUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerDTO[]>
   update(
     selector: FilterableCustomerProps,
-    data: CustomerUpdateableFields,
+    data: CustomerUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerDTO[]>
 

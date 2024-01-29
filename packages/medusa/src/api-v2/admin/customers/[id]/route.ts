@@ -4,7 +4,7 @@ import {
 } from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
-  CustomerUpdateableFields,
+  CustomerUpdatableFields,
   ICustomerModuleService,
 } from "@medusajs/types"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
@@ -27,7 +27,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const { result, errors } = await updateCampaigns.run({
     input: {
       selector: { id: req.params.id },
-      update: req.validatedBody as CustomerUpdateableFields,
+      update: req.validatedBody as CustomerUpdatableFields,
     },
     throwOnError: false,
   })

@@ -2,7 +2,7 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FilterableCustomerProps,
   ICustomerModuleService,
-  CustomerUpdateableFields,
+  CustomerUpdatableFields,
 } from "@medusajs/types"
 import {
   getSelectsAndRelationsFromObjectArray,
@@ -12,7 +12,7 @@ import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 type UpdateCustomersStepInput = {
   selector: FilterableCustomerProps
-  update: CustomerUpdateableFields
+  update: CustomerUpdatableFields
 }
 
 export const updateCustomersStepId = "update-customer"

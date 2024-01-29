@@ -56,7 +56,7 @@ export interface UpdateCustomerDTO {
   metadata?: Record<string, unknown> | null
 }
 
-export interface CustomerUpdateableFields {
+export interface CustomerUpdatableFields {
   company_name?: string | null
   first_name?: string | null
   last_name?: string | null

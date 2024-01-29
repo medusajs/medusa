@@ -1,6 +1,6 @@
 import {
   CustomerDTO,
-  CustomerUpdateableFields,
+  CustomerUpdatableFields,
   FilterableCustomerProps,
 } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
@@ -8,7 +8,7 @@ import { updateCustomersStep } from "../steps"
 
 type UpdateCustomersStepInput = {
   selector: FilterableCustomerProps
-  update: CustomerUpdateableFields
+  update: CustomerUpdatableFields
 }
 
 type WorkflowInput = UpdateCustomersStepInput
