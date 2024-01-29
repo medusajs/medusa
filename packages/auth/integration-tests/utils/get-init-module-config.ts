@@ -12,7 +12,7 @@ export function getInitModuleConfig() {
     },
     providers: [
       {
-        name: "usernamePassword",
+        name: "userpass",
         scopes: {
           admin: {},
           store: {},

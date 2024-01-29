@@ -5,7 +5,7 @@ import { AuthUserService } from "@services"
 import Scrypt from "scrypt-kdf"
 
 class UsernamePasswordProvider extends AbstractAuthModuleProvider {
-  public static PROVIDER = "usernamePassword"
+  public static PROVIDER = "userpass"
   public static DISPLAY_NAME = "Username/Password Authentication"
 
   protected readonly authUserSerivce_: AuthUserService
