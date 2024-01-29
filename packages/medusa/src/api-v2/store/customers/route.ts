@@ -1,9 +1,9 @@
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
-import { createStoreCustomersWorkflow } from "@medusajs/core-flows"
+import { createCustomersWorkflow } from "@medusajs/core-flows"
 import { CreateCustomerDTO } from "@medusajs/types"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  const createCustomers = createStoreCustomersWorkflow(req.scope)
+  const createCustomers = createCustomersWorkflow(req.scope)
   const customersData = [req.validatedBody as CreateCustomerDTO]
 
   const { result } = await createCustomers.run({
