@@ -1,5 +1,6 @@
 import { transformBody } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import passport from "passport"
 import { StorePostCustomersReq } from "./validators"
 
 export const storeCustomerRoutesMiddlewares: MiddlewareRoute[] = [
@@ -11,6 +12,10 @@ export const storeCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["GET"],
     matcher: "/store/customers/me",
-    middlewares: [],
+    middlewares: [
+      passport.authenticate("customRoute", {
+        scope: "store",
+      }),
+    ],
   },
 ]
