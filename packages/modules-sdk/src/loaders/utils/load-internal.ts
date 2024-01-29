@@ -9,6 +9,7 @@ import {
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
+  MedusaModuleType,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
 
@@ -19,7 +20,7 @@ export async function loadInternalModule(
 ): Promise<{ error?: Error } | void> {
   const registrationName = resolution.definition.registrationName
 
-  const { scope, resources } =
+  const { resources } =
     resolution.moduleDeclaration as InternalModuleDeclaration
 
   let loadedModule: ModuleExports
@@ -111,6 +112,7 @@ export async function loadInternalModule(
   const moduleService = loadedModule.service
   container.register({
     [registrationName]: asFunction((cradle) => {
+      ;(moduleService as any).__type = MedusaModuleType
       return new moduleService(
         localContainer.cradle,
         resolution.options,

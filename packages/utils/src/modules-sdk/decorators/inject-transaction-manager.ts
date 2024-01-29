@@ -1,5 +1,6 @@
 import { Context, SharedContext } from "@medusajs/types"
 import { isString } from "../../common"
+import { MedusaContextType } from "./context-parameter"
 
 export function InjectTransactionManager(
   shouldForceTransactionOrManagerProperty:
@@ -42,7 +43,9 @@ export function InjectTransactionManager(
         : this[managerProperty]
       ).transaction(
         async (transactionManager) => {
-          args[argIndex] = { ...(args[argIndex] ?? {}) }
+          args[argIndex] = {
+            ...(args[argIndex] ?? { __type: MedusaContextType }),
+          }
           args[argIndex].transactionManager = transactionManager
 
           return await originalMethod.apply(this, args)
