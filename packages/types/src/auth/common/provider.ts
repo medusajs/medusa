@@ -18,5 +18,5 @@ export type AuthenticationInput = {
   headers: Record<string, string>
   query: Record<string, string>
   body: Record<string, string>
-  scope: string
+  authScope: string
 }

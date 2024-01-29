@@ -2,6 +2,7 @@ import { MiddlewareRoute } from "../../loaders/helpers/routing/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import passport from "passport"
 import passportCustom from "passport-custom"
+import { IAuthModuleService } from "@medusajs/types"
 
 passport.serializeUser((user, done) => {
   done(null, user)
@@ -13,7 +14,7 @@ passport.deserializeUser((user, done) => {
 
 passport.use(
   "custom",
-  new passportCustom.Strategy(async function (req: any, cb) {
+  new passportCustom.Strategy(async (req: any, cb) => {
     if (req.user || req.customer) {
       return cb(null, req.user)
     }
@@ -24,7 +25,9 @@ passport.use(
       return (this as passport.Strategy).fail()
     }
 
-    const service = req.scope.resolve(ModuleRegistrationName.AUTHENTICATION)
+    const service: IAuthModuleService = req.scope.resolve(
+      ModuleRegistrationName.AUTHENTICATION
+    )
 
     const res = await service.authenticate(auth_provider, req)
 
@@ -43,7 +46,7 @@ passport.use(
 
 passport.use(
   "customCallback",
-  new passportCustom.Strategy(async function (req: any, cb) {
+  new passportCustom.Strategy(async (req: any, cb) => {
     if (req.user) {
       return cb(null, req.user)
     }
@@ -51,7 +54,7 @@ passport.use(
     const { scope, auth_provider } = req.params
 
     if (!auth_provider || !scope) {
-      return this.fail()
+      return (this as passport.Strategy).fail()
     }
 
     const service = req.scope.resolve(ModuleRegistrationName.AUTHENTICATION)
@@ -60,7 +63,7 @@ passport.use(
 
     const { success, error, authUser, location } = res
     if (location) {
-      return this.redirect(location)
+      return (this as passport.Strategy).redirect(location)
     }
 
     if (!success) {
