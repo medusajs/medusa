@@ -1,16 +1,11 @@
 import { ICustomerModuleService } from "@medusajs/types"
-import {
-  WorkflowData,
-  createWorkflow,
-  createStep,
-  StepResponse,
-} from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 type DeleteCustomerStepInput = string[]
 
-const deleteCustomerStepId = "delete-customer"
-const deleteCustomerStep = createStep(
+export const deleteCustomerStepId = "delete-customer"
+export const deleteCustomerStep = createStep(
   deleteCustomerStepId,
   async (ids: DeleteCustomerStepInput, { container }) => {
     const service = container.resolve<ICustomerModuleService>(
@@ -31,15 +26,5 @@ const deleteCustomerStep = createStep(
     )
 
     await service.restore(prevCustomers)
-  }
-)
-
-type WorkflowInput = { ids: DeleteCustomerStepInput }
-
-export const deleteCustomersWorkflowId = "delete-customers"
-export const deleteCustomersWorkflow = createWorkflow(
-  deleteCustomersWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
-    return deleteCustomerStep(input.ids)
   }
 )

@@ -1,6 +1,5 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
-  CustomerDTO,
   FilterableCustomerProps,
   ICustomerModuleService,
   CustomerUpdateableFields,
@@ -9,22 +8,17 @@ import {
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
 } from "@medusajs/utils"
-import {
-  WorkflowData,
-  createWorkflow,
-  createStep,
-  StepResponse,
-} from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-type UpdateCustomerStepInput = {
+type UpdateCustomersStepInput = {
   selector: FilterableCustomerProps
   update: CustomerUpdateableFields
 }
 
-const updateCustomerStepId = "update-customer"
-const updateCustomersStep = createStep(
-  updateCustomerStepId,
-  async (data: UpdateCustomerStepInput, { container }) => {
+export const updateCustomersStepId = "update-customer"
+export const updateCustomersStep = createStep(
+  updateCustomersStepId,
+  async (data: UpdateCustomersStepInput, { container }) => {
     const service = container.resolve<ICustomerModuleService>(
       ModuleRegistrationName.CUSTOMER
     )
@@ -61,15 +55,5 @@ const updateCustomersStep = createStep(
         })
       )
     )
-  }
-)
-
-type WorkflowInput = UpdateCustomerStepInput
-
-export const updateCustomersWorkflowId = "update-customers"
-export const updateCustomersWorkflow = createWorkflow(
-  updateCustomersWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<CustomerDTO[]> => {
-    return updateCustomersStep(input)
   }
 )
