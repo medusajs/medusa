@@ -415,6 +415,122 @@ export default class CustomerModuleService implements ICustomerModuleService {
     return { id: groupCustomers[0].id }
   }
 
+  async addAddresses(
+    addresses: CustomerTypes.CreateCustomerAddressDTO[],
+    sharedContext?: Context
+  ): Promise<CustomerTypes.CustomerAddressDTO[]>
+  async addAddresses(
+    address: CustomerTypes.CreateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerTypes.CustomerAddressDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async addAddresses(
+    data:
+      | CustomerTypes.CreateCustomerAddressDTO
+      | CustomerTypes.CreateCustomerAddressDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    CustomerTypes.CustomerAddressDTO | CustomerTypes.CustomerAddressDTO[]
+  > {
+    const addresses = await this.addressService_.create(
+      Array.isArray(data) ? data : [data],
+      sharedContext
+    )
+
+    const serialized = await this.baseRepository_.serialize<
+      CustomerTypes.CustomerAddressDTO[]
+    >(addresses, { populate: true })
+
+    if (Array.isArray(data)) {
+      return serialized
+    }
+
+    return serialized[0]
+  }
+
+  async updateAddress(
+    addressId: string,
+    data: CustomerTypes.UpdateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerTypes.CustomerAddressDTO>
+  async updateAddress(
+    addressIds: string[],
+    data: CustomerTypes.UpdateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerTypes.CustomerAddressDTO[]>
+  async updateAddress(
+    selector: CustomerTypes.FilterableCustomerAddressProps,
+    data: CustomerTypes.UpdateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerTypes.CustomerAddressDTO[]>
+
+  @InjectTransactionManager("baseRepository_")
+  async updateAddress(
+    addressIdOrSelector:
+      | string
+      | string[]
+      | CustomerTypes.FilterableCustomerAddressProps,
+    data: CustomerTypes.UpdateCustomerAddressDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    let updateData: CustomerTypes.UpdateCustomerAddressDTO[] = []
+    if (isString(addressIdOrSelector)) {
+      updateData = [
+        {
+          id: addressIdOrSelector,
+          ...data,
+        },
+      ]
+    } else if (Array.isArray(addressIdOrSelector)) {
+      updateData = addressIdOrSelector.map((id) => ({
+        id,
+        ...data,
+      }))
+    } else {
+      const ids = await this.addressService_.list(
+        addressIdOrSelector,
+        { select: ["id"] },
+        sharedContext
+      )
+      updateData = ids.map(({ id }) => ({
+        id,
+        ...data,
+      }))
+    }
+
+    const addresses = await this.addressService_.update(
+      updateData,
+      sharedContext
+    )
+    const serialized = await this.baseRepository_.serialize<
+      CustomerTypes.CustomerAddressDTO[]
+    >(addresses, { populate: true })
+
+    if (isString(addressIdOrSelector)) {
+      return serialized[0]
+    }
+
+    return serialized
+  }
+
+  @InjectManager("baseRepository_")
+  async listAddresses(
+    filters?: CustomerTypes.FilterableCustomerAddressProps,
+    config?: FindConfig<CustomerTypes.CustomerAddressDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<CustomerTypes.CustomerAddressDTO[]> {
+    const addresses = await this.addressService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      CustomerTypes.CustomerAddressDTO[]
+    >(addresses, { populate: true })
+  }
+
   async removeCustomerFromGroup(
     groupCustomerPair: CustomerTypes.GroupCustomerPair,
     sharedContext?: Context

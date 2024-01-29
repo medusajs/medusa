@@ -1,5 +1,6 @@
-import { IAuthenticationModuleService } from "@medusajs/types"
 import { MedusaModule, Modules } from "@medusajs/modules-sdk"
+
+import { IAuthenticationModuleService } from "@medusajs/types"
 import { MikroOrmWrapper } from "../../../utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createAuthProviders } from "../../../__fixtures__/auth-provider"
