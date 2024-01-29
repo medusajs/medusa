@@ -22,8 +22,6 @@ import Address from "./address"
 type OptionalCustomerProps =
   | "groups"
   | "addresses"
-  | "default_shipping_address"
-  | "default_billing_address"
   | DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "customer" })
@@ -51,26 +49,6 @@ export default class Customer {
 
   @Property({ columnType: "boolean", default: false })
   has_account: boolean = false
-
-  @Index({ name: "IDX_customer_default_shipping_address_id" })
-  @Property({ columnType: "text", nullable: true })
-  default_shipping_address_id: string | null = null
-
-  @ManyToOne(() => Address, {
-    fieldName: "default_shipping_address_id",
-    nullable: true,
-  })
-  default_shipping_address: Address | null
-
-  @Index({ name: "IDX_customer_default_billing_address_id" })
-  @Property({ columnType: "text", nullable: true })
-  default_billing_address_id: string | null = null
-
-  @ManyToOne(() => Address, {
-    fieldName: "default_billing_address_id",
-    nullable: true,
-  })
-  default_billing_address: Address | null
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

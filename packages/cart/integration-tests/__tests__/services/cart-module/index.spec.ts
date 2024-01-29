@@ -1,9 +1,9 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { ICartModuleService } from "@medusajs/types"
 import { CheckConstraintViolationException } from "@mikro-orm/core"
-import { MikroOrmWrapper } from "../../../utils"
-import { Modules } from "@medusajs/modules-sdk"
-import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
+import { MikroOrmWrapper } from "../../../utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 
 jest.setTimeout(30000)
 

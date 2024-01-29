@@ -4,34 +4,28 @@ export class Migration20240124154000 extends Migration {
   async up(): Promise<void> {
     // Customer table modifications
     this.addSql(
-      'create table if not exists "customer" ("id" text not null, "company_name" text null, "first_name" text null, "last_name" text null, "email" text null, "phone" text null, "has_account" boolean not null default false, "default_shipping_address_id" text null, "default_billing_address_id" text null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, "created_by" text null, constraint "customer_pkey" primary key ("id"));'
+      'create table if not exists "customer" ("id" text not null, "company_name" text null, "first_name" text null, "last_name" text null, "email" text null, "phone" text null, "has_account" boolean not null default false, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, "created_by" text null, constraint "customer_pkey" primary key ("id"));'
     )
     this.addSql(
       'alter table "customer" add column if not exists "company_name" text null;'
     )
     this.addSql(
-      'alter table "customer" add column if not exists "default_shipping_address_id" text null;'
-    )
-    this.addSql(
-      'alter table "customer" add column if not exists "default_billing_address_id" text null;'
-    )
-    this.addSql(
       'alter table "customer" add column if not exists "created_by" text null;'
     )
     this.addSql('drop index if exists "IDX_8abe81b9aac151ae60bf507ad1";')
-    this.addSql(
-      'create index if not exists "IDX_customer_default_shipping_address_id" on "customer" ("default_shipping_address_id");'
-    )
-    this.addSql(
-      'create index if not exists "IDX_customer_default_billing_address_id" on "customer" ("default_billing_address_id");'
-    )
 
     // Customer Address table
     this.addSql(
-      'create table if not exists "customer_address" ("id" text not null, "customer_id" text not null, "company" text null, "first_name" text null, "last_name" text null, "address_1" text null, "address_2" text null, "city" text null, "country_code" text null, "province" text null, "postal_code" text null, "phone" text null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), constraint "customer_address_pkey" primary key ("id"));'
+      'create table if not exists "customer_address" ("id" text not null, "customer_id" text not null, "address_name" text null, "is_default_shipping" boolean not null default false, "is_default_billing" boolean not null default false, "company" text null, "first_name" text null, "last_name" text null, "address_1" text null, "address_2" text null, "city" text null, "country_code" text null, "province" text null, "postal_code" text null, "phone" text null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), constraint "customer_address_pkey" primary key ("id"));'
     )
     this.addSql(
       'create index if not exists "IDX_customer_address_customer_id" on "customer_address" ("customer_id");'
+    )
+    this.addSql(
+      'create unique index "IDX_customer_address_unqiue_customer_billing" on "customer_address" ("customer_id") where "is_default_billing" = true;'
+    )
+    this.addSql(
+      'create unique index "IDX_customer_address_unique_customer_shipping" on "customer_address" ("customer_id") where "is_default_shipping" = true;'
     )
 
     // Customer Group table modifications
@@ -62,13 +56,7 @@ export class Migration20240124154000 extends Migration {
       'alter table "customer" drop constraint if exists "FK_8abe81b9aac151ae60bf507ad15";'
     )
     this.addSql(
-      'alter table "customer" add constraint "customer_default_shipping_address_id_foreign" foreign key ("default_shipping_address_id") references "customer_address" ("id") on update cascade on delete set null;'
-    )
-    this.addSql(
-      'alter table "customer" add constraint "customer_default_billing_address_id_foreign" foreign key ("default_billing_address_id") references "customer_address" ("id") on update cascade on delete set null;'
-    )
-    this.addSql(
-      'alter table "customer_address" add constraint "customer_address_customer_id_foreign" foreign key ("customer_id") references "customer" ("id") on update cascade;'
+      'alter table "customer_address" add constraint "customer_address_customer_id_foreign" foreign key ("customer_id") references "customer" ("id") on update cascade on delete cascade;'
     )
     this.addSql(
       'alter table "customer_group_customer" add constraint "customer_group_customer_customer_group_id_foreign" foreign key ("customer_group_id") references "customer_group" ("id") on delete cascade;'
