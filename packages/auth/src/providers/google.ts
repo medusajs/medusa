@@ -98,7 +98,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
       )
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
-        authUser = await this.authUserSerivce_.create([
+        const [createdAuthUser] = await this.authUserSerivce_.create([
           {
             entity_id,
             provider_id: GoogleProvider.PROVIDER,
@@ -106,6 +106,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
             app_metadata: { scope },
           },
         ])
+        authUser = createdAuthUser
       } else {
         return { success: false, error: error.message }
       }
@@ -121,12 +122,12 @@ class GoogleProvider extends AbstractAuthModuleProvider {
     { clientID, callbackURL, clientSecret }: ProviderConfig
   ) {
     const client = this.getAuthorizationCodeHandler({ clientID, clientSecret })
-
+    
     const tokenParams = {
       code,
       redirect_uri: callbackURL,
     }
-
+    
     try {
       const accessToken = await client.getToken(tokenParams)
 
@@ -136,24 +137,18 @@ class GoogleProvider extends AbstractAuthModuleProvider {
     }
   }
 
-  private getConfigFromScope(config: AuthProviderScope): ProviderConfig {
-    const providerConfig: Partial<ProviderConfig> = {}
+  private getConfigFromScope(config: AuthProviderScope & Partial<ProviderConfig>): ProviderConfig {
+    const providerConfig: Partial<ProviderConfig> = { ...config }
 
-    if (config.clientId) {
-      providerConfig.clientID = config.clientId
-    } else {
+    if (!providerConfig.clientID) {
       throw new Error("Google clientID is required")
-    }
+    } 
 
-    if (config.clientSecret) {
-      providerConfig.clientSecret = config.clientSecret
-    } else {
+    if (!providerConfig.clientSecret) {
       throw new Error("Google clientSecret is required")
     }
 
-    if (config.callbackURL) {
-      providerConfig.callbackURL = config.callbackUrl
-    } else {
+    if (!providerConfig.callbackURL) {
       throw new Error("Google callbackUrl is required")
     }
 

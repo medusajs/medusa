@@ -3,6 +3,7 @@ import { AuthenticationInput, AuthenticationResponse } from "@medusajs/types"
 
 import { AuthUserService } from "@services"
 import Scrypt from "scrypt-kdf"
+import { MedusaError } from "@medusajs/utils"
 
 class UsernamePasswordProvider extends AbstractAuthModuleProvider {
   public static PROVIDER = "usernamePassword"
@@ -35,10 +36,27 @@ class UsernamePasswordProvider extends AbstractAuthModuleProvider {
       }
     }
 
-    const authUser = await this.authUserSerivce_.retrieveByProviderAndEntityId(
-      email,
-      UsernamePasswordProvider.PROVIDER
-    )
+    let authUser
+
+    try {
+      authUser = await this.authUserSerivce_.retrieveByProviderAndEntityId(
+        email,
+        UsernamePasswordProvider.PROVIDER
+      )
+    } catch (error) {
+      if (error.code === MedusaError.Types.NOT_FOUND) {
+        const [createdAuthUser] = await this.authUserSerivce_.create([{
+          entity_id: email,
+          provider_id: UsernamePasswordProvider.PROVIDER,
+          app_metadata: {
+            scope: userData.authScope,
+          },
+        }])
+
+        authUser = createdAuthUser
+      }
+      return { success: false, error: error.message }
+    }
 
     const password_hash = authUser.provider_metadata?.password
 
