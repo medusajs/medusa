@@ -8070,7 +8070,7 @@ __metadata:
     react-hook-form: 7.49.1
     react-i18next: 13.5.0
     react-router-dom: 6.20.1
-    tailwindcss: 3.3.6
+    tailwindcss: ^3.4.1
     typescript: 5.2.2
     vite: 5.0.10
     zod: 3.22.4
@@ -8628,7 +8628,7 @@ __metadata:
   dependencies:
     "@medusajs/toolbox": ^0.0.1
     "@tailwindcss/forms": ^0.5.3
-    tailwindcss: ^3.3.2
+    tailwindcss: ^3.4.1
     tailwindcss-animate: ^1.0.6
     tsup: ^7.1.0
     typescript: ^5.1.6
@@ -8699,7 +8699,7 @@ __metadata:
     rimraf: ^5.0.1
     storybook: ^7.0.23
     tailwind-merge: ^1.13.2
-    tailwindcss: ^3.3.2
+    tailwindcss: ^3.4.1
     tsc-alias: ^1.8.7
     typescript: ^5.1.6
     vite: ^4.3.9
@@ -47864,72 +47864,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.3.6":
-  version: 3.3.6
-  resolution: "tailwindcss@npm:3.3.6"
-  dependencies:
-    "@alloc/quick-lru": ^5.2.0
-    arg: ^5.0.2
-    chokidar: ^3.5.3
-    didyoumean: ^1.2.2
-    dlv: ^1.1.3
-    fast-glob: ^3.3.0
-    glob-parent: ^6.0.2
-    is-glob: ^4.0.3
-    jiti: ^1.19.1
-    lilconfig: ^2.1.0
-    micromatch: ^4.0.5
-    normalize-path: ^3.0.0
-    object-hash: ^3.0.0
-    picocolors: ^1.0.0
-    postcss: ^8.4.23
-    postcss-import: ^15.1.0
-    postcss-js: ^4.0.1
-    postcss-load-config: ^4.0.1
-    postcss-nested: ^6.0.1
-    postcss-selector-parser: ^6.0.11
-    resolve: ^1.22.2
-    sucrase: ^3.32.0
-  bin:
-    tailwind: lib/cli.js
-    tailwindcss: lib/cli.js
-  checksum: 69caade773249cb963c33e81f85b7fc423dcb74b416727483f434f4e12874187f633970c9de864fa96736289abaf71189314a53589ada0be6c09ccb0e8b78391
-  languageName: node
-  linkType: hard
-
-"tailwindcss@npm:^3.3.2":
-  version: 3.3.4
-  resolution: "tailwindcss@npm:3.3.4"
-  dependencies:
-    "@alloc/quick-lru": ^5.2.0
-    arg: ^5.0.2
-    chokidar: ^3.5.3
-    didyoumean: ^1.2.2
-    dlv: ^1.1.3
-    fast-glob: ^3.3.0
-    glob-parent: ^6.0.2
-    is-glob: ^4.0.3
-    jiti: ^1.19.1
-    lilconfig: ^2.1.0
-    micromatch: ^4.0.5
-    normalize-path: ^3.0.0
-    object-hash: ^3.0.0
-    picocolors: ^1.0.0
-    postcss: ^8.4.23
-    postcss-import: ^15.1.0
-    postcss-js: ^4.0.1
-    postcss-load-config: ^4.0.1
-    postcss-nested: ^6.0.1
-    postcss-selector-parser: ^6.0.11
-    resolve: ^1.22.2
-    sucrase: ^3.32.0
-  bin:
-    tailwind: lib/cli.js
-    tailwindcss: lib/cli.js
-  checksum: a1a0c8c1793b1b1b67503484fe924dc84f79e74c1ddc576095d616eaecc18bbd8fcdbf7c62e07a181673466f4913ebc20d92b93b87da730148b05f7c95e6c83e
-  languageName: node
-  linkType: hard
-
 "tailwindcss@npm:^3.3.6":
   version: 3.4.0
   resolution: "tailwindcss@npm:3.4.0"
@@ -47960,6 +47894,39 @@ __metadata:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
   checksum: 0a1cef7468e6d17c2857d0b3c4017af2cb37ed8ba27dfb14780c517b8a74f6786970227c400ac1325fc8bcfc09099d8e990fa7c60924bf945f3d0a912d63f546
+  languageName: node
+  linkType: hard
+
+"tailwindcss@npm:^3.4.1":
+  version: 3.4.1
+  resolution: "tailwindcss@npm:3.4.1"
+  dependencies:
+    "@alloc/quick-lru": ^5.2.0
+    arg: ^5.0.2
+    chokidar: ^3.5.3
+    didyoumean: ^1.2.2
+    dlv: ^1.1.3
+    fast-glob: ^3.3.0
+    glob-parent: ^6.0.2
+    is-glob: ^4.0.3
+    jiti: ^1.19.1
+    lilconfig: ^2.1.0
+    micromatch: ^4.0.5
+    normalize-path: ^3.0.0
+    object-hash: ^3.0.0
+    picocolors: ^1.0.0
+    postcss: ^8.4.23
+    postcss-import: ^15.1.0
+    postcss-js: ^4.0.1
+    postcss-load-config: ^4.0.1
+    postcss-nested: ^6.0.1
+    postcss-selector-parser: ^6.0.11
+    resolve: ^1.22.2
+    sucrase: ^3.32.0
+  bin:
+    tailwind: lib/cli.js
+    tailwindcss: lib/cli.js
+  checksum: eec3d758f1cd4f51ab3b4c201927c3ecd18e55f8ac94256af60276aaf8d1df78f9dddb5e9fb1e057dfa7cea3c1356add4994cc3d42da9739df874e67047e656f
   languageName: node
   linkType: hard
 

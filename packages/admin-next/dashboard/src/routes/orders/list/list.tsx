@@ -1,11 +1,115 @@
-import { Container, Heading } from "@medusajs/ui";
+import { EllipsisHorizontal } from "@medusajs/icons"
+import { Order } from "@medusajs/medusa"
+import { Checkbox, Container, Heading, Tooltip } from "@medusajs/ui"
+import {
+  createColumnHelper,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table"
+import { useAdminOrders, useAdminRegions } from "medusa-react"
+import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
+import { DataTable } from "../../../components/data-table/data-table"
+import { useQueryParams } from "../../../hooks/use-query-params"
 
 export const OrderList = () => {
+  const { regions } = useAdminRegions({
+    limit: 1000,
+    fields: "id,name",
+    expand: "",
+  })
+
+  const { q } = useQueryParams(["order", "q"])
+  const { orders, count, isLoading, isError, error } = useAdminOrders({
+    limit: 50,
+    offset: 0,
+    q,
+  })
+
+  const columns = useColumns()
+  const table = useReactTable({
+    data: orders ?? [],
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  })
+
   return (
     <div>
-      <Container>
-        <Heading>Orders</Heading>
+      <Container className="p-0 divide-y">
+        <div className="px-6 py-4 flex items-center">
+          <Heading>Orders</Heading>
+        </div>
+        <DataTable
+          table={table}
+          columns={columns}
+          navigateTo={({ row }) => `/orders/${row.original.id}`}
+          searchable
+        />
       </Container>
     </div>
-  );
-};
+  )
+}
+
+const columnHelper = createColumnHelper<Order>()
+
+const useColumns = () => {
+  const { t } = useTranslation()
+
+  return useMemo(
+    () => [
+      columnHelper.display({
+        id: "select",
+        header: ({ table }) => {
+          return (
+            <Checkbox
+              checked={
+                table.getIsSomePageRowsSelected()
+                  ? "indeterminate"
+                  : table.getIsAllPageRowsSelected()
+              }
+              onCheckedChange={(value) =>
+                table.toggleAllPageRowsSelected(!!value)
+              }
+            />
+          )
+        },
+        cell: ({ row }) => {
+          const isPreSelected = !row.getCanSelect()
+          const isSelected = row.getIsSelected() || isPreSelected
+
+          const Component = (
+            <Checkbox
+              checked={isSelected}
+              disabled={isPreSelected}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            />
+          )
+
+          if (isPreSelected) {
+            return (
+              <Tooltip content={t("store.currencyAlreadyAdded")} side="right">
+                {Component}
+              </Tooltip>
+            )
+          }
+
+          return Component
+        },
+      }),
+      columnHelper.accessor("display_id", {
+        header: "Order",
+        cell: ({ getValue }) => getValue(),
+      }),
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => {
+          return <EllipsisHorizontal />
+        },
+      }),
+    ],
+    [t]
+  )
+}
