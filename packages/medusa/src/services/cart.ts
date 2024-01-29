@@ -1647,7 +1647,7 @@ class CartService extends TransactionBaseService {
               await this.discountService_
                 .withTransaction(transactionManager)
                 .validateDiscountForCartOrThrow(cart, discount)
-            } catch {
+            } catch (err) {
               await this.removeDiscount(cart.id, discount.code)
             }
             if (discountsMap.has(discount.id)) {

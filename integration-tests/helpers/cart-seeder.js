@@ -829,6 +829,24 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(cartWithItemPercDiscount)
 
+  const cartWithInvalidDiscount = manager.create(Cart, {
+    id: "test-cart-w-invalid-discount",
+    customer_id: "some-customer",
+    email: "some-customer@email.com",
+    discounts: [dUsageLimit],
+    sales_channel_id: salesChannelId,
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    items: [],
+  })
+
+  await manager.save(cartWithInvalidDiscount)
+
   const cart2 = manager.create(Cart, {
     id: "test-cart-2",
     customer_id: "some-customer",
