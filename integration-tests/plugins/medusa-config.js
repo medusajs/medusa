@@ -81,5 +81,10 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/sales-channel",
     },
+    [Modules.CART]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/cart",
+    },
   },
 }
