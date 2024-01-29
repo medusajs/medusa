@@ -1,3 +1,4 @@
+import { BigNumber } from "../../../utils/dist"
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
 
@@ -365,7 +366,7 @@ export interface CartLineItemDTO extends CartLineItemTotalsDTO {
   /**
    * The price of the item
    */
-  unit_price: number
+  unit_price: BigNumber
   /**
    * The associated tax lines.
    *

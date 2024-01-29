@@ -1,3 +1,5 @@
+import { BigNumberRawValue } from "@medusajs/utils"
+
 interface PartialUpsertLineItemDTO {
   subtitle?: string
   thumbnail?: string
@@ -26,7 +28,7 @@ interface PartialUpsertLineItemDTO {
 export interface CreateLineItemDTO extends PartialUpsertLineItemDTO {
   title: string
   quantity: number
-  unit_price: number
+  unit_price: number | BigNumberRawValue
   cart_id: string
 }
 

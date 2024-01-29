@@ -94,27 +94,6 @@ describe("Cart Module Service", () => {
       )
     })
 
-    it.only("should do something", async () => {
-      // TODO: Will be removed. This is here for demoing purposes
-      let cart = await service.create({ currency_code: "eur" })
-      
-      const [lineItem] = await service.addLineItems(cart.id, [
-        {
-          title: "three",
-          quantity: 1,
-          unit_price: 200,
-        },
-      ])
-
-      console.log("Before: ", lineItem)
-      const [updated] = await service.updateLineItems({ id: lineItem.id }, { unit_price: 500 })
-      console.log("After: ", updated)
-
-      // const cart = await service.retrieve(createdCart.id, {
-      //   relations: ["items", "items.adjustments"],
-      // })
-    })
-
     it("should create a cart successfully", async () => {
       const [createdCart] = await service.create([
         {

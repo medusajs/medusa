@@ -14,11 +14,19 @@ export class BigNumber {
 
   constructor(rawPrice: BigNumberRawValue | number | string | BigNumberJS) {
     if (BigNumberJS.isBigNumber(rawPrice)) {
+      /**
+       * Example:
+       *  const bnUnitPrice = new BigNumberJS("10.99")
+       *  const unitPrice = new BigNumber(bnUnitPrice)
+       */
       this.numeric_ = rawPrice.toNumber()
       this.raw_ = {
         value: rawPrice.toPrecision(BigNumber.DEFAULT_PRECISION),
       }
     } else if (isString(rawPrice)) {
+      /**
+       * Example: const unitPrice = "1234.1234"
+       */
       const bigNum = new BigNumberJS(rawPrice)
 
       this.numeric_ = bigNum.toNumber()
@@ -26,6 +34,9 @@ export class BigNumber {
         value: bigNum.toPrecision(BigNumber.DEFAULT_PRECISION),
       }
     } else if (isObject(rawPrice)) {
+      /**
+       * Example: const unitPrice = { value: "1234.1234" }
+       */
       if (!("value" in rawPrice)) {
         throw new Error(
           "Invalid BigNumber. Property `value` missing in object."
@@ -38,6 +49,9 @@ export class BigNumber {
         ...rawPrice,
       }
     } else if (typeof rawPrice === `number` && !Number.isNaN(rawPrice)) {
+      /**
+       * Example: const unitPrice = 1234
+       */
       this.numeric_ = rawPrice as number
 
       this.raw_ = {

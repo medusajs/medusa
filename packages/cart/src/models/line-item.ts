@@ -8,6 +8,7 @@ import {
   Entity,
   ManyToOne,
   OnInit,
+  OnLoad,
   OneToMany,
   OptionalProps,
   PrimaryKey,
@@ -107,7 +108,7 @@ export default class LineItem {
   compare_at_unit_price?: BigNumber | number | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  raw_compare_at_unit_price?: BigNumberRawValue | null = null
+  raw_compare_at_unit_price: BigNumberRawValue | null = null
 
   @Property({ columnType: "numeric" })
   unit_price: BigNumber | number
@@ -144,38 +145,31 @@ export default class LineItem {
   onCreate() {
     this.id = generateEntityId(this.id, "cali")
 
-    const asBigNumber = new BigNumber(
-      this.unit_price as number | string | BigNumberRawValue
-    )
+    const val = (this.raw_unit_price ?? this.unit_price) as BigNumberRawValue
 
-    this.unit_price = asBigNumber.numeric
-
-    if (!this.raw_unit_price) {
-      this.raw_unit_price = asBigNumber.raw as BigNumberRawValue
-    }
+    this.raw_unit_price = new BigNumber(val).raw!
   }
 
   @BeforeUpdate()
   onUpdate() {
-    const asBigNumber = new BigNumber(
-      this.unit_price as number | string | BigNumberRawValue
-    )
+    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
 
-    this.unit_price = asBigNumber.numeric
-    this.raw_unit_price = asBigNumber.raw as BigNumberRawValue
+    this.unit_price = val.numeric
+    this.raw_unit_price = val.raw as BigNumberRawValue
+  }
+
+  @OnLoad()
+  onLoad() {
+    this.unit_price = new BigNumber(this.raw_unit_price)
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "cali")
 
-    if (!this.raw_unit_price) {
-      const asBigNumber = new BigNumber(
-        this.unit_price as number | string | BigNumberRawValue
-      )
+    const val = (this.raw_unit_price ?? this.unit_price) as BigNumberRawValue
 
-      this.raw_unit_price = asBigNumber.raw as BigNumberRawValue
-    }
+    this.raw_unit_price = new BigNumber(val).raw!
 
     if (this.raw_unit_price && !("value" in this.raw_unit_price)) {
       throw Error("Property `value` is required in `raw_unit_price`")
