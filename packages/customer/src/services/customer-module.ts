@@ -8,6 +8,7 @@ import {
   CustomerTypes,
   SoftDeleteReturn,
   RestoreReturn,
+  CustomerUpdateableFields,
 } from "@medusajs/types"
 
 import {
@@ -110,24 +111,24 @@ export default class CustomerModuleService implements ICustomerModuleService {
 
   update(
     customerId: string,
-    data: Partial<CustomerTypes.CreateCustomerDTO>,
+    data: CustomerUpdateableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO>
   update(
     customerIds: string[],
-    data: Partial<CustomerTypes.CreateCustomerDTO>,
+    data: CustomerUpdateableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
   update(
     selector: CustomerTypes.FilterableCustomerProps,
-    data: Partial<CustomerTypes.CreateCustomerDTO>,
+    data: CustomerUpdateableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
 
   @InjectTransactionManager("baseRepository_")
   async update(
     idsOrSelector: string | string[] | CustomerTypes.FilterableCustomerProps,
-    data: Partial<CustomerTypes.CreateCustomerDTO>,
+    data: CustomerUpdateableFields,
     @MedusaContext() sharedContext: Context = {}
   ) {
     let updateData: CustomerTypes.UpdateCustomerDTO[] = []
