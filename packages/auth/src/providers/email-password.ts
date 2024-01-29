@@ -4,9 +4,9 @@ import { AuthenticationInput, AuthenticationResponse } from "@medusajs/types"
 import { AuthUserService } from "@services"
 import Scrypt from "scrypt-kdf"
 
-class UsernamePasswordProvider extends AbstractAuthModuleProvider {
-  public static PROVIDER = "userpass"
-  public static DISPLAY_NAME = "Username/Password Authentication"
+class EmailPasswordProvider extends AbstractAuthModuleProvider {
+  public static PROVIDER = "emailpass"
+  public static DISPLAY_NAME = "Email/Password Authentication"
 
   protected readonly authUserSerivce_: AuthUserService
 
@@ -37,7 +37,7 @@ class UsernamePasswordProvider extends AbstractAuthModuleProvider {
 
     const authUser = await this.authUserSerivce_.retrieveByProviderAndEntityId(
       email,
-      UsernamePasswordProvider.PROVIDER
+      EmailPasswordProvider.PROVIDER
     )
 
     const password_hash = authUser.provider_metadata?.password
@@ -61,4 +61,4 @@ class UsernamePasswordProvider extends AbstractAuthModuleProvider {
   }
 }
 
-export default UsernamePasswordProvider
+export default EmailPasswordProvider

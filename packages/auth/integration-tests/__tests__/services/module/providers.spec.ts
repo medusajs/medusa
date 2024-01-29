@@ -50,8 +50,8 @@ describe("AuthModuleService - AuthProvider", () => {
       expect(serialized).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            provider: "userpass",
-            name: "Username/Password Authentication",
+            provider: "emailpass",
+            name: "Email/Password Authentication",
           }),
           expect.objectContaining({
             provider: "google",
@@ -81,7 +81,7 @@ describe("AuthModuleService - AuthProvider", () => {
 
     it("fails to authenticate using a valid provider with an invalid scope", async () => {
       const { success, error } = await service.authenticate(
-        "userpass",
+        "emailpass",
         {
           scope: "non-existing",
         } as any
@@ -89,7 +89,7 @@ describe("AuthModuleService - AuthProvider", () => {
 
       expect(success).toBe(false)
       expect(error).toEqual(
-        `Scope "non-existing" is not valid for provider userpass`
+        `Scope "non-existing" is not valid for provider emailpass`
       )
     })
   })
