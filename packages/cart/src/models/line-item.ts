@@ -61,7 +61,11 @@ export default class LineItem {
   })
   variant_id?: string | null
 
-  @Property({ columnType: "text", nullable: true })
+  @Property({
+    columnType: "text",
+    nullable: true,
+    index: "IDX_line_item_product_id",
+  })
   product_id?: string | null
 
   @Property({ columnType: "text", nullable: true })

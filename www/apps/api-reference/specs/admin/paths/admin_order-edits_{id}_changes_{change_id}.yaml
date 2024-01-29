@@ -30,7 +30,7 @@ delete:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_order-edits_{id}_changes_{change_id}/deleteundefined
+          ../code_samples/tsx/admin_order-edits_{id}_changes_{change_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

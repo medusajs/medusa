@@ -43,7 +43,11 @@ export default class ShippingMethod {
   @Property({ columnType: "boolean" })
   is_tax_inclusive = false
 
-  @Property({ columnType: "text", nullable: true })
+  @Property({
+    columnType: "text",
+    nullable: true,
+    index: "IDX_shipping_method_option_id",
+  })
   shipping_option_id?: string | null
 
   @Property({ columnType: "jsonb", nullable: true })

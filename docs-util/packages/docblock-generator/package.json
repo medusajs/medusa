@@ -2,7 +2,8 @@
   "name": "docblock-generator",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "dev": "ts-node src/index.ts",
+    "start": "node dist/index.js",
     "build": "tsc",
     "watch": "tsc --watch",
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
@@ -23,7 +24,8 @@
     "eslint": "^8.56.0",
     "minimatch": "^9.0.3",
     "ts-node": "^10.9.1",
-    "typescript": "5.2"
+    "typescript": "5.2",
+    "utils": "*"
   },
   "devDependencies": {
     "@types/node": "^20.9.4"

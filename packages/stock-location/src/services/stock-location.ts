@@ -12,12 +12,12 @@ import {
 } from "@medusajs/types"
 import {
   InjectEntityManager,
+  isDefined,
   MedusaContext,
   MedusaError,
-  isDefined,
   setMetadata,
 } from "@medusajs/utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import { joinerConfig } from "../joiner-config"
 import { StockLocation, StockLocationAddress } from "../models"
 import { buildQuery } from "../utils/build-query"
@@ -66,11 +66,8 @@ export default class StockLocationService {
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
     context: SharedContext = {}
   ): Promise<StockLocation[]> {
-    const manager = context.transactionManager ?? this.manager_
-    const locationRepo = manager.getRepository(StockLocation)
-
-    const query = buildQuery(selector, config)
-    return await locationRepo.find(query)
+    const [locations] = await this.listAndCount(selector, config, context)
+    return locations
   }
 
   /**
@@ -87,8 +84,27 @@ export default class StockLocationService {
   ): Promise<[StockLocation[], number]> {
     const manager = context.transactionManager ?? this.manager_
     const locationRepo = manager.getRepository(StockLocation)
+    let q
+    if (selector.q) {
+      q = selector.q
+      delete selector.q
+    }
 
     const query = buildQuery(selector, config)
+
+    if (q) {
+      const where = query.where as FindOptionsWhere<StockLocation>
+
+      delete where.name
+
+      query.where = [
+        {
+          ...where,
+          name: ILike(`%${q}%`),
+        },
+      ]
+    }
+
     return await locationRepo.findAndCount(query)
   }
 
