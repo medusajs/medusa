@@ -30,7 +30,7 @@ get:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_publishable-api-keys_{id}_sales-channels/getundefined
+          ../code_samples/tsx/admin_publishable-api-keys_{id}_sales-channels/get.tsx
     - lang: Shell
       label: cURL
       source:

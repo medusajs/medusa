@@ -31,8 +31,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: >-
-          ../code_samples/tsx/store_carts_{id}_line-items_{line_id}/postundefined
+        $ref: ../code_samples/tsx/store_carts_{id}_line-items_{line_id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -86,8 +85,7 @@ delete:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: >-
-          ../code_samples/tsx/store_carts_{id}_line-items_{line_id}/deleteundefined
+        $ref: ../code_samples/tsx/store_carts_{id}_line-items_{line_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

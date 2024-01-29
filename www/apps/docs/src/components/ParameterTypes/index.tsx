@@ -16,6 +16,7 @@ export type Parameter = {
 type ParameterTypesType = {
   parameters: Parameter[]
   expandUrl?: string
+  sectionTitle?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
 const ParameterTypesItems = lazy(async () => import("./Items"))
@@ -34,6 +35,7 @@ const ParameterTypes = ({
         <ParameterTypesItems
           parameters={parameters}
           expandUrl={props.expandUrl}
+          sectionTitle={props.sectionTitle}
         />
       </Suspense>
     </div>

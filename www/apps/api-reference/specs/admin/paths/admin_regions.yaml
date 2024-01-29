@@ -7,6 +7,16 @@ get:
   x-authenticated: true
   parameters:
     - in: query
+      name: q
+      description: Term used to search regions' name.
+      schema:
+        type: string
+    - in: query
+      name: order
+      description: A field to sort-order the retrieved regions by.
+      schema:
+        type: string
+    - in: query
       name: limit
       schema:
         type: integer
@@ -100,7 +110,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_regions/getundefined
+        $ref: ../code_samples/tsx/admin_regions/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -150,7 +160,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_regions/postundefined
+        $ref: ../code_samples/tsx/admin_regions/post.tsx
     - lang: Shell
       label: cURL
       source:

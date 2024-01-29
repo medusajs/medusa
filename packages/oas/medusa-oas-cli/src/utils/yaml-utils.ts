@@ -6,7 +6,11 @@ export const readYaml = async (filePath): Promise<unknown> => {
   return yaml.load(yamlString)
 }
 
-export const writeYaml = async (filePath, jsonObject): Promise<void> => {
+export const writeYaml = async (filePath: string, yamlContent: string): Promise<void> => {
+  await fs.writeFile(filePath, yamlContent, "utf8")
+}
+
+export const writeYamlFromJson = async (filePath, jsonObject): Promise<void> => {
   const yamlString = yaml.dump(jsonObject)
   await fs.writeFile(filePath, yamlString, "utf8")
 }
