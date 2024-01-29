@@ -78,6 +78,23 @@ describe("/admin/orders", () => {
         })
       expect(response.status).toEqual(200)
     })
+
+    it("gets orders ordered by display_id", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/orders?order=display_id", adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+      expect(response.status).toEqual(200)
+
+      const sortedOrders = response.data.orders.sort((a, b) => {
+        return a.display_id - b.display_id
+      })
+
+      expect(response.data.orders).toEqual(sortedOrders)
+    })
   })
 
   describe("POST /admin/orders/:id", () => {
