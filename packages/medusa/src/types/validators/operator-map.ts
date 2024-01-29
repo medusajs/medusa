@@ -38,8 +38,8 @@ export class OperatorMapValidator {
   $overlap?: string[]
 
   @IsOptional()
-  @IsArray()
-  $contains?: string[]
+  @IsString()
+  $contains?: string
 
   @IsOptional()
   @IsArray()

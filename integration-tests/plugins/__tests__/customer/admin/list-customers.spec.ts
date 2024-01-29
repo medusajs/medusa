@@ -66,4 +66,54 @@ describe("GET /admin/customers", () => {
       }),
     ])
   })
+
+  it("should filter customers by last name", async () => {
+    await customerModuleService.create([
+      {
+        first_name: "Jane",
+        last_name: "Doe",
+        email: "jane@me.com",
+      },
+      {
+        first_name: "John",
+        last_name: "Doe",
+        email: "john@me.com",
+      },
+      {
+        first_name: "LeBron",
+        last_name: "James",
+        email: "lebron@me.com",
+      },
+      {
+        first_name: "John",
+        last_name: "Silver",
+        email: "johns@me.com",
+      },
+    ])
+
+    const api = useApi() as any
+    const response = await api.get(
+      `/admin/customers?last_name=Doe`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.count).toEqual(2)
+    expect(response.data.customers).toContainEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        first_name: "Jane",
+        last_name: "Doe",
+        email: "jane@me.com",
+      })
+    )
+    expect(response.data.customers).toContainEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        first_name: "John",
+        last_name: "Doe",
+        email: "john@me.com",
+      })
+    )
+  })
 })

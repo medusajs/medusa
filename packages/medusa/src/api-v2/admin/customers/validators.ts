@@ -1,5 +1,5 @@
 import { OperatorMap } from "@medusajs/types"
-import { Type } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import {
   IsNotEmpty,
   IsOptional,
@@ -8,6 +8,7 @@ import {
 } from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import { OperatorMapValidator } from "../../../types/validators/operator-map"
+import { IsType } from "../../../utils"
 
 export class AdminGetCustomersCustomerParams extends FindParams {}
 
@@ -20,8 +21,7 @@ export class AdminGetCustomersParams extends extendedFindParamsMixin({
   id?: string | string[]
 
   @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => OperatorMapValidator)
+  @IsType([String, [String], OperatorMapValidator])
   email?: string | string[] | OperatorMap<string>
 
   @IsOptional()
@@ -46,7 +46,8 @@ export class AdminGetCustomersParams extends extendedFindParamsMixin({
   first_name?: string | string[] | OperatorMap<string> | null
 
   @IsOptional()
-  @IsString({ each: true })
+  @IsType([String, [String], OperatorMapValidator])
+  @Transform(({ value }) => (value === "null" ? null : value))
   last_name?: string | string[] | OperatorMap<string> | null
 
   @IsOptional()
