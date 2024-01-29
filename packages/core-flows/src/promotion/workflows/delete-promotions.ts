@@ -1,5 +1,5 @@
 import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk"
-import { deletePromotionsStep } from "../../handlers/promotion"
+import { deletePromotionsStep } from "../steps"
 
 type WorkflowInput = { ids: string[] }
 
