@@ -1,5 +1,6 @@
 import { MedusaV2Flag } from "@medusajs/utils"
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
+import { Modules } from "@medusajs/modules-sdk"
 
 type HandlerInputData = {
   cart: {
@@ -30,10 +31,10 @@ export async function detachCartFromSalesChannel({
   const salesChannel = data[Aliases.SalesChannel]
 
   await remoteLink.dismiss({
-    cartService: {
+    [Modules.CART]: {
       cart_id: cart.id,
     },
-    salesChannelService: {
+    [Modules.SALES_CHANNEL]: {
       sales_channel_id: salesChannel.sales_channel_id,
     },
   })
