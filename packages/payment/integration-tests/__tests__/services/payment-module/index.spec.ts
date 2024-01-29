@@ -56,7 +56,7 @@ describe("Payment Module Service", () => {
     })
 
     it("complete payment flow successfully", async () => {
-      const paymentCollection = await service.createPaymentCollection({
+      let paymentCollection = await service.createPaymentCollection({
         currency_code: "USD",
         amount: 200,
         region_id: "reg_123",
@@ -71,14 +71,24 @@ describe("Payment Module Service", () => {
         paymentSession.id,
       ])
 
-      await service.completePaymentCollection(paymentCollection.id)
-
-      const finalCollection = await service.retrievePaymentCollection(
+      paymentCollection = await service.retrievePaymentCollection(
         paymentCollection.id,
-        { relations: ["payment_sessions", "payments"] }
+        { relations: ["payments"] }
       )
 
-      expect(finalCollection).toEqual(
+      await service.capturePayment({
+        amount: 200,
+        payment_id: paymentCollection.payments![0].id,
+      })
+
+      await service.completePaymentCollection(paymentCollection.id)
+
+      paymentCollection = await service.retrievePaymentCollection(
+        paymentCollection.id,
+        { relations: ["payment_sessions", "payments.captures"] }
+      )
+
+      expect(paymentCollection).toEqual(
         expect.objectContaining({
           id: expect.any(String),
           currency_code: "USD",
@@ -105,6 +115,11 @@ describe("Payment Module Service", () => {
               amount: 200,
               currency_code: "USD",
               provider_id: "manual",
+              captures: [
+                expect.objectContaining({
+                  amount: 200,
+                }),
+              ],
             }),
           ],
         })
@@ -678,7 +693,24 @@ describe("Payment Module Service", () => {
           })
           .catch((e) => e)
 
-        expect(error.message).toEqual("The payment is already fully captured.")
+        expect(error.message).toEqual(
+          "The payment: pay-id-1 is already fully captured."
+        )
+      })
+
+      it("should fail to capture a canceled payment", async () => {
+        await service.cancelPayment("pay-id-1")
+
+        const error = await service
+          .capturePayment({
+            amount: 100,
+            payment_id: "pay-id-1",
+          })
+          .catch((e) => e)
+
+        expect(error.message).toEqual(
+          "The payment: pay-id-1 has been canceled."
+        )
       })
     })
 
@@ -750,6 +782,31 @@ describe("Payment Module Service", () => {
 
         expect(error.message).toEqual(
           "Refund amount for payment: pay-id-1 cannot be greater than the amount captured on the payment."
+        )
+      })
+    })
+
+    describe("cancel", () => {
+      it("should cancel a payment", async () => {
+        const payment = await service.cancelPayment("pay-id-1")
+
+        expect(payment).toEqual(
+          expect.objectContaining({
+            id: "pay-id-1",
+            canceled_at: expect.any(Date),
+          })
+        )
+      })
+
+      it("should throw if trying to cancel a captured payment", async () => {
+        await service.capturePayment({ payment_id: "pay-id-2", amount: 100 })
+
+        const error = await service
+          .cancelPayment("pay-id-2")
+          .catch((e) => e.message)
+
+        expect(error).toEqual(
+          "Cannot cancel a payment: pay-id-2 that has been captured."
         )
       })
     })

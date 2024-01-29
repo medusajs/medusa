@@ -29,9 +29,9 @@ import {
 } from "@medusajs/utils"
 
 import * as services from "@services"
+import { Payment } from "@models"
 
 import { joinerConfig } from "../joiner-config"
-import { Payment, PaymentSession } from "@models"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -298,6 +298,7 @@ export default class PaymentModuleService implements IPaymentModuleService {
           "authorized_amount",
           "captured_amount",
           "captured_at",
+          "canceled_at",
         ],
         relations: ["captures"],
       },
@@ -308,10 +309,17 @@ export default class PaymentModuleService implements IPaymentModuleService {
     for (const payment of payments) {
       const input = inputMap.get(payment.id)!
 
+      if (payment.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `The payment: ${payment.id} has been canceled.`
+        )
+      }
+
       if (payment.captured_at) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          "The payment is already fully captured."
+          `The payment: ${payment.id} is already fully captured.`
         )
       }
 
@@ -516,6 +524,7 @@ export default class PaymentModuleService implements IPaymentModuleService {
         await this.createPayment(
           {
             amount: paymentSession.amount,
+            authorized_amount: paymentSession.amount,
             currency_code: paymentCollection.currency_code,
             provider_id: paymentSession.provider_id,
             payment_session_id: paymentSession.id,
@@ -571,15 +580,6 @@ export default class PaymentModuleService implements IPaymentModuleService {
         `Cannot set payment sessions for a payment collection with status ${paymentCollection.status}`
       )
     }
-
-    // TODO: we should pass payment providers upon creation
-
-    const paymentProvidersMap = new Map(
-      paymentCollection.payment_providers.map((provider) => [
-        provider.id,
-        provider,
-      ])
-    )
 
     const paymentSessionsMap = new Map(
       paymentCollection.payment_providers.map((session) => [
@@ -703,6 +703,8 @@ export default class PaymentModuleService implements IPaymentModuleService {
         }))
       : [{ id: paymentCollectionId, completed_at: new Date() }]
 
+    // TODO: what checks should be done here? e.g. captured_amount === amount?
+
     const updated = await this.paymentCollectionService_.update(
       input,
       sharedContext
@@ -727,7 +729,21 @@ export default class PaymentModuleService implements IPaymentModuleService {
   ): Promise<PaymentDTO | PaymentDTO[]> {
     const input = Array.isArray(paymentId) ? paymentId : [paymentId]
 
-    // TODO: what if there are existing captures/refunds
+    const payments = await this.paymentService_.list(
+      { id: input },
+      {
+        select: ["captured_amount", "refunded_amount"],
+      }
+    )
+
+    for (const payment of payments) {
+      if (payment.captured_amount !== 0) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Cannot cancel a payment: ${payment.id} that has been captured.`
+        )
+      }
+    }
 
     // TODO: cancel with the provider
 

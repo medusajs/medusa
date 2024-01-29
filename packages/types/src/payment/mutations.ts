@@ -27,6 +27,8 @@ export interface UpdatePaymentCollectionDTO
 
 export interface CreatePaymentDTO {
   amount: number
+  authorized_amount?: number
+
   currency_code: string
   provider_id: string
   data: Record<string, unknown>
