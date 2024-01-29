@@ -1,6 +1,6 @@
+import { AuthenticationInput, IAuthModuleService } from "@medusajs/types"
 import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 
-import { IAuthModuleService } from "@medusajs/types"
 import { MikroOrmWrapper } from "../../../utils"
 import Scrypt from "scrypt-kdf"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
@@ -60,7 +60,7 @@ describe("AuthModuleService - AuthProvider", () => {
       await createAuthUsers(testManager, [
         // Add authenticated user
         {
-          provider: "usernamePassword",
+          provider: "emailpass",
           entity_id: email,
           provider_metadata: {
             password: passwordHash,
@@ -68,7 +68,7 @@ describe("AuthModuleService - AuthProvider", () => {
         },
       ])
 
-      const res = await service.authenticate("usernamePassword", {
+      const res = await service.authenticate("emailpass", {
         body: {
           email: "test@test.com",
           password: password,
@@ -90,7 +90,7 @@ describe("AuthModuleService - AuthProvider", () => {
 
       await seedDefaultData(testManager)
 
-      const res = await service.authenticate("usernamePassword", {
+      const res = await service.authenticate("emailpass", {
         body: { email: "test@test.com" },
         scope: "store",
       })
@@ -104,7 +104,7 @@ describe("AuthModuleService - AuthProvider", () => {
     it("fails when no email is given", async () => {
       await seedDefaultData(testManager)
 
-      const res = await service.authenticate("usernamePassword", {
+      const res = await service.authenticate("emailpass", {
         body: { password: "supersecret" },
         scope: "store",
       })
@@ -126,7 +126,7 @@ describe("AuthModuleService - AuthProvider", () => {
       await createAuthUsers(testManager, [
         // Add authenticated user
         {
-          provider: "usernamePassword",
+          provider: "emailpass",
           entity_id: email,
           provider_metadata: {
             password_hash: passwordHash,
@@ -134,7 +134,7 @@ describe("AuthModuleService - AuthProvider", () => {
         },
       ])
 
-      const res = await service.authenticate("usernamePassword", {
+      const res = await service.authenticate("emailpass", {
         body: {
           email: "test@test.com",
           password: "password",
