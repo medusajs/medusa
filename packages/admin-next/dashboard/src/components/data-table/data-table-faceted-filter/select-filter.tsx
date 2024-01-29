@@ -4,10 +4,10 @@ import * as Popover from "@radix-ui/react-popover"
 import { Command } from "cmdk"
 import { MouseEvent, useState } from "react"
 
+import { DataTableFilterProps } from "../types"
 import { useDataTableFacetedFilterContext, useSelectedParams } from "./hooks"
-import { FilterProps } from "./types"
 
-interface SelectFilterProps extends FilterProps {
+interface SelectFilterProps extends DataTableFilterProps {
   options: { label: string; value: unknown }[]
   multiple?: boolean
 }

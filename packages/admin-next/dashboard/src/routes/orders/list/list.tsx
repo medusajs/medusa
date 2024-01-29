@@ -1,15 +1,12 @@
 import { EllipsisHorizontal } from "@medusajs/icons"
 import { Order } from "@medusajs/medusa"
 import { Checkbox, Container, Heading, Tooltip } from "@medusajs/ui"
-import {
-  createColumnHelper,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
+import { createColumnHelper } from "@tanstack/react-table"
 import { useAdminOrders, useAdminRegions } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { DataTable } from "../../../components/data-table/data-table"
+import { useDataTable } from "../../../hooks/use-data-table"
 import { useQueryParams } from "../../../hooks/use-query-params"
 
 export const OrderList = () => {
@@ -19,18 +16,25 @@ export const OrderList = () => {
     expand: "",
   })
 
-  const { q } = useQueryParams(["order", "q"])
-  const { orders, count, isLoading, isError, error } = useAdminOrders({
-    limit: 50,
-    offset: 0,
-    q,
-  })
+  const { q, offset } = useQueryParams(["offset", "q"])
+  const { orders, count, isLoading, isError, error } = useAdminOrders(
+    {
+      limit: 10,
+      offset: offset ? Number(offset) : 0,
+      q,
+    },
+    {
+      keepPreviousData: true,
+    }
+  )
 
   const columns = useColumns()
-  const table = useReactTable({
+  const { table } = useDataTable({
     data: orders ?? [],
     columns,
-    getCoreRowModel: getCoreRowModel(),
+    enablePagination: true,
+    count,
+    pageSize: 10,
   })
 
   return (
@@ -43,7 +47,31 @@ export const OrderList = () => {
           table={table}
           columns={columns}
           navigateTo={({ row }) => `/orders/${row.original.id}`}
+          filters={[
+            {
+              key: "region",
+              label: "Region",
+              type: "select",
+              options:
+                regions?.map((r) => ({
+                  label: r.name,
+                  value: r.id,
+                })) ?? [],
+              multiple: true,
+            },
+          ]}
           searchable
+          pagination
+          commands={[
+            {
+              label: "Export",
+              action: (selection) => {
+                console.log(selection)
+              },
+              shortcut: "e",
+            },
+          ]}
+          count={count}
         />
       </Container>
     </div>

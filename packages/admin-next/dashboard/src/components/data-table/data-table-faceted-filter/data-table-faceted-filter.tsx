@@ -2,33 +2,14 @@ import { Button, DropdownMenu, clx } from "@medusajs/ui"
 import { useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
+import { DataTableFilter } from "../types"
 import { DataTableFacetedFilterContext } from "./context"
 import { DateFilter } from "./date-filter"
 import { useDataTableFacetedFilterContext } from "./hooks"
 import { SelectFilter } from "./select-filter"
 
-type FilterOption = {
-  label: string
-  value: unknown
-}
-
-type FacetedFilter = {
-  key: string
-  label: string
-} & (
-  | {
-      type: "select"
-      options: FilterOption[]
-      multiple?: boolean
-    }
-  | {
-      type: "date"
-      options?: never
-    }
-)
-
 type DataTableFacetedFilterProps = {
-  filters: FacetedFilter[]
+  filters: DataTableFilter[]
   prefix?: string
 }
 
@@ -39,7 +20,7 @@ export const DataTableFacetedFilter = ({
   const [searchParams] = useSearchParams()
 
   const [activeFilters, setActiveFilters] = useState<
-    (FacetedFilter & { openOnMount: boolean })[]
+    (DataTableFilter & { openOnMount: boolean })[]
   >(getInitialFilters({ searchParams, filters, prefix }))
 
   const availableFilters = filters.filter(
@@ -126,7 +107,7 @@ export const DataTableFacetedFilter = ({
 }
 
 type ClearAllFiltersProps = {
-  filters: FacetedFilter[]
+  filters: DataTableFilter[]
   prefix?: string
 }
 
@@ -165,11 +146,11 @@ const getInitialFilters = ({
   prefix,
 }: {
   searchParams: URLSearchParams
-  filters: FacetedFilter[]
+  filters: DataTableFilter[]
   prefix?: string
 }) => {
   const params = new URLSearchParams(searchParams)
-  const activeFilters: (FacetedFilter & { openOnMount: boolean })[] = []
+  const activeFilters: (DataTableFilter & { openOnMount: boolean })[] = []
 
   filters.forEach((filter) => {
     const key = prefix ? `${prefix}_${filter.key}` : filter.key
@@ -188,6 +169,5 @@ const getInitialFilters = ({
     }
   })
 
-  console.log("activeFilters", activeFilters)
   return activeFilters
 }

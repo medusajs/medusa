@@ -5,10 +5,10 @@ import { format } from "date-fns"
 import isEqual from "lodash/isEqual"
 import { MouseEvent, useState } from "react"
 
+import { type DataTableFilterProps } from "../types"
 import { useDataTableFacetedFilterContext, useSelectedParams } from "./hooks"
-import { type FilterProps } from "./types"
 
-type DateFilterProps = FilterProps
+type DateFilterProps = DataTableFilterProps
 
 type DateComparisonOperator = {
   gte?: string
