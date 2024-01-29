@@ -1,7 +1,7 @@
 import { AbstractAuthenticationModuleProvider, isString } from "@medusajs/utils"
 
 import { AuthUserService } from "@services"
-import { AuthenticationResponse } from "@medusajs/types"
+import { AuthenticationInput, AuthenticationResponse } from "@medusajs/types"
 import Scrypt from "scrypt-kdf"
 
 class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
@@ -10,14 +10,14 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
 
   protected readonly authUserSerivce_: AuthUserService
 
-  constructor({ authUserService: AuthUserService }) {
-    super()
+  constructor({ authUserService }: { authUserService: AuthUserService }) {
+    super(arguments[0])
 
-    this.authUserSerivce_ = AuthUserService
+    this.authUserSerivce_ = authUserService
   }
 
   async authenticate(
-    userData: Record<string, any>
+    userData: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     const { email, password } = userData.body
 
@@ -43,7 +43,7 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
     const password_hash = authUser.provider_metadata?.password
 
     if (isString(password_hash)) {
-      const buf = Buffer.from(password_hash, "base64")
+      const buf = Buffer.from(password_hash as string, "base64")
 
       const success = await Scrypt.verify(buf, password)
 

@@ -1,4 +1,5 @@
 import {
+  AuthenticationInput,
   AuthenticationResponse,
   AuthenticationTypes,
   Context,
@@ -353,7 +354,8 @@ export default class AuthenticationModuleService<
   }
 
   protected getRegisteredAuthenticationProvider(
-    provider: string
+    provider: string,
+    { scope }: AuthenticationInput
   ): AbstractAuthenticationModuleProvider {
     let containerProvider: AbstractAuthenticationModuleProvider
     try {
@@ -365,18 +367,22 @@ export default class AuthenticationModuleService<
       )
     }
 
+    containerProvider.validateScope(scope)
+
     return containerProvider
   }
 
   async authenticate(
     provider: string,
-    authenticationData: Record<string, unknown>
+    authenticationData: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     try {
       await this.retrieveAuthProvider(provider, {})
 
-      const registeredProvider =
-        this.getRegisteredAuthenticationProvider(provider)
+      const registeredProvider = this.getRegisteredAuthenticationProvider(
+        provider,
+        authenticationData
+      )
 
       return await registeredProvider.authenticate(authenticationData)
     } catch (error) {
@@ -386,13 +392,15 @@ export default class AuthenticationModuleService<
 
   async validateCallback(
     provider: string,
-    authenticationData: Record<string, unknown>
+    authenticationData: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     try {
       await this.retrieveAuthProvider(provider, {})
 
-      const registeredProvider =
-        this.getRegisteredAuthenticationProvider(provider)
+      const registeredProvider = this.getRegisteredAuthenticationProvider(
+        provider,
+        authenticationData
+      )
 
       return await registeredProvider.validateCallback(authenticationData)
     } catch (error) {

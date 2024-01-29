@@ -78,5 +78,19 @@ describe("AuthenticationModuleService - AuthProvider", () => {
         "AuthenticationProvider with for provider: notRegistered wasn't registered in the module. Have you configured your options correctly?"
       )
     })
+
+    it("fails to authenticate using a valid provider with an invalid scope", async () => {
+      const { success, error } = await service.authenticate(
+        "usernamePassword",
+        {
+          scope: "non-existing",
+        }
+      )
+
+      expect(success).toBe(false)
+      expect(error).toEqual(
+        `Scope "non-existing" is not valid for provider usernamePassword`
+      )
+    })
   })
 })

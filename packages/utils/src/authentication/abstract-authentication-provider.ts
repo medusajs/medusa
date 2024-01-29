@@ -1,8 +1,10 @@
-import { AuthenticationResponse } from "@medusajs/types"
+import { AuthenticationResponse, AuthProviderScope } from "@medusajs/types"
+import { MedusaError } from "../common"
 
 export abstract class AbstractAuthenticationModuleProvider {
   public static PROVIDER: string
   public static DISPLAY_NAME: string
+  protected readonly scopes_: Record<string, AuthProviderScope>
 
   public get provider() {
     return (this.constructor as Function & { PROVIDER: string }).PROVIDER
@@ -11,6 +13,19 @@ export abstract class AbstractAuthenticationModuleProvider {
   public get displayName() {
     return (this.constructor as Function & { DISPLAY_NAME: string })
       .DISPLAY_NAME
+  }
+
+  protected constructor({ scopes }) {
+    this.scopes_ = scopes
+  }
+
+  public validateScope(scope) {
+    if (!this.scopes_[scope]) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        `Scope "${scope}" is not valid for provider ${this.provider}`
+      )
+    }
   }
 
   abstract authenticate(
