@@ -59,6 +59,13 @@
       },
       "description": "The date to show dates to."
     },
+    "locale": {
+      "required": false,
+      "tsType": {
+        "name": "Locale"
+      },
+      "description": "The locale to use for formatting dates. To change the locale pass a date-fns locale object."
+    },
     "className": {
       "required": false,
       "tsType": {
@@ -79,6 +86,13 @@
         "name": "boolean"
       },
       "description": "Whether the date picker's input is required."
+    },
+    "placeholder": {
+      "required": false,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The date picker's placeholder."
     },
     "size": {
       "required": false,
@@ -108,6 +122,54 @@
         "name": "boolean"
       },
       "description": "Whether to show a time picker along with the date picker."
+    },
+    "translations": {
+      "required": false,
+      "tsType": {
+        "name": "signature",
+        "type": "object",
+        "raw": "{\n  cancel?: string\n  apply?: string\n  start?: string\n  end?: string\n  range?: string\n}",
+        "signature": {
+          "properties": [
+            {
+              "key": "cancel",
+              "value": {
+                "name": "string",
+                "required": false
+              }
+            },
+            {
+              "key": "apply",
+              "value": {
+                "name": "string",
+                "required": false
+              }
+            },
+            {
+              "key": "start",
+              "value": {
+                "name": "string",
+                "required": false
+              }
+            },
+            {
+              "key": "end",
+              "value": {
+                "name": "string",
+                "required": false
+              }
+            },
+            {
+              "key": "range",
+              "value": {
+                "name": "string",
+                "required": false
+              }
+            }
+          ]
+        }
+      },
+      "description": "Translation keys for the date picker. Use this to localize the date picker."
     },
     "id": {
       "required": false,
