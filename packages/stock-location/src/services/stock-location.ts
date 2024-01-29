@@ -64,7 +64,7 @@ export default class StockLocationService {
   async list(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<StockLocation[]> {
     const manager = context.transactionManager ?? this.manager_
     const locationRepo = manager.getRepository(StockLocation)
@@ -83,7 +83,7 @@ export default class StockLocationService {
   async listAndCount(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<[StockLocation[], number]> {
     const manager = context.transactionManager ?? this.manager_
     const locationRepo = manager.getRepository(StockLocation)
@@ -103,7 +103,7 @@ export default class StockLocationService {
   async retrieve(
     stockLocationId: string,
     config: FindConfig<StockLocation> = {},
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<StockLocation> {
     if (!isDefined(stockLocationId)) {
       throw new MedusaError(

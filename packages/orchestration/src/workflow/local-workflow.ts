@@ -72,7 +72,7 @@ export class LocalWorkflow {
   private contextualizedMedusaModules(container) {
     // eslint-disable-next-line
     const this_ = this
-    return new Proxy(container, {
+    return new Proxy(container ?? {}, {
       get: function (target, prop) {
         if (prop !== "resolve") {
           return target[prop]
@@ -92,16 +92,18 @@ export class LocalWorkflow {
                     MedusaContext.getIndex(target, prop as string) ??
                     args.length
 
-                  let context = this_.medusaContext
-                  for (let i = args.length; i--; ) {
-                    const arg = args[i]
-                    if (arg?.__type === MedusaContextType) {
-                      context = arg
-                      args.splice(i, 1)
-                      break
+                  const hasContext =
+                    args[ctxIndex]?.__type === MedusaContextType
+
+                  if (!hasContext) {
+                    const context = this_.medusaContext
+                    if (context?.__type === MedusaContextType) {
+                      delete context?.manager
+                      delete context?.transactionManager
+                      args[ctxIndex] = context
                     }
                   }
-                  args[ctxIndex] = context
+
                   return await target[prop].apply(target, [...args])
                 }
               }

@@ -11,16 +11,9 @@ import {
 
 import { AuthProvider, AuthUser } from "@models"
 
-import { joinerConfig } from "../joiner-config"
 import { AuthProviderService, AuthUserService } from "@services"
+import { joinerConfig } from "../joiner-config"
 
-import {
-  AbstractAuthenticationModuleProvider,
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-} from "@medusajs/utils"
 import {
   AuthProviderDTO,
   AuthUserDTO,
@@ -30,6 +23,13 @@ import {
   FilterableAuthUserProps,
   UpdateAuthUserDTO,
 } from "@medusajs/types/dist/authentication/common"
+import {
+  AbstractAuthenticationModuleProvider,
+  InjectManager,
+  InjectTransactionManager,
+  MedusaContext,
+  MedusaError,
+} from "@medusajs/utils"
 import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
@@ -74,7 +74,7 @@ export default class AuthenticationModuleService<
   async retrieveAuthProvider(
     provider: string,
     config: FindConfig<AuthProviderDTO> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthProviderDTO> {
     const authProvider = await this.authProviderService_.retrieve(
       provider,
@@ -91,7 +91,7 @@ export default class AuthenticationModuleService<
   async listAuthProviders(
     filters: FilterableAuthProviderProps = {},
     config: FindConfig<AuthProviderDTO> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthProviderDTO[]> {
     const authProviders = await this.authProviderService_.list(
       filters,
