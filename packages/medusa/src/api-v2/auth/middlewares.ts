@@ -1,6 +1,6 @@
 import { MiddlewareRoute } from "../../loaders/helpers/routing/types"
-import passport from "passport"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import passport from "passport"
 import passportCustom from "passport-custom"
 
 passport.serializeUser((user, done) => {
@@ -21,7 +21,7 @@ passport.use(
     const { scope, auth_provider } = req.params
 
     if (!auth_provider || !scope) {
-      return this.fail()
+      return (this as passport.Strategy).fail()
     }
 
     const service = req.scope.resolve(ModuleRegistrationName.AUTHENTICATION)
@@ -30,7 +30,7 @@ passport.use(
 
     const { success, error, authUser, location } = res
     if (location) {
-      return this.redirect(location)
+      return (this as passport.Strategy).redirect(location)
     }
 
     if (!success) {
