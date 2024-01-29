@@ -52,7 +52,7 @@ export default class Address {
   phone: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  metadata?: Record<string, unknown> | null
+  metadata: Record<string, unknown> | null = null
 
   @Property({
     onCreate: () => new Date(),
