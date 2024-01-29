@@ -2,20 +2,22 @@ const path = require("path")
 
 const {
   startBootstrapApp,
-} = require("../../../environment-helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../environment-helpers/use-db")
-const { getContainer } = require("../../../environment-helpers/use-container")
-const { useExpressServer } = require("../../../environment-helpers/use-api")
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const {
+  getContainer,
+} = require("../../../../environment-helpers/use-container")
+const { useExpressServer } = require("../../../../environment-helpers/use-api")
 
 jest.setTimeout(30000)
 
-describe("Inventory Module", () => {
+describe("Stock Location Module", () => {
   let appContainer
   let dbConnection
   let shutdownServer
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
     shutdownServer = await startBootstrapApp({ cwd })
     appContainer = getContainer()
