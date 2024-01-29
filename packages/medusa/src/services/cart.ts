@@ -69,7 +69,7 @@ import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { PaymentSessionInput } from "../types/payment"
 import { validateEmail } from "../utils/is-email"
 import { RemoteQueryFunction } from "@medusajs/types"
-import { RemoteLink } from "@medusajs/modules-sdk"
+import { Modules, RemoteLink } from "@medusajs/modules-sdk"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -501,10 +501,10 @@ class CartService extends TransactionBaseService {
           )
 
           await this.remoteLink_.create({
-            cartService: {
+            [Modules.CART]: {
               cart_id: cart.id,
             },
-            salesChannelService: {
+            [Modules.SALES_CHANNEL]: {
               sales_channel_id: salesChannel.id,
             },
           })
@@ -1294,20 +1294,20 @@ class CartService extends TransactionBaseService {
           if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
             if (cart.sales_channel_id) {
               await this.remoteLink_.dismiss({
-                cartService: {
+                [Modules.CART]: {
                   cart_id: cart.id,
                 },
-                salesChannelService: {
+                [Modules.SALES_CHANNEL]: {
                   sales_channel_id: cart.sales_channel_id,
                 },
               })
             }
 
             await this.remoteLink_.create({
-              cartService: {
+              [Modules.CART]: {
                 cart_id: cart.id,
               },
-              salesChannelService: {
+              [Modules.SALES_CHANNEL]: {
                 sales_channel_id: salesChannel.id,
               },
             })

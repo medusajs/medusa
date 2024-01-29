@@ -25,25 +25,25 @@ export const LINKS = {
   ProductSalesChannel: composeLinkName(
     Modules.PRODUCT,
     "product_id",
-    "salesChannelService",
+    Modules.SALES_CHANNEL,
     "sales_channel_id"
   ),
   CartSalesChannel: composeLinkName(
-    "cartService",
+    Modules.CART,
     "cart_id",
-    "salesChannelService",
+    Modules.SALES_CHANNEL,
     "sales_channel_id"
   ),
   OrderSalesChannel: composeLinkName(
     "orderService",
     "order_id",
-    "salesChannelService",
+    Modules.SALES_CHANNEL,
     "sales_channel_id"
   ),
   PublishableApiKeySalesChannel: composeLinkName(
     "publishableApiKeyService",
     "publishable_key_id",
-    "salesChannelService",
+    Modules.SALES_CHANNEL,
     "sales_channel_id"
   ),
 }
