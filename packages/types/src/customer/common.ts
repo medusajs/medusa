@@ -1,6 +1,50 @@
+import { AddressDTO } from "../address"
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
-import { AddressDTO } from "../address"
+
+export interface CustomerAddressDTO {
+  id: string
+  address_name?: string
+  is_default_shipping: boolean
+  is_default_billing: boolean
+  customer_id: string
+  company?: string
+  first_name?: string
+  last_name?: string
+  address_1?: string
+  address_2?: string
+  city?: string
+  country_code?: string
+  province?: string
+  postal_code?: string
+  phone?: string
+  metadata?: Record<string, unknown>
+  created_at: string
+  updated_at: string
+}
+
+export interface FilterableCustomerAddressProps
+  extends BaseFilterable<FilterableCustomerAddressProps> {
+  id?: string | string[]
+  address_name?: string | OperatorMap<string>
+  is_default_shipping?: boolean | OperatorMap<boolean>
+  is_default_billing?: boolean | OperatorMap<boolean>
+  customer_id?: string | string[]
+  customer?: FilterableCustomerProps | string | string[]
+  company?: string | OperatorMap<string>
+  first_name?: string | OperatorMap<string>
+  last_name?: string | OperatorMap<string>
+  address_1?: string | OperatorMap<string>
+  address_2?: string | OperatorMap<string>
+  city?: string | OperatorMap<string>
+  country_code?: string | OperatorMap<string>
+  province?: string | OperatorMap<string>
+  postal_code?: string | OperatorMap<string>
+  phone?: string | OperatorMap<string>
+  metadata?: Record<string, unknown> | OperatorMap<Record<string, unknown>>
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+}
 
 export interface FilterableCustomerGroupProps
   extends BaseFilterable<FilterableCustomerGroupProps> {
@@ -69,9 +113,7 @@ export interface CustomerDTO {
   company_name?: string | null
   first_name?: string | null
   last_name?: string | null
-  default_billing_address?: AddressDTO
-  default_shipping_address?: AddressDTO
-  addresses?: AddressDTO[]
+  addresses?: CustomerAddressDTO[]
   phone?: string | null
   groups?: { id: string }[]
   metadata?: Record<string, unknown>
