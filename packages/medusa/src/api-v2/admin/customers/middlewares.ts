@@ -1,23 +1,14 @@
-import { MedusaV2Flag } from "@medusajs/utils"
-
-import {
-  isFeatureFlagEnabled,
-  transformBody,
-  transformQuery,
-} from "../../../api/middlewares"
+import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import * as QueryConfig from "./query-config"
 import {
   AdminGetCustomersParams,
   AdminGetCustomersCustomerParams,
+  AdminPostCustomersReq,
   AdminPostCustomersCustomerReq,
 } from "./validators"
 
 export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    matcher: "/admin/customers*",
-    middlewares: [isFeatureFlagEnabled(MedusaV2Flag.key)],
-  },
   {
     method: ["GET"],
     matcher: "/admin/customers",
@@ -27,6 +18,11 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/customers",
+    middlewares: [transformBody(AdminPostCustomersReq)],
   },
   {
     method: ["GET"],
