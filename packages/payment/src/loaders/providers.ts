@@ -1,7 +1,5 @@
-import {
-  AbstractPaymentProcessor,
-  moduleProviderLoader,
-} from "@medusajs/medusa"
+import { AbstractPaymentProcessor } from "@medusajs/medusa"
+import { moduleProviderLoader } from "@medusajs/modules-sdk"
 
 import { LoaderOptions, ModulesSdkTypes } from "@medusajs/types"
 import { Lifetime, asFunction } from "awilix"
