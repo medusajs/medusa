@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 type Action = {
   icon: ReactNode
   label: string
+  disabled?: boolean
 } & (
   | {
       to: string
@@ -47,12 +48,13 @@ export const ActionMenu = ({ groups }: ActionMenuProps) => {
                 if (action.onClick) {
                   return (
                     <DropdownMenu.Item
+                      disabled={action.disabled}
                       key={index}
                       onClick={(e) => {
                         e.stopPropagation()
                         action.onClick()
                       }}
-                      className="[&_svg]:text-ui-fg-subtle flex items-center gap-x-2"
+                      className="[&_svg]:text-ui-fg-subtle flex items-center gap-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {action.icon}
                       <span>{action.label}</span>
@@ -62,12 +64,16 @@ export const ActionMenu = ({ groups }: ActionMenuProps) => {
 
                 return (
                   <div key={index}>
-                    <Link to={action.to} onClick={(e) => e.stopPropagation()}>
-                      <DropdownMenu.Item className="[&_svg]:text-ui-fg-subtle flex items-center gap-x-2">
+                    <DropdownMenu.Item
+                      className="[&_svg]:text-ui-fg-subtle flex items-center gap-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      asChild
+                      disabled={action.disabled}
+                    >
+                      <Link to={action.to} onClick={(e) => e.stopPropagation()}>
                         {action.icon}
                         <span>{action.label}</span>
-                      </DropdownMenu.Item>
-                    </Link>
+                      </Link>
+                    </DropdownMenu.Item>
                   </div>
                 )
               })}
