@@ -14,7 +14,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     ModuleRegistrationName.CUSTOMER
   )
 
-  const customer = await customerModuleService.retrieveCustomerGroup(
+  const group = await customerModuleService.retrieveCustomerGroup(
     req.params.id,
     {
       select: req.retrieveConfig.select,
@@ -22,7 +22,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     }
   )
 
-  res.status(200).json({ customer })
+  res.status(200).json({ customer_group: group })
 }
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
