@@ -36,7 +36,7 @@ export const updateCustomersStep = createStep(
     return new StepResponse(customers, prevCustomers)
   },
   async (prevCustomers, { container }) => {
-    if (!prevCustomers) {
+    if (!prevCustomers?.length) {
       return
     }
 
