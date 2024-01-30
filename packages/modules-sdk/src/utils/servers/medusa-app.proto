@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package medusaAppService;
+
+message MedusaAppRequest {
+    string module = 1;
+    string method = 2;
+    string args = 3; // array of arguments
+}
+
+message MedusaAppQuery {
+    string args = 1; // array of arguments
+}
+
+message MedusaAppResponse {
+    string result = 1; // JSON serialized result
+}
+
+service MedusaAppService {
+    rpc Call (MedusaAppRequest) returns (MedusaAppResponse);
+    rpc Query (MedusaAppQuery) returns (MedusaAppResponse);
+}

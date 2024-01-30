@@ -2,7 +2,7 @@ import { LoadedModule, MedusaAppOutput, MedusaContainer } from "@medusajs/types"
 import { isString } from "@medusajs/utils"
 import { ModuleRegistrationName } from "../../definitions"
 
-export function httpServer(
+export default function (
   container: MedusaContainer,
   loadedModules: Record<string, LoadedModule | LoadedModule[]>,
   remoteQuery: MedusaAppOutput["query"]

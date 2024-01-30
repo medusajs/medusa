@@ -40,11 +40,13 @@
   },
   "scripts": {
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build && npm prune --production",
-    "build": "rimraf dist && tsc --build",
+    "build": "rimraf dist && tsc --build && node build.js",
     "test": "jest --runInBand --bail --forceExit",
     "watch": "tsc --build --watch"
   },
   "optionalDependencies": {
+    "@grpc/grpc-js": "^1.9.14",
+    "@grpc/proto-loader": "^0.7.10",
     "fastify": "^4.25.2",
     "undici": "^6.4.0"
   }
