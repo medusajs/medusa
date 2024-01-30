@@ -17,6 +17,14 @@ class UsernamePasswordProvider extends AbstractAuthModuleProvider {
     this.authUserSerivce_ = authUserService
   }
 
+  private getHashConfig(scope: string) {
+    const scopeConfig = this.scopes_[scope].hashConfig as
+      | Scrypt.ScryptParams
+      | undefined
+
+    return scopeConfig ?? { logN: 15, r: 8, p: 1 }
+  }
+
   async authenticate(
     userData: AuthenticationInput
   ): Promise<AuthenticationResponse> {
@@ -44,16 +52,29 @@ class UsernamePasswordProvider extends AbstractAuthModuleProvider {
         UsernamePasswordProvider.PROVIDER
       )
     } catch (error) {
-      if (error.code === MedusaError.Types.NOT_FOUND) {
-        const [createdAuthUser] = await this.authUserSerivce_.create([{
-          entity_id: email,
-          provider_id: UsernamePasswordProvider.PROVIDER,
-          app_metadata: {
-            scope: userData.authScope,
-          },
-        }])
+      if (error.type === MedusaError.Types.NOT_FOUND) {
+        const password_hash = await Scrypt.kdf(
+          password,
+          this.getHashConfig(userData.authScope)
+        )
 
-        authUser = createdAuthUser
+        const [createdAuthUser] = await this.authUserSerivce_.create([
+          {
+            entity_id: email,
+            provider: UsernamePasswordProvider.PROVIDER,
+            app_metadata: {
+              scope: userData.authScope,
+            },
+            provider_metadata: {
+              password: password_hash.toString("base64"),
+            },
+          },
+        ])
+
+        return {
+          success: true,
+          authUser: JSON.parse(JSON.stringify(createdAuthUser)),
+        }
       }
       return { success: false, error: error.message }
     }
