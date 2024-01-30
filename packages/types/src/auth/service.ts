@@ -15,6 +15,10 @@ import { Context } from "../shared-context"
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 
+export type JWTGenerationOptions = {
+  expiresIn?: string | number
+}
+
 export interface IAuthModuleService extends IModuleService {
   authenticate(
     provider: string,
@@ -72,7 +76,11 @@ export interface IAuthModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<AuthUserDTO>
 
-  generateJwtToken(authUserId: string, scope: string): Promise<string>
+  generateJwtToken(
+    authUserId: string,
+    scope: string,
+    options?: JWTGenerationOptions
+  ): Promise<string>
   retrieveAuthUserFromJwtToken(
     token: string,
     scope: string

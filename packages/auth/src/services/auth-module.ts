@@ -10,6 +10,7 @@ import {
   InternalModuleDeclaration,
   MedusaContainer,
   ModuleJoinerConfig,
+  JWTGenerationOptions,
 } from "@medusajs/types"
 
 import { AuthProvider, AuthUser } from "@models"
@@ -34,10 +35,6 @@ import {
   UpdateAuthUserDTO,
 } from "@medusajs/types"
 import { ServiceTypes } from "@types"
-
-type JWTOptions = {
-  expiresIn?: string | number
-}
 
 type AuthModuleOptions = {
   jwt_secret: string
@@ -148,7 +145,7 @@ export default class AuthModuleService<
   async generateJwtToken(
     authUserId: string,
     scope: string,
-    options: JWTOptions = {}
+    options: JWTGenerationOptions = {}
   ): Promise<string> {
     const authUser = await this.authUserService_.retrieve(authUserId)
     return jwt.sign({ id: authUser.id, scope }, this.options_.jwt_secret, {
