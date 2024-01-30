@@ -45,7 +45,10 @@ export function InjectTransactionManager(
         async (transactionManager) => {
           const copiedContext = {} as Context
           for (const key in originalContext) {
-            if (key === "manager" || key === "transactionManager") continue
+            if (key === "manager" || key === "transactionManager") {
+              continue
+            }
+
             Object.defineProperty(copiedContext, key, {
               get: function () {
                 return originalContext[key]
