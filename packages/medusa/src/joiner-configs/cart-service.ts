@@ -4,7 +4,7 @@ import { ModuleJoinerConfig } from "@medusajs/types"
 import { Cart } from "../models"
 
 export default {
-  serviceName: Modules.CART,
+  serviceName: "cartService",
   primaryKeys: ["id"],
   linkableKeys: { cart_id: "Cart" },
   alias: {
