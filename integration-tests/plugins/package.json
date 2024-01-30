@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@medusajs/cache-inmemory": "workspace:*",
+    "@medusajs/customer": "workspace:^",
     "@medusajs/event-bus-local": "workspace:*",
     "@medusajs/inventory": "workspace:^",
     "@medusajs/medusa": "workspace:*",

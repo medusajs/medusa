@@ -8009,7 +8009,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/customer@workspace:packages/customer":
+"@medusajs/customer@workspace:^, @medusajs/customer@workspace:packages/customer":
   version: 0.0.0-use.local
   resolution: "@medusajs/customer@workspace:packages/customer"
   dependencies:
@@ -31378,6 +31378,7 @@ __metadata:
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
     "@medusajs/cache-inmemory": "workspace:*"
+    "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/inventory": "workspace:^"
     "@medusajs/medusa": "workspace:*"
