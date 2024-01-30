@@ -164,7 +164,12 @@ describe("POST /admin/campaigns", () => {
             type: "usage",
           },
         },
-        adminHeaders
+        {
+          headers: {
+            ...adminHeaders.headers,
+            "x-request-id": "my-custom-request-id",
+          },
+        }
       )
     }
 
@@ -179,5 +184,14 @@ describe("POST /admin/campaigns", () => {
       ),
     ]
     expect(distinctTransactionId).toHaveLength(3)
+
+    const distinctRequestId = [
+      ...new Set(
+        spyCreateCampaigns.mock.calls.map((call) => call[1].requestId)
+      ),
+    ]
+
+    expect(distinctRequestId).toHaveLength(3)
+    expect(distinctRequestId).toContain("my-custom-request-id")
   })
 })

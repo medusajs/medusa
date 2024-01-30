@@ -17,8 +17,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "downlevelIteration": true, // to use ES5 specific tooling
-    "resolveJsonModule": true,
-    "typeRoots": ["node_modules/@types", "src/types/global.ts"]
+    "resolveJsonModule": true
   },
   "include": ["./src/**/*", "index.d.ts"],
   "exclude": [

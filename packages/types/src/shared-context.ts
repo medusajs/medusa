@@ -43,4 +43,9 @@ export type Context<TManager = unknown> = {
    * A string indicating the ID of the current transaction.
    */
   transactionId?: string
+
+  /**
+   * A string indicating the ID of the current request.
+   */
+  requestId?: string
 }

@@ -18,7 +18,7 @@ declare global {
       allowedProperties: string[]
       includes?: Record<string, boolean>
       errors: string[]
-      resquestId?: string
+      requestId?: string
     }
   }
 }

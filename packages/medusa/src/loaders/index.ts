@@ -193,7 +193,7 @@ export default async ({
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
     container.register({ manager: asValue(dataSource.manager) })
     req.scope = container.createScope() as MedusaContainer
-    req.resquestId = (req.headers["x-request-id"] as string) ?? v4()
+    req.requestId = (req.headers["x-request-id"] as string) ?? v4()
     next()
   })
 
