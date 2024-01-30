@@ -41,7 +41,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
 export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
   const id = req.params.id
-  const deleteCampaigns = deleteCustomersWorkflow(req.scope)
+  const deleteCustomers = deleteCustomersWorkflow(req.scope)
 
   const { errors } = await deleteCampaigns.run({
     input: { ids: [id] },
