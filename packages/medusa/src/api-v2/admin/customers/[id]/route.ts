@@ -54,7 +54,7 @@ export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
 
   res.status(200).json({
     id,
-    object: "campaign",
+    object: "customer",
     deleted: true,
   })
 }
