@@ -1,4 +1,5 @@
 import { ExternalModuleDeclaration, Logger } from "@medusajs/types"
+import { findMedusaContext } from "./find-medusa-context"
 
 const openedClients = new Map<string, any>()
 
@@ -45,13 +46,22 @@ export default async function (
           const path = `/modules/${moduleKeyName}/${methodName}`
 
           try {
+            const hasMedusaContext = findMedusaContext(args)
+
+            const sendHeaders = {
+              "content-type": "application/json",
+              "accept-encoding": "gzip, deflate, br",
+              connection: "keep-alive",
+            }
+
+            if (hasMedusaContext) {
+              sendHeaders["x-request-id"] = hasMedusaContext.requestId
+            }
+
             const { statusCode, body } = await client.request({
               path,
               method: "POST",
-              headers: {
-                "content-type": "application/json",
-                connection: "keep-alive",
-              },
+              headers: sendHeaders,
               body: JSON.stringify(args), // arguments as an array
             })
 

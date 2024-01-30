@@ -9,12 +9,14 @@ export default function (
 ) {
   return async (port: number, options?: Record<string, any>) => {
     let serverDependency
+    let fastifyCompress
 
     try {
       serverDependency = await import("fastify")
+      fastifyCompress = await import("@fastify/compress")
     } catch (err) {
       throw new Error(
-        "Fastify is not installed. Please install it to serve MedusaApp as a web server."
+        "Fastify or fastify-compress is not installed. Please install them to serve MedusaApp as a web server."
       )
     }
 
@@ -23,6 +25,15 @@ export default function (
       keepAliveTimeout: 1000 * 60 * 2,
       connectionTimeout: 1000 * 60 * 1,
       ...(options ?? {}),
+    })
+
+    fastify.register(fastifyCompress)
+
+    fastify.addHook("onSend", async (req, reply) => {
+      const requestId = req.headers["x-request-id"]
+      if (requestId) {
+        reply.header("X-Request-Id", req.headers["x-request-id"])
+      }
     })
 
     fastify.post("/modules/:module/:method", async (request, response) => {
