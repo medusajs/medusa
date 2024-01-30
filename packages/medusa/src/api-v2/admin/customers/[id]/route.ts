@@ -24,7 +24,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const updateCustomers = updateCustomersWorkflow(req.scope)
-  const { result, errors } = await updateCampaigns.run({
+  const { result, errors } = await updateCustomers.run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody as CustomerUpdatableFields,
@@ -43,7 +43,7 @@ export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
   const id = req.params.id
   const deleteCustomers = deleteCustomersWorkflow(req.scope)
 
-  const { errors } = await deleteCampaigns.run({
+  const { errors } = await deleteCustomers.run({
     input: { ids: [id] },
     throwOnError: false,
   })
