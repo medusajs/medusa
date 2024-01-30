@@ -8,7 +8,6 @@ import {
   Entity,
   ManyToOne,
   OnInit,
-  OnLoad,
   OneToMany,
   OptionalProps,
   PrimaryKey,
@@ -162,11 +161,6 @@ export default class LineItem {
 
     this.unit_price = val.numeric
     this.raw_unit_price = val.raw as BigNumberRawValue
-  }
-
-  @OnLoad()
-  onLoad() {
-    this.unit_price = new BigNumber(this.raw_unit_price)
   }
 
   @OnInit()

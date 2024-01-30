@@ -8,7 +8,6 @@ import {
   Entity,
   ManyToOne,
   OnInit,
-  OnLoad,
   OneToMany,
   PrimaryKey,
   Property,
@@ -111,11 +110,6 @@ export default class ShippingMethod {
 
     this.amount = val.numeric
     this.raw_amount = val.raw as BigNumberRawValue
-  }
-
-  @OnLoad()
-  onLoad() {
-    this.amount = new BigNumber(this.raw_amount)
   }
 
   @OnInit()
