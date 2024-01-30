@@ -18,4 +18,13 @@ export const storeCustomerRoutesMiddlewares: MiddlewareRoute[] = [
       }),
     ],
   },
+  {
+    method: ["GET"],
+    matcher: "/store/customers/me/admin",
+    middlewares: [
+      passport.authenticate("customRoute", {
+        scope: "admin",
+      }),
+    ],
+  },
 ]
