@@ -1,10 +1,6 @@
+import { BigNumberRawValue } from "@medusajs/types"
 import { BigNumber as BigNumberJS } from "bignumber.js"
 import { isObject, isString } from "../common"
-
-export type BigNumberRawValue = {
-  value: string | number
-  [key: string]: unknown
-}
 
 export class BigNumber {
   static DEFAULT_PRECISION = 20

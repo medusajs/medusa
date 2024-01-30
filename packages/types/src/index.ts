@@ -24,5 +24,7 @@ export * from "./sales-channel"
 export * from "./search"
 export * from "./shared-context"
 export * from "./stock-location"
+export * from "./totals"
 export * from "./transaction-base"
 export * from "./workflow"
+

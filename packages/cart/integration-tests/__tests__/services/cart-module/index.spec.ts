@@ -50,12 +50,12 @@ describe("Cart Module Service", () => {
               // proof of backward compatibility
               unit_price: 100,
             },
-            {
-              title: "two",
-              quantity: 1,
-              // raw price creation
-              unit_price: { value: "1234.1234" },
-            },
+            // {
+            //   title: "two",
+            //   quantity: 1,
+            //   // raw price creation
+            //   unit_price: { value: "1234.1234" },
+            // },
             {
               title: "three",
               quantity: 1,
@@ -71,19 +71,12 @@ describe("Cart Module Service", () => {
       })
 
       const itemOne = cart.items?.find((el) => el.title === "one")
-      const itemTwo = cart.items?.find((el) => el.title === "two")
       const itemThree = cart.items?.find((el) => el.title === "three")
 
       expect(JSON.parse(JSON.stringify(itemOne))).toEqual(
         expect.objectContaining({
           unit_price: 100,
           title: "one",
-        })
-      )
-      expect(JSON.parse(JSON.stringify(itemTwo))).toEqual(
-        expect.objectContaining({
-          unit_price: 1234.1234,
-          title: "two",
         })
       )
       expect(JSON.parse(JSON.stringify(itemThree))).toEqual(

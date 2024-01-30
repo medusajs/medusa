@@ -13,7 +13,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
-  decorateTotals,
+  decorateCartTotals,
   isObject,
   isString,
 } from "@medusajs/utils"
@@ -106,7 +106,7 @@ export default class CartModuleService implements ICartModuleService {
       { populate: true }
     )
 
-    return decorateTotals(serialized)
+    return decorateCartTotals(serialized)
   }
 
   @InjectManager("baseRepository_")

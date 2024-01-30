@@ -1,5 +1,5 @@
-import { DAL } from "@medusajs/types"
-import { BigNumber, BigNumberRawValue, generateEntityId } from "@medusajs/utils"
+import { BigNumberRawValue, DAL } from "@medusajs/types"
+import { BigNumber, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   BeforeUpdate,
