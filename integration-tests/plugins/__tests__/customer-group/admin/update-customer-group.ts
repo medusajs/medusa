@@ -12,7 +12,7 @@ const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("GET /admin/customer-groups", () => {
+describe("POST /admin/customer-groups/:id", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -43,21 +43,26 @@ describe("GET /admin/customer-groups", () => {
     await db.teardown()
   })
 
-  it("should get all customer groups and its count", async () => {
-    await customerModuleService.createCustomerGroup({
-      name: "Test",
+  it("should update a customer group", async () => {
+    const customer = await customerModuleService.createCustomerGroup({
+      name: "VIP",
     })
 
     const api = useApi() as any
-    const response = await api.get(`/admin/customer-groups`, adminHeaders)
+    const response = await api.post(
+      `/admin/customer-groups/${customer.id}`,
+      {
+        name: "regular",
+      },
+      adminHeaders
+    )
 
     expect(response.status).toEqual(200)
-    expect(response.data.count).toEqual(1)
-    expect(response.data.groups).toEqual([
+    expect(response.data.customer_group).toEqual(
       expect.objectContaining({
         id: expect.any(String),
-        name: "Test",
-      }),
-    ])
+        name: "regular",
+      })
+    )
   })
 })
