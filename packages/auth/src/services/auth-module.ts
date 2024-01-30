@@ -35,6 +35,10 @@ import {
 } from "@medusajs/types"
 import { ServiceTypes } from "@types"
 
+type JWTOptions = {
+  expiresIn?: string | number
+}
+
 type AuthModuleOptions = {
   jwt_secret: string
 }
@@ -141,10 +145,14 @@ export default class AuthModuleService<
     ]
   }
 
-  async generateJwtToken(authUserId: string, scope: string): Promise<string> {
+  async generateJwtToken(
+    authUserId: string,
+    scope: string,
+    options: JWTOptions = {}
+  ): Promise<string> {
     const authUser = await this.authUserService_.retrieve(authUserId)
     return jwt.sign({ id: authUser.id, scope }, this.options_.jwt_secret, {
-      expiresIn: "1d",
+      expiresIn: options.expiresIn || "1d",
     })
   }
 

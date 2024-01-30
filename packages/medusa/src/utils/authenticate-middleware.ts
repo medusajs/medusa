@@ -1,7 +1,10 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IAuthModuleService } from "@medusajs/types"
+import { AuthUserDTO, IAuthModuleService } from "@medusajs/types"
 import { NextFunction, RequestHandler } from "express"
 import { MedusaRequest, MedusaResponse } from "../types/routing"
+
+const SESSION_AUTH = "session"
+const BEARER_AUTH = "bearer"
 
 type MedusaSession = {
   auth: {
@@ -31,21 +34,16 @@ export default (
     // @ts-ignore
     const session: MedusaSession = req.session || {}
 
-    if (authTypes.includes("session")) {
+    let authUser: AuthUserDTO | null = null
+    if (authTypes.includes(SESSION_AUTH)) {
       if (session.auth && session.auth[authScope]) {
-        const authUser = await authModule.retrieveAuthUser(
-          session.auth[authScope].user_id
-        )
-        req.auth_user = {
-          id: authUser.id,
-          app_metadata: authUser.app_metadata,
-          scope: authScope,
-        }
-        return next()
+        authUser = await authModule
+          .retrieveAuthUser(session.auth[authScope].user_id)
+          .catch(() => null)
       }
     }
 
-    if (authTypes.includes("bearer")) {
+    if (authTypes.includes(BEARER_AUTH)) {
       const authHeader = req.headers.authorization
       if (authHeader) {
         const re = /(\S+)\s+(\S+)/
@@ -55,19 +53,21 @@ export default (
           const tokenType = matches[1]
           const token = matches[2]
           if (tokenType.toLowerCase() === "bearer") {
-            const authUser = await authModule.retrieveAuthUserFromJwtToken(
-              token,
-              authScope
-            )
-            req.auth_user = {
-              id: authUser.id,
-              app_metadata: authUser.app_metadata,
-              scope: authScope,
-            }
-            return next()
+            authUser = await authModule
+              .retrieveAuthUserFromJwtToken(token, authScope)
+              .catch(() => null)
           }
         }
       }
+    }
+
+    if (authUser) {
+      req.auth_user = {
+        id: authUser.id,
+        app_metadata: authUser.app_metadata,
+        scope: authScope,
+      }
+      return next()
     }
 
     if (options.allowUnauthenticated) {
