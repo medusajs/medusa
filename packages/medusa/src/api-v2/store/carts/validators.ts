@@ -18,7 +18,7 @@ const Address = z
   })
   .strict()
 
-export const StorePostCartReqZod = z
+export const StorePostCartReq = z
   .object({
     region_id: z.string().optional(),
     customer_id: z.string().optional(),
