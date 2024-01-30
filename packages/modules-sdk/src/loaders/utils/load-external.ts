@@ -5,6 +5,7 @@ import {
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
+import { MedusaModuleType } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Modules } from "../../definitions"
 import * as Clients from "./clients"
@@ -36,7 +37,10 @@ export async function loadExternalModule(
       }
     }
 
-    loadedModule = await Clients[clientType].default(
+    const clientConstructor = Clients[clientType].default
+    clientConstructor.__type = MedusaModuleType
+
+    loadedModule = await clientConstructor(
       moduleKey,
       server?.url,
       {

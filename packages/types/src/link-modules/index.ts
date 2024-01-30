@@ -1,6 +1,6 @@
 import { FindConfig } from "../common"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
-import { ModuleJoinerConfig } from "../modules-sdk"
+import { ModuleJoinerConfig } from "../modules-sdk/common"
 import { Context } from "../shared-context"
 
 export interface ILinkModule {

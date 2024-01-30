@@ -2,10 +2,11 @@ import { mergeTypeDefs } from "@graphql-tools/merge"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
-  ExternalModuleDeclaration,
   InternalModuleDeclaration,
   LoadedModule,
+  MedusaAppOutput,
   MedusaContainer,
+  MedusaModuleConfig,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
   ModuleDefinition,
@@ -13,6 +14,8 @@ import {
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
   RemoteJoinerQuery,
+  RunMigrationFn,
+  SharedResources,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -31,39 +34,9 @@ import { MedusaModule } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { cleanGraphQLSchema } from "./utils"
+import * as Servers from "./utils/servers"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
-
-export type RunMigrationFn = (
-  options?: ModuleServiceInitializeOptions,
-  injectedDependencies?: Record<any, any>
-) => Promise<void>
-
-export type MedusaModuleConfig = {
-  [key: string | Modules]:
-    | boolean
-    | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
-}
-
-export type SharedResources = {
-  database?: ModuleServiceInitializeOptions["database"] & {
-    /**
-     * {
-     *   name?: string
-     *   afterCreate?: Function
-     *   min?: number
-     *   max?: number
-     *   refreshIdle?: boolean
-     *   idleTimeoutMillis?: number
-     *   reapIntervalMillis?: number
-     *   returnToHead?: boolean
-     *   priorityRange?: number
-     *   log?: (message: string, logLevel: string) => void
-     * }
-     */
-    pool?: Record<string, unknown>
-  }
-}
 
 async function loadModules(modulesConfig, sharedContainer) {
   const allModules = {}
@@ -177,19 +150,6 @@ function registerCustomJoinerConfigs(servicesConfig: ModuleJoinerConfig[]) {
 
     MedusaModule.setJoinerConfig(config.serviceName, config)
   }
-}
-
-export type MedusaAppOutput = {
-  modules: Record<string, LoadedModule | LoadedModule[]>
-  link: RemoteLink | undefined
-  query: (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any>
-  entitiesMap?: Record<string, any>
-  notFound?: Record<string, Record<string, string>>
-  runMigrations: RunMigrationFn
-  listen: (port: number, options?: Record<string, any>) => Promise<void>
 }
 
 export async function MedusaApp({
@@ -344,93 +304,16 @@ export async function MedusaApp({
       entitiesMap: schema.getTypeMap(),
       notFound,
       runMigrations,
-      listen: webServer(sharedContainer_, allModules, query),
+      listen: async (protocol, port, options?: Record<string, any>) => {
+        const serverConstructor = Servers[protocol].default
+        await serverConstructor(
+          sharedContainer_,
+          allModules,
+          query
+        )(port, options)
+      },
     }
   } finally {
     await MedusaModule.onApplicationStart()
-  }
-}
-
-function webServer(
-  container: MedusaContainer,
-  loadedModules: Record<string, LoadedModule | LoadedModule[]>,
-  remoteQuery: MedusaAppOutput["query"]
-) {
-  return async (port: number, options?: Record<string, any>) => {
-    let serverDependency
-
-    try {
-      serverDependency = await import("fastify")
-    } catch (err) {
-      throw new Error(
-        "Fastify is not installed. Please install it to serve MedusaApp as a web server."
-      )
-    }
-
-    const fastify = serverDependency.default({
-      logger: true,
-      keepAliveTimeout: 1000 * 60 * 2,
-      connectionTimeout: 1000 * 60 * 1,
-      ...(options ?? {}),
-    })
-
-    fastify.post("/modules/:module/:method", async (request, response) => {
-      const { module, method } = request.params as {
-        module: string
-        method: string
-      }
-      const args = request.body
-
-      const modName = module ?? ""
-      const resolutionName =
-        ModuleRegistrationName[modName.toUpperCase()] ??
-        loadModules[modName]?.__definition?.registrationName
-
-      const resolvedModule = container.resolve(resolutionName, {
-        allowUnregistered: true,
-      })
-
-      if (!resolvedModule) {
-        return response.status(500).send(`Module ${modName} not found.`)
-      }
-
-      if (method === "__joinerConfig" || method == "__definition") {
-        return resolvedModule[method]
-      } else if (typeof resolvedModule[method] !== "function") {
-        return response
-          .status(500)
-          .send(`Method "${method}" not found in "${modName}"`)
-      }
-
-      try {
-        return await resolvedModule[method].apply(resolvedModule, args)
-      } catch (err) {
-        return response.status(500).send(err.message)
-      }
-    })
-
-    fastify.post("/query", async (request, response) => {
-      const input = request.body
-
-      let query
-      let variables = {}
-      if (isString(input.query)) {
-        query = input.query
-        variables = input.variables ?? {}
-      } else {
-        query = input
-      }
-
-      try {
-        return await remoteQuery(query, variables)
-      } catch (err) {
-        return response.status(500).send(err.message)
-      }
-    })
-
-    await fastify.listen({
-      port,
-      host: "0.0.0.0",
-    })
   }
 }
