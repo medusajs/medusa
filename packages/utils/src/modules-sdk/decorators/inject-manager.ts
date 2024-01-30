@@ -1,4 +1,4 @@
-import { Context, SharedContext } from "@medusajs/types"
+import { Context } from "@medusajs/types"
 
 export function InjectManager(managerProperty?: string): MethodDecorator {
   return function (
@@ -16,13 +16,28 @@ export function InjectManager(managerProperty?: string): MethodDecorator {
     const argIndex = target.MedusaContextIndex_[propertyKey]
 
     descriptor.value = function (...args: any[]) {
-      const context: SharedContext | Context = { ...(args[argIndex] ?? {}) }
+      const originalContext = args[argIndex] ?? {}
+      const copiedContext = {} as Context
+      for (const key in originalContext) {
+        if (key === "manager" || key === "transactionManager") continue
+        Object.defineProperty(copiedContext, key, {
+          get: function () {
+            return originalContext[key]
+          },
+          set: function (value) {
+            originalContext[key] = value
+          },
+        })
+      }
+
       const resourceWithManager = !managerProperty
         ? this
         : this[managerProperty]
 
-      context.manager = context.manager ?? resourceWithManager.getFreshManager()
-      args[argIndex] = context
+      copiedContext.manager ??= resourceWithManager.getFreshManager()
+      copiedContext.transactionManager ??= originalContext?.transactionManager
+
+      args[argIndex] = copiedContext
 
       return originalMethod.apply(this, args)
     }

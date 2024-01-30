@@ -14,19 +14,22 @@ export default abstract class AdjustmentLine {
   id: string
 
   @Property({ columnType: "text", nullable: true })
-  description?: string | null
+  description: string | null = null
+
+  @Property({
+    columnType: "text",
+    nullable: true,
+  })
+  promotion_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  promotion_id?: string | null
+  code: string | null = null
 
-  @Property({ columnType: "text" })
-  code: string
-
-  @Property({ columnType: "numeric" })
+  @Property({ columnType: "numeric", serializer: Number })
   amount: number
 
   @Property({ columnType: "text", nullable: true })
-  provider_id?: string | null
+  provider_id: string | null = null
 
   @Property({
     onCreate: () => new Date(),

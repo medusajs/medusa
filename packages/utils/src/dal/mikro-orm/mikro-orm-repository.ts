@@ -17,9 +17,12 @@ import {
   EntityName,
   FilterQuery as MikroFilterQuery,
 } from "@mikro-orm/core/typings"
-import { isString, MedusaError } from "../../common"
-import { MedusaContext } from "../../decorators"
-import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
+import { MedusaError, isString } from "../../common"
+import {
+  InjectTransactionManager,
+  MedusaContext,
+  buildQuery,
+} from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,

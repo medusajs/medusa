@@ -1,4 +1,4 @@
-import { Context, SharedContext } from "@medusajs/types"
+import { Context } from "@medusajs/types"
 import { isString } from "../../common"
 
 export function InjectTransactionManager(
@@ -31,7 +31,8 @@ export function InjectTransactionManager(
     const argIndex = target.MedusaContextIndex_[propertyKey]
     descriptor.value = async function (...args: any[]) {
       const shouldForceTransactionRes = shouldForceTransaction(target)
-      const context: SharedContext | Context = args[argIndex] ?? {}
+      const context: Context = args[argIndex] ?? {}
+      const originalContext = args[argIndex] ?? {}
 
       if (!shouldForceTransactionRes && context?.transactionManager) {
         return await originalMethod.apply(this, args)
@@ -42,8 +43,22 @@ export function InjectTransactionManager(
         : this[managerProperty]
       ).transaction(
         async (transactionManager) => {
-          args[argIndex] = { ...(args[argIndex] ?? {}) }
-          args[argIndex].transactionManager = transactionManager
+          const copiedContext = {} as Context
+          for (const key in originalContext) {
+            if (key === "manager" || key === "transactionManager") continue
+            Object.defineProperty(copiedContext, key, {
+              get: function () {
+                return originalContext[key]
+              },
+              set: function (value) {
+                originalContext[key] = value
+              },
+            })
+          }
+
+          copiedContext.transactionManager ??= transactionManager
+          copiedContext.manager ??= originalContext?.manager
+          args[argIndex] = copiedContext
 
           return await originalMethod.apply(this, args)
         },

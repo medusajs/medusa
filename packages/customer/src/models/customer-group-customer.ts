@@ -1,6 +1,7 @@
 import { DAL } from "@medusajs/types"
 import { generateEntityId } from "@medusajs/utils"
 import {
+  Cascade,
   BeforeCreate,
   ManyToOne,
   Entity,
@@ -12,7 +13,7 @@ import {
 import Customer from "./customer"
 import CustomerGroup from "./customer-group"
 
-type OptionalGroupProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
+type OptionalGroupProps = "customer_group" | "customer" | DAL.EntityDateColumns // TODO: To be revisited when more clear
 
 @Entity({ tableName: "customer_group_customer" })
 export default class CustomerGroupCustomer {
@@ -21,10 +22,17 @@ export default class CustomerGroupCustomer {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Property({ columnType: "text" })
+  customer_id: string
+
+  @Property({ columnType: "text" })
+  customer_group_id: string
+
   @ManyToOne({
     entity: () => Customer,
-    fieldName: "customer__id",
+    fieldName: "customer_id",
     index: "IDX_customer_group_customer_customer_id",
+    cascade: [Cascade.REMOVE],
   })
   customer: Customer
 
@@ -32,6 +40,7 @@ export default class CustomerGroupCustomer {
     entity: () => CustomerGroup,
     fieldName: "customer_group_id",
     index: "IDX_customer_group_customer_group_id",
+    cascade: [Cascade.REMOVE],
   })
   customer_group: CustomerGroup
 
@@ -52,6 +61,9 @@ export default class CustomerGroupCustomer {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @Property({ columnType: "text", nullable: true })
+  created_by: string | null = null
 
   @BeforeCreate()
   onCreate() {

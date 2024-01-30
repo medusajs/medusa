@@ -1,20 +1,20 @@
 import {
   Context,
-  FilterQuery as InternalFilterQuery,
   FindConfig,
+  FilterQuery as InternalFilterQuery,
 } from "@medusajs/types"
 import { EntitySchema } from "@mikro-orm/core"
 import { EntityClass } from "@mikro-orm/core/typings"
 import {
+  MedusaError,
   doNotForceTransaction,
   isDefined,
   isString,
   lowerCaseFirst,
-  MedusaError,
   shouldForceTransaction,
   upperCaseFirst,
 } from "../common"
-import { MedusaContext } from "../decorators"
+import { MedusaContext } from "../modules-sdk"
 import { buildQuery } from "./build-query"
 import { InjectManager, InjectTransactionManager } from "./decorators"
 

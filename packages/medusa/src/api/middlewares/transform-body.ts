@@ -1,6 +1,6 @@
+import { ValidatorOptions } from "class-validator"
 import { NextFunction, Request, Response } from "express"
 import { ClassConstructor } from "../../types/global"
-import { ValidatorOptions } from "class-validator"
 import { validator } from "../../utils/validator"
 
 export function transformBody<T>(

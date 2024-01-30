@@ -6,6 +6,7 @@ import type { MedusaContainer } from "./global"
 export interface MedusaRequest extends Request {
   user?: (User | Customer) & { customer_id?: string; userId?: string }
   scope: MedusaContainer
+  requestId?: string
 }
 
 export type MedusaResponse = Response

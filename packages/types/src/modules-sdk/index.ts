@@ -36,7 +36,7 @@ export type InternalModuleDeclaration = {
   resources: MODULE_RESOURCE_TYPE
   dependencies?: string[]
   definition?: ModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
-  resolve?: string
+  resolve?: string | ModuleExports
   options?: Record<string, unknown>
   /**
    * If multiple modules are registered with the same key, the alias can be used to differentiate them
@@ -231,14 +231,20 @@ export declare type ModuleJoinerRelationship = JoinerRelationship & {
 export type ModuleExports = {
   service: Constructor<any>
   loaders?: ModuleLoaderFunction[]
+  /**
+   * @deprecated property will be removed in future versions
+   */
   migrations?: any[]
+  /**
+   * @deprecated property will be removed in future versions
+   */
   models?: Constructor<any>[]
   runMigrations?(
-    options: LoaderOptions,
+    options: LoaderOptions<any>,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
   revertMigration?(
-    options: LoaderOptions,
+    options: LoaderOptions<any>,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
 }

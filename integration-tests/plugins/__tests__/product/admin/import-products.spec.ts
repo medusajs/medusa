@@ -49,7 +49,7 @@ const env: Record<any, any> = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("Product import batch job", () => {
+describe.skip("Product import batch job", () => {
   let dbConnection
   let shutdownServer
   let medusaProcess

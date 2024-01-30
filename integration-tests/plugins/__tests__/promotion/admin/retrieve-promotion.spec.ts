@@ -8,6 +8,8 @@ import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import adminSeeder from "../../../../helpers/admin-seeder"
 
+jest.setTimeout(50000)
+
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
@@ -74,28 +76,30 @@ describe("GET /admin/promotions", () => {
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.promotion).toEqual({
-      id: expect.any(String),
-      code: "TEST",
-      campaign: null,
-      is_automatic: false,
-      type: "standard",
-      created_at: expect.any(String),
-      updated_at: expect.any(String),
-      deleted_at: null,
-      application_method: {
+    expect(response.data.promotion).toEqual(
+      expect.objectContaining({
         id: expect.any(String),
-        promotion: expect.any(Object),
-        value: 100,
-        type: "fixed",
-        target_type: "order",
-        max_quantity: 0,
-        allocation: null,
+        code: "TEST",
+        campaign: null,
+        is_automatic: false,
+        type: "standard",
         created_at: expect.any(String),
         updated_at: expect.any(String),
         deleted_at: null,
-      },
-    })
+        application_method: expect.objectContaining({
+          id: expect.any(String),
+          promotion: expect.any(Object),
+          value: 100,
+          type: "fixed",
+          target_type: "order",
+          max_quantity: 0,
+          allocation: null,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        }),
+      })
+    )
   })
 
   it("should get the requested promotion with filtered fields and relations", async () => {

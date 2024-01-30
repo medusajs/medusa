@@ -92,6 +92,7 @@ export type { AdminGetStockLocationsParams } from "./AdminGetStockLocationsParam
 export type { AdminGetSwapsParams } from "./AdminGetSwapsParams"
 export type { AdminGetTaxRatesParams } from "./AdminGetTaxRatesParams"
 export type { AdminGetTaxRatesTaxRateParams } from "./AdminGetTaxRatesTaxRateParams"
+export type { AdminGetUsersParams } from "./AdminGetUsersParams"
 export type { AdminGetVariantParams } from "./AdminGetVariantParams"
 export type { AdminGetVariantsParams } from "./AdminGetVariantsParams"
 export type { AdminGetVariantsVariantInventoryRes } from "./AdminGetVariantsVariantInventoryRes"

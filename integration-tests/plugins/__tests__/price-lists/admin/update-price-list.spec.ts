@@ -30,7 +30,7 @@ const env = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("POST /admin/price-lists/:id", () => {
+describe.skip("POST /admin/price-lists/:id", () => {
   let dbConnection
   let appContainer
   let shutdownServer

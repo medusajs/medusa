@@ -1,4 +1,4 @@
-export * as AuthenticationTypes from "./authentication"
+export * as AuthTypes from "./auth"
 export * as CacheTypes from "./cache"
 export * as CartTypes from "./cart"
 export * as CommonTypes from "./common"
@@ -18,4 +18,3 @@ export * as SearchTypes from "./search"
 export * as StockLocationTypes from "./stock-location"
 export * as TransactionBaseTypes from "./transaction-base"
 export * as WorkflowTypes from "./workflow"
-

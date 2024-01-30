@@ -9,11 +9,15 @@ export interface AdjustmentLineDTO {
   /**
    * The code of the adjustment line
    */
-  code: string
+  code?: string
   /**
    * The amount of the adjustment line
    */
   amount: number
+  /**
+   * The ID of the associated cart
+   */
+  cart_id: string
   /**
    * The description of the adjustment line
    */
@@ -36,18 +40,27 @@ export interface AdjustmentLineDTO {
   updated_at: Date | string
 }
 
-export interface ShippingMethodAdjustmentLineDTO extends AdjustmentLineDTO {
+export interface ShippingMethodAdjustmentDTO extends AdjustmentLineDTO {
   /**
    * The associated shipping method
    */
   shipping_method: CartShippingMethodDTO
+  /**
+   * The ID of the associated shipping method
+   */
+  shipping_method_id: string
 }
 
-export interface LineItemAdjustmentLineDTO extends AdjustmentLineDTO {
+export interface LineItemAdjustmentDTO extends AdjustmentLineDTO {
+  /**
+   * The associated line item
+   * @expandable
+   */
+  item: CartLineItemDTO
   /**
    * The associated line item
    */
-  line_item: CartLineItemDTO
+  item_id: string
 }
 
 export interface TaxLineDTO {
@@ -90,13 +103,21 @@ export interface ShippingMethodTaxLineDTO extends TaxLineDTO {
    * The associated shipping method
    */
   shipping_method: CartShippingMethodDTO
+  /**
+   * The ID of the associated shipping method
+   */
+  shipping_method_id: string
 }
 
 export interface LineItemTaxLineDTO extends TaxLineDTO {
   /**
    * The associated line item
    */
-  line_item: CartLineItemDTO
+  item: CartLineItemDTO
+  /**
+   * The ID of the associated line item
+   */
+  item_id: string
 }
 
 export interface CartAddressDTO {
@@ -218,7 +239,7 @@ export interface CartShippingMethodDTO {
    *
    * @expandable
    */
-  adjustments?: ShippingMethodAdjustmentLineDTO[]
+  adjustments?: ShippingMethodAdjustmentDTO[]
 
   /**
    * When the shipping method was created.
@@ -340,7 +361,7 @@ export interface CartLineItemDTO {
    *
    * @expandable
    */
-  adjustments?: LineItemAdjustmentLineDTO[]
+  adjustments?: LineItemAdjustmentDTO[]
   /**
    * The associated cart.
    *
@@ -494,12 +515,51 @@ export interface FilterableLineItemProps
   product_id?: string | string[]
 }
 
+export interface FilterableLineItemAdjustmentProps
+  extends BaseFilterable<FilterableLineItemAdjustmentProps> {
+  id?: string | string[]
+  item_id?: string | string[]
+  promotion_id?: string | string[]
+  provider_id?: string | string[]
+  item?: FilterableLineItemProps
+}
 export interface FilterableShippingMethodProps
   extends BaseFilterable<FilterableShippingMethodProps> {
   id?: string | string[]
   cart_id?: string | string[]
   name?: string
   shipping_option_id?: string | string[]
+}
+
+export interface FilterableShippingMethodAdjustmentProps
+  extends BaseFilterable<FilterableShippingMethodAdjustmentProps> {
+  id?: string | string[]
+  shipping_method_id?: string | string[]
+  promotion_id?: string | string[]
+  provider_id?: string | string[]
+  shipping_method?: FilterableShippingMethodProps
+}
+
+export interface FilterableLineItemTaxLineProps
+  extends BaseFilterable<FilterableLineItemTaxLineProps> {
+  id?: string | string[]
+  description?: string
+  code?: string | string[]
+  tax_rate_id?: string | string[]
+  provider_id?: string | string[]
+  item_id?: string | string[]
+  item?: FilterableLineItemProps
+}
+
+export interface FilterableShippingMethodTaxLineProps
+  extends BaseFilterable<FilterableShippingMethodTaxLineProps> {
+  id?: string | string[]
+  description?: string
+  code?: string | string[]
+  tax_rate_id?: string | string[]
+  provider_id?: string | string[]
+  shipping_method_id?: string | string[]
+  shipping_method?: FilterableShippingMethodProps
 }
 
 /**
