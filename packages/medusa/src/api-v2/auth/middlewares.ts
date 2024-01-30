@@ -19,22 +19,18 @@ passport.deserializeUser((user, done) => {
   done(null, user)
 })
 
-type AuthenticatorMethod = (
-  service: IAuthModuleService
-) => (
-  provider: string,
-  data: AuthenticationInput
-) => Promise<AuthenticationResponse>
-
-// class AbstractAuthModuleStrategy extends passport.Strategy {
+// abstract class AbstractAuthModuleStrategy extends passport.Strategy {
 //   name?: string
-//   authenticationMethod: AuthenticatorMethod
 
-//   constructor(name: string, authMethod: AuthenticatorMethod) {
+//   constructor(name: string) {
 //     super()
 //     this.name = name
-//     this.authenticationMethod = authMethod
 //   }
+
+//   abstract authenticationMethod(
+//     authProvider: string,
+//     authData: AuthenticationInput
+//   ): (service: IAuthModuleService) => Promise<AuthenticationResponse>
 
 //   async authenticate(
 //     this: passport.StrategyCreated<this, this & passport.StrategyCreatedStatic>,
@@ -57,7 +53,8 @@ type AuthenticatorMethod = (
 
 //     const authData = { ...req } as unknown as AuthenticationInput
 //     authData.authScope = scope
-//     const res = await this.authenticationMethod(service)(authProvider, authData)
+//     const res = await this.authenticationMethod(authProvider, authData)(service)
+//     // const res = await this.authenticationMethod(service)(authProvider, authData)
 
 //     const { success, error, authUser, location } = res
 //     if (location) {
@@ -71,6 +68,28 @@ type AuthenticatorMethod = (
 //     }
 //   }
 // }
+
+// class AuthModuleInitializeStrategy extends AbstractAuthModuleStrategy {
+//   constructor(name: string) {
+//     super(name)
+//   }
+
+//   authenticationMethod(authProvider: string, authData: AuthenticationInput) {
+//     return (service: IAuthModuleService) =>
+//       service.authenticate(authProvider, authData)
+//   }
+// }
+// class AuthModuleCallbackeStrategy extends AbstractAuthModuleStrategy {
+//   constructor(name: string) {
+//     super(name)
+//   }
+
+//   authenticationMethod(authProvider: string, authData: AuthenticationInput) {
+//     return (service: IAuthModuleService) =>
+//       service.validateCallback(authProvider, authData)
+//   }
+// }
+
 // passport.use(
 //   new AbstractAuthModuleStrategy("custom1", (service) => service.authenticate)
 // )
@@ -95,16 +114,40 @@ class CustomStrategyRoutes extends passport.Strategy {
     req: MedusaRequest,
     options?: any
   ) {
-    console.log("middleware")
-    if (req.user && req.user?.scope === options.scope && req.user?.medusa_id) {
+    if (
+      req.user &&
+      req.user?.scope === options.scope &&
+      (req.user.medusa_id ||
+        (req.user.customer_id && req.user?.scope === "store") ||
+        (req.user.userId && req.user?.scope === "admin"))
+    ) {
       return this.success(req.user)
+    }
+
+    const hasUserId = (user) => user?.medusa_id || user?.customer_id || user?.userId
+    
+    const service: IAuthModuleService = req.scope.resolve(
+      ModuleRegistrationName.AUTH
+    )
+
+    // Refetch user if no id is present
+    // TODO: is there a better "fix" than this ugly hack?
+    if(!hasUserId(req.user)) {
+      const user = await service.retrieveAuthUser(req.user!.authUser!.id!)
+
+      const successParam = { ...req.user, ...user, ...user.app_metadata }
+
+      if(!user || !hasUserId(successParam)) {
+        return this.fail()
+      }
+
+      return this.success(successParam)
     }
 
     return this.fail()
   }
 }
 
-passport.use(new CustomStrategyRoutes("customRoute"))
 class CustomStrategy1 extends passport.Strategy {
   name?: string
 
@@ -148,8 +191,6 @@ class CustomStrategy1 extends passport.Strategy {
     }
   }
 }
-
-passport.use(new CustomStrategy1("custom"))
 
 class CustomStrategy2 extends passport.Strategy {
   name?: string
@@ -196,24 +237,23 @@ class CustomStrategy2 extends passport.Strategy {
 }
 
 passport.use(new CustomStrategy2("customCallback"))
+passport.use(new CustomStrategyRoutes("customRoute"))
+passport.use(new CustomStrategy1("custom"))
 
 export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/auth/:scope/:authProvider",
     method: ["GET", "POST"],
-    // middlewares: [],
     middlewares: [passport.authenticate("custom", {})],
   },
   {
     matcher: "/auth/:scope/:authProvider/callback",
     method: ["GET", "POST"],
-    // middlewares: [],
     middlewares: [passport.authenticate("customCallback", {})],
   },
   {
     matcher: "/auth/:scope",
     method: ["GET"],
-    // middlewares: [],
     middlewares: [
       passport.authenticate("customRoute", {
         scope: "store",
