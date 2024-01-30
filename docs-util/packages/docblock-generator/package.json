@@ -25,7 +25,8 @@
     "minimatch": "^9.0.3",
     "ts-node": "^10.9.1",
     "typescript": "5.2",
-    "utils": "*"
+    "utils": "*",
+    "yaml": "^2.3.4"
   },
   "devDependencies": {
     "@types/node": "^20.9.4"
