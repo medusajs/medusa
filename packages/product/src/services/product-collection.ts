@@ -4,11 +4,17 @@ import {
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  retrieveEntity,
 } from "@medusajs/utils"
-import { ProductCollectionRepository } from "../repositories"
 
 import { ProductCollection } from "@models"
+import {
+  IProductCollectionRepository,
+  ProductCollectionServiceTypes,
+} from "@types"
+import {
+  CreateProductCollection,
+  UpdateProductCollection,
+} from "../types/services/product-collection"
 
 type InjectedDependencies = {
   productCollectionRepository: DAL.RepositoryService
@@ -16,68 +22,59 @@ type InjectedDependencies = {
 
 export default class ProductCollectionService<
   TEntity extends ProductCollection = ProductCollection
-> {
-  protected readonly productCollectionRepository_: DAL.RepositoryService
+> extends ModulesSdkUtils.abstractServiceFactory<
+  InjectedDependencies,
+  {
+    create: CreateProductCollection
+    update: UpdateProductCollection
+  }
+>(ProductCollection)<TEntity> {
+  // eslint-disable-next-line max-len
+  protected readonly productCollectionRepository_: IProductCollectionRepository<TEntity>
 
-  constructor({ productCollectionRepository }: InjectedDependencies) {
-    this.productCollectionRepository_ = productCollectionRepository
+  constructor(container: InjectedDependencies) {
+    super(container)
+    this.productCollectionRepository_ = container.productCollectionRepository
   }
 
   @InjectManager("productCollectionRepository_")
-  async retrieve(
-    productCollectionId: string,
-    config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity> {
-    return (await retrieveEntity<
-      ProductCollection,
-      ProductTypes.ProductCollectionDTO
-    >({
-      id: productCollectionId,
-      entityName: ProductCollection.name,
-      repository: this.productCollectionRepository_,
-      config,
-      sharedContext,
-    })) as TEntity
-  }
-
-  @InjectManager("productCollectionRepository_")
-  async list(
+  async list<TEntityMethod = ProductTypes.ProductCollectionDTO>(
     filters: ProductTypes.FilterableProductCollectionProps = {},
-    config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
+    config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await this.productCollectionRepository_.find(
+    return await this.productCollectionRepository_.find(
       this.buildListQueryOptions(filters, config),
       sharedContext
-    )) as TEntity[]
+    )
   }
 
   @InjectManager("productCollectionRepository_")
-  async listAndCount(
+  async listAndCount<TEntityMethod = ProductTypes.ProductCollectionDTO>(
     filters: ProductTypes.FilterableProductCollectionProps = {},
-    config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
+    config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
-    return (await this.productCollectionRepository_.findAndCount(
+    return await this.productCollectionRepository_.findAndCount(
       this.buildListQueryOptions(filters, config),
       sharedContext
-    )) as [TEntity[], number]
+    )
   }
 
-  protected buildListQueryOptions(
+  protected buildListQueryOptions<
+    TEntityMethod = ProductTypes.ProductCollectionDTO
+  >(
     filters: ProductTypes.FilterableProductCollectionProps = {},
-    config: FindConfig<ProductTypes.ProductCollectionDTO> = {}
-  ) {
-    const queryOptions = ModulesSdkUtils.buildQuery<ProductCollection>(
-      filters,
-      config
-    )
+    config: FindConfig<TEntityMethod> = {}
+  ): DAL.FindOptions<TEntity> {
+    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
 
     queryOptions.where ??= {}
 
     if (filters.title) {
-      queryOptions.where["title"] = { $like: filters.title }
+      queryOptions.where.title = {
+        $like: `%${filters.title}%`,
+      } as DAL.FindOptions<TEntity>["where"]["title"]
     }
 
     return queryOptions
@@ -85,29 +82,37 @@ export default class ProductCollectionService<
 
   @InjectTransactionManager("productCollectionRepository_")
   async create(
-    data: ProductTypes.CreateProductCollectionDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    data: ProductCollectionServiceTypes.CreateProductCollection[],
+    context: Context = {}
   ): Promise<TEntity[]> {
-    return (await (
-      this.productCollectionRepository_ as ProductCollectionRepository
-    ).create(data, sharedContext)) as TEntity[]
+    const productCollections = data.map((collectionData) => {
+      if (collectionData.product_ids) {
+        collectionData.products = collectionData.product_ids
+
+        delete collectionData.product_ids
+      }
+
+      return collectionData
+    })
+
+    return super.create(productCollections, context)
   }
 
   @InjectTransactionManager("productCollectionRepository_")
   async update(
-    data: ProductTypes.UpdateProductCollectionDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    data: ProductCollectionServiceTypes.UpdateProductCollection[],
+    context: Context = {}
   ): Promise<TEntity[]> {
-    return (await (
-      this.productCollectionRepository_ as ProductCollectionRepository
-    ).update(data, sharedContext)) as TEntity[]
-  }
+    const productCollections = data.map((collectionData) => {
+      if (collectionData.product_ids) {
+        collectionData.products = collectionData.product_ids
 
-  @InjectTransactionManager("productCollectionRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.productCollectionRepository_.delete(ids, sharedContext)
+        delete collectionData.product_ids
+      }
+
+      return collectionData
+    })
+
+    return super.update(productCollections, context)
   }
 }

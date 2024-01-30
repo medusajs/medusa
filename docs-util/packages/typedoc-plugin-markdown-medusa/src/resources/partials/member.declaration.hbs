@@ -24,7 +24,7 @@
 
 {{#with typeParameters}}
 
-{{{typeParameter}}}
+{{{typeParameter sectionTitle=../name}}}
 
 {{/with}}
 
@@ -86,17 +86,41 @@
 
 {{#with type.declaration}}
 
-{{{titleLevel}}} Type declaration
+{{{titleLevel}}} Properties
 
 {{/with}}
 
 {{#with type.declaration.children}}
 
-{{{typeDeclarationMembers}}}
+{{{typeDeclarationMembers sectionTitle=../name}}}
 
 {{/with}}
 
 {{/if}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_declaration_children")}}
+
+{{#if (shouldExpandDeclarationChildren)}}
+
+{{#each (getDeclarationChildren)}}
+
+{{> member}}
+
+{{/each}}
+
+{{else}}
+
+{{#with (getDeclarationChildren)}}
+
+{{{titleLevel}}} Properties
+
+{{{typeDeclarationMembers sectionTitle=../name}}}
+
+{{/with}}
 
 {{/if}}
 

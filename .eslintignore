@@ -24,6 +24,10 @@ packages/*
 !packages/orchestration
 !packages/workflows-sdk
 !packages/core-flows
+!packages/types
+!packages/medusa-react
+!packages/workflow-engine-redis
+!packages/workflow-engine-inmemory
 
 
 **/models/*

@@ -36,7 +36,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/store_shipping-options/getundefined
+        $ref: ../code_samples/tsx/store_shipping-options/get.tsx
     - lang: Shell
       label: cURL
       source:

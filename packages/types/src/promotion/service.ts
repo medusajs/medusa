@@ -1,4 +1,5 @@
 import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
@@ -13,10 +14,11 @@ import {
   RemovePromotionRuleDTO,
   UpdatePromotionDTO,
 } from "./common"
-
 import { CreateCampaignDTO, UpdateCampaignDTO } from "./mutations"
 
 export interface IPromotionModuleService extends IModuleService {
+  registerUsage(computedActions: ComputeActions[]): Promise<void>
+
   computeActions(
     promotionCodesToApply: string[],
     applicationContext: ComputeActionContext,
@@ -49,6 +51,12 @@ export interface IPromotionModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PromotionDTO[]>
 
+  listAndCount(
+    filters?: FilterablePromotionProps,
+    config?: FindConfig<PromotionDTO>,
+    sharedContext?: Context
+  ): Promise<[PromotionDTO[], number]>
+
   retrieve(
     id: string,
     config?: FindConfig<PromotionDTO>,
@@ -57,6 +65,18 @@ export interface IPromotionModuleService extends IModuleService {
 
   delete(ids: string[], sharedContext?: Context): Promise<void>
   delete(ids: string, sharedContext?: Context): Promise<void>
+
+  softDelete<TReturnableLinkableKeys extends string = string>(
+    promotionIds: string | string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restore<TReturnableLinkableKeys extends string = string>(
+    promotionIds: string | string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
   addPromotionRules(
     promotionId: string,
@@ -70,6 +90,12 @@ export interface IPromotionModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PromotionDTO>
 
+  addPromotionBuyRules(
+    promotionId: string,
+    rulesData: CreatePromotionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<PromotionDTO>
+
   removePromotionRules(
     promotionId: string,
     rulesData: RemovePromotionRuleDTO[],
@@ -77,6 +103,12 @@ export interface IPromotionModuleService extends IModuleService {
   ): Promise<PromotionDTO>
 
   removePromotionTargetRules(
+    promotionId: string,
+    rulesData: RemovePromotionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<PromotionDTO>
+
+  removePromotionBuyRules(
     promotionId: string,
     rulesData: RemovePromotionRuleDTO[],
     sharedContext?: Context
@@ -108,6 +140,12 @@ export interface IPromotionModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<CampaignDTO[]>
 
+  listAndCountCampaigns(
+    filters?: FilterableCampaignProps,
+    config?: FindConfig<CampaignDTO>,
+    sharedContext?: Context
+  ): Promise<[CampaignDTO[], number]>
+
   retrieveCampaign(
     id: string,
     config?: FindConfig<CampaignDTO>,
@@ -116,4 +154,16 @@ export interface IPromotionModuleService extends IModuleService {
 
   deleteCampaigns(ids: string[], sharedContext?: Context): Promise<void>
   deleteCampaigns(ids: string, sharedContext?: Context): Promise<void>
+
+  softDeleteCampaigns<TReturnableLinkableKeys extends string = string>(
+    campaignIds: string | string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreCampaigns<TReturnableLinkableKeys extends string = string>(
+    campaignIds: string | string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }

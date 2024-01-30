@@ -1,15 +1,16 @@
-import { PromotionType } from "@medusajs/types"
+import { PromotionTypeValues } from "@medusajs/types"
 
 export interface CreatePromotionDTO {
   code: string
-  type: PromotionType
+  type: PromotionTypeValues
   is_automatic?: boolean
+  campaign?: string
 }
 
 export interface UpdatePromotionDTO {
   id: string
   code?: string
-  // TODO: add this when buyget is available
-  // type: PromotionType
+  type?: PromotionTypeValues
   is_automatic?: boolean
+  campaign?: string
 }

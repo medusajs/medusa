@@ -14,7 +14,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 import Cart from "./cart"
-import LineItemAdjustmentLine from "./line-item-adjustment-line"
+import LineItemAdjustment from "./line-item-adjustment"
 import LineItemTaxLine from "./line-item-tax-line"
 
 type OptionalLineItemProps =
@@ -22,6 +22,7 @@ type OptionalLineItemProps =
   | "is_tax_inclusive"
   | "compare_at_unit_price"
   | "requires_shipping"
+  | "cart"
   | DAL.EntityDateColumns
 
 @Entity({ tableName: "cart_line_item" })
@@ -31,23 +32,27 @@ export default class LineItem {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @ManyToOne(() => Cart, {
+  @Property({ columnType: "text" })
+  cart_id: string
+
+  @ManyToOne({
+    entity: () => Cart,
     onDelete: "cascade",
     index: "IDX_line_item_cart_id",
-    fieldName: "cart_id",
+    cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
-  cart!: Cart
+  cart: Cart
 
   @Property({ columnType: "text" })
   title: string
 
   @Property({ columnType: "text", nullable: true })
-  subtitle: string | null
+  subtitle: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  thumbnail?: string | null
+  thumbnail: string | null = null
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "integer" })
   quantity: number
 
   @Property({
@@ -55,40 +60,44 @@ export default class LineItem {
     nullable: true,
     index: "IDX_line_item_variant_id",
   })
-  variant_id?: string | null
+  variant_id: string | null = null
+
+  @Property({
+    columnType: "text",
+    nullable: true,
+    index: "IDX_line_item_product_id",
+  })
+  product_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_id?: string | null
+  product_title: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_title?: string | null
+  product_description: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_description?: string | null
+  product_subtitle: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_subtitle?: string | null
+  product_type: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_type?: string | null
+  product_collection: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_collection?: string | null
+  product_handle: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_handle?: string | null
+  variant_sku: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  variant_sku?: string | null
+  variant_barcode: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  variant_barcode?: string | null
-
-  @Property({ columnType: "text", nullable: true })
-  variant_title?: string | null
+  variant_title: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  variant_option_values?: Record<string, unknown> | null
+  variant_option_values: Record<string, unknown> | null = null
 
   @Property({ columnType: "boolean" })
   requires_shipping = true
@@ -100,47 +109,22 @@ export default class LineItem {
   is_tax_inclusive = false
 
   @Property({ columnType: "numeric", nullable: true })
-  compare_at_unit_price?: number
+  compare_at_unit_price: number | null = null
 
+  // TODO: Rework when BigNumber has been introduced
   @Property({ columnType: "numeric", serializer: Number })
   @Check({ expression: "unit_price >= 0" }) // TODO: Validate that numeric types work with the expression
   unit_price: number
 
-  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.line_item, {
+  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
     cascade: [Cascade.REMOVE],
   })
   tax_lines = new Collection<LineItemTaxLine>(this)
 
-  @OneToMany(
-    () => LineItemAdjustmentLine,
-    (adjustment) => adjustment.line_item,
-    {
-      cascade: [Cascade.REMOVE],
-    }
-  )
-  adjustments = new Collection<LineItemAdjustmentLine>(this)
-
-  /** COMPUTED PROPERTIES - START */
-
-  // compare_at_total?: number
-  // compare_at_subtotal?: number
-  // compare_at_tax_total?: number
-
-  // original_total: number
-  // original_subtotal: number
-  // original_tax_total: number
-
-  // item_total: number
-  // item_subtotal: number
-  // item_tax_total: number
-
-  // total: number
-  // subtotal: number
-  // tax_total: number
-  // discount_total: number
-  // discount_tax_total: number
-
-  /** COMPUTED PROPERTIES - END */
+  @OneToMany(() => LineItemAdjustment, (adjustment) => adjustment.item, {
+    cascade: [Cascade.REMOVE],
+  })
+  adjustments = new Collection<LineItemAdjustment>(this)
 
   @Property({
     onCreate: () => new Date(),

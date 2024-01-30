@@ -12,18 +12,22 @@ import {
   Property,
 } from "@mikro-orm/core"
 import Cart from "./cart"
-import ShippingMethodAdjustmentLine from "./shipping-method-adjustment-line"
+import ShippingMethodAdjustment from "./shipping-method-adjustment"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"
 
 @Entity({ tableName: "cart_shipping_method" })
+@Check<ShippingMethod>({ expression: (columns) => `${columns.amount} >= 0` })
 export default class ShippingMethod {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @ManyToOne(() => Cart, {
-    onDelete: "cascade",
+  @Property({ columnType: "text" })
+  cart_id: string
+
+  @ManyToOne({
+    entity: () => Cart,
     index: "IDX_shipping_method_cart_id",
-    fieldName: "cart_id",
+    cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
   cart: Cart
 
@@ -31,23 +35,26 @@ export default class ShippingMethod {
   name: string
 
   @Property({ columnType: "jsonb", nullable: true })
-  description?: string | null
+  description: string | null = null
 
   @Property({ columnType: "numeric", serializer: Number })
-  @Check({ expression: "amount >= 0" }) // TODO: Validate that numeric types work with the expression
   amount: number
 
   @Property({ columnType: "boolean" })
   is_tax_inclusive = false
 
-  @Property({ columnType: "text", nullable: true })
-  shipping_option_id?: string | null
+  @Property({
+    columnType: "text",
+    nullable: true,
+    index: "IDX_shipping_method_option_id",
+  })
+  shipping_option_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  data?: Record<string, unknown> | null
+  data: Record<string, unknown> | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  metadata?: Record<string, unknown> | null
+  metadata: Record<string, unknown> | null = null
 
   @OneToMany(
     () => ShippingMethodTaxLine,
@@ -59,27 +66,13 @@ export default class ShippingMethod {
   tax_lines = new Collection<ShippingMethodTaxLine>(this)
 
   @OneToMany(
-    () => ShippingMethodAdjustmentLine,
+    () => ShippingMethodAdjustment,
     (adjustment) => adjustment.shipping_method,
     {
       cascade: [Cascade.REMOVE],
     }
   )
-  adjustments = new Collection<ShippingMethodAdjustmentLine>(this)
-
-  /** COMPUTED PROPERTIES - START */
-
-  // original_total: number
-  // original_subtotal: number
-  // original_tax_total: number
-
-  // total: number
-  // subtotal: number
-  // tax_total: number
-  // discount_total: number
-  // discount_tax_total: number
-
-  /** COMPUTED PROPERTIES - END */
+  adjustments = new Collection<ShippingMethodAdjustment>(this)
 
   @Property({
     onCreate: () => new Date(),

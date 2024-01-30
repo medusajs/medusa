@@ -1,4 +1,5 @@
 export * from "./helper"
 export * from "./medusa-workflow"
+export * as WorkflowOrchestratorTypes from "./types"
 export * from "./utils/composer"
 export * as Composer from "./utils/composer"

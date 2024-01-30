@@ -1,29 +1,105 @@
 import { IPromotionModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { initialize } from "../../../../src"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { createPromotions } from "../../../__fixtures__/promotion"
+import { MikroOrmWrapper } from "../../../utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { initModules } from "medusa-test-utils"
+import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
 describe("Promotion Module Service: Campaigns", () => {
   let service: IPromotionModuleService
   let repositoryManager: SqlEntityManager
+  let shutdownFunc: () => void
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PROMOTION]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = MikroOrmWrapper.forkManager()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PROMOTION_DB_SCHEMA,
-      },
-    })
   })
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
+  })
+
+  describe("listAndCountCampaigns", () => {
+    beforeEach(async () => {
+      await createCampaigns(repositoryManager)
+    })
+
+    it("should return all campaigns and its count", async () => {
+      const [campaigns, count] = await service.listAndCountCampaigns()
+
+      expect(count).toEqual(2)
+      expect(campaigns).toEqual([
+        {
+          id: "campaign-id-1",
+          name: "campaign 1",
+          description: "test description",
+          currency: "USD",
+          campaign_identifier: "test-1",
+          starts_at: expect.any(Date),
+          ends_at: expect.any(Date),
+          budget: expect.any(String),
+          created_at: expect.any(Date),
+          updated_at: expect.any(Date),
+          deleted_at: null,
+        },
+        {
+          id: "campaign-id-2",
+          name: "campaign 1",
+          description: "test description",
+          currency: "USD",
+          campaign_identifier: "test-2",
+          starts_at: expect.any(Date),
+          ends_at: expect.any(Date),
+          budget: expect.any(String),
+          created_at: expect.any(Date),
+          updated_at: expect.any(Date),
+          deleted_at: null,
+        },
+      ])
+    })
+
+    it("should return all campaigns based on config select and relations param", async () => {
+      const [campaigns, count] = await service.listAndCountCampaigns(
+        {
+          id: ["campaign-id-1"],
+        },
+        {
+          relations: ["budget"],
+          select: ["name", "budget.limit"],
+        }
+      )
+
+      expect(count).toEqual(1)
+      expect(campaigns).toEqual([
+        {
+          id: "campaign-id-1",
+          name: "campaign 1",
+          budget: {
+            id: expect.any(String),
+            campaign: expect.any(Object),
+            limit: 1000,
+          },
+        },
+      ])
+    })
   })
 
   describe("createCampaigns", () => {
@@ -101,6 +177,43 @@ describe("Promotion Module Service: Campaigns", () => {
         })
       )
     })
+
+    it("should create a basic campaign with promotions successfully", async () => {
+      await createPromotions(repositoryManager)
+
+      const startsAt = new Date("01/01/2024")
+      const endsAt = new Date("01/01/2025")
+      const [createdCampaign] = await service.createCampaigns([
+        {
+          name: "test",
+          campaign_identifier: "test",
+          starts_at: startsAt,
+          ends_at: endsAt,
+          promotions: [{ id: "promotion-id-1" }, { id: "promotion-id-2" }],
+        },
+      ])
+
+      const campaign = await service.retrieveCampaign(createdCampaign.id, {
+        relations: ["promotions"],
+      })
+
+      expect(campaign).toEqual(
+        expect.objectContaining({
+          name: "test",
+          campaign_identifier: "test",
+          starts_at: startsAt,
+          ends_at: endsAt,
+          promotions: [
+            expect.objectContaining({
+              id: "promotion-id-1",
+            }),
+            expect.objectContaining({
+              id: "promotion-id-2",
+            }),
+          ],
+        })
+      )
+    })
   })
 
   describe("updateCampaigns", () => {
@@ -163,6 +276,66 @@ describe("Promotion Module Service: Campaigns", () => {
         })
       )
     })
+
+    it("should update promotions of a campaign successfully", async () => {
+      await createCampaigns(repositoryManager)
+      await createPromotions(repositoryManager)
+
+      const [updatedCampaign] = await service.updateCampaigns([
+        {
+          id: "campaign-id-1",
+          description: "test description 1",
+          currency: "EUR",
+          campaign_identifier: "new",
+          starts_at: new Date("01/01/2024"),
+          ends_at: new Date("01/01/2025"),
+          promotions: [{ id: "promotion-id-1" }, { id: "promotion-id-2" }],
+        },
+      ])
+
+      expect(updatedCampaign).toEqual(
+        expect.objectContaining({
+          description: "test description 1",
+          currency: "EUR",
+          campaign_identifier: "new",
+          starts_at: new Date("01/01/2024"),
+          ends_at: new Date("01/01/2025"),
+          promotions: [
+            expect.objectContaining({
+              id: "promotion-id-1",
+            }),
+            expect.objectContaining({
+              id: "promotion-id-2",
+            }),
+          ],
+        })
+      )
+    })
+
+    it("should remove promotions of the campaign successfully", async () => {
+      await createCampaigns(repositoryManager)
+      await createPromotions(repositoryManager)
+
+      await service.updateCampaigns({
+        id: "campaign-id-1",
+        promotions: [{ id: "promotion-id-1" }, { id: "promotion-id-2" }],
+      })
+
+      const updatedCampaign = await service.updateCampaigns({
+        id: "campaign-id-1",
+        promotions: [{ id: "promotion-id-1" }],
+      })
+
+      expect(updatedCampaign).toEqual(
+        expect.objectContaining({
+          promotions: [
+            expect.objectContaining({
+              id: "promotion-id-1",
+            }),
+          ],
+        })
+      )
+    })
   })
 
   describe("retrieveCampaign", () => {
@@ -222,20 +395,70 @@ describe("Promotion Module Service: Campaigns", () => {
   })
 
   describe("deleteCampaigns", () => {
-    beforeEach(async () => {
-      await createCampaigns(repositoryManager)
-    })
-
-    const id = "campaign-id-1"
-
     it("should delete the campaigns given an id successfully", async () => {
-      await service.deleteCampaigns([id])
+      const [createdCampaign] = await service.createCampaigns([
+        {
+          name: "test",
+          campaign_identifier: "test",
+          starts_at: new Date("01/01/2024"),
+          ends_at: new Date("01/01/2025"),
+        },
+      ])
 
-      const campaigns = await service.list({
-        id: [id],
+      await service.deleteCampaigns([createdCampaign.id])
+
+      const campaigns = await service.listCampaigns(
+        {
+          id: [createdCampaign.id],
+        },
+        { withDeleted: true }
+      )
+
+      expect(campaigns).toHaveLength(0)
+    })
+  })
+
+  describe("softDeleteCampaigns", () => {
+    it("should soft delete the campaigns given an id successfully", async () => {
+      const [createdCampaign] = await service.createCampaigns([
+        {
+          name: "test",
+          campaign_identifier: "test",
+          starts_at: new Date("01/01/2024"),
+          ends_at: new Date("01/01/2025"),
+        },
+      ])
+
+      await service.softDeleteCampaigns([createdCampaign.id])
+
+      const campaigns = await service.listCampaigns({
+        id: [createdCampaign.id],
       })
 
       expect(campaigns).toHaveLength(0)
+    })
+  })
+
+  describe("restoreCampaigns", () => {
+    it("should restore the campaigns given an id successfully", async () => {
+      const [createdCampaign] = await service.createCampaigns([
+        {
+          name: "test",
+          campaign_identifier: "test",
+          starts_at: new Date("01/01/2024"),
+          ends_at: new Date("01/01/2025"),
+        },
+      ])
+
+      await service.softDeleteCampaigns([createdCampaign.id])
+
+      let campaigns = await service.listCampaigns({ id: [createdCampaign.id] })
+
+      expect(campaigns).toHaveLength(0)
+      await service.restoreCampaigns([createdCampaign.id])
+
+      campaigns = await service.listCampaigns({ id: [createdCampaign.id] })
+      expect(campaigns).toHaveLength(1)
     })
   })
 })

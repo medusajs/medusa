@@ -4,6 +4,7 @@ export default function DatePickerSinglePresetsTime() {
   return (
     <div className="w-[250px]">
       <DatePicker
+        placeholder="Pick a date"
         showTimePicker
         presets={[
           {

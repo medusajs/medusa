@@ -10,7 +10,8 @@ export type CopyButtonProps = {
   buttonClassName?: string
   tooltipClassName?: string
   tooltipText?: string
-} & React.HTMLAttributes<HTMLDivElement>
+  onCopy?: (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void
+} & Omit<React.HTMLAttributes<HTMLDivElement>, "onCopy">
 
 export const CopyButton = ({
   text,
@@ -19,6 +20,7 @@ export const CopyButton = ({
   tooltipText = "Copy to Clipboard",
   children,
   className,
+  onCopy,
 }: CopyButtonProps) => {
   const { isCopied, handleCopy } = useCopy(text)
 
@@ -30,7 +32,10 @@ export const CopyButton = ({
     >
       <span
         className={clsx("cursor-pointer", buttonClassName)}
-        onClick={handleCopy}
+        onClick={(e) => {
+          onCopy?.(e)
+          handleCopy()
+        }}
       >
         {children}
       </span>

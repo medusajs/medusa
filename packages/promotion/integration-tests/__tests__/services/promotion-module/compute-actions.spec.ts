@@ -1,25 +1,36 @@
 import { IPromotionModuleService } from "@medusajs/types"
 import { PromotionType } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { initialize } from "../../../../src"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { createCampaigns } from "../../../__fixtures__/campaigns"
+import { MikroOrmWrapper } from "../../../utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { Modules } from "@medusajs/modules-sdk"
+import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
 describe("Promotion Service: computeActions", () => {
   let service: IPromotionModuleService
   let repositoryManager: SqlEntityManager
+  let shutdownFunc: () => void
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PROMOTION]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = MikroOrmWrapper.forkManager()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PROMOTION_DB_SCHEMA,
-      },
-    })
   })
 
   afterEach(async () => {
@@ -27,44 +38,40 @@ describe("Promotion Service: computeActions", () => {
   })
 
   describe("when code is not present in database", () => {
-    it("should throw error when code in promotions array does not exist", async () => {
-      const error = await service
-        .computeActions(["DOES_NOT_EXIST"], {
-          customer: {
-            customer_group: {
-              id: "VIP",
+    it("should return empty array when promotion does not exist", async () => {
+      const response = await service.computeActions(["DOES_NOT_EXIST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        items: [
+          {
+            id: "item_cotton_tshirt",
+            quantity: 1,
+            unit_price: 100,
+            product_category: {
+              id: "catg_cotton",
+            },
+            product: {
+              id: "prod_tshirt",
             },
           },
-          items: [
-            {
-              id: "item_cotton_tshirt",
-              quantity: 1,
-              unit_price: 100,
-              product_category: {
-                id: "catg_cotton",
-              },
-              product: {
-                id: "prod_tshirt",
-              },
+          {
+            id: "item_cotton_sweater",
+            quantity: 5,
+            unit_price: 150,
+            product_category: {
+              id: "catg_cotton",
             },
-            {
-              id: "item_cotton_sweater",
-              quantity: 5,
-              unit_price: 150,
-              product_category: {
-                id: "catg_cotton",
-              },
-              product: {
-                id: "prod_sweater",
-              },
+            product: {
+              id: "prod_sweater",
             },
-          ],
-        })
-        .catch((e) => e)
+          },
+        ],
+      })
 
-      expect(error.message).toContain(
-        "Promotion for code (DOES_NOT_EXIST) not found"
-      )
+      expect(response).toEqual([])
     })
 
     it("should throw error when code in items adjustment does not exist", async () => {
@@ -459,10 +466,10 @@ describe("Promotion Service: computeActions", () => {
         },
       ])
     })
-  })
 
-  describe("when promotion is for items and allocation is across", () => {
-    it("should compute the correct item amendments", async () => {
+    it("should compute budget exceeded action when applicable total exceeds campaign budget for type spend", async () => {
+      await createCampaigns(repositoryManager)
+
       const [createdPromotion] = await service.create([
         {
           code: "PROMOTION_TEST",
@@ -474,12 +481,13 @@ describe("Promotion Service: computeActions", () => {
               values: ["VIP", "top100"],
             },
           ],
+          campaign_id: "campaign-id-1",
           application_method: {
             type: "fixed",
             target_type: "items",
-            allocation: "across",
-            value: "200",
-            max_quantity: 2,
+            allocation: "each",
+            value: "500",
+            max_quantity: 5,
             target_rules: [
               {
                 attribute: "product_category.id",
@@ -500,7 +508,126 @@ describe("Promotion Service: computeActions", () => {
         items: [
           {
             id: "item_cotton_tshirt",
-            quantity: 1,
+            quantity: 5,
+            unit_price: 1000,
+            product_category: {
+              id: "catg_cotton",
+            },
+            product: {
+              id: "prod_tshirt",
+            },
+          },
+        ],
+      })
+
+      expect(result).toEqual([
+        { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+      ])
+    })
+
+    it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
+      await createCampaigns(repositoryManager)
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          campaign_id: "campaign-id-2",
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "each",
+            value: "500",
+            max_quantity: 5,
+            target_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_cotton"],
+              },
+            ],
+          },
+        },
+      ])
+
+      await service.updateCampaigns({
+        id: "campaign-id-2",
+        budget: { used: 1000 },
+      })
+
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        items: [
+          {
+            id: "item_cotton_tshirt",
+            quantity: 5,
+            unit_price: 1000,
+            product_category: {
+              id: "catg_cotton",
+            },
+            product: {
+              id: "prod_tshirt",
+            },
+          },
+        ],
+      })
+
+      expect(result).toEqual([
+        { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+      ])
+    })
+  })
+
+  describe("when promotion is for items and allocation is across", () => {
+    it("should compute the correct item amendments", async () => {
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "across",
+            value: "400",
+            target_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_cotton"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        items: [
+          {
+            id: "item_cotton_tshirt",
+            quantity: 2,
             unit_price: 100,
             product_category: {
               id: "catg_cotton",
@@ -512,7 +639,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_sweater",
             quantity: 2,
-            unit_price: 150,
+            unit_price: 300,
             product_category: {
               id: "catg_cotton",
             },
@@ -527,13 +654,13 @@ describe("Promotion Service: computeActions", () => {
         {
           action: "addItemAdjustment",
           item_id: "item_cotton_tshirt",
-          amount: 50,
+          amount: 100,
           code: "PROMOTION_TEST",
         },
         {
           action: "addItemAdjustment",
           item_id: "item_cotton_sweater",
-          amount: 150,
+          amount: 300,
           code: "PROMOTION_TEST",
         },
       ])
@@ -556,7 +683,6 @@ describe("Promotion Service: computeActions", () => {
             target_type: "items",
             allocation: "across",
             value: "30",
-            max_quantity: 2,
             target_rules: [
               {
                 attribute: "product_category.id",
@@ -584,7 +710,6 @@ describe("Promotion Service: computeActions", () => {
             target_type: "items",
             allocation: "across",
             value: "50",
-            max_quantity: 1,
             target_rules: [
               {
                 attribute: "product_category.id",
@@ -676,7 +801,6 @@ describe("Promotion Service: computeActions", () => {
             target_type: "items",
             allocation: "across",
             value: "500",
-            max_quantity: 2,
             target_rules: [
               {
                 attribute: "product_category.id",
@@ -704,7 +828,6 @@ describe("Promotion Service: computeActions", () => {
             target_type: "items",
             allocation: "across",
             value: "50",
-            max_quantity: 1,
             target_rules: [
               {
                 attribute: "product_category.id",
@@ -776,6 +899,125 @@ describe("Promotion Service: computeActions", () => {
           amount: 37.5,
           code: "PROMOTION_TEST_2",
         },
+      ])
+    })
+
+    it("should compute budget exceeded action when applicable total exceeds campaign budget for type spend", async () => {
+      await createCampaigns(repositoryManager)
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          campaign_id: "campaign-id-1",
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "across",
+            value: "1500",
+            target_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_cotton"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        items: [
+          {
+            id: "item_cotton_tshirt",
+            quantity: 5,
+            unit_price: 1000,
+            product_category: {
+              id: "catg_cotton",
+            },
+            product: {
+              id: "prod_tshirt",
+            },
+          },
+        ],
+      })
+
+      expect(result).toEqual([
+        { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+      ])
+    })
+
+    it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
+      await createCampaigns(repositoryManager)
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          campaign_id: "campaign-id-2",
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "across",
+            value: "500",
+            target_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_cotton"],
+              },
+            ],
+          },
+        },
+      ])
+
+      await service.updateCampaigns({
+        id: "campaign-id-2",
+        budget: { used: 1000 },
+      })
+
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        items: [
+          {
+            id: "item_cotton_tshirt",
+            quantity: 5,
+            unit_price: 1000,
+            product_category: {
+              id: "catg_cotton",
+            },
+            product: {
+              id: "prod_tshirt",
+            },
+          },
+        ],
+      })
+
+      expect(result).toEqual([
+        { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
       ])
     })
   })
@@ -1076,6 +1318,119 @@ describe("Promotion Service: computeActions", () => {
         },
       ])
     })
+
+    it("should compute budget exceeded action when applicable total exceeds campaign budget for type spend", async () => {
+      await createCampaigns(repositoryManager)
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          campaign_id: "campaign-id-1",
+          application_method: {
+            type: "fixed",
+            target_type: "shipping_methods",
+            allocation: "each",
+            value: "1200",
+            max_quantity: 2,
+            target_rules: [
+              {
+                attribute: "shipping_option.id",
+                operator: "in",
+                values: ["express", "standard"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        shipping_methods: [
+          {
+            id: "shipping_method_express",
+            unit_price: 1200,
+            shipping_option: {
+              id: "express",
+            },
+          },
+        ],
+      })
+
+      expect(result).toEqual([
+        { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+      ])
+    })
+
+    it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
+      await createCampaigns(repositoryManager)
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          campaign_id: "campaign-id-2",
+          application_method: {
+            type: "fixed",
+            target_type: "shipping_methods",
+            allocation: "each",
+            value: "1200",
+            max_quantity: 2,
+            target_rules: [
+              {
+                attribute: "shipping_option.id",
+                operator: "in",
+                values: ["express", "standard"],
+              },
+            ],
+          },
+        },
+      ])
+
+      await service.updateCampaigns({
+        id: "campaign-id-2",
+        budget: { used: 1000 },
+      })
+
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        shipping_methods: [
+          {
+            id: "shipping_method_express",
+            unit_price: 1200,
+            shipping_option: {
+              id: "express",
+            },
+          },
+        ],
+      })
+
+      expect(result).toEqual([
+        { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+      ])
+    })
   })
 
   describe("when promotion is for shipping_method and allocation is across", () => {
@@ -1096,7 +1451,6 @@ describe("Promotion Service: computeActions", () => {
             target_type: "shipping_methods",
             allocation: "across",
             value: "200",
-            max_quantity: 2,
             target_rules: [
               {
                 attribute: "shipping_option.id",
@@ -1172,7 +1526,6 @@ describe("Promotion Service: computeActions", () => {
             target_type: "shipping_methods",
             allocation: "across",
             value: "200",
-            max_quantity: 2,
             target_rules: [
               {
                 attribute: "shipping_option.id",
@@ -1200,7 +1553,6 @@ describe("Promotion Service: computeActions", () => {
             target_type: "shipping_methods",
             allocation: "across",
             value: "200",
-            max_quantity: 2,
             target_rules: [
               {
                 attribute: "shipping_option.id",
@@ -1291,7 +1643,6 @@ describe("Promotion Service: computeActions", () => {
             target_type: "shipping_methods",
             allocation: "across",
             value: "1000",
-            max_quantity: 2,
             target_rules: [
               {
                 attribute: "shipping_option.id",
@@ -1319,7 +1670,6 @@ describe("Promotion Service: computeActions", () => {
             target_type: "shipping_methods",
             allocation: "across",
             value: "200",
-            max_quantity: 2,
             target_rules: [
               {
                 attribute: "shipping_option.id",
@@ -1378,6 +1728,117 @@ describe("Promotion Service: computeActions", () => {
           amount: 100,
           code: "PROMOTION_TEST",
         },
+      ])
+    })
+
+    it("should compute budget exceeded action when applicable total exceeds campaign budget for type spend", async () => {
+      await createCampaigns(repositoryManager)
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          campaign_id: "campaign-id-1",
+          application_method: {
+            type: "fixed",
+            target_type: "shipping_methods",
+            allocation: "across",
+            value: "1200",
+            target_rules: [
+              {
+                attribute: "shipping_option.id",
+                operator: "in",
+                values: ["express", "standard"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        shipping_methods: [
+          {
+            id: "shipping_method_express",
+            unit_price: 1200,
+            shipping_option: {
+              id: "express",
+            },
+          },
+        ],
+      })
+
+      expect(result).toEqual([
+        { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+      ])
+    })
+
+    it("should compute budget exceeded action when applicable total exceeds campaign budget for type usage", async () => {
+      await createCampaigns(repositoryManager)
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          campaign_id: "campaign-id-2",
+          application_method: {
+            type: "fixed",
+            target_type: "shipping_methods",
+            allocation: "across",
+            value: "1200",
+            target_rules: [
+              {
+                attribute: "shipping_option.id",
+                operator: "in",
+                values: ["express", "standard"],
+              },
+            ],
+          },
+        },
+      ])
+
+      await service.updateCampaigns({
+        id: "campaign-id-2",
+        budget: { used: 1000 },
+      })
+
+      const result = await service.computeActions(["PROMOTION_TEST"], {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        shipping_methods: [
+          {
+            id: "shipping_method_express",
+            unit_price: 1200,
+            shipping_option: {
+              id: "express",
+            },
+          },
+        ],
+      })
+
+      expect(result).toEqual([
+        { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
       ])
     })
   })
@@ -1740,6 +2201,7 @@ describe("Promotion Service: computeActions", () => {
         {
           action: "removeItemAdjustment",
           adjustment_id: "test-adjustment",
+          code: "ADJUSTMENT_CODE",
         },
         {
           action: "addItemAdjustment",
@@ -1780,7 +2242,6 @@ describe("Promotion Service: computeActions", () => {
             target_type: "shipping_methods",
             allocation: "across",
             value: "200",
-            max_quantity: 2,
             target_rules: [
               {
                 attribute: "shipping_option.id",
@@ -1833,6 +2294,7 @@ describe("Promotion Service: computeActions", () => {
         {
           action: "removeShippingMethodAdjustment",
           adjustment_id: "test-adjustment",
+          code: "ADJUSTMENT_CODE",
         },
         {
           action: "addShippingMethodAdjustment",
@@ -1847,6 +2309,368 @@ describe("Promotion Service: computeActions", () => {
           code: "PROMOTION_TEST",
         },
       ])
+    })
+  })
+
+  describe("when promotion of type buyget", () => {
+    it("should compute adjustment when target and buy rules match", async () => {
+      const context = {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        items: [
+          {
+            id: "item_cotton_tshirt",
+            quantity: 2,
+            unit_price: 500,
+            product_category: {
+              id: "catg_tshirt",
+            },
+            product: {
+              id: "prod_tshirt_1",
+            },
+          },
+          {
+            id: "item_cotton_tshirt2",
+            quantity: 2,
+            unit_price: 1000,
+            product_category: {
+              id: "catg_tshirt",
+            },
+            product: {
+              id: "prod_tshirt_2",
+            },
+          },
+          {
+            id: "item_cotton_sweater",
+            quantity: 2,
+            unit_price: 1000,
+            product_category: {
+              id: "catg_sweater",
+            },
+            product: {
+              id: "prod_sweater_1",
+            },
+          },
+        ],
+      }
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.BUYGET,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "each",
+            max_quantity: 1,
+            apply_to_quantity: 1,
+            buy_rules_min_quantity: 1,
+            target_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_tshirt"],
+              },
+            ],
+            buy_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_sweater"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const result = await service.computeActions(["PROMOTION_TEST"], context)
+
+      expect(result).toEqual([
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_tshirt2",
+          amount: 1000,
+          code: "PROMOTION_TEST",
+        },
+      ])
+    })
+
+    it("should return empty array when conditions for minimum qty aren't met", async () => {
+      const context = {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        items: [
+          {
+            id: "item_cotton_tshirt",
+            quantity: 2,
+            unit_price: 500,
+            product_category: {
+              id: "catg_tshirt",
+            },
+            product: {
+              id: "prod_tshirt_1",
+            },
+          },
+          {
+            id: "item_cotton_tshirt2",
+            quantity: 2,
+            unit_price: 1000,
+            product_category: {
+              id: "catg_tshirt",
+            },
+            product: {
+              id: "prod_tshirt_2",
+            },
+          },
+          {
+            id: "item_cotton_sweater",
+            quantity: 2,
+            unit_price: 1000,
+            product_category: {
+              id: "catg_sweater",
+            },
+            product: {
+              id: "prod_sweater_1",
+            },
+          },
+        ],
+      }
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.BUYGET,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "each",
+            max_quantity: 1,
+            apply_to_quantity: 1,
+            buy_rules_min_quantity: 4,
+            target_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_tshirt"],
+              },
+            ],
+            buy_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_sweater"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const result = await service.computeActions(["PROMOTION_TEST"], context)
+
+      expect(result).toEqual([])
+    })
+
+    it("should compute actions for multiple items when conditions for target qty exceed one item", async () => {
+      const context = {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        items: [
+          {
+            id: "item_cotton_tshirt",
+            quantity: 2,
+            unit_price: 500,
+            product_category: {
+              id: "catg_tshirt",
+            },
+            product: {
+              id: "prod_tshirt_1",
+            },
+          },
+          {
+            id: "item_cotton_tshirt2",
+            quantity: 2,
+            unit_price: 1000,
+            product_category: {
+              id: "catg_tshirt",
+            },
+            product: {
+              id: "prod_tshirt_2",
+            },
+          },
+          {
+            id: "item_cotton_sweater",
+            quantity: 2,
+            unit_price: 1000,
+            product_category: {
+              id: "catg_sweater",
+            },
+            product: {
+              id: "prod_sweater_1",
+            },
+          },
+        ],
+      }
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.BUYGET,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "each",
+            max_quantity: 1,
+            apply_to_quantity: 4,
+            buy_rules_min_quantity: 1,
+            target_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_tshirt"],
+              },
+            ],
+            buy_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_sweater"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const result = await service.computeActions(["PROMOTION_TEST"], context)
+
+      expect(result).toEqual([
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_tshirt2",
+          amount: 2000,
+          code: "PROMOTION_TEST",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_tshirt",
+          amount: 1000,
+          code: "PROMOTION_TEST",
+        },
+      ])
+    })
+
+    it("should return empty array when target rules arent met with context", async () => {
+      const context = {
+        customer: {
+          customer_group: {
+            id: "VIP",
+          },
+        },
+        items: [
+          {
+            id: "item_cotton_tshirt",
+            quantity: 2,
+            unit_price: 500,
+            product_category: {
+              id: "catg_tshirt",
+            },
+            product: {
+              id: "prod_tshirt_1",
+            },
+          },
+          {
+            id: "item_cotton_tshirt2",
+            quantity: 2,
+            unit_price: 1000,
+            product_category: {
+              id: "catg_tshirt",
+            },
+            product: {
+              id: "prod_tshirt_2",
+            },
+          },
+          {
+            id: "item_cotton_sweater",
+            quantity: 2,
+            unit_price: 1000,
+            product_category: {
+              id: "catg_sweater",
+            },
+            product: {
+              id: "prod_sweater_1",
+            },
+          },
+        ],
+      }
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.BUYGET,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "each",
+            max_quantity: 1,
+            apply_to_quantity: 4,
+            buy_rules_min_quantity: 1,
+            target_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_not-found"],
+              },
+            ],
+            buy_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_sweater"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const result = await service.computeActions(["PROMOTION_TEST"], context)
+
+      expect(result).toEqual([])
     })
   })
 })

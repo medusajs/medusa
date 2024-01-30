@@ -7,6 +7,7 @@ import {
 import { upperCaseFirst } from "@medusajs/utils"
 
 export enum Modules {
+  LINK = "linkModules",
   EVENT_BUS = "eventBus",
   STOCK_LOCATION = "stockLocationService",
   INVENTORY = "inventoryService",
@@ -14,8 +15,11 @@ export enum Modules {
   PRODUCT = "productService",
   PRICING = "pricingService",
   PROMOTION = "promotion",
-  AUTHENTICATION = "authentication",
+  AUTH = "auth",
+  WORKFLOW_ENGINE = "workflows",
+  SALES_CHANNEL = "salesChannel",
   CART = "cart",
+  CUSTOMER = "customer",
   PAYMENT = "payment",
 }
 
@@ -27,12 +31,16 @@ export enum ModuleRegistrationName {
   PRODUCT = "productModuleService",
   PRICING = "pricingModuleService",
   PROMOTION = "promotionModuleService",
-  AUTHENTICATION = "authenticationModuleService",
+  AUTH = "authModuleService",
+  WORKFLOW_ENGINE = "workflowsModuleService",
+  SALES_CHANNEL = "salesChannelModuleService",
   CART = "cartModuleService",
+  CUSTOMER = "customerModuleService",
   PAYMENT = "paymentModuleService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
+  [Modules.LINK]: "@medusajs/link-modules",
   [Modules.PRODUCT]: "@medusajs/product",
   [Modules.EVENT_BUS]: "@medusajs/event-bus-local",
   [Modules.STOCK_LOCATION]: "@medusajs/stock-location",
@@ -40,8 +48,11 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.CACHE]: "@medusajs/cache-inmemory",
   [Modules.PRICING]: "@medusajs/pricing",
   [Modules.PROMOTION]: "@medusajs/promotion",
-  [Modules.AUTHENTICATION]: "@medusajs/authentication",
+  [Modules.AUTH]: "@medusajs/auth",
+  [Modules.WORKFLOW_ENGINE]: "@medusajs/workflow-engine-inmemory",
+  [Modules.SALES_CHANNEL]: "@medusajs/sales-channel",
   [Modules.CART]: "@medusajs/cart",
+  [Modules.CUSTOMER]: "@medusajs/customer",
   [Modules.PAYMENT]: "@medusajs/payment",
 }
 
@@ -146,11 +157,39 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
         resources: MODULE_RESOURCE_TYPE.SHARED,
       },
     },
-    [Modules.AUTHENTICATION]: {
-      key: Modules.AUTHENTICATION,
-      registrationName: ModuleRegistrationName.AUTHENTICATION,
+    [Modules.AUTH]: {
+      key: Modules.AUTH,
+      registrationName: ModuleRegistrationName.AUTH,
       defaultPackage: false,
-      label: upperCaseFirst(ModuleRegistrationName.AUTHENTICATION),
+      label: upperCaseFirst(ModuleRegistrationName.AUTH),
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.WORKFLOW_ENGINE]: {
+      key: Modules.WORKFLOW_ENGINE,
+      registrationName: ModuleRegistrationName.WORKFLOW_ENGINE,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.WORKFLOW_ENGINE),
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.SALES_CHANNEL]: {
+      key: Modules.SALES_CHANNEL,
+      registrationName: ModuleRegistrationName.SALES_CHANNEL,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.SALES_CHANNEL),
       isRequired: false,
       canOverride: true,
       isQueryable: true,
@@ -165,6 +204,20 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       registrationName: ModuleRegistrationName.CART,
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.CART),
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.CUSTOMER]: {
+      key: Modules.CUSTOMER,
+      registrationName: ModuleRegistrationName.CUSTOMER,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.CUSTOMER),
       isRequired: false,
       canOverride: true,
       isQueryable: true,

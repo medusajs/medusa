@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/pricing",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Medusa Pricing module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,8 +11,6 @@
     "node": ">=16"
   },
   "bin": {
-    "medusa-pricing-migrations-down": "dist/scripts/bin/run-migration-down.js",
-    "medusa-pricing-migrations-up": "dist/scripts/bin/run-migration-up.js",
     "medusa-pricing-seed": "dist/scripts/bin/run-seed.js"
   },
   "repository": {
@@ -50,9 +48,9 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.12.6",
-    "@medusajs/types": "^1.11.10",
-    "@medusajs/utils": "^1.11.3",
+    "@medusajs/modules-sdk": "^1.12.7",
+    "@medusajs/types": "^1.11.11",
+    "@medusajs/utils": "^1.11.4",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",
     "@mikro-orm/postgresql": "5.9.7",

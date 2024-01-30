@@ -10,6 +10,31 @@
       },
       "description": "The content to copy."
     },
+    "variant": {
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"mini\" | \"default\" | null",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"mini\""
+          },
+          {
+            "name": "literal",
+            "value": "\"default\""
+          },
+          {
+            "name": "null"
+          }
+        ]
+      },
+      "description": "The variant of the copy button.",
+      "defaultValue": {
+        "value": "\"default\"",
+        "computed": false
+      }
+    },
     "asChild": {
       "required": false,
       "tsType": {
