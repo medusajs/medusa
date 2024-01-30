@@ -39,7 +39,7 @@
     "resolve-cwd": "^3.0.0"
   },
   "scripts": {
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build && npm prune --production",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build && node build.js",
     "test": "jest --runInBand --bail --forceExit",
     "watch": "tsc --build --watch"
