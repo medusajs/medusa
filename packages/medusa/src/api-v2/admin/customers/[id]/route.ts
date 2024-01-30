@@ -23,7 +23,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  const updateCampaigns = updateCustomersWorkflow(req.scope)
+  const updateCustomers = updateCustomersWorkflow(req.scope)
   const { result, errors } = await updateCampaigns.run({
     input: {
       selector: { id: req.params.id },
