@@ -26,7 +26,7 @@ class DatabaseFactory {
   }
 
   async createTemplateDb_({ cwd }) {
-    const { configModule } = getConfigFile(cwd, `medusa-config`)
+    const { configModule, error } = getConfigFile(cwd, `medusa-config`)
 
     const migrationDir = path.resolve(
       path.join(

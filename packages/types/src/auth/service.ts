@@ -72,6 +72,12 @@ export interface IAuthModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<AuthUserDTO>
 
+  generateJwtToken(authUserId: string, scope: string): Promise<string>
+  retrieveAuthUserFromJwtToken(
+    token: string,
+    scope: string
+  ): Promise<AuthUserDTO>
+
   listAuthUsers(
     filters?: FilterableAuthProviderProps,
     config?: FindConfig<AuthUserDTO>,
