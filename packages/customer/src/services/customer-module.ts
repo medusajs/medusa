@@ -6,16 +6,24 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   CustomerTypes,
+  SoftDeleteReturn,
+  RestoreReturn,
+  CustomerUpdatableFields,
 } from "@medusajs/types"
 
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  mapObjectTo,
   isString,
   isObject,
 } from "@medusajs/utils"
-import { joinerConfig } from "../joiner-config"
+import {
+  entityNameToLinkableKeysMap,
+  LinkableKeys,
+  joinerConfig,
+} from "../joiner-config"
 import * as services from "../services"
 
 type InjectedDependencies = {
@@ -103,24 +111,24 @@ export default class CustomerModuleService implements ICustomerModuleService {
 
   update(
     customerId: string,
-    data: Partial<CustomerTypes.CreateCustomerDTO>,
+    data: CustomerUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO>
   update(
     customerIds: string[],
-    data: Partial<CustomerTypes.CreateCustomerDTO>,
+    data: CustomerUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
   update(
     selector: CustomerTypes.FilterableCustomerProps,
-    data: Partial<CustomerTypes.CreateCustomerDTO>,
+    data: CustomerUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
 
   @InjectTransactionManager("baseRepository_")
   async update(
     idsOrSelector: string | string[] | CustomerTypes.FilterableCustomerProps,
-    data: Partial<CustomerTypes.CreateCustomerDTO>,
+    data: CustomerUpdatableFields,
     @MedusaContext() sharedContext: Context = {}
   ) {
     let updateData: CustomerTypes.UpdateCustomerDTO[] = []
@@ -264,6 +272,23 @@ export default class CustomerModuleService implements ICustomerModuleService {
     return Array.isArray(dataOrArrayOfData) ? serialized : serialized[0]
   }
 
+  @InjectManager("baseRepository_")
+  async retrieveCustomerGroup(
+    groupId: string,
+    config: FindConfig<CustomerTypes.CustomerGroupDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const group = await this.customerGroupService_.retrieve(
+      groupId,
+      config,
+      sharedContext
+    )
+    return await this.baseRepository_.serialize<CustomerTypes.CustomerGroupDTO>(
+      group,
+      { populate: true }
+    )
+  }
+
   async updateCustomerGroup(
     groupId: string,
     data: Partial<CustomerTypes.CreateCustomerGroupDTO>,
@@ -331,6 +356,39 @@ export default class CustomerModuleService implements ICustomerModuleService {
     >(groups, { populate: true })
   }
 
+  deleteCustomerGroup(groupId: string, sharedContext?: Context): Promise<void>
+  deleteCustomerGroup(
+    groupIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  deleteCustomerGroup(
+    selector: CustomerTypes.FilterableCustomerGroupProps,
+    sharedContext?: Context
+  ): Promise<void>
+
+  @InjectTransactionManager("baseRepository_")
+  async deleteCustomerGroup(
+    groupIdOrSelector:
+      | string
+      | string[]
+      | CustomerTypes.FilterableCustomerGroupProps,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    let toDelete = Array.isArray(groupIdOrSelector)
+      ? groupIdOrSelector
+      : [groupIdOrSelector as string]
+    if (isObject(groupIdOrSelector)) {
+      const ids = await this.customerGroupService_.list(
+        groupIdOrSelector,
+        { select: ["id"] },
+        sharedContext
+      )
+      toDelete = ids.map(({ id }) => id)
+    }
+
+    return await this.customerGroupService_.delete(toDelete, sharedContext)
+  }
+
   async addCustomerToGroup(
     groupCustomerPair: CustomerTypes.GroupCustomerPair,
     sharedContext?: Context
@@ -358,6 +416,122 @@ export default class CustomerModuleService implements ICustomerModuleService {
     return { id: groupCustomers[0].id }
   }
 
+  async addAddresses(
+    addresses: CustomerTypes.CreateCustomerAddressDTO[],
+    sharedContext?: Context
+  ): Promise<CustomerTypes.CustomerAddressDTO[]>
+  async addAddresses(
+    address: CustomerTypes.CreateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerTypes.CustomerAddressDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async addAddresses(
+    data:
+      | CustomerTypes.CreateCustomerAddressDTO
+      | CustomerTypes.CreateCustomerAddressDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    CustomerTypes.CustomerAddressDTO | CustomerTypes.CustomerAddressDTO[]
+  > {
+    const addresses = await this.addressService_.create(
+      Array.isArray(data) ? data : [data],
+      sharedContext
+    )
+
+    const serialized = await this.baseRepository_.serialize<
+      CustomerTypes.CustomerAddressDTO[]
+    >(addresses, { populate: true })
+
+    if (Array.isArray(data)) {
+      return serialized
+    }
+
+    return serialized[0]
+  }
+
+  async updateAddress(
+    addressId: string,
+    data: CustomerTypes.UpdateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerTypes.CustomerAddressDTO>
+  async updateAddress(
+    addressIds: string[],
+    data: CustomerTypes.UpdateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerTypes.CustomerAddressDTO[]>
+  async updateAddress(
+    selector: CustomerTypes.FilterableCustomerAddressProps,
+    data: CustomerTypes.UpdateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerTypes.CustomerAddressDTO[]>
+
+  @InjectTransactionManager("baseRepository_")
+  async updateAddress(
+    addressIdOrSelector:
+      | string
+      | string[]
+      | CustomerTypes.FilterableCustomerAddressProps,
+    data: CustomerTypes.UpdateCustomerAddressDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    let updateData: CustomerTypes.UpdateCustomerAddressDTO[] = []
+    if (isString(addressIdOrSelector)) {
+      updateData = [
+        {
+          id: addressIdOrSelector,
+          ...data,
+        },
+      ]
+    } else if (Array.isArray(addressIdOrSelector)) {
+      updateData = addressIdOrSelector.map((id) => ({
+        id,
+        ...data,
+      }))
+    } else {
+      const ids = await this.addressService_.list(
+        addressIdOrSelector,
+        { select: ["id"] },
+        sharedContext
+      )
+      updateData = ids.map(({ id }) => ({
+        id,
+        ...data,
+      }))
+    }
+
+    const addresses = await this.addressService_.update(
+      updateData,
+      sharedContext
+    )
+    const serialized = await this.baseRepository_.serialize<
+      CustomerTypes.CustomerAddressDTO[]
+    >(addresses, { populate: true })
+
+    if (isString(addressIdOrSelector)) {
+      return serialized[0]
+    }
+
+    return serialized
+  }
+
+  @InjectManager("baseRepository_")
+  async listAddresses(
+    filters?: CustomerTypes.FilterableCustomerAddressProps,
+    config?: FindConfig<CustomerTypes.CustomerAddressDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<CustomerTypes.CustomerAddressDTO[]> {
+    const addresses = await this.addressService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      CustomerTypes.CustomerAddressDTO[]
+    >(addresses, { populate: true })
+  }
+
   async removeCustomerFromGroup(
     groupCustomerPair: CustomerTypes.GroupCustomerPair,
     sharedContext?: Context
@@ -380,6 +554,25 @@ export default class CustomerModuleService implements ICustomerModuleService {
       groupCustomers.map((gc) => gc.id),
       sharedContext
     )
+  }
+
+  @InjectManager("baseRepository_")
+  async listCustomerGroupRelations(
+    filters?: CustomerTypes.FilterableCustomerGroupCustomerProps,
+    config?: FindConfig<CustomerTypes.CustomerGroupCustomerDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const groupCustomers = await this.customerGroupCustomerService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      CustomerTypes.CustomerGroupCustomerDTO[]
+    >(groupCustomers, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")
@@ -422,5 +615,91 @@ export default class CustomerModuleService implements ICustomerModuleService {
       ),
       count,
     ]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async softDeleteCustomerGroup<
+    TReturnableLinkableKeys extends string = string
+  >(
+    groupIds: string[],
+    config: SoftDeleteReturn<TReturnableLinkableKeys> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const [_, cascadedEntitiesMap] =
+      await this.customerGroupService_.softDelete(groupIds, sharedContext)
+    return config.returnLinkableKeys
+      ? mapObjectTo<Record<TReturnableLinkableKeys, string[]>>(
+          cascadedEntitiesMap,
+          entityNameToLinkableKeysMap,
+          {
+            pick: config.returnLinkableKeys,
+          }
+        )
+      : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async restoreCustomerGroup<TReturnableLinkableKeys extends string = string>(
+    groupIds: string[],
+    config: RestoreReturn<TReturnableLinkableKeys> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const [_, cascadedEntitiesMap] = await this.customerGroupService_.restore(
+      groupIds,
+      sharedContext
+    )
+    return config.returnLinkableKeys
+      ? mapObjectTo<Record<TReturnableLinkableKeys, string[]>>(
+          cascadedEntitiesMap,
+          entityNameToLinkableKeysMap,
+          {
+            pick: config.returnLinkableKeys,
+          }
+        )
+      : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async softDelete<TReturnableLinkableKeys extends string = string>(
+    customerIds: string[],
+    config: SoftDeleteReturn<TReturnableLinkableKeys> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const [_, cascadedEntitiesMap] = await this.customerService_.softDelete(
+      customerIds,
+      sharedContext
+    )
+
+    return config.returnLinkableKeys
+      ? mapObjectTo<Record<TReturnableLinkableKeys, string[]>>(
+          cascadedEntitiesMap,
+          entityNameToLinkableKeysMap,
+          {
+            pick: config.returnLinkableKeys,
+          }
+        )
+      : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async restore<TReturnableLinkableKeys extends string = string>(
+    customerIds: string[],
+    config: RestoreReturn<TReturnableLinkableKeys> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const [_, cascadedEntitiesMap] = await this.customerService_.restore(
+      customerIds,
+      sharedContext
+    )
+
+    return config.returnLinkableKeys
+      ? mapObjectTo<Record<TReturnableLinkableKeys, string[]>>(
+          cascadedEntitiesMap,
+          entityNameToLinkableKeysMap,
+          {
+            pick: config.returnLinkableKeys,
+          }
+        )
+      : void 0
   }
 }

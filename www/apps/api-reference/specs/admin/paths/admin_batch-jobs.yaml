@@ -238,7 +238,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_batch-jobs/getundefined
+        $ref: ../code_samples/tsx/admin_batch-jobs/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -294,7 +294,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_batch-jobs/postundefined
+        $ref: ../code_samples/tsx/admin_batch-jobs/post.tsx
     - lang: Shell
       label: cURL
       source:

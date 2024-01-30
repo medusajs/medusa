@@ -1,39 +1,41 @@
 import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Product, ProductCollection } from "@models"
-
-import { initialize } from "../../../../src"
 import { EventBusService } from "../../../__fixtures__/event-bus"
 import { createCollections } from "../../../__fixtures__/product"
-import { DB_URL, TestDatabase } from "../../../utils"
+import { getInitModuleConfig, TestDatabase } from "../../../utils"
+import { MedusaModule, Modules } from "@medusajs/modules-sdk"
+import { initModules } from "medusa-test-utils"
 
 describe("ProductModuleService product collections", () => {
   let service: IProductModuleService
   let testManager: SqlEntityManager
-  let repositoryManager: SqlEntityManager
   let productOne: Product
   let productTwo: Product
   let productCollectionOne: ProductCollection
   let productCollectionTwo: ProductCollection
   let productCollections: ProductCollection[]
-  let eventBus
+
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    MedusaModule.clearInstances()
+
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PRODUCT]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
-    repositoryManager = await TestDatabase.forkManager()
-    eventBus = new EventBusService()
-
-    service = await initialize(
-      {
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-        },
-      },
-      {
-        eventBusModuleService: eventBus,
-      }
-    )
 
     testManager = await TestDatabase.forkManager()
 

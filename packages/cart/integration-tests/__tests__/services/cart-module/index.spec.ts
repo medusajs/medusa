@@ -1,22 +1,32 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { ICartModuleService } from "@medusajs/types"
 import { CheckConstraintViolationException } from "@mikro-orm/core"
-import { initialize } from "../../../../src/initialize"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { initModules } from "medusa-test-utils"
+import { MikroOrmWrapper } from "../../../utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 
 jest.setTimeout(30000)
 
 describe("Cart Module Service", () => {
   let service: ICartModuleService
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.CART]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_CART_DB_SCHEMA,
-      },
-    })
   })
 
   afterEach(async () => {

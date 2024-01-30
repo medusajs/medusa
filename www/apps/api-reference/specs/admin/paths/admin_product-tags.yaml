@@ -108,7 +108,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_product-tags/getundefined
+        $ref: ../code_samples/tsx/admin_product-tags/get.tsx
     - lang: Shell
       label: cURL
       source:
