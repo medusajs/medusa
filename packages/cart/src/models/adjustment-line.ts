@@ -16,7 +16,10 @@ export default abstract class AdjustmentLine {
   @Property({ columnType: "text", nullable: true })
   description: string | null = null
 
-  @Property({ columnType: "text", nullable: true })
+  @Property({
+    columnType: "text",
+    nullable: true,
+  })
   promotion_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
