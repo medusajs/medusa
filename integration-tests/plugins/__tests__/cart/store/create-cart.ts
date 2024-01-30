@@ -54,4 +54,19 @@ describe("POST /store/carts", () => {
       })
     )
   })
+
+  it("should fail if body is incorrect", async () => {
+    const api = useApi() as any
+    const error = await api
+      .post(`/store/carts`, {
+        full_name: "Oliver Juhl",
+        currency_code: "usd",
+      })
+      .catch((e) => e)
+
+    const message = error.response.data.message
+
+    expect(error.response.status).toEqual(400)
+    expect(message).toEqual("Unrecognized key(s) in object: 'full_name'")
+  })
 })
