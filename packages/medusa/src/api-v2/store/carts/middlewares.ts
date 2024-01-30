@@ -1,7 +1,11 @@
 import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import * as QueryConfig from "./query-config"
-import { StoreGetCartsCartParams, StorePostCartReq } from "./validators"
+import {
+  StoreGetCartsCartParams,
+  StorePostCartReq,
+  StorePostCartsCartReq,
+} from "./validators"
 
 export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -18,5 +22,10 @@ export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/store/carts",
     middlewares: [transformBody(StorePostCartReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/store/carts/:id",
+    middlewares: [transformBody(StorePostCartsCartReq)],
   },
 ]

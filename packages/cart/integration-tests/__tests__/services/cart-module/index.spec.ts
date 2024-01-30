@@ -258,6 +258,56 @@ describe("Cart Module Service", () => {
         })
       )
     })
+
+    it("should update a cart with selector successfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [updatedCart] = await service.update(
+        { id: createdCart.id },
+        {
+          email: "test@email.com",
+        }
+      )
+
+      const [cart] = await service.list({ id: [createdCart.id] })
+
+      expect(cart).toEqual(
+        expect.objectContaining({
+          id: createdCart.id,
+          currency_code: "eur",
+          email: updatedCart.email,
+        })
+      )
+    })
+
+    it("should update a cart with id successfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const updatedCart = await service.update(
+        createdCart.id,
+        {
+          email: "test@email.com",
+        }
+      )
+
+      const [cart] = await service.list({ id: [createdCart.id] })
+
+      expect(cart).toEqual(
+        expect.objectContaining({
+          id: createdCart.id,
+          currency_code: "eur",
+          email: updatedCart.email,
+        })
+      )
+    })
   })
 
   describe("delete", () => {

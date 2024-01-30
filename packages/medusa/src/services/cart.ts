@@ -61,6 +61,8 @@ import {
 } from "../types/common"
 import { buildQuery, isString, setMetadata } from "../utils"
 
+import { Modules, RemoteLink } from "@medusajs/modules-sdk"
+import { RemoteQueryFunction } from "@medusajs/types"
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
@@ -68,8 +70,6 @@ import { PaymentSessionRepository } from "../repositories/payment-session"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { PaymentSessionInput } from "../types/payment"
 import { validateEmail } from "../utils/is-email"
-import { RemoteQueryFunction } from "@medusajs/types"
-import { Modules, RemoteLink } from "@medusajs/modules-sdk"
 
 type InjectedDependencies = {
   manager: EntityManager

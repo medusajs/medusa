@@ -190,35 +190,62 @@ export default class CartModuleService implements ICartModuleService {
     return createdCarts
   }
 
+  async update(data: CartTypes.UpdateCartDTO[]): Promise<CartTypes.CartDTO[]>
   async update(
-    data: CartTypes.UpdateCartDTO[],
+    cartId: string,
+    data: CartTypes.UpdateCartDataDTO,
+    sharedContext?: Context
+  ): Promise<CartTypes.CartDTO>
+  async update(
+    selector: Partial<CartTypes.CartDTO>,
+    data: CartTypes.UpdateCartDataDTO,
     sharedContext?: Context
   ): Promise<CartTypes.CartDTO[]>
 
-  async update(
-    data: CartTypes.UpdateCartDTO,
-    sharedContext?: Context
-  ): Promise<CartTypes.CartDTO>
-
   @InjectManager("baseRepository_")
   async update(
-    data: CartTypes.UpdateCartDTO[] | CartTypes.UpdateCartDTO,
+    dataOrIdOrSelector:
+      | CartTypes.UpdateCartDTO[]
+      | string
+      | Partial<CartTypes.CartDTO>,
+    data?: CartTypes.UpdateCartDataDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartDTO[] | CartTypes.CartDTO> {
-    const input = Array.isArray(data) ? data : [data]
-    const carts = await this.update_(input, sharedContext)
+    let toUpdate: CartTypes.UpdateCartDTO[] = []
+    if (isString(dataOrIdOrSelector)) {
+      toUpdate = [
+        {
+          id: dataOrIdOrSelector,
+          ...data,
+        },
+      ]
+    } else if (Array.isArray(dataOrIdOrSelector)) {
+      toUpdate = dataOrIdOrSelector
+    } else {
+      const carts = await this.cartService_.list(
+        { ...dataOrIdOrSelector },
+        { select: ["id"] },
+        sharedContext
+      )
 
-    const result = await this.list(
-      { id: carts.map((p) => p!.id) },
-      {
-        relations: ["shipping_address", "billing_address"],
-      },
-      sharedContext
-    )
 
-    return (Array.isArray(data) ? result : result[0]) as
-      | CartTypes.CartDTO
-      | CartTypes.CartDTO[]
+      toUpdate = carts.map((cart) => {
+        return {
+          ...data,
+          id: cart.id,
+        }
+      })
+    }
+
+    const result = await this.cartService_.update(toUpdate, sharedContext)
+
+    const serializedResult = await this.baseRepository_.serialize<
+      CartTypes.CartDTO[]
+    >(result, {
+      populate: true,
+    })
+
+    return isString(dataOrIdOrSelector) ? serializedResult[0] : serializedResult
   }
 
   @InjectTransactionManager("baseRepository_")

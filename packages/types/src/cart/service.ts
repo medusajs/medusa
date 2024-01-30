@@ -32,6 +32,7 @@ import {
   CreateShippingMethodTaxLineDTO,
   UpdateAddressDTO,
   UpdateCartDTO,
+  UpdateCartDataDTO,
   UpdateLineItemDTO,
   UpdateLineItemTaxLineDTO,
   UpdateLineItemWithSelectorDTO,
@@ -62,8 +63,17 @@ export interface ICartModuleService extends IModuleService {
   create(data: CreateCartDTO[], sharedContext?: Context): Promise<CartDTO[]>
   create(data: CreateCartDTO, sharedContext?: Context): Promise<CartDTO>
 
-  update(data: UpdateCartDTO[], sharedContext?: Context): Promise<CartDTO[]>
-  update(data: UpdateCartDTO, sharedContext?: Context): Promise<CartDTO>
+  update(data: UpdateCartDTO[]): Promise<CartDTO[]>
+  update(
+    cartId: string,
+    data: UpdateCartDataDTO,
+    sharedContext?: Context
+  ): Promise<CartDTO>
+  update(
+    selector: Partial<CartDTO>,
+    data: UpdateCartDataDTO,
+    sharedContext?: Context
+  ): Promise<CartDTO[]>
 
   delete(cartIds: string[], sharedContext?: Context): Promise<void>
   delete(cartId: string, sharedContext?: Context): Promise<void>
