@@ -19,89 +19,80 @@ passport.deserializeUser((user, done) => {
   done(null, user)
 })
 
-// abstract class AbstractAuthModuleStrategy extends passport.Strategy {
-//   name?: string
+abstract class AbstractAuthModuleStrategy extends passport.Strategy {
+  name?: string
 
-//   constructor(name: string) {
-//     super()
-//     this.name = name
-//   }
+  constructor(name: string) {
+    super()
+    this.name = name
+  }
 
-//   abstract authenticationMethod(
-//     authProvider: string,
-//     authData: AuthenticationInput
-//   ): (service: IAuthModuleService) => Promise<AuthenticationResponse>
+  abstract authenticationMethod(
+    authProvider: string,
+    authData: AuthenticationInput
+  ): (service: IAuthModuleService) => Promise<AuthenticationResponse>
 
-//   async authenticate(
-//     this: passport.StrategyCreated<this, this & passport.StrategyCreatedStatic>,
-//     req: MedusaRequest,
-//     _options?: any
-//   ) {
-//     if (req.user) {
-//       return this.success(req.user)
-//     }
+  async authenticate(
+    this: passport.StrategyCreated<this, this & passport.StrategyCreatedStatic>,
+    req: MedusaRequest,
+    _options?: any
+  ) {
+    if (req.user) {
+      return this.success(req.user)
+    }
 
-//     const { scope, authProvider } = req.params
+    const { scope, authProvider } = req.params
 
-//     if (!authProvider || !scope) {
-//       return this.fail()
-//     }
+    if (!authProvider || !scope) {
+      return this.fail()
+    }
 
-//     const service: IAuthModuleService = req.scope.resolve(
-//       ModuleRegistrationName.AUTH
-//     )
+    const service: IAuthModuleService = req.scope.resolve(
+      ModuleRegistrationName.AUTH
+    )
 
-//     const authData = { ...req } as unknown as AuthenticationInput
-//     authData.authScope = scope
-//     const res = await this.authenticationMethod(authProvider, authData)(service)
-//     // const res = await this.authenticationMethod(service)(authProvider, authData)
+    const authData = { ...req } as unknown as AuthenticationInput
+    authData.authScope = scope
+    const res = await this.authenticationMethod(authProvider, authData)(service)
+    // const res = await this.authenticationMethod(service)(authProvider, authData)
 
-//     const { success, error, authUser, location } = res
-//     if (location) {
-//       return this.redirect(location)
-//     }
+    const { success, error, authUser, location } = res
+    if (location) {
+      return this.redirect(location)
+    }
 
-//     if (!success) {
-//       return this.error(error)
-//     } else {
-//       return this.success({ authUser, ...authUser.app_metadata })
-//     }
-//   }
-// }
+    if (!success) {
+      return this.error(error)
+    } else {
+      return this.success({ authUser, ...authUser.app_metadata })
+    }
+  }
+}
 
-// class AuthModuleInitializeStrategy extends AbstractAuthModuleStrategy {
-//   constructor(name: string) {
-//     super(name)
-//   }
+class AuthModuleAuthenticateStrategy extends AbstractAuthModuleStrategy {
+  authenticationMethod(authProvider: string, authData: AuthenticationInput) {
+    return (service: IAuthModuleService) =>
+      service.authenticate(authProvider, authData)
+  }
+}
+class AuthModuleCallbackeStrategy extends AbstractAuthModuleStrategy {
+  authenticationMethod(authProvider: string, authData: AuthenticationInput) {
+    return (service: IAuthModuleService) =>
+      service.validateCallback(authProvider, authData)
+  }
+}
 
-//   authenticationMethod(authProvider: string, authData: AuthenticationInput) {
-//     return (service: IAuthModuleService) =>
-//       service.authenticate(authProvider, authData)
-//   }
-// }
-// class AuthModuleCallbackeStrategy extends AbstractAuthModuleStrategy {
-//   constructor(name: string) {
-//     super(name)
-//   }
+passport.use(
+  new AuthModuleAuthenticateStrategy("authModuleAuthenticate")
+)
 
-//   authenticationMethod(authProvider: string, authData: AuthenticationInput) {
-//     return (service: IAuthModuleService) =>
-//       service.validateCallback(authProvider, authData)
-//   }
-// }
+passport.use(
+  new AuthModuleCallbackeStrategy(
+    "authModuleCallback"
+  )
+)
 
-// passport.use(
-//   new AbstractAuthModuleStrategy("custom1", (service) => service.authenticate)
-// )
-
-// passport.use(
-//   new AbstractAuthModuleStrategy(
-//     "customCallback1",
-//     (service) => service.validateCallback
-//   )
-// )
-
-class CustomStrategyRoutes extends passport.Strategy {
+class AuthModuleRoutes extends passport.Strategy {
   name?: string
 
   constructor(name: string) {
@@ -148,97 +139,7 @@ class CustomStrategyRoutes extends passport.Strategy {
   }
 }
 
-class CustomStrategy1 extends passport.Strategy {
-  name?: string
-
-  constructor(name: string) {
-    super()
-    this.name = name
-  }
-
-  async authenticate(
-    this: passport.StrategyCreated<this, this & passport.StrategyCreatedStatic>,
-    req: MedusaRequest,
-    _options?: any
-  ) {
-    if (req.user) {
-      return this.success(req.user)
-    }
-
-    const { scope, authProvider } = req.params
-
-    if (!authProvider || !scope) {
-      return this.fail()
-    }
-
-    const service: IAuthModuleService = req.scope.resolve(
-      ModuleRegistrationName.AUTH
-    )
-
-    const authData = { ...req } as unknown as AuthenticationInput
-    authData.authScope = scope
-    const res = await service.authenticate(authProvider, authData)
-
-    const { success, error, authUser, location } = res
-    if (location) {
-      return this.redirect(location)
-    }
-
-    if (!success) {
-      return this.error(error)
-    } else {
-      return this.success({ authUser, ...authUser.app_metadata })
-    }
-  }
-}
-
-class CustomStrategy2 extends passport.Strategy {
-  name?: string
-
-  constructor(name: string) {
-    super()
-    this.name = name
-  }
-
-  async authenticate(
-    this: passport.StrategyCreated<this, this & passport.StrategyCreatedStatic>,
-    req: MedusaRequest,
-    _options?: any
-  ) {
-    if (req.user) {
-      return this.success(req.user)
-    }
-
-    const { scope, authProvider } = req.params
-
-    if (!authProvider || !scope) {
-      return this.fail()
-    }
-
-    const service: IAuthModuleService = req.scope.resolve(
-      ModuleRegistrationName.AUTH
-    )
-
-    const authData = { ...req } as unknown as AuthenticationInput
-    authData.authScope = scope
-    const res = await service.validateCallback(authProvider, authData)
-
-    const { success, error, authUser, location } = res
-    if (location) {
-      return this.redirect(location)
-    }
-
-    if (!success) {
-      return this.error(error)
-    } else {
-      return this.success({ authUser, ...authUser.app_metadata })
-    }
-  }
-}
-
-passport.use(new CustomStrategy2("customCallback"))
-passport.use(new CustomStrategyRoutes("customRoute"))
-passport.use(new CustomStrategy1("custom"))
+passport.use(new AuthModuleRoutes("customRoute"))
 
 export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
