@@ -86,28 +86,27 @@ export class LocalWorkflow {
 
           return new Proxy(resolved, {
             get: function (target, prop) {
-              if (typeof target[prop] === "function") {
-                return async (...args) => {
-                  const ctxIndex =
-                    MedusaContext.getIndex(target, prop as string) ??
-                    args.length
-
-                  const hasContext =
-                    args[ctxIndex]?.__type === MedusaContextType
-
-                  if (!hasContext) {
-                    const context = this_.medusaContext
-                    if (context?.__type === MedusaContextType) {
-                      delete context?.manager
-                      delete context?.transactionManager
-                      args[ctxIndex] = context
-                    }
-                  }
-
-                  return await target[prop].apply(target, [...args])
-                }
+              if (typeof target[prop] !== "function") {
+                return target[prop]
               }
-              return target[prop]
+
+              return async (...args) => {
+                const ctxIndex =
+                  MedusaContext.getIndex(target, prop as string) ?? args.length
+
+                const hasContext = args[ctxIndex]?.__type === MedusaContextType
+
+                if (!hasContext) {
+                  const context = this_.medusaContext
+                  if (context?.__type === MedusaContextType) {
+                    delete context?.manager
+                    delete context?.transactionManager
+                    args[ctxIndex] = context
+                  }
+                }
+
+                return await target[prop].apply(target, [...args])
+              }
             },
           })
         }
