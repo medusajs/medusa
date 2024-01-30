@@ -4,7 +4,7 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 type DeleteCustomerGroupStepInput = string[]
 
-export const deleteCustomerGroupStepId = "delete-customer"
+export const deleteCustomerGroupStepId = "delete-customer-groups"
 export const deleteCustomerGroupStep = createStep(
   deleteCustomerGroupStepId,
   async (ids: DeleteCustomerGroupStepInput, { container }) => {
