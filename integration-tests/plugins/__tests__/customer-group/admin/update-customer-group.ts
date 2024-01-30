@@ -58,7 +58,7 @@ describe("POST /admin/customer-groups/:id", () => {
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.group).toEqual(
+    expect(response.data.customer_group).toEqual(
       expect.objectContaining({
         id: expect.any(String),
         name: "regular",

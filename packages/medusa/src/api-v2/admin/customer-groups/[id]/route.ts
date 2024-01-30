@@ -14,17 +14,20 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     ModuleRegistrationName.CUSTOMER
   )
 
-  const customer = await customerModuleService.retrieve(req.params.id, {
-    select: req.retrieveConfig.select,
-    relations: req.retrieveConfig.relations,
-  })
+  const customer = await customerModuleService.retrieveCustomerGroup(
+    req.params.id,
+    {
+      select: req.retrieveConfig.select,
+      relations: req.retrieveConfig.relations,
+    }
+  )
 
   res.status(200).json({ customer })
 }
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const updateGroups = updateCustomerGroupsWorkflow(req.scope)
-  const { result, errors } = await updateCampaigns.run({
+  const { result, errors } = await updateGroups.run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody as CustomerGroupUpdatableFields,

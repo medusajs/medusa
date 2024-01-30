@@ -53,7 +53,7 @@ describe("GET /admin/customer-groups", () => {
 
     expect(response.status).toEqual(200)
     expect(response.data.count).toEqual(1)
-    expect(response.data.groups).toEqual([
+    expect(response.data.customer_groups).toEqual([
       expect.objectContaining({
         id: expect.any(String),
         name: "Test",

@@ -18,7 +18,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
   res.json({
     count,
-    groups,
+    customer_groups: groups,
     offset,
     limit,
   })
@@ -42,5 +42,5 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     throw errors[0].error
   }
 
-  res.status(200).json({ group: result[0] })
+  res.status(200).json({ customer_group: result[0] })
 }
