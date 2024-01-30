@@ -1,12 +1,11 @@
-import { promiseAll } from "@medusajs/utils"
+import { MedusaContainer } from "@medusajs/types"
+import { formatRegistrationName, promiseAll } from "@medusajs/utils"
 import { Lifetime, asFunction } from "awilix"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
 import glob from "glob"
 import { createRequireFromPath } from "medusa-core-utils"
 import path from "path"
-import { MedusaContainer } from "../../types/global"
-import { formatRegistrationName } from "../../utils/format-registration-name"
 
 type PluginDetails = {
   resolve: string
