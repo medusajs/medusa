@@ -20,8 +20,12 @@ export async function moduleProviderLoader({
   providers,
   registerServiceFn,
 }) {
+  if (!providers?.length) {
+    return
+  }
+
   const resolvedProviders = new Map<string, Record<string, unknown>>()
-  const installedPlugins = providers.providers.map((provider) => {
+  const installedPlugins = providers.map((provider) => {
     let resolvedProvider
     if (resolvedProviders.has(provider.resolve)) {
       resolvedProvider = resolvedProviders.get(provider.resolve)

@@ -12,7 +12,7 @@ type PaymentModuleProviders = {
   }[]
 }
 
-const loadPaymentProviderService = async (klass, container, pluginOptions) => {
+const registrationFn = async (klass, container, pluginOptions) => {
   if (!AbstractPaymentProcessor.isPaymentProcessor(klass.prototype)) {
     return
   }
@@ -44,9 +44,12 @@ export default async ({
   ) &
     PaymentModuleProviders
 >): Promise<void> => {
+  const pluginProviders =
+    options?.providers?.filter((provider) => provider.resolve) || []
+
   await moduleProviderLoader({
     container,
-    providers: options!.providers,
-    registerServiceFn: loadPaymentProviderService,
+    providers: pluginProviders,
+    registerServiceFn: registrationFn,
   })
 }

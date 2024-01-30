@@ -1,12 +1,12 @@
 import { IPaymentModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { initialize } from "../../../../src/initialize"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
-import { createPaymentCollections } from "../../../__fixtures__/payment-collection"
-import { getInitModuleConfig } from "../../../utils/get-init-module-config"
-import { initModules } from "medusa-test-utils"
 import { Modules } from "@medusajs/modules-sdk"
+import { initModules } from "medusa-test-utils"
+import { initialize } from "../../../../src/initialize"
+import { createPaymentCollections } from "../../../__fixtures__/payment-collection"
+import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 
 jest.setTimeout(30000)
 
@@ -48,7 +48,7 @@ describe("Payment Module Service", () => {
   })
 
   describe("create", () => {
-    it("should throw an error when required params are not passed", async () => {
+    it.only("should throw an error when required params are not passed", async () => {
       let error = await service
         .createPaymentCollection([
           {
