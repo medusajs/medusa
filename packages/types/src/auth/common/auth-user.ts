@@ -12,7 +12,7 @@ export type AuthUserDTO = {
 }
 
 export type CreateAuthUserDTO = {
-  provider_id: string
+  provider: string
   entity_id: string
   provider_metadata?: Record<string, unknown>
   user_metadata?: Record<string, unknown>

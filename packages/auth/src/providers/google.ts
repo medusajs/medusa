@@ -101,7 +101,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
         const [createdAuthUser] = await this.authUserSerivce_.create([
           {
             entity_id,
-            provider_id: GoogleProvider.PROVIDER,
+            provider: GoogleProvider.PROVIDER,
             user_metadata: jwtData!.payload,
             app_metadata: { scope },
           },
