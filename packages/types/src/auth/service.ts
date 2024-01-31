@@ -1,8 +1,8 @@
 import {
-  AuthProviderDTO,
-  AuthUserDTO,
   AuthenticationInput,
   AuthenticationResponse,
+  AuthProviderDTO,
+  AuthUserDTO,
   CreateAuthProviderDTO,
   CreateAuthUserDTO,
   FilterableAuthProviderProps,
@@ -81,7 +81,6 @@ export interface IAuthModuleService extends IModuleService {
     scope: string,
     options?: JWTGenerationOptions
   ): Promise<string>
-  
   retrieveAuthUserFromJwtToken(
     token: string,
     scope: string

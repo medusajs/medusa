@@ -24,9 +24,6 @@ export const authenticate = (
     res: MedusaResponse,
     next: NextFunction
   ): Promise<void> => {
-    console.log(req.user)
-    console.log(req.session)
-
     const authTypes = Array.isArray(authType) ? authType : [authType]
     const authModule = req.scope.resolve<IAuthModuleService>(
       ModuleRegistrationName.AUTH
@@ -48,6 +45,7 @@ export const authenticate = (
         const re = /(\S+)\s+(\S+)/
         const matches = authHeader.match(re)
 
+        // TODO: figure out how to obtain token (and store correct data in token)
         if (matches) {
           const tokenType = matches[1]
           const token = matches[2]

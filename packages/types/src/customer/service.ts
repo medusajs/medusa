@@ -1,3 +1,18 @@
+import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
+import { IModuleService } from "../modules-sdk"
+import { Context } from "../shared-context"
+import {
+  CustomerDTO,
+  CustomerGroupDTO,
+  CustomerGroupCustomerDTO,
+  FilterableCustomerGroupCustomerProps,
+  FilterableCustomerProps,
+  FilterableCustomerGroupProps,
+  GroupCustomerPair,
+  FilterableCustomerAddressProps,
+  CustomerAddressDTO,
+} from "./common"
 import {
   CreateCustomerAddressDTO,
   CreateCustomerDTO,
@@ -6,22 +21,6 @@ import {
   CustomerUpdatableFields,
   UpdateCustomerAddressDTO,
 } from "./mutations"
-import {
-  CustomerAddressDTO,
-  CustomerDTO,
-  CustomerGroupCustomerDTO,
-  CustomerGroupDTO,
-  FilterableCustomerAddressProps,
-  FilterableCustomerGroupCustomerProps,
-  FilterableCustomerGroupProps,
-  FilterableCustomerProps,
-  GroupCustomerPair,
-} from "./common"
-import { RestoreReturn, SoftDeleteReturn } from "../dal"
-
-import { Context } from "../shared-context"
-import { FindConfig } from "../common"
-import { IModuleService } from "../modules-sdk"
 
 export interface ICustomerModuleService extends IModuleService {
   retrieve(
