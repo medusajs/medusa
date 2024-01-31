@@ -29,26 +29,35 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
         continue
       }
 
+      const retrieveEntity = async () => {
+        const query = buildQuery(
+          {
+            id: entity.id,
+          },
+          {
+            relations: [relation.name],
+            withDeleted: true,
+          }
+        )
+        return await manager.findOne(
+          entity.constructor.name,
+          query.where,
+          query.options
+        )
+      }
+
+      if (!entityRelation) {
+        // Fixes the case of many to many through pivot table
+        entityRelation = await retrieveEntity()
+      }
+
       const isCollection = "toArray" in entityRelation
       let relationEntities: any[] = []
 
       if (isCollection) {
         if (!entityRelation.isInitialized()) {
-          const query = buildQuery(
-            {
-              id: entity.id,
-            },
-            {
-              relations: [relation.name],
-              withDeleted: true,
-            }
-          )
-          entityRelation = await manager.find(
-            entityRelation.name || entity.constructor.name,
-            query.where,
-            query.options
-          )
-          entityRelation = entityRelation[0][relation.name]
+          entityRelation = await retrieveEntity()
+          entityRelation = entityRelation[relation.name]
         }
         relationEntities = entityRelation.getItems()
       } else {

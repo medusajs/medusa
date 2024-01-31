@@ -4,23 +4,6 @@ import {
   CurrencyDTO,
   PriceSetMoneyAmountDTO,
 } from "@medusajs/types"
-import { AbstractService } from "@medusajs/utils"
-import { IMoneyAmountRepository } from "../repositories"
-import { MoneyAmount } from "@models"
-
-export interface IMoneyAmountService<TEntity extends MoneyAmount = MoneyAmount>
-  extends AbstractService<
-    TEntity,
-    { moneyAmountRepository: IMoneyAmountRepository<TEntity> },
-    {
-      create: CreateMoneyAmountDTO
-      update: UpdateMoneyAmountDTO
-    },
-    {
-      list: FilterableMoneyAmountProps
-      listAndCount: FilterableMoneyAmountProps
-    }
-  > {}
 
 export interface CreateMoneyAmountDTO {
   id?: string

@@ -6,6 +6,7 @@ import {
   DAL,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
+  ModulesSdkTypes,
   PriceSetDTO,
   PricingContext,
   PricingFilters,
@@ -50,27 +51,18 @@ import {
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { validatePriceListDates } from "@utils"
 import { ServiceTypes } from "@types"
-import {
-  CreatePriceListRuleValueDTO,
-  ICurrencyService,
-  IMoneyAmountService,
-  IPriceSetMoneyAmountRuleService,
-  IPriceSetMoneyAmountService,
-  IPriceSetRuleTypeService,
-  IPriceSetService,
-} from "src/types/services"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   pricingRepository: PricingRepositoryService
-  currencyService: ICurrencyService<any>
-  moneyAmountService: IMoneyAmountService<any>
-  priceSetService: IPriceSetService<any>
-  priceSetMoneyAmountRulesService: IPriceSetMoneyAmountRuleService<any>
+  currencyService: ModulesSdkTypes.InternalModuleService<any>
+  moneyAmountService: ModulesSdkTypes.InternalModuleService<any>
+  priceSetService: ModulesSdkTypes.InternalModuleService<any>
+  priceSetMoneyAmountRulesService: ModulesSdkTypes.InternalModuleService<any>
   ruleTypeService: RuleTypeService<any>
   priceRuleService: PriceRuleService<any>
-  priceSetRuleTypeService: IPriceSetRuleTypeService<any>
-  priceSetMoneyAmountService: IPriceSetMoneyAmountService<any>
+  priceSetRuleTypeService: ModulesSdkTypes.InternalModuleService<any>
+  priceSetMoneyAmountService: ModulesSdkTypes.InternalModuleService<any>
   priceListService: PriceListService<any>
   priceListRuleService: PriceListRuleService<any>
   priceListRuleValueService: PriceListRuleValueService<any>
@@ -122,14 +114,14 @@ export default class PricingModuleService<
 {
   protected baseRepository_: DAL.RepositoryService
   protected readonly pricingRepository_: PricingRepositoryService
-  protected readonly currencyService_: ICurrencyService<TCurrency>
-  protected readonly moneyAmountService_: IMoneyAmountService<TMoneyAmount>
+  protected readonly currencyService_: ModulesSdkTypes.InternalModuleService<TCurrency>
+  protected readonly moneyAmountService_: ModulesSdkTypes.InternalModuleService<TMoneyAmount>
   protected readonly ruleTypeService_: RuleTypeService<TRuleType>
-  protected readonly priceSetService_: IPriceSetService<TPriceSet>
-  protected readonly priceSetMoneyAmountRulesService_: IPriceSetMoneyAmountRuleService<TPriceSetMoneyAmountRules>
+  protected readonly priceSetService_: ModulesSdkTypes.InternalModuleService<TPriceSet>
+  protected readonly priceSetMoneyAmountRulesService_: ModulesSdkTypes.InternalModuleService<TPriceSetMoneyAmountRules>
   protected readonly priceRuleService_: PriceRuleService<TPriceRule>
-  protected readonly priceSetRuleTypeService_: IPriceSetRuleTypeService<TPriceSetRuleType>
-  protected readonly priceSetMoneyAmountService_: IPriceSetMoneyAmountService<TPriceSetMoneyAmount>
+  protected readonly priceSetRuleTypeService_: ModulesSdkTypes.InternalModuleService<TPriceSetRuleType>
+  protected readonly priceSetMoneyAmountService_: ModulesSdkTypes.InternalModuleService<TPriceSetMoneyAmount>
   protected readonly priceListService_: PriceListService<TPriceList>
   protected readonly priceListRuleService_: PriceListRuleService<TPriceListRule>
   protected readonly priceListRuleValueService_: PriceListRuleValueService<TPriceListRuleValue>
@@ -1480,10 +1472,12 @@ export default class PricingModuleService<
 
     await Promise.all([
       this.priceListRuleValueService_.delete(
-        priceListValuesToDelete.map((p) => p.id)
+        priceListValuesToDelete.map((p) => p.id),
+        sharedContext
       ),
       this.priceListRuleValueService_.create(
-        priceListRuleValuesToCreate as CreatePriceListRuleValueDTO[]
+        priceListRuleValuesToCreate as ServiceTypes.CreatePriceListRuleValueDTO[],
+        sharedContext
       ),
     ])
 

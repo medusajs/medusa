@@ -5,24 +5,6 @@ import {
   PriceRuleDTO,
   PriceSetDTO,
 } from "@medusajs/types"
-import { AbstractService } from "@medusajs/utils"
-import { PriceSetMoneyAmount } from "@models"
-import { IPriceSetMoneyAmountRepository } from "../repositories"
-
-export interface IPriceSetMoneyAmountService<
-  TEntity extends PriceSetMoneyAmount = PriceSetMoneyAmount
-> extends AbstractService<
-    TEntity,
-    { priceSetMoneyAmountRepository: IPriceSetMoneyAmountRepository<TEntity> },
-    {
-      create: CreatePriceSetMoneyAmountDTO
-      update: UpdatePriceSetMoneyAmountDTO
-    },
-    {
-      list: FilterablePriceSetMoneyAmountProps
-      listAndCount: FilterablePriceSetMoneyAmountProps
-    }
-  > {}
 
 export interface UpdatePriceSetMoneyAmountDTO {
   id: string

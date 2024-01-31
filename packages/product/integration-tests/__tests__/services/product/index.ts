@@ -217,7 +217,7 @@ describe("Product Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual(`Product with id "undefined" not found`)
+      expect(error.message).toEqual(`Product with id "" not found`)
 
       let result = await service.retrieve(productOne.id)
 
