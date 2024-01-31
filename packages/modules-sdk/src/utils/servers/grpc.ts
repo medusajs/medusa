@@ -1,6 +1,7 @@
 import { LoadedModule, MedusaAppOutput, MedusaContainer } from "@medusajs/types"
 import { isString } from "@medusajs/utils"
 import { ModuleRegistrationName } from "../../definitions"
+import { findMedusaContext } from "../../loaders/utils/clients/find-medusa-context"
 
 export default function (
   container: MedusaContainer,
@@ -55,6 +56,15 @@ export default function (
 
       try {
         const args_ = JSON.parse(args)
+
+        const requestId = call.metadata.get("request-id")?.[0]
+        if (requestId) {
+          const medusaContext = findMedusaContext(args_)
+          if (medusaContext) {
+            medusaContext.requestId ??= requestId
+          }
+        }
+
         const result = await resolvedModule[method].apply(resolvedModule, args_)
         return callback(null, {
           result: JSON.stringify(result),

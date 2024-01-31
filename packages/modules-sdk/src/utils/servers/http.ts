@@ -1,6 +1,7 @@
 import { LoadedModule, MedusaAppOutput, MedusaContainer } from "@medusajs/types"
 import { isString } from "@medusajs/utils"
 import { ModuleRegistrationName } from "../../definitions"
+import { findMedusaContext } from "../../loaders/utils/clients/find-medusa-context"
 
 export default function (
   container: MedusaContainer,
@@ -29,10 +30,10 @@ export default function (
 
     fastify.register(fastifyCompress)
 
-    fastify.addHook("onSend", async (req, reply) => {
-      const requestId = req.headers["x-request-id"]
+    fastify.addHook("onSend", async (request, response) => {
+      const requestId = request.headers["x-request-id"]
       if (requestId) {
-        reply.header("X-Request-Id", req.headers["x-request-id"])
+        response.header("X-Request-Id", request.headers["x-request-id"])
       }
     })
 
@@ -65,6 +66,14 @@ export default function (
       }
 
       try {
+        const requestId = request.headers["x-request-id"]
+        if (requestId) {
+          const medusaContext = findMedusaContext(args)
+          if (medusaContext) {
+            medusaContext.requestId ??= requestId
+          }
+        }
+
         return await resolvedModule[method].apply(resolvedModule, args)
       } catch (err) {
         return response.status(500).send(err.message)

@@ -5,5 +5,11 @@ export const findMedusaContext = (args: any[]) => {
     return
   }
 
-  return args.find((argument) => argument?.__type === MedusaContextType)
+  for (let i = args.length; i--; ) {
+    if (args[i]?.__type === MedusaContextType) {
+      return args[i]
+    }
+  }
+
+  return
 }

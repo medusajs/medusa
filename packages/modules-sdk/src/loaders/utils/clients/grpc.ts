@@ -1,4 +1,5 @@
 import { isString } from "@medusajs/utils"
+import { findMedusaContext } from "./find-medusa-context"
 
 export default async function (moduleKeyName, baseUrl, serverOptions, logger) {
   let grpc
@@ -45,8 +46,15 @@ export default async function (moduleKeyName, baseUrl, serverOptions, logger) {
             args: JSON.stringify(args),
           }
 
+          const metadata = new grpc.Metadata()
+
+          const medusaContext = findMedusaContext(args)
+          if (medusaContext) {
+            metadata.add("request-id", medusaContext.requestId)
+          }
+
           return new Promise((resolve, reject) => {
-            client.Call(request, (error, response) => {
+            client.Call(request, metadata, (error, response) => {
               if (error) {
                 reject(error)
                 return

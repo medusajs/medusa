@@ -46,7 +46,7 @@ export default async function (
           const path = `/modules/${moduleKeyName}/${methodName}`
 
           try {
-            const hasMedusaContext = findMedusaContext(args)
+            const medusaContext = findMedusaContext(args)
 
             const sendHeaders = {
               "content-type": "application/json",
@@ -54,8 +54,8 @@ export default async function (
               connection: "keep-alive",
             }
 
-            if (hasMedusaContext) {
-              sendHeaders["x-request-id"] = hasMedusaContext.requestId
+            if (medusaContext) {
+              sendHeaders["x-request-id"] = medusaContext.requestId
             }
 
             const { statusCode, body } = await client.request({
