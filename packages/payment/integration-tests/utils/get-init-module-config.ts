@@ -10,12 +10,6 @@ export function getInitModuleConfig() {
         schema: process.env.MEDUSA_PAYMENT_DB_SCHEMA,
       },
     },
-    providers: [
-      {
-        resolve: "medusa-payment-stripe",
-        options: {},
-      },
-    ],
   }
 
   const injectedDependencies = {}

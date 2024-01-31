@@ -48,7 +48,7 @@ describe("Payment Module Service", () => {
   })
 
   describe("create", () => {
-    it.only("should throw an error when required params are not passed", async () => {
+    it("should throw an error when required params are not passed", async () => {
       let error = await service
         .createPaymentCollection([
           {
