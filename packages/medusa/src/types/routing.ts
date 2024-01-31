@@ -12,6 +12,7 @@ export interface MedusaRequest extends Request {
   }
   scope: MedusaContainer
   session?: any
+  auth_user?: { id: string; app_metadata: Record<string, any>; scope: string }
 }
 
 export type MedusaResponse = Response
