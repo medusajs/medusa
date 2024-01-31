@@ -2,21 +2,6 @@ import {
   CreateLineItemAdjustmentDTO,
   UpdateLineItemAdjustmentDTO,
 } from "./line-item-adjustment"
-import { Cart } from "@models"
-import { AbstractService } from "@medusajs/utils"
-import { ICartRepository } from "./repositories"
-
-export interface ICartService<TEntity extends Cart = Cart>
-  extends AbstractService<
-    TEntity,
-    {
-      cartRepository: ICartRepository<TEntity>
-    },
-    {
-      create: CreateCartDTO
-      update: UpdateCartDTO
-    }
-  > {}
 
 export interface CreateCartDTO {
   region_id?: string

@@ -6,6 +6,7 @@ import {
   ICartModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
+  ModulesSdkTypes,
 } from "@medusajs/types"
 import {
   InjectManager,
@@ -31,14 +32,6 @@ import {
   CreateLineItemTaxLineDTO,
   CreateShippingMethodDTO,
   CreateShippingMethodTaxLineDTO,
-  IAddressService,
-  ICartService,
-  ILineItemAdjustmentService,
-  ILineItemService,
-  ILineItemTaxLineService,
-  IShippingMethodAdjustmentService,
-  IShippingMethodService,
-  IShippingMethodTaxLineService,
   UpdateLineItemDTO,
   UpdateLineItemTaxLineDTO,
   UpdateShippingMethodTaxLineDTO,
@@ -47,14 +40,14 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  cartService: ICartService<any>
-  addressService: IAddressService<any>
-  lineItemService: ILineItemService<any>
-  shippingMethodAdjustmentService: IShippingMethodAdjustmentService<any>
-  shippingMethodService: IShippingMethodService<any>
-  lineItemAdjustmentService: ILineItemAdjustmentService<any>
-  lineItemTaxLineService: ILineItemTaxLineService<any>
-  shippingMethodTaxLineService: IShippingMethodTaxLineService<any>
+  cartService: ModulesSdkTypes.InternalModuleService<any>
+  addressService: ModulesSdkTypes.InternalModuleService<any>
+  lineItemService: ModulesSdkTypes.InternalModuleService<any>
+  shippingMethodAdjustmentService: ModulesSdkTypes.InternalModuleService<any>
+  shippingMethodService: ModulesSdkTypes.InternalModuleService<any>
+  lineItemAdjustmentService: ModulesSdkTypes.InternalModuleService<any>
+  lineItemTaxLineService: ModulesSdkTypes.InternalModuleService<any>
+  shippingMethodTaxLineService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 const generateMethodForModels = [
@@ -93,14 +86,14 @@ export default class CartModuleService<
   implements ICartModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected cartService_: ICartService<TCart>
-  protected addressService_: IAddressService<TAddress>
-  protected lineItemService_: ILineItemService<TLineItem>
-  protected shippingMethodAdjustmentService_: IShippingMethodAdjustmentService<TShippingMethodAdjustment>
-  protected shippingMethodService_: IShippingMethodService<TShippingMethod>
-  protected lineItemAdjustmentService_: ILineItemAdjustmentService<TLineItemAdjustment>
-  protected lineItemTaxLineService_: ILineItemTaxLineService<TLineItemTaxLine>
-  protected shippingMethodTaxLineService_: IShippingMethodTaxLineService<TShippingMethodTaxLine>
+  protected cartService_: ModulesSdkTypes.InternalModuleService<TCart>
+  protected addressService_: ModulesSdkTypes.InternalModuleService<TAddress>
+  protected lineItemService_: ModulesSdkTypes.InternalModuleService<TLineItem>
+  protected shippingMethodAdjustmentService_: ModulesSdkTypes.InternalModuleService<TShippingMethodAdjustment>
+  protected shippingMethodService_: ModulesSdkTypes.InternalModuleService<TShippingMethod>
+  protected lineItemAdjustmentService_: ModulesSdkTypes.InternalModuleService<TLineItemAdjustment>
+  protected lineItemTaxLineService_: ModulesSdkTypes.InternalModuleService<TLineItemTaxLine>
+  protected shippingMethodTaxLineService_: ModulesSdkTypes.InternalModuleService<TShippingMethodTaxLine>
 
   constructor(
     {
