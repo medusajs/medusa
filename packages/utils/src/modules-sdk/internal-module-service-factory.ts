@@ -294,8 +294,9 @@ export function internalModuleServiceFactory<
         | string[]
         | object
         | object[]
-        | FilterQuery<any>
-        | BaseFilterable<FilterQuery<any>>,
+        | {
+            selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>
+          },
       @MedusaContext() sharedContext: Context = {}
     ): Promise<void> {
       const primaryKeys = AbstractService_.retrievePrimaryKeys(model)
@@ -304,10 +305,7 @@ export function internalModuleServiceFactory<
         !isDefined(idOrSelector) ||
         ((isString(idOrSelector) ||
           (Array.isArray(idOrSelector) && isString(idOrSelector[0]))) &&
-          primaryKeys.length > 1) ||
-        (((Array.isArray(idOrSelector) && isObject(idOrSelector[0])) ||
-          isObject(idOrSelector)) &&
-          primaryKeys.length === 1)
+          primaryKeys.length > 1)
       ) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
@@ -327,7 +325,7 @@ export function internalModuleServiceFactory<
 
       if (isObject(idOrSelector) && "selector" in idOrSelector) {
         const entitiesToDelete = await this.list(
-          idOrSelector,
+          idOrSelector.selector as FilterQuery<any>,
           {
             select: primaryKeys,
           },
@@ -348,11 +346,21 @@ export function internalModuleServiceFactory<
 
         deleteCriteria.$or = primaryKeysValues.map((primaryKeyValue) => {
           const criteria = {}
-          primaryKeys.forEach((key) => {
-            if (
+
+          if (isObject(primaryKeyValue)) {
+            Object.entries(primaryKeyValue).forEach(([key, value]) => {
+              criteria[key] = value
+            })
+          } else {
+            criteria[primaryKeys[0]] = primaryKeyValue
+          }
+
+          // TODO: Revisit
+          /*primaryKeys.forEach((key) => {
+            /!*if (
               isObject(primaryKeyValue) &&
-              !primaryKeyValue[key] &&
-              primaryKeys.length > 1
+              !isDefined(primaryKeyValue[key]) &&
+              // primaryKeys.length > 1
             ) {
               throw new MedusaError(
                 MedusaError.Types.INVALID_DATA,
@@ -360,12 +368,12 @@ export function internalModuleServiceFactory<
                   ", "
                 )}. Found: ${Object.keys(primaryKeyValue)}`
               )
-            }
+            }*!/
 
             criteria[key] = isObject(primaryKeyValue)
               ? primaryKeyValue[key]
               : primaryKeyValue
-          })
+          })*/
           return criteria
         })
       }
