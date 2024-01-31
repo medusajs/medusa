@@ -11,7 +11,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     ModuleRegistrationName.CUSTOMER
   )
 
-  const customer = await customerModuleService.listAddresses(
+  const [address] = await customerModuleService.listAddresses(
     { id: req.params.address_id, customer_id: req.params.id },
     {
       select: req.retrieveConfig.select,
@@ -19,7 +19,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     }
   )
 
-  res.status(200).json({ customer })
+  res.status(200).json({ address })
 }
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {

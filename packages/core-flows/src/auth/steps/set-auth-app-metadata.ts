@@ -9,9 +9,9 @@ type StepInput = {
   value: string
 }
 
-export const setAuthAppMetadata = "set-auth-app-metadata"
+export const setAuthAppMetadataStepId = "set-auth-app-metadata"
 export const setAuthAppMetadataStep = createStep(
-  setAuthAppMetadata,
+  setAuthAppMetadataStepId,
   async (data: StepInput, { container }) => {
     const service = container.resolve<IAuthModuleService>(
       ModuleRegistrationName.AUTH

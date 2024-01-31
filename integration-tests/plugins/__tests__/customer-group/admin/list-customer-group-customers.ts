@@ -7,14 +7,12 @@ import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import adminSeeder from "../../../../helpers/admin-seeder"
 
-jest.setTimeout(50000)
-
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("POST /admin/customer-groups", () => {
+describe("GET /admin/customer-groups/:id/customers", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -45,23 +43,46 @@ describe("POST /admin/customer-groups", () => {
     await db.teardown()
   })
 
-  it("should create a customer group", async () => {
-    const api = useApi() as any
-    const response = await api.post(
-      `/admin/customer-groups`,
+  it("should get all customer groups and its count", async () => {
+    const group = await customerModuleService.createCustomerGroup({
+      name: "Test",
+    })
+
+    const customers = await customerModuleService.create([
       {
-        name: "VIP",
+        first_name: "Test",
+        last_name: "Test",
       },
+      {
+        first_name: "Test2",
+        last_name: "Test2",
+      },
+    ])
+
+    // add to group
+
+    await customerModuleService.addCustomerToGroup(
+      customers.map((c) => ({ customer_id: c.id, customer_group_id: group.id }))
+    )
+
+    const api = useApi() as any
+
+    const response = await api.get(
+      `/admin/customer-groups/${group.id}/customers`,
       adminHeaders
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.customer_group).toEqual(
-      expect.objectContaining({
-        id: expect.any(String),
-        name: "VIP",
-        created_by: "admin_user",
-      })
+    expect(response.data.count).toEqual(2)
+    expect(response.data.customers).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: customers[0].id,
+        }),
+        expect.objectContaining({
+          id: customers[1].id,
+        }),
+      ])
     )
   })
 })

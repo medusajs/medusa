@@ -1,24 +1,18 @@
-import { MedusaV2Flag } from "@medusajs/utils"
-
-import {
-  isFeatureFlagEnabled,
-  transformBody,
-  transformQuery,
-} from "../../../api/middlewares"
+import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import * as QueryConfig from "./query-config"
+import { listTransformQueryConfig as customersListTransformQueryConfig } from "../customers/query-config"
 import {
   AdminGetCustomerGroupsParams,
   AdminGetCustomerGroupsGroupParams,
   AdminPostCustomerGroupsReq,
   AdminPostCustomerGroupsGroupReq,
+  AdminGetCustomerGroupsGroupCustomersParams,
+  AdminPostCustomerGroupsGroupCustomersBatchReq,
+  AdminDeleteCustomerGroupsGroupCustomersBatchReq,
 } from "./validators"
 
 export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    matcher: "/admin/customer-groups*",
-    middlewares: [isFeatureFlagEnabled(MedusaV2Flag.key)],
-  },
   {
     method: ["GET"],
     matcher: "/admin/customer-groups",
@@ -48,5 +42,27 @@ export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/customer-groups/:id",
     middlewares: [transformBody(AdminPostCustomerGroupsGroupReq)],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/customer-groups/:id/customers",
+    middlewares: [
+      transformQuery(
+        AdminGetCustomerGroupsGroupCustomersParams,
+        customersListTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/customer-groups/:id/customers/batch",
+    middlewares: [transformBody(AdminPostCustomerGroupsGroupCustomersBatchReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/customer-groups/:id/customers/remove",
+    middlewares: [
+      transformBody(AdminDeleteCustomerGroupsGroupCustomersBatchReq),
+    ],
   },
 ]
