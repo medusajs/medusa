@@ -3,28 +3,9 @@ import {
   ApplicationMethodTargetTypeValues,
   ApplicationMethodTypeValues,
   PromotionDTO,
-  PromotionTypes,
 } from "@medusajs/types"
 
-import { ApplicationMethod, Promotion } from "@models"
-import { AbstractService } from "@medusajs/utils"
-import { IApplicationMethodRepository } from "./repositories"
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IApplicationMethodService<
-  TEntity extends ApplicationMethod = ApplicationMethod
-> extends AbstractService<
-    TEntity,
-    { applicationMethodRepository: IApplicationMethodRepository<TEntity> },
-    {
-      create: CreateApplicationMethodDTO
-      update: UpdateApplicationMethodDTO
-    },
-    {
-      list: PromotionTypes.FilterableApplicationMethodProps
-      listAndCount: PromotionTypes.FilterableApplicationMethodProps
-    }
-  > {}
+import { Promotion } from "@models"
 
 export interface CreateApplicationMethodDTO {
   type: ApplicationMethodTypeValues

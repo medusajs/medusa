@@ -147,16 +147,6 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Pr
       }
     })
 
-    /* const productsToUpdate = await manager.find(
-      Product,
-      {
-        id: data.map(({ update: updateData }) => updateData.id),
-      },
-      {
-        populate: ["tags", "categories"],
-      }
-    )*/
-
     const collectionsToAssign = collectionIds.length
       ? await manager.find(ProductCollection, {
           id: collectionIds,

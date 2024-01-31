@@ -3,6 +3,7 @@ import {
   DAL,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
+  ModulesSdkTypes,
   PromotionTypes,
 } from "@medusajs/types"
 import {
@@ -31,12 +32,6 @@ import {
   CreateCampaignDTO,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
-  IApplicationMethodService,
-  ICampaignBudgetService,
-  ICampaignService,
-  IPromotionRuleService,
-  IPromotionRuleValueService,
-  IPromotionService,
   UpdateApplicationMethodDTO,
   UpdateCampaignBudgetDTO,
   UpdateCampaignDTO,
@@ -53,12 +48,12 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  promotionService: IPromotionService<any>
-  applicationMethodService: IApplicationMethodService<any>
-  promotionRuleService: IPromotionRuleService<any>
-  promotionRuleValueService: IPromotionRuleValueService<any>
-  campaignService: ICampaignService<any>
-  campaignBudgetService: ICampaignBudgetService<any>
+  promotionService: ModulesSdkTypes.InternalModuleService<any>
+  applicationMethodService: ModulesSdkTypes.InternalModuleService<any>
+  promotionRuleService: ModulesSdkTypes.InternalModuleService<any>
+  promotionRuleValueService: ModulesSdkTypes.InternalModuleService<any>
+  campaignService: ModulesSdkTypes.InternalModuleService<any>
+  campaignBudgetService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 const generateMethodForModels = [
@@ -91,12 +86,12 @@ export default class PromotionModuleService<
   implements PromotionTypes.IPromotionModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected promotionService_: IPromotionService<TPromotion>
-  protected applicationMethodService_: IApplicationMethodService<TApplicationMethod>
-  protected promotionRuleService_: IPromotionRuleService<TPromotionRule>
-  protected promotionRuleValueService_: IPromotionRuleValueService<TPromotionRuleValue>
-  protected campaignService_: ICampaignService<TCampaign>
-  protected campaignBudgetService_: ICampaignBudgetService<TCampaignBudget>
+  protected promotionService_: ModulesSdkTypes.InternalModuleService<TPromotion>
+  protected applicationMethodService_: ModulesSdkTypes.InternalModuleService<TApplicationMethod>
+  protected promotionRuleService_: ModulesSdkTypes.InternalModuleService<TPromotionRule>
+  protected promotionRuleValueService_: ModulesSdkTypes.InternalModuleService<TPromotionRuleValue>
+  protected campaignService_: ModulesSdkTypes.InternalModuleService<TCampaign>
+  protected campaignBudgetService_: ModulesSdkTypes.InternalModuleService<TCampaignBudget>
 
   constructor(
     {
