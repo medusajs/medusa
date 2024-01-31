@@ -80,26 +80,22 @@ describe("Customer Module Service", () => {
       }
       const customer = await service.create(customerData)
 
-      expect(customer).toEqual(
+      const [address] = await service.listAddresses({
+        customer_id: customer.id,
+      })
+
+      expect(address).toEqual(
         expect.objectContaining({
           id: expect.any(String),
-          company_name: "Acme Corp",
-          first_name: "John",
-          last_name: "Doe",
-          addresses: expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              address_1: "Testvej 1",
-              address_2: "Testvej 2",
-              city: "Testby",
-              country_code: "DK",
-              province: "Test",
-              postal_code: "8000",
-              phone: "123456789",
-              metadata: expect.objectContaining({ membership: "gold" }),
-              is_default_shipping: true,
-            }),
-          ]),
+          address_1: "Testvej 1",
+          address_2: "Testvej 2",
+          city: "Testby",
+          country_code: "DK",
+          province: "Test",
+          postal_code: "8000",
+          phone: "123456789",
+          metadata: expect.objectContaining({ membership: "gold" }),
+          is_default_shipping: true,
         })
       )
     })

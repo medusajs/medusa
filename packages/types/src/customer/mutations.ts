@@ -71,7 +71,7 @@ export interface CreateCustomerGroupDTO {
   created_by?: string
 }
 
-export interface CustomerGroupUpdatableFileds {
+export interface CustomerGroupUpdatableFields {
   name?: string
   metadata?: Record<string, unknown> | null
 }
