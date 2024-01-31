@@ -1,8 +1,8 @@
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { CreateCustomerDTO } from "@medusajs/types"
 import { createCustomerAccountWorkflow } from "@medusajs/core-flows"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   if (req.session.auth_user.app_metadata.customer_id) {

@@ -17,13 +17,8 @@ export const defaultStoreCustomersFields: (keyof CustomerDTO)[] = [
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultStoreCustomersFields,
+  defaultFields: defaultStoreCustomersFields as string[],
   defaultRelations: defaultStoreCustomersRelations,
   allowedRelations: allowedStoreCustomersRelations,
   isList: false,
-}
-
-export const listTransformQueryConfig = {
-  ...retrieveTransformQueryConfig,
-  isList: true,
 }

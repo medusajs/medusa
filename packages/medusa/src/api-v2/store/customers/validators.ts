@@ -1,5 +1,8 @@
 import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 
+import { FindParams } from "../../../types/common"
+
+export class StoreGetCustomersMeParams extends FindParams {}
 export class StorePostCustomersReq {
   @IsString()
   @IsOptional()
