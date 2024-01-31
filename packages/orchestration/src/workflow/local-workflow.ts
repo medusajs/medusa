@@ -70,48 +70,45 @@ export class LocalWorkflow {
   }
 
   private contextualizedMedusaModules(container) {
+    if (!container) {
+      return createMedusaContainer()
+    }
+
     // eslint-disable-next-line
     const this_ = this
-    return new Proxy(container ?? {}, {
-      get: function (target, prop) {
-        if (prop !== "resolve") {
-          return target[prop]
-        }
+    const originalResolver = container.resolve
+    container.resolve = function (registrationName, opts) {
+      const resolved = originalResolver(registrationName, opts)
+      if (resolved?.constructor?.__type !== MedusaModuleType) {
+        return resolved
+      }
 
-        return function (registrationName, opts) {
-          const resolved = target.resolve(registrationName, opts)
-          if (resolved?.constructor?.__type !== MedusaModuleType) {
-            return resolved
+      return new Proxy(resolved, {
+        get: function (target, prop) {
+          if (typeof target[prop] !== "function") {
+            return target[prop]
           }
 
-          return new Proxy(resolved, {
-            get: function (target, prop) {
-              if (typeof target[prop] !== "function") {
-                return target[prop]
+          return async (...args) => {
+            const ctxIndex =
+              MedusaContext.getIndex(target, prop as string) ?? args.length - 1
+
+            const hasContext = args[ctxIndex]?.__type === MedusaContextType
+            if (!hasContext) {
+              const context = this_.medusaContext
+              if (context?.__type === MedusaContextType) {
+                delete context?.manager
+                delete context?.transactionManager
+
+                args[ctxIndex] = context
               }
-
-              return async (...args) => {
-                const ctxIndex =
-                  MedusaContext.getIndex(target, prop as string) ?? args.length
-
-                const hasContext = args[ctxIndex]?.__type === MedusaContextType
-
-                if (!hasContext) {
-                  const context = this_.medusaContext
-                  if (context?.__type === MedusaContextType) {
-                    delete context?.manager
-                    delete context?.transactionManager
-                    args[ctxIndex] = context
-                  }
-                }
-
-                return await target[prop].apply(target, [...args])
-              }
-            },
-          })
-        }
-      },
-    })
+            }
+            return await target[prop].apply(target, [...args])
+          }
+        },
+      })
+    }
+    return container
   }
 
   protected commit() {

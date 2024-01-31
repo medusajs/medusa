@@ -340,9 +340,7 @@ export class RemoteJoiner {
     const isObj = isDefined(response.path)
     let resData = isObj ? response.data[response.path!] : response.data
 
-    if (!Array.isArray(resData)) {
-      resData = [resData]
-    }
+    resData = Array.isArray(resData) ? resData : [resData]
 
     const filteredDataArray = resData.map((data: any) =>
       RemoteJoiner.filterFields(data, expand.fields, expand.expands)
