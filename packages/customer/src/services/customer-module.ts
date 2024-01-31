@@ -96,10 +96,32 @@ export default class CustomerModuleService implements ICustomerModuleService {
     @MedusaContext() sharedContext: Context = {}
   ) {
     const data = Array.isArray(dataOrArray) ? dataOrArray : [dataOrArray]
-    const customer = await this.customerService_.create(data, sharedContext)
+
+    // keep address data for creation
+    const addressData = data.map((d) => d.addresses)
+
+    const customers = await this.customerService_.create(data, sharedContext)
+
+    // decorate addresses with customer ids
+    // filter out addresses without data
+    const addressDataWithCustomerIds = addressData
+      .map((addresses, i) => {
+        if (!addresses) {
+          return []
+        }
+
+        return addresses.map((address) => ({
+          ...address,
+          customer_id: customers[i].id,
+        }))
+      })
+      .flat()
+
+    await this.addressService_.create(addressDataWithCustomerIds, sharedContext)
+
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerDTO[]
-    >(customer, {
+    >(customers, {
       populate: true,
     })
     return Array.isArray(dataOrArray) ? serialized : serialized[0]
@@ -511,6 +533,40 @@ export default class CustomerModuleService implements ICustomerModuleService {
     return serialized
   }
 
+  async deleteAddress(addressId: string, sharedContext?: Context): Promise<void>
+  async deleteAddress(
+    addressIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  async deleteAddress(
+    selector: CustomerTypes.FilterableCustomerAddressProps,
+    sharedContext?: Context
+  ): Promise<void>
+
+  @InjectTransactionManager("baseRepository_")
+  async deleteAddress(
+    addressIdOrSelector:
+      | string
+      | string[]
+      | CustomerTypes.FilterableCustomerAddressProps,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    let toDelete = Array.isArray(addressIdOrSelector)
+      ? addressIdOrSelector
+      : [addressIdOrSelector as string]
+
+    if (isObject(addressIdOrSelector)) {
+      const ids = await this.addressService_.list(
+        addressIdOrSelector,
+        { select: ["id"] },
+        sharedContext
+      )
+      toDelete = ids.map(({ id }) => id)
+    }
+
+    await this.addressService_.delete(toDelete, sharedContext)
+  }
+
   @InjectManager("baseRepository_")
   async listAddresses(
     filters?: CustomerTypes.FilterableCustomerAddressProps,
@@ -526,6 +582,27 @@ export default class CustomerModuleService implements ICustomerModuleService {
     return await this.baseRepository_.serialize<
       CustomerTypes.CustomerAddressDTO[]
     >(addresses, { populate: true })
+  }
+
+  @InjectManager("baseRepository_")
+  async listAndCountAddresses(
+    filters?: CustomerTypes.FilterableCustomerAddressProps,
+    config?: FindConfig<CustomerTypes.CustomerAddressDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[CustomerTypes.CustomerAddressDTO[], number]> {
+    const [addresses, count] = await this.addressService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [
+      await this.baseRepository_.serialize<CustomerTypes.CustomerAddressDTO[]>(
+        addresses,
+        { populate: true }
+      ),
+      count,
+    ]
   }
 
   async removeCustomerFromGroup(
