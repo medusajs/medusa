@@ -18,6 +18,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { success, error, authUser, location } = authResult
   if (location) {
     res.redirect(location)
+    return
   }
 
   if (!success && error) {
@@ -31,5 +32,5 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  res.status(200).json({})
+  await GET(req, res)
 }

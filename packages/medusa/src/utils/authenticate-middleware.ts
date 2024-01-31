@@ -8,11 +8,13 @@ const SESSION_AUTH = "session"
 const BEARER_AUTH = "bearer"
 
 type MedusaSession = {
-  auth: {
-    [authScope: string]: {
-      user_id: string
-    }
-  }
+  authUser: AuthUserDTO
+  scope: string
+  // auth: {
+  //   [authScope: string]: {
+  //     user_id: string
+  //   }
+  // }
 }
 
 type AuthType = "session" | "bearer"
@@ -27,6 +29,10 @@ export default (
     res: MedusaResponse,
     next: NextFunction
   ): Promise<void> => {
+    console.log(req.user)
+    console.log(req.session)
+    req.user = { ...(req.session?.authUser?.app_metadata ?? {}) }
+
     const authTypes = Array.isArray(authType) ? authType : [authType]
     const authModule = req.scope.resolve<IAuthModuleService>(
       ModuleRegistrationName.AUTH
@@ -37,14 +43,13 @@ export default (
 
     let authUser: AuthUserDTO | null = null
     if (authTypes.includes(SESSION_AUTH)) {
-      if (session.auth && session.auth[authScope]) {
-        authUser = await authModule
-          .retrieveAuthUser(session.auth[authScope].user_id)
-          .catch(() => null)
+      if (session.authUser && session.scope === authScope) {
+        next()
+        return
       }
     }
 
-    if (authTypes.includes(BEARER_AUTH)) {
+    if (!authUser && authTypes.includes(BEARER_AUTH)) {
       const authHeader = req.headers.authorization
       if (authHeader) {
         const re = /(\S+)\s+(\S+)/
