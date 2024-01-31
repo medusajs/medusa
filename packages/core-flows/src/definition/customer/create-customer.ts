@@ -27,8 +27,8 @@ const transformationStep = createStep(
   }
 )
 
-export const createCustomersWorkflowId = "create-customers"
-export const createCustomersWorkflow = createWorkflow(
+export const createCustomersWorkflowsId = "create-customers"
+export const createCustomersWorkflows = createWorkflow(
   createCustomersWorkflowId,
   (input: WorkflowData<WorkflowInput>): WorkflowData<CustomerDTO[]> => {
     const customer = createCustomerStep(input.customersData)

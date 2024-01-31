@@ -6,6 +6,7 @@ import { storeCustomerRoutesMiddlewares } from "./store/customers/middlewares"
 import { adminCustomerRoutesMiddlewares } from "./admin/customers/middlewares"
 import { adminCustomerGroupRoutesMiddlewares } from "./admin/customer-groups/middlewares"
 import { storeCartRoutesMiddlewares } from "./store/carts/middlewares"
+import { storeCustomerRoutesMiddlewares } from "./store/customers/middlewares"
 
 export const config: MiddlewaresConfig = {
   routes: [

@@ -1,19 +1,10 @@
 import { CustomerDTO } from "@medusajs/types"
 
-export const defaultStoreCustomersRelations = [
-  "default_billing_address",
-  "default_shipping_address",
-  "addresses",
-  "groups",
-]
-export const allowedStoreCustomersRelations = [
-  ...defaultStoreCustomersRelations,
-]
+export const defaultStoreCustomersRelations = []
+export const allowedStoreCustomersRelations = ["addresses", "groups"]
 export const defaultStoreCustomersFields: (keyof CustomerDTO)[] = [
   "id",
   "email",
-  "default_billing_address_id",
-  "default_shipping_address_id",
   "company_name",
   "first_name",
   "last_name",

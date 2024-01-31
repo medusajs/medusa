@@ -1,7 +1,8 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { AuthUserDTO, IAuthModuleService } from "@medusajs/types"
-import { NextFunction, RequestHandler } from "express"
 import { MedusaRequest, MedusaResponse } from "../types/routing"
+import { NextFunction, RequestHandler } from "express"
+
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 const SESSION_AUTH = "session"
 const BEARER_AUTH = "bearer"

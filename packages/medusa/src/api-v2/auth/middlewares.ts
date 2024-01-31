@@ -1,5 +1,4 @@
 import {
-  AuthUserDTO,
   AuthenticationInput,
   AuthenticationResponse,
   IAuthModuleService,
@@ -9,7 +8,6 @@ import { MedusaRequest } from "../../types/routing"
 import { MiddlewareRoute } from "../../loaders/helpers/routing/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import passport from "passport"
-import passportCustom from "passport-custom"
 
 passport.serializeUser((user, done) => {
   done(null, user)
@@ -71,26 +69,21 @@ abstract class AbstractAuthModuleStrategy extends passport.Strategy {
 
 class AuthModuleAuthenticateStrategy extends AbstractAuthModuleStrategy {
   authenticationMethod(authProvider: string, authData: AuthenticationInput) {
-    return (service: IAuthModuleService) =>
+    return async (service: IAuthModuleService) =>
       service.authenticate(authProvider, authData)
   }
 }
+
 class AuthModuleCallbackeStrategy extends AbstractAuthModuleStrategy {
   authenticationMethod(authProvider: string, authData: AuthenticationInput) {
-    return (service: IAuthModuleService) =>
+    return async (service: IAuthModuleService) =>
       service.validateCallback(authProvider, authData)
   }
 }
 
-passport.use(
-  new AuthModuleAuthenticateStrategy("authModuleAuthenticate")
-)
+passport.use(new AuthModuleAuthenticateStrategy("authModuleAuthenticate"))
 
-passport.use(
-  new AuthModuleCallbackeStrategy(
-    "authModuleCallback"
-  )
-)
+passport.use(new AuthModuleCallbackeStrategy("authModuleCallback"))
 
 class AuthModuleRoutes extends passport.Strategy {
   name?: string
@@ -105,6 +98,8 @@ class AuthModuleRoutes extends passport.Strategy {
     req: MedusaRequest,
     options?: any
   ) {
+    console.log(req)
+    console.log(req.session)
     if (
       req.user &&
       req.user?.scope === options.scope &&
@@ -115,20 +110,21 @@ class AuthModuleRoutes extends passport.Strategy {
       return this.success(req.user)
     }
 
-    const hasUserId = (user) => user?.medusa_id || user?.customer_id || user?.userId
-    
+    const hasUserId = (user) =>
+      user?.medusa_id || user?.customer_id || user?.userId
+
     const service: IAuthModuleService = req.scope.resolve(
       ModuleRegistrationName.AUTH
     )
 
     // Refetch user if no id is present
     // TODO: is there a better "fix" than this ugly hack?
-    if(!hasUserId(req.user)) {
+    if (!hasUserId(req.user)) {
       const user = await service.retrieveAuthUser(req.user!.authUser!.id!)
 
       const successParam = { ...req.user, ...user, ...user.app_metadata }
 
-      if(!user || !hasUserId(successParam)) {
+      if (!user || !hasUserId(successParam)) {
         return this.fail()
       }
 
@@ -145,7 +141,8 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/auth/:scope/:authProvider",
     method: ["GET", "POST"],
-    middlewares: [passport.authenticate("custom", {})],
+    middlewares: [],
+    // middlewares: [passport.authenticate("custom", {})],
   },
   {
     matcher: "/auth/:scope/:authProvider/callback",

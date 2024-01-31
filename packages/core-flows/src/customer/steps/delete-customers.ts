@@ -16,8 +16,8 @@ export const deleteCustomerStep = createStep(
 
     return new StepResponse(void 0, ids)
   },
-  async (prevCustomerIds, { container }) => {
-    if (!prevCustomerIds?.length) {
+  async (prevCustomers, { container }) => {
+    if (!prevCustomers) {
       return
     }
 
@@ -25,6 +25,6 @@ export const deleteCustomerStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    await service.restore(prevCustomerIds)
+    await service.restore(prevCustomers)
   }
 )

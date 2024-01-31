@@ -2,7 +2,7 @@ import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import { CreateCustomerDTO, ICustomerModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-export const createCustomerStepId = "create-customer"
+export const createCustomerStepId = "create-customer-step"
 export const createCustomerStep = createStep(
   createCustomerStepId,
   async (data: CreateCustomerDTO[], { container }) => {
