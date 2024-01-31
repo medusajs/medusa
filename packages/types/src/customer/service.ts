@@ -144,11 +144,24 @@ export interface ICustomerModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<CustomerAddressDTO[]>
 
+  deleteAddress(addressId: string, sharedContext?: Context): Promise<void>
+  deleteAddress(addressIds: string[], sharedContext?: Context): Promise<void>
+  deleteAddress(
+    selector: FilterableCustomerAddressProps,
+    sharedContext?: Context
+  ): Promise<void>
+
   listAddresses(
     filters?: FilterableCustomerAddressProps,
     config?: FindConfig<CustomerAddressDTO>,
     sharedContext?: Context
   ): Promise<CustomerAddressDTO[]>
+
+  listAndCountAddresses(
+    filters?: FilterableCustomerAddressProps,
+    config?: FindConfig<CustomerAddressDTO>,
+    sharedContext?: Context
+  ): Promise<[CustomerAddressDTO[], number]>
 
   listCustomerGroupRelations(
     filters?: FilterableCustomerGroupCustomerProps,
