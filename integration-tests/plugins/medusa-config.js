@@ -42,6 +42,14 @@ module.exports = {
     },
   },
   modules: {
+    [Modules.AUTH]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/auth",
+      options: {
+        jwt_secret: "test",
+      },
+    },
     [Modules.STOCK_LOCATION]: {
       scope: "internal",
       resources: "shared",
@@ -80,6 +88,11 @@ module.exports = {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/sales-channel",
+    },
+    [Modules.CART]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/cart",
     },
   },
 }
