@@ -1,10 +1,8 @@
-import * as QueryConfig from "./query-config"
-
-import { StoreGetCustomersMeParams, StorePostCustomersReq } from "./validators"
 import { transformBody, transformQuery } from "../../../api/middlewares"
-
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import { authenticate } from "../../../utils/authenticate-middleware"
+import { StorePostCustomersReq, StoreGetCustomersMeParams } from "./validators"
+import authenticate from "../../../utils/authenticate-middleware"
+import * as QueryConfig from "./query-config"
 
 export const storeCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {
