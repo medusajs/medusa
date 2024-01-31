@@ -70,24 +70,6 @@
           "default": "false",
           "mappedType": "boolean"
         },
-        "default_shipping_address_id": {
-          "name": "default_shipping_address_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "default_billing_address_id": {
-          "name": "default_billing_address_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
         "metadata": {
           "name": "metadata",
           "type": "jsonb",
@@ -143,24 +125,6 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "default_shipping_address_id"
-          ],
-          "composite": false,
-          "keyName": "IDX_customer_default_shipping_address_id",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "default_billing_address_id"
-          ],
-          "composite": false,
-          "keyName": "IDX_customer_default_billing_address_id",
-          "primary": false,
-          "unique": false
-        },
-        {
           "keyName": "customer_pkey",
           "columnNames": [
             "id"
@@ -171,34 +135,7 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {
-        "customer_default_shipping_address_id_foreign": {
-          "constraintName": "customer_default_shipping_address_id_foreign",
-          "columnNames": [
-            "default_shipping_address_id"
-          ],
-          "localTableName": "public.customer",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.customer_address",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "customer_default_billing_address_id_foreign": {
-          "constraintName": "customer_default_billing_address_id_foreign",
-          "columnNames": [
-            "default_billing_address_id"
-          ],
-          "localTableName": "public.customer",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.customer_address",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
+      "foreignKeys": {}
     },
     {
       "columns": {
@@ -210,6 +147,35 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "address_name": {
+          "name": "address_name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "is_default_shipping": {
+          "name": "is_default_shipping",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "is_default_billing": {
+          "name": "is_default_billing",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
         },
         "customer_id": {
           "name": "customer_id",
@@ -355,6 +321,22 @@
           "unique": false
         },
         {
+          "keyName": "IDX_customer_address_unqiue_customer_billing",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "create unique index \"IDX_customer_address_unqiue_customer_billing\" on \"customer_address\" (\"customer_id\") where \"is_default_billing\" = true"
+        },
+        {
+          "keyName": "IDX_customer_address_unqiue_customer_shipping",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "create unique index \"IDX_customer_address_unique_customer_shipping\" on \"customer_address\" (\"customer_id\") where \"is_default_shipping\" = true"
+        },
+        {
           "keyName": "customer_address_pkey",
           "columnNames": [
             "id"
@@ -376,6 +358,7 @@
             "id"
           ],
           "referencedTableName": "public.customer",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

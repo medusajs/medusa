@@ -1,5 +1,5 @@
 import { IStockLocationService } from "@medusajs/types"
-import { IsOptional } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 import {
   SalesChannelLocationService,
@@ -232,6 +232,13 @@ export class AdminGetStockLocationsParams extends extendedFindParamsMixin({
   offset: 0,
 }) {
   /**
+   * Search term to search stock location names.
+   */
+  @IsString()
+  @IsOptional()
+  q?: string
+
+  /**
    * IDs to filter stock locations by.
    */
   @IsOptional()
@@ -258,4 +265,11 @@ export class AdminGetStockLocationsParams extends extendedFindParamsMixin({
   @IsOptional()
   @IsType([String, [String]])
   sales_channel_id?: string | string[]
+
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
+  @IsString()
+  @IsOptional()
+  order?: string
 }
