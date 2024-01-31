@@ -24,7 +24,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   if (!success && error) {
     throw new MedusaError(MedusaError.Types.UNAUTHORIZED, error)
   } else if (success) {
-    req.session.authUser = authUser
+    req.session.auth_user = authUser
     req.session.scope = authUser.app_metadata.scope
 
     res.status(200).json({ authUser })

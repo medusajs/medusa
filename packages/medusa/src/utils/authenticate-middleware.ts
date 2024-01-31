@@ -8,18 +8,13 @@ const SESSION_AUTH = "session"
 const BEARER_AUTH = "bearer"
 
 type MedusaSession = {
-  authUser: AuthUserDTO
+  auth_user: AuthUserDTO
   scope: string
-  // auth: {
-  //   [authScope: string]: {
-  //     user_id: string
-  //   }
-  // }
 }
 
 type AuthType = "session" | "bearer"
 
-export default (
+export const authenticate = (
   authScope: string,
   authType: AuthType | AuthType[],
   options: { allowUnauthenticated?: boolean } = {}
@@ -31,7 +26,6 @@ export default (
   ): Promise<void> => {
     console.log(req.user)
     console.log(req.session)
-    req.user = { ...(req.session?.authUser?.app_metadata ?? {}) }
 
     const authTypes = Array.isArray(authType) ? authType : [authType]
     const authModule = req.scope.resolve<IAuthModuleService>(
@@ -43,9 +37,8 @@ export default (
 
     let authUser: AuthUserDTO | null = null
     if (authTypes.includes(SESSION_AUTH)) {
-      if (session.authUser && session.scope === authScope) {
-        next()
-        return
+      if (session.auth_user && session.scope === authScope) {
+        return next()
       }
     }
 
