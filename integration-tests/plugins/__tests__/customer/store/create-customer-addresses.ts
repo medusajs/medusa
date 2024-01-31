@@ -5,12 +5,11 @@ import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app
 import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import adminSeeder from "../../../../helpers/admin-seeder"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
-describe("GET /store/customers", () => {
+describe("POST /store/customers/me/addresses", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -32,34 +31,44 @@ describe("GET /store/customers", () => {
     await shutdownServer()
   })
 
-  beforeEach(async () => {
-    await adminSeeder(dbConnection)
-  })
-
   afterEach(async () => {
     const db = useDb()
     await db.teardown()
   })
 
-  it("should retrieve auth user's customer", async () => {
+  it("should create a customer address", async () => {
     const { customer, jwt } = await createAuthenticatedCustomer(
       customerModuleService,
       appContainer.resolve(ModuleRegistrationName.AUTH)
     )
 
     const api = useApi() as any
-    const response = await api.get(`/store/customers/me`, {
-      headers: { authorization: `Bearer ${jwt}` },
-    })
-
-    expect(response.status).toEqual(200)
-    expect(response.data.customer).toEqual(
-      expect.objectContaining({
-        id: customer.id,
+    const response = await api.post(
+      `/store/customers/me/addresses`,
+      {
         first_name: "John",
         last_name: "Doe",
-        email: "john@me.com",
+        address_1: "Test street 1",
+      },
+      { headers: { authorization: `Bearer ${jwt}` } }
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.address).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        first_name: "John",
+        last_name: "Doe",
+        address_1: "Test street 1",
+        customer_id: customer.id,
       })
     )
+
+    const customerWithAddresses = await customerModuleService.retrieve(
+      customer.id,
+      { relations: ["addresses"] }
+    )
+
+    expect(customerWithAddresses.addresses?.length).toEqual(1)
   })
 })
