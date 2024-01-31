@@ -8,7 +8,6 @@ import {
   CustomerTypes,
   SoftDeleteReturn,
   RestoreReturn,
-  CustomerUpdatableFields,
 } from "@medusajs/types"
 
 import {
@@ -18,9 +17,12 @@ import {
   mapObjectTo,
   isString,
   isObject,
+  isDuplicateError,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import * as services from "../services"
+import { Address } from "@models"
+import { MedusaError } from "@medusajs/utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -452,20 +454,40 @@ export default class CustomerModuleService implements ICustomerModuleService {
   ): Promise<
     CustomerTypes.CustomerAddressDTO | CustomerTypes.CustomerAddressDTO[]
   > {
-    const addresses = await this.addressService_.create(
-      Array.isArray(data) ? data : [data],
-      sharedContext
-    )
+    debugger
+    try {
+      const addresses = await this.addressService_.create(
+        Array.isArray(data) ? data : [data],
+        sharedContext
+      )
+      const serialized = await this.baseRepository_.serialize<
+        CustomerTypes.CustomerAddressDTO[]
+      >(addresses, { populate: true })
 
-    const serialized = await this.baseRepository_.serialize<
-      CustomerTypes.CustomerAddressDTO[]
-    >(addresses, { populate: true })
+      console.log("all good")
+      if (Array.isArray(data)) {
+        return serialized
+      }
 
-    if (Array.isArray(data)) {
-      return serialized
+      return serialized[0]
+    } catch (err) {
+      console.log("hi")
+      console.log(err)
+
+      console.log(err.message)
+      console.log(err.code)
+      console.log(Object.keys(err))
+
+      if (isDuplicateError(err)) {
+        // Check if constriant is shipping
+        throw new MedusaError(
+          MedusaError.Types.DUPLICATE_ERROR,
+          "A default shipping address already exists."
+        )
+      }
+
+      throw err
     }
-
-    return serialized[0]
   }
 
   async updateAddress(

@@ -631,7 +631,7 @@ describe("Customer Module Service", () => {
       )
     })
 
-    it("should only be possible to add one default shipping address per customer", async () => {
+    it.only("should only be possible to add one default shipping address per customer", async () => {
       const customer = await service.create({
         first_name: "John",
         last_name: "Doe",
@@ -662,7 +662,7 @@ describe("Customer Module Service", () => {
           country_code: "US",
           is_default_shipping: true,
         })
-      ).rejects.toThrow()
+      ).rejects.toThrow("A default shipping address already exists")
     })
 
     it("should only be possible to add one default billing address per customer", async () => {
