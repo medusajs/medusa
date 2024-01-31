@@ -1,3 +1,5 @@
+import { buildQuery } from "../../modules-sdk"
+
 export const mikroOrmUpdateDeletedAtRecursively = async <
   T extends object = any
 >(
@@ -32,7 +34,21 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
 
       if (isCollection) {
         if (!entityRelation.isInitialized()) {
-          entityRelation = await entityRelation.init({ populate: true })
+          const query = buildQuery(
+            {
+              id: entity.id,
+            },
+            {
+              relations: [relation.name],
+              withDeleted: true,
+            }
+          )
+          entityRelation = await manager.find(
+            entityRelation.name || entity.constructor.name,
+            query.where,
+            query.options
+          )
+          entityRelation = entityRelation[0][relation.name]
         }
         relationEntities = entityRelation.getItems()
       } else {

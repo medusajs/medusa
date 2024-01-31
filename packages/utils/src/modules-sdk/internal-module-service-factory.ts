@@ -30,7 +30,7 @@ type SelectorAndData = {
 export function internalModuleServiceFactory<
   TContainer extends object = object
 >(
-  model: new (...args: any[]) => any
+  model: any
 ): {
   new <TEntity extends object = any>(
     container: TContainer

@@ -76,9 +76,10 @@ export class MikroOrmBase<T = any> {
  * related ones.
  */
 
-export class MikroOrmBaseRepository<
-  T extends object = object
-> extends MikroOrmBase<T> {
+export class MikroOrmBaseRepository<T extends object = object>
+  extends MikroOrmBase<T>
+  implements RepositoryService<T>
+{
   constructor(...args: any[]) {
     // @ts-ignore
     super(...arguments)
@@ -88,7 +89,7 @@ export class MikroOrmBaseRepository<
     throw new Error("Method not implemented.")
   }
 
-  update(data: unknown[], context?: Context): Promise<T[]> {
+  update(data: { entity; update }[], context?: Context): Promise<T[]> {
     throw new Error("Method not implemented.")
   }
 
@@ -117,8 +118,7 @@ export class MikroOrmBaseRepository<
   @InjectTransactionManager()
   async softDelete(
     idsOrFilter: string[] | InternalFilterQuery,
-    @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
     const isArray = Array.isArray(idsOrFilter)
     // TODO handle composite keys
@@ -131,9 +131,10 @@ export class MikroOrmBaseRepository<
           }
         : idsOrFilter
 
-    const entities = await this.find({ where: filter as any })
+    const entities = await this.find({ where: filter as any }, sharedContext)
     const date = new Date()
 
+    const manager = this.getActiveManager(sharedContext)
     await mikroOrmUpdateDeletedAtRecursively<T>(
       manager,
       entities as any[],
@@ -150,8 +151,7 @@ export class MikroOrmBaseRepository<
   @InjectTransactionManager()
   async restore(
     idsOrFilter: string[] | InternalFilterQuery,
-    @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
     // TODO handle composite keys
     const isArray = Array.isArray(idsOrFilter)
@@ -168,8 +168,9 @@ export class MikroOrmBaseRepository<
       withDeleted: true,
     })
 
-    const entities = await this.find(query)
+    const entities = await this.find(query, sharedContext)
 
+    const manager = this.getActiveManager(sharedContext)
     await mikroOrmUpdateDeletedAtRecursively(manager, entities as any[], null)
 
     const softDeletedEntitiesMap = getSoftDeletedCascadedEntitiesIdsMappedBy({
@@ -233,12 +234,11 @@ export class MikroOrmBaseTreeRepository<
 }
 
 export function mikroOrmBaseRepositoryFactory<T extends object = object>(
-  entity: new (...args: any[]) => any
-) {
-  class MikroOrmAbstractBaseRepository_
-    extends MikroOrmBaseRepository<T>
-    implements RepositoryService<T>
-  {
+  entity: any
+): {
+  new ({ manager }: { manager: any }): MikroOrmBaseRepository<T>
+} {
+  class MikroOrmAbstractBaseRepository_ extends MikroOrmBaseRepository<T> {
     // @ts-ignore
     constructor(...args: any[]) {
       // @ts-ignore
@@ -385,7 +385,7 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
           const updatedType = manager.assign(existingEntity, data_)
           updatedEntities.push(updatedType)
         } else {
-          const newEntity = manager.create(entity, data_)
+          const newEntity = manager.create<T>(entity, data_)
           createdEntities.push(newEntity)
         }
       })
@@ -405,5 +405,7 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
     }
   }
 
-  return MikroOrmAbstractBaseRepository_
+  return MikroOrmAbstractBaseRepository_ as unknown as {
+    new ({ manager }: { manager: any }): MikroOrmBaseRepository<T>
+  }
 }
