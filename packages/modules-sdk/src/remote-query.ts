@@ -229,7 +229,7 @@ export class RemoteQuery {
     if (isString(query)) {
       finalQuery = RemoteJoiner.parseQuery(query, variables)
     } else if (!isString(finalQuery?.service) && !isString(finalQuery?.alias)) {
-      finalQuery = toRemoteJoinerQuery(query)
+      finalQuery = toRemoteJoinerQuery(query, variables)
     }
 
     return await this.remoteJoiner.query(finalQuery)
