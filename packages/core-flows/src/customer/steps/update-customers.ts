@@ -1,15 +1,14 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
-  CustomerUpdatableFields,
   FilterableCustomerProps,
   ICustomerModuleService,
+  CustomerUpdatableFields,
 } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import {
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
 } from "@medusajs/utils"
-
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 type UpdateCustomersStepInput = {
   selector: FilterableCustomerProps

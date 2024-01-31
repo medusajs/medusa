@@ -1,14 +1,13 @@
 import {
+  updateCustomersWorkflow,
+  deleteCustomersWorkflow,
+} from "@medusajs/core-flows"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
   CustomerUpdatableFields,
   ICustomerModuleService,
 } from "@medusajs/types"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
-import {
-  deleteCustomersWorkflow,
-  updateCustomersWorkflow,
-} from "@medusajs/core-flows"
-
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const customerModuleService = req.scope.resolve<ICustomerModuleService>(
