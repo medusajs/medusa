@@ -263,9 +263,9 @@ export function internalModuleServiceFactory<
 
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
-            `${entityName} with ${primaryKeys.join(
-              ", "
-            )} "${missingEntityValues.join(", ")}" not found`
+            `${entityName} with ${primaryKeys.join(", ")} "${missingEntityValues
+              .map((v) => (v === "" ? "undefined" : v))
+              .join(", ")}" not found`
           )
         }
       }
