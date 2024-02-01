@@ -1,12 +1,11 @@
-import { IAuthModuleService, ICustomerModuleService } from "@medusajs/types"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import adminSeeder from "../../../../helpers/admin-seeder"
-import { getContainer } from "../../../../environment-helpers/use-container"
+import { ICustomerModuleService, IAuthModuleService } from "@medusajs/types"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
+import { getContainer } from "../../../../environment-helpers/use-container"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+import adminSeeder from "../../../../helpers/admin-seeder"
 
 jest.setTimeout(50000)
 
