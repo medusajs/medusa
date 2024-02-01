@@ -62,6 +62,7 @@ describe("AuthModuleService - AuthProvider", () => {
         {
           provider: "emailpass",
           entity_id: email,
+          scope: "store",
           provider_metadata: {
             password: passwordHash,
           },
@@ -127,6 +128,7 @@ describe("AuthModuleService - AuthProvider", () => {
         // Add authenticated user
         {
           provider: "emailpass",
+          scope: "store",
           entity_id: email,
           provider_metadata: {
             password_hash: passwordHash,
