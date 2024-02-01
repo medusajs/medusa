@@ -6,7 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { Fulfillment } from "./Fulfillment"
 
 /**
- * Tracking Link holds information about tracking numbers for a Fulfillment. Tracking Links can optionally contain a URL that can be visited to see the status of the shipment.
+ * A tracking link holds information about tracking numbers for a Fulfillment. Tracking Links can optionally contain a URL that can be visited to see the status of the shipment. Typically, the tracking link is provided from the third-party service integrated through the used fulfillment provider.
  */
 export interface TrackingLink {
   /**
@@ -22,11 +22,11 @@ export interface TrackingLink {
    */
   tracking_number: string
   /**
-   * The id of the Fulfillment that the Tracking Link references.
+   * The ID of the fulfillment that the tracking link belongs to.
    */
   fulfillment_id: string
   /**
-   * Available if the relation `fulfillment` is expanded.
+   * The details of the fulfillment that the tracking link belongs to.
    */
   fulfillment?: Fulfillment | null
   /**

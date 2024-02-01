@@ -1,5 +1,7 @@
 import { useAdminCollections } from "medusa-react"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
+
 import Modal from "../../../../../../components/molecules/modal"
 import { SelectableTable } from "../../../../../../components/templates/selectable-table"
 import useQueryFilters from "../../../../../../hooks/use-query-filters"
@@ -20,6 +22,7 @@ import AddConditionFooter from "./add-condition-footer"
 const AddCollectionConditionSelector = ({
   onClose,
 }: AddConditionSelectorProps) => {
+  const { t } = useTranslation()
   const params = useQueryFilters(defaultQueryProps)
 
   const { conditions } = useDiscountForm()
@@ -62,7 +65,10 @@ const AddCollectionConditionSelector = ({
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: "Search by title...",
+            searchPlaceholder: t(
+              "add-condition-tables-search-by-title",
+              "Search by title..."
+            ),
           }}
           resourceName="Collections"
           totalCount={count || 0}

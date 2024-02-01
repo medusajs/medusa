@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.4.0
+
+### Minor Changes
+
+- [#4483](https://github.com/medusajs/medusa/pull/4483) [`5d0e9ac00`](https://github.com/medusajs/medusa/commit/5d0e9ac007ecd1a60a4d5b8736024d2627da0b6d) Thanks [@edinskeja](https://github.com/edinskeja)! - Add language support
+
+## 1.3.10
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
 ## 1.3.9
 
 ### Patch Changes

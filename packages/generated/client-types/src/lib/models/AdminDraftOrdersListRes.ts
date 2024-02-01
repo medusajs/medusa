@@ -7,7 +7,13 @@ import type { Cart } from "./Cart"
 import type { DraftOrder } from "./DraftOrder"
 import type { LineItem } from "./LineItem"
 
+/**
+ * The list of draft orders with pagination fields.
+ */
 export interface AdminDraftOrdersListRes {
+  /**
+   * An array of draft order's details.
+   */
   draft_orders: Array<
     Merge<
       SetRelation<DraftOrder, "order" | "cart">,
@@ -26,7 +32,7 @@ export interface AdminDraftOrdersListRes {
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of draft orders skipped when retrieving the draft orders.
    */
   offset: number
   /**

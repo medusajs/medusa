@@ -1,44 +1,42 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const { setPort, useApi } = require("../../../../helpers/use-api")
-
 const {
-  ProductVariantInventoryService,
-  ProductVariantService,
-} = require("@medusajs/medusa")
+  startBootstrapApp,
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const {
+  useApi,
+  useExpressServer,
+} = require("../../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
-const { simpleProductFactory } = require("../../../factories")
-const { simpleSalesChannelFactory } = require("../../../../api/factories")
+const { simpleProductFactory } = require("../../../../factories")
+const { simpleSalesChannelFactory } = require("../../../../factories")
+const {
+  getContainer,
+} = require("../../../../environment-helpers/use-container")
 
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("Create Variant", () => {
   let appContainer
   let dbConnection
-  let express
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd })
-    appContainer = container
-
-    setPort(port)
-    express = app.listen(port, (err) => {
-      process.send(port)
-    })
+    shutdownServer = await startBootstrapApp({ cwd })
+    appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   afterEach(async () => {
@@ -68,6 +66,7 @@ describe("Create Variant", () => {
         {
           id: productId,
           status: "published",
+          sales_channels: [],
           variants: [{ id: variantId }],
         },
         100
@@ -135,6 +134,7 @@ describe("Create Variant", () => {
           {
             id: `${productId}-1`,
             status: "published",
+            sales_channels: [],
             variants: [
               {
                 id: `${variantId}-1`,
@@ -150,6 +150,7 @@ describe("Create Variant", () => {
             id: `${productId}-2`,
             status: "published",
             variants: [{ id: `${variantId}-2`, manage_inventory: true }],
+            sales_channels: [],
           },
           102
         )
@@ -158,6 +159,7 @@ describe("Create Variant", () => {
           {
             id: `${productId}-3`,
             status: "published",
+            sales_channels: [],
             variants: [
               {
                 id: `${variantId}-3`,
@@ -180,6 +182,7 @@ describe("Create Variant", () => {
           {
             id: `${productId}-4`,
             status: "published",
+            sales_channels: [],
             variants: [
               {
                 id: `${variantId}-4`,
@@ -196,6 +199,27 @@ describe("Create Variant", () => {
         await productVariantInventoryService.attachInventoryItem(
           `${variantId}-4`,
           invItem1.id
+        )
+      })
+
+      it("includes inventory items when property is expanded", async () => {
+        const api = useApi()
+
+        const result = await api.get(
+          `/store/products?expand=variants,variants.inventory_items`
+        )
+
+        expect(result.status).toEqual(200)
+        expect(result.data.products).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              variants: expect.arrayContaining([
+                expect.objectContaining({
+                  inventory_items: [expect.any(Object)],
+                }),
+              ]),
+            }),
+          ])
         )
       })
 

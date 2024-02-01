@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import useToggleState from "../../../hooks/use-toggle-state"
 import { currencies } from "../../../utils/currencies"
 import Button from "../../fundamentals/button"
@@ -6,6 +7,7 @@ import EyeOffIcon from "../../fundamentals/icons/eye-off-icon"
 import MedusaPriceInput from "../../organisms/medusa-price-input"
 
 const PriceAmount = ({ value, onChange }) => {
+  const { t } = useTranslation()
   const { state: showRegions, toggle } = useToggleState()
 
   const currencyName = currencies[value.currency_code?.toUpperCase()]?.name
@@ -28,7 +30,7 @@ const PriceAmount = ({ value, onChange }) => {
             >
               <div className="flex items-center gap-2">
                 {showRegions ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
-                <span>Show regions</span>
+                <span>{t("price-overrides-show-regions", "Show regions")}</span>
               </div>
             </Button>
           ) : null}

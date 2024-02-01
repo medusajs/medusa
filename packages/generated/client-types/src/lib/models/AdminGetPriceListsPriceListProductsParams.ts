@@ -5,51 +5,51 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetPriceListsPriceListProductsParams {
   /**
-   * Query used for searching product title and description, variant title and sku, and collection title.
+   * term used to search products' title, description, product variant's title and sku, and product collection's title.
    */
   q?: string
   /**
-   * ID of the product to search for.
+   * Filter by product ID
    */
   id?: string
   /**
-   * Product status to search for
+   * Filter by product status
    */
   status?: Array<"draft" | "proposed" | "published" | "rejected">
   /**
-   * Collection IDs to search for
+   * Filter by product collection ID. Only products in the specified collections are retrieved.
    */
   collection_id?: Array<string>
   /**
-   * Tag IDs to search for
+   * Filter by tag IDs. Only products having the specified tags are retrieved.
    */
   tags?: Array<string>
   /**
-   * product title to search for.
+   * Filter by title
    */
   title?: string
   /**
-   * product description to search for.
+   * Filter by description
    */
   description?: string
   /**
-   * product handle to search for.
+   * Filter by handle
    */
   handle?: string
   /**
-   * Search for giftcards using is_giftcard=true.
+   * A boolean value to filter by whether the product is a gift card or not.
    */
   is_giftcard?: string
   /**
-   * to search for.
+   * Filter product type.
    */
   type?: string
   /**
-   * field to sort results by.
+   * A product field to sort-order the retrieved products by.
    */
   order?: string
   /**
-   * Date comparison for when resulting products were created.
+   * Filter by a creation date range.
    */
   created_at?: {
     /**
@@ -70,7 +70,7 @@ export interface AdminGetPriceListsPriceListProductsParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting products were updated.
+   * Filter by an update date range.
    */
   updated_at?: {
     /**
@@ -91,7 +91,7 @@ export interface AdminGetPriceListsPriceListProductsParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting products were deleted.
+   * Filter by a deletion date range.
    */
   deleted_at?: {
     /**
@@ -112,7 +112,7 @@ export interface AdminGetPriceListsPriceListProductsParams {
     gte?: string
   }
   /**
-   * How many products to skip in the result.
+   * The number of products to skip when retrieving the products.
    */
   offset?: number
   /**
@@ -120,11 +120,11 @@ export interface AdminGetPriceListsPriceListProductsParams {
    */
   limit?: number
   /**
-   * (Comma separated) Which fields should be expanded in each product of the result.
+   * Comma-separated relations that should be expanded in the returned products.
    */
   expand?: string
   /**
-   * (Comma separated) Which fields should be included in each product of the result.
+   * Comma-separated fields that should be included in the returned products.
    */
   fields?: string
 }

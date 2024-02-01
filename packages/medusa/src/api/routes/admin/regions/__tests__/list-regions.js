@@ -19,8 +19,9 @@ const defaultFields = [
 
 const defaultRelations = [
   "countries",
-  "payment_providers",
+  "currency",
   "fulfillment_providers",
+  "payment_providers",
 ]
 
 describe("GET /admin/regions", () => {
@@ -46,14 +47,15 @@ describe("GET /admin/regions", () => {
     })
 
     it("calls service list", () => {
-      expect(RegionServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(RegionServiceMock.list).toHaveBeenCalledWith(
+      expect(RegionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(RegionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
           select: defaultFields,
           relations: defaultRelations,
           take: 50,
           skip: 0,
+          order: { created_at: "DESC" },
         }
       )
     })
@@ -81,14 +83,15 @@ describe("GET /admin/regions", () => {
     })
 
     it("calls service list", () => {
-      expect(RegionServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(RegionServiceMock.list).toHaveBeenCalledWith(
+      expect(RegionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(RegionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
           select: defaultFields,
           relations: defaultRelations,
           take: 20,
           skip: 10,
+          order: { created_at: "DESC" },
         }
       )
     })

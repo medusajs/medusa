@@ -1,5 +1,7 @@
 import {
+  AfterLoad,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   Generated,
@@ -12,7 +14,10 @@ import {
   OneToOne,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-import { FeatureFlagColumn, FeatureFlagDecorators, } from "../utils/feature-flag-decorators"
+import {
+  FeatureFlagColumn,
+  FeatureFlagDecorators,
+} from "../utils/feature-flag-decorators"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
@@ -36,39 +41,123 @@ import { Return } from "./return"
 import { SalesChannel } from "./sales-channel"
 import { ShippingMethod } from "./shipping-method"
 import { Swap } from "./swap"
+import { MedusaV2Flag } from "@medusajs/utils"
 
+/**
+ * @enum
+ *
+ * The order's status.
+ */
 export enum OrderStatus {
+  /**
+   * The order is pending.
+   */
   PENDING = "pending",
+  /**
+   * The order is completed, meaning that
+   * the items have been fulfilled and the payment
+   * has been captured.
+   */
   COMPLETED = "completed",
+  /**
+   * The order is archived.
+   */
   ARCHIVED = "archived",
+  /**
+   * The order is canceled.
+   */
   CANCELED = "canceled",
+  /**
+   * The order requires action.
+   */
   REQUIRES_ACTION = "requires_action",
 }
 
+/**
+ * @enum
+ *
+ * The order's fulfillment status.
+ */
 export enum FulfillmentStatus {
+  /**
+   * The order's items are not fulfilled.
+   */
   NOT_FULFILLED = "not_fulfilled",
+  /**
+   * Some of the order's items, but not all, are fulfilled.
+   */
   PARTIALLY_FULFILLED = "partially_fulfilled",
+  /**
+   * The order's items are fulfilled.
+   */
   FULFILLED = "fulfilled",
+  /**
+   * Some of the order's items, but not all, are shipped.
+   */
   PARTIALLY_SHIPPED = "partially_shipped",
+  /**
+   * The order's items are shipped.
+   */
   SHIPPED = "shipped",
+  /**
+   * Some of the order's items, but not all, are returned.
+   */
   PARTIALLY_RETURNED = "partially_returned",
+  /**
+   * The order's items are returned.
+   */
   RETURNED = "returned",
+  /**
+   * The order's fulfillments are canceled.
+   */
   CANCELED = "canceled",
+  /**
+   * The order's fulfillment requires action.
+   */
   REQUIRES_ACTION = "requires_action",
 }
 
+/**
+ * @enum
+ *
+ * The order's payment status.
+ */
 export enum PaymentStatus {
+  /**
+   * The order's payment is not paid.
+   */
   NOT_PAID = "not_paid",
+  /**
+   * The order's payment is awaiting capturing.
+   */
   AWAITING = "awaiting",
+  /**
+   * The order's payment is captured.
+   */
   CAPTURED = "captured",
+  /**
+   * Some of the order's payment amount is refunded.
+   */
   PARTIALLY_REFUNDED = "partially_refunded",
+  /**
+   * The order's payment amount is refunded.
+   */
   REFUNDED = "refunded",
+  /**
+   * The order's payment is canceled.
+   */
   CANCELED = "canceled",
+  /**
+   * The order's payment requires action.
+   */
   REQUIRES_ACTION = "requires_action",
 }
 
 @Entity()
 export class Order extends BaseEntity {
+  /**
+   * @apiIgnore
+   */
   readonly object = "order"
 
   @DbAwareColumn({ type: "enum", enum: OrderStatus, default: "pending" })
@@ -238,10 +327,31 @@ export class Order extends BaseEntity {
   ])
   sales_channel: SalesChannel
 
+  @FeatureFlagDecorators(
+    [MedusaV2Flag.key, "sales_channels"],
+    [
+      ManyToMany(() => SalesChannel, { cascade: ["remove", "soft-remove"] }),
+      JoinTable({
+        name: "order_sales_channel",
+        joinColumn: {
+          name: "cart_id",
+          referencedColumnName: "id",
+        },
+        inverseJoinColumn: {
+          name: "sales_channel_id",
+          referencedColumnName: "id",
+        },
+      }),
+    ]
+  )
+  sales_channels?: SalesChannel[]
+
   // Total fields
   shipping_total: number
+  shipping_tax_total: number | null
   discount_total: number
   raw_discount_total: number
+  item_tax_total: number | null
   tax_total: number | null
   refunded_total: number
   total: number
@@ -253,9 +363,18 @@ export class Order extends BaseEntity {
 
   returnable_items?: LineItem[]
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private async beforeInsert(): Promise<void> {
     this.id = generateEntityId(this.id, "order")
+
+    if (this.sales_channel_id || this.sales_channel) {
+      this.sales_channels = [
+        { id: this.sales_channel_id || this.sales_channel?.id },
+      ] as SalesChannel[]
+    }
 
     if (process.env.NODE_ENV === "development" && !this.display_id) {
       const disId = await manualAutoIncrement("order")
@@ -265,12 +384,36 @@ export class Order extends BaseEntity {
       }
     }
   }
+
+  /**
+   * @apiIgnore
+   */
+  @BeforeUpdate()
+  private beforeUpdate(): void {
+    if (this.sales_channel_id || this.sales_channel) {
+      this.sales_channels = [
+        { id: this.sales_channel_id || this.sales_channel?.id },
+      ] as SalesChannel[]
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @AfterLoad()
+  private afterLoad(): void {
+    if (this.sales_channels) {
+      this.sales_channel = this.sales_channels?.[0]
+      this.sales_channel_id = this.sales_channel?.id
+      delete this.sales_channels
+    }
+  }
 }
 
 /**
  * @schema Order
  * title: "Order"
- * description: "Represents an order"
+ * description: "An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user."
  * type: object
  * required:
  *   - billing_address_id
@@ -346,7 +489,8 @@ export class Order extends BaseEntity {
  *     type: string
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: A cart object. Available if the relation `cart` is expanded.
+ *     description: The details of the cart associated with the order.
+ *     x-expandable: "cart"
  *     nullable: true
  *     $ref: "#/components/schemas/Cart"
  *   customer_id:
@@ -354,7 +498,8 @@ export class Order extends BaseEntity {
  *     type: string
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
- *     description: A customer object. Available if the relation `customer` is expanded.
+ *     description: The details of the customer associated with the order.
+ *     x-expandable: "customer"
  *     nullable: true
  *     $ref: "#/components/schemas/Customer"
  *   email:
@@ -367,7 +512,8 @@ export class Order extends BaseEntity {
  *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
- *     description: Available if the relation `billing_address` is expanded.
+ *     description: The details of the billing address associated with the order.
+ *     x-expandable: "billing_address"
  *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   shipping_address_id:
@@ -376,15 +522,17 @@ export class Order extends BaseEntity {
  *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
- *     description: Available if the relation `shipping_address` is expanded.
+ *     description: The details of the shipping address associated with the order.
+ *     x-expandable: "shipping_address"
  *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   region_id:
- *     description: The region's ID
+ *     description: The ID of the region this order was created in.
  *     type: string
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation `region` is expanded.
+ *     description: The details of the region this order was created in.
+ *     x-expandable: "region"
  *     nullable: true
  *     $ref: "#/components/schemas/Region"
  *   currency_code:
@@ -395,7 +543,8 @@ export class Order extends BaseEntity {
  *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *       description: See a list of codes.
  *   currency:
- *     description: Available if the relation `currency` is expanded.
+ *     description: The details of the currency used in the order.
+ *     x-expandable: "currency"
  *     nullable: true
  *     $ref: "#/components/schemas/Currency"
  *   tax_rate:
@@ -404,72 +553,85 @@ export class Order extends BaseEntity {
  *     type: number
  *     example: 0
  *   discounts:
- *     description: The discounts used in the order. Available if the relation `discounts` is expanded.
+ *     description: The details of the discounts applied on the order.
  *     type: array
+ *     x-expandable: "discounts"
  *     items:
  *       $ref: "#/components/schemas/Discount"
  *   gift_cards:
- *     description: The gift cards used in the order. Available if the relation `gift_cards` is expanded.
+ *     description: The details of the gift card used in the order.
  *     type: array
+ *     x-expandable: "gift_cards"
  *     items:
  *       $ref: "#/components/schemas/GiftCard"
  *   shipping_methods:
- *     description: The shipping methods used in the order. Available if the relation `shipping_methods` is expanded.
+ *     description: The details of the shipping methods used in the order.
  *     type: array
+ *     x-expandable: "shipping_methods"
  *     items:
  *       $ref: "#/components/schemas/ShippingMethod"
  *   payments:
- *     description: The payments used in the order. Available if the relation `payments` is expanded.
+ *     description: The details of the payments used in the order.
  *     type: array
+ *     x-expandable: "payments"
  *     items:
  *       $ref: "#/components/schemas/Payment"
  *   fulfillments:
- *     description: The fulfillments used in the order. Available if the relation `fulfillments` is expanded.
+ *     description: The details of the fulfillments created for the order.
  *     type: array
+ *     x-expandable: "fulfillments"
  *     items:
  *       $ref: "#/components/schemas/Fulfillment"
  *   returns:
- *     description: The returns associated with the order. Available if the relation `returns` is expanded.
+ *     description: The details of the returns created for the order.
  *     type: array
+ *     x-expandable: "returns"
  *     items:
  *       $ref: "#/components/schemas/Return"
  *   claims:
- *     description: The claims associated with the order. Available if the relation `claims` is expanded.
+ *     description: The details of the claims created for the order.
  *     type: array
+ *     x-expandable: "claims"
  *     items:
  *       $ref: "#/components/schemas/ClaimOrder"
  *   refunds:
- *     description: The refunds associated with the order. Available if the relation `refunds` is expanded.
+ *     description: The details of the refunds created for the order.
  *     type: array
+ *     x-expandable: "refunds"
  *     items:
  *       $ref: "#/components/schemas/Refund"
  *   swaps:
- *     description: The swaps associated with the order. Available if the relation `swaps` is expanded.
+ *     description: The details of the swaps created for the order.
  *     type: array
+ *     x-expandable: "swaps"
  *     items:
  *       $ref: "#/components/schemas/Swap"
  *   draft_order_id:
- *     description: The ID of the draft order this order is associated with.
+ *     description: The ID of the draft order this order was created from.
  *     nullable: true
  *     type: string
  *     example: null
  *   draft_order:
- *     description: A draft order object. Available if the relation `draft_order` is expanded.
+ *     description: The details of the draft order this order was created from.
+ *     x-expandable: "draft_order"
  *     nullable: true
  *     $ref: "#/components/schemas/DraftOrder"
  *   items:
- *     description: The line items that belong to the order. Available if the relation `items` is expanded.
+ *     description: The details of the line items that belong to the order.
+ *     x-expandable: "items"
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/LineItem"
  *   edits:
- *     description: Order edits done on the order. Available if the relation `edits` is expanded.
+ *     description: The details of the order edits done on the order.
  *     type: array
+ *     x-expandable: "edits"
  *     items:
  *       $ref: "#/components/schemas/OrderEdit"
  *   gift_card_transactions:
- *     description: The gift card transactions used in the order. Available if the relation `gift_card_transactions` is expanded.
+ *     description: The gift card transactions made in the order.
  *     type: array
+ *     x-expandable: "gift_card_transactions"
  *     items:
  *       $ref: "#/components/schemas/GiftCardTransaction"
  *   canceled_at:
@@ -495,17 +657,23 @@ export class Order extends BaseEntity {
  *     type: string
  *     example: null
  *   sales_channel_id:
- *     description: The ID of the sales channel this order is associated with.
+ *     description: The ID of the sales channel this order belongs to.
  *     nullable: true
  *     type: string
  *     example: null
  *   sales_channel:
- *     description: A sales channel object. Available if the relation `sales_channel` is expanded.
+ *     description: The details of the sales channel this order belongs to.
+ *     x-expandable: "sales_channel"
  *     nullable: true
  *     $ref: "#/components/schemas/SalesChannel"
  *   shipping_total:
  *     type: integer
  *     description: The total of shipping
+ *     example: 1000
+ *     nullable: true
+ *   shipping_tax_total:
+ *     type: integer
+ *     description: The tax total applied on shipping
  *     example: 1000
  *   raw_discount_total:
  *     description: The total of discount
@@ -519,6 +687,11 @@ export class Order extends BaseEntity {
  *     description: The total of tax
  *     type: integer
  *     example: 0
+ *   item_tax_total:
+ *     description: The tax total applied on items
+ *     type: integer
+ *     example: 0
+ *     nullable: true
  *   refunded_total:
  *     description: The total amount refunded if the order is returned.
  *     type: integer
@@ -548,8 +721,9 @@ export class Order extends BaseEntity {
  *     type: integer
  *     example: 0
  *   returnable_items:
- *     description: The items that are returnable as part of the order, order swaps or order claims
+ *     description: The details of the line items that are returnable as part of the order, swaps, or claims
  *     type: array
+ *     x-expandable: "returnable_items"
  *     items:
  *       $ref: "#/components/schemas/LineItem"
  *   created_at:
@@ -565,4 +739,15 @@ export class Order extends BaseEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
+ *   sales_channels:
+ *     description: The associated sales channels.
+ *     type: array
+ *     nullable: true
+ *     x-expandable: "sales_channels"
+ *     x-featureFlag: "medusa_v2"
+ *     items:
+ *       $ref: "#/components/schemas/SalesChannel"
  */

@@ -46,7 +46,7 @@ export const RegionServiceMock = {
   withTransaction: function () {
     return this
   },
-  retrieve: jest.fn().mockImplementation(regionId => {
+  retrieve: jest.fn().mockImplementation((regionId) => {
     if (regionId === IdMap.getId("testRegion")) {
       return Promise.resolve(regions.testRegion)
     }
@@ -64,28 +64,34 @@ export const RegionServiceMock = {
     }
     return Promise.resolve(regions.testRegion)
   }),
-  delete: jest.fn().mockImplementation(data => Promise.resolve()),
+  delete: jest.fn().mockImplementation((data) => Promise.resolve()),
   create: jest
     .fn()
-    .mockImplementation(data => Promise.resolve({ id: "region" })),
-  addCountry: jest.fn().mockImplementation(data => Promise.resolve()),
+    .mockImplementation((data) => Promise.resolve({ id: "region" })),
+  addCountry: jest.fn().mockImplementation((data) => Promise.resolve()),
   addFulfillmentProvider: jest
     .fn()
-    .mockImplementation(data => Promise.resolve()),
-  addPaymentProvider: jest.fn().mockImplementation(data => Promise.resolve()),
-  removeCountry: jest.fn().mockImplementation(data => Promise.resolve()),
+    .mockImplementation((data) => Promise.resolve()),
+  addPaymentProvider: jest.fn().mockImplementation((data) => Promise.resolve()),
+  removeCountry: jest.fn().mockImplementation((data) => Promise.resolve()),
   removeFulfillmentProvider: jest
     .fn()
-    .mockImplementation(data => Promise.resolve()),
+    .mockImplementation((data) => Promise.resolve()),
   removePaymentProvider: jest
     .fn()
-    .mockImplementation(data => Promise.resolve()),
-  update: jest.fn().mockImplementation(data => Promise.resolve()),
-  list: jest.fn().mockImplementation(data => {
+    .mockImplementation((data) => Promise.resolve()),
+  update: jest.fn().mockImplementation((data) => Promise.resolve()),
+  list: jest.fn().mockImplementation((data) => {
     return Promise.resolve([
       regions.testRegion,
       regions.regionFrance,
       regions.regionUs,
+    ])
+  }),
+  listAndCount: jest.fn().mockImplementation((data) => {
+    return Promise.resolve([
+      [regions.testRegion, regions.regionFrance, regions.regionUs],
+      3,
     ])
   }),
 }

@@ -1,0 +1,63 @@
+---
+title: "Select"
+description: "Displays a list of options for the user to pick from—triggered by a button."
+component: true
+---
+
+<ComponentExample name="select-demo" />
+
+## Usage
+
+---
+
+```tsx
+import { Select } from "@medusajs/ui"
+```
+
+```tsx
+<Select>
+  <Select.Trigger>
+    <Select.Value placeholder="Placeholder" />
+  </Select.Trigger>
+  <Select.Content>
+    {items.map((item) => (
+      <Select.Item key={item.value} value={item.value}>
+        {item.label}
+      </Select.Item>
+    ))}
+  </Select.Content>
+</Select>
+```
+
+## API Reference
+
+---
+
+<ComponentReference mainComponent="Select" componentsToShow={[
+  "Select",
+  "Select.Trigger",
+  "Select.Value",
+  "Select.Group",
+  "Select.Label",
+  "Select.Item"
+]} />
+
+## Examples
+
+---
+
+### Small
+
+<ComponentExample name="select-small" />
+
+### Disabled
+
+<ComponentExample name="select-disabled" />
+
+### Grouped Items
+
+<ComponentExample name="select-grouped-items" />
+
+### Controlled
+
+<ComponentExample name="select-controlled" />

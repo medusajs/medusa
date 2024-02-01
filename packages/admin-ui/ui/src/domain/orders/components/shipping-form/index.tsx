@@ -4,6 +4,7 @@ import clsx from "clsx"
 import { useAdminShippingOptions } from "medusa-react"
 import { useMemo } from "react"
 import { Controller, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import PriceFormInput from "../../../../components/forms/general/prices-form/price-form-input"
 import Button from "../../../../components/fundamentals/button"
 import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
@@ -37,6 +38,7 @@ const ShippingForm = ({
   isClaim = false,
   required = false,
 }: Props) => {
+  const { t } = useTranslation()
   const {
     control,
     path,
@@ -111,20 +113,38 @@ const ShippingForm = ({
     <div className="gap-y-base flex flex-col">
       <div className="flex flex-col">
         <h2 className="inter-base-semibold">
-          Shipping for {isReturn ? "return" : "replacement"} items
+          {isReturn
+            ? t(
+                "shipping-form-shipping-for-return-items",
+                "Shipping for return items"
+              )
+            : t(
+                "shipping-form-shipping-for-replacement-items",
+                "Shipping for replacement items"
+              )}
         </h2>
         <ShippingFormHelpText isClaim={isClaim} isReturn={isReturn} />
       </div>
       <Controller
         control={control}
         name={path("option")}
-        rules={{ required: required ? `Shipping method is required` : false }}
+        rules={{
+          required: required
+            ? t(
+                "shipping-form-shipping-method-is-required",
+                "Shipping method is required"
+              )
+            : false,
+        }}
         render={({ field: { value, onChange, onBlur, ref, name } }) => {
           return (
             <NextSelect
               ref={ref}
-              placeholder="Choose shipping method"
-              label="Shipping method"
+              placeholder={t(
+                "shipping-form-choose-shipping-method",
+                "Choose shipping method"
+              )}
+              label={t("shipping-form-shipping-method", "Shipping method")}
               name={name}
               options={returnShippingOptions}
               value={value}
@@ -175,7 +195,7 @@ const ShippingForm = ({
               className="h-10"
               onClick={setCustomPrice}
             >
-              Add custom price
+              {t("shipping-form-add-custom-price", "Add custom price")}
             </Button>
           )}
         </div>
@@ -188,13 +208,21 @@ const ShippingFormHelpText = ({
   isClaim = false,
   isReturn = false,
 }: Pick<Props, "isClaim" | "isReturn">) => {
+  const { t } = useTranslation()
+
   const text = useMemo(() => {
     if (isClaim && isReturn) {
-      return "Return shipping for items claimed by the customer is complimentary."
+      return t(
+        "shipping-form-return-shipping-for-items-claimed-by-the-customer-is-complimentary",
+        "Return shipping for items claimed by the customer is complimentary."
+      )
     }
 
     if (!isReturn) {
-      return "Shipping for replacement items is complimentary."
+      return t(
+        "shipping-form-shipping-for-replacement-items-is-complimentary",
+        "Shipping for replacement items is complimentary."
+      )
     }
 
     return undefined

@@ -3,6 +3,7 @@ import { StockLocationAddressDTO } from "@medusajs/types"
 import { useAdminRegions } from "medusa-react"
 import { useEffect, useMemo, useState } from "react"
 import { Controller, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import InputField from "../../../../../components/molecules/input"
 import { NextSelect } from "../../../../../components/molecules/select/next-select"
 import FormValidator from "../../../../../utils/form-validator"
@@ -20,6 +21,7 @@ const AddressForm = ({
     control,
   } = form
 
+  const { t } = useTranslation()
   const { regions } = useAdminRegions()
 
   const watchedAddressForm = useWatch({
@@ -59,12 +61,14 @@ const AddressForm = ({
 
   return (
     <>
-      <span className="inter-base-semibold">Address</span>
+      <span className="inter-base-semibold">
+        {t("address-form-address", "Address")}
+      </span>
       <div className="gap-y-large gap-x-large grid grid-cols-1">
         <div className="gap-x-large grid grid-cols-2">
           <InputField
-            label="Company"
-            placeholder="Company"
+            label={t("address-form-company", "Company")}
+            placeholder={t("address-form-company", "Company")}
             errors={errors}
             {...register(path("company"), {
               pattern: FormValidator.whiteSpaceRule("Company"),
@@ -73,20 +77,23 @@ const AddressForm = ({
         </div>
         <div className="gap-x-large grid grid-cols-2">
           <InputField
-            label="Address 1"
-            placeholder="Address 1"
+            label={t("address-form-address-1", "Address 1")}
+            placeholder={t("address-form-address-1", "Address 1")}
             errors={errors}
             required={addressFieldsRequired}
             {...register(path("address_1"), {
               pattern: FormValidator.whiteSpaceRule("Address 1"),
               required: addressFieldsRequired
-                ? "This field is required"
+                ? t(
+                    "address-form-this-field-is-required",
+                    "This field is required"
+                  )
                 : undefined,
             })}
           />
           <InputField
-            label="Address 2"
-            placeholder="Address 2"
+            label={t("address-form-address-2", "Address 2")}
+            placeholder={t("address-form-address-2", "Address 2")}
             errors={errors}
             {...register(path("address_2"), {
               pattern: FormValidator.whiteSpaceRule("Address 2"),
@@ -95,16 +102,16 @@ const AddressForm = ({
         </div>
         <div className="gap-x-large grid grid-cols-2">
           <InputField
-            label="Postal code"
-            placeholder="Postal code"
+            label={t("address-form-postal-code", "Postal code")}
+            placeholder={t("address-form-postal-code", "Postal code")}
             errors={errors}
             {...register(path("postal_code"), {
               pattern: FormValidator.whiteSpaceRule("Postal code"),
             })}
           />
           <InputField
-            label="City"
-            placeholder="City"
+            label={t("address-form-city", "City")}
+            placeholder={t("address-form-city", "City")}
             errors={errors}
             {...register(path("city"), {
               pattern: FormValidator.whiteSpaceRule("City"),
@@ -117,7 +124,10 @@ const AddressForm = ({
             name={path("country_code")}
             rules={{
               required: addressFieldsRequired
-                ? "This field is required"
+                ? t(
+                    "address-form-this-field-is-required",
+                    "This field is required"
+                  )
                 : undefined,
             }}
             render={({ field: { value, onChange } }) => {
@@ -134,7 +144,7 @@ const AddressForm = ({
 
               return (
                 <NextSelect
-                  label="Country"
+                  label={t("address-form-country", "Country")}
                   required={addressFieldsRequired}
                   value={fieldValue}
                   options={countries}

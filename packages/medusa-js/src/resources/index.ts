@@ -13,6 +13,7 @@ import PaymentMethodsResource from "./payment-methods"
 import ProductCategoriesResource from "./product-categories"
 import ProductTagsResource from "./product-tags"
 import ProductTypesResource from "./product-types"
+import ProductVariantsResource from "./product-variants"
 import ProductsResource from "./products"
 import RegionsResource from "./regions"
 import ReturnReasonsResource from "./return-reasons"
@@ -36,11 +37,11 @@ export {
   PaymentMethodsResource,
   ProductCategoriesResource,
   ProductTagsResource,
-  ProductTypesResource,
-  ProductsResource,
+  ProductTypesResource, ProductVariantsResource, ProductsResource,
   RegionsResource,
   ReturnReasonsResource,
   ReturnsResource,
   ShippingOptionsResource,
-  SwapsResource,
+  SwapsResource
 }
+

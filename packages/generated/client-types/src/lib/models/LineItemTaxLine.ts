@@ -6,7 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { LineItem } from "./LineItem"
 
 /**
- * Represents a Line Item Tax Line
+ * A Line Item Tax Line represents the taxes applied on a line item.
  */
 export interface LineItemTaxLine {
   /**
@@ -30,7 +30,7 @@ export interface LineItemTaxLine {
    */
   item_id: string
   /**
-   * Available if the relation `item` is expanded.
+   * The details of the line item.
    */
   item?: LineItem | null
   /**

@@ -5,47 +5,47 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StoreGetProductsParams {
   /**
-   * Query used for searching products by title, description, variant's title, variant's sku, and collection's title
+   * term used to search products' title, description, variant's title, variant's sku, and collection's title.
    */
   q?: string
   /**
-   * product IDs to search for.
+   * Filter by IDs.
    */
   id?: string | Array<string>
   /**
-   * an array of sales channel IDs to filter the retrieved products by.
+   * Filter by sales channel IDs. When provided, only products available in the selected sales channels are retrieved. Alternatively, you can pass a publishable API key in the request header and this will have the same effect.
    */
   sales_channel_id?: Array<string>
   /**
-   * Collection IDs to search for
+   * Filter by product collection IDs. When provided, only products that belong to the specified product collections are retrieved.
    */
   collection_id?: Array<string>
   /**
-   * Type IDs to search for
+   * Filter by product type IDs. When provided, only products that belong to the specified product types are retrieved.
    */
   type_id?: Array<string>
   /**
-   * Tag IDs to search for
+   * Filter by product tag IDs. When provided, only products that belong to the specified product tags are retrieved.
    */
   tags?: Array<string>
   /**
-   * title to search for.
+   * Filter by title.
    */
   title?: string
   /**
-   * description to search for.
+   * Filter by description
    */
   description?: string
   /**
-   * handle to search for.
+   * Filter by handle.
    */
   handle?: string
   /**
-   * Search for giftcards using is_giftcard=true.
+   * Whether to retrieve regular products or gift-card products.
    */
   is_giftcard?: boolean
   /**
-   * Date comparison for when resulting products were created.
+   * Filter by a creation date range.
    */
   created_at?: {
     /**
@@ -66,7 +66,7 @@ export interface StoreGetProductsParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting products were updated.
+   * Filter by an update date range.
    */
   updated_at?: {
     /**
@@ -87,15 +87,15 @@ export interface StoreGetProductsParams {
     gte?: string
   }
   /**
-   * Category ids to filter by.
+   * Filter by product category IDs. When provided, only products that belong to the specified product categories are retrieved.
    */
   category_id?: Array<string>
   /**
-   * Include category children when filtering by category_id.
+   * Whether to include child product categories when filtering using the `category_id` field.
    */
   include_category_children?: boolean
   /**
-   * How many products to skip in the result.
+   * The number of products to skip when retrieving the products.
    */
   offset?: number
   /**
@@ -103,27 +103,27 @@ export interface StoreGetProductsParams {
    */
   limit?: number
   /**
-   * (Comma separated) Which fields should be expanded in each product of the result.
+   * Comma-separated relations that should be expanded in the returned products.
    */
   expand?: string
   /**
-   * (Comma separated) Which fields should be included in each product of the result.
+   * Comma-separated fields that should be included in the returned products.
    */
   fields?: string
   /**
-   * the field used to order the products.
+   * A product field to sort-order the retrieved products by.
    */
   order?: string
   /**
-   * The id of the Cart to set prices based on.
+   * The ID of the cart. This is useful for accurate pricing based on the cart's context.
    */
   cart_id?: string
   /**
-   * The id of the Region to set prices based on.
+   * The ID of the region. This is useful for accurate pricing based on the selected region.
    */
   region_id?: string
   /**
-   * The currency code to use for price selection.
+   * A 3 character ISO currency code. This is useful for accurate pricing based on the selected currency.
    */
   currency_code?: string
 }

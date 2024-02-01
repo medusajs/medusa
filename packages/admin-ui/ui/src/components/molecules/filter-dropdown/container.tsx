@@ -1,4 +1,5 @@
 import * as RadixPopover from "@radix-ui/react-popover"
+
 import React, {
   PropsWithChildren,
   ReactNode,
@@ -6,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react"
+
 import { useWindowDimensions } from "../../../hooks/use-window-dimensions"
 import Button from "../../fundamentals/button"
 
@@ -15,6 +17,9 @@ type FilterDropdownContainerProps = {
   triggerElement: ReactNode
 }
 
+/**
+ * @deprecated Use `FilterMenu` instead
+ */
 const FilterDropdownContainer = ({
   submitFilters,
   clearFilters,
@@ -52,13 +57,25 @@ const FilterDropdownContainer = ({
       <RadixPopover.Content
         sideOffset={8}
         style={heightStyle}
-        className="bg-grey-0 rounded-rounded shadow-dropdown z-40 max-w-[272px] overflow-y-auto py-4"
+        className="bg-grey-0 rounded-rounded shadow-dropdown z-40 max-w-[320px] overflow-y-auto pt-1"
       >
-        <div className="border-grey-20 flex border-b px-4 pb-4">
+        {React.Children.toArray(children)
+          .filter(Boolean)
+          .map((child, idx) => {
+            return (
+              <div
+                key={idx}
+                className="border-grey-20 border-b last:border-0 last:pb-0"
+              >
+                {child}
+              </div>
+            )
+          })}
+        <div className="border-grey-20 gap-x-small flex grid grid-cols-2 border-b px-3 py-2.5">
           <Button
             size="small"
             tabIndex={-1}
-            className="border-grey-20 mr-2 border"
+            className="border-grey-20 mr-2 w-full border"
             variant="ghost"
             onClick={() => onClear()}
           >
@@ -67,20 +84,13 @@ const FilterDropdownContainer = ({
           <Button
             tabIndex={-1}
             variant="primary"
-            className="w-44 justify-center"
+            className="w-full justify-center"
             size="small"
             onClick={() => onSubmit()}
           >
             Apply
           </Button>
         </div>
-        {React.Children.toArray(children).filter(Boolean).map((child) => {
-          return (
-            <div className="border-grey-20 border-b py-2 px-4 last:border-0 last:pb-0">
-              {child}
-            </div>
-          )
-        })}
       </RadixPopover.Content>
     </RadixPopover.Root>
   )

@@ -5,27 +5,27 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface GetOrderEditsParams {
   /**
-   * Query used for searching order edit internal note.
+   * term to search order edits' internal note.
    */
   q?: string
   /**
-   * List order edits by order id.
+   * Filter by order ID
    */
   order_id?: string
   /**
-   * The number of items in the response
+   * Limit the number of order edits returned.
    */
   limit?: number
   /**
-   * The offset of items in response
+   * The number of order edits to skip when retrieving the order edits.
    */
   offset?: number
   /**
-   * Comma separated list of relations to include in the results.
+   * Comma-separated relations that should be expanded in each returned order edit.
    */
   expand?: string
   /**
-   * Comma separated list of fields to include in the results.
+   * Comma-separated fields that should be included in each returned order edit.
    */
   fields?: string
 }

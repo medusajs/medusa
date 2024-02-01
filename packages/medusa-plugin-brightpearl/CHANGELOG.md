@@ -1,5 +1,44 @@
 # Change Log
 
+## 1.3.13
+
+### Patch Changes
+
+- [#5543](https://github.com/medusajs/medusa/pull/5543) [`f90ba0208`](https://github.com/medusajs/medusa/commit/f90ba02087778d8131aed3a59a6dc9c8ca3c95f4) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(utils): Introduce promiseAll util
+
+- Updated dependencies [[`c39bf69a5`](https://github.com/medusajs/medusa/commit/c39bf69a5e5cae75d7fa12aa6022b10903557a32), [`154c9b43b`](https://github.com/medusajs/medusa/commit/154c9b43bde1fdff562aba9da8a79af2660b29b3)]:
+  - @medusajs/utils@1.10.5
+
+## 1.3.12
+
+### Patch Changes
+
+- [#5390](https://github.com/medusajs/medusa/pull/5390) [`04e9dd6a6`](https://github.com/medusajs/medusa/commit/04e9dd6a6a00bb67a1ce55bf575e7c13fb9db223) Thanks [@josipmatichr](https://github.com/josipmatichr)! - fix(medusa-plugin-brightpearl): Missing discounts rule relation
+
+## 1.3.11
+
+### Patch Changes
+
+- [#4503](https://github.com/medusajs/medusa/pull/4503) [`d184d23c6`](https://github.com/medusajs/medusa/commit/d184d23c6384d5f8bf52827826b62c6bef37f884) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa,inventory,types,brightpearl): update some inventory methods to be bulk-operation enabled
+
+- [#4383](https://github.com/medusajs/medusa/pull/4383) [`130465713`](https://github.com/medusajs/medusa/commit/1304657133585f7850807d9508be2780a08d2b12) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa-plugin-brightpearl): change the way reservations are handled
+
+## 1.3.10
+
+### Patch Changes
+
+- [#4389](https://github.com/medusajs/medusa/pull/4389) [`9dcdc0041`](https://github.com/medusajs/medusa/commit/9dcdc0041a2b08cc0723343dd8d9127d9977b086) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, utils): fix the way selects are consumed alongside the relations
+
+## 1.3.9
+
+### Patch Changes
+
+- [#4160](https://github.com/medusajs/medusa/pull/4160) [`572280e1d`](https://github.com/medusajs/medusa/commit/572280e1d1deb1d01660168b453ad397fa382a79) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa-plugin-bright-pearl): update order creation to include sales channel brightpearl id where possible
+
+- [#4295](https://github.com/medusajs/medusa/pull/4295) [`1d91fa4e0`](https://github.com/medusajs/medusa/commit/1d91fa4e08fa3d9ecb6f0aa403655fe75e2b5e6f) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(brightpearl): split externalRef to get product id
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
 ## 1.3.8
 
 ### Patch Changes

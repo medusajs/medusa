@@ -1,5 +1,6 @@
 import { useMemo } from "react"
 import { Control, FieldPath, FieldValues, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Button from "../../../components/fundamentals/button"
 import MinusIcon from "../../../components/fundamentals/icons/minus-icon"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
@@ -36,6 +37,7 @@ const TableQuantitySelector = <
   index,
   maxQuantity,
 }: TableQuantitySelectorProps<TFieldValues, TFieldName>) => {
+  const { t } = useTranslation()
   const currentQuantity = useWatch({
     control,
     name: name,
@@ -62,7 +64,7 @@ const TableQuantitySelector = <
             onClick={() => updateQuantity(index, -1)}
             disabled={currentQuantity === 1}
             className="h-large w-large rounded-base disabled:text-grey-30"
-            aria-label="Decrease quantity"
+            aria-label={t("components-decrease-quantity", "Decrease quantity")}
           >
             <MinusIcon size={16} />
           </Button>
@@ -76,7 +78,7 @@ const TableQuantitySelector = <
             onClick={() => updateQuantity(index, 1)}
             disabled={maxQuantity ? currentQuantity === maxQuantity : undefined}
             className="h-large w-large rounded-base disabled:text-grey-30"
-            aria-label="Increase quantity"
+            aria-label={t("components-increase-quantity", "Increase quantity")}
           >
             <PlusIcon size={16} />
           </Button>

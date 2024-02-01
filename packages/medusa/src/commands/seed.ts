@@ -1,3 +1,6 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IPricingModuleService } from "@medusajs/types"
+import { MedusaV2Flag } from "@medusajs/utils"
 import express from "express"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
@@ -5,23 +8,24 @@ import { getConfigFile } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import path from "path"
 import { DataSource, DataSourceOptions } from "typeorm"
-
 import loaders from "../loaders"
 import { handleConfigError } from "../loaders/config"
-import Logger from "../loaders/logger"
-
 import featureFlagLoader from "../loaders/feature-flags"
-
+import Logger from "../loaders/logger"
+import { SalesChannel } from "../models"
 import {
   ProductCategoryService,
+  ProductCollectionService,
   ProductService,
   ProductVariantService,
   RegionService,
+  SalesChannelService,
   ShippingOptionService,
   ShippingProfileService,
   StoreService,
   UserService,
 } from "../services"
+import PublishableApiKeyService from "../services/publishable-api-key"
 import { ConfigModule } from "../types/global"
 import { CreateProductInput } from "../types/product"
 import { CreateProductCategoryInput } from "../types/product-category"
@@ -97,9 +101,18 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
   const storeService: StoreService = container.resolve("storeService")
   const userService: UserService = container.resolve("userService")
   const regionService: RegionService = container.resolve("regionService")
+  const productCollectionService: ProductCollectionService = container.resolve(
+    "productCollectionService"
+  )
   const productService: ProductService = container.resolve("productService")
   const productCategoryService: ProductCategoryService = container.resolve(
     "productCategoryService"
+  )
+  const publishableApiKeyService: PublishableApiKeyService = container.resolve(
+    "publishableApiKeyService"
+  )
+  const salesChannelService: SalesChannelService = container.resolve(
+    "salesChannelService"
   )
 
   /* eslint-disable */
@@ -112,16 +125,22 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
   const shippingProfileService: ShippingProfileService = container.resolve(
     "shippingProfileService"
   )
+  const pricingModuleService: IPricingModuleService = container.resolve(
+    ModuleRegistrationName.PRICING
+  )
   /* eslint-enable */
 
   await manager.transaction(async (tx) => {
     const {
       store: seededStore,
       regions,
+      product_collections = [],
       products,
       categories = [],
       shipping_options,
       users,
+      rule_types = [],
+      publishable_api_keys = [],
     } = JSON.parse(fs.readFileSync(resolvedPath, `utf-8`))
 
     const gcProfile = await shippingProfileService.retrieveGiftCardDefault()
@@ -197,6 +216,10 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       await createProductCategory(c)
     }
 
+    for (const pc of product_collections) {
+      await productCollectionService.withTransaction(tx).create(pc)
+    }
+
     for (const p of products) {
       const variants = p.variants
       delete p.variants
@@ -233,6 +256,37 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
             .withTransaction(tx)
             .create(newProd.id, variant)
         }
+      }
+    }
+
+    let defaultSalesChannel: SalesChannel | null = null
+
+    try {
+      defaultSalesChannel = await salesChannelService
+        .withTransaction(tx)
+        .retrieveDefault()
+    } catch (e) {
+      defaultSalesChannel = null
+    }
+
+    for (const pak of publishable_api_keys) {
+      const publishableApiKey = await publishableApiKeyService
+        .withTransaction(tx)
+        .create(pak, {
+          loggedInUserId: "",
+        })
+
+      // attach to default sales channel if exists
+      if (defaultSalesChannel) {
+        await publishableApiKeyService.addSalesChannels(publishableApiKey.id, [
+          defaultSalesChannel.id,
+        ])
+      }
+    }
+
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+      for (const ruleType of rule_types) {
+        await pricingModuleService.createRuleTypes(ruleType)
       }
     }
   })

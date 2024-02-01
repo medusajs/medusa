@@ -4,15 +4,15 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
- * Represents a Payment Provider plugin and holds its installation status.
+ * A payment provider represents a payment service installed in the Medusa backend, either through a plugin or backend customizations. It holds the payment service's installation status.
  */
 export interface PaymentProvider {
   /**
-   * The id of the payment provider as given by the plugin.
+   * The ID of the payment provider as given by the payment service.
    */
   id: string
   /**
-   * Whether the plugin is installed in the current version. Plugins that are no longer installed are not deleted by will have this field set to `false`.
+   * Whether the payment service is installed in the current version. If a payment service is no longer installed, the `is_installed` attribute is set to `false`.
    */
   is_installed: boolean
 }

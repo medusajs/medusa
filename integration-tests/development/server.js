@@ -2,6 +2,7 @@ const path = require("path")
 const express = require("express")
 const importFrom = require("import-from")
 const chokidar = require("chokidar")
+const { WorkflowManager } = require("@medusajs/orchestration")
 
 process.env.DEV_MODE = !!process[Symbol.for("ts-node.register.instance")]
 process.env.NODE_ENV = process.env.DEV_MODE && "development"
@@ -106,6 +107,8 @@ const watchFiles = () => {
         }
       }
     }
+
+    WorkflowManager.unregisterAll()
 
     await bootstrapApp()
     IS_RELOADING = false

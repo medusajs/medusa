@@ -1,81 +1,81 @@
+import { FlagRouter } from "@medusajs/utils"
 import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { FindParams, PaginatedResponse } from "../../../../types/common"
-import { FlagRouter } from "../../../../utils/flag-router"
+import {
+  defaultAdminOrdersFields,
+  defaultAdminOrdersRelations,
+} from "../../../../types/orders"
 import middlewares, {
   transformBody,
   transformIncludesOptions,
   transformQuery,
 } from "../../../middlewares"
 import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
-import { AdminOrdersOrderLineItemReservationReq } from "./create-reservation-for-line-item"
-import { AdminGetOrdersOrderReservationsParams } from "./get-reservations"
-import { AdminGetOrdersParams } from "./list-orders"
-import {
-  AdminPostOrdersOrderSwapsParams,
-  AdminPostOrdersOrderSwapsReq,
-} from "./create-swap"
-import {
-  AdminPostOrdersOrderParams,
-  AdminPostOrdersOrderReq,
-} from "./update-order"
-import { AdminPostOrdersOrderCompleteParams } from "./complete-order"
-import {
-  AdminPostOrdersOrderRefundsParams,
-  AdminPostOrdersOrderRefundsReq,
-} from "./refund-payment"
-import { AdminPostOrdersOrderCaptureParams } from "./capture-payment"
-import {
-  AdminPostOrdersOrderFulfillmentsParams,
-  AdminPostOrdersOrderFulfillmentsReq,
-} from "./create-fulfillment"
-import { AdminPostOrdersOrderFulfillementsCancelParams } from "./cancel-fulfillment"
-import { AdminPostOrdersOrderSwapFulfillementsCancelParams } from "./cancel-fulfillment-swap"
-import { AdminPostOrdersClaimFulfillmentsCancelParams } from "./cancel-fulfillment-claim"
-import {
-  AdminPostOrdersOrderShipmentParams,
-  AdminPostOrdersOrderShipmentReq,
-} from "./create-shipment"
-import {
-  AdminPostOrdersOrderReturnsParams,
-  AdminPostOrdersOrderReturnsReq,
-} from "./request-return"
-import { AdminPostOrdersOrderCancel } from "./cancel-order"
 import {
   AdminPostOrdersOrderShippingMethodsParams,
   AdminPostOrdersOrderShippingMethodsReq,
 } from "./add-shipping-method"
 import { AdminPostOrdersOrderArchiveParams } from "./archive-order"
+import { AdminPostOrdersClaimCancel } from "./cancel-claim"
+import { AdminPostOrdersOrderFulfillementsCancelParams } from "./cancel-fulfillment"
+import { AdminPostOrdersClaimFulfillmentsCancelParams } from "./cancel-fulfillment-claim"
+import { AdminPostOrdersOrderSwapFulfillementsCancelParams } from "./cancel-fulfillment-swap"
+import { AdminPostOrdersOrderCancel } from "./cancel-order"
 import { AdminPostOrdersSwapCancelParams } from "./cancel-swap"
-import { AdminPostOrdersOrderSwapsSwapFulfillmentsParams } from "./fulfill-swap"
-import {
-  AdminPostOrdersOrderSwapsSwapShipmentsParams,
-  AdminPostOrdersOrderSwapsSwapShipmentsReq,
-} from "./create-swap-shipment"
-import { AdminPostOrdersOrderSwapsSwapProcessPaymentParams } from "./process-swap-payment"
+import { AdminPostOrdersOrderCaptureParams } from "./capture-payment"
+import { AdminPostOrdersOrderCompleteParams } from "./complete-order"
 import {
   AdminPostOrdersOrderClaimsParams,
   AdminPostOrdersOrderClaimsReq,
 } from "./create-claim"
-import { AdminPostOrdersClaimCancel } from "./cancel-claim"
-import {
-  AdminPostOrdersOrderClaimsClaimParams,
-  AdminPostOrdersOrderClaimsClaimReq,
-} from "./update-claim"
-import {
-  AdminPostOrdersOrderClaimsClaimFulfillmentsParams,
-  AdminPostOrdersOrderClaimsClaimFulfillmentsReq,
-} from "./fulfill-claim"
 import {
   AdminPostOrdersOrderClaimsClaimShipmentsParams,
   AdminPostOrdersOrderClaimsClaimShipmentsReq,
 } from "./create-claim-shipment"
 import {
-  defaultAdminOrdersFields,
-  defaultAdminOrdersRelations,
-} from "../../../../types/orders"
+  AdminPostOrdersOrderFulfillmentsParams,
+  AdminPostOrdersOrderFulfillmentsReq,
+} from "./create-fulfillment"
+import { AdminOrdersOrderLineItemReservationReq } from "./create-reservation-for-line-item"
+import {
+  AdminPostOrdersOrderShipmentParams,
+  AdminPostOrdersOrderShipmentReq,
+} from "./create-shipment"
+import {
+  AdminPostOrdersOrderSwapsParams,
+  AdminPostOrdersOrderSwapsReq,
+} from "./create-swap"
+import {
+  AdminPostOrdersOrderSwapsSwapShipmentsParams,
+  AdminPostOrdersOrderSwapsSwapShipmentsReq,
+} from "./create-swap-shipment"
+import {
+  AdminPostOrdersOrderClaimsClaimFulfillmentsParams,
+  AdminPostOrdersOrderClaimsClaimFulfillmentsReq,
+} from "./fulfill-claim"
+import { AdminPostOrdersOrderSwapsSwapFulfillmentsParams } from "./fulfill-swap"
+import { AdminGetOrdersOrderReservationsParams } from "./get-reservations"
+import { AdminGetOrdersParams } from "./list-orders"
+import { AdminPostOrdersOrderSwapsSwapProcessPaymentParams } from "./process-swap-payment"
+import {
+  AdminPostOrdersOrderRefundsParams,
+  AdminPostOrdersOrderRefundsReq,
+} from "./refund-payment"
+import {
+  AdminPostOrdersOrderReturnsParams,
+  AdminPostOrdersOrderReturnsReq,
+} from "./request-return"
+import {
+  AdminPostOrdersOrderClaimsClaimParams,
+  AdminPostOrdersOrderClaimsClaimReq,
+} from "./update-claim"
+import {
+  AdminPostOrdersOrderParams,
+  AdminPostOrdersOrderReq,
+} from "./update-order"
 
 const route = Router()
 
@@ -484,6 +484,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
 /**
  * @schema AdminOrdersRes
  * type: object
+ * description: "The order's details."
  * x-expanded-relations:
  *   field: order
  *   relations:
@@ -543,6 +544,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
  *     - items.tax_lines
  *     - items.variant
  *     - items.variant.product
+ *     - items.variant.product.profiles
  *     - refunds
  *     - region
  *     - shipping_methods
@@ -591,6 +593,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
  *   - order
  * properties:
  *   order:
+ *     description: "Order details."
  *     $ref: "#/components/schemas/Order"
  */
 export type AdminOrdersRes = {
@@ -600,6 +603,7 @@ export type AdminOrdersRes = {
 /**
  * @schema AdminOrdersListRes
  * type: object
+ * description: "The list of orders with pagination fields."
  * x-expanded-relations:
  *   field: orders
  *   relations:
@@ -659,6 +663,7 @@ export type AdminOrdersRes = {
  *     - items.tax_lines
  *     - items.variant
  *     - items.variant.product
+ *     - items.variant.product.profiles
  *     - refunds
  *     - region
  *     - shipping_methods
@@ -711,6 +716,7 @@ export type AdminOrdersRes = {
  * properties:
  *   orders:
  *     type: array
+ *     description: "An array of order details."
  *     items:
  *       $ref: "#/components/schemas/Order"
  *   count:
@@ -718,7 +724,7 @@ export type AdminOrdersRes = {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of orders skipped when retrieving the orders.
  *   limit:
  *     type: integer
  *     description: The number of items per page

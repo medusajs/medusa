@@ -1,5 +1,54 @@
 # Change Log
 
+## 6.0.7
+
+### Patch Changes
+
+- [#5838](https://github.com/medusajs/medusa/pull/5838) [`99a4f94db`](https://github.com/medusajs/medusa/commit/99a4f94db5ae25dd1688fe29556ba46923715e5f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa-payment-stripe): Add delay to Stripe webhook
+
+- [#5991](https://github.com/medusajs/medusa/pull/5991) [`7f62ab1b5`](https://github.com/medusajs/medusa/commit/7f62ab1b583f8ea39cc2aad169d98a5c514f40b1) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, medusa-payment-stripe): fix stripe error handling
+
+- [#6034](https://github.com/medusajs/medusa/pull/6034) [`125879ada`](https://github.com/medusajs/medusa/commit/125879ada4478e3397fe08d128c17d1b4ab44d53) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-payment-stripe): change webhook environment variables to plugin options
+
+- Updated dependencies [[`42cc8ae3f`](https://github.com/medusajs/medusa/commit/42cc8ae3f89ed7d642e51654d1a3cca011f13155), [`45996d58a2`](https://github.com/medusajs/medusa/commit/45996d58a2665d72335faad11bea958f8da74195), [`9cc787cac4`](https://github.com/medusajs/medusa/commit/9cc787cac4bf1c5d8edf1c4b548bb3205100e822), [`355075097`](https://github.com/medusajs/medusa/commit/3550750975a0c9359fd887929377733606ef03af), [`fbee006e5`](https://github.com/medusajs/medusa/commit/fbee006e512ef2d56ffb23eeabad8b51b56be285), [`c41f3002f`](https://github.com/medusajs/medusa/commit/c41f3002f3118b1f195c5c822fe0f400091d115b), [`d16d10619`](https://github.com/medusajs/medusa/commit/d16d10619dfbd3966a4709753de3d8cc37c6f2eb), [`890e76a5c`](https://github.com/medusajs/medusa/commit/890e76a5c53039576c42ca4d46af6f6977cdebd1), [`fe007d01b`](https://github.com/medusajs/medusa/commit/fe007d01bd827f0e09ee545e48cef18913540c68), [`76332ca6c`](https://github.com/medusajs/medusa/commit/76332ca6c153a786acc07d3f06ff45c3b9346fd3)]:
+  - @medusajs/utils@1.11.3
+
+## 6.0.6
+
+### Patch Changes
+
+- [#5470](https://github.com/medusajs/medusa/pull/5470) [`e4ce2f4e0`](https://github.com/medusajs/medusa/commit/e4ce2f4e07a0c02103c17e16d3a12dbba6053b0e) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa-payment-stripe): Add missing dev/peer dependency on react table
+
+## 6.0.5
+
+### Patch Changes
+
+- [#5177](https://github.com/medusajs/medusa/pull/5177) [`c1b8f089e`](https://github.com/medusajs/medusa/commit/c1b8f089e3277f2aa4b7188bf914253e4ad0fe95) Thanks [@srindom](https://github.com/srindom)! - fix(medusa-payment-stripe): adds missing undefined check
+
+## 6.0.4
+
+### Patch Changes
+
+- [#4928](https://github.com/medusajs/medusa/pull/4928) [`c348263fd`](https://github.com/medusajs/medusa/commit/c348263fdba73ad0cdb8b8941d91a415d5b26a2a) Thanks [@zulianrizki](https://github.com/zulianrizki)! - fix(medusa-payment-stripe): api endpoint for getStripePayments
+
+## 6.0.3
+
+### Patch Changes
+
+- [#4761](https://github.com/medusajs/medusa/pull/4761) [`f1a05f472`](https://github.com/medusajs/medusa/commit/f1a05f4725dcc45150f014769562bd3dfbc0f1f8) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(admin, admin-ui, medusa, medusa-js, medusa-react, stripe-plugin): Support admin extensions
+
+## 6.0.2
+
+### Patch Changes
+
+- [#4442](https://github.com/medusajs/medusa/pull/4442) [`4264302f2`](https://github.com/medusajs/medusa/commit/4264302f214f0717e8b3218a15d43def9122879c) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa, stripe, paypal): Add update payment session support to the abstract payment processor API
+
+## 6.0.1
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
 ## 6.0.0
 
 ### Patch Changes

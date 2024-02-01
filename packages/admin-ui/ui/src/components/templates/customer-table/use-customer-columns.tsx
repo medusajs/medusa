@@ -1,18 +1,20 @@
 import moment from "moment"
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import { getColor } from "../../../utils/color"
 import CustomerAvatarItem from "../../molecules/customer-avatar-item"
 
 export const useCustomerColumns = () => {
+  const { t } = useTranslation()
   const columns = useMemo(
     () => [
       {
-        Header: "Date added",
+        Header: t("customer-table-date-added", "Date added"),
         accessor: "created_at", // accessor is the "key" in the data
         Cell: ({ cell: { value } }) => moment(value).format("DD MMM YYYY"),
       },
       {
-        Header: "Name",
+        Header: t("customer-table-name", "Name"),
         accessor: "customer",
         Cell: ({ row }) => (
           <CustomerAvatarItem
@@ -22,7 +24,7 @@ export const useCustomerColumns = () => {
         ),
       },
       {
-        Header: "Email",
+        Header: t("customer-table-email", "Email"),
         accessor: "email",
       },
       {
@@ -31,7 +33,11 @@ export const useCustomerColumns = () => {
       },
       {
         accessor: "orders",
-        Header: () => <div className="text-right">Orders</div>,
+        Header: () => (
+          <div className="text-right">
+            {t("customer-table-orders", "Orders")}
+          </div>
+        ),
         Cell: ({ cell: { value } }) => (
           <div className="text-right">{value?.length || 0}</div>
         ),

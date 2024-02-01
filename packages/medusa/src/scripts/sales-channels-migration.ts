@@ -80,6 +80,6 @@ migrate({ typeormConfig })
     Logger.info("Database migration completed successfully")
     process.exit()
   })
-  .catch((err) => console.log(err))
+  .catch((err) => Logger.log(err))
 
 export default migrate

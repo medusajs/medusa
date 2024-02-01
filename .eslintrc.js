@@ -72,7 +72,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: [],
+  ignorePatterns: ["packages/admin-next/dashboard/**/dist"],
   overrides: [
     {
       files: ["*.ts"],
@@ -85,15 +85,23 @@ module.exports = {
           "./packages/medusa-payment-stripe/tsconfig.spec.json",
           "./packages/medusa-payment-paypal/tsconfig.spec.json",
           "./packages/admin-ui/tsconfig.json",
+          "./packages/admin-ui/tsconfig.spec.json",
           "./packages/event-bus-local/tsconfig.spec.json",
           "./packages/event-bus-redis/tsconfig.spec.json",
           "./packages/medusa-plugin-meilisearch/tsconfig.spec.json",
           "./packages/medusa-plugin-algolia/tsconfig.spec.json",
-          "./packages/admin-ui/tsconfig.json",
           "./packages/inventory/tsconfig.spec.json",
           "./packages/stock-location/tsconfig.spec.json",
           "./packages/cache-redis/tsconfig.spec.json",
           "./packages/cache-inmemory/tsconfig.spec.json",
+          "./packages/create-medusa-app/tsconfig.json",
+          "./packages/product/tsconfig.json",
+          "./packages/orchestration/tsconfig.json",
+          "./packages/workflows-sdk/tsconfig.spec.json",
+          "./packages/core-flows/tsconfig.spec.json",
+          "./packages/types/tsconfig.json",
+          "./packages/workflow-engine-redis/tsconfig.spec.json",
+          "./packages/workflow-engine-inmemory/tsconfig.spec.json",
         ],
       },
       rules: {
@@ -123,6 +131,61 @@ module.exports = {
       },
     },
     {
+      files: ["packages/design-system/ui/**/*.{ts,tsx}"],
+      extends: [
+        "plugin:react/recommended",
+        "plugin:storybook/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:@typescript-eslint/recommended",
+      ],
+      plugins: ["@typescript-eslint"],
+      rules: {
+        "react/no-children-prop": "off",
+        "react-hooks/exhaustive-deps": "warn",
+        "react/prop-types": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { argsIgnorePattern: "^_" },
+        ],
+      },
+      settings: {
+        react: {
+          version: "detect",
+        },
+      },
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: "./packages/design-system/ui/tsconfig.json",
+      },
+    },
+    {
+      files: ["packages/design-system/icons/**/*.{ts,tsx}"],
+      extends: [
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+      ],
+      plugins: ["@typescript-eslint"],
+      rules: {
+        "react/no-children-prop": "off",
+        "react/prop-types": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { argsIgnorePattern: "^_" },
+        ],
+      },
+      settings: {
+        react: {
+          version: "detect",
+        },
+      },
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: "./packages/design-system/icons/tsconfig.json",
+      },
+    },
+    {
       files: ["packages/admin-ui/ui/**/*.ts", "packages/admin-ui/ui/**/*.tsx"],
       plugins: ["unused-imports"],
       extends: [
@@ -138,6 +201,9 @@ module.exports = {
         ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
         sourceType: "module", // Allows for the use of imports
         project: "./packages/admin-ui/ui/tsconfig.json",
+      },
+      globals: {
+        __BASE__: "readonly",
       },
       env: {
         browser: true,
@@ -162,6 +228,26 @@ module.exports = {
       },
     },
     {
+      files: ["packages/admin-next/dashboard/src/**/*.{ts,tsx}"],
+      env: { browser: true, es2020: true, node: true },
+      extends: [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react-hooks/recommended",
+      ],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: "tsconfig.json",
+      },
+      plugins: ["react-refresh"],
+      rules: {
+        "react-refresh/only-export-components": [
+          "warn",
+          { allowConstantExport: true },
+        ],
+      },
+    },
+    {
       files: ["packages/admin-ui/lib/**/*.ts"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
@@ -173,6 +259,48 @@ module.exports = {
       parser: "@typescript-eslint/parser",
       parserOptions: {
         project: "./packages/admin/tsconfig.json",
+      },
+    },
+    {
+      files: [
+        "packages/medusa-payment-stripe/src/admin/**/*.ts",
+        "packages/medusa-payment-stripe/src/admin/**/*.tsx",
+      ],
+      plugins: ["unused-imports"],
+      extends: [
+        "plugin:react/recommended",
+        "plugin:react/jsx-runtime",
+        "plugin:react-hooks/recommended",
+      ],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
+        sourceType: "module", // Allows for the use of imports
+        project: "./packages/medusa-payment-stripe/tsconfig.admin.json",
+      },
+      env: {
+        browser: true,
+      },
+      rules: {
+        "prettier/prettier": "error",
+        "react/prop-types": "off",
+        "new-cap": "off",
+        "require-jsdoc": "off",
+        "valid-jsdoc": "off",
+        "no-unused-expressions": "off",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "warn",
+          {
+            vars: "all",
+            varsIgnorePattern: "^_",
+            args: "after-used",
+            argsIgnorePattern: "^_",
+          },
+        ],
       },
     },
   ],

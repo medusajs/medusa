@@ -1,5 +1,6 @@
 import { Product, ProductVariant } from "@medusajs/medusa"
 import React from "react"
+import { useTranslation } from "react-i18next"
 import { ActionType } from "../../molecules/actionables"
 import { CollapsibleTree } from "../../molecules/collapsible-tree"
 
@@ -58,6 +59,7 @@ const ProductVariantTree: React.FC<ProductVariantTreeProps> = ({
 }
 
 const ProductVariantLeaf = ({ sku, title, prices = [] }: LeafProps) => {
+  const { t } = useTranslation()
   const filteredPrices = prices.filter((pr) => pr.price_list_id)
   return (
     <div className="flex flex-1">
@@ -68,12 +70,14 @@ const ProductVariantLeaf = ({ sku, title, prices = [] }: LeafProps) => {
       <div className="text-grey-50 flex flex-1 items-center justify-end">
         <div className="text-grey-50 mr-xsmall">
           {filteredPrices.length ? (
-            <span>{`${filteredPrices.length} price${
-              filteredPrices.length > 1 ? "s" : ""
-            }`}</span>
+            <span>
+              {t("product-variant-tree-count", "{{count}}", {
+                count: filteredPrices.length,
+              })}
+            </span>
           ) : (
             <span className="inter-small-semibold text-orange-40">
-              Add prices
+              {t("product-variant-tree-add-prices", "Add prices")}
             </span>
           )}
         </div>

@@ -3,13 +3,17 @@ import { CartService, IdempotencyKeyService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { IdempotencyKey } from "../../../../models/idempotency-key"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { Logger } from "@medusajs/types"
 
 /**
  * @oas [post] /store/carts/{id}/taxes
- * summary: "Calculate Cart Taxes"
  * operationId: "PostCartsCartTaxes"
- * description: "Calculates taxes for a cart. Depending on the cart's region
- *   this may involve making 3rd party API calls to a Tax Provider service."
+ * summary: "Calculate Cart Taxes"
+ * description: "Calculate the taxes for a cart. This is useful if the `automatic_taxes` field of the cart's region is set to `false`. If the cart's region uses a tax provider other than
+ *  Medusa's system provider, this may lead to sending requests to third-party services."
+ * externalDocs:
+ *   description: "How to calculate taxes manually during checkout"
+ *   url: "https://docs.medusajs.com/modules/taxes/storefront/manual-calculation"
  * parameters:
  *   - (path) id=* {String} The Cart ID.
  * x-codegen:
@@ -18,7 +22,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/taxes'
+ *       curl -X POST '{backend_url}/store/carts/{id}/taxes'
  * tags:
  *   - Carts
  * responses:
@@ -46,6 +50,7 @@ export default async (req, res) => {
     "idempotencyKeyService"
   )
   const manager: EntityManager = req.scope.resolve("manager")
+  const logger: Logger = req.scope.resolve("logger")
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -58,7 +63,7 @@ export default async (req, res) => {
         .initializeRequest(headerKey, req.method, req.params, req.path)
     })
   } catch (error) {
-    console.log(error)
+    logger.log(error)
     res.status(409).send("Failed to create idempotency key")
     return
   }

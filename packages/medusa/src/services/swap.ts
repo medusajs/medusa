@@ -29,13 +29,14 @@ import {
 } from "./index"
 import { EntityManager, In } from "typeorm"
 import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { buildQuery, setMetadata, validateId } from "../utils"
 
 import { CreateShipmentConfig } from "../types/fulfillment"
 import { OrdersReturnItem } from "../types/orders"
 import { SwapRepository } from "../repositories/swap"
 import { TransactionBaseService } from "../interfaces"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedProps = {
   manager: EntityManager
@@ -278,11 +279,31 @@ class SwapService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Swap[]> {
+    const [swaps] = await this.listAndCount(selector, config)
+
+    return swaps
+  }
+
+  /**
+   * List swaps.
+   *
+   * @param selector - the query object for find
+   * @param config - the configuration used to find the objects. contains relations, skip, and take.
+   * @return the result of the find operation
+   */
+  async listAndCount(
+    selector: Selector<Swap>,
+    config: FindConfig<Swap> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<[Swap[], number]> {
     const swapRepo = this.activeManager_.withRepository(this.swapRepository_)
     const query = buildQuery(selector, config)
     query.relationLoadStrategy = "query"
 
-    return await swapRepo.find(query)
+    return await swapRepo.findAndCount(query)
   }
 
   /**
@@ -338,7 +359,7 @@ class SwapService extends TransactionBaseService {
       let newItems: LineItem[] = []
 
       if (additionalItems) {
-        newItems = await Promise.all(
+        newItems = await promiseAll(
           additionalItems.map(async ({ variant_id, quantity }) => {
             if (variant_id === null) {
               throw new MedusaError(
@@ -564,10 +585,7 @@ class SwapService extends TransactionBaseService {
 
       const swap = await this.retrieve(swapId, {
         relations: [
-          "order",
-          "order.items",
-          "order.items.variant",
-          "order.items.variant.product",
+          "order.items.variant.product.profiles",
           "order.swaps",
           "order.swaps.additional_items",
           "order.discounts",
@@ -579,6 +597,7 @@ class SwapService extends TransactionBaseService {
           "return_order",
           "return_order.items",
           "return_order.shipping_method",
+          "return_order.shipping_method.shipping_option",
           "return_order.shipping_method.tax_lines",
         ],
       })
@@ -634,7 +653,7 @@ class SwapService extends TransactionBaseService {
       const lineItemAdjustmentServiceTx =
         this.lineItemAdjustmentService_.withTransaction(manager)
 
-      await Promise.all(
+      await promiseAll(
         swap.additional_items.map(
           async (item) =>
             await lineItemServiceTx.update(item.id, {
@@ -655,7 +674,7 @@ class SwapService extends TransactionBaseService {
           ],
         })
 
-      await Promise.all(
+      await promiseAll(
         cart.items.map(async (item) => {
           // we generate adjustments in case the cart has any discounts that should be applied to the additional items
           await lineItemAdjustmentServiceTx.createAdjustmentForLineItem(
@@ -772,7 +791,7 @@ class SwapService extends TransactionBaseService {
             order_id: swap.order_id,
           })
 
-        await Promise.all(
+        await promiseAll(
           items.map(async (item) => {
             if (item.variant_id) {
               await this.productVariantInventoryService_.reserveQuantity(
@@ -913,11 +932,10 @@ class SwapService extends TransactionBaseService {
         relations: [
           "payment",
           "shipping_address",
-          "additional_items",
           "additional_items.tax_lines",
-          "additional_items.variant",
-          "additional_items.variant.product",
+          "additional_items.variant.product.profiles",
           "shipping_methods",
+          "shipping_methods.shipping_option",
           "shipping_methods.tax_lines",
           "order",
           "order.region",

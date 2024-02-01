@@ -4,7 +4,7 @@ import { IsString } from "class-validator"
  * @oas [delete] /admin/uploads
  * operationId: "DeleteUploads"
  * summary: "Delete an Uploaded File"
- * description: "Removes an uploaded file using the installed fileservice"
+ * description: "Delete an uploaded file from storage. The file is deleted using the installed file service on the Medusa backend."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -23,19 +23,44 @@ import { IsString } from "class-validator"
  *       })
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteFile } from "medusa-react"
+ *
+ *       const Image = () => {
+ *         const deleteFile = useAdminDeleteFile()
+ *         // ...
+ *
+ *         const handleDeleteFile = (fileKey: string) => {
+ *           deleteFile.mutate({
+ *             file_key: fileKey
+ *           }, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Image
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/uploads' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE '{backend_url}/admin/uploads' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "file_key": "{file_key}"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Uploads
  * responses:
@@ -73,11 +98,12 @@ export default async (req, res) => {
 /**
  * @schema AdminDeleteUploadsReq
  * type: object
+ * description: "The details of the file to delete."
  * required:
  *   - file_key
  * properties:
  *   file_key:
- *     description: "key of the file to delete"
+ *     description: "key of the file to delete. This is obtained when you first uploaded the file, or by the file service if you used it directly."
  *     type: string
  */
 export class AdminDeleteUploadsReq {

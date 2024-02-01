@@ -1,7 +1,8 @@
 import {
   moduleHelper,
   moduleLoader,
-  registerModules,
+  ModulesDefinition,
+  registerMedusaModule,
 } from "@medusajs/modules-sdk"
 import { asValue, createContainer } from "awilix"
 import express from "express"
@@ -30,7 +31,16 @@ const clientSessionOpts = {
   secret: "test",
 }
 
-const moduleResolutions = registerModules({})
+const moduleResolutions = {}
+Object.entries(ModulesDefinition).forEach(([moduleKey, module]) => {
+  moduleResolutions[moduleKey] = registerMedusaModule(
+    moduleKey,
+    module.defaultModuleDeclaration,
+    undefined,
+    module
+  )[moduleKey]
+})
+
 const config = {
   projectConfig: {
     jwt_secret: "supersecret",
@@ -91,24 +101,37 @@ testApp.use((req, res, next) => {
   next()
 })
 
-featureFlagLoader(config)
-models({ container, configModule: config, isTest: true })
-repositories({ container, isTest: true })
-servicesLoader({ container, configModule: config })
-strategiesLoader({ container, configModule: config })
-passportLoader({ app: testApp, container, configModule: config })
-moduleLoader({ container, moduleResolutions })
-
-testApp.use((req, res, next) => {
-  req.scope = container.createScope()
-  next()
+let supertestRequest
+let resolveIsInit
+const isInit = new Promise((resolve) => {
+  resolveIsInit = resolve
 })
 
-apiLoader({ container, app: testApp, configModule: config })
+async function init() {
+  featureFlagLoader(config)
+  models({ container, configModule: config, isTest: true })
+  repositories({ container, isTest: true })
+  servicesLoader({ container, configModule: config })
+  strategiesLoader({ container, configModule: config })
+  await passportLoader({ app: testApp, container, configModule: config })
+  await moduleLoader({ container, moduleResolutions })
 
-const supertestRequest = supertest(testApp)
+  testApp.use((req, res, next) => {
+    req.scope = container.createScope()
+    next()
+  })
+
+  await apiLoader({ container, app: testApp, configModule: config })
+
+  supertestRequest = supertest(testApp)
+  resolveIsInit(true)
+}
+
+init()
 
 export async function request(method, url, opts = {}) {
+  await isInit
+
   const { payload, query, headers = {}, flags = [] } = opts
 
   flags.forEach((flag) => {
@@ -121,31 +144,27 @@ export async function request(method, url, opts = {}) {
   )
   headers.Cookie = headers.Cookie || ""
   if (opts.adminSession) {
-    const adminSession = { ...opts.adminSession }
+    const token = jwt.sign(
+      {
+        user_id: opts.adminSession.userId || opts.adminSession.jwt?.userId,
+        domain: "admin",
+      },
+      config.projectConfig.jwt_secret
+    )
 
-    if (adminSession.jwt) {
-      adminSession.jwt = jwt.sign(
-        adminSession.jwt,
-        config.projectConfig.jwt_secret,
-        {
-          expiresIn: "30m",
-        }
-      )
-    }
-    headers.Cookie = JSON.stringify(adminSession) || ""
+    headers.Authorization = `Bearer ${token}`
   }
   if (opts.clientSession) {
-    if (opts.clientSession.jwt) {
-      opts.clientSession.jwt_store = jwt.sign(
-        opts.clientSession.jwt,
-        config.projectConfig.jwt_secret,
-        {
-          expiresIn: "30d",
-        }
-      )
-    }
+    const token = jwt.sign(
+      {
+        customer_id:
+          opts.clientSession.customer_id || opts.clientSession.jwt?.customer_id,
+        domain: "store",
+      },
+      config.projectConfig.jwt_secret
+    )
 
-    headers.Cookie = JSON.stringify(opts.clientSession) || ""
+    headers.Authorization = `Bearer ${token}`
   }
 
   for (const name in headers) {

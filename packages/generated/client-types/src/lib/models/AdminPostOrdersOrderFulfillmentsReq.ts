@@ -3,13 +3,16 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the fulfillment to be created.
+ */
 export interface AdminPostOrdersOrderFulfillmentsReq {
   /**
    * The Line Items to include in the Fulfillment.
    */
   items: Array<{
     /**
-     * The ID of Line Item to fulfill.
+     * The ID of the Line Item to fulfill.
      */
     item_id: string
     /**
@@ -18,7 +21,11 @@ export interface AdminPostOrdersOrderFulfillmentsReq {
     quantity: number
   }>
   /**
-   * If set to true no notification will be send related to this Swap.
+   * The ID of the location where the items will be fulfilled from.
+   */
+  location_id?: string
+  /**
+   * If set to `true`, no notification will be sent to the customer related to this fulfillment.
    */
   no_notification?: boolean
   /**

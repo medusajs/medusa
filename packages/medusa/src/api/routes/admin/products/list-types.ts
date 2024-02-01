@@ -5,7 +5,7 @@ import { ProductService } from "../../../../services"
  * deprecated: true
  * operationId: "GetProductsTypes"
  * summary: "List Product Types"
- * description: "Retrieves a list of Product Types."
+ * description: "Retrieve a list of Product Types."
  * x-authenticated: true
  * x-codegen:
  *   method: listTypes
@@ -19,15 +19,16 @@ import { ProductService } from "../../../../services"
  *       medusa.admin.products.listTypes()
  *       .then(({ types }) => {
  *         console.log(types.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/products/types' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/products/types' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:

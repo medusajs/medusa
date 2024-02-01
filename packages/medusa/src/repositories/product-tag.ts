@@ -3,6 +3,7 @@ import { ProductTag } from "../models/product-tag"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
+import { promiseAll } from "@medusajs/utils"
 
 type UpsertTagsInput = (Partial<ProductTag> & {
   value: string
@@ -91,7 +92,7 @@ export const ProductTagRepository = dataSource
       conditionId: string,
       query: ExtendedFindConfig<ProductTag>
     ) {
-      return await this.createQueryBuilder("pt")
+      const qb = this.createQueryBuilder("pt")
         .where(query.where)
         .setFindOptions(query)
         .innerJoin(
@@ -100,7 +101,8 @@ export const ProductTagRepository = dataSource
           `dc_pt.product_tag_id = pt.id AND dc_pt.condition_id = :dcId`,
           { dcId: conditionId }
         )
-        .getManyAndCount()
+
+      return await promiseAll([qb.getMany(), qb.getCount()])
     },
   })
 

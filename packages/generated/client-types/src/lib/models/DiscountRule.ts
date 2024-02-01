@@ -6,7 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { DiscountCondition } from "./DiscountCondition"
 
 /**
- * Holds the rules that governs how a Discount is calculated when applied to a Cart.
+ * A discount rule defines how a Discount is calculated when applied to a Cart.
  */
 export interface DiscountRule {
   /**
@@ -30,7 +30,7 @@ export interface DiscountRule {
    */
   allocation: "total" | "item" | null
   /**
-   * A set of conditions that can be used to limit when  the discount can be used. Available if the relation `conditions` is expanded.
+   * The details of the discount conditions associated with the rule. They can be used to limit when the discount can be used.
    */
   conditions?: Array<DiscountCondition>
   /**

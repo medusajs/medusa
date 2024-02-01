@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPublishableApiKeyDeleteRes {
   /**
-   * The ID of the deleted PublishableApiKey.
+   * The ID of the deleted publishable API key.
    */
   id: string
   /**
@@ -13,7 +13,7 @@ export interface AdminPublishableApiKeyDeleteRes {
    */
   object: string
   /**
-   * Whether the PublishableApiKeys was deleted.
+   * Whether the publishable API key was deleted.
    */
   deleted: boolean
 }

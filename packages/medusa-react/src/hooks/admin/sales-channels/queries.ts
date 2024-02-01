@@ -17,13 +17,40 @@ export const adminSalesChannelsKeys = queryKeysFactory(
 
 type SalesChannelsQueryKeys = typeof adminSalesChannelsKeys
 
-/** retrieve a sales channel
- * @experimental This feature is under development and may change in the future.
- * To use this feature please enable feature flag `sales_channels` in your medusa backend project.
- * @description gets a sales channel
- * @returns a medusa sales channel
+/**
+ * This hook retrieves a sales channel's details.
+ * 
+ * @example
+ * import React from "react"
+ * import { useAdminSalesChannel } from "medusa-react"
+ * 
+ * type Props = {
+ *   salesChannelId: string
+ * }
+ * 
+ * const SalesChannel = ({ salesChannelId }: Props) => {
+ *   const { 
+ *     sales_channel, 
+ *     isLoading, 
+ *   } = useAdminSalesChannel(salesChannelId)
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {sales_channel && <span>{sales_channel.name}</span>}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default SalesChannel
+ * 
+ * @customNamespace Hooks.Admin.Sales Channels
+ * @category Queries
  */
 export const useAdminSalesChannel = (
+  /**
+   * The sales channel's ID.
+   */
   id: string,
   options?: UseQueryOptionsWrapper<
     Response<AdminSalesChannelsRes>,
@@ -41,13 +68,118 @@ export const useAdminSalesChannel = (
 }
 
 /**
- * retrieve a list of sales channels
- * @experimental This feature is under development and may change in the future.
- * To use this feature please enable feature flag `sales_channels` in your medusa backend project.
- * @description Retrieve a list of sales channel
- * @returns a list of sales channel as well as the pagination properties
+ * This hook retrieves a list of sales channels. The sales channels can be filtered by fields such as `q` or `name` 
+ * passed in the `query` parameter. The sales channels can also be sorted or paginated.
+ * 
+ * @example
+ * To list sales channels:
+ * 
+ * ```tsx
+ * import React from "react"
+ * import { useAdminSalesChannels } from "medusa-react"
+ * 
+ * const SalesChannels = () => {
+ *   const { sales_channels, isLoading } = useAdminSalesChannels()
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {sales_channels && !sales_channels.length && (
+ *         <span>No Sales Channels</span>
+ *       )}
+ *       {sales_channels && sales_channels.length > 0 && (
+ *         <ul>
+ *           {sales_channels.map((salesChannel) => (
+ *             <li key={salesChannel.id}>{salesChannel.name}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default SalesChannels
+ * ```
+ * 
+ * To specify relations that should be retrieved within the sales channels:
+ * 
+ * ```tsx
+ * import React from "react"
+ * import { useAdminSalesChannels } from "medusa-react"
+ * 
+ * const SalesChannels = () => {
+ *   const { 
+ *     sales_channels, 
+ *     isLoading
+ *   } = useAdminSalesChannels({
+ *     expand: "locations"
+ *   })
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {sales_channels && !sales_channels.length && (
+ *         <span>No Sales Channels</span>
+ *       )}
+ *       {sales_channels && sales_channels.length > 0 && (
+ *         <ul>
+ *           {sales_channels.map((salesChannel) => (
+ *             <li key={salesChannel.id}>{salesChannel.name}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default SalesChannels
+ * ```
+ * 
+ * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+ * 
+ * ```tsx
+ * import React from "react"
+ * import { useAdminSalesChannels } from "medusa-react"
+ * 
+ * const SalesChannels = () => {
+ *   const { 
+ *     sales_channels, 
+ *     limit,
+ *     offset,
+ *     isLoading
+ *   } = useAdminSalesChannels({
+ *     expand: "locations",
+ *     limit: 10,
+ *     offset: 0
+ *   })
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {sales_channels && !sales_channels.length && (
+ *         <span>No Sales Channels</span>
+ *       )}
+ *       {sales_channels && sales_channels.length > 0 && (
+ *         <ul>
+ *           {sales_channels.map((salesChannel) => (
+ *             <li key={salesChannel.id}>{salesChannel.name}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default SalesChannels
+ * ```
+ * 
+ * @customNamespace Hooks.Admin.Sales Channels
+ * @category Queries
  */
 export const useAdminSalesChannels = (
+  /**
+   * Filters and pagination configurations applied on the retrieved sales channels.
+   */
   query?: AdminGetSalesChannelsParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminSalesChannelsListRes>,

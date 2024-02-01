@@ -1,3 +1,4 @@
 node_modules
 /dist
 yarn.lock
+my-medusa-store

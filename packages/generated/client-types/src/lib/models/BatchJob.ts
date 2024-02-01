@@ -6,7 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { User } from "./User"
 
 /**
- * A Batch Job.
+ * A Batch Job indicates an asynchronus task stored in the Medusa backend. Its status determines whether it has been executed or not.
  */
 export interface BatchJob {
   /**
@@ -33,7 +33,7 @@ export interface BatchJob {
    */
   created_by: string | null
   /**
-   * A user object. Available if the relation `created_by_user` is expanded.
+   * The details of the user that created the batch job.
    */
   created_by_user?: User | null
   /**

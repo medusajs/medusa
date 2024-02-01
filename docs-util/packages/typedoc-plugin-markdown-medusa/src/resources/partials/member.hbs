@@ -1,0 +1,77 @@
+{{#unless hasOwnDocument}}
+
+{{#if name}}
+
+{{titleLevel}} {{#ifNamedAnchors}}<a id="{{anchor}}" name="{{this.anchor}}"></a> {{/ifNamedAnchors}}{{ escape name }}
+
+{{incrementCurrentTitleLevel}}
+
+{{/if}}
+
+{{/unless}}
+
+{{#if signatures}}
+
+{{#if (sectionEnabled "member_signatures")}}
+
+{{#each signatures}}
+
+{{> member.signature-wrapper showSources=true parent=.. }}
+
+{{/each}}
+
+{{/if}}
+
+{{else}}
+
+{{#if hasGetterOrSetter}}
+
+{{#if (sectionEnabled "member_getterSetter")}}
+
+{{> member.getterSetter}}
+
+{{/if}}
+
+{{else}}
+
+{{#ifIsReference}}
+
+{{#if (sectionEnabled "member_reference")}}
+
+{{referenceMember}}
+
+{{/if}}
+
+{{else}}
+
+{{#if (sectionEnabled "member_declaration")}}
+
+{{> member.declaration}}
+
+{{/if}}
+
+{{/ifIsReference}}
+
+{{/if}}
+
+{{/if}}
+
+{{#unless hasOwnDocument}}
+
+{{#if name}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/if}}
+
+{{/unless}}
+
+{{#ifShowSeparatorForTitleLevel}}
+{{#unless @last}}
+{{#unless hasOwnDocument}}
+{{#unless removeSeparator}}
+___
+{{/unless}}
+{{/unless}}
+{{/unless}}
+{{/ifShowSeparatorForTitleLevel}}

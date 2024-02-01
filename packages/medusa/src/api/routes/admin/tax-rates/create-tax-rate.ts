@@ -12,11 +12,11 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/tax-rates
  * operationId: "PostTaxRates"
  * summary: "Create a Tax Rate"
- * description: "Creates a Tax Rate"
+ * description: "Create a Tax Rate."
  * parameters:
  *   - in: query
  *     name: fields
- *     description: "Which fields should be included in the result."
+ *     description: "Comma-separated fields that should be included in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -25,7 +25,7 @@ import { validator } from "../../../../utils/validator"
  *         type: string
  *   - in: query
  *     name: expand
- *     description: "Which fields should be expanded and retrieved in the result."
+ *     description: "Comma-separated relations that should be expanded in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -49,19 +49,54 @@ import { validator } from "../../../../utils/validator"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.taxRates.create({
- *         code: 'TEST',
- *         name: 'New Tax Rate',
+ *         code: "TEST",
+ *         name: "New Tax Rate",
  *         region_id
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateTaxRate } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const CreateTaxRate = ({ regionId }: Props) => {
+ *         const createTaxRate = useAdminCreateTaxRate()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           code: string,
+ *           name: string,
+ *           rate: number
+ *         ) => {
+ *           createTaxRate.mutate({
+ *             code,
+ *             name,
+ *             region_id: regionId,
+ *             rate,
+ *           }, {
+ *             onSuccess: ({ tax_rate }) => {
+ *               console.log(tax_rate.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateTaxRate
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/tax-rates' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/tax-rates' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "code": "TEST",
  *           "name": "New Tax Rate",
@@ -70,6 +105,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Tax Rates
  * responses:
@@ -142,6 +178,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostTaxRatesReq
  * type: object
+ * description: "The details of the tax rate to create."
  * required:
  *   - code
  *   - name
@@ -149,19 +186,19 @@ export default async (req, res) => {
  * properties:
  *   code:
  *     type: string
- *     description: "A code to identify the tax type by"
+ *     description: "The code of the tax rate."
  *   name:
  *     type: string
- *     description: "A human friendly name for the tax"
+ *     description: "The name of the tax rate."
  *   region_id:
  *     type: string
- *     description: "The ID of the Region that the rate belongs to"
+ *     description: "The ID of the Region that the tax rate belongs to."
  *   rate:
  *     type: number
- *     description: "The numeric rate to charge"
+ *     description: "The numeric rate to charge."
  *   products:
  *     type: array
- *     description: "The IDs of the products associated with this tax rate"
+ *     description: "The IDs of the products associated with this tax rate."
  *     items:
  *       type: string
  *   shipping_options:
@@ -202,11 +239,20 @@ export class AdminPostTaxRatesReq {
   product_types?: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminPostTaxRatesParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

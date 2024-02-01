@@ -2,6 +2,7 @@ import {
   EXISTING_CUSTOMER_EMAIL,
   FAIL_INTENT_ID,
   PARTIALLY_FAIL_INTENT_ID,
+  STRIPE_ID,
   WRONG_CUSTOMER_EMAIL,
 } from "../../__mocks__/stripe"
 import { PaymentIntentDataByStatus } from "../../__fixtures__/data"
@@ -211,4 +212,14 @@ export const updatePaymentContextFailWithDifferentAmount = {
     customer: "test",
     amount: 1000,
   },
+}
+
+export const updatePaymentDataWithAmountData = {
+  sessionId: STRIPE_ID,
+  amount: 2000,
+}
+
+export const updatePaymentDataWithoutAmountData = {
+  sessionId: STRIPE_ID,
+  customProp: "test",
 }

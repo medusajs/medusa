@@ -1,14 +1,14 @@
 const path = require("path")
-const setupServer = require("../../../helpers/setup-server")
+const setupServer = require("../../../environment-helpers/setup-server")
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { useDb, initDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
+  require("../../../environment-helpers/start-server-with-environment").default
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb, initDb } = require("../../../environment-helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -52,6 +52,35 @@ describe("/admin/currencies", () => {
       )
 
       expect(response.data).toMatchSnapshot()
+    })
+
+    it("should retrieve the currencies filtered with q param", async () => {
+      const api = useApi()
+      const response = await api.get(
+        `/admin/currencies?q=us&order=code`,
+        adminReqConfig
+      )
+
+      const { currencies } = response.data
+
+      expect(currencies).toEqual([
+        expect.objectContaining({
+          code: "aud",
+          name: "Australian Dollar",
+        }),
+        expect.objectContaining({
+          code: "byn",
+          name: "Belarusian Ruble",
+        }),
+        expect.objectContaining({
+          code: "rub",
+          name: "Russian Ruble",
+        }),
+        expect.objectContaining({
+          code: "usd",
+          name: "US Dollar",
+        }),
+      ])
     })
   })
 })

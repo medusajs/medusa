@@ -1,0 +1,71 @@
+{{#if (sectionEnabled "member_sources_implementationOf")}}
+
+{{#if implementationOf}}
+
+{{titleLevel}} Implementation of
+
+{{#with implementationOf}}
+
+{{typeAndParent}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_sources_inheritedFrom")}}
+
+{{#if inheritedFrom}}
+
+{{titleLevel}} Inherited from
+
+{{#with inheritedFrom}}
+
+{{{typeAndParent}}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_sources_overrides")}}
+
+{{#if overwrites}}
+
+{{titleLevel}} Overrides
+
+{{#with overwrites}}
+
+{{typeAndParent}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_sources_definedIn")}}
+
+{{#if sources}}
+
+{{titleLevel}} Defined in
+
+{{#each sources}}
+
+{{#if url}}
+
+[{{fileName}}:{{line}}]({{url}})
+
+{{else}}
+
+{{fileName}}:{{line}}
+
+{{/if}}
+
+{{/each}}
+
+{{/if}}
+
+{{/if}}

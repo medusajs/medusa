@@ -3,9 +3,12 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the orders to claim.
+ */
 export interface StorePostCustomersCustomerOrderClaimReq {
   /**
-   * The ids of the orders to claim
+   * The ID of the orders to claim
    */
   order_ids: Array<string>
 }

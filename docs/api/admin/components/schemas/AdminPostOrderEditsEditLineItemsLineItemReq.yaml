@@ -1,7 +1,0 @@
-type: object
-required:
-  - quantity
-properties:
-  quantity:
-    description: The quantity to update
-    type: number

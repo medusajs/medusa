@@ -1,4 +1,5 @@
 import { Product } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 import useToggleState from "../../../hooks/use-toggle-state"
 import { ActionType } from "../../molecules/actionables"
 import Section from "../../organisms/section"
@@ -10,10 +11,11 @@ type Props = {
 
 const ProductMediaSection = ({ product }: Props) => {
   const { state, close, toggle } = useToggleState()
+  const { t } = useTranslation()
 
   const actions: ActionType[] = [
     {
-      label: "Edit Media",
+      label: t("product-media-section-edit-media", "Edit Media"),
       onClick: toggle,
     },
   ]

@@ -1,16 +1,16 @@
 import {
-  Constructor,
   InternalModuleDeclaration,
   Logger,
   MedusaContainer,
+  MODULE_RESOURCE_TYPE,
   ModuleExports,
   ModuleResolution,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
 } from "@medusajs/types"
-import { createMedusaContainer } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  createMedusaContainer,
+} from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
-import { trackInstallation } from "medusa-telemetry"
 
 export async function loadInternalModule(
   container: MedusaContainer,
@@ -24,7 +24,18 @@ export async function loadInternalModule(
 
   let loadedModule: ModuleExports
   try {
-    loadedModule = (await import(resolution.resolutionPath as string)).default
+    // When loading manually, we pass the exports to be loaded, meaning that we do not need to import the package to find
+    // the exports. This is useful when a package export an initialize function which will bootstrap itself and therefore
+    // does not need to import the package that is currently being loaded as it would create a
+    // circular reference.
+    const path = resolution.resolutionPath as string
+
+    if (resolution.moduleExports) {
+      loadedModule = resolution.moduleExports
+    } else {
+      loadedModule = await import(path)
+      loadedModule = (loadedModule as any).default
+    }
   } catch (error) {
     if (
       resolution.definition.isRequired &&
@@ -52,36 +63,25 @@ export async function loadInternalModule(
     }
   }
 
-  if (
-    scope === MODULE_SCOPE.INTERNAL &&
-    resources === MODULE_RESOURCE_TYPE.SHARED
-  ) {
-    const moduleModels = loadedModule?.models || null
-    if (moduleModels) {
-      moduleModels.map((val: Constructor<unknown>) => {
-        container.registerAdd("db_entities", asValue(val))
-      })
-    }
+  const localContainer = createMedusaContainer()
+
+  const dependencies = resolution?.dependencies ?? []
+  if (resources === MODULE_RESOURCE_TYPE.SHARED) {
+    dependencies.push(
+      ContainerRegistrationKeys.MANAGER,
+      ContainerRegistrationKeys.CONFIG_MODULE,
+      ContainerRegistrationKeys.LOGGER,
+      ContainerRegistrationKeys.PG_CONNECTION
+    )
   }
 
-  const localContainer =
-    resources === MODULE_RESOURCE_TYPE.ISOLATED
-      ? createMedusaContainer()
-      : (container.createScope() as MedusaContainer)
-
-  if (resources === MODULE_RESOURCE_TYPE.ISOLATED) {
-    const moduleDependencies = resolution?.dependencies ?? []
-
-    for (const dependency of moduleDependencies) {
-      localContainer.register(
-        dependency,
-        asFunction(() => {
-          return container.hasRegistration(dependency)
-            ? container.resolve(dependency)
-            : undefined
-        })
-      )
-    }
+  for (const dependency of dependencies) {
+    localContainer.register(
+      dependency,
+      asFunction(() => {
+        return container.resolve(dependency, { allowUnregistered: true })
+      })
+    )
   }
 
   const moduleLoaders = loadedModule?.loaders ?? []
@@ -118,22 +118,17 @@ export async function loadInternalModule(
       )
     }).singleton(),
   })
-
-  trackInstallation(
-    {
-      module: resolution.definition.key,
-      resolution: resolution.resolutionPath,
-    },
-    "module"
-  )
 }
 
 export async function loadModuleMigrations(
-  resolution: ModuleResolution
+  resolution: ModuleResolution,
+  moduleExports?: ModuleExports
 ): Promise<[Function | undefined, Function | undefined]> {
   let loadedModule: ModuleExports
   try {
-    loadedModule = (await import(resolution.resolutionPath as string)).default
+    loadedModule =
+      moduleExports ?? (await import(resolution.resolutionPath as string))
+
     return [loadedModule.runMigrations, loadedModule.revertMigration]
   } catch {
     return [undefined, undefined]

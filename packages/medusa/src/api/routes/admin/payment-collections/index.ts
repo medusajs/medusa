@@ -65,6 +65,7 @@ export const defaulPaymentCollectionRelations = [
 /**
  * @schema AdminPaymentCollectionsRes
  * type: object
+ * description: "The payment collection's details."
  * x-expanded-relations:
  *   field: payment_collection
  *   relations:
@@ -78,6 +79,7 @@ export const defaulPaymentCollectionRelations = [
  *   - payment_collection
  * properties:
  *   payment_collection:
+ *     description: Payment Collection details.
  *     $ref: "#/components/schemas/PaymentCollection"
  */
 export type AdminPaymentCollectionsRes = {
@@ -87,6 +89,7 @@ export type AdminPaymentCollectionsRes = {
 /**
  * @schema AdminPaymentCollectionDeleteRes
  * type: object
+ * description: "The details of deleting a payment collection."
  * required:
  *   - id
  *   - object

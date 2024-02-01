@@ -4,7 +4,7 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
- * Represents a User who can manage store settings.
+ * A User is an administrator who can manage store settings and data.
  */
 export interface User {
   /**
@@ -12,7 +12,7 @@ export interface User {
    */
   id: string
   /**
-   * The user's role
+   * The user's role. These roles don't provide any different privileges.
    */
   role: "admin" | "member" | "developer"
   /**

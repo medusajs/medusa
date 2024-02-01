@@ -2,16 +2,18 @@ import { PriceList } from "@medusajs/medusa"
 import { isArray } from "lodash"
 import { useMemo } from "react"
 import { Column } from "react-table"
+import { useTranslation } from "react-i18next"
 import Actionables from "../../molecules/actionables"
 import Table from "../../molecules/table"
 import usePriceListActions from "./use-price-list-actions"
 import { formatPriceListGroups, getPriceListStatus } from "./utils"
 
 export const usePriceListTableColumns = () => {
+  const { t } = useTranslation()
   const columns = useMemo<Column<PriceList>[]>(
     () => [
       {
-        Header: "Name",
+        Header: t("price-list-table-name", "Name"),
         accessor: "name",
         Cell: ({ cell: { value } }) => (
           <Table.Cell>
@@ -20,19 +22,19 @@ export const usePriceListTableColumns = () => {
         ),
       },
       {
-        Header: "Description",
+        Header: t("price-list-table-description", "Description"),
         accessor: "description",
         Cell: ({ cell: { value } }) => <Table.Cell>{value}</Table.Cell>,
       },
       {
-        Header: "Status",
+        Header: t("price-list-table-status", "Status"),
         accessor: "status",
         Cell: ({ row: { original } }) => (
           <Table.Cell>{getPriceListStatus(original)}</Table.Cell>
         ),
       },
       {
-        Header: "Groups",
+        Header: t("price-list-table-groups", "Groups"),
         accessor: "customer_groups",
         Cell: ({ cell: { value } }) => {
           const groups: string[] = isArray(value)
@@ -42,7 +44,14 @@ export const usePriceListTableColumns = () => {
           return (
             <Table.Cell>
               {group}
-              {other && <span className="text-grey-40"> + {other} more</span>}
+              {other && (
+                <span className="text-grey-40">
+                  {" "}
+                  {t("price-list-table-other-more", "+ {{other}} more", {
+                    other,
+                  })}
+                </span>
+              )}
             </Table.Cell>
           )
         },

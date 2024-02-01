@@ -1,5 +1,6 @@
 import clsx from "clsx"
 import { useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
 import AddressForm, {
   AddressType,
@@ -9,6 +10,7 @@ import { nestedForm } from "../../../../utils/nested-form"
 import { useNewOrderForm } from "../form"
 
 const Billing = () => {
+  const { t } = useTranslation()
   const {
     context: { validCountries },
     form,
@@ -42,7 +44,9 @@ const Billing = () => {
 
   return (
     <div className="min-h-[705px]">
-      <span className="inter-base-semibold">Billing Address</span>
+      <span className="inter-base-semibold">
+        {t("components-billing-address", "Billing Address")}
+      </span>
       {!isNullishObject(shippingAddress) || shippingAddressId ? (
         <div
           className="mt-4 mb-6 flex cursor-pointer items-center"
@@ -63,7 +67,9 @@ const Billing = () => {
             {...form.register("same_as_shipping")}
             tabIndex={-1}
           />
-          <span className="text-grey-90 ml-3">Use same as shipping</span>
+          <span className="text-grey-90 ml-3">
+            {t("components-use-same-as-shipping", "Use same as shipping")}
+          </span>
         </div>
       ) : null}
       <div

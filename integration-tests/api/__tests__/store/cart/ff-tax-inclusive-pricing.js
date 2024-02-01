@@ -1,9 +1,9 @@
 const path = require("path")
 
 const startServerWithEnvironment =
-  require("../../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../../helpers/use-api")
-const { useDb } = require("../../../../helpers/use-db")
+  require("../../../../environment-helpers/start-server-with-environment").default
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { useDb } = require("../../../../environment-helpers/use-db")
 
 const {
   simpleCartFactory,
@@ -14,7 +14,7 @@ const {
   simplePriceListFactory,
   simpleDiscountFactory,
   simpleSalesChannelFactory,
-} = require("../../../factories")
+} = require("../../../../factories")
 const { IdMap } = require("medusa-test-utils")
 
 jest.setTimeout(30000)

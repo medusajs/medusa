@@ -3,21 +3,24 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the tax rate.
+ */
 export interface AdminPostTaxRatesTaxRateReq {
   /**
-   * A code to identify the tax type by
+   * The code of the tax rate.
    */
   code?: string
   /**
-   * A human friendly name for the tax
+   * The name of the tax rate.
    */
   name?: string
   /**
-   * The ID of the Region that the rate belongs to
+   * The ID of the Region that the tax rate belongs to.
    */
   region_id?: string
   /**
-   * The numeric rate to charge
+   * The numeric rate to charge.
    */
   rate?: number
   /**
@@ -29,7 +32,7 @@ export interface AdminPostTaxRatesTaxRateReq {
    */
   shipping_options?: Array<string>
   /**
-   * The IDs of the types of products associated with this tax rate
+   * The IDs of the types of product types associated with this tax rate
    */
   product_types?: Array<string>
 }

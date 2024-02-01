@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
  * @oas [delete] /admin/reservations/{id}
  * operationId: "DeleteReservationsReservation"
  * summary: "Delete a Reservation"
- * description: "Deletes a Reservation."
+ * description: "Delete a Reservation. Associated resources, such as the line item, will not be deleted."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Reservation to delete.
@@ -21,15 +21,44 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.reservations.delete(reservationId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteReservation } from "medusa-react"
+ *
+ *       type Props = {
+ *         reservationId: string
+ *       }
+ *
+ *       const Reservation = ({ reservationId }: Props) => {
+ *         const deleteReservation = useAdminDeleteReservation(
+ *           reservationId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteReservation.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Reservation
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/reservations/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/reservations/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Reservations
  * responses:

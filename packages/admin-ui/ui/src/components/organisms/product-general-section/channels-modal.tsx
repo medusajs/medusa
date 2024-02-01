@@ -1,5 +1,6 @@
 import { Product, SalesChannel } from "@medusajs/medusa"
 import { useAdminUpdateProduct } from "medusa-react"
+import { useTranslation } from "react-i18next"
 import SalesChannelsModal from "../../forms/product/sales-channels-modal"
 import useNotification from "../../../hooks/use-notification"
 
@@ -11,6 +12,7 @@ type Props = {
 
 const ChannelsModal = ({ product, open, onClose }: Props) => {
   const notification = useNotification()
+  const { t } = useTranslation()
 
   const { mutateAsync } = useAdminUpdateProduct(product.id)
 
@@ -19,9 +21,23 @@ const ChannelsModal = ({ product, open, onClose }: Props) => {
       await mutateAsync({
         sales_channels: channels.map((c) => ({ id: c.id })),
       })
-      notification("Success", "Successfully updated sales channels", "success")
+      notification(
+        t("product-general-section-success", "Success"),
+        t(
+          "product-general-section-successfully-updated-sales-channels",
+          "Successfully updated sales channels"
+        ),
+        "success"
+      )
     } catch (e) {
-      notification("Error", "Failed to update sales channels", "error")
+      notification(
+        t("product-general-section-error", "Error"),
+        t(
+          "product-general-section-failed-to-update-sales-channels",
+          "Failed to update sales channels"
+        ),
+        "error"
+      )
     }
   }
 

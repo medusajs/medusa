@@ -1,10 +1,10 @@
 const path = require("path")
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
-const productSeeder = require("../../helpers/product-seeder")
-const adminSeeder = require("../../helpers/admin-seeder")
+const productSeeder = require("../../../helpers/product-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 const {
   DiscountRuleType,
   AllocationType,
@@ -12,16 +12,13 @@ const {
   DiscountConditionOperator,
 } = require("@medusajs/medusa")
 const { IdMap } = require("medusa-test-utils")
-const {
-  simpleDiscountFactory,
-  simpleSalesChannelFactory,
-} = require("../../factories")
+const { simpleDiscountFactory } = require("../../../factories")
 
 jest.setTimeout(30000)
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -60,7 +57,7 @@ describe("/admin/collections", () => {
         {
           title: "test",
         },
-        { headers: { Authorization: "Bearer test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       const response = await api.post(
@@ -69,7 +66,7 @@ describe("/admin/collections", () => {
           title: "test collection creation",
           handle: "test-handle-creation",
         },
-        { headers: { Authorization: "Bearer test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       expect(response.status).toEqual(200)
@@ -94,12 +91,12 @@ describe("/admin/collections", () => {
         {
           title: "test",
         },
-        { headers: { Authorization: "Bearer test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       const response = await api.delete(
         `/admin/collections/${creationResponse.data.collection.id}`,
-        { headers: { Authorization: "Bearer test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       expect(response.status).toEqual(200)
@@ -114,7 +111,7 @@ describe("/admin/collections", () => {
       const api = useApi()
 
       const response = await api.get("/admin/collections/test-collection", {
-        headers: { Authorization: "Bearer test_token" },
+        headers: { "x-medusa-access-token": "test_token" },
       })
 
       expect(response.data).toEqual(
@@ -163,7 +160,7 @@ describe("/admin/collections", () => {
           title: "test collection creation",
           handle: "test-handle-creation",
         },
-        { headers: { Authorization: "Bearer test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       expect(response.status).toEqual(200)
@@ -184,7 +181,7 @@ describe("/admin/collections", () => {
       const api = useApi()
 
       const response = await api.get("/admin/collections", {
-        headers: { Authorization: "Bearer test_token" },
+        headers: { "x-medusa-access-token": "test_token" },
       })
 
       expect(response.data).toEqual(
@@ -264,7 +261,7 @@ describe("/admin/collections", () => {
             product_ids: ["test-product_filtering_1"],
           },
           {
-            headers: { Authorization: "Bearer test_token" },
+            headers: { "x-medusa-access-token": "test_token" },
           }
         )
         .catch((err) => console.warn(err))
@@ -310,7 +307,7 @@ describe("/admin/collections", () => {
 
       const response = await api
         .delete("/admin/collections/test-collection/products/batch", {
-          headers: { Authorization: "Bearer test_token" },
+          headers: { "x-medusa-access-token": "test_token" },
           data: { product_ids: ["test-product"] },
         })
         .catch((err) => console.warn(err))
@@ -331,7 +328,7 @@ describe("/admin/collections", () => {
 
       const response = await api
         .get("/admin/collections?title=Test%20collection", {
-          headers: { Authorization: "Bearer test_token" },
+          headers: { "x-medusa-access-token": "test_token" },
         })
         .catch((err) => console.log(err))
 

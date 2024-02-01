@@ -1,4 +1,4 @@
-import { MedusaModule, registerModules } from "@medusajs/modules-sdk"
+import { MedusaModule, registerMedusaModule } from "@medusajs/modules-sdk"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
 import glob from "glob"
@@ -10,6 +10,7 @@ import {
 } from "medusa-core-utils"
 import path from "path"
 import { handleConfigError } from "../../loaders/config"
+import { MEDUSA_PROJECT_NAME } from "../../loaders/plugins"
 
 function createFileContentHash(path, files) {
   return path + files
@@ -95,8 +96,13 @@ function resolvePlugin(pluginName) {
 
 export function getInternalModules(configModule) {
   const modules = []
+  const moduleResolutions = {}
 
-  const moduleResolutions = registerModules(configModule.modules)
+  Object.entries(configModule.modules ?? {}).forEach(([moduleKey, module]) => {
+    moduleResolutions[moduleKey] = registerMedusaModule(moduleKey, module)[
+      moduleKey
+    ]
+  })
 
   for (const moduleResolution of Object.values(moduleResolutions)) {
     if (
@@ -143,10 +149,11 @@ export default (directory, featureFlagRouter) => {
     return details
   })
 
+  // Resolve user's project as a plugin for loading purposes
   resolved.push({
     resolve: `${directory}/dist`,
-    name: `project-plugin`,
-    id: createPluginId(`project-plugin`),
+    name: MEDUSA_PROJECT_NAME,
+    id: createPluginId(MEDUSA_PROJECT_NAME),
     options: {},
     version: createFileContentHash(process.cwd(), `**`),
   })
@@ -254,7 +261,12 @@ export const getModuleSharedResources = (configModule, featureFlagsRouter) => {
 }
 
 export const runIsolatedModulesMigration = async (configModule) => {
-  const moduleResolutions = registerModules(configModule.modules)
+  const moduleResolutions = {}
+  Object.entries(configModule.modules ?? {}).forEach(([moduleKey, module]) => {
+    moduleResolutions[moduleKey] = registerMedusaModule(moduleKey, module)[
+      moduleKey
+    ]
+  })
 
   for (const moduleResolution of Object.values(moduleResolutions)) {
     if (
@@ -274,7 +286,12 @@ export const runIsolatedModulesMigration = async (configModule) => {
 }
 
 export const revertIsolatedModulesMigration = async (configModule) => {
-  const moduleResolutions = registerModules(configModule.modules)
+  const moduleResolutions = {}
+  Object.entries(configModule.modules ?? {}).forEach(([moduleKey, module]) => {
+    moduleResolutions[moduleKey] = registerMedusaModule(moduleKey, module)[
+      moduleKey
+    ]
+  })
 
   for (const moduleResolution of Object.values(moduleResolutions)) {
     if (

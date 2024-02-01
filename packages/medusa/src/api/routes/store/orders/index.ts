@@ -83,6 +83,7 @@ export const defaultStoreOrdersRelations = [
   "items",
   "items.variant",
   "shipping_methods",
+  "shipping_methods.shipping_option",
   "discounts",
   "discounts.rule",
   "customer",
@@ -108,7 +109,6 @@ export const defaultStoreOrdersFields = [
   "currency_code",
   "tax_rate",
   "created_at",
-  "items.refundable",
 ] as (keyof Order)[]
 
 export const allowedStoreOrdersFields = [
@@ -124,11 +124,13 @@ export const allowedStoreOrdersFields = [
   "refundable_amount",
   "gift_card_total",
   "gift_card_tax_total",
+  "items.refundable",
 ]
 
 /**
  * @schema StoreOrdersRes
  * type: object
+ * description: "The order's details."
  * required:
  *   - order
  * x-expanded-relations:
@@ -167,6 +169,7 @@ export const allowedStoreOrdersFields = [
  *     - items.tax_lines
  *     - items.variant
  *     - items.variant.product
+ *     - items.variant.product.profiles
  *     - refunds
  *     - region
  *     - shipping_methods
@@ -213,6 +216,7 @@ export const allowedStoreOrdersFields = [
  *     - swaps.additional_items.total
  * properties:
  *   order:
+ *     description: "Order details."
  *     $ref: "#/components/schemas/Order"
  */
 export type StoreOrdersRes = {

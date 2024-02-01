@@ -1,6 +1,8 @@
 import { useEffect, useMemo } from "react"
-import { useAdminStockLocations } from "medusa-react"
+
 import { NextSelect } from "../select/next-select"
+import { StockLocationDTO } from "@medusajs/types"
+import { useAdminStockLocations } from "medusa-react"
 
 const LocationDropdown = ({
   selectedLocation,
@@ -19,7 +21,10 @@ const LocationDropdown = ({
 
   const selectedLocObj = useMemo(() => {
     if (!isLoading && locations) {
-      return locations.find((l) => l.id === selectedLocation) ?? locations[0]
+      return (
+        locations.find((l: StockLocationDTO) => l.id === selectedLocation) ??
+        locations[0]
+      )
     }
   }, [selectedLocation, locations, isLoading])
 
@@ -33,7 +38,7 @@ const LocationDropdown = ({
       onChange={(loc) => {
         onChange(loc!.value)
       }}
-      options={locations.map((l) => ({
+      options={locations.map((l: StockLocationDTO) => ({
         label: l.name,
         value: l.id,
       }))}

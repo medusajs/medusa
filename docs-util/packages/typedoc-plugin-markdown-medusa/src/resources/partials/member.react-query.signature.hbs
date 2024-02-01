@@ -1,0 +1,125 @@
+{{{signatureTitle accessor parent}}}
+
+{{#if (getFormattingOption "expandMembers")}}
+
+{{#if (hasMoreThanOneSignature parent)}}
+
+{{incrementCurrentTitleLevel}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_signature_comment")}}
+
+{{#with comment}}
+
+{{#if hasVisibleComponent}}
+
+{{{comments this true false}}}
+
+{{/if}}
+
+{{/with}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_signature_example")}}
+
+{{{example this}}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_signature_typeParameters")}}
+
+{{#if typeParameters}}
+
+{{{titleLevel}}} Type Parameters
+
+{{#with typeParameters}}
+
+{{{typeParameter sectionTitle=../name}}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_signature_parameters")}}
+
+{{#ifHasHookParams}}
+
+{{{titleLevel}}} Hook Parameters
+
+{{{reactQueryHookParams}}}
+
+{{/ifHasHookParams}}
+
+{{#ifHasMutationParams}}
+
+{{{titleLevel}}} Mutation Function Parameters
+
+{{{reactQueryMutationParams}}}
+
+{{/ifHasMutationParams}}
+
+{{/if}}
+
+{{#ifShowReturns}}
+
+{{#ifHasMutationReturn}}
+
+{{{titleLevel}}} Mutation Function Returned Data
+
+{{{reactQueryMutationReturn}}}
+
+{{/ifHasMutationReturn}}
+
+{{#ifHasQueryReturn}}
+
+{{{titleLevel}}} Query Returned Data
+
+{{{reactQueryQueryReturn}}}
+
+{{/ifHasQueryReturn}}
+
+{{/ifShowReturns}}
+
+{{#if (sectionEnabled "member_signature_comment")}}
+
+{{#with comment}}
+
+{{#if hasVisibleComponent}}
+
+{{{comments this false true ..}}}
+
+{{/if}}
+
+{{/with}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_signature_sources")}}
+
+{{#if showSources}}
+
+{{incrementCurrentTitleLevel}}
+
+{{> member.sources}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (getFormattingOption "expandMembers")}}
+
+{{#if (hasMoreThanOneSignature parent)}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/if}}
+
+{{/if}}

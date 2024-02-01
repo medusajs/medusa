@@ -3,23 +3,24 @@ import {
   Order,
   VariantInventory,
 } from "@medusajs/medusa"
-import { DisplayTotal, PaymentDetails } from "../templates"
 import React, { useContext, useMemo } from "react"
+import { DisplayTotal, PaymentDetails } from "../templates"
+import { useTranslation } from "react-i18next"
 
 import { ActionType } from "../../../../components/molecules/actionables"
-import AllocateItemsModal from "../allocations/allocate-items-modal"
 import Badge from "../../../../components/fundamentals/badge"
 import BodyCard from "../../../../components/organisms/body-card"
 import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
 import { OrderEditContext } from "../../edit/context"
 import OrderLine from "../order-line"
 import { ReservationItemDTO } from "@medusajs/types"
+import ReserveItemsModal from "../reservation/reserve-items-modal"
 import { Response } from "@medusajs/medusa-js"
-import StatusIndicator from "../../../../components/fundamentals/status-indicator"
 import { sum } from "lodash"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import { useMedusa } from "medusa-react"
+import StatusIndicator from "../../../../components/fundamentals/status-indicator"
 import useToggleState from "../../../../hooks/use-toggle-state"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 
 type SummaryCardProps = {
   order: Order
@@ -27,10 +28,11 @@ type SummaryCardProps = {
 }
 
 const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
+  const { t } = useTranslation()
   const {
-    state: allocationModalIsOpen,
-    open: showAllocationModal,
-    close: closeAllocationModal,
+    state: reservationModalIsOpen,
+    open: showReservationModal,
+    close: closeReservationModal,
   } = useToggleState()
 
   const { showModal } = useContext(OrderEditContext)
@@ -151,24 +153,24 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
     const actionables: ActionType[] = []
     if (isFeatureEnabled("order_editing")) {
       actionables.push({
-        label: "Edit Order",
+        label: t("detail-cards-edit-order", "Edit Order"),
         onClick: showModal,
       })
     }
     if (isFeatureEnabled("inventoryService") && !allItemsReserved) {
       actionables.push({
-        label: "Allocate",
-        onClick: showAllocationModal,
+        label: t("detail-cards-allocate", "Allocate"),
+        onClick: showReservationModal,
       })
     }
     return actionables
-  }, [showModal, isFeatureEnabled, showAllocationModal, allItemsReserved])
+  }, [showModal, isFeatureEnabled, showReservationModal, allItemsReserved])
 
   const isAllocatable = !["canceled", "archived"].includes(order.status)
 
   return (
     <BodyCard
-      className={"mb-4 h-auto min-h-0 w-full"}
+      className={"h-auto min-h-0 w-full"}
       title="Summary"
       status={
         isFeatureEnabled("inventoryService") &&
@@ -177,13 +179,13 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
             onClick={
               allItemsReserved || !isAllocatable
                 ? undefined
-                : showAllocationModal
+                : showReservationModal
             }
             variant={allItemsReserved || !isAllocatable ? "success" : "danger"}
             title={
               allItemsReserved || !isAllocatable
-                ? "Allocated"
-                : "Awaits allocation"
+                ? t("detail-cards-allocated", "Allocated")
+                : t("detail-cards-not-fully-allocated", "Not fully allocated")
             }
             className="rounded-rounded border px-3 py-1.5"
           />
@@ -204,7 +206,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
         <DisplayTotal
           currency={order.currency_code}
           totalAmount={order.subtotal}
-          totalTitle={"Subtotal"}
+          totalTitle={t("detail-cards-subtotal", "Subtotal")}
         />
         {order?.discounts?.map((discount, index) => (
           <DisplayTotal
@@ -213,7 +215,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
             totalAmount={-1 * order.discount_total}
             totalTitle={
               <div className="inter-small-regular text-grey-90 flex items-center">
-                Discount:{" "}
+                {t("detail-cards-discount", "Discount:")}{" "}
                 <Badge className="ml-3" variant="default">
                   {discount.code}
                 </Badge>
@@ -221,20 +223,20 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
             }
           />
         ))}
-        {order?.gift_cards?.map((giftCard, index) => (
+        {order?.gift_card_transactions?.map((gcTransaction, index) => (
           <DisplayTotal
             key={index}
             currency={order.currency_code}
-            totalAmount={-1 * order.gift_card_total}
+            totalAmount={-1 * gcTransaction.amount}
             totalTitle={
               <div className="inter-small-regular text-grey-90 flex items-center">
                 Gift card:
                 <Badge className="ml-3" variant="default">
-                  {giftCard.code}
+                  {gcTransaction.gift_card.code}
                 </Badge>
                 <div className="ml-2">
                   <CopyToClipboard
-                    value={giftCard.code}
+                    value={gcTransaction.gift_card.code}
                     showValue={false}
                     iconSize={16}
                   />
@@ -246,18 +248,22 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
         <DisplayTotal
           currency={order.currency_code}
           totalAmount={order.shipping_total}
-          totalTitle={"Shipping"}
+          totalTitle={t("detail-cards-shipping", "Shipping")}
         />
         <DisplayTotal
           currency={order.currency_code}
           totalAmount={order.tax_total}
-          totalTitle={`Tax`}
+          totalTitle={t("detail-cards-tax", "Tax")}
         />
         <DisplayTotal
           variant={"large"}
           currency={order.currency_code}
           totalAmount={order.total}
-          totalTitle={hasMovements ? "Original Total" : "Total"}
+          totalTitle={
+            hasMovements
+              ? t("detail-cards-original-total", "Original Total")
+              : t("detail-cards-total", "Total")
+          }
         />
         <PaymentDetails
           manualRefund={manualRefund}
@@ -269,11 +275,11 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
           currency={order.currency_code}
         />
       </div>
-      {allocationModalIsOpen && (
-        <AllocateItemsModal
+      {reservationModalIsOpen && (
+        <ReserveItemsModal
           reservationItemsMap={reservationItemsMap}
           items={order.items}
-          close={closeAllocationModal}
+          close={closeReservationModal}
         />
       )}
     </BodyCard>

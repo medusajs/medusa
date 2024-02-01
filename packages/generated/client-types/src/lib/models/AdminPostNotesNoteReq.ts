@@ -3,9 +3,12 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the note.
+ */
 export interface AdminPostNotesNoteReq {
   /**
-   * The updated description of the Note.
+   * The description of the Note.
    */
   value: string
 }

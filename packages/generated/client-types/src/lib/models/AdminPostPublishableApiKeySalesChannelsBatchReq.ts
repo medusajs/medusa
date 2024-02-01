@@ -3,9 +3,12 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the sales channels to add to the publishable API key.
+ */
 export interface AdminPostPublishableApiKeySalesChannelsBatchReq {
   /**
-   * The IDs of the sales channels to add to the publishable api key
+   * The IDs of the sales channels to add to the publishable API key
    */
   sales_channel_ids: Array<{
     /**

@@ -5,11 +5,15 @@ import {
   Resolver,
 } from "awilix"
 import { mkdirSync, rmSync, writeFileSync } from "fs"
-import { resolve } from "path"
-import Logger from "../logger"
-import { registerServices, registerStrategies } from "../plugins"
-import { DataSource, EntityManager } from "typeorm"
 import { createMedusaContainer } from "medusa-core-utils"
+import { resolve } from "path"
+import { DataSource, EntityManager } from "typeorm"
+import Logger from "../logger"
+import {
+  MEDUSA_PROJECT_NAME,
+  registerServices,
+  registerStrategies,
+} from "../plugins"
 
 // ***** TEMPLATES *****
 const buildServiceTemplate = (name: string): string => {
@@ -32,7 +36,7 @@ const buildBatchJobStrategyTemplate = (name: string, type: string): string => {
   return `
   import { AbstractBatchJobStrategy } from "../../../../interfaces/batch-job-strategy"
 
-  class ${name}BatchStrategy extends AbstractBatchJobStrategy{
+  class ${name}BatchStrategy extends AbstractBatchJobStrategy {
     static identifier = '${name}-identifier';
     static batchType = '${type}';
 
@@ -79,7 +83,8 @@ const buildPriceSelectionStrategyTemplate = (name: string): string => {
 
 const buildTaxCalcStrategyTemplate = (name: string): string => {
   return `
-  class ${name}TaxCalculationStrategy {
+  import { AbstractTaxCalculationStrategy } from "../../../../interfaces/tax-calculation-strategy"
+  class ${name}TaxCalculationStrategy extends AbstractTaxCalculationStrategy {
     calculate(items, taxLines, calculationContext) {
       throw new Error("Method not implemented.")
     }
@@ -116,7 +121,7 @@ describe("plugins loader", () => {
 
   const pluginsDetails = {
     resolve: resolve(__dirname, "__pluginsLoaderTest__"),
-    name: `project-plugin`,
+    name: MEDUSA_PROJECT_NAME,
     id: "fakeId",
     options: {},
     version: '"fakeVersion',

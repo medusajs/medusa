@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostDiscountsParams {
   /**
-   * (Comma separated) Which fields should be expanded in the results.
+   * Comma-separated relations that should be expanded in the returned discount.
    */
   expand?: string
   /**
-   * (Comma separated) Which fields should be retrieved in the results.
+   * Comma-separated fields that should be retrieved in the returned discount.
    */
   fields?: string
 }

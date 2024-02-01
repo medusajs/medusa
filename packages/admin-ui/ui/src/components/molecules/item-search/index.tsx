@@ -12,7 +12,7 @@ import { useDebounce } from "../../../hooks/use-debounce"
 import { useState } from "react"
 
 type Props = {
-  onItemSelect: (item: itemType) => void
+  onItemSelect: (item: DecoratedInventoryItemDTO) => void
   clearOnSelect?: boolean
   filters?: AdminGetInventoryItemsParams
 }
@@ -64,7 +64,7 @@ const ItemSearch = ({ onItemSelect, clearOnSelect, filters = {} }: Props) => {
         components={{ Option: ProductOption, Control: SearchControl }}
         onInputChange={setItemSearchTerm}
         options={options}
-        placeholder="Choose an item"
+        placeholder="Search by sku..."
         isSearchable={true}
         noOptionsMessage={() => "No items found"}
         openMenuOnClick={!!inventory_items?.length}

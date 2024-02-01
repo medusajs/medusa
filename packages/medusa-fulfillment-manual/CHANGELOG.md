@@ -1,5 +1,19 @@
 # Change Log
 
+## 1.1.39
+
+### Patch Changes
+
+- Updated dependencies [[`45996d58a2`](https://github.com/medusajs/medusa/commit/45996d58a2665d72335faad11bea958f8da74195), [`f86877586`](https://github.com/medusajs/medusa/commit/f86877586147ecedbf7f56a1c57f37ef0c33286c), [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8)]:
+  - medusa-interfaces@1.3.8
+  - medusa-core-utils@1.2.1
+
+## 1.1.38
+
+### Patch Changes
+
+- [#4221](https://github.com/medusajs/medusa/pull/4221) [`109096465`](https://github.com/medusajs/medusa/commit/109096465dacdc5879a816a56ef4f2d7a9927e1a) Thanks [@josipmatichr](https://github.com/josipmatichr)! - fix(medusa-fulfillment-manual): Missing retrieveDocuments override
+
 ## 1.1.37
 
 ### Patch Changes

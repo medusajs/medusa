@@ -1,41 +1,44 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const { setPort, useApi } = require("../../../../helpers/use-api")
+const {
+  startBootstrapApp,
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const {
+  useApi,
+  useExpressServer,
+} = require("../../../../environment-helpers/use-api")
 
 const {
   ProductVariantInventoryService,
   ProductVariantService,
 } = require("@medusajs/medusa")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
-const { simpleProductFactory } = require("../../../factories")
+const { simpleProductFactory } = require("../../../../factories")
+const {
+  getContainer,
+} = require("../../../../environment-helpers/use-container")
 
 describe("Create Variant", () => {
   let appContainer
   let dbConnection
-  let express
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd })
-    appContainer = container
-
-    setPort(port)
-    express = app.listen(port, (err) => {
-      process.send(port)
-    })
+    shutdownServer = await startBootstrapApp({ cwd })
+    appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   afterEach(async () => {
@@ -81,7 +84,7 @@ describe("Create Variant", () => {
           ],
           prices: [{ currency_code: "usd", amount: 2300 }],
         },
-        { headers: { Authorization: "Bearer test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       expect(response.status).toEqual(200)
@@ -158,7 +161,7 @@ describe("Create Variant", () => {
             ],
             prices: [{ currency_code: "usd", amount: 2300 }],
           },
-          { headers: { Authorization: "Bearer test_token" } }
+          { headers: { "x-medusa-access-token": "test_token" } }
         )
         .catch((e) => e)
 

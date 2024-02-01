@@ -4,7 +4,7 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
- * Product Tags can be added to Products for easy filtering and grouping.
+ * A Product Tag can be added to Products for easy filtering and grouping.
  */
 export interface ProductTag {
   /**

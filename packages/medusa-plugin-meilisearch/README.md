@@ -63,7 +63,7 @@ Provide powerful indexing and searching features in your commerce application wi
               ],
             },
             primaryKey: "id",
-            transform: (product) => ({ 
+            transformer: (product) => ({
               id: product.id, 
               // other attributes...
             }),

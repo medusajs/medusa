@@ -6,13 +6,13 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 /**
  * @oas [post] /admin/orders/{id}/capture
  * operationId: "PostOrdersOrderCapture"
- * summary: "Capture Order's Payment"
- * description: "Captures all the Payments associated with an Order."
+ * summary: "Capture an Order's Payments"
+ * description: "Capture all the Payments associated with an Order. The payment of canceled orders can't be captured."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
- *   - (query) expand {string} Comma separated list of relations to include in the result.
- *   - (query) fields {string} Comma separated list of fields to include in the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * x-codegen:
  *   method: capturePayment
  *   params: AdminPostOrdersOrderCaptureParams
@@ -23,18 +23,47 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.capturePayment(order_id)
+ *       medusa.admin.orders.capturePayment(orderId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCapturePayment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const capturePayment = useAdminCapturePayment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleCapture = () => {
+ *           capturePayment.mutate(void 0, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.status)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/capture' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST '{backend_url}/admin/orders/{id}/capture' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:

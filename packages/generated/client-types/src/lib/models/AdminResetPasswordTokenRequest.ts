@@ -3,9 +3,12 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the password reset token request.
+ */
 export interface AdminResetPasswordTokenRequest {
   /**
-   * The Users email.
+   * The User's email.
    */
   email: string
 }

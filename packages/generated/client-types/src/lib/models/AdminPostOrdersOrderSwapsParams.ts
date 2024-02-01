@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostOrdersOrderSwapsParams {
   /**
-   * (Comma separated) Which fields should be expanded the order of the result.
+   * Comma-separated relations that should be expanded in the returned order.
    */
   expand?: string
   /**
-   * (Comma separated) Which fields should be included the order of the result.
+   * Comma-separated fields that should be included in the returned order.
    */
   fields?: string
 }

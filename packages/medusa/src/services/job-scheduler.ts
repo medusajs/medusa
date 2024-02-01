@@ -1,6 +1,7 @@
 import { Job, Queue, Worker } from "bullmq"
 import Redis from "ioredis"
 import { ConfigModule, Logger } from "../types/global"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   logger: Logger
@@ -30,23 +31,28 @@ export default class JobSchedulerService {
     this.config_ = config
     this.logger_ = logger
 
+    const prefix = `${config?.projectConfig?.redis_prefix ?? ""}${
+      this.constructor.name
+    }`
+
     if (singleton && config?.projectConfig?.redis_url) {
       // Required config
       // See: https://github.com/OptimalBits/bull/blob/develop/CHANGELOG.md#breaking-changes
       const connection = new Redis(config.projectConfig.redis_url, {
         maxRetriesPerRequest: null,
         enableReadyCheck: false,
+        ...(config.projectConfig.redis_options ?? {}),
       })
 
       this.queue_ = new Queue(`scheduled-jobs:queue`, {
         connection,
-        prefix: `${this.constructor.name}`,
+        prefix,
       })
 
       // Register scheduled job worker
       new Worker("scheduled-jobs:queue", this.scheduledJobsWorker, {
         connection,
-        prefix: `${this.constructor.name}`,
+        prefix,
       })
     }
   }
@@ -82,7 +88,7 @@ export default class JobSchedulerService {
     const observers = this.handlers_.get(eventName) || []
     this.logger_.info(`Processing scheduled job: ${eventName}`)
 
-    return await Promise.all(
+    return await promiseAll(
       observers.map(async (subscriber) => {
         return subscriber(data, eventName).catch((err) => {
           this.logger_.warn(

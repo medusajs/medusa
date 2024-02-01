@@ -19,6 +19,7 @@ import {
 } from "../types/tax-rate"
 import { buildQuery, PostgresError } from "../utils"
 import { TransactionBaseService } from "../interfaces"
+import { promiseAll } from "@medusajs/utils"
 
 class TaxRateService extends TransactionBaseService {
   protected readonly productService_: ProductService
@@ -208,10 +209,10 @@ class TaxRateService extends TransactionBaseService {
       async (err: any) => {
         if (err.code === PostgresError.FOREIGN_KEY_ERROR) {
           // A foreign key constraint failed meaning some thing doesn't exist
-          // either it is a product or the tax rate itself. Using Promise.all
+          // either it is a product or the tax rate itself. Using promiseAll
           // will try to retrieve all of the resources and will fail when
           // something is not found.
-          await Promise.all([
+          await promiseAll([
             this.retrieve(id, { select: ["id"] }),
             ...ids.map(async (pId) =>
               this.productService_.retrieve(pId, { select: ["id"] })
@@ -244,10 +245,10 @@ class TaxRateService extends TransactionBaseService {
       async (err: any) => {
         if (err.code === PostgresError.FOREIGN_KEY_ERROR) {
           // A foreign key constraint failed meaning some thing doesn't exist
-          // either it is a product or the tax rate itself. Using Promise.all
+          // either it is a product or the tax rate itself. Using promiseAll
           // will try to retrieve all of the resources and will fail when
           // something is not found.
-          await Promise.all([
+          await promiseAll([
             this.retrieve(id, {
               select: ["id"],
             }) as Promise<unknown>,
@@ -297,10 +298,10 @@ class TaxRateService extends TransactionBaseService {
       async (err: any) => {
         if (err.code === PostgresError.FOREIGN_KEY_ERROR) {
           // A foreign key constraint failed meaning some thing doesn't exist
-          // either it is a product or the tax rate itself. Using Promise.all
+          // either it is a product or the tax rate itself. Using promiseAll
           // will try to retrieve all of the resources and will fail when
           // something is not found.
-          await Promise.all([
+          await promiseAll([
             this.retrieve(id, { select: ["id"] }),
             ...ids.map(async (sId) =>
               this.shippingOptionService_.retrieve(sId, { select: ["id"] })

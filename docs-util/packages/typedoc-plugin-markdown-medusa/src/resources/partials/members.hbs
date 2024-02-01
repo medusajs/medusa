@@ -1,0 +1,63 @@
+{{#if (sectionEnabled "members_categories")}}
+
+{{#if categories}}
+
+{{#each categories}}
+
+{{#ifShowSeparatorForTitleLevel}}
+{{#unless @first}}
+___
+{{/unless}}
+{{/ifShowSeparatorForTitleLevel}}
+
+{{#unless allChildrenHaveOwnDocument}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{{titleLevel}}} {{title}}
+
+{{incrementCurrentTitleLevel}}
+
+{{/unless}}
+
+{{#each children}}
+
+{{#unless hasOwnDocument}}
+
+{{> member removeSeparator=true}}
+
+{{/unless}}
+
+{{/each}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/unless}}
+
+{{/unless}}
+
+{{/each}}
+
+{{else}}
+
+{{#each groups}}
+
+{{#unless allChildrenHaveOwnDocument}}
+
+{{#ifShowSeparatorForTitleLevel}}
+{{#unless @first}}
+___
+{{/unless}}
+{{/ifShowSeparatorForTitleLevel}}
+
+{{> members.group}}
+
+{{/unless}}
+
+{{/each}}
+
+{{/if}}
+
+{{/if}}

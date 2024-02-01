@@ -144,14 +144,30 @@ export type StockLocationDTO = {
  *   - type: object
  *     properties:
  *       sales_channels:
+ *         description: "The associated sales channels."
  *         $ref: "#/components/schemas/SalesChannel"
  */
 export type StockLocationExpandedDTO = StockLocationDTO & {
   sales_channels?: any[] // TODO: SalesChannel type
 }
 
+/**
+ * @interface
+ *
+ * The filters to apply on the retrieved stock locations.
+ */
 export type FilterableStockLocationProps = {
+  /**
+   * Search parameter for stock location names
+   */
+  q?: string
+  /**
+   * The IDs to filter stock locations by.
+   */
   id?: string | string[]
+  /**
+   * The names to filter stock locations by.
+   */
   name?: string | string[] | StringComparisonOperator
 }
 

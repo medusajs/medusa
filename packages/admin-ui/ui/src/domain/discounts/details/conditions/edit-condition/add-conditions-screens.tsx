@@ -6,8 +6,10 @@ import AddCustomerGroupsConditionsScreen from "./add-condition-resources/custome
 import AddTypesConditionsScreen from "./add-condition-resources/product-types/add-types"
 import AddProductConditionsScreen from "./add-condition-resources/products/add-products"
 import AddTagsConditionsScreen from "./add-condition-resources/tags/add-tags"
+import { useTranslation } from "react-i18next"
 
 export const useAddConditionsModalScreen = (condition: DiscountCondition) => {
+  const { t } = useTranslation()
   const { pop } = React.useContext(LayeredModalContext)
 
   const renderModalScreen = () => {
@@ -26,7 +28,7 @@ export const useAddConditionsModalScreen = (condition: DiscountCondition) => {
   }
 
   return {
-    title: `Add conditions`,
+    title: t("edit-condition-add-conditions", "Add conditions"),
     onBack: pop,
     view: renderModalScreen(),
   }

@@ -8,6 +8,9 @@ import type { ProductOption } from "./ProductOption"
 import type { ProductVariant } from "./ProductVariant"
 
 export interface StoreProductsRes {
+  /**
+   * Product details.
+   */
   product: Merge<
     SetRelation<
       PricedProduct,

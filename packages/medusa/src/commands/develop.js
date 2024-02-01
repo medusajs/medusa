@@ -1,12 +1,12 @@
 import boxen from "boxen"
-import { execSync } from "child_process"
+import { execSync, fork } from "child_process"
 import chokidar from "chokidar"
-import spawn from "cross-spawn"
 import Store from "medusa-telemetry/dist/store"
 import { EOL } from "os"
 import path from "path"
 
 import Logger from "../loaders/logger"
+import { resolveAdminCLI } from "./utils/resolve-admin-cli"
 
 const defaultConfig = {
   padding: 5,
@@ -16,6 +16,10 @@ const defaultConfig = {
 
 export default async function ({ port, directory }) {
   const args = process.argv
+  const argv =
+    process.argv.indexOf("--") !== -1
+      ? process.argv.slice(process.argv.indexOf("--") + 1)
+      : []
   args.shift()
   args.shift()
   args.shift()
@@ -39,49 +43,85 @@ export default async function ({ port, directory }) {
     process.exit(0)
   })
 
-  const babelPath = path.join(directory, "node_modules", ".bin", "babel")
-
-  execSync(`"${babelPath}" src -d dist`, {
+  execSync(`npx --no-install babel src -d dist --ignore "src/admin/**"`, {
     cwd: directory,
     stdio: ["ignore", process.stdout, process.stderr],
   })
 
-  const cliPath = path.join(directory, "node_modules", ".bin", "medusa")
-  let child = spawn(cliPath, [`start`, ...args], {
+  /**
+   * Environment variable to indicate that the `start` command was initiated by the `develop`.
+   * Used to determine if Admin should build if it is installed and has `autoBuild` enabled.
+   */
+  const COMMAND_INITIATED_BY = {
+    COMMAND_INITIATED_BY: "develop",
+  }
+
+  const cliPath = path.resolve(
+    require.resolve("@medusajs/medusa"),
+    "../",
+    "bin",
+    "medusa.js"
+  )
+  let child = fork(cliPath, [`start`, ...args], {
+    execArgv: argv,
     cwd: directory,
-    env: process.env,
-    stdio: ["pipe", process.stdout, process.stderr],
+    env: { ...process.env, ...COMMAND_INITIATED_BY },
   })
+
   child.on("error", function (err) {
     console.log("Error ", err)
     process.exit(1)
   })
 
-  chokidar.watch(`${directory}/src`).on("change", (file) => {
-    const f = file.split("src")[1]
-    Logger.info(`${f} changed: restarting...`)
+  const { cli, binExists } = resolveAdminCLI()
 
-    if (process.platform === "win32") {
-      execSync(`taskkill /PID ${child.pid} /F /T`)
-    }
+  if (binExists) {
+    const backendUrl = `http://localhost:${port}`
 
-    child.kill("SIGINT")
-
-    execSync(`${babelPath} src -d dist --extensions ".ts,.js"`, {
-      cwd: directory,
-      stdio: ["pipe", process.stdout, process.stderr],
-    })
-
-    Logger.info("Rebuilt")
-
-    child = spawn(cliPath, [`start`, ...args], {
+    const adminChild = fork(cli, [`develop`, "--backend", `${backendUrl}`], {
       cwd: directory,
       env: process.env,
-      stdio: ["pipe", process.stdout, process.stderr],
+      stdio: ["pipe", process.stdout, process.stderr, "ipc"],
     })
-    child.on("error", function (err) {
+
+    adminChild.on("error", function (err) {
       console.log("Error ", err)
-      process.exit(1)
+      adminChild.kill("SIGINT") // Only kill admin in case of error
     })
-  })
+  }
+
+  chokidar
+    .watch(`${directory}/src`, {
+      ignored: `${directory}/src/admin`,
+    })
+    .on("change", (file) => {
+      const f = file.split("src")[1]
+      Logger.info(`${f} changed: restarting...`)
+
+      if (process.platform === "win32") {
+        execSync(`taskkill /PID ${child.pid} /F /T`)
+      }
+
+      child.kill("SIGINT")
+
+      execSync(
+        `npx --no-install babel src -d dist --extensions ".ts,.js" --ignore "src/admin/**"`,
+        {
+          cwd: directory,
+          stdio: ["pipe", process.stdout, process.stderr],
+        }
+      )
+
+      Logger.info("Rebuilt")
+
+      child = fork(cliPath, [`start`, ...args], {
+        cwd: directory,
+        env: { ...process.env, ...COMMAND_INITIATED_BY },
+        stdio: ["pipe", process.stdout, process.stderr, "ipc"],
+      })
+      child.on("error", function (err) {
+        console.log("Error ", err)
+        process.exit(1)
+      })
+    })
 }

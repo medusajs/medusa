@@ -1,0 +1,57 @@
+---
+title: "Progress Accordion"
+description: "A set of expandable content panels, specifically designed for implementing multi-step tasks"
+component: true
+---
+
+<ComponentExample name="progress-accordion-demo"/>
+
+## Usage
+
+---
+
+```tsx
+import { ProgressAccordion } from "@medusajs/ui"
+```
+
+```tsx
+<ProgressAccordion type="single">
+  <ProgressAccordion.Item value="general">
+    <ProgressAccordion.Header>
+      General
+    </ProgressAccordion.Header>
+    <ProgressAccordion.Content>
+       {/* Content */}
+    </ProgressAccordion.Content>
+  </ProgressAccordion.Item>
+  <ProgressAccordion.Item value="shipping">
+    <ProgressAccordion.Header>
+      Shipping
+    </ProgressAccordion.Header>
+    <ProgressAccordion.Content>
+        {/* Content */}
+    </ProgressAccordion.Content>
+  </ProgressAccordion.Item>
+</ProgressAccordion>
+```
+
+## API Reference
+
+---
+
+<ComponentReference mainComponent="ProgressAccordion" componentsToShow={[
+  "ProgressAccordion",
+  "ProgressAccordion.Header"
+]} />
+
+## Examples
+
+---
+
+### Single
+
+<ComponentExample name="progress-accordion-single" />
+
+### Multiple
+
+<ComponentExample name="progress-accordion-multiple" />

@@ -17,6 +17,7 @@ export const defaultRelations = ["items", "items.reason"]
 /**
  * @schema StoreReturnsRes
  * type: object
+ * description: "The return's details."
  * x-expanded-relations:
  *   field: return
  *   relations:
@@ -28,6 +29,7 @@ export const defaultRelations = ["items", "items.reason"]
  *   - return
  * properties:
  *   return:
+ *     description: "Return details."
  *     $ref: "#/components/schemas/Return"
  */
 export type StoreReturnsRes = {

@@ -24,15 +24,42 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.inventoryItems.deleteLocationLevel(inventoryItemId, locationId)
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteLocationLevel } from "medusa-react"
+ *
+ *       type Props = {
+ *         inventoryItemId: string
+ *       }
+ *
+ *       const InventoryItem = ({ inventoryItemId }: Props) => {
+ *         const deleteLocationLevel = useAdminDeleteLocationLevel(
+ *           inventoryItemId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = (
+ *           locationId: string
+ *         ) => {
+ *           deleteLocationLevel.mutate(locationId)
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default InventoryItem
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/inventory-items/{id}/location-levels/{location_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/inventory-items/{id}/location-levels/{location_id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Inventory Items
  * responses:

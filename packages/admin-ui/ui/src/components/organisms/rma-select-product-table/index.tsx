@@ -1,6 +1,7 @@
 import { LineItem, Order } from "@medusajs/medusa"
 import clsx from "clsx"
 import React, { Fragment, useContext } from "react"
+import { useTranslation } from "react-i18next"
 import RMAReturnReasonSubModal from "../../../domain/orders/details/rma-sub-modals/return-reasons"
 import Medusa from "../../../services/api"
 import { isLineItemCanceled } from "../../../utils/is-line-item"
@@ -32,6 +33,7 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
   setToReturn,
   isSwapOrClaim = false,
 }) => {
+  const { t } = useTranslation()
   const { push, pop } = useContext(LayeredModalContext)
 
   const handleQuantity = (change, item) => {
@@ -112,9 +114,15 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
     <Table>
       <Table.Head className="border-none">
         <Table.HeadRow className="text-grey-50 inter-small-semibold">
-          <Table.HeadCell colSpan={2}>Product Details</Table.HeadCell>
-          <Table.HeadCell className="pr-8 text-right">Quantity</Table.HeadCell>
-          <Table.HeadCell className="text-right">Refundable</Table.HeadCell>
+          <Table.HeadCell colSpan={2}>
+            {t("rma-select-product-table-product-details", "Product Details")}
+          </Table.HeadCell>
+          <Table.HeadCell className="pr-8 text-right">
+            {t("rma-select-product-table-quantity", "Quantity")}
+          </Table.HeadCell>
+          <Table.HeadCell className="text-right">
+            {t("rma-select-product-table-refundable", "Refundable")}
+          </Table.HeadCell>
           <Table.HeadCell></Table.HeadCell>
         </Table.HeadRow>
       </Table.Head>
@@ -231,11 +239,13 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                           <span className="ml-2">
                             {toReturn[item.id]?.images?.length > 0 && (
                               <>
-                                ({toReturn[item.id]?.images?.length} image{" "}
-                                {toReturn[item.id]?.images?.length > 1
-                                  ? "s"
-                                  : ""}
-                                )
+                                {t(
+                                  "rma-select-product-table-images-witch-count",
+                                  "{{count}}",
+                                  {
+                                    count: toReturn[item.id]?.images?.length,
+                                  }
+                                )}
                               </>
                             )}
                           </span>
@@ -263,7 +273,10 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                         size="small"
                         className="border-grey-20 border"
                       >
-                        Select Reason
+                        {t(
+                          "rma-select-product-table-select-reason",
+                          "Select Reason"
+                        )}
                       </Button>
                     </div>
                   </Table.Cell>
