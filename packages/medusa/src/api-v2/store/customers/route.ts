@@ -11,7 +11,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     )
     const query = {
       customer: {
-        __args: { id: req.session.auth_user.app_metadata.customer_id },
+        __args: { id: req.auth_user?.app_metadata?.customer_id },
       },
     }
 
