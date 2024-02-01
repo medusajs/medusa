@@ -17,6 +17,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     query: req.query,
     body: req.body,
     authScope: scope,
+    protocol: req.protocol,
   } as AuthenticationInput
 
   const authResult = await service.authenticate(authProvider, authData)
@@ -31,7 +32,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     req.session.auth_user = authUser
     req.session.scope = authUser.scope
 
-    res.status(200).json({ authUser })
+    return res.status(200).json({ authUser })
   }
 
   throw new MedusaError(

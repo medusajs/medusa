@@ -18,4 +18,5 @@ export type AuthenticationInput = {
   query: Record<string, string>
   body: Record<string, string>
   authScope: string
+  protocol: string
 }

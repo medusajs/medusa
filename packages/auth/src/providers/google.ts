@@ -1,7 +1,4 @@
-import {
-  AbstractAuthModuleProvider,
-  MedusaError,
-} from "@medusajs/utils"
+import { AbstractAuthModuleProvider, MedusaError } from "@medusajs/utils"
 import {
   AuthProviderScope,
   AuthenticationInput,
@@ -103,7 +100,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
             entity_id,
             provider: GoogleProvider.PROVIDER,
             user_metadata: jwtData!.payload,
-            scope
+            scope,
           },
         ])
         authUser = createdAuthUser
@@ -122,12 +119,12 @@ class GoogleProvider extends AbstractAuthModuleProvider {
     { clientID, callbackURL, clientSecret }: ProviderConfig
   ) {
     const client = this.getAuthorizationCodeHandler({ clientID, clientSecret })
-    
+
     const tokenParams = {
       code,
       redirect_uri: callbackURL,
     }
-    
+
     try {
       const accessToken = await client.getToken(tokenParams)
 
@@ -137,12 +134,14 @@ class GoogleProvider extends AbstractAuthModuleProvider {
     }
   }
 
-  private getConfigFromScope(config: AuthProviderScope & Partial<ProviderConfig>): ProviderConfig {
+  private getConfigFromScope(
+    config: AuthProviderScope & Partial<ProviderConfig>
+  ): ProviderConfig {
     const providerConfig: Partial<ProviderConfig> = { ...config }
 
     if (!providerConfig.clientID) {
       throw new Error("Google clientID is required")
-    } 
+    }
 
     if (!providerConfig.clientSecret) {
       throw new Error("Google clientSecret is required")
@@ -156,9 +155,8 @@ class GoogleProvider extends AbstractAuthModuleProvider {
   }
 
   private originalURL(req: AuthenticationInput) {
-    const tls = req.connection.encrypted
     const host = req.headers.host
-    const protocol = tls ? "https" : "http"
+    const protocol = req.protocol
     const path = req.url || ""
 
     return protocol + "://" + host + path

@@ -1,6 +1,9 @@
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import { CreateCustomerDTO } from "@medusajs/types"
 import { createCustomerAccountWorkflow } from "@medusajs/core-flows"
 
@@ -9,12 +12,12 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     const remoteQuery = req.scope.resolve(
       ContainerRegistrationKeys.REMOTE_QUERY
     )
-    const query = {
-      customer: {
-        __args: { id: req.auth_user?.app_metadata?.customer_id },
-      },
-    }
 
+    const query = remoteQueryObjectFromString({
+      entryPoint: "customer",
+      variables: { id: req.auth_user.app_metadata.customer_id },
+      fields: [],
+    })
     const [customer] = await remoteQuery(query)
 
     res.status(200).json({ customer })

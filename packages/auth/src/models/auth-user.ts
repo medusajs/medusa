@@ -17,8 +17,10 @@ import { generateEntityId } from "@medusajs/utils"
 type OptionalFields = "provider_metadata" | "app_metadata" | "user_metadata"
 
 @Entity()
-@Unique({ properties: ["provider","entity_id" ], name: "IDX_auth_user_provider_entity_id" })
-@Unique({ properties: ["scope","entity_id" ], name: "IDX_auth_user_scope_entity_id" })
+@Unique({
+  properties: ["provider", "scope", "entity_id"],
+  name: "IDX_auth_user_provider_scope_entity_id",
+})
 export default class AuthUser {
   [OptionalProps]: OptionalFields
 
