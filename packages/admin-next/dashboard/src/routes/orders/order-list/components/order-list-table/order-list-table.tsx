@@ -56,6 +56,7 @@ export const OrderListTable = () => {
         navigateTo={(row) => `/orders/${row.original.id}`}
         filters={filters}
         count={count}
+        search
         isLoading={isLoading}
         rowCount={PAGE_SIZE}
         orderBy={["display_id", "created_at", "updated_at"]}

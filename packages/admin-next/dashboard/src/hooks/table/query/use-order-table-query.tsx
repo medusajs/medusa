@@ -6,6 +6,10 @@ type UseOrderTableQueryProps = {
   pageSize?: number
 }
 
+/**
+ * TODO: Enable `order` query param when staging is updated
+ */
+
 export const useOrderTableQuery = ({
   prefix,
   pageSize = 50,

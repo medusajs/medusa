@@ -16,7 +16,6 @@ const PAGE_SIZE = 10
 const DEFAULT_RELATIONS = "customer,items,sales_channel"
 const DEFAULT_FIELDS =
   "id,status,display_id,created_at,email,fulfillment_status,payment_status,total,currency_code"
-const PREFIX = "co"
 
 export const CustomerOrderSection = ({
   customer,
@@ -25,7 +24,6 @@ export const CustomerOrderSection = ({
 
   const { searchParams, raw } = useOrderTableQuery({
     pageSize: PAGE_SIZE,
-    prefix: PREFIX,
   })
   const { orders, count, isLoading, isError, error } = useAdminOrders(
     {
@@ -78,7 +76,6 @@ export const CustomerOrderSection = ({
         orderBy={["display_id", "created_at", "updated_at"]}
         search={true}
         queryObject={raw}
-        prefix={PREFIX}
       />
     </Container>
   )
