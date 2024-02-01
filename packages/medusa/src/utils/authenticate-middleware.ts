@@ -35,7 +35,7 @@ export const authenticate = (
     let authUser: AuthUserDTO | null = null
     if (authTypes.includes(SESSION_AUTH)) {
       if (session.auth_user && session.scope === authScope) {
-        return next()
+        authUser = session.auth_user
       }
     }
 

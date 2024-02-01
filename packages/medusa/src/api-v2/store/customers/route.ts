@@ -5,7 +5,7 @@ import { CreateCustomerDTO } from "@medusajs/types"
 import { createCustomerAccountWorkflow } from "@medusajs/core-flows"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  if (req.session.auth_user.app_metadata.customer_id) {
+  if (req.auth_user?.app_metadata?.customer_id) {
     const remoteQuery = req.scope.resolve(
       ContainerRegistrationKeys.REMOTE_QUERY
     )
@@ -26,7 +26,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const customersData = req.validatedBody as CreateCustomerDTO
 
   const { result } = await createCustomers.run({
-    input: { customersData, authUserId: req.session.authUser!.id },
+    input: { customersData, authUserId: req.auth_user!.id },
   })
 
   req.session.auth_user.app_metadata.customer_id = result.id
