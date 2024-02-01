@@ -5,6 +5,7 @@ import {
   CartShippingMethodDTO,
 } from "@medusajs/types"
 import { BigNumber as BigNumberJs } from "bignumber.js"
+import { BigNumber } from "./big-number"
 
 type GetLineItemTotalsContext = {
   includeTax?: boolean
@@ -17,6 +18,31 @@ interface GetShippingMethodTotalInput extends CartShippingMethodDTO {
 
 interface GetItemTotalInput extends CartLineItemDTO {
   raw_unit_price: BigNumberRawValue
+}
+
+interface GetItemTotalOutput {
+  quantity: number
+
+  unit_price: number
+  raw_unit_price?: BigNumberRawValue
+
+  subtotal: number
+  raw_subtotal?: BigNumberRawValue
+
+  total: number
+  raw_total?: BigNumberRawValue
+
+  original_total: number
+  raw_original_total?: BigNumberRawValue
+
+  discount_total: number
+  raw_discount_total?: BigNumberRawValue
+
+  tax_total: number
+  raw_tax_total?: BigNumberRawValue
+
+  original_tax_total: number
+  raw_original_tax_total?: BigNumberRawValue
 }
 
 export function getShippingMethodTotals(
@@ -49,22 +75,22 @@ export function getShippingMethodTotals_(
 
   const totals = {
     amount: shippingMethodPrice.toNumber(),
-    raw_amount: shippingMethodPrice,
+    raw_amount: new BigNumber(shippingMethodPrice).raw,
 
     total: shippingMethodPrice.toNumber(),
-    raw_total: shippingMethodPrice,
+    raw_total: new BigNumber(shippingMethodPrice),
 
     original_total: shippingMethodPrice.toNumber(),
-    raw_original_total: shippingMethodPrice,
+    raw_original_total: new BigNumber(shippingMethodPrice),
 
     subtotal: shippingMethodPrice.toNumber(),
-    raw_subtotal: shippingMethodPrice,
+    raw_subtotal: new BigNumber(shippingMethodPrice),
 
     tax_total: taxTotal.toNumber(),
-    raw_tax_total: taxTotal,
+    raw_tax_total: new BigNumber(taxTotal),
 
     original_tax_total: originalTaxTotal.toNumber(),
-    raw_original_tax_total: originalTaxTotal,
+    raw_original_tax_total: new BigNumber(originalTaxTotal),
   }
 
   const isTaxInclusive = context.includeTax ?? shippingMethod.is_tax_inclusive
@@ -72,7 +98,7 @@ export function getShippingMethodTotals_(
   if (isTaxInclusive) {
     const subtotal = BigNumberJs(shippingMethod.subtotal).minus(taxTotal)
     totals.subtotal = subtotal.toNumber()
-    totals.raw_subtotal = subtotal
+    totals.raw_subtotal = new BigNumber(subtotal)
   } else {
     const originalTotal = BigNumberJs(shippingMethod.original_subtotal).plus(
       totals.original_tax_total
@@ -80,10 +106,10 @@ export function getShippingMethodTotals_(
     const total = BigNumberJs(shippingMethod.total).plus(totals.tax_total)
 
     totals.original_total = originalTotal.toNumber()
-    totals.raw_original_total = originalTotal
+    totals.raw_original_total = new BigNumber(originalTotal)
 
     totals.total = total.toNumber()
-    totals.raw_total = total
+    totals.raw_total = new BigNumber(total)
   }
 
   return totals
@@ -96,7 +122,7 @@ export function getLineItemTotals(
   const itemsTotals = {}
 
   for (const item of items) {
-    itemsTotals[item.id] = getLineItemTotals_(item, {
+    itemsTotals[item.id] = getTotalsForSingleLineItem(item, {
       includeTax: context.includeTax,
     })
   }
@@ -104,7 +130,26 @@ export function getLineItemTotals(
   return itemsTotals
 }
 
-function getLineItemTotals_(
+function adjustLineItemTotalForTaxInclusive(totals: GetItemTotalInput) {
+  const unitPrice = BigNumberJs(totals.raw_unit_price.value)
+  const originalTaxTotal = BigNumberJs(
+    totals.original_tax_total.value ?? original_tax_total.numeric
+  )
+  const subtotal = unitPrice.times(quantity).minus(originalTaxTotal)
+
+  totals.subtotal = subtotal.toNumber()
+  totals.raw_subtotal = new BigNumber(subtotal)
+
+  totals.total = subtotal.toNumber()
+  totals.raw_total = new BigNumber(subtotal)
+
+  totals.original_total = subtotal.toNumber()
+  totals.raw_original_total = new BigNumber(subtotal)
+
+  return totals
+}
+
+function getTotalsForSingleLineItem(
   item: GetItemTotalInput,
   context: GetLineItemTotalsContext
 ) {
@@ -117,57 +162,44 @@ function getLineItemTotals_(
 
   const total = subtotal.minus(discountTotal)
 
-  const totals = {
+  const totals: GetItemTotalOutput = {
     quantity: item.quantity,
 
     unit_price: unitPrice.toNumber(),
-    raw_unit_price: unitPrice,
+    raw_unit_price: new BigNumber(unitPrice).raw,
 
     subtotal: subtotal.toNumber(),
-    raw_subtotal: subtotal,
+    raw_subtotal: new BigNumber(subtotal).raw,
 
     total: total.toNumber(),
-    raw_total: total,
+    raw_total: new BigNumber(total).raw,
 
     original_total: subtotal.toNumber(),
-    raw_original_total: subtotal,
+    raw_original_total: new BigNumber(subtotal).raw,
 
     discount_total: discountTotal.toNumber(),
-    raw_discount_total: discountTotal,
+    raw_discount_total: new BigNumber(discountTotal).raw,
 
     tax_total: taxTotal.toNumber(),
-    raw_tax_total: taxTotal,
+    raw_tax_total: new BigNumber(taxTotal).raw,
 
     original_tax_total: originalTaxTotal.toNumber(),
-    raw_original_tax_total: originalTaxTotal,
+    raw_original_tax_total: new BigNumber(originalTaxTotal).raw,
   }
 
   const isTaxInclusive = context.includeTax ?? item.is_tax_inclusive
 
   if (isTaxInclusive) {
-    const subtotal = totals.raw_unit_price
-      .times(totals.quantity)
-      .minus(originalTaxTotal)
-
-    totals.subtotal = subtotal.toNumber()
-    totals.raw_subtotal = subtotal
-
-    totals.total = subtotal.toNumber()
-    totals.raw_total = subtotal
-
-    totals.original_total = subtotal.toNumber()
-    totals.raw_original_total = subtotal
+    adjustLineItemTotalForTaxInclusive(totals)
   } else {
-    const total = totals.raw_total.plus(totals.raw_tax_total)
-    const originalTotal = totals.raw_original_total.plus(
-      totals.original_tax_total
-    )
+    const newTotal = total.plus(taxTotal)
+    const originalTotal = subtotal.plus(totals.original_tax_total)
 
-    totals.total = total.toNumber()
-    totals.raw_total = total
+    totals.total = newTotal.toNumber()
+    totals.raw_total = new BigNumber(newTotal)
 
     totals.original_total = originalTotal.toNumber()
-    totals.raw_original_total = originalTotal
+    totals.raw_original_total = new BigNumber(originalTotal)
   }
 
   return totals
