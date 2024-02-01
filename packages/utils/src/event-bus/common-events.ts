@@ -3,5 +3,5 @@ export enum CommonEvents {
   UPDATED = "updated",
   DELETED = "deleted",
   ATTACHED = "attached",
-  DETTACHED = "dettached",
+  DETACHED = "detached",
 }

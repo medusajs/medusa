@@ -10,6 +10,7 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
+  CommonEvents,
   InjectManager,
   InjectTransactionManager,
   MapToConfig,
@@ -256,11 +257,11 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     const allData = Array.isArray(data) ? data : [data]
     await this.eventBusModuleService_?.emit<Record<string, unknown>>(
       allData.map(({ id }) => ({
-        eventName: this.entityName_ + ".dettached",
+        eventName: this.entityName_ + "." + CommonEvents.DETACHED,
         body: {
           metadata: {
             service: this.serviceName_,
-            action: "dettached",
+            action: CommonEvents.DETACHED,
             object: this.entityName_,
             eventGroupId: sharedContext.eventGroupId,
           },
@@ -305,11 +306,11 @@ export default class LinkModuleService<TLink> implements ILinkModule {
 
     await this.eventBusModuleService_?.emit<Record<string, unknown>>(
       (deletedEntities as { id: string }[]).map(({ id }) => ({
-        eventName: this.entityName_ + ".dettached",
+        eventName: this.entityName_ + "." + CommonEvents.DETACHED,
         body: {
           metadata: {
             service: this.serviceName_,
-            action: "dettached",
+            action: CommonEvents.DETACHED,
             object: this.entityName_,
             eventGroupId: sharedContext.eventGroupId,
           },

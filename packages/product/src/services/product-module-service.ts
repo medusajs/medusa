@@ -1297,11 +1297,6 @@ export default class ProductModuleService<
         productData.options,
         sharedContext
       )
-
-      console.log(
-        "++++++productData.options++++++++++++++++++++++++++++++",
-        productData.options
-      )
     }
   }
 

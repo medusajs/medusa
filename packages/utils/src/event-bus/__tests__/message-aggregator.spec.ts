@@ -44,11 +44,11 @@ describe("MessageAggregator", function () {
       },
     })
     aggregator.save({
-      eventName: "ProductType.dettached",
+      eventName: "ProductType.detached",
       body: {
         metadata: {
           service: "ProductService",
-          action: "dettached",
+          action: "detached",
           object: "ProductType",
           eventGroupId: "1",
         },
@@ -84,11 +84,11 @@ describe("MessageAggregator", function () {
 
     expect(allGroups[0]).toEqual([
       {
-        eventName: "ProductType.dettached",
+        eventName: "ProductType.detached",
         body: {
           metadata: {
             service: "ProductService",
-            action: "dettached",
+            action: "detached",
             object: "ProductType",
             eventGroupId: "1",
           },

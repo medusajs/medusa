@@ -12,7 +12,6 @@ import {
   FlagRouter,
   MedusaError,
   MedusaV2Flag,
-  buildEventMessages,
   isDefined,
   promiseAll,
   remoteQueryObjectFromString,
@@ -434,19 +433,6 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     const createdVariantInventoryItems = await variantInventoryRepo.save(
       toCreate
-    )
-
-    await this.eventBusService_.emit(
-      buildEventMessages({
-        // TODO: align the event entity format later
-        eventName: "LinkProductVariantInventoryItem.attached",
-        data: createdVariantInventoryItems.map((v) => ({ id: v.id })),
-        metadata: {
-          object: "LinkProductVariantInventoryItem",
-          service: "product-variant-inventory",
-          action: "attached",
-        },
-      })
     )
 
     return createdVariantInventoryItems
