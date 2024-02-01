@@ -9,6 +9,7 @@ import {
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 
 import { MedusaModule } from "@medusajs/modules-sdk"
+import { MedusaContextType } from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { MedusaWorkflow } from "../medusa-workflow"
@@ -159,7 +160,7 @@ function createContextualWorkflowRunner<
     )
   }
 
-  const flow = new LocalWorkflow(workflowId, container)
+  const flow = new LocalWorkflow(workflowId, container!)
 
   const originalRun = flow.run.bind(flow)
   const originalRegisterStepSuccess = flow.registerStepSuccess.bind(flow)
@@ -197,13 +198,26 @@ function createContextualWorkflowRunner<
   }
 
   const newRun = async (
-    { input, context, throwOnError, resultFrom, events }: FlowRunOptions = {
+    {
+      input,
+      context: outerContext,
+      throwOnError,
+      resultFrom,
+      events,
+    }: FlowRunOptions = {
       throwOnError: true,
       resultFrom: defaultResult,
     }
   ) => {
     resultFrom ??= defaultResult
     throwOnError ??= true
+
+    const context = {
+      ...outerContext,
+      __type: MedusaContextType,
+    }
+
+    context.transactionId ??= ulid()
 
     if (typeof dataPreparation === "function") {
       try {
@@ -224,7 +238,7 @@ function createContextualWorkflowRunner<
     return await originalExecution(
       originalRun,
       { throwOnError, resultFrom },
-      context?.transactionId ?? ulid(),
+      context.transactionId,
       input,
       context,
       events
@@ -236,7 +250,7 @@ function createContextualWorkflowRunner<
     {
       response,
       idempotencyKey,
-      context,
+      context: outerContext,
       throwOnError,
       resultFrom,
       events,
@@ -248,6 +262,13 @@ function createContextualWorkflowRunner<
   ) => {
     resultFrom ??= defaultResult
     throwOnError ??= true
+
+    const [, transactionId] = idempotencyKey.split(":")
+    const context = {
+      ...outerContext,
+      transactionId,
+      __type: MedusaContextType,
+    }
 
     return await originalExecution(
       originalRegisterStepSuccess,
@@ -264,7 +285,7 @@ function createContextualWorkflowRunner<
     {
       response,
       idempotencyKey,
-      context,
+      context: outerContext,
       throwOnError,
       resultFrom,
       events,
@@ -276,6 +297,13 @@ function createContextualWorkflowRunner<
   ) => {
     resultFrom ??= defaultResult
     throwOnError ??= true
+
+    const [, transactionId] = idempotencyKey.split(":")
+    const context = {
+      ...outerContext,
+      transactionId,
+      __type: MedusaContextType,
+    }
 
     return await originalExecution(
       originalRegisterStepFailure,

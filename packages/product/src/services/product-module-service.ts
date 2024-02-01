@@ -955,7 +955,7 @@ export default class ProductModuleService<
   @InjectManager("baseRepository_")
   async create(
     data: ProductTypes.CreateProductDTO[],
-    @MedusaContext() sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.create_(data, sharedContext)
     const createdProducts = await this.baseRepository_.serialize<

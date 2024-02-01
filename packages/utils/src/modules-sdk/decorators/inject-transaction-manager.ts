@@ -1,5 +1,6 @@
 import { Context } from "@medusajs/types"
 import { isString } from "../../common"
+import { MedusaContextType } from "./context-parameter"
 
 export function InjectTransactionManager(
   shouldForceTransactionOrManagerProperty:
@@ -45,7 +46,10 @@ export function InjectTransactionManager(
         async (transactionManager) => {
           const copiedContext = {} as Context
           for (const key in originalContext) {
-            if (key === "manager" || key === "transactionManager") continue
+            if (key === "manager" || key === "transactionManager") {
+              continue
+            }
+
             Object.defineProperty(copiedContext, key, {
               get: function () {
                 return originalContext[key]
@@ -58,6 +62,8 @@ export function InjectTransactionManager(
 
           copiedContext.transactionManager ??= transactionManager
           copiedContext.manager ??= originalContext?.manager
+          copiedContext.__type ??= MedusaContextType
+
           args[argIndex] = copiedContext
 
           return await originalMethod.apply(this, args)

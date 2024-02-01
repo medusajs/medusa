@@ -14,7 +14,7 @@ import {
   shouldForceTransaction,
   upperCaseFirst,
 } from "../common"
-import { MedusaContext } from "../decorators"
+import { MedusaContext } from "../modules-sdk"
 import { buildQuery } from "./build-query"
 import { InjectManager, InjectTransactionManager } from "./decorators"
 
