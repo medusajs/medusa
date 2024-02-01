@@ -185,6 +185,7 @@ export const SelectDisplay = ({
   value,
   onRemove,
 }: SelectDisplayProps) => {
+  const { t } = useTranslation()
   const v = value ? (Array.isArray(value) ? value : [value]) : null
   const count = v?.length || 0
 
@@ -223,7 +224,7 @@ export const SelectDisplay = ({
                 leading="compact"
                 className="text-ui-fg-muted"
               >
-                is
+                {t("general.is")}
               </Text>
             </div>
           )}

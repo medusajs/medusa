@@ -247,7 +247,7 @@ const DateDisplay = ({ label, value, onRemove }: DateDisplayProps) => {
         {value && (
           <div className="flex items-center">
             <div key={value} className="border-r p-1 px-2">
-              <Text size="small" leading="compact">
+              <Text size="small" weight="plus" leading="compact">
                 {value}
               </Text>
             </div>
