@@ -58,11 +58,13 @@ export interface ICustomerModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
 
+  // TODO should be pluralized
   createCustomerGroup(
     data: CreateCustomerGroupDTO[],
     sharedContext?: Context
   ): Promise<CustomerGroupDTO[]>
 
+  // TODO should be pluralized
   createCustomerGroup(
     data: CreateCustomerGroupDTO,
     sharedContext?: Context
@@ -74,17 +76,19 @@ export interface ICustomerModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<CustomerGroupDTO>
 
-  updateCustomerGroup(
+  updateCustomerGroups(
     groupId: string,
     data: CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerGroupDTO>
-  updateCustomerGroup(
+
+  updateCustomerGroups(
     groupIds: string[],
     data: CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerGroupDTO[]>
-  updateCustomerGroup(
+
+  updateCustomerGroups(
     selector: FilterableCustomerGroupProps,
     data: CustomerGroupUpdatableFields,
     sharedContext?: Context
@@ -110,10 +114,13 @@ export interface ICustomerModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<{ id: string }[]>
 
+  // TODO should be pluralized
   removeCustomerFromGroup(
     groupCustomerPair: GroupCustomerPair,
     sharedContext?: Context
   ): Promise<void>
+
+  // TODO should be pluralized
   removeCustomerFromGroup(
     groupCustomerPairs: GroupCustomerPair[],
     sharedContext?: Context
@@ -128,25 +135,26 @@ export interface ICustomerModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<CustomerAddressDTO>
 
-  updateAddress(
+  updateAddresses(
     addressId: string,
     data: UpdateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerAddressDTO>
-  updateAddress(
+  updateAddresses(
     addressIds: string[],
     data: UpdateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerAddressDTO[]>
-  updateAddress(
+
+  updateAddresses(
     selector: FilterableCustomerAddressProps,
     data: UpdateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerAddressDTO[]>
 
-  deleteAddress(addressId: string, sharedContext?: Context): Promise<void>
-  deleteAddress(addressIds: string[], sharedContext?: Context): Promise<void>
-  deleteAddress(
+  deleteAddresses(addressId: string, sharedContext?: Context): Promise<void>
+  deleteAddresses(addressIds: string[], sharedContext?: Context): Promise<void>
+  deleteAddresses(
     selector: FilterableCustomerAddressProps,
     sharedContext?: Context
   ): Promise<void>

@@ -11,7 +11,6 @@ import {
 
 import {
   InjectTransactionManager,
-  isObject,
   isString,
   MedusaContext,
   ModulesSdkUtils,
@@ -222,24 +221,24 @@ export default class CustomerModuleService<
     })
   }
 
-  async updateCustomerGroup(
+  async updateCustomerGroups(
     groupId: string,
     data: CustomerTypes.CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerGroupDTO>
-  async updateCustomerGroup(
+  async updateCustomerGroups(
     groupIds: string[],
     data: CustomerTypes.CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerGroupDTO[]>
-  async updateCustomerGroup(
+  async updateCustomerGroups(
     selector: CustomerTypes.FilterableCustomerGroupProps,
     data: CustomerTypes.CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerGroupDTO[]>
 
   @InjectTransactionManager("baseRepository_")
-  async updateCustomerGroup(
+  async updateCustomerGroups(
     groupIdOrSelector:
       | string
       | string[]
@@ -247,8 +246,31 @@ export default class CustomerModuleService<
     data: CustomerTypes.CustomerGroupUpdatableFields,
     @MedusaContext() sharedContext: Context = {}
   ) {
+    let updateData:
+      | CustomerTypes.UpdateCustomerGroupDTO
+      | CustomerTypes.UpdateCustomerGroupDTO[]
+      | {
+          selector: CustomerTypes.FilterableCustomerGroupProps
+          data: CustomerTypes.CustomerGroupUpdatableFields
+        } = []
+
+    if (isString(groupIdOrSelector) || Array.isArray(groupIdOrSelector)) {
+      const groupIdOrSelectorArray = Array.isArray(groupIdOrSelector)
+        ? groupIdOrSelector
+        : [groupIdOrSelector]
+      updateData = groupIdOrSelectorArray.map((id) => ({
+        id,
+        ...data,
+      }))
+    } else {
+      updateData = {
+        selector: groupIdOrSelector,
+        data: data,
+      }
+    }
+
     const groups = await this.customerGroupService_.update(
-      groupIdOrSelector,
+      updateData,
       sharedContext
     )
 
@@ -327,24 +349,24 @@ export default class CustomerModuleService<
     return serialized[0]
   }
 
-  async updateAddress(
+  async updateAddresses(
     addressId: string,
     data: CustomerTypes.UpdateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerAddressDTO>
-  async updateAddress(
+  async updateAddresses(
     addressIds: string[],
     data: CustomerTypes.UpdateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerAddressDTO[]>
-  async updateAddress(
+  async updateAddresses(
     selector: CustomerTypes.FilterableCustomerAddressProps,
     data: CustomerTypes.UpdateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerAddressDTO[]>
 
   @InjectTransactionManager("baseRepository_")
-  async updateAddress(
+  async updateAddresses(
     addressIdOrSelector:
       | string
       | string[]
@@ -352,7 +374,12 @@ export default class CustomerModuleService<
     data: CustomerTypes.UpdateCustomerAddressDTO,
     @MedusaContext() sharedContext: Context = {}
   ) {
-    let updateData: CustomerTypes.UpdateCustomerAddressDTO[] = []
+    let updateData:
+      | CustomerTypes.UpdateCustomerAddressDTO[]
+      | {
+          selector: CustomerTypes.FilterableCustomerAddressProps
+          data: CustomerTypes.UpdateCustomerAddressDTO
+        } = []
     if (isString(addressIdOrSelector)) {
       updateData = [
         {
@@ -366,15 +393,10 @@ export default class CustomerModuleService<
         ...data,
       }))
     } else {
-      const ids = await this.addressService_.list(
-        addressIdOrSelector,
-        { select: ["id"] },
-        sharedContext
-      )
-      updateData = ids.map(({ id }) => ({
-        id,
-        ...data,
-      }))
+      updateData = {
+        selector: addressIdOrSelector,
+        data,
+      }
     }
 
     const addresses = await this.addressService_.update(
@@ -390,40 +412,6 @@ export default class CustomerModuleService<
     }
 
     return serialized
-  }
-
-  async deleteAddress(addressId: string, sharedContext?: Context): Promise<void>
-  async deleteAddress(
-    addressIds: string[],
-    sharedContext?: Context
-  ): Promise<void>
-  async deleteAddress(
-    selector: CustomerTypes.FilterableCustomerAddressProps,
-    sharedContext?: Context
-  ): Promise<void>
-
-  @InjectTransactionManager("baseRepository_")
-  async deleteAddress(
-    addressIdOrSelector:
-      | string
-      | string[]
-      | CustomerTypes.FilterableCustomerAddressProps,
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    let toDelete = Array.isArray(addressIdOrSelector)
-      ? addressIdOrSelector
-      : [addressIdOrSelector as string]
-
-    if (isObject(addressIdOrSelector)) {
-      const ids = await this.addressService_.list(
-        addressIdOrSelector,
-        { select: ["id"] },
-        sharedContext
-      )
-      toDelete = ids.map(({ id }) => id)
-    }
-
-    await this.addressService_.delete(toDelete, sharedContext)
   }
 
   async removeCustomerFromGroup(

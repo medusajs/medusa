@@ -31,7 +31,7 @@ export const updateCustomerAddressesStep = createStep(
       relations,
     })
 
-    const customerAddresses = await service.updateAddress(
+    const customerAddresses = await service.updateAddresses(
       data.selector,
       data.update
     )
@@ -48,7 +48,7 @@ export const updateCustomerAddressesStep = createStep(
     )
 
     await promiseAll(
-      prevCustomerAddresses.map((c) => service.updateAddress(c.id, { ...c }))
+      prevCustomerAddresses.map((c) => service.updateAddresses(c.id, { ...c }))
     )
   }
 )
