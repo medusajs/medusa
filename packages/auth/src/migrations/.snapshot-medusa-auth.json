@@ -24,20 +24,14 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "domain": {
-          "name": "domain",
+        "scope": {
+          "name": "scope",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
-          "default": "'all'",
-          "enumItems": [
-            "all",
-            "store",
-            "admin"
-          ],
-          "mappedType": "enum"
+          "nullable": true,
+          "mappedType": "text"
         },
         "config": {
           "name": "config",
@@ -104,6 +98,15 @@
           "nullable": true,
           "mappedType": "text"
         },
+        "scope": {
+          "name": "scope",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "user_metadata": {
           "name": "user_metadata",
           "type": "jsonb",
@@ -119,7 +122,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "json"
         },
         "provider_metadata": {
@@ -135,6 +138,16 @@
       "name": "auth_user",
       "schema": "public",
       "indexes": [
+        {
+          "keyName": "IDX_auth_user_scope_entity_id",
+          "columnNames": [
+            "scope",
+            "entity_id"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": true
+        },
         {
           "keyName": "IDX_auth_user_provider_entity_id",
           "columnNames": [

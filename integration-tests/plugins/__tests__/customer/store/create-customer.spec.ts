@@ -1,11 +1,12 @@
+import { IAuthModuleService, ICustomerModuleService } from "@medusajs/types"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ICustomerModuleService, IAuthModuleService } from "@medusajs/types"
+import adminSeeder from "../../../../helpers/admin-seeder"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
-import { getContainer } from "../../../../environment-helpers/use-container"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import adminSeeder from "../../../../helpers/admin-seeder"
 
 jest.setTimeout(50000)
 
@@ -49,6 +50,7 @@ describe("POST /store/customers", () => {
     const authUser = await authService.createAuthUser({
       entity_id: "store_user",
       provider_id: "test",
+      scope: "store",
     })
     const jwt = await authService.generateJwtToken(authUser.id, "store")
 

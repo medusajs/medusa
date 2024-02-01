@@ -9,6 +9,7 @@ import {
 } from "@medusajs/types"
 import { AuthProviderService, AuthUserService } from "@services"
 import jwt, { JwtPayload } from "jsonwebtoken"
+
 import { AuthorizationCode } from "simple-oauth2"
 import url from "url"
 
@@ -102,7 +103,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
             entity_id,
             provider: GoogleProvider.PROVIDER,
             user_metadata: jwtData!.payload,
-            app_metadata: { scope },
+            scope
           },
         ])
         authUser = createdAuthUser

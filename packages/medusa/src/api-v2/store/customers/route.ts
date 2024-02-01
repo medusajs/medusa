@@ -29,6 +29,9 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     input: { customersData, authUserId: req.auth_user!.id },
   })
 
-  req.session.auth_user.app_metadata.customer_id = result.id
+  // Set customer_id on session user if we are in session
+  if (req.session.auth_user) {
+    req.session.auth_user.app_metadata.customer_id = result.id
+  }
   res.status(200).json({ customer: result })
 }
