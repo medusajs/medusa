@@ -11,12 +11,12 @@ import {
 import {
   InjectManager,
   InjectTransactionManager,
-  isDefined,
-  mapObjectTo,
   MapToConfig,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  isDefined,
+  mapObjectTo,
 } from "@medusajs/utils"
 import { LinkService } from "@services"
 import { shouldForceTransaction } from "../utils"
@@ -229,7 +229,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
   async softDelete(
     data: any,
     { returnLinkableKeys }: SoftDeleteReturn = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<string, unknown[]> | void> {
     this.validateFields(data)
 
@@ -270,7 +270,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
   async restore(
     data: any,
     { returnLinkableKeys }: RestoreReturn = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<string, unknown[]> | void> {
     this.validateFields(data)
 
