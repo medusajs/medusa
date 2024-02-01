@@ -1,6 +1,6 @@
-import { IAuthModuleService } from "@medusajs/types"
 import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 
+import { IAuthModuleService } from "@medusajs/types"
 import { MikroOrmWrapper } from "../../../utils"
 import Scrypt from "scrypt-kdf"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
@@ -73,8 +73,8 @@ describe("AuthModuleService - AuthProvider", () => {
           email: "test@test.com",
           password: password,
         },
-        scope: "store",
-      })
+        authScope: "store",
+      } as any)
 
       expect(res).toEqual({
         success: true,
@@ -92,8 +92,8 @@ describe("AuthModuleService - AuthProvider", () => {
 
       const res = await service.authenticate("emailpass", {
         body: { email: "test@test.com" },
-        scope: "store",
-      })
+        authScope: "store",
+      } as any)
 
       expect(res).toEqual({
         success: false,
@@ -106,8 +106,8 @@ describe("AuthModuleService - AuthProvider", () => {
 
       const res = await service.authenticate("emailpass", {
         body: { password: "supersecret" },
-        scope: "store",
-      })
+        authScope: "store",
+      } as any)
 
       expect(res).toEqual({
         success: false,
@@ -139,8 +139,8 @@ describe("AuthModuleService - AuthProvider", () => {
           email: "test@test.com",
           password: "password",
         },
-        scope: "store",
-      })
+        authScope: "store",
+      } as any)
 
       expect(res).toEqual({
         success: false,
