@@ -60,9 +60,7 @@ class EmailPasswordProvider extends AbstractAuthModuleProvider {
           {
             entity_id: email,
             provider: EmailPasswordProvider.PROVIDER,
-            app_metadata: {
-              scope: userData.authScope,
-            },
+            scope: userData.authScope,
             provider_metadata: {
               password: password_hash.toString("base64"),
             },

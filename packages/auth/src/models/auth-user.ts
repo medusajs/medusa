@@ -34,6 +34,9 @@ export default class AuthUser {
   })
   provider: AuthProvider
 
+  @Property({ columnType: "text" })
+  scope: string
+
   @Property({ columnType: "jsonb", nullable: true })
   user_metadata: Record<string, unknown> | null
 

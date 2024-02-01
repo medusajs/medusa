@@ -24,20 +24,14 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "domain": {
-          "name": "domain",
+        "scope": {
+          "name": "scope",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
-          "default": "'all'",
-          "enumItems": [
-            "all",
-            "store",
-            "admin"
-          ],
-          "mappedType": "enum"
+          "nullable": true,
+          "mappedType": "text"
         },
         "config": {
           "name": "config",
@@ -102,6 +96,15 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "mappedType": "text"
+        },
+        "scope": {
+          "name": "scope",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
           "mappedType": "text"
         },
         "user_metadata": {
