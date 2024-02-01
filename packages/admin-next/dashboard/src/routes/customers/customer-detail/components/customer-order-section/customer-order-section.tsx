@@ -1,18 +1,7 @@
-import { ReceiptPercent } from "@medusajs/icons"
-import { Customer, Order } from "@medusajs/medusa"
+import { Customer } from "@medusajs/medusa"
 import { Button, Container, Heading } from "@medusajs/ui"
-import { createColumnHelper } from "@tanstack/react-table"
 import { useAdminOrders } from "medusa-react"
-import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { ActionMenu } from "../../../../../components/common/action-menu"
-import {
-  OrderDateCell,
-  OrderDisplayIdCell,
-  OrderFulfillmentStatusCell,
-  OrderPaymentStatusCell,
-  OrderTotalCell,
-} from "../../../../../components/common/order-table-cells"
 import { DataTable } from "../../../../../components/data-table"
 import { useOrderTableColumns } from "../../../../../hooks/tables/columns/use-order-table-columns"
 import { useOrderTableFilters } from "../../../../../hooks/tables/filters/use-order-table-filters"
@@ -92,68 +81,5 @@ export const CustomerOrderSection = ({
         prefix={PREFIX}
       />
     </Container>
-  )
-}
-
-const OrderActions = ({ order }: { order: Order }) => {
-  const { t } = useTranslation()
-
-  return (
-    <ActionMenu
-      groups={[
-        {
-          actions: [
-            {
-              icon: <ReceiptPercent />,
-              label: t("customers.viewOrder"),
-              to: `/orders/${order.id}/edit`,
-            },
-          ],
-        },
-      ]}
-    />
-  )
-}
-
-const columnHelper = createColumnHelper<any>()
-
-const useColumns = () => {
-  const { t } = useTranslation()
-
-  return useMemo(
-    () => [
-      columnHelper.accessor("display_id", {
-        header: "Order",
-        cell: ({ getValue }) => <OrderDisplayIdCell id={getValue()} />,
-      }),
-      columnHelper.accessor("created_at", {
-        header: "Date",
-        cell: ({ getValue }) => <OrderDateCell date={getValue()} />,
-      }),
-      columnHelper.accessor("fulfillment_status", {
-        header: "Fulfillment Status",
-        cell: ({ getValue }) => (
-          <OrderFulfillmentStatusCell status={getValue()} />
-        ),
-      }),
-      columnHelper.accessor("payment_status", {
-        header: "Payment Status",
-        cell: ({ getValue }) => <OrderPaymentStatusCell status={getValue()} />,
-      }),
-      columnHelper.accessor("total", {
-        header: () => t("fields.total"),
-        cell: ({ getValue, row }) => (
-          <OrderTotalCell
-            total={getValue()}
-            currencyCode={row.original.currency_code}
-          />
-        ),
-      }),
-      columnHelper.display({
-        id: "actions",
-        cell: ({ row }) => <OrderActions order={row.original} />,
-      }),
-    ],
-    [t]
   )
 }
