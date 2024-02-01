@@ -31,7 +31,7 @@ const defaultConfig = {
 }
 
 class Client {
-  private axiosClient: AxiosInstance
+  public axiosClient: AxiosInstance
   private config: Config
 
   constructor(config: Config) {
