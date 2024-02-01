@@ -10,13 +10,13 @@ import {
   DAL,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
+  ModulesSdkTypes,
   UpdateAuthUserDTO,
 } from "@medusajs/types"
 
 import { AuthProvider, AuthUser } from "@models"
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { AuthUserService } from "@services"
 
 import {
   AbstractAuthenticationModuleProvider,
@@ -27,12 +27,11 @@ import {
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import { ServiceTypes } from "@types"
-import { IAuthProviderService } from "../types/services"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  authUserService: AuthUserService<any>
-  authProviderService: IAuthProviderService<any>
+  authUserService: ModulesSdkTypes.InternalModuleService<any>
+  authProviderService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 const generateMethodForModels = [AuthProvider, AuthUser]
@@ -61,8 +60,8 @@ export default class AuthenticationModuleService<
 
   protected baseRepository_: DAL.RepositoryService
 
-  protected authUserService_: AuthUserService<TAuthUser>
-  protected authProviderService_: IAuthProviderService<TAuthProvider>
+  protected authUserService_: ModulesSdkTypes.InternalModuleService<TAuthUser>
+  protected authProviderService_: ModulesSdkTypes.InternalModuleService<TAuthProvider>
 
   constructor(
     {
@@ -102,12 +101,13 @@ export default class AuthenticationModuleService<
     const providers = await this.createAuthProviders_(input, sharedContext)
 
     const serializedProviders = await this.baseRepository_.serialize<
-      AuthenticationTypes.AuthProviderDTO[]
+      | AuthenticationTypes.AuthProviderDTO
+      | AuthenticationTypes.AuthProviderDTO[]
     >(providers, {
       populate: true,
     })
 
-    return Array.isArray(data) ? serializedProviders : serializedProviders[0]
+    return serializedProviders
   }
 
   @InjectTransactionManager("baseRepository_")

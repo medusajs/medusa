@@ -1,4 +1,10 @@
-import { AuthenticationTypes, Context, DAL, FindConfig } from "@medusajs/types"
+import {
+  AuthenticationTypes,
+  Context,
+  DAL,
+  FindConfig,
+  RepositoryService,
+} from "@medusajs/types"
 import {
   InjectManager,
   MedusaContext,
@@ -6,7 +12,6 @@ import {
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import { AuthUser } from "@models"
-import { ServiceTypes, RepositoryTypes } from "@types"
 
 type InjectedDependencies = {
   authUserRepository: DAL.RepositoryService
@@ -14,13 +19,11 @@ type InjectedDependencies = {
 
 export default class AuthUserService<
   TEntity extends AuthUser = AuthUser
-> extends ModulesSdkUtils.abstractServiceFactory<
-  InjectedDependencies,
-  {
-    create: ServiceTypes.CreateAuthUserDTO
-  }
->(AuthUser)<TEntity> {
-  protected readonly authUserRepository_: RepositoryTypes.IAuthUserRepository<TEntity>
+> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+  AuthUser
+)<TEntity> {
+  protected readonly authUserRepository_: RepositoryService<TEntity>
+
   constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)

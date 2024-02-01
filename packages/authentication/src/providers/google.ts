@@ -6,14 +6,13 @@ import { AuthUserService } from "@services"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
 import { AuthProvider } from "@models"
-import { AuthenticationResponse } from "@medusajs/types"
+import { AuthenticationResponse, ModulesSdkTypes } from "@medusajs/types"
 import { AuthorizationCode } from "simple-oauth2"
 import url from "url"
-import { IAuthProviderService } from "../types/services"
 
 type InjectedDependencies = {
   authUserService: AuthUserService
-  authProviderService: IAuthProviderService
+  authProviderService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 type AuthenticationInput = {
@@ -35,7 +34,7 @@ class GoogleProvider extends AbstractAuthenticationModuleProvider {
   public static DISPLAY_NAME = "Google Authentication"
 
   protected readonly authUserService_: AuthUserService
-  protected readonly authProviderService_: IAuthProviderService
+  protected readonly authProviderService_: ModulesSdkTypes.InternalModuleService<any>
 
   constructor({ authUserService, authProviderService }: InjectedDependencies) {
     super()
