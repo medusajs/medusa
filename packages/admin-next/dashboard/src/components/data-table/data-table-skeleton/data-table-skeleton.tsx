@@ -32,8 +32,8 @@ export const DataTableSkeleton = ({
   return (
     <div>
       {hasToolbar && (
-        <div className="px-6 py-4 flex items-center justify-between">
-          {filterable && <Skeleton className="h-7 max-w-[160px] w-full" />}
+        <div className="flex items-center justify-between px-6 py-4">
+          {filterable && <Skeleton className="h-7 w-full max-w-[160px]" />}
           {hasSearchOrOrder && (
             <div className="flex items-center gap-x-2">
               {searchable && <Skeleton className="h-7 w-[160px]" />}
@@ -46,7 +46,7 @@ export const DataTableSkeleton = ({
         <Table.Header>
           <Table.Row
             className={clx({
-              "[&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap border-b-0":
+              "border-b-0 [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap":
                 hasActions,
               "[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap":
                 hasSelect,
@@ -101,7 +101,7 @@ export const DataTableSkeleton = ({
         </Table.Body>
       </Table>
       {pagination && (
-        <div className="p-4 flex items-center justify-between">
+        <div className="flex items-center justify-between p-4">
           <Skeleton className="h-7 w-[138px]" />
           <div className="flex items-center gap-x-2">
             <Skeleton className="h-7 w-24" />

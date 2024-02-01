@@ -26,7 +26,7 @@ export const PaymentStatusHeader = () => {
   const { t } = useTranslation()
 
   return (
-    <div className="w-full h-full flex items-center">
+    <div className="flex h-full w-full items-center">
       <span className="truncate">{t("fields.payment")}</span>
     </div>
   )

@@ -1,9 +1,11 @@
 import { useAdminRegions, useAdminSalesChannels } from "medusa-react"
 import { useTranslation } from "react-i18next"
-import { Filter } from "../../../../../components/data-table"
 
-export const useFilters = (): Filter[] => {
+import type { Filter } from "../../../components/data-table"
+
+export const useOrderTableFilters = (): Filter[] => {
   const { t } = useTranslation()
+
   const { regions } = useAdminRegions({
     limit: 1000,
     fields: "id,name",

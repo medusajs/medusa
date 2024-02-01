@@ -1,3 +1,4 @@
+import { memo } from "react"
 import { NoRecords } from "../common/empty-table-content"
 import { DataTableQuery, DataTableQueryProps } from "./data-table-query"
 import { DataTableRoot, DataTableRootProps } from "./data-table-root"
@@ -10,6 +11,9 @@ interface DataTableProps<TData, TValue>
   rowCount: number
   queryObject?: Record<string, any>
 }
+
+const MemoizedDataTableRoot = memo(DataTableRoot) as typeof DataTableRoot
+const MemoizedDataTableQuery = memo(DataTableQuery)
 
 export const DataTable = <TData, TValue>({
   table,
@@ -50,13 +54,13 @@ export const DataTable = <TData, TValue>({
 
   return (
     <div className="divide-y">
-      <DataTableQuery
-        search
-        orderBy={["display_id", "created_at", "updated_at"]}
+      <MemoizedDataTableQuery
+        search={search}
+        orderBy={orderBy}
         filters={filters}
         prefix={prefix}
       />
-      <DataTableRoot
+      <MemoizedDataTableRoot
         table={table}
         count={count}
         columns={columns}

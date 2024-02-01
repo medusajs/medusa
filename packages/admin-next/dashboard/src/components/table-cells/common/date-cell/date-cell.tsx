@@ -14,7 +14,7 @@ export const DateCell = ({ date }: DateCellProps) => {
   const timestampFormat = hour12 ? "dd MMM yyyy hh:MM a" : "dd MMM yyyy HH:MM"
 
   return (
-    <div className="w-full h-full overflow-hidden flex items-center">
+    <div className="flex h-full w-full items-center overflow-hidden">
       <Tooltip
         className="z-10"
         content={
@@ -34,7 +34,7 @@ export const DateHeader = () => {
   const { t } = useTranslation()
 
   return (
-    <div className="w-full h-full flex items-center">
+    <div className="flex h-full w-full items-center">
       <span className="truncate">{t("fields.date")}</span>
     </div>
   )

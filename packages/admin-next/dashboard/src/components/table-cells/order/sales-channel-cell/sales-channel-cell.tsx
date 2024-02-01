@@ -13,7 +13,7 @@ export const SalesChannelCell = ({
   const { name } = channel
 
   return (
-    <div className="w-full h-full overflow-hidden flex items-center">
+    <div className="flex h-full w-full items-center overflow-hidden">
       <span className="truncate">{name}</span>
     </div>
   )
@@ -23,7 +23,7 @@ export const SalesChannelHeader = () => {
   const { t } = useTranslation()
 
   return (
-    <div className="w-full h-full flex items-center">
+    <div className="flex h-full w-full items-center">
       <span className="truncate">{t("fields.salesChannel")}</span>
     </div>
   )

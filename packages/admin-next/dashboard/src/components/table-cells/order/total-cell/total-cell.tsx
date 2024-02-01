@@ -25,7 +25,7 @@ export const TotalCell = ({ currencyCode, total }: TotalCellProps) => {
   }).format(presentationAmount)
 
   return (
-    <div className="h-full w-full flex items-center overflow-hidden justify-end">
+    <div className="flex h-full w-full items-center justify-end overflow-hidden">
       <span className="truncate">
         {symbol} {formattedTotal} {currencyCode.toUpperCase()}
       </span>
@@ -37,7 +37,7 @@ export const TotalHeader = () => {
   const { t } = useTranslation()
 
   return (
-    <div className="w-full h-full flex items-center justify-end">
+    <div className="flex h-full w-full items-center justify-end">
       <span className="truncate">{t("fields.total")}</span>
     </div>
   )

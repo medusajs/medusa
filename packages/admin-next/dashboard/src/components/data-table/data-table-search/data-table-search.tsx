@@ -1,15 +1,19 @@
 import { Input } from "@medusajs/ui"
-import { debounce } from "lodash"
-import { ChangeEvent, useCallback, useEffect, useState } from "react"
+import { ChangeEvent, useCallback, useEffect } from "react"
 import { useTranslation } from "react-i18next"
+
+import { debounce } from "lodash"
 import { useSelectedParams } from "../hooks"
 
-type DataTableSearch = {
+type DataTableSearchProps = {
   placeholder?: string
   prefix?: string
 }
 
-export const DataTableSearch = ({ placeholder, prefix }: DataTableSearch) => {
+export const DataTableSearch = ({
+  placeholder,
+  prefix,
+}: DataTableSearchProps) => {
   const { t } = useTranslation()
   const placeholderText = placeholder || t("general.search")
   const selectedParams = useSelectedParams({
@@ -18,41 +22,34 @@ export const DataTableSearch = ({ placeholder, prefix }: DataTableSearch) => {
     multiple: false,
   })
 
-  const initialQuery = selectedParams.get()
-  const [inputValue, setInputValue] = useState(initialQuery?.[0] || "")
+  const query = selectedParams.get()
 
-  const updateSearchParams = (newValue: string) => {
-    if (!newValue) {
-      selectedParams.delete()
-      return
-    }
+  const debouncedOnChange = useCallback(
+    debounce((e: ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
 
-    selectedParams.add(newValue)
-  }
-
-  const debouncedUpdate = useCallback(
-    debounce((newValue: string) => updateSearchParams(newValue), 500),
-    [updateSearchParams]
+      if (!value) {
+        selectedParams.delete()
+      } else {
+        selectedParams.add(value)
+      }
+    }, 500),
+    [selectedParams]
   )
 
   useEffect(() => {
-    debouncedUpdate(inputValue)
-
     return () => {
-      debouncedUpdate.cancel()
+      debouncedOnChange.cancel()
     }
-  }, [inputValue, debouncedUpdate])
-
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value)
-  }
+  }, [debouncedOnChange])
 
   return (
     <Input
+      name="q"
       type="search"
       size="small"
-      value={inputValue}
-      onChange={handleInputChange}
+      defaultValue={query?.[0] || undefined}
+      onChange={debouncedOnChange}
       placeholder={placeholderText}
     />
   )

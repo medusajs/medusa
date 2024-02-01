@@ -83,7 +83,7 @@ export const DateFilter = ({
     removeFilter(key)
   }
 
-  let timeoutId: NodeJS.Timeout | null = null
+  let timeoutId: ReturnType<typeof setTimeout> | null = null
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open)
@@ -113,8 +113,6 @@ export const DateFilter = ({
           )}
           onInteractOutside={(e) => {
             if (e.target instanceof HTMLElement) {
-              console.log(e.target)
-
               if (
                 e.target.attributes.getNamedItem("data-name")?.value ===
                 "filters_menu_content"
@@ -132,7 +130,7 @@ export const DateFilter = ({
               return (
                 <li key={preset.label}>
                   <button
-                    className="bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none w-full"
+                    className="bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex w-full cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none"
                     type="button"
                     onClick={() => {
                       handleSelectPreset(preset.value)
@@ -140,7 +138,7 @@ export const DateFilter = ({
                   >
                     <div
                       className={clx(
-                        "w-5 h-5 flex items-center justify-center transition-fg",
+                        "transition-fg flex h-5 w-5 items-center justify-center",
                         {
                           "[&_svg]:invisible": !isSelected,
                         }
@@ -155,13 +153,13 @@ export const DateFilter = ({
             })}
             <li>
               <button
-                className="bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none w-full"
+                className="bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex w-full cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none"
                 type="button"
                 onClick={handleSelectCustom}
               >
                 <div
                   className={clx(
-                    "w-5 h-5 flex items-center justify-center transition-fg",
+                    "transition-fg flex h-5 w-5 items-center justify-center",
                     {
                       "[&_svg]:invisible": !showCustom,
                     }
@@ -174,7 +172,7 @@ export const DateFilter = ({
             </li>
           </ul>
           {showCustom && (
-            <div className="border-t pt-1 px-1 pb-3">
+            <div className="border-t px-1 pb-3 pt-1">
               <div>
                 <div className="px-2 py-1">
                   <Text size="xsmall" leading="compact" weight="plus">
@@ -184,6 +182,7 @@ export const DateFilter = ({
                 <div className="px-2 py-1">
                   <DatePicker
                     placeholder="MM/DD/YYYY"
+                    toDate={customEndValue}
                     value={customStartValue}
                     onChange={(d) => handleCustomDateChange(d, "start")}
                   />
@@ -198,9 +197,9 @@ export const DateFilter = ({
                 <div className="px-2 py-1">
                   <DatePicker
                     placeholder="MM/DD/YYYY"
+                    fromDate={customStartValue}
                     value={customEndValue || undefined}
                     onChange={(d) => {
-                      console.log(d)
                       handleCustomDateChange(d, "end")
                     }}
                   />
@@ -230,7 +229,7 @@ const DateDisplay = ({ label, value, onRemove }: DateDisplayProps) => {
     <Popover.Trigger
       asChild
       className={clx(
-        "bg-ui-bg-field transition-fg shadow-borders-base rounded-md flex items-center text-ui-fg-subtle select-none cursor-pointer",
+        "bg-ui-bg-field transition-fg shadow-borders-base text-ui-fg-subtle flex cursor-pointer select-none items-center rounded-md",
         "hover:bg-ui-bg-field-hover",
         "data-[state=open]:bg-ui-bg-field-hover"
       )}
@@ -247,7 +246,7 @@ const DateDisplay = ({ label, value, onRemove }: DateDisplayProps) => {
         </div>
         {value && (
           <div className="flex items-center">
-            <div key={value} className="px-2 p-1 border-r">
+            <div key={value} className="border-r p-1 px-2">
               <Text size="small" leading="compact">
                 {value}
               </Text>
@@ -259,7 +258,7 @@ const DateDisplay = ({ label, value, onRemove }: DateDisplayProps) => {
             <button
               onClick={handleRemove}
               className={clx(
-                "flex items-center justify-center p-1 text-ui-fg-muted transition-fg",
+                "text-ui-fg-muted transition-fg flex items-center justify-center p-1",
                 "hover:bg-ui-bg-subtle-hover",
                 "active:bg-ui-bg-subtle-pressed active:text-ui-fg-base"
               )}

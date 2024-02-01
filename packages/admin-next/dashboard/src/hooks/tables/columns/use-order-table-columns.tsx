@@ -1,46 +1,50 @@
-import { createColumnHelper } from "@tanstack/react-table"
+import { Order } from "@medusajs/medusa"
+import {
+  ColumnDef,
+  ColumnDefBase,
+  createColumnHelper,
+} from "@tanstack/react-table"
 import { useMemo } from "react"
-import { useTranslation } from "react-i18next"
 import {
   DateCell,
   DateHeader,
-} from "../../../../../components/table-cells/common/date-cell"
-import {
-  CustomerCell,
-  CustomerHeader,
-} from "../../../../../components/table-cells/order/customer-cell"
+} from "../../../components/table-cells/common/date-cell"
 import {
   DisplayIdCell,
   DisplayIdHeader,
-} from "../../../../../components/table-cells/order/display-id-cell"
+} from "../../../components/table-cells/order/display-id-cell"
 import {
   FulfillmentStatusCell,
   FulfillmentStatusHeader,
-} from "../../../../../components/table-cells/order/fulfillment-status-cell"
+} from "../../../components/table-cells/order/fulfillment-status-cell"
 import {
   ItemsCell,
   ItemsHeader,
-} from "../../../../../components/table-cells/order/items-cell"
+} from "../../../components/table-cells/order/items-cell"
 import {
   PaymentStatusCell,
   PaymentStatusHeader,
-} from "../../../../../components/table-cells/order/payment-status-cell"
+} from "../../../components/table-cells/order/payment-status-cell"
 import {
   SalesChannelCell,
   SalesChannelHeader,
-} from "../../../../../components/table-cells/order/sales-channel-cell"
+} from "../../../components/table-cells/order/sales-channel-cell"
 import {
   TotalCell,
   TotalHeader,
-} from "../../../../../components/table-cells/order/total-cell"
+} from "../../../components/table-cells/order/total-cell"
 
 // We have to use any here, as the type of Order is so complex that it lags the TS server
-const columnHelper = createColumnHelper<any>()
+const columnHelper = createColumnHelper<Order>()
 
-export const useColumns = () => {
-  const { t } = useTranslation()
+type UseOrderTableColumnsProps = {
+  exclude?: string[]
+}
 
-  return useMemo(
+export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
+  const { exclude = [] } = props ?? {}
+
+  const columns = useMemo(
     () => [
       columnHelper.accessor("display_id", {
         header: () => <DisplayIdHeader />,
@@ -56,14 +60,6 @@ export const useColumns = () => {
           const date = new Date(getValue())
 
           return <DateCell date={date} />
-        },
-      }),
-      columnHelper.accessor("customer", {
-        header: () => <CustomerHeader />,
-        cell: ({ getValue }) => {
-          const customer = getValue()
-
-          return <CustomerCell customer={customer} />
         },
       }),
       columnHelper.accessor("sales_channel", {
@@ -92,7 +88,7 @@ export const useColumns = () => {
       }),
       columnHelper.accessor("items", {
         header: () => <ItemsHeader />,
-        cell: ({ getValue, row }) => {
+        cell: ({ getValue }) => {
           const items = getValue()
 
           return <ItemsCell items={items} />
@@ -108,6 +104,30 @@ export const useColumns = () => {
         },
       }),
     ],
-    [t]
+    []
   )
+
+  const isAccessorColumnDef = (
+    c: any
+  ): c is ColumnDef<Order> & { accessorKey: string } => {
+    return c.accessorKey !== undefined
+  }
+
+  const isDisplayColumnDef = (
+    c: any
+  ): c is ColumnDef<Order> & { id: string } => {
+    return c.id !== undefined
+  }
+
+  const shouldExclude = <TDef extends ColumnDefBase<Order, any>>(c: TDef) => {
+    if (isAccessorColumnDef(c)) {
+      return exclude.includes(c.accessorKey)
+    } else if (isDisplayColumnDef(c)) {
+      return exclude.includes(c.id)
+    }
+
+    return false
+  }
+
+  return columns.filter((c) => !shouldExclude(c)) as ColumnDef<Order>[]
 }

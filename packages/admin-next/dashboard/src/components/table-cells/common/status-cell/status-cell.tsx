@@ -7,14 +7,14 @@ type StatusCellProps = PropsWithChildren<{
 
 export const StatusCell = ({ color, children }: StatusCellProps) => {
   return (
-    <div className="flex items-center gap-x-0.5 txt-compact-small text-ui-fg-subtle w-full h-full overflow-hidden">
+    <div className="txt-compact-small text-ui-fg-subtle flex h-full w-full items-center gap-x-0.5 overflow-hidden">
       <div
         role="presentation"
-        className="size-5 flex items-center justify-center"
+        className="flex size-5 items-center justify-center"
       >
         <div
           className={clx(
-            "w-2 h-2 rounded-sm shadow-[0px_0px_0px_1px_rgba(0,0,0,0.12)_inset]",
+            "h-2 w-2 rounded-sm shadow-[0px_0px_0px_1px_rgba(0,0,0,0.12)_inset]",
             {
               "bg-ui-tag-neutral-icon": color === "grey",
               "bg-ui-tag-green-icon": color === "green",

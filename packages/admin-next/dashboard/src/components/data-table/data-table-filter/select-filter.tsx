@@ -43,7 +43,7 @@ export const SelectFilter = ({
     removeFilter(key)
   }
 
-  let timeoutId: NodeJS.Timeout | null = null
+  let timeoutId: ReturnType<typeof setTimeout> | null = null
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open)
@@ -90,7 +90,7 @@ export const SelectFilter = ({
           sideOffset={8}
           collisionPadding={8}
           className={clx(
-            "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout max-h-[200px] h-full w-[300px] overflow-hidden rounded-lg outline-none z-[1]"
+            "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout z-[1] h-full max-h-[200px] w-[300px] overflow-hidden rounded-lg outline-none"
           )}
           onInteractOutside={(e) => {
             if (e.target instanceof HTMLElement) {
@@ -106,8 +106,8 @@ export const SelectFilter = ({
         >
           <Command>
             {searchable && (
-              <div className="p-1 border-b">
-                <div className="px-2 py-1 rounded-md grid grid-cols-[1fr_20px] gap-x-2">
+              <div className="border-b p-1">
+                <div className="grid grid-cols-[1fr_20px] gap-x-2 rounded-md px-2 py-1">
                   <Command.Input
                     ref={setSearchRef}
                     value={search}
@@ -115,12 +115,12 @@ export const SelectFilter = ({
                     className="txt-compact-small placeholder:text-ui-fg-muted outline-none"
                     placeholder="Search"
                   />
-                  <div className="w-5 h-5 flex items-center justify-center">
+                  <div className="flex h-5 w-5 items-center justify-center">
                     <button
                       disabled={!search}
                       onClick={handleClearSearch}
                       className={clx(
-                        "transition-fg text-ui-fg-muted outline-none focus-visible:bg-ui-bg-base-pressed rounded-md",
+                        "transition-fg text-ui-fg-muted focus-visible:bg-ui-bg-base-pressed rounded-md outline-none",
                         {
                           invisible: !search,
                         }
@@ -132,12 +132,12 @@ export const SelectFilter = ({
                 </div>
               </div>
             )}
-            <Command.Empty className="txt-compact-small p-1 flex items-center justify-center">
-              <span className="px-2 py-1 w-full text-center">
+            <Command.Empty className="txt-compact-small flex items-center justify-center p-1">
+              <span className="w-full px-2 py-1 text-center">
                 {t("general.noResultsTitle")}
               </span>
             </Command.Empty>
-            <Command.Group className="p-1 overflow-auto outline-none">
+            <Command.Group className="overflow-auto p-1 outline-none">
               {options.map((option) => {
                 const isSelected = selectedParams
                   .get()
@@ -146,7 +146,7 @@ export const SelectFilter = ({
                 return (
                   <Command.Item
                     key={String(option.value)}
-                    className="bg-ui-bg-base hover:bg-ui-bg-base-hover aria-selected:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none gap-x-2"
+                    className="bg-ui-bg-base hover:bg-ui-bg-base-hover aria-selected:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex cursor-pointer select-none items-center gap-x-2 rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none"
                     value={option.label}
                     onSelect={() => {
                       handleSelect(option.value)
@@ -154,7 +154,7 @@ export const SelectFilter = ({
                   >
                     <div
                       className={clx(
-                        "w-5 h-5 flex items-center justify-center transition-fg",
+                        "transition-fg flex h-5 w-5 items-center justify-center",
                         {
                           "[&_svg]:invisible": !isSelected,
                         }
@@ -197,14 +197,14 @@ export const SelectDisplay = ({
     <Popover.Trigger asChild>
       <div
         className={clx(
-          "bg-ui-bg-field transition-fg shadow-borders-base rounded-md flex items-center text-ui-fg-subtle select-none overflow-hidden cursor-pointer",
+          "bg-ui-bg-field transition-fg shadow-borders-base text-ui-fg-subtle flex cursor-pointer select-none items-center overflow-hidden rounded-md",
           "hover:bg-ui-bg-field-hover",
           "data-[state=open]:bg-ui-bg-field-hover"
         )}
       >
         <div
           className={clx(
-            "flex items-center justify-center px-2 py-1 whitespace-nowrap",
+            "flex items-center justify-center whitespace-nowrap px-2 py-1",
             {
               "border-r": count > 0,
             }
@@ -214,9 +214,9 @@ export const SelectDisplay = ({
             {label}
           </Text>
         </div>
-        <div className="flex items-center w-full overflow-hidden">
+        <div className="flex w-full items-center overflow-hidden">
           {count > 0 && (
-            <div className="px-2 p-1 border-r">
+            <div className="border-r p-1 px-2">
               <Text
                 size="small"
                 weight="plus"
@@ -228,12 +228,12 @@ export const SelectDisplay = ({
             </div>
           )}
           {count > 0 && (
-            <div className="px-2 p-1 flex-1 overflow-hidden border-r">
+            <div className="flex-1 overflow-hidden border-r p-1 px-2">
               <Text
                 size="small"
                 leading="compact"
                 weight="plus"
-                className="text-nowrap truncate"
+                className="truncate text-nowrap"
               >
                 {v?.join(", ")}
               </Text>
@@ -245,7 +245,7 @@ export const SelectDisplay = ({
             <button
               onClick={handleRemove}
               className={clx(
-                "flex items-center justify-center p-1 text-ui-fg-muted transition-fg",
+                "text-ui-fg-muted transition-fg flex items-center justify-center p-1",
                 "hover:bg-ui-bg-subtle-hover",
                 "active:bg-ui-bg-subtle-pressed active:text-ui-fg-base"
               )}

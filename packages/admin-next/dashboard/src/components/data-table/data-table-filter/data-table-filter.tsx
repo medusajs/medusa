@@ -1,6 +1,6 @@
 import { Button, clx } from "@medusajs/ui"
 import * as Popover from "@radix-ui/react-popover"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
 import { DataTableFilterContext, useDataTableFilterContext } from "./context"
@@ -50,45 +50,52 @@ export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
    * add them to the active filters. This ensures that we display the filters
    * if a user navigates to a page with filters in the URL.
    */
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams)
+  const initialMount = useRef(true)
 
-    filters.forEach((filter) => {
-      const key = prefix ? `${prefix}_${filter.key}` : filter.key
-      const value = params.get(key)
-      if (value && !activeFilters.find((af) => af.key === filter.key)) {
-        if (filter.type === "select") {
-          setActiveFilters((prev) => [
-            ...prev,
-            {
-              ...filter,
-              multiple: filter.multiple,
-              options: filter.options,
-              openOnMount: false,
-            },
-          ])
-        } else {
-          setActiveFilters((prev) => [
-            ...prev,
-            { ...filter, openOnMount: false },
-          ])
+  useEffect(() => {
+    if (initialMount.current) {
+      const params = new URLSearchParams(searchParams)
+
+      filters.forEach((filter) => {
+        const key = prefix ? `${prefix}_${filter.key}` : filter.key
+        const value = params.get(key)
+        if (value && !activeFilters.find((af) => af.key === filter.key)) {
+          console.log("adding filter", filter.key, "to active filters")
+          if (filter.type === "select") {
+            setActiveFilters((prev) => [
+              ...prev,
+              {
+                ...filter,
+                multiple: filter.multiple,
+                options: filter.options,
+                openOnMount: false,
+              },
+            ])
+          } else {
+            setActiveFilters((prev) => [
+              ...prev,
+              { ...filter, openOnMount: false },
+            ])
+          }
         }
-      }
-    })
-  }, [activeFilters, filters, searchParams, prefix])
+      })
+    }
+
+    initialMount.current = false
+  }, [activeFilters, filters, prefix, searchParams])
 
   const addFilter = (filter: Filter) => {
     setOpen(false)
     setActiveFilters((prev) => [...prev, { ...filter, openOnMount: true }])
   }
 
-  const removeFilter = (key: string) => {
+  const removeFilter = useCallback((key: string) => {
     setActiveFilters((prev) => prev.filter((f) => f.key !== key))
-  }
+  }, [])
 
-  const removeAllFilters = () => {
+  const removeAllFilters = useCallback(() => {
     setActiveFilters([])
-  }
+  }, [])
 
   return (
     <DataTableFilterContext.Provider
@@ -100,7 +107,7 @@ export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
         [removeAllFilters, removeFilter]
       )}
     >
-      <div className="flex items-center gap-2 flex-wrap max-w-2/3">
+      <div className="max-w-2/3 flex flex-wrap items-center gap-2">
         {activeFilters.map((filter) => {
           if (filter.type === "select") {
             return (
@@ -135,7 +142,7 @@ export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
             <Popover.Portal>
               <Popover.Content
                 className={clx(
-                  "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout max-h-[200px] h-full w-[300px] overflow-hidden rounded-lg outline-none z-[1] p-1"
+                  "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout z-[1] h-full max-h-[200px] w-[300px] overflow-hidden rounded-lg p-1 outline-none"
                 )}
                 data-name="filters_menu_content"
                 align="start"
@@ -205,7 +212,7 @@ const ClearAllFilters = ({ filters, prefix }: ClearAllFiltersProps) => {
       type="button"
       onClick={handleRemoveAll}
       className={clx(
-        "px-2 py-1 text-ui-fg-muted transition-fg rounded-md txt-compact-small-plus",
+        "text-ui-fg-muted transition-fg txt-compact-small-plus rounded-md px-2 py-1",
         "hover:text-ui-fg-subtle",
         "focus-visible:shadow-borders-focus"
       )}

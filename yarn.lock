@@ -8053,6 +8053,7 @@ __metadata:
     "@radix-ui/react-hover-card": ^1.0.7
     "@tanstack/react-query": 4.22.0
     "@tanstack/react-table": 8.10.7
+    "@types/node": ^20.11.15
     "@types/react": 18.2.43
     "@types/react-dom": 18.2.17
     "@uiw/react-json-view": 2.0.0-alpha.10
@@ -17694,6 +17695,15 @@ __metadata:
   dependencies:
     undici-types: ~5.26.4
   checksum: 6692ccfa8552ef60c4069fda3c8de726c23e8d403cdf788e3c7efa769987e80fbda5f02723dd857f9de7df24a5fa40b3ed4580ec3c5cbac04eba44cf7b2ab1dc
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.11.15":
+  version: 20.11.15
+  resolution: "@types/node@npm:20.11.15"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: 7dfab4208fedc02e9584c619551906f46ade7955bb929b1e32e354a50522eb532d6bfb2844fdaad2c8dca03be84a590674460c64cb101e1a33bb318e1ec448d4
   languageName: node
   linkType: hard
 

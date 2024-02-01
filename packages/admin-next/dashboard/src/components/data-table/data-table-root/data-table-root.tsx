@@ -5,7 +5,7 @@ import {
   Row,
   flexRender,
 } from "@tanstack/react-table"
-import { ComponentPropsWithoutRef, Fragment, useState } from "react"
+import { ComponentPropsWithoutRef, Fragment, UIEvent, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { NoResults } from "../../common/empty-table-content"
@@ -84,12 +84,10 @@ export const DataTableRoot = <TData, TValue>({
   const colCount = columns.length - (hasSelect ? 1 : 0) - (hasActions ? 1 : 0)
   const colWidth = 100 / colCount
 
-  const handleHorizontalScroll = (e: React.UIEvent<HTMLDivElement>) => {
+  const handleHorizontalScroll = (e: UIEvent<HTMLDivElement>) => {
     const scrollLeft = e.currentTarget.scrollLeft
-    const scrollWidth = e.currentTarget.scrollWidth
-    const clientWidth = e.currentTarget.clientWidth
 
-    if (scrollLeft > 0 && scrollLeft < scrollWidth - clientWidth) {
+    if (scrollLeft > 0) {
       setShowStickyBorder(true)
     } else {
       setShowStickyBorder(false)
@@ -98,7 +96,7 @@ export const DataTableRoot = <TData, TValue>({
 
   return (
     <div className="w-full">
-      <div onScroll={handleHorizontalScroll} className="overflow-x-auto w-full">
+      <div onScroll={handleHorizontalScroll} className="w-full overflow-x-auto">
         {!noResults ? (
           <Table className="w-full">
             <Table.Header className="border-t-0">
@@ -107,7 +105,7 @@ export const DataTableRoot = <TData, TValue>({
                   <Table.Row
                     key={headerGroup.id}
                     className={clx({
-                      "[&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap border-b-0":
+                      "border-b-0 [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap":
                         hasActions,
                       "[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap":
                         hasSelect,
@@ -138,7 +136,7 @@ export const DataTableRoot = <TData, TValue>({
                               : undefined,
                           }}
                           className={clx({
-                            "sticky left-0 bg-ui-bg-base after:content-[''] after:inset-y-0 after:right-0 after:w-px after:bg-transparent after:absolute after:h-full":
+                            "bg-ui-bg-base sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                               isStickyHeader,
                             "after:bg-ui-border-base":
                               showStickyBorder && isStickyHeader,
@@ -162,7 +160,7 @@ export const DataTableRoot = <TData, TValue>({
                   <Table.Row
                     key={row.id}
                     className={clx(
-                      "transition-fg [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap group/row",
+                      "transition-fg group/row [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
                       "[&:has(td_a:focus-visible)_td]:bg-ui-bg-base-pressed",
                       {
                         "cursor-pointer": !!to,
@@ -190,7 +188,7 @@ export const DataTableRoot = <TData, TValue>({
                         <Table.Cell
                           key={cell.id}
                           className={clx("has-[a]:cursor-pointer", {
-                            "sticky left-0 bg-ui-bg-base group-[:has(td_a:focus)]/row:bg-ui-bg-base-pressed group-hover/row:bg-ui-bg-base-hover transition-fg after:content-[''] after:inset-y-0 after:right-0 after:w-px after:bg-transparent after:absolute after:h-full":
+                            "bg-ui-bg-base group-[:has(td_a:focus)]/row:bg-ui-bg-base-pressed group-hover/row:bg-ui-bg-base-hover transition-fg sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                               isStickyCell,
                             "after:bg-ui-border-base":
                               showStickyBorder && isStickyCell,
