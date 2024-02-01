@@ -1,7 +1,8 @@
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 import { AuthenticationInput, IAuthModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+
 import { MedusaError } from "@medusajs/utils"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { scope, authProvider } = req.params
@@ -25,7 +26,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     throw new MedusaError(MedusaError.Types.UNAUTHORIZED, error)
   } else if (success) {
     req.session.auth_user = authUser
-    req.session.scope = authUser.app_metadata.scope
+    req.session.scope = authUser.scope
 
     res.status(200).json({ authUser })
   }
