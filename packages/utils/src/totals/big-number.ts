@@ -1,6 +1,6 @@
 import { BigNumberRawValue } from "@medusajs/types"
 import { BigNumber as BigNumberJS } from "bignumber.js"
-import { isObject, isString } from "../common"
+import { isBigNumber, isString } from "../common"
 
 export class BigNumber {
   static DEFAULT_PRECISION = 20
@@ -9,6 +9,12 @@ export class BigNumber {
   private raw_?: BigNumberRawValue
 
   constructor(rawPrice: BigNumberRawValue | number | string | BigNumberJS) {
+    this.setRawPriceOrThrow(rawPrice)
+  }
+
+  setRawPriceOrThrow(
+    rawPrice: BigNumberRawValue | number | string | BigNumberJS
+  ) {
     if (BigNumberJS.isBigNumber(rawPrice)) {
       /**
        * Example:
@@ -29,16 +35,10 @@ export class BigNumber {
       this.raw_ = this.raw_ = {
         value: bigNum.toPrecision(BigNumber.DEFAULT_PRECISION),
       }
-    } else if (isObject(rawPrice)) {
+    } else if (isBigNumber(rawPrice)) {
       /**
        * Example: const unitPrice = { value: "1234.1234" }
        */
-      if (!("value" in rawPrice)) {
-        throw new Error(
-          "Invalid BigNumber. Property `value` missing in object."
-        )
-      }
-
       this.numeric_ = BigNumberJS(rawPrice.value).toNumber()
 
       this.raw_ = {
