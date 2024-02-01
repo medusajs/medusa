@@ -30,7 +30,7 @@ describe("modules loader", () => {
 
     const testService = container.resolve("testService")
     expect(testService).toBeTruthy()
-    expect(typeof testService).toEqual("object")
+    expect(testService.constructor.name).toEqual("TestService")
   })
 
   it("should register the provider service with custom register fn", async () => {
@@ -51,11 +51,15 @@ describe("modules loader", () => {
       },
     ]
 
-    await moduleProviderLoader({ container, providers: moduleProviders, registerServiceFn: fn })
+    await moduleProviderLoader({
+      container,
+      providers: moduleProviders,
+      registerServiceFn: fn,
+    })
 
     const testService = container.resolve("testServiceCustomRegistration")
     expect(testService).toBeTruthy()
-    expect(typeof testService).toEqual("object")
+    expect(testService.constructor.name).toEqual("TestService")
   })
 
   it("should log the errors if no service is defined", async () => {
@@ -70,7 +74,7 @@ describe("modules loader", () => {
       await moduleProviderLoader({ container, providers: moduleProviders })
     } catch (error) {
       expect(error.message).toBe(
-        "No services found in plugin @plugins/no-service -- make sure your plugin exports a service."
+        "No services found in plugin @plugins/no-service -- make sure your plugin has a default export of services."
       )
     }
   })
@@ -87,7 +91,7 @@ describe("modules loader", () => {
       await moduleProviderLoader({ container, providers: moduleProviders })
     } catch (error) {
       expect(error.message).toBe(
-        "No default export found in plugin @plugins/no-default -- make sure your plugin has a default export."
+        "No services found in plugin @plugins/no-default -- make sure your plugin has a default export of services."
       )
     }
   })
