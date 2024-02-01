@@ -104,7 +104,7 @@ export const SelectFilter = ({
             }
           }}
         >
-          <Command>
+          <Command className="h-full">
             {searchable && (
               <div className="border-b p-1">
                 <div className="grid grid-cols-[1fr_20px] gap-x-2 rounded-md px-2 py-1">
@@ -137,7 +137,7 @@ export const SelectFilter = ({
                 {t("general.noResultsTitle")}
               </span>
             </Command.Empty>
-            <Command.Group className="overflow-auto p-1 outline-none">
+            <Command.List className="h-full max-h-[163px] min-h-[0] overflow-auto p-1 outline-none">
               {options.map((option) => {
                 const isSelected = selectedParams
                   .get()
@@ -166,7 +166,7 @@ export const SelectFilter = ({
                   </Command.Item>
                 )
               })}
-            </Command.Group>
+            </Command.List>
           </Command>
         </Popover.Content>
       </Popover.Portal>
