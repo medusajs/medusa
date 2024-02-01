@@ -13,23 +13,12 @@ export const createCustomerAddressesStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    try {
-      const addresses = await service.addAddresses(data)
+    const addresses = await service.addAddresses(data)
 
-      return new StepResponse(
-        addresses,
-        addresses.map((address) => address.id)
-      )
-    } catch (error) {
-      console.log("things went wrong")
-      console.log(error)
-      console.log(error.message)
-      console.log(error.stack)
-      console.log(error.code)
-      console.log(error.constraint)
-      console.log(Object.keys(error))
-      throw error
-    }
+    return new StepResponse(
+      addresses,
+      addresses.map((address) => address.id)
+    )
   },
   async (ids, { container }) => {
     if (!ids?.length) {

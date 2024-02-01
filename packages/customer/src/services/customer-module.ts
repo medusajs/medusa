@@ -21,8 +21,13 @@ import {
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import * as services from "../services"
-import { Address } from "@models"
 import { MedusaError } from "@medusajs/utils"
+import { EntityManager } from "@mikro-orm/core"
+
+const UNIQUE_CUSTOMER_SHIPPING_ADDRESS =
+  "IDX_customer_address_unique_customer_shipping"
+const UNIQUE_CUSTOMER_BILLING_ADDRESS =
+  "IDX_customer_address_unique_customer_billing"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -454,36 +459,39 @@ export default class CustomerModuleService implements ICustomerModuleService {
   ): Promise<
     CustomerTypes.CustomerAddressDTO | CustomerTypes.CustomerAddressDTO[]
   > {
-    debugger
     try {
       const addresses = await this.addressService_.create(
         Array.isArray(data) ? data : [data],
         sharedContext
       )
+
+      await this.flush(sharedContext)
+
       const serialized = await this.baseRepository_.serialize<
         CustomerTypes.CustomerAddressDTO[]
       >(addresses, { populate: true })
 
-      console.log("all good")
       if (Array.isArray(data)) {
         return serialized
       }
 
       return serialized[0]
     } catch (err) {
-      console.log("hi")
-      console.log(err)
-
-      console.log(err.message)
-      console.log(err.code)
-      console.log(Object.keys(err))
-
       if (isDuplicateError(err)) {
-        // Check if constriant is shipping
-        throw new MedusaError(
-          MedusaError.Types.DUPLICATE_ERROR,
-          "A default shipping address already exists."
-        )
+        switch (err.constraint) {
+          case UNIQUE_CUSTOMER_SHIPPING_ADDRESS:
+            throw new MedusaError(
+              MedusaError.Types.DUPLICATE_ERROR,
+              "A default shipping address already exists"
+            )
+          case UNIQUE_CUSTOMER_BILLING_ADDRESS:
+            throw new MedusaError(
+              MedusaError.Types.DUPLICATE_ERROR,
+              "A default billing address already exists"
+            )
+          default:
+            break
+        }
       }
 
       throw err
@@ -796,5 +804,10 @@ export default class CustomerModuleService implements ICustomerModuleService {
           }
         )
       : void 0
+  }
+
+  private async flush(context: Context) {
+    const em = (context.manager ?? context.transactionManager) as EntityManager
+    await em.flush()
   }
 }
