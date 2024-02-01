@@ -11,8 +11,13 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     ModuleRegistrationName.AUTH
   )
 
-  const authData = { ...req } as unknown as AuthenticationInput
-  authData.authScope = scope
+  const authData = {
+    url: req.url,
+    headers: req.headers,
+    query: req.query,
+    body: req.body,
+    authScope: scope,
+  } as AuthenticationInput
 
   const authResult = await service.authenticate(authProvider, authData)
 

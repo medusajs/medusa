@@ -1,4 +1,8 @@
-import { AbstractAuthModuleProvider, MedusaError, isString } from "@medusajs/utils"
+import {
+  AbstractAuthModuleProvider,
+  MedusaError,
+  isString,
+} from "@medusajs/utils"
 import { AuthenticationInput, AuthenticationResponse } from "@medusajs/types"
 
 import { AuthUserService } from "@services"
@@ -21,9 +25,12 @@ class EmailPasswordProvider extends AbstractAuthModuleProvider {
       | Scrypt.ScryptParams
       | undefined
 
-    return scopeConfig ?? { logN: 15, r: 8, p: 1 }
+    const defaultHashConfig = { logN: 15, r: 8, p: 1 }
+
+    // Return custom defined hash config or default hash parameters
+    return scopeConfig ?? defaultHashConfig
   }
-  
+
   async authenticate(
     userData: AuthenticationInput
   ): Promise<AuthenticationResponse> {

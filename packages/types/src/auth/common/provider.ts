@@ -13,7 +13,6 @@ export type AuthModuleProviderConfig = {
 export type AuthProviderScope = Record<string, unknown>
 
 export type AuthenticationInput = {
-  connection: { encrypted: boolean }
   url: string
   headers: Record<string, string>
   query: Record<string, string>
