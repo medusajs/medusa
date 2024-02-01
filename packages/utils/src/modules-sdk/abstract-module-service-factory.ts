@@ -265,16 +265,23 @@ export function abstractModuleServiceFactory<
     const applyMethod = function (impl: Function, contextIndex) {
       klassPrototype[methodName] = impl
 
+      const descriptorMockRef = {
+        value: klassPrototype[methodName],
+      }
+
       MedusaContext()(klassPrototype, methodName, contextIndex)
 
       const ManagerDecorator = readMethods.includes(method as BaseMethods)
         ? InjectManager
         : InjectTransactionManager
+
       ManagerDecorator("baseRepository_")(
         klassPrototype,
-        method,
-        Object.getOwnPropertyDescriptor(klassPrototype, methodName)!
+        methodName,
+        descriptorMockRef
       )
+
+      klassPrototype[methodName] = descriptorMockRef.value
     }
 
     let methodImplementation: any = function () {
@@ -293,7 +300,7 @@ export function abstractModuleServiceFactory<
             serviceRegistrationName
           ].retrieve(id, config, sharedContext)
 
-          return this.baseRepository_.serialize<T>(entities, {
+          return await this.baseRepository_.serialize<T>(entities, {
             populate: true,
           })
         }

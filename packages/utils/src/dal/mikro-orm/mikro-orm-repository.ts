@@ -41,10 +41,10 @@ export class MikroOrmBase<T = any> {
       : this.manager_) as unknown as TManager
   }
 
-  getActiveManager<TManager = unknown>(
-    @MedusaContext()
-    { transactionManager, manager }: Context = {}
-  ): TManager {
+  getActiveManager<TManager = unknown>({
+    transactionManager,
+    manager,
+  }: Context = {}): TManager {
     return (transactionManager ?? manager ?? this.manager_) as TManager
   }
 
@@ -338,21 +338,34 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
 
       let primaryKeysCriteria: { [key: string]: any }[] = []
       if (primaryKeys.length === 1) {
-        primaryKeysCriteria.push({
-          [primaryKeys[0]]: data.map((d) => d[primaryKeys[0]]),
-        })
+        const primaryKeyValues = data
+          .map((d) => d[primaryKeys[0]])
+          .filter(Boolean)
+
+        if (primaryKeyValues.length) {
+          primaryKeysCriteria.push({
+            [primaryKeys[0]]: primaryKeyValues,
+          })
+        }
       } else {
         primaryKeysCriteria = data.map((d) => ({
           $and: primaryKeys.map((key) => ({ [key]: d[key] })),
         }))
       }
 
-      const allEntities = await Promise.all(
-        primaryKeysCriteria.map(
-          async (criteria) =>
-            await this.find({ where: criteria } as DAL.FindOptions<T>, context)
+      let allEntities: T[][] = []
+
+      if (primaryKeysCriteria.length) {
+        allEntities = await Promise.all(
+          primaryKeysCriteria.map(
+            async (criteria) =>
+              await this.find(
+                { where: criteria } as DAL.FindOptions<T>,
+                context
+              )
+          )
         )
-      )
+      }
 
       const existingEntities = allEntities.flat()
 

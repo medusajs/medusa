@@ -166,8 +166,8 @@ export function internalModuleServiceFactory<
       return Array.isArray(data) ? entities : entities[0]
     }
 
-    update(data: any, sharedContext?: Context): Promise<TEntity>
     update(data: any[], sharedContext?: Context): Promise<TEntity[]>
+    update(data: any, sharedContext?: Context): Promise<TEntity>
     update(
       selectorAndData: SelectorAndData,
       sharedContext?: Context
@@ -404,8 +404,8 @@ export function internalModuleServiceFactory<
       )
     }
 
-    upsert(data: any, sharedContext?: Context): Promise<TEntity>
     upsert(data: any[], sharedContext?: Context): Promise<TEntity[]>
+    upsert(data: any, sharedContext?: Context): Promise<TEntity>
 
     @InjectTransactionManager(propertyRepositoryName)
     async upsert(
