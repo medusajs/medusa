@@ -1,5 +1,4 @@
 import { LoadedModule, MedusaAppOutput, MedusaContainer } from "@medusajs/types"
-import { isString } from "@medusajs/utils"
 import { ModuleRegistrationName } from "../../definitions"
 import { findMedusaContext } from "../../loaders/utils/clients/find-medusa-context"
 
@@ -75,25 +74,6 @@ export default function (
         }
 
         return await resolvedModule[method].apply(resolvedModule, args)
-      } catch (err) {
-        return response.status(500).send(err.message)
-      }
-    })
-
-    fastify.post("/query", async (request, response) => {
-      const input = request.body
-
-      let query
-      let variables = {}
-      if (isString(input.query)) {
-        query = input.query
-        variables = input.variables ?? {}
-      } else {
-        query = input
-      }
-
-      try {
-        return await remoteQuery(query, variables)
       } catch (err) {
         return response.status(500).send(err.message)
       }
