@@ -45,7 +45,7 @@ export default class AuthUser {
   app_metadata: Record<string, unknown> = {}
 
   @Property({ columnType: "jsonb", nullable: true })
-  provider_metadata: Record<string, unknown> | null
+  provider_metadata: Record<string, unknown> | null = null
 
   @BeforeCreate()
   onCreate() {
