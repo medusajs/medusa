@@ -139,6 +139,7 @@ describe("Abstract Module Service Factory", () => {
     let instance
 
     beforeEach(() => {
+      jest.clearAllMocks()
       instance = new abstractModuleService(containerMock)
     })
 

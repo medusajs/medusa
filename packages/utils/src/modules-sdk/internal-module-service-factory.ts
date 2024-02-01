@@ -72,16 +72,16 @@ export function internalModuleServiceFactory<
       if (
         !isDefined(idOrObject) ||
         (isString(idOrObject) && primaryKeys.length > 1) ||
-        (!isString(idOrObject) && primaryKeys.length === 1)
+        ((!isString(idOrObject) ||
+          (isObject(idOrObject) && !idOrObject[primaryKeys[0]])) &&
+          primaryKeys.length === 1)
       ) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
           `${
             primaryKeys.length === 1
-              ? `"${
-                  lowerCaseFirst(model.name) + upperCaseFirst(primaryKeys[0])
-                }"`
-              : `${lowerCaseFirst(model.name)} ${primaryKeys.join(", ")}`
+              ? `${lowerCaseFirst(model.name) + " - " + primaryKeys[0]}`
+              : `${lowerCaseFirst(model.name)} - ${primaryKeys.join(", ")}`
           } must be defined`
         )
       }
@@ -90,11 +90,12 @@ export function internalModuleServiceFactory<
       if (primaryKeys.length === 1) {
         primaryKeysCriteria[primaryKeys[0]] = idOrObject
       } else {
-        primaryKeysCriteria = (idOrObject as string[] | object[]).map(
-          (primaryKeyValue) => ({
-            $and: primaryKeys.map((key) => ({ [key]: primaryKeyValue[key] })),
-          })
-        )
+        const idOrObject_ = Array.isArray(idOrObject)
+          ? idOrObject
+          : [idOrObject]
+        primaryKeysCriteria = idOrObject_.map((primaryKeyValue) => ({
+          $and: primaryKeys.map((key) => ({ [key]: primaryKeyValue[key] })),
+        }))
       }
 
       const queryOptions = buildQuery(primaryKeysCriteria, config)
