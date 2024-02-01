@@ -122,6 +122,11 @@ export const ExampleRegistry: Record<string, ExampleType> = {
     component: React.lazy(async () => import("@/examples/calendar-demo")),
     file: "src/examples/calendar-demo.tsx",
   },
+  "calendar-locale": {
+    name: "calendar-locale",
+    component: React.lazy(async () => import("@/examples/calendar-locale")),
+    file: "src/examples/calendar-locale.tsx",
+  },
   "checkbox-demo": {
     name: "checkbox-demo",
     component: React.lazy(async () => import("@/examples/checkbox-demo")),
@@ -213,6 +218,11 @@ export const ExampleRegistry: Record<string, ExampleType> = {
       async () => import("@/examples/date-picker-range-presets-time")
     ),
     file: "src/examples/date-picker-range-presets-time.tsx",
+  },
+  "date-picker-locale": {
+    name: "date-picker-locale",
+    component: React.lazy(async () => import("@/examples/date-picker-locale")),
+    file: "src/examples/date-picker-locale.tsx",
   },
   "drawer-demo": {
     name: "drawer-demo",
