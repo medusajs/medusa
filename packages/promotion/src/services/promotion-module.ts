@@ -939,7 +939,7 @@ export default class PromotionModuleService<
   >(
     ids: string | string[],
     { returnLinkableKeys }: SoftDeleteReturn<TReturnableLinkableKeys> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const idsToDelete = Array.isArray(ids) ? ids : [ids]
     let [_, cascadedEntitiesMap] = await this.softDelete_(
@@ -975,7 +975,7 @@ export default class PromotionModuleService<
   >(
     ids: string | string[],
     { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const idsToRestore = Array.isArray(ids) ? ids : [ids]
     const [_, cascadedEntitiesMap] = await this.restore_(
@@ -1376,7 +1376,7 @@ export default class PromotionModuleService<
   async softDeleteCampaigns<TReturnableLinkableKeys extends string>(
     ids: string | string[],
     { returnLinkableKeys }: SoftDeleteReturn<TReturnableLinkableKeys> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const idsToDelete = Array.isArray(ids) ? ids : [ids]
     let [_, cascadedEntitiesMap] = await this.softDeleteCampaigns_(
@@ -1412,7 +1412,7 @@ export default class PromotionModuleService<
   >(
     ids: string | string[],
     { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const idsToRestore = Array.isArray(ids) ? ids : [ids]
     const [_, cascadedEntitiesMap] = await this.restoreCampaigns_(
