@@ -1,6 +1,6 @@
 import { Table, clx } from "@medusajs/ui"
 import { ColumnDef } from "@tanstack/react-table"
-import { Skeleton } from "../../common/skeleton"
+import { Skeleton } from "../../../common/skeleton"
 
 type DataTableSkeletonProps = {
   columns: ColumnDef<any, any>[]

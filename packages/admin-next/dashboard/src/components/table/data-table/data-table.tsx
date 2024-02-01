@@ -1,5 +1,5 @@
 import { memo } from "react"
-import { NoRecords } from "../common/empty-table-content"
+import { NoRecords } from "../../common/empty-table-content"
 import { DataTableQuery, DataTableQueryProps } from "./data-table-query"
 import { DataTableRoot, DataTableRootProps } from "./data-table-root"
 import { DataTableSkeleton } from "./data-table-skeleton"

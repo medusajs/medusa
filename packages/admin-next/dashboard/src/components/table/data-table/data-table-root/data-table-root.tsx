@@ -8,7 +8,7 @@ import {
 import { ComponentPropsWithoutRef, Fragment, UIEvent, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
-import { NoResults } from "../../common/empty-table-content"
+import { NoResults } from "../../../common/empty-table-content"
 
 type BulkCommand = {
   label: string

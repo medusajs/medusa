@@ -1,10 +1,10 @@
 import { Container, Heading } from "@medusajs/ui"
 import { useAdminOrders } from "medusa-react"
 import { useTranslation } from "react-i18next"
-import { DataTable } from "../../../../../components/data-table/data-table"
-import { useOrderTableColumns } from "../../../../../hooks/tables/columns/use-order-table-columns"
-import { useOrderTableFilters } from "../../../../../hooks/tables/filters/use-order-table-filters"
-import { useOrderTableQuery } from "../../../../../hooks/tables/query/use-order-table-query"
+import { DataTable } from "../../../../../components/table/data-table/data-table"
+import { useOrderTableColumns } from "../../../../../hooks/table/columns/use-order-table-columns"
+import { useOrderTableFilters } from "../../../../../hooks/table/filters/use-order-table-filters"
+import { useOrderTableQuery } from "../../../../../hooks/table/query/use-order-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 
 const PAGE_SIZE = 50

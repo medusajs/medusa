@@ -1,7 +1,7 @@
 import { useAdminRegions, useAdminSalesChannels } from "medusa-react"
 import { useTranslation } from "react-i18next"
 
-import type { Filter } from "../../../components/data-table"
+import type { Filter } from "../../../components/table/data-table"
 
 export const useOrderTableFilters = (): Filter[] => {
   const { t } = useTranslation()

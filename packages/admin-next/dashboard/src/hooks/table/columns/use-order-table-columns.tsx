@@ -8,31 +8,31 @@ import { useMemo } from "react"
 import {
   DateCell,
   DateHeader,
-} from "../../../components/table-cells/common/date-cell"
+} from "../../../components/table/table-cells/common/date-cell"
 import {
   DisplayIdCell,
   DisplayIdHeader,
-} from "../../../components/table-cells/order/display-id-cell"
+} from "../../../components/table/table-cells/order/display-id-cell"
 import {
   FulfillmentStatusCell,
   FulfillmentStatusHeader,
-} from "../../../components/table-cells/order/fulfillment-status-cell"
+} from "../../../components/table/table-cells/order/fulfillment-status-cell"
 import {
   ItemsCell,
   ItemsHeader,
-} from "../../../components/table-cells/order/items-cell"
+} from "../../../components/table/table-cells/order/items-cell"
 import {
   PaymentStatusCell,
   PaymentStatusHeader,
-} from "../../../components/table-cells/order/payment-status-cell"
+} from "../../../components/table/table-cells/order/payment-status-cell"
 import {
   SalesChannelCell,
   SalesChannelHeader,
-} from "../../../components/table-cells/order/sales-channel-cell"
+} from "../../../components/table/table-cells/order/sales-channel-cell"
 import {
   TotalCell,
   TotalHeader,
-} from "../../../components/table-cells/order/total-cell"
+} from "../../../components/table/table-cells/order/total-cell"
 
 // We have to use any here, as the type of Order is so complex that it lags the TS server
 const columnHelper = createColumnHelper<Order>()

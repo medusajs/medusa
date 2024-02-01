@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next"
-import { getPresentationalAmount } from "../../../../lib/money-amount-helpers"
+import { getPresentationalAmount } from "../../../../../lib/money-amount-helpers"
 
 type TotalCellProps = {
   currencyCode: string
