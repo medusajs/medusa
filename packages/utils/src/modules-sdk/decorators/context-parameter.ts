@@ -8,3 +8,12 @@ export function MedusaContext() {
     target.MedusaContextIndex_[propertyKey] = parameterIndex
   }
 }
+
+MedusaContext.getIndex = function (
+  target: any,
+  propertyKey: string
+): number | undefined {
+  return target.MedusaContextIndex_?.[propertyKey]
+}
+
+export const MedusaContextType = "MedusaContext"
