@@ -5,14 +5,11 @@ import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app
 import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import adminSeeder from "../../../../helpers/admin-seeder"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
-
-jest.setTimeout(50000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
-describe("GET /store/customers", () => {
+describe("POST /store/customers/:id/addresses/:address_id", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -34,34 +31,69 @@ describe("GET /store/customers", () => {
     await shutdownServer()
   })
 
-  beforeEach(async () => {
-    await adminSeeder(dbConnection)
-  })
-
   afterEach(async () => {
     const db = useDb()
     await db.teardown()
   })
 
-  it("should retrieve auth user's customer", async () => {
+  it("should update a customer address", async () => {
     const { customer, jwt } = await createAuthenticatedCustomer(
       customerModuleService,
       appContainer.resolve(ModuleRegistrationName.AUTH)
     )
 
-    const api = useApi() as any
-    const response = await api.get(`/store/customers/me`, {
-      headers: { authorization: `Bearer ${jwt}` },
+    const address = await customerModuleService.addAddresses({
+      customer_id: customer.id,
+      first_name: "John",
+      last_name: "Doe",
+      address_1: "Test street 1",
     })
 
+    const api = useApi() as any
+    const response = await api.post(
+      `/store/customers/me/addresses/${address.id}`,
+      {
+        first_name: "Jane",
+      },
+      { headers: { authorization: `Bearer ${jwt}` } }
+    )
+
     expect(response.status).toEqual(200)
-    expect(response.data.customer).toEqual(
+    expect(response.data.address).toEqual(
       expect.objectContaining({
-        id: customer.id,
-        first_name: "John",
+        id: address.id,
+        first_name: "Jane",
         last_name: "Doe",
-        email: "john@me.com",
       })
     )
+  })
+
+  it("should fail to update another customer's address", async () => {
+    const { jwt } = await createAuthenticatedCustomer(
+      customerModuleService,
+      appContainer.resolve(ModuleRegistrationName.AUTH)
+    )
+
+    const otherCustomer = await customerModuleService.create({
+      first_name: "Jane",
+      last_name: "Doe",
+    })
+    const address = await customerModuleService.addAddresses({
+      customer_id: otherCustomer.id,
+      first_name: "John",
+      last_name: "Doe",
+      address_1: "Test street 1",
+    })
+
+    const api = useApi() as any
+    const response = await api
+      .post(
+        `/store/customers/me/addresses/${address.id}`,
+        { first_name: "Jane" },
+        { headers: { authorization: `Bearer ${jwt}` } }
+      )
+      .catch((e) => e.response)
+
+    expect(response.status).toEqual(404)
   })
 })
