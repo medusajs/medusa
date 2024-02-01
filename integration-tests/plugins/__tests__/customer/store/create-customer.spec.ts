@@ -1,5 +1,5 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ICustomerModuleService } from "@medusajs/types"
+import { ICustomerModuleService, IAuthModuleService } from "@medusajs/types"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
@@ -10,11 +10,8 @@ import adminSeeder from "../../../../helpers/admin-seeder"
 jest.setTimeout(50000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
-const adminHeaders = {
-  headers: { "x-medusa-access-token": "test_token" },
-}
 
-describe("POST /admin/customer-groups", () => {
+describe("POST /store/customers", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -45,22 +42,34 @@ describe("POST /admin/customer-groups", () => {
     await db.teardown()
   })
 
-  it("should create a customer group", async () => {
+  it("should create a customer", async () => {
+    const authService: IAuthModuleService = appContainer.resolve(
+      ModuleRegistrationName.AUTH
+    )
+    const authUser = await authService.createAuthUser({
+      entity_id: "store_user",
+      provider_id: "test",
+    })
+    const jwt = await authService.generateJwtToken(authUser.id, "store")
+
     const api = useApi() as any
     const response = await api.post(
-      `/admin/customer-groups`,
+      `/store/customers`,
       {
-        name: "VIP",
+        first_name: "John",
+        last_name: "Doe",
+        email: "john@me.com",
       },
-      adminHeaders
+      { headers: { authorization: `Bearer ${jwt}` } }
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.customer_group).toEqual(
+    expect(response.data.customer).toEqual(
       expect.objectContaining({
         id: expect.any(String),
-        name: "VIP",
-        created_by: "admin_user",
+        first_name: "John",
+        last_name: "Doe",
+        email: "john@me.com",
       })
     )
   })

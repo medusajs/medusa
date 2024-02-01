@@ -5,16 +5,11 @@ import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app
 import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import adminSeeder from "../../../../helpers/admin-seeder"
-
-jest.setTimeout(50000)
+import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
-const adminHeaders = {
-  headers: { "x-medusa-access-token": "test_token" },
-}
 
-describe("GET /admin/customers/:id/addresses", () => {
+describe("GET /store/customers/me/addresses", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -36,57 +31,54 @@ describe("GET /admin/customers/:id/addresses", () => {
     await shutdownServer()
   })
 
-  beforeEach(async () => {
-    await adminSeeder(dbConnection)
-  })
-
   afterEach(async () => {
     const db = useDb()
     await db.teardown()
   })
 
   it("should get all customer addresses and its count", async () => {
-    const [customer] = await customerModuleService.create([
+    const { customer, jwt } = await createAuthenticatedCustomer(
+      customerModuleService,
+      appContainer.resolve(ModuleRegistrationName.AUTH)
+    )
+
+    await customerModuleService.addAddresses([
       {
         first_name: "Test",
         last_name: "Test",
-        email: "test@me.com",
-        addresses: [
-          {
-            first_name: "Test",
-            last_name: "Test",
-            address_1: "Test street 1",
-          },
-          {
-            first_name: "Test",
-            last_name: "Test",
-            address_1: "Test street 2",
-          },
-          {
-            first_name: "Test",
-            last_name: "Test",
-            address_1: "Test street 3",
-          },
-        ],
+        address_1: "Test street 1",
+        customer_id: customer.id,
       },
       {
-        first_name: "Test Test",
-        last_name: "Test Test",
-        addresses: [
-          {
-            first_name: "Test TEST",
-            last_name: "Test TEST",
-            address_1: "NOT street 1",
-          },
-        ],
+        first_name: "Test",
+        last_name: "Test",
+        address_1: "Test street 2",
+        customer_id: customer.id,
+      },
+      {
+        first_name: "Test",
+        last_name: "Test",
+        address_1: "Test street 3",
+        customer_id: customer.id,
       },
     ])
 
+    await customerModuleService.create({
+      first_name: "Test Test",
+      last_name: "Test Test",
+      addresses: [
+        {
+          first_name: "Test TEST",
+          last_name: "Test TEST",
+          address_1: "NOT street 1",
+        },
+      ],
+    })
+
     const api = useApi() as any
-    const response = await api.get(
-      `/admin/customers/${customer.id}/addresses`,
-      adminHeaders
-    )
+    const response = await api.get(`/store/customers/me/addresses`, {
+      headers: { authorization: `Bearer ${jwt}` },
+    })
 
     expect(response.status).toEqual(200)
     expect(response.data.count).toEqual(3)
