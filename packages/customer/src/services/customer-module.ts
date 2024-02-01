@@ -104,15 +104,10 @@ export default class CustomerModuleService implements ICustomerModuleService {
   ) {
     const data = Array.isArray(dataOrArray) ? dataOrArray : [dataOrArray]
 
-    // keep address data for creation
-    const addressData = data.map((d) => d.addresses)
-
     const customers = await this.customerService_.create(data, sharedContext)
 
-    // decorate addresses with customer ids
-    // filter out addresses without data
-    const addressDataWithCustomerIds = addressData
-      .map((addresses, i) => {
+    const addressDataWithCustomerIds = data
+      .map(({ addresses }, i) => {
         if (!addresses) {
           return []
         }
@@ -124,7 +119,7 @@ export default class CustomerModuleService implements ICustomerModuleService {
       })
       .flat()
 
-    await this.addressService_.create(addressDataWithCustomerIds, sharedContext)
+    await this.addAddresses(addressDataWithCustomerIds, sharedContext)
 
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerDTO[]
@@ -459,43 +454,22 @@ export default class CustomerModuleService implements ICustomerModuleService {
   ): Promise<
     CustomerTypes.CustomerAddressDTO | CustomerTypes.CustomerAddressDTO[]
   > {
-    try {
-      const addresses = await this.addressService_.create(
-        Array.isArray(data) ? data : [data],
-        sharedContext
-      )
+    const addresses = await this.addressService_.create(
+      Array.isArray(data) ? data : [data],
+      sharedContext
+    )
 
-      await this.flush(sharedContext)
+    await this.flush(sharedContext).catch(this.handleDbErrors)
 
-      const serialized = await this.baseRepository_.serialize<
-        CustomerTypes.CustomerAddressDTO[]
-      >(addresses, { populate: true })
+    const serialized = await this.baseRepository_.serialize<
+      CustomerTypes.CustomerAddressDTO[]
+    >(addresses, { populate: true })
 
-      if (Array.isArray(data)) {
-        return serialized
-      }
-
-      return serialized[0]
-    } catch (err) {
-      if (isDuplicateError(err)) {
-        switch (err.constraint) {
-          case UNIQUE_CUSTOMER_SHIPPING_ADDRESS:
-            throw new MedusaError(
-              MedusaError.Types.DUPLICATE_ERROR,
-              "A default shipping address already exists"
-            )
-          case UNIQUE_CUSTOMER_BILLING_ADDRESS:
-            throw new MedusaError(
-              MedusaError.Types.DUPLICATE_ERROR,
-              "A default billing address already exists"
-            )
-          default:
-            break
-        }
-      }
-
-      throw err
+    if (Array.isArray(data)) {
+      return serialized
     }
+
+    return serialized[0]
   }
 
   async updateAddress(
@@ -552,6 +526,9 @@ export default class CustomerModuleService implements ICustomerModuleService {
       updateData,
       sharedContext
     )
+
+    await this.flush(sharedContext).catch(this.handleDbErrors)
+
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerAddressDTO[]
     >(addresses, { populate: true })
@@ -809,5 +786,26 @@ export default class CustomerModuleService implements ICustomerModuleService {
   private async flush(context: Context) {
     const em = (context.manager ?? context.transactionManager) as EntityManager
     await em.flush()
+  }
+
+  private async handleDbErrors(err: any) {
+    if (isDuplicateError(err)) {
+      switch (err.constraint) {
+        case UNIQUE_CUSTOMER_SHIPPING_ADDRESS:
+          throw new MedusaError(
+            MedusaError.Types.DUPLICATE_ERROR,
+            "A default shipping address already exists"
+          )
+        case UNIQUE_CUSTOMER_BILLING_ADDRESS:
+          throw new MedusaError(
+            MedusaError.Types.DUPLICATE_ERROR,
+            "A default billing address already exists"
+          )
+        default:
+          break
+      }
+    }
+
+    throw err
   }
 }

@@ -100,6 +100,37 @@ describe("Customer Module Service", () => {
       )
     })
 
+    it("should fail to create two default shipping", async () => {
+      const customerData = {
+        company_name: "Acme Corp",
+        first_name: "John",
+        last_name: "Doe",
+        addresses: [
+          {
+            address_1: "Testvej 1",
+            address_2: "Testvej 2",
+            city: "Testby",
+            country_code: "DK",
+            province: "Test",
+            postal_code: "8000",
+            phone: "123456789",
+            metadata: { membership: "gold" },
+            is_default_shipping: true,
+          },
+          {
+            address_1: "Test Ave 1",
+            address_2: "Test Ave 2",
+            city: "Testville",
+            country_code: "US",
+            is_default_shipping: true,
+          },
+        ],
+      }
+      await expect(service.create(customerData)).rejects.toThrow(
+        "A default shipping address already exists"
+      )
+    })
+
     it("should create multiple customers", async () => {
       const customersData = [
         {
@@ -812,6 +843,29 @@ describe("Customer Module Service", () => {
           }),
         ])
       )
+    })
+
+    it("should fail when updating address to a default shipping address when one already exists", async () => {
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+        addresses: [
+          {
+            address_name: "Home",
+            address_1: "123 Main St",
+            is_default_shipping: true,
+          },
+        ],
+      })
+      const address = await service.addAddresses({
+        customer_id: customer.id,
+        address_name: "Work",
+        address_1: "456 Main St",
+      })
+
+      await expect(
+        service.updateAddress(address.id, { is_default_shipping: true })
+      ).rejects.toThrow("A default shipping address already exists")
     })
   })
 
