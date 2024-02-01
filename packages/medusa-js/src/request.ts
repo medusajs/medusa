@@ -35,7 +35,7 @@ class Client {
   private config: Config
 
   constructor(config: Config) {
-    /** @private @constant {AxiosInstance} */
+    /** @public @constant {AxiosInstance} */
     this.axiosClient = this.createClient({ ...defaultConfig, ...config })
 
     /** @private @constant {Config} */
