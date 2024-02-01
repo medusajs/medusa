@@ -7,6 +7,7 @@ import {
   InternalModuleDeclaration,
   IPaymentModuleService,
   ModuleJoinerConfig,
+  ModulesSdkTypes,
   PaymentCollectionDTO,
   PaymentDTO,
   SetPaymentSessionsDTO,
@@ -20,7 +21,6 @@ import {
 } from "@medusajs/utils"
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { IPaymentCollectionService } from "../types"
 import {
   Capture,
   Payment,
@@ -33,7 +33,7 @@ import {
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  paymentCollectionService: IPaymentCollectionService<any>
+  paymentCollectionService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 const generateMethodForModels = [
@@ -64,7 +64,7 @@ export default class PaymentModuleService<
   implements IPaymentModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected paymentCollectionService_: IPaymentCollectionService<TPaymentCollection>
+  protected paymentCollectionService_: ModulesSdkTypes.InternalModuleService<TPaymentCollection>
 
   constructor(
     { baseRepository, paymentCollectionService }: InjectedDependencies,
