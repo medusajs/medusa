@@ -204,11 +204,11 @@ export default class LinkModuleService<TLink> implements ILinkModule {
 
     await this.eventBusModuleService_?.emit<Record<string, unknown>>(
       (data as { id: unknown }[]).map(({ id }) => ({
-        eventName: this.entityName_ + ".attached",
+        eventName: this.entityName_ + "." + CommonEvents.ATTACHED,
         body: {
           metadata: {
             service: this.serviceName_,
-            action: "attached",
+            action: CommonEvents.ATTACHED,
             object: this.entityName_,
             eventGroupId: sharedContext.eventGroupId,
           },
@@ -365,11 +365,11 @@ export default class LinkModuleService<TLink> implements ILinkModule {
 
     await this.eventBusModuleService_?.emit<Record<string, unknown>>(
       (restoredEntities as { id: string }[]).map(({ id }) => ({
-        eventName: this.entityName_ + ".attached",
+        eventName: this.entityName_ + "." + CommonEvents.ATTACHED,
         body: {
           metadata: {
             service: this.serviceName_,
-            action: "attached",
+            action: CommonEvents.ATTACHED,
             object: this.entityName_,
             eventGroupId: sharedContext.eventGroupId,
           },
