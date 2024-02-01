@@ -149,6 +149,9 @@ function getLineItemTotals_(
       .times(totals.quantity)
       .minus(originalTaxTotal)
 
+    totals.subtotal = subtotal.toNumber()
+    totals.raw_subtotal = subtotal
+
     totals.total = subtotal.toNumber()
     totals.raw_total = subtotal
 
