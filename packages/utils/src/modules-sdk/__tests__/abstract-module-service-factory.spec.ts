@@ -1,4 +1,4 @@
-import { abstractModuleServiceFactory } from "../abstract-module-service-factory" // Adjust the import path accordingly
+import { abstractModuleServiceFactory } from "../abstract-module-service-factory"
 
 describe("Abstract Module Service Factory", () => {
   const containerMock = {
