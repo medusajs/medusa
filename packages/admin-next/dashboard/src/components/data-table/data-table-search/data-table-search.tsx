@@ -2,7 +2,7 @@ import { Input } from "@medusajs/ui"
 import { debounce } from "lodash"
 import { ChangeEvent, useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useSearchParams } from "react-router-dom"
+import { useSelectedParams } from "../hooks"
 
 type DataTableSearch = {
   placeholder?: string
@@ -12,27 +12,27 @@ type DataTableSearch = {
 export const DataTableSearch = ({ placeholder, prefix }: DataTableSearch) => {
   const { t } = useTranslation()
   const placeholderText = placeholder || t("general.search")
-  const key = prefix ? `${prefix}_q` : "q"
+  const selectedParams = useSelectedParams({
+    param: "q",
+    prefix,
+    multiple: false,
+  })
 
-  const [searchParams, setSearchParams] = useSearchParams()
-  const [inputValue, setInputValue] = useState(searchParams.get(key) || "")
+  const initialQuery = selectedParams.get()
+  const [inputValue, setInputValue] = useState(initialQuery?.[0] || "")
 
   const updateSearchParams = (newValue: string) => {
     if (!newValue) {
-      setSearchParams((prev) => {
-        prev.delete(key)
-        return prev
-      })
-
+      selectedParams.delete()
       return
     }
 
-    setSearchParams((prev) => ({ ...prev, [key]: newValue || "" }))
+    selectedParams.add(newValue)
   }
 
   const debouncedUpdate = useCallback(
     debounce((newValue: string) => updateSearchParams(newValue), 500),
-    []
+    [updateSearchParams]
   )
 
   useEffect(() => {

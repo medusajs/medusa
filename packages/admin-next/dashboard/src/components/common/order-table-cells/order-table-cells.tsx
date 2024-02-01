@@ -1,6 +1,7 @@
 import type { Order } from "@medusajs/medusa"
 import { StatusBadge } from "@medusajs/ui"
 import { format } from "date-fns"
+import { useTranslation } from "react-i18next"
 import { getPresentationalAmount } from "../../../lib/money-amount-helpers"
 
 export const OrderDisplayIdCell = ({ id }: { id: Order["display_id"] }) => {
@@ -14,7 +15,38 @@ export const OrderDateCell = ({
 }) => {
   const value = new Date(date)
 
-  return <span>{format(value, "dd MMM, yyyy")}</span>
+  return (
+    <div className="w-full overflow-hidden">
+      <span className="truncate">{format(value, "dd MMM yyyy")}</span>
+    </div>
+  )
+}
+
+export const OrderCustomerCell = ({
+  customer,
+}: {
+  customer: Order["customer"]
+}) => {
+  const { id, first_name, last_name, email } = customer
+  const name = [first_name, last_name].filter(Boolean).join(" ")
+
+  return (
+    <div className="w-full overflow-hidden">
+      <span className="truncate w-full">{name || email}</span>
+    </div>
+  )
+}
+
+export const OrderSalesChannelCell = ({
+  channel,
+}: {
+  channel: Order["sales_channel"]
+}) => {
+  return (
+    <div className="w-full overflow-hidden">
+      <span className="truncate">{channel?.name || "-"}</span>
+    </div>
+  )
 }
 
 export const OrderFulfillmentStatusCell = ({
@@ -67,8 +99,18 @@ export const OrderPaymentStatusCell = ({
   }
 }
 
-// TODO: Fix formatting amount with correct division eg. EUR 1000 -> EUR 10.00
-// Source currency info from `@medusajs/medusa` definition
+export const OrderItemsCell = ({ items }: { items: Order["items"] }) => {
+  const { t } = useTranslation()
+
+  return (
+    <span>
+      {t("general.items", {
+        count: items.length,
+      })}
+    </span>
+  )
+}
+
 export const OrderTotalCell = ({
   total,
   currencyCode,
@@ -90,8 +132,10 @@ export const OrderTotalCell = ({
   }).format(presentationAmount)
 
   return (
-    <span>
-      {symbol} {formattedTotal} {currencyCode.toUpperCase()}
-    </span>
+    <div className="text-right w-full">
+      <span>
+        {symbol} {formattedTotal} {currencyCode.toUpperCase()}
+      </span>
+    </div>
   )
 }

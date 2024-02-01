@@ -1,14 +1,15 @@
 import { EllipseMiniSolid, XMarkMini } from "@medusajs/icons"
-import { DatePicker, Label, Text, clx } from "@medusajs/ui"
+import { DatePicker, Text, clx } from "@medusajs/ui"
 import * as Popover from "@radix-ui/react-popover"
 import { format } from "date-fns"
 import isEqual from "lodash/isEqual"
 import { MouseEvent, useState } from "react"
 
-import { type DataTableFilterProps } from "../types"
-import { useDataTableFacetedFilterContext, useSelectedParams } from "./hooks"
+import { useSelectedParams } from "../hooks"
+import { useDataTableFilterContext } from "./context"
+import { IFilter } from "./types"
 
-type DateFilterProps = DataTableFilterProps
+type DateFilterProps = IFilter
 
 type DateComparisonOperator = {
   gte?: string
@@ -25,23 +26,21 @@ export const DateFilter = ({
   const [open, setOpen] = useState(openOnMount)
   const [showCustom, setShowCustom] = useState(false)
   const { key, label } = filter
-  const { removeFilter } = useDataTableFacetedFilterContext()
-  const identifier = prefix ? `${prefix}_${key}` : key
-  const selectedParams = useSelectedParams({ title: identifier })
+  const { removeFilter } = useDataTableFilterContext()
+  const selectedParams = useSelectedParams({ param: key, prefix })
 
   const handleSelectPreset = (value: DateComparisonOperator) => {
     selectedParams.add(JSON.stringify(value))
     setShowCustom(false)
   }
 
-  const handleSelectCustom = (e) => {
-    e.stopPropagation()
-    e.preventDefault()
+  const handleSelectCustom = () => {
     selectedParams.delete()
     setShowCustom((prev) => !prev)
   }
 
   const currentValue = selectedParams.get()
+
   const currentDateComparison = parseDateComparison(currentValue)
   const customStartValue = getDateFromComparison(currentDateComparison, "gte")
   const customEndValue = getDateFromComparison(currentDateComparison, "lte")
@@ -67,7 +66,7 @@ export const DateFilter = ({
   }
 
   const formatCustomDate = (date: Date | undefined) => {
-    return date ? format(date, "MM/dd/yyyy") : undefined
+    return date ? format(date, "dd MMM, yyyy") : undefined
   }
 
   const getCustomDisplayValue = () => {
@@ -81,36 +80,59 @@ export const DateFilter = ({
 
   const handleRemove = () => {
     selectedParams.delete()
+    removeFilter(key)
+  }
+
+  let timeoutId: NodeJS.Timeout | null = null
+
+  const handleOpenChange = (open: boolean) => {
+    setOpen(open)
+
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+
+    if (!open && !currentValue.length) {
+      timeoutId = setTimeout(() => {
+        removeFilter(key)
+      }, 200)
+    }
   }
 
   return (
-    <Popover.Root defaultOpen={openOnMount}>
+    <Popover.Root open={open} onOpenChange={handleOpenChange}>
       <DateDisplay label={label} value={displayValue} onRemove={handleRemove} />
       <Popover.Portal>
         <Popover.Content
+          data-name="date_filter_content"
           align="start"
           sideOffset={8}
           collisionPadding={24}
           className={clx(
-            "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout max-h-[var(--radix-popper-available-height)] w-[300px] overflow-hidden rounded-lg p-1",
-            "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+            "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout max-h-[var(--radix-popper-available-height)] w-[300px] overflow-hidden rounded-lg"
           )}
-          onPointerDownOutside={(e) => {
-            console.log(e.target)
-          }}
           onInteractOutside={(e) => {
-            console.log(e.target)
+            if (e.target instanceof HTMLElement) {
+              console.log(e.target)
+
+              if (
+                e.target.attributes.getNamedItem("data-name")?.value ===
+                "filters_menu_content"
+              ) {
+                e.preventDefault()
+              }
+            }
           }}
         >
-          <ul className="w-full">
+          <ul className="w-full p-1">
             {presets.map((preset) => {
               const isSelected = selectedParams
                 .get()
                 .includes(JSON.stringify(preset.value))
               return (
-                <li key={preset.label} className="p-1">
+                <li key={preset.label}>
                   <button
-                    className="capitalize txt-compact-small flex items-center gap-x-2 py-1 px-2 select-none w-full"
+                    className="bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none w-full"
                     type="button"
                     onClick={() => {
                       handleSelectPreset(preset.value)
@@ -131,9 +153,9 @@ export const DateFilter = ({
                 </li>
               )
             })}
-            <li className="p-1">
+            <li>
               <button
-                className="capitalize txt-compact-small flex items-center gap-x-2 py-1 px-2 select-none w-full"
+                className="bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none w-full"
                 type="button"
                 onClick={handleSelectCustom}
               >
@@ -155,7 +177,9 @@ export const DateFilter = ({
             <div className="border-t pt-1 px-1 pb-3">
               <div>
                 <div className="px-2 py-1">
-                  <Label>Starting</Label>
+                  <Text size="xsmall" leading="compact" weight="plus">
+                    Starting
+                  </Text>
                 </div>
                 <div className="px-2 py-1">
                   <DatePicker
@@ -167,13 +191,18 @@ export const DateFilter = ({
               </div>
               <div>
                 <div className="px-2 py-1">
-                  <Label>Ending</Label>
+                  <Text size="xsmall" leading="compact" weight="plus">
+                    Ending
+                  </Text>
                 </div>
                 <div className="px-2 py-1">
                   <DatePicker
                     placeholder="MM/DD/YYYY"
                     value={customEndValue || undefined}
-                    onChange={(d) => handleCustomDateChange(d, "end")}
+                    onChange={(d) => {
+                      console.log(d)
+                      handleCustomDateChange(d, "end")
+                    }}
                   />
                 </div>
               </div>
@@ -198,27 +227,33 @@ const DateDisplay = ({ label, value, onRemove }: DateDisplayProps) => {
   }
 
   return (
-    <Popover.Trigger asChild>
-      <div
-        className={clx(
-          "bg-ui-bg-field transition-fg shadow-borders-base rounded-md flex items-center text-ui-fg-subtle select-none",
-          "hover:bg-ui-bg-field-hover"
-        )}
-      >
-        <div className="flex items-center justify-center px-2 py-1 border-r">
+    <Popover.Trigger
+      asChild
+      className={clx(
+        "bg-ui-bg-field transition-fg shadow-borders-base rounded-md flex items-center text-ui-fg-subtle select-none cursor-pointer",
+        "hover:bg-ui-bg-field-hover",
+        "data-[state=open]:bg-ui-bg-field-hover"
+      )}
+    >
+      <div>
+        <div
+          className={clx("flex items-center justify-center px-2 py-1", {
+            "border-r": !!value,
+          })}
+        >
           <Text size="small" weight="plus" leading="compact">
             {label}
           </Text>
         </div>
-        <div className="flex items-center">
-          {value && (
+        {value && (
+          <div className="flex items-center">
             <div key={value} className="px-2 p-1 border-r">
-              <Text size="small" weight="plus" leading="compact">
+              <Text size="small" leading="compact">
                 {value}
               </Text>
             </div>
-          )}
-        </div>
+          </div>
+        )}
         {value && (
           <div>
             <button

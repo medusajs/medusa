@@ -1,5 +1,6 @@
 import {
   ColumnDef,
+  OnChangeFn,
   PaginationState,
   Row,
   getCoreRowModel,
@@ -31,10 +32,11 @@ export const useDataTable = <TData, TValue>({
   prefix,
 }: UseDataTableProps<TData, TValue>) => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const initialOffset = searchParams.get(`${prefix ? `${prefix}_` : ""}offset`)
+  const offsetKey = `${prefix ? `${prefix}_` : ""}offset`
+  const offset = searchParams.get(offsetKey)
 
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: initialOffset ? Math.ceil(Number(initialOffset) / _pageSize) : 0,
+    pageIndex: offset ? Math.ceil(Number(offset) / _pageSize) : 0,
     pageSize: _pageSize,
   })
   const pagination = useMemo(
@@ -51,20 +53,39 @@ export const useDataTable = <TData, TValue>({
       return
     }
 
-    if (!pageIndex) {
-      setSearchParams((prev) => {
-        prev.delete(`${prefix ? `${prefix}_` : ""}offset`)
-        return prev
-      })
+    const index = offset ? Math.ceil(Number(offset) / _pageSize) : 0
 
+    if (index === pageIndex) {
       return
     }
 
+    setPagination((prev) => ({
+      ...prev,
+      pageIndex: index,
+    }))
+  }, [offset, enablePagination, _pageSize, pageIndex])
+
+  const onPaginationChange = (
+    updater: (old: PaginationState) => PaginationState
+  ) => {
+    const state = updater(pagination)
+    const { pageIndex, pageSize } = state
+
     setSearchParams((prev) => {
-      prev.set(`${prefix ? `${prefix}_` : ""}offset`, `${pageIndex * pageSize}`)
-      return prev
+      if (!pageIndex) {
+        prev.delete(offsetKey)
+        return prev
+      }
+
+      const newSearch = new URLSearchParams(prev)
+      newSearch.set(offsetKey, String(pageIndex * pageSize))
+
+      return newSearch
     })
-  }, [pageIndex, pageSize, enablePagination, setSearchParams, prefix])
+
+    setPagination(state)
+    return state
+  }
 
   const table = useReactTable({
     data,
@@ -77,7 +98,9 @@ export const useDataTable = <TData, TValue>({
     enableRowSelection,
     getRowId,
     onRowSelectionChange: enableRowSelection ? setRowSelection : undefined,
-    onPaginationChange: enablePagination ? setPagination : undefined,
+    onPaginationChange: enablePagination
+      ? (onPaginationChange as OnChangeFn<PaginationState>)
+      : undefined,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: enablePagination
       ? getPaginationRowModel()

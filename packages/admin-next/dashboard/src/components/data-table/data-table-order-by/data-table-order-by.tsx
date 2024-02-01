@@ -1,5 +1,5 @@
 import { ArrowUpDown } from "@medusajs/icons"
-import { DropdownMenu, IconButton } from "@medusajs/ui"
+import { DropdownMenu, IconButton, Tooltip } from "@medusajs/ui"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useSearchParams } from "react-router-dom"
@@ -60,7 +60,6 @@ export const DataTableOrderBy = <TData,>({
     dir: SortDirection
   }>(initState(searchParams, prefix))
   const param = prefix ? `${prefix}_order` : "order"
-
   const { t } = useTranslation()
 
   const handleDirChange = (dir: string) => {
@@ -106,12 +105,14 @@ export const DataTableOrderBy = <TData,>({
 
   return (
     <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
-        <IconButton size="small">
-          <ArrowUpDown />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
+      <Tooltip content="Order" side="bottom">
+        <DropdownMenu.Trigger asChild>
+          <IconButton size="small">
+            <ArrowUpDown />
+          </IconButton>
+        </DropdownMenu.Trigger>
+      </Tooltip>
+      <DropdownMenu.Content className="z-[1]" align="end">
         <DropdownMenu.RadioGroup
           value={state.key}
           onValueChange={handleKeyChange}
