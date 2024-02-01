@@ -14,7 +14,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/store_return-reasons/getundefined
+        $ref: ../code_samples/tsx/store_return-reasons/get.tsx
     - lang: Shell
       label: cURL
       source:

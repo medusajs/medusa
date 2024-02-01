@@ -32,7 +32,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_customers_{id}/getundefined
+        $ref: ../code_samples/tsx/admin_customers_{id}/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -103,7 +103,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_customers_{id}/postundefined
+        $ref: ../code_samples/tsx/admin_customers_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:

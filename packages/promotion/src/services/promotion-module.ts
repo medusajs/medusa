@@ -226,11 +226,11 @@ export default class PromotionModuleService<
   }
 
   async computeActions(
-    promotionCodesToApply: string[],
+    promotionCodes: string[],
     applicationContext: PromotionTypes.ComputeActionContext,
-    // TODO: specify correct type with options
-    options: Record<string, any> = {}
+    options: PromotionTypes.ComputeActionOptions = {}
   ): Promise<PromotionTypes.ComputeActions[]> {
+    const { prevent_auto_promotions: preventAutoPromotions } = options
     const computedActions: PromotionTypes.ComputeActions[] = []
     const { items = [], shipping_methods: shippingMethods = [] } =
       applicationContext
@@ -241,6 +241,15 @@ export default class PromotionModuleService<
       PromotionTypes.ComputeActionAdjustmentLine
     >()
     const methodIdPromoValueMap = new Map<string, number>()
+    const automaticPromotions = preventAutoPromotions
+      ? []
+      : await this.list({ is_automatic: true }, { select: ["code"] })
+
+    const automaticPromotionCodes = automaticPromotions.map((p) => p.code!)
+    const promotionCodesToApply = [
+      ...promotionCodes,
+      ...automaticPromotionCodes,
+    ]
 
     items.forEach((item) => {
       item.adjustments?.forEach((adjustment) => {
@@ -273,6 +282,8 @@ export default class PromotionModuleService<
           "application_method",
           "application_method.target_rules",
           "application_method.target_rules.values",
+          "application_method.buy_rules",
+          "application_method.buy_rules.values",
           "rules",
           "rules.values",
           "campaign",
@@ -280,6 +291,10 @@ export default class PromotionModuleService<
         ],
       }
     )
+
+    const sortedPermissionsToApply = promotions
+      .filter((p) => promotionCodesToApply.includes(p.code!))
+      .sort(ComputeActionUtils.sortByBuyGetType)
 
     const existingPromotionsMap = new Map<string, PromotionTypes.PromotionDTO>(
       promotions.map((promotion) => [promotion.code!, promotion])
@@ -295,7 +310,7 @@ export default class PromotionModuleService<
         )
       }
 
-      if (promotionCodesToApply.includes(appliedCode)) {
+      if (promotionCodes.includes(appliedCode)) {
         continue
       }
 
@@ -316,15 +331,8 @@ export default class PromotionModuleService<
       }
     }
 
-    for (const promotionCode of promotionCodesToApply) {
-      const promotion = existingPromotionsMap.get(promotionCode)
-
-      if (!promotion) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Promotion for code (${promotionCode}) not found`
-        )
-      }
+    for (const promotionToApply of sortedPermissionsToApply) {
+      const promotion = existingPromotionsMap.get(promotionToApply.code!)!
 
       const {
         application_method: applicationMethod,
@@ -344,20 +352,9 @@ export default class PromotionModuleService<
         continue
       }
 
-      if (applicationMethod.target_type === ApplicationMethodTargetType.ORDER) {
+      if (promotion.type === PromotionType.BUYGET) {
         const computedActionsForItems =
-          ComputeActionUtils.getComputedActionsForOrder(
-            promotion,
-            applicationContext,
-            methodIdPromoValueMap
-          )
-
-        computedActions.push(...computedActionsForItems)
-      }
-
-      if (applicationMethod.target_type === ApplicationMethodTargetType.ITEMS) {
-        const computedActionsForItems =
-          ComputeActionUtils.getComputedActionsForItems(
+          ComputeActionUtils.getComputedActionsForBuyGet(
             promotion,
             applicationContext[ApplicationMethodTargetType.ITEMS],
             methodIdPromoValueMap
@@ -366,18 +363,46 @@ export default class PromotionModuleService<
         computedActions.push(...computedActionsForItems)
       }
 
-      if (
-        applicationMethod.target_type ===
-        ApplicationMethodTargetType.SHIPPING_METHODS
-      ) {
-        const computedActionsForShippingMethods =
-          ComputeActionUtils.getComputedActionsForShippingMethods(
-            promotion,
-            applicationContext[ApplicationMethodTargetType.SHIPPING_METHODS],
-            methodIdPromoValueMap
-          )
+      if (promotion.type === PromotionType.STANDARD) {
+        if (
+          applicationMethod.target_type === ApplicationMethodTargetType.ORDER
+        ) {
+          const computedActionsForItems =
+            ComputeActionUtils.getComputedActionsForOrder(
+              promotion,
+              applicationContext,
+              methodIdPromoValueMap
+            )
 
-        computedActions.push(...computedActionsForShippingMethods)
+          computedActions.push(...computedActionsForItems)
+        }
+
+        if (
+          applicationMethod.target_type === ApplicationMethodTargetType.ITEMS
+        ) {
+          const computedActionsForItems =
+            ComputeActionUtils.getComputedActionsForItems(
+              promotion,
+              applicationContext[ApplicationMethodTargetType.ITEMS],
+              methodIdPromoValueMap
+            )
+
+          computedActions.push(...computedActionsForItems)
+        }
+
+        if (
+          applicationMethod.target_type ===
+          ApplicationMethodTargetType.SHIPPING_METHODS
+        ) {
+          const computedActionsForShippingMethods =
+            ComputeActionUtils.getComputedActionsForShippingMethods(
+              promotion,
+              applicationContext[ApplicationMethodTargetType.SHIPPING_METHODS],
+              methodIdPromoValueMap
+            )
+
+          computedActions.push(...computedActionsForShippingMethods)
+        }
       }
     }
 

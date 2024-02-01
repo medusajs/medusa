@@ -3,15 +3,24 @@ import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
+  CustomerAddressDTO,
   CustomerDTO,
   CustomerGroupCustomerDTO,
   CustomerGroupDTO,
+  FilterableCustomerAddressProps,
   FilterableCustomerGroupCustomerProps,
   FilterableCustomerGroupProps,
   FilterableCustomerProps,
   GroupCustomerPair,
 } from "./common"
-import { CreateCustomerDTO, CreateCustomerGroupDTO } from "./mutations"
+import {
+  CreateCustomerAddressDTO,
+  CreateCustomerDTO,
+  CreateCustomerGroupDTO,
+  CustomerGroupUpdatableFields,
+  CustomerUpdatableFields,
+  UpdateCustomerAddressDTO,
+} from "./mutations"
 
 export interface ICustomerModuleService extends IModuleService {
   retrieve(
@@ -28,17 +37,17 @@ export interface ICustomerModuleService extends IModuleService {
 
   update(
     customerId: string,
-    data: Partial<CreateCustomerDTO>,
+    data: CustomerUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerDTO>
   update(
     customerIds: string[],
-    data: Partial<CreateCustomerDTO>,
+    data: CustomerUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerDTO[]>
   update(
     selector: FilterableCustomerProps,
-    data: Partial<CreateCustomerDTO>,
+    data: CustomerUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerDTO[]>
 
@@ -67,17 +76,17 @@ export interface ICustomerModuleService extends IModuleService {
 
   updateCustomerGroup(
     groupId: string,
-    data: Partial<CreateCustomerGroupDTO>,
+    data: CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerGroupDTO>
   updateCustomerGroup(
     groupIds: string[],
-    data: Partial<CreateCustomerGroupDTO>,
+    data: CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerGroupDTO[]>
   updateCustomerGroup(
     selector: FilterableCustomerGroupProps,
-    data: Partial<CreateCustomerGroupDTO>,
+    data: CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerGroupDTO[]>
 
@@ -109,6 +118,50 @@ export interface ICustomerModuleService extends IModuleService {
     groupCustomerPairs: GroupCustomerPair[],
     sharedContext?: Context
   ): Promise<void>
+
+  addAddresses(
+    addresses: CreateCustomerAddressDTO[],
+    sharedContext?: Context
+  ): Promise<CustomerAddressDTO[]>
+  addAddresses(
+    address: CreateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerAddressDTO>
+
+  updateAddress(
+    addressId: string,
+    data: UpdateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerAddressDTO>
+  updateAddress(
+    addressIds: string[],
+    data: UpdateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerAddressDTO[]>
+  updateAddress(
+    selector: FilterableCustomerAddressProps,
+    data: UpdateCustomerAddressDTO,
+    sharedContext?: Context
+  ): Promise<CustomerAddressDTO[]>
+
+  deleteAddress(addressId: string, sharedContext?: Context): Promise<void>
+  deleteAddress(addressIds: string[], sharedContext?: Context): Promise<void>
+  deleteAddress(
+    selector: FilterableCustomerAddressProps,
+    sharedContext?: Context
+  ): Promise<void>
+
+  listAddresses(
+    filters?: FilterableCustomerAddressProps,
+    config?: FindConfig<CustomerAddressDTO>,
+    sharedContext?: Context
+  ): Promise<CustomerAddressDTO[]>
+
+  listAndCountAddresses(
+    filters?: FilterableCustomerAddressProps,
+    config?: FindConfig<CustomerAddressDTO>,
+    sharedContext?: Context
+  ): Promise<[CustomerAddressDTO[], number]>
 
   listCustomerGroupCustomers(
     filters?: FilterableCustomerGroupCustomerProps,

@@ -44,7 +44,7 @@ post:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_product-categories_{id}_products_batch/postundefined
+          ../code_samples/tsx/admin_product-categories_{id}_products_batch/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -121,7 +121,7 @@ delete:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_product-categories_{id}_products_batch/deleteundefined
+          ../code_samples/tsx/admin_product-categories_{id}_products_batch/delete.tsx
     - lang: Shell
       label: cURL
       source:

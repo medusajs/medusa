@@ -9,7 +9,9 @@
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
+    "@medusajs/auth": "workspace:*",
     "@medusajs/cache-inmemory": "workspace:*",
+    "@medusajs/customer": "workspace:^",
     "@medusajs/event-bus-local": "workspace:*",
     "@medusajs/inventory": "workspace:^",
     "@medusajs/medusa": "workspace:*",
