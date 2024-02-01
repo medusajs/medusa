@@ -2,6 +2,7 @@ import { PromotionTypes } from "@medusajs/types"
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
+  ApplicationMethodType,
   ComputedActions,
   MedusaError,
 } from "@medusajs/utils"
@@ -55,8 +56,13 @@ export function applyPromotionToShippingMethods(
   if (allocation === ApplicationMethodAllocation.EACH) {
     for (const method of shippingMethods!) {
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
-      const promotionValue = parseFloat(applicationMethod!.value!)
+      let promotionValue = parseFloat(applicationMethod!.value!)
       const applicableTotal = method.unit_price - appliedPromoValue
+
+      if (applicationMethod?.type === ApplicationMethodType.PERCENTAGE) {
+        promotionValue = (promotionValue / 100) * applicableTotal
+      }
+
       const amount = Math.min(promotionValue, applicableTotal)
 
       if (amount <= 0) {
@@ -102,9 +108,14 @@ export function applyPromotionToShippingMethods(
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
 
       // TODO: should we worry about precision here?
-      const applicablePromotionValue =
+      let applicablePromotionValue =
         (applicableTotal / totalApplicableValue) * promotionValue -
         appliedPromoValue
+
+      if (applicationMethod?.type === ApplicationMethodType.PERCENTAGE) {
+        applicablePromotionValue =
+          (promotionValue / 100) * (applicableTotal - appliedPromoValue)
+      }
 
       const amount = Math.min(applicablePromotionValue, applicableTotal)
 
