@@ -27,14 +27,17 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     return
   }
 
-  if (!success && error) {
-    throw new MedusaError(MedusaError.Types.UNAUTHORIZED, error)
-  } else if (success) {
+  if (success) {
     req.session.auth_user = authUser
     req.session.scope = authUser.scope
 
     res.status(200).json({ authUser })
   }
+
+  throw new MedusaError(
+    MedusaError.Types.UNAUTHORIZED,
+    error || "Authentication failed"
+  )
 }
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
