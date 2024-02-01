@@ -14,7 +14,7 @@ const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("GET /admin/customers", () => {
+describe("GET /admin/customers/:id/addresses", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -45,77 +45,69 @@ describe("GET /admin/customers", () => {
     await db.teardown()
   })
 
-  it("should get all customers and its count", async () => {
-    await customerModuleService.create([
+  it("should get all customer addresses and its count", async () => {
+    const [customer] = await customerModuleService.create([
       {
         first_name: "Test",
         last_name: "Test",
         email: "test@me.com",
-      },
-    ])
-
-    const api = useApi() as any
-    const response = await api.get(`/admin/customers`, adminHeaders)
-
-    expect(response.status).toEqual(200)
-    expect(response.data.count).toEqual(1)
-    expect(response.data.customers).toEqual([
-      expect.objectContaining({
-        id: expect.any(String),
-        first_name: "Test",
-        last_name: "Test",
-        email: "test@me.com",
-      }),
-    ])
-  })
-
-  it("should filter customers by last name", async () => {
-    await customerModuleService.create([
-      {
-        first_name: "Jane",
-        last_name: "Doe",
-        email: "jane@me.com",
+        addresses: [
+          {
+            first_name: "Test",
+            last_name: "Test",
+            address_1: "Test street 1",
+          },
+          {
+            first_name: "Test",
+            last_name: "Test",
+            address_1: "Test street 2",
+          },
+          {
+            first_name: "Test",
+            last_name: "Test",
+            address_1: "Test street 3",
+          },
+        ],
       },
       {
-        first_name: "John",
-        last_name: "Doe",
-        email: "john@me.com",
-      },
-      {
-        first_name: "LeBron",
-        last_name: "James",
-        email: "lebron@me.com",
-      },
-      {
-        first_name: "John",
-        last_name: "Silver",
-        email: "johns@me.com",
+        first_name: "Test Test",
+        last_name: "Test Test",
+        addresses: [
+          {
+            first_name: "Test TEST",
+            last_name: "Test TEST",
+            address_1: "NOT street 1",
+          },
+        ],
       },
     ])
 
     const api = useApi() as any
     const response = await api.get(
-      `/admin/customers?last_name=Doe`,
+      `/admin/customers/${customer.id}/addresses`,
       adminHeaders
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.count).toEqual(2)
-    expect(response.data.customers).toContainEqual(
-      expect.objectContaining({
-        id: expect.any(String),
-        first_name: "Jane",
-        last_name: "Doe",
-        email: "jane@me.com",
-      })
-    )
-    expect(response.data.customers).toContainEqual(
-      expect.objectContaining({
-        id: expect.any(String),
-        first_name: "John",
-        last_name: "Doe",
-        email: "john@me.com",
-      })
+    expect(response.data.count).toEqual(3)
+    expect(response.data.addresses).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: expect.any(String),
+          customer_id: customer.id,
+          address_1: "Test street 1",
+        }),
+        expect.objectContaining({
+          id: expect.any(String),
+          customer_id: customer.id,
+          address_1: "Test street 2",
+        }),
+        expect.objectContaining({
+          id: expect.any(String),
+          customer_id: customer.id,
+          address_1: "Test street 3",
+        }),
+      ])
     )
   })
 })

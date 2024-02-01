@@ -14,7 +14,7 @@ const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("POST /admin/customer-groups", () => {
+describe("DELETE /admin/customers/:id/addresses/:address_id", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -45,23 +45,31 @@ describe("POST /admin/customer-groups", () => {
     await db.teardown()
   })
 
-  it("should create a customer group", async () => {
+  it("should update a customer address", async () => {
+    const customer = await customerModuleService.create({
+      first_name: "John",
+      last_name: "Doe",
+    })
+
+    const address = await customerModuleService.addAddresses({
+      customer_id: customer.id,
+      first_name: "John",
+      last_name: "Doe",
+      address_1: "Test street 1",
+    })
+
     const api = useApi() as any
-    const response = await api.post(
-      `/admin/customer-groups`,
-      {
-        name: "VIP",
-      },
+    const response = await api.delete(
+      `/admin/customers/${customer.id}/addresses/${address.id}`,
       adminHeaders
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.customer_group).toEqual(
-      expect.objectContaining({
-        id: expect.any(String),
-        name: "VIP",
-        created_by: "admin_user",
-      })
-    )
+
+    const updatedCustomer = await customerModuleService.retrieve(customer.id, {
+      relations: ["addresses"],
+    })
+
+    expect(updatedCustomer.addresses?.length).toEqual(0)
   })
 })
