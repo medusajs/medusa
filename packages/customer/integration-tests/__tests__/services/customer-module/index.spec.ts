@@ -712,7 +712,7 @@ describe("Customer Module Service", () => {
         address_1: "123 Main St",
       })
 
-      await service.updateAddress(address.id, {
+      await service.updateAddresses(address.id, {
         address_name: "Work",
         address_1: "456 Main St",
       })
@@ -747,7 +747,7 @@ describe("Customer Module Service", () => {
         address_1: "456 Main St",
       })
 
-      await service.updateAddress(
+      await service.updateAddresses(
         { customer_id: customer.id },
         {
           address_name: "Under Construction",
@@ -791,7 +791,7 @@ describe("Customer Module Service", () => {
         },
       ])
 
-      await service.updateAddress([address1.id, address2.id], {
+      await service.updateAddresses([address1.id, address2.id], {
         address_name: "Under Construction",
       })
 
