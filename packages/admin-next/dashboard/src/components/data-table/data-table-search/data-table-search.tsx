@@ -24,6 +24,7 @@ export const DataTableSearch = ({
 
   const query = selectedParams.get()
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedOnChange = useCallback(
     debounce((e: ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value
