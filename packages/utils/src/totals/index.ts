@@ -5,6 +5,7 @@ import {
 } from "@medusajs/types"
 import { BigNumber as BigNumberJs } from "bignumber.js"
 import { BigNumber } from "./big-number"
+import { toBigNumberJs } from "./to-big-number-js"
 
 type GetLineItemTotalsContext = {
   includeTax?: boolean
@@ -60,47 +61,32 @@ export function getShippingMethodTotals_(
   shippingMethod: GetShippingMethodTotalInput,
   context: { includeTax?: boolean }
 ) {
-  const shippingMethodPrice = BigNumberJs(shippingMethod.raw_amount.value)
-  const taxTotal = BigNumberJs(shippingMethod.tax_total ?? 0)
-  const originalTaxTotal = BigNumberJs(shippingMethod.original_tax_total ?? 0)
+  const { amount, tax_total, original_tax_total } = toBigNumberJs(
+    shippingMethod,
+    ["amount", "tax_total", "original_tax_total"]
+  )
+
+  const amountBn = new BigNumber(amount)
 
   const totals = {
-    amount: shippingMethodPrice.toNumber(),
-    raw_amount: new BigNumber(shippingMethodPrice).raw,
-
-    total: shippingMethodPrice.toNumber(),
-    raw_total: new BigNumber(shippingMethodPrice),
-
-    original_total: shippingMethodPrice.toNumber(),
-    raw_original_total: new BigNumber(shippingMethodPrice),
-
-    subtotal: shippingMethodPrice.toNumber(),
-    raw_subtotal: new BigNumber(shippingMethodPrice),
-
-    tax_total: taxTotal.toNumber(),
-    raw_tax_total: new BigNumber(taxTotal),
-
-    original_tax_total: originalTaxTotal.toNumber(),
-    raw_original_tax_total: new BigNumber(originalTaxTotal),
+    amount: amountBn,
+    total: amountBn,
+    original_total: amountBn,
+    subtotal: amountBn,
+    tax_total: new BigNumber(tax_total),
+    original_tax_total: new BigNumber(original_tax_total),
   }
 
   const isTaxInclusive = context.includeTax ?? shippingMethod.is_tax_inclusive
 
   if (isTaxInclusive) {
-    const subtotal = BigNumberJs(shippingMethod.subtotal).minus(taxTotal)
-    totals.subtotal = subtotal.toNumber()
-    totals.raw_subtotal = new BigNumber(subtotal)
+    const subtotal = amount.minus(tax_total)
+    totals.subtotal = new BigNumber(subtotal)
   } else {
-    const originalTotal = BigNumberJs(shippingMethod.original_subtotal).plus(
-      totals.original_tax_total
-    )
-    const total = BigNumberJs(shippingMethod.total).plus(totals.tax_total)
-
-    totals.original_total = originalTotal.toNumber()
-    totals.raw_original_total = new BigNumber(originalTotal)
-
-    totals.total = total.toNumber()
-    totals.raw_total = new BigNumber(total)
+    const originalTotal = amount.plus(original_tax_total)
+    const total = amount.plus(tax_total)
+    totals.original_total = new BigNumber(originalTotal)
+    totals.total = new BigNumber(total)
   }
 
   return totals
@@ -125,16 +111,13 @@ function getTotalsForSingleLineItem(
   item: GetItemTotalInput,
   context: GetLineItemTotalsContext
 ) {
-  const unitPrice = BigNumberJs(
-    item.unit_price.raw?.value ?? item.unit_price.numeric
-  )
-  const subtotal = unitPrice.times(item.quantity)
-  const taxTotal = BigNumberJs(
-    item.tax_total?.raw?.value ?? item.tax_total?.numeric ?? 0
-  )
-  const originalTaxTotal = BigNumberJs(
-    item.original_tax_total?.raw?.value ?? item.original_tax_total?.numeric ?? 0
-  )
+  const { unit_price, tax_total, original_tax_total } = toBigNumberJs(item, [
+    "unit_price",
+    "tax_total",
+    "original_tax_total",
+  ])
+
+  const subtotal = unit_price.times(item.quantity)
 
   const discountTotal = BigNumberJs(0)
 
@@ -148,22 +131,22 @@ function getTotalsForSingleLineItem(
     total: new BigNumber(total),
     original_total: new BigNumber(subtotal),
     discount_total: new BigNumber(discountTotal),
-    tax_total: new BigNumber(taxTotal),
-    original_tax_total: new BigNumber(originalTaxTotal),
+    tax_total: new BigNumber(tax_total),
+    original_tax_total: new BigNumber(original_tax_total),
   }
 
   const isTaxInclusive = context.includeTax ?? item.is_tax_inclusive
 
   if (isTaxInclusive) {
-    const subtotal = unitPrice.times(totals.quantity).minus(originalTaxTotal)
+    const subtotal = unit_price.times(totals.quantity).minus(original_tax_total)
 
     const subtotalBn = new BigNumber(subtotal)
     totals.subtotal = subtotalBn
     totals.total = subtotalBn
     totals.original_total = subtotalBn
   } else {
-    const newTotal = total.plus(taxTotal)
-    const originalTotal = subtotal.plus(originalTaxTotal)
+    const newTotal = total.plus(tax_total)
+    const originalTotal = subtotal.plus(original_tax_total)
     totals.total = new BigNumber(newTotal)
     totals.original_total = new BigNumber(originalTotal)
   }
@@ -213,19 +196,20 @@ export function decorateCartTotals(
     return itemTotals
   })
 
-  // cart.shipping_methods = (cart.shipping_methods || []).map(
-  //   (shippingMethod) => {
-  //     const methodWithTotals = Object.assign(
-  //       shippingMethod,
-  //       shippingMethodsTotals[shippingMethod.id] ?? {}
-  //     )
+  cart.shipping_methods = shippingMethods.map((shippingMethod) => {
+    const methodTotals = Object.assign(
+      shippingMethod,
+      shippingMethodsTotals[shippingMethod.id] ?? {}
+    )
 
-  //     shippingTotal.plus(methodWithTotals.raw_total)
-  //     shippingTaxTotal.plus(methodWithTotals.raw_tax_total)
+    const total = BigNumberJs(methodTotals.total.raw!.value)
+    const methodTaxTotal = BigNumberJs(methodTotals.tax_total.raw!.value)
 
-  //     return methodWithTotals
-  //   }
-  // )
+    shippingTotal.plus(total)
+    shippingTaxTotal.plus(methodTaxTotal)
+
+    return methodTotals
+  })
 
   const taxTotal = itemTaxTotal.plus(shippingTaxTotal)
 
