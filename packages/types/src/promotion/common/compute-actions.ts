@@ -51,13 +51,13 @@ export interface ComputeActionAdjustmentLine extends Record<string, unknown> {
 export interface ComputeActionItemLine extends Record<string, unknown> {
   id: string
   quantity: number
-  unit_price: number
+  subtotal: number
   adjustments?: ComputeActionAdjustmentLine[]
 }
 
 export interface ComputeActionShippingLine extends Record<string, unknown> {
   id: string
-  unit_price: number
+  subtotal: number
   adjustments?: ComputeActionAdjustmentLine[]
 }
 

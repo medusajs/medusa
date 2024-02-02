@@ -1,8 +1,7 @@
-import { AuthUserDTO, IAuthModuleService } from "@medusajs/types"
+import { AuthUserDTO } from "@medusajs/types"
 import { MedusaRequest, MedusaResponse } from "../types/routing"
 import { NextFunction, RequestHandler } from "express"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
 const SESSION_AUTH = "session"
@@ -47,13 +46,14 @@ export const authenticate = (
       }
     }
 
-    if (authTypes.includes(BEARER_AUTH)) {
+    if (!authUser && authTypes.includes(BEARER_AUTH)) {
       const authHeader = req.headers.authorization
 
       if (authHeader) {
         const re = /(\S+)\s+(\S+)/
         const matches = authHeader.match(re)
 
+        // TODO: figure out how to obtain token (and store correct data in token)
         if (matches) {
           const tokenType = matches[1]
           const token = matches[2]

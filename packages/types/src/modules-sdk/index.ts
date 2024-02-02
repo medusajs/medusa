@@ -10,6 +10,7 @@ import { Logger } from "../logger"
 
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
+export * from "./internal-module-service"
 
 export type LogLevel =
   | "query"
@@ -289,4 +290,14 @@ export interface IModuleService {
   __hooks?: {
     onApplicationStart?: () => Promise<void>
   }
+}
+
+export type ModuleProviderExports = {
+  services: Constructor<any>[]
+}
+
+export type ModuleProvider = {
+  resolve: string | ModuleProviderExports
+  provider_name?: string
+  options: Record<string, unknown>
 }

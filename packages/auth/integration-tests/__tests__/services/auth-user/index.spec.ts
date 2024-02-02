@@ -166,7 +166,7 @@ describe("AuthUser Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"authUserId" must be defined')
+      expect(error.message).toEqual("authUser - id must be defined")
     })
   })
 
@@ -229,7 +229,7 @@ describe("AuthUser Service", () => {
           id: "test",
           provider_id: "manual",
           entity_id: "test",
-          scope: "store"
+          scope: "store",
         },
       ])
 

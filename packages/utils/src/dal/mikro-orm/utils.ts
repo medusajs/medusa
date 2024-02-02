@@ -1,3 +1,5 @@
+import { buildQuery } from "../../modules-sdk"
+
 export const mikroOrmUpdateDeletedAtRecursively = async <
   T extends object = any
 >(
@@ -27,12 +29,35 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
         continue
       }
 
+      const retrieveEntity = async () => {
+        const query = buildQuery(
+          {
+            id: entity.id,
+          },
+          {
+            relations: [relation.name],
+            withDeleted: true,
+          }
+        )
+        return await manager.findOne(
+          entity.constructor.name,
+          query.where,
+          query.options
+        )
+      }
+
+      if (!entityRelation) {
+        // Fixes the case of many to many through pivot table
+        entityRelation = await retrieveEntity()
+      }
+
       const isCollection = "toArray" in entityRelation
       let relationEntities: any[] = []
 
       if (isCollection) {
         if (!entityRelation.isInitialized()) {
-          entityRelation = await entityRelation.init({ populate: true })
+          entityRelation = await retrieveEntity()
+          entityRelation = entityRelation[relation.name]
         }
         relationEntities = entityRelation.getItems()
       } else {
@@ -53,6 +78,10 @@ export const mikroOrmSerializer = async <TOutput extends object>(
 ): Promise<TOutput> => {
   options ??= {}
   const { serialize } = await import("@mikro-orm/core")
-  const result = serialize(data, options)
+  const result = serialize(data, {
+    forceObject: true,
+    populate: true,
+    ...options,
+  })
   return result as unknown as Promise<TOutput>
 }

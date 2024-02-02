@@ -1,13 +1,11 @@
-import { IAuthModuleService, ICustomerModuleService } from "@medusajs/types"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import adminSeeder from "../../../../helpers/admin-seeder"
-import { getContainer } from "../../../../environment-helpers/use-container"
-import jwt from "jsonwebtoken"
+import { ICustomerModuleService } from "@medusajs/types"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
+import { getContainer } from "../../../../environment-helpers/use-container"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
 jest.setTimeout(50000)
 
@@ -35,44 +33,28 @@ describe("GET /store/customers", () => {
     await shutdownServer()
   })
 
-  beforeEach(async () => {
-    await adminSeeder(dbConnection)
-  })
-
   afterEach(async () => {
     const db = useDb()
     await db.teardown()
   })
 
   it("should retrieve auth user's customer", async () => {
-    const customer = await customerModuleService.create({
-      first_name: "John",
-      last_name: "Doe",
-      email: "john@me.com",
-    })
-
-    const authService: IAuthModuleService = appContainer.resolve(
-      ModuleRegistrationName.AUTH
-    )
-    const authUser = await authService.createAuthUser({
-      entity_id: "store_user",
-      provider_id: "test",
-      scope: "store",
-      app_metadata: { customer_id: customer.id },
-    })
-
     const { jwt_secret } = appContainer.resolve("configModule").projectConfig
-    const token = jwt.sign(authUser, jwt_secret)
+    const { customer, jwt } = await createAuthenticatedCustomer(
+      customerModuleService,
+      appContainer.resolve(ModuleRegistrationName.AUTH),
+      jwt_secret
+    )
 
     const api = useApi() as any
     const response = await api.get(`/store/customers/me`, {
-      headers: { authorization: `Bearer ${token}` },
+      headers: { authorization: `Bearer ${jwt}` },
     })
 
     expect(response.status).toEqual(200)
     expect(response.data.customer).toEqual(
       expect.objectContaining({
-        id: expect.any(String),
+        id: customer.id,
         first_name: "John",
         last_name: "Doe",
         email: "john@me.com",

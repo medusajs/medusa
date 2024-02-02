@@ -8,9 +8,9 @@ import {
 } from "@medusajs/types"
 import {
   InjectEntityManager,
-  isDefined,
   MedusaContext,
   MedusaError,
+  isDefined,
   promiseAll,
 } from "@medusajs/utils"
 import { EntityManager, FindManyOptions, In } from "typeorm"
@@ -55,7 +55,7 @@ export default class ReservationItemService {
   async list(
     selector: FilterableReservationItemProps = {},
     config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<ReservationItem[]> {
     const manager = context.transactionManager ?? this.manager_
     const itemRepository = manager.getRepository(ReservationItem)
@@ -75,7 +75,7 @@ export default class ReservationItemService {
   async listAndCount(
     selector: FilterableReservationItemProps = {},
     config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<[ReservationItem[], number]> {
     const manager = context.transactionManager ?? this.manager_
     const itemRepository = manager.getRepository(ReservationItem)
@@ -96,7 +96,7 @@ export default class ReservationItemService {
   async retrieve(
     reservationItemId: string,
     config: FindConfig<ReservationItem> = {},
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<ReservationItem> {
     if (!isDefined(reservationItemId)) {
       throw new MedusaError(

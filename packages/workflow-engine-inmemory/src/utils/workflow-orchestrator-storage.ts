@@ -5,14 +5,12 @@ import {
   TransactionStep,
 } from "@medusajs/orchestration"
 import { TransactionState } from "@medusajs/utils"
-import {
-  WorkflowExecutionService,
-  WorkflowOrchestratorService,
-} from "@services"
+import { WorkflowOrchestratorService } from "@services"
+import { ModulesSdkTypes } from "@medusajs/types"
 
 // eslint-disable-next-line max-len
 export class InMemoryDistributedTransactionStorage extends DistributedTransactionStorage {
-  private workflowExecutionService_: WorkflowExecutionService
+  private workflowExecutionService_: ModulesSdkTypes.InternalModuleService<any>
   private workflowOrchestratorService_: WorkflowOrchestratorService
 
   private storage: Map<string, TransactionCheckpoint> = new Map()
@@ -22,7 +20,7 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
   constructor({
     workflowExecutionService,
   }: {
-    workflowExecutionService: WorkflowExecutionService
+    workflowExecutionService: ModulesSdkTypes.InternalModuleService<any>
   }) {
     super()
 

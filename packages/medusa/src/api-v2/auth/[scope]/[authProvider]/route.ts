@@ -1,9 +1,8 @@
+import jwt from "jsonwebtoken"
 import { AuthenticationInput, IAuthModuleService } from "@medusajs/types"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
-
 import { MedusaError } from "@medusajs/utils"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import jwt from "jsonwebtoken"
+import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { scope, authProvider } = req.params

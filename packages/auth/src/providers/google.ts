@@ -3,8 +3,9 @@ import {
   AuthProviderScope,
   AuthenticationInput,
   AuthenticationResponse,
+  ModulesSdkTypes,
 } from "@medusajs/types"
-import { AuthProviderService, AuthUserService } from "@services"
+import { AuthUserService } from "@services"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
 import { AuthorizationCode } from "simple-oauth2"
@@ -12,7 +13,7 @@ import url from "url"
 
 type InjectedDependencies = {
   authUserService: AuthUserService
-  authProviderService: AuthProviderService
+  authProviderService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 type ProviderConfig = {
@@ -25,13 +26,13 @@ class GoogleProvider extends AbstractAuthModuleProvider {
   public static PROVIDER = "google"
   public static DISPLAY_NAME = "Google Authentication"
 
-  protected readonly authUserSerivce_: AuthUserService
-  protected readonly authProviderService_: AuthProviderService
+  protected readonly authUserService_: AuthUserService
+  protected readonly authProviderService_: ModulesSdkTypes.InternalModuleService<any>
 
   constructor({ authUserService, authProviderService }: InjectedDependencies) {
     super(arguments[0])
 
-    this.authUserSerivce_ = authUserService
+    this.authUserService_ = authUserService
     this.authProviderService_ = authProviderService
   }
 
@@ -81,21 +82,21 @@ class GoogleProvider extends AbstractAuthModuleProvider {
 
   // abstractable
   async verify_(refreshToken: string, scope: string) {
-    const jwtData = (await jwt.decode(refreshToken, {
+    const jwtData = jwt.decode(refreshToken, {
       complete: true,
-    })) as JwtPayload
+    }) as JwtPayload
     const entity_id = jwtData.payload.email
 
     let authUser
 
     try {
-      authUser = await this.authUserSerivce_.retrieveByProviderAndEntityId(
+      authUser = await this.authUserService_.retrieveByProviderAndEntityId(
         entity_id,
         GoogleProvider.PROVIDER
       )
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
-        const [createdAuthUser] = await this.authUserSerivce_.create([
+        const [createdAuthUser] = await this.authUserService_.create([
           {
             entity_id,
             provider: GoogleProvider.PROVIDER,
