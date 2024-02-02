@@ -8,7 +8,6 @@ import {
   CustomerTypes,
   SoftDeleteReturn,
   RestoreReturn,
-  CustomerUpdatableFields,
 } from "@medusajs/types"
 
 import {
@@ -18,9 +17,17 @@ import {
   mapObjectTo,
   isString,
   isObject,
+  isDuplicateError,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import * as services from "../services"
+import { MedusaError } from "@medusajs/utils"
+import { EntityManager } from "@mikro-orm/core"
+
+const UNIQUE_CUSTOMER_SHIPPING_ADDRESS =
+  "IDX_customer_address_unique_customer_shipping"
+const UNIQUE_CUSTOMER_BILLING_ADDRESS =
+  "IDX_customer_address_unique_customer_billing"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -97,15 +104,10 @@ export default class CustomerModuleService implements ICustomerModuleService {
   ) {
     const data = Array.isArray(dataOrArray) ? dataOrArray : [dataOrArray]
 
-    // keep address data for creation
-    const addressData = data.map((d) => d.addresses)
-
     const customers = await this.customerService_.create(data, sharedContext)
 
-    // decorate addresses with customer ids
-    // filter out addresses without data
-    const addressDataWithCustomerIds = addressData
-      .map((addresses, i) => {
+    const addressDataWithCustomerIds = data
+      .map(({ addresses }, i) => {
         if (!addresses) {
           return []
         }
@@ -117,7 +119,7 @@ export default class CustomerModuleService implements ICustomerModuleService {
       })
       .flat()
 
-    await this.addressService_.create(addressDataWithCustomerIds, sharedContext)
+    await this.addAddresses(addressDataWithCustomerIds, sharedContext)
 
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerDTO[]
@@ -457,6 +459,8 @@ export default class CustomerModuleService implements ICustomerModuleService {
       sharedContext
     )
 
+    await this.flush(sharedContext).catch(this.handleDbErrors)
+
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerAddressDTO[]
     >(addresses, { populate: true })
@@ -522,6 +526,9 @@ export default class CustomerModuleService implements ICustomerModuleService {
       updateData,
       sharedContext
     )
+
+    await this.flush(sharedContext).catch(this.handleDbErrors)
+
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerAddressDTO[]
     >(addresses, { populate: true })
@@ -774,5 +781,31 @@ export default class CustomerModuleService implements ICustomerModuleService {
           }
         )
       : void 0
+  }
+
+  private async flush(context: Context) {
+    const em = (context.manager ?? context.transactionManager) as EntityManager
+    await em.flush()
+  }
+
+  private async handleDbErrors(err: any) {
+    if (isDuplicateError(err)) {
+      switch (err.constraint) {
+        case UNIQUE_CUSTOMER_SHIPPING_ADDRESS:
+          throw new MedusaError(
+            MedusaError.Types.DUPLICATE_ERROR,
+            "A default shipping address already exists"
+          )
+        case UNIQUE_CUSTOMER_BILLING_ADDRESS:
+          throw new MedusaError(
+            MedusaError.Types.DUPLICATE_ERROR,
+            "A default billing address already exists"
+          )
+        default:
+          break
+      }
+    }
+
+    throw err
   }
 }

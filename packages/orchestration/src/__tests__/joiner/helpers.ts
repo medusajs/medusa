@@ -144,4 +144,79 @@ describe("toRemoteJoinerQuery", () => {
       ],
     })
   })
+
+  it("should transform a nested object with arguments and directives to a Remote Joiner Query format only using variables", async () => {
+    const obj = {
+      product: {
+        fields: ["id", "title", "handle"],
+        variants: {
+          fields: ["sku"],
+          __directives: {
+            directiveName: "value",
+          },
+          shipping_profiles: {
+            profile: {
+              fields: ["id", "name"],
+            },
+          },
+        },
+      },
+    }
+
+    const rjQuery = toRemoteJoinerQuery(obj, {
+      product: {
+        limit: 10,
+        offset: 0,
+      },
+      "product.variants.shipping_profiles.profile": {
+        context: {
+          customer_group: "cg_123",
+          region_id: "US",
+        },
+      },
+    })
+
+    expect(rjQuery).toEqual({
+      alias: "product",
+      fields: ["id", "title", "handle"],
+      expands: [
+        {
+          property: "variants",
+          directives: [
+            {
+              name: "directiveName",
+              value: "value",
+            },
+          ],
+          fields: ["sku"],
+        },
+        {
+          property: "variants.shipping_profiles",
+        },
+        {
+          property: "variants.shipping_profiles.profile",
+          args: [
+            {
+              name: "context",
+              value: {
+                customer_group: "cg_123",
+                region_id: "US",
+              },
+            },
+          ],
+          fields: ["id", "name"],
+        },
+      ],
+      args: [
+        {
+          name: "limit",
+          value: 10,
+        },
+        {
+          name: "offset",
+          value: 0,
+        },
+      ],
+    })
+  })
 })

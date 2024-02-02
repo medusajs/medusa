@@ -1,5 +1,5 @@
 import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
-import { MedusaContext } from "../decorators"
+import { MedusaContext } from "../modules-sdk"
 import { transactionWrapper } from "./utils"
 
 class AbstractBase<T = any> {
