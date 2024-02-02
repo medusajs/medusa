@@ -5,6 +5,7 @@ import { storeCustomerRoutesMiddlewares } from "./store/customers/middlewares"
 import { adminCustomerRoutesMiddlewares } from "./admin/customers/middlewares"
 import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
 import { storeCartRoutesMiddlewares } from "./store/carts/middlewares"
+import { authRoutesMiddlewares } from "./auth/middlewares"
 
 export const config: MiddlewaresConfig = {
   routes: [
@@ -14,5 +15,6 @@ export const config: MiddlewaresConfig = {
     ...adminCampaignRoutesMiddlewares,
     ...storeCustomerRoutesMiddlewares,
     ...storeCartRoutesMiddlewares,
+    ...authRoutesMiddlewares,
   ],
 }
