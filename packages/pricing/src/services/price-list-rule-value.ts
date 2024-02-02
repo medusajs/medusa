@@ -9,26 +9,32 @@ type InjectedDependencies = {
 
 export default class PriceListRuleValueService<
   TEntity extends PriceListRuleValue = PriceListRuleValue
-> extends ModulesSdkUtils.abstractServiceFactory<
-  InjectedDependencies,
-  {
-    update: ServiceTypes.UpdatePriceListRuleValueDTO
-  },
-  {
-    list: ServiceTypes.FilterablePriceListRuleValueProps
-    listAndCount: ServiceTypes.FilterablePriceListRuleValueProps
-  }
->(PriceListRuleValue)<TEntity> {
+> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+  PriceListRuleValue
+)<TEntity> {
   constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
   }
 
-  async create(
+  create(
     data: ServiceTypes.CreatePriceListRuleValueDTO[],
+    context: Context
+  ): Promise<TEntity[]>
+
+  create(
+    data: ServiceTypes.CreatePriceListRuleValueDTO,
+    context: Context
+  ): Promise<TEntity>
+
+  async create(
+    data:
+      | ServiceTypes.CreatePriceListRuleValueDTO
+      | ServiceTypes.CreatePriceListRuleValueDTO[],
     context: Context = {}
-  ): Promise<TEntity[]> {
-    const priceListRuleValues = data.map((priceRuleValueData) => {
+  ): Promise<TEntity | TEntity[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+    const priceListRuleValues = data_.map((priceRuleValueData) => {
       const { price_list_rule_id: priceListRuleId, ...priceRuleValue } =
         priceRuleValueData
 

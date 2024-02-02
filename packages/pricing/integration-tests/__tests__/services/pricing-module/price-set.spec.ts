@@ -248,7 +248,7 @@ describe("PricingModule Service - PriceSet", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"priceSetId" must be defined')
+      expect(error.message).toEqual("priceSet - id must be defined")
     })
 
     it("should return priceSet based on config select param", async () => {

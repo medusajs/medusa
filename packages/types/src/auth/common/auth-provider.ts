@@ -25,6 +25,7 @@ export type UpdateAuthProviderDTO = {
 
 export interface FilterableAuthProviderProps
   extends BaseFilterable<FilterableAuthProviderProps> {
+  id?: string | string[]
   provider?: string[]
   is_active?: boolean
   scope?: string[]
