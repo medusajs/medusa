@@ -1,4 +1,5 @@
 import { Context } from "@medusajs/types"
+import { MedusaContextType } from "./context-parameter"
 
 export function InjectManager(managerProperty?: string): MethodDecorator {
   return function (
@@ -38,7 +39,12 @@ export function InjectManager(managerProperty?: string): MethodDecorator {
         : this[managerProperty]
 
       copiedContext.manager ??= resourceWithManager.getFreshManager()
-      copiedContext.transactionManager ??= originalContext?.transactionManager
+
+      if (originalContext?.transactionManager) {
+        copiedContext.transactionManager = originalContext?.transactionManager
+      }
+
+      copiedContext.__type ??= MedusaContextType
 
       args[argIndex] = copiedContext
 

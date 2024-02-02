@@ -1,6 +1,8 @@
 import { internalModuleServiceFactory } from "../internal-module-service-factory"
 import { lowerCaseFirst } from "../../common"
 
+const defaultContext = { __type: "MedusaContext" }
+
 class Model {}
 describe("Internal Module Service Factory", () => {
   const modelRepositoryName = `${lowerCaseFirst(Model.name)}Repository`
@@ -197,7 +199,7 @@ describe("Internal Module Service Factory", () => {
             },
           ],
         },
-        {}
+        defaultContext
       )
     })
 
@@ -216,7 +218,7 @@ describe("Internal Module Service Factory", () => {
             },
           ],
         },
-        {}
+        defaultContext
       )
     })
 
@@ -224,14 +226,14 @@ describe("Internal Module Service Factory", () => {
       await instance.softDelete("1")
       expect(
         containerMock[modelRepositoryName].softDelete
-      ).toHaveBeenCalledWith("1", {})
+      ).toHaveBeenCalledWith("1", defaultContext)
     })
 
     test("should restore entity successfully", async () => {
       await instance.restore("1")
       expect(containerMock[modelRepositoryName].restore).toHaveBeenCalledWith(
         "1",
-        {}
+        defaultContext
       )
     })
   })

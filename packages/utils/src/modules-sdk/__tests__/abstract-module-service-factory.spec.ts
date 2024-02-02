@@ -1,19 +1,23 @@
 import { abstractModuleServiceFactory } from "../abstract-module-service-factory"
 
+const baseRepoMock = {
+  serialize: jest.fn().mockImplementation((item) => item),
+  transaction: (task) => task("transactionManager"),
+  getFreshManager: jest.fn().mockReturnThis(),
+}
+
+const defaultContext = { __type: "MedusaContext", manager: baseRepoMock }
+const defaultTransactionContext = {
+  __type: "MedusaContext",
+  transactionManager: "transactionManager",
+}
+
 describe("Abstract Module Service Factory", () => {
   const containerMock = {
-    baseRepository: {
-      serialize: jest.fn().mockImplementation((item) => item),
-    },
-    mainModelMockRepository: {
-      serialize: jest.fn().mockImplementation((item) => item),
-    },
-    otherModelMock1Repository: {
-      serialize: jest.fn().mockImplementation((item) => item),
-    },
-    otherModelMock2Repository: {
-      serialize: jest.fn().mockImplementation((item) => item),
-    },
+    baseRepository: baseRepoMock,
+    mainModelMockRepository: baseRepoMock,
+    otherModelMock1Repository: baseRepoMock,
+    otherModelMock2Repository: baseRepoMock,
     mainModelMockService: {
       retrieve: jest.fn().mockResolvedValue({ id: "1", name: "Item" }),
       list: jest.fn().mockResolvedValue([{ id: "1", name: "Item" }]),
@@ -87,7 +91,7 @@ describe("Abstract Module Service Factory", () => {
       expect(containerMock.mainModelMockService.retrieve).toHaveBeenCalledWith(
         "1",
         undefined,
-        {}
+        defaultContext
       )
     })
 
@@ -97,7 +101,7 @@ describe("Abstract Module Service Factory", () => {
       expect(containerMock.mainModelMockService.list).toHaveBeenCalledWith(
         {},
         {},
-        {}
+        defaultContext
       )
     })
 
@@ -105,7 +109,7 @@ describe("Abstract Module Service Factory", () => {
       await instance.delete("1")
       expect(containerMock.mainModelMockService.delete).toHaveBeenCalledWith(
         ["1"],
-        {}
+        defaultTransactionContext
       )
     })
 
@@ -114,7 +118,7 @@ describe("Abstract Module Service Factory", () => {
       expect(result).toEqual(undefined)
       expect(
         containerMock.mainModelMockService.softDelete
-      ).toHaveBeenCalledWith(["1"], {})
+      ).toHaveBeenCalledWith(["1"], defaultTransactionContext)
     })
 
     test("should have restore method", async () => {
@@ -122,7 +126,7 @@ describe("Abstract Module Service Factory", () => {
       expect(result).toEqual(undefined)
       expect(containerMock.mainModelMockService.restore).toHaveBeenCalledWith(
         ["1"],
-        {}
+        defaultTransactionContext
       )
     })
 
@@ -130,7 +134,7 @@ describe("Abstract Module Service Factory", () => {
       await instance.delete({ selector: { id: "1" } })
       expect(containerMock.mainModelMockService.delete).toHaveBeenCalledWith(
         [{ selector: { id: "1" } }],
-        {}
+        defaultTransactionContext
       )
     })
   })
@@ -148,7 +152,7 @@ describe("Abstract Module Service Factory", () => {
       expect(result).toEqual({ id: "1", name: "Item" })
       expect(
         containerMock.otherModelMock1Service.retrieve
-      ).toHaveBeenCalledWith("1", undefined, {})
+      ).toHaveBeenCalledWith("1", undefined, defaultContext)
     })
 
     test("should have list method for other models", async () => {
@@ -157,7 +161,7 @@ describe("Abstract Module Service Factory", () => {
       expect(containerMock.otherModelMock1Service.list).toHaveBeenCalledWith(
         {},
         {},
-        {}
+        defaultContext
       )
     })
 
@@ -165,7 +169,7 @@ describe("Abstract Module Service Factory", () => {
       await instance.deleteOtherModelMock1s("1")
       expect(containerMock.otherModelMock1Service.delete).toHaveBeenCalledWith(
         ["1"],
-        {}
+        defaultTransactionContext
       )
     })
 
@@ -174,7 +178,7 @@ describe("Abstract Module Service Factory", () => {
       expect(result).toEqual(undefined)
       expect(
         containerMock.otherModelMock1Service.softDelete
-      ).toHaveBeenCalledWith(["1"], {})
+      ).toHaveBeenCalledWith(["1"], defaultTransactionContext)
     })
 
     test("should have restore method for other models", async () => {
@@ -182,7 +186,7 @@ describe("Abstract Module Service Factory", () => {
       expect(result).toEqual(undefined)
       expect(containerMock.otherModelMock1Service.restore).toHaveBeenCalledWith(
         ["1"],
-        {}
+        defaultTransactionContext
       )
     })
 
@@ -190,7 +194,7 @@ describe("Abstract Module Service Factory", () => {
       await instance.deleteOtherModelMock1s({ selector: { id: "1" } })
       expect(containerMock.otherModelMock1Service.delete).toHaveBeenCalledWith(
         [{ selector: { id: "1" } }],
-        {}
+        defaultTransactionContext
       )
     })
   })
