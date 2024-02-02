@@ -246,6 +246,7 @@ describe("AuthModuleService - AuthUser", () => {
           id: "test",
           provider_id: "manual",
           entity_id: "test",
+          scope: "store",
         },
       ])
 

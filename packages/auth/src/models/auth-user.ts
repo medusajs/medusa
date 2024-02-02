@@ -17,7 +17,10 @@ import { generateEntityId } from "@medusajs/utils"
 type OptionalFields = "provider_metadata" | "app_metadata" | "user_metadata"
 
 @Entity()
-@Unique({ properties: ["provider","entity_id" ], name: "IDX_auth_user_provider_entity_id" })
+@Unique({
+  properties: ["provider", "scope", "entity_id"],
+  name: "IDX_auth_user_provider_scope_entity_id",
+})
 export default class AuthUser {
   [OptionalProps]: OptionalFields
 
@@ -34,14 +37,17 @@ export default class AuthUser {
   })
   provider: AuthProvider
 
+  @Property({ columnType: "text" })
+  scope: string
+
   @Property({ columnType: "jsonb", nullable: true })
   user_metadata: Record<string, unknown> | null
 
-  @Property({ columnType: "jsonb", nullable: true })
-  app_metadata: Record<string, unknown> | null
+  @Property({ columnType: "jsonb" })
+  app_metadata: Record<string, unknown> = {}
 
   @Property({ columnType: "jsonb", nullable: true })
-  provider_metadata: Record<string, unknown> | null
+  provider_metadata: Record<string, unknown> | null = null
 
   @BeforeCreate()
   onCreate() {

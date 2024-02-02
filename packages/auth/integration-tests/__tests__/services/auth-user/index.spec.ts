@@ -1,12 +1,11 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { AuthUserService } from "@services"
-
+import ContainerLoader from "../../../../src/loaders/container"
 import { MikroOrmWrapper } from "../../../utils"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { asValue } from "awilix"
 import { createAuthProviders } from "../../../__fixtures__/auth-provider"
 import { createAuthUsers } from "../../../__fixtures__/auth-user"
 import { createMedusaContainer } from "@medusajs/utils"
-import { asValue } from "awilix"
-import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -229,7 +228,8 @@ describe("AuthUser Service", () => {
         {
           id: "test",
           provider_id: "manual",
-          entity_id: "test"
+          entity_id: "test",
+          scope: "store"
         },
       ])
 
