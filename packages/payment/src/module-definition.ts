@@ -4,6 +4,7 @@ import { PaymentModuleService } from "@services"
 
 import loadConnection from "./loaders/connection"
 import loadContainer from "./loaders/container"
+import loadProviders from "./loaders/providers"
 
 import { Modules } from "@medusajs/modules-sdk"
 import { ModulesSdkUtils } from "@medusajs/utils"
@@ -24,7 +25,7 @@ export const revertMigration = ModulesSdkUtils.buildRevertMigrationScript(
 )
 
 const service = PaymentModuleService
-const loaders = [loadContainer, loadConnection] as any
+const loaders = [loadContainer, loadConnection, loadProviders] as any
 
 export const moduleDefinition: ModuleExports = {
   service,

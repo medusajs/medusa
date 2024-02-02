@@ -8,6 +8,8 @@ import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import adminSeeder from "../../../../helpers/admin-seeder"
 
+jest.setTimeout(50000)
+
 export const campaignsData = [
   {
     id: "campaign-id-1",

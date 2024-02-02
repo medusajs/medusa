@@ -49,7 +49,7 @@ post:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_inventory-items_{id}_location-levels_{location_id}/postundefined
+          ../code_samples/tsx/admin_inventory-items_{id}_location-levels_{location_id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -110,7 +110,7 @@ delete:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_inventory-items_{id}_location-levels_{location_id}/deleteundefined
+          ../code_samples/tsx/admin_inventory-items_{id}_location-levels_{location_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

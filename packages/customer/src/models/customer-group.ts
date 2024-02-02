@@ -1,5 +1,5 @@
 import { DAL } from "@medusajs/types"
-import { generateEntityId } from "@medusajs/utils"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -9,13 +9,15 @@ import {
   Property,
   ManyToMany,
   Collection,
+  Filter,
 } from "@mikro-orm/core"
 import Customer from "./customer"
 import CustomerGroupCustomer from "./customer-group-customer"
 
-type OptionalGroupProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
+type OptionalGroupProps = DAL.SoftDeletableEntityDateColumns // TODO: To be revisited when more clear
 
 @Entity({ tableName: "customer_group" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class CustomerGroup {
   [OptionalProps]: OptionalGroupProps
 
@@ -51,6 +53,9 @@ export default class CustomerGroup {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

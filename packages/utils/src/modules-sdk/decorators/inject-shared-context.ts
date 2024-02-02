@@ -1,4 +1,5 @@
 import { Context, SharedContext } from "@medusajs/types"
+import { MedusaContextType } from "./context-parameter"
 
 export function InjectSharedContext(): MethodDecorator {
   return function (
@@ -16,7 +17,9 @@ export function InjectSharedContext(): MethodDecorator {
     const argIndex = target.MedusaContextIndex_[propertyKey]
 
     descriptor.value = function (...args: any[]) {
-      const context: SharedContext | Context = { ...(args[argIndex] ?? {}) }
+      const context: SharedContext | Context = {
+        ...(args[argIndex] ?? { __type: MedusaContextType }),
+      }
       args[argIndex] = context
 
       return originalMethod.apply(this, args)

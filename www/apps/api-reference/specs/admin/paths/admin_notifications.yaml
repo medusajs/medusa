@@ -78,7 +78,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_notifications/getundefined
+        $ref: ../code_samples/tsx/admin_notifications/get.tsx
     - lang: Shell
       label: cURL
       source:
