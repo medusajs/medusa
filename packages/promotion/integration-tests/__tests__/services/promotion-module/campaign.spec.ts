@@ -378,7 +378,7 @@ describe("Promotion Module Service: Campaigns", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"campaignId" must be defined')
+      expect(error.message).toEqual("campaign - id must be defined")
     })
 
     it("should return campaign based on config select param", async () => {
