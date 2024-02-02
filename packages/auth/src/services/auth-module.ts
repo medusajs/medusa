@@ -1,23 +1,24 @@
 import jwt from "jsonwebtoken"
 
 import {
+  AuthProviderDTO,
+  AuthTypes,
+  AuthUserDTO,
   AuthenticationInput,
   AuthenticationResponse,
-  AuthTypes,
   Context,
+  CreateAuthProviderDTO,
+  CreateAuthUserDTO,
   DAL,
+  FilterableAuthProviderProps,
+  FilterableAuthUserProps,
   FindConfig,
   InternalModuleDeclaration,
+  JWTGenerationOptions,
   MedusaContainer,
   ModuleJoinerConfig,
-  JWTGenerationOptions,
+  UpdateAuthUserDTO,
 } from "@medusajs/types"
-
-import { AuthProvider, AuthUser } from "@models"
-
-import { joinerConfig } from "../joiner-config"
-import { AuthProviderService, AuthUserService } from "@services"
-
 import {
   AbstractAuthModuleProvider,
   InjectManager,
@@ -25,16 +26,10 @@ import {
   MedusaContext,
   MedusaError,
 } from "@medusajs/utils"
-import {
-  AuthProviderDTO,
-  AuthUserDTO,
-  CreateAuthProviderDTO,
-  CreateAuthUserDTO,
-  FilterableAuthProviderProps,
-  FilterableAuthUserProps,
-  UpdateAuthUserDTO,
-} from "@medusajs/types"
+import { AuthProvider, AuthUser } from "@models"
+import { AuthProviderService, AuthUserService } from "@services"
 import { ServiceTypes } from "@types"
+import { joinerConfig } from "../joiner-config"
 
 type AuthModuleOptions = {
   jwt_secret: string
@@ -90,7 +85,7 @@ export default class AuthModuleService<
   async retrieveAuthProvider(
     provider: string,
     config: FindConfig<AuthProviderDTO> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthProviderDTO> {
     const authProvider = await this.authProviderService_.retrieve(
       provider,
@@ -107,7 +102,7 @@ export default class AuthModuleService<
   async listAuthProviders(
     filters: FilterableAuthProviderProps = {},
     config: FindConfig<AuthProviderDTO> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthProviderDTO[]> {
     const authProviders = await this.authProviderService_.list(
       filters,

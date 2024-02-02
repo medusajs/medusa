@@ -54,6 +54,11 @@ import {
   MedusaError,
   promiseAll,
 } from "@medusajs/utils"
+import { ProductEventData, ProductEvents } from "../types/services/product"
+import {
+  ProductCategoryEventData,
+  ProductCategoryEvents,
+} from "../types/services/product-category"
 import {
   CreateProductOptionValueDTO,
   UpdateProductOptionValueDTO,
@@ -63,11 +68,6 @@ import {
   joinerConfig,
   LinkableKeys,
 } from "./../joiner-config"
-import {
-  ProductCategoryEventData,
-  ProductCategoryEvents,
-} from "../types/services/product-category"
-import { ProductEventData, ProductEvents } from "../types/services/product"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -897,7 +897,7 @@ export default class ProductModuleService<
   @InjectManager("baseRepository_")
   async create(
     data: ProductTypes.CreateProductDTO[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.create_(data, sharedContext)
     const createdProducts = await this.baseRepository_.serialize<
@@ -1319,7 +1319,7 @@ export default class ProductModuleService<
   >(
     productIds: string[],
     { returnLinkableKeys }: SoftDeleteReturn<TReturnableLinkableKeys> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const [products, cascadedEntitiesMap] = await this.softDelete_(
       productIds,
@@ -1369,7 +1369,7 @@ export default class ProductModuleService<
   >(
     productIds: string[],
     { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const [_, cascadedEntitiesMap] = await this.restore_(
       productIds,
