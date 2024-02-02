@@ -18,9 +18,12 @@ import {
   shouldForceTransaction,
   upperCaseFirst,
 } from "../common"
-import { MedusaContext } from "../decorators"
 import { buildQuery } from "./build-query"
-import { InjectManager, InjectTransactionManager } from "./decorators"
+import {
+  InjectManager,
+  InjectTransactionManager,
+  MedusaContext,
+} from "./decorators"
 
 type SelectorAndData = {
   selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>

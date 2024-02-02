@@ -20,8 +20,11 @@ import {
   pluralize,
   upperCaseFirst,
 } from "../common"
-import { InjectManager, InjectTransactionManager } from "./decorators"
-import { MedusaContext } from "../decorators"
+import {
+  InjectManager,
+  InjectTransactionManager,
+  MedusaContext,
+} from "./decorators"
 
 type BaseMethods =
   | "retrieve"

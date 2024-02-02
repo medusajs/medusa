@@ -10,9 +10,12 @@ import {
 } from "@medusajs/types"
 
 import {
+  InjectManager,
   InjectTransactionManager,
+  isDuplicateError,
   isString,
   MedusaContext,
+  MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
@@ -22,6 +25,11 @@ import {
   CustomerGroup,
   CustomerGroupCustomer,
 } from "@models"
+import { EntityManager } from "@mikro-orm/core"
+import {
+  UNIQUE_CUSTOMER_BILLING_ADDRESS,
+  UNIQUE_CUSTOMER_SHIPPING_ADDRESS,
+} from "../models/address"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -91,24 +99,39 @@ export default class CustomerModuleService<
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async create(
     dataOrArray:
       | CustomerTypes.CreateCustomerDTO
       | CustomerTypes.CreateCustomerDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CustomerTypes.CustomerDTO | CustomerTypes.CustomerDTO[]> {
-    const data = Array.isArray(dataOrArray) ? dataOrArray : [dataOrArray]
+    const customers = await this.create_(dataOrArray, sharedContext).catch(
+      this.handleDbErrors
+    )
 
-    // keep address data for creation
-    const addressData = data.map((d) => d.addresses)
+    const serialized = await this.baseRepository_.serialize<
+      CustomerTypes.CustomerDTO[]
+    >(customers, {
+      populate: true,
+    })
+
+    return Array.isArray(dataOrArray) ? serialized : serialized[0]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async create_(
+    dataOrArray:
+      | CustomerTypes.CreateCustomerDTO
+      | CustomerTypes.CreateCustomerDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<CustomerTypes.CustomerDTO[]> {
+    const data = Array.isArray(dataOrArray) ? dataOrArray : [dataOrArray]
 
     const customers = await this.customerService_.create(data, sharedContext)
 
-    // decorate addresses with customer ids
-    // filter out addresses without data
-    const addressDataWithCustomerIds = addressData
-      .map((addresses, i) => {
+    const addressDataWithCustomerIds = data
+      .map(({ addresses }, i) => {
         if (!addresses) {
           return []
         }
@@ -120,15 +143,9 @@ export default class CustomerModuleService<
       })
       .flat()
 
-    await this.addressService_.create(addressDataWithCustomerIds, sharedContext)
+    await this.addAddresses(addressDataWithCustomerIds, sharedContext)
 
-    const serialized = await this.baseRepository_.serialize<
-      CustomerTypes.CustomerDTO[]
-    >(customers, {
-      populate: true,
-    })
-
-    return Array.isArray(dataOrArray) ? serialized : serialized[0]
+    return customers as unknown as CustomerTypes.CustomerDTO[]
   }
 
   update(
@@ -315,6 +332,7 @@ export default class CustomerModuleService<
     return { id: groupCustomers.id }
   }
 
+  // TODO: should be createAddresses to conform to the convention
   async addAddresses(
     addresses: CustomerTypes.CreateCustomerAddressDTO[],
     sharedContext?: Context
@@ -324,7 +342,7 @@ export default class CustomerModuleService<
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerAddressDTO>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async addAddresses(
     data:
       | CustomerTypes.CreateCustomerAddressDTO
@@ -333,9 +351,8 @@ export default class CustomerModuleService<
   ): Promise<
     CustomerTypes.CustomerAddressDTO | CustomerTypes.CustomerAddressDTO[]
   > {
-    const addresses = await this.addressService_.create(
-      Array.isArray(data) ? data : [data],
-      sharedContext
+    const addresses = await this.addAddresses_(data, sharedContext).catch(
+      this.handleDbErrors
     )
 
     const serialized = await this.baseRepository_.serialize<
@@ -347,6 +364,21 @@ export default class CustomerModuleService<
     }
 
     return serialized[0]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  private async addAddresses_(
+    data:
+      | CustomerTypes.CreateCustomerAddressDTO
+      | CustomerTypes.CreateCustomerAddressDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const addresses = await this.addressService_.create(
+      Array.isArray(data) ? data : [data],
+      sharedContext
+    )
+
+    return addresses
   }
 
   async updateAddresses(
@@ -403,6 +435,9 @@ export default class CustomerModuleService<
       updateData,
       sharedContext
     )
+
+    await this.flush(sharedContext).catch(this.handleDbErrors)
+
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerAddressDTO[]
     >(addresses, { populate: true })
@@ -436,5 +471,31 @@ export default class CustomerModuleService<
       groupCustomers.map((gc) => gc.id),
       sharedContext
     )
+  }
+
+  private async flush(context: Context) {
+    const em = (context.manager ?? context.transactionManager) as EntityManager
+    await em.flush()
+  }
+
+  private async handleDbErrors(err: any) {
+    if (isDuplicateError(err)) {
+      switch (err.constraint) {
+        case UNIQUE_CUSTOMER_SHIPPING_ADDRESS:
+          throw new MedusaError(
+            MedusaError.Types.DUPLICATE_ERROR,
+            "A default shipping address already exists"
+          )
+        case UNIQUE_CUSTOMER_BILLING_ADDRESS:
+          throw new MedusaError(
+            MedusaError.Types.DUPLICATE_ERROR,
+            "A default billing address already exists"
+          )
+        default:
+          break
+      }
+    }
+
+    throw err
   }
 }

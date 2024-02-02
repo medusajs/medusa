@@ -30,6 +30,9 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const { result, errors } = await createCampaigns.run({
     input: { campaignsData },
     throwOnError: false,
+    context: {
+      requestId: req.requestId,
+    },
   })
 
   if (Array.isArray(errors) && errors[0]) {

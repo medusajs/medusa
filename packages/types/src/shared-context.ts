@@ -22,6 +22,7 @@ export type SharedContext = {
  * A context used to share resources, such as transaction manager, between the application and the module.
  */
 export type Context<TManager = unknown> = {
+  __type?: "MedusaContext"
   /**
    * An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
    */
@@ -42,4 +43,9 @@ export type Context<TManager = unknown> = {
    * A string indicating the ID of the current transaction.
    */
   transactionId?: string
+
+  /**
+   * A string indicating the ID of the current request.
+   */
+  requestId?: string
 }

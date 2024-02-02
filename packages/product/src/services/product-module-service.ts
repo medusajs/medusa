@@ -43,6 +43,7 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
+import { ProductEventData, ProductEvents } from "../types/services/product"
 import {
   ProductCategoryEventData,
   ProductCategoryEvents,
@@ -54,7 +55,6 @@ import {
   ProductServiceTypes,
   ProductVariantServiceTypes,
 } from "@types"
-import { ProductEventData, ProductEvents } from "../types/services/product"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -536,7 +536,7 @@ export default class ProductModuleService<
   @InjectManager("baseRepository_")
   async create(
     data: ProductTypes.CreateProductDTO[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.create_(data, sharedContext)
     const createdProducts = await this.baseRepository_.serialize<

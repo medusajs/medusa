@@ -20,8 +20,11 @@ import {
   FilterQuery as MikroFilterQuery,
 } from "@mikro-orm/core/typings"
 import { isString } from "../../common"
-import { MedusaContext } from "../../decorators"
-import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
+import {
+  buildQuery,
+  InjectTransactionManager,
+  MedusaContext,
+} from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,

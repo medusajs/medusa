@@ -22,3 +22,35 @@ export const retrieveTransformQueryConfig = {
   allowedRelations: allowedStoreCustomersRelations,
   isList: false,
 }
+
+export const defaultStoreCustomerAddressRelations = []
+export const allowedStoreCustomerAddressRelations = ["customer"]
+export const defaultStoreCustomerAddressFields = [
+  "id",
+  "company",
+  "customer_id",
+  "first_name",
+  "last_name",
+  "address_1",
+  "address_2",
+  "city",
+  "province",
+  "postal_code",
+  "country_code",
+  "phone",
+  "metadata",
+  "created_at",
+  "updated_at",
+]
+
+export const retrieveAddressTransformQueryConfig = {
+  defaultFields: defaultStoreCustomerAddressFields,
+  defaultRelations: defaultStoreCustomerAddressRelations,
+  allowedRelations: allowedStoreCustomerAddressRelations,
+  isList: false,
+}
+
+export const listAddressesTransformQueryConfig = {
+  ...retrieveAddressTransformQueryConfig,
+  isList: true,
+}

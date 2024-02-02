@@ -1,5 +1,10 @@
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
-import { createContainerLike, createMedusaContainer } from "@medusajs/utils"
+import {
+  MedusaContext,
+  MedusaContextType,
+  MedusaModuleType,
+  createMedusaContainer,
+} from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
   DistributedTransaction,
@@ -28,6 +33,7 @@ export class LocalWorkflow {
   protected customOptions: Partial<TransactionModelOptions> = {}
   protected workflow: WorkflowDefinition
   protected handlers: Map<string, StepHandler>
+  protected medusaContext?: Context
 
   constructor(
     workflowId: string,
@@ -47,9 +53,9 @@ export class LocalWorkflow {
 
     if (!Array.isArray(modulesLoaded) && modulesLoaded) {
       if (!("cradle" in modulesLoaded)) {
-        container = createContainerLike(modulesLoaded)
+        container = createMedusaContainer(modulesLoaded)
       } else {
-        container = modulesLoaded
+        container = createMedusaContainer({}, modulesLoaded) // copy container
       }
     } else if (Array.isArray(modulesLoaded) && modulesLoaded.length) {
       container = createMedusaContainer()
@@ -60,7 +66,49 @@ export class LocalWorkflow {
       }
     }
 
-    this.container = container
+    this.container = this.contextualizedMedusaModules(container)
+  }
+
+  private contextualizedMedusaModules(container) {
+    if (!container) {
+      return createMedusaContainer()
+    }
+
+    // eslint-disable-next-line
+    const this_ = this
+    const originalResolver = container.resolve
+    container.resolve = function (registrationName, opts) {
+      const resolved = originalResolver(registrationName, opts)
+      if (resolved?.constructor?.__type !== MedusaModuleType) {
+        return resolved
+      }
+
+      return new Proxy(resolved, {
+        get: function (target, prop) {
+          if (typeof target[prop] !== "function") {
+            return target[prop]
+          }
+
+          return async (...args) => {
+            const ctxIndex =
+              MedusaContext.getIndex(target, prop as string) ?? args.length - 1
+
+            const hasContext = args[ctxIndex]?.__type === MedusaContextType
+            if (!hasContext) {
+              const context = this_.medusaContext
+              if (context?.__type === MedusaContextType) {
+                delete context?.manager
+                delete context?.transactionManager
+
+                args[ctxIndex] = context
+              }
+            }
+            return await target[prop].apply(target, [...args])
+          }
+        },
+      })
+    }
+    return container
   }
 
   protected commit() {
@@ -265,7 +313,7 @@ export class LocalWorkflow {
     if (this.flow.hasChanges) {
       this.commit()
     }
-
+    this.medusaContext = context
     const { handler, orchestrator } = this.workflow
 
     const transaction = await orchestrator.beginTransaction(
@@ -288,6 +336,7 @@ export class LocalWorkflow {
   }
 
   async getRunningTransaction(uniqueTransactionId: string, context?: Context) {
+    this.medusaContext = context
     const { handler, orchestrator } = this.workflow
 
     const transaction = await orchestrator.retrieveExistingTransaction(
@@ -303,6 +352,7 @@ export class LocalWorkflow {
     context?: Context,
     subscribe?: DistributedTransactionEvents
   ) {
+    this.medusaContext = context
     const { orchestrator } = this.workflow
 
     const transaction = await this.getRunningTransaction(
@@ -329,6 +379,7 @@ export class LocalWorkflow {
     context?: Context,
     subscribe?: DistributedTransactionEvents
   ): Promise<DistributedTransaction> {
+    this.medusaContext = context
     const { handler, orchestrator } = this.workflow
 
     const { cleanUpEventListeners } = this.registerEventCallbacks({
@@ -355,6 +406,7 @@ export class LocalWorkflow {
     context?: Context,
     subscribe?: DistributedTransactionEvents
   ): Promise<DistributedTransaction> {
+    this.medusaContext = context
     const { handler, orchestrator } = this.workflow
 
     const { cleanUpEventListeners } = this.registerEventCallbacks({
