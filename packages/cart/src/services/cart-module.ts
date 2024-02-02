@@ -1025,10 +1025,12 @@ export default class CartModuleService<
       }
     })
 
-    await this.lineItemTaxLineService_.delete(
-      toDelete.map((taxLine) => taxLine!.id),
-      sharedContext
-    )
+    if (toDelete.length) {
+      await this.lineItemTaxLineService_.delete(
+        toDelete.map((taxLine) => taxLine!.id),
+        sharedContext
+      )
+    }
 
     const result = await this.lineItemTaxLineService_.upsert(
       taxLines as UpdateLineItemTaxLineDTO[],

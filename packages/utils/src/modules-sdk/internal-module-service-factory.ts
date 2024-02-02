@@ -16,7 +16,6 @@ import {
   lowerCaseFirst,
   MedusaError,
   shouldForceTransaction,
-  upperCaseFirst,
 } from "../common"
 import { buildQuery } from "./build-query"
 import {
@@ -307,6 +306,7 @@ export function internalModuleServiceFactory<
 
       if (
         !isDefined(idOrSelector) ||
+        (Array.isArray(idOrSelector) && idOrSelector.length === 0) ||
         ((isString(idOrSelector) ||
           (Array.isArray(idOrSelector) && isString(idOrSelector[0]))) &&
           primaryKeys.length > 1)
@@ -315,10 +315,8 @@ export function internalModuleServiceFactory<
           MedusaError.Types.NOT_FOUND,
           `${
             primaryKeys.length === 1
-              ? `"${
-                  lowerCaseFirst(model.name) + upperCaseFirst(primaryKeys[0])
-                }"`
-              : `${lowerCaseFirst(model.name)} ${primaryKeys.join(", ")}`
+              ? `"${lowerCaseFirst(model.name) + " - " + primaryKeys[0]}"`
+              : `${lowerCaseFirst(model.name)} - ${primaryKeys.join(", ")}`
           } must be defined`
         )
       }

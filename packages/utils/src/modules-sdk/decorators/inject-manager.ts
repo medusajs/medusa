@@ -38,13 +38,14 @@ export function InjectManager(managerProperty?: string): MethodDecorator {
         ? this
         : this[managerProperty]
 
-      copiedContext.manager ??= resourceWithManager.getFreshManager()
+      copiedContext.manager =
+        originalContext.manager ?? resourceWithManager.getFreshManager()
 
       if (originalContext?.transactionManager) {
         copiedContext.transactionManager = originalContext?.transactionManager
       }
 
-      copiedContext.__type ??= MedusaContextType
+      copiedContext.__type = MedusaContextType
 
       args[argIndex] = copiedContext
 
