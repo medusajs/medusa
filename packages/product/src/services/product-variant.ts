@@ -7,7 +7,7 @@ import {
 } from "@medusajs/utils"
 import { Product, ProductVariant } from "@models"
 
-import { IProductVariantRepository, ProductVariantServiceTypes } from "@types"
+import { ProductVariantServiceTypes } from "@types"
 import ProductService from "./product"
 
 type InjectedDependencies = {
@@ -18,14 +18,10 @@ type InjectedDependencies = {
 export default class ProductVariantService<
   TEntity extends ProductVariant = ProductVariant,
   TProduct extends Product = Product
-> extends ModulesSdkUtils.abstractServiceFactory<
-  InjectedDependencies,
-  {
-    create: ProductTypes.CreateProductVariantOnlyDTO
-    update: ProductVariantServiceTypes.UpdateProductVariantDTO
-  }
->(ProductVariant)<TEntity> {
-  protected readonly productVariantRepository_: IProductVariantRepository<TEntity>
+> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+  ProductVariant
+)<TEntity> {
+  protected readonly productVariantRepository_: DAL.RepositoryService<TEntity>
   protected readonly productService_: ProductService<TProduct>
 
   constructor({
@@ -92,8 +88,6 @@ export default class ProductVariantService<
     const variantsData = [...data]
     variantsData.forEach((variant) => Object.assign(variant, { product }))
 
-    return await this.productVariantRepository_.update(variantsData, {
-      transactionManager: sharedContext.transactionManager,
-    })
+    return await super.update(variantsData, sharedContext)
   }
 }

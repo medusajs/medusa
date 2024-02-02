@@ -219,7 +219,7 @@ describe("PriceRule Service", () => {
           error = e
         }
 
-        expect(error.message).toEqual('"priceRuleId" must be defined')
+        expect(error.message).toEqual("priceRule - id must be defined")
       })
 
       it("should return priceRule based on config select param", async () => {
