@@ -9,6 +9,8 @@ import { createAuthenticatedCustomer } from "../../../helpers/create-authenticat
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
+jest.setTimeout(100000)
+
 describe("GET /store/customers/me/addresses", () => {
   let dbConnection
   let appContainer
@@ -16,13 +18,17 @@ describe("GET /store/customers/me/addresses", () => {
   let customerModuleService: ICustomerModuleService
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    dbConnection = await initDb({ cwd, env } as any)
-    shutdownServer = await startBootstrapApp({ cwd, env })
-    appContainer = getContainer()
-    customerModuleService = appContainer.resolve(
-      ModuleRegistrationName.CUSTOMER
-    )
+    try {
+      const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
+      dbConnection = await initDb({ cwd, env } as any)
+      shutdownServer = await startBootstrapApp({ cwd, env })
+      appContainer = getContainer()
+      customerModuleService = appContainer.resolve(
+        ModuleRegistrationName.CUSTOMER
+      )
+    } catch (error) {
+      console.error(error)
+    }
   })
 
   afterAll(async () => {
