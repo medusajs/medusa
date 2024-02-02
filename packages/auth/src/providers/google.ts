@@ -1,20 +1,19 @@
+import { AbstractAuthModuleProvider, MedusaError } from "@medusajs/utils"
 import {
-  AbstractAuthModuleProvider,
-  MedusaError,
-} from "@medusajs/utils"
-import {
-  AuthProviderScope,
   AuthenticationInput,
   AuthenticationResponse,
+  AuthProviderScope,
+  ModulesSdkTypes,
 } from "@medusajs/types"
-import { AuthProviderService, AuthUserService } from "@services"
+import { AuthUserService } from "@services"
 import jwt, { JwtPayload } from "jsonwebtoken"
+
 import { AuthorizationCode } from "simple-oauth2"
 import url from "url"
 
 type InjectedDependencies = {
   authUserService: AuthUserService
-  authProviderService: AuthProviderService
+  authProviderService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 type ProviderConfig = {
@@ -27,13 +26,13 @@ class GoogleProvider extends AbstractAuthModuleProvider {
   public static PROVIDER = "google"
   public static DISPLAY_NAME = "Google Authentication"
 
-  protected readonly authUserSerivce_: AuthUserService
-  protected readonly authProviderService_: AuthProviderService
+  protected readonly authUserService_: AuthUserService
+  protected readonly authProviderService_: ModulesSdkTypes.InternalModuleService<any>
 
   constructor({ authUserService, authProviderService }: InjectedDependencies) {
     super(arguments[0])
 
-    this.authUserSerivce_ = authUserService
+    this.authUserService_ = authUserService
     this.authProviderService_ = authProviderService
   }
 
@@ -78,7 +77,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
 
     const code = req.query?.code ?? req.body?.code
 
-    return await this.validateCallbackToken(code, req.scope, config)
+    return await this.validateCallbackToken(code, req.authScope, config)
   }
 
   // abstractable
@@ -91,20 +90,21 @@ class GoogleProvider extends AbstractAuthModuleProvider {
     let authUser
 
     try {
-      authUser = await this.authUserSerivce_.retrieveByProviderAndEntityId(
+      authUser = await this.authUserService_.retrieveByProviderAndEntityId(
         entity_id,
         GoogleProvider.PROVIDER
       )
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
-        authUser = await this.authUserSerivce_.create([
+        const [createdAuthUser] = await this.authUserService_.create([
           {
             entity_id,
-            provider_id: GoogleProvider.PROVIDER,
+            provider: GoogleProvider.PROVIDER,
             user_metadata: jwtData!.payload,
-            app_metadata: { scope },
+            scope,
           },
         ])
+        authUser = createdAuthUser
       } else {
         return { success: false, error: error.message }
       }
@@ -135,24 +135,20 @@ class GoogleProvider extends AbstractAuthModuleProvider {
     }
   }
 
-  private getConfigFromScope(config: AuthProviderScope): ProviderConfig {
-    const providerConfig: Partial<ProviderConfig> = {}
+  private getConfigFromScope(
+    config: AuthProviderScope & Partial<ProviderConfig>
+  ): ProviderConfig {
+    const providerConfig: Partial<ProviderConfig> = { ...config }
 
-    if (config.clientId) {
-      providerConfig.clientID = config.clientId
-    } else {
+    if (!providerConfig.clientID) {
       throw new Error("Google clientID is required")
     }
 
-    if (config.clientSecret) {
-      providerConfig.clientSecret = config.clientSecret
-    } else {
+    if (!providerConfig.clientSecret) {
       throw new Error("Google clientSecret is required")
     }
 
-    if (config.callbackURL) {
-      providerConfig.callbackURL = config.callbackUrl
-    } else {
+    if (!providerConfig.callbackURL) {
       throw new Error("Google callbackUrl is required")
     }
 
@@ -160,9 +156,8 @@ class GoogleProvider extends AbstractAuthModuleProvider {
   }
 
   private originalURL(req: AuthenticationInput) {
-    const tls = req.connection.encrypted
     const host = req.headers.host
-    const protocol = tls ? "https" : "http"
+    const protocol = req.protocol
     const path = req.url || ""
 
     return protocol + "://" + host + path
@@ -173,7 +168,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
   ): Promise<ProviderConfig> {
     await this.authProviderService_.retrieve(GoogleProvider.PROVIDER)
 
-    const scopeConfig = this.scopes_[req.scope]
+    const scopeConfig = this.scopes_[req.authScope]
 
     const config = this.getConfigFromScope(scopeConfig)
 

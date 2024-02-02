@@ -157,7 +157,7 @@ describe("PriceList Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"priceListId" must be defined')
+      expect(error.message).toEqual("priceList - id must be defined")
     })
   })
 

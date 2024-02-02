@@ -199,7 +199,7 @@ describe("ProductType Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"productTypeId" must be defined')
+      expect(error.message).toEqual("productType - id must be defined")
     })
 
     it("should return type based on config select param", async () => {

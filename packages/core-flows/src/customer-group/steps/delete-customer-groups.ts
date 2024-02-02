@@ -12,7 +12,7 @@ export const deleteCustomerGroupStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    await service.softDeleteCustomerGroup(ids)
+    await service.softDeleteCustomerGroups(ids)
 
     return new StepResponse(void 0, ids)
   },
@@ -25,6 +25,6 @@ export const deleteCustomerGroupStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    await service.restoreCustomerGroup(prevCustomerGroups)
+    await service.restoreCustomerGroups(prevCustomerGroups)
   }
 )

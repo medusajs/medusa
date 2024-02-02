@@ -10,6 +10,7 @@ import { Logger } from "../logger"
 
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
+export * from "./internal-module-service"
 
 export type LogLevel =
   | "query"

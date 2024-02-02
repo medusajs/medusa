@@ -1,16 +1,16 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { AuthProviderService } from "@services"
 
 import { MikroOrmWrapper } from "../../../utils"
 import { createAuthProviders } from "../../../__fixtures__/auth-provider"
 import { createMedusaContainer } from "@medusajs/utils"
 import { asValue } from "awilix"
 import ContainerLoader from "../../../../src/loaders/container"
+import { ModulesSdkTypes } from "@medusajs/types"
 
 jest.setTimeout(30000)
 
 describe("AuthProvider Service", () => {
-  let service: AuthProviderService
+  let service: ModulesSdkTypes.InternalModuleService<any>
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
 
@@ -180,7 +180,7 @@ describe("AuthProvider Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"authProviderProvider" must be defined')
+      expect(error.message).toEqual("authProvider - provider must be defined")
     })
 
     it("should return authProvider based on config select param", async () => {

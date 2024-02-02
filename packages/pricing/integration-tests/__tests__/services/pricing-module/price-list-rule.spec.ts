@@ -171,7 +171,7 @@ describe("PriceListRule Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"priceListRuleId" must be defined')
+      expect(error.message).toEqual("priceListRule - id must be defined")
     })
   })
 
@@ -283,7 +283,7 @@ describe("PriceListRule Service", () => {
       expect(priceList.price_list_rules).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            rule_type: "rule-type-3",
+            rule_type: { id: "rule-type-3" },
             price_list_rule_values: [
               expect.objectContaining({ value: "sc-1" }),
             ],
@@ -323,7 +323,7 @@ describe("PriceListRule Service", () => {
       expect(priceList.price_list_rules).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            rule_type: "rule-type-3",
+            rule_type: { id: "rule-type-3" },
             price_list_rule_values: expect.arrayContaining([
               expect.objectContaining({ value: "sc-1" }),
               expect.objectContaining({ value: "sc-2" }),
@@ -351,7 +351,7 @@ describe("PriceListRule Service", () => {
       )
 
       expect(priceList.price_list_rules).toEqual([
-        expect.objectContaining({ rule_type: "rule-type-2" }),
+        expect.objectContaining({ rule_type: { id: "rule-type-2" } }),
       ])
     })
   })
