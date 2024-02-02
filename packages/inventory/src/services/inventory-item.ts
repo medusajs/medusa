@@ -8,14 +8,14 @@ import {
 } from "@medusajs/types"
 import {
   InjectEntityManager,
-  isDefined,
   MedusaContext,
   MedusaError,
+  isDefined,
 } from "@medusajs/utils"
 import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryItem } from "../models"
-import { getListQuery } from "../utils/query"
 import { buildQuery } from "../utils/build-query"
+import { getListQuery } from "../utils/query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -47,7 +47,7 @@ export default class InventoryItemService {
   async list(
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryItemDTO[]> {
     const queryBuilder = getListQuery(
       context.transactionManager ?? this.manager_,
@@ -68,7 +68,7 @@ export default class InventoryItemService {
   async retrieve(
     inventoryItemId: string,
     config: FindConfig<InventoryItem> = {},
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryItem> {
     if (!isDefined(inventoryItemId)) {
       throw new MedusaError(
@@ -102,7 +102,7 @@ export default class InventoryItemService {
   async listAndCount(
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<[InventoryItemDTO[], number]> {
     const queryBuilder = getListQuery(
       context.transactionManager ?? this.manager_,

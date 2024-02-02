@@ -34,7 +34,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_gift-cards/getundefined
+        $ref: ../code_samples/tsx/admin_gift-cards/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -86,7 +86,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_gift-cards/postundefined
+        $ref: ../code_samples/tsx/admin_gift-cards/post.tsx
     - lang: Shell
       label: cURL
       source:

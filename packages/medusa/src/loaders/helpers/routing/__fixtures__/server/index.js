@@ -108,7 +108,12 @@ export const createServer = async (rootDir) => {
   }).load()
 
   // the apiLoader needs to be called after plugins otherwise the core middleware bleads into the plugins
-  await apiLoader({ container, app: app, configModule: config })
+  await apiLoader({
+    container,
+    app: app,
+    configModule: config,
+    featureFlagRouter,
+  })
 
   const superRequest = supertest(app)
 

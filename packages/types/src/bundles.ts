@@ -1,4 +1,4 @@
-export * as AuthenticationTypes from "./authentication"
+export * as AuthTypes from "./auth"
 export * as CacheTypes from "./cache"
 export * as CartTypes from "./cart"
 export * as CommonTypes from "./common"

@@ -8,26 +8,48 @@ import {
   PrimaryKey,
   Property,
   ManyToOne,
+  Cascade,
+  Index,
 } from "@mikro-orm/core"
 import Customer from "./customer"
 
 type OptionalAddressProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
 
 @Entity({ tableName: "customer_address" })
+@Index({
+  name: "IDX_customer_address_unique_customer_shipping",
+  expression:
+    'create unique index "IDX_customer_address_unique_customer_shipping" on "customer_address" ("customer_id") where "is_default_shipping" = true',
+})
+@Index({
+  name: "IDX_customer_address_unique_customer_billing",
+  expression:
+    'create unique index "IDX_customer_address_unique_customer_billing" on "customer_address" ("customer_id") where "is_default_billing" = true',
+})
 export default class Address {
   [OptionalProps]: OptionalAddressProps
 
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Property({ columnType: "text", nullable: true })
+  address_name: string | null = null
+
+  @Property({ columnType: "boolean", default: false })
+  is_default_shipping: boolean = false
+
+  @Property({ columnType: "boolean", default: false })
+  is_default_billing: boolean = false
+
   @Property({ columnType: "text" })
   customer_id: string
 
   @ManyToOne(() => Customer, {
     fieldName: "customer_id",
-    nullable: true,
+    index: "IDX_customer_address_customer_id",
+    cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
-  customer?: Customer
+  customer: Customer
 
   @Property({ columnType: "text", nullable: true })
   company: string | null = null

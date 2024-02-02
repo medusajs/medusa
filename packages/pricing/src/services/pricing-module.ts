@@ -7,7 +7,6 @@ import {
   FindConfig,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
-  MoneyAmountDTO,
   PriceSetDTO,
   PricingContext,
   PricingFilters,
@@ -56,14 +55,14 @@ import {
   PriceSetService,
   RuleTypeService,
 } from "@services"
+import { ServiceTypes } from "@types"
+import { validatePriceListDates } from "@utils"
+import { CreatePriceListRuleValueDTO } from "src/types/services"
 import {
   LinkableKeys,
   entityNameToLinkableKeysMap,
   joinerConfig,
 } from "../joiner-config"
-import { validatePriceListDates } from "@utils"
-import { ServiceTypes } from "@types"
-import { CreatePriceListRuleValueDTO } from "src/types/services"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   pricingRepository: PricingRepositoryService
@@ -639,8 +638,8 @@ export default class PricingModuleService<
 
     // Price set money amounts
     let maCursor = 0
-    const priceSetMoneyAmountsBulkData: unknown[] =
-      input.flatMap(({ priceSetId, prices }) =>
+    const priceSetMoneyAmountsBulkData: unknown[] = input.flatMap(
+      ({ priceSetId, prices }) =>
         prices.map(() => {
           const ma = createdMoneyAmounts[maCursor]
           const numberOfRules = Object.entries(
@@ -654,7 +653,7 @@ export default class PricingModuleService<
             rules_count: numberOfRules,
           }
         })
-      )
+    )
     const createdPriceSetMoneyAmounts =
       await this.priceSetMoneyAmountService_.create(
         priceSetMoneyAmountsBulkData as ServiceTypes.CreatePriceSetMoneyAmountDTO[],
@@ -1637,7 +1636,6 @@ export default class PricingModuleService<
       }
 
       validatePriceListDates(updatePriceListData)
-
 
       if (typeof rules === "object") {
         updatePriceListData.rules_count = Object.keys(rules).length
