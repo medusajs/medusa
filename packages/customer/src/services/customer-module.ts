@@ -8,7 +8,6 @@ import {
   CustomerTypes,
   SoftDeleteReturn,
   RestoreReturn,
-  CustomerUpdatableFields,
 } from "@medusajs/types"
 
 import {
@@ -18,13 +17,17 @@ import {
   mapObjectTo,
   isString,
   isObject,
+  isDuplicateError,
 } from "@medusajs/utils"
-import {
-  entityNameToLinkableKeysMap,
-  LinkableKeys,
-  joinerConfig,
-} from "../joiner-config"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import * as services from "../services"
+import { MedusaError } from "@medusajs/utils"
+import { EntityManager } from "@mikro-orm/core"
+
+const UNIQUE_CUSTOMER_SHIPPING_ADDRESS =
+  "IDX_customer_address_unique_customer_shipping"
+const UNIQUE_CUSTOMER_BILLING_ADDRESS =
+  "IDX_customer_address_unique_customer_billing"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -100,10 +103,27 @@ export default class CustomerModuleService implements ICustomerModuleService {
     @MedusaContext() sharedContext: Context = {}
   ) {
     const data = Array.isArray(dataOrArray) ? dataOrArray : [dataOrArray]
-    const customer = await this.customerService_.create(data, sharedContext)
+
+    const customers = await this.customerService_.create(data, sharedContext)
+
+    const addressDataWithCustomerIds = data
+      .map(({ addresses }, i) => {
+        if (!addresses) {
+          return []
+        }
+
+        return addresses.map((address) => ({
+          ...address,
+          customer_id: customers[i].id,
+        }))
+      })
+      .flat()
+
+    await this.addAddresses(addressDataWithCustomerIds, sharedContext)
+
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerDTO[]
-    >(customer, {
+    >(customers, {
       populate: true,
     })
     return Array.isArray(dataOrArray) ? serialized : serialized[0]
@@ -111,24 +131,24 @@ export default class CustomerModuleService implements ICustomerModuleService {
 
   update(
     customerId: string,
-    data: CustomerUpdatableFields,
+    data: CustomerTypes.CustomerUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO>
   update(
     customerIds: string[],
-    data: CustomerUpdatableFields,
+    data: CustomerTypes.CustomerUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
   update(
     selector: CustomerTypes.FilterableCustomerProps,
-    data: CustomerUpdatableFields,
+    data: CustomerTypes.CustomerUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
 
   @InjectTransactionManager("baseRepository_")
   async update(
     idsOrSelector: string | string[] | CustomerTypes.FilterableCustomerProps,
-    data: CustomerUpdatableFields,
+    data: CustomerTypes.CustomerUpdatableFields,
     @MedusaContext() sharedContext: Context = {}
   ) {
     let updateData: CustomerTypes.UpdateCustomerDTO[] = []
@@ -291,17 +311,17 @@ export default class CustomerModuleService implements ICustomerModuleService {
 
   async updateCustomerGroup(
     groupId: string,
-    data: Partial<CustomerTypes.CreateCustomerGroupDTO>,
+    data: CustomerTypes.CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerGroupDTO>
   async updateCustomerGroup(
     groupIds: string[],
-    data: Partial<CustomerTypes.CreateCustomerGroupDTO>,
+    data: CustomerTypes.CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerGroupDTO[]>
   async updateCustomerGroup(
     selector: CustomerTypes.FilterableCustomerGroupProps,
-    data: Partial<CustomerTypes.CreateCustomerGroupDTO>,
+    data: CustomerTypes.CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerGroupDTO[]>
 
@@ -311,7 +331,7 @@ export default class CustomerModuleService implements ICustomerModuleService {
       | string
       | string[]
       | CustomerTypes.FilterableCustomerGroupProps,
-    data: Partial<CustomerTypes.CreateCustomerGroupDTO>,
+    data: CustomerTypes.CustomerGroupUpdatableFields,
     @MedusaContext() sharedContext: Context = {}
   ) {
     let updateData: CustomerTypes.UpdateCustomerGroupDTO[] = []
@@ -439,6 +459,8 @@ export default class CustomerModuleService implements ICustomerModuleService {
       sharedContext
     )
 
+    await this.flush(sharedContext).catch(this.handleDbErrors)
+
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerAddressDTO[]
     >(addresses, { populate: true })
@@ -504,6 +526,9 @@ export default class CustomerModuleService implements ICustomerModuleService {
       updateData,
       sharedContext
     )
+
+    await this.flush(sharedContext).catch(this.handleDbErrors)
+
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerAddressDTO[]
     >(addresses, { populate: true })
@@ -513,6 +538,40 @@ export default class CustomerModuleService implements ICustomerModuleService {
     }
 
     return serialized
+  }
+
+  async deleteAddress(addressId: string, sharedContext?: Context): Promise<void>
+  async deleteAddress(
+    addressIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  async deleteAddress(
+    selector: CustomerTypes.FilterableCustomerAddressProps,
+    sharedContext?: Context
+  ): Promise<void>
+
+  @InjectTransactionManager("baseRepository_")
+  async deleteAddress(
+    addressIdOrSelector:
+      | string
+      | string[]
+      | CustomerTypes.FilterableCustomerAddressProps,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    let toDelete = Array.isArray(addressIdOrSelector)
+      ? addressIdOrSelector
+      : [addressIdOrSelector as string]
+
+    if (isObject(addressIdOrSelector)) {
+      const ids = await this.addressService_.list(
+        addressIdOrSelector,
+        { select: ["id"] },
+        sharedContext
+      )
+      toDelete = ids.map(({ id }) => id)
+    }
+
+    await this.addressService_.delete(toDelete, sharedContext)
   }
 
   @InjectManager("baseRepository_")
@@ -530,6 +589,27 @@ export default class CustomerModuleService implements ICustomerModuleService {
     return await this.baseRepository_.serialize<
       CustomerTypes.CustomerAddressDTO[]
     >(addresses, { populate: true })
+  }
+
+  @InjectManager("baseRepository_")
+  async listAndCountAddresses(
+    filters?: CustomerTypes.FilterableCustomerAddressProps,
+    config?: FindConfig<CustomerTypes.CustomerAddressDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[CustomerTypes.CustomerAddressDTO[], number]> {
+    const [addresses, count] = await this.addressService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [
+      await this.baseRepository_.serialize<CustomerTypes.CustomerAddressDTO[]>(
+        addresses,
+        { populate: true }
+      ),
+      count,
+    ]
   }
 
   async removeCustomerFromGroup(
@@ -701,5 +781,31 @@ export default class CustomerModuleService implements ICustomerModuleService {
           }
         )
       : void 0
+  }
+
+  private async flush(context: Context) {
+    const em = (context.manager ?? context.transactionManager) as EntityManager
+    await em.flush()
+  }
+
+  private async handleDbErrors(err: any) {
+    if (isDuplicateError(err)) {
+      switch (err.constraint) {
+        case UNIQUE_CUSTOMER_SHIPPING_ADDRESS:
+          throw new MedusaError(
+            MedusaError.Types.DUPLICATE_ERROR,
+            "A default shipping address already exists"
+          )
+        case UNIQUE_CUSTOMER_BILLING_ADDRESS:
+          throw new MedusaError(
+            MedusaError.Types.DUPLICATE_ERROR,
+            "A default billing address already exists"
+          )
+        default:
+          break
+      }
+    }
+
+    throw err
   }
 }

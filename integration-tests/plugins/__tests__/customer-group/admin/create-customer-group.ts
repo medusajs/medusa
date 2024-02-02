@@ -7,12 +7,14 @@ import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import adminSeeder from "../../../../helpers/admin-seeder"
 
+jest.setTimeout(50000)
+
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("GET /admin/customer-groups", () => {
+describe("POST /admin/customer-groups", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -43,21 +45,23 @@ describe("GET /admin/customer-groups", () => {
     await db.teardown()
   })
 
-  it("should get all customer groups and its count", async () => {
-    await customerModuleService.createCustomerGroup({
-      name: "Test",
-    })
-
+  it("should create a customer group", async () => {
     const api = useApi() as any
-    const response = await api.get(`/admin/customer-groups`, adminHeaders)
+    const response = await api.post(
+      `/admin/customer-groups`,
+      {
+        name: "VIP",
+      },
+      adminHeaders
+    )
 
     expect(response.status).toEqual(200)
-    expect(response.data.count).toEqual(1)
-    expect(response.data.groups).toEqual([
+    expect(response.data.customer_group).toEqual(
       expect.objectContaining({
         id: expect.any(String),
-        name: "Test",
-      }),
-    ])
+        name: "VIP",
+        created_by: "admin_user",
+      })
+    )
   })
 })

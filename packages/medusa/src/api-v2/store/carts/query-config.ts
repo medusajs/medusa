@@ -22,7 +22,7 @@ export const retrieveTransformQueryConfig = {
 
 export const defaultStoreCartRemoteQueryObject = {
   fields: defaultStoreCartFields,
-  line_items: {
+  items: {
     fields: [
       "id",
       "created_at",

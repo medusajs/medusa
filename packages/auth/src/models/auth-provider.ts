@@ -20,8 +20,8 @@ export default class AuthProvider {
   @Property({ columnType: "text" })
   name: string
 
-  @Enum({ items: () => ProviderDomain, default: ProviderDomain.ALL })
-  domain: ProviderDomain = ProviderDomain.ALL
+  @Property({ columnType: "text", nullable: true })
+  scope: string
 
   @Property({ columnType: "jsonb", nullable: true })
   config: Record<string, unknown> | null = null

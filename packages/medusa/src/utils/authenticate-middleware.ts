@@ -1,22 +1,20 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { AuthUserDTO, IAuthModuleService } from "@medusajs/types"
-import { NextFunction, RequestHandler } from "express"
 import { MedusaRequest, MedusaResponse } from "../types/routing"
+import { NextFunction, RequestHandler } from "express"
+
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 const SESSION_AUTH = "session"
 const BEARER_AUTH = "bearer"
 
 type MedusaSession = {
-  auth: {
-    [authScope: string]: {
-      user_id: string
-    }
-  }
+  auth_user: AuthUserDTO
+  scope: string
 }
 
 type AuthType = "session" | "bearer"
 
-export default (
+export const authenticate = (
   authScope: string,
   authType: AuthType | AuthType[],
   options: { allowUnauthenticated?: boolean } = {}
@@ -36,19 +34,18 @@ export default (
 
     let authUser: AuthUserDTO | null = null
     if (authTypes.includes(SESSION_AUTH)) {
-      if (session.auth && session.auth[authScope]) {
-        authUser = await authModule
-          .retrieveAuthUser(session.auth[authScope].user_id)
-          .catch(() => null)
+      if (session.auth_user && session.scope === authScope) {
+        authUser = session.auth_user
       }
     }
 
-    if (authTypes.includes(BEARER_AUTH)) {
+    if (!authUser && authTypes.includes(BEARER_AUTH)) {
       const authHeader = req.headers.authorization
       if (authHeader) {
         const re = /(\S+)\s+(\S+)/
         const matches = authHeader.match(re)
 
+        // TODO: figure out how to obtain token (and store correct data in token)
         if (matches) {
           const tokenType = matches[1]
           const token = matches[2]

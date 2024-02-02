@@ -17,6 +17,7 @@ import {
   CreateCustomerAddressDTO,
   CreateCustomerDTO,
   CreateCustomerGroupDTO,
+  CustomerGroupUpdatableFields,
   CustomerUpdatableFields,
   UpdateCustomerAddressDTO,
 } from "./mutations"
@@ -75,17 +76,17 @@ export interface ICustomerModuleService extends IModuleService {
 
   updateCustomerGroup(
     groupId: string,
-    data: Partial<CreateCustomerGroupDTO>,
+    data: CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerGroupDTO>
   updateCustomerGroup(
     groupIds: string[],
-    data: Partial<CreateCustomerGroupDTO>,
+    data: CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerGroupDTO[]>
   updateCustomerGroup(
     selector: FilterableCustomerGroupProps,
-    data: Partial<CreateCustomerGroupDTO>,
+    data: CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerGroupDTO[]>
 
@@ -143,11 +144,24 @@ export interface ICustomerModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<CustomerAddressDTO[]>
 
+  deleteAddress(addressId: string, sharedContext?: Context): Promise<void>
+  deleteAddress(addressIds: string[], sharedContext?: Context): Promise<void>
+  deleteAddress(
+    selector: FilterableCustomerAddressProps,
+    sharedContext?: Context
+  ): Promise<void>
+
   listAddresses(
     filters?: FilterableCustomerAddressProps,
     config?: FindConfig<CustomerAddressDTO>,
     sharedContext?: Context
   ): Promise<CustomerAddressDTO[]>
+
+  listAndCountAddresses(
+    filters?: FilterableCustomerAddressProps,
+    config?: FindConfig<CustomerAddressDTO>,
+    sharedContext?: Context
+  ): Promise<[CustomerAddressDTO[], number]>
 
   listCustomerGroupRelations(
     filters?: FilterableCustomerGroupCustomerProps,

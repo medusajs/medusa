@@ -455,7 +455,7 @@ export default class NewTotalsService extends TransactionBaseService {
     if (!giftCards && !giftCardTransactions) {
       throw new MedusaError(
         MedusaError.Types.UNEXPECTED_STATE,
-        "Cannot calculate the gift cart totals. Neither the gift cards or gift card transactions have been provided"
+        "Cannot calculate the gift card totals. Neither the gift cards or gift card transactions have been provided"
       )
     }
 

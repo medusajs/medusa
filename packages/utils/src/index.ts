@@ -4,6 +4,7 @@ export * from "./common"
 export * from "./dal"
 export * from "./decorators"
 export * from "./event-bus"
+export * from "./exceptions"
 export * from "./feature-flags"
 export * from "./modules-sdk"
 export * from "./orchestration"
@@ -16,3 +17,4 @@ export * from "./shipping"
 export * from "./totals"
 export * from "./totals/big-number"
 
+export const MedusaModuleType = Symbol.for("MedusaModule")
