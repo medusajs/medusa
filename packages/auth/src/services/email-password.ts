@@ -16,12 +16,25 @@ class EmailPasswordProvider extends AbstractAuthModuleProvider {
 
   constructor({ authUserService }: { authUserService: AuthUserService }) {
     super(arguments[0])
-
     this.authUserSerivce_ = authUserService
   }
 
   private getHashConfig(scope: string) {
-    const scopeConfig = this.scopes_[scope].hashConfig as
+    if (!this.scope_) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Scope not set for provider"
+      )
+    }
+
+    if (this.scope_.scope !== scope) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Scope ${scope} does not match provider scope ${this.scope_.scope}`
+      )
+    }
+
+    const scopeConfig = this.scope_.config.hashConfig as
       | Scrypt.ScryptParams
       | undefined
 

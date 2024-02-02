@@ -1,11 +1,26 @@
-import { AuthProviderScope, AuthenticationResponse } from "@medusajs/types"
-
-import { MedusaError } from "../common"
+import { AuthenticationResponse } from "@medusajs/types"
 
 export abstract class AbstractAuthModuleProvider {
   public static PROVIDER: string
   public static DISPLAY_NAME: string
-  protected readonly scopes_: Record<string, AuthProviderScope>
+  protected readonly container_: any
+  protected scope_: {
+    scope: string
+    config: Record<string, unknown>
+  }
+
+  constructor(container: any) {
+    this.container_ = container
+  }
+
+  withConfig(scope: string, config: Record<string, unknown>) {
+    const cloned = new (this.constructor as any)(this.container_)
+    cloned.scope_ = {
+      scope,
+      config,
+    }
+    return cloned
+  }
 
   public get provider() {
     return (this.constructor as Function & { PROVIDER: string }).PROVIDER
@@ -14,19 +29,6 @@ export abstract class AbstractAuthModuleProvider {
   public get displayName() {
     return (this.constructor as Function & { DISPLAY_NAME: string })
       .DISPLAY_NAME
-  }
-
-  protected constructor({ scopes }) {
-    this.scopes_ = scopes
-  }
-
-  public validateScope(scope) {
-    if (!this.scopes_[scope]) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        `Scope "${scope}" is not valid for provider ${this.provider}`
-      )
-    }
   }
 
   abstract authenticate(

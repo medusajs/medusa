@@ -27,13 +27,10 @@ class GoogleProvider extends AbstractAuthModuleProvider {
   public static DISPLAY_NAME = "Google Authentication"
 
   protected readonly authUserService_: AuthUserService
-  protected readonly authProviderService_: ModulesSdkTypes.InternalModuleService<any>
 
-  constructor({ authUserService, authProviderService }: InjectedDependencies) {
+  constructor({ authUserService }: InjectedDependencies) {
     super(arguments[0])
-
     this.authUserService_ = authUserService
-    this.authProviderService_ = authProviderService
   }
 
   async authenticate(
@@ -135,24 +132,32 @@ class GoogleProvider extends AbstractAuthModuleProvider {
     }
   }
 
-  private getConfigFromScope(
-    config: AuthProviderScope & Partial<ProviderConfig>
-  ): ProviderConfig {
-    const providerConfig: Partial<ProviderConfig> = { ...config }
+  private validateConfig(scope: string): ProviderConfig {
+    if (this.scope_ === undefined) {
+      throw new Error(
+        "Google Provider was not configured. Make sure withConfig was called before authentication."
+      )
+    }
 
-    if (!providerConfig.clientID) {
+    if (this.scope_.scope !== scope) {
+      throw new Error(`Scope ${scope} is not configured for Google Provider`)
+    }
+
+    const config = this.scope_.config
+
+    if (!config.clientID) {
       throw new Error("Google clientID is required")
     }
 
-    if (!providerConfig.clientSecret) {
+    if (!config.clientSecret) {
       throw new Error("Google clientSecret is required")
     }
 
-    if (!providerConfig.callbackURL) {
+    if (!config.callbackURL) {
       throw new Error("Google callbackUrl is required")
     }
 
-    return providerConfig as ProviderConfig
+    return config as ProviderConfig
   }
 
   private originalURL(req: AuthenticationInput) {
@@ -166,13 +171,9 @@ class GoogleProvider extends AbstractAuthModuleProvider {
   private async getProviderConfig(
     req: AuthenticationInput
   ): Promise<ProviderConfig> {
-    await this.authProviderService_.retrieve(GoogleProvider.PROVIDER)
+    const config = this.validateConfig(req.authScope)
 
-    const scopeConfig = this.scopes_[req.authScope]
-
-    const config = this.getConfigFromScope(scopeConfig)
-
-    const { callbackURL } = config
+    const callbackURL = config.callbackURL
 
     const parsedCallbackUrl = !url.parse(callbackURL).protocol
       ? url.resolve(this.originalURL(req), callbackURL)

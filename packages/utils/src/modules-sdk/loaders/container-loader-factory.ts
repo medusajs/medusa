@@ -89,14 +89,16 @@ export function loadModuleServices({
       repository,
     ])
   )
-
   // Build default services for all models that are not present in the module services
   Object.values(moduleModels).forEach((Model) => {
     const mappedServiceName = lowerCaseFirst(Model.name) + "Service"
     const finalService = moduleServicesMap.get(mappedServiceName)
 
     if (!finalService) {
-      moduleServicesMap.set(mappedServiceName, internalModuleServiceFactory(Model))
+      moduleServicesMap.set(
+        mappedServiceName,
+        internalModuleServiceFactory(Model)
+      )
     }
   })
 

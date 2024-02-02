@@ -6,71 +6,6 @@
   "tables": [
     {
       "columns": {
-        "provider": {
-          "name": "provider",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "scope": {
-          "name": "scope",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "config": {
-          "name": "config",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "json"
-        },
-        "is_active": {
-          "name": "is_active",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "false",
-          "mappedType": "boolean"
-        }
-      },
-      "name": "auth_provider",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "auth_provider_pkey",
-          "columnNames": [
-            "provider"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
         "id": {
           "name": "id",
           "type": "text",
@@ -89,13 +24,13 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "provider_id": {
-          "name": "provider_id",
+        "provider": {
+          "name": "provider",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "text"
         },
         "scope": {
@@ -141,7 +76,7 @@
         {
           "keyName": "IDX_auth_user_provider_scope_entity_id",
           "columnNames": [
-            "provider_id",
+            "provider",
             "scope",
             "entity_id"
           ],
@@ -160,20 +95,7 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {
-        "auth_user_provider_id_foreign": {
-          "constraintName": "auth_user_provider_id_foreign",
-          "columnNames": [
-            "provider_id"
-          ],
-          "localTableName": "public.auth_user",
-          "referencedColumnNames": [
-            "provider"
-          ],
-          "referencedTableName": "public.auth_provider",
-          "deleteRule": "cascade"
-        }
-      }
+      "foreignKeys": {}
     }
   ]
 }
