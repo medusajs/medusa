@@ -78,7 +78,7 @@ describe("Product Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"productId" must be defined')
+      expect(error.message).toEqual("product - id must be defined")
     })
 
     it("should throw an error when product with id does not exist", async () => {
