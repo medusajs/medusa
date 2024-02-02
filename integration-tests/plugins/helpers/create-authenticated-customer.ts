@@ -13,6 +13,7 @@ export const createAuthenticatedCustomer = async (
   const authUser = await authService.createAuthUser({
     entity_id: "store_user",
     provider_id: "test",
+    scope: "store",
     app_metadata: { customer_id: customer.id },
   })
 
