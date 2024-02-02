@@ -1,11 +1,13 @@
+import { IAuthModuleService, ICustomerModuleService } from "@medusajs/types"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ICustomerModuleService, IAuthModuleService } from "@medusajs/types"
+import adminSeeder from "../../../../helpers/admin-seeder"
+import { getContainer } from "../../../../environment-helpers/use-container"
+import jwt from "jsonwebtoken"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
-import { getContainer } from "../../../../environment-helpers/use-container"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import adminSeeder from "../../../../helpers/admin-seeder"
 
 jest.setTimeout(50000)
 
@@ -59,11 +61,12 @@ describe("GET /store/customers", () => {
       app_metadata: { customer_id: customer.id },
     })
 
-    const jwt = await authService.generateJwtToken(authUser.id, "store")
+    const { jwt_secret } = appContainer.resolve("configModule").projectConfig
+    const token = jwt.sign(authUser, jwt_secret)
 
     const api = useApi() as any
     const response = await api.get(`/store/customers/me`, {
-      headers: { authorization: `Bearer ${jwt}` },
+      headers: { authorization: `Bearer ${token}` },
     })
 
     expect(response.status).toEqual(200)

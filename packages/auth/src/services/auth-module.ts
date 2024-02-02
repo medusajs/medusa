@@ -142,46 +142,6 @@ export default class AuthModuleService<
     ]
   }
 
-  async generateJwtToken(
-    authUserId: string,
-    scope: string,
-    options: JWTGenerationOptions = {}
-  ): Promise<string> {
-    const authUser = await this.authUserService_.retrieve(authUserId)
-    return jwt.sign({ id: authUser.id, scope }, this.options_.jwt_secret, {
-      expiresIn: options.expiresIn || "1d",
-    })
-  }
-
-  async retrieveAuthUserFromJwtToken(
-    token: string,
-    scope: string
-  ): Promise<AuthUserDTO> {
-    let decoded: AuthJWTPayload
-    try {
-      const verifiedToken = jwt.verify(token, this.options_.jwt_secret)
-      decoded = verifiedToken as AuthJWTPayload
-    } catch (err) {
-      throw new MedusaError(
-        MedusaError.Types.UNAUTHORIZED,
-        "The provided JWT token is invalid"
-      )
-    }
-
-    if (decoded.scope !== scope) {
-      throw new MedusaError(
-        MedusaError.Types.UNAUTHORIZED,
-        "The provided JWT token is invalid"
-      )
-    }
-
-    const authUser = await this.authUserService_.retrieve(decoded.id)
-    return await this.baseRepository_.serialize<AuthTypes.AuthUserDTO>(
-      authUser,
-      { populate: true }
-    )
-  }
-
   async createAuthProvider(
     data: CreateAuthProviderDTO[],
     sharedContext?: Context
