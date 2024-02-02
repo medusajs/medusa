@@ -159,6 +159,10 @@ export function internalModuleServiceFactory<
       data: any | any[],
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity | TEntity[]> {
+      if (!isDefined(data) || (Array.isArray(data) && data.length)) {
+        return (Array.isArray(data) ? [] : void 0) as TEntity | TEntity[]
+      }
+
       const data_ = Array.isArray(data) ? data : [data]
       const entities = await this[propertyRepositoryName].create(
         data_,
@@ -184,6 +188,10 @@ export function internalModuleServiceFactory<
       input: any | any[] | SelectorAndData | SelectorAndData[],
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity | TEntity[]> {
+      if (!isDefined(input) || (Array.isArray(input) && input.length === 0)) {
+        return (Array.isArray(input) ? [] : void 0) as TEntity | TEntity[]
+      }
+
       const primaryKeys = AbstractService_.retrievePrimaryKeys(model)
       const inputArray = Array.isArray(input) ? input : [input]
 
@@ -302,10 +310,16 @@ export function internalModuleServiceFactory<
           },
       @MedusaContext() sharedContext: Context = {}
     ): Promise<void> {
+      if (
+        !isDefined(idOrSelector) ||
+        (Array.isArray(idOrSelector) && idOrSelector.length === 0)
+      ) {
+        return
+      }
+
       const primaryKeys = AbstractService_.retrievePrimaryKeys(model)
 
       if (
-        !isDefined(idOrSelector) ||
         (Array.isArray(idOrSelector) && idOrSelector.length === 0) ||
         ((isString(idOrSelector) ||
           (Array.isArray(idOrSelector) && isString(idOrSelector[0]))) &&

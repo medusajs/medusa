@@ -61,7 +61,7 @@ export class WorkflowsModuleService
       sharedContext
     )
 
-    return this.baseRepository_.serialize<
+    return await this.baseRepository_.serialize<
       WorkflowOrchestratorTypes.WorkflowExecutionDTO[]
     >(wfExecutions, {
       populate: true,

@@ -48,9 +48,9 @@ import {
   PriceRuleService,
   RuleTypeService,
 } from "@services"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { validatePriceListDates } from "@utils"
-import { ServiceTypes } from "@types"
+import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
+import {validatePriceListDates} from "@utils"
+import {ServiceTypes} from "@types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -705,7 +705,7 @@ export default class PricingModuleService<
   ) {
     const priceSets = await this.priceSetService_.update(data, sharedContext)
 
-    return this.baseRepository_.serialize<PricingTypes.PriceSetDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.PriceSetDTO[]>(
       priceSets,
       {
         populate: true,
@@ -723,7 +723,7 @@ export default class PricingModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize<PricingTypes.MoneyAmountDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.MoneyAmountDTO[]>(
       moneyAmounts,
       {
         populate: true,
@@ -741,7 +741,7 @@ export default class PricingModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize<PricingTypes.MoneyAmountDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.MoneyAmountDTO[]>(
       moneyAmounts,
       {
         populate: true,
@@ -756,7 +756,7 @@ export default class PricingModuleService<
   ) {
     const currencies = await this.currencyService_.create(data, sharedContext)
 
-    return this.baseRepository_.serialize<PricingTypes.CurrencyDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.CurrencyDTO[]>(
       currencies,
       {
         populate: true,
@@ -771,7 +771,7 @@ export default class PricingModuleService<
   ) {
     const currencies = await this.currencyService_.update(data, sharedContext)
 
-    return this.baseRepository_.serialize<PricingTypes.CurrencyDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.CurrencyDTO[]>(
       currencies,
       {
         populate: true,
@@ -786,7 +786,7 @@ export default class PricingModuleService<
   ): Promise<PricingTypes.RuleTypeDTO[]> {
     const ruleTypes = await this.ruleTypeService_.create(data, sharedContext)
 
-    return this.baseRepository_.serialize<PricingTypes.RuleTypeDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.RuleTypeDTO[]>(
       ruleTypes,
       {
         populate: true,
@@ -801,7 +801,7 @@ export default class PricingModuleService<
   ): Promise<PricingTypes.RuleTypeDTO[]> {
     const ruleTypes = await this.ruleTypeService_.update(data, sharedContext)
 
-    return this.baseRepository_.serialize<PricingTypes.RuleTypeDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.RuleTypeDTO[]>(
       ruleTypes,
       {
         populate: true,
@@ -819,7 +819,7 @@ export default class PricingModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize<
+    return await this.baseRepository_.serialize<
       PricingTypes.PriceSetMoneyAmountRulesDTO[]
     >(records, {
       populate: true,
@@ -836,7 +836,7 @@ export default class PricingModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize<
+    return await this.baseRepository_.serialize<
       PricingTypes.PriceSetMoneyAmountRulesDTO[]
     >(records, {
       populate: true,
@@ -853,7 +853,7 @@ export default class PricingModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
       priceRules,
       {
         populate: true,
@@ -868,7 +868,7 @@ export default class PricingModuleService<
   ): Promise<PricingTypes.PriceRuleDTO[]> {
     const priceRules = await this.priceRuleService_.update(data, sharedContext)
 
-    return this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
       priceRules,
       {
         populate: true,
@@ -883,7 +883,7 @@ export default class PricingModuleService<
   ): Promise<PricingTypes.PriceListDTO[]> {
     const priceLists = await this.createPriceLists_(data, sharedContext)
 
-    return this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
       priceLists,
       {
         populate: true,
@@ -1034,7 +1034,7 @@ export default class PricingModuleService<
   ): Promise<PricingTypes.PriceListDTO[]> {
     const priceLists = await this.updatePriceLists_(data, sharedContext)
 
-    return this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
       priceLists,
       {
         populate: true,
@@ -1167,7 +1167,7 @@ export default class PricingModuleService<
   ): Promise<PricingTypes.PriceListRuleDTO[]> {
     const priceLists = await this.createPriceListRules_(data, sharedContext)
 
-    return this.baseRepository_.serialize<PricingTypes.PriceListRuleDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.PriceListRuleDTO[]>(
       priceLists,
       {
         populate: true,
@@ -1193,7 +1193,7 @@ export default class PricingModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize<PricingTypes.PriceListRuleDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.PriceListRuleDTO[]>(
       priceLists,
       {
         populate: true,
@@ -1481,7 +1481,7 @@ export default class PricingModuleService<
       ),
     ])
 
-    return this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
       priceLists,
       {
         populate: true,
@@ -1543,7 +1543,7 @@ export default class PricingModuleService<
 
     await this.priceListRuleService_.delete(idsToDelete)
 
-    return this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
+    return await this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
       priceLists,
       {
         populate: true,

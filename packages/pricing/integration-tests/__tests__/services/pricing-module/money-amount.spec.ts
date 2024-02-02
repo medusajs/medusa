@@ -245,7 +245,7 @@ describe("PricingModule Service - MoneyAmount", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"moneyAmountId" must be defined')
+      expect(error.message).toEqual("moneyAmount - id must be defined")
     })
 
     it("should return moneyAmount based on config select param", async () => {

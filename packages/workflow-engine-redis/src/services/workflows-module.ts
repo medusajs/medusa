@@ -16,8 +16,8 @@ import type {
   UnwrapWorkflowInputDataType,
   WorkflowOrchestratorTypes,
 } from "@medusajs/workflows-sdk"
-import { WorkflowOrchestratorService } from "@services"
-import { joinerConfig } from "../joiner-config"
+import {WorkflowOrchestratorService} from "@services"
+import {joinerConfig} from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -61,7 +61,7 @@ export class WorkflowsModuleService
       sharedContext
     )
 
-    return this.baseRepository_.serialize<
+    return await this.baseRepository_.serialize<
       WorkflowOrchestratorTypes.WorkflowExecutionDTO[]
     >(wfExecutions, {
       populate: true,
