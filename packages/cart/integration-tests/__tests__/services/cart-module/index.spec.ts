@@ -48,55 +48,6 @@ describe("Cart Module Service", () => {
       )
     })
 
-    it.only("should create a line item with prices in different shapes", async () => {
-      // TODO: Will be removed. This is here for demoing purposes
-      const [createdCart] = await service.create([
-        {
-          currency_code: "eur",
-          items: [
-            {
-              title: "one",
-              quantity: 1,
-              // proof of backward compatibility
-              unit_price: 100,
-            },
-            // {
-            //   title: "two",
-            //   quantity: 1,
-            //   // raw price creation
-            //   unit_price: { value: "1234.1234" },
-            // },
-            {
-              title: "three",
-              quantity: 1,
-              // string price creation
-              unit_price: "200",
-            },
-          ],
-        },
-      ])
-
-      const cart = await service.retrieve(createdCart.id, {
-        relations: ["items", "items.adjustments"],
-      })
-
-      const itemOne = cart.items?.find((el) => el.title === "one")
-      const itemThree = cart.items?.find((el) => el.title === "three")
-
-      expect(JSON.parse(JSON.stringify(itemOne))).toEqual(
-        expect.objectContaining({
-          unit_price: 100,
-          title: "one",
-        })
-      )
-      expect(JSON.parse(JSON.stringify(itemThree))).toEqual(
-        expect.objectContaining({
-          unit_price: 200,
-          title: "three",
-        })
-      )
-    })
-
     it("should create a cart successfully", async () => {
       const [createdCart] = await service.create([
         {

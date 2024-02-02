@@ -8640,6 +8640,7 @@ __metadata:
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
     awilix: ^8.0.0
+    bignumber.js: ^9.1.2
     cross-env: ^5.2.1
     ioredis: ^5.2.5
     rimraf: ^5.0.1
