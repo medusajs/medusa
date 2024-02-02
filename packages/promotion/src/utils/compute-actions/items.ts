@@ -68,7 +68,8 @@ export function applyPromotionToItems(
         method.quantity,
         applicationMethod?.max_quantity!
       )
-      const totalItemValue = method.unit_price * quantityMultiplier
+      const totalItemValue =
+        (method.subtotal / method.quantity) * quantityMultiplier
       let promotionValue = parseFloat(applicationMethod!.value!)
       const applicableTotal = totalItemValue - appliedPromoValue
 
@@ -111,14 +112,19 @@ export function applyPromotionToItems(
   ) {
     const totalApplicableValue = items!.reduce((acc, method) => {
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
-      return acc + method.unit_price * method.quantity - appliedPromoValue
+      return (
+        acc +
+        (method.subtotal / method.quantity) * method.quantity -
+        appliedPromoValue
+      )
     }, 0)
 
     for (const method of items!) {
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
       const promotionValue = parseFloat(applicationMethod!.value!)
       const applicableTotal =
-        method.unit_price * method.quantity - appliedPromoValue
+        (method.subtotal / method.quantity) * method.quantity -
+        appliedPromoValue
 
       if (applicableTotal <= 0) {
         continue

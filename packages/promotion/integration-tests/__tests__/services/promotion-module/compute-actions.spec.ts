@@ -49,7 +49,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_tshirt",
             quantity: 1,
-            unit_price: 100,
+            subtotal: 100,
             product_category: {
               id: "catg_cotton",
             },
@@ -60,7 +60,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_sweater",
             quantity: 5,
-            unit_price: 150,
+            subtotal: 750,
             product_category: {
               id: "catg_cotton",
             },
@@ -95,7 +95,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 1,
-              unit_price: 100,
+              subtotal: 100,
               adjustments: [
                 {
                   id: "test-adjustment",
@@ -106,7 +106,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_sweater",
               quantity: 5,
-              unit_price: 150,
+              subtotal: 750,
             },
           ],
         })
@@ -138,12 +138,12 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 1,
-              unit_price: 100,
+              subtotal: 100,
             },
             {
               id: "item_cotton_sweater",
               quantity: 5,
-              unit_price: 150,
+              subtotal: 750,
               adjustments: [
                 {
                   id: "test-adjustment",
@@ -202,7 +202,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 1,
-              unit_price: 100,
+              subtotal: 100,
               product_category: {
                 id: "catg_cotton",
               },
@@ -213,7 +213,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_sweater",
               quantity: 5,
-              unit_price: 150,
+              subtotal: 750,
               product_category: {
                 id: "catg_cotton",
               },
@@ -309,7 +309,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_tshirt",
                 quantity: 1,
-                unit_price: 50,
+                subtotal: 50,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -320,7 +320,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_sweater",
                 quantity: 1,
-                unit_price: 150,
+                subtotal: 150,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -429,7 +429,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_tshirt",
                 quantity: 1,
-                unit_price: 50,
+                subtotal: 50,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -440,7 +440,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_sweater",
                 quantity: 1,
-                unit_price: 150,
+                subtotal: 150,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -510,7 +510,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 5,
-              unit_price: 1000,
+              subtotal: 5000,
               product_category: {
                 id: "catg_cotton",
               },
@@ -578,7 +578,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 5,
-              unit_price: 1000,
+              subtotal: 5000,
               product_category: {
                 id: "catg_cotton",
               },
@@ -635,7 +635,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 1,
-              unit_price: 100,
+              subtotal: 100,
               product_category: {
                 id: "catg_cotton",
               },
@@ -646,7 +646,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_sweater",
               quantity: 5,
-              unit_price: 150,
+              subtotal: 750,
               product_category: {
                 id: "catg_cotton",
               },
@@ -742,7 +742,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_tshirt",
                 quantity: 3,
-                unit_price: 50,
+                subtotal: 150,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -753,7 +753,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_sweater",
                 quantity: 1,
-                unit_price: 150,
+                subtotal: 150,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -862,7 +862,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_tshirt",
                 quantity: 1,
-                unit_price: 50,
+                subtotal: 50,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -873,7 +873,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_sweater",
                 quantity: 1,
-                unit_price: 150,
+                subtotal: 150,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -943,7 +943,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 5,
-              unit_price: 2000,
+              subtotal: 10000,
               product_category: {
                 id: "catg_cotton",
               },
@@ -1006,7 +1006,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 5,
-              unit_price: 1000,
+              subtotal: 5000,
               product_category: {
                 id: "catg_cotton",
               },
@@ -1064,7 +1064,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 2,
-              unit_price: 100,
+              subtotal: 200,
               product_category: {
                 id: "catg_cotton",
               },
@@ -1075,7 +1075,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_sweater",
               quantity: 2,
-              unit_price: 300,
+              subtotal: 600,
               product_category: {
                 id: "catg_cotton",
               },
@@ -1141,7 +1141,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 2,
-              unit_price: 100,
+              subtotal: 200,
               product_category: {
                 id: "catg_cotton",
               },
@@ -1152,7 +1152,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_sweater",
               quantity: 2,
-              unit_price: 300,
+              subtotal: 600,
               product_category: {
                 id: "catg_cotton",
               },
@@ -1246,7 +1246,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_tshirt",
                 quantity: 1,
-                unit_price: 50,
+                subtotal: 50,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -1257,7 +1257,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_sweater",
                 quantity: 1,
-                unit_price: 150,
+                subtotal: 150,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -1364,7 +1364,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_tshirt",
                 quantity: 1,
-                unit_price: 50,
+                subtotal: 50,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -1375,7 +1375,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_sweater",
                 quantity: 1,
-                unit_price: 150,
+                subtotal: 150,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -1444,7 +1444,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 5,
-              unit_price: 1000,
+              subtotal: 5000,
               product_category: {
                 id: "catg_cotton",
               },
@@ -1506,7 +1506,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 5,
-              unit_price: 1000,
+              subtotal: 5000,
               product_category: {
                 id: "catg_cotton",
               },
@@ -1562,7 +1562,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 2,
-              unit_price: 100,
+              subtotal: 200,
               product_category: {
                 id: "catg_cotton",
               },
@@ -1573,7 +1573,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_sweater",
               quantity: 2,
-              unit_price: 300,
+              subtotal: 600,
               product_category: {
                 id: "catg_cotton",
               },
@@ -1639,7 +1639,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 2,
-              unit_price: 100,
+              subtotal: 200,
               product_category: {
                 id: "catg_cotton",
               },
@@ -1650,7 +1650,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_sweater",
               quantity: 2,
-              unit_price: 300,
+              subtotal: 600,
               product_category: {
                 id: "catg_cotton",
               },
@@ -1744,7 +1744,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_tshirt",
                 quantity: 1,
-                unit_price: 50,
+                subtotal: 50,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -1755,7 +1755,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_sweater",
                 quantity: 1,
-                unit_price: 150,
+                subtotal: 150,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -1862,7 +1862,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_tshirt",
                 quantity: 1,
-                unit_price: 50,
+                subtotal: 50,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -1873,7 +1873,7 @@ describe("Promotion Service: computeActions", () => {
               {
                 id: "item_cotton_sweater",
                 quantity: 1,
-                unit_price: 150,
+                subtotal: 150,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -1954,7 +1954,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 5,
-              unit_price: 1000,
+              subtotal: 5000,
               product_category: {
                 id: "catg_cotton",
               },
@@ -2016,7 +2016,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 5,
-              unit_price: 1000,
+              subtotal: 5000,
               product_category: {
                 id: "catg_cotton",
               },
@@ -2074,21 +2074,21 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 250,
+              subtotal: 250,
               shipping_option: {
                 id: "express",
               },
             },
             {
               id: "shipping_method_standard",
-              unit_price: 150,
+              subtotal: 150,
               shipping_option: {
                 id: "standard",
               },
             },
             {
               id: "shipping_method_snail",
-              unit_price: 200,
+              subtotal: 200,
               shipping_option: {
                 id: "snail",
               },
@@ -2151,21 +2151,21 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 250,
+              subtotal: 250,
               shipping_option: {
                 id: "express",
               },
             },
             {
               id: "shipping_method_standard",
-              unit_price: 150,
+              subtotal: 150,
               shipping_option: {
                 id: "standard",
               },
             },
             {
               id: "shipping_method_snail",
-              unit_price: 200,
+              subtotal: 200,
               shipping_option: {
                 id: "snail",
               },
@@ -2230,21 +2230,21 @@ describe("Promotion Service: computeActions", () => {
             shipping_methods: [
               {
                 id: "shipping_method_express",
-                unit_price: 250,
+                subtotal: 250,
                 shipping_option: {
                   id: "express",
                 },
               },
               {
                 id: "shipping_method_standard",
-                unit_price: 150,
+                subtotal: 150,
                 shipping_option: {
                   id: "standard",
                 },
               },
               {
                 id: "shipping_method_snail",
-                unit_price: 200,
+                subtotal: 200,
                 shipping_option: {
                   id: "snail",
                 },
@@ -2325,21 +2325,21 @@ describe("Promotion Service: computeActions", () => {
             shipping_methods: [
               {
                 id: "shipping_method_express",
-                unit_price: 250,
+                subtotal: 250,
                 shipping_option: {
                   id: "express",
                 },
               },
               {
                 id: "shipping_method_standard",
-                unit_price: 150,
+                subtotal: 150,
                 shipping_option: {
                   id: "standard",
                 },
               },
               {
                 id: "shipping_method_snail",
-                unit_price: 200,
+                subtotal: 200,
                 shipping_option: {
                   id: "snail",
                 },
@@ -2438,21 +2438,21 @@ describe("Promotion Service: computeActions", () => {
             shipping_methods: [
               {
                 id: "shipping_method_express",
-                unit_price: 250,
+                subtotal: 250,
                 shipping_option: {
                   id: "express",
                 },
               },
               {
                 id: "shipping_method_standard",
-                unit_price: 150,
+                subtotal: 150,
                 shipping_option: {
                   id: "standard",
                 },
               },
               {
                 id: "shipping_method_snail",
-                unit_price: 200,
+                subtotal: 200,
                 shipping_option: {
                   id: "snail",
                 },
@@ -2518,7 +2518,7 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 1200,
+              subtotal: 1200,
               shipping_option: {
                 id: "express",
               },
@@ -2577,7 +2577,7 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 1200,
+              subtotal: 1200,
               shipping_option: {
                 id: "express",
               },
@@ -2630,21 +2630,21 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 250,
+              subtotal: 250,
               shipping_option: {
                 id: "express",
               },
             },
             {
               id: "shipping_method_standard",
-              unit_price: 150,
+              subtotal: 150,
               shipping_option: {
                 id: "standard",
               },
             },
             {
               id: "shipping_method_snail",
-              unit_price: 200,
+              subtotal: 200,
               shipping_option: {
                 id: "snail",
               },
@@ -2707,21 +2707,21 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 250,
+              subtotal: 250,
               shipping_option: {
                 id: "express",
               },
             },
             {
               id: "shipping_method_standard",
-              unit_price: 150,
+              subtotal: 150,
               shipping_option: {
                 id: "standard",
               },
             },
             {
               id: "shipping_method_snail",
-              unit_price: 200,
+              subtotal: 200,
               shipping_option: {
                 id: "snail",
               },
@@ -2786,21 +2786,21 @@ describe("Promotion Service: computeActions", () => {
             shipping_methods: [
               {
                 id: "shipping_method_express",
-                unit_price: 250,
+                subtotal: 250,
                 shipping_option: {
                   id: "express",
                 },
               },
               {
                 id: "shipping_method_standard",
-                unit_price: 150,
+                subtotal: 150,
                 shipping_option: {
                   id: "standard",
                 },
               },
               {
                 id: "shipping_method_snail",
-                unit_price: 200,
+                subtotal: 200,
                 shipping_option: {
                   id: "snail",
                 },
@@ -2881,21 +2881,21 @@ describe("Promotion Service: computeActions", () => {
             shipping_methods: [
               {
                 id: "shipping_method_express",
-                unit_price: 250,
+                subtotal: 250,
                 shipping_option: {
                   id: "express",
                 },
               },
               {
                 id: "shipping_method_standard",
-                unit_price: 150,
+                subtotal: 150,
                 shipping_option: {
                   id: "standard",
                 },
               },
               {
                 id: "shipping_method_snail",
-                unit_price: 200,
+                subtotal: 200,
                 shipping_option: {
                   id: "snail",
                 },
@@ -3000,21 +3000,21 @@ describe("Promotion Service: computeActions", () => {
             shipping_methods: [
               {
                 id: "shipping_method_express",
-                unit_price: 250,
+                subtotal: 250,
                 shipping_option: {
                   id: "express",
                 },
               },
               {
                 id: "shipping_method_standard",
-                unit_price: 150,
+                subtotal: 150,
                 shipping_option: {
                   id: "standard",
                 },
               },
               {
                 id: "shipping_method_snail",
-                unit_price: 200,
+                subtotal: 200,
                 shipping_option: {
                   id: "snail",
                 },
@@ -3092,7 +3092,7 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 1200,
+              subtotal: 1200,
               shipping_option: {
                 id: "express",
               },
@@ -3151,7 +3151,7 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 1200,
+              subtotal: 1200,
               shipping_option: {
                 id: "express",
               },
@@ -3205,21 +3205,21 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 500,
+              subtotal: 500,
               shipping_option: {
                 id: "express",
               },
             },
             {
               id: "shipping_method_standard",
-              unit_price: 100,
+              subtotal: 100,
               shipping_option: {
                 id: "standard",
               },
             },
             {
               id: "shipping_method_snail",
-              unit_price: 200,
+              subtotal: 200,
               shipping_option: {
                 id: "snail",
               },
@@ -3281,21 +3281,21 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 500,
+              subtotal: 500,
               shipping_option: {
                 id: "express",
               },
             },
             {
               id: "shipping_method_standard",
-              unit_price: 100,
+              subtotal: 100,
               shipping_option: {
                 id: "standard",
               },
             },
             {
               id: "shipping_method_snail",
-              unit_price: 200,
+              subtotal: 200,
               shipping_option: {
                 id: "snail",
               },
@@ -3385,21 +3385,21 @@ describe("Promotion Service: computeActions", () => {
             shipping_methods: [
               {
                 id: "shipping_method_express",
-                unit_price: 500,
+                subtotal: 500,
                 shipping_option: {
                   id: "express",
                 },
               },
               {
                 id: "shipping_method_standard",
-                unit_price: 100,
+                subtotal: 100,
                 shipping_option: {
                   id: "standard",
                 },
               },
               {
                 id: "shipping_method_snail",
-                unit_price: 200,
+                subtotal: 200,
                 shipping_option: {
                   id: "snail",
                 },
@@ -3502,21 +3502,21 @@ describe("Promotion Service: computeActions", () => {
             shipping_methods: [
               {
                 id: "shipping_method_express",
-                unit_price: 500,
+                subtotal: 500,
                 shipping_option: {
                   id: "express",
                 },
               },
               {
                 id: "shipping_method_standard",
-                unit_price: 100,
+                subtotal: 100,
                 shipping_option: {
                   id: "standard",
                 },
               },
               {
                 id: "shipping_method_snail",
-                unit_price: 200,
+                subtotal: 200,
                 shipping_option: {
                   id: "snail",
                 },
@@ -3581,7 +3581,7 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 1200,
+              subtotal: 1200,
               shipping_option: {
                 id: "express",
               },
@@ -3639,7 +3639,7 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 1200,
+              subtotal: 1200,
               shipping_option: {
                 id: "express",
               },
@@ -3691,21 +3691,21 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 500,
+              subtotal: 500,
               shipping_option: {
                 id: "express",
               },
             },
             {
               id: "shipping_method_standard",
-              unit_price: 100,
+              subtotal: 100,
               shipping_option: {
                 id: "standard",
               },
             },
             {
               id: "shipping_method_snail",
-              unit_price: 200,
+              subtotal: 200,
               shipping_option: {
                 id: "snail",
               },
@@ -3767,21 +3767,21 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 500,
+              subtotal: 500,
               shipping_option: {
                 id: "express",
               },
             },
             {
               id: "shipping_method_standard",
-              unit_price: 100,
+              subtotal: 100,
               shipping_option: {
                 id: "standard",
               },
             },
             {
               id: "shipping_method_snail",
-              unit_price: 200,
+              subtotal: 200,
               shipping_option: {
                 id: "snail",
               },
@@ -3871,21 +3871,21 @@ describe("Promotion Service: computeActions", () => {
             shipping_methods: [
               {
                 id: "shipping_method_express",
-                unit_price: 500,
+                subtotal: 500,
                 shipping_option: {
                   id: "express",
                 },
               },
               {
                 id: "shipping_method_standard",
-                unit_price: 100,
+                subtotal: 100,
                 shipping_option: {
                   id: "standard",
                 },
               },
               {
                 id: "shipping_method_snail",
-                unit_price: 200,
+                subtotal: 200,
                 shipping_option: {
                   id: "snail",
                 },
@@ -3988,21 +3988,21 @@ describe("Promotion Service: computeActions", () => {
             shipping_methods: [
               {
                 id: "shipping_method_express",
-                unit_price: 500,
+                subtotal: 500,
                 shipping_option: {
                   id: "express",
                 },
               },
               {
                 id: "shipping_method_standard",
-                unit_price: 100,
+                subtotal: 100,
                 shipping_option: {
                   id: "standard",
                 },
               },
               {
                 id: "shipping_method_snail",
-                unit_price: 200,
+                subtotal: 200,
                 shipping_option: {
                   id: "snail",
                 },
@@ -4067,7 +4067,7 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 1200,
+              subtotal: 1200,
               shipping_option: {
                 id: "express",
               },
@@ -4125,7 +4125,7 @@ describe("Promotion Service: computeActions", () => {
           shipping_methods: [
             {
               id: "shipping_method_express",
-              unit_price: 1200,
+              subtotal: 1200,
               shipping_option: {
                 id: "express",
               },
@@ -4172,7 +4172,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_tshirt",
             quantity: 1,
-            unit_price: 100,
+            subtotal: 100,
             product_category: {
               id: "catg_cotton",
             },
@@ -4183,7 +4183,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_sweater",
             quantity: 2,
-            unit_price: 150,
+            subtotal: 300,
             product_category: {
               id: "catg_cotton",
             },
@@ -4242,7 +4242,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_tshirt",
             quantity: 1,
-            unit_price: 100,
+            subtotal: 100,
             product_category: {
               id: "catg_cotton",
             },
@@ -4253,7 +4253,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_sweater",
             quantity: 2,
-            unit_price: 150,
+            subtotal: 300,
             product_category: {
               id: "catg_cotton",
             },
@@ -4333,7 +4333,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 1,
-              unit_price: 50,
+              subtotal: 50,
               product_category: {
                 id: "catg_cotton",
               },
@@ -4344,7 +4344,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_sweater",
               quantity: 1,
-              unit_price: 150,
+              subtotal: 150,
               product_category: {
                 id: "catg_cotton",
               },
@@ -4437,7 +4437,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_tshirt",
               quantity: 1,
-              unit_price: 50,
+              subtotal: 50,
               product_category: {
                 id: "catg_cotton",
               },
@@ -4448,7 +4448,7 @@ describe("Promotion Service: computeActions", () => {
             {
               id: "item_cotton_sweater",
               quantity: 1,
-              unit_price: 150,
+              subtotal: 150,
               product_category: {
                 id: "catg_cotton",
               },
@@ -4524,7 +4524,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_tshirt",
             quantity: 1,
-            unit_price: 100,
+            subtotal: 100,
             product_category: {
               id: "catg_cotton",
             },
@@ -4541,7 +4541,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_sweater",
             quantity: 5,
-            unit_price: 150,
+            subtotal: 750,
             product_category: {
               id: "catg_cotton",
             },
@@ -4617,7 +4617,7 @@ describe("Promotion Service: computeActions", () => {
         shipping_methods: [
           {
             id: "shipping_method_express",
-            unit_price: 500,
+            subtotal: 500,
             shipping_option: {
               id: "express",
             },
@@ -4630,14 +4630,14 @@ describe("Promotion Service: computeActions", () => {
           },
           {
             id: "shipping_method_standard",
-            unit_price: 100,
+            subtotal: 100,
             shipping_option: {
               id: "standard",
             },
           },
           {
             id: "shipping_method_snail",
-            unit_price: 200,
+            subtotal: 200,
             shipping_option: {
               id: "snail",
             },
@@ -4679,7 +4679,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_tshirt",
             quantity: 2,
-            unit_price: 500,
+            subtotal: 1000,
             product_category: {
               id: "catg_tshirt",
             },
@@ -4690,7 +4690,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_tshirt2",
             quantity: 2,
-            unit_price: 1000,
+            subtotal: 2000,
             product_category: {
               id: "catg_tshirt",
             },
@@ -4701,7 +4701,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_sweater",
             quantity: 2,
-            unit_price: 1000,
+            subtotal: 2000,
             product_category: {
               id: "catg_sweater",
             },
@@ -4771,7 +4771,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_tshirt",
             quantity: 2,
-            unit_price: 500,
+            subtotal: 1000,
             product_category: {
               id: "catg_tshirt",
             },
@@ -4782,7 +4782,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_tshirt2",
             quantity: 2,
-            unit_price: 1000,
+            subtotal: 2000,
             product_category: {
               id: "catg_tshirt",
             },
@@ -4793,7 +4793,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_sweater",
             quantity: 2,
-            unit_price: 1000,
+            subtotal: 2000,
             product_category: {
               id: "catg_sweater",
             },
@@ -4856,7 +4856,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_tshirt",
             quantity: 2,
-            unit_price: 500,
+            subtotal: 1000,
             product_category: {
               id: "catg_tshirt",
             },
@@ -4867,7 +4867,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_tshirt2",
             quantity: 2,
-            unit_price: 1000,
+            subtotal: 2000,
             product_category: {
               id: "catg_tshirt",
             },
@@ -4878,7 +4878,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_sweater",
             quantity: 2,
-            unit_price: 1000,
+            subtotal: 2000,
             product_category: {
               id: "catg_sweater",
             },
@@ -4954,7 +4954,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_tshirt",
             quantity: 2,
-            unit_price: 500,
+            subtotal: 1000,
             product_category: {
               id: "catg_tshirt",
             },
@@ -4965,7 +4965,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_tshirt2",
             quantity: 2,
-            unit_price: 1000,
+            subtotal: 2000,
             product_category: {
               id: "catg_tshirt",
             },
@@ -4976,7 +4976,7 @@ describe("Promotion Service: computeActions", () => {
           {
             id: "item_cotton_sweater",
             quantity: 2,
-            unit_price: 1000,
+            subtotal: 2000,
             product_category: {
               id: "catg_sweater",
             },

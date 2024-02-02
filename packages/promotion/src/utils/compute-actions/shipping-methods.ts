@@ -57,7 +57,7 @@ export function applyPromotionToShippingMethods(
     for (const method of shippingMethods!) {
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
       let promotionValue = parseFloat(applicationMethod!.value!)
-      const applicableTotal = method.unit_price - appliedPromoValue
+      const applicableTotal = method.subtotal - appliedPromoValue
 
       if (applicationMethod?.type === ApplicationMethodType.PERCENTAGE) {
         promotionValue = (promotionValue / 100) * applicableTotal
@@ -95,7 +95,7 @@ export function applyPromotionToShippingMethods(
     const totalApplicableValue = shippingMethods!.reduce((acc, method) => {
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
 
-      return acc + method.unit_price - appliedPromoValue
+      return acc + method.subtotal - appliedPromoValue
     }, 0)
 
     if (totalApplicableValue <= 0) {
@@ -104,7 +104,7 @@ export function applyPromotionToShippingMethods(
 
     for (const method of shippingMethods!) {
       const promotionValue = parseFloat(applicationMethod!.value!)
-      const applicableTotal = method.unit_price
+      const applicableTotal = method.subtotal
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
 
       // TODO: should we worry about precision here?
