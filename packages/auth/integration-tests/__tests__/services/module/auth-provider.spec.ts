@@ -193,7 +193,7 @@ describe("AuthModuleService - AuthProvider", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"authProviderProvider" must be defined')
+      expect(error.message).toEqual("authProvider - provider must be defined")
     })
   })
 

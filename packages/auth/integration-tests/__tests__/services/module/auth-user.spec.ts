@@ -167,7 +167,7 @@ describe("AuthModuleService - AuthUser", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"authUserId" must be defined')
+      expect(error.message).toEqual("authUser - id must be defined")
     })
 
     it("should return authUser based on config select param", async () => {
@@ -240,6 +240,7 @@ describe("AuthModuleService - AuthUser", () => {
           id: "test",
           provider_id: "manual",
           entity_id: "test",
+          scope: "store",
         },
       ])
 

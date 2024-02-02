@@ -82,7 +82,7 @@ describe("AuthModuleService - AuthProvider", () => {
       const { success, error } = await service.authenticate(
         "emailpass",
         {
-          scope: "non-existing",
+          authScope: "non-existing",
         } as any
       )
 

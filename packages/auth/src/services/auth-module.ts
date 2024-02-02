@@ -233,6 +233,7 @@ export default class AuthModuleService<
     sharedContext?: Context
   ): Promise<AuthUserDTO>
 
+  // TODO: should be pluralized, see convention about the methods naming or the abstract module service interface definition @engineering
   @InjectManager("baseRepository_")
   async updateAuthUser(
     data: UpdateAuthUserDTO | UpdateAuthUserDTO[],
@@ -249,6 +250,33 @@ export default class AuthModuleService<
     })
 
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async updateAuthUsers_(
+    data: UpdateAuthUserDTO[],
+    @MedusaContext() sharedContext: Context
+  ): Promise<TAuthUser[]> {
+    return await this.authUserService_.update(data, sharedContext)
+  }
+
+  protected getRegisteredAuthenticationProvider(
+    provider: string,
+    { authScope }: AuthenticationInput
+  ): AbstractAuthModuleProvider {
+    let containerProvider: AbstractAuthModuleProvider
+    try {
+      containerProvider = this.__container__[`auth_provider_${provider}`]
+    } catch (error) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `AuthenticationProvider with for provider: ${provider} wasn't registered in the module. Have you configured your options correctly?`
+      )
+    }
+
+    containerProvider.validateScope(authScope)
+
+    return containerProvider
   }
 
   async authenticate(
@@ -301,33 +329,6 @@ export default class AuthModuleService<
     @MedusaContext() sharedContext: Context
   ): Promise<TAuthUser[]> {
     return await this.authUserService_.create(data, sharedContext)
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async updateAuthUsers_(
-    data: UpdateAuthUserDTO[],
-    @MedusaContext() sharedContext: Context
-  ): Promise<TAuthUser[]> {
-    return await this.authUserService_.update(data, sharedContext)
-  }
-
-  protected getRegisteredAuthenticationProvider(
-    provider: string,
-    { scope }: AuthenticationInput
-  ): AbstractAuthModuleProvider {
-    let containerProvider: AbstractAuthModuleProvider
-    try {
-      containerProvider = this.__container__[`auth_provider_${provider}`]
-    } catch (error) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `AuthenticationProvider with for provider: ${provider} wasn't registered in the module. Have you configured your options correctly?`
-      )
-    }
-
-    containerProvider.validateScope(scope)
-
-    return containerProvider
   }
 
   private async createProvidersOnLoad() {

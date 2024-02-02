@@ -180,7 +180,7 @@ describe("AuthProvider Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"authProviderProvider" must be defined')
+      expect(error.message).toEqual("authProvider - provider must be defined")
     })
 
     it("should return authProvider based on config select param", async () => {
