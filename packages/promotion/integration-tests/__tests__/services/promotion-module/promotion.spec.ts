@@ -871,7 +871,7 @@ describe("Promotion Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"promotionId" must be defined')
+      expect(error.message).toEqual("promotion - id must be defined")
     })
 
     it("should return promotion based on config select param", async () => {
@@ -1062,7 +1062,7 @@ describe("Promotion Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"promotionId" must be defined')
+      expect(error.message).toEqual("promotion - id must be defined")
     })
 
     it("should successfully create rules for a promotion", async () => {
@@ -1137,7 +1137,7 @@ describe("Promotion Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"promotionId" must be defined')
+      expect(error.message).toEqual("promotion - id must be defined")
     })
 
     it("should successfully create target rules for a promotion", async () => {
@@ -1227,7 +1227,7 @@ describe("Promotion Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"promotionId" must be defined')
+      expect(error.message).toEqual("promotion - id must be defined")
     })
 
     it("should successfully create buy rules for a buyget promotion", async () => {
@@ -1315,7 +1315,7 @@ describe("Promotion Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"promotionId" must be defined')
+      expect(error.message).toEqual("promotion - id must be defined")
     })
 
     it("should successfully create rules for a promotion", async () => {
@@ -1386,7 +1386,7 @@ describe("Promotion Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"promotionId" must be defined')
+      expect(error.message).toEqual("promotion - id must be defined")
     })
 
     it("should successfully create rules for a promotion", async () => {
@@ -1470,7 +1470,7 @@ describe("Promotion Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"promotionId" must be defined')
+      expect(error.message).toEqual("promotion - id must be defined")
     })
 
     it("should successfully remove rules for a promotion", async () => {
