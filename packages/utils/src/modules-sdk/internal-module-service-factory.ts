@@ -159,7 +159,7 @@ export function internalModuleServiceFactory<
       data: any | any[],
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity | TEntity[]> {
-      if (!isDefined(data) || (Array.isArray(data) && data.length)) {
+      if (!isDefined(data) || (Array.isArray(data) && data.length === 0)) {
         return (Array.isArray(data) ? [] : void 0) as TEntity | TEntity[]
       }
 
