@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken"
 import { ICustomerModuleService, IAuthModuleService } from "@medusajs/types"
+import { createAuthToken } from "./create-auth-token"
 
 export const createAuthenticatedCustomer = async (
   customerModuleService: ICustomerModuleService,
@@ -12,14 +13,14 @@ export const createAuthenticatedCustomer = async (
     email: "john@me.com",
   })
 
-  const authUser = await authService.createAuthUser({
+  const authUser = await authService.create({
     entity_id: "store_user",
     provider: "emailpass",
     scope: "store",
     app_metadata: { customer_id: customer.id },
   })
 
-  const token = jwt.sign(authUser, jwtSecret)
+  const token = createAuthToken(authUser, jwtSecret)
 
   return { customer, authUser, jwt: token }
 }

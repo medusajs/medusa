@@ -3,6 +3,7 @@ import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import adminSeeder from "../../../../helpers/admin-seeder"
+import { createAuthToken } from "../../../helpers/create-auth-token"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
@@ -44,15 +45,16 @@ describe("POST /store/customers", () => {
   })
 
   it("should create a customer", async () => {
+    const { jwt_secret } = appContainer.resolve("configModule").projectConfig
     const authService: IAuthModuleService = appContainer.resolve(
       ModuleRegistrationName.AUTH
     )
-    const authUser = await authService.createAuthUser({
+    const authUser = await authService.create({
       entity_id: "store_user",
-      provider_id: "test",
+      provider: "test",
       scope: "store",
     })
-    const jwt = await authService.generateJwtToken(authUser.id, "store")
+    const jwt = createAuthToken(authUser, jwt_secret)
 
     const api = useApi() as any
     const response = await api.post(
