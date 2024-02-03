@@ -72,7 +72,7 @@
     "resize-observer-polyfill": "^1.5.1",
     "rimraf": "^5.0.1",
     "storybook": "^7.0.23",
-    "tailwindcss": "^3.3.2",
+    "tailwindcss": "^3.4.1",
     "tsc-alias": "^1.8.7",
     "typescript": "^5.1.6",
     "vite": "^4.3.9",

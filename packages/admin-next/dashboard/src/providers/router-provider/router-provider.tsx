@@ -74,7 +74,7 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                lazy: () => import("../../routes/orders/list"),
+                lazy: () => import("../../routes/orders/order-list"),
               },
               {
                 path: ":id",

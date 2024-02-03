@@ -35,13 +35,13 @@ export const Shell = ({ children }: PropsWithChildren) => {
         <MobileSidebarContainer>{children}</MobileSidebarContainer>
         <DesktopSidebarContainer>{children}</DesktopSidebarContainer>
       </div>
-      <div className="flex flex-col h-screen w-full">
+      <div className="flex flex-col h-screen w-full overflow-auto">
         <Topbar />
-        <div className="flex h-full w-full flex-col items-center overflow-y-auto">
+        <main className="flex h-full w-full flex-col items-center overflow-y-auto">
           <Gutter>
             <Outlet />
           </Gutter>
-        </div>
+        </main>
       </div>
     </div>
   )
@@ -76,6 +76,7 @@ const Breadcrumbs = () => {
     <ol className={clx("text-ui-fg-muted flex items-center select-none")}>
       {crumbs.map((crumb, index) => {
         const isLast = index === crumbs.length - 1
+        const isSingle = crumbs.length === 1
 
         return (
           <li
@@ -93,8 +94,13 @@ const Breadcrumbs = () => {
               </Link>
             ) : (
               <div>
-                <span className="block md:hidden">...</span>
-                <span key={index} className="hidden md:block">
+                {!isSingle && <span className="block lg:hidden">...</span>}
+                <span
+                  key={index}
+                  className={clx({
+                    "hidden lg:block": !isSingle,
+                  })}
+                >
                   {crumb.label}
                 </span>
               </div>
