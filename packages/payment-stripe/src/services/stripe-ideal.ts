@@ -2,7 +2,7 @@ import StripeBase from "../core/stripe-base"
 import { PaymentIntentOptions, PaymentProviderKeys } from "../types"
 
 class IdealProviderService extends StripeBase {
-  static identifier = PaymentProviderKeys.IDEAL
+  static PROVIDER = PaymentProviderKeys.IDEAL
 
   constructor(_, options) {
     super(_, options)

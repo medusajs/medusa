@@ -1,9 +1,9 @@
-import { AbstractAuthModuleProvider, MedusaError } from "@medusajs/utils"
 import {
   AuthProviderScope,
   AuthenticationInput,
   AuthenticationResponse,
 } from "@medusajs/types"
+import { AbstractAuthModuleProvider, MedusaError } from "@medusajs/utils"
 import { AuthProviderService, AuthUserService } from "@services"
 import jwt, { JwtPayload } from "jsonwebtoken"
 

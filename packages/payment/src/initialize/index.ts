@@ -5,17 +5,23 @@ import {
   MODULE_PACKAGE_NAMES,
   Modules,
 } from "@medusajs/modules-sdk"
-import { IPaymentModuleService, ModulesSdkTypes } from "@medusajs/types"
+import {
+  IPaymentModuleService,
+  ModuleProvider,
+  ModulesSdkTypes,
+} from "@medusajs/types"
 
 import { moduleDefinition } from "../module-definition"
 import { InitializeModuleInjectableDependencies } from "../types"
 
 export const initialize = async (
   options?:
-    | ModulesSdkTypes.ModuleServiceInitializeOptions
-    | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
-    | ExternalModuleDeclaration
-    | InternalModuleDeclaration,
+    | (
+        | ModulesSdkTypes.ModuleServiceInitializeOptions
+        | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
+        | ExternalModuleDeclaration
+        | InternalModuleDeclaration
+      ) & { providers: ModuleProvider[] },
   injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<IPaymentModuleService> => {
   const loaded = await MedusaModule.bootstrap<IPaymentModuleService>({

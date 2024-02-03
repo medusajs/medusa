@@ -8458,29 +8458,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/payment-stripe@workspace:packages/payment-stripe"
   dependencies:
-    "@medusajs/admin": ^7.1.10
     "@medusajs/medusa": ^1.19.1
     "@medusajs/utils": ^1.11.3
-    "@tanstack/react-table": ^8.7.9
     "@types/stripe": ^8.0.417
     awilix: ^8.0.1
     body-parser: ^1.19.0
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-react: ^9.0.13
     rimraf: ^5.0.1
-    stripe: ^11.10.0
+    stripe: latest
     typescript: ^4.9.5
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
-    "@tanstack/react-table": ^8.7.9
-    medusa-react: ^9.0.0
-  peerDependenciesMeta:
-    "@tanstack/react-table":
-      optional: true
-    medusa-react:
-      optional: true
   languageName: unknown
   linkType: soft
 
@@ -47462,6 +47452,16 @@ __metadata:
     "@types/node": ">=8.1.0"
     qs: ^6.10.3
   checksum: 7979f9d2b2f099d3bf0e5558dd4dc8f20fb20e8a34d93f38fc55fc1c0dc79296345898035f4075f497e255a9e7f6a0df3f9d8dbb0d1beb57fca595f70429af53
+  languageName: node
+  linkType: hard
+
+"stripe@npm:latest":
+  version: 14.14.0
+  resolution: "stripe@npm:14.14.0"
+  dependencies:
+    "@types/node": ">=8.1.0"
+    qs: ^6.11.0
+  checksum: 77dc847d9e458e0c13b31ea84b7a9178f8844f52afee4d9cb06211420dc164efa53d5774dbca33be54a8717252df148fc7e93003351bc85fa731e56afd17e131
   languageName: node
   linkType: hard
 

@@ -38,6 +38,21 @@ describe("Payment Module Service", () => {
         clientUrl: DB_URL,
         schema: process.env.MEDUSA_PAYMNET_DB_SCHEMA,
       },
+      providers: [
+        {
+          resolve: "@medusajs/payment-stripe",
+          options: {
+            config: {
+              dkk: {
+                apiKey: "pk_test_123",
+              },
+              usd: {
+                apiKey: "pk_test_456",
+              },
+            },
+          },
+        },
+      ],
     })
 
     await createPaymentCollections(repositoryManager)
@@ -48,7 +63,11 @@ describe("Payment Module Service", () => {
   })
 
   describe("create", () => {
-    it("should throw an error when required params are not passed", async () => {
+    it.only("should throw an error when required params are not passed", async () => {
+      const test = await (service as any).retrieveProvider("stripe_usd")
+
+      console.log(test)
+
       let error = await service
         .createPaymentCollection([
           {

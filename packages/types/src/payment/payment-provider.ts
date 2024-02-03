@@ -84,3 +84,5 @@ export interface PaymentProcessorError {
    */
   detail?: any
 }
+
+export interface IPaymentProviderService {}

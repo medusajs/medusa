@@ -1,51 +1,55 @@
 import {
-  AbstractPaymentProcessor,
+  // AbstractPaymentProcessor,
   isPaymentProcessorError,
   PaymentProcessorContext,
   PaymentProcessorError,
   PaymentProcessorSessionResponse,
   PaymentSessionStatus,
 } from "@medusajs/medusa"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaContainer } from "@medusajs/types"
+import { AbstractPaymentModuleProvider, MedusaError } from "@medusajs/utils"
+import { isDefined } from "medusa-core-utils"
 import { EOL } from "os"
 import Stripe from "stripe"
 import {
   ErrorCodes,
   ErrorIntentStatus,
   PaymentIntentOptions,
+  StripeCredentials,
   StripeOptions,
 } from "../types"
 
-abstract class StripeBase extends AbstractPaymentProcessor {
-  static identifier = ""
-
+abstract class StripeBase extends AbstractPaymentModuleProvider {
   protected readonly options_: StripeOptions
   protected stripe_: Stripe
+  protected container_: MedusaContainer
 
-  protected constructor(_, options) {
-    super(_, options)
+  protected constructor(container: MedusaContainer, options: StripeOptions) {
+    // @ts-ignore
+    super(...arguments)
 
+    this.container_ = container
     this.options_ = options
 
-    this.init()
+    this.stripe_ = this.init()
   }
 
-  protected init(): void {
-    this.stripe_ =
-      this.stripe_ ||
-      new Stripe(this.options_.api_key, {
-        apiVersion: "2022-11-15",
-      })
+  protected init() {
+    this.validateOptions(this.config_ as StripeCredentials)
+
+    return new Stripe(this.config_.api_key)
   }
 
   abstract get paymentIntentOptions(): PaymentIntentOptions
 
-  get options(): StripeOptions {
-    return this.options_
+  private validateOptions(options: StripeCredentials): void {
+    if (!isDefined(options.api_key)) {
+      throw new Error("Required option `api_key` is missing in Stripe plugin")
+    }
   }
 
-  getStripe() {
-    return this.stripe_
+  get options(): StripeOptions {
+    return this.options_
   }
 
   getPaymentIntentOptions(): PaymentIntentOptions {
@@ -316,13 +320,13 @@ abstract class StripeBase extends AbstractPaymentProcessor {
    *    ensures integrity of the webhook event
    * @return {object} Stripe Webhook event
    */
-  constructWebhookEvent(data, signature) {
-    return this.stripe_.webhooks.constructEvent(
-      data,
-      signature,
-      this.options_.webhook_secret
-    )
-  }
+  // constructWebhookEvent(data, signature) {
+  //   return this.stripe_.webhooks.constructEvent(
+  //     data,
+  //     signature,
+  //     this.options_.webhook_secret
+  //   )
+  // }
 
   protected buildError(
     message: string,

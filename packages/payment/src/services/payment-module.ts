@@ -8,6 +8,7 @@ import {
   FindConfig,
   InternalModuleDeclaration,
   IPaymentModuleService,
+  MedusaContainer,
   ModuleJoinerConfig,
   PaymentCollectionDTO,
   PaymentDTO,
@@ -28,23 +29,37 @@ import { joinerConfig } from "../joiner-config"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   paymentCollectionService: services.PaymentCollectionService
+  paymentProviderService: services.PaymentProviderService
 }
 
 export default class PaymentModuleService implements IPaymentModuleService {
   protected baseRepository_: DAL.RepositoryService
   protected paymentCollectionService_: services.PaymentCollectionService
+  protected paymentProviderService_: services.PaymentProviderService
+  protected container_: MedusaContainer
 
   constructor(
-    { baseRepository, paymentCollectionService }: InjectedDependencies,
+    {
+      baseRepository,
+      paymentCollectionService,
+      paymentProviderService,
+    }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
+    this.container_ = arguments[0]
+
     this.baseRepository_ = baseRepository
 
     this.paymentCollectionService_ = paymentCollectionService
+    this.paymentProviderService_ = paymentProviderService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  __hooks = {
+    onApplicationStart: async () => await this.createProvidersOnLoad(),
   }
 
   createPaymentCollection(
@@ -184,6 +199,10 @@ export default class PaymentModuleService implements IPaymentModuleService {
     ]
   }
 
+  async retrieveProvider(providerId: string) {
+    return this.paymentProviderService_.retrieveProvider(providerId)
+  }
+
   /**
    * TODO
    */
@@ -270,5 +289,29 @@ export default class PaymentModuleService implements IPaymentModuleService {
     sharedContext?: Context | undefined
   ): Promise<PaymentCollectionDTO> {
     throw new Error("Method not implemented.")
+  }
+
+  private async createProvidersOnLoad() {
+    const providersToLoad = this.container_["payment_providers"]
+
+    const providers = await this.paymentProviderService_.list({
+      id: providersToLoad,
+    })
+
+    const loadedProvidersMap = new Set(providers.map((p) => p.id))
+
+    const providersToCreate: { id: string }[] = []
+
+    for (const provider of providersToLoad) {
+      if (loadedProvidersMap.has(provider)) {
+        continue
+      }
+
+      providersToCreate.push({
+        id: provider,
+      })
+    }
+
+    await this.paymentProviderService_.create(providersToCreate)
   }
 }

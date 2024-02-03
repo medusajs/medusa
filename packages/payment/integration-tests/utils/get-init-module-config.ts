@@ -10,6 +10,21 @@ export function getInitModuleConfig() {
         schema: process.env.MEDUSA_PAYMENT_DB_SCHEMA,
       },
     },
+    providers: [
+      {
+        resolve: "@medusajs/payment-stripe",
+        options: {
+          config: {
+            dkk: {
+              apiKey: "pk_test_123",
+            },
+            usd: {
+              apiKey: "pk_test_456",
+            },
+          },
+        },
+      },
+    ],
   }
 
   const injectedDependencies = {}
