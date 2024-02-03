@@ -29,21 +29,15 @@ import { joinerConfig } from "../joiner-config"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   paymentCollectionService: services.PaymentCollectionService
-  paymentProviderService: services.PaymentProviderService
 }
 
 export default class PaymentModuleService implements IPaymentModuleService {
   protected baseRepository_: DAL.RepositoryService
   protected paymentCollectionService_: services.PaymentCollectionService
-  protected paymentProviderService_: services.PaymentProviderService
   protected container_: MedusaContainer
 
   constructor(
-    {
-      baseRepository,
-      paymentCollectionService,
-      paymentProviderService,
-    }: InjectedDependencies,
+    { baseRepository, paymentCollectionService }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.container_ = arguments[0]
@@ -51,7 +45,6 @@ export default class PaymentModuleService implements IPaymentModuleService {
     this.baseRepository_ = baseRepository
 
     this.paymentCollectionService_ = paymentCollectionService
-    this.paymentProviderService_ = paymentProviderService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -199,10 +192,6 @@ export default class PaymentModuleService implements IPaymentModuleService {
     ]
   }
 
-  async retrieveProvider(providerId: string) {
-    return this.paymentProviderService_.retrieveProvider(providerId)
-  }
-
   /**
    * TODO
    */
@@ -294,9 +283,10 @@ export default class PaymentModuleService implements IPaymentModuleService {
   private async createProvidersOnLoad() {
     const providersToLoad = this.container_["payment_providers"]
 
-    const providers = await this.paymentProviderService_.list({
-      id: providersToLoad,
-    })
+    const providers: { id: string }[] = []
+    // const providers = await this.paymentProviderService_.list({
+    //   id: providersToLoad,
+    // })
 
     const loadedProvidersMap = new Set(providers.map((p) => p.id))
 
@@ -312,6 +302,6 @@ export default class PaymentModuleService implements IPaymentModuleService {
       })
     }
 
-    await this.paymentProviderService_.create(providersToCreate)
+    // await this.paymentProviderService_.create(providersToCreate)
   }
 }

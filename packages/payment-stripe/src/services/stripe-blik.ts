@@ -6,7 +6,6 @@ class BlikProviderService extends StripeBase {
 
   constructor(_, options) {
     super(_, options)
-    console.log("CONFIG ", this.config_)
   }
 
   get paymentIntentOptions(): PaymentIntentOptions {

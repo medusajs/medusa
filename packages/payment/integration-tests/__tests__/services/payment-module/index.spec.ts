@@ -63,11 +63,7 @@ describe("Payment Module Service", () => {
   })
 
   describe("create", () => {
-    it.only("should throw an error when required params are not passed", async () => {
-      const test = await (service as any).retrieveProvider("stripe_usd")
-
-      console.log(test)
-
+    it("should throw an error when required params are not passed", async () => {
       let error = await service
         .createPaymentCollection([
           {

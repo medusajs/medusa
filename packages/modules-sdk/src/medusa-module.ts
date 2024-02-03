@@ -268,7 +268,6 @@ export class MedusaModule {
     )
 
     try {
-      console.log("Loading module")
       await moduleLoader({
         container,
         moduleResolutions,

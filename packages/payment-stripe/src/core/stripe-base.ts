@@ -1,5 +1,4 @@
 import {
-  // AbstractPaymentProcessor,
   isPaymentProcessorError,
   PaymentProcessorContext,
   PaymentProcessorError,
@@ -320,13 +319,13 @@ abstract class StripeBase extends AbstractPaymentModuleProvider {
    *    ensures integrity of the webhook event
    * @return {object} Stripe Webhook event
    */
-  // constructWebhookEvent(data, signature) {
-  //   return this.stripe_.webhooks.constructEvent(
-  //     data,
-  //     signature,
-  //     this.options_.webhook_secret
-  //   )
-  // }
+  constructWebhookEvent(data, signature) {
+    return this.stripe_.webhooks.constructEvent(
+      data,
+      signature,
+      this.config_.webhook_secret
+    )
+  }
 
   protected buildError(
     message: string,
