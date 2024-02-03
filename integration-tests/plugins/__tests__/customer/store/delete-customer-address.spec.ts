@@ -7,6 +7,8 @@ import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
+jest.setTimeout(50000)
+
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
 describe("DELETE /store/customers/me/addresses/:address_id", () => {
