@@ -60,9 +60,13 @@ export function InjectTransactionManager(
             })
           }
 
-          copiedContext.transactionManager ??= transactionManager
-          copiedContext.manager ??= originalContext?.manager
-          copiedContext.__type ??= MedusaContextType
+          copiedContext.transactionManager = transactionManager
+
+          if (originalContext?.manager) {
+            copiedContext.manager = originalContext?.manager
+          }
+
+          copiedContext.__type = MedusaContextType
 
           args[argIndex] = copiedContext
 

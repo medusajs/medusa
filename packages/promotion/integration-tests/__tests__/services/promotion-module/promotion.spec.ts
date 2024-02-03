@@ -1,16 +1,17 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
 import {
+  ApplicationMethodTargetType,
   ApplicationMethodType,
   CampaignBudgetType,
   PromotionType,
 } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { initModules } from "medusa-test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { createPromotions } from "../../../__fixtures__/promotion"
 import { MikroOrmWrapper } from "../../../utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
-import { Modules } from "@medusajs/modules-sdk"
-import { initModules } from "medusa-test-utils/dist"
 
 jest.setTimeout(30000)
 
@@ -111,6 +112,24 @@ describe("Promotion Service", () => {
             value: 100,
           }),
         })
+      )
+    })
+
+    it("should throw error when percentage type and value is greater than 100", async () => {
+      const error = await service
+        .create({
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          application_method: {
+            type: ApplicationMethodType.PERCENTAGE,
+            target_type: ApplicationMethodTargetType.ORDER,
+            value: "1000",
+          },
+        })
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "Application Method value should be a percentage number between 0 and 100"
       )
     })
 
@@ -655,7 +674,7 @@ describe("Promotion Service", () => {
           is_automatic: true,
           code: "TEST",
           type: PromotionType.BUYGET,
-        },
+        } as any,
       ])
 
       expect(updatedPromotion).toEqual(
@@ -871,7 +890,7 @@ describe("Promotion Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"promotionId" must be defined')
+      expect(error.message).toEqual("promotion - id must be defined")
     })
 
     it("should return promotion based on config select param", async () => {
@@ -899,12 +918,12 @@ describe("Promotion Service", () => {
             value: "200",
             target_type: "items",
           },
-        },
+        } as any,
         {
           id: "promotion-id-2",
           code: "PROMOTION_2",
           type: PromotionType.STANDARD,
-        },
+        } as any,
       ])
     })
 
@@ -919,7 +938,7 @@ describe("Promotion Service", () => {
           campaign: null,
           is_automatic: false,
           type: "standard",
-          application_method: expect.any(String),
+          application_method: expect.any(Object),
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
           deleted_at: null,
@@ -1062,7 +1081,7 @@ describe("Promotion Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"promotionId" must be defined')
+      expect(error.message).toEqual("promotion - id must be defined")
     })
 
     it("should successfully create rules for a promotion", async () => {
@@ -1137,7 +1156,7 @@ describe("Promotion Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"promotionId" must be defined')
+      expect(error.message).toEqual("promotion - id must be defined")
     })
 
     it("should successfully create target rules for a promotion", async () => {
@@ -1227,7 +1246,7 @@ describe("Promotion Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"promotionId" must be defined')
+      expect(error.message).toEqual("promotion - id must be defined")
     })
 
     it("should successfully create buy rules for a buyget promotion", async () => {
@@ -1315,7 +1334,7 @@ describe("Promotion Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"promotionId" must be defined')
+      expect(error.message).toEqual("promotion - id must be defined")
     })
 
     it("should successfully create rules for a promotion", async () => {
@@ -1386,7 +1405,7 @@ describe("Promotion Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"promotionId" must be defined')
+      expect(error.message).toEqual("promotion - id must be defined")
     })
 
     it("should successfully create rules for a promotion", async () => {
@@ -1470,7 +1489,7 @@ describe("Promotion Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"promotionId" must be defined')
+      expect(error.message).toEqual("promotion - id must be defined")
     })
 
     it("should successfully remove rules for a promotion", async () => {

@@ -1,4 +1,8 @@
-import { AbstractAuthModuleProvider, isString } from "@medusajs/utils"
+import {
+  AbstractAuthModuleProvider,
+  MedusaError,
+  isString,
+} from "@medusajs/utils"
 import { AuthenticationInput, AuthenticationResponse } from "@medusajs/types"
 
 import { AuthUserService } from "@services"
@@ -14,6 +18,17 @@ class EmailPasswordProvider extends AbstractAuthModuleProvider {
     super(arguments[0])
 
     this.authUserSerivce_ = authUserService
+  }
+
+  private getHashConfig(scope: string) {
+    const scopeConfig = this.scopes_[scope].hashConfig as
+      | Scrypt.ScryptParams
+      | undefined
+
+    const defaultHashConfig = { logN: 15, r: 8, p: 1 }
+
+    // Return custom defined hash config or default hash parameters
+    return scopeConfig ?? defaultHashConfig
   }
 
   async authenticate(
@@ -34,11 +49,38 @@ class EmailPasswordProvider extends AbstractAuthModuleProvider {
         error: "Email should be a string",
       }
     }
+    let authUser
 
-    const authUser = await this.authUserSerivce_.retrieveByProviderAndEntityId(
-      email,
-      EmailPasswordProvider.PROVIDER
-    )
+    try {
+      authUser = await this.authUserSerivce_.retrieveByProviderAndEntityId(
+        email,
+        EmailPasswordProvider.PROVIDER
+      )
+    } catch (error) {
+      if (error.type === MedusaError.Types.NOT_FOUND) {
+        const password_hash = await Scrypt.kdf(
+          password,
+          this.getHashConfig(userData.authScope)
+        )
+
+        const [createdAuthUser] = await this.authUserSerivce_.create([
+          {
+            entity_id: email,
+            provider: EmailPasswordProvider.PROVIDER,
+            scope: userData.authScope,
+            provider_metadata: {
+              password: password_hash.toString("base64"),
+            },
+          },
+        ])
+
+        return {
+          success: true,
+          authUser: JSON.parse(JSON.stringify(createdAuthUser)),
+        }
+      }
+      return { success: false, error: error.message }
+    }
 
     const password_hash = authUser.provider_metadata?.password
 
