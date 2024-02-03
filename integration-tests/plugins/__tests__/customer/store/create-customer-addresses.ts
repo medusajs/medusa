@@ -39,9 +39,11 @@ describe("POST /store/customers/me/addresses", () => {
   })
 
   it("should create a customer address", async () => {
+    const { jwt_secret } = appContainer.resolve("configModule").projectConfig
     const { customer, jwt } = await createAuthenticatedCustomer(
       customerModuleService,
-      appContainer.resolve(ModuleRegistrationName.AUTH)
+      appContainer.resolve(ModuleRegistrationName.AUTH),
+      jwt_secret
     )
 
     const api = useApi() as any

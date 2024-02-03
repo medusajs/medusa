@@ -37,9 +37,11 @@ describe("DELETE /store/customers/me/addresses/:address_id", () => {
   })
 
   it("should delete a customer address", async () => {
+    const { jwt_secret } = appContainer.resolve("configModule").projectConfig
     const { customer, jwt } = await createAuthenticatedCustomer(
       customerModuleService,
-      appContainer.resolve(ModuleRegistrationName.AUTH)
+      appContainer.resolve(ModuleRegistrationName.AUTH),
+      jwt_secret
     )
 
     const address = await customerModuleService.addAddresses({
@@ -65,9 +67,11 @@ describe("DELETE /store/customers/me/addresses/:address_id", () => {
   })
 
   it("should fail to delete another customer's address", async () => {
+    const { jwt_secret } = appContainer.resolve("configModule").projectConfig
     const { jwt } = await createAuthenticatedCustomer(
       customerModuleService,
-      appContainer.resolve(ModuleRegistrationName.AUTH)
+      appContainer.resolve(ModuleRegistrationName.AUTH),
+      jwt_secret
     )
 
     const otherCustomer = await customerModuleService.create({
