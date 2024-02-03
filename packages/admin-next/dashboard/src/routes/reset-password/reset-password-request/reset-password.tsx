@@ -41,6 +41,10 @@ export const ResetPassword = () => {
           setSuccess(true)
         },
         onError: (_error) => {
+          /**
+           * This endpoint is not supposed to return any errors.
+           * If it does, we can assume it's a server error.
+           */
           setSuccess(false)
           form.setError("root", {
             type: "manual",
@@ -52,10 +56,10 @@ export const ResetPassword = () => {
   })
 
   return (
-    <div className="flex items-center justify-center min-h-dvh w-dvw bg-ui-bg-base">
-      <div className="max-w-[300px] w-full m-4 flex flex-col items-center">
+    <div className="min-h-dvh w-dvw bg-ui-bg-base flex items-center justify-center">
+      <div className="m-4 flex w-full max-w-[300px] flex-col items-center">
         <LogoBox className="mb-4" checked={success} />
-        <div className="flex flex-col items-center mb-4">
+        <div className="mb-4 flex flex-col items-center">
           <Heading>{t("resetPassword.title")}</Heading>
           <Text
             size="small"
@@ -67,7 +71,7 @@ export const ResetPassword = () => {
         <Form {...form}>
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col w-full gap-y-6"
+            className="flex w-full flex-col gap-y-6"
           >
             <div className="flex flex-col">
               <Form.Field
@@ -102,6 +106,7 @@ export const ResetPassword = () => {
                     delay: 0.2,
                     ease: [0, 0.71, 0.2, 1.01],
                   }}
+                  layout
                 >
                   <Alert variant="success" dismissible className="mt-4">
                     {t("resetPassword.successfulRequest")}
@@ -109,27 +114,9 @@ export const ResetPassword = () => {
                 </motion.div>
               )}
               {form.formState.errors.root && (
-                <motion.div
-                  initial={{
-                    opacity: 0,
-                    height: 0,
-                    y: 20,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    height: "auto",
-                    y: 0,
-                  }}
-                  transition={{
-                    duration: 0.5,
-                    delay: 0.2,
-                    ease: [0, 0.71, 0.2, 1.01],
-                  }}
-                >
-                  <Alert variant="error" dismissible className="mt-4">
-                    {form.formState.errors.root.message}
-                  </Alert>
-                </motion.div>
+                <Alert variant="error" dismissible className="mt-4">
+                  {form.formState.errors.root.message}
+                </Alert>
               )}
             </div>
             <Button className="w-full" type="submit">
@@ -137,12 +124,13 @@ export const ResetPassword = () => {
             </Button>
           </form>
         </Form>
-        <div className="w-full h-px border-b border-dotted my-6" />
+        <div className="my-6 h-px w-full border-b border-dotted" />
         <span className="text-ui-fg-subtle txt-small">
           <Trans
             i18nKey="resetPassword.backToLogin"
             components={[
               <Link
+                key="login-link"
                 to="/login"
                 className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover outline-none"
               />,

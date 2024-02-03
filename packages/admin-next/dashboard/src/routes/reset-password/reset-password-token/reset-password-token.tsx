@@ -95,10 +95,10 @@ export const ResetPasswordToken = () => {
   }[tokenStatus]
 
   return (
-    <div className="flex items-center justify-center min-h-dvh w-dvw bg-ui-bg-base">
-      <div className="max-w-[300px] w-full m-4 flex flex-col items-center">
+    <div className="min-h-dvh w-dvw bg-ui-bg-base flex items-center justify-center">
+      <div className="m-4 flex w-full max-w-[300px] flex-col items-center">
         <LogoBox className="mb-4" />
-        <div className="flex flex-col items-center mb-4">
+        <div className="mb-4 flex flex-col items-center">
           <Heading>{title}</Heading>
           <Text
             size="small"
@@ -111,7 +111,7 @@ export const ResetPasswordToken = () => {
           <Form {...form}>
             <form
               onSubmit={handleSubmit}
-              className="flex flex-col w-full gap-y-6"
+              className="flex w-full flex-col gap-y-6"
             >
               <div className="flex flex-col gap-y-4">
                 <Form.Field
@@ -184,13 +184,14 @@ export const ResetPasswordToken = () => {
             </Link>
           </Button>
         )}
-        <div className="w-full h-px border-b border-dotted my-6" />
+        <div className="my-6 h-px w-full border-b border-dotted" />
         <span className="text-ui-fg-subtle txt-small">
           <Trans
             t={t}
             i18nKey="resetPassword.backToLogin"
             components={[
               <Link
+                key="login-link"
                 to="/login"
                 className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover outline-none"
               />,
@@ -232,23 +233,23 @@ const Countdown = ({ expiresAt }: { expiresAt: Date }) => {
   }
 
   return (
-    <div className="bg-ui-bg-subtle border border-ui-border-base w-full p-2 rounded-lg txt-compact-small relative">
-      <div className="absolute inset-0 flex rounded-lg overflow-hidden">
+    <div className="bg-ui-bg-subtle border-ui-border-base txt-compact-small relative w-full rounded-lg border p-2">
+      <div className="absolute inset-0 flex overflow-hidden rounded-lg">
         <div
-          className="h-full bg-ui-bg-subtle-hover transition-[width]"
+          className="bg-ui-bg-subtle-hover h-full transition-[width]"
           style={{
             width: `${percentageLeft}%`,
           }}
         />
       </div>
-      <div className="flex items-center text-ui-fg-subtle gap-x-2 z-10 relative">
+      <div className="text-ui-fg-subtle relative z-10 flex items-center gap-x-2">
         <Clock className="text-ui-tag-neutral-icon" />
         <span>
           <Trans
             t={t}
             i18nKey={"resetPassword.tokenExpiresIn"}
             values={{ time: timespan }}
-            components={[<span className="tabular-nums" />]}
+            components={[<span key="countdown" className="tabular-nums" />]}
           />
         </span>
       </div>

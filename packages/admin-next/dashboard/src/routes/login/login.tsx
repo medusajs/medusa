@@ -67,10 +67,10 @@ export const Login = () => {
   })
 
   return (
-    <div className="flex items-center justify-center min-h-dvh w-dvw bg-ui-bg-base">
-      <div className="max-w-[300px] w-full m-4 flex flex-col items-center">
+    <div className="min-h-dvh w-dvw bg-ui-bg-base flex items-center justify-center">
+      <div className="m-4 flex w-full max-w-[300px] flex-col items-center">
         <LogoBox className="mb-4" />
-        <div className="flex flex-col items-center mb-4">
+        <div className="mb-4 flex flex-col items-center">
           <Heading>{t("login.title")}</Heading>
           <Text size="small" className="text-ui-fg-subtle text-center">
             {t("login.hint")}
@@ -79,7 +79,7 @@ export const Login = () => {
         <Form {...form}>
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col w-full gap-y-6"
+            className="flex w-full flex-col gap-y-6"
           >
             <div className="flex flex-col gap-y-4">
               <Form.Field
@@ -122,12 +122,13 @@ export const Login = () => {
             </Button>
           </form>
         </Form>
-        <div className="w-full h-px border-b border-dotted my-6" />
+        <div className="my-6 h-px w-full border-b border-dotted" />
         <span className="text-ui-fg-subtle txt-small">
           <Trans
             i18nKey="login.forgotPassword"
             components={[
               <Link
+                key="reset-password-link"
                 to="/reset-password"
                 className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover outline-none"
               />,

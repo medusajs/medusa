@@ -1,24 +1,26 @@
+import { zodResolver } from "@hookform/resolvers/zod"
 import { UserRoles } from "@medusajs/medusa"
-import { Button, Heading, Input, Text, Tooltip } from "@medusajs/ui"
+import { Alert, Button, Heading, Input, Text, Tooltip } from "@medusajs/ui"
+import { AnimatePresence, motion } from "framer-motion"
+import { useAdminAcceptInvite } from "medusa-react"
 import { Trans, useTranslation } from "react-i18next"
 import { decodeToken } from "react-jwt"
 import { Link, useSearchParams } from "react-router-dom"
 import * as z from "zod"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useAdminAcceptInvite } from "medusa-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
+import { isAxiosError } from "../../lib/is-axios-error"
 
 const CreateAccountSchema = z
   .object({
     email: z.string().email(),
-    first_name: z.string(),
-    last_name: z.string(),
-    password: z.string(),
-    repeat_password: z.string(),
+    first_name: z.string().min(1),
+    last_name: z.string().min(1),
+    password: z.string().min(1),
+    repeat_password: z.string().min(1),
   })
   .superRefine(({ password, repeat_password }, ctx) => {
     if (password !== repeat_password) {
@@ -31,10 +33,99 @@ const CreateAccountSchema = z
   })
 
 export const Invite = () => {
+  const [success, setSuccess] = useState(false)
+
+  return (
+    <div className="min-h-dvh w-dvw bg-ui-bg-base relative flex items-center justify-center p-4">
+      <div className="flex w-full max-w-[300px] flex-col items-center">
+        <LogoBox
+          className="mb-4"
+          checked={success}
+          containerTransition={{
+            duration: 1.2,
+            delay: 0.8,
+            ease: [0, 0.71, 0.2, 1.01],
+          }}
+          pathTransition={{
+            duration: 1.3,
+            delay: 1.1,
+            bounce: 0.6,
+            ease: [0.1, 0.8, 0.2, 1.01],
+          }}
+        />
+        <div className="max-h-[557px] w-full will-change-contents">
+          <AnimatePresence>
+            {!success ? (
+              <motion.div
+                key="create-account"
+                initial={false}
+                animate={{
+                  height: "557px",
+                  y: 0,
+                }}
+                exit={{
+                  height: 0,
+                  y: 40,
+                }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.6,
+                  ease: [0, 0.71, 0.2, 1.01],
+                }}
+                className="w-full will-change-transform"
+              >
+                <motion.div
+                  initial={false}
+                  animate={{
+                    opacity: 1,
+                    scale: 1,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    scale: 0.7,
+                  }}
+                  transition={{
+                    duration: 0.6,
+                    delay: 0,
+                    ease: [0, 0.71, 0.2, 1.01],
+                  }}
+                  key="inner-create-account"
+                >
+                  <CreateView onSuccess={() => setSuccess(true)} />
+                </motion.div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="success-view"
+                initial={{
+                  opacity: 0,
+                  scale: 0.4,
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                }}
+                transition={{
+                  duration: 1,
+                  delay: 0.6,
+                  ease: [0, 0.71, 0.2, 1.01],
+                }}
+                className="w-full"
+              >
+                <SuccessView />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const CreateView = ({ onSuccess }: { onSuccess: () => void }) => {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const token = searchParams.get("token")
-  const [success, setSuccess] = useState(false)
 
   let tokenStatus: "valid" | "invalid" | "expired" = "valid"
   const decodedToken: {
@@ -59,6 +150,13 @@ export const Invite = () => {
     },
   })
 
+  if (tokenStatus === "invalid") {
+    form.setError("root", {
+      type: "manual",
+      message: t("invite.invalidInvite"),
+    })
+  }
+
   const { mutateAsync, isLoading } = useAdminAcceptInvite()
 
   const handleSubmit = form.handleSubmit(async (data) => {
@@ -72,136 +170,172 @@ export const Invite = () => {
         token: token!,
       },
       {
-        onSuccess: () => {
-          setSuccess(true)
-        },
+        onSuccess,
         onError: (error) => {
-          console.log(error)
+          if (isAxiosError(error) && error.response?.status === 400) {
+            form.setError("root", {
+              type: "manual",
+              message: t("invite.invalidInvite"),
+            })
+            tokenStatus = "invalid"
+            return
+          }
+
+          form.setError("root", {
+            type: "manual",
+            message: t("errors.serverError"),
+          })
         },
       }
     )
   })
 
   return (
-    <div className="flex items-center justify-center min-h-dvh w-dvw bg-ui-bg-base">
-      <div className="max-w-[300px] w-full m-4 flex flex-col items-center">
-        <LogoBox className="mb-4" />
-        <div className="flex flex-col items-center mb-4">
-          <Heading>{t("invite.title")}</Heading>
-          <Text size="small" className="text-ui-fg-subtle text-center">
-            {t("invite.hint")}
-          </Text>
-        </div>
-        <Form {...form}>
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col w-full gap-y-6"
-          >
-            <div className="flex flex-col gap-y-4">
-              <Form.Field
-                control={form.control}
-                name="email"
-                render={({ field }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Label>{t("fields.email")}</Form.Label>
-                      <Form.Control>
-                        <Tooltip content={t("invite.emailTooltip")}>
-                          <Input autoComplete="off" {...field} disabled />
-                        </Tooltip>
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
-              <Form.Field
-                control={form.control}
-                name="first_name"
-                render={({ field }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Label>{t("fields.firstName")}</Form.Label>
-                      <Form.Control>
-                        <Input autoComplete="given-name" {...field} />
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
-              <Form.Field
-                control={form.control}
-                name="last_name"
-                render={({ field }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Label>{t("fields.lastName")}</Form.Label>
-                      <Form.Control>
-                        <Input autoComplete="family-name" {...field} />
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
-              <Form.Field
-                control={form.control}
-                name="password"
-                render={({ field }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Label>{t("fields.password")}</Form.Label>
-                      <Form.Control>
-                        <Input
-                          autoComplete="new-password"
-                          type="password"
-                          {...field}
-                        />
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
-              <Form.Field
-                control={form.control}
-                name="repeat_password"
-                render={({ field }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Label>{t("fields.repeatPassword")}</Form.Label>
-                      <Form.Control>
-                        <Input autoComplete="off" type="password" {...field} />
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
-              {form.formState.errors.root && (
-                <span>{form.formState.errors.root.message}</span>
-              )}
-            </div>
-            <Button className="w-full" type="submit" isLoading={isLoading}>
-              {t("invite.createAccount")}
-            </Button>
-          </form>
-        </Form>
-        <div className="w-full h-px border-b border-dotted my-6" />
-        <span className="text-ui-fg-subtle txt-small">
-          <Trans
-            t={t}
-            i18nKey="invite.alreadyHaveAccount"
-            components={[
-              <Link
-                to="/login"
-                className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover outline-none"
-              />,
-            ]}
-          />
-        </span>
+    <div className="flex w-full flex-col items-center">
+      <div className="mb-4 flex flex-col items-center">
+        <Heading>{t("invite.title")}</Heading>
+        <Text size="small" className="text-ui-fg-subtle text-center">
+          {t("invite.hint")}
+        </Text>
       </div>
+      <Form {...form}>
+        <form onSubmit={handleSubmit} className="flex w-full flex-col gap-y-6">
+          <div className="flex flex-col gap-y-4">
+            <Form.Field
+              control={form.control}
+              name="email"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.email")}</Form.Label>
+                    <Form.Control>
+                      <Tooltip content={t("invite.emailTooltip")}>
+                        <Input autoComplete="off" {...field} disabled />
+                      </Tooltip>
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="first_name"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.firstName")}</Form.Label>
+                    <Form.Control>
+                      <Input autoComplete="given-name" {...field} />
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="last_name"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.lastName")}</Form.Label>
+                    <Form.Control>
+                      <Input autoComplete="family-name" {...field} />
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="password"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.password")}</Form.Label>
+                    <Form.Control>
+                      <Input
+                        autoComplete="new-password"
+                        type="password"
+                        {...field}
+                      />
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="repeat_password"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.repeatPassword")}</Form.Label>
+                    <Form.Control>
+                      <Input autoComplete="off" type="password" {...field} />
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+            {form.formState.errors.root && (
+              <Alert
+                variant="error"
+                dismissible={false}
+                className="text-balance"
+              >
+                {form.formState.errors.root.message}
+              </Alert>
+            )}
+          </div>
+          <Button
+            className="w-full"
+            type="submit"
+            isLoading={isLoading}
+            disabled={tokenStatus !== "valid"}
+          >
+            {t("invite.createAccount")}
+          </Button>
+        </form>
+      </Form>
+      <div className="my-6 h-px w-full border-b border-dotted" />
+      <span className="text-ui-fg-subtle txt-small">
+        <Trans
+          t={t}
+          i18nKey="invite.alreadyHaveAccount"
+          components={[
+            <Link
+              key="login-link"
+              to="/login"
+              className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover outline-none"
+            />,
+          ]}
+        />
+      </span>
+    </div>
+  )
+}
+
+const SuccessView = () => {
+  const { t } = useTranslation()
+
+  return (
+    <div className="flex w-full flex-col items-center gap-y-6">
+      <div className="flex flex-col items-center gap-y-1">
+        <Heading>{t("invite.successTitle")}</Heading>
+        <Text size="small" className="text-ui-fg-subtle text-center">
+          {t("invite.successHint")}
+        </Text>
+      </div>
+      <Button variant="secondary" asChild className="w-full">
+        <Link to="/orders" replace>
+          {t("invite.successAction")}
+        </Link>
+      </Button>
     </div>
   )
 }
