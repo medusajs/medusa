@@ -18,6 +18,13 @@ import {
   StripeOptions,
 } from "../types"
 
+type StripeWebhookEventData = {
+  data: string | Buffer
+  headers: {
+    "stripe-signature": string | string[] | Buffer
+  } & Record<string, unknown>
+}
+
 abstract class StripeBase extends AbstractPaymentModuleProvider {
   protected readonly options_: StripeOptions
   protected stripe_: Stripe
@@ -312,6 +319,21 @@ abstract class StripeBase extends AbstractPaymentModuleProvider {
     }
   }
 
+  // async onWebhookReceived(data: StripeWebhookEventData): Promise<void> {
+  //   const event = this.constructWebhookEvent(data)
+
+  //   switch (event.type) {
+  //     case "payment_intent.succeeded":
+  //       return this.onPaymentIntentSucceeded(event)
+  //     case "payment_intent.amount_capturable_updated":
+  //       return this.onPaymentAmountCapturableUpdate(event)
+  //     case "payment_intent.payment_failed":
+  //       return this.onPaymentIntentFailed(event)
+  //     default:
+  //       return
+  //   }
+  // }
+
   /**
    * Constructs Stripe Webhook event
    * @param {object} data - the data of the webhook request: req.body
@@ -319,9 +341,11 @@ abstract class StripeBase extends AbstractPaymentModuleProvider {
    *    ensures integrity of the webhook event
    * @return {object} Stripe Webhook event
    */
-  constructWebhookEvent(data, signature) {
+  constructWebhookEvent(data: StripeWebhookEventData): Stripe.Event {
+    const signature = data.headers["stripe-signature"]
+
     return this.stripe_.webhooks.constructEvent(
-      data,
+      data.data,
       signature,
       this.config_.webhook_secret
     )

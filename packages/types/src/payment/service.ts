@@ -1,5 +1,11 @@
+import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
+import {
+  FilterablePaymentCollectionProps,
+  PaymentCollectionDTO,
+  PaymentDTO,
+} from "./common"
 import {
   CreatePaymentCollectionDTO,
   CreatePaymentDTO,
@@ -8,12 +14,6 @@ import {
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
 } from "./mutations"
-import {
-  FilterablePaymentCollectionProps,
-  PaymentCollectionDTO,
-  PaymentDTO,
-} from "./common"
-import { FindConfig } from "../common"
 
 export interface IPaymentModuleService extends IModuleService {
   /* ********** PAYMENT COLLECTION ********** */

@@ -7,9 +7,11 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
     const options = req.scope.resolve(ModuleRegistrationName.PAYMENT).options
 
-    const event = { provider, data: req.body }
+    const event = { provider, data: req.body, headers: req.headers }
 
     const eventBus = req.scope.resolve("eventBusService")
+
+    // const validated = await paymentModuleService.validateWebhook(data)
 
     // we delay the processing of the event to avoid a conflict caused by a race condition
     await eventBus.emit("payment.webhook_received", event, {
