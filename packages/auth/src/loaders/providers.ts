@@ -32,6 +32,7 @@ export default async ({
     options?.providers?.map((provider) => [provider.name, provider.scopes]) ??
       []
   )
+
   // if(options?.providers?.length) {
   // TODO: implement plugin provider registration
   // }

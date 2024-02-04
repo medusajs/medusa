@@ -4,9 +4,11 @@
     "ascending": "Ascending",
     "descending": "Descending",
     "cancel": "Cancel",
+    "close": "Close",
     "save": "Save",
     "create": "Create",
     "delete": "Delete",
+    "invite": "Invite",
     "edit": "Edit",
     "confirm": "Confirm",
     "add": "Add",
@@ -21,6 +23,7 @@
     "pages": "pages",
     "next": "Next",
     "prev": "Prev",
+    "is": "is",
     "extensions": "Extensions",
     "settings": "Settings",
     "general": "General",
@@ -28,10 +31,13 @@
     "enabled": "Enabled",
     "disabled": "Disabled",
     "active": "Active",
+    "revoke": "Revoke",
     "revoked": "Revoked",
     "remove": "Remove",
     "admin": "Admin",
     "store": "Store",
+    "items_one": "{{count}} item",
+    "items_other": "{{count}} items",
     "countSelected": "{{count}} selected",
     "plusCountMore": "+ {{count}} more",
     "areYouSure": "Are you sure?",
@@ -104,7 +110,29 @@
     "deleteCustomerGroupWarning": "You are about to delete the customer group {{name}}. This action cannot be undone."
   },
   "orders": {
-    "domain": "Orders"
+    "domain": "Orders",
+    "paymentStatusLabel": "Payment Status",
+    "paymentStatus": {
+      "notPaid": "Not Paid",
+      "awaiting": "Awaiting",
+      "captured": "Captured",
+      "partiallyRefunded": "Partially Refunded",
+      "refunded": "Refunded",
+      "canceled": "Canceled",
+      "requresAction": "Requires Action"
+    },
+    "fulfillmentStatusLabel": "Fulfillment Status",
+    "fulfillmentStatus": {
+      "notFulfilled": "Not Fulfilled",
+      "partiallyFulfilled": "Partially Fulfilled",
+      "fulfilled": "Fulfilled",
+      "partiallyShipped": "Partially Shipped",
+      "shipped": "Shipped",
+      "partiallyReturned": "Partially Returned",
+      "returned": "Returned",
+      "canceled": "Canceled",
+      "requresAction": "Requires Action"
+    }
   },
   "draftOrders": {
     "domain": "Draft Orders"
@@ -126,7 +154,22 @@
   },
   "users": {
     "domain": "Users",
-    "role": "Role",
+    "editUser": "Edit User",
+    "inviteUser": "Invite User",
+    "inviteUserHint": "Invite a new user to your store.",
+    "sendInvite": "Send invite",
+    "pendingInvites": "Pending Invites",
+    "revokeInviteWarning": "You are about to revoke the invite for {{email}}. This action cannot be undone.",
+    "resendInvite": "Resend invite",
+    "copyInviteLink": "Copy invite link",
+    "expiredOnDate": "Expired on {{date}}",
+    "validFromUntil": "Valid from <0>{{from}}</0> - <1>{{until}}</1>",
+    "acceptedOnDate": "Accepted on {{date}}",
+    "inviteStatus": {
+      "accepted": "Accepted",
+      "pending": "Pending",
+      "expired": "Expired"
+    },
     "roles": {
       "admin": "Admin",
       "developer": "Developer",
@@ -244,6 +287,16 @@
     "account": "Account",
     "total": "Total",
     "created": "Created",
-    "key": "Key"
+    "key": "Key",
+    "customer": "Customer",
+    "date": "Date",
+    "order": "Order",
+    "fulfillment": "Fulfillment",
+    "payment": "Payment",
+    "items": "Items",
+    "salesChannel": "Sales Channel",
+    "region": "Region",
+    "role": "Role",
+    "sent": "Sent"
   }
 }
