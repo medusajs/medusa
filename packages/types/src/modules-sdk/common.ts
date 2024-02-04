@@ -35,7 +35,7 @@ export type InternalModuleDeclaration = {
   scope: MODULE_SCOPE.INTERNAL
   resources: MODULE_RESOURCE_TYPE
   dependencies?: string[]
-  definition?: ModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
+  definition?: Partial<ModuleDefinition> // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   resolve?: string | ModuleExports
   options?: Record<string, unknown>
   /**
@@ -50,7 +50,7 @@ export type InternalModuleDeclaration = {
 
 export type ExternalModuleDeclaration = {
   scope: MODULE_SCOPE.EXTERNAL
-  definition?: ModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
+  definition?: Partial<ModuleDefinition> // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   server:
     | {
         type: "http"
