@@ -9,11 +9,9 @@ import {
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
-  isString,
   MedusaModuleType,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
-import path from "path"
 
 export async function loadInternalModule(
   container: MedusaContainer,
@@ -22,7 +20,7 @@ export async function loadInternalModule(
 ): Promise<{ error?: Error } | void> {
   const registrationName = resolution.definition.registrationName
 
-  const { resources, resolve } =
+  const { resources } =
     resolution.moduleDeclaration as InternalModuleDeclaration
 
   let loadedModule: ModuleExports
@@ -31,10 +29,7 @@ export async function loadInternalModule(
     // the exports. This is useful when a package export an initialize function which will bootstrap itself and therefore
     // does not need to import the package that is currently being loaded as it would create a
     // circular reference.
-    const modulePath =
-      (resolution.resolutionPath as string) ?? isString(resolve)
-        ? path.resolve(resolve as string)
-        : ""
+    const modulePath = resolution.resolutionPath as string
 
     if (resolution.moduleExports) {
       loadedModule = resolution.moduleExports

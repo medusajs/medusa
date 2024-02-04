@@ -82,13 +82,6 @@ export type ModuleDefinition = {
   registrationName: string
   defaultPackage: string | false
   label: string
-  /**
-   * @deprecated property will be removed in future versions
-   */
-  canOverride?: boolean
-  /**
-   * @deprecated property will be removed in future versions
-   */
   isRequired?: boolean
   isQueryable?: boolean // If the module is queryable via Remote Joiner
   isLegacy?: boolean // If the module is a legacy module TODO: Remove once all the legacy modules are migrated
