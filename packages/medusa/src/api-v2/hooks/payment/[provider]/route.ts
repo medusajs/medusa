@@ -1,7 +1,7 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   try {
     const { provider } = req.params
 
@@ -22,8 +22,4 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   }
 
   res.sendStatus(200)
-}
-
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  await GET(req, res)
 }
