@@ -8210,7 +8210,7 @@ __metadata:
     configstore: 5.0.1
     core-js: ^3.6.5
     cross-env: ^5.2.1
-    dotenv: 16.0.3
+    dotenv: 16.3.1
     execa: ^5.1.1
     fs-exists-cached: ^1.0.0
     fs-extra: ^10.0.0
@@ -8220,7 +8220,7 @@ __metadata:
     is-valid-path: ^0.1.1
     jest: ^25.5.4
     meant: ^1.0.3
-    medusa-core-utils: ^1.2.0
+    medusa-core-utils: ^1.2.1
     medusa-telemetry: ^0.0.17
     open: ^8.0.6
     ora: ^5.4.1
@@ -25431,13 +25431,6 @@ __metadata:
   version: 5.1.0
   resolution: "dotenv-expand@npm:5.1.0"
   checksum: 24ac633de853ef474d0421cc639328b7134109c8dc2baaa5e3afb7495af5e9237136d7e6971e55668e4dce915487eb140967cdd2b3e99aa439e0f6bf8b56faeb
-  languageName: node
-  linkType: hard
-
-"dotenv@npm:16.0.3":
-  version: 16.0.3
-  resolution: "dotenv@npm:16.0.3"
-  checksum: 109457ac5f9e930ca8066ea33887b6f839ab24d647a7a8b49ddcd1f32662e2c35591c5e5b9819063e430148a664d0927f0cbe60cf9575d89bc524f47ff7e78f0
   languageName: node
   linkType: hard
 

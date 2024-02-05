@@ -3,6 +3,7 @@ import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
 import { MedusaError } from "@medusajs/utils"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { RouteConfig } from "../../../../loaders/helpers/routing/types"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { scope, authProvider } = req.params
@@ -24,7 +25,10 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
   const { success, error, authUser, location } = authResult
   if (location) {
-    res.redirect(location)
+    res.status(302)
+    res.setHeader("Location", location)
+    res.setHeader("Content-Length", "0")
+    res.end()
     return
   }
 
@@ -44,3 +48,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   await GET(req, res)
 }
+
+// export const config: RouteConfig = {
+//   shouldAppendStoreCors: true,
+// }

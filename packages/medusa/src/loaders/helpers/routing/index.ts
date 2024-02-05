@@ -332,6 +332,10 @@ export class RoutesLoader {
             }
           }
 
+          if (route.startsWith("/auth")) {
+            config.shouldAppendStoreCors = true
+          }
+
           if (shouldRequireAuth && route.startsWith("/store/me")) {
             config.shouldRequireCustomerAuth = shouldRequireAuth
           }

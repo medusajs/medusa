@@ -24,7 +24,10 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
   const { success, error, authUser, location } = authResult
   if (location) {
-    res.redirect(location)
+    res.status(302)
+    res.setHeader("Location", location)
+    res.setHeader("Content-Length", "0")
+    res.end()
     return
   }
 

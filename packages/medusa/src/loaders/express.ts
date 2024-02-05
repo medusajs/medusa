@@ -31,8 +31,8 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
     proxy: true,
     secret: session_options?.secret ?? cookie_secret,
     cookie: {
-      sameSite,
-      secure,
+      sameSite: "none",
+      secure: true,
       maxAge: session_options?.ttl ?? 10 * 60 * 60 * 1000,
     },
     store: null,
@@ -41,7 +41,7 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
   if (configModule?.projectConfig?.redis_url) {
     const RedisStore = createStore(session)
     const redisClient = new Redis(
-      configModule.projectConfig.redis_url, 
+      configModule.projectConfig.redis_url,
       configModule.projectConfig.redis_options ?? {}
     )
     sessionOpts.store = new RedisStore({
