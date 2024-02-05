@@ -62,5 +62,5 @@ export interface IAuthModuleService extends IModuleService {
 
   update(data: UpdateAuthUserDTO, sharedContext?: Context): Promise<AuthUserDTO>
 
-  deleteAuthUsers(ids: string[], sharedContext?: Context): Promise<void>
+  delete(ids: string[], sharedContext?: Context): Promise<void>
 }

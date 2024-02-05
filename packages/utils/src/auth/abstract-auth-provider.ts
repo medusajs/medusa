@@ -5,7 +5,12 @@ import { MedusaError } from "../common"
 export abstract class AbstractAuthModuleProvider {
   public static PROVIDER: string
   public static DISPLAY_NAME: string
-  protected readonly scopes_: Record<string, AuthProviderScope>
+
+  protected readonly container_: any
+  protected scopeConfig_: AuthProviderScope
+  protected scope_: string
+
+  private readonly scopes_: Record<string, AuthProviderScope>
 
   public get provider() {
     return (this.constructor as Function & { PROVIDER: string }).PROVIDER
@@ -20,13 +25,23 @@ export abstract class AbstractAuthModuleProvider {
     this.scopes_ = scopes
   }
 
-  public validateScope(scope) {
+  private validateScope(scope) {
     if (!this.scopes_[scope]) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
         `Scope "${scope}" is not valid for provider ${this.provider}`
       )
     }
+  }
+
+  public withScope(scope: string) {
+    this.validateScope(scope)
+
+    const cloned = new (this.constructor as any)(this.container_)
+    cloned.scope_ = scope
+    cloned.scopeConfg_ = this.scopes_[scope]
+
+    return cloned
   }
 
   abstract authenticate(

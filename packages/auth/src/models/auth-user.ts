@@ -11,7 +11,6 @@ import {
   Unique,
 } from "@mikro-orm/core"
 
-import AuthProvider from "./auth-provider"
 import { generateEntityId } from "@medusajs/utils"
 
 type OptionalFields = "provider_metadata" | "app_metadata" | "user_metadata"
@@ -30,12 +29,8 @@ export default class AuthUser {
   @Property({ columnType: "text" })
   entity_id: string
 
-  @ManyToOne(() => AuthProvider, {
-    joinColumn: "provider",
-    fieldName: "provider_id",
-    cascade: [Cascade.REMOVE],
-  })
-  provider: AuthProvider
+  @Property({ columnType: "text" })
+  provider: string
 
   @Property({ columnType: "text" })
   scope: string
