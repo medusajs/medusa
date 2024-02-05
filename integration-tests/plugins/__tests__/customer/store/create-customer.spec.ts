@@ -56,7 +56,6 @@ describe("POST /store/customers", () => {
       scope: "store",
     })
     const jwtToken = jwt.sign(authUser, jwt_secret)
-    // const jwt = await authService.generateJwtToken(authUser.id, "store")
 
     const api = useApi() as any
     const response = await api.post(
