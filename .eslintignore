@@ -9,6 +9,8 @@ packages/*
 !packages/medusa
 !packages/admin-ui
 !packages/admin
+!packages/admin-next
+!packages/admin-next/dashboard
 !packages/medusa-payment-stripe
 !packages/medusa-payment-paypal
 !packages/event-bus-redis

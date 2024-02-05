@@ -64,7 +64,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       registrationName: ModuleRegistrationName.EVENT_BUS,
       defaultPackage: MODULE_PACKAGE_NAMES[Modules.EVENT_BUS],
       label: upperCaseFirst(ModuleRegistrationName.EVENT_BUS),
-      canOverride: true,
       isRequired: true,
       dependencies: ["logger"],
       defaultModuleDeclaration: {
@@ -79,7 +78,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.STOCK_LOCATION),
       isRequired: false,
-      canOverride: true,
       isQueryable: true,
       dependencies: ["eventBusService"],
       defaultModuleDeclaration: {
@@ -94,7 +92,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.INVENTORY),
       isRequired: false,
-      canOverride: true,
       isQueryable: true,
       dependencies: ["eventBusService"],
       defaultModuleDeclaration: {
@@ -109,7 +106,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       defaultPackage: MODULE_PACKAGE_NAMES[Modules.CACHE],
       label: upperCaseFirst(ModuleRegistrationName.CACHE),
       isRequired: true,
-      canOverride: true,
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -121,7 +117,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.PRODUCT),
       isRequired: false,
-      canOverride: true,
       isQueryable: true,
       dependencies: [ModuleRegistrationName.EVENT_BUS, "logger"],
       defaultModuleDeclaration: {
@@ -135,7 +130,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.PRICING),
       isRequired: false,
-      canOverride: true,
       isQueryable: true,
       dependencies: ["logger"],
       defaultModuleDeclaration: {
@@ -149,7 +143,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.PROMOTION),
       isRequired: false,
-      canOverride: true,
       isQueryable: true,
       dependencies: ["logger"],
       defaultModuleDeclaration: {
@@ -163,7 +156,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.AUTH),
       isRequired: false,
-      canOverride: true,
       isQueryable: true,
       dependencies: ["logger"],
       defaultModuleDeclaration: {
@@ -177,7 +169,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.WORKFLOW_ENGINE),
       isRequired: false,
-      canOverride: true,
       isQueryable: true,
       dependencies: ["logger"],
       defaultModuleDeclaration: {
@@ -191,7 +182,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.SALES_CHANNEL),
       isRequired: false,
-      canOverride: true,
       isQueryable: true,
       dependencies: ["logger"],
       defaultModuleDeclaration: {
@@ -205,7 +195,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.CART),
       isRequired: false,
-      canOverride: true,
       isQueryable: true,
       dependencies: ["logger"],
       defaultModuleDeclaration: {
@@ -219,7 +208,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.CUSTOMER),
       isRequired: false,
-      canOverride: true,
       isQueryable: true,
       dependencies: ["logger"],
       defaultModuleDeclaration: {
@@ -233,7 +221,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.PAYMENT),
       isRequired: false,
-      canOverride: true,
       isQueryable: true,
       dependencies: ["logger"],
       defaultModuleDeclaration: {
