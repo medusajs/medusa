@@ -50,7 +50,7 @@ const useCopyPromotion = () => {
       copy.rule.conditions = promotion.rule.conditions.map((cond) => ({
         operator: cond.operator,
         ...removeFalsy({
-          products: cond.products,
+          products: cond.products.map((product) => product.id),
           product_types: cond.product_types,
           product_tags: cond.product_tags,
           product_collections: cond.product_collections,

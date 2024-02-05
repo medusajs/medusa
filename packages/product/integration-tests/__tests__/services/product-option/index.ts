@@ -205,7 +205,7 @@ describe("ProductOption Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"productOptionId" must be defined')
+      expect(error.message).toEqual("productOption - id must be defined")
     })
 
     it("should return option based on config select param", async () => {

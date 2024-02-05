@@ -320,7 +320,7 @@ describe("ProductVariant Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"productVariantId" must be defined')
+      expect(error.message).toEqual("productVariant - id must be defined")
     })
   })
 })

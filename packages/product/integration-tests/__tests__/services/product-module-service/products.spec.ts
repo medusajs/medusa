@@ -796,7 +796,23 @@ describe("ProductModuleService products", function () {
 
       const products = await module.create([data])
 
+      let retrievedProducts = await module.list({ id: products[0].id })
+
+      expect(retrievedProducts).toHaveLength(1)
+      expect(retrievedProducts[0].deleted_at).toBeNull()
+
       await module.softDelete([products[0].id])
+
+      retrievedProducts = await module.list(
+        { id: products[0].id },
+        {
+          withDeleted: true,
+        }
+      )
+
+      expect(retrievedProducts).toHaveLength(1)
+      expect(retrievedProducts[0].deleted_at).not.toBeNull()
+
       await module.restore([products[0].id])
 
       const deletedProducts = await module.list(

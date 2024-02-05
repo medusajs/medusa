@@ -144,7 +144,7 @@ class Product {
   @ManyToMany(() => ProductCategory, "products", {
     owner: true,
     pivotTable: "product_category_product",
-    cascade: ["soft-remove"] as any,
+    // TODO: rm cascade: ["soft-remove"] as any,
   })
   categories = new Collection<ProductCategory>(this)
 

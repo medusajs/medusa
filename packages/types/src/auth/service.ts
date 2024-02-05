@@ -68,22 +68,12 @@ export interface IAuthModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<AuthProviderDTO>
 
-  deleteAuthProvider(ids: string[], sharedContext?: Context): Promise<void>
+  deleteAuthProviders(ids: string[], sharedContext?: Context): Promise<void>
 
   retrieveAuthUser(
     id: string,
     config?: FindConfig<AuthUserDTO>,
     sharedContext?: Context
-  ): Promise<AuthUserDTO>
-
-  generateJwtToken(
-    authUserId: string,
-    scope: string,
-    options?: JWTGenerationOptions
-  ): Promise<string>
-  retrieveAuthUserFromJwtToken(
-    token: string,
-    scope: string
   ): Promise<AuthUserDTO>
 
   listAuthUsers(
@@ -118,5 +108,5 @@ export interface IAuthModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<AuthUserDTO>
 
-  deleteAuthUser(ids: string[], sharedContext?: Context): Promise<void>
+  deleteAuthUsers(ids: string[], sharedContext?: Context): Promise<void>
 }

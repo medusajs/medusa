@@ -4,7 +4,6 @@ export const ProductInventoryLinkModule = {
     registrationName: "productVariantInventoryInventoryItemLink",
     defaultPackage: "",
     label: "productVariantInventoryInventoryItemLink",
-    canOverride: true,
     isRequired: false,
     isQueryable: true,
     defaultModuleDeclaration: {
