@@ -13,10 +13,11 @@ const migrationScriptOptions = {
   pathToMigrations: __dirname + "/migrations",
 }
 
-export const runMigrations = ModulesSdkUtils.buildMigrationScript(
+const runMigrations = ModulesSdkUtils.buildMigrationScript(
   migrationScriptOptions
 )
-export const revertMigration = ModulesSdkUtils.buildRevertMigrationScript(
+
+const revertMigration = ModulesSdkUtils.buildRevertMigrationScript(
   migrationScriptOptions
 )
 

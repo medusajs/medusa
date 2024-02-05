@@ -12,19 +12,18 @@ import {
   Modules,
 } from "@medusajs/modules-sdk"
 
-export default moduleDefinition
+export * from "./types"
+export * from "./models"
+export * from "./services"
 
-export const runMigrations = moduleDefinition.runMigrations
-export const revertMigration = moduleDefinition.revertMigration
-
-export const initialize = async (
+export async function initialize(
   options?:
     | ModulesSdkTypes.ModuleServiceInitializeOptions
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
     | ExternalModuleDeclaration
     | InternalModuleDeclaration,
   injectedDependencies?: InitializeModuleInjectableDependencies
-): Promise<IFulfillmentModuleService> => {
+): Promise<IFulfillmentModuleService> {
   const serviceKey = Modules.FULFILLMENT
 
   const loaded = await MedusaModule.bootstrap<IFulfillmentModuleService>({
@@ -40,6 +39,6 @@ export const initialize = async (
   return loaded[serviceKey]
 }
 
-export * from "./types"
-export * from "./models"
-export * from "./services"
+export const runMigrations = moduleDefinition.runMigrations
+export const revertMigration = moduleDefinition.revertMigration
+export default moduleDefinition
