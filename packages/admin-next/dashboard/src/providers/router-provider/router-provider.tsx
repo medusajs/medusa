@@ -6,6 +6,7 @@ import type {
   AdminPublishableApiKeysRes,
   AdminRegionsRes,
   AdminSalesChannelsRes,
+  AdminUserRes,
 } from "@medusajs/medusa"
 import {
   Outlet,
@@ -439,6 +440,9 @@ const router = createBrowserRouter([
               {
                 path: ":id",
                 lazy: () => import("../../routes/users/user-detail"),
+                handle: {
+                  crumb: (data: AdminUserRes) => data.user.email,
+                },
                 children: [
                   {
                     path: "edit",

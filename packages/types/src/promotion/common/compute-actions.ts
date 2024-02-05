@@ -65,3 +65,7 @@ export interface ComputeActionContext extends Record<string, unknown> {
   items?: ComputeActionItemLine[]
   shipping_methods?: ComputeActionShippingLine[]
 }
+
+export interface ComputeActionOptions {
+  prevent_auto_promotions?: boolean
+}

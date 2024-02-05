@@ -1,20 +1,24 @@
+import jwt from "jsonwebtoken"
+
 import {
+  AuthProviderDTO,
+  AuthTypes,
+  AuthUserDTO,
   AuthenticationInput,
   AuthenticationResponse,
-  AuthTypes,
   Context,
+  CreateAuthProviderDTO,
+  CreateAuthUserDTO,
   DAL,
+  FilterableAuthProviderProps,
+  FilterableAuthUserProps,
   FindConfig,
   InternalModuleDeclaration,
+  JWTGenerationOptions,
   MedusaContainer,
   ModuleJoinerConfig,
+  UpdateAuthUserDTO,
 } from "@medusajs/types"
-
-import { AuthProvider, AuthUser } from "@models"
-
-import { joinerConfig } from "../joiner-config"
-import { AuthProviderService, AuthUserService } from "@services"
-
 import {
   AbstractAuthModuleProvider,
   InjectManager,
@@ -22,16 +26,19 @@ import {
   MedusaContext,
   MedusaError,
 } from "@medusajs/utils"
-import {
-  AuthProviderDTO,
-  AuthUserDTO,
-  CreateAuthProviderDTO,
-  CreateAuthUserDTO,
-  FilterableAuthProviderProps,
-  FilterableAuthUserProps,
-  UpdateAuthUserDTO,
-} from "@medusajs/types"
+import { AuthProvider, AuthUser } from "@models"
+import { AuthProviderService, AuthUserService } from "@services"
 import { ServiceTypes } from "@types"
+import { joinerConfig } from "../joiner-config"
+
+type AuthModuleOptions = {
+  jwt_secret: string
+}
+
+type AuthJWTPayload = {
+  id: string
+  scope: string
+}
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -57,6 +64,7 @@ export default class AuthModuleService<
 
   protected authUserService_: AuthUserService<TAuthUser>
   protected authProviderService_: AuthProviderService<TAuthProvider>
+  protected options_: AuthModuleOptions
 
   constructor(
     {
@@ -64,18 +72,20 @@ export default class AuthModuleService<
       authProviderService,
       baseRepository,
     }: InjectedDependencies,
+    options: AuthModuleOptions,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.__container__ = arguments[0]
     this.baseRepository_ = baseRepository
     this.authUserService_ = authUserService
     this.authProviderService_ = authProviderService
+    this.options_ = options
   }
 
   async retrieveAuthProvider(
     provider: string,
     config: FindConfig<AuthProviderDTO> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthProviderDTO> {
     const authProvider = await this.authProviderService_.retrieve(
       provider,
@@ -92,7 +102,7 @@ export default class AuthModuleService<
   async listAuthProviders(
     filters: FilterableAuthProviderProps = {},
     config: FindConfig<AuthProviderDTO> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthProviderDTO[]> {
     const authProviders = await this.authProviderService_.list(
       filters,
@@ -100,9 +110,10 @@ export default class AuthModuleService<
       sharedContext
     )
 
-    return await this.baseRepository_.serialize<
-      AuthTypes.AuthProviderDTO[]
-    >(authProviders, { populate: true })
+    return await this.baseRepository_.serialize<AuthTypes.AuthProviderDTO[]>(
+      authProviders,
+      { populate: true }
+    )
   }
 
   @InjectManager("baseRepository_")
@@ -118,11 +129,52 @@ export default class AuthModuleService<
     )
 
     return [
-      await this.baseRepository_.serialize<
-        AuthTypes.AuthProviderDTO[]
-      >(authProviders, { populate: true }),
+      await this.baseRepository_.serialize<AuthTypes.AuthProviderDTO[]>(
+        authProviders,
+        { populate: true }
+      ),
       count,
     ]
+  }
+
+  async generateJwtToken(
+    authUserId: string,
+    scope: string,
+    options: JWTGenerationOptions = {}
+  ): Promise<string> {
+    const authUser = await this.authUserService_.retrieve(authUserId)
+    return jwt.sign({ id: authUser.id, scope }, this.options_.jwt_secret, {
+      expiresIn: options.expiresIn || "1d",
+    })
+  }
+
+  async retrieveAuthUserFromJwtToken(
+    token: string,
+    scope: string
+  ): Promise<AuthUserDTO> {
+    let decoded: AuthJWTPayload
+    try {
+      const verifiedToken = jwt.verify(token, this.options_.jwt_secret)
+      decoded = verifiedToken as AuthJWTPayload
+    } catch (err) {
+      throw new MedusaError(
+        MedusaError.Types.UNAUTHORIZED,
+        "The provided JWT token is invalid"
+      )
+    }
+
+    if (decoded.scope !== scope) {
+      throw new MedusaError(
+        MedusaError.Types.UNAUTHORIZED,
+        "The provided JWT token is invalid"
+      )
+    }
+
+    const authUser = await this.authUserService_.retrieve(decoded.id)
+    return await this.baseRepository_.serialize<AuthTypes.AuthUserDTO>(
+      authUser,
+      { populate: true }
+    )
   }
 
   async createAuthProvider(
@@ -139,9 +191,7 @@ export default class AuthModuleService<
   async createAuthProvider(
     data: CreateAuthProviderDTO | CreateAuthProviderDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<
-    AuthTypes.AuthProviderDTO | AuthTypes.AuthProviderDTO[]
-  > {
+  ): Promise<AuthTypes.AuthProviderDTO | AuthTypes.AuthProviderDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
     const providers = await this.createAuthProviders_(input, sharedContext)
@@ -174,13 +224,9 @@ export default class AuthModuleService<
 
   @InjectManager("baseRepository_")
   async updateAuthProvider(
-    data:
-      | AuthTypes.UpdateAuthProviderDTO[]
-      | AuthTypes.UpdateAuthProviderDTO,
+    data: AuthTypes.UpdateAuthProviderDTO[] | AuthTypes.UpdateAuthProviderDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<
-    AuthTypes.AuthProviderDTO | AuthTypes.AuthProviderDTO[]
-  > {
+  ): Promise<AuthTypes.AuthProviderDTO | AuthTypes.AuthProviderDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
     const providers = await this.updateAuthProvider_(input, sharedContext)
@@ -241,11 +287,12 @@ export default class AuthModuleService<
       sharedContext
     )
 
-    return await this.baseRepository_.serialize<
-      AuthTypes.AuthUserDTO[]
-    >(authUsers, {
-      populate: true,
-    })
+    return await this.baseRepository_.serialize<AuthTypes.AuthUserDTO[]>(
+      authUsers,
+      {
+        populate: true,
+      }
+    )
   }
 
   @InjectManager("baseRepository_")
@@ -261,12 +308,9 @@ export default class AuthModuleService<
     )
 
     return [
-      await this.baseRepository_.serialize<AuthTypes.AuthUserDTO[]>(
-        authUsers,
-        {
-          populate: true,
-        }
-      ),
+      await this.baseRepository_.serialize<AuthTypes.AuthUserDTO[]>(authUsers, {
+        populate: true,
+      }),
       count,
     ]
   }
@@ -284,9 +328,7 @@ export default class AuthModuleService<
   async createAuthUser(
     data: CreateAuthUserDTO[] | CreateAuthUserDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<
-    AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]
-  > {
+  ): Promise<AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
     const authUsers = await this.createAuthUsers_(input, sharedContext)
@@ -321,9 +363,7 @@ export default class AuthModuleService<
   async updateAuthUser(
     data: UpdateAuthUserDTO | UpdateAuthUserDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<
-    AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]
-  > {
+  ): Promise<AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
     const updatedUsers = await this.updateAuthUsers_(input, sharedContext)
