@@ -4,12 +4,12 @@ import { Alert, Button, Heading, Input, Text, Tooltip } from "@medusajs/ui"
 import { AnimatePresence, motion } from "framer-motion"
 import { useAdminAcceptInvite } from "medusa-react"
 import { Trans, useTranslation } from "react-i18next"
-import { decodeToken } from "react-jwt"
 import { Link, useSearchParams } from "react-router-dom"
 import * as z from "zod"
 
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { decodeToken } from "react-jwt"
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
 import { isAxiosError } from "../../lib/is-axios-error"
@@ -32,8 +32,20 @@ const CreateAccountSchema = z
     }
   })
 
+type DecodedInvite = {
+  invite_id: string
+  role: UserRoles
+  user_email: string
+  iat: number
+}
+
 export const Invite = () => {
+  const [searchParams] = useSearchParams()
   const [success, setSuccess] = useState(false)
+
+  const token = searchParams.get("token")
+  const invite: DecodedInvite | null = token ? decodeToken(token) : null
+  const isValidInvite = invite && validateDecodedInvite(invite)
 
   return (
     <div className="min-h-dvh w-dvw bg-ui-bg-base relative flex items-center justify-center p-4">
@@ -54,108 +66,143 @@ export const Invite = () => {
           }}
         />
         <div className="max-h-[557px] w-full will-change-contents">
-          <AnimatePresence>
-            {!success ? (
-              <motion.div
-                key="create-account"
-                initial={false}
-                animate={{
-                  height: "557px",
-                  y: 0,
-                }}
-                exit={{
-                  height: 0,
-                  y: 40,
-                }}
-                transition={{
-                  duration: 0.8,
-                  delay: 0.6,
-                  ease: [0, 0.71, 0.2, 1.01],
-                }}
-                className="w-full will-change-transform"
-              >
+          {isValidInvite ? (
+            <AnimatePresence>
+              {!success ? (
                 <motion.div
+                  key="create-account"
                   initial={false}
+                  animate={{
+                    height: "557px",
+                    y: 0,
+                  }}
+                  exit={{
+                    height: 0,
+                    y: 40,
+                  }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.6,
+                    ease: [0, 0.71, 0.2, 1.01],
+                  }}
+                  className="w-full will-change-transform"
+                >
+                  <motion.div
+                    initial={false}
+                    animate={{
+                      opacity: 1,
+                      scale: 1,
+                    }}
+                    exit={{
+                      opacity: 0,
+                      scale: 0.7,
+                    }}
+                    transition={{
+                      duration: 0.6,
+                      delay: 0,
+                      ease: [0, 0.71, 0.2, 1.01],
+                    }}
+                    key="inner-create-account"
+                  >
+                    <CreateView
+                      onSuccess={() => setSuccess(true)}
+                      token={token!}
+                      invite={invite}
+                    />
+                  </motion.div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="success-view"
+                  initial={{
+                    opacity: 0,
+                    scale: 0.4,
+                  }}
                   animate={{
                     opacity: 1,
                     scale: 1,
                   }}
-                  exit={{
-                    opacity: 0,
-                    scale: 0.7,
-                  }}
                   transition={{
-                    duration: 0.6,
-                    delay: 0,
+                    duration: 1,
+                    delay: 0.6,
                     ease: [0, 0.71, 0.2, 1.01],
                   }}
-                  key="inner-create-account"
+                  className="w-full"
                 >
-                  <CreateView onSuccess={() => setSuccess(true)} />
+                  <SuccessView />
                 </motion.div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="success-view"
-                initial={{
-                  opacity: 0,
-                  scale: 0.4,
-                }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                }}
-                transition={{
-                  duration: 1,
-                  delay: 0.6,
-                  ease: [0, 0.71, 0.2, 1.01],
-                }}
-                className="w-full"
-              >
-                <SuccessView />
-              </motion.div>
-            )}
-          </AnimatePresence>
+              )}
+            </AnimatePresence>
+          ) : (
+            <InvalidView />
+          )}
         </div>
       </div>
     </div>
   )
 }
 
-const CreateView = ({ onSuccess }: { onSuccess: () => void }) => {
+const LoginLink = () => {
   const { t } = useTranslation()
-  const [searchParams] = useSearchParams()
-  const token = searchParams.get("token")
 
-  let tokenStatus: "valid" | "invalid" | "expired" = "valid"
-  const decodedToken: {
-    invite_id: string
-    role: UserRoles
-    user_email: string
-    iat: number
-  } | null = token ? decodeToken(token) : null
+  return (
+    <div className="flex w-full flex-col items-center">
+      <div className="my-6 h-px w-full border-b border-dotted" />
+      <span className="text-ui-fg-subtle txt-small">
+        <Trans
+          t={t}
+          i18nKey="invite.alreadyHaveAccount"
+          components={[
+            <Link
+              key="login-link"
+              to="/login"
+              className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover outline-none"
+            />,
+          ]}
+        />
+      </span>
+    </div>
+  )
+}
 
-  if (!decodedToken) {
-    tokenStatus = "invalid"
-  }
+const InvalidView = () => {
+  const { t } = useTranslation()
+
+  return (
+    <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center gap-y-1">
+        <Heading>{t("invite.invalidTokenTitle")}</Heading>
+        <Text size="small" className="text-ui-fg-subtle text-center">
+          {t("invite.invalidTokenHint")}
+        </Text>
+      </div>
+      <LoginLink />
+    </div>
+  )
+}
+
+const CreateView = ({
+  onSuccess,
+  token,
+  invite,
+}: {
+  onSuccess: () => void
+  token: string
+  invite: DecodedInvite
+}) => {
+  const { t } = useTranslation()
+  const [invalid, setInvalid] = useState(false)
 
   const form = useForm<z.infer<typeof CreateAccountSchema>>({
     resolver: zodResolver(CreateAccountSchema),
     defaultValues: {
-      email: decodedToken?.user_email || "",
+      email: invite.user_email,
       first_name: "",
       last_name: "",
       password: "",
       repeat_password: "",
     },
   })
-
-  if (tokenStatus === "invalid") {
-    form.setError("root", {
-      type: "manual",
-      message: t("invite.invalidInvite"),
-    })
-  }
 
   const { mutateAsync, isLoading } = useAdminAcceptInvite()
 
@@ -177,7 +224,7 @@ const CreateView = ({ onSuccess }: { onSuccess: () => void }) => {
               type: "manual",
               message: t("invite.invalidInvite"),
             })
-            tokenStatus = "invalid"
+            setInvalid(true)
             return
           }
 
@@ -296,26 +343,13 @@ const CreateView = ({ onSuccess }: { onSuccess: () => void }) => {
             className="w-full"
             type="submit"
             isLoading={isLoading}
-            disabled={tokenStatus !== "valid"}
+            disabled={invalid}
           >
             {t("invite.createAccount")}
           </Button>
         </form>
       </Form>
-      <div className="my-6 h-px w-full border-b border-dotted" />
-      <span className="text-ui-fg-subtle txt-small">
-        <Trans
-          t={t}
-          i18nKey="invite.alreadyHaveAccount"
-          components={[
-            <Link
-              key="login-link"
-              to="/login"
-              className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover outline-none"
-            />,
-          ]}
-        />
-      </span>
+      <LoginLink />
     </div>
   )
 }
@@ -338,4 +372,15 @@ const SuccessView = () => {
       </Button>
     </div>
   )
+}
+
+const InviteSchema = z.object({
+  invite_id: z.string(),
+  role: z.string(),
+  user_email: z.string().email(),
+  iat: z.number(),
+})
+
+const validateDecodedInvite = (decoded: any): decoded is DecodedInvite => {
+  return InviteSchema.safeParse(decoded).success
 }
