@@ -20,7 +20,9 @@ export default {
   alias: [
     {
       name: ["publishable_api_key", "publishable_api_keys"],
-      args: { entity: "PublishableApiKey" },
+      args: {
+        entity: "PublishableApiKey",
+      },
     },
   ],
 } as ModuleJoinerConfig

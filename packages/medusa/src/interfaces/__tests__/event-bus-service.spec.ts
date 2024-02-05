@@ -16,8 +16,15 @@ class EventBus extends EventBusUtils.AbstractEventBusModuleService {
     options: Record<string, unknown>
   ): Promise<void>
   async emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<void>
+  async emit<T>(data: EventBusTypes.Message<T>[]): Promise<void>
 
-  async emit<T, TInput extends string | EventBusTypes.EmitData<T>[] = string>(
+  async emit<
+    T,
+    TInput extends
+      | string
+      | EventBusTypes.EmitData<T>[]
+      | EventBusTypes.Message<T>[] = string
+  >(
     eventOrData: TInput,
     data?: T,
     options: Record<string, unknown> = {}

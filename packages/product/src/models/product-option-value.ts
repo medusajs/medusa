@@ -1,16 +1,17 @@
+import { DAL } from "@medusajs/types"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
   Filter,
   Index,
   ManyToOne,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { ProductOption, ProductVariant } from "./index"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
-import { DAL } from "@medusajs/types"
 
 type OptionalFields =
   | "allow_backorder"
@@ -71,6 +72,11 @@ class ProductOptionValue {
   @Index({ name: "IDX_product_option_value_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at?: Date
+
+  @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "optval")
+  }
 
   @BeforeCreate()
   beforeCreate() {

@@ -13,13 +13,13 @@ import {
   ProductVariant,
 } from "@models"
 
+import { initModules } from "medusa-test-utils"
 import { initialize } from "../../../../src"
 import { EventBusService } from "../../../__fixtures__/event-bus"
 import { createCollections, createTypes } from "../../../__fixtures__/product"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import { buildProductAndRelationsData } from "../../../__fixtures__/product/data/create-product"
-import { DB_URL, getInitModuleConfig, TestDatabase } from "../../../utils"
-import { initModules } from "medusa-test-utils"
+import { DB_URL, TestDatabase, getInitModuleConfig } from "../../../utils"
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -584,7 +584,23 @@ describe("ProductModuleService products", function () {
         thumbnail: images[0],
       })
 
-      const products = await module.create([data])
+      const productsCreated = await module.create([data])
+
+      const products = await module.list(
+        { id: productsCreated[0].id },
+        {
+          relations: [
+            "images",
+            "categories",
+            "variants",
+            "variants.options",
+            "options",
+            "options.values",
+            "tags",
+            "type",
+          ],
+        }
+      )
 
       expect(products).toHaveLength(1)
       expect(products[0].images).toHaveLength(1)
