@@ -8578,7 +8578,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/region@workspace:packages/region":
+"@medusajs/region@workspace:^, @medusajs/region@workspace:packages/region":
   version: 0.0.0-use.local
   resolution: "@medusajs/region@workspace:packages/region"
   dependencies:
@@ -31510,6 +31510,7 @@ __metadata:
     "@medusajs/pricing": "workspace:^"
     "@medusajs/product": "workspace:^"
     "@medusajs/promotion": "workspace:^"
+    "@medusajs/region": "workspace:^"
     "@medusajs/types": "workspace:^"
     "@medusajs/utils": "workspace:^"
     babel-preset-medusa-package: "*"

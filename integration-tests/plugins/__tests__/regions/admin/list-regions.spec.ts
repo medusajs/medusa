@@ -54,8 +54,6 @@ describe("GET /admin/regions", () => {
     const api = useApi() as any
     const response = await api.get(`/admin/regions`, adminHeaders)
 
-    console.log(response.data)
-
     expect(response.status).toEqual(200)
     expect(response.data.count).toEqual(1)
     expect(response.data.customers).toEqual([
