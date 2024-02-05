@@ -1,4 +1,3 @@
-import { MedusaModule, MODULE_PACKAGE_NAMES } from "@medusajs/modules-sdk"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
@@ -6,6 +5,8 @@ import {
   ModuleServiceInitializeCustomDataLayerOptions,
   ModuleServiceInitializeOptions,
 } from "@medusajs/types"
+import { MODULE_PACKAGE_NAMES } from "../definitions"
+import { MedusaModule } from "../medusa-module"
 
 /**
  * Generate a initialize module factory that is exported by the module to be initialized manually
