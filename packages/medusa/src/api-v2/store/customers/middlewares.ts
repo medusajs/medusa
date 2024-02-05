@@ -7,8 +7,9 @@ import {
   StorePostCustomersMeAddressesAddressReq,
   StoreGetCustomersMeAddressesParams,
 } from "./validators"
-import authenticate from "../../../utils/authenticate-middleware"
 import * as QueryConfig from "./query-config"
+
+import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const storeCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {

@@ -1,11 +1,11 @@
-import { IAuthModuleService } from "@medusajs/types"
-import { MikroOrmWrapper } from "../../../utils"
 import { Modules } from "@medusajs/modules-sdk"
+import { IAuthModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { initModules } from "medusa-test-utils"
 import { createAuthProviders } from "../../../__fixtures__/auth-provider"
 import { createAuthUsers } from "../../../__fixtures__/auth-user"
+import { MikroOrmWrapper } from "../../../utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
-import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -43,9 +43,8 @@ describe("AuthModuleService - AuthProvider", () => {
   describe("listAuthProviders", () => {
     it("should list AuthProviders", async () => {
       const authProviders = await service.listAuthProviders()
-      const serialized = JSON.parse(JSON.stringify(authProviders))
 
-      expect(serialized).toEqual(
+      expect(authProviders).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             provider: "manual",
@@ -80,9 +79,7 @@ describe("AuthModuleService - AuthProvider", () => {
         is_active: true,
       })
 
-      const serialized = JSON.parse(JSON.stringify(authProviders))
-
-      expect(serialized).toEqual([
+      expect(authProviders).toEqual([
         expect.objectContaining({
           provider: "manual",
         }),
@@ -99,10 +96,9 @@ describe("AuthModuleService - AuthProvider", () => {
   describe("listAndCountAuthProviders", () => {
     it("should list and count AuthProviders", async () => {
       const [authProviders, count] = await service.listAndCountAuthProviders()
-      const serialized = JSON.parse(JSON.stringify(authProviders))
 
       expect(count).toEqual(4)
-      expect(serialized).toEqual([
+      expect(authProviders).toEqual([
         expect.objectContaining({
           provider: "manual",
         }),
@@ -136,10 +132,8 @@ describe("AuthModuleService - AuthProvider", () => {
         is_active: true,
       })
 
-      const serialized = JSON.parse(JSON.stringify(authProviders))
-
       expect(count).toEqual(3)
-      expect(serialized).toEqual([
+      expect(authProviders).toEqual([
         expect.objectContaining({
           provider: "manual",
         }),
@@ -171,9 +165,7 @@ describe("AuthModuleService - AuthProvider", () => {
         select: ["provider"],
       })
 
-      const serialized = JSON.parse(JSON.stringify(authProvider))
-
-      expect(serialized).toEqual({
+      expect(authProvider).toEqual({
         provider,
       })
     })
@@ -201,7 +193,7 @@ describe("AuthModuleService - AuthProvider", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"authProviderProvider" must be defined')
+      expect(error.message).toEqual("authProvider - provider must be defined")
     })
   })
 
@@ -209,7 +201,7 @@ describe("AuthModuleService - AuthProvider", () => {
     const provider = "manual"
 
     it("should delete the authProviders given a provider successfully", async () => {
-      await service.deleteAuthProvider([provider])
+      await service.deleteAuthProviders([provider])
 
       const authProviders = await service.listAuthProviders({
         provider: [provider],

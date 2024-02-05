@@ -228,9 +228,11 @@ class InviteService extends TransactionBaseService {
 
   verifyToken(token): JwtPayload | string {
     const { jwt_secret } = this.configModule_.projectConfig
+
     if (jwt_secret) {
       return jwt.verify(token, jwt_secret)
     }
+
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       "Please configure jwt_secret"

@@ -12,6 +12,9 @@ export const ProductShippingProfile: ModuleJoinerConfig = {
   alias: [
     {
       name: "product_shipping_profile",
+      args: {
+        entity: "LinkProductShippingProfile",
+      },
     },
   ],
   primaryKeys: ["id", "product_id", "profile_id"],

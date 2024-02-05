@@ -6,4 +6,3 @@ export type InitializeModuleInjectableDependencies = {
 }
 
 export * from "./services"
-export * from "./repositories"

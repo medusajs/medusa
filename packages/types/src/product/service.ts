@@ -1,3 +1,4 @@
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import {
   CreateProductCategoryDTO,
   CreateProductCollectionDTO,
@@ -28,18 +29,12 @@ import {
   UpdateProductTypeDTO,
   UpdateProductVariantDTO,
 } from "./common"
-import { RestoreReturn, SoftDeleteReturn } from "../dal"
 
-import { Context } from "../shared-context"
 import { FindConfig } from "../common"
-import { ModuleJoinerConfig } from "../modules-sdk"
+import { IModuleService } from "../modules-sdk"
+import { Context } from "../shared-context"
 
-export interface IProductModuleService {
-  /**
-   * @ignore
-   */
-  __joinerConfig(): ModuleJoinerConfig
-
+export interface IProductModuleService extends IModuleService {
   /**
    * This method is used to retrieve a product by its ID
    *
@@ -1493,24 +1488,24 @@ export interface IProductModuleService {
 
   /**
    * This method is used to update a product's variants.
-   * 
+   *
    * @param {UpdateProductVariantDTO[]} data - The product variants to update.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ProductVariantDTO[]>} The updated product variants's details.
-   * 
+   *
    * @example
    * import {
    *   initialize as initializeProductModule,
    * } from "@medusajs/product"
-   * import { 
+   * import {
    *   UpdateProductVariantDTO
    * } from "@medusajs/product/dist/types/services/product-variant"
-   * 
+   *
    * async function updateProductVariants (items: UpdateProductVariantDTO[]) {
    *   const productModule = await initializeProductModule()
-   * 
+   *
    *   const productVariants = await productModule.updateVariants(items)
-   * 
+   *
    *   // do something with the product variants or return them
    * }
    */
@@ -1521,24 +1516,24 @@ export interface IProductModuleService {
 
   /**
    * This method is used to create variants for a product.
-   * 
+   *
    * @param {CreateProductVariantDTO[]} data - The product variants to create.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ProductVariantDTO[]>} The created product variants' details.
-   * 
+   *
    * @example
    * import {
    *   initialize as initializeProductModule,
    * } from "@medusajs/product"
-   * 
+   *
    * async function createProductVariants (items: {
    *   product_id: string,
    *   title: string
    * }[]) {
    *   const productModule = await initializeProductModule()
-   * 
+   *
    *   const productVariants = await productModule.createVariants(items)
-   * 
+   *
    *   // do something with the product variants or return them
    * }
    */
@@ -2513,16 +2508,16 @@ export interface IProductModuleService {
   ): Promise<Record<string, string[]> | void>
 
   /**
-   * This method is used to restore product varaints that were soft deleted. Product variants are soft deleted when they're not 
+   * This method is used to restore product varaints that were soft deleted. Product variants are soft deleted when they're not
    * provided in a product's details passed to the {@link update} method.
-   * 
+   *
    * @param {string[]} variantIds - The IDs of the variants to restore.
-   * @param {RestoreReturn<TReturnableLinkableKeys>} config - 
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
    * Configurations determining which relations to restore along with each of the product variants. You can pass to its `returnLinkableKeys`
    * property any of the product variant's relation attribute names.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<Record<string, string[]> | void>}
-   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the product variant entity's relations 
+   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the product variant entity's relations
    * and its value is an array of strings, each being the ID of the record associated with the product variant through this relation.
    *
    * If there are no related records that were restored, the promise resolved to `void`.

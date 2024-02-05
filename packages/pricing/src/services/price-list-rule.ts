@@ -9,27 +9,31 @@ type InjectedDependencies = {
 
 export default class PriceListRuleService<
   TEntity extends PriceListRule = PriceListRule
-> extends ModulesSdkUtils.abstractServiceFactory<
-  InjectedDependencies,
-  {
-    create: ServiceTypes.CreatePriceListRuleDTO
-    update: ServiceTypes.UpdatePriceListRuleDTO
-  },
-  {
-    list: ServiceTypes.FilterablePriceListRuleProps
-    listAndCount: ServiceTypes.FilterablePriceListRuleProps
-  }
->(PriceListRule)<TEntity> {
+> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+  PriceListRule
+)<TEntity> {
   constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
   }
 
-  async create(
+  create(
     data: ServiceTypes.CreatePriceListRuleDTO[],
+    sharedContext?: Context
+  ): Promise<TEntity[]>
+  create(
+    data: ServiceTypes.CreatePriceListRuleDTO,
+    sharedContext?: Context
+  ): Promise<TEntity>
+
+  async create(
+    data:
+      | ServiceTypes.CreatePriceListRuleDTO
+      | ServiceTypes.CreatePriceListRuleDTO[],
     context: Context = {}
-  ): Promise<TEntity[]> {
-    const priceListRule = data.map((priceListRule) => {
+  ): Promise<TEntity | TEntity[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+    const priceListRule = data_.map((priceListRule) => {
       const {
         price_list_id: priceListId,
         rule_type_id: ruleTypeId,
@@ -50,11 +54,28 @@ export default class PriceListRuleService<
     return await super.create(priceListRule, context)
   }
 
-  async update(
+  // @ts-ignore
+  update(
     data: ServiceTypes.UpdatePriceListRuleDTO[],
+    context: Context
+  ): Promise<TEntity[]>
+
+  // @ts-ignore
+  update(
+    data: ServiceTypes.UpdatePriceListRuleDTO,
+    context: Context
+  ): Promise<TEntity>
+
+  // TODO add support for selector? and then rm ts ignore
+  // @ts-ignore
+  async update(
+    data:
+      | ServiceTypes.UpdatePriceListRuleDTO
+      | ServiceTypes.UpdatePriceListRuleDTO[],
     context: Context = {}
-  ): Promise<TEntity[]> {
-    const priceListRules = data.map((priceListRule) => {
+  ): Promise<TEntity | TEntity[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+    const priceListRules = data_.map((priceListRule) => {
       const { price_list_id, rule_type_id, ...priceListRuleData } =
         priceListRule
 

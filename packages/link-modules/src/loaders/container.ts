@@ -7,7 +7,9 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
 } from "@medusajs/types"
+import { lowerCaseFirst, simpleHash, toPascalCase } from "@medusajs/utils"
 import { asClass, asValue } from "awilix"
+import { composeLinkName, composeTableName } from "../utils"
 
 export function containerLoader(entity, joinerConfig: ModuleJoinerConfig) {
   return async (
@@ -22,6 +24,29 @@ export function containerLoader(entity, joinerConfig: ModuleJoinerConfig) {
   ): Promise<void> => {
     const [primary, foreign] = joinerConfig.relationships!
 
+    const serviceName = !joinerConfig.isReadOnlyLink
+      ? lowerCaseFirst(
+          joinerConfig.serviceName ??
+            composeLinkName(
+              primary.serviceName,
+              primary.foreignKey,
+              foreign.serviceName,
+              foreign.foreignKey
+            )
+        )
+      : simpleHash(JSON.stringify(joinerConfig.extends))
+
+    const entityName = toPascalCase(
+      "Link_" +
+        (joinerConfig.databaseConfig?.tableName ??
+          composeTableName(
+            primary.serviceName,
+            primary.foreignKey,
+            foreign.serviceName,
+            foreign.foreignKey
+          ))
+    )
+
     container.register({
       joinerConfig: asValue(joinerConfig),
       primaryKey: asValue(primary.foreignKey.split(",")),
@@ -35,6 +60,8 @@ export function containerLoader(entity, joinerConfig: ModuleJoinerConfig) {
 
       baseRepository: asClass(BaseRepository).singleton(),
       linkRepository: asClass(getLinkRepository(entity)).singleton(),
+      entityName: asValue(entityName),
+      serviceName: asValue(serviceName),
     })
   }
 }
