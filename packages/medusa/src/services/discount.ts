@@ -780,7 +780,7 @@ class DiscountService extends TransactionBaseService {
     // If customer is empty on the cart, we will allow it
     const limit = discount?.usage_limit_per_customer
 
-    if (!customer && !!limit) {
+    if (!customer || !limit) {
       return false
     }
 

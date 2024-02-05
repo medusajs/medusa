@@ -1,0 +1,44 @@
+version: "3.8"
+name: "medusa-core"
+services:
+  postgres:
+    image: postgres:15
+    ports:
+      - '${FORWARD_DB_PORT:-5432}:5432'
+    environment:
+      TZ: "Europe/Amsterdam"
+      POSTGRES_DB: 'medusa'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'password'
+      PGPASSWORD: 'password'
+    volumes:
+      - 'medusa-core_pgsql:/var/lib/postgresql/data'
+    networks:
+      - medusa-core
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      retries: 3
+      timeout: 5s
+
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '${FORWARD_REDIS_PORT:-6379}:6379'
+    volumes:
+      - 'medusa-core_redis:/data'
+    networks:
+      - medusa-core
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      retries: 3
+      timeout: 5s
+
+networks:
+  medusa-core:
+    driver: bridge
+
+volumes:
+  medusa-core_pgsql:
+    driver: local
+  medusa-core_redis:
+    driver: local
