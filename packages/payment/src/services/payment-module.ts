@@ -346,15 +346,16 @@ export default class PaymentModuleService<
 
     const inputMap = new Map(data.map((d) => [d.payment_id, d]))
 
-    for (const payment of payments) {
-      const input = inputMap.get(payment.id)!
-      if (payment.captured_amount < input.amount) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Refund amount for payment: ${payment.id} cannot be greater than the amount captured on the payment.`
-        )
-      }
-    }
+    // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
+    // for (const payment of payments) {
+    //   const input = inputMap.get(payment.id)!
+    //   if (payment.captured_amount < input.amount) {
+    //     throw new MedusaError(
+    //       MedusaError.Types.INVALID_DATA,
+    //       `Refund amount for payment: ${payment.id} cannot be greater than the amount captured on the payment.`
+    //     )
+    //   }
+    // }
 
     await this.refundService_.create(
       data.map((d) => ({
