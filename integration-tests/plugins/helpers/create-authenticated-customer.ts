@@ -1,9 +1,4 @@
-import {
-  CreateCustomerDTO,
-  IAuthModuleService,
-  ICustomerModuleService,
-  MedusaContainer,
-} from "@medusajs/types"
+import { CreateCustomerDTO, MedusaContainer } from "@medusajs/types"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import jwt from "jsonwebtoken"
@@ -27,7 +22,7 @@ export const createAuthenticatedCustomer = async (
 
   const authUser = await authService.create({
     entity_id: "store_user",
-    provider: "test",
+    provider: "emailpass",
     scope: "store",
     app_metadata: { customer_id: customer.id },
   })

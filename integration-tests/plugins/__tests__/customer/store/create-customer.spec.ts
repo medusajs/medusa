@@ -48,14 +48,14 @@ describe("POST /store/customers", () => {
     const authService: IAuthModuleService = appContainer.resolve(
       ModuleRegistrationName.AUTH
     )
-
     const { jwt_secret } = appContainer.resolve("configModule").projectConfig
-    const authUser = await authService.create({
+    const authUser = await authService.createAuthUser({
       entity_id: "store_user",
-      provider: "test",
+      provider: "emailpass",
       scope: "store",
     })
-    const jwtToken = jwt.sign(authUser, jwt_secret)
+
+    const token = jwt.sign(authUser, jwt_secret)
 
     const api = useApi() as any
     const response = await api.post(
@@ -65,7 +65,7 @@ describe("POST /store/customers", () => {
         last_name: "Doe",
         email: "john@me.com",
       },
-      { headers: { authorization: `Bearer ${jwtToken}` } }
+      { headers: { authorization: `Bearer ${token}` } }
     )
 
     expect(response.status).toEqual(200)

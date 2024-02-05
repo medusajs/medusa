@@ -26,6 +26,14 @@ describe("POST /store/customers/:id/addresses/:address_id", () => {
     )
   })
 
+  // TODO: delete with removal of authProvider
+  beforeEach(async () => {
+    const onStart =
+      appContainer.resolve(ModuleRegistrationName.AUTH).__hooks
+        .onApplicationStart ?? (() => Promise.resolve())
+    await onStart()
+  })
+
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
@@ -73,6 +81,7 @@ describe("POST /store/customers/:id/addresses/:address_id", () => {
       first_name: "Jane",
       last_name: "Doe",
     })
+
     const address = await customerModuleService.addAddresses({
       customer_id: otherCustomer.id,
       first_name: "John",
