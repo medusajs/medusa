@@ -84,7 +84,7 @@ class GoogleProvider extends AbstractAuthModuleProvider {
   async verify_(refreshToken: string) {
     const jwtData = (await jwt.decode(refreshToken, {
       complete: true,
-    }) as JwtPayload
+    })) as JwtPayload
     const entity_id = jwtData.payload.email
 
     let authUser
