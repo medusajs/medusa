@@ -15,7 +15,10 @@ class EmailPasswordProvider extends AbstractAuthModuleProvider {
   protected readonly authUserSerivce_: AuthUserService
 
   constructor({ authUserService }: { authUserService: AuthUserService }) {
-    super(arguments[0])
+    super(arguments[0], {
+      provider: EmailPasswordProvider.PROVIDER,
+      displayName: EmailPasswordProvider.DISPLAY_NAME,
+    })
 
     this.authUserSerivce_ = authUserService
   }

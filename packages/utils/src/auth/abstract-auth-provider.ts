@@ -13,17 +13,23 @@ export abstract class AbstractAuthModuleProvider {
   private readonly scopes_: Record<string, AuthProviderScope>
 
   public get provider() {
-    return (this.constructor as Function & { PROVIDER: string }).PROVIDER
+    return (this.constructor as typeof AbstractAuthModuleProvider).PROVIDER
   }
 
   public get displayName() {
-    return (this.constructor as Function & { DISPLAY_NAME: string })
-      .DISPLAY_NAME
+    return (this.constructor as typeof AbstractAuthModuleProvider).DISPLAY_NAME
   }
 
-  protected constructor({ scopes }) {
+  protected constructor(
+    { scopes },
+    config: { provider: string; displayName: string }
+  ) {
     this.container_ = arguments[0]
     this.scopes_ = scopes
+    ;(this.constructor as typeof AbstractAuthModuleProvider).PROVIDER ??=
+      config.provider
+    ;(this.constructor as typeof AbstractAuthModuleProvider).DISPLAY_NAME ??=
+      config.displayName
   }
 
   private validateScope(scope) {

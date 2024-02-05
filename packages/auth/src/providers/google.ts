@@ -30,7 +30,10 @@ class GoogleProvider extends AbstractAuthModuleProvider {
   protected readonly authProviderService_: ModulesSdkTypes.InternalModuleService<any>
 
   constructor({ authUserService, authProviderService }: InjectedDependencies) {
-    super(arguments[0])
+    super(arguments[0], {
+      provider: GoogleProvider.PROVIDER,
+      displayName: GoogleProvider.DISPLAY_NAME,
+    })
 
     this.authUserService_ = authUserService
     this.authProviderService_ = authProviderService

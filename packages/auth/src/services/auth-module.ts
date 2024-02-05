@@ -72,9 +72,7 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
     data: CreateAuthUserDTO[] | CreateAuthUserDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]> {
-    const input = Array.isArray(data) ? data : [data]
-
-    const authUsers = await this.create_(input, sharedContext)
+    const authUsers = await this.authUserService_.create(data, sharedContext)
 
     const serializedUsers = await this.baseRepository_.serialize<
       AuthTypes.AuthUserDTO[]
@@ -83,14 +81,6 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
     })
 
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async create_(
-    data: CreateAuthUserDTO[],
-    @MedusaContext() sharedContext: Context
-  ): Promise<TAuthUser[]> {
-    return await this.authUserService_.create(data, sharedContext)
   }
 
   update(
@@ -106,9 +96,7 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
     data: UpdateAuthUserDTO | UpdateAuthUserDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]> {
-    const input = Array.isArray(data) ? data : [data]
-
-    const updatedUsers = await this.update_(input, sharedContext)
+    const updatedUsers = await this.authUserService_.update(data, sharedContext)
 
     const serializedUsers = await this.baseRepository_.serialize<
       AuthTypes.AuthUserDTO[]
@@ -117,14 +105,6 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
     })
 
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async update_(
-    data: UpdateAuthUserDTO[],
-    @MedusaContext() sharedContext: Context
-  ): Promise<TAuthUser[]> {
-    return await this.authUserService_.update(data, sharedContext)
   }
 
   protected getRegisteredAuthenticationProvider(
@@ -137,7 +117,7 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
     } catch (error) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `AuthenticationProvider with for provider: ${provider} wasn't registered in the module. Have you configured your options correctly?`
+        `AuthenticationProvider: ${provider} wasn't registered in the module. Have you configured your options correctly?`
       )
     }
 
