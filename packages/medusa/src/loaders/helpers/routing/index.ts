@@ -333,7 +333,7 @@ export class RoutesLoader {
           }
 
           if (route.startsWith("/auth")) {
-            config.shouldAppendStoreCors = true
+            config.shouldAppendAuthCors = true
           }
 
           if (shouldRequireAuth && route.startsWith("/store/me")) {
@@ -614,6 +614,21 @@ export class RoutesLoader {
           cors({
             origin: parseCorsOrigins(
               this.configModule.projectConfig.store_cors || ""
+            ),
+            credentials: true,
+          })
+        )
+      }
+
+      if (descriptor.config.shouldAppendAuthCors) {
+        /**
+         * Apply the store cors
+         */
+        this.router.use(
+          descriptor.route,
+          cors({
+            origin: parseCorsOrigins(
+              this.configModule.projectConfig.auth_cors || ""
             ),
             credentials: true,
           })

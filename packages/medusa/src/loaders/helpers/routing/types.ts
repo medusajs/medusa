@@ -41,6 +41,7 @@ export type RouteConfig = {
   shouldAppendCustomer?: boolean
   shouldAppendAdminCors?: boolean
   shouldAppendStoreCors?: boolean
+  shouldAppendAuthCors?: boolean
   routes?: RouteImplementation[]
 }
 
