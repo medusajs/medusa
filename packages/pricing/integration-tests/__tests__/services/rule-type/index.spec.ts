@@ -164,7 +164,7 @@ describe("RuleType Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"ruleTypeId" must be defined')
+      expect(error.message).toEqual("ruleType - id must be defined")
     })
 
     it("should return ruleType based on config select param", async () => {

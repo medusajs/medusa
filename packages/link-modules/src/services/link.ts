@@ -89,7 +89,7 @@ export default class LinkService<TEntity> {
   async softDelete(
     data: any,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[string[], Record<string, string[]>]> {
+  ): Promise<[object[], Record<string, string[]>]> {
     const filter = {}
     for (const key in data) {
       filter[key] = { $in: Array.isArray(data[key]) ? data[key] : [data[key]] }
@@ -104,7 +104,7 @@ export default class LinkService<TEntity> {
   async restore(
     data: any,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[string[], Record<string, string[]>]> {
+  ): Promise<[object[], Record<string, string[]>]> {
     const filter = {}
     for (const key in data) {
       filter[key] = { $in: Array.isArray(data[key]) ? data[key] : [data[key]] }

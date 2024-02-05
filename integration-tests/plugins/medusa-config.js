@@ -46,9 +46,6 @@ module.exports = {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/auth",
-      options: {
-        jwt_secret: "test",
-      },
     },
     [Modules.STOCK_LOCATION]: {
       scope: "internal",

@@ -56,11 +56,11 @@ export interface IPaymentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
 
-  deletePaymentCollection(
+  deletePaymentCollections(
     paymentCollectionId: string[],
     sharedContext?: Context
   ): Promise<void>
-  deletePaymentCollection(
+  deletePaymentCollections(
     paymentCollectionId: string,
     sharedContext?: Context
   ): Promise<void>

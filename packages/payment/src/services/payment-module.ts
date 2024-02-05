@@ -6,11 +6,10 @@ import {
   CreatePaymentSessionDTO,
   CreateRefundDTO,
   DAL,
-  FilterablePaymentCollectionProps,
-  FindConfig,
   InternalModuleDeclaration,
   IPaymentModuleService,
   ModuleJoinerConfig,
+  ModulesSdkTypes,
   PaymentCollectionDTO,
   PaymentDTO,
   SetPaymentSessionsDTO,
@@ -18,12 +17,22 @@ import {
   UpdatePaymentDTO,
 } from "@medusajs/types"
 import {
-  InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  ModulesSdkUtils,
   MedusaError,
 } from "@medusajs/utils"
 
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import {
+  Capture,
+  Payment,
+  PaymentCollection,
+  PaymentMethodToken,
+  PaymentProvider,
+  PaymentSession,
+  Refund,
+} from "@models"
 import * as services from "@services"
 
 import { joinerConfig } from "../joiner-config"
@@ -31,17 +40,44 @@ import { Payment } from "@models"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  paymentCollectionService: services.PaymentCollectionService
-  paymentService: services.PaymentService
-  paymentSessionService: services.PaymentSessionService
+  paymentCollectionService: ModulesSdkTypes.InternalModuleService<any>
+  paymentService: ModulesSdkTypes.InternalModuleService<any>
+  paymentSessionService: ModulesSdkTypes.InternalModuleService<any>
+  paymentCollectionService: ModulesSdkTypes.InternalModuleService<any>
 }
 
-export default class PaymentModuleService implements IPaymentModuleService {
+const generateMethodForModels = [
+  Capture,
+  PaymentCollection,
+  PaymentMethodToken,
+  PaymentProvider,
+  PaymentSession,
+  Refund,
+]
+
+export default class PaymentModuleService<
+    TPaymentCollection extends PaymentCollection = PaymentCollection
+  >
+  extends ModulesSdkUtils.abstractModuleServiceFactory<
+    // TODO revisit when moving forward frane
+    InjectedDependencies,
+    PaymentDTO,
+    {
+      Capture: { dto: any }
+      PaymentCollection: { dto: any }
+      PaymentMethodToken: { dto: any }
+      PaymentProvider: { dto: any }
+      PaymentSession: { dto: any }
+      Refund: { dto: any }
+    }
+  >(Payment, generateMethodForModels, entityNameToLinkableKeysMap)
+  implements IPaymentModuleService
+{
   protected baseRepository_: DAL.RepositoryService
 
   protected paymentService_: services.PaymentService
   protected paymentSessionService_: services.PaymentSessionService
-  protected paymentCollectionService_: services.PaymentCollectionService
+  protected paymentCollectionService_: ModulesSdkTypes.InternalModuleService<TPaymentCollection>
 
   constructor(
     {
@@ -52,6 +88,9 @@ export default class PaymentModuleService implements IPaymentModuleService {
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
+    // @ts-ignore
+    super(...arguments)
+
     this.baseRepository_ = baseRepository
 
     this.paymentService_ = paymentService

@@ -1,6 +1,8 @@
 import { EntityManager } from "typeorm"
+import { Message } from "./event-bus"
 
 /**
+ * @deprecated use `Context` instead
  * @interface
  *
  * A context used to share resources, such as transaction manager, between the application and the module.
@@ -16,9 +18,19 @@ export type SharedContext = {
   manager?: EntityManager
 }
 
+export interface MessageAggregatorFormat {
+  groupBy?: string[]
+  sortBy?: { [key: string]: string[] | string | number }
+}
+
+export interface IMessageAggregator {
+  save(msg: Message | Message[]): void
+  getMessages(format?: MessageAggregatorFormat): Record<string, Message[]>
+  clearMessages(): void
+}
+
 /**
  * @interface
- *
  * A context used to share resources, such as transaction manager, between the application and the module.
  */
 export type Context<TManager = unknown> = {
@@ -40,9 +52,18 @@ export type Context<TManager = unknown> = {
    */
   enableNestedTransactions?: boolean
   /**
+   * A string indicating the ID of the group to aggregate the events to be emitted at a later point.
+   */
+  eventGroupId?: string
+  /**
    * A string indicating the ID of the current transaction.
    */
   transactionId?: string
+
+  /**
+   * An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.
+   */
+  messageAggregator?: IMessageAggregator
 
   /**
    * A string indicating the ID of the current request.

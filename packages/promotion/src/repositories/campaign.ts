@@ -4,13 +4,9 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Campaign, Promotion } from "@models"
 import { CreateCampaignDTO, UpdateCampaignDTO } from "@types"
 
-export class CampaignRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
-  Campaign,
-  {
-    create: CreateCampaignDTO
-    update: UpdateCampaignDTO
-  }
->(Campaign) {
+export class CampaignRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Campaign>(
+  Campaign
+) {
   async create(
     data: CreateCampaignDTO[],
     context: Context = {}
@@ -64,7 +60,7 @@ export class CampaignRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
   }
 
   async update(
-    data: UpdateCampaignDTO[],
+    data: { entity: Campaign; update: UpdateCampaignDTO }[],
     context: Context = {}
   ): Promise<Campaign[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -72,7 +68,7 @@ export class CampaignRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     const campaignIds: string[] = []
     const campaignPromotionIdsMap = new Map<string, string[]>()
 
-    data.forEach((campaignData) => {
+    data.forEach(({ update: campaignData }) => {
       const campaignPromotionIds = campaignData.promotions?.map((p) => p.id)
 
       campaignIds.push(campaignData.id)
