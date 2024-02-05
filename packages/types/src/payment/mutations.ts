@@ -64,7 +64,7 @@ export interface CreateRefundDTO {
   amount: number
   payment_id: string
 
-  captured_by?: string
+  created_by?: string
 }
 
 /**

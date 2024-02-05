@@ -260,7 +260,7 @@ export default class PaymentModuleService<
       ) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Total captured amount for payment: ${payment.id} exceeds authorised amount.`
+          `Total captured amount for payment: ${payment.id} exceeds authorized amount.`
         )
       }
     }
