@@ -34,9 +34,6 @@
       ],
       "@types": [
         "./src/types"
-      ],
-      "@providers": [
-        "./src/providers"
       ]
     }
   },

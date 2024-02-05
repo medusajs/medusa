@@ -10,15 +10,6 @@ export function getInitModuleConfig() {
         schema: process.env.MEDUSA_USER_DB_SCHEMA,
       },
     },
-    providers: [
-      {
-        name: "emailpass",
-        scopes: {
-          admin: {},
-          store: {},
-        },
-      },
-    ],
   }
 
   const injectedDependencies = {}

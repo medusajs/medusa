@@ -53,52 +53,6 @@ export default class UserModuleService<TUser extends User = User>
     this.userService_ = userService
   }
 
-  // @InjectManager("baseRepository_")
-  // async retrieveUser(
-  //   id: string,
-  //   config: FindConfig<UserDTO> = {},
-  //   @MedusaContext() sharedContext: Context = {}
-  // ): Promise<UserDTO> {
-  //   const user = await this.userService_.retrieve(id, config, sharedContext)
-
-  //   return await this.baseRepository_.serialize<UserTypes.UserDTO>(user, {
-  //     exclude: ["password_hash"],
-  //   })
-  // }
-
-  // @InjectManager("baseRepository_")
-  // async listUsers(
-  //   filters: FilterableUserProps = {},
-  //   config: FindConfig<UserDTO> = {},
-  //   @MedusaContext() sharedContext: Context = {}
-  // ): Promise<UserDTO[]> {
-  //   const users = await this.userService_.list(filters, config, sharedContext)
-
-  //   return await this.baseRepository_.serialize<UserTypes.UserDTO[]>(users, {
-  //     populate: true,
-  //   })
-  // }
-
-  // @InjectManager("baseRepository_")
-  // async listAndCountUsers(
-  //   filters: FilterableUserProps = {},
-  //   config: FindConfig<UserDTO> = {},
-  //   @MedusaContext() sharedContext: Context = {}
-  // ): Promise<[UserDTO[], number]> {
-  //   const [users, count] = await this.userService_.listAndCount(
-  //     filters,
-  //     config,
-  //     sharedContext
-  //   )
-
-  //   return [
-  //     await this.baseRepository_.serialize<UserTypes.UserDTO[]>(users, {
-  //       populate: true,
-  //     }),
-  //     count,
-  //   ]
-  // }
-
   create(data: CreateUserDTO[], sharedContext?: Context): Promise<UserDTO[]>
   create(data: CreateUserDTO, sharedContext?: Context): Promise<UserDTO>
 
@@ -156,12 +110,4 @@ export default class UserModuleService<TUser extends User = User>
   ): Promise<TUser[]> {
     return await this.userService_.update(data, sharedContext)
   }
-
-  // @InjectTransactionManager("baseRepository_")
-  // async deleteUser(
-  //   ids: string[],
-  //   @MedusaContext() sharedContext: Context = {}
-  // ): Promise<void> {
-  //   await this.userService_.delete(ids, sharedContext)
-  // }
 }

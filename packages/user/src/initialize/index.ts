@@ -22,7 +22,7 @@ export const initialize = async (
     defaultPath: MODULE_PACKAGE_NAMES[Modules.USER],
     declaration: options as
       | InternalModuleDeclaration
-      | ExternalModuleDeclaration, // TODO: Add provider configuration
+      | ExternalModuleDeclaration,
     injectedDependencies,
     moduleExports: moduleDefinition,
   })
