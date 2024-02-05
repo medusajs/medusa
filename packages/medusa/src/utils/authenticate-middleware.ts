@@ -1,8 +1,9 @@
-import { AuthUserDTO } from "@medusajs/types"
 import { MedusaRequest, MedusaResponse } from "../types/routing"
 import { NextFunction, RequestHandler } from "express"
-
 import jwt, { JwtPayload } from "jsonwebtoken"
+
+import { AuthUserDTO } from "@medusajs/types"
+import { stringEqualsOrRegexMatch } from "@medusajs/utils"
 
 const SESSION_AUTH = "session"
 const BEARER_AUTH = "bearer"
@@ -13,13 +14,6 @@ type MedusaSession = {
 }
 
 type AuthType = "session" | "bearer"
-
-const isValidScope = (authScope: string | RegExp, scopeToVerify: string) => {
-  if (authScope instanceof RegExp) {
-    return authScope.test(scopeToVerify)
-  }
-  return scopeToVerify === authScope
-}
 
 export const authenticate = (
   authScope: string | RegExp,
@@ -40,7 +34,7 @@ export const authenticate = (
     if (authTypes.includes(SESSION_AUTH)) {
       if (
         session.auth_user &&
-        isValidScope(authScope, session.auth_user.scope)
+        stringEqualsOrRegexMatch(authScope, session.auth_user.scope)
       ) {
         authUser = session.auth_user
       }
@@ -65,7 +59,7 @@ export const authenticate = (
 
             const verified = jwt.verify(token, jwt_secret) as JwtPayload
 
-            if (isValidScope(authScope, verified.scope)) {
+            if (stringEqualsOrRegexMatch(authScope, verified.scope)) {
               authUser = verified as AuthUserDTO
             }
           }
