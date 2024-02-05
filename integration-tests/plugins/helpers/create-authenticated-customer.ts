@@ -1,5 +1,6 @@
+import { IAuthModuleService, ICustomerModuleService } from "@medusajs/types"
+
 import jwt from "jsonwebtoken"
-import { ICustomerModuleService, IAuthModuleService } from "@medusajs/types"
 
 export const createAuthenticatedCustomer = async (
   customerModuleService: ICustomerModuleService,
@@ -14,7 +15,7 @@ export const createAuthenticatedCustomer = async (
 
   const authUser = await authService.createAuthUser({
     entity_id: "store_user",
-    provider: "test",
+    provider: "emailpass",
     scope: "store",
     app_metadata: { customer_id: customer.id },
   })
