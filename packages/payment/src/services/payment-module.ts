@@ -361,7 +361,7 @@ export default class PaymentModuleService<
       data.map((d) => ({
         payment: d.payment_id,
         amount: d.amount,
-        captured_by: d.captured_by,
+        captured_by: d.created_by,
       })),
       sharedContext
     )
