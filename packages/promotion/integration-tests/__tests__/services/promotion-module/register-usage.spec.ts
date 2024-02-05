@@ -1,10 +1,10 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { initModules } from "medusa-test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { MikroOrmWrapper } from "../../../utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
-import { initModules } from "medusa-test-utils/dist"
-import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
