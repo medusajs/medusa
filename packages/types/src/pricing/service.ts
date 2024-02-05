@@ -45,8 +45,7 @@ import {
 } from "./common"
 
 import { FindConfig } from "../common"
-import { RestoreReturn } from "../dal"
-import { IModuleService } from "../modules-sdk"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { Context } from "../shared-context"
 
 export interface IPricingModuleService extends IModuleService {
@@ -1274,6 +1273,7 @@ export interface IPricingModuleService extends IModuleService {
    * This method soft deletes money amounts by their IDs.
    *
    * @param {string[]} ids - The IDs of the money amounts to delete.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the money amounts are successfully deleted.
    *
@@ -1290,7 +1290,11 @@ export interface IPricingModuleService extends IModuleService {
    *   )
    * }
    */
-  softDeleteMoneyAmounts(ids: string[], sharedContext?: Context): Promise<void>
+  softDeleteMoneyAmounts<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
   /**
    * This method restores soft deleted money amounts by their IDs.
@@ -1319,7 +1323,7 @@ export interface IPricingModuleService extends IModuleService {
    *   )
    * }
    */
-  restoreDeletedMoneyAmounts<TReturnableLinkableKeys extends string = string>(
+  restoreMoneyAmounts<TReturnableLinkableKeys extends string = string>(
     ids: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context

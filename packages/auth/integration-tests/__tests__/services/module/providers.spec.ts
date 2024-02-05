@@ -44,9 +44,8 @@ describe("AuthModuleService - AuthProvider", () => {
   describe("listAuthProviders", () => {
     it("should list default AuthProviders registered by loaders", async () => {
       const authProviders = await service.listAuthProviders()
-      const serialized = JSON.parse(JSON.stringify(authProviders))
 
-      expect(serialized).toEqual(
+      expect(authProviders).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             provider: "emailpass",
@@ -83,7 +82,7 @@ describe("AuthModuleService - AuthProvider", () => {
 
     it("fails to authenticate using a valid provider with an invalid scope", async () => {
       const { success, error } = await service.authenticate("emailpass", {
-        scope: "non-existing",
+        authScope: "non-existing",
       } as any)
 
       expect(success).toBe(false)

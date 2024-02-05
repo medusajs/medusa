@@ -3,7 +3,7 @@ import { BaseFilterable } from "../../dal"
 export type AuthProviderDTO = {
   provider: string
   name: string
-  domain: ProviderDomain
+  scope?: string
   is_active: boolean
   config: Record<string, unknown> | null
 }
@@ -11,29 +11,23 @@ export type AuthProviderDTO = {
 export type CreateAuthProviderDTO = {
   provider: string
   name: string
-  domain?: ProviderDomain
+  scope?: string
   is_active?: boolean
-  config?: Record<string, unknown> 
+  config?: Record<string, unknown>
 }
 
 export type UpdateAuthProviderDTO = {
   provider: string
   name?: string
-  domain?: ProviderDomain
   is_active?: boolean
   config?: Record<string, unknown>
 }
 
-export enum ProviderDomain {
-  ALL = "all",
-  STORE = "store",
-  ADMIN = "admin",
-}
-
 export interface FilterableAuthProviderProps
   extends BaseFilterable<FilterableAuthProviderProps> {
+  id?: string | string[]
   provider?: string[]
   is_active?: boolean
-  domain?: ProviderDomain[]
+  scope?: string[]
   name?: string[]
 }

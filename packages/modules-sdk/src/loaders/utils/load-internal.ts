@@ -29,12 +29,12 @@ export async function loadInternalModule(
     // the exports. This is useful when a package export an initialize function which will bootstrap itself and therefore
     // does not need to import the package that is currently being loaded as it would create a
     // circular reference.
-    const path = resolution.resolutionPath as string
+    const modulePath = resolution.resolutionPath as string
 
     if (resolution.moduleExports) {
       loadedModule = resolution.moduleExports
     } else {
-      loadedModule = await import(path)
+      loadedModule = await import(modulePath)
       loadedModule = (loadedModule as any).default
     }
   } catch (error) {

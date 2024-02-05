@@ -365,7 +365,6 @@ export class MedusaModule {
       dependencies: definition.dependencies,
       defaultPackage: "",
       label: definition.label,
-      canOverride: true,
       isRequired: false,
       isQueryable: true,
       defaultModuleDeclaration: definition.defaultModuleDeclaration,
