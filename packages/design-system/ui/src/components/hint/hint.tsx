@@ -5,7 +5,7 @@ import * as React from "react"
 import { clx } from "../../utils/clx"
 
 const hintVariants = cva({
-  base: "txt-small inline-flex items-center gap-x-2",
+  base: "txt-small inline-flex items-start gap-x-2",
   variants: {
     variant: {
       info: "text-ui-fg-subtle",

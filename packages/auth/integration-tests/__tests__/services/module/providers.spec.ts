@@ -1,11 +1,10 @@
 import { MedusaModule, Modules } from "@medusajs/modules-sdk"
-
 import { IAuthModuleService } from "@medusajs/types"
-import { MikroOrmWrapper } from "../../../utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { createAuthProviders } from "../../../__fixtures__/auth-provider"
-import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
+import { createAuthProviders } from "../../../__fixtures__/auth-provider"
+import { MikroOrmWrapper } from "../../../utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 
 jest.setTimeout(30000)
 
@@ -70,7 +69,10 @@ describe("AuthModuleService - AuthProvider", () => {
         },
       ])
 
-      const { success, error } = await service.authenticate("notRegistered", {} as any)
+      const { success, error } = await service.authenticate(
+        "notRegistered",
+        {} as any
+      )
 
       expect(success).toBe(false)
       expect(error).toEqual(
@@ -79,12 +81,9 @@ describe("AuthModuleService - AuthProvider", () => {
     })
 
     it("fails to authenticate using a valid provider with an invalid scope", async () => {
-      const { success, error } = await service.authenticate(
-        "emailpass",
-        {
-          authScope: "non-existing",
-        } as any
-      )
+      const { success, error } = await service.authenticate("emailpass", {
+        authScope: "non-existing",
+      } as any)
 
       expect(success).toBe(false)
       expect(error).toEqual(
