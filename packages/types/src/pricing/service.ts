@@ -46,6 +46,7 @@ import {
 
 import { FindConfig } from "../common"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
+import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 
 export interface IPricingModuleService extends IModuleService {
