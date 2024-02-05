@@ -1,28 +1,26 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { IRegionModuleService } from "@medusajs/types"
 import { DefaultsUtils } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { initialize } from "../../src"
-import { DB_URL, MikroOrmWrapper } from "../utils"
+import { initModules } from "medusa-test-utils"
+import { MikroOrmWrapper } from "../utils"
+import { getInitModuleConfig } from "../utils/get-init-module-config"
 
 jest.setTimeout(30000)
 
 describe("Region Module Service", () => {
   let service: IRegionModuleService
   let testManager: SqlEntityManager
-  let repositoryManager: SqlEntityManager
+  let shutdownFunc: () => Promise<void>
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
-    repositoryManager = await MikroOrmWrapper.forkManager()
 
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_REGION_DB_SCHEMA,
-      },
-    })
+    const initModulesConfig = getInitModuleConfig()
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+    service = medusaApp.modules[Modules.REGION]
 
-    testManager = await MikroOrmWrapper.forkManager()
+    shutdownFunc = shutdown
   })
 
   afterEach(async () => {
@@ -32,10 +30,10 @@ describe("Region Module Service", () => {
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     testManager = MikroOrmWrapper.forkManager()
+  })
 
-    if (service.__hooks?.onApplicationStart) {
-      await service.__hooks.onApplicationStart()
-    }
+  afterAll(async () => {
+    await shutdownFunc()
   })
 
   it("should create countries and currencies on application start", async () => {
@@ -46,11 +44,11 @@ describe("Region Module Service", () => {
     expect(currencies.length).toBeGreaterThan(0)
   })
 
-  it.only("should create countries added to default ones", async () => {
+  it("should create countries added to default ones", async () => {
     const [, count] = await service.listAndCountCountries()
-    const initialCountries = Object.keys(DefaultsUtils.defaultCountries)
+    const initialCountries = DefaultsUtils.defaultCountries.length
 
-    expect(count).toEqual(initialCountries.length)
+    expect(count).toEqual(initialCountries)
 
     DefaultsUtils.defaultCountries.push({
       name: "Dogecoin",
@@ -63,10 +61,7 @@ describe("Region Module Service", () => {
     await service.__hooks!.onApplicationStart!()
 
     const [, newCount] = await service.listAndCountCountries()
-
-    console.log(newCount)
-
-    expect(newCount).toEqual(initialCountries.length + 1)
+    expect(newCount).toEqual(initialCountries + 1)
   })
 
   it("should create and list a region", async () => {

@@ -40,11 +40,23 @@ export interface IRegionModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<[RegionDTO[], number]>
 
+  retrieveCountry(
+    countryId: string,
+    config?: FindConfig<RegionCountryDTO>,
+    sharedContext?: Context
+  ): Promise<RegionCountryDTO>
+
   listCountries(
     filters?: FilterableRegionCountryProps,
     config?: FindConfig<RegionCountryDTO>,
     sharedContext?: Context
   ): Promise<RegionCountryDTO[]>
+
+  retrieveCurrency(
+    currencyId: string,
+    config?: FindConfig<RegionCountryDTO>,
+    sharedContext?: Context
+  ): Promise<RegionCountryDTO>
 
   listAndCountCountries(
     filters?: FilterableRegionCountryProps,

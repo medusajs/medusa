@@ -32,7 +32,7 @@ export default class Country {
   display_name: string
 
   @Property({ columnType: "text", nullable: true })
-  region_id: string | null
+  region_id: string | null = null
 
   @ManyToOne({
     entity: () => Region,

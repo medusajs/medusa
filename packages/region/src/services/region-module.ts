@@ -180,15 +180,10 @@ export default class RegionModuleService<
   private async maybeCreateCountries(
     @MedusaContext() sharedContext: Context
   ): Promise<void> {
-    // I want to retrieve all countries in the DB, without knowing how many there is. This should be done in chunks until there are no more left.
     const [countries, count] = await this.countryService_.listAndCount(
       {},
       { select: ["id", "iso_2"], take: COUNTRIES_LIMIT },
       sharedContext
-    )
-
-    const iso2s = DefaultsUtils.defaultCountries.map((c) =>
-      c.alpha2.toLowerCase()
     )
 
     let countsToCreate: CreateCountryDTO[] = []
@@ -219,7 +214,8 @@ export default class RegionModuleService<
   ): Promise<void> {
     const [currency] = await this.currencyService_.list(
       {},
-      { select: ["id"], take: 1 }
+      { select: ["id"], take: 1 },
+      sharedContext
     )
 
     let currsToCreate: CreateCurrencyDTO[] = []
