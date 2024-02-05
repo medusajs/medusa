@@ -41,13 +41,23 @@ describe("AuthModuleService - AuthProvider", () => {
     await shutdownFunc()
   })
 
-  // TODO: scope
   describe("authenticate", () => {
     it("authenticate validates that a provider is registered in container", async () => {
       const { success, error } = await service.authenticate(
         "notRegistered",
         {} as any
       )
+
+      expect(success).toBe(false)
+      expect(error).toEqual(
+        "AuthenticationProvider with for provider: notRegistered wasn't registered in the module. Have you configured your options correctly?"
+      )
+    })
+
+    it("fails to authenticate using a valid provider with an invalid scope", async () => {
+      const { success, error } = await service.authenticate("emailpass", {
+        authScope: "non-existing",
+      } as any)
 
       expect(success).toBe(false)
       expect(error).toEqual(
