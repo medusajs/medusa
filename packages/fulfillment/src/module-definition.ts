@@ -8,7 +8,7 @@ import * as Models from "@models"
 import { ModulesSdkUtils } from "@medusajs/utils"
 
 const migrationScriptOptions = {
-  moduleName: Modules.SALES_CHANNEL,
+  moduleName: Modules.FULFILLMENT,
   models: Models,
   pathToMigrations: __dirname + "/migrations",
 }

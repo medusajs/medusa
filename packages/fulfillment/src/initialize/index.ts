@@ -18,11 +18,11 @@ export const initialize = async (
     | InternalModuleDeclaration,
   injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<IFulfillmentModuleService> => {
-  const serviceKey = Modules.SALES_CHANNEL
+  const serviceKey = Modules.FULFILLMENT
 
   const loaded = await MedusaModule.bootstrap<IFulfillmentModuleService>({
     moduleKey: serviceKey,
-    defaultPath: MODULE_PACKAGE_NAMES[Modules.FULFILLMENT],
+    defaultPath: MODULE_PACKAGE_NAMES[serviceKey],
     declaration: options as
       | InternalModuleDeclaration
       | ExternalModuleDeclaration,
