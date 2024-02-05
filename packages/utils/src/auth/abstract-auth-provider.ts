@@ -22,6 +22,7 @@ export abstract class AbstractAuthModuleProvider {
   }
 
   protected constructor({ scopes }) {
+    this.container_ = arguments[0]
     this.scopes_ = scopes
   }
 

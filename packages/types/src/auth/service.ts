@@ -1,13 +1,9 @@
 import {
-  AuthProviderDTO,
   AuthUserDTO,
   AuthenticationInput,
   AuthenticationResponse,
-  CreateAuthProviderDTO,
   CreateAuthUserDTO,
-  FilterableAuthProviderProps,
   FilterableAuthUserProps,
-  UpdateAuthProviderDTO,
   UpdateAuthUserDTO,
 } from "./common"
 
@@ -37,7 +33,7 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthUserDTO>
 
   list(
-    filters?: FilterableAuthProviderProps,
+    filters?: FilterableAuthUserProps,
     config?: FindConfig<AuthUserDTO>,
     sharedContext?: Context
   ): Promise<AuthUserDTO[]>

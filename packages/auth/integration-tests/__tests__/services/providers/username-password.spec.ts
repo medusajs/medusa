@@ -4,14 +4,12 @@ import { IAuthModuleService } from "@medusajs/types"
 import { MikroOrmWrapper } from "../../../utils"
 import Scrypt from "scrypt-kdf"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { createAuthProviders } from "../../../__fixtures__/auth-provider"
 import { createAuthUsers } from "../../../__fixtures__/auth-user"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 const seedDefaultData = async (testManager) => {
-  await createAuthProviders(testManager)
   await createAuthUsers(testManager)
 }
 
@@ -87,8 +85,6 @@ describe("AuthModuleService - AuthProvider", () => {
     })
 
     it("fails when no password is given", async () => {
-      const email = "test@test.com"
-
       await seedDefaultData(testManager)
 
       const res = await service.authenticate("emailpass", {
