@@ -3,6 +3,13 @@ import Models from "@medusajs/medusa/dist/loaders/models"
 import { EntitySchema } from "@mikro-orm/core"
 import { mikroOrmConnectionLoader } from "./mikro-orm-connection-loader"
 
+/**
+ * Factory for creating a MikroORM connection loader for the modules
+ *
+ * @param moduleName
+ * @param moduleModels
+ * @param migrationsPath
+ */
 export function mikroOrmConnectionLoaderFactory({
   moduleName,
   moduleModels,

@@ -7,6 +7,12 @@ import {
 } from "@medusajs/modules-sdk"
 import { ModulesSdkTypes } from "@medusajs/types"
 
+/**
+ * Generate a initialize module factory that is exported by the module to be initialized manually
+ *
+ * @param moduleName
+ * @param moduleDefinition
+ */
 export function initializeFactory<T>({
   moduleName,
   moduleDefinition,
