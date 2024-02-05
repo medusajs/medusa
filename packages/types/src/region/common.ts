@@ -33,7 +33,6 @@ export interface RegionCountryDTO {
 }
 
 export interface RegionCurrencyDTO {
-  id: string
   code: string
   symbol: string
   name: string

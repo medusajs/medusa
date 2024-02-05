@@ -1,6 +1,5 @@
 import {
   BeforeCreate,
-  Cascade,
   Entity,
   ManyToOne,
   OnInit,
@@ -31,16 +30,13 @@ export default class Country {
   @Property({ columnType: "text" })
   display_name: string
 
-  @Property({ columnType: "text", nullable: true })
-  region_id: string | null = null
-
   @ManyToOne({
     entity: () => Region,
-    onDelete: "cascade",
+    fieldName: "region_id",
     index: "IDX_country_region_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    nullable: true,
   })
-  region: Region
+  region: Region | null = null
 
   @BeforeCreate()
   onCreate() {

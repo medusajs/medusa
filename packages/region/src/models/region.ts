@@ -2,7 +2,6 @@ import { DAL } from "@medusajs/types"
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
-  Cascade,
   Collection,
   Entity,
   Filter,
@@ -32,20 +31,15 @@ export default class Region {
   @Property({ columnType: "text" })
   name: string
 
-  @Property({ columnType: "text" })
-  currency_code: string
-
   @ManyToOne({
     entity: () => Currency,
     onDelete: "cascade",
+    fieldName: "currency_code",
     index: "IDX_region_currency_code",
-    cascade: [Cascade.PERSIST],
   })
   currency: Currency
 
-  @OneToMany(() => Country, (country) => country.region, {
-    cascade: [Cascade.REMOVE],
-  })
+  @OneToMany(() => Country, (country) => country.region)
   countries = new Collection<Country>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
