@@ -3,16 +3,15 @@ import {
   CaptureDTO,
   Context,
   CreateCaptureDTO,
-  CreatePaymentDTO,
   CreateRefundDTO,
   DAL,
   FindConfig,
   RefundDTO,
-  UpdatePaymentDTO,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
+  isObject,
   MedusaContext,
   ModulesSdkUtils,
 } from "@medusajs/utils"
@@ -25,13 +24,9 @@ type InjectedDependencies = {
 
 export default class PaymentService<
   TEntity extends Payment = Payment
-> extends ModulesSdkUtils.abstractServiceFactory<
-  InjectedDependencies,
-  {
-    create: CreatePaymentDTO
-    update: UpdatePaymentDTO
-  }
->(Payment)<TEntity> {
+> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+  Payment
+)<TEntity> {
   protected captureRepository_: DAL.RepositoryService
   protected refundRepository_: DAL.RepositoryService
   protected paymentRepository_: DAL.RepositoryService
@@ -105,17 +100,16 @@ export default class PaymentService<
   /**
    * NOTE TODO - TEMP IMPL. THAT WILL CHANGE
    */
-  @InjectManager("paymentRepository_")
   async retrieve(
-    id: string,
+    id: string | object,
     config: FindConfig<any> = {}, // TODO: fix type when overriding
-    @MedusaContext() sharedContext?: Context
+    sharedContext: Context = {}
   ): Promise<TEntity> {
     const { select, relations, amountsSelect } =
       this.transformQueryForAmounts(config)
 
     const result = await super.retrieve(
-      id,
+      isObject(id) ? id : { id },
       { ...config, select, relations },
       sharedContext
     )

@@ -364,8 +364,12 @@ describe("Payment Module Service", () => {
             amount: 200,
             currency_code: "usd",
             provider_id: "manual",
-            payment_collection: paymentCollection.id,
-            payment_session: paymentCollection.payment_sessions![0].id,
+            payment_collection: expect.objectContaining({
+              id: paymentCollection.id,
+            }),
+            payment_session: expect.objectContaining({
+              id: paymentCollection.payment_sessions![0].id,
+            }),
           })
         )
       })
