@@ -1,7 +1,6 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IRegionModuleService } from "@medusajs/types"
 import { DefaultsUtils } from "@medusajs/utils"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { initModules } from "medusa-test-utils"
 import { MikroOrmWrapper } from "../utils"
 import { getInitModuleConfig } from "../utils/get-init-module-config"
@@ -10,10 +9,9 @@ jest.setTimeout(30000)
 
 describe("Region Module Service", () => {
   let service: IRegionModuleService
-  let testManager: SqlEntityManager
   let shutdownFunc: () => Promise<void>
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
 
     const initModulesConfig = getInitModuleConfig()
@@ -25,14 +23,6 @@ describe("Region Module Service", () => {
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
-  })
-
-  beforeEach(async () => {
-    await MikroOrmWrapper.setupDatabase()
-    testManager = MikroOrmWrapper.forkManager()
-  })
-
-  afterAll(async () => {
     await shutdownFunc()
   })
 
@@ -57,8 +47,7 @@ describe("Region Module Service", () => {
       numeric: "420",
     })
 
-    // TODO: This is a hack to force the service to re-create the countries
-    await service.__hooks!.onApplicationStart!()
+    await service.createDefaultCountriesAndCurrencies()
 
     const [, newCount] = await service.listAndCountCountries()
     expect(newCount).toEqual(initialCountries + 1)

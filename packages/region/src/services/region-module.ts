@@ -78,11 +78,6 @@ export default class RegionModuleService<
     this.currencyService_ = currencyService
   }
 
-  // TODO: Rework API separately
-  __hooks = {
-    onApplicationStart: async () => await this.createCountriesAndCurrencies(),
-  }
-
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
   }
@@ -154,9 +149,7 @@ export default class RegionModuleService<
     data: UpdateRegionDTO | UpdateRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<RegionDTO | RegionDTO[]> {
-    const input = Array.isArray(data) ? data : [data]
-
-    const result = await this.regionService_.update(input, sharedContext)
+    const result = await this.regionService_.update(data, sharedContext)
 
     return await this.baseRepository_.serialize<RegionDTO[]>(
       Array.isArray(data) ? result : result[0],
@@ -167,7 +160,7 @@ export default class RegionModuleService<
   }
 
   @InjectManager("baseRepository_")
-  private async createCountriesAndCurrencies(
+  public async createDefaultCountriesAndCurrencies(
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     await promiseAll([
@@ -188,10 +181,10 @@ export default class RegionModuleService<
 
     let countsToCreate: CreateCountryDTO[] = []
     if (count !== DefaultsUtils.defaultCountries.length) {
-      const countriesInDb = countries.map((c) => c.iso_2)
+      const countriesInDb = new Set(countries.map((c) => c.iso_2))
 
       const countriesToAdd = DefaultsUtils.defaultCountries.filter(
-        (c) => !countriesInDb.includes(c.alpha2.toLowerCase())
+        (c) => !countriesInDb.has(c.alpha2.toLowerCase())
       )
 
       countsToCreate = countriesToAdd.map((c) => ({

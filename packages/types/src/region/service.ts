@@ -87,4 +87,6 @@ export interface IRegionModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
+
+  createDefaultCountriesAndCurrencies(sharedContext?: Context): Promise<void>
 }
