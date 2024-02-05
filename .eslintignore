@@ -30,6 +30,7 @@ packages/*
 !packages/medusa-react
 !packages/workflow-engine-redis
 !packages/workflow-engine-inmemory
+!packages/fulfillment
 
 
 **/models/*

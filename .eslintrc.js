@@ -102,6 +102,7 @@ module.exports = {
           "./packages/types/tsconfig.json",
           "./packages/workflow-engine-redis/tsconfig.spec.json",
           "./packages/workflow-engine-inmemory/tsconfig.spec.json",
+          "./packages/fulfillment/tsconfig.spec.json",
         ],
       },
       rules: {
