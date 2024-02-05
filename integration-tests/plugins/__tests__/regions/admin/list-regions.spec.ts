@@ -23,6 +23,7 @@ describe("GET /admin/regions", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
+    // TODO: Use a different bootstrapping mechanism if possible
     shutdownServer = await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
     regionModuleService = appContainer.resolve(ModuleRegistrationName.REGION)
@@ -43,7 +44,7 @@ describe("GET /admin/regions", () => {
     await db.teardown()
   })
 
-  it("should get all customers and its count", async () => {
+  it("should get all regions and count", async () => {
     await regionModuleService.create([
       {
         name: "Test",
