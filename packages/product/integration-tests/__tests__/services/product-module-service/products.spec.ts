@@ -578,7 +578,7 @@ describe("ProductModuleService products", function () {
 
     afterEach(afterEach_)
 
-    it.only("should create a product", async () => {
+    it("should create a product", async () => {
       const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],
