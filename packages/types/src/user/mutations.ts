@@ -1,2 +1,6 @@
-export type CreateUserDTO = { id?: string }
-export type UpdateUserDTO = { id: string }
+export interface CreateUserDTO {
+  id?: string
+}
+export interface UpdateUserDTO {
+  id: string
+}
