@@ -56,7 +56,7 @@ export interface IRegionModuleService extends IModuleService {
     currencyId: string,
     config?: FindConfig<RegionCountryDTO>,
     sharedContext?: Context
-  ): Promise<RegionCountryDTO>
+  ): Promise<RegionCurrencyDTO>
 
   listAndCountCountries(
     filters?: FilterableRegionCountryProps,

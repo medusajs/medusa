@@ -13,7 +13,7 @@ describe("Region Module Service", () => {
   let testManager: SqlEntityManager
   let shutdownFunc: () => Promise<void>
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     await MikroOrmWrapper.setupDatabase()
 
     const initModulesConfig = getInitModuleConfig()
