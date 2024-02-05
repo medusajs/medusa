@@ -4,7 +4,7 @@ export class RegionModuleSetup20240205173216 extends Migration {
   async up(): Promise<void> {
     this.addSql(`
 -- Create or update "region" table
-CREATE TABLE "region" (
+CREATE TABLE IF NOT EXISTS "region" (
   "id" text NOT NULL,
   "name" text NOT NULL,
   "currency_code" text NOT NULL,
@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS "region_currency" (
 
 -- Adjust "region" table
 ALTER TABLE "region" DROP CONSTRAINT IF EXISTS "FK_3bdd5896ec93be2f1c62a3309a5";
+ALTER TABLE "region" DROP CONSTRAINT IF EXISTS "FK_91f88052197680f9790272aaf5b";
 ALTER TABLE "region" ADD CONSTRAINT "region_currency_code_foreign" FOREIGN KEY ("currency_code") REFERENCES "region_currency" ("code") ON UPDATE CASCADE ON DELETE CASCADE;
     
 CREATE INDEX IF NOT EXISTS "IDX_region_currency_code" ON "region" ("currency_code");
