@@ -50,7 +50,7 @@ describe("AuthModuleService - AuthProvider", () => {
 
       expect(success).toBe(false)
       expect(error).toEqual(
-        "AuthenticationProvider with for provider: notRegistered wasn't registered in the module. Have you configured your options correctly?"
+        "AuthenticationProvider: notRegistered wasn't registered in the module. Have you configured your options correctly?"
       )
     })
 
@@ -61,7 +61,7 @@ describe("AuthModuleService - AuthProvider", () => {
 
       expect(success).toBe(false)
       expect(error).toEqual(
-        "AuthenticationProvider: notRegistered wasn't registered in the module. Have you configured your options correctly?"
+        `Scope "non-existing" is not valid for provider emailpass`
       )
     })
   })
