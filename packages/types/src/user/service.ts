@@ -1,35 +1,36 @@
+import { CreateUserDTO, UpdateUserDTO } from "./mutations"
+import { FilterableUserProps, UserDTO } from "./common"
+
 import { Context } from "../shared-context"
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
-import { FilterableUserProps, UserDTO } from "./common"
-import { CreateUserDTO, UpdateUserDTO } from "./mutations"
 
 export interface IUserModuleService extends IModuleService {
-  retrieveUser(
+  retrieve(
     id: string,
     config?: FindConfig<UserDTO>,
     sharedContext?: Context
   ): Promise<UserDTO>
 
-  listUsers(
+  list(
     filters?: FilterableUserProps,
     config?: FindConfig<UserDTO>,
     sharedContext?: Context
   ): Promise<UserDTO[]>
 
-  listAndCountUsers(
+  listAndCount(
     filters?: FilterableUserProps,
     config?: FindConfig<UserDTO>,
     sharedContext?: Context
   ): Promise<[UserDTO[], number]>
 
-  createUser(data: CreateUserDTO[], sharedContext?: Context): Promise<UserDTO[]>
+  create(data: CreateUserDTO[], sharedContext?: Context): Promise<UserDTO[]>
 
-  createUser(data: CreateUserDTO, sharedContext?: Context): Promise<UserDTO>
+  create(data: CreateUserDTO, sharedContext?: Context): Promise<UserDTO>
 
-  updateUser(data: UpdateUserDTO[], sharedContext?: Context): Promise<UserDTO[]>
+  update(data: UpdateUserDTO[], sharedContext?: Context): Promise<UserDTO[]>
 
-  updateUser(data: UpdateUserDTO, sharedContext?: Context): Promise<UserDTO>
+  update(data: UpdateUserDTO, sharedContext?: Context): Promise<UserDTO>
 
-  deleteUser(ids: string[], sharedContext?: Context): Promise<void>
+  delete(ids: string[], sharedContext?: Context): Promise<void>
 }

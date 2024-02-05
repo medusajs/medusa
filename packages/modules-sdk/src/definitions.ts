@@ -237,9 +237,8 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.USER),
       isRequired: false,
-      canOverride: true,
       isQueryable: true,
-      dependencies: ["logger"], 
+      dependencies: ["logger"],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,

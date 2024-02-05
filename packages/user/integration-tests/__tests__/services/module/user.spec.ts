@@ -1,10 +1,10 @@
+import { IUserModuleService } from "@medusajs/types/dist/user"
 import { MikroOrmWrapper } from "../../../utils"
 import { Modules } from "@medusajs/modules-sdk"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createUsers } from "../../../__fixtures__/user"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
-import { IUserModuleService } from "@medusajs/types/dist/user"
 
 jest.setTimeout(30000)
 
@@ -40,7 +40,7 @@ describe("UserModuleService - User", () => {
 
   describe("listUsers", () => {
     it("should list users", async () => {
-      const users = await service.listUsers()
+      const users = await service.list()
       const serialized = JSON.parse(JSON.stringify(users))
 
       expect(serialized).toEqual([
@@ -51,7 +51,7 @@ describe("UserModuleService - User", () => {
     })
 
     it("should list users by id", async () => {
-      const users = await service.listUsers({
+      const users = await service.list({
         id: ["1"],
       })
 
@@ -65,7 +65,7 @@ describe("UserModuleService - User", () => {
 
   describe("listAndCountUsers", () => {
     it("should list and count users", async () => {
-      const [users, count] = await service.listAndCountUsers()
+      const [users, count] = await service.listAndCount()
       const serialized = JSON.parse(JSON.stringify(users))
 
       expect(count).toEqual(1)
@@ -77,7 +77,7 @@ describe("UserModuleService - User", () => {
     })
 
     it("should listAndCount Users by id", async () => {
-      const [Users, count] = await service.listAndCountUsers({
+      const [Users, count] = await service.listAndCount({
         id: "1",
       })
 
@@ -94,7 +94,7 @@ describe("UserModuleService - User", () => {
     const id = "1"
 
     it("should return an user for the given id", async () => {
-      const user = await service.retrieveUser(id)
+      const user = await service.retrieve(id)
 
       expect(user).toEqual(
         expect.objectContaining({
@@ -107,7 +107,7 @@ describe("UserModuleService - User", () => {
       let error
 
       try {
-        await service.retrieveUser("does-not-exist")
+        await service.retrieve("does-not-exist")
       } catch (e) {
         error = e
       }
@@ -121,16 +121,16 @@ describe("UserModuleService - User", () => {
       let error
 
       try {
-        await service.retrieveUser(undefined as unknown as string)
+        await service.retrieve(undefined as unknown as string)
       } catch (e) {
         error = e
       }
 
-      expect(error.message).toEqual('"userId" must be defined')
+      expect(error.message).toEqual("user - id must be defined")
     })
 
     it("should return user based on config select param", async () => {
-      const User = await service.retrieveUser(id, {
+      const User = await service.retrieve(id, {
         select: ["id"],
       })
 
@@ -146,9 +146,9 @@ describe("UserModuleService - User", () => {
     const id = "1"
 
     it("should delete the Users given an id successfully", async () => {
-      await service.deleteUser([id])
+      await service.delete([id])
 
-      const users = await service.listUsers({
+      const users = await service.list({
         id: [id],
       })
 
@@ -161,7 +161,7 @@ describe("UserModuleService - User", () => {
       let error
 
       try {
-        await service.updateUser([
+        await service.update([
           {
             id: "does-not-exist",
           },
@@ -176,13 +176,13 @@ describe("UserModuleService - User", () => {
 
   describe("createUser", () => {
     it("should create a User successfully", async () => {
-      await service.createUser([
+      await service.create([
         {
           id: "2",
         },
       ])
 
-      const [User, count] = await service.listAndCountUsers({
+      const [User, count] = await service.listAndCount({
         id: ["2"],
       })
 
