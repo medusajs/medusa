@@ -1,5 +1,3 @@
-import jwt from "jsonwebtoken"
-
 import {
   AuthenticationInput,
   AuthenticationResponse,
@@ -11,7 +9,6 @@ import {
   CreateAuthUserDTO,
   DAL,
   InternalModuleDeclaration,
-  JWTGenerationOptions,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   UpdateAuthUserDTO,
@@ -30,15 +27,6 @@ import {
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import { ServiceTypes } from "@types"
-
-type AuthModuleOptions = {
-  jwt_secret: string
-}
-
-type AuthJWTPayload = {
-  id: string
-  scope: string
-}
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -68,7 +56,6 @@ export default class AuthModuleService<
   protected baseRepository_: DAL.RepositoryService
   protected authUserService_: ModulesSdkTypes.InternalModuleService<TAuthUser>
   protected authProviderService_: ModulesSdkTypes.InternalModuleService<TAuthProvider>
-  protected options_: AuthModuleOptions
 
   constructor(
     {
@@ -76,7 +63,6 @@ export default class AuthModuleService<
       authProviderService,
       baseRepository,
     }: InjectedDependencies,
-    options: AuthModuleOptions,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
@@ -85,51 +71,10 @@ export default class AuthModuleService<
     this.baseRepository_ = baseRepository
     this.authUserService_ = authUserService
     this.authProviderService_ = authProviderService
-    this.options_ = options
   }
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
-  }
-
-  async generateJwtToken(
-    authUserId: string,
-    scope: string,
-    options: JWTGenerationOptions = {}
-  ): Promise<string> {
-    const authUser = await this.authUserService_.retrieve(authUserId)
-    return jwt.sign({ id: authUser.id, scope }, this.options_.jwt_secret, {
-      expiresIn: options.expiresIn || "1d",
-    })
-  }
-
-  async retrieveAuthUserFromJwtToken(
-    token: string,
-    scope: string
-  ): Promise<AuthUserDTO> {
-    let decoded: AuthJWTPayload
-    try {
-      const verifiedToken = jwt.verify(token, this.options_.jwt_secret)
-      decoded = verifiedToken as AuthJWTPayload
-    } catch (err) {
-      throw new MedusaError(
-        MedusaError.Types.UNAUTHORIZED,
-        "The provided JWT token is invalid"
-      )
-    }
-
-    if (decoded.scope !== scope) {
-      throw new MedusaError(
-        MedusaError.Types.UNAUTHORIZED,
-        "The provided JWT token is invalid"
-      )
-    }
-
-    const authUser = await this.authUserService_.retrieve(decoded.id)
-    return await this.baseRepository_.serialize<AuthTypes.AuthUserDTO>(
-      authUser,
-      { populate: true }
-    )
   }
 
   async createAuthProvider(

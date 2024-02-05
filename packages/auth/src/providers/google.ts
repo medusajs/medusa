@@ -1,8 +1,8 @@
 import { AbstractAuthModuleProvider, MedusaError } from "@medusajs/utils"
 import {
+  AuthProviderScope,
   AuthenticationInput,
   AuthenticationResponse,
-  AuthProviderScope,
   ModulesSdkTypes,
 } from "@medusajs/types"
 import { AuthUserService } from "@services"
@@ -82,9 +82,9 @@ class GoogleProvider extends AbstractAuthModuleProvider {
 
   // abstractable
   async verify_(refreshToken: string, scope: string) {
-    const jwtData = (await jwt.decode(refreshToken, {
+    const jwtData = jwt.decode(refreshToken, {
       complete: true,
-    })) as JwtPayload
+    }) as JwtPayload
     const entity_id = jwtData.payload.email
 
     let authUser

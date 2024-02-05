@@ -1,8 +1,11 @@
-import { ICustomerModuleService, IAuthModuleService } from "@medusajs/types"
+import { IAuthModuleService, ICustomerModuleService } from "@medusajs/types"
+
+import jwt from "jsonwebtoken"
 
 export const createAuthenticatedCustomer = async (
   customerModuleService: ICustomerModuleService,
-  authService: IAuthModuleService
+  authService: IAuthModuleService,
+  jwtSecret: string
 ) => {
   const customer = await customerModuleService.create({
     first_name: "John",
@@ -12,12 +15,12 @@ export const createAuthenticatedCustomer = async (
 
   const authUser = await authService.createAuthUser({
     entity_id: "store_user",
-    provider_id: "test",
+    provider: "emailpass",
     scope: "store",
     app_metadata: { customer_id: customer.id },
   })
 
-  const jwt = await authService.generateJwtToken(authUser.id, "store")
+  const token = jwt.sign(authUser, jwtSecret)
 
-  return { customer, authUser, jwt }
+  return { customer, authUser, jwt: token }
 }
