@@ -1,11 +1,11 @@
+import { MedusaModule, MODULE_PACKAGE_NAMES } from "@medusajs/modules-sdk"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  MedusaModule,
-  MODULE_PACKAGE_NAMES,
   ModuleExports,
-} from "@medusajs/modules-sdk"
-import { ModulesSdkTypes } from "@medusajs/types"
+  ModuleServiceInitializeCustomDataLayerOptions,
+  ModuleServiceInitializeOptions,
+} from "@medusajs/types"
 
 /**
  * Generate a initialize module factory that is exported by the module to be initialized manually
@@ -22,8 +22,8 @@ export function initializeFactory<T>({
 }) {
   return async (
     options?:
-      | ModulesSdkTypes.ModuleServiceInitializeOptions
-      | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
+      | ModuleServiceInitializeOptions
+      | ModuleServiceInitializeCustomDataLayerOptions
       | ExternalModuleDeclaration
       | InternalModuleDeclaration,
     injectedDependencies?: any
