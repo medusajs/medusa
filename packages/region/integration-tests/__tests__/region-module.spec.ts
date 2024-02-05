@@ -1,7 +1,7 @@
 import { IRegionModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { initialize } from "../../../src"
-import { DB_URL, MikroOrmWrapper } from "../../utils"
+import { initialize } from "../../src"
+import { DB_URL, MikroOrmWrapper } from "../utils"
 
 jest.setTimeout(30000)
 
