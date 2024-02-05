@@ -36,18 +36,14 @@ type InjectedDependencies = {
 
 const generateMethodForModels = [AuthProvider, AuthUser]
 
-export default class AuthModuleService<
-    TAuthUser extends AuthUser = AuthUser,
-    TAuthProvider extends AuthProvider = AuthProvider
-  >
+export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
-    AuthTypes.AuthProviderDTO,
+    AuthTypes.AuthUserDTO,
     {
       AuthUser: { dto: AuthUserDTO }
-      AuthProvider: { dto: AuthProviderDTO }
     }
-  >(AuthProvider, generateMethodForModels, entityNameToLinkableKeysMap)
+  >(AuthUser, generateMethodForModels, entityNameToLinkableKeysMap)
   implements AuthTypes.IAuthModuleService
 {
   __hooks = {
@@ -55,7 +51,7 @@ export default class AuthModuleService<
   }
   protected baseRepository_: DAL.RepositoryService
   protected authUserService_: ModulesSdkTypes.InternalModuleService<TAuthUser>
-  protected authProviderService_: ModulesSdkTypes.InternalModuleService<TAuthProvider>
+  protected options_: AuthModuleOptions
 
   constructor(
     {
@@ -70,7 +66,7 @@ export default class AuthModuleService<
 
     this.baseRepository_ = baseRepository
     this.authUserService_ = authUserService
-    this.authProviderService_ = authProviderService
+    this.options_ = options
   }
 
   __joinerConfig(): ModuleJoinerConfig {
