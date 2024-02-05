@@ -1629,10 +1629,6 @@ class CartService extends TransactionBaseService {
             relations: ["rule", "rule.conditions", "regions"],
           })
 
-        await this.discountService_
-          .withTransaction(transactionManager)
-          .validateDiscountForCartOrThrow(cart, discounts)
-
         const rules: Map<string, DiscountRule> = new Map()
         const discountsMap = new Map(
           discounts.map((d) => {

@@ -778,9 +778,9 @@ class DiscountService extends TransactionBaseService {
     customer: Customer
   ): Promise<boolean> {
     // If customer is empty on the cart, we will allow it
+    const limit = discount?.usage_limit_per_customer
 
-
-    if (!customer) {
+    if (!customer && !!limit) {
       return false
     }
 
@@ -798,8 +798,6 @@ class DiscountService extends TransactionBaseService {
         },
       },
     })
-
-    const limit = discount.usage_limit_per_customer
 
     return !!limit && count >= limit
   }
