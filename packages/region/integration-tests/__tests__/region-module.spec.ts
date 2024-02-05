@@ -1,4 +1,5 @@
 import { IRegionModuleService } from "@medusajs/types"
+import { DefaultsUtils } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { initialize } from "../../src"
 import { DB_URL, MikroOrmWrapper } from "../utils"
@@ -43,6 +44,29 @@ describe("Region Module Service", () => {
 
     expect(countries.length).toBeGreaterThan(0)
     expect(currencies.length).toBeGreaterThan(0)
+  })
+
+  it.only("should create countries added to default ones", async () => {
+    const [, count] = await service.listAndCountCountries()
+    const initialCountries = Object.keys(DefaultsUtils.defaultCountries)
+
+    expect(count).toEqual(initialCountries.length)
+
+    DefaultsUtils.defaultCountries.push({
+      name: "Dogecoin",
+      alpha2: "DOGE",
+      alpha3: "DOGE",
+      numeric: "420",
+    })
+
+    // TODO: This is a hack to force the service to re-create the countries
+    await service.__hooks!.onApplicationStart!()
+
+    const [, newCount] = await service.listAndCountCountries()
+
+    console.log(newCount)
+
+    expect(newCount).toEqual(initialCountries.length + 1)
   })
 
   it("should create and list a region", async () => {

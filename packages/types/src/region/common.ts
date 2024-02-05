@@ -5,9 +5,6 @@ export interface RegionDTO {
   name: string
   currency_code: string
   currency: RegionCurrencyDTO
-  tax_code?: string
-  tax_rate?: number
-  tax_provider_id?: string
   countries: CountryDTO[]
 }
 

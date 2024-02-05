@@ -8,12 +8,9 @@ import {
   FilterableRegionProps,
   RegionCountryDTO,
   RegionCurrencyDTO,
-  RegionDTO
+  RegionDTO,
 } from "./common"
-import {
-  CreateRegionDTO,
-  UpdateRegionDTO
-} from "./mutations"
+import { CreateRegionDTO, UpdateRegionDTO } from "./mutations"
 
 export interface IRegionModuleService extends IModuleService {
   create(data: CreateRegionDTO[], sharedContext?: Context): Promise<RegionDTO[]>
@@ -49,11 +46,23 @@ export interface IRegionModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<RegionCountryDTO[]>
 
+  listAndCountCountries(
+    filters?: FilterableRegionCountryProps,
+    config?: FindConfig<RegionCountryDTO>,
+    sharedContext?: Context
+  ): Promise<[RegionCountryDTO[], number]>
+
   listCurrencies(
     filters?: FilterableRegionCurrencyProps,
     config?: FindConfig<RegionCurrencyDTO>,
     sharedContext?: Context
   ): Promise<RegionCurrencyDTO[]>
+
+  listAndCountCurrencies(
+    filters?: FilterableRegionCurrencyProps,
+    config?: FindConfig<RegionCurrencyDTO>,
+    sharedContext?: Context
+  ): Promise<[RegionCurrencyDTO[], number]>
 
   softDelete<TReturnableLinkableKeys extends string = string>(
     regionIds: string[],

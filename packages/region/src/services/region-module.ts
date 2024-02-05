@@ -26,6 +26,8 @@ import { DefaultsUtils } from "@medusajs/utils"
 import { CreateCountryDTO, CreateCurrencyDTO } from "@types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
+const COUNTRIES_LIMIT = 1000
+
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   regionService: ModulesSdkTypes.InternalModuleService<any>
@@ -46,13 +48,9 @@ export default class RegionModuleService<
     {
       Country: {
         dto: RegionCountryDTO
-        singular: "Country"
-        plural: "Countries"
       }
       Currency: {
         dto: RegionCurrencyDTO
-        singular: "Currency"
-        plural: "Currencies"
       }
     }
   >(Region, generateMethodForModels, entityNameToLinkableKeysMap)
@@ -80,6 +78,7 @@ export default class RegionModuleService<
     this.currencyService_ = currencyService
   }
 
+  // TODO: Rework API separately
   __hooks = {
     onApplicationStart: async () => await this.createCountriesAndCurrencies(),
   }
@@ -181,14 +180,26 @@ export default class RegionModuleService<
   private async maybeCreateCountries(
     @MedusaContext() sharedContext: Context
   ): Promise<void> {
-    const [country] = await this.countryService_.list(
+    // I want to retrieve all countries in the DB, without knowing how many there is. This should be done in chunks until there are no more left.
+    const [countries, count] = await this.countryService_.listAndCount(
       {},
-      { select: ["id"], take: 1 }
+      { select: ["id", "iso_2"], take: COUNTRIES_LIMIT },
+      sharedContext
+    )
+
+    const iso2s = DefaultsUtils.defaultCountries.map((c) =>
+      c.alpha2.toLowerCase()
     )
 
     let countsToCreate: CreateCountryDTO[] = []
-    if (!country) {
-      countsToCreate = DefaultsUtils.defaultCountries.map((c) => ({
+    if (count !== DefaultsUtils.defaultCountries.length) {
+      const countriesInDb = countries.map((c) => c.iso_2)
+
+      const countriesToAdd = DefaultsUtils.defaultCountries.filter(
+        (c) => !countriesInDb.includes(c.alpha2.toLowerCase())
+      )
+
+      countsToCreate = countriesToAdd.map((c) => ({
         iso_2: c.alpha2.toLowerCase(),
         iso_3: c.alpha3.toLowerCase(),
         num_code: c.numeric,
