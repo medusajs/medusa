@@ -86,7 +86,7 @@ export class MedusaModule {
       return MedusaModule.getModuleInstance(key)
     })
   }
-  
+
   public static onApplicationStart(): void {
     for (const instances of MedusaModule.instances_.values()) {
       for (const instance of Object.values(instances) as IModuleService[]) {
@@ -354,7 +354,6 @@ export class MedusaModule {
       dependencies: definition.dependencies,
       defaultPackage: "",
       label: definition.label,
-      canOverride: true,
       isRequired: false,
       isQueryable: true,
       defaultModuleDeclaration: definition.defaultModuleDeclaration,

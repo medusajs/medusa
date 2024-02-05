@@ -1,11 +1,12 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+
 import { ICustomerModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
-import { getContainer } from "../../../../environment-helpers/use-container"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
@@ -25,6 +26,14 @@ describe("DELETE /store/customers/me/addresses/:address_id", () => {
     )
   })
 
+  // TODO: delete with removal of authProvider
+  beforeEach(async () => {
+    const onStart =
+      appContainer.resolve(ModuleRegistrationName.AUTH).__hooks
+        .onApplicationStart ?? (() => Promise.resolve())
+    await onStart()
+  })
+
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
@@ -37,9 +46,11 @@ describe("DELETE /store/customers/me/addresses/:address_id", () => {
   })
 
   it("should delete a customer address", async () => {
+    const { jwt_secret } = appContainer.resolve("configModule").projectConfig
     const { customer, jwt } = await createAuthenticatedCustomer(
       customerModuleService,
-      appContainer.resolve(ModuleRegistrationName.AUTH)
+      appContainer.resolve(ModuleRegistrationName.AUTH),
+      jwt_secret
     )
 
     const address = await customerModuleService.addAddresses({
@@ -65,9 +76,11 @@ describe("DELETE /store/customers/me/addresses/:address_id", () => {
   })
 
   it("should fail to delete another customer's address", async () => {
+    const { jwt_secret } = appContainer.resolve("configModule").projectConfig
     const { jwt } = await createAuthenticatedCustomer(
       customerModuleService,
-      appContainer.resolve(ModuleRegistrationName.AUTH)
+      appContainer.resolve(ModuleRegistrationName.AUTH),
+      jwt_secret
     )
 
     const otherCustomer = await customerModuleService.create({

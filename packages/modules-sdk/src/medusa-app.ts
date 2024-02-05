@@ -74,7 +74,7 @@ async function loadModules(modulesConfig, sharedContainer) {
       let path: string
       let moduleExports: ModuleExports | undefined = undefined
       let declaration: any = {}
-      let definition: ModuleDefinition | undefined = undefined
+      let definition: Partial<ModuleDefinition> | undefined = undefined
 
       if (isObject(mod)) {
         const mod_ = mod as unknown as InternalModuleDeclaration
@@ -102,7 +102,7 @@ async function loadModules(modulesConfig, sharedContainer) {
         defaultPath: path,
         declaration,
         sharedContainer,
-        moduleDefinition: definition,
+        moduleDefinition: definition as ModuleDefinition,
         moduleExports,
       })) as LoadedModule
 
