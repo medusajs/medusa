@@ -6,9 +6,11 @@ import {
   DeleteDateColumn,
   Entity,
   Index,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
+import { InventoryLevel } from "./inventory-level"
 
 @Entity()
 export class InventoryItem {
@@ -66,6 +68,12 @@ export class InventoryItem {
 
   @Column({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
+
+  @OneToMany(
+    () => InventoryLevel,
+    (inventoryLevel) => inventoryLevel.inventory_item
+  )
+  inventory_levels!: InventoryLevel[]
 
   @BeforeInsert()
   private beforeInsert(): void {

@@ -43,92 +43,57 @@ export const joinerConfig: ModuleJoinerConfig = {
   schema: moduleSchema,
   alias: [
     {
-      name: "product",
-    },
-    {
-      name: "products",
-    },
-    {
-      name: "variant",
+      name: ["product", "products"],
       args: {
+        entity: "Product",
+      },
+    },
+    {
+      name: ["variant", "variants"],
+      args: {
+        entity: "ProductVariant",
         methodSuffix: "Variants",
       },
     },
     {
-      name: "variants",
+      name: ["product_option", "product_options"],
       args: {
-        methodSuffix: "Variants",
-      },
-    },
-    {
-      name: "product_option",
-      args: {
+        entity: "ProductOption",
         methodSuffix: "Options",
       },
     },
     {
-      name: "product_options",
+      name: ["product_type", "product_types"],
       args: {
-        methodSuffix: "Options",
-      },
-    },
-    {
-      name: "product_type",
-      args: {
+        entity: "ProductType",
         methodSuffix: "Types",
       },
     },
     {
-      name: "product_types",
+      name: ["product_image", "product_images"],
       args: {
-        methodSuffix: "Types",
-      },
-    },
-    {
-      name: "product_image",
-      args: {
+        entity: "ProductImage",
         methodSuffix: "Images",
       },
     },
     {
-      name: "product_images",
+      name: ["product_tag", "product_tags"],
       args: {
-        methodSuffix: "Images",
-      },
-    },
-    {
-      name: "product_tag",
-      args: {
+        entity: "ProductTag",
         methodSuffix: "Tags",
       },
     },
     {
-      name: "product_tags",
+      name: ["product_collection", "product_collections"],
       args: {
-        methodSuffix: "Tags",
-      },
-    },
-    {
-      name: "product_collection",
-      args: {
+        entity: "ProductCollection",
         methodSuffix: "Collections",
       },
     },
     {
-      name: "product_collections",
+      name: ["product_category", "product_categories"],
       args: {
-        methodSuffix: "Collections",
-      },
-    },
-    {
-      name: "product_category",
-      args: {
-        methodSuffix: "Categories",
-      },
-    },
-    {
-      name: "product_categories",
-      args: {
+        entity: "ProductCategory",
         methodSuffix: "Categories",
       },
     },
