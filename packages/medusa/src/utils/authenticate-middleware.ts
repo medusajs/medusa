@@ -1,8 +1,9 @@
-import { AuthUserDTO, IAuthModuleService } from "@medusajs/types"
 import { MedusaRequest, MedusaResponse } from "../types/routing"
 import { NextFunction, RequestHandler } from "express"
+import jwt, { JwtPayload } from "jsonwebtoken"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { AuthUserDTO } from "@medusajs/types"
+import { stringEqualsOrRegexMatch } from "@medusajs/utils"
 
 const SESSION_AUTH = "session"
 const BEARER_AUTH = "bearer"
@@ -15,7 +16,7 @@ type MedusaSession = {
 type AuthType = "session" | "bearer"
 
 export const authenticate = (
-  authScope: string,
+  authScope: string | RegExp,
   authType: AuthType | AuthType[],
   options: { allowUnauthenticated?: boolean } = {}
 ): RequestHandler => {
@@ -25,22 +26,23 @@ export const authenticate = (
     next: NextFunction
   ): Promise<void> => {
     const authTypes = Array.isArray(authType) ? authType : [authType]
-    const authModule = req.scope.resolve<IAuthModuleService>(
-      ModuleRegistrationName.AUTH
-    )
 
     // @ts-ignore
     const session: MedusaSession = req.session || {}
 
     let authUser: AuthUserDTO | null = null
     if (authTypes.includes(SESSION_AUTH)) {
-      if (session.auth_user && session.scope === authScope) {
+      if (
+        session.auth_user &&
+        stringEqualsOrRegexMatch(authScope, session.auth_user.scope)
+      ) {
         authUser = session.auth_user
       }
     }
 
     if (!authUser && authTypes.includes(BEARER_AUTH)) {
       const authHeader = req.headers.authorization
+
       if (authHeader) {
         const re = /(\S+)\s+(\S+)/
         const matches = authHeader.match(re)
@@ -49,10 +51,17 @@ export const authenticate = (
         if (matches) {
           const tokenType = matches[1]
           const token = matches[2]
-          if (tokenType.toLowerCase() === "bearer") {
-            authUser = await authModule
-              .retrieveAuthUserFromJwtToken(token, authScope)
-              .catch(() => null)
+          if (tokenType.toLowerCase() === BEARER_AUTH) {
+            // get config jwt secret
+            // verify token and set authUser
+            const { jwt_secret } =
+              req.scope.resolve("configModule").projectConfig
+
+            const verified = jwt.verify(token, jwt_secret) as JwtPayload
+
+            if (stringEqualsOrRegexMatch(authScope, verified.scope)) {
+              authUser = verified as AuthUserDTO
+            }
           }
         }
       }
@@ -62,7 +71,7 @@ export const authenticate = (
       req.auth_user = {
         id: authUser.id,
         app_metadata: authUser.app_metadata,
-        scope: authScope,
+        scope: authUser.scope,
       }
       return next()
     }
