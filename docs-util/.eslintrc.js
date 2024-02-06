@@ -72,6 +72,7 @@ module.exports = {
     ],
     "space-infix-ops": "error",
     "eol-last": ["error", "always"],
+    "no-case-declarations": "off"
   },
   env: {
     es6: true,
@@ -79,7 +80,8 @@ module.exports = {
   },
   ignorePatterns: [
     ".eslintrc.js",
-    "dist"
+    "dist",
+    "oas-output"
   ],
   overrides: [
     {

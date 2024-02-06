@@ -11,6 +11,16 @@ import execa from "execa"
 const medusaPackagePath = path.dirname(
   require.resolve("@medusajs/medusa/package.json")
 )
+/**
+ * OAS output directory
+ * 
+ * @privateRemark
+ * This should be the only directory OAS is loaded from for Medusa V2.
+ * For now, we only use it if the --v2 flag it passed to the CLI tool.
+ */
+const oasOutputPath = path.resolve(
+  __dirname, "..", "..", "..", "..", "docs-util", "oas-output"
+)
 const basePath = path.resolve(__dirname, `../../`)
 
 export const runCLI = async (command: string, options: string[] = []) => {
@@ -80,8 +90,8 @@ describe("command oas", () => {
 
     it("generates oas using admin.oas.base.yaml", async () => {
       const yamlFilePath = path.resolve(
-        medusaPackagePath,
-        "oas",
+        oasOutputPath,
+        "base",
         "admin.oas.base.yaml"
       )
       const oasBase = (await readYaml(yamlFilePath)) as OpenAPIObject
@@ -107,8 +117,8 @@ describe("command oas", () => {
 
     it("generates oas using store.oas.base.yaml", async () => {
       const yamlFilePath = path.resolve(
-        medusaPackagePath,
-        "oas",
+        oasOutputPath,
+        "base",
         "store.oas.base.yaml"
       )
       const oasBase = (await readYaml(yamlFilePath)) as OpenAPIObject

@@ -1,10 +1,12 @@
 import filterFiles from "../utils/filter-files.js"
 import path from "path"
-import DocblockGenerator from "../classes/docblock-generator.js"
+import DocblockGenerator from "../classes/generators/docblock.js"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
 import { GitManager } from "../classes/git-manager.js"
+import OasGenerator from "../classes/generators/oas.js"
+import { CommonCliOptions } from "../types/index.js"
 
-export default async function () {
+export default async function ({ type, ...options }: CommonCliOptions) {
   const gitManager = new GitManager()
 
   console.log("Get files in commits since last release")
@@ -27,12 +29,23 @@ export default async function () {
     path.resolve(getMonorepoRoot(), filePath)
   )
 
-  // generate docblocks for each of the files.
-  const docblockGenerator = new DocblockGenerator({
-    paths: filteredFiles,
-  })
+  if (type === "all" || type === "docs") {
+    const docblockGenerator = new DocblockGenerator({
+      paths: filteredFiles,
+      ...options,
+    })
 
-  await docblockGenerator.run()
+    await docblockGenerator.run()
+  }
+
+  if (type === "all" || type === "oas") {
+    const oasGenerator = new OasGenerator({
+      paths: filteredFiles,
+      ...options,
+    })
+
+    oasGenerator.run()
+  }
 
   console.log(`Finished generating docs for ${filteredFiles.length} files.`)
 }

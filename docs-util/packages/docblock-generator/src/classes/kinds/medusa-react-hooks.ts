@@ -9,7 +9,6 @@ import {
   DOCBLOCK_START,
   DOCBLOCK_DOUBLE_LINES,
 } from "../../constants.js"
-import nodeHasComments from "../../utils/node-has-comments.js"
 import {
   CUSTOM_NAMESPACE_TAG,
   getCustomNamespaceTag,
@@ -152,7 +151,7 @@ class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
       return (
         !parameterTypeStr?.startsWith("UseQueryOptionsWrapper") &&
         !parameterTypeStr?.startsWith("UseMutationOptions") &&
-        !nodeHasComments(parameter)
+        !this.nodeHasComments(parameter)
       )
     })
   }
