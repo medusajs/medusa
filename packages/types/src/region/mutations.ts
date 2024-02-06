@@ -19,6 +19,13 @@ export interface UpdateRegionDTO {
   tax_provider_id?: string
 }
 
+export interface UpdatableRegionFields {
+  currency_code?: string
+  currency?: RegionCurrencyDTO
+  name?: string
+  metadata?: Record<string, unknown>
+}
+
 export interface AddCountryToRegionDTO {
   region_id: string
   country_id: string

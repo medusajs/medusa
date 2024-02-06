@@ -1,3 +1,4 @@
+import { CreateRegionDTO } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import { defaultAdminRegionFields } from "./query-config"
@@ -29,4 +30,24 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     offset: req.listConfig.skip,
     limit: req.listConfig.take,
   })
+}
+
+export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+  const workflow = createRegionWorkflow(req.scope)
+  const input = [
+    {
+      ...(req.validatedBody as CreateRegionDTO),
+    },
+  ]
+
+  const { result, errors } = await workflow.run({
+    input: { input },
+    throwOnError: false,
+  })
+
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
+
+  res.status(200).json({ region: result[0] })
 }

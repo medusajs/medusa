@@ -6,6 +6,7 @@ export interface RegionDTO {
   currency_code: string
   currency: RegionCurrencyDTO
   countries: CountryDTO[]
+  metadata?: Record<string, any>
 }
 
 export interface CountryDTO {
@@ -19,8 +20,9 @@ export interface CountryDTO {
 
 export interface FilterableRegionProps
   extends BaseFilterable<FilterableRegionProps> {
-  id?: string[]
-  name?: string[]
+  id?: string[] | string
+  name?: string[] | string
+  currency_code?: string[] | string
 }
 
 export interface RegionCountryDTO {

@@ -2,6 +2,7 @@ import {
   Context,
   CreateRegionDTO,
   DAL,
+  FilterableRegionProps,
   InternalModuleDeclaration,
   IRegionModuleService,
   ModuleJoinerConfig,
@@ -9,11 +10,12 @@ import {
   RegionCountryDTO,
   RegionCurrencyDTO,
   RegionDTO,
-  UpdateRegionDTO,
+  UpdatableRegionFields,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
+  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
@@ -137,26 +139,36 @@ export default class RegionModuleService<
   }
 
   async update(
-    data: UpdateRegionDTO[],
+    selector: FilterableRegionProps,
+    data: UpdatableRegionFields,
     sharedContext?: Context
   ): Promise<RegionDTO[]>
   async update(
-    data: UpdateRegionDTO,
+    regionId: string,
+    data: UpdatableRegionFields,
     sharedContext?: Context
   ): Promise<RegionDTO>
   @InjectTransactionManager("baseRepository_")
   async update(
-    data: UpdateRegionDTO | UpdateRegionDTO[],
+    idOrSelector: string | FilterableRegionProps,
+    data: UpdatableRegionFields,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<RegionDTO | RegionDTO[]> {
-    const result = await this.regionService_.update(data, sharedContext)
-
-    return await this.baseRepository_.serialize<RegionDTO[]>(
-      Array.isArray(data) ? result : result[0],
-      {
-        populate: true,
+    let updateData: {
+      selector?: FilterableRegionProps
+      data?: UpdatableRegionFields
+    } = {}
+    if (isString(idOrSelector)) {
+      updateData = { selector: { id: idOrSelector }, data }
+    } else {
+      updateData = {
+        selector: idOrSelector,
+        data,
       }
-    )
+    }
+    const result = await this.regionService_.update(updateData, sharedContext)
+
+    return await this.baseRepository_.serialize<RegionDTO[] | RegionDTO>(result)
   }
 
   @InjectManager("baseRepository_")
