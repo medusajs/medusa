@@ -31,13 +31,15 @@ export default class Region {
   @Property({ columnType: "text" })
   name: string
 
+  @Property({ columnType: "text" })
+  currency_code: string
+
   @ManyToOne({
     entity: () => Currency,
-    onDelete: "cascade",
-    fieldName: "currency_code",
     index: "IDX_region_currency_code",
+    nullable: true,
   })
-  currency: Currency
+  currency?: Currency
 
   @OneToMany(() => Country, (country) => country.region)
   countries = new Collection<Country>(this)

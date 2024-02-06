@@ -125,7 +125,7 @@ export default class RegionModuleService<
         )
       }
 
-      reg.currency = currencyMap.get(lowerCasedCurrency)
+      reg.currency_code = lowerCasedCurrency
     }
 
     const result = await this.regionService_.create(data, sharedContext)

@@ -63,10 +63,7 @@ describe("Region Module Service", () => {
       expect.objectContaining({
         id: createdRegion.id,
         name: "Europe",
-        currency: expect.objectContaining({
-          code: "eur",
-          name: "Euro",
-        }),
+        currency_code: "eur",
         countries: [],
       })
     )
@@ -79,6 +76,7 @@ describe("Region Module Service", () => {
       expect.objectContaining({
         id: region.id,
         name: "Europe",
+        currency_code: "eur",
         currency: expect.objectContaining({
           code: "eur",
           name: "Euro",

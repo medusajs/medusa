@@ -27,10 +27,10 @@ CREATE TABLE IF NOT EXISTS "region_currency" (
 -- Adjust "region" table
 ALTER TABLE "region" DROP CONSTRAINT IF EXISTS "FK_3bdd5896ec93be2f1c62a3309a5";
 ALTER TABLE "region" DROP CONSTRAINT IF EXISTS "FK_91f88052197680f9790272aaf5b";
-ALTER TABLE "region" ADD CONSTRAINT "region_currency_code_foreign" FOREIGN KEY ("currency_code") REFERENCES "region_currency" ("code") ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE "region" ADD CONSTRAINT "region_currency_code_foreign" FOREIGN KEY ("currency_code") REFERENCES "region_currency" ("code") ON UPDATE CASCADE;
     
 CREATE INDEX IF NOT EXISTS "IDX_region_currency_code" ON "region" ("currency_code");
-CREATE INDEX IF NOT EXISTS "IDX_region_deleted_at" ON "region" ("deleted_at");
+CREATE INDEX IF NOT EXISTS "IDX_region_deleted_at" ON "region" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
 
 -- Create or update "region_country" table
 CREATE TABLE IF NOT EXISTS "region_country" (
@@ -47,7 +47,7 @@ CREATE INDEX IF NOT EXISTS "IDX_country_region_id" ON "region_country" ("region_
 
 -- Adjust foreign keys for "region_country"
 ALTER TABLE "region_country" DROP CONSTRAINT IF EXISTS "FK_91f88052197680f9790272aaf5b";
-ALTER TABLE "region_country" ADD CONSTRAINT "region_country_region_id_foreign" FOREIGN KEY ("region_id") REFERENCES "region" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE "region_country" ADD CONSTRAINT "region_country_region_id_foreign" FOREIGN KEY ("region_id") REFERENCES "region" ("id") ON UPDATE CASCADE;
 `)
   }
 }
