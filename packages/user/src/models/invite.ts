@@ -5,38 +5,40 @@ import {
   PrimaryKey,
   Property,
   Index,
-  OptionalProps,
   Filter,
+  OptionalProps,
 } from "@mikro-orm/core"
 
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 import { DAL } from "@medusajs/types"
 
 type OptionalFields =
-  | "first_name"
-  | "last_name"
   | "metadata"
-  | "avatar_url"
+  | "accepted"
   | DAL.SoftDeletableEntityDateColumns
-@Entity()
+@Entity({ tableName: "invite" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
-export default class User {
-  [OptionalProps]?: OptionalFields
+export default class Invite {
+  [OptionalProps]: OptionalFields
 
   @PrimaryKey({ columnType: "text" })
-  id!: string
+  id: string
 
-  @Property({ columnType: "text", nullable: true })
-  first_name: string
+  @Index({
+    name: "invite_user_identifier_index",
+    expression: `create unique index "invite_user_identifier_index" on "invite" ("user_identifier") where deleted_at is null;`,
+  })
+  @Property({ columnType: "text" })
+  user_identifier: string
 
-  @Property({ columnType: "text", nullable: true })
-  last_name: string
+  @Property({ columnType: "boolean" })
+  accepted: boolean = false
 
   @Property({ columnType: "text" })
-  email: string
+  token: string
 
-  @Property({ columnType: "text", nullable: true })
-  avatar_url: string
+  @Property({ columnType: "timestamptz" })
+  expires_at: Date
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
@@ -56,17 +58,17 @@ export default class User {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_user_deleted_at" })
+  @Index({ name: "IDX_invite_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at?: Date
 
-  @BeforeCreate()
-  onCreate() {
-    this.id = generateEntityId(this.id, "user")
-  }
-
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "user")
+    this.id = generateEntityId(this.id, "invite")
+  }
+
+  @BeforeCreate()
+  beforeCreate() {
+    this.id = generateEntityId(this.id, "invite")
   }
 }
