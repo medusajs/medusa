@@ -26,5 +26,6 @@ export * from "./search"
 export * from "./shared-context"
 export * from "./stock-location"
 export * from "./transaction-base"
+export * from "./user"
 export * from "./workflow"
 
