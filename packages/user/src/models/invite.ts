@@ -37,6 +37,7 @@ type OptionalFields =
   | "metadata"
   | "accepted"
   | DAL.SoftDeletableEntityDateColumns
+
 @Entity({ tableName: "invite" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Invite {

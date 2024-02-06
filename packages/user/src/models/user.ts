@@ -34,6 +34,7 @@ type OptionalFields =
   | "metadata"
   | "avatar_url"
   | DAL.SoftDeletableEntityDateColumns
+
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class User {
