@@ -1,10 +1,10 @@
 import { MedusaModule, Modules } from "@medusajs/modules-sdk"
+
 import { IAuthModuleService } from "@medusajs/types"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { initModules } from "medusa-test-utils"
-import { createAuthProviders } from "../../../__fixtures__/auth-provider"
 import { MikroOrmWrapper } from "../../../utils"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -41,34 +41,8 @@ describe("AuthModuleService - AuthProvider", () => {
     await shutdownFunc()
   })
 
-  describe("listAuthProviders", () => {
-    it("should list default AuthProviders registered by loaders", async () => {
-      const authProviders = await service.listAuthProviders()
-
-      expect(authProviders).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            provider: "emailpass",
-            name: "Email/Password Authentication",
-          }),
-          expect.objectContaining({
-            provider: "google",
-            name: "Google Authentication",
-          }),
-        ])
-      )
-    })
-  })
-
   describe("authenticate", () => {
     it("authenticate validates that a provider is registered in container", async () => {
-      await createAuthProviders(testManager, [
-        {
-          provider: "notRegistered",
-          name: "test",
-        },
-      ])
-
       const { success, error } = await service.authenticate(
         "notRegistered",
         {} as any
@@ -76,7 +50,7 @@ describe("AuthModuleService - AuthProvider", () => {
 
       expect(success).toBe(false)
       expect(error).toEqual(
-        "AuthenticationProvider with for provider: notRegistered wasn't registered in the module. Have you configured your options correctly?"
+        "AuthenticationProvider: notRegistered wasn't registered in the module. Have you configured your options correctly?"
       )
     })
 

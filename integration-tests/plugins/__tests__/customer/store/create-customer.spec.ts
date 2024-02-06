@@ -49,7 +49,7 @@ describe("POST /store/customers", () => {
       ModuleRegistrationName.AUTH
     )
     const { jwt_secret } = appContainer.resolve("configModule").projectConfig
-    const authUser = await authService.createAuthUser({
+    const authUser = await authService.create({
       entity_id: "store_user",
       provider: "emailpass",
       scope: "store",

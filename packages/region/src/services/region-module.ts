@@ -102,10 +102,7 @@ export default class RegionModuleService<
     const result = await this.create_(input, sharedContext)
 
     return await this.baseRepository_.serialize<RegionDTO[]>(
-      Array.isArray(data) ? result : result[0],
-      {
-        populate: true,
-      }
+      Array.isArray(data) ? result : result[0]
     )
   }
 
@@ -130,7 +127,7 @@ export default class RegionModuleService<
         )
       }
 
-      reg.currency = currencyMap.get(lowerCasedCurrency) as RegionCurrencyDTO
+      reg.currency_code = lowerCasedCurrency
     }
 
     const result = await this.regionService_.create(data, sharedContext)
@@ -219,7 +216,7 @@ export default class RegionModuleService<
   ): Promise<void> {
     const [currency] = await this.currencyService_.list(
       {},
-      { select: ["id"], take: 1 },
+      { select: ["code"], take: 1 },
       sharedContext
     )
 
