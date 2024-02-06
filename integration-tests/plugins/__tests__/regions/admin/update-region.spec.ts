@@ -14,18 +14,18 @@ const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("GET /admin/regions", () => {
+describe("POST /admin/regions/:id", () => {
   let dbConnection
   let appContainer
   let shutdownServer
-  let regionModuleService: IRegionModuleService
+  let service: IRegionModuleService
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
     shutdownServer = await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
-    regionModuleService = appContainer.resolve(ModuleRegistrationName.REGION)
+    service = appContainer.resolve(ModuleRegistrationName.REGION)
   })
 
   afterAll(async () => {
@@ -43,24 +43,28 @@ describe("GET /admin/regions", () => {
     await db.teardown()
   })
 
-  it("should get all regions and count", async () => {
-    await regionModuleService.create([
-      {
-        name: "Test",
-        currency_code: "usd",
-      },
-    ])
+  it("should update a region", async () => {
+    const region = await service.create({
+      currency_code: "usd",
+      name: "US",
+    })
 
     const api = useApi() as any
-    const response = await api.get(`/admin/regions`, adminHeaders)
+    const response = await api.post(
+      `/admin/regions/${region.id}`,
+      {
+        name: "United States",
+      },
+      adminHeaders
+    )
 
     expect(response.status).toEqual(200)
-    expect(response.data.count).toEqual(1)
-    expect(response.data.customers).toEqual([
+    expect(response.data.region).toEqual(
       expect.objectContaining({
         id: expect.any(String),
-        name: "Test",
-      }),
-    ])
+        currency_code: "usd",
+        name: "United States",
+      })
+    )
   })
 })

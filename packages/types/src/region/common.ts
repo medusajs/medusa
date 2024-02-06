@@ -7,6 +7,9 @@ export interface RegionDTO {
   currency: RegionCurrencyDTO
   countries: CountryDTO[]
   metadata?: Record<string, any>
+  deleted_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
 }
 
 export interface CountryDTO {
