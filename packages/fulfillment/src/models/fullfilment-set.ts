@@ -12,7 +12,7 @@ import {
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
 
-type FulfillmentSetOptionalProps = DAL.EntityDateColumns
+type FulfillmentSetOptionalProps = DAL.SoftDeletableEntityDateColumns
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
