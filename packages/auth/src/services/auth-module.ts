@@ -1,11 +1,9 @@
 import {
   AuthenticationInput,
   AuthenticationResponse,
-  AuthProviderDTO,
   AuthTypes,
   AuthUserDTO,
   Context,
-  CreateAuthProviderDTO,
   CreateAuthUserDTO,
   DAL,
   InternalModuleDeclaration,
@@ -14,7 +12,7 @@ import {
   UpdateAuthUserDTO,
 } from "@medusajs/types"
 
-import { AuthProvider, AuthUser } from "@models"
+import { AuthUser } from "@models"
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
@@ -26,43 +24,29 @@ import {
   MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
-import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   authUserService: ModulesSdkTypes.InternalModuleService<any>
-  authProviderService: ModulesSdkTypes.InternalModuleService<any>
 }
 
-const generateMethodForModels = [AuthProvider, AuthUser]
+const generateMethodForModels = [AuthUser]
 
-export default class AuthModuleService<
-    TAuthUser extends AuthUser = AuthUser,
-    TAuthProvider extends AuthProvider = AuthProvider
-  >
+export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
-    AuthTypes.AuthProviderDTO,
+    AuthTypes.AuthUserDTO,
     {
       AuthUser: { dto: AuthUserDTO }
-      AuthProvider: { dto: AuthProviderDTO }
     }
-  >(AuthProvider, generateMethodForModels, entityNameToLinkableKeysMap)
+  >(AuthUser, generateMethodForModels, entityNameToLinkableKeysMap)
   implements AuthTypes.IAuthModuleService
 {
-  __hooks = {
-    onApplicationStart: async () => await this.createProvidersOnLoad(),
-  }
   protected baseRepository_: DAL.RepositoryService
   protected authUserService_: ModulesSdkTypes.InternalModuleService<TAuthUser>
-  protected authProviderService_: ModulesSdkTypes.InternalModuleService<TAuthProvider>
 
   constructor(
-    {
-      authUserService,
-      authProviderService,
-      baseRepository,
-    }: InjectedDependencies,
+    { authUserService, baseRepository }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
@@ -70,94 +54,25 @@ export default class AuthModuleService<
 
     this.baseRepository_ = baseRepository
     this.authUserService_ = authUserService
-    this.authProviderService_ = authProviderService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
   }
 
-  async createAuthProvider(
-    data: CreateAuthProviderDTO[],
-    sharedContext?: Context
-  ): Promise<AuthProviderDTO[]>
-
-  async createAuthProvider(
-    data: CreateAuthProviderDTO,
-    sharedContext?: Context
-  ): Promise<AuthProviderDTO>
-
-  @InjectManager("baseRepository_")
-  async createAuthProvider(
-    data: CreateAuthProviderDTO | CreateAuthProviderDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthTypes.AuthProviderDTO | AuthTypes.AuthProviderDTO[]> {
-    const input = Array.isArray(data) ? data : [data]
-
-    const providers = await this.createAuthProviders_(input, sharedContext)
-
-    const serializedProviders = await this.baseRepository_.serialize<
-      AuthTypes.AuthProviderDTO[]
-    >(providers, {
-      populate: true,
-    })
-
-    return Array.isArray(data) ? serializedProviders : serializedProviders[0]
-  }
-
-  updateAuthProvider(
-    data: AuthTypes.UpdateAuthProviderDTO[],
-    sharedContext?: Context
-  ): Promise<AuthProviderDTO[]>
-
-  updateAuthProvider(
-    data: AuthTypes.UpdateAuthProviderDTO,
-    sharedContext?: Context
-  ): Promise<AuthProviderDTO>
-
-  @InjectManager("baseRepository_")
-  async updateAuthProvider(
-    data: AuthTypes.UpdateAuthProviderDTO[] | AuthTypes.UpdateAuthProviderDTO,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<AuthTypes.AuthProviderDTO | AuthTypes.AuthProviderDTO[]> {
-    const input = Array.isArray(data) ? data : [data]
-
-    const providers = await this.updateAuthProvider_(input, sharedContext)
-
-    const serializedProviders = await this.baseRepository_.serialize<
-      AuthTypes.AuthProviderDTO[]
-    >(providers, {
-      populate: true,
-    })
-
-    return Array.isArray(data) ? serializedProviders : serializedProviders[0]
-  }
-
-  async updateAuthProvider_(
-    data: AuthTypes.UpdateAuthProviderDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TAuthProvider[]> {
-    return await this.authProviderService_.update(data, sharedContext)
-  }
-
-  createAuthUser(
+  create(
     data: CreateAuthUserDTO[],
     sharedContext?: Context
   ): Promise<AuthUserDTO[]>
 
-  createAuthUser(
-    data: CreateAuthUserDTO,
-    sharedContext?: Context
-  ): Promise<AuthUserDTO>
+  create(data: CreateAuthUserDTO, sharedContext?: Context): Promise<AuthUserDTO>
 
   @InjectManager("baseRepository_")
-  async createAuthUser(
+  async create(
     data: CreateAuthUserDTO[] | CreateAuthUserDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]> {
-    const input = Array.isArray(data) ? data : [data]
-
-    const authUsers = await this.createAuthUsers_(input, sharedContext)
+    const authUsers = await this.authUserService_.create(data, sharedContext)
 
     const serializedUsers = await this.baseRepository_.serialize<
       AuthTypes.AuthUserDTO[]
@@ -165,28 +80,23 @@ export default class AuthModuleService<
       populate: true,
     })
 
-    return Array.isArray(data) ? serializedUsers : serializedUsers[0]
+    return serializedUsers
   }
 
-  updateAuthUser(
+  update(
     data: UpdateAuthUserDTO[],
     sharedContext?: Context
   ): Promise<AuthUserDTO[]>
 
-  updateAuthUser(
-    data: UpdateAuthUserDTO,
-    sharedContext?: Context
-  ): Promise<AuthUserDTO>
+  update(data: UpdateAuthUserDTO, sharedContext?: Context): Promise<AuthUserDTO>
 
   // TODO: should be pluralized, see convention about the methods naming or the abstract module service interface definition @engineering
   @InjectManager("baseRepository_")
-  async updateAuthUser(
+  async update(
     data: UpdateAuthUserDTO | UpdateAuthUserDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]> {
-    const input = Array.isArray(data) ? data : [data]
-
-    const updatedUsers = await this.updateAuthUsers_(input, sharedContext)
+    const updatedUsers = await this.authUserService_.update(data, sharedContext)
 
     const serializedUsers = await this.baseRepository_.serialize<
       AuthTypes.AuthUserDTO[]
@@ -195,14 +105,6 @@ export default class AuthModuleService<
     })
 
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async updateAuthUsers_(
-    data: UpdateAuthUserDTO[],
-    @MedusaContext() sharedContext: Context
-  ): Promise<TAuthUser[]> {
-    return await this.authUserService_.update(data, sharedContext)
   }
 
   protected getRegisteredAuthenticationProvider(
@@ -215,13 +117,11 @@ export default class AuthModuleService<
     } catch (error) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `AuthenticationProvider with for provider: ${provider} wasn't registered in the module. Have you configured your options correctly?`
+        `AuthenticationProvider: ${provider} wasn't registered in the module. Have you configured your options correctly?`
       )
     }
 
-    containerProvider.validateScope(authScope)
-
-    return containerProvider
+    return containerProvider.withScope(authScope)
   }
 
   async authenticate(
@@ -229,8 +129,6 @@ export default class AuthModuleService<
     authenticationData: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     try {
-      await this.retrieveAuthProvider(provider, {})
-
       const registeredProvider = this.getRegisteredAuthenticationProvider(
         provider,
         authenticationData
@@ -247,8 +145,6 @@ export default class AuthModuleService<
     authenticationData: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     try {
-      await this.retrieveAuthProvider(provider, {})
-
       const registeredProvider = this.getRegisteredAuthenticationProvider(
         provider,
         authenticationData
@@ -258,46 +154,5 @@ export default class AuthModuleService<
     } catch (error) {
       return { success: false, error: error.message }
     }
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async createAuthProviders_(
-    data: any[],
-    @MedusaContext() sharedContext: Context
-  ): Promise<TAuthProvider[]> {
-    return await this.authProviderService_.create(data, sharedContext)
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async createAuthUsers_(
-    data: CreateAuthUserDTO[],
-    @MedusaContext() sharedContext: Context
-  ): Promise<TAuthUser[]> {
-    return await this.authUserService_.create(data, sharedContext)
-  }
-
-  private async createProvidersOnLoad() {
-    const providersToLoad = this.__container__["auth_providers"]
-
-    const providers = await this.authProviderService_.list({
-      provider: providersToLoad.map((p) => p.provider),
-    })
-
-    const loadedProvidersMap = new Map(providers.map((p) => [p.provider, p]))
-
-    const providersToCreate: ServiceTypes.CreateAuthProviderDTO[] = []
-
-    for (const provider of providersToLoad) {
-      if (loadedProvidersMap.has(provider.provider)) {
-        continue
-      }
-
-      providersToCreate.push({
-        provider: provider.provider,
-        name: provider.displayName,
-      })
-    }
-
-    await this.authProviderService_.create(providersToCreate)
   }
 }
