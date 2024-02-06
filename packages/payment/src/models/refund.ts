@@ -26,7 +26,7 @@ export default class Refund {
     index: "IDX_refund_payment_id",
     fieldName: "payment_id",
   })
-  payment: Payment
+  payment!: Payment
 
   @Property({
     onCreate: () => new Date(),
