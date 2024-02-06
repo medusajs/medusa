@@ -16,15 +16,16 @@ import { OpenAPIV3 } from "openapi-types"
 import { parse, stringify } from "yaml"
 import {
   DOCBLOCK_END_LINE,
-  DOCBLOCK_LINE_ASTRIX,
+  // DOCBLOCK_LINE_ASTRIX,
   DOCBLOCK_NEW_LINE,
-  DOCBLOCK_START,
+  // DOCBLOCK_START,
 } from "../../constants.js"
 import { GeneratorEvent } from "../generator-event-manager.js"
 import { readFileSync, writeFileSync } from "fs"
-import getMonorepoRoot from "../../utils/get-monorepo-root.js"
 import OasExamplesGenerator from "../examples/oas.js"
 import pluralize from "pluralize"
+import getOasOutputBasePath from "../../utils/get-oas-output-base-path.js"
+import parseOas, { ExistingOas } from "../../utils/parse-oas.js"
 
 export const API_ROUTE_PARAM_REGEX = /\[(.+)\]/g
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
@@ -35,11 +36,6 @@ type SchemaDescriptionOptions = {
   nodeType?: ts.Type
   typeStr: string
   parentName?: string
-}
-
-type ExistingOas = {
-  oas: OpenApiOperation
-  oasPrefix: string
 }
 
 export type OasArea = "admin" | "store"
@@ -99,7 +95,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     super(options)
 
     this.oasExamplesGenerator = new OasExamplesGenerator()
-    this.baseOutputPath = join(getMonorepoRoot(), "docs-util", "oas-output")
+    this.baseOutputPath = getOasOutputBasePath()
 
     this.tags = new Map()
     this.initTags()
@@ -171,44 +167,14 @@ class OasKindGenerator extends FunctionKindGenerator {
    */
   getExistingOas(node: FunctionOrVariableNode): ExistingOas | undefined {
     // read the file holding the OAS, if it's available.
-    let fileContent = ts.sys.readFile(this.getAssociatedFileName(node))
+    const fileContent = ts.sys.readFile(this.getAssociatedFileName(node))
 
     if (!fileContent) {
       // the file doesn't exist, meaning there's no existing OAS.
       return
     }
 
-    fileContent = fileContent
-      .replace(`/*${DOCBLOCK_START}`, "")
-      .replaceAll(DOCBLOCK_LINE_ASTRIX, "")
-      .replace(/\*\/$/, "")
-      .replace(/\s\*\s*\n*/, "")
-
-    if (!fileContent.startsWith("@oas")) {
-      // the file is of an invalid format.
-      return
-    }
-
-    // extract oas prefix line
-    const splitNodeComments = fileContent.split("\n")
-    const oasPrefix = fileContent.split("\n")[0]
-    fileContent = splitNodeComments.slice(1).join("\n")
-
-    let oas: OpenApiOperation | undefined
-
-    try {
-      oas = parse(fileContent) as OpenApiOperation
-    } catch (e) {
-      // couldn't parse the OAS, so consider it
-      // not existent
-    }
-
-    return oas
-      ? {
-          oas,
-          oasPrefix,
-        }
-      : undefined
+    return parseOas(fileContent)
   }
 
   /**
@@ -1811,9 +1777,10 @@ class OasKindGenerator extends FunctionKindGenerator {
    * @returns The formatted OAS comment.
    */
   formatOas(oas: OpenApiOperation, oasPrefix: string) {
-    return `${DOCBLOCK_START}${oasPrefix}${DOCBLOCK_NEW_LINE}${stringify(
-      oas
-    ).replaceAll("\n", DOCBLOCK_NEW_LINE)}${DOCBLOCK_END_LINE}`
+    return `* ${oasPrefix}${DOCBLOCK_NEW_LINE}${stringify(oas).replaceAll(
+      "\n",
+      DOCBLOCK_NEW_LINE
+    )}${DOCBLOCK_END_LINE}`
   }
 
   /**

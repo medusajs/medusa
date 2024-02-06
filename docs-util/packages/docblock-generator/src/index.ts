@@ -5,6 +5,7 @@ import run from "./commands/run.js"
 import runGitChanges from "./commands/run-git-changes.js"
 import runGitCommit from "./commands/run-git-commit.js"
 import runRelease from "./commands/run-release.js"
+import cleanOas from "./commands/clean-oas.js"
 
 const program = new Command()
 
@@ -55,5 +56,12 @@ program
   .addOption(typeOption)
   .addOption(generateExamplesOption)
   .action(runRelease)
+
+program
+  .command("clean:oas")
+  .description(
+    "Check generated OAS under the `oas-output/operations` directory and remove any OAS that no longer exists."
+  )
+  .action(cleanOas)
 
 program.parse()

@@ -6,6 +6,7 @@ A CLI tool that can be used to generate TSDoc docblocks and OAS for TypeScript/J
 
 1. Run the `yarn` command to install dependencies.
 2. Copy the `.env.sample` to `.env` and change the `MONOREPO_ROOT_PATH` variable to the absolute path to the monorepo root.
+3. Run the `yarn build` command to build source files.
 
 ---
 
@@ -43,6 +44,14 @@ Run the following command to run the tool on commits since the latest release.
 
 ```bash
 yarn start run:release
+```
+
+### Clean OAS
+
+Run the following command to clean up the OAS output files and remove any routes that no longer exist:
+
+```bash
+yarn start clean:oas
 ```
 
 ---
