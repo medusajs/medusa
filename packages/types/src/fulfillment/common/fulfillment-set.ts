@@ -1,3 +1,5 @@
+import { ServiceZoneDTO } from "./service-zone"
+
 export interface FulfillmentSetDTO {
   id: string
   name: string

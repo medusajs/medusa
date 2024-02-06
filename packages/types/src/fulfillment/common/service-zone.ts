@@ -1,5 +1,6 @@
 import { FulfillmentSetDTO } from "./fulfillment-set"
 import { GeoZoneDTO } from "./geo-zone"
+import { ShippingOptionDTO } from "./shipping-option"
 
 export interface ServiceZoneDTO {
   id: string
