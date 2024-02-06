@@ -2,15 +2,18 @@ import { DALUtils, generateEntityId } from "@medusajs/utils"
 
 import {
   BeforeCreate,
+  Collection,
   Entity,
   Filter,
   Index,
+  OneToMany,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
+import ShippingOption from "./shipping-option"
 
 type ServiceProviderOptionalProps = DAL.EntityDateColumns
 
@@ -22,7 +25,11 @@ export default class ServiceProvider {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  shipping_options // TODO: configure relationship
+  @OneToMany(
+    () => ShippingOption,
+    (shippingOption) => shippingOption.service_provider
+  )
+  shipping_options = new Collection<ShippingOption>(this)
 
   @Property({
     onCreate: () => new Date(),

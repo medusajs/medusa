@@ -2,15 +2,18 @@ import { DALUtils, generateEntityId } from "@medusajs/utils"
 
 import {
   BeforeCreate,
+  Collection,
   Entity,
   Filter,
   Index,
+  ManyToMany,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
+import ServiceZone from "./service-zone"
 
 type FulfillmentSetOptionalProps = DAL.SoftDeletableEntityDateColumns
 
@@ -27,6 +30,16 @@ export default class FulfillmentSet {
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
+
+  @ManyToMany(
+    () => ServiceZone,
+    (serviceZone) => serviceZone.fulfillment_sets,
+    {
+      index: "IDX_fulfillment_set_service_zone_id",
+      pivotTable: "fulfillment_set_service_zone",
+    }
+  )
+  service_zones = new Collection<ServiceZone>(this)
 
   @Property({
     onCreate: () => new Date(),

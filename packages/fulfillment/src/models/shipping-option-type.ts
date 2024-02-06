@@ -5,12 +5,14 @@ import {
   Entity,
   Filter,
   Index,
+  OneToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
+import ShippingOption from "./shipping-option"
 
 type ShippingOptionTypeOptionalProps = DAL.EntityDateColumns
 
@@ -28,7 +30,8 @@ export default class ShippingOptionType {
   @Property({ columnType: "text", nullable: true })
   description: string | null = null
 
-  shipping_options // TODO: configure relationship
+  @OneToOne(() => ShippingOption, (so) => so.shipping_option_type)
+  shipping_option: ShippingOption
 
   @Property({
     onCreate: () => new Date(),

@@ -6,16 +6,25 @@ import {
 
 import {
   BeforeCreate,
+  Collection,
   Entity,
   Enum,
   Filter,
   Index,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
+import ServiceZone from "./service-zone"
+import ShippingProfile from "./shipping-profile"
+import ServiceProvider from "./service-provider"
+import ShippingOptionType from "./shipping-option-type"
+import ShippingOptionRule from "./shipping-option-rule"
 
 type ShippingOptionOptionalProps = DAL.EntityDateColumns
 
@@ -27,8 +36,6 @@ export default class ShippingOption {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  rules // TODO configure relationship
-
   @Property({ columnType: "text" })
   name: string
 
@@ -38,18 +45,40 @@ export default class ShippingOption {
   })
   price_type: ShippingOptionPriceType
 
-  provider_id // TODO configure relationship
+  @Property({ columnType: "text" })
+  service_zone_id: string
 
-  @Property({ columnType: "jsonb", nullable: true })
-  data: Record<string, unknown> | null = null
+  @Property({ columnType: "text" })
+  shipping_profile_id: string
+
+  @Property({ columnType: "text" })
+  service_provider_id: string
 
   @Property({ columnType: "text", nullable: true })
   shipping_option_type_id: string | null = null
 
-  shipping_option_type // TODO configure relationship
+  @Property({ columnType: "jsonb", nullable: true })
+  data: Record<string, unknown> | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
+
+  @ManyToOne()
+  service_zone: ServiceZone
+
+  @ManyToOne()
+  shipping_profile: ShippingProfile
+
+  @ManyToOne()
+  service_provider: ServiceProvider
+
+  @OneToOne(() => ShippingOptionType, (so) => so.shipping_option, {
+    owner: true,
+  })
+  shipping_option_type: ShippingOptionType
+
+  @OneToMany(() => ShippingOptionRule, (sor) => sor.shipping_option)
+  rules = new Collection<ShippingOptionRule>(this)
 
   @Property({
     onCreate: () => new Date(),

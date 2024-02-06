@@ -2,15 +2,21 @@ import { DALUtils, generateEntityId } from "@medusajs/utils"
 
 import {
   BeforeCreate,
+  Collection,
   Entity,
   Filter,
   Index,
+  ManyToMany,
+  OneToMany,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
+import FulfillmentSet from "./fullfilment-set"
+import GeoZone from "./geo-zone"
+import ShippingOption from "./shipping-option"
 
 type ServiceZoneOptionalProps = DAL.EntityDateColumns
 
@@ -27,6 +33,28 @@ export default class ServiceZone {
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
+
+  @ManyToMany(
+    () => FulfillmentSet,
+    (fulfillmentSet) => fulfillmentSet.service_zones,
+    {
+      index: "IDX_service_zone_fulfillment_set_id",
+      pivotTable: "fulfillment_set_service_zone",
+    }
+  )
+  fulfillment_sets = new Collection<FulfillmentSet>(this)
+
+  @ManyToMany(() => GeoZone, (geoZone) => geoZone.service_zones, {
+    index: "IDX_service_zone_geo_zone_id",
+    pivotTable: "service_zone_geo_zone",
+  })
+  geo_zones = new Collection<GeoZone>(this)
+
+  @OneToMany(
+    () => ShippingOption,
+    (shippingOption) => shippingOption.service_zone
+  )
+  shipping_options = new Collection<ShippingOption>(this)
 
   @Property({
     onCreate: () => new Date(),

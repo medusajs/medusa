@@ -2,16 +2,19 @@ import { DALUtils, generateEntityId, GeoZoneType } from "@medusajs/utils"
 
 import {
   BeforeCreate,
+  Collection,
   Entity,
   Enum,
   Filter,
   Index,
+  ManyToMany,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
+import ServiceZone from "./service-zone"
 
 type GeoZoneOptionalProps = DAL.EntityDateColumns
 
@@ -58,6 +61,12 @@ export default class GeoZone {
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
+
+  @ManyToMany(() => ServiceZone, (serviceZone) => serviceZone.geo_zones, {
+    index: "IDX_geo_zone_service_zone_id",
+    pivotTable: "service_zone_geo_zone",
+  })
+  service_zones = new Collection<ServiceZone>(this)
 
   @Property({
     onCreate: () => new Date(),
