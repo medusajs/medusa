@@ -128,7 +128,10 @@ export const loadMedusaApp = async (
     return medusaApp
   }
 
-  container.register("remoteLink", asValue(medusaApp.link))
+  container.register(
+    ContainerRegistrationKeys.REMOTE_LINK,
+    asValue(medusaApp.link)
+  )
   container.register(
     ContainerRegistrationKeys.REMOTE_QUERY,
     asValue(medusaApp.query)
@@ -143,7 +146,7 @@ export const loadMedusaApp = async (
 
   // Register all unresolved modules as undefined to be present in the container with undefined value by defaul
   // but still resolvable
-  for (const [, moduleDefinition] of Object.entries(ModulesDefinition)) {
+  for (const moduleDefinition of Object.values(ModulesDefinition)) {
     if (!container.hasRegistration(moduleDefinition.registrationName)) {
       container.register(moduleDefinition.registrationName, asValue(undefined))
     }

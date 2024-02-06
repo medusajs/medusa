@@ -4,8 +4,8 @@ import {
   FindConfig,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
+  ModulesSdkTypes,
 } from "@medusajs/types"
-import {} from "@medusajs/types/src"
 import {
   InjectManager,
   InjectSharedContext,
@@ -16,15 +16,12 @@ import type {
   UnwrapWorkflowInputDataType,
   WorkflowOrchestratorTypes,
 } from "@medusajs/workflows-sdk"
-import {
-  WorkflowExecutionService,
-  WorkflowOrchestratorService,
-} from "@services"
-import { joinerConfig } from "../joiner-config"
+import {WorkflowOrchestratorService} from "@services"
+import {joinerConfig} from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  workflowExecutionService: WorkflowExecutionService
+  workflowExecutionService: ModulesSdkTypes.InternalModuleService<any>
   workflowOrchestratorService: WorkflowOrchestratorService
 }
 
@@ -32,7 +29,7 @@ export class WorkflowsModuleService
   implements WorkflowOrchestratorTypes.IWorkflowsModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected workflowExecutionService_: WorkflowExecutionService
+  protected workflowExecutionService_: ModulesSdkTypes.InternalModuleService<any>
   protected workflowOrchestratorService_: WorkflowOrchestratorService
 
   constructor(
@@ -64,7 +61,7 @@ export class WorkflowsModuleService
       sharedContext
     )
 
-    return this.baseRepository_.serialize<
+    return await this.baseRepository_.serialize<
       WorkflowOrchestratorTypes.WorkflowExecutionDTO[]
     >(wfExecutions, {
       populate: true,

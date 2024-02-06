@@ -94,7 +94,7 @@ function getInternalModuleResolution(
 
   // If user added a module and it's overridable, we resolve that instead
   const isString = typeof moduleConfig === "string"
-  if (definition.canOverride && (isString || (isObj && moduleConfig.resolve))) {
+  if (isString || (isObj && moduleConfig.resolve)) {
     resolutionPath = !moduleExports
       ? resolveCwd(isString ? moduleConfig : (moduleConfig.resolve as string))
       : // Explicitly assign an empty string, later, we will check if the value is exactly false.

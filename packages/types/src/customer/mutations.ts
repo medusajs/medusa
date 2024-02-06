@@ -48,12 +48,21 @@ export interface CreateCustomerDTO {
 
 export interface UpdateCustomerDTO {
   id: string
-  company_name?: string
-  first_name?: string
-  last_name?: string
-  email?: string
-  phone?: string
-  metadata?: Record<string, unknown>
+  company_name?: string | null
+  first_name?: string | null
+  last_name?: string | null
+  email?: string | null
+  phone?: string | null
+  metadata?: Record<string, unknown> | null
+}
+
+export interface CustomerUpdatableFields {
+  company_name?: string | null
+  first_name?: string | null
+  last_name?: string | null
+  email?: string | null
+  phone?: string | null
+  metadata?: Record<string, unknown> | null
 }
 
 export interface CreateCustomerGroupDTO {
@@ -62,7 +71,7 @@ export interface CreateCustomerGroupDTO {
   created_by?: string
 }
 
-export interface CustomerGroupUpdatableFileds {
+export interface CustomerGroupUpdatableFields {
   name?: string
   metadata?: Record<string, unknown> | null
 }

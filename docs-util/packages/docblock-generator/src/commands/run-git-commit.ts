@@ -1,26 +1,15 @@
-import { Octokit } from "@octokit/core"
 import filterFiles from "../utils/filter-files.js"
 import path from "path"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
 import DocblockGenerator from "../classes/docblock-generator.js"
+import { GitManager } from "../classes/git-manager.js"
 
 export default async function (commitSha: string) {
   const monorepoPath = getMonorepoRoot()
   // retrieve the files changed in the commit
-  const octokit = new Octokit({
-    auth: process.env.GH_TOKEN,
-  })
+  const gitManager = new GitManager()
 
-  const {
-    data: { files },
-  } = await octokit.request("GET /repos/{owner}/{repo}/commits/{ref}", {
-    owner: "medusajs",
-    repo: "medusa",
-    ref: commitSha,
-    headers: {
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
-  })
+  const files = await gitManager.getCommitFiles(commitSha)
 
   // filter changed files
   let filteredFiles = filterFiles(files?.map((file) => file.filename) || [])

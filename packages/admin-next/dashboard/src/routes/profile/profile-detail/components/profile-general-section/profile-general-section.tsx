@@ -43,6 +43,14 @@ export const ProfileGeneralSection = ({ user }: ProfileGeneralSectionProps) => {
       </div>
       <div className="grid grid-cols-2 px-6 py-4 items-center">
         <Text size="small" leading="compact" weight="plus">
+          {t("fields.role")}
+        </Text>
+        <Text size="small" leading="compact">
+          {t(`users.roles.${user.role}`)}
+        </Text>
+      </div>
+      <div className="grid grid-cols-2 px-6 py-4 items-center">
+        <Text size="small" leading="compact" weight="plus">
           {t("profile.language")}
         </Text>
         <Text size="small" leading="compact">

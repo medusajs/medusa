@@ -1,10 +1,5 @@
 export const defaultAdminCustomerRelations = []
-export const allowedAdminCustomerRelations = [
-  "groups",
-  "default_shipping_address",
-  "default_billing_address",
-  "addresses",
-]
+export const allowedAdminCustomerRelations = ["groups", "addresses"]
 export const defaultAdminCustomerFields = [
   "id",
   "company_name",
@@ -25,5 +20,37 @@ export const retrieveTransformQueryConfig = {
 
 export const listTransformQueryConfig = {
   ...retrieveTransformQueryConfig,
+  isList: true,
+}
+
+export const defaultAdminCustomerAddressRelations = []
+export const allowedAdminCustomerAddressRelations = ["customer"]
+export const defaultAdminCustomerAddressFields = [
+  "id",
+  "company",
+  "customer_id",
+  "first_name",
+  "last_name",
+  "address_1",
+  "address_2",
+  "city",
+  "province",
+  "postal_code",
+  "country_code",
+  "phone",
+  "metadata",
+  "created_at",
+  "updated_at",
+]
+
+export const retrieveAddressTransformQueryConfig = {
+  defaultFields: defaultAdminCustomerAddressFields,
+  defaultRelations: defaultAdminCustomerAddressRelations,
+  allowedRelations: allowedAdminCustomerAddressRelations,
+  isList: false,
+}
+
+export const listAddressesTransformQueryConfig = {
+  ...retrieveAddressTransformQueryConfig,
   isList: true,
 }

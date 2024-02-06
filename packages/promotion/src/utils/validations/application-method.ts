@@ -37,10 +37,22 @@ export function validateApplicationMethodAttributes(
   const applyToQuantity =
     data.apply_to_quantity || applicationMethod?.apply_to_quantity
   const targetType = data.target_type || applicationMethod?.target_type
+  const type = data.type || applicationMethod?.type
   const applicationMethodType = data.type || applicationMethod?.type
+  const value = parseFloat(data.value! || applicationMethod?.value!)
   const maxQuantity = data.max_quantity || applicationMethod.max_quantity
   const allocation = data.allocation || applicationMethod.allocation
   const allTargetTypes: string[] = Object.values(ApplicationMethodTargetType)
+
+  if (
+    type === ApplicationMethodType.PERCENTAGE &&
+    (value <= 0 || value > 100)
+  ) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Application Method value should be a percentage number between 0 and 100`
+    )
+  }
 
   if (promotion?.type === PromotionType.BUYGET) {
     if (!isPresent(applyToQuantity)) {

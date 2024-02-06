@@ -13,6 +13,7 @@ import {
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
   RemoteJoinerQuery,
+  RemoteQueryFunction,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -41,6 +42,7 @@ export type RunMigrationFn = (
 
 export type MedusaModuleConfig = {
   [key: string | Modules]:
+    | string
     | boolean
     | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
 }
@@ -74,7 +76,7 @@ async function loadModules(modulesConfig, sharedContainer) {
       let path: string
       let moduleExports: ModuleExports | undefined = undefined
       let declaration: any = {}
-      let definition: ModuleDefinition | undefined = undefined
+      let definition: Partial<ModuleDefinition> | undefined = undefined
 
       if (isObject(mod)) {
         const mod_ = mod as unknown as InternalModuleDeclaration
@@ -102,7 +104,7 @@ async function loadModules(modulesConfig, sharedContainer) {
         defaultPath: path,
         declaration,
         sharedContainer,
-        moduleDefinition: definition,
+        moduleDefinition: definition as ModuleDefinition,
         moduleExports,
       })) as LoadedModule
 
@@ -182,10 +184,7 @@ function registerCustomJoinerConfigs(servicesConfig: ModuleJoinerConfig[]) {
 export type MedusaAppOutput = {
   modules: Record<string, LoadedModule | LoadedModule[]>
   link: RemoteLink | undefined
-  query: (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any>
+  query: RemoteQueryFunction
   entitiesMap?: Record<string, any>
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
@@ -201,6 +200,7 @@ export async function MedusaApp({
   linkModules,
   remoteFetchData,
   injectedDependencies,
+  onApplicationStartCb,
 }: {
   sharedContainer?: MedusaContainer
   sharedResourcesConfig?: SharedResources
@@ -212,6 +212,7 @@ export async function MedusaApp({
   linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
   remoteFetchData?: RemoteFetchDataCallback
   injectedDependencies?: any
+  onApplicationStartCb?: () => void
 } = {}): Promise<{
   modules: Record<string, LoadedModule | LoadedModule[]>
   link: RemoteLink | undefined
@@ -355,6 +356,6 @@ export async function MedusaApp({
       runMigrations,
     }
   } finally {
-    await MedusaModule.onApplicationStart()
+    MedusaModule.onApplicationStart(onApplicationStartCb)
   }
 }

@@ -1,6 +1,7 @@
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Cascade,
   Check,
   Entity,
   ManyToOne,
@@ -15,12 +16,12 @@ import LineItem from "./line-item"
   expression: (columns) => `${columns.amount} >= 0`,
 })
 export default class LineItemAdjustment extends AdjustmentLine {
-  @ManyToOne(() => LineItem, {
-    onDelete: "cascade",
-    nullable: true,
+  @ManyToOne({
+    entity: () => LineItem,
     index: "IDX_adjustment_item_id",
+    cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
-  item?: LineItem | null
+  item: LineItem
 
   @Property({ columnType: "text" })
   item_id: string

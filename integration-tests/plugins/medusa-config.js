@@ -42,6 +42,11 @@ module.exports = {
     },
   },
   modules: {
+    [Modules.AUTH]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/auth",
+    },
     [Modules.STOCK_LOCATION]: {
       scope: "internal",
       resources: "shared",

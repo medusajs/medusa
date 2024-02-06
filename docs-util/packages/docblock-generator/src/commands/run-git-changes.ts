@@ -1,22 +1,13 @@
 import path from "path"
 import DocblockGenerator from "../classes/docblock-generator.js"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
-import promiseExec from "../utils/promise-exec.js"
-import filterFiles from "../utils/filter-files.js"
+import { GitManager } from "../classes/git-manager.js"
 
 export default async function runGitChanges() {
   const monorepoPath = getMonorepoRoot()
   // retrieve the changed files under `packages` in the monorepo root.
-  const childProcess = await promiseExec(
-    `git diff --name-only -- "packages/**/**.ts" "packages/**/*.js" "packages/**/*.tsx" "packages/**/*.jsx"`,
-    {
-      cwd: monorepoPath,
-    }
-  )
-
-  let files = filterFiles(
-    childProcess.stdout.toString().split("\n").filter(Boolean)
-  )
+  const gitManager = new GitManager()
+  let files = await gitManager.getDiffFiles()
 
   if (!files.length) {
     console.log(`No file changes detected.`)

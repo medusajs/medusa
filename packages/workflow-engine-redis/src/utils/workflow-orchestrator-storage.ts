@@ -5,8 +5,8 @@ import {
   TransactionStep,
 } from "@medusajs/orchestration"
 import { TransactionState } from "@medusajs/utils"
+import { ModulesSdkTypes } from "@medusajs/types"
 import {
-  WorkflowExecutionService,
   WorkflowOrchestratorService,
 } from "@services"
 import { Queue, Worker } from "bullmq"
@@ -21,7 +21,7 @@ enum JobType {
 // eslint-disable-next-line max-len
 export class RedisDistributedTransactionStorage extends DistributedTransactionStorage {
   private static TTL_AFTER_COMPLETED = 60 * 15 // 15 minutes
-  private workflowExecutionService_: WorkflowExecutionService
+  private workflowExecutionService_:   ModulesSdkTypes.InternalModuleService<any>
   private workflowOrchestratorService_: WorkflowOrchestratorService
 
   private redisClient: Redis
@@ -34,7 +34,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     redisWorkerConnection,
     redisQueueName,
   }: {
-    workflowExecutionService: WorkflowExecutionService
+    workflowExecutionService:   ModulesSdkTypes.InternalModuleService<any>,
     redisConnection: Redis
     redisWorkerConnection: Redis
     redisQueueName: string

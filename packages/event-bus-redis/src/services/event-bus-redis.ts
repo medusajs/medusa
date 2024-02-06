@@ -1,6 +1,6 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-import { EmitData, Logger } from "@medusajs/types"
-import { AbstractEventBusModuleService } from "@medusajs/utils"
+import { EmitData, Logger, Message } from "@medusajs/types"
+import { AbstractEventBusModuleService, isString } from "@medusajs/utils"
 import { BulkJobOptions, JobsOptions, Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
 import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
@@ -67,7 +67,9 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
    */
   async emit<T>(data: EmitData<T>[]): Promise<void>
 
-  async emit<T, TInput extends string | EmitData<T>[] = string>(
+  async emit<T>(data: Message<T>[]): Promise<void>
+
+  async emit<T, TInput extends string | EmitData<T>[] | Message<T>[] = string>(
     eventNameOrData: TInput,
     data?: T,
     options: BulkJobOptions | JobsOptions = {}
@@ -84,10 +86,17 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       ...globalJobOptions,
     } as EmitOptions
 
+    const dataBody = isString(eventNameOrData)
+      ? data ?? (data as Message<T>).body
+      : undefined
+
     const events = isBulkEmit
       ? eventNameOrData.map((event) => ({
           name: event.eventName,
-          data: { eventName: event.eventName, data: event.data },
+          data: {
+            eventName: event.eventName,
+            data: (event as EmitData).data ?? (event as Message<T>).body,
+          },
           opts: {
             ...opts,
             // local options
@@ -97,7 +106,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       : [
           {
             name: eventNameOrData as string,
-            data: { eventName: eventNameOrData, data },
+            data: { eventName: eventNameOrData, data: dataBody },
             opts: {
               ...opts,
               // local options

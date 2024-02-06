@@ -1,4 +1,7 @@
 import { Octokit } from "octokit"
+import promiseExec from "../utils/promise-exec.js"
+import getMonorepoRoot from "../utils/get-monorepo-root.js"
+import filterFiles from "../utils/filter-files.js"
 
 type Options = {
   owner?: string
@@ -52,24 +55,41 @@ export class GitManager {
 
     await Promise.all(
       commits.map(async (commit) => {
-        const {
-          data: { files: commitFiles },
-        } = await this.octokit.request(
-          "GET /repos/{owner}/{repo}/commits/{ref}",
-          {
-            owner: this.owner,
-            repo: this.repo,
-            ref: commit.sha,
-            headers: {
-              "X-GitHub-Api-Version": this.gitApiVersion,
-            },
-          }
-        )
+        const commitFiles = await this.getCommitFiles(commit.sha)
 
         commitFiles?.forEach((commitFile) => files.add(commitFile.filename))
       })
     )
 
     return [...files]
+  }
+
+  async getDiffFiles(): Promise<string[]> {
+    const childProcess = await promiseExec(
+      `git diff --name-only -- "packages/**/**.ts" "packages/**/*.js" "packages/**/*.tsx" "packages/**/*.jsx"`,
+      {
+        cwd: getMonorepoRoot(),
+      }
+    )
+
+    return filterFiles(
+      childProcess.stdout.toString().split("\n").filter(Boolean)
+    )
+  }
+
+  async getCommitFiles(commitSha: string) {
+    const {
+      data: { files },
+    } = await this.octokit.request("GET /repos/{owner}/{repo}/commits/{ref}", {
+      owner: "medusajs",
+      repo: "medusa",
+      ref: commitSha,
+      headers: {
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+      per_page: 3000,
+    })
+
+    return files
   }
 }

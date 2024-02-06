@@ -285,7 +285,9 @@ npx medusa develop
 This document assumes you already followed along with the [Prepare Environment documentation](https://docs.medusajs.com/development/backend/prepare-environment) and have a Medusa backend installed.
       
 ---`,
-      reflectionTitle: "Configure Medusa Backend",
+      reflectionTitle: {
+        fullReplacement: "Configure Medusa Backend",
+      },
       expandMembers: true,
       expandProperties: true,
       // parameterStyle: "list",
