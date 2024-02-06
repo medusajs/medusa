@@ -1629,6 +1629,17 @@ class CartService extends TransactionBaseService {
             relations: ["rule", "rule.conditions", "regions"],
           })
 
+        for (const discount of discounts) {
+          try {
+            await this.discountService_
+              .withTransaction(transactionManager)
+              .validateDiscountForCartOrThrow(cart, discount)
+          } catch (err) {
+            await this.removeDiscount(cart.id, discount.code)
+            throw new MedusaError(err.type, err.message)
+          }
+        }
+
         const rules: Map<string, DiscountRule> = new Map()
         const discountsMap = new Map(
           discounts.map((d) => {
@@ -1637,20 +1648,11 @@ class CartService extends TransactionBaseService {
           })
         )
 
-        await promiseAll(
-          cart.discounts.map(async (discount) => {
-            try {
-              await this.discountService_
-                .withTransaction(transactionManager)
-                .validateDiscountForCartOrThrow(cart, discount)
-            } catch (err) {
-              await this.removeDiscount(cart.id, discount.code)
-            }
-            if (discountsMap.has(discount.id)) {
-              discountsMap.delete(discount.id)
-            }
-          })
-        )
+        cart.discounts.forEach((discount) => {
+          if (discountsMap.has(discount.id)) {
+            discountsMap.delete(discount.id)
+          }
+        })
 
         const toParse = [...cart.discounts, ...discountsMap.values()]
 
