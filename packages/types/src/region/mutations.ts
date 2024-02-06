@@ -1,9 +1,6 @@
-import { RegionCurrencyDTO } from "./common"
-
 export interface CreateRegionDTO {
   name: string
   currency_code: string
-  currency?: RegionCurrencyDTO
   tax_code?: string
   tax_rate?: number
   tax_provider_id?: string
@@ -12,7 +9,6 @@ export interface CreateRegionDTO {
 export interface UpdateRegionDTO {
   id: string
   currency_code?: string
-  currency?: RegionCurrencyDTO
   name?: string
   tax_code?: string
   tax_rate?: number
@@ -21,7 +17,6 @@ export interface UpdateRegionDTO {
 
 export interface UpdatableRegionFields {
   currency_code?: string
-  currency?: RegionCurrencyDTO
   name?: string
   metadata?: Record<string, unknown>
 }

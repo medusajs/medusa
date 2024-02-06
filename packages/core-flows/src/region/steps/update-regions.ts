@@ -51,7 +51,6 @@ export const updateRegionsStep = createStep(
           await service.update(region.id, {
             name: region.name,
             currency_code: region.currency_code,
-            currency: region.currency,
             metadata: region.metadata,
           })
       )
