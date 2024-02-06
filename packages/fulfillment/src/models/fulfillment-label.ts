@@ -39,7 +39,7 @@ export default class FulfillmentLabel {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_fulfillment_item_deleted_at" })
+  @Index({ name: "IDX_fulfillment_label_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
