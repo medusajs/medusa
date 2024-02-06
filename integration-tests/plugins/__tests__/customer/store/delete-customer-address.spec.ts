@@ -10,6 +10,8 @@ import { useApi } from "../../../../environment-helpers/use-api"
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
+jest.setTimeout(50000)
+
 describe("DELETE /store/customers/me/addresses/:address_id", () => {
   let dbConnection
   let appContainer
@@ -26,14 +28,6 @@ describe("DELETE /store/customers/me/addresses/:address_id", () => {
     )
   })
 
-  // TODO: delete with removal of authProvider
-  beforeEach(async () => {
-    const onStart =
-      appContainer.resolve(ModuleRegistrationName.AUTH).__hooks
-        .onApplicationStart ?? (() => Promise.resolve())
-    await onStart()
-  })
-
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
@@ -46,12 +40,7 @@ describe("DELETE /store/customers/me/addresses/:address_id", () => {
   })
 
   it("should delete a customer address", async () => {
-    const { jwt_secret } = appContainer.resolve("configModule").projectConfig
-    const { customer, jwt } = await createAuthenticatedCustomer(
-      customerModuleService,
-      appContainer.resolve(ModuleRegistrationName.AUTH),
-      jwt_secret
-    )
+    const { customer, jwt } = await createAuthenticatedCustomer(appContainer)
 
     const address = await customerModuleService.addAddresses({
       customer_id: customer.id,
@@ -76,12 +65,7 @@ describe("DELETE /store/customers/me/addresses/:address_id", () => {
   })
 
   it("should fail to delete another customer's address", async () => {
-    const { jwt_secret } = appContainer.resolve("configModule").projectConfig
-    const { jwt } = await createAuthenticatedCustomer(
-      customerModuleService,
-      appContainer.resolve(ModuleRegistrationName.AUTH),
-      jwt_secret
-    )
+    const { jwt } = await createAuthenticatedCustomer(appContainer)
 
     const otherCustomer = await customerModuleService.create({
       first_name: "Jane",
