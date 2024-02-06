@@ -38,7 +38,7 @@ export default class EventBusService
 
   constructor(
     { stagedJobService, logger }: InjectedDependencies,
-    config,
+    config: ConfigModule,
     isSingleton = true
   ) {
     // eslint-disable-next-line prefer-rest-params
@@ -201,7 +201,7 @@ export default class EventBusService
     const listConfig = {
       relations: [],
       skip: 0,
-      take: 1000,
+      take: this.config_.projectConfig.jobs_batch_size ?? 1000,
     }
 
     while (this.shouldEnqueuerRun) {
