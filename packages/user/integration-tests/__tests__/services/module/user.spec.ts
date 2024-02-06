@@ -8,6 +8,17 @@ import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
+const defaultUserData = [
+  {
+    id: "1",
+    email: "user_1@test.com",
+  },
+  {
+    id: "2",
+    email: "user_2@test.com",
+  },
+]
+
 describe("UserModuleService - User", () => {
   let service: IUserModuleService
   let testManager: SqlEntityManager
@@ -26,8 +37,6 @@ describe("UserModuleService - User", () => {
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     testManager = MikroOrmWrapper.forkManager()
-
-    await createUsers(testManager)
   })
 
   afterEach(async () => {
@@ -38,8 +47,10 @@ describe("UserModuleService - User", () => {
     await shutdownFunc()
   })
 
-  describe("listUsers", () => {
+  describe("list", () => {
     it("should list users", async () => {
+      await createUsers(testManager, defaultUserData)
+
       const users = await service.list()
       const serialized = JSON.parse(JSON.stringify(users))
 
@@ -47,10 +58,14 @@ describe("UserModuleService - User", () => {
         expect.objectContaining({
           id: "1",
         }),
+        expect.objectContaining({
+          id: "2",
+        }),
       ])
     })
 
     it("should list users by id", async () => {
+      await createUsers(testManager, defaultUserData)
       const users = await service.list({
         id: ["1"],
       })
@@ -63,20 +78,25 @@ describe("UserModuleService - User", () => {
     })
   })
 
-  describe("listAndCountUsers", () => {
+  describe("listAndCount", () => {
     it("should list and count users", async () => {
+      await createUsers(testManager, defaultUserData)
       const [users, count] = await service.listAndCount()
       const serialized = JSON.parse(JSON.stringify(users))
 
-      expect(count).toEqual(1)
+      expect(count).toEqual(2)
       expect(serialized).toEqual([
         expect.objectContaining({
           id: "1",
         }),
+        expect.objectContaining({
+          id: "2",
+        }),
       ])
     })
 
-    it("should listAndCount Users by id", async () => {
+    it("should list and count users by id", async () => {
+      await createUsers(testManager, defaultUserData)
       const [Users, count] = await service.listAndCount({
         id: "1",
       })
@@ -90,10 +110,16 @@ describe("UserModuleService - User", () => {
     })
   })
 
-  describe("retrieveUser", () => {
+  describe("retrieve", () => {
     const id = "1"
 
     it("should return an user for the given id", async () => {
+      await createUsers(testManager, [
+        {
+          id,
+          email: "user_1@test.com",
+        },
+      ])
       const user = await service.retrieve(id)
 
       expect(user).toEqual(
@@ -130,6 +156,12 @@ describe("UserModuleService - User", () => {
     })
 
     it("should return user based on config select param", async () => {
+      await createUsers(testManager, [
+        {
+          id,
+          email: "user_1@test.com",
+        },
+      ])
       const User = await service.retrieve(id, {
         select: ["id"],
       })
@@ -142,10 +174,16 @@ describe("UserModuleService - User", () => {
     })
   })
 
-  describe("deleteUser", () => {
+  describe("delete", () => {
     const id = "1"
 
-    it("should delete the Users given an id successfully", async () => {
+    it("should delete the users given an id successfully", async () => {
+      await createUsers(testManager, [
+        {
+          id,
+          email: "user_1@test.com",
+        },
+      ])
       await service.delete([id])
 
       const users = await service.list({
@@ -156,7 +194,7 @@ describe("UserModuleService - User", () => {
     })
   })
 
-  describe("updateUser", () => {
+  describe("update", () => {
     it("should throw an error when a id does not exist", async () => {
       let error
 
@@ -174,22 +212,23 @@ describe("UserModuleService - User", () => {
     })
   })
 
-  describe("createUser", () => {
-    it("should create a User successfully", async () => {
+  describe("create", () => {
+    it("should create a user successfully", async () => {
       await service.create([
         {
-          id: "2",
+          id: "1",
+          email: "test@test.com",
         },
       ])
 
       const [User, count] = await service.listAndCount({
-        id: ["2"],
+        id: ["1"],
       })
 
       expect(count).toEqual(1)
       expect(User[0]).toEqual(
         expect.objectContaining({
-          id: "2",
+          id: "1",
         })
       )
     })

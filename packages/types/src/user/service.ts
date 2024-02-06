@@ -1,5 +1,10 @@
-import { CreateUserDTO, UpdateUserDTO } from "./mutations"
-import { FilterableUserProps, UserDTO } from "./common"
+import {
+  CreateInviteDTO,
+  CreateUserDTO,
+  UpdateInviteDTO,
+  UpdateUserDTO,
+} from "./mutations"
+import { FilterableUserProps, InviteDTO, UserDTO } from "./common"
 
 import { Context } from "../shared-context"
 import { FindConfig } from "../common"
@@ -33,4 +38,44 @@ export interface IUserModuleService extends IModuleService {
   update(data: UpdateUserDTO, sharedContext?: Context): Promise<UserDTO>
 
   delete(ids: string[], sharedContext?: Context): Promise<void>
+
+  retrieveInvite(
+    id: string,
+    config?: FindConfig<InviteDTO>,
+    sharedContext?: Context
+  ): Promise<InviteDTO>
+
+  listInvites(
+    filters?: FilterableUserProps,
+    config?: FindConfig<InviteDTO>,
+    sharedContext?: Context
+  ): Promise<InviteDTO[]>
+
+  listAndCountInvites(
+    filters?: FilterableUserProps,
+    config?: FindConfig<InviteDTO>,
+    sharedContext?: Context
+  ): Promise<[InviteDTO[], number]>
+
+  createInvite(
+    data: CreateInviteDTO[],
+    sharedContext?: Context
+  ): Promise<InviteDTO[]>
+
+  createInvite(
+    data: CreateInviteDTO,
+    sharedContext?: Context
+  ): Promise<InviteDTO>
+
+  updateInvite(
+    data: UpdateInviteDTO[],
+    sharedContext?: Context
+  ): Promise<InviteDTO[]>
+
+  updateInvite(
+    data: UpdateInviteDTO,
+    sharedContext?: Context
+  ): Promise<InviteDTO>
+
+  deleteInvites(ids: string[], sharedContext?: Context): Promise<void>
 }
