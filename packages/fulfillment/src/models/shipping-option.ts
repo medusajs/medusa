@@ -26,7 +26,7 @@ import ServiceProvider from "./service-provider"
 import ShippingOptionType from "./shipping-option-type"
 import ShippingOptionRule from "./shipping-option-rule"
 
-type ShippingOptionOptionalProps = DAL.EntityDateColumns
+type ShippingOptionOptionalProps = DAL.SoftDeletableEntityDateColumns
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -63,13 +63,13 @@ export default class ShippingOption {
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @ManyToOne()
+  @ManyToOne(() => ServiceZone)
   service_zone: ServiceZone
 
-  @ManyToOne()
+  @ManyToOne(() => ShippingProfile)
   shipping_profile: ShippingProfile
 
-  @ManyToOne()
+  @ManyToOne(() => ServiceProvider)
   service_provider: ServiceProvider
 
   @OneToOne(() => ShippingOptionType, (so) => so.shipping_option, {

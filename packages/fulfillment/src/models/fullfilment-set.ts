@@ -31,14 +31,13 @@ export default class FulfillmentSet {
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @ManyToMany(
-    () => ServiceZone,
-    (serviceZone) => serviceZone.fulfillment_sets,
-    {
-      index: "IDX_fulfillment_set_service_zone_id",
-      pivotTable: "fulfillment_set_service_zone",
-    }
-  )
+  @ManyToMany(() => ServiceZone, "fulfillment_sets", {
+    owner: true,
+    index: "IDX_fulfillment_set_service_zone_id",
+    pivotTable: "fulfillment_set_service_zones",
+    joinColumn: "fulfillment_set_id",
+    inverseJoinColumn: "service_zone_id",
+  })
   service_zones = new Collection<ServiceZone>(this)
 
   @Property({

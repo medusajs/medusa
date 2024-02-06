@@ -16,7 +16,7 @@ import {
 import { DAL } from "@medusajs/types"
 import ServiceZone from "./service-zone"
 
-type GeoZoneOptionalProps = DAL.EntityDateColumns
+type GeoZoneOptionalProps = DAL.SoftDeletableEntityDateColumns
 
 // TODO: Preliminary index creation, need some thoughts once we start filtering by these fields etc. Same for all entities in that dir
 
@@ -62,10 +62,7 @@ export default class GeoZone {
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @ManyToMany(() => ServiceZone, (serviceZone) => serviceZone.geo_zones, {
-    index: "IDX_geo_zone_service_zone_id",
-    pivotTable: "service_zone_geo_zone",
-  })
+  @ManyToMany(() => ServiceZone, (serviceZone) => serviceZone.geo_zones)
   service_zones = new Collection<ServiceZone>(this)
 
   @Property({

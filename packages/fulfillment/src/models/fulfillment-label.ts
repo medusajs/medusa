@@ -12,7 +12,7 @@ import {
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
 
-type FulfillmentLabelOptionalProps = DAL.EntityDateColumns
+type FulfillmentLabelOptionalProps = DAL.SoftDeletableEntityDateColumns
 
 // TODO: Waiting discussion before continuing this part
 

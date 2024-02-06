@@ -14,7 +14,7 @@ import {
 import { DAL } from "@medusajs/types"
 import ShippingOption from "./shipping-option"
 
-type ShippingOptionRuleOptionalProps = DAL.EntityDateColumns
+type ShippingOptionRuleOptionalProps = DAL.SoftDeletableEntityDateColumns
 
 // TODO: need some test to see if we continue with this kind of structure or we change it
 
@@ -38,7 +38,7 @@ export default class ShippingOptionRule {
   @Property({ columnType: "text" })
   shipping_option_id: string
 
-  @ManyToOne()
+  @ManyToOne(() => ShippingOption)
   shipping_option: ShippingOption
 
   @Property({

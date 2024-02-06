@@ -15,7 +15,7 @@ import {
 import { DAL } from "@medusajs/types"
 import ShippingOption from "./shipping-option"
 
-type ServiceProviderOptionalProps = DAL.EntityDateColumns
+type ServiceProviderOptionalProps = DAL.SoftDeletableEntityDateColumns
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

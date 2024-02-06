@@ -10,7 +10,9 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-type OptionalAddressProps = DAL.EntityDateColumns
+// TODO: Waiting discussion before continuing this part
+
+type OptionalAddressProps = DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "fulfillment_address" })
 export default class Address {

@@ -18,7 +18,7 @@ import FulfillmentSet from "./fullfilment-set"
 import GeoZone from "./geo-zone"
 import ShippingOption from "./shipping-option"
 
-type ServiceZoneOptionalProps = DAL.EntityDateColumns
+type ServiceZoneOptionalProps = DAL.SoftDeletableEntityDateColumns
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -36,17 +36,16 @@ export default class ServiceZone {
 
   @ManyToMany(
     () => FulfillmentSet,
-    (fulfillmentSet) => fulfillmentSet.service_zones,
-    {
-      index: "IDX_service_zone_fulfillment_set_id",
-      pivotTable: "fulfillment_set_service_zone",
-    }
+    (fulfillmentSet) => fulfillmentSet.service_zones
   )
   fulfillment_sets = new Collection<FulfillmentSet>(this)
 
-  @ManyToMany(() => GeoZone, (geoZone) => geoZone.service_zones, {
+  @ManyToMany(() => GeoZone, "service_zones", {
+    owner: true,
     index: "IDX_service_zone_geo_zone_id",
-    pivotTable: "service_zone_geo_zone",
+    pivotTable: "service_zone_geo_zones",
+    joinColumn: "service_zone_id",
+    inverseJoinColumn: "geo_zone_id",
   })
   geo_zones = new Collection<GeoZone>(this)
 
