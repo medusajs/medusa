@@ -91,5 +91,6 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/cart",
     },
+    [Modules.WORKFLOW_ENGINE]: true,
   },
 }

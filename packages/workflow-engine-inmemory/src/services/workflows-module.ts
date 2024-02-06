@@ -10,8 +10,10 @@ import {
   InjectManager,
   InjectSharedContext,
   MedusaContext,
+  MedusaError,
 } from "@medusajs/utils"
 import type {
+  IWorkflowEngineService,
   ReturnWorkflow,
   UnwrapWorkflowInputDataType,
   WorkflowOrchestratorTypes,
@@ -25,9 +27,7 @@ type InjectedDependencies = {
   workflowOrchestratorService: WorkflowOrchestratorService
 }
 
-export class WorkflowsModuleService
-  implements WorkflowOrchestratorTypes.IWorkflowsModuleService
-{
+export class WorkflowsModuleService implements IWorkflowEngineService {
   protected baseRepository_: DAL.RepositoryService
   protected workflowExecutionService_: ModulesSdkTypes.InternalModuleService<any>
   protected workflowOrchestratorService_: WorkflowOrchestratorService
@@ -47,6 +47,42 @@ export class WorkflowsModuleService
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  @InjectManager("baseRepository_")
+  async retrieveWorkflowExecution(
+    idOrObject: {
+      workflow_id: string
+      transaction_id: string
+    },
+    config: FindConfig<WorkflowOrchestratorTypes.WorkflowExecutionDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<WorkflowOrchestratorTypes.WorkflowExecutionDTO> {
+    const wfExecution = await this.workflowExecutionService_.list(
+      {
+        workflow_id: idOrObject.workflow_id,
+        transaction_id: idOrObject.transaction_id,
+      },
+      config,
+      sharedContext
+    )
+
+    if (wfExecution.length === 0) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `WorkflowExecution with workflow_id, transaction_id: ${Object.values(
+          idOrObject
+        ).join(", ")} was not found`
+      )
+    }
+
+    // eslint-disable-next-line max-len
+    return await this.baseRepository_.serialize<WorkflowOrchestratorTypes.WorkflowExecutionDTO>(
+      wfExecution[0],
+      {
+        populate: true,
+      }
+    )
   }
 
   @InjectManager("baseRepository_")
