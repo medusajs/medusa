@@ -1,6 +1,6 @@
 import { DAL, FindConfig } from "@medusajs/types"
-
 import { deduplicate, isDefined, isObject } from "../common"
+
 import { SoftDeletableFilterKey } from "../dal"
 
 export function buildQuery<T = any, TDto = any>(
