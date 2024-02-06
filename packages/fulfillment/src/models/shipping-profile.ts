@@ -12,21 +12,17 @@ import {
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
 
-type FulfillmentSetOptionalProps = DAL.SoftDeletableEntityDateColumns
+type ShippingProfileOptionalProps = DAL.EntityDateColumns
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
-export default class FulfillmentSet {
-  [OptionalProps]?: FulfillmentSetOptionalProps
+export default class ShippingProfile {
+  [OptionalProps]?: ShippingProfileOptionalProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
-  name: string
-
-  @Property({ columnType: "jsonb", nullable: true })
-  metadata: Record<string, unknown> | null = null
+  shipping_options // TODO: configure relationship
 
   @Property({
     onCreate: () => new Date(),
@@ -43,17 +39,17 @@ export default class FulfillmentSet {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_fulfillment_set_deleted_at" })
+  @Index({ name: "IDX_shipping_profile_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "fuset")
+    this.id = generateEntityId(this.id, "shpro")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "fuset")
+    this.id = generateEntityId(this.id, "shpro")
   }
 }

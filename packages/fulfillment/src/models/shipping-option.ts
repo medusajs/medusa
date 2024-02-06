@@ -1,8 +1,13 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  generateEntityId,
+  ShippingOptionPriceType,
+} from "@medusajs/utils"
 
 import {
   BeforeCreate,
   Entity,
+  Enum,
   Filter,
   Index,
   OnInit,
@@ -12,18 +17,36 @@ import {
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
 
-type FulfillmentSetOptionalProps = DAL.SoftDeletableEntityDateColumns
+type ShippingOptionOptionalProps = DAL.EntityDateColumns
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
-export default class FulfillmentSet {
-  [OptionalProps]?: FulfillmentSetOptionalProps
+export default class ShippingOption {
+  [OptionalProps]?: ShippingOptionOptionalProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  rules // TODO configure relationship
+
   @Property({ columnType: "text" })
   name: string
+
+  @Enum({
+    items: () => ShippingOptionPriceType,
+    default: ShippingOptionPriceType.CALCULATED,
+  })
+  price_type: ShippingOptionPriceType
+
+  provider_id // TODO configure relationship
+
+  @Property({ columnType: "jsonb", nullable: true })
+  data: Record<string, unknown> | null = null
+
+  @Property({ columnType: "text", nullable: true })
+  shipping_option_type_id: string | null = null
+
+  shipping_option_type // TODO configure relationship
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
@@ -43,17 +66,17 @@ export default class FulfillmentSet {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_fulfillment_set_deleted_at" })
+  @Index({ name: "IDX_shipping_option_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "fuset")
+    this.id = generateEntityId(this.id, "shopt")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "fuset")
+    this.id = generateEntityId(this.id, "shopt")
   }
 }

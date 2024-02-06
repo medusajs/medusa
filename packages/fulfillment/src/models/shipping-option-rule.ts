@@ -12,21 +12,28 @@ import {
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
 
-type FulfillmentSetOptionalProps = DAL.SoftDeletableEntityDateColumns
+type ShippingOptionRuleOptionalProps = DAL.EntityDateColumns
+
+// TODO: need some test to see if we continue with this kind of structure or we change it
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
-export default class FulfillmentSet {
-  [OptionalProps]?: FulfillmentSetOptionalProps
+export default class ShippingOptionRule {
+  [OptionalProps]?: ShippingOptionRuleOptionalProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
 
   @Property({ columnType: "text" })
-  name: string
+  attribute: string
+
+  @Property({ columnType: "text" })
+  operator: string
 
   @Property({ columnType: "jsonb", nullable: true })
-  metadata: Record<string, unknown> | null = null
+  value: { value: string | string[] } | null = null
+
+  shipping_options // TODO: configure relationship
 
   @Property({
     onCreate: () => new Date(),
@@ -43,17 +50,17 @@ export default class FulfillmentSet {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_fulfillment_set_deleted_at" })
+  @Index({ name: "IDX_shipping_option_rule_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "fuset")
+    this.id = generateEntityId(this.id, "shoptty")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "fuset")
+    this.id = generateEntityId(this.id, "shoptty")
   }
 }

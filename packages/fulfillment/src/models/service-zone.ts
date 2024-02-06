@@ -12,12 +12,12 @@ import {
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
 
-type FulfillmentSetOptionalProps = DAL.SoftDeletableEntityDateColumns
+type ServiceZoneOptionalProps = DAL.EntityDateColumns
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
-export default class FulfillmentSet {
-  [OptionalProps]?: FulfillmentSetOptionalProps
+export default class ServiceZone {
+  [OptionalProps]?: ServiceZoneOptionalProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
@@ -43,17 +43,17 @@ export default class FulfillmentSet {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_fulfillment_set_deleted_at" })
+  @Index({ name: "IDX_service_zone_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "fuset")
+    this.id = generateEntityId(this.id, "serzo")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "fuset")
+    this.id = generateEntityId(this.id, "serzo")
   }
 }
