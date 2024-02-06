@@ -23,7 +23,6 @@ describe("GET /admin/regions", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    // TODO: Use a different bootstrapping mechanism if possible
     shutdownServer = await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
     regionModuleService = appContainer.resolve(ModuleRegistrationName.REGION)

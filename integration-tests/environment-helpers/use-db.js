@@ -6,6 +6,7 @@ const {
   isObject,
   createMedusaContainer,
   MedusaV2Flag,
+  promiseAll,
 } = require("@medusajs/utils")
 const { dropDatabase } = require("pg-god")
 const { DataSource } = require("typeorm")
@@ -172,10 +173,16 @@ module.exports = {
       const pgConnection = await pgConnectionLoader({ configModule, container })
       instance.setPgConnection(pgConnection)
 
-      const { runMigrations } = await medusaAppLoader(
-        { configModule, container },
-        { registerInContainer: false }
-      )
+      const migrationPromises = []
+      for (const [, options] of Object.entries(configModule.modules)) {
+        const path = options.resolve
+
+        const loadedModule = await import(path)
+
+        if (loadedModule.runMigrations) {
+          migrationPromises.push(loadedModule.runMigrations)
+        }
+      }
 
       const options = {
         database: {
@@ -183,7 +190,15 @@ module.exports = {
           connection: pgConnection,
         },
       }
-      await runMigrations(options)
+
+      for (const migration of migrationPromises) {
+        await migration(options)
+      }
+
+      await medusaAppLoader(
+        { configModule, container },
+        { registerInContainer: false }
+      )
     }
 
     return dbDataSource
