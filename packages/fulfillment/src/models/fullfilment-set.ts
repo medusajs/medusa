@@ -5,6 +5,7 @@ import {
   Entity,
   Filter,
   Index,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -48,7 +49,7 @@ export default class FulfillmentSet {
     this.id = generateEntityId(this.id, "fuset")
   }
 
-  @BeforeCreate()
+  @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "fuset")
   }
