@@ -146,7 +146,7 @@ You can create an item allocation by sending a request to the [Create a Reservat
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/reservations' \
-        -H 'Authorization: Bearer <API_TOKEN>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
         -H 'Content-Type: application/json' \
         --data-raw '{
             "line_item_id": "<LINE_ITEM_ID>",
@@ -237,7 +237,7 @@ You can retrieve the item allocations of a line item in an order using the [List
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/reservations?line_item_id=<LINE_ITEM_ID>' \
-        -H 'Authorization: Bearer <API_TOKEN>'
+        -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -307,7 +307,7 @@ You can retrieve a single item allocation by its ID using the [Get a Reservation
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/reservations/<RESERVATION_ID>' \
-        -H 'Authorization: Bearer <API_TOKEN>'
+        -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -390,7 +390,7 @@ You can update an item allocation to change the location to allocate from or the
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/reservations/<RESERVATION_ID>' \
-        -H 'Authorization: Bearer <API_TOKEN>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
         -H 'Content-Type: application/json' \
         --data-raw '{
             "quantity": 3
@@ -475,7 +475,7 @@ You can delete an item allocation by sending a request to the [Delete Reservatio
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/reservations/<RESERVATION_ID>' \
-        -H 'Authorization: Bearer <API_TOKEN>'
+        -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -575,7 +575,7 @@ When you create a fulfillment of an order, you can specify the location to fulfi
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/fulfillment' \
-        -H 'Authorization: Bearer <API_TOKEN>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
         -H 'Content-Type: application/json' \
         --data-raw '{
             "items": [
@@ -689,7 +689,7 @@ When requesting a return, you can specify the location to return the item to by 
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/return' \
-        -H 'Authorization: Bearer <API_TOKEN>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
         -H 'Content-Type: application/json' \
         --data-raw '{
             "items": [

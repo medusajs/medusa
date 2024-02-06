@@ -170,7 +170,7 @@ You can create a discount by sending a request to the [Create Discount API Route
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/discounts' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "code": "<CODE>",
@@ -272,7 +272,7 @@ For example, you can update the discount’s description and status by sending t
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
       "is_disabled": true
@@ -384,7 +384,7 @@ You can send a request to the [Create Condition API Route](https://docs.medusajs
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
       "operator": "in",
@@ -498,7 +498,7 @@ You can retrieve a condition and its resources by sending a request to the [Get 
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>&expand=products' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -606,7 +606,7 @@ For example, to update the products in a condition:
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "products": [
@@ -698,7 +698,7 @@ You can delete a condition by sending a request to the [Delete Condition API Rou
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -763,7 +763,7 @@ You can delete a discount by sending a request to the [Delete Discount API Route
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

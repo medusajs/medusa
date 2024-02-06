@@ -111,7 +111,7 @@ You can list draft orders by sending a request to the [List Draft Orders API Rou
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/draft-orders' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -243,7 +243,7 @@ You can create a draft order by sending a request to the [Create Draft Order API
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/draft-orders' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
       "email": "<EMAIL>",
@@ -350,7 +350,7 @@ You can retrieve a draft order by sending a request to the [Get Draft Order API 
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -435,7 +435,7 @@ You can update a draft order by sending a request to the [Update Draft Order API
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "email": "user@example.com"
@@ -530,7 +530,7 @@ You can add line items to a draft order by sending a request to the [Create Line
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/line-items' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "quantity": 1
@@ -628,7 +628,7 @@ You can update a line item by sending a request to the [Update Line Item API Rou
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/line-items/<ITEM_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "quantity": 1
@@ -705,7 +705,7 @@ You can delete a line item by sending a request to the [Delete Line Item API Rou
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/line-items/<ITEM_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -782,7 +782,7 @@ You can register the draft order payment by sending a request to the [Register D
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/pay' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -857,7 +857,7 @@ You can delete a draft order by sending a request to the [Delete Draft Order API
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

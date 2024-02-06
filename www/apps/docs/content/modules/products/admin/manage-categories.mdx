@@ -117,7 +117,7 @@ You can retrieve available categories by sending a request to the [List Categori
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/product-categories' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -198,7 +198,7 @@ You can create a category by sending a request to the [Create a Category API Rou
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/product-categories' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "name": "Skinny Jeans"
@@ -283,7 +283,7 @@ You can retrieve a product category by sending a request to the [Get a Product C
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/product-categories/<CAT_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -374,7 +374,7 @@ You can edit a product category by sending a request to the [Update a Product Ca
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/product-categories/<CAT_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "name": "Skinny Jeans",
@@ -495,7 +495,7 @@ You can add more than one product to a category using the [Add Products to a Cat
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/product-categories/<CAT_ID>/products/batch' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
       "product_ids": [
@@ -618,7 +618,7 @@ You can remove products from a category by sending a request to the [Delete Prod
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/product-categories/<CAT_ID>/products/batch' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
       "product_ids": [
@@ -709,7 +709,7 @@ You can delete a product category by sending a request to the [Delete a Product 
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/product-categories/<CAT_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

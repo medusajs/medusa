@@ -195,7 +195,7 @@ For example, sending the following request creates a price list with two prices:
 
     ```bash
     curl -L -X POST '<YOUR_BACKEND_URL>/admin/price-lists' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "name": "New Price List",
@@ -289,7 +289,7 @@ You can retrieve all of a price list’s details using the Get a Price List API 
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/price-lists/{id}' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -374,7 +374,7 @@ For example, by sending the following request the end date of the price list wil
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "ends_at": "2022-10-11"
@@ -489,7 +489,7 @@ For example, sending the following request adds a new price to the price list:
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "prices": [
@@ -587,7 +587,7 @@ You can delete all the prices of a product’s variants using the [Delete Produc
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>/products/<PRODUCT_ID>/prices' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -673,7 +673,7 @@ You can delete all the prices of a variant using the [Delete Variant Prices API 
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>/variants/<VARIANT_ID>/prices' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -746,7 +746,7 @@ You can delete a price list, and subsequently all prices defined in it, using th
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

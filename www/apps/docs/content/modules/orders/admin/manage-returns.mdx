@@ -118,7 +118,7 @@ You can list available return reasons using the [List Return Reasons API Route](
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/return-reasons' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -201,7 +201,7 @@ You can create a return reason using the [Create Return Reason API Route](https:
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/return-reasons' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
       "label": "Damaged",
@@ -296,7 +296,7 @@ You can update a return reason by sending a request to the [Update Return Reason
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/return-reasons/<REASON_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
       "label": "Damaged"
@@ -375,7 +375,7 @@ You can delete a return reason by sending a request to the [Delete Return Reason
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/return-reasons/<REASON_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -464,7 +464,7 @@ When you retrieve an order using the [Get Order API Route](https://docs.medusajs
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -578,7 +578,7 @@ You can mark a return as received by sending a request to the [Receive a Return 
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/returns/<RETURN_ID>/receive' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "items": [
@@ -675,7 +675,7 @@ You can cancel a return by sending a request to the [Cancel Return API Route](ht
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/returns/<RETURN_ID>/cancel' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

@@ -111,7 +111,7 @@ You can show a list of customers by sending a request to the [List Customers API
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/customers' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -214,7 +214,7 @@ You can create a customer account by sending a request to the [Create a Customer
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/customers' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "email": "<EMAIL>",
@@ -314,7 +314,7 @@ You can edit a customer’s information by sending a request to the [Update a Cu
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/customers/<CUSTOMER_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "first_name": "<FIRST_NAME>"

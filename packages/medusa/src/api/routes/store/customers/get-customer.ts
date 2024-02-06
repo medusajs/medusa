@@ -44,7 +44,7 @@ import CustomerService from "../../../../services/customer"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/store/customers/me' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'x-medusa-access-token: {access_token}'
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []

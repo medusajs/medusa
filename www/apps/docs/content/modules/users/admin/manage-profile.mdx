@@ -186,7 +186,7 @@ You can log out a user by sending a request to the [User Logout API Route](https
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/auth' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -250,7 +250,7 @@ You can retrieve the current user’s details for their profile by sending a req
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/auth' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -335,7 +335,7 @@ You can update a user’s details in their profile by sending a request to the [
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/users/<USER_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
       "first_name": "Marcellus"
