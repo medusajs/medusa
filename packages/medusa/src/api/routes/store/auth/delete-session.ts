@@ -20,7 +20,7 @@
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/store/auth' \
- *       -H 'x-medusa-access-token: {access_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []

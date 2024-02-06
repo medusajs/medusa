@@ -135,7 +135,7 @@ paths:
           label: cURL
           source: |
             curl '{backend_url}/store/auth' \
-            -H 'x-medusa-access-token: {access_token}'
+            -H 'Authorization: Bearer {access_token}'
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -235,7 +235,7 @@ paths:
           label: cURL
           source: |
             curl -X DELETE '{backend_url}/store/auth' \
-            -H 'x-medusa-access-token: {access_token}'
+            -H 'Authorization: Bearer {access_token}'
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -1897,7 +1897,7 @@ paths:
           label: cURL
           source: |
             curl '{backend_url}/store/customers/me' \
-            -H 'x-medusa-access-token: {access_token}'
+            -H 'Authorization: Bearer {access_token}'
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -1983,7 +1983,7 @@ paths:
           label: cURL
           source: |
             curl -X POST '{backend_url}/store/customers/me' \
-            -H 'x-medusa-access-token: {access_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
                 "first_name": "Laury"
@@ -2052,7 +2052,7 @@ paths:
           label: cURL
           source: |
             curl -X POST '{backend_url}/store/customers/me/addresses' \
-            -H 'x-medusa-access-token: {access_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
                 "address": {
@@ -2125,7 +2125,7 @@ paths:
           label: cURL
           source: |
             curl -X POST '{backend_url}/store/customers/me/addresses/{address_id}' \
-            -H 'x-medusa-access-token: {access_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
                 "first_name": "Gina"
@@ -2183,7 +2183,7 @@ paths:
           label: cURL
           source: |
             curl -X DELETE '{backend_url}/store/customers/me/addresses/{address_id}' \
-            -H 'x-medusa-access-token: {access_token}'
+            -H 'Authorization: Bearer {access_token}'
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -2443,7 +2443,7 @@ paths:
           label: cURL
           source: |
             curl '{backend_url}/store/customers/me/orders' \
-            -H 'x-medusa-access-token: {access_token}'
+            -H 'Authorization: Bearer {access_token}'
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -2492,7 +2492,7 @@ paths:
           label: cURL
           source: |
             curl '{backend_url}/store/customers/me/payment-methods' \
-            -H 'x-medusa-access-token: {access_token}'
+            -H 'Authorization: Bearer {access_token}'
       security:
         - cookie_auth: []
         - jwt_token: []

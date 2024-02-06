@@ -29,7 +29,7 @@ import { promiseAll } from "@medusajs/utils"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/store/customers/me/payment-methods' \
- *       -H 'x-medusa-access-token: {access_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []

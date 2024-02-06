@@ -46,7 +46,7 @@ import { validator } from "../../../../utils/validator"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/store/customers/me/addresses' \
- *       -H 'x-medusa-access-token: {access_token}' \
+ *       -H 'Authorization: Bearer {access_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "address": {
