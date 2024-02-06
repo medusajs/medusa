@@ -25,9 +25,6 @@ export default class ShippingProfile {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
-  shipping_option_id: string
-
   @OneToMany(
     () => ShippingOption,
     (shippingOption) => shippingOption.shipping_profile
