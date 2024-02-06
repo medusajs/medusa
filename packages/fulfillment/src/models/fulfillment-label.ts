@@ -1,3 +1,5 @@
+// TODO: Not to be reviewed yet. Waiting discussion before continuing this part
+
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 
 import {
@@ -13,8 +15,6 @@ import {
 import { DAL } from "@medusajs/types"
 
 type FulfillmentLabelOptionalProps = DAL.SoftDeletableEntityDateColumns
-
-// TODO: Waiting discussion before continuing this part
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

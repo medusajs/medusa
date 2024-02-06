@@ -1,3 +1,5 @@
+// TODO: Not to be reviewed yet. Waiting discussion before continuing this part
+
 import { DAL } from "@medusajs/types"
 import { generateEntityId } from "@medusajs/utils"
 import {
@@ -9,8 +11,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-
-// TODO: Waiting discussion before continuing this part
 
 type OptionalAddressProps = DAL.SoftDeletableEntityDateColumns
 
