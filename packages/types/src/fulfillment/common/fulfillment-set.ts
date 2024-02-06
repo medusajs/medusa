@@ -1,0 +1,9 @@
+export interface FulfillmentSetDTO {
+  id: string
+  name: string
+  metadata: Record<string, unknown> | null
+  service_zones: ServiceZoneDTO[]
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date | null
+}
