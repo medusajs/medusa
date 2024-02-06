@@ -5,14 +5,15 @@ import {
   Filter,
   Index,
   ManyToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
+import { DAL } from "@medusajs/types"
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 import Product from "./product"
-import { DAL } from "@medusajs/types"
 
 type OptionalRelations = "products"
 type OptionalFields = DAL.SoftDeletableEntityDateColumns
@@ -53,6 +54,11 @@ class ProductImage {
 
   @ManyToMany(() => Product, (product) => product.images)
   products = new Collection<Product>(this)
+
+  @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "img")
+  }
 
   @BeforeCreate()
   onCreate() {

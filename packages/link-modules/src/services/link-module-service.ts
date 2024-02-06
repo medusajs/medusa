@@ -2,6 +2,7 @@ import {
   Context,
   DAL,
   FindConfig,
+  IEventBusModuleService,
   ILinkModule,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
@@ -9,6 +10,7 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
+  CommonEvents,
   InjectManager,
   InjectTransactionManager,
   MapToConfig,
@@ -24,14 +26,20 @@ import { shouldForceTransaction } from "../utils"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   linkService: LinkService<any>
+  eventBusModuleService?: IEventBusModuleService
   primaryKey: string | string[]
   foreignKey: string
   extraFields: string[]
+  entityName: string
+  serviceName: string
 }
 
 export default class LinkModuleService<TLink> implements ILinkModule {
   protected baseRepository_: DAL.RepositoryService
   protected readonly linkService_: LinkService<TLink>
+  protected readonly eventBusModuleService_?: IEventBusModuleService
+  protected readonly entityName_: string
+  protected readonly serviceName_: string
   protected primaryKey_: string[]
   protected foreignKey_: string
   protected extraFields_: string[]
@@ -40,17 +48,23 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     {
       baseRepository,
       linkService,
+      eventBusModuleService,
       primaryKey,
       foreignKey,
       extraFields,
+      entityName,
+      serviceName,
     }: InjectedDependencies,
     readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
     this.linkService_ = linkService
+    this.eventBusModuleService_ = eventBusModuleService
     this.primaryKey_ = !Array.isArray(primaryKey) ? [primaryKey] : primaryKey
     this.foreignKey_ = foreignKey
     this.extraFields_ = extraFields
+    this.entityName_ = entityName
+    this.serviceName_ = serviceName
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -188,6 +202,21 @@ export default class LinkModuleService<TLink> implements ILinkModule {
 
     const links = await this.linkService_.create(data, sharedContext)
 
+    await this.eventBusModuleService_?.emit<Record<string, unknown>>(
+      (data as { id: unknown }[]).map(({ id }) => ({
+        eventName: this.entityName_ + "." + CommonEvents.ATTACHED,
+        body: {
+          metadata: {
+            service: this.serviceName_,
+            action: CommonEvents.ATTACHED,
+            object: this.entityName_,
+            eventGroupId: sharedContext.eventGroupId,
+          },
+          data: { id },
+        },
+      }))
+    )
+
     return await this.baseRepository_.serialize<object[]>(links)
   }
 
@@ -224,6 +253,22 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     this.validateFields(data)
 
     await this.linkService_.delete(data, sharedContext)
+
+    const allData = Array.isArray(data) ? data : [data]
+    await this.eventBusModuleService_?.emit<Record<string, unknown>>(
+      allData.map(({ id }) => ({
+        eventName: this.entityName_ + "." + CommonEvents.DETACHED,
+        body: {
+          metadata: {
+            service: this.serviceName_,
+            action: CommonEvents.DETACHED,
+            object: this.entityName_,
+            eventGroupId: sharedContext.eventGroupId,
+          },
+          data: { id },
+        },
+      }))
+    )
   }
 
   async softDelete(
@@ -233,7 +278,10 @@ export default class LinkModuleService<TLink> implements ILinkModule {
   ): Promise<Record<string, unknown[]> | void> {
     this.validateFields(data)
 
-    let [, cascadedEntitiesMap] = await this.softDelete_(data, sharedContext)
+    let [deletedEntities, cascadedEntitiesMap] = await this.softDelete_(
+      data,
+      sharedContext
+    )
 
     const pk = this.primaryKey_.join(",")
     const entityNameToLinkableKeysMap: MapToConfig = {
@@ -256,6 +304,21 @@ export default class LinkModuleService<TLink> implements ILinkModule {
       )
     }
 
+    await this.eventBusModuleService_?.emit<Record<string, unknown>>(
+      (deletedEntities as { id: string }[]).map(({ id }) => ({
+        eventName: this.entityName_ + "." + CommonEvents.DETACHED,
+        body: {
+          metadata: {
+            service: this.serviceName_,
+            action: CommonEvents.DETACHED,
+            object: this.entityName_,
+            eventGroupId: sharedContext.eventGroupId,
+          },
+          data: { id },
+        },
+      }))
+    )
+
     return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
@@ -263,7 +326,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
   protected async softDelete_(
     data: any,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[string[], Record<string, string[]>]> {
+  ): Promise<[object[], Record<string, string[]>]> {
     return await this.linkService_.softDelete(data, sharedContext)
   }
 
@@ -274,7 +337,10 @@ export default class LinkModuleService<TLink> implements ILinkModule {
   ): Promise<Record<string, unknown[]> | void> {
     this.validateFields(data)
 
-    let [, cascadedEntitiesMap] = await this.restore_(data, sharedContext)
+    let [restoredEntities, cascadedEntitiesMap] = await this.restore_(
+      data,
+      sharedContext
+    )
 
     const pk = this.primaryKey_.join(",")
     const entityNameToLinkableKeysMap: MapToConfig = {
@@ -297,6 +363,21 @@ export default class LinkModuleService<TLink> implements ILinkModule {
       )
     }
 
+    await this.eventBusModuleService_?.emit<Record<string, unknown>>(
+      (restoredEntities as { id: string }[]).map(({ id }) => ({
+        eventName: this.entityName_ + "." + CommonEvents.ATTACHED,
+        body: {
+          metadata: {
+            service: this.serviceName_,
+            action: CommonEvents.ATTACHED,
+            object: this.entityName_,
+            eventGroupId: sharedContext.eventGroupId,
+          },
+          data: { id },
+        },
+      }))
+    )
+
     return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
@@ -304,7 +385,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
   async restore_(
     data: any,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[string[], Record<string, string[]>]> {
+  ): Promise<[object[], Record<string, string[]>]> {
     return await this.linkService_.restore(data, sharedContext)
   }
 }

@@ -22,6 +22,7 @@ export enum Modules {
   STOCK_LOCATION = "stockLocationService",
   USER = "user",
   WORKFLOW_ENGINE = "workflows",
+  REGION = "region",
 }
 
 export enum ModuleRegistrationName {
@@ -39,6 +40,7 @@ export enum ModuleRegistrationName {
   STOCK_LOCATION = "stockLocationService",
   USER = "userModuleService",
   WORKFLOW_ENGINE = "workflowsModuleService",
+  REGION = "regionModuleService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
@@ -57,6 +59,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.STOCK_LOCATION]: "@medusajs/stock-location",
   [Modules.USER]: "@medusajs/user",
   [Modules.WORKFLOW_ENGINE]: "@medusajs/workflow-engine-inmemory",
+  [Modules.REGION]: "@medusajs/region",
 }
 
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
@@ -236,6 +239,19 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       registrationName: ModuleRegistrationName.USER,
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.USER),
+      isRequired: false,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.REGION]: {
+      key: Modules.REGION,
+      registrationName: ModuleRegistrationName.REGION,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.REGION),
       isRequired: false,
       isQueryable: true,
       dependencies: ["logger"],

@@ -1,7 +1,5 @@
 import type { Customer, User } from "../models"
 import type { NextFunction, Request, Response } from "express"
-
-import { AuthUserDTO } from "@medusajs/types"
 import type { MedusaContainer } from "./global"
 
 export interface MedusaRequest extends Request {

@@ -1,6 +1,6 @@
-import { LINKS } from "../links"
-import { ModuleJoinerConfig } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
+import { ModuleJoinerConfig } from "@medusajs/types"
+import { LINKS } from "../links"
 
 export const ProductVariantPriceSet: ModuleJoinerConfig = {
   serviceName: LINKS.ProductVariantPriceSet,
@@ -11,10 +11,10 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
   },
   alias: [
     {
-      name: "product_variant_price_set",
-    },
-    {
-      name: "product_variant_price_sets",
+      name: ["product_variant_price_set", "product_variant_price_sets"],
+      args: {
+        entity: "LinkProductVariantPriceSet",
+      },
     },
   ],
   primaryKeys: ["id", "variant_id", "price_set_id"],
