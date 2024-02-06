@@ -44,12 +44,7 @@ describe("GET /store/customers/me/addresses", () => {
   })
 
   it("should get all customer addresses and its count", async () => {
-    const { jwt_secret } = appContainer.resolve("configModule").projectConfig
-    const { customer, jwt } = await createAuthenticatedCustomer(
-      customerModuleService,
-      appContainer.resolve(ModuleRegistrationName.AUTH),
-      jwt_secret
-    )
+    const { customer, jwt } = await createAuthenticatedCustomer(appContainer)
 
     await customerModuleService.addAddresses([
       {
