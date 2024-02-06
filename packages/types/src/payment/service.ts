@@ -6,14 +6,17 @@ import {
   CreatePaymentDTO,
   CreatePaymentSessionDTO,
   CreateRefundDTO,
+  SetPaymentSessionsContextDTO,
   SetPaymentSessionsDTO,
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
+  UpdatePaymentSessionDTO,
 } from "./mutations"
 import {
   FilterablePaymentCollectionProps,
   PaymentCollectionDTO,
   PaymentDTO,
+  PaymentSessionDTO,
 } from "./common"
 import { FindConfig } from "../common"
 
@@ -67,6 +70,8 @@ export interface IPaymentModuleService extends IModuleService {
 
   authorizePaymentCollection(
     paymentCollectionId: string,
+    sessionIds: string[],
+    context: Record<string, unknown>,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
 
@@ -74,6 +79,10 @@ export interface IPaymentModuleService extends IModuleService {
     paymentCollectionId: string,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
+  completePaymentCollection(
+    paymentCollectionId: string[],
+    sharedContext?: Context
+  ): Promise<PaymentCollectionDTO[]>
 
   /* ********** PAYMENT ********** */
 
@@ -125,28 +134,26 @@ export interface IPaymentModuleService extends IModuleService {
     paymentCollectionId: string,
     data: CreatePaymentSessionDTO,
     sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
+  ): Promise<PaymentSessionDTO>
   createPaymentSession(
     paymentCollectionId: string,
     data: CreatePaymentSessionDTO[],
     sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
+  ): Promise<PaymentSessionDTO[]>
 
-  authorizePaymentSessions(
-    paymentCollectionId: string,
-    sessionIds: string[],
+  updatePaymentSession(
+    data: UpdatePaymentSessionDTO,
     sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
-
-  completePaymentSessions(
-    paymentCollectionId: string,
-    sessionIds: string[],
+  ): Promise<PaymentSessionDTO>
+  updatePaymentSession(
+    data: UpdatePaymentSessionDTO[],
     sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
+  ): Promise<PaymentSessionDTO[]>
 
   setPaymentSessions(
     paymentCollectionId: string,
     data: SetPaymentSessionsDTO[],
+    context: SetPaymentSessionsContextDTO,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
 }

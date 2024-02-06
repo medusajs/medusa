@@ -31,6 +31,34 @@ export enum PaymentCollectionStatus {
   CANCELED = "canceled",
 }
 
+/**
+ * @enum
+ *
+ * The status of a payment session.
+ */
+export enum PaymentSessionStatus {
+  /**
+   * The payment is authorized.
+   */
+  AUTHORIZED = "authorized",
+  /**
+   * The payment is pending.
+   */
+  PENDING = "pending",
+  /**
+   * The payment requires an action.
+   */
+  REQUIRES_MORE = "requires_more",
+  /**
+   * An error occurred while processing the payment.
+   */
+  ERROR = "error",
+  /**
+   * The payment is canceled.
+   */
+  CANCELED = "canceled",
+}
+
 export interface PaymentCollectionDTO {
   /**
    * The ID of the Payment Collection
@@ -255,6 +283,48 @@ export interface PaymentSessionDTO {
    * The ID of the Payment Session
    */
   id: string
+
+  /**
+   * The amount
+   */
+  amount: number
+
+  /**
+   * Payment session currency
+   */
+  currency_code: string
+
+  /**
+   * The ID of payment provider
+   */
+  provider_id: string
+
+  /**
+   * Payment provider data
+   */
+  data: Record<string, unknown>
+
+  /**
+   * The status of the payment session
+   */
+  status: PaymentSessionStatus
+
+  /**
+   * When the session was authorized
+   */
+  authorized_at?: Date
+
+  /**
+   * The payment collection the session is associated with
+   * @expandable
+   */
+  payment_collection?: PaymentCollectionDTO
+
+  /**
+   * The payment created from the session
+   * @expandable
+   */
+  payment?: PaymentDTO
 }
 
 export interface PaymentProviderDTO {

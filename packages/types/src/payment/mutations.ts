@@ -1,4 +1,4 @@
-import { PaymentCollectionStatus } from "./common"
+import { PaymentCollectionStatus, PaymentSessionStatus } from "./common"
 
 /**
  * Payment Collection
@@ -26,6 +26,8 @@ export interface UpdatePaymentCollectionDTO
 
 export interface CreatePaymentDTO {
   amount: number
+  authorized_amount?: number
+
   currency_code: string
   provider_id: string
   data: Record<string, unknown>
@@ -46,6 +48,8 @@ export interface UpdatePaymentDTO {
   order_id?: string
   order_edit_id?: string
   customer_id?: string
+
+  captured_at?: Date
 
   data?: Record<string, unknown>
 }
@@ -72,6 +76,21 @@ export interface CreatePaymentSessionDTO {
   amount: number
   currency_code: string
   provider_id: string
+  data: Record<string, unknown> // Payment Provider data
+
+  cart_id?: string
+  resource_id?: string
+  customer_id?: string
+}
+
+export interface UpdatePaymentSessionDTO {
+  id: string
+
+  amount?: number
+  currency_code?: string
+
+  data?: Record<string, unknown>
+  status?: PaymentSessionStatus
 
   cart_id?: string
   resource_id?: string
@@ -82,4 +101,35 @@ export interface SetPaymentSessionsDTO {
   provider_id: string
   amount: number
   session_id?: string
+}
+
+export interface SetPaymentSessionsContextDTO {
+  /**
+   * The payment's billing address.
+   */
+  billing_address?: Record<string, unknown> | null // TODO: type
+  /**
+   * The customer's email.
+   */
+  email: string
+  /**
+   * The ID of the resource the payment is associated with. For example, the cart's ID.
+   */
+  resource_id: string
+  /**
+   * The customer associated with this payment.
+   */
+  customer?: Record<string, unknown> // TODO: type
+  /**
+   * The cart's context.
+   */
+  context: Record<string, unknown>
+}
+
+/**
+ * Payment Provider
+ */
+export interface CreatePaymentProviderDTO {
+  id: string
+  is_enabled?: boolean
 }
