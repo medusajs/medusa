@@ -80,7 +80,7 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
       populate: true,
     })
 
-    return Array.isArray(data) ? serializedUsers : serializedUsers[0]
+    return serializedUsers
   }
 
   update(

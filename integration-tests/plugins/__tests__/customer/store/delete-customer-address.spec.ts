@@ -28,14 +28,6 @@ describe("DELETE /store/customers/me/addresses/:address_id", () => {
     )
   })
 
-  // TODO: delete with removal of authProvider
-  beforeEach(async () => {
-    const onStart =
-      appContainer.resolve(ModuleRegistrationName.AUTH).__hooks
-        .onApplicationStart ?? (() => Promise.resolve())
-    await onStart()
-  })
-
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
