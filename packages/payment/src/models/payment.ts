@@ -115,16 +115,17 @@ export default class Payment {
   @ManyToOne({
     index: "IDX_payment_payment_collection_id",
     fieldName: "payment_collection_id",
+    onDelete: "cascade",
   })
-  payment_collection: PaymentCollection
+  payment_collection!: PaymentCollection
 
   @OneToOne({ owner: true, fieldName: "session_id" })
-  session: PaymentSession
+  payment_session!: PaymentSession
 
   /** COMPUTED PROPERTIES START **/
 
-  // captured_amount: number // sum of the associated captures
-  // refunded_amount: number // sum of the associated refunds
+  captured_amount: number // sum of the associated captures
+  refunded_amount: number // sum of the associated refunds
 
   /** COMPUTED PROPERTIES END **/
 

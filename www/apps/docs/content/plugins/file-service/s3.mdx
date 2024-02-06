@@ -220,9 +220,13 @@ const { withStoreConfig } = require("./store-config")
 module.exports = withStoreConfig({
   // ...
   images: {
-    domains: [
+    remotePatterns: [
       // ...
-      "<BUCKET_NAME>.s3.<REGION>.amazonaws.com",
+      {
+        protocol: "https",
+        hostname:"<BUCKET_NAME>.s3.<REGION>.amazonaws.com",
+      },
+      // ...
     ],
   },
 })
