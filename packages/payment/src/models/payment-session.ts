@@ -16,7 +16,7 @@ import Payment from "./payment"
 
 @Entity({ tableName: "payment_session" })
 export default class PaymentSession {
-  [OptionalProps]?: "status"
+  [OptionalProps]?: "status" | "data"
 
   @PrimaryKey({ columnType: "text" })
   id: string
@@ -33,8 +33,8 @@ export default class PaymentSession {
   @Property({ columnType: "text" })
   provider_id: string
 
-  @Property({ columnType: "jsonb", nullable: true })
-  data: Record<string, unknown> | null = null
+  @Property({ columnType: "jsonb" })
+  data: Record<string, unknown> = {}
 
   @Enum({
     items: () => PaymentSessionStatus,

@@ -1,4 +1,5 @@
 import { PaymentCollectionStatus, PaymentSessionStatus } from "./common"
+import { CreatePaymentInput, PaymentProcessorContext } from "./processors"
 
 /**
  * Payment Collection
@@ -73,33 +74,19 @@ export interface CreateRefundDTO {
  */
 
 export interface CreatePaymentSessionDTO {
-  amount: number
-  currency_code: string
   provider_id: string
-  data: Record<string, unknown> // Payment Provider data
-
-  cart_id?: string
-  resource_id?: string
-  customer_id?: string
+  providerContext: PaymentProcessorContext
 }
 
 export interface UpdatePaymentSessionDTO {
   id: string
-
-  amount?: number
-  currency_code?: string
-
-  data?: Record<string, unknown>
-  status?: PaymentSessionStatus
-
-  cart_id?: string
-  resource_id?: string
-  customer_id?: string
+  providerContext: PaymentProcessorContext
 }
 
 export interface SetPaymentSessionsDTO {
   provider_id: string
   amount: number
+  currency_code: string
   session_id?: string
 }
 

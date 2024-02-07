@@ -102,7 +102,6 @@ export type PaymentSessionInput = {
 }
 
 export type CreatePaymentInput = {
-  cart_id?: string
   amount: number
   currency_code: string
   provider_id?: string

@@ -29,7 +29,6 @@ import {
   MedusaContext,
   ModulesSdkUtils,
   MedusaError,
-  InjectManager,
 } from "@medusajs/utils"
 import {
   Capture,
@@ -103,8 +102,8 @@ export default class PaymentModuleService<
     this.refundService_ = refundService
     this.captureService_ = captureService
     this.paymentService_ = paymentService
-    this.paymentProviderService_ = paymentProviderService
     this.paymentSessionService_ = paymentSessionService
+    this.paymentProviderService_ = paymentProviderService
     this.paymentCollectionService_ = paymentCollectionService
   }
 
@@ -115,6 +114,12 @@ export default class PaymentModuleService<
   __hooks = {
     onApplicationStart: async () => await this.createProvidersOnLoad(),
   }
+
+  /**
+   *
+   * ========== PAYMENT COLLECTION ==========
+   *
+   */
 
   createPaymentCollection(
     data: CreatePaymentCollectionDTO,
@@ -174,36 +179,349 @@ export default class PaymentModuleService<
     )
   }
 
-  createPayment(
-    data: CreatePaymentDTO,
+  completePaymentCollection(
+    paymentCollectionId: string,
     sharedContext?: Context
-  ): Promise<PaymentDTO>
-  createPayment(
-    data: CreatePaymentDTO[],
+  ): Promise<PaymentCollectionDTO>
+  completePaymentCollection(
+    paymentCollectionId: string[],
     sharedContext?: Context
-  ): Promise<PaymentDTO[]>
+  ): Promise<PaymentCollectionDTO[]>
+
+  @InjectTransactionManager("baseRepository_")
+  async completePaymentCollection(
+    paymentCollectionId: string | string[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentCollectionDTO | PaymentCollectionDTO[]> {
+    const input = Array.isArray(paymentCollectionId)
+      ? paymentCollectionId.map((id) => ({
+          id,
+          completed_at: new Date(),
+        }))
+      : [{ id: paymentCollectionId, completed_at: new Date() }]
+
+    // TODO: what checks should be done here? e.g. captured_amount === amount?
+
+    const updated = await this.paymentCollectionService_.update(
+      input,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize(
+      Array.isArray(paymentCollectionId) ? updated : updated[0],
+      { populate: true }
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async authorizePaymentCollection(
+    paymentCollectionId: string,
+    sessionIds: string[],
+    context: Record<string, unknown> = {},
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentCollectionDTO> {
+    const paymentCollection = await this.retrievePaymentCollection(
+      paymentCollectionId,
+      { relations: ["payment_sessions", "payments"] }
+    )
+
+    if (paymentCollection.authorized_amount === paymentCollection.amount) {
+      return paymentCollection
+    }
+
+    if (paymentCollection.amount < 0) {
+      return await this.updatePaymentCollection(
+        {
+          id: paymentCollectionId,
+          authorized_amount: 0,
+          status: PaymentCollectionStatus.AUTHORIZED,
+        },
+        sharedContext
+      )
+    }
+
+    if (!paymentCollection.payment_sessions?.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "You cannot complete a Payment Collection without a payment session."
+      )
+    }
+
+    let authorizedAmount = 0
+
+    for (const paymentSession of paymentCollection.payment_sessions) {
+      if (paymentSession.authorized_at) {
+        continue
+      }
+
+      if (!sessionIds.includes(paymentSession.id)) {
+        continue
+      }
+
+      const { data, status } =
+        await this.paymentProviderService_.authorizePayment(
+          {
+            provider_id: paymentSession.provider_id,
+            data: paymentSession.data,
+          },
+          context
+        )
+
+      await this.paymentSessionService_.update({
+        id: paymentSession.id,
+        data,
+        status,
+        authorized_at:
+          status === PaymentSessionStatus.AUTHORIZED ? new Date() : null,
+      })
+
+      if (status === PaymentSessionStatus.AUTHORIZED) {
+        authorizedAmount += paymentSession.amount
+
+        await this.createPayment(
+          {
+            amount: paymentSession.amount,
+            authorized_amount: paymentSession.amount,
+            currency_code: paymentCollection.currency_code,
+            provider_id: paymentSession.provider_id,
+            payment_session_id: paymentSession.id,
+            payment_collection_id: paymentCollection.id,
+            data: paymentSession.data, // TODO: fetch latest data here <-
+            // TODO: cart_id
+          },
+          sharedContext
+        )
+      }
+    }
+
+    let status = paymentCollection.status
+
+    if (authorizedAmount === 0) {
+      status = PaymentCollectionStatus.AWAITING
+    } else if (authorizedAmount < paymentCollection.amount) {
+      status = PaymentCollectionStatus.PARTIALLY_AUTHORIZED
+    } else if (authorizedAmount === paymentCollection.amount) {
+      status = PaymentCollectionStatus.AUTHORIZED
+    }
+
+    await this.updatePaymentCollection(
+      {
+        id: paymentCollectionId,
+        authorized_amount: authorizedAmount,
+        status,
+      },
+      sharedContext
+    )
+
+    return this.retrievePaymentCollection(
+      paymentCollectionId,
+      {},
+      sharedContext
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async setPaymentSessions(
+    paymentCollectionId: string,
+    data: SetPaymentSessionsDTO[],
+    context: SetPaymentSessionsContextDTO,
+    sharedContext?: Context | undefined
+  ): Promise<PaymentCollectionDTO> {
+    const paymentCollection = await this.retrievePaymentCollection(
+      paymentCollectionId,
+      { relations: ["payment_sessions", "payment_providers"] },
+      sharedContext
+    )
+
+    if (paymentCollection.status !== PaymentCollectionStatus.NOT_PAID) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Cannot set payment sessions for a payment collection with status ${paymentCollection.status}`
+      )
+    }
+
+    const paymentSessionsMap = new Map(
+      paymentCollection.payment_sessions!.map((session) => [
+        session.id,
+        session,
+      ])
+    )
+
+    const totalSessionsAmount = data.reduce((acc, i) => acc + i.amount, 0)
+
+    if (totalSessionsAmount !== paymentCollection.amount) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `The sum of sessions is not equal to ${paymentCollection.amount} on Payment Collection`
+      )
+    }
+
+    const currentSessionsIds: string[] = []
+
+    for (const input of data) {
+      const existingSession = input.session_id
+        ? (paymentSessionsMap.get(input.session_id) as PaymentSessionDTO)
+        : null
+
+      let paymentSession: PaymentSessionDTO
+
+      const providerContext = {
+        amount: input.amount,
+        currency_code: input.currency_code,
+        ...context,
+        paymentSessionData: {},
+      }
+
+      if (existingSession) {
+        paymentSession = await this.updatePaymentSession({
+          id: existingSession.id,
+          providerContext,
+        })
+      } else {
+        paymentSession = await this.createPaymentSession(paymentCollectionId, {
+          provider_id: input.provider_id,
+          providerContext,
+        })
+      }
+
+      currentSessionsIds.push(paymentSession.id)
+    }
+
+    if (paymentCollection.payment_sessions?.length) {
+      const toRemoveSessions = paymentCollection.payment_sessions.filter(
+        ({ id }) => !currentSessionsIds.includes(id)
+      )
+
+      if (toRemoveSessions.length) {
+        await Promise.all(
+          toRemoveSessions.map((session) =>
+            this.deletePaymentSession(session.id)
+          )
+        )
+      }
+    }
+
+    return await this.retrievePaymentCollection(
+      paymentCollectionId,
+      {},
+      sharedContext
+    )
+  }
+
+  /**
+   *
+   * ========== PAYMENT SESSION ==========
+   *
+   */
+
+  @InjectTransactionManager("baseRepository_")
+  async createPaymentSession(
+    paymentCollectionId: string,
+    data: CreatePaymentSessionDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentSessionDTO> {
+    const sessionData = await this.paymentProviderService_.createSession(
+      data.provider_id,
+      data.providerContext
+    )
+
+    const created = await this.paymentSessionService_.create(
+      {
+        provider_id: data.provider_id,
+        amount: data.providerContext.amount,
+        currency_code: data.providerContext.currency_code,
+        payment_collection: paymentCollectionId,
+        data: sessionData,
+      },
+      sharedContext
+    )
+
+    return this.baseRepository_.serialize(created, { populate: true })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async updatePaymentSession(
+    data: UpdatePaymentSessionDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentSessionDTO> {
+    const session = await this.retrievePaymentSession(
+      data.id,
+      {},
+      sharedContext
+    )
+
+    const sessionData = await this.paymentProviderService_.updateSession(
+      {
+        id: session.id,
+        data: session.data,
+        provider_id: session.provider_id,
+      },
+      data.providerContext
+    )
+
+    const updated = await this.paymentSessionService_.update(
+      {
+        amount: data.providerContext.amount,
+        currency_code: data.providerContext.currency_code,
+        data: sessionData,
+      },
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize(updated, { populate: true })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async deletePaymentSession(
+    id: string,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<void> {
+    const session = await this.retrievePaymentSession(id, {}, sharedContext)
+
+    await this.paymentProviderService_.deleteSession({
+      provider_id: session.provider_id,
+      data: session.data,
+    })
+
+    await this.paymentSessionService_.delete(id, sharedContext)
+  }
+
+  /**
+   *
+   * ========== PAYMENT ==========
+   *
+   */
 
   @InjectTransactionManager("baseRepository_")
   async createPayment(
-    data: CreatePaymentDTO | CreatePaymentDTO[],
+    data: CreatePaymentDTO,
     @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentDTO | PaymentDTO[]> {
-    let input = Array.isArray(data) ? data : [data]
-
-    input = input.map((inputData) => ({
-      payment_collection: inputData.payment_collection_id,
-      payment_session: inputData.payment_session_id,
-      ...inputData,
-    }))
-
-    const payments = await this.paymentService_.create(input, sharedContext)
-
-    return await this.baseRepository_.serialize<PaymentDTO[]>(
-      Array.isArray(data) ? payments : payments[0],
-      {
-        populate: true,
-      }
+  ): Promise<PaymentDTO> {
+    const session = await this.retrievePaymentSession(
+      data.payment_session_id,
+      {},
+      sharedContext
     )
+
+    const paymentData = await this.paymentProviderService_.createPayment({
+      payment_session: session,
+      amount: data.amount,
+      provider_id: data.provider_id,
+      currency_code: data.currency_code,
+      resource_id: data.order_edit_id || data.order_id || data.cart_id,
+    })
+
+    const payment = await this.paymentService_.create(
+      {
+        ...data,
+        payment_collection: data.payment_collection_id,
+        payment_session: data.payment_session_id,
+        data: paymentData,
+      },
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<PaymentDTO>(payment)
   }
 
   updatePayment(
@@ -370,341 +688,6 @@ export default class PaymentModuleService<
     )
 
     return this.retrievePayment(payment.id, {}, sharedContext)
-  }
-
-  createPaymentSession(
-    paymentCollectionId: string,
-    data: CreatePaymentSessionDTO,
-    sharedContext?: Context | undefined
-  ): Promise<PaymentSessionDTO>
-  createPaymentSession(
-    paymentCollectionId: string,
-    data: CreatePaymentSessionDTO[],
-    sharedContext?: Context | undefined
-  ): Promise<PaymentSessionDTO[]>
-
-  @InjectTransactionManager("baseRepository_")
-  async createPaymentSession(
-    paymentCollectionId: string,
-    data: CreatePaymentSessionDTO | CreatePaymentSessionDTO[],
-    @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentSessionDTO | PaymentSessionDTO[]> {
-    let input = Array.isArray(data) ? data : [data]
-
-    input = input.map((inputData) => ({
-      payment_collection: paymentCollectionId,
-      ...inputData,
-    }))
-
-    const created = await this.paymentSessionService_.create(
-      input,
-      sharedContext
-    )
-
-    return this.baseRepository_.serialize(
-      Array.isArray(data) ? created : created[0],
-      { populate: true }
-    )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async authorizePaymentCollection(
-    paymentCollectionId: string,
-    sessionIds: string[],
-    context: Record<string, unknown> = {},
-    @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentCollectionDTO> {
-    const paymentCollection = await this.retrievePaymentCollection(
-      paymentCollectionId,
-      { relations: ["payment_sessions", "payments"] }
-    )
-
-    if (paymentCollection.authorized_amount === paymentCollection.amount) {
-      return paymentCollection
-    }
-
-    if (paymentCollection.amount < 0) {
-      return await this.updatePaymentCollection(
-        {
-          id: paymentCollectionId,
-          authorized_amount: 0,
-          status: PaymentCollectionStatus.AUTHORIZED,
-        },
-        sharedContext
-      )
-    }
-
-    if (!paymentCollection.payment_sessions?.length) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "You cannot complete a Payment Collection without a payment session."
-      )
-    }
-
-    let authorizedAmount = 0
-
-    for (const paymentSession of paymentCollection.payment_sessions) {
-      if (paymentSession.authorized_at) {
-        continue
-      }
-
-      if (!sessionIds.includes(paymentSession.id)) {
-        continue
-      }
-
-      const { data, status } =
-        await this.paymentProviderService_.authorizePayment(
-          {
-            provider_id: paymentSession.provider_id,
-            data: paymentSession.data,
-          },
-          context
-        )
-
-      await this.paymentSessionService_.update({
-        id: paymentSession.id,
-        data,
-        status,
-        authorized_at:
-          status === PaymentSessionStatus.AUTHORIZED ? new Date() : null,
-      })
-
-      if (status === PaymentSessionStatus.AUTHORIZED) {
-        authorizedAmount += paymentSession.amount
-
-        await this.createPayment(
-          {
-            amount: paymentSession.amount,
-            authorized_amount: paymentSession.amount,
-            currency_code: paymentCollection.currency_code,
-            provider_id: paymentSession.provider_id,
-            payment_session_id: paymentSession.id,
-            payment_collection_id: paymentCollection.id,
-            data: paymentSession.data, // TODO: fetch latest data here <-
-            // TODO: cart_id
-          },
-          sharedContext
-        )
-      }
-    }
-
-    let status = paymentCollection.status
-
-    if (authorizedAmount === 0) {
-      status = PaymentCollectionStatus.AWAITING
-    } else if (authorizedAmount < paymentCollection.amount) {
-      status = PaymentCollectionStatus.PARTIALLY_AUTHORIZED
-    } else if (authorizedAmount === paymentCollection.amount) {
-      status = PaymentCollectionStatus.AUTHORIZED
-    }
-
-    await this.updatePaymentCollection(
-      {
-        id: paymentCollectionId,
-        authorized_amount: authorizedAmount,
-        status,
-      },
-      sharedContext
-    )
-
-    return this.retrievePaymentCollection(
-      paymentCollectionId,
-      {},
-      sharedContext
-    )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async setPaymentSessions(
-    paymentCollectionId: string,
-    data: SetPaymentSessionsDTO[],
-    context: SetPaymentSessionsContextDTO,
-    sharedContext?: Context | undefined
-  ): Promise<PaymentCollectionDTO> {
-    const paymentCollection = await this.retrievePaymentCollection(
-      paymentCollectionId,
-      { relations: ["payment_sessions", "payment_providers"] },
-      sharedContext
-    )
-
-    if (paymentCollection.status !== PaymentCollectionStatus.NOT_PAID) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        `Cannot set payment sessions for a payment collection with status ${paymentCollection.status}`
-      )
-    }
-
-    const paymentSessionsMap = new Map(
-      paymentCollection.payment_sessions!.map((session) => [
-        session.id,
-        session,
-      ])
-    )
-
-    const totalSessionsAmount = data.reduce((acc, i) => acc + i.amount, 0)
-
-    if (totalSessionsAmount !== paymentCollection.amount) {
-      throw new MedusaError(
-        MedusaError.Types.UNEXPECTED_STATE,
-        `The sum of sessions is not equal to ${paymentCollection.amount} on Payment Collection`
-      )
-    }
-
-    const currentSessionsIds: string[] = []
-
-    for (const input of data) {
-      const existingSession = input.session_id
-        ? paymentSessionsMap.get(input.session_id)
-        : null
-      let paymentSession: PaymentSessionDTO
-
-      const providerDataInput = {
-        amount: input.amount,
-        currency_code: paymentCollection.currency_code,
-
-        resource_id: context.resource_id,
-        email: context.email,
-        customer: context.customer,
-        context: context.context,
-        billing_address: context.billing_address,
-        paymentSessionData: existingSession?.data || {},
-      }
-
-      if (existingSession) {
-        await this.paymentProviderService_.updateSession(
-          {
-            id: existingSession.id,
-            provider_id: existingSession.provider_id,
-            data: existingSession.data,
-          },
-          providerDataInput
-        )
-
-        paymentSession = await this.updatePaymentSession({
-          id: existingSession.id,
-          amount: input.amount,
-          // currency_code: input.currency_code,
-          customer_id: context.customer!.id as string,
-          resource_id: context.resource_id,
-          data: existingSession.data,
-        })
-      } else {
-        const sessionData = await this.paymentProviderService_.createSession(
-          input.provider_id,
-          providerDataInput
-        )
-
-        paymentSession = await this.createPaymentSession(paymentCollectionId, {
-          amount: input.amount,
-          provider_id: input.provider_id,
-          currency_code: paymentCollection.currency_code,
-          data: sessionData,
-        })
-      }
-
-      currentSessionsIds.push(paymentSession.id)
-    }
-
-    if (paymentCollection.payment_sessions?.length) {
-      const toRemoveSessions = paymentCollection.payment_sessions.filter(
-        ({ id }) => !currentSessionsIds.includes(id)
-      )
-
-      if (toRemoveSessions.length) {
-        await Promise.all(
-          toRemoveSessions.map((session) =>
-            this.paymentProviderService_.deleteSession({
-              provider_id: session.provider_id,
-              data: session.data,
-            })
-          )
-        )
-
-        await this.deletePaymentSession(
-          toRemoveSessions.map(({ id }) => id),
-          sharedContext
-        )
-      }
-    }
-
-    return await this.retrievePaymentCollection(
-      paymentCollectionId,
-      {},
-      sharedContext
-    )
-  }
-
-  deletePaymentSession(ids: string[], sharedContext?: Context): Promise<void>
-  deletePaymentSession(id: string, sharedContext?: Context): Promise<void>
-  @InjectTransactionManager("baseRepository_")
-  async deletePaymentSession(
-    ids: string | string[],
-    @MedusaContext() sharedContext?: Context
-  ): Promise<void> {
-    const paymentCollectionIds = Array.isArray(ids) ? ids : [ids]
-    await this.paymentSessionService_.delete(
-      paymentCollectionIds,
-      sharedContext
-    )
-  }
-
-  updatePaymentSession(
-    data: UpdatePaymentSessionDTO,
-    sharedContext?: Context
-  ): Promise<PaymentSessionDTO>
-  updatePaymentSession(
-    data: UpdatePaymentSessionDTO[],
-    sharedContext?: Context
-  ): Promise<PaymentSessionDTO[]>
-  @InjectTransactionManager("baseRepository_")
-  async updatePaymentSession(
-    data: UpdatePaymentSessionDTO | UpdatePaymentSessionDTO[],
-    @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentSessionDTO | PaymentSessionDTO[]> {
-    const input = Array.isArray(data) ? data : [data]
-    const sessions = await this.paymentSessionService_.update(
-      input,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize(
-      Array.isArray(data) ? sessions : sessions[0],
-      { populate: true }
-    )
-  }
-
-  completePaymentCollection(
-    paymentCollectionId: string,
-    sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
-  completePaymentCollection(
-    paymentCollectionId: string[],
-    sharedContext?: Context
-  ): Promise<PaymentCollectionDTO[]>
-
-  @InjectTransactionManager("baseRepository_")
-  async completePaymentCollection(
-    paymentCollectionId: string | string[],
-    @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentCollectionDTO | PaymentCollectionDTO[]> {
-    const input = Array.isArray(paymentCollectionId)
-      ? paymentCollectionId.map((id) => ({
-          id,
-          completed_at: new Date(),
-        }))
-      : [{ id: paymentCollectionId, completed_at: new Date() }]
-
-    // TODO: what checks should be done here? e.g. captured_amount === amount?
-
-    const updated = await this.paymentCollectionService_.update(
-      input,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize(
-      Array.isArray(paymentCollectionId) ? updated : updated[0],
-      { populate: true }
-    )
   }
 
   private async createProvidersOnLoad() {
