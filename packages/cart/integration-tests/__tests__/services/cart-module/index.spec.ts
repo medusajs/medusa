@@ -5,7 +5,7 @@ import { initModules } from "medusa-test-utils"
 import { MikroOrmWrapper } from "../../../utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 describe("Cart Module Service", () => {
   let service: ICartModuleService

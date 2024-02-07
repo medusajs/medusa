@@ -2,13 +2,13 @@ import { mergeTypeDefs } from "@graphql-tools/merge"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
+  ExternalModuleDeclaration,
   InternalModuleDeclaration,
   LoadedModule,
-  MedusaAppOutput,
-  MedusaContainer,
-  MedusaModuleConfig,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  MedusaContainer,
+  MedusaModuleConfig,
   ModuleDefinition,
   ModuleExports,
   ModuleJoinerConfig,
@@ -19,10 +19,10 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  ModulesSdkUtils,
   createMedusaContainer,
   isObject,
   isString,
-  ModulesSdkUtils,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
@@ -37,6 +37,38 @@ import { cleanGraphQLSchema } from "./utils"
 import * as Servers from "./utils/servers"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
+
+export type RunMigrationFn = (
+  options?: ModuleServiceInitializeOptions,
+  injectedDependencies?: Record<any, any>
+) => Promise<void>
+
+export type MedusaModuleConfig = {
+  [key: string | Modules]:
+    | string
+    | boolean
+    | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
+}
+
+export type SharedResources = {
+  database?: ModuleServiceInitializeOptions["database"] & {
+    /**
+     * {
+     *   name?: string
+     *   afterCreate?: Function
+     *   min?: number
+     *   max?: number
+     *   refreshIdle?: boolean
+     *   idleTimeoutMillis?: number
+     *   reapIntervalMillis?: number
+     *   returnToHead?: boolean
+     *   priorityRange?: number
+     *   log?: (message: string, logLevel: string) => void
+     * }
+     */
+    pool?: Record<string, unknown>
+  }
+}
 
 async function loadModules(modulesConfig, sharedContainer) {
   const allModules = {}
@@ -152,6 +184,23 @@ function registerCustomJoinerConfigs(servicesConfig: ModuleJoinerConfig[]) {
   }
 }
 
+export type MedusaAppOutput = {
+  modules: Record<string, LoadedModule | LoadedModule[]>
+  link: RemoteLink | undefined
+  query: (
+    query: string | RemoteJoinerQuery | object,
+    variables?: Record<string, unknown>
+  ) => Promise<any>
+  entitiesMap?: Record<string, any>
+  notFound?: Record<string, Record<string, string>>
+  runMigrations: RunMigrationFn
+  listen: (
+    protocol: "http" | "grpc",
+    port: number,
+    options?: Record<string, any>
+  ) => Promise<void>
+}
+
 export async function MedusaApp({
   sharedContainer,
   sharedResourcesConfig,
@@ -162,6 +211,7 @@ export async function MedusaApp({
   linkModules,
   remoteFetchData,
   injectedDependencies,
+  onApplicationStartCb,
 }: {
   sharedContainer?: MedusaContainer
   sharedResourcesConfig?: SharedResources
@@ -173,6 +223,7 @@ export async function MedusaApp({
   linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
   remoteFetchData?: RemoteFetchDataCallback
   injectedDependencies?: any
+  onApplicationStartCb?: () => void
 } = {}): Promise<MedusaAppOutput> {
   injectedDependencies ??= {}
 
@@ -314,6 +365,6 @@ export async function MedusaApp({
       },
     }
   } finally {
-    await MedusaModule.onApplicationStart()
+    MedusaModule.onApplicationStart(onApplicationStartCb)
   }
 }

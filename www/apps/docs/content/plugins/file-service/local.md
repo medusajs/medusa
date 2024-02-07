@@ -87,10 +87,14 @@ const { withStoreConfig } = require("./store-config")
 
 module.exports = withStoreConfig({
   // ...
-  images: {
-    domains: [
+ images: {
+    remotePatterns: [
       // ...
-      "<BACKEND_URL>",
+      {
+        protocol: "http", // or https
+        hostname:"<BACKEND_URL>",
+      },
+      // ...
     ],
   },
 })

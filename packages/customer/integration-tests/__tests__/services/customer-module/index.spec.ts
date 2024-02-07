@@ -1,8 +1,8 @@
 import { ICustomerModuleService } from "@medusajs/types"
 import { MikroOrmWrapper } from "../../../utils"
 import { Modules } from "@medusajs/modules-sdk"
-import { initModules } from "medusa-test-utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 

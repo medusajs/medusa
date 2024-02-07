@@ -1,11 +1,12 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+
 import { ICustomerModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
-import { getContainer } from "../../../../environment-helpers/use-container"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
@@ -37,10 +38,7 @@ describe("POST /store/customers/:id/addresses/:address_id", () => {
   })
 
   it("should update a customer address", async () => {
-    const { customer, jwt } = await createAuthenticatedCustomer(
-      customerModuleService,
-      appContainer.resolve(ModuleRegistrationName.AUTH)
-    )
+    const { customer, jwt } = await createAuthenticatedCustomer(appContainer)
 
     const address = await customerModuleService.addAddresses({
       customer_id: customer.id,
@@ -69,15 +67,13 @@ describe("POST /store/customers/:id/addresses/:address_id", () => {
   })
 
   it("should fail to update another customer's address", async () => {
-    const { jwt } = await createAuthenticatedCustomer(
-      customerModuleService,
-      appContainer.resolve(ModuleRegistrationName.AUTH)
-    )
+    const { jwt } = await createAuthenticatedCustomer(appContainer)
 
     const otherCustomer = await customerModuleService.create({
       first_name: "Jane",
       last_name: "Doe",
     })
+
     const address = await customerModuleService.addAddresses({
       customer_id: otherCustomer.id,
       first_name: "John",
