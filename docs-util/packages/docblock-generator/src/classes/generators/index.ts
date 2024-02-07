@@ -1,7 +1,7 @@
 import ts from "typescript"
-import Formatter from "../formatter.js"
+import Formatter from "../helpers/formatter.js"
 import KindsRegistry from "../kinds/registry.js"
-import GeneratorEventManager from "../generator-event-manager.js"
+import GeneratorEventManager from "../helpers/generator-event-manager.js"
 import { CommonCliOptions } from "../../types/index.js"
 
 export type Options = {

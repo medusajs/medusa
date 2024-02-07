@@ -55,6 +55,13 @@ export function wordsToKebab(str: string): string {
     .join("-")
 }
 
+export function wordsToPascal(str: string): string {
+  return str
+    .split(" ")
+    .map((word) => capitalize(word))
+    .join("")
+}
+
 /**
  * Remove parts of the name such as DTO, Filterable, etc...
  *

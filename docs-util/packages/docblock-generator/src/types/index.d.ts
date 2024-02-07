@@ -15,3 +15,15 @@ export declare type CommonCliOptions = {
   type: "all" | "oas" | "docs"
   generateExamples?: boolean
 }
+
+export declare type OpenApiSchema = OpenAPIV3.SchemaObject & {
+  "x-schemaName"?: string
+}
+
+export declare interface OpenApiTagObject extends OpenAPIV3.TagObject {
+  "x-associatedSchema"?: OpenAPIV3.ReferenceObject
+}
+
+export declare interface OpenApiDocument extends OpenAPIV3.Document {
+  tags?: OpenApiTagObject[]
+}

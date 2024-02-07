@@ -11,21 +11,22 @@ import {
   kebabToTitle,
   wordsToKebab,
 } from "../../utils/str-formatting.js"
-import { OpenApiOperation } from "../../types/index.js"
+import {
+  OpenApiDocument,
+  OpenApiOperation,
+  OpenApiSchema,
+} from "../../types/index.js"
 import { OpenAPIV3 } from "openapi-types"
 import { parse, stringify } from "yaml"
-import {
-  DOCBLOCK_END_LINE,
-  // DOCBLOCK_LINE_ASTRIX,
-  DOCBLOCK_NEW_LINE,
-  // DOCBLOCK_START,
-} from "../../constants.js"
-import { GeneratorEvent } from "../generator-event-manager.js"
+import { GeneratorEvent } from "../helpers/generator-event-manager.js"
 import { readFileSync, writeFileSync } from "fs"
 import OasExamplesGenerator from "../examples/oas.js"
 import pluralize from "pluralize"
 import getOasOutputBasePath from "../../utils/get-oas-output-base-path.js"
 import parseOas, { ExistingOas } from "../../utils/parse-oas.js"
+import OasSchemaHelper from "../helpers/oas-schema.js"
+import formatOas from "../../utils/format-oas.js"
+import { DEFAULT_OAS_RESPONSES } from "../../constants.js"
 
 export const API_ROUTE_PARAM_REGEX = /\[(.+)\]/g
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
@@ -65,31 +66,7 @@ class OasKindGenerator extends FunctionKindGenerator {
    */
   protected baseOutputPath: string
   protected oasExamplesGenerator: OasExamplesGenerator
-  /**
-   * These responses are included by default for all API routes.
-   */
-  private defaultResponses: {
-    [k: string]: OpenAPIV3.ReferenceObject
-  } = {
-    "400": {
-      $ref: "#/components/responses/400_error",
-    },
-    "401": {
-      $ref: "#/components/responses/unauthorized",
-    },
-    "404": {
-      $ref: "#/components/responses/not_found_error",
-    },
-    "409": {
-      $ref: "#/components/responses/invalid_state_error",
-    },
-    "422": {
-      $ref: "#/components/responses/invalid_request_error",
-    },
-    "500": {
-      $ref: "#/components/responses/500_error",
-    },
-  }
+  protected oasSchemaHelper: OasSchemaHelper
 
   constructor(options: GeneratorOptions) {
     super(options)
@@ -98,7 +75,8 @@ class OasKindGenerator extends FunctionKindGenerator {
     this.baseOutputPath = getOasOutputBasePath()
 
     this.tags = new Map()
-    this.initTags()
+    this.oasSchemaHelper = new OasSchemaHelper()
+    this.init()
 
     this.generatorEventManager.listen(
       GeneratorEvent.FINISHED_GENERATE_EVENT,
@@ -274,7 +252,9 @@ class OasKindGenerator extends FunctionKindGenerator {
       oas.requestBody = {
         content: {
           "application/json": {
-            schema: requestSchema,
+            schema:
+              this.oasSchemaHelper.schemaToReference(requestSchema) ||
+              requestSchema,
           },
         },
       }
@@ -347,14 +327,16 @@ class OasKindGenerator extends FunctionKindGenerator {
     if (responseSchema && Object.keys(responseSchema).length > 0) {
       ;(oas.responses[responseStatus] as OpenAPIV3.ResponseObject).content = {
         "application/json": {
-          schema: responseSchema,
+          schema:
+            this.oasSchemaHelper.schemaToReference(responseSchema) ||
+            responseSchema,
         },
       }
     }
 
     oas.responses = {
       ...(oas.responses || {}),
-      ...this.defaultResponses,
+      ...DEFAULT_OAS_RESPONSES,
     }
 
     // push new tag to the tags property
@@ -363,7 +345,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       areaTags?.add(tagName)
     }
 
-    return this.formatOas(oas, oasPrefix)
+    return formatOas(oas, oasPrefix)
   }
 
   /**
@@ -466,7 +448,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     // update request schema
     const existingRequestBodySchema = (
       oas.requestBody as OpenAPIV3.RequestBodyObject
-    )?.content?.["application/json"].schema as OpenAPIV3.SchemaObject
+    )?.content?.["application/json"].schema as OpenApiSchema
     const updatedRequestSchema = this.updateSchema({
       oldSchema: existingRequestBodySchema,
       newSchema: requestSchema,
@@ -480,7 +462,10 @@ class OasKindGenerator extends FunctionKindGenerator {
       oas.requestBody = {
         content: {
           "application/json": {
-            schema: updatedRequestSchema,
+            schema: updatedRequestSchema
+              ? this.oasSchemaHelper.schemaToReference(updatedRequestSchema) ||
+                updatedRequestSchema
+              : updatedRequestSchema,
           },
         },
       }
@@ -492,7 +477,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       node,
       tagName,
     })
-    let updatedResponseSchema: OpenAPIV3.SchemaObject | undefined
+    let updatedResponseSchema: OpenApiSchema | undefined
 
     if (!oas.responses && newResponseSchema) {
       // add response schema
@@ -501,24 +486,26 @@ class OasKindGenerator extends FunctionKindGenerator {
           description: "OK",
           content: {
             "application/json": {
-              schema: newResponseSchema,
+              schema:
+                this.oasSchemaHelper.schemaToReference(newResponseSchema) ||
+                newResponseSchema,
             },
           },
         },
-        ...this.defaultResponses,
+        ...DEFAULT_OAS_RESPONSES,
       }
       updatedResponseSchema = newResponseSchema
     } else if (oas.responses && !newResponseSchema) {
       // remove response schema by only keeping the default responses
-      oas.responses = this.defaultResponses
+      oas.responses = DEFAULT_OAS_RESPONSES
     } else {
       // check if response status should be changed
       const oldResponseStatus = Object.keys(oas.responses!).find(
-        (status) => !Object.keys(this.defaultResponses).includes(status)
+        (status) => !Object.keys(DEFAULT_OAS_RESPONSES).includes(status)
       )
       const oldResponseSchema = oldResponseStatus
         ? ((oas.responses![oldResponseStatus] as OpenAPIV3.ResponseObject)
-            .content?.["application/json"].schema as OpenAPIV3.SchemaObject)
+            .content?.["application/json"].schema as OpenApiSchema)
         : undefined
 
       updatedResponseSchema = this.updateSchema({
@@ -536,7 +523,10 @@ class OasKindGenerator extends FunctionKindGenerator {
         description: "OK",
         content: {
           "application/json": {
-            schema: updatedResponseSchema,
+            schema: updatedResponseSchema
+              ? this.oasSchemaHelper.schemaToReference(updatedResponseSchema) ||
+                updatedResponseSchema
+              : updatedResponseSchema,
           },
         },
       }
@@ -612,7 +602,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       areaTags?.add(tagName)
     }
 
-    return this.formatOas(oas, oasPrefix)
+    return formatOas(oas, oasPrefix)
   }
 
   /**
@@ -968,7 +958,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     /**
      * The parameter's schema.
      */
-    schema: OpenAPIV3.SchemaObject
+    schema: OpenApiSchema
   }): OpenAPIV3.ParameterObject {
     return {
       name: name,
@@ -1049,10 +1039,10 @@ class OasKindGenerator extends FunctionKindGenerator {
     /**
      * The request schema.
      */
-    requestSchema?: OpenAPIV3.SchemaObject
+    requestSchema?: OpenApiSchema
   } {
     const parameters: OpenAPIV3.ParameterObject[] = []
-    let requestSchema: OpenAPIV3.SchemaObject | undefined
+    let requestSchema: OpenApiSchema | undefined
 
     if (
       node.parameters[0].type &&
@@ -1147,8 +1137,8 @@ class OasKindGenerator extends FunctionKindGenerator {
      * The tag's name.
      */
     tagName?: string
-  }): OpenAPIV3.SchemaObject | undefined {
-    let responseSchema: OpenAPIV3.SchemaObject | undefined
+  }): OpenApiSchema | undefined {
+    let responseSchema: OpenApiSchema | undefined
 
     if (
       node.parameters[1].type &&
@@ -1214,7 +1204,7 @@ class OasKindGenerator extends FunctionKindGenerator {
      * only children not included in this array are added to the schema.
      */
     disallowedChildren?: string[]
-  }): OpenAPIV3.SchemaObject {
+  }): OpenApiSchema {
     if (level > this.MAX_LEVEL) {
       return {}
     }
@@ -1416,7 +1406,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       case itemType.isClassOrInterface() ||
         itemType.isTypeParameter() ||
         (itemType as ts.Type).flags === ts.TypeFlags.Object:
-        const properties: Record<string, OpenAPIV3.SchemaObject> = {}
+        const properties: Record<string, OpenApiSchema> = {}
         const requiredProperties: string[] = []
         if (level + 1 <= this.MAX_LEVEL) {
           itemType.getProperties().forEach((property) => {
@@ -1441,13 +1431,25 @@ class OasKindGenerator extends FunctionKindGenerator {
             })
           })
         }
-        return {
+        const objSchema: OpenApiSchema = {
           type: "object",
           description,
+          "x-schemaName":
+            itemType.isClassOrInterface() || itemType.isTypeParameter()
+              ? this.oasSchemaHelper.normalizeSchemaName(typeAsString)
+              : undefined,
           required:
             requiredProperties.length > 0 ? requiredProperties : undefined,
           properties,
         }
+
+        if (objSchema["x-schemaName"]) {
+          // add object to schemas to be created
+          // if necessary
+          this.oasSchemaHelper.schemaToReference(objSchema)
+        }
+
+        return objSchema
       default:
         return {}
     }
@@ -1571,7 +1573,7 @@ class OasKindGenerator extends FunctionKindGenerator {
   /**
    * Initialize the {@link tags} property.
    */
-  initTags() {
+  init() {
     this.tags.set("admin", new Set())
     this.tags.set("store", new Set())
   }
@@ -1633,31 +1635,30 @@ class OasKindGenerator extends FunctionKindGenerator {
       }
 
       if (
-        (updatedParameter.schema as OpenAPIV3.SchemaObject).type !==
-        (parameter.schema as OpenAPIV3.SchemaObject).type
+        (updatedParameter.schema as OpenApiSchema).type !==
+        (parameter.schema as OpenApiSchema).type
       ) {
-        ;(parameter.schema as OpenAPIV3.SchemaObject).type = (
-          updatedParameter.schema as OpenAPIV3.SchemaObject
+        ;(parameter.schema as OpenApiSchema).type = (
+          updatedParameter.schema as OpenApiSchema
         ).type
       }
 
       if (
-        (updatedParameter.schema as OpenAPIV3.SchemaObject).title !==
-        (parameter.schema as OpenAPIV3.SchemaObject).title
+        (updatedParameter.schema as OpenApiSchema).title !==
+        (parameter.schema as OpenApiSchema).title
       ) {
-        ;(parameter.schema as OpenAPIV3.SchemaObject).title = (
-          updatedParameter.schema as OpenAPIV3.SchemaObject
+        ;(parameter.schema as OpenApiSchema).title = (
+          updatedParameter.schema as OpenApiSchema
         ).title
       }
 
       if (
-        (updatedParameter.schema as OpenAPIV3.SchemaObject).description !==
-          (parameter.schema as OpenAPIV3.SchemaObject).description &&
-        (parameter.schema as OpenAPIV3.SchemaObject).description ===
-          this.defaultSummary
+        (updatedParameter.schema as OpenApiSchema).description !==
+          (parameter.schema as OpenApiSchema).description &&
+        (parameter.schema as OpenApiSchema).description === this.defaultSummary
       ) {
-        ;(parameter.schema as OpenAPIV3.SchemaObject).description = (
-          updatedParameter.schema as OpenAPIV3.SchemaObject
+        ;(parameter.schema as OpenApiSchema).description = (
+          updatedParameter.schema as OpenApiSchema
         ).description
       }
     })
@@ -1695,92 +1696,93 @@ class OasKindGenerator extends FunctionKindGenerator {
     /**
      * The old schema.
      */
-    oldSchema?: OpenAPIV3.SchemaObject
+    oldSchema?: OpenApiSchema | OpenAPIV3.ReferenceObject
     /**
      * The new schema.
      */
-    newSchema?: OpenAPIV3.SchemaObject
-  }): OpenAPIV3.SchemaObject | undefined {
-    if (!oldSchema && newSchema) {
-      return newSchema
-    } else if (oldSchema && !newSchema) {
+    newSchema?: OpenApiSchema | OpenAPIV3.ReferenceObject
+  }): OpenApiSchema | undefined {
+    const oldSchemaObj = (
+      oldSchema && "$ref" in oldSchema
+        ? this.oasSchemaHelper.getSchemaByName(oldSchema.$ref)?.schema
+        : oldSchema
+    ) as OpenApiSchema | undefined
+    const newSchemaObj = (
+      newSchema && "$ref" in newSchema
+        ? this.oasSchemaHelper.getSchemaByName(newSchema.$ref)?.schema
+        : newSchema
+    ) as OpenApiSchema | undefined
+    if (!oldSchemaObj && newSchemaObj) {
+      return newSchemaObj
+    } else if (oldSchemaObj && !newSchemaObj) {
       return undefined
     }
 
     // update schema
-    if (oldSchema!.type !== newSchema?.type) {
-      oldSchema!.type = newSchema?.type
+    if (oldSchemaObj!.type !== newSchemaObj?.type) {
+      oldSchemaObj!.type = newSchemaObj?.type
     }
 
     if (
-      oldSchema!.description !== newSchema?.description &&
-      oldSchema!.description === this.defaultSummary
+      oldSchemaObj!.description !== newSchemaObj?.description &&
+      oldSchemaObj!.description === this.defaultSummary
     ) {
-      oldSchema!.description = newSchema?.description || this.defaultSummary
+      oldSchemaObj!.description =
+        newSchemaObj?.description || this.defaultSummary
     }
 
-    oldSchema!.required = newSchema?.required
+    oldSchemaObj!.required = newSchemaObj?.required
 
-    if (oldSchema!.type === "object") {
-      if (!oldSchema?.properties && newSchema?.properties) {
-        oldSchema!.properties = newSchema.properties
-      } else if (oldSchema?.properties && !newSchema?.properties) {
-        delete oldSchema!.properties
+    if (oldSchemaObj!.type === "object") {
+      if (!oldSchemaObj?.properties && newSchemaObj?.properties) {
+        oldSchemaObj!.properties = newSchemaObj.properties
+      } else if (oldSchemaObj?.properties && !newSchemaObj?.properties) {
+        delete oldSchemaObj!.properties
       } else {
         // update existing properties
-        Object.entries(oldSchema!.properties!).forEach(
+        Object.entries(oldSchemaObj!.properties!).forEach(
           ([propertyName, propertySchema]) => {
             const newPropertySchemaKey = Object.keys(
-              newSchema!.properties!
+              newSchemaObj!.properties!
             ).find((newPropertyName) => newPropertyName === propertyName)
             if (!newPropertySchemaKey) {
               // remove property
-              delete oldSchema!.properties![propertyName]
+              delete oldSchemaObj!.properties![propertyName]
               return
             }
 
-            oldSchema!.properties![propertyName] =
+            oldSchemaObj!.properties![propertyName] =
               this.updateSchema({
-                oldSchema: propertySchema as OpenAPIV3.SchemaObject,
-                newSchema: newSchema!.properties![
+                oldSchema: propertySchema as OpenApiSchema,
+                newSchema: newSchemaObj!.properties![
                   propertyName
-                ] as OpenAPIV3.SchemaObject,
+                ] as OpenApiSchema,
               }) || propertySchema
           }
         )
         // add new properties
-        Object.keys(newSchema!.properties!)
+        Object.keys(newSchemaObj!.properties!)
           .filter(
-            (propertyKey) => !Object.hasOwn(oldSchema!.properties!, propertyKey)
+            (propertyKey) =>
+              !Object.hasOwn(oldSchemaObj!.properties!, propertyKey)
           )
           .forEach((newPropertyKey) => {
-            oldSchema!.properties![newPropertyKey] =
-              newSchema!.properties![newPropertyKey]
+            oldSchemaObj!.properties![newPropertyKey] =
+              newSchemaObj!.properties![newPropertyKey]
           })
       }
-    } else if (oldSchema?.type === "array" && newSchema?.type === "array") {
-      oldSchema.items =
+    } else if (
+      oldSchemaObj?.type === "array" &&
+      newSchemaObj?.type === "array"
+    ) {
+      oldSchemaObj.items =
         this.updateSchema({
-          oldSchema: oldSchema.items as OpenAPIV3.SchemaObject,
-          newSchema: newSchema!.items as OpenAPIV3.SchemaObject,
-        }) || oldSchema.items
+          oldSchema: oldSchemaObj.items as OpenApiSchema,
+          newSchema: newSchemaObj!.items as OpenApiSchema,
+        }) || oldSchemaObj.items
     }
 
-    return oldSchema
-  }
-
-  /**
-   * Retrieve the OAS as a formatted string that can be used as a comment.
-   *
-   * @param oas - The OAS operation to format.
-   * @param oasPrefix - The OAS prefix that's used before the OAS operation.
-   * @returns The formatted OAS comment.
-   */
-  formatOas(oas: OpenApiOperation, oasPrefix: string) {
-    return `* ${oasPrefix}${DOCBLOCK_NEW_LINE}${stringify(oas).replaceAll(
-      "\n",
-      DOCBLOCK_NEW_LINE
-    )}${DOCBLOCK_END_LINE}`
+    return oldSchemaObj
   }
 
   /**
@@ -1806,9 +1808,12 @@ class OasKindGenerator extends FunctionKindGenerator {
   afterGenerate() {
     this.writeNewTags("admin")
     this.writeNewTags("store")
+    this.oasSchemaHelper.writeNewSchemas()
 
     // reset tags
-    this.initTags()
+    this.init()
+    // reset schemas
+    this.oasSchemaHelper.init()
   }
 
   /**
@@ -1825,7 +1830,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     )
     const areaYaml = parse(
       readFileSync(areaYamlPath, "utf-8")
-    ) as OpenAPIV3.Document
+    ) as OpenApiDocument
     let addedTags = false
 
     areaYaml.tags = [...(areaYaml.tags || [])]
@@ -1833,8 +1838,19 @@ class OasKindGenerator extends FunctionKindGenerator {
     this.tags.get(area)?.forEach((tag) => {
       const existingTag = areaYaml.tags!.find((baseTag) => baseTag.name === tag)
       if (!existingTag) {
+        // try to retrieve associated schema
+        const schema = this.oasSchemaHelper.getSchemaByName(
+          this.oasSchemaHelper.tagNameToSchemaName(tag)
+        )
         areaYaml.tags!.push({
           name: tag,
+          "x-associatedSchema": schema?.schema?.["x-schemaName"]
+            ? {
+                $ref: this.oasSchemaHelper.constructSchemaReference(
+                  schema.schema["x-schemaName"]
+                ),
+              }
+            : undefined,
         })
         addedTags = true
       }

@@ -11,9 +11,11 @@ import parseOas from "../utils/parse-oas.js"
 import OasKindGenerator, { OasArea } from "../classes/kinds/oas.js"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
 import ts from "typescript"
-import GeneratorEventManager from "../classes/generator-event-manager.js"
+import GeneratorEventManager from "../classes/helpers/generator-event-manager.js"
 import { parse, stringify } from "yaml"
-import { OpenAPIV3 } from "openapi-types"
+import OasSchemaHelper from "../classes/helpers/oas-schema.js"
+import { DEFAULT_OAS_RESPONSES } from "../constants.js"
+import { OpenApiDocument } from "../types/index.js"
 
 const OAS_PREFIX_REGEX = /@oas \[(?<method>(get|post|delete))\] (?<path>.+)/
 
@@ -29,6 +31,9 @@ export default async function () {
   )
   const areas: OasArea[] = ["admin", "store"]
   const tags: Map<OasArea, Set<string>> = new Map()
+  const oasSchemaHelper = new OasSchemaHelper()
+  const referencedSchemas: Set<string> = new Set()
+  const allSchemas: Set<string> = new Set()
   areas.forEach((area) => {
     tags.set(area, new Set<string>())
   })
@@ -127,6 +132,44 @@ export default async function () {
         const areaTags = tags.get(area as OasArea)
         areaTags?.add(tag)
       })
+
+      // collect schemas
+      if (oas.requestBody) {
+        if (oasSchemaHelper.isRefObject(oas.requestBody)) {
+          referencedSchemas.add(
+            oasSchemaHelper.normalizeSchemaName(oas.requestBody.$ref)
+          )
+        } else {
+          const requestBodySchema =
+            oas.requestBody.content[Object.keys(oas.requestBody.content)[0]]
+              .schema
+          if (oasSchemaHelper.isRefObject(requestBodySchema)) {
+            referencedSchemas.add(
+              oasSchemaHelper.normalizeSchemaName(requestBodySchema.$ref)
+            )
+          }
+        }
+      }
+
+      if (oas.responses) {
+        const successResponseKey = Object.keys(oas.responses)[0]
+        if (!Object.keys(DEFAULT_OAS_RESPONSES).includes(successResponseKey)) {
+          const responseObj = oas.responses[successResponseKey]
+          if (oasSchemaHelper.isRefObject(responseObj)) {
+            referencedSchemas.add(
+              oasSchemaHelper.normalizeSchemaName(responseObj.$ref)
+            )
+          } else if (responseObj.content) {
+            const responseBodySchema =
+              responseObj.content[Object.keys(responseObj.content)[0]].schema
+            if (oasSchemaHelper.isRefObject(responseBodySchema)) {
+              referencedSchemas.add(
+                oasSchemaHelper.normalizeSchemaName(responseBodySchema.$ref)
+              )
+            }
+          }
+        }
+      }
     })
   })
 
@@ -141,7 +184,7 @@ export default async function () {
     const baseYamlPath = path.join(oasBasePath, baseYaml)
     const parsedBaseYaml = parse(
       readFileSync(baseYamlPath, "utf-8")
-    ) as OpenAPIV3.Document
+    ) as OpenApiDocument
 
     const area = path.basename(baseYaml).split(".")[0] as OasArea
     const areaTags = tags.get(area)
@@ -162,6 +205,64 @@ export default async function () {
       // write to the file
       writeFileSync(baseYamlPath, stringify(parsedBaseYaml))
     }
+
+    // collect referenced schemas
+    parsedBaseYaml.tags?.forEach((tag) => {
+      if (tag["x-associatedSchema"]) {
+        referencedSchemas.add(
+          oasSchemaHelper.normalizeSchemaName(tag["x-associatedSchema"].$ref)
+        )
+      }
+    })
+  })
+
+  // check if any schemas should be removed
+  // a schema is removed if no other schemas/operations reference it
+  const oasSchemasPath = path.join(oasOutputBasePath, "schemas")
+  readdirSync(oasSchemasPath, {
+    recursive: true,
+    encoding: "utf-8",
+  }).forEach((schemaYaml) => {
+    const schemaPath = path.join(oasSchemasPath, schemaYaml)
+    const parsedSchema = oasSchemaHelper.parseSchema(
+      readFileSync(schemaPath, "utf-8")
+    )
+
+    if (!parsedSchema) {
+      // remove file
+      rmSync(schemaPath, {
+        force: true,
+      })
+      return
+    }
+
+    // add schema to all schemas
+    if (parsedSchema.schema["x-schemaName"]) {
+      allSchemas.add(parsedSchema.schema["x-schemaName"])
+    }
+
+    // collect referenced schemas
+    if (parsedSchema.schema.properties) {
+      Object.values(parsedSchema.schema.properties).forEach((property) => {
+        if (oasSchemaHelper.isRefObject(property)) {
+          referencedSchemas.add(
+            oasSchemaHelper.normalizeSchemaName(property.$ref)
+          )
+        }
+      })
+    }
+  })
+
+  // clean up schemas
+  allSchemas.forEach((schemaName) => {
+    if (referencedSchemas.has(schemaName)) {
+      return
+    }
+
+    // schema isn't referenced anywhere, so remove it
+    rmSync(path.join(oasSchemasPath, `${schemaName}.ts`), {
+      force: true,
+    })
   })
 
   console.log("Finished clean up")

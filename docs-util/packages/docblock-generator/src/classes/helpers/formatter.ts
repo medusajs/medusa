@@ -1,11 +1,11 @@
-import getMonorepoRoot from "../utils/get-monorepo-root.js"
+import getMonorepoRoot from "../../utils/get-monorepo-root.js"
 import { ESLint, Linter } from "eslint"
 import path from "path"
-import dirname from "../utils/dirname.js"
+import dirname from "../../utils/dirname.js"
 import { minimatch } from "minimatch"
 import { existsSync } from "fs"
 import * as prettier from "prettier"
-import getRelativePaths from "../utils/get-relative-paths.js"
+import getRelativePaths from "../../utils/get-relative-paths.js"
 
 /**
  * A class used to apply formatting to files using ESLint and other formatting options.

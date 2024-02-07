@@ -158,6 +158,7 @@ async function getOASFromCodebase(
   const gen = await swaggerInline(
     v2 ? [
       path.resolve(oasOutputPath, "operations", apiType),
+      path.resolve(oasOutputPath, "schemas"),
       // We currently load error schemas from here. If we change
       // that in the future, we should change the path.
       path.resolve(medusaPackagePath, "dist", "api/middlewares"),

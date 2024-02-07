@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
 import ts from "typescript"
-import { GeneratorEvent } from "../generator-event-manager.js"
+import { GeneratorEvent } from "../helpers/generator-event-manager.js"
 import AbstractGenerator from "./index.js"
 import { minimatch } from "minimatch"
 

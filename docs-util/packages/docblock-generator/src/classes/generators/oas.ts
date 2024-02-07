@@ -2,6 +2,7 @@ import { minimatch } from "minimatch"
 import AbstractGenerator from "./index.js"
 import ts from "typescript"
 import OasKindGenerator from "../kinds/oas.js"
+import { GeneratorEvent } from "../helpers/generator-event-manager.js"
 
 /**
  * A class used to generate OAS yaml comments. The comments are written
@@ -50,6 +51,7 @@ class OasGenerator extends AbstractGenerator {
 
       ts.forEachChild(file, documentChild)
 
+      this.generatorEventManager.emit(GeneratorEvent.FINISHED_GENERATE_EVENT)
       console.log(`[OAS] Finished generating OAS for ${file.fileName}.`)
     })
   }

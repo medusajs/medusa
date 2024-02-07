@@ -8,7 +8,7 @@ import {
 import getSymbol from "../../utils/get-symbol.js"
 import KnowledgeBaseFactory, {
   RetrieveOptions,
-} from "../knowledge-base-factory.js"
+} from "../helpers/knowledge-base-factory.js"
 import {
   getCustomNamespaceTag,
   shouldHaveCustomNamespace,
@@ -18,7 +18,7 @@ import {
   capitalize,
   normalizeName,
 } from "../../utils/str-formatting.js"
-import GeneratorEventManager from "../generator-event-manager.js"
+import GeneratorEventManager from "../helpers/generator-event-manager.js"
 import { CommonCliOptions } from "../../types/index.js"
 
 export type GeneratorOptions = {

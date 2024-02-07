@@ -2,7 +2,7 @@ import filterFiles from "../utils/filter-files.js"
 import path from "path"
 import DocblockGenerator from "../classes/generators/docblock.js"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
-import { GitManager } from "../classes/git-manager.js"
+import { GitManager } from "../classes/helpers/git-manager.js"
 import OasGenerator from "../classes/generators/oas.js"
 import { CommonCliOptions } from "../types/index.js"
 

@@ -1,11 +1,11 @@
 import ts from "typescript"
-import { DOCBLOCK_DOUBLE_LINES, DOCBLOCK_NEW_LINE } from "../constants.js"
+import { DOCBLOCK_DOUBLE_LINES, DOCBLOCK_NEW_LINE } from "../../constants.js"
 import {
   camelToTitle,
   camelToWords,
   normalizeName,
   snakeToWords,
-} from "../utils/str-formatting.js"
+} from "../../utils/str-formatting.js"
 import pluralize from "pluralize"
 
 type TemplateOptions = {
