@@ -27,8 +27,8 @@ import {
 import {
   InjectTransactionManager,
   MedusaContext,
-  ModulesSdkUtils,
   MedusaError,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
 import {
   Capture,
@@ -40,6 +40,7 @@ import {
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import PaymentProviderService from "./payment-provider"
+import paymentSession from "@medusajs/medusa/dist/repositories/payment-session"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -484,6 +485,52 @@ export default class PaymentModuleService<
     })
 
     await this.paymentSessionService_.delete(id, sharedContext)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async authorizePaymentSession(
+    id: string,
+    context: Record<string, unknown>,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentDTO | void> {
+    const session = await this.retrievePaymentSession(id, {}, sharedContext)
+
+    if (session.authorized_at) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Session is already authorized."
+      )
+    }
+
+    const { data, status } =
+      await this.paymentProviderService_.authorizePayment(
+        {
+          provider_id: session.provider_id,
+          data: session.data,
+        },
+        context
+      )
+
+    if (status === PaymentSessionStatus.AUTHORIZED) {
+      const payment = await this.paymentService_.create(
+        {
+          amount: session.amount,
+          currency_code: session.currency_code,
+          authorized_amount: session.amount,
+          payment_session: session.id,
+          payment_collection: session.payment_collection!.id,
+          data,
+        },
+        sharedContext
+      )
+
+      await this.paymentSessionService_.update(
+        { id: session.id, authorized_at: new Date() },
+        sharedContext
+      )
+
+      return this.retrievePayment(payment.id, {}, sharedContext)
+    }
   }
 
   /**

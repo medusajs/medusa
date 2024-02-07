@@ -19,6 +19,7 @@ import {
   PaymentSessionDTO,
 } from "./common"
 import { FindConfig } from "../common"
+import { MedusaContext } from "@medusajs/utils"
 
 export interface IPaymentModuleService extends IModuleService {
   /* ********** PAYMENT COLLECTION ********** */
@@ -98,6 +99,12 @@ export interface IPaymentModuleService extends IModuleService {
   ): Promise<PaymentSessionDTO>
 
   deletePaymentSession(id: string, sharedContext?: Context): Promise<void>
+
+  authorizePaymentSession(
+    id: string,
+    context: Record<string, unknown>,
+    sharedContext?: Context
+  ): Promise<PaymentDTO | void>
 
   setPaymentSessions(
     paymentCollectionId: string,
