@@ -11,7 +11,7 @@ on:
 jobs:
   generate-tsdocs:
     if: github.event_name == 'workflow_dispatch' || (startsWith(github.head_ref, 'changeset-release/develop') && github.event.pull_request.merged == true)
-    name: Generated TSDoc PRs
+    name: Generated TSDoc PR
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -46,8 +46,50 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          title: "Generated TSDocs"
+          title: "chore(docs): Generated TSDocs"
           body: "This PR holds all generated TSDocs for the upcoming release."
           branch: "chore/generate-tsdocs"
           team-reviewers: "@medusajs/docs"
           add-paths: packages/**
+  generate-oas:
+    if: github.event_name == 'workflow_dispatch' || (startsWith(github.head_ref, 'changeset-release/develop') && github.event.pull_request.merged == true)
+    name: Generated OAS PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Install docs-util Dependencies
+        run: yarn
+        working-directory: docs-util
+
+      - name: Build packages
+        run: yarn build
+        working-directory: docs-util
+
+      - name: Run docblock generator
+        run: "yarn start run:release --type oas"
+        working-directory: docs-util/packages/docblock-generator
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_OWNER: ${{ github.repository_owner }}
+          GIT_REPO: medusa
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          title: "chore(docs): Generated OAS"
+          body: "This PR holds all generated OAS for the upcoming release."
+          branch: "chore/generate-oas"
+          team-reviewers: "@medusajs/docs"
+          add-paths: docs-util/oas-output/**
