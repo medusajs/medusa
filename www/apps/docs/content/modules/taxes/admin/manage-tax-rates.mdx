@@ -110,7 +110,7 @@ You can list the tax rates by sending a request to the [List Tax Rates API Route
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/tax-rates' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -185,7 +185,7 @@ You can retrieve the tax rate of a region by passing the `region_id` query param
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/tax-rates?region_id=reg_123' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -258,7 +258,7 @@ This query parameter also accepts an array of strings, allowing you to filter th
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/tax-rates?region_id[]=reg_123&region_id[]=reg_456' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -350,7 +350,7 @@ You can create a tax rate by sending a request to the [Create Tax Rate API Route
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/tax-rates' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "code": "TEST",
@@ -454,7 +454,7 @@ You can update a tax rate by sending a request to the [Update Tax Rate API Route
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "name": "New Tax Rate"
@@ -553,7 +553,7 @@ You can add a product to a tax rate by sending a request to the [Add Products AP
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/products/batch' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
       "products": [
@@ -646,7 +646,7 @@ You can remove a product from a tax rate by sending a request to the [Delete Pro
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/products/batch' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
       "products": [
@@ -751,7 +751,7 @@ You can add a product type to a tax rate by sending a request to the [Add Produc
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/product-types/batch' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
       "product_types": [
@@ -852,7 +852,7 @@ You can remove a product type from a tax rate by sending a request to the [Delet
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/product-types/batch' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
       "product_types": [
@@ -957,7 +957,7 @@ You can add a shipping option to a tax rate by sending a request to the [Add Shi
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/shipping-options/batch' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
       "shipping_options": [
@@ -1054,7 +1054,7 @@ You can remove a shipping option from a tax rate by sending a request to the [De
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/shipping-options/batch' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
       "shipping_options": [
@@ -1135,7 +1135,7 @@ You can delete a tax rate by sending a request to the [Delete Tax Rate API Route
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
