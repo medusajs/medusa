@@ -231,246 +231,131 @@ export default class PaymentModuleService<
     )
   }
 
-  capturePayment(
-    data: CreateCaptureDTO,
-    sharedContext?: Context
-  ): Promise<PaymentDTO>
-  capturePayment(
-    data: CreateCaptureDTO[],
-    sharedContext?: Context
-  ): Promise<PaymentDTO[]>
-
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async capturePayment(
-    data: CreateCaptureDTO | CreateCaptureDTO[],
+    data: CreateCaptureDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PaymentDTO | PaymentDTO[]> {
-    const input = Array.isArray(data) ? data : [data]
-
-    const payments = await this.capturePaymentBulk_(input, sharedContext)
-
-    return await this.baseRepository_.serialize(
-      Array.isArray(data) ? payments : payments[0],
-      { populate: true }
-    )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async capturePaymentBulk_(
-    data: CreateCaptureDTO[],
-    @MedusaContext() sharedContext?: Context
-  ): Promise<Payment[]> {
-    let payments = await this.paymentService_.list(
-      { id: data.map((d) => d.payment_id) },
-      {},
-      sharedContext
-    )
-    const inputMap = new Map(data.map((d) => [d.payment_id, d]))
-
-    for (const payment of payments) {
-      const input = inputMap.get(payment.id)!
-
-      if (payment.canceled_at) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `The payment: ${payment.id} has been canceled.`
-        )
-      }
-
-      if (payment.captured_at) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `The payment: ${payment.id} is already fully captured.`
-        )
-      }
-
-      // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
-      // if (payment.captured_amount + input.amount > payment.authorized_amount) {
-      //   throw new MedusaError(
-      //     MedusaError.Types.INVALID_DATA,
-      //     `Total captured amount for payment: ${payment.id} exceeds authorized amount.`
-      //   )
-      // }
-    }
-
-    const paymentData = await Promise.all(
-      payments.map((payment) =>
-        this.paymentProviderService_.capturePayment({
-          data: payment.data!,
-          provider_id: payment.provider_id,
-        })
-      )
-    )
-
-    await this.captureService_.create(
-      data.map((d) => ({
-        payment: d.payment_id,
-        amount: d.amount,
-        captured_by: d.captured_by,
-      })),
-      sharedContext
-    )
-
-    await this.updatePayment(
-      payments.map((p, i) => ({ id: p.id, data: paymentData[i] }))
-    )
-
-    let fullyCapturedPaymentsId: string[] = []
-    for (const payment of payments) {
-      const input = inputMap.get(payment.id)!
-
-      // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
-      // if (payment.captured_amount + input.amount === payment.amount) {
-      //   fullyCapturedPaymentsId.push(payment.id)
-      // }
-    }
-
-    if (fullyCapturedPaymentsId.length) {
-      await this.paymentService_.update(
-        fullyCapturedPaymentsId.map((id) => ({ id, captured_at: new Date() })),
-        sharedContext
-      )
-    }
-
-    // TODO: set PaymentCollection status if fully captured
-
-    return await this.paymentService_.list(
-      { id: data.map((d) => d.payment_id) },
-      {
-        relations: ["captures"],
-      },
-      sharedContext
-    )
-  }
-
-  refundPayment(
-    data: CreateRefundDTO,
-    sharedContext?: Context
-  ): Promise<PaymentDTO>
-  refundPayment(
-    data: CreateRefundDTO[],
-    sharedContext?: Context
-  ): Promise<PaymentDTO[]>
-
-  @InjectManager("baseRepository_")
-  async refundPayment(
-    data: CreateRefundDTO | CreateRefundDTO[],
-    @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentDTO | PaymentDTO[]> {
-    const input = Array.isArray(data) ? data : [data]
-
-    const payments = await this.refundPaymentBulk_(input, sharedContext)
-
-    return await this.baseRepository_.serialize(
-      Array.isArray(data) ? payments : payments[0],
-      { populate: true }
-    )
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async refundPaymentBulk_(
-    data: CreateRefundDTO[],
-    @MedusaContext() sharedContext?: Context
-  ): Promise<Payment[]> {
-    const payments = await this.paymentService_.list(
-      { id: data.map(({ payment_id }) => payment_id) },
+  ): Promise<PaymentDTO> {
+    const payment = await this.paymentService_.retrieve(
+      data.payment_id,
       {},
       sharedContext
     )
 
-    const inputMap = new Map(data.map((d) => [d.payment_id, d]))
+    if (payment.canceled_at) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `The payment: ${payment.id} has been canceled.`
+      )
+    }
+
+    if (payment.captured_at) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `The payment: ${payment.id} is already fully captured.`
+      )
+    }
 
     // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
-    // for (const payment of payments) {
-    //   const input = inputMap.get(payment.id)!
-    //   if (payment.captured_amount < input.amount) {
-    //     throw new MedusaError(
-    //       MedusaError.Types.INVALID_DATA,
-    //       `Refund amount for payment: ${payment.id} cannot be greater than the amount captured on the payment.`
-    //     )
-    //   }
+    // if (payment.captured_amount + input.amount > payment.authorized_amount) {
+    //   throw new MedusaError(
+    //     MedusaError.Types.INVALID_DATA,
+    //     `Total captured amount for payment: ${payment.id} exceeds authorized amount.`
+    //   )
     // }
 
-    const paymentData = await Promise.all(
-      payments.map((payment) =>
-        this.paymentProviderService_.refundFromPayment(
-          {
-            data: payment.data!,
-            provider_id: payment.provider_id,
-          },
-          inputMap.get(payment.id)!.amount
-        )
-      )
-    )
+    const paymentData = await this.paymentProviderService_.capturePayment({
+      data: payment.data!,
+      provider_id: payment.provider_id,
+    })
 
-    await this.refundService_.create(
-      data.map((d) => ({
-        payment: d.payment_id,
-        amount: d.amount,
-        captured_by: d.created_by,
-      })),
-      sharedContext
-    )
+    await this.captureService_.create(data, sharedContext)
 
-    await this.updatePayment(
-      payments.map((p, i) => ({ id: p.id, data: paymentData[i] }))
-    )
+    await this.updatePayment({ id: payment.id, data: paymentData })
 
-    return await this.paymentService_.list(
-      { id: data.map(({ payment_id }) => payment_id) },
-      {
-        relations: ["refunds"],
-      },
+    // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
+    // if (payment.captured_amount + data.amount === payment.amount) {
+    //   await this.paymentService_.update(
+    //     { id: payment.id, captured_at: new Date() },
+    //     sharedContext
+    //   )
+    // }
+
+    return this.retrievePayment(
+      payment.id,
+      { relations: ["captures"] },
       sharedContext
     )
   }
 
-  cancelPayment(paymentId: string, sharedContext?: Context): Promise<PaymentDTO>
-  cancelPayment(
-    paymentId: string[],
-    sharedContext?: Context
-  ): Promise<PaymentDTO[]>
+  @InjectTransactionManager("baseRepository_")
+  async refundPayment(
+    data: CreateRefundDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentDTO> {
+    const payment = await this.paymentService_.retrieve(
+      data.payment_id,
+      {},
+      sharedContext
+    )
+
+    // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
+    // if (payment.captured_amount < input.amount) {
+    //   throw new MedusaError(
+    //     MedusaError.Types.INVALID_DATA,
+    //     `Refund amount for payment: ${payment.id} cannot be greater than the amount captured on the payment.`
+    //   )
+    // }
+
+    const paymentData = await this.paymentProviderService_.refundFromPayment(
+      {
+        data: payment.data!,
+        provider_id: payment.provider_id,
+      },
+      data.amount
+    )
+
+    await this.refundService_.create(data, sharedContext)
+
+    await this.updatePayment({ id: payment.id, data: paymentData })
+
+    return this.retrievePayment(
+      payment.id,
+      { relations: ["refunds"] },
+      sharedContext
+    )
+  }
 
   @InjectTransactionManager("baseRepository_")
   async cancelPayment(
-    paymentId: string | string[],
+    paymentId: string,
     @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentDTO | PaymentDTO[]> {
-    const input = Array.isArray(paymentId) ? paymentId : [paymentId]
-
-    const payments = await this.paymentService_.list({ id: input })
+  ): Promise<PaymentDTO> {
+    const payment = await this.paymentService_.retrieve(
+      paymentId,
+      {},
+      sharedContext
+    )
 
     // TODO: revisit when totals are implemented
-    // for (const payment of payments) {
     //   if (payment.captured_amount !== 0) {
     //     throw new MedusaError(
     //       MedusaError.Types.INVALID_DATA,
     //       `Cannot cancel a payment: ${payment.id} that has been captured.`
     //     )
     //   }
-    // }
 
-    await Promise.all(
-      payments.map((payment) =>
-        this.paymentProviderService_.cancelPayment({
-          data: payment.data!,
-          provider_id: payment.provider_id,
-        })
-      )
-    )
+    await this.paymentProviderService_.cancelPayment({
+      data: payment.data!,
+      provider_id: payment.provider_id,
+    })
 
     const updated = await this.paymentService_.update(
-      input.map((id) => ({
-        id,
-        canceled_at: new Date(),
-      })),
+      { id: paymentId, canceled_at: new Date() },
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(
-      Array.isArray(paymentId) ? updated : updated[0],
-      { populate: true }
-    )
+    return await this.baseRepository_.serialize(updated, { populate: true })
   }
 
   createPaymentSession(
