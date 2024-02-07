@@ -54,6 +54,8 @@ Run the following command to clean up the OAS output files and remove any routes
 yarn start clean:oas
 ```
 
+This command will also remove tags and schemas not used.
+
 ---
 
 ## How it Works

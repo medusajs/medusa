@@ -33,9 +33,6 @@ tags:
     externalDocs:
       description: How to import products
       url: https://docs.medusajs.com/modules/products/admin/import-products
-  - name: Campaigns
-    x-associatedSchema:
-      $ref: "#/components/schemas/Campaign"
   - name: Currencies
     description: >
       A store can use unlimited currencies, and each region must be associated
