@@ -105,7 +105,7 @@ class DocblockGenerator extends AbstractGenerator {
   isFileIncluded(fileName: string): boolean {
     return (
       super.isFileIncluded(fileName) &&
-      !minimatch(fileName, "**/packages/medusa/**/api**/**", {
+      !minimatch(this.getBasePath(fileName), "packages/medusa/**/api**/**", {
         matchBase: true,
       })
     )
