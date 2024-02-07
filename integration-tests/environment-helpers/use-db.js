@@ -6,12 +6,12 @@ const {
   isObject,
   createMedusaContainer,
   MedusaV2Flag,
-  promiseAll,
 } = require("@medusajs/utils")
 const { dropDatabase } = require("pg-god")
 const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
 const { ContainerRegistrationKeys } = require("@medusajs/utils")
+const { migrateMedusaApp } = require("@medusajs/medusa/dist/loaders/medusa-app")
 
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
@@ -163,39 +163,19 @@ module.exports = {
 
       const featureFlagRouter = await featureFlagLoader(configModule)
 
+      const pgConnection = await pgConnectionLoader({ configModule, container })
+
       container.register({
         [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
         [ContainerRegistrationKeys.LOGGER]: asValue(console),
         [ContainerRegistrationKeys.MANAGER]: asValue(dbDataSource.manager),
+        [ContainerRegistrationKeys.PG_CONNECTION]: asValue(pgConnection),
         featureFlagRouter: asValue(featureFlagRouter),
       })
 
-      const pgConnection = await pgConnectionLoader({ configModule, container })
       instance.setPgConnection(pgConnection)
 
-      const migrationPromises = []
-      for (const [, options] of Object.entries(configModule.modules)) {
-        const path = options.resolve
-
-        const loadedModule = await import(path)
-
-        if (loadedModule.runMigrations) {
-          migrationPromises.push(loadedModule.runMigrations)
-        }
-      }
-
-      const options = {
-        database: {
-          clientUrl: DB_URL,
-          connection: pgConnection,
-        },
-      }
-
-      for (const migration of migrationPromises) {
-        await migration(options)
-      }
-
-      await medusaAppLoader(
+      await migrateMedusaApp(
         { configModule, container },
         { registerInContainer: false }
       )
