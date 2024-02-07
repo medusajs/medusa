@@ -269,7 +269,14 @@ export default class PaymentModuleService<
       provider_id: payment.provider_id,
     })
 
-    await this.captureService_.create(data, sharedContext)
+    await this.captureService_.create(
+      {
+        payment: data.payment_id,
+        amount: data.amount,
+        captured_by: data.captured_by,
+      },
+      sharedContext
+    )
 
     await this.updatePayment({ id: payment.id, data: paymentData })
 
@@ -281,7 +288,7 @@ export default class PaymentModuleService<
     //   )
     // }
 
-    return this.retrievePayment(
+    return await this.retrievePayment(
       payment.id,
       { relations: ["captures"] },
       sharedContext
@@ -315,11 +322,18 @@ export default class PaymentModuleService<
       data.amount
     )
 
-    await this.refundService_.create(data, sharedContext)
+    await this.refundService_.create(
+      {
+        payment: data.payment_id,
+        amount: data.amount,
+        created_by: data.created_by,
+      },
+      sharedContext
+    )
 
     await this.updatePayment({ id: payment.id, data: paymentData })
 
-    return this.retrievePayment(
+    return await this.retrievePayment(
       payment.id,
       { relations: ["refunds"] },
       sharedContext
@@ -350,12 +364,12 @@ export default class PaymentModuleService<
       provider_id: payment.provider_id,
     })
 
-    const updated = await this.paymentService_.update(
+    await this.paymentService_.update(
       { id: paymentId, canceled_at: new Date() },
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(updated, { populate: true })
+    return this.retrievePayment(payment.id, {}, sharedContext)
   }
 
   createPaymentSession(

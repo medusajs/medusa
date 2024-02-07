@@ -699,69 +699,7 @@ describe("Payment Module Service", () => {
         )
       })
 
-      it("should capture payments in bulk successfully", async () => {
-        const capturedPayments = await service.capturePayment([
-          {
-            amount: 50, // partially captured
-            payment_id: "pay-id-1",
-          },
-          {
-            amount: 100, // fully captured
-            payment_id: "pay-id-2",
-          },
-        ])
-
-        expect(capturedPayments).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              id: "pay-id-1",
-              amount: 100,
-              authorized_amount: 100,
-              captured_at: null,
-              captures: [
-                expect.objectContaining({
-                  created_by: null,
-                  amount: 50,
-                }),
-              ],
-              // captured_amount: 50,
-            }),
-            expect.objectContaining({
-              id: "pay-id-2",
-              amount: 100,
-              authorized_amount: 100,
-              // captured_at: expect.any(Date),
-              captures: [
-                expect.objectContaining({
-                  created_by: null,
-                  amount: 100,
-                }),
-              ],
-              // captured_amount: 100,
-            }),
-          ])
-        )
-      })
-
       // TODO: uncomment when totals are implemented
-      // it("should fail to capture payments in bulk if one of the captures fail", async () => {
-      //   const error = await service
-      //     .capturePayment([
-      //       {
-      //         amount: 50,
-      //         payment_id: "pay-id-1",
-      //       },
-      //       {
-      //         amount: 200, // exceeds authorized amount
-      //         payment_id: "pay-id-2",
-      //       },
-      //     ])
-      //     .catch((e) => e)
-      //
-      //   expect(error.message).toEqual(
-      //     "Total captured amount for payment: pay-id-2 exceeds authorized amount."
-      //   )
-      // })
 
       //   it("should fail to capture amount greater than authorized", async () => {
       //     const error = await service
@@ -811,55 +749,30 @@ describe("Payment Module Service", () => {
     })
 
     describe("refund", () => {
-      it("should refund a payments in bulk successfully", async () => {
-        await service.capturePayment({
-          amount: 100,
-          payment_id: "pay-id-1",
-        })
-
+      it("should refund a payments successfully", async () => {
         await service.capturePayment({
           amount: 100,
           payment_id: "pay-id-2",
         })
 
-        const refundedPayment = await service.refundPayment([
-          {
-            amount: 100,
-            payment_id: "pay-id-1",
-          },
-          {
-            amount: 100,
-            payment_id: "pay-id-2",
-          },
-        ])
+        const refundedPayment = await service.refundPayment({
+          amount: 100,
+          payment_id: "pay-id-2",
+        })
 
         expect(refundedPayment).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              id: "pay-id-1",
-              amount: 100,
-              refunds: [
-                expect.objectContaining({
-                  created_by: null,
-                  amount: 100,
-                }),
-              ],
-              // captured_amount: 100,
-              // refunded_amount: 100,
-            }),
-            expect.objectContaining({
-              id: "pay-id-2",
-              amount: 100,
-              refunds: [
-                expect.objectContaining({
-                  created_by: null,
-                  amount: 100,
-                }),
-              ],
-              // captured_amount: 100,
-              // refunded_amount: 100,
-            }),
-          ])
+          expect.objectContaining({
+            id: "pay-id-2",
+            amount: 100,
+            refunds: [
+              expect.objectContaining({
+                created_by: null,
+                amount: 100,
+              }),
+            ],
+            // captured_amount: 100,
+            // refunded_amount: 100,
+          })
         )
       })
 
