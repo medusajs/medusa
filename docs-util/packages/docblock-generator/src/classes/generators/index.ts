@@ -3,6 +3,8 @@ import Formatter from "../helpers/formatter.js"
 import KindsRegistry from "../kinds/registry.js"
 import GeneratorEventManager from "../helpers/generator-event-manager.js"
 import { CommonCliOptions } from "../../types/index.js"
+import { existsSync, readdirSync, statSync } from "node:fs"
+import path from "node:path"
 
 export type Options = {
   paths: string[]
@@ -24,7 +26,30 @@ abstract class AbstractGenerator {
   }
 
   init() {
-    this.program = ts.createProgram(this.options.paths, {})
+    const files: string[] = []
+
+    this.options.paths.forEach((optionPath) => {
+      if (!existsSync(optionPath)) {
+        return
+      }
+
+      if (!statSync(optionPath).isDirectory()) {
+        files.push(optionPath)
+        return
+      }
+
+      // read files recursively from directory
+      files.push(
+        ...readdirSync(optionPath, {
+          recursive: true,
+          encoding: "utf-8",
+        })
+          .map((filePath) => path.join(optionPath, filePath))
+          .filter((filePath) => !statSync(filePath).isDirectory())
+      )
+    })
+
+    this.program = ts.createProgram(files, {})
 
     this.checker = this.program.getTypeChecker()
 
@@ -51,7 +76,10 @@ abstract class AbstractGenerator {
    * @returns {boolean} Whether the file can have docblocks generated for it.
    */
   isFileIncluded(fileName: string): boolean {
-    return this.options.paths.some((path) => path.includes(fileName))
+    const baseFilePath = this.getBasePath(fileName)
+    return this.options.paths.some((path) =>
+      baseFilePath.startsWith(this.getBasePath(path))
+    )
   }
 
   /**

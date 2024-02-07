@@ -76,7 +76,7 @@ jobs:
         working-directory: docs-util
 
       - name: Run docblock generator
-        run: "yarn start run:release --type oas && yarn start clean:oas"
+        run: "yarn start run ../../../packages/medusa/src/api-v2 --type oas && yarn start clean:oas"
         working-directory: docs-util/packages/docblock-generator
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
