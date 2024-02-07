@@ -176,7 +176,7 @@ export default async function () {
   console.log("Clean tags...")
 
   // check if any tags should be removed
-  const oasBasePath = path.join(oasOutputBasePath, "base")
+  const oasBasePath = path.join(oasOutputBasePath, "base-v2")
   readdirSync(oasBasePath, {
     recursive: true,
     encoding: "utf-8",
@@ -215,6 +215,8 @@ export default async function () {
       }
     })
   })
+
+  console.log("Clean schemas...")
 
   // check if any schemas should be removed
   // a schema is removed if no other schemas/operations reference it

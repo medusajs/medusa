@@ -1825,8 +1825,8 @@ class OasKindGenerator extends FunctionKindGenerator {
     // load base oas files
     const areaYamlPath = join(
       this.baseOutputPath,
-      "base",
-      "admin.oas.base.yaml"
+      "base-v2",
+      `${area}.oas.base.yaml`
     )
     const areaYaml = parse(
       readFileSync(areaYamlPath, "utf-8")

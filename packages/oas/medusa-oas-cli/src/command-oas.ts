@@ -173,7 +173,7 @@ async function getOASFromCodebase(
     {
       base:
         customBaseFile ??
-        path.resolve(oasOutputPath, "base", `${apiType}.oas.base.yaml`),
+        path.resolve(oasOutputPath, v2 ? "base-v2" : "base", `${apiType}.oas.base.yaml`),
       format: ".json",
     }
   )
