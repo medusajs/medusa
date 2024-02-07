@@ -10,13 +10,13 @@ export type AuthModuleProviderConfig = {
   scopes: Record<string, AuthProviderScope>
 }
 
-export type AuthProviderScope = { domain?: string } & Record<string, string>
+export type AuthProviderScope = Record<string, unknown>
 
 export type AuthenticationInput = {
-  connection: { encrypted: boolean }
   url: string
   headers: Record<string, string>
   query: Record<string, string>
   body: Record<string, string>
-  scope: string
+  authScope: string
+  protocol: string
 }

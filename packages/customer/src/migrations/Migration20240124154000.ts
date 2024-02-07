@@ -6,6 +6,7 @@ export class Migration20240124154000 extends Migration {
     this.addSql(
       'create table if not exists "customer" ("id" text not null, "company_name" text null, "first_name" text null, "last_name" text null, "email" text null, "phone" text null, "has_account" boolean not null default false, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, "created_by" text null, constraint "customer_pkey" primary key ("id"));'
     )
+    this.addSql('alter table "customer" alter column "email" drop not null;')
     this.addSql(
       'alter table "customer" add column if not exists "company_name" text null;'
     )

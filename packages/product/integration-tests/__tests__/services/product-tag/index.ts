@@ -237,7 +237,7 @@ describe("ProductTag Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"productTagId" must be defined')
+      expect(error.message).toEqual("productTag - id must be defined")
     })
 
     it("should return tag based on config select param", async () => {

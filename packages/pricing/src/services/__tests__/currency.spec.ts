@@ -1,18 +1,31 @@
 import {
-  mockContainer,
+  currencyRepositoryMock,
   nonExistingCurrencyCode,
 } from "../__fixtures__/currency"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../loaders/container"
+import { MedusaContainer } from "@medusajs/types"
 
 const code = "existing-currency"
 
 describe("Currency service", function () {
-  beforeEach(function () {
+  let container: MedusaContainer
+
+  beforeEach(async function () {
     jest.clearAllMocks()
+
+    container = createMedusaContainer()
+    container.register("manager", asValue({}))
+
+    await ContainerLoader({ container })
+
+    container.register(currencyRepositoryMock)
   })
 
   it("should retrieve a currency", async function () {
-    const currencyService = mockContainer.resolve("currencyService")
-    const currencyRepository = mockContainer.resolve("currencyRepository")
+    const currencyService = container.resolve("currencyService")
+    const currencyRepository = container.resolve("currencyRepository")
 
     await currencyService.retrieve(code)
 
@@ -33,8 +46,8 @@ describe("Currency service", function () {
   })
 
   it("should fail to retrieve a currency", async function () {
-    const currencyService = mockContainer.resolve("currencyService")
-    const currencyRepository = mockContainer.resolve("currencyRepository")
+    const currencyService = container.resolve("currencyService")
+    const currencyRepository = container.resolve("currencyRepository")
 
     const err = await currencyService
       .retrieve(nonExistingCurrencyCode)
@@ -62,8 +75,8 @@ describe("Currency service", function () {
   })
 
   it("should list currencys", async function () {
-    const currencyService = mockContainer.resolve("currencyService")
-    const currencyRepository = mockContainer.resolve("currencyRepository")
+    const currencyService = container.resolve("currencyService")
+    const currencyRepository = container.resolve("currencyRepository")
 
     const filters = {}
     const config = {
@@ -88,8 +101,8 @@ describe("Currency service", function () {
   })
 
   it("should list currencys with filters", async function () {
-    const currencyService = mockContainer.resolve("currencyService")
-    const currencyRepository = mockContainer.resolve("currencyRepository")
+    const currencyService = container.resolve("currencyService")
+    const currencyRepository = container.resolve("currencyRepository")
 
     const filters = {
       tags: {
@@ -126,8 +139,8 @@ describe("Currency service", function () {
   })
 
   it("should list currencys with filters and relations", async function () {
-    const currencyService = mockContainer.resolve("currencyService")
-    const currencyRepository = mockContainer.resolve("currencyRepository")
+    const currencyService = container.resolve("currencyService")
+    const currencyRepository = container.resolve("currencyRepository")
 
     const filters = {
       tags: {
@@ -163,9 +176,9 @@ describe("Currency service", function () {
     )
   })
 
-  it("should list and count the currencys with filters and relations", async function () {
-    const currencyService = mockContainer.resolve("currencyService")
-    const currencyRepository = mockContainer.resolve("currencyRepository")
+  it("should list and count the currencies with filters and relations", async function () {
+    const currencyService = container.resolve("currencyService")
+    const currencyRepository = container.resolve("currencyRepository")
 
     const filters = {
       tags: {

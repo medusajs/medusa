@@ -123,7 +123,7 @@ To view an order’s claims, you can retrieve the order using the [Get Order API
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -224,7 +224,7 @@ You can create a claim by sending a request to the [Create Claim API Route](http
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "type": "refund",
@@ -337,7 +337,7 @@ You can update a claim by sending a request to the [Update Claim API Route](http
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "no_notification": true
@@ -428,7 +428,7 @@ You can create a fulfillment for a claim by sending a request to the [Create Cla
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/fulfillments' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -515,7 +515,7 @@ You can create a shipment for a claim by sending a request to the [Create Claim 
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/shipments' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "fulfillment_id": "<FUL_ID>"
@@ -614,7 +614,7 @@ You can cancel a fulfillment by sending a request to the [Cancel Fulfillment API
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/fulfillments/<FUL_ID>/cancel' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -694,7 +694,7 @@ You can cancel a claim by sending a request to the [Cancel Claim API Route](http
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/cancel' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

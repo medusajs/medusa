@@ -2,7 +2,6 @@ import { IAuthModuleService } from "@medusajs/types"
 import { MikroOrmWrapper } from "../../../utils"
 import { Modules } from "@medusajs/modules-sdk"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { createAuthProviders } from "../../../__fixtures__/auth-provider"
 import { createAuthUsers } from "../../../__fixtures__/auth-user"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
@@ -28,7 +27,6 @@ describe("AuthModuleService - AuthUser", () => {
     await MikroOrmWrapper.setupDatabase()
     testManager = MikroOrmWrapper.forkManager()
 
-    await createAuthProviders(testManager)
     await createAuthUsers(testManager)
   })
 
@@ -42,10 +40,9 @@ describe("AuthModuleService - AuthUser", () => {
 
   describe("listAuthUsers", () => {
     it("should list authUsers", async () => {
-      const authUsers = await service.listAuthUsers()
-      const serialized = JSON.parse(JSON.stringify(authUsers))
+      const authUsers = await service.list()
 
-      expect(serialized).toEqual([
+      expect(authUsers).toEqual([
         expect.objectContaining({
           provider: "manual",
         }),
@@ -59,7 +56,7 @@ describe("AuthModuleService - AuthUser", () => {
     })
 
     it("should list authUsers by id", async () => {
-      const authUsers = await service.listAuthUsers({
+      const authUsers = await service.list({
         id: ["test-id"],
       })
 
@@ -70,14 +67,12 @@ describe("AuthModuleService - AuthUser", () => {
       ])
     })
 
-    it("should list authUsers by provider_id", async () => {
-      const authUsers = await service.listAuthUsers({
-        provider_id: "manual",
+    it("should list authUsers by provider", async () => {
+      const authUsers = await service.list({
+        provider: "manual",
       })
 
-      const serialized = JSON.parse(JSON.stringify(authUsers))
-
-      expect(serialized).toEqual([
+      expect(authUsers).toEqual([
         expect.objectContaining({
           id: "test-id",
         }),
@@ -90,11 +85,10 @@ describe("AuthModuleService - AuthUser", () => {
 
   describe("listAndCountAuthUsers", () => {
     it("should list and count authUsers", async () => {
-      const [authUsers, count] = await service.listAndCountAuthUsers()
-      const serialized = JSON.parse(JSON.stringify(authUsers))
+      const [authUsers, count] = await service.listAndCount()
 
       expect(count).toEqual(3)
-      expect(serialized).toEqual([
+      expect(authUsers).toEqual([
         expect.objectContaining({
           provider: "manual",
         }),
@@ -108,8 +102,8 @@ describe("AuthModuleService - AuthUser", () => {
     })
 
     it("should listAndCount authUsers by provider_id", async () => {
-      const [authUsers, count] = await service.listAndCountAuthUsers({
-        provider_id: "manual",
+      const [authUsers, count] = await service.listAndCount({
+        provider: "manual",
       })
 
       expect(count).toEqual(2)
@@ -128,7 +122,7 @@ describe("AuthModuleService - AuthUser", () => {
     const id = "test-id"
 
     it("should return an authUser for the given id", async () => {
-      const authUser = await service.retrieveAuthUser(id)
+      const authUser = await service.retrieve(id)
 
       expect(authUser).toEqual(
         expect.objectContaining({
@@ -141,7 +135,7 @@ describe("AuthModuleService - AuthUser", () => {
       let error
 
       try {
-        await service.retrieveAuthUser("does-not-exist")
+        await service.retrieve("does-not-exist")
       } catch (e) {
         error = e
       }
@@ -152,7 +146,7 @@ describe("AuthModuleService - AuthUser", () => {
     })
 
     it("should not return an authUser with password hash", async () => {
-      const authUser = await service.retrieveAuthUser("test-id-1")
+      const authUser = await service.retrieve("test-id-1")
 
       expect(authUser).toEqual(
         expect.objectContaining({
@@ -166,22 +160,20 @@ describe("AuthModuleService - AuthUser", () => {
       let error
 
       try {
-        await service.retrieveAuthUser(undefined as unknown as string)
+        await service.retrieve(undefined as unknown as string)
       } catch (e) {
         error = e
       }
 
-      expect(error.message).toEqual('"authUserId" must be defined')
+      expect(error.message).toEqual("authUser - id must be defined")
     })
 
     it("should return authUser based on config select param", async () => {
-      const authUser = await service.retrieveAuthUser(id, {
+      const authUser = await service.retrieve(id, {
         select: ["id"],
       })
 
-      const serialized = JSON.parse(JSON.stringify(authUser))
-
-      expect(serialized).toEqual({
+      expect(authUser).toEqual({
         id,
       })
     })
@@ -191,9 +183,9 @@ describe("AuthModuleService - AuthUser", () => {
     const id = "test-id"
 
     it("should delete the authUsers given an id successfully", async () => {
-      await service.deleteAuthUser([id])
+      await service.delete([id])
 
-      const authUsers = await service.listAuthUsers({
+      const authUsers = await service.list({
         id: [id],
       })
 
@@ -208,7 +200,7 @@ describe("AuthModuleService - AuthUser", () => {
       let error
 
       try {
-        await service.updateAuthUser([
+        await service.update([
           {
             id: "does-not-exist",
           },
@@ -223,14 +215,14 @@ describe("AuthModuleService - AuthUser", () => {
     })
 
     it("should update authUser", async () => {
-      await service.updateAuthUser([
+      await service.update([
         {
           id,
           provider_metadata: { email: "test@email.com" },
         },
       ])
 
-      const [authUser] = await service.listAuthUsers({ id: [id] })
+      const [authUser] = await service.list({ id: [id] })
       expect(authUser).toEqual(
         expect.objectContaining({
           provider_metadata: { email: "test@email.com" },
@@ -241,15 +233,16 @@ describe("AuthModuleService - AuthUser", () => {
 
   describe("createAuthUser", () => {
     it("should create a authUser successfully", async () => {
-      await service.createAuthUser([
+      await service.create([
         {
           id: "test",
-          provider_id: "manual",
+          provider: "manual",
           entity_id: "test",
+          scope: "store",
         },
       ])
 
-      const [authUser, count] = await service.listAndCountAuthUsers({
+      const [authUser, count] = await service.listAndCount({
         id: ["test"],
       })
 

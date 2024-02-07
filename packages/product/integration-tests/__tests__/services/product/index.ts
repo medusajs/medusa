@@ -78,7 +78,7 @@ describe("Product Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"productId" must be defined')
+      expect(error.message).toEqual("product - id must be defined")
     })
 
     it("should throw an error when product with id does not exist", async () => {
@@ -217,7 +217,7 @@ describe("Product Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual(`Product with id "undefined" not found`)
+      expect(error.message).toEqual(`Product with id "" not found`)
 
       let result = await service.retrieve(productOne.id)
 

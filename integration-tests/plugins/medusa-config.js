@@ -42,6 +42,11 @@ module.exports = {
     },
   },
   modules: {
+    [Modules.AUTH]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/auth",
+    },
     [Modules.STOCK_LOCATION]: {
       scope: "internal",
       resources: "shared",
@@ -71,10 +76,20 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/promotion",
     },
+    [Modules.CUSTOMER]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/customer",
+    },
     [Modules.SALES_CHANNEL]: {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/sales-channel",
+    },
+    [Modules.CART]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/cart",
     },
   },
 }

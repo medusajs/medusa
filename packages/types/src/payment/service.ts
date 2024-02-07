@@ -1,9 +1,11 @@
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
+  CreateCaptureDTO,
   CreatePaymentCollectionDTO,
   CreatePaymentDTO,
   CreatePaymentSessionDTO,
+  CreateRefundDTO,
   SetPaymentSessionsDTO,
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
@@ -54,11 +56,11 @@ export interface IPaymentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
 
-  deletePaymentCollection(
+  deletePaymentCollections(
     paymentCollectionId: string[],
     sharedContext?: Context
   ): Promise<void>
-  deletePaymentCollection(
+  deletePaymentCollections(
     paymentCollectionId: string,
     sharedContext?: Context
   ): Promise<void>
@@ -75,19 +77,38 @@ export interface IPaymentModuleService extends IModuleService {
 
   /* ********** PAYMENT ********** */
 
-  createPayment(data: CreatePaymentDTO): Promise<PaymentDTO>
-  createPayment(data: CreatePaymentDTO[]): Promise<PaymentDTO[]>
+  createPayment(
+    data: CreatePaymentDTO,
+    sharedContext?: Context
+  ): Promise<PaymentDTO>
+  createPayment(
+    data: CreatePaymentDTO[],
+    sharedContext?: Context
+  ): Promise<PaymentDTO[]>
 
   capturePayment(
-    paymentId: string,
-    amount: number,
+    data: CreateCaptureDTO,
+    sharedContext?: Context
+  ): Promise<PaymentDTO>
+  capturePayment(
+    data: CreateCaptureDTO[],
+    sharedContext?: Context
+  ): Promise<PaymentDTO[]>
+
+  refundPayment(
+    data: CreateRefundDTO,
     sharedContext?: Context
   ): Promise<PaymentDTO>
   refundPayment(
-    paymentId: string,
-    amount: number,
+    data: CreateRefundDTO[],
     sharedContext?: Context
-  ): Promise<PaymentDTO>
+  ): Promise<PaymentDTO[]>
+
+  cancelPayment(paymentId: string, sharedContext?: Context): Promise<PaymentDTO>
+  cancelPayment(
+    paymentId: string[],
+    sharedContext?: Context
+  ): Promise<PaymentDTO[]>
 
   updatePayment(
     data: UpdatePaymentDTO,

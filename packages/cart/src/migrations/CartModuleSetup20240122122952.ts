@@ -21,6 +21,8 @@ export class CartModuleSetup20240122122952 extends Migration {
     );
     
     ALTER TABLE "cart" ADD COLUMN IF NOT EXISTS "currency_code" TEXT NOT NULL;
+    ALTER TABLE "cart" ALTER COLUMN "region_id" DROP NOT NULL;
+    ALTER TABLE "cart" ALTER COLUMN "email" DROP NOT NULL;
     
     ALTER TABLE "cart" DROP CONSTRAINT IF EXISTS "FK_242205c81c1152fab1b6e848470";
     ALTER TABLE "cart" DROP CONSTRAINT IF EXISTS "FK_484c329f4783be4e18e5e2ff090";

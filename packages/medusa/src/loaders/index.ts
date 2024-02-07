@@ -13,9 +13,9 @@ import { asValue } from "awilix"
 import { createMedusaContainer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
-import path from "path"
 import requestIp from "request-ip"
 import { Connection } from "typeorm"
+import { v4 } from "uuid"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
@@ -192,7 +192,8 @@ export default async ({
   // Add the registered services to the request scope
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
     container.register({ manager: asValue(dataSource.manager) })
-    ;(req as any).scope = container.createScope()
+    req.scope = container.createScope() as MedusaContainer
+    req.requestId = (req.headers["x-request-id"] as string) ?? v4()
     next()
   })
 

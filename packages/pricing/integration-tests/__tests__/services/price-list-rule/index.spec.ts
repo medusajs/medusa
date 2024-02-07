@@ -162,7 +162,7 @@ describe("PriceListRule Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"priceListRuleId" must be defined')
+      expect(error.message).toEqual("priceListRule - id must be defined")
     })
   })
 

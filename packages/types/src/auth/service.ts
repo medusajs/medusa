@@ -1,19 +1,19 @@
 import {
+  AuthUserDTO,
   AuthenticationInput,
   AuthenticationResponse,
-  AuthProviderDTO,
-  AuthUserDTO,
-  CreateAuthProviderDTO,
   CreateAuthUserDTO,
-  FilterableAuthProviderProps,
   FilterableAuthUserProps,
-  UpdateAuthProviderDTO,
   UpdateAuthUserDTO,
 } from "./common"
 
 import { Context } from "../shared-context"
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
+
+export type JWTGenerationOptions = {
+  expiresIn?: string | number
+}
 
 export interface IAuthModuleService extends IModuleService {
   authenticate(
@@ -26,83 +26,37 @@ export interface IAuthModuleService extends IModuleService {
     providerData: AuthenticationInput
   ): Promise<AuthenticationResponse>
 
-  retrieveAuthProvider(
-    provider: string,
-    config?: FindConfig<AuthProviderDTO>,
-    sharedContext?: Context
-  ): Promise<AuthProviderDTO>
-
-  listAuthProviders(
-    filters?: FilterableAuthProviderProps,
-    config?: FindConfig<AuthProviderDTO>,
-    sharedContext?: Context
-  ): Promise<AuthProviderDTO[]>
-
-  listAndCountAuthProviders(
-    filters?: FilterableAuthProviderProps,
-    config?: FindConfig<AuthProviderDTO>,
-    sharedContext?: Context
-  ): Promise<[AuthProviderDTO[], number]>
-
-  createAuthProvider(
-    data: CreateAuthProviderDTO[],
-    sharedContext?: Context
-  ): Promise<AuthProviderDTO[]>
-
-  createAuthProvider(
-    data: CreateAuthProviderDTO,
-    sharedContext?: Context
-  ): Promise<AuthProviderDTO>
-
-  updateAuthProvider(
-    data: UpdateAuthProviderDTO[],
-    sharedContext?: Context
-  ): Promise<AuthProviderDTO[]>
-
-  updateAuthProvider(
-    data: UpdateAuthProviderDTO,
-    sharedContext?: Context
-  ): Promise<AuthProviderDTO>
-
-  deleteAuthProvider(ids: string[], sharedContext?: Context): Promise<void>
-
-  retrieveAuthUser(
+  retrieve(
     id: string,
     config?: FindConfig<AuthUserDTO>,
     sharedContext?: Context
   ): Promise<AuthUserDTO>
 
-  listAuthUsers(
-    filters?: FilterableAuthProviderProps,
+  list(
+    filters?: FilterableAuthUserProps,
     config?: FindConfig<AuthUserDTO>,
     sharedContext?: Context
   ): Promise<AuthUserDTO[]>
 
-  listAndCountAuthUsers(
+  listAndCount(
     filters?: FilterableAuthUserProps,
     config?: FindConfig<AuthUserDTO>,
     sharedContext?: Context
   ): Promise<[AuthUserDTO[], number]>
 
-  createAuthUser(
+  create(
     data: CreateAuthUserDTO[],
     sharedContext?: Context
   ): Promise<AuthUserDTO[]>
 
-  createAuthUser(
-    data: CreateAuthUserDTO,
-    sharedContext?: Context
-  ): Promise<AuthUserDTO>
+  create(data: CreateAuthUserDTO, sharedContext?: Context): Promise<AuthUserDTO>
 
-  updateAuthUser(
+  update(
     data: UpdateAuthUserDTO[],
     sharedContext?: Context
   ): Promise<AuthUserDTO[]>
 
-  updateAuthUser(
-    data: UpdateAuthUserDTO,
-    sharedContext?: Context
-  ): Promise<AuthUserDTO>
+  update(data: UpdateAuthUserDTO, sharedContext?: Context): Promise<AuthUserDTO>
 
-  deleteAuthUser(ids: string[], sharedContext?: Context): Promise<void>
+  delete(ids: string[], sharedContext?: Context): Promise<void>
 }

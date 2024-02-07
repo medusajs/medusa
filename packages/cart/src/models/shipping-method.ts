@@ -24,18 +24,18 @@ export default class ShippingMethod {
   @Property({ columnType: "text" })
   cart_id: string
 
-  @ManyToOne(() => Cart, {
-    onDelete: "cascade",
+  @ManyToOne({
+    entity: () => Cart,
     index: "IDX_shipping_method_cart_id",
-    nullable: true,
+    cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
-  cart?: Cart | null
+  cart: Cart
 
   @Property({ columnType: "text" })
   name: string
 
   @Property({ columnType: "jsonb", nullable: true })
-  description?: string | null
+  description: string | null = null
 
   @Property({ columnType: "numeric", serializer: Number })
   amount: number
@@ -48,13 +48,13 @@ export default class ShippingMethod {
     nullable: true,
     index: "IDX_shipping_method_option_id",
   })
-  shipping_option_id?: string | null
+  shipping_option_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  data?: Record<string, unknown> | null
+  data: Record<string, unknown> | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  metadata?: Record<string, unknown> | null
+  metadata: Record<string, unknown> | null = null
 
   @OneToMany(
     () => ShippingMethodTaxLine,
@@ -73,20 +73,6 @@ export default class ShippingMethod {
     }
   )
   adjustments = new Collection<ShippingMethodAdjustment>(this)
-
-  /** COMPUTED PROPERTIES - START */
-
-  // original_total: number
-  // original_subtotal: number
-  // original_tax_total: number
-
-  // total: number
-  // subtotal: number
-  // tax_total: number
-  // discount_total: number
-  // discount_tax_total: number
-
-  /** COMPUTED PROPERTIES - END */
 
   @Property({
     onCreate: () => new Date(),

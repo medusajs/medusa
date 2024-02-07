@@ -35,21 +35,22 @@ export default class LineItem {
   @Property({ columnType: "text" })
   cart_id: string
 
-  @ManyToOne(() => Cart, {
+  @ManyToOne({
+    entity: () => Cart,
     onDelete: "cascade",
     index: "IDX_line_item_cart_id",
-    nullable: true,
+    cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
-  cart?: Cart | null
+  cart: Cart
 
   @Property({ columnType: "text" })
   title: string
 
   @Property({ columnType: "text", nullable: true })
-  subtitle: string | null
+  subtitle: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  thumbnail?: string | null
+  thumbnail: string | null = null
 
   @Property({ columnType: "integer" })
   quantity: number
@@ -59,44 +60,44 @@ export default class LineItem {
     nullable: true,
     index: "IDX_line_item_variant_id",
   })
-  variant_id?: string | null
+  variant_id: string | null = null
 
   @Property({
     columnType: "text",
     nullable: true,
     index: "IDX_line_item_product_id",
   })
-  product_id?: string | null
+  product_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_title?: string | null
+  product_title: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_description?: string | null
+  product_description: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_subtitle?: string | null
+  product_subtitle: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_type?: string | null
+  product_type: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_collection?: string | null
+  product_collection: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_handle?: string | null
+  product_handle: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  variant_sku?: string | null
+  variant_sku: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  variant_barcode?: string | null
+  variant_barcode: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  variant_title?: string | null
+  variant_title: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  variant_option_values?: Record<string, unknown> | null
+  variant_option_values: Record<string, unknown> | null = null
 
   @Property({ columnType: "boolean" })
   requires_shipping = true
@@ -108,8 +109,9 @@ export default class LineItem {
   is_tax_inclusive = false
 
   @Property({ columnType: "numeric", nullable: true })
-  compare_at_unit_price?: number
+  compare_at_unit_price: number | null = null
 
+  // TODO: Rework when BigNumber has been introduced
   @Property({ columnType: "numeric", serializer: Number })
   @Check({ expression: "unit_price >= 0" }) // TODO: Validate that numeric types work with the expression
   unit_price: number
@@ -124,34 +126,12 @@ export default class LineItem {
   })
   adjustments = new Collection<LineItemAdjustment>(this)
 
-  /** COMPUTED PROPERTIES - START */
-
-  // compare_at_total?: number
-  // compare_at_subtotal?: number
-  // compare_at_tax_total?: number
-
-  // original_total: number
-  // original_subtotal: number
-  // original_tax_total: number
-
-  // item_total: number
-  // item_subtotal: number
-  // item_tax_total: number
-
-  // total: number
-  // subtotal: number
-  // tax_total: number
-  // discount_total: number
-  // discount_tax_total: number
-
-  /** COMPUTED PROPERTIES - END */
-
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at?: Date
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -159,7 +139,7 @@ export default class LineItem {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at?: Date
+  updated_at: Date
 
   @BeforeCreate()
   onCreate() {

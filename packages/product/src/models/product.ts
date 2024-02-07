@@ -8,12 +8,14 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
   Unique,
 } from "@mikro-orm/core"
 
+import { DAL } from "@medusajs/types"
 import {
   DALUtils,
   generateEntityId,
@@ -22,12 +24,11 @@ import {
 } from "@medusajs/utils"
 import ProductCategory from "./product-category"
 import ProductCollection from "./product-collection"
+import ProductImage from "./product-image"
 import ProductOption from "./product-option"
 import ProductTag from "./product-tag"
 import ProductType from "./product-type"
 import ProductVariant from "./product-variant"
-import ProductImage from "./product-image"
-import { DAL } from "@medusajs/types"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =
@@ -144,7 +145,7 @@ class Product {
   @ManyToMany(() => ProductCategory, "products", {
     owner: true,
     pivotTable: "product_category_product",
-    cascade: ["soft-remove"] as any,
+    // TODO: rm cascade: ["soft-remove"] as any,
   })
   categories = new Collection<ProductCategory>(this)
 
@@ -175,6 +176,11 @@ class Product {
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
+
+  @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "prod")
+  }
 
   @BeforeCreate()
   beforeCreate() {

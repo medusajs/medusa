@@ -188,7 +188,7 @@ export class SubscriberLoader {
 
     const events = Array.isArray(event) ? event : [event]
 
-    const subscriber: Subscriber<T> = async (data: T, eventName: string) => {
+    const subscriber = async (data: T, eventName: string) => {
       return handler({
         eventName,
         data,
@@ -200,7 +200,7 @@ export class SubscriberLoader {
     const subscriberId = this.inferIdentifier(fileName, config, handler)
 
     for (const e of events) {
-      eventBusService.subscribe(e, subscriber as Subscriber<unknown>, {
+      eventBusService.subscribe(e, subscriber as Subscriber, {
         ...(config.context ?? {}),
         subscriberId,
       })

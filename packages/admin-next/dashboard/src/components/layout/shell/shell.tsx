@@ -24,6 +24,7 @@ import {
 
 import { Skeleton } from "../../common/skeleton"
 
+import { queryClient } from "../../../lib/medusa"
 import { useSearch } from "../../../providers/search-provider"
 import { useSidebar } from "../../../providers/sidebar-provider"
 import { useTheme } from "../../../providers/theme-provider"
@@ -35,13 +36,13 @@ export const Shell = ({ children }: PropsWithChildren) => {
         <MobileSidebarContainer>{children}</MobileSidebarContainer>
         <DesktopSidebarContainer>{children}</DesktopSidebarContainer>
       </div>
-      <div className="flex flex-col h-screen w-full">
+      <div className="flex h-screen w-full flex-col overflow-auto">
         <Topbar />
-        <div className="flex h-full w-full flex-col items-center overflow-y-auto">
+        <main className="flex h-full w-full flex-col items-center overflow-y-auto">
           <Gutter>
             <Outlet />
           </Gutter>
-        </div>
+        </main>
       </div>
     </div>
   )
@@ -73,9 +74,10 @@ const Breadcrumbs = () => {
     })
 
   return (
-    <ol className={clx("text-ui-fg-muted flex items-center select-none")}>
+    <ol className={clx("text-ui-fg-muted flex select-none items-center")}>
       {crumbs.map((crumb, index) => {
         const isLast = index === crumbs.length - 1
+        const isSingle = crumbs.length === 1
 
         return (
           <li
@@ -93,14 +95,19 @@ const Breadcrumbs = () => {
               </Link>
             ) : (
               <div>
-                <span className="block md:hidden">...</span>
-                <span key={index} className="hidden md:block">
+                {!isSingle && <span className="block lg:hidden">...</span>}
+                <span
+                  key={index}
+                  className={clx({
+                    "hidden lg:block": !isSingle,
+                  })}
+                >
                   {crumb.label}
                 </span>
               </div>
             )}
             {/* {!isLast && <TriangleRightMini className="-mt-0.5 mx-2" />} */}
-            {!isLast && <span className="-mt-0.5 mx-2">›</span>}
+            {!isLast && <span className="mx-2 -mt-0.5">›</span>}
           </li>
         )
       })}
@@ -109,17 +116,21 @@ const Breadcrumbs = () => {
 }
 
 const UserBadge = () => {
-  const { user, isError, error } = useAdminGetSession()
+  const { user, isLoading, isError, error } = useAdminGetSession()
 
-  const displayName = user
-    ? user.first_name && user.last_name
-      ? `${user.first_name} ${user.last_name}`
-      : user.first_name
-        ? user.first_name
-        : user.email
-    : null
+  const name = [user?.first_name, user?.last_name].filter(Boolean).join(" ")
+  const displayName = name || user?.email
 
   const fallback = displayName ? displayName[0].toUpperCase() : null
+
+  if (isLoading) {
+    return (
+      <button className="shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5">
+        <Skeleton className="h-5 w-5 rounded-full" />
+        <Skeleton className="h-[9px] w-[70px]" />
+      </button>
+    )
+  }
 
   if (isError) {
     throw error
@@ -130,13 +141,13 @@ const UserBadge = () => {
       <button
         disabled={!user}
         className={clx(
-          "shadow-borders-base flex max-w-[192px] items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5 select-none"
+          "shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5"
         )}
       >
         {fallback ? (
           <Avatar size="xsmall" fallback={fallback} />
         ) : (
-          <Skeleton className="w-5 h-5 rounded-full" />
+          <Skeleton className="h-5 w-5 rounded-full" />
         )}
         {displayName ? (
           <Text
@@ -148,7 +159,7 @@ const UserBadge = () => {
             {displayName}
           </Text>
         ) : (
-          <Skeleton className="w-[70px] h-[9px]" />
+          <Skeleton className="h-[9px] w-[70px]" />
         )}
       </button>
     </DropdownMenu.Trigger>
@@ -197,6 +208,11 @@ const Logout = () => {
   const handleLayout = async () => {
     await logoutMutation(undefined, {
       onSuccess: () => {
+        /**
+         * When the user logs out, we want to clear the query cache
+         */
+        queryClient.clear()
+
         navigate("/login")
       },
     })
@@ -291,7 +307,7 @@ const Searchbar = () => {
   return (
     <button
       onClick={toggleSearch}
-      className="shadow-borders-base bg-ui-bg-subtle hover:bg-ui-bg-subtle-hover transition-fg focus-visible:shadow-borders-focus text-ui-fg-muted flex w-full max-w-[280px] items-center gap-x-2 rounded-full py-1.5 pl-2 pr-1.5 outline-none select-none"
+      className="shadow-borders-base bg-ui-bg-subtle hover:bg-ui-bg-subtle-hover transition-fg focus-visible:shadow-borders-focus text-ui-fg-muted flex w-full max-w-[280px] select-none items-center gap-x-2 rounded-full py-1.5 pl-2 pr-1.5 outline-none"
     >
       <MagnifyingGlass />
       <div className="flex-1 text-left">
@@ -329,7 +345,7 @@ const ToggleSidebar = () => {
 
 const Topbar = () => {
   return (
-    <div className="w-full grid-cols-3 border-b p-3 grid">
+    <div className="grid w-full grid-cols-3 border-b p-3">
       <div className="flex items-center gap-x-1.5">
         <ToggleSidebar />
         <Breadcrumbs />
@@ -368,8 +384,8 @@ const MobileSidebarContainer = ({ children }: PropsWithChildren) => {
   return (
     <Dialog.Root open={mobile} onOpenChange={() => toggle("mobile")}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-ui-bg-overlay" />
-        <Dialog.Content className="h-screen fixed left-0 inset-y-0 w-[220px] border-r bg-ui-bg-subtle">
+        <Dialog.Overlay className="bg-ui-bg-overlay fixed inset-0" />
+        <Dialog.Content className="bg-ui-bg-subtle fixed inset-y-0 left-0 h-screen w-[220px] border-r">
           {children}
         </Dialog.Content>
       </Dialog.Portal>
