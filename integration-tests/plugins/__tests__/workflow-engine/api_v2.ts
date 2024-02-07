@@ -22,7 +22,7 @@ const adminHeaders = {
 }
 
 const env = {
-  MEDUSA_FF_MEDUSA_V2: false,
+  MEDUSA_FF_MEDUSA_V2: true,
 }
 
 describe("Workflow Engine API", () => {
@@ -32,11 +32,7 @@ describe("Workflow Engine API", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({
-      cwd,
-      env,
-      force_modules_migration: true,
-    } as any)
+    dbConnection = await initDb({ cwd, env } as any)
     shutdownServer = await startBootstrapApp({ cwd, env })
     medusaContainer = getContainer()
 
