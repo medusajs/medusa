@@ -120,7 +120,7 @@ You can create a sales channel by sending a request to the Create a Sales Channe
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/sales-channels' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         name: 'App',
@@ -198,7 +198,7 @@ You can list all sales channels by sending a request to the List Sales Channels 
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/sales-channels' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -267,7 +267,7 @@ You can retrieve a sales channel’s details by its ID using the Get Sales Chann
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -352,7 +352,7 @@ You can update a Sales Channel’s details and attributes by sending a request t
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "is_disabled": false
@@ -433,7 +433,7 @@ You can delete a sales channel by sending a request to the Delete Sales Channel 
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -535,7 +535,7 @@ To add a product to a sales channel, send a request to the Sales Channel’s Add
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "product_ids": [
@@ -631,7 +631,7 @@ You can list the products available in a sales channel by sending a request to t
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/products?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -739,7 +739,7 @@ You can delete a product from a sales channel by sending a request to the Sales 
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "product_ids": [
@@ -831,7 +831,7 @@ You can filter orders by a specific sales channel by sending a request to the Li
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

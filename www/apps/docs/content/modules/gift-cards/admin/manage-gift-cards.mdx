@@ -140,7 +140,7 @@ You can retrieve the gift card products by sending a request to the [List Produc
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/products?is_giftcard=true' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -295,7 +295,7 @@ You can create a gift card product by sending a request to the [Create a Product
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "title": "My Gift Card",
@@ -424,7 +424,7 @@ You can update a gift card product’s details by sending a request to the [Upda
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products/<GIFT_CARD_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "description": "The best gift card"
@@ -501,7 +501,7 @@ You can delete a gift card product by sending a request to the [Delete a Product
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/products/<GIFT_CARD_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -582,7 +582,7 @@ You can retrieve all custom gift cards by sending a request to the [List Gift Ca
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/gift-cards' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -667,7 +667,7 @@ You can create a custom gift card by sending a request to the [Create a Gift Car
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/gift-cards' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "region_id": "<REGION_ID>",
@@ -755,7 +755,7 @@ You can update a gift card by sending a request to the [Update a Gift Card API R
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/gift-cards/<GIFT_CARD_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "balance": 2000
@@ -834,7 +834,7 @@ You can delete a custom gift card by sending a request to the [Delete a Gift Car
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/gift-card/<GIFT_CARD_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

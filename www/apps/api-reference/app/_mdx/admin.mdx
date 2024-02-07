@@ -353,7 +353,7 @@ by passing to the `expand` query parameter the value `collection`:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?expand=collection" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -416,7 +416,7 @@ pass to the `expand` query parameter the value `variants,collection`:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?expand=variants,collection" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -478,7 +478,7 @@ For example:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?expand" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -572,7 +572,7 @@ parameter:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?fields=title" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -632,7 +632,7 @@ value to the `expand` query parameter. For example:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?fields=title&expand" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -696,7 +696,7 @@ For example, to select the `title` and `handle` of products:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?fields=title,handle" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -755,7 +755,7 @@ entity. For example:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?fields" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -811,7 +811,7 @@ relations aren't retrieved as well. For example:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?fields&expand" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -891,7 +891,7 @@ For example:
 
 ```bash
 curl "http://localhost:9000/admin/products?title=Shirt" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 
@@ -905,7 +905,7 @@ For example, if the string has spaces, you can encode the space with `+` or
 
 ```bash
 curl "http://localhost:9000/admin/products?title=Blue%20Shirt" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 
@@ -924,7 +924,7 @@ For example:
 
 ```bash
 curl "http://localhost:9000/admin/products?offset=1" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 
@@ -939,7 +939,7 @@ For example:
 
 ```bash
 curl "http://localhost:9000/admin/products?is_giftcard=true" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 
@@ -955,7 +955,7 @@ For example:
 
 ```bash
 curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 
@@ -968,7 +968,7 @@ For example:
 
 ```bash
 curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17T07:22:30Z" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 
@@ -985,7 +985,7 @@ For example:
 
 ```bash
 curl -g "http://localhost:9000/admin/products?sales_channel_id[]=sc_01GPGVB42PZ7N3YQEP2WDM7PC7&sales_channel_id[]=sc_234PGVB42PZ7N3YQEP2WDM7PC7" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 
@@ -1006,7 +1006,7 @@ For example:
 
 ```bash
 curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17&created_at[gt]=2022-09-17" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 <Feedback
@@ -1046,7 +1046,7 @@ For example, to limit the number of products returned in the List Products API R
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?limit=5" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -1123,7 +1123,7 @@ sort products by their `created_at` attribute by setting `order` to
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?order=created_at" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -1179,7 +1179,7 @@ descending, pass a dash (`-`) before the attribute name. For example:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?order=-created_at" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
