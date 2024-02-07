@@ -1,5 +1,6 @@
 ---
 "@medusajs/types": patch
+"@medusajs/utils": patch
 ---
 
-feat(types): payment module session and collection methods
+feat(types, utils): payment module - provider service
