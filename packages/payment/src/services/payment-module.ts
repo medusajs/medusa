@@ -117,7 +117,7 @@ export default class PaymentModuleService<
 
   /**
    *
-   * ========== PAYMENT COLLECTION ==========
+   * ********** PAYMENT COLLECTION **********
    *
    */
 
@@ -410,7 +410,7 @@ export default class PaymentModuleService<
 
   /**
    *
-   * ========== PAYMENT SESSION ==========
+   * ********** PAYMENT SESSION **********
    *
    */
 
@@ -488,7 +488,7 @@ export default class PaymentModuleService<
 
   /**
    *
-   * ========== PAYMENT ==========
+   * ********** PAYMENT **********
    *
    */
 

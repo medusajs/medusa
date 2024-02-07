@@ -69,7 +69,19 @@ describe("Payment Module Service", () => {
 
       const paymentSession = await service.createPaymentSession(
         paymentCollection.id,
-        { amount: 200, provider_id: "system", currency_code: "USD", data: {} }
+        {
+          provider_id: "system",
+          providerContext: {
+            amount: 200,
+            currency_code: "USD",
+            paymentSessionData: {},
+            context: {},
+            customer: {},
+            billing_address: {},
+            email: "test@test.test.com",
+            resource_id: "cart_test",
+          },
+        }
       )
 
       await service.authorizePaymentCollection(
@@ -408,10 +420,17 @@ describe("Payment Module Service", () => {
     describe("create", () => {
       it("should create a payment session successfully", async () => {
         await service.createPaymentSession("pay-col-id-1", {
-          amount: 200,
           provider_id: "system",
-          currency_code: "usd",
-          data: {},
+          providerContext: {
+            amount: 200,
+            currency_code: "usd",
+            paymentSessionData: {},
+            context: {},
+            customer: {},
+            billing_address: {},
+            email: "test@test.test.com",
+            resource_id: "cart_test",
+          },
         })
 
         const paymentCollection = await service.retrievePaymentCollection(
@@ -613,17 +632,24 @@ describe("Payment Module Service", () => {
         const session = await service.createPaymentSession(
           paymentCollection.id,
           {
-            amount: 200,
-            provider_id: "manual",
-            currency_code: "usd",
-            data: {},
+            provider_id: "system",
+            providerContext: {
+              amount: 200,
+              currency_code: "usd",
+              paymentSessionData: {},
+              context: {},
+              customer: {},
+              billing_address: {},
+              email: "test@test.test.com",
+              resource_id: "cart_test",
+            },
           }
         )
 
         const createdPayment = await service.createPayment({
           data: {},
           amount: 200,
-          provider_id: "manual",
+          provider_id: "system",
           currency_code: "usd",
           payment_collection_id: paymentCollection.id,
           payment_session_id: session.id,
@@ -645,7 +671,7 @@ describe("Payment Module Service", () => {
             captures: [],
             amount: 200,
             currency_code: "usd",
-            provider_id: "manual",
+            provider_id: "system",
             payment_collection: expect.objectContaining({
               id: paymentCollection.id,
             }),

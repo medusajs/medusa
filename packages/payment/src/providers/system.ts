@@ -36,7 +36,7 @@ export class SystemProviderService extends AbstractPaymentProcessor {
   async retrievePayment(
     paymentSessionData: Record<string, unknown>
   ): Promise<Record<string, unknown> | PaymentProcessorError> {
-    throw new Error("Method not implemented.")
+    return {}
   }
 
   async authorizePayment(_): Promise<
