@@ -15,8 +15,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "user_identifier": {
-          "name": "user_identifier",
+        "email": {
+          "name": "email",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -31,6 +31,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         },
         "token": {
@@ -109,12 +110,12 @@
         {
           "keyName": "invite_user_identifier_index",
           "columnNames": [
-            "user_identifier"
+            "email"
           ],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "create unique index \"invite_user_identifier_index\" on \"invite\" (\"user_identifier\") where deleted_at is null;"
+          "expression": "create unique index \"IDX_invite_email\" on \"invite\" (\"email\") where deleted_at is null;"
         },
         {
           "keyName": "invite_pkey",

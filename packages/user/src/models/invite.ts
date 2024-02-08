@@ -26,10 +26,10 @@ export default class Invite {
 
   @Index({
     name: "invite_user_identifier_index",
-    expression: `create unique index "invite_user_identifier_index" on "invite" ("user_identifier") where deleted_at is null;`,
+    expression: `create unique index "IDX_invite_email" on "invite" ("email") where deleted_at is null;`,
   })
   @Property({ columnType: "text" })
-  user_identifier: string
+  email: string
 
   @Property({ columnType: "boolean" })
   accepted: boolean = false

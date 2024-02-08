@@ -14,13 +14,13 @@ const expireDate = new Date(today.setDate(today.getDate() + 10))
 const defaultInviteData = [
   {
     id: "1",
-    user_identifier: "user_1@test.com",
+    email: "user_1@test.com",
     token: "test",
     expires_at: expireDate,
   },
   {
     id: "2",
-    user_identifier: "user_2@test.com",
+    email: "user_2@test.com",
     token: "test",
     expires_at: expireDate,
   },
@@ -124,7 +124,7 @@ describe("UserModuleService - Invite", () => {
       await createInvites(testManager, [
         {
           id,
-          user_identifier: "user_1@test.com",
+          email: "user_1@test.com",
           token: "test",
           expires_at: expireDate,
         },
@@ -168,7 +168,7 @@ describe("UserModuleService - Invite", () => {
       await createInvites(testManager, [
         {
           id,
-          user_identifier: "user_1@test.com",
+          email: "user_1@test.com",
           token: "test",
           expires_at: expireDate,
         },
@@ -192,7 +192,7 @@ describe("UserModuleService - Invite", () => {
       await createInvites(testManager, [
         {
           id,
-          user_identifier: "user_1@test.com",
+          email: "user_1@test.com",
           token: "test",
           expires_at: expireDate,
         },
@@ -230,7 +230,7 @@ describe("UserModuleService - Invite", () => {
       await service.createInvite([
         {
           id: "1",
-          user_identifier: "user_1@test.com",
+          email: "user_1@test.com",
           token: "test",
           expires_at: expireDate,
         },
