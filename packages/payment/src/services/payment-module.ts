@@ -404,7 +404,7 @@ export default class PaymentModuleService<
     // NOTE: currently there is no update with the provider but maybe data could be updated
     const result = await this.paymentService_.update(data, sharedContext)
 
-    return await this.baseRepository_.serialize<PaymentDTO>(result, {
+    return await this.baseRepository_.serialize<PaymentDTO>(result[0], {
       populate: true,
     })
   }

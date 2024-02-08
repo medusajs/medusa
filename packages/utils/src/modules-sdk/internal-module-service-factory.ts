@@ -281,12 +281,10 @@ export function internalModuleServiceFactory<
         }
       }
 
-      const result = await this[propertyRepositoryName].update(
+      return await this[propertyRepositoryName].update(
         toUpdateData,
         sharedContext
       )
-
-      return Array.isArray(input) ? result : result[0]
     }
 
     delete(idOrSelector: string, sharedContext?: Context): Promise<void>
