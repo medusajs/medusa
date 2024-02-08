@@ -1,18 +1,8 @@
-import { generateEntityId } from "@medusajs/utils"
-import {
-  BeforeCreate,
-  Entity,
-  OnInit,
-  PrimaryKey,
-  Property,
-} from "@mikro-orm/core"
+import { Entity, PrimaryKey, Property } from "@mikro-orm/core"
 
 @Entity({ tableName: "region_currency" })
 export default class Currency {
   @PrimaryKey({ columnType: "text" })
-  id: string
-
-  @Property({ columnType: "text" })
   code: string
 
   @Property({ columnType: "text" })
@@ -23,14 +13,4 @@ export default class Currency {
 
   @Property({ columnType: "text" })
   name: string
-
-  @BeforeCreate()
-  onCreate() {
-    this.id = generateEntityId(this.id, "reg_curr")
-  }
-
-  @OnInit()
-  onInit() {
-    this.id = generateEntityId(this.id, "reg_curr")
-  }
 }
