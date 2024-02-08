@@ -22,13 +22,7 @@ type InjectedDependencies = {
   inviteService: ModulesSdkTypes.InternalModuleService<any>
 }
 
-const generateMethodForModels = [
-  {
-    model: Invite,
-    singular: "Invite",
-    plural: "Invites",
-  },
-]
+const generateMethodForModels = [Invite]
 
 export default class UserModuleService<
     TUser extends User = User,
@@ -40,8 +34,6 @@ export default class UserModuleService<
     {
       Invite: {
         dto: UserTypes.InviteDTO
-        singular: "Invite"
-        plural: "Invites"
       }
     }
   >(User, generateMethodForModels, entityNameToLinkableKeysMap)
@@ -141,17 +133,17 @@ export default class UserModuleService<
   createInvite(
     data: UserTypes.CreateInviteDTO[],
     sharedContext?: Context
-  ): Promise<UserTypes.UserDTO[]>
+  ): Promise<UserTypes.InviteDTO[]>
   createInvite(
     data: UserTypes.CreateInviteDTO,
     sharedContext?: Context
-  ): Promise<UserTypes.UserDTO>
+  ): Promise<UserTypes.InviteDTO>
 
   @InjectManager("baseRepository_")
   async createInvite(
     data: UserTypes.CreateInviteDTO[] | UserTypes.CreateInviteDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<UserTypes.UserDTO | UserTypes.UserDTO[]> {
+  ): Promise<UserTypes.InviteDTO | UserTypes.InviteDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
     const invites = await this.inviteService_.create(input, sharedContext)
@@ -168,17 +160,17 @@ export default class UserModuleService<
   updateInvite(
     data: UserTypes.UpdateInviteDTO[],
     sharedContext?: Context
-  ): Promise<UserTypes.UserDTO[]>
+  ): Promise<UserTypes.InviteDTO[]>
   updateInvite(
     data: UserTypes.UpdateInviteDTO,
     sharedContext?: Context
-  ): Promise<UserTypes.UserDTO>
+  ): Promise<UserTypes.InviteDTO>
 
   @InjectManager("baseRepository_")
   async updateInvite(
     data: UserTypes.UpdateInviteDTO | UserTypes.UpdateInviteDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<UserTypes.UserDTO | UserTypes.UserDTO[]> {
+  ): Promise<UserTypes.InviteDTO | UserTypes.InviteDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
     const updatedInvites = await this.inviteService_.update(

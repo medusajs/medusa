@@ -17,7 +17,7 @@ export interface UpdateUserDTO {
 
 export interface CreateInviteDTO {
   id?: string
-  user_identifier?: string
+  email?: string
   accepted?: boolean
   token: string
   expires_at: Date
@@ -26,7 +26,7 @@ export interface CreateInviteDTO {
 
 export interface UpdateInviteDTO {
   id: string
-  user_identifier?: string
+  email?: string
   accepted?: boolean
   token?: string
   expires_at?: Date
