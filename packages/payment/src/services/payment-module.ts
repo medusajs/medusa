@@ -13,13 +13,10 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
   PaymentCollectionDTO,
-  PaymentCollectionStatus,
   PaymentDTO,
   PaymentSessionDTO,
   PaymentSessionStatus,
   RefundDTO,
-  SetPaymentSessionsContextDTO,
-  SetPaymentSessionsDTO,
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
@@ -40,7 +37,6 @@ import {
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import PaymentProviderService from "./payment-provider"
-import paymentSession from "@medusajs/medusa/dist/repositories/payment-session"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
