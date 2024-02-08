@@ -156,9 +156,6 @@ module.exports = {
       const featureFlagLoader =
         require("@medusajs/medusa/dist/loaders/feature-flags").default
 
-      const medusaAppLoader =
-        require("@medusajs/medusa/dist/loaders/medusa-app").default
-
       const container = createMedusaContainer()
 
       const featureFlagRouter = await featureFlagLoader(configModule)
