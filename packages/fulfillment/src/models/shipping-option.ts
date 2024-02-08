@@ -29,6 +29,52 @@ import Fulfillment from "./fulfillment"
 
 type ShippingOptionOptionalProps = DAL.SoftDeletableEntityDateColumns
 
+const deletedAtIndexName = "IDX_shipping_option_deleted_at"
+const deletedAtIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+  name: deletedAtIndexName,
+  tableName: "shipping_option",
+  columnNames: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
+const serviceZoneIdIndexName = "IDX_shipping_option_service_zone_id"
+const serviceZoneIdIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+  name: serviceZoneIdIndexName,
+  tableName: "shipping_option",
+  columnNames: "service_zone_id",
+  where: "deleted_at IS NULL",
+})
+
+const shippingProfileIdIndexName = "IDX_shipping_option_shipping_profile_id"
+const shippingProfileIdIndexStatement = DALUtils.createPsqlIndexStatementHelper(
+  {
+    name: shippingProfileIdIndexName,
+    tableName: "shipping_option",
+    columnNames: "shipping_profile_id",
+    where: "deleted_at IS NULL",
+  }
+)
+
+const serviceProviderIdIndexName = "IDX_shipping_option_service_provider_id"
+const serviceProviderIdIndexStatement = DALUtils.createPsqlIndexStatementHelper(
+  {
+    name: serviceProviderIdIndexName,
+    tableName: "shipping_option",
+    columnNames: "service_provider_id",
+    where: "deleted_at IS NULL",
+  }
+)
+
+const shippingOptionTypeIdIndexName =
+  "IDX_shipping_option_shipping_option_type_id"
+const shippingOptionTypeIdIndexStatement =
+  DALUtils.createPsqlIndexStatementHelper({
+    name: shippingOptionTypeIdIndexName,
+    tableName: "shipping_option",
+    columnNames: "shipping_option_type_id",
+    where: "deleted_at IS NULL",
+  })
+
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingOption {
@@ -47,15 +93,31 @@ export default class ShippingOption {
   price_type: ShippingOptionPriceType
 
   @Property({ columnType: "text" })
+  @Index({
+    name: serviceZoneIdIndexName,
+    expression: serviceZoneIdIndexStatement,
+  })
   service_zone_id: string
 
   @Property({ columnType: "text" })
+  @Index({
+    name: shippingProfileIdIndexName,
+    expression: shippingProfileIdIndexStatement,
+  })
   shipping_profile_id: string
 
   @Property({ columnType: "text" })
+  @Index({
+    name: serviceProviderIdIndexName,
+    expression: serviceProviderIdIndexStatement,
+  })
   service_provider_id: string
 
   @Property({ columnType: "text", nullable: true })
+  @Index({
+    name: shippingOptionTypeIdIndexName,
+    expression: shippingOptionTypeIdIndexStatement,
+  })
   shipping_option_type_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
@@ -99,7 +161,10 @@ export default class ShippingOption {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_shipping_option_deleted_at" })
+  @Index({
+    name: deletedAtIndexName,
+    expression: deletedAtIndexStatement,
+  })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

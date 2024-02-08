@@ -20,6 +20,14 @@ import ShippingOption from "./shipping-option"
 
 type ServiceZoneOptionalProps = DAL.SoftDeletableEntityDateColumns
 
+const deletedAtIndexName = "IDX_service_zone_deleted_at"
+const deletedAtIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+  name: deletedAtIndexName,
+  tableName: "service_zone",
+  columnNames: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ServiceZone {
@@ -69,7 +77,10 @@ export default class ServiceZone {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_service_zone_deleted_at" })
+  @Index({
+    name: deletedAtIndexName,
+    expression: deletedAtIndexStatement,
+  })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
