@@ -28,6 +28,9 @@ export default class FulfillmentSet {
   @Property({ columnType: "text" })
   name: string
 
+  @Property({ columnType: "text" })
+  type: string
+
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 

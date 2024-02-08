@@ -4,10 +4,12 @@ import { DALUtils, generateEntityId } from "@medusajs/utils"
 
 import {
   BeforeCreate,
+  Collection,
   Entity,
   Filter,
   Index,
   ManyToOne,
+  OneToMany,
   OnInit,
   OptionalProps,
   PrimaryKey,
@@ -18,6 +20,7 @@ import ShippingOption from "./shipping-option"
 import ServiceProvider from "./service-provider"
 import Address from "./address"
 import FulfillmentItem from "./fulfillment-item"
+import FulfillmentLabel from "./fulfillment-label"
 
 type FulfillmentOptionalProps = DAL.SoftDeletableEntityDateColumns
 
@@ -31,9 +34,6 @@ export default class Fulfillment {
 
   @Property({ columnType: "text" })
   location_id: string
-
-  @Property({ columnType: "jsonb", nullable: true })
-  tracking_numbers: string[] | null = null
 
   @Property({
     columnType: "timestamptz",
@@ -80,9 +80,8 @@ export default class Fulfillment {
   @ManyToOne(() => FulfillmentItem)
   items: FulfillmentItem
 
-  // TODO
-  /*@OneToMany(() => FulfillmentLabel
-  shipping_labels: FulfillmentItem | null*/
+  @OneToMany(() => FulfillmentLabel, (label) => label.fulfillment)
+  labels = new Collection<FulfillmentLabel>(this)
 
   @Property({
     onCreate: () => new Date(),

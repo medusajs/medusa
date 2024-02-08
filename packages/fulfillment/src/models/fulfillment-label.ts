@@ -7,12 +7,14 @@ import {
   Entity,
   Filter,
   Index,
+  OneToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
+import Fulfillment from "./fulfillment"
 
 type FulfillmentLabelOptionalProps = DAL.SoftDeletableEntityDateColumns
 
@@ -35,6 +37,12 @@ export default class FulfillmentLabel {
 
   @Property({ columnType: "text" })
   provider_id: string
+
+  @Property({ columnType: "text" })
+  fulfillment_id: string
+
+  @OneToOne(() => Fulfillment)
+  fulfillment: Fulfillment
 
   @Property({
     onCreate: () => new Date(),

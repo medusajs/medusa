@@ -41,6 +41,9 @@ export default class FulfillmentItem {
   @Property({ columnType: "text", nullable: true })
   line_item_id: string | null = null
 
+  @Property({ columnType: "text", nullable: true })
+  line_item_id: string | null = null
+
   @Property({ columnType: "text" })
   fulfillment_id: string
 
