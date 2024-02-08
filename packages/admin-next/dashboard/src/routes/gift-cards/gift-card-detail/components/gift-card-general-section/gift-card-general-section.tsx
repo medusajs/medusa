@@ -134,7 +134,7 @@ export const GiftCardGeneralSection = ({
         <Text size="small" leading="compact">
           {giftCard.ends_at
             ? format(new Date(giftCard.ends_at), "dd MMM yyyy")
-            : "Doesn't expire"}
+            : "-"}
         </Text>
       </div>
     </Container>

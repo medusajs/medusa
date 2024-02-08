@@ -1,5 +1,5 @@
 import { useAdminGiftCard } from "medusa-react"
-import { useParams } from "react-router-dom"
+import { Outlet, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { GiftCardGeneralSection } from "./components/gift-card-general-section"
 
@@ -20,6 +20,7 @@ export const GiftCardDetail = () => {
     <div className="flex flex-col gap-y-2">
       <GiftCardGeneralSection giftCard={gift_card} />
       <JsonViewSection data={gift_card} />
+      <Outlet />
     </div>
   )
 }

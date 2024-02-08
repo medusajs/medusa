@@ -273,12 +273,19 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () => import("../../routes/gift-cards/gift-card-list"),
               },
               {
                 path: ":id",
                 lazy: () => import("../../routes/gift-cards/gift-card-detail"),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../routes/gift-cards/gift-card-edit"),
+                  },
+                ],
               },
             ],
           },

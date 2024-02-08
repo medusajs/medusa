@@ -84,7 +84,14 @@
   },
   "giftCards": {
     "domain": "Gift Cards",
-    "deleteGiftCardWarning": "You are about to delete the gift card {{code}}. This action cannot be undone."
+    "editGiftCard": "Edit Gift Card",
+    "deleteGiftCardWarning": "You are about to delete the gift card {{code}}. This action cannot be undone.",
+    "balanceHigherThanValue": "The balance cannot be higher than the original amount.",
+    "balanceLowerThanZero": "The balance cannot be negative.",
+    "expiryDateHint": "Countries have different laws regarding gift card expiry dates. Make sure to check local regulations before setting an expiry date.",
+    "enabledHint": "Specify if the gift card is enabled or disabled.",
+    "currentBalance": "Current balance",
+    "initialBalance": "Initial balance"
   },
   "customers": {
     "domain": "Customers",
