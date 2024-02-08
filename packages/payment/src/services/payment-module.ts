@@ -522,7 +522,7 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    if (status === PaymentSessionStatus.AUTHORIZED) {
+    if (status !== PaymentSessionStatus.AUTHORIZED) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Session not authorized with the provider."
@@ -536,6 +536,8 @@ export default class PaymentModuleService<
         authorized_amount: session.amount,
         payment_session: session.id,
         payment_collection: session.payment_collection!.id,
+        provider_id: session.provider_id,
+        // customer_id: context.customer.id,
         data,
       },
       sharedContext

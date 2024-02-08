@@ -459,139 +459,215 @@ describe("Payment Module Service", () => {
     })
 
     describe("authorize", () => {
-      it("should authorize payment sessions successfully", async () => {
+      it("should authorize a payment session", async () => {
         const collection = await service.createPaymentCollection({
           amount: 200,
           region_id: "test-region",
           currency_code: "usd",
         })
 
-        const sessions = await service.createPaymentSession(collection.id, [
-          {
+        const session = await service.createPaymentSession(collection.id, {
+          provider_id: "system",
+          providerContext: {
             amount: 100,
             currency_code: "usd",
-            provider_id: "system",
-            data: {},
+            paymentSessionData: {},
+            context: {},
+            resource_id: "test",
+            email: "test@test.com",
+            billing_address: {},
+            customer: {},
           },
-          {
-            amount: 100,
-            currency_code: "usd",
-            provider_id: "system",
-            data: {},
-          },
-        ])
+        })
 
-        await service.authorizePaymentCollection(
-          collection.id,
-          sessions.map(({ id }) => id),
-          {}
-        )
+        const payment = await service.authorizePaymentSession(session.id, {})
 
-        const authorizedCollection = await service.retrievePaymentCollection(
-          collection.id,
-          { relations: ["payment_sessions", "payments"] }
-        )
-
-        expect(authorizedCollection).toEqual(
+        expect(payment).toEqual(
           expect.objectContaining({
-            id: collection.id,
-            amount: 200,
-            authorized_amount: 200,
-            payment_sessions: expect.arrayContaining([
-              expect.objectContaining({
-                id: sessions[0].id,
-                amount: 100,
-                provider_id: "system",
-                data: {},
-                status: "authorized",
-                authorized_at: expect.any(Date),
+            id: expect.any(String),
+            amount: 100,
+            authorized_amount: 100,
+            currency_code: "usd",
+            provider_id: "system",
+
+            refunds: [],
+            captures: [],
+            data: {},
+            cart_id: null,
+            order_id: null,
+            order_edit_id: null,
+            customer_id: null,
+            deleted_at: null,
+            captured_at: null,
+            canceled_at: null,
+            payment_collection: expect.objectContaining({
+              id: expect.any(String),
+            }),
+            payment_session: {
+              id: expect.any(String),
+              currency_code: "usd",
+              amount: 100,
+              provider_id: "system",
+              data: {},
+              status: "authorized",
+              authorized_at: expect.any(Date),
+              payment_collection: expect.objectContaining({
+                id: expect.any(String),
               }),
-              expect.objectContaining({
-                id: sessions[1].id,
-                amount: 100,
-                provider_id: "system",
-                data: {},
-                status: "authorized",
-                authorized_at: expect.any(Date),
-              }),
-            ]),
-            payments: expect.arrayContaining([
-              // Payments were created from the sessions
-              expect.objectContaining({
-                payment_session: expect.objectContaining({
-                  id: sessions[0].id,
-                }),
-                amount: 100,
+              payment: expect.objectContaining({
                 authorized_amount: 100,
+                cart_id: null,
+                order_id: null,
+                order_edit_id: null,
+                customer_id: null,
+                data: {},
+                deleted_at: null,
+                captured_at: null,
+                canceled_at: null,
+                refunds: [],
+                captures: [],
+                amount: 100,
                 currency_code: "usd",
                 provider_id: "system",
               }),
-              expect.objectContaining({
-                payment_session: expect.objectContaining({
-                  id: sessions[1].id,
-                }),
-                amount: 100,
-                authorized_amount: 100,
-                currency_code: "usd",
-                provider_id: "system",
-              }),
-            ]),
+            },
           })
         )
       })
+
+      // it("should authorize payment sessions successfully", async () => {
+      //   const collection = await service.createPaymentCollection({
+      //     amount: 200,
+      //     region_id: "test-region",
+      //     currency_code: "usd",
+      //   })
+      //
+      //   const sessions = await service.createPaymentSession(collection.id, [
+      //     {
+      //       amount: 100,
+      //       currency_code: "usd",
+      //       provider_id: "system",
+      //       data: {},
+      //     },
+      //     {
+      //       amount: 100,
+      //       currency_code: "usd",
+      //       provider_id: "system",
+      //       data: {},
+      //     },
+      //   ])
+      //
+      //   await service.authorizePaymentCollection(
+      //     collection.id,
+      //     sessions.map(({ id }) => id),
+      //     {}
+      //   )
+      //
+      //   const authorizedCollection = await service.retrievePaymentCollection(
+      //     collection.id,
+      //     { relations: ["payment_sessions", "payments"] }
+      //   )
+      //
+      //   expect(authorizedCollection).toEqual(
+      //     expect.objectContaining({
+      //       id: collection.id,
+      //       amount: 200,
+      //       authorized_amount: 200,
+      //       payment_sessions: expect.arrayContaining([
+      //         expect.objectContaining({
+      //           id: sessions[0].id,
+      //           amount: 100,
+      //           provider_id: "system",
+      //           data: {},
+      //           status: "authorized",
+      //           authorized_at: expect.any(Date),
+      //         }),
+      //         expect.objectContaining({
+      //           id: sessions[1].id,
+      //           amount: 100,
+      //           provider_id: "system",
+      //           data: {},
+      //           status: "authorized",
+      //           authorized_at: expect.any(Date),
+      //         }),
+      //       ]),
+      //       payments: expect.arrayContaining([
+      //         // Payments were created from the sessions
+      //         expect.objectContaining({
+      //           payment_session: expect.objectContaining({
+      //             id: sessions[0].id,
+      //           }),
+      //           amount: 100,
+      //           authorized_amount: 100,
+      //           currency_code: "usd",
+      //           provider_id: "system",
+      //         }),
+      //         expect.objectContaining({
+      //           payment_session: expect.objectContaining({
+      //             id: sessions[1].id,
+      //           }),
+      //           amount: 100,
+      //           authorized_amount: 100,
+      //           currency_code: "usd",
+      //           provider_id: "system",
+      //         }),
+      //       ]),
+      //     })
+      //   )
+      // })
     })
 
-    describe("set sessions", () => {
-      it("should set sessions on a collection", async () => {
-        let collection = await service.createPaymentCollection({
-          amount: 200,
-          region_id: "test-region",
-          currency_code: "usd",
-        })
-
-        await service.setPaymentSessions(
-          collection.id,
-          [
-            { amount: 100, provider_id: "system" },
-            { amount: 100, provider_id: "system" },
-          ],
-          {
-            resource_id: "todo",
-            email: "asd",
-            context: {},
-            billing_address: {},
-            customer: {},
-          }
-        )
-
-        collection = await service.retrievePaymentCollection(collection.id, {
-          relations: ["payment_sessions"],
-        })
-
-        expect(collection.payment_sessions).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              currency_code: "usd",
-              amount: 100,
-              provider_id: "system",
-              data: {},
-              status: "pending",
-              authorized_at: null,
-              payment: null,
-            }),
-            expect.objectContaining({
-              currency_code: "usd",
-              amount: 100,
-              provider_id: "system",
-              data: {},
-              status: "pending",
-              authorized_at: null,
-              payment: null,
-            }),
-          ])
-        )
-      })
-    })
+    // describe("set sessions", () => {
+    //   it("should set sessions on a collection", async () => {
+    //     let collection = await service.createPaymentCollection({
+    //       amount: 200,
+    //       region_id: "test-region",
+    //       currency_code: "usd",
+    //     })
+    //
+    //     await service.setPaymentSessions(
+    //       collection.id,
+    //       [
+    //         { amount: 100, provider_id: "system" },
+    //         { amount: 100, provider_id: "system" },
+    //       ],
+    //       {
+    //         resource_id: "todo",
+    //         email: "asd",
+    //         context: {},
+    //         billing_address: {},
+    //         customer: {},
+    //       }
+    //     )
+    //
+    //     collection = await service.retrievePaymentCollection(collection.id, {
+    //       relations: ["payment_sessions"],
+    //     })
+    //
+    //     expect(collection.payment_sessions).toEqual(
+    //       expect.arrayContaining([
+    //         expect.objectContaining({
+    //           currency_code: "usd",
+    //           amount: 100,
+    //           provider_id: "system",
+    //           data: {},
+    //           status: "pending",
+    //           authorized_at: null,
+    //           payment: null,
+    //         }),
+    //         expect.objectContaining({
+    //           currency_code: "usd",
+    //           amount: 100,
+    //           provider_id: "system",
+    //           data: {},
+    //           status: "pending",
+    //           authorized_at: null,
+    //           payment: null,
+    //         }),
+    //       ])
+    //     )
+    //   })
+    // })
   })
 
   describe("Payment", () => {
