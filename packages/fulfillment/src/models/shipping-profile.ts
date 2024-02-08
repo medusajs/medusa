@@ -70,11 +70,11 @@ export default class ShippingProfile {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "shpro")
+    this.id = generateEntityId(this.id, "sp")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "shpro")
+    this.id = generateEntityId(this.id, "sp")
   }
 }
