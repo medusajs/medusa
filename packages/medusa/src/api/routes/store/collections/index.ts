@@ -1,6 +1,9 @@
 import { Router } from "express"
-import { PaginatedResponse } from "../../../../types/common"
-import { ProductCollection } from "../../../../"
+import { PaginatedResponse, QueryConfig } from "../../../../types/common"
+import {
+  ProductCollection,
+  StoreGetCollectionsCollectionParams,
+} from "../../../../"
 import middlewares, { transformStoreQuery } from "../../../middlewares"
 import { StoreGetCollectionsParams } from "./list-collections"
 
@@ -9,21 +12,34 @@ const route = Router()
 export default (app) => {
   app.use("/collections", route)
 
+  const defaultQueryConfig = {
+    defaultFields: defaultStoreCollectionFields,
+    defaultRelations: defaultStoreCollectionRelations,
+    allowedFields: allowedStoreCollectionFields,
+    allowedRelations: allowedStoreCollectionRelations,
+  } satisfies QueryConfig<ProductCollection>
+
   route.get(
     "/",
     transformStoreQuery(StoreGetCollectionsParams, {
-      allowedFields,
+      ...defaultQueryConfig,
       isList: true,
     }),
     middlewares.wrap(require("./list-collections").default)
   )
-  route.get("/:id", middlewares.wrap(require("./get-collection").default))
+  route.get(
+    "/:id",
+    transformStoreQuery(
+      StoreGetCollectionsCollectionParams,
+      defaultQueryConfig
+    ),
+    middlewares.wrap(require("./get-collection").default)
+  )
 
   return app
 }
 
-export const defaultStoreCollectionRelations = []
-export const allowedFields = [
+export const defaultStoreCollectionFields = [
   "id",
   "title",
   "handle",
@@ -32,6 +48,13 @@ export const allowedFields = [
   "created_at",
   "updated_at",
   "deleted_at",
+]
+
+export const defaultStoreCollectionRelations = []
+
+export const allowedStoreCollectionFields = [...defaultStoreCollectionFields]
+
+export const allowedStoreCollectionRelations = [
   ...defaultStoreCollectionRelations,
 ]
 
