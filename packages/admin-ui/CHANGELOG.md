@@ -1,5 +1,15 @@
 # @medusajs/admin-ui
 
+## 2.1.12
+
+### Patch Changes
+
+- [#6306](https://github.com/medusajs/medusa/pull/6306) [`58baead34`](https://github.com/medusajs/medusa/commit/58baead34e32abff3c587dbc1c6b11b527be8381) Thanks [@erikengervall](https://github.com/erikengervall)! - fix(admin-ui) Refactor `use-copy-promotion` to map product IDs
+
+- Updated dependencies [[`8cbf6c60f`](https://github.com/medusajs/medusa/commit/8cbf6c60fec7fe8ddf59dcf420b9339f84b8636c), [`73fd92a1a`](https://github.com/medusajs/medusa/commit/73fd92a1afdec88c0d5f4aeed16349f2bd62cfa2)]:
+  - @medusajs/ui-preset@1.1.1
+  - @medusajs/ui@2.4.0
+
 ## 2.1.11
 
 ### Patch Changes

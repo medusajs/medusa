@@ -1,5 +1,25 @@
 # @medusajs/types
 
+## 1.11.12
+
+### Patch Changes
+
+- [#6319](https://github.com/medusajs/medusa/pull/6319) [`12054f5c0`](https://github.com/medusajs/medusa/commit/12054f5c01915899223ddc6da734151b31fbb23b) Thanks [@adrien2p](https://github.com/adrien2p)! - Feat/shipping method init
+
+- [#5923](https://github.com/medusajs/medusa/pull/5923) [`3db2f95e65`](https://github.com/medusajs/medusa/commit/3db2f95e65909f4fff432990b48be74509052e83) Thanks [@fPolic](https://github.com/fPolic)! - feat: Sales Channel module
+
+- [#6312](https://github.com/medusajs/medusa/pull/6312) [`96ba49329`](https://github.com/medusajs/medusa/commit/96ba49329b6b05922c90f0c55f16455cb40aa5ca) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Load custom modules by path
+
+- [#6263](https://github.com/medusajs/medusa/pull/6263) [`45134e4d1`](https://github.com/medusajs/medusa/commit/45134e4d11cfcdc08dbd10aae687bfbe9e848ab9) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Workflows passing MedusaContext as argument
+
+- [#6333](https://github.com/medusajs/medusa/pull/6333) [`82c728bec`](https://github.com/medusajs/medusa/commit/82c728bec7232a245a67dca0b01b28572ebea75d) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Allow configuring of staged job polling batch size
+
+- [#6272](https://github.com/medusajs/medusa/pull/6272) [`e749dd653`](https://github.com/medusajs/medusa/commit/e749dd653c755bfc3632b134d32c15ceaee0a852) Thanks [@riqwan](https://github.com/riqwan)! - feat(types): added computed actions for automatic promotions
+
+- [#6218](https://github.com/medusajs/medusa/pull/6218) [`884428a1b`](https://github.com/medusajs/medusa/commit/884428a1b573e499d7659aefed639bf797147428) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Feat: Event Aggregator
+
+- [#6197](https://github.com/medusajs/medusa/pull/6197) [`d1c18a309`](https://github.com/medusajs/medusa/commit/d1c18a3090d71c68a98343fdbb53516f416504c5) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(stock-location, medusa, types): add `q` and `order` query parameters to stock locations list endpoint
+
 ## 1.11.11
 
 ### Patch Changes
