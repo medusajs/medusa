@@ -37,6 +37,9 @@ export default class ServiceProvider {
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
+
   @OneToMany(
     () => ShippingOption,
     (shippingOption) => shippingOption.service_provider

@@ -77,11 +77,11 @@ export default class ShippingOptionRule {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "shoptty")
+    this.id = generateEntityId(this.id, "shoptru")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "shoptty")
+    this.id = generateEntityId(this.id, "shoptru")
   }
 }

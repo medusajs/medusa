@@ -118,6 +118,9 @@ export default class Fulfillment {
   })
   shipping_option_id: string | null = null
 
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
+
   @ManyToOne(() => ShippingOption, { nullable: true })
   shipping_option: ShippingOption | null
 
