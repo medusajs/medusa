@@ -1,0 +1,23 @@
+{
+  "description": "This component is based on the div element and supports all of its props",
+  "methods": [],
+  "displayName": "Alert",
+  "props": {
+    "variant": {
+      "defaultValue": {
+        "value": "\"info\"",
+        "computed": false
+      },
+      "description": "The variant of the alert",
+      "required": false
+    },
+    "dismissible": {
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      },
+      "description": "Whether the alert is dismissible",
+      "required": false
+    }
+  }
+}
