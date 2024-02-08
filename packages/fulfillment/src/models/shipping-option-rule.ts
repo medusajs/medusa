@@ -21,6 +21,7 @@ import ShippingOption from "./shipping-option"
 type ShippingOptionRuleOptionalProps = DAL.SoftDeletableEntityDateColumns
 
 // TODO: need some test to see if we continue with this kind of structure or we change it
+// More adjustments can appear as I move forward
 
 const deletedAtIndexName = "IDX_shipping_option_rule_deleted_at"
 const deletedAtIndexStatement = createPsqlIndexStatementHelper({

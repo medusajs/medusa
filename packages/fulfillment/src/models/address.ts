@@ -1,5 +1,3 @@
-// TODO: Not to be reviewed yet. Waiting discussion before continuing this part
-
 import { DAL } from "@medusajs/types"
 import {
   createPsqlIndexStatementHelper,
