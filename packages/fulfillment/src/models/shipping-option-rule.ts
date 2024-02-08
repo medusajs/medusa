@@ -6,53 +6,53 @@ import {
 
 import {
   BeforeCreate,
-  Collection,
   Entity,
   Filter,
   Index,
-  ManyToMany,
+  ManyToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
-import ServiceZone from "./service-zone"
+import ShippingOption from "./shipping-option"
 
-type FulfillmentSetOptionalProps = DAL.SoftDeletableEntityDateColumns
+type ShippingOptionRuleOptionalProps = DAL.SoftDeletableEntityDateColumns
 
-const deletedAtIndexName = "IDX_fulfillment_set_deleted_at"
+// TODO: need some test to see if we continue with this kind of structure or we change it
+// More adjustments can appear as I move forward
+
+const deletedAtIndexName = "IDX_shipping_option_rule_deleted_at"
 const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   name: deletedAtIndexName,
-  tableName: "fulfillment_set",
+  tableName: "shipping_option_rule",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
-export default class FulfillmentSet {
-  [OptionalProps]?: FulfillmentSetOptionalProps
+export default class ShippingOptionRule {
+  [OptionalProps]?: ShippingOptionRuleOptionalProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
 
   @Property({ columnType: "text" })
-  name: string
+  attribute: string
 
   @Property({ columnType: "text" })
-  type: string
+  operator: string
 
   @Property({ columnType: "jsonb", nullable: true })
-  metadata: Record<string, unknown> | null = null
+  value: { value: string | string[] } | null = null
 
-  @ManyToMany(() => ServiceZone, "fulfillment_sets", {
-    owner: true,
-    pivotTable: "fulfillment_set_service_zones",
-    joinColumn: "fulfillment_set_id",
-    inverseJoinColumn: "service_zone_id",
-  })
-  service_zones = new Collection<ServiceZone>(this)
+  @Property({ columnType: "text" })
+  shipping_option_id: string
+
+  @ManyToOne(() => ShippingOption)
+  shipping_option: ShippingOption
 
   @Property({
     onCreate: () => new Date(),
@@ -69,20 +69,20 @@ export default class FulfillmentSet {
   })
   updated_at: Date
 
-  @Property({ columnType: "timestamptz", nullable: true })
   @Index({
     name: deletedAtIndexName,
     expression: deletedAtIndexStatement,
   })
+  @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "fuset")
+    this.id = generateEntityId(this.id, "sorul")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "fuset")
+    this.id = generateEntityId(this.id, "sorul")
   }
 }
