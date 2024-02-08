@@ -492,7 +492,7 @@ export default class PaymentModuleService<
     id: string,
     context: Record<string, unknown>,
     @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentDTO | void> {
+  ): Promise<PaymentDTO> {
     const session = await this.retrievePaymentSession(id, {}, sharedContext)
 
     if (session.authorized_at) {
@@ -511,26 +511,37 @@ export default class PaymentModuleService<
         context
       )
 
+    await this.paymentSessionService_.update(
+      {
+        id: session.id,
+        data,
+        status,
+        authorized_at:
+          status === PaymentSessionStatus.AUTHORIZED ? new Date() : null,
+      },
+      sharedContext
+    )
+
     if (status === PaymentSessionStatus.AUTHORIZED) {
-      const payment = await this.paymentService_.create(
-        {
-          amount: session.amount,
-          currency_code: session.currency_code,
-          authorized_amount: session.amount,
-          payment_session: session.id,
-          payment_collection: session.payment_collection!.id,
-          data,
-        },
-        sharedContext
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Session not authorized with the provider."
       )
-
-      await this.paymentSessionService_.update(
-        { id: session.id, authorized_at: new Date() },
-        sharedContext
-      )
-
-      return this.retrievePayment(payment.id, {}, sharedContext)
     }
+
+    const payment = await this.paymentService_.create(
+      {
+        amount: session.amount,
+        currency_code: session.currency_code,
+        authorized_amount: session.amount,
+        payment_session: session.id,
+        payment_collection: session.payment_collection!.id,
+        data,
+      },
+      sharedContext
+    )
+
+    return this.retrievePayment(payment.id, {}, sharedContext)
   }
 
   /**
