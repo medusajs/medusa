@@ -12,15 +12,20 @@ export const SalesChannelDetail = () => {
   >
 
   const { id } = useParams()
-  const { sales_channel, isLoading } = useAdminSalesChannel(id!, {
-    initialData,
-  })
+  const { sales_channel, isLoading, isError, error } = useAdminSalesChannel(
+    id!,
+    {
+      initialData,
+    }
+  )
 
   if (isLoading || !sales_channel) {
     return <div>Loading...</div>
   }
 
-  console.log("SalesChannelDetail")
+  if (isError) {
+    throw error
+  }
 
   return (
     <div className="flex flex-col gap-y-2">

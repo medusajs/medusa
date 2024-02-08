@@ -135,8 +135,8 @@ export const useOrderTableFilters = (): Filter[] => {
   }
 
   const dateFilters: Filter[] = [
-    { label: "Created At", key: "created_at" },
-    { label: "Updated At", key: "updated_at" },
+    { label: t("fields.createdAt"), key: "created_at" },
+    { label: t("fields.updatedAt"), key: "updated_at" },
   ].map((f) => ({
     key: f.key,
     label: f.label,

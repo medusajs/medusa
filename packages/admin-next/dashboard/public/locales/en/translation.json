@@ -61,7 +61,12 @@
       "published": "Published",
       "proposed": "Proposed",
       "rejected": "Rejected"
-    }
+    },
+    "deleteProductWarning": "You are about to delete the product {{title}}. This action cannot be undone.",
+    "editProduct": "Edit Product",
+    "attributes": "Attributes",
+    "editAttributes": "Edit Attributes",
+    "editOptions": "Edit Options"
   },
   "collections": {
     "domain": "Collections",
@@ -82,7 +87,9 @@
     "domain": "Inventory"
   },
   "giftCards": {
-    "domain": "Gift Cards"
+    "domain": "Gift Cards",
+    "editGiftCard": "Edit Gift Card",
+    "deleteGiftCardWarning": "You are about to delete the gift card {{code}}. This action cannot be undone."
   },
   "customers": {
     "domain": "Customers",
@@ -322,6 +329,7 @@
     "metadata": "Metadata",
     "selectCountry": "Select country",
     "products": "Products",
+    "product": "Product",
     "variants": "Variants",
     "orders": "Orders",
     "account": "Account",
@@ -335,8 +343,27 @@
     "payment": "Payment",
     "items": "Items",
     "salesChannel": "Sales Channel",
+    "salesChannels": "Sales Channels",
     "region": "Region",
     "role": "Role",
-    "sent": "Sent"
+    "sent": "Sent",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "expiryDate": "Expiry date",
+    "issuedDate": "Issued date",
+    "tag": "Tag",
+    "giftCard": "Gift Card",
+    "true": "True",
+    "false": "False",
+    "width": "Width",
+    "height": "Height",
+    "length": "Length",
+    "weight": "Weight",
+    "midCode": "MID Code",
+    "hsCode": "HS Code",
+    "countryOfOrigin": "Country of origin",
+    "material": "Material",
+    "dateIssued": "Date issued",
+    "balance": "Balance"
   }
 }

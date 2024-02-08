@@ -13,7 +13,7 @@ import { NoResults } from "../../../common/empty-table-content"
 type BulkCommand = {
   label: string
   shortcut: string
-  action: (selection: Record<string, boolean>) => void
+  action: (selection: Record<string, boolean>) => Promise<void>
 }
 
 export interface DataTableRootProps<TData, TValue> {
@@ -45,6 +45,10 @@ export interface DataTableRootProps<TData, TValue> {
    * Whether the table is empty due to no results from the active query
    */
   noResults?: boolean
+  /**
+   * The layout of the table
+   */
+  layout?: "fullscreen" | "compact"
 }
 
 /**
@@ -69,6 +73,7 @@ export const DataTableRoot = <TData, TValue>({
   commands,
   count = 0,
   noResults = false,
+  layout = "compact",
 }: DataTableRootProps<TData, TValue>) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -94,9 +99,21 @@ export const DataTableRoot = <TData, TValue>({
     }
   }
 
+  const handleAction = async (action: BulkCommand["action"]) => {
+    await action(rowSelection).then(() => {
+      table.resetRowSelection()
+    })
+  }
+
   return (
-    <div className="w-full">
-      <div onScroll={handleHorizontalScroll} className="w-full overflow-x-auto">
+    <div className="grid w-full grid-cols-1 grid-rows-[1fr_64px] overflow-hidden">
+      <div
+        onScroll={handleHorizontalScroll}
+        className={clx("w-full", {
+          "overflow-x-auto": layout === "compact",
+          "h-full overflow-auto border-b": layout === "fullscreen",
+        })}
+      >
         {!noResults ? (
           <Table className="w-full">
             <Table.Header className="border-t-0">
@@ -156,16 +173,18 @@ export const DataTableRoot = <TData, TValue>({
             <Table.Body className="border-b-0">
               {table.getRowModel().rows.map((row) => {
                 const to = navigateTo ? navigateTo(row) : undefined
+                const rowIsSelected = row.getIsSelected()
                 return (
                   <Table.Row
                     key={row.id}
+                    data-selected={rowIsSelected}
                     className={clx(
-                      "transition-fg group/row [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
+                      "transition-fg group [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
                       "[&:has(td_a:focus-visible)_td]:bg-ui-bg-base-pressed",
                       {
                         "cursor-pointer": !!to,
                         "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                          row.getIsSelected(),
+                          rowIsSelected,
                       }
                     )}
                     onClick={to ? () => navigate(to) : undefined}
@@ -188,7 +207,9 @@ export const DataTableRoot = <TData, TValue>({
                         <Table.Cell
                           key={cell.id}
                           className={clx("has-[a]:cursor-pointer", {
-                            "bg-ui-bg-base group-[:has(td_a:focus)]/row:bg-ui-bg-base-pressed group-hover/row:bg-ui-bg-base-hover transition-fg sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                            "bg-ui-bg-base group-[:has(td_a:focus)]:bg-ui-bg-base-pressed group-hover:bg-ui-bg-base-hover transition-fg sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                              isStickyCell,
+                            "group-data-[selected=true]:bg-ui-bg-highlight group-data-[selected=true]:group-hover:bg-ui-bg-highlight-hover":
                               isStickyCell,
                             "after:bg-ui-border-base":
                               showStickyBorder && isStickyCell,
@@ -239,7 +260,7 @@ export const DataTableRoot = <TData, TValue>({
                   <CommandBar.Command
                     label={command.label}
                     shortcut={command.shortcut}
-                    action={() => command.action(rowSelection)}
+                    action={() => handleAction(command.action)}
                   />
                   {index < commands.length - 1 && <CommandBar.Seperator />}
                 </Fragment>
@@ -268,5 +289,11 @@ const Pagination = (props: PaginationProps) => {
     next: t("general.next"),
   }
 
-  return <Table.Pagination {...props} translations={translations} />
+  return (
+    <Table.Pagination
+      className="flex-[0_0_auto]"
+      {...props}
+      translations={translations}
+    />
+  )
 }

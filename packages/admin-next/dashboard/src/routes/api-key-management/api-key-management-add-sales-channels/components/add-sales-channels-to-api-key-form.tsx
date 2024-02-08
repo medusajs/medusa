@@ -62,11 +62,12 @@ export const AddSalesChannelsToApiKeyForm = ({
 
   const {
     formState: { isDirty },
+    setValue,
   } = form
 
   useEffect(() => {
     subscribe(isDirty)
-  }, [isDirty])
+  }, [isDirty, subscribe])
 
   const { mutateAsync, isLoading: isMutating } =
     useAdminAddPublishableKeySalesChannelsBatch(apiKey)
@@ -87,11 +88,11 @@ export const AddSalesChannelsToApiKeyForm = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   useEffect(() => {
-    form.setValue(
+    setValue(
       "sales_channel_ids",
       Object.keys(rowSelection).filter((k) => rowSelection[k])
     )
-  }, [rowSelection])
+  }, [rowSelection, setValue])
 
   const params = useQueryParams(["q", "order"])
   const { sales_channels, count } = useAdminSalesChannels(
@@ -164,8 +165,8 @@ export const AddSalesChannelsToApiKeyForm = ({
             </Button>
           </div>
         </FocusModal.Header>
-        <FocusModal.Body className="flex h-full w-full flex-col items-center overflow-y-auto divide-y">
-          <div className="flex items-center justify-between w-full px-6 py-4">
+        <FocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
+          <div className="flex w-full items-center justify-between px-6 py-4">
             <div></div>
             <div className="flex items-center gap-x-2">
               <Query />

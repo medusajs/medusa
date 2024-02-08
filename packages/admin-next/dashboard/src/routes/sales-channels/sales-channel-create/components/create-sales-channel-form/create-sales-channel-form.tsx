@@ -46,7 +46,7 @@ export const CreateSalesChannelForm = ({
 
   useEffect(() => {
     subscribe(isDirty)
-  }, [isDirty])
+  }, [isDirty, subscribe])
 
   const { t } = useTranslation()
   const navigate = useNavigate()

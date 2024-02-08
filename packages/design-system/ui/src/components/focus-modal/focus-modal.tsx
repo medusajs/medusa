@@ -36,12 +36,9 @@ const FocusModalClose = FocusModalPrimitives.Close
 FocusModalClose.displayName = "FocusModal.Close"
 
 const FocusModalPortal = ({
-  className,
   ...props
 }: FocusModalPrimitives.DialogPortalProps) => {
-  return (
-    <FocusModalPrimitives.DialogPortal className={clx(className)} {...props} />
-  )
+  return <FocusModalPrimitives.DialogPortal {...props} />
 }
 FocusModalPortal.displayName = "FocusModal.Portal"
 

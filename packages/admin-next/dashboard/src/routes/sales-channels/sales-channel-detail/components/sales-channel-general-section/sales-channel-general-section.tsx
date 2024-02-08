@@ -7,13 +7,13 @@ import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 
-type SalesChannelGeneralSection = {
+type SalesChannelGeneralSectionProps = {
   salesChannel: SalesChannel
 }
 
 export const SalesChannelGeneralSection = ({
   salesChannel,
-}: SalesChannelGeneralSection) => {
+}: SalesChannelGeneralSectionProps) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
@@ -44,14 +44,9 @@ export const SalesChannelGeneralSection = ({
   }
 
   return (
-    <Container className="p-0">
+    <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <div className="flex flex-col">
-          <Heading>{salesChannel.name}</Heading>
-          <Text size="small" className="text-ui-fg-subtle">
-            {salesChannel.description}
-          </Text>
-        </div>
+        <Heading>{salesChannel.name}</Heading>
         <div className="flex items-center gap-x-2">
           <StatusBadge color={salesChannel.is_disabled ? "red" : "green"}>
             {t(`general.${salesChannel.is_disabled ? "disabled" : "enabled"}`)}
@@ -79,6 +74,14 @@ export const SalesChannelGeneralSection = ({
             ]}
           />
         </div>
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("fields.description")}
+        </Text>
+        <Text size="small" leading="compact" className="text-pretty">
+          {salesChannel.description || "-"}
+        </Text>
       </div>
     </Container>
   )

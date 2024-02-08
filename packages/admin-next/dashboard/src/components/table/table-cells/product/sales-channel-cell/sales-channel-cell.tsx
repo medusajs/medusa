@@ -1,0 +1,63 @@
+import type { SalesChannel } from "@medusajs/medusa"
+import { Tooltip } from "@medusajs/ui"
+import { useTranslation } from "react-i18next"
+import { PlaceholderCell } from "../../common/placeholder-cell"
+
+type SalesChannelCellProps = {
+  salesChannels?: SalesChannel[] | null
+}
+
+export const SalesChannelCell = ({ salesChannels }: SalesChannelCellProps) => {
+  const { t } = useTranslation()
+
+  if (!salesChannels || !salesChannels.length) {
+    return <PlaceholderCell />
+  }
+
+  // If the length of salesChannels is greater than 2, we will only display the first two sales channels and append a '+' sign to indicate that there are more sales channels
+  if (salesChannels.length > 2) {
+    return (
+      <div className="flex h-full w-full items-center gap-x-1 overflow-hidden">
+        <span className="truncate">
+          {salesChannels
+            .slice(0, 2)
+            .map((sc) => sc.name)
+            .join(", ")}
+        </span>
+        <Tooltip
+          content={
+            <ul>
+              {salesChannels.slice(2).map((sc) => (
+                <li key={sc.id}>{sc.name}</li>
+              ))}
+            </ul>
+          }
+        >
+          <span className="text-xs">
+            {t("general.plusCountMore", {
+              count: salesChannels.length - 2,
+            })}
+          </span>
+        </Tooltip>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex h-full w-full items-center overflow-hidden">
+      <span className="truncate">
+        {salesChannels.map((sc) => sc.name).join(", ")}
+      </span>
+    </div>
+  )
+}
+
+export const SalesChannelHeader = () => {
+  const { t } = useTranslation()
+
+  return (
+    <div className="flex h-full w-full items-center">
+      <span>{t("fields.salesChannels")}</span>
+    </div>
+  )
+}

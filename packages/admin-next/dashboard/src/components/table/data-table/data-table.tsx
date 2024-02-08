@@ -1,3 +1,4 @@
+import { clx } from "@medusajs/ui"
 import { memo } from "react"
 import { NoRecords } from "../../common/empty-table-content"
 import { DataTableQuery, DataTableQueryProps } from "./data-table-query"
@@ -29,6 +30,7 @@ export const DataTable = <TData, TValue>({
   queryObject = {},
   rowCount,
   isLoading = false,
+  layout,
 }: DataTableProps<TData, TValue>) => {
   if (isLoading) {
     return (
@@ -53,7 +55,11 @@ export const DataTable = <TData, TValue>({
   }
 
   return (
-    <div className="divide-y">
+    <div
+      className={clx("divide-y", {
+        "grid h-full grid-cols-1 grid-rows-[60px_1fr]": layout === "fullscreen",
+      })}
+    >
       <MemoizedDataTableQuery
         search={search}
         orderBy={orderBy}
@@ -68,6 +74,7 @@ export const DataTable = <TData, TValue>({
         navigateTo={navigateTo}
         commands={commands}
         noResults={noResults}
+        layout={layout}
       />
     </div>
   )

@@ -8,7 +8,16 @@ import {
 } from "@medusajs/ui"
 import * as LabelPrimitives from "@radix-ui/react-label"
 import { Slot } from "@radix-ui/react-slot"
-import { ReactNode, createContext, forwardRef, useContext, useId } from "react"
+import {
+  ComponentPropsWithoutRef,
+  ElementRef,
+  HTMLAttributes,
+  ReactNode,
+  createContext,
+  forwardRef,
+  useContext,
+  useId,
+} from "react"
 import {
   Controller,
   ControllerProps,
@@ -78,7 +87,7 @@ const useFormField = () => {
   }
 }
 
-const Item = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+const Item = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => {
     const id = useId()
 
@@ -96,8 +105,8 @@ const Item = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
 Item.displayName = "Form.Item"
 
 const Label = forwardRef<
-  React.ElementRef<typeof LabelPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitives.Root> & {
+  ElementRef<typeof LabelPrimitives.Root>,
+  ComponentPropsWithoutRef<typeof LabelPrimitives.Root> & {
     optional?: boolean
     tooltip?: ReactNode
   }
@@ -131,8 +140,8 @@ const Label = forwardRef<
 Label.displayName = "Form.Label"
 
 const Control = forwardRef<
-  React.ElementRef<typeof Slot>,
-  React.ComponentPropsWithoutRef<typeof Slot>
+  ElementRef<typeof Slot>,
+  ComponentPropsWithoutRef<typeof Slot>
 >(({ ...props }, ref) => {
   const { error, formItemId, formDescriptionId, formErrorMessageId } =
     useFormField()
@@ -155,7 +164,7 @@ Control.displayName = "Form.Control"
 
 const Hint = forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => {
   const { formDescriptionId } = useFormField()
 
@@ -172,7 +181,7 @@ Hint.displayName = "Form.Hint"
 
 const ErrorMessage = forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  HTMLAttributes<HTMLParagraphElement>
 >(({ className, children, ...props }, ref) => {
   const { error, formErrorMessageId } = useFormField()
   const msg = error ? String(error?.message) : children

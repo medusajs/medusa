@@ -30,7 +30,7 @@ export const useRouteModalState = (): [
   const prompt = usePrompt()
   const { t } = useTranslation()
 
-  let promptValues: Prompt = {
+  const promptValues: Prompt = {
     title: t("general.unsavedChangesTitle"),
     description: t("general.unsavedChangesDescription"),
     cancelText: t("general.cancel"),
@@ -44,7 +44,10 @@ export const useRouteModalState = (): [
   const onOpenChange = async (open: boolean, ignore = false) => {
     if (!open) {
       if (shouldPrompt && !ignore) {
-        const confirmed = await prompt(promptValues)
+        const confirmed = await prompt({
+          ...promptValues,
+          variant: "confirmation",
+        })
 
         if (!confirmed) {
           return

@@ -26,9 +26,9 @@ export const JsonViewSection = ({ data, root }: JsonViewProps) => {
 
   return (
     <Container className="flex items-center justify-between px-6 py-4">
-      <div className="flex items-center gap-x-4">
+      <div className="flex items-center gap-x-3">
         <Heading level="h2">JSON</Heading>
-        <Badge>{numberOfKeys} keys</Badge>
+        <Badge size="2xsmall">{numberOfKeys} keys</Badge>
       </div>
       <Drawer>
         <Drawer.Trigger asChild>

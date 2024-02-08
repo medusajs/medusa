@@ -1,4 +1,5 @@
 import {
+  AdminGetProductParams,
   AdminGetProductsParams,
   AdminPostProductsProductMetadataReq,
   AdminPostProductsProductOptionsOption,
@@ -22,11 +23,11 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Product API Routes](https://docs.medusajs.com/api/admin#products). All its method
  * are available in the JS Client under the `medusa.admin.products` property.
- * 
+ *
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
- * 
+ *
  * Products are saleable items in a store. This also includes [saleable gift cards](https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-gift-card-product) in a store.
- * 
+ *
  * Related Guide: [How to manage products](https://docs.medusajs.com/modules/products/admin/manage-products).
  */
 class AdminProductsResource extends BaseResource {
@@ -35,7 +36,7 @@ class AdminProductsResource extends BaseResource {
    * @param {AdminPostProductsReq} payload - The product to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -62,7 +63,7 @@ class AdminProductsResource extends BaseResource {
    * @param {string} id - The product's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -74,9 +75,16 @@ class AdminProductsResource extends BaseResource {
    */
   retrieve(
     id: string,
+    query?: AdminGetProductParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsRes> {
-    const path = `/admin/products/${id}`
+    let path = `/admin/products/${id}`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path = `/admin/products/${id}?${queryString}`
+    }
+
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
@@ -86,7 +94,7 @@ class AdminProductsResource extends BaseResource {
    * @param {AdminPostProductsProductReq} payload - The attributes to update in a product.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -112,7 +120,7 @@ class AdminProductsResource extends BaseResource {
    * @param {string} id - The product's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminProductsDeleteRes>} Resolves to the deletion operation's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -135,10 +143,10 @@ class AdminProductsResource extends BaseResource {
    * @param {AdminGetProductsParams} query - Filters and pagination configurations to apply on the retrieved products.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminProductsListRes>} Resolves to the list of products with pagination fields.
-   * 
+   *
    * @example
    * To list products:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -148,9 +156,9 @@ class AdminProductsResource extends BaseResource {
    *   console.log(products.length);
    * })
    * ```
-   * 
+   *
    * To specify relations that should be retrieved within the products:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -162,9 +170,9 @@ class AdminProductsResource extends BaseResource {
    *   console.log(products.length);
    * })
    * ```
-   * 
+   *
    * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -195,7 +203,7 @@ class AdminProductsResource extends BaseResource {
 
   /**
    * @ignore
-   * 
+   *
    * @deprecated Use {@link AdminProductTypesResource.list} instead.
    */
   listTypes(
@@ -209,7 +217,7 @@ class AdminProductsResource extends BaseResource {
    * Retrieve a list of Product Tags with how many times each is used in products.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminProductsListTagsRes>} Resolves to the list of tags.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -227,13 +235,13 @@ class AdminProductsResource extends BaseResource {
   }
 
   /**
-   * Set the metadata of a product. It can be any key-value pair, which allows adding custom data to a product. Learn about how you can update and delete the metadata attribute 
+   * Set the metadata of a product. It can be any key-value pair, which allows adding custom data to a product. Learn about how you can update and delete the metadata attribute
    * [here](https://docs.medusajs.com/development/entities/overview#metadata-attribute).
    * @param {string} id - The product's ID.
    * @param {AdminPostProductsProductMetadataReq} payload - The metadata details to add, update, or delete.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -261,7 +269,7 @@ class AdminProductsResource extends BaseResource {
    * @param {AdminPostProductsProductVariantsReq} payload - The product variant to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details. You can access the variant under the `variants` property.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -298,11 +306,11 @@ class AdminProductsResource extends BaseResource {
   /**
    * Update a product variant's details.
    * @param {string} id - The ID of the product that the variant belongs to.
-   * @param {string} variantId - The ID of the product variant. 
+   * @param {string} variantId - The ID of the product variant.
    * @param {AdminPostProductsProductVariantsVariantReq} payload - The attributes to update in the product variant.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details. You can access the variant under the `variants` property.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -340,10 +348,10 @@ class AdminProductsResource extends BaseResource {
   /**
    * Delete a product variant.
    * @param {string} id - The ID of the product that the variant belongs to.
-   * @param {string} variantId - The ID of the product variant. 
+   * @param {string} variantId - The ID of the product variant.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminProductsDeleteVariantRes>} Resolves to the deletion operation's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -368,7 +376,7 @@ class AdminProductsResource extends BaseResource {
    * @param {AdminPostProductsProductOptionsReq} payload - The option to add.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details. You can access the variant under the `options` property.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -396,7 +404,7 @@ class AdminProductsResource extends BaseResource {
    * @param {AdminPostProductsProductOptionsOption} payload - The attributes to update in the product option.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details. You can access the variant under the `options` property.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })

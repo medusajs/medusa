@@ -118,8 +118,14 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () => import("../../routes/products/product-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () => import("../../routes/products/product-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
@@ -127,6 +133,35 @@ const router = createBrowserRouter([
                 handle: {
                   crumb: (data: AdminProductsRes) => data.product.title,
                 },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/products/product-edit"),
+                  },
+                  {
+                    path: "attributes",
+                    lazy: () =>
+                      import("../../routes/products/product-attributes"),
+                  },
+                  {
+                    path: "media",
+                    lazy: () => import("../../routes/products/product-media"),
+                  },
+                  {
+                    path: "organization",
+                    lazy: () =>
+                      import("../../routes/products/product-organization"),
+                  },
+                  {
+                    path: "sales-channels",
+                    lazy: () =>
+                      import("../../routes/products/product-sales-channels"),
+                  },
+                  {
+                    path: "options",
+                    lazy: () => import("../../routes/products/product-options"),
+                  },
+                ],
               },
             ],
           },
@@ -274,11 +309,18 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                lazy: () => import("../../routes/gift-cards/list"),
+                lazy: () => import("../../routes/gift-cards/gift-card-list"),
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/gift-cards/details"),
+                lazy: () => import("../../routes/gift-cards/gift-card-detail"),
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../routes/gift-cards/gift-card-edit"),
+                  },
+                ],
               },
             ],
           },

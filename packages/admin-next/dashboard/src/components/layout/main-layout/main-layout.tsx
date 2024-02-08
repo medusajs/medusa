@@ -61,14 +61,14 @@ const Header = () => {
           {fallback ? (
             <Avatar variant="squared" fallback={fallback} />
           ) : (
-            <Skeleton className="w-8 h-8 rounded-md" />
+            <Skeleton className="h-8 w-8 rounded-md" />
           )}
           {name ? (
             <Text size="small" weight="plus" leading="compact">
               {store.name}
             </Text>
           ) : (
-            <Skeleton className="w-[120px] h-[9px]" />
+            <Skeleton className="h-[9px] w-[120px]" />
           )}
         </div>
       </div>

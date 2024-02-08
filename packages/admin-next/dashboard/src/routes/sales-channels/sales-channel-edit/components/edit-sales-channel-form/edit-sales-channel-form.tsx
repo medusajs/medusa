@@ -39,9 +39,11 @@ export const EditSalesChannelForm = ({
     formState: { isDirty },
   } = form
 
+  console.log("rendering EditSalesChannelForm")
+
   useEffect(() => {
     subscribe(isDirty)
-  }, [isDirty])
+  }, [isDirty, subscribe])
 
   const { t } = useTranslation()
 
@@ -66,9 +68,9 @@ export const EditSalesChannelForm = ({
     <Form {...form}>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col overflow-hidden flex-1"
+        className="flex flex-1 flex-col overflow-hidden"
       >
-        <Drawer.Body className="flex flex-col gap-y-8 overflow-y-auto flex-1 max-w-full">
+        <Drawer.Body className="flex max-w-full flex-1 flex-col gap-y-8 overflow-y-auto">
           <Form.Field
             control={form.control}
             name="name"
@@ -77,7 +79,7 @@ export const EditSalesChannelForm = ({
                 <Form.Item>
                   <Form.Label>{t("fields.name")}</Form.Label>
                   <Form.Control>
-                    <Input {...field} size="small" />
+                    <Input {...field} />
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>

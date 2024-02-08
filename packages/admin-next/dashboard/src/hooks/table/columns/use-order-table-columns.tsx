@@ -34,7 +34,6 @@ import {
   TotalHeader,
 } from "../../../components/table/table-cells/order/total-cell"
 
-// We have to use any here, as the type of Order is so complex that it lags the TS server
 const columnHelper = createColumnHelper<Order>()
 
 type UseOrderTableColumnsProps = {

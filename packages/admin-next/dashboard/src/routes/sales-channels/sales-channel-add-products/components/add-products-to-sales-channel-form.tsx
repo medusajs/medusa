@@ -34,9 +34,9 @@ import {
   ProductTitleCell,
   ProductVariantCell,
 } from "../../../../components/common/product-table-cells"
-import { OrderBy } from "../../../../components/filtering/order-by"
-import { Query } from "../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../components/localization/localized-table-pagination"
+import { DataTableQuery } from "../../../../components/table/data-table/data-table-query"
+import { useProductTableFilters } from "../../../../hooks/table/filters/use-product-table-filters"
 import { useQueryParams } from "../../../../hooks/use-query-params"
 import { queryClient } from "../../../../lib/medusa"
 
@@ -68,11 +68,8 @@ export const AddProductsToSalesChannelForm = ({
 
   const {
     formState: { isDirty },
+    setValue,
   } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
 
   const { mutateAsync, isLoading: isMutating } =
     useAdminAddProductsToSalesChannel(salesChannel.id)
@@ -93,15 +90,22 @@ export const AddProductsToSalesChannelForm = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   useEffect(() => {
-    form.setValue(
+    subscribe(Object.keys(rowSelection).length > 0)
+  }, [rowSelection, subscribe])
+
+  useEffect(() => {
+    setValue(
       "product_ids",
-      Object.keys(rowSelection).filter((k) => rowSelection[k])
+      Object.keys(rowSelection).filter((k) => rowSelection[k]),
+      {
+        shouldDirty: true,
+      }
     )
-  }, [rowSelection])
+  }, [rowSelection, setValue])
 
   const params = useQueryParams(["q", "order"])
 
-  const { products, count, isLoading } = useAdminProducts(
+  const { products, count } = useAdminProducts(
     {
       expand: "variants,sales_channels",
       ...params,
@@ -111,6 +115,18 @@ export const AddProductsToSalesChannelForm = ({
     }
   )
 
+  // effect that subscribes to mouse clicks and logs which element was clicked
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      console.log(e.target)
+    }
+    document.addEventListener("click", handleClick)
+    return () => {
+      document.removeEventListener("click", handleClick)
+    }
+  }, [])
+
+  const filters = useProductTableFilters(["sales_channel_id"])
   const columns = useColumns()
 
   const table = useReactTable({
@@ -177,14 +193,12 @@ export const AddProductsToSalesChannelForm = ({
             </Button>
           </div>
         </FocusModal.Header>
-        <FocusModal.Body className="flex h-full w-full flex-col items-center overflow-y-auto divide-y">
-          <div className="flex items-center justify-between w-full px-6 py-4">
-            <div></div>
-            <div className="flex items-center gap-x-2">
-              <Query />
-              <OrderBy keys={["title"]} />
-            </div>
-          </div>
+        <FocusModal.Body className="flex h-full w-full flex-col divide-y overflow-y-auto">
+          <DataTableQuery
+            filters={filters}
+            search
+            orderBy={["title", "created_at", "updated_at"]}
+          />
           <div className="w-full flex-1 overflow-y-auto">
             <Table>
               <Table.Header className="border-t-0">

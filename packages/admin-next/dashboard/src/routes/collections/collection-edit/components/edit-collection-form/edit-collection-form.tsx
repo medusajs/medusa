@@ -83,7 +83,7 @@ export const EditCollectionForm = ({
                     </Form.Label>
                     <Form.Control>
                       <div className="relative">
-                        <div className="absolute left-0 inset-y-0 w-8 border-r z-10 flex items-center justify-center">
+                        <div className="absolute inset-y-0 left-0 z-10 flex w-8 items-center justify-center border-r">
                           <Text
                             className="text-ui-fg-muted"
                             size="small"
