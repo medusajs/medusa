@@ -1,4 +1,9 @@
-import { DALUtils, generateEntityId, GeoZoneType } from "@medusajs/utils"
+import {
+  createPsqlIndexStatementHelper,
+  DALUtils,
+  generateEntityId,
+  GeoZoneType,
+} from "@medusajs/utils"
 
 import {
   BeforeCreate,
@@ -19,34 +24,34 @@ import ServiceZone from "./service-zone"
 type GeoZoneOptionalProps = DAL.SoftDeletableEntityDateColumns
 
 const deletedAtIndexName = "IDX_geo_zone_deleted_at"
-const deletedAtIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   name: deletedAtIndexName,
   tableName: "geo_zone",
-  columnNames: "deleted_at",
+  columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
 const countryCodeIndexName = "IDX_geo_zone_country_code"
-const countryCodeIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+const countryCodeIndexStatement = createPsqlIndexStatementHelper({
   name: countryCodeIndexName,
   tableName: "geo_zone",
-  columnNames: "country_code",
+  columns: "country_code",
   where: "deleted_at IS NULL",
 })
 
 const provinceCodeIndexName = "IDX_geo_zone_province_code"
-const provinceCodeIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+const provinceCodeIndexStatement = createPsqlIndexStatementHelper({
   name: provinceCodeIndexName,
   tableName: "geo_zone",
-  columnNames: "province_code",
+  columns: "province_code",
   where: "deleted_at IS NULL AND province_code IS NOT NULL",
 })
 
 const cityIndexName = "IDX_geo_zone_city"
-const cityIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+const cityIndexStatement = createPsqlIndexStatementHelper({
   name: cityIndexName,
   tableName: "geo_zone",
-  columnNames: "city",
+  columns: "city",
   where: "deleted_at IS NULL AND city IS NOT NULL",
 })
 

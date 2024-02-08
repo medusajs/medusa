@@ -26,7 +26,7 @@ const fulfillmentIdIndexName = "IDX_fulfillment_label_fulfillment_id"
 const fulfillmentIdIndexStatement = createPsqlIndexStatementHelper({
   name: fulfillmentIdIndexName,
   tableName: "fulfillment_label",
-  columnNames: "fulfillment_id",
+  columns: "fulfillment_id",
   where: "deleted_at IS NULL",
 })
 
@@ -34,7 +34,7 @@ const providerIdIndexName = "IDX_fulfillment_label_provider_id"
 const providerIdIndexStatement = createPsqlIndexStatementHelper({
   name: providerIdIndexName,
   tableName: "fulfillment_label",
-  columnNames: "provider_id",
+  columns: "provider_id",
   where: "deleted_at IS NULL",
 })
 
@@ -42,7 +42,7 @@ const deletedAtIndexName = "IDX_fulfillment_label_deleted_at"
 const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   name: deletedAtIndexName,
   tableName: "fulfillment_label",
-  columnNames: "deleted_at",
+  columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 

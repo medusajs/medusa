@@ -1,4 +1,8 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  createPsqlIndexStatementHelper,
+  DALUtils,
+  generateEntityId,
+} from "@medusajs/utils"
 
 import {
   BeforeCreate,
@@ -19,10 +23,10 @@ type ShippingOptionRuleOptionalProps = DAL.SoftDeletableEntityDateColumns
 // TODO: need some test to see if we continue with this kind of structure or we change it
 
 const deletedAtIndexName = "IDX_shipping_option_rule_deleted_at"
-const deletedAtIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   name: deletedAtIndexName,
   tableName: "shipping_option_rule",
-  columnNames: "deleted_at",
+  columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 

@@ -24,7 +24,7 @@ const deletedAtIndexName = "IDX_shipping_option_type_deleted_at"
 const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   name: deletedAtIndexName,
   tableName: "shipping_option_type",
-  columnNames: "deleted_at",
+  columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 

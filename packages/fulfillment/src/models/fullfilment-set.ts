@@ -1,4 +1,8 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  createPsqlIndexStatementHelper,
+  DALUtils,
+  generateEntityId,
+} from "@medusajs/utils"
 
 import {
   BeforeCreate,
@@ -18,10 +22,10 @@ import ServiceZone from "./service-zone"
 type FulfillmentSetOptionalProps = DAL.SoftDeletableEntityDateColumns
 
 const deletedAtIndexName = "IDX_fulfillment_set_deleted_at"
-const deletedAtIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   name: deletedAtIndexName,
   tableName: "fulfillment_set",
-  columnNames: "deleted_at",
+  columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
