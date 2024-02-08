@@ -181,7 +181,7 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerGroupDTO[]>} The created customer groups.
    *
    *
-   * @privateRemark
+   * @privateRemarks
    * TODO should be pluralized
    */
   createCustomerGroup(
@@ -196,7 +196,7 @@ export interface ICustomerModuleService extends IModuleService {
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<CustomerGroupDTO>} The created customer group.
    *
-   * @privateRemark
+   * @privateRemarks
    * TODO should be pluralized
    */
   createCustomerGroup(
