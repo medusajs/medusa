@@ -364,7 +364,7 @@ export interface CreateCustomerGroupDTO {
 }
 
 /**
- * @privateRemark
+ * @privateRemarks
  *
  * This seems to be the same as {@link CustomerGroupUpdatableFields} but with
  * a typo?
