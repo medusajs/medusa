@@ -4,6 +4,15 @@ import { isString } from "../../common"
 
 // Monkey patch due to the compilation version issue which prevents us from creating a proper class that extends the TSMigrationGenerator
 const originalCreateStatement = TSMigrationGenerator.prototype.createStatement
+
+/**
+ * Safe migration generation for MikroORM
+ *
+ * @param sql The sql statement
+ * @param padLeft The padding
+ *
+ * @example see test file
+ */
 TSMigrationGenerator.prototype.createStatement = function (
   sql: string,
   padLeft: number
@@ -38,6 +47,10 @@ TSMigrationGenerator.prototype.createStatement = function (
 
     if (!sql.includes("add column if not exists")) {
       sql = sql.replace("add column", "add column if not exists")
+    }
+
+    if (!sql.includes("alter column if exists exists")) {
+      sql = sql.replace("alter column", "alter column if exists")
     }
 
     if (!sql.includes("drop column if exists")) {
