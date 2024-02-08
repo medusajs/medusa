@@ -1,7 +1,5 @@
 /**
- * @interface
- *
- * {summary}
+ * The type of fulfillment's location.
  */
 export type GeoZoneType = "country" | "province" | "city" | "zip"
 
