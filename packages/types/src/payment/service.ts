@@ -6,8 +6,6 @@ import {
   CreatePaymentDTO,
   CreatePaymentSessionDTO,
   CreateRefundDTO,
-  SetPaymentSessionsContextDTO,
-  SetPaymentSessionsDTO,
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
@@ -19,7 +17,6 @@ import {
   PaymentSessionDTO,
 } from "./common"
 import { FindConfig } from "../common"
-import { MedusaContext } from "@medusajs/utils"
 
 export interface IPaymentModuleService extends IModuleService {
   /* ********** PAYMENT COLLECTION ********** */
