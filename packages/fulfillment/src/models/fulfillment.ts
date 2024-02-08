@@ -1,6 +1,10 @@
 // TODO: Not to be reviewed yet. Waiting discussion before continuing this part
 
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  createPsqlIndexStatementHelper,
+  DALUtils,
+  generateEntityId,
+} from "@medusajs/utils"
 
 import {
   BeforeCreate,
@@ -24,6 +28,40 @@ import FulfillmentLabel from "./fulfillment-label"
 
 type FulfillmentOptionalProps = DAL.SoftDeletableEntityDateColumns
 
+const fulfillmentDeletedAtIndexName = "IDX_fulfillment_deleted_at"
+const fulfillmentDeletedAtIndexStatement = createPsqlIndexStatementHelper({
+  name: fulfillmentDeletedAtIndexName,
+  tableName: "fulfillment",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
+const fulfillmentProviderIdIndexName = "IDX_fulfillment_provider_id"
+const fulfillmentProviderIdIndexStatement = createPsqlIndexStatementHelper({
+  name: fulfillmentProviderIdIndexName,
+  tableName: "fulfillment",
+  columns: "provider_id",
+  where: "deleted_at IS NULL",
+})
+
+const fulfillmentLocationIdIndexName = "IDX_fulfillment_location_id"
+const fulfillmentLocationIdIndexStatement = createPsqlIndexStatementHelper({
+  name: fulfillmentLocationIdIndexName,
+  tableName: "fulfillment",
+  columns: "location_id",
+  where: "deleted_at IS NULL",
+})
+
+const fulfillmentShippingOptionIdIndexName =
+  "IDX_fulfillment_shipping_option_id"
+const fulfillmentShippingOptionIdIndexStatement =
+  createPsqlIndexStatementHelper({
+    name: fulfillmentShippingOptionIdIndexName,
+    tableName: "fulfillment",
+    columns: "shipping_option_id",
+    where: "deleted_at IS NULL",
+  })
+
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Fulfillment {
@@ -33,6 +71,10 @@ export default class Fulfillment {
   id: string
 
   @Property({ columnType: "text" })
+  @Index({
+    name: fulfillmentLocationIdIndexName,
+    expression: fulfillmentLocationIdIndexStatement,
+  })
   location_id: string
 
   @Property({
@@ -63,9 +105,17 @@ export default class Fulfillment {
   data: Record<string, unknown> | null = null
 
   @Property({ columnType: "text" })
+  @Index({
+    name: fulfillmentProviderIdIndexName,
+    expression: fulfillmentProviderIdIndexStatement,
+  })
   provider_id: string
 
   @Property({ columnType: "text", nullable: true })
+  @Index({
+    name: fulfillmentShippingOptionIdIndexName,
+    expression: fulfillmentShippingOptionIdIndexStatement,
+  })
   shipping_option_id: string | null = null
 
   @ManyToOne(() => ShippingOption, { nullable: true })
@@ -98,7 +148,10 @@ export default class Fulfillment {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_fulfillment_deleted_at" })
+  @Index({
+    name: fulfillmentDeletedAtIndexName,
+    expression: fulfillmentDeletedAtIndexStatement,
+  })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

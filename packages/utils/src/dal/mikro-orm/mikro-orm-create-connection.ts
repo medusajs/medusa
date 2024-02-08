@@ -1,4 +1,58 @@
 import { ModuleServiceInitializeOptions } from "@medusajs/types"
+import { TSMigrationGenerator } from "@mikro-orm/migrations"
+import { isString } from "../../common"
+
+// Monkey patch due to the compilation version issue which prevents us from creating a proper class that extends the TSMigrationGenerator
+const originalCreateStatement = TSMigrationGenerator.prototype.createStatement
+TSMigrationGenerator.prototype.createStatement = function (
+  sql: string,
+  padLeft: number
+) {
+  if (isString(sql)) {
+    if (!sql.includes("create table if not exists")) {
+      sql = sql.replace("create table", "create table if not exists")
+    }
+
+    if (!sql.includes("alter table if exists")) {
+      sql = sql.replace("alter table", "alter table if exists")
+    }
+
+    if (!sql.includes("create index if not exists")) {
+      sql = sql.replace("create index", "create index if not exists")
+    }
+
+    if (!sql.includes("drop index if exists")) {
+      sql = sql.replace("drop index", "drop index if exists")
+    }
+
+    if (!sql.includes("create unique index if not exists")) {
+      sql = sql.replace(
+        "create unique index",
+        "create unique index if not exists"
+      )
+    }
+
+    if (!sql.includes("drop unique index if exists")) {
+      sql = sql.replace("drop unique index", "drop unique index if exists")
+    }
+
+    if (!sql.includes("add column if not exists")) {
+      sql = sql.replace("add column", "add column if not exists")
+    }
+
+    if (!sql.includes("drop column if exists")) {
+      sql = sql.replace("drop column", "drop column if exists")
+    }
+
+    if (!sql.includes("drop constraint if exists")) {
+      sql = sql.replace("drop constraint", "drop constraint if exists")
+    }
+  }
+
+  return originalCreateStatement(sql, padLeft)
+}
+
+export { TSMigrationGenerator }
 
 export async function mikroOrmCreateConnection(
   database: ModuleServiceInitializeOptions["database"] & { connection?: any },
@@ -35,6 +89,7 @@ export async function mikroOrmCreateConnection(
     type: "postgresql",
     migrations: {
       path: pathToMigrations,
+      generator: TSMigrationGenerator,
     },
     pool: database.pool as any,
   })

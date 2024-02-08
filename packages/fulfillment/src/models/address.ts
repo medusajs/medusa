@@ -1,7 +1,10 @@
 // TODO: Not to be reviewed yet. Waiting discussion before continuing this part
 
 import { DAL } from "@medusajs/types"
-import { generateEntityId } from "@medusajs/utils"
+import {
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -14,6 +17,22 @@ import {
 
 type OptionalAddressProps = DAL.SoftDeletableEntityDateColumns
 
+const fulfillmentIdIndexName = "IDX_fulfillment_address_fulfillment_id"
+const fulfillmentIdIndexStatement = createPsqlIndexStatementHelper({
+  name: fulfillmentIdIndexName,
+  tableName: "fulfillment_address",
+  columns: "fulfillment_id",
+  where: "deleted_at IS NULL",
+})
+
+const fulfillmentDeletedAtIndexName = "IDX_fulfillment_address_deleted_at"
+const fulfillmentDeletedAtIndexStatement = createPsqlIndexStatementHelper({
+  name: fulfillmentDeletedAtIndexName,
+  tableName: "fulfillment_address",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
 @Entity({ tableName: "fulfillment_address" })
 export default class Address {
   [OptionalProps]: OptionalAddressProps
@@ -22,6 +41,10 @@ export default class Address {
   id!: string
 
   @Property({ columnType: "text", nullable: true })
+  @Index({
+    name: fulfillmentIdIndexName,
+    expression: fulfillmentIdIndexStatement,
+  })
   fulfillment_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
@@ -72,8 +95,11 @@ export default class Address {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_fulfillment_address_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
+  @Index({
+    name: fulfillmentDeletedAtIndexName,
+    expression: fulfillmentDeletedAtIndexStatement,
+  })
   deleted_at: Date | null = null
 
   @BeforeCreate()
