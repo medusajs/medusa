@@ -42,7 +42,6 @@ export default class ServiceZone {
 
   @ManyToMany(() => GeoZone, "service_zones", {
     owner: true,
-    index: "IDX_service_zone_geo_zone_id",
     pivotTable: "service_zone_geo_zones",
     joinColumn: "service_zone_id",
     inverseJoinColumn: "geo_zone_id",

@@ -7,7 +7,7 @@ import {
   Entity,
   Filter,
   Index,
-  OneToOne,
+  ManyToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
@@ -41,7 +41,7 @@ export default class FulfillmentLabel {
   @Property({ columnType: "text" })
   fulfillment_id: string
 
-  @OneToOne(() => Fulfillment)
+  @ManyToOne(() => Fulfillment)
   fulfillment: Fulfillment
 
   @Property({

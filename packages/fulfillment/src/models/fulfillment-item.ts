@@ -7,7 +7,7 @@ import {
   Entity,
   Filter,
   Index,
-  OneToOne,
+  ManyToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
@@ -47,7 +47,7 @@ export default class FulfillmentItem {
   @Property({ columnType: "text" })
   fulfillment_id: string
 
-  @OneToOne(() => Fulfillment, "items")
+  @ManyToOne(() => Fulfillment)
   fulfillment: Fulfillment
 
   @Property({

@@ -36,7 +36,6 @@ export default class FulfillmentSet {
 
   @ManyToMany(() => ServiceZone, "fulfillment_sets", {
     owner: true,
-    index: "IDX_fulfillment_set_service_zone_id",
     pivotTable: "fulfillment_set_service_zones",
     joinColumn: "fulfillment_set_id",
     inverseJoinColumn: "service_zone_id",
