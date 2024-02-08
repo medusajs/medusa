@@ -3,13 +3,6 @@ import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
-type Prompt = {
-  title: string
-  description: string
-  cancelText: string
-  confirmText: string
-}
-
 /**
  * Hook for managing the state of route modals.
  */
@@ -30,11 +23,12 @@ export const useRouteModalState = (): [
   const prompt = usePrompt()
   const { t } = useTranslation()
 
-  let promptValues: Prompt = {
+  const promptValues = {
     title: t("general.unsavedChangesTitle"),
     description: t("general.unsavedChangesDescription"),
     cancelText: t("general.cancel"),
     confirmText: t("general.continue"),
+    variant: "confirmation" as const,
   }
 
   useEffect(() => {
