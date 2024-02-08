@@ -337,6 +337,7 @@
     "salesChannel": "Sales Channel",
     "region": "Region",
     "role": "Role",
-    "sent": "Sent"
+    "sent": "Sent",
+    "salesChannels": "Sales Channels"
   }
 }
