@@ -1,5 +1,5 @@
-import { PaymentCollectionStatus, PaymentSessionStatus } from "./common"
-import { CreatePaymentInput, PaymentProcessorContext } from "./processors"
+import { PaymentCollectionStatus } from "./common"
+import { PaymentProcessorContext } from "./processors"
 
 /**
  * Payment Collection
@@ -48,10 +48,6 @@ export interface UpdatePaymentDTO {
   order_id?: string
   order_edit_id?: string
   customer_id?: string
-
-  captured_at?: Date
-
-  data?: Record<string, unknown>
 }
 
 export interface CreateCaptureDTO {
@@ -87,29 +83,6 @@ export interface SetPaymentSessionsDTO {
   amount: number
   currency_code: string
   session_id?: string
-}
-
-export interface SetPaymentSessionsContextDTO {
-  /**
-   * The payment's billing address.
-   */
-  billing_address?: Record<string, unknown> | null // TODO: type
-  /**
-   * The customer's email.
-   */
-  email: string
-  /**
-   * The ID of the resource the payment is associated with. For example, the cart's ID.
-   */
-  resource_id: string
-  /**
-   * The customer associated with this payment.
-   */
-  customer?: Record<string, unknown> // TODO: type
-  /**
-   * The cart's context.
-   */
-  context: Record<string, unknown>
 }
 
 /**

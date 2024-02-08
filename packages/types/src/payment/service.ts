@@ -94,7 +94,7 @@ export interface IPaymentModuleService extends IModuleService {
     id: string,
     context: Record<string, unknown>,
     sharedContext?: Context
-  ): Promise<PaymentDTO | void>
+  ): Promise<PaymentDTO>
 
   /* ********** PAYMENT ********** */
 

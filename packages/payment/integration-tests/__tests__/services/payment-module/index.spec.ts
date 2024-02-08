@@ -84,20 +84,14 @@ describe("Payment Module Service", () => {
         }
       )
 
-      await service.authorizePaymentCollection(
-        paymentCollection.id,
-        [paymentSession.id],
+      const payment = await service.authorizePaymentSession(
+        paymentSession.id,
         {}
-      )
-
-      paymentCollection = await service.retrievePaymentCollection(
-        paymentCollection.id,
-        { relations: ["payments"] }
       )
 
       await service.capturePayment({
         amount: 200,
-        payment_id: paymentCollection.payments![0].id,
+        payment_id: payment.id,
       })
 
       await service.completePaymentCollection(paymentCollection.id)
@@ -112,12 +106,12 @@ describe("Payment Module Service", () => {
           id: expect.any(String),
           currency_code: "USD",
           amount: 200,
-          authorized_amount: 200,
-          refunded_amount: null,
+          // TODO
+          // authorized_amount: 200,
+          // status: "authorized",
           region_id: "reg_123",
           deleted_at: null,
           completed_at: expect.any(Date),
-          status: "authorized",
           payment_sessions: [
             expect.objectContaining({
               id: expect.any(String),
@@ -356,7 +350,7 @@ describe("Payment Module Service", () => {
         await service.updatePaymentCollection({
           id: "pay-col-id-2",
           currency_code: "eur",
-          authorized_amount: 200,
+          region_id: "reg-2",
         })
 
         const collection = await service.retrievePaymentCollection(
@@ -366,7 +360,7 @@ describe("Payment Module Service", () => {
         expect(collection).toEqual(
           expect.objectContaining({
             id: "pay-col-id-2",
-            authorized_amount: 200,
+            region_id: "reg-2",
             currency_code: "eur",
           })
         )

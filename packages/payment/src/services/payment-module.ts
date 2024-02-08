@@ -48,7 +48,7 @@ type InjectedDependencies = {
   paymentProviderService: PaymentProviderService
 }
 
-const generateMethodForModels = [PaymentCollection, PaymentSession, Payment]
+const generateMethodForModels = [PaymentCollection, Payment]
 
 export default class PaymentModuleService<
     TPaymentCollection extends PaymentCollection = PaymentCollection,
@@ -246,7 +246,7 @@ export default class PaymentModuleService<
     data: UpdatePaymentSessionDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentSessionDTO> {
-    const session = await this.retrievePaymentSession(
+    const session = await this.paymentSessionService_.retrieve(
       data.id,
       {},
       sharedContext
@@ -278,7 +278,11 @@ export default class PaymentModuleService<
     id: string,
     @MedusaContext() sharedContext?: Context
   ): Promise<void> {
-    const session = await this.retrievePaymentSession(id, {}, sharedContext)
+    const session = await this.paymentSessionService_.retrieve(
+      id,
+      {},
+      sharedContext
+    )
 
     await this.paymentProviderService_.deleteSession({
       provider_id: session.provider_id,
@@ -294,7 +298,11 @@ export default class PaymentModuleService<
     context: Record<string, unknown>,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentDTO> {
-    const session = await this.retrievePaymentSession(id, {}, sharedContext)
+    const session = await this.paymentSessionService_.retrieve(
+      id,
+      {},
+      sharedContext
+    )
 
     if (session.authorized_at) {
       throw new MedusaError(
@@ -330,6 +338,8 @@ export default class PaymentModuleService<
       )
     }
 
+    // TODO: update status on payment collection if authorized_amount === amount - depends on the BigNumber PR
+
     const payment = await this.paymentService_.create(
       {
         amount: session.amount,
@@ -358,14 +368,15 @@ export default class PaymentModuleService<
     data: CreatePaymentDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentDTO> {
-    const session = await this.retrievePaymentSession(
+    const session = await this.paymentSessionService_.retrieve(
       data.payment_session_id,
       {},
       sharedContext
     )
 
+    // just retrieve latest data from provider
     const paymentData = await this.paymentProviderService_.createPayment({
-      payment_session: session,
+      payment_session: session as unknown as PaymentSessionDTO,
       amount: data.amount,
       provider_id: data.provider_id,
       currency_code: data.currency_code,
@@ -385,29 +396,17 @@ export default class PaymentModuleService<
     return await this.baseRepository_.serialize<PaymentDTO>(payment)
   }
 
-  updatePayment(
-    data: UpdatePaymentDTO,
-    sharedContext?: Context | undefined
-  ): Promise<PaymentDTO>
-  updatePayment(
-    data: UpdatePaymentDTO[],
-    sharedContext?: Context | undefined
-  ): Promise<PaymentDTO[]>
-
   @InjectTransactionManager("baseRepository_")
   async updatePayment(
-    data: UpdatePaymentDTO | UpdatePaymentDTO[],
+    data: UpdatePaymentDTO,
     @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentDTO | PaymentDTO[]> {
-    const input = Array.isArray(data) ? data : [data]
-    const result = await this.paymentService_.update(input, sharedContext)
+  ): Promise<PaymentDTO> {
+    // NOTE: currently there is no update with the provider but maybe data could be updated
+    const result = await this.paymentService_.update(data, sharedContext)
 
-    return await this.baseRepository_.serialize<PaymentDTO[]>(
-      Array.isArray(data) ? result : result[0],
-      {
-        populate: true,
-      }
-    )
+    return await this.baseRepository_.serialize<PaymentDTO>(result, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -457,7 +456,10 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    await this.updatePayment({ id: payment.id, data: paymentData })
+    await this.paymentService_.update(
+      { id: payment.id, data: paymentData },
+      sharedContext
+    )
 
     // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
     // if (payment.captured_amount + data.amount === payment.amount) {
@@ -510,7 +512,7 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    await this.updatePayment({ id: payment.id, data: paymentData })
+    await this.paymentService_.update({ id: payment.id, data: paymentData })
 
     return await this.retrievePayment(
       payment.id,
