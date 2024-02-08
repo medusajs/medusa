@@ -30,6 +30,7 @@
     "details": "Details",
     "enabled": "Enabled",
     "disabled": "Disabled",
+    "expired": "Expired",
     "active": "Active",
     "revoke": "Revoke",
     "revoked": "Revoked",

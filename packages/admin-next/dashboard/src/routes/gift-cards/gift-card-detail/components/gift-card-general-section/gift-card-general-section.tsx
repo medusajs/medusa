@@ -49,6 +49,27 @@ export const GiftCardGeneralSection = ({
     })
   }
 
+  let color: "green" | "red"
+
+  if (
+    giftCard.is_disabled ||
+    (giftCard.ends_at && new Date(giftCard.ends_at) < new Date())
+  ) {
+    color = "red"
+  } else {
+    color = "green"
+  }
+
+  let text: string = t("general.enabled")
+
+  if (giftCard.is_disabled) {
+    text = t("general.disabled")
+  }
+
+  if (giftCard.ends_at && new Date(giftCard.ends_at) < new Date()) {
+    text = t("general.expired")
+  }
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
@@ -57,11 +78,7 @@ export const GiftCardGeneralSection = ({
           <Copy content={giftCard.code} className="text-ui-fg-muted" />
         </div>
         <div className="flex items-center gap-x-2">
-          <StatusBadge color={giftCard.is_disabled ? "red" : "green"}>
-            {giftCard.is_disabled
-              ? t("general.disabled")
-              : t("general.enabled")}
-          </StatusBadge>
+          <StatusBadge color={color}>{text}</StatusBadge>
           <ActionMenu
             groups={[
               {
