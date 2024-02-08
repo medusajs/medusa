@@ -69,13 +69,6 @@ export interface IPaymentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
 
-  authorizePaymentCollection(
-    paymentCollectionId: string,
-    sessionIds: string[],
-    context: Record<string, unknown>,
-    sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
-
   completePaymentCollection(
     paymentCollectionId: string,
     sharedContext?: Context
@@ -105,13 +98,6 @@ export interface IPaymentModuleService extends IModuleService {
     context: Record<string, unknown>,
     sharedContext?: Context
   ): Promise<PaymentDTO | void>
-
-  setPaymentSessions(
-    paymentCollectionId: string,
-    data: SetPaymentSessionsDTO[],
-    context: SetPaymentSessionsContextDTO,
-    sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
 
   /* ********** PAYMENT ********** */
 
