@@ -469,7 +469,7 @@ export type ProjectConfigOptions = {
   http_compression?: HttpCompressionOptions
 
   /**
-   * Configure the number of staged jobs that are polled from the database. Default is 1000.
+   * Configure the number of staged jobs that are polled from the database. Default is `1000`.
    * 
    * @example
    * ```js title="medusa-config.js"
