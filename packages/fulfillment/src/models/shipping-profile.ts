@@ -1,4 +1,8 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  createPsqlIndexStatementHelper,
+  DALUtils,
+  generateEntityId,
+} from "@medusajs/utils"
 
 import {
   BeforeCreate,
@@ -16,6 +20,14 @@ import { DAL } from "@medusajs/types"
 import ShippingOption from "./shipping-option"
 
 type ShippingProfileOptionalProps = DAL.SoftDeletableEntityDateColumns
+
+const deletedAtIndexName = "IDX_shipping_profile_deleted_at"
+const deletedAtIndexStatement = createPsqlIndexStatementHelper({
+  name: deletedAtIndexName,
+  tableName: "shipping_profile",
+  columnNames: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -49,7 +61,10 @@ export default class ShippingProfile {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_shipping_profile_deleted_at" })
+  @Index({
+    name: deletedAtIndexName,
+    expression: deletedAtIndexStatement,
+  })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

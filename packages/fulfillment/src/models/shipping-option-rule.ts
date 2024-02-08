@@ -18,6 +18,14 @@ type ShippingOptionRuleOptionalProps = DAL.SoftDeletableEntityDateColumns
 
 // TODO: need some test to see if we continue with this kind of structure or we change it
 
+const deletedAtIndexName = "IDX_shipping_option_rule_deleted_at"
+const deletedAtIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+  name: deletedAtIndexName,
+  tableName: "shipping_option_rule",
+  columnNames: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingOptionRule {
@@ -56,7 +64,10 @@ export default class ShippingOptionRule {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_shipping_option_rule_deleted_at" })
+  @Index({
+    name: deletedAtIndexName,
+    expression: deletedAtIndexStatement,
+  })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
