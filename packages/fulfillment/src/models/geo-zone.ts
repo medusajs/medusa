@@ -18,7 +18,37 @@ import ServiceZone from "./service-zone"
 
 type GeoZoneOptionalProps = DAL.SoftDeletableEntityDateColumns
 
-// TODO: Preliminary index creation, need some thoughts once we start filtering by these fields etc. Same for all entities in that dir
+const deletedAtIndexName = "IDX_geo_zone_deleted_at"
+const deletedAtIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+  name: deletedAtIndexName,
+  tableName: "geo_zone",
+  columnNames: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
+const countryCodeIndexName = "IDX_geo_zone_country_code"
+const countryCodeIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+  name: countryCodeIndexName,
+  tableName: "geo_zone",
+  columnNames: "country_code",
+  where: "deleted_at IS NULL",
+})
+
+const provinceCodeIndexName = "IDX_geo_zone_province_code"
+const provinceCodeIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+  name: provinceCodeIndexName,
+  tableName: "geo_zone",
+  columnNames: "province_code",
+  where: "deleted_at IS NULL AND province_code IS NOT NULL",
+})
+
+const cityIndexName = "IDX_geo_zone_city"
+const cityIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+  name: cityIndexName,
+  tableName: "geo_zone",
+  columnNames: "city",
+  where: "deleted_at IS NULL AND city IS NOT NULL",
+})
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -32,25 +62,22 @@ export default class GeoZone {
   type: GeoZoneType
 
   @Index({
-    name: "IDX_geo_zone_country_code",
-    expression:
-      'CREATE INDEX IF NOT EXISTS "IDX_geo_zone_country_code" ON "geo_zone" ("country_code") WHERE deleted_at IS NULL',
+    name: countryCodeIndexName,
+    expression: countryCodeIndexStatement,
   })
   @Property({ columnType: "text" })
   country_code: string
 
   @Index({
-    name: "IDX_geo_zone_province_code",
-    expression:
-      'CREATE INDEX IF NOT EXISTS "IDX_geo_zone_province_code" ON "geo_zone" ("province_code") WHERE deleted_at IS NULL AND province_code IS NOT NULL',
+    name: provinceCodeIndexName,
+    expression: provinceCodeIndexStatement,
   })
   @Property({ columnType: "text", nullable: true })
   province_code: string | null = null
 
   @Index({
-    name: "IDX_geo_zone_city",
-    expression:
-      'CREATE INDEX IF NOT EXISTS "IDX_geo_zone_city" ON "geo_zone" ("city") WHERE deleted_at IS NULL AND city IS NOT NULL',
+    name: cityIndexName,
+    expression: cityIndexStatement,
   })
   @Property({ columnType: "text", nullable: true })
   city: string | null = null
@@ -80,7 +107,10 @@ export default class GeoZone {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_geo_zone_deleted_at" })
+  @Index({
+    name: deletedAtIndexName,
+    expression: deletedAtIndexStatement,
+  })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

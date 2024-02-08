@@ -17,6 +17,14 @@ import ServiceZone from "./service-zone"
 
 type FulfillmentSetOptionalProps = DAL.SoftDeletableEntityDateColumns
 
+const deletedAtIndexName = "IDX_fulfillment_set_deleted_at"
+const deletedAtIndexStatement = DALUtils.createPsqlIndexStatementHelper({
+  name: deletedAtIndexName,
+  tableName: "fulfillment_set",
+  columnNames: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class FulfillmentSet {
@@ -57,8 +65,11 @@ export default class FulfillmentSet {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_fulfillment_set_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
+  @Index({
+    name: deletedAtIndexName,
+    expression: deletedAtIndexStatement,
+  })
   deleted_at: Date | null = null
 
   @BeforeCreate()

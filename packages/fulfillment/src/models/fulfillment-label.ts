@@ -1,6 +1,10 @@
 // TODO: Not to be reviewed yet. Waiting discussion before continuing this part
 
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  createPsqlIndexStatementHelper,
+  DALUtils,
+  generateEntityId,
+} from "@medusajs/utils"
 
 import {
   BeforeCreate,
@@ -17,6 +21,30 @@ import { DAL } from "@medusajs/types"
 import Fulfillment from "./fulfillment"
 
 type FulfillmentLabelOptionalProps = DAL.SoftDeletableEntityDateColumns
+
+const fulfillmentIdIndexName = "IDX_fulfillment_label_fulfillment_id"
+const fulfillmentIdIndexStatement = createPsqlIndexStatementHelper({
+  name: fulfillmentIdIndexName,
+  tableName: "fulfillment_label",
+  columnNames: "fulfillment_id",
+  where: "deleted_at IS NULL",
+})
+
+const providerIdIndexName = "IDX_fulfillment_label_provider_id"
+const providerIdIndexStatement = createPsqlIndexStatementHelper({
+  name: providerIdIndexName,
+  tableName: "fulfillment_label",
+  columnNames: "provider_id",
+  where: "deleted_at IS NULL",
+})
+
+const deletedAtIndexName = "IDX_fulfillment_label_deleted_at"
+const deletedAtIndexStatement = createPsqlIndexStatementHelper({
+  name: deletedAtIndexName,
+  tableName: "fulfillment_label",
+  columnNames: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -36,9 +64,17 @@ export default class FulfillmentLabel {
   label_url: string
 
   @Property({ columnType: "text" })
+  @Index({
+    name: fulfillmentIdIndexName,
+    expression: fulfillmentIdIndexStatement,
+  })
   provider_id: string
 
   @Property({ columnType: "text" })
+  @Index({
+    name: providerIdIndexName,
+    expression: providerIdIndexStatement,
+  })
   fulfillment_id: string
 
   @ManyToOne(() => Fulfillment)
@@ -59,8 +95,11 @@ export default class FulfillmentLabel {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_fulfillment_label_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
+  @Index({
+    name: deletedAtIndexName,
+    expression: deletedAtIndexStatement,
+  })
   deleted_at: Date | null = null
 
   @BeforeCreate()
