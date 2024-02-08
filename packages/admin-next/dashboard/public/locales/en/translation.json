@@ -338,6 +338,13 @@
     "region": "Region",
     "role": "Role",
     "sent": "Sent",
-    "salesChannels": "Sales Channels"
+    "salesChannels": "Sales Channels",
+    "product": "Product",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "true": "True",
+    "false": "False",
+    "giftCard": "Gift Card",
+    "tag": "Tag"
   }
 }

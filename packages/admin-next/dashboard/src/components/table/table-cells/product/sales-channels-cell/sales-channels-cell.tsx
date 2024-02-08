@@ -4,11 +4,13 @@ import { useTranslation } from "react-i18next"
 
 import { PlaceholderCell } from "../../common/placeholder-cell"
 
-type SalesChannelCellProps = {
+type SalesChannelsCellProps = {
   salesChannels?: SalesChannel[] | null
 }
 
-export const SalesChannelCell = ({ salesChannels }: SalesChannelCellProps) => {
+export const SalesChannelsCell = ({
+  salesChannels,
+}: SalesChannelsCellProps) => {
   const { t } = useTranslation()
 
   if (!salesChannels || !salesChannels.length) {

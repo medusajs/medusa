@@ -13,7 +13,7 @@ import { NoResults } from "../../../common/empty-table-content"
 type BulkCommand = {
   label: string
   shortcut: string
-  action: (selection: Record<string, boolean>) => void
+  action: (selection: Record<string, boolean>) => Promise<void>
 }
 
 export interface DataTableRootProps<TData, TValue> {
@@ -92,6 +92,12 @@ export const DataTableRoot = <TData, TValue>({
     } else {
       setShowStickyBorder(false)
     }
+  }
+
+  const handleAction = async (action: BulkCommand["action"]) => {
+    await action(rowSelection).then(() => {
+      table.resetRowSelection()
+    })
   }
 
   return (
@@ -239,7 +245,7 @@ export const DataTableRoot = <TData, TValue>({
                   <CommandBar.Command
                     label={command.label}
                     shortcut={command.shortcut}
-                    action={() => command.action(rowSelection)}
+                    action={() => handleAction(command.action)}
                   />
                   {index < commands.length - 1 && <CommandBar.Seperator />}
                 </Fragment>

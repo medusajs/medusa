@@ -18,6 +18,7 @@ type UseDataTableProps<TData, TValue> = {
   enableRowSelection?: boolean | ((row: Row<TData>) => boolean)
   enablePagination?: boolean
   getRowId?: (original: TData, index: number) => string
+  meta: Record<string, unknown>
   prefix?: string
 }
 
@@ -29,6 +30,7 @@ export const useDataTable = <TData, TValue>({
   enablePagination = true,
   enableRowSelection = false,
   getRowId,
+  meta,
   prefix,
 }: UseDataTableProps<TData, TValue>) => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -106,6 +108,7 @@ export const useDataTable = <TData, TValue>({
       ? getPaginationRowModel()
       : undefined,
     manualPagination: enablePagination ? true : undefined,
+    meta,
   })
 
   return { table }
