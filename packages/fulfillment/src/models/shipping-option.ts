@@ -25,6 +25,7 @@ import ShippingProfile from "./shipping-profile"
 import ServiceProvider from "./service-provider"
 import ShippingOptionType from "./shipping-option-type"
 import ShippingOptionRule from "./shipping-option-rule"
+import Fulfillment from "./fulfillment"
 
 type ShippingOptionOptionalProps = DAL.SoftDeletableEntityDateColumns
 
@@ -80,6 +81,9 @@ export default class ShippingOption {
   @OneToMany(() => ShippingOptionRule, (sor) => sor.shipping_option)
   rules = new Collection<ShippingOptionRule>(this)
 
+  @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.shipping_option)
+  fulfillments = new Collection<Fulfillment>(this)
+
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
@@ -101,11 +105,11 @@ export default class ShippingOption {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "shopt")
+    this.id = generateEntityId(this.id, "so")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "shopt")
+    this.id = generateEntityId(this.id, "so")
   }
 }

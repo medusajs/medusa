@@ -7,12 +7,17 @@ import {
   Entity,
   Filter,
   Index,
+  ManyToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
+import ShippingOption from "./shipping-option"
+import ServiceProvider from "./service-provider"
+import Address from "./address"
+import FulfillmentItem from "./fulfillment-item"
 
 type FulfillmentOptionalProps = DAL.SoftDeletableEntityDateColumns
 
@@ -32,18 +37,27 @@ export default class Fulfillment {
 
   @Property({
     columnType: "timestamptz",
+    nullable: true,
   })
   packed_at: Date | null = null
 
   @Property({
     columnType: "timestamptz",
+    nullable: true,
   })
   shipped_at: Date | null = null
 
   @Property({
     columnType: "timestamptz",
+    nullable: true,
   })
   delivered_at: Date | null = null
+
+  @Property({
+    columnType: "timestamptz",
+    nullable: true,
+  })
+  canceled_at: Date | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
   data: Record<string, unknown> | null = null
@@ -54,11 +68,21 @@ export default class Fulfillment {
   @Property({ columnType: "text", nullable: true })
   shipping_option_id: string | null = null
 
-  shipping_option // TODO configure relationship
-  provider // TODO  configure relationship
-  shipping_labels // TODO configure relationship
-  items // TODO configure relationship
-  delivery_address // TODO configure relationship
+  @ManyToOne(() => ShippingOption, { nullable: true })
+  shipping_option: ShippingOption | null
+
+  @ManyToOne(() => ServiceProvider)
+  provider: ServiceProvider
+
+  @ManyToOne(() => Address)
+  delivery_address: Address
+
+  @ManyToOne(() => FulfillmentItem)
+  items: FulfillmentItem
+
+  // TODO
+  /*@OneToMany(() => FulfillmentLabel
+  shipping_labels: FulfillmentItem | null*/
 
   @Property({
     onCreate: () => new Date(),

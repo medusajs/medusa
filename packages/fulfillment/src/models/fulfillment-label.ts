@@ -24,6 +24,18 @@ export default class FulfillmentLabel {
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @Property({ columnType: "text" })
+  tracking_number: string
+
+  @Property({ columnType: "text" })
+  tracking_url: string
+
+  @Property({ columnType: "text" })
+  label_url: string
+
+  @Property({ columnType: "text" })
+  provider_id: string
+
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",

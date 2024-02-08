@@ -7,14 +7,16 @@ import {
   Entity,
   Filter,
   Index,
+  OneToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { DAL } from "@medusajs/types"
+import Fulfillment from "./fulfillment"
 
-type FulfillmentItemOptionalProps = DAL.EntityDateColumns
+type FulfillmentItemOptionalProps = DAL.SoftDeletableEntityDateColumns
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -38,6 +40,12 @@ export default class FulfillmentItem {
 
   @Property({ columnType: "text", nullable: true })
   line_item_id: string | null = null
+
+  @Property({ columnType: "text" })
+  fulfillment_id: string
+
+  @OneToOne(() => Fulfillment, "items")
+  fulfillment: Fulfillment
 
   @Property({
     onCreate: () => new Date(),

@@ -86,11 +86,11 @@ export default class GeoZone {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, " geozo")
+    this.id = generateEntityId(this.id, " fgz")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "geozo")
+    this.id = generateEntityId(this.id, "fgz")
   }
 }

@@ -54,11 +54,11 @@ export default class ShippingOptionType {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "shoptty")
+    this.id = generateEntityId(this.id, "sotype")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "shoptty")
+    this.id = generateEntityId(this.id, "sotype")
   }
 }
