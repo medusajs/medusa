@@ -4,3 +4,5 @@ if (typeof process.env.DB_TEMP_NAME === "undefined") {
 }
 
 process.env.MEDUSA_REGION_DB_SCHEMA = "public"
+// TODO: Remove this when all modules are migrated to v2
+process.env.MEDUSA_V2 = "true"
