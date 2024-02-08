@@ -345,6 +345,9 @@
     "true": "True",
     "false": "False",
     "giftCard": "Gift Card",
-    "tag": "Tag"
+    "tag": "Tag",
+    "dateIssued": "Date issued",
+    "balance": "Balance",
+    "originalAmount": "Original amount"
   }
 }

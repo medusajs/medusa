@@ -18,7 +18,7 @@ type UseDataTableProps<TData, TValue> = {
   enableRowSelection?: boolean | ((row: Row<TData>) => boolean)
   enablePagination?: boolean
   getRowId?: (original: TData, index: number) => string
-  meta: Record<string, unknown>
+  meta?: Record<string, unknown>
   prefix?: string
 }
 
