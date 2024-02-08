@@ -82,7 +82,8 @@
     "domain": "Inventory"
   },
   "giftCards": {
-    "domain": "Gift Cards"
+    "domain": "Gift Cards",
+    "deleteGiftCardWarning": "You are about to delete the gift card {{code}}. This action cannot be undone."
   },
   "customers": {
     "domain": "Customers",
@@ -347,6 +348,8 @@
     "giftCard": "Gift Card",
     "tag": "Tag",
     "dateIssued": "Date issued",
+    "issuedDate": "Issued date",
+    "expiryDate": "Expiry date",
     "balance": "Balance",
     "originalAmount": "Original amount"
   }
