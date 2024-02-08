@@ -66,6 +66,18 @@ export const Rounded: Story = {
   },
 }
 
+export const XXSmall: Story = {
+  args: {
+    size: "2xsmall",
+  },
+}
+
+export const XSmall: Story = {
+  args: {
+    size: "xsmall",
+  },
+}
+
 export const Small: Story = {
   args: {
     size: "small",
