@@ -119,4 +119,6 @@ export interface IPaymentModuleService extends IModuleService {
   ): Promise<PaymentDTO>
 
   cancelPayment(paymentId: string, sharedContext?: Context): Promise<PaymentDTO>
+
+  createProvidersOnLoad(): Promise<void>
 }

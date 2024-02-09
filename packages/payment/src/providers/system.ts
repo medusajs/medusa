@@ -56,7 +56,7 @@ export class SystemProviderService extends AbstractPaymentProcessor {
   async updatePayment(
     _
   ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse> {
-    return {} as PaymentProcessorSessionResponse
+    return { session_data: {} } as PaymentProcessorSessionResponse
   }
 
   async deletePayment(_): Promise<Record<string, unknown>> {

@@ -4,6 +4,7 @@ import {
   CreateCaptureDTO,
   CreatePaymentCollectionDTO,
   CreatePaymentDTO,
+  CreatePaymentProviderDTO,
   CreatePaymentSessionDTO,
   CreateRefundDTO,
   DAL,
@@ -231,7 +232,7 @@ export default class PaymentModuleService<
   ): Promise<PaymentSessionDTO> {
     const session = await this.paymentSessionService_.retrieve(
       data.id,
-      { select: ["data", "provider_id"] },
+      { select: ["id", "data", "provider_id"] },
       sharedContext
     )
 
@@ -246,6 +247,7 @@ export default class PaymentModuleService<
 
     const updated = await this.paymentSessionService_.update(
       {
+        id: session.id,
         amount: data.providerContext.amount,
         currency_code: data.providerContext.currency_code,
         data: sessionData,
@@ -253,7 +255,7 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(updated, { populate: true })
+    return await this.baseRepository_.serialize(updated[0], { populate: true })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -528,5 +530,29 @@ export default class PaymentModuleService<
     )
 
     return await this.retrievePayment(payment.id, {}, sharedContext)
+  }
+
+  async createProvidersOnLoad() {
+    const providersToLoad = this.__container__["payment_providers"]
+
+    const providers = await this.paymentProviderService_.list({
+      // @ts-ignore TODO
+      id: providersToLoad.map((p) => p.getIdentifier()),
+    })
+
+    const loadedProvidersMap = new Map(providers.map((p) => [p.id, p]))
+
+    const providersToCreate: CreatePaymentProviderDTO[] = []
+    for (const provider of providersToLoad) {
+      if (loadedProvidersMap.has(provider.getIdentifier())) {
+        continue
+      }
+
+      providersToCreate.push({
+        id: provider.getIdentifier(),
+      })
+    }
+
+    await this.paymentProviderService_.create(providersToCreate)
   }
 }

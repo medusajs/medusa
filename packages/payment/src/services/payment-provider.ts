@@ -60,9 +60,7 @@ export default class PaymentProviderService implements IPaymentProviderService {
 
   retrieveProvider(providerId: string): IPaymentProcessor {
     try {
-      return this.container_[
-        `payment_provider_${providerId}`
-      ] as IPaymentProcessor
+      return this.container_[`pp_${providerId}`] as IPaymentProcessor
     } catch (e) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,

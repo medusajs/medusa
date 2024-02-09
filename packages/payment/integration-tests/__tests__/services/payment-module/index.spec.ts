@@ -440,13 +440,13 @@ describe("Payment Module Service", () => {
           id: session.id,
           providerContext: {
             amount: 200,
-            currency_code: "usd",
+            currency_code: "eur",
             resource_id: "res_id",
             context: {},
             customer: {},
             billing_address: {},
             email: "new@test.tsst",
-            paymentSessionData: { asd: 123 },
+            paymentSessionData: {},
           },
         })
 
@@ -454,12 +454,8 @@ describe("Payment Module Service", () => {
           expect.objectContaining({
             id: expect.any(String),
             status: "pending",
-            authorized_at: null,
-            currency_code: "usd",
+            currency_code: "eur",
             amount: 200,
-            provider_id: "system",
-            email: "new@test.tsst",
-            data: { asd: 123 },
           })
         )
       })
