@@ -102,7 +102,7 @@ export interface MedusaProviderProps {
   /**
    * An instance of the Medusa JS Client. If you don't provide an instance, one will be created using the `baseUrl`, `apiKey`, `publishableApiKey`, `maxRetries`, and `customHeaders` props.
    */
-  medusaClient: Medusa
+  medusaClient?: Medusa
 }
 
 /**
