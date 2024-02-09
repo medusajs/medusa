@@ -7,7 +7,7 @@ export interface CreateShippingOptionDTO {
   service_zone_id: string
   shipping_profile_id: string
   service_provider_id: string
-  type: CreateShippingOptionTypeDTO
+  type: Omit<CreateShippingOptionTypeDTO, "shipping_option_id">
   data?: Record<string, unknown> | null
   rules?: Omit<ShippingOptionRuleDTO, "shipping_option_id">[]
 }
