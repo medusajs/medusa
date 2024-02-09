@@ -89,6 +89,7 @@
     "balanceHigherThanValue": "The balance cannot be higher than the original amount.",
     "balanceLowerThanZero": "The balance cannot be negative.",
     "expiryDateHint": "Countries have different laws regarding gift card expiry dates. Make sure to check local regulations before setting an expiry date.",
+    "regionHint": "Changing the region of the gift card will also change its currency, potentially affecting its monetary value.",
     "enabledHint": "Specify if the gift card is enabled or disabled.",
     "currentBalance": "Current balance",
     "initialBalance": "Initial balance"

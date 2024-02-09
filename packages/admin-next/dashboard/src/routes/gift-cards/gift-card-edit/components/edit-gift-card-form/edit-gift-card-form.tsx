@@ -34,7 +34,7 @@ const EditGiftCardSchema = zod.object({
   region_id: zod.string(),
   balance: zod.string(),
   is_enabled: zod.boolean(),
-  ends_at: zod.date().optional(),
+  ends_at: zod.date().nullable(),
 })
 
 export const EditGiftCardForm = ({
@@ -52,12 +52,14 @@ export const EditGiftCardForm = ({
         giftCard.region.currency_code
       ).toString(),
       is_enabled: !giftCard.is_disabled,
+      ends_at: giftCard.ends_at ? new Date(giftCard.ends_at) : null,
     },
     resolver: zodResolver(EditGiftCardSchema),
   })
 
   const {
     formState: { isDirty },
+    setValue,
   } = form
 
   useEffect(() => {
@@ -70,6 +72,16 @@ export const EditGiftCardForm = ({
   })
 
   const { mutateAsync, isLoading } = useAdminUpdateGiftCard(giftCard.id)
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      setValue("ends_at", null, {
+        shouldDirty: true,
+      })
+    }
+
+    setShowDateFields(open)
+  }
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const newBalance = getDbAmount(
@@ -101,6 +113,7 @@ export const EditGiftCardForm = ({
           giftCard.region.currency_code
         ),
         is_disabled: !data.is_enabled,
+        ends_at: data.ends_at,
       },
       {
         onSuccess: () => {
@@ -125,62 +138,59 @@ export const EditGiftCardForm = ({
         className="flex flex-1 flex-col overflow-hidden"
       >
         <Drawer.Body className="flex flex-1 flex-col gap-y-8 overflow-auto">
-          <div className="flex flex-col gap-y-4">
-            <Form.Field
-              control={form.control}
-              name="balance"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label>{t("fields.balance")}</Form.Label>
-                    <Form.Control>
-                      <CurrencyInput
-                        code={giftCard.region.currency_code.toUpperCase()}
-                        symbol={`/ ${getPresentationalAmount(
-                          giftCard.value,
-                          giftCard.region.currency_code
-                        )} ${
-                          currencies[
-                            giftCard.region.currency_code.toUpperCase()
-                          ].symbol_native
-                        }`}
-                        min={0}
-                        {...field}
-                      />
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            <Form.Field
-              control={form.control}
-              name="region_id"
-              render={({ field: { onChange, ref, ...field } }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label>{t("fields.region")}</Form.Label>
-                    <Form.Control>
-                      <Select {...field} onValueChange={onChange}>
-                        <Select.Trigger ref={ref}>
-                          <Select.Value />
-                        </Select.Trigger>
-                        <Select.Content>
-                          {regions?.map((region) => (
-                            <Select.Item key={region.id} value={region.id}>
-                              {region.name}
-                            </Select.Item>
-                          ))}
-                        </Select.Content>
-                      </Select>
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-          </div>
-
+          <Form.Field
+            control={form.control}
+            name="balance"
+            render={({ field }) => {
+              return (
+                <Form.Item>
+                  <Form.Label>{t("fields.balance")}</Form.Label>
+                  <Form.Control>
+                    <CurrencyInput
+                      code={giftCard.region.currency_code.toUpperCase()}
+                      symbol={`/ ${getPresentationalAmount(
+                        giftCard.value,
+                        giftCard.region.currency_code
+                      )} ${
+                        currencies[giftCard.region.currency_code.toUpperCase()]
+                          .symbol_native
+                      }`}
+                      min={0}
+                      {...field}
+                    />
+                  </Form.Control>
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
+          <Form.Field
+            control={form.control}
+            name="region_id"
+            render={({ field: { onChange, ref, ...field } }) => {
+              return (
+                <Form.Item>
+                  <Form.Label>{t("fields.region")}</Form.Label>
+                  <Form.Control>
+                    <Select {...field} onValueChange={onChange}>
+                      <Select.Trigger ref={ref}>
+                        <Select.Value />
+                      </Select.Trigger>
+                      <Select.Content>
+                        {regions?.map((region) => (
+                          <Select.Item key={region.id} value={region.id}>
+                            {region.name}
+                          </Select.Item>
+                        ))}
+                      </Select.Content>
+                    </Select>
+                  </Form.Control>
+                  <Form.Hint>{t("giftCards.regionHint")}</Form.Hint>
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
           <Form.Field
             control={form.control}
             name="is_enabled"
@@ -206,10 +216,7 @@ export const EditGiftCardForm = ({
             }}
           />
           <div>
-            <Collapsible.Root
-              open={showDateFields}
-              onOpenChange={setShowDateFields}
-            >
+            <Collapsible.Root open={showDateFields}>
               <div className="flex flex-col gap-y-1">
                 <div className="flex items-center justify-between">
                   <Text size="small" leading="compact" weight="plus">
@@ -217,7 +224,7 @@ export const EditGiftCardForm = ({
                   </Text>
                   <Switch
                     checked={showDateFields}
-                    onCheckedChange={setShowDateFields}
+                    onCheckedChange={handleOpenChange}
                   />
                 </div>
                 <Text size="small" className="text-ui-fg-subtle text-pretty">
@@ -229,18 +236,17 @@ export const EditGiftCardForm = ({
                   <Form.Field
                     control={form.control}
                     name="ends_at"
-                    render={({ field: { value, onChange, ...field } }) => {
+                    render={({
+                      field: { value, onChange, ref: _ref, ...field },
+                    }) => {
                       return (
                         <Form.Item>
                           <Form.Control>
                             <DatePicker
-                              mode="single"
-                              value={value}
-                              onChange={(val) => {
-                                onChange(val)
+                              value={value ?? undefined}
+                              onChange={(v) => {
+                                onChange(v ?? null)
                               }}
-                              placeholder="DD/MM/YYYY HH:MM"
-                              showTimePicker
                               {...field}
                             />
                           </Form.Control>

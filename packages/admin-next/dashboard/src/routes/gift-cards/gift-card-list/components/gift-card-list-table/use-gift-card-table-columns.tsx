@@ -1,8 +1,11 @@
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { GiftCard } from "@medusajs/medusa"
-import { Badge } from "@medusajs/ui"
+import { Badge, usePrompt } from "@medusajs/ui"
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
+import { useAdminDeleteGiftCard } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
@@ -21,10 +24,11 @@ export const useGiftCardTableColumns = () => {
           return <Badge size="2xsmall">{getValue()}</Badge>
         },
       }),
-      columnHelper.accessor("order.display_id", {
+      columnHelper.accessor("order", {
         header: t("fields.order"),
         cell: ({ getValue }) => {
-          return <DisplayIdCell displayId={getValue()} />
+          const order = getValue()
+          return <DisplayIdCell displayId={order?.display_id} />
         },
       }),
       columnHelper.accessor("region", {
@@ -69,7 +73,60 @@ export const useGiftCardTableColumns = () => {
           return <MoneyAmountCell amount={value} currencyCode={currencyCode} />
         },
       }),
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => <GiftCardActions giftCard={row.original} />,
+      }),
     ],
     [t]
   ) as ColumnDef<GiftCard>[]
+}
+
+const GiftCardActions = ({ giftCard }: { giftCard: GiftCard }) => {
+  const { t } = useTranslation()
+  const prompt = usePrompt()
+
+  const { mutateAsync } = useAdminDeleteGiftCard(giftCard.id)
+
+  const handleDelete = async () => {
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("giftCards.deleteGiftCardWarning", {
+        code: giftCard.code,
+      }),
+      confirmText: t("general.delete"),
+      cancelText: t("general.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync()
+  }
+
+  return (
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: t("general.edit"),
+              to: `/gift-cards/${giftCard.id}/edit`,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              icon: <Trash />,
+              label: t("general.delete"),
+              onClick: handleDelete,
+            },
+          ],
+        },
+      ]}
+    />
+  )
 }

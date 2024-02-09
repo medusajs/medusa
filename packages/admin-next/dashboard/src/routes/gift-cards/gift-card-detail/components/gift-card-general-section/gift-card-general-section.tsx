@@ -14,6 +14,8 @@ import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { currencies } from "../../../../../lib/currencies"
+import { getPresentationalAmount } from "../../../../../lib/money-amount-helpers"
 
 type GiftCardGeneralSectionProps = {
   giftCard: GiftCard
@@ -70,6 +72,9 @@ export const GiftCardGeneralSection = ({
     text = t("general.expired")
   }
 
+  const currencyCode = giftCard.region.currency_code.toUpperCase()
+  const nativeSymbol = currencies[currencyCode].symbol_native
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
@@ -102,6 +107,28 @@ export const GiftCardGeneralSection = ({
             ]}
           />
         </div>
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("giftCards.currentBalance")}
+        </Text>
+        <Text size="small" leading="compact">
+          {`${nativeSymbol} ${getPresentationalAmount(
+            giftCard.balance,
+            currencyCode
+          )} ${currencyCode}`}
+        </Text>
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("giftCards.initialBalance")}
+        </Text>
+        <Text size="small" leading="compact">
+          {`${nativeSymbol} ${getPresentationalAmount(
+            giftCard.value,
+            currencyCode
+          )} ${currencyCode}`}
+        </Text>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
