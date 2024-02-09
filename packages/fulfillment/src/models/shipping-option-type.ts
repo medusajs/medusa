@@ -43,6 +43,9 @@ export default class ShippingOptionType {
   description: string | null = null
 
   @Property({ columnType: "text" })
+  code: string
+
+  @Property({ columnType: "text" })
   shipping_option_id: string
 
   @OneToOne(() => ShippingOption, (so) => so.shipping_option_type)
