@@ -1,5 +1,15 @@
 # @medusajs/ui
 
+## 2.4.0
+
+### Minor Changes
+
+- [#6310](https://github.com/medusajs/medusa/pull/6310) [`73fd92a1a`](https://github.com/medusajs/medusa/commit/73fd92a1afdec88c0d5f4aeed16349f2bd62cfa2) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(ui): Add Alert component.
+
+### Patch Changes
+
+- [#6297](https://github.com/medusajs/medusa/pull/6297) [`8cbf6c60f`](https://github.com/medusajs/medusa/commit/8cbf6c60fec7fe8ddf59dcf420b9339f84b8636c) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(ui,ui-preset): Update to latest version of TailwindCSS. Increase spacing between columns in <Table /> component.
+
 ## 2.3.0
 
 ### Minor Changes

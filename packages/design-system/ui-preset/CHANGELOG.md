@@ -1,5 +1,11 @@
 # @medusajs/ui-preset
 
+## 1.1.1
+
+### Patch Changes
+
+- [#6297](https://github.com/medusajs/medusa/pull/6297) [`8cbf6c60f`](https://github.com/medusajs/medusa/commit/8cbf6c60fec7fe8ddf59dcf420b9339f84b8636c) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(ui,ui-preset): Update to latest version of TailwindCSS. Increase spacing between columns in <Table /> component.
+
 ## 1.1.0
 
 ### Minor Changes
