@@ -322,7 +322,7 @@ export default class PaymentModuleService<
     if (status !== PaymentSessionStatus.AUTHORIZED) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
-        "Session not authorized with the provider."
+        `Session: ${session.id} is not authorized with the provider.`
       )
     }
 

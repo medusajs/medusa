@@ -32,18 +32,14 @@ export default async ({
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   ) & { providers: ModuleProvider[] }
 >): Promise<void> => {
-  const pluginProviders =
-    options?.providers?.filter((provider) => provider.resolve) || []
-
   // Local providers
   for (const provider of Object.values(providers)) {
-    // TODO: pass options
     await registrationFn(provider, container, {})
   }
 
   await moduleProviderLoader({
     container,
-    providers: pluginProviders,
+    providers: options?.providers || [],
     registerServiceFn: registrationFn,
   })
 }
