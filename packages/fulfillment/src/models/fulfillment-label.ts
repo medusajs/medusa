@@ -63,13 +63,6 @@ export default class FulfillmentLabel {
 
   @Property({ columnType: "text" })
   @Index({
-    name: fulfillmentIdIndexName,
-    expression: fulfillmentIdIndexStatement,
-  })
-  provider_id: string
-
-  @Property({ columnType: "text" })
-  @Index({
     name: providerIdIndexName,
     expression: providerIdIndexStatement,
   })

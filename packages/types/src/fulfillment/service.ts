@@ -1,48 +1,68 @@
 import { IModuleService } from "../modules-sdk"
-import { FulfillmentDTO } from "./common"
+import { FulfillmentSetDTO, ServiceZoneDTO } from "./common"
 import { FindConfig } from "../common"
 import { Context } from "../shared-context"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
+import { CreateFulfillmentSetDTO } from "./mutations/fulfillment-set"
 
 export interface IFulfillmentModuleService extends IModuleService {
+  /**
+   * Create a new fulfillment set
+   * @param data
+   * @param sharedContext
+   */
   create(
-    data: any[], // TODO Create appropriate DTO
+    data: CreateFulfillmentSetDTO[],
     sharedContext?: Context
-  ): Promise<FulfillmentDTO[]>
+  ): Promise<FulfillmentSetDTO[]>
   create(
-    data: any, // TODO Create appropriate DTO
+    data: CreateFulfillmentSetDTO,
     sharedContext?: Context
-  ): Promise<FulfillmentDTO>
+  ): Promise<FulfillmentSetDTO>
+
+  /**
+   * Create a new service zone
+   * @param data
+   * @param sharedContext
+   */
+  createServiceZones(
+    data: CreateFulfillmentSetDTO[],
+    sharedContext?: Context
+  ): Promise<ServiceZoneDTO[]>
+  createServiceZones(
+    data: CreateFulfillmentSetDTO,
+    sharedContext?: Context
+  ): Promise<ServiceZoneDTO>
 
   update(
     data: any[], // TODO Create appropriate DTO
     sharedContext?: Context
-  ): Promise<FulfillmentDTO[]>
+  ): Promise<FulfillmentSetDTO[]>
   update(
     data: any, // TODO Create appropriate DTO
     sharedContext?: Context
-  ): Promise<FulfillmentDTO>
+  ): Promise<FulfillmentSetDTO>
 
   delete(ids: string[], sharedContext?: Context): Promise<void>
   delete(id: string, sharedContext?: Context): Promise<void>
 
   retrieve(
     id: string,
-    config?: FindConfig<FulfillmentDTO>,
+    config?: FindConfig<FulfillmentSetDTO>,
     sharedContext?: Context
-  ): Promise<FulfillmentDTO>
+  ): Promise<FulfillmentSetDTO>
 
   list(
     filters?: any, // TODO Create appropriate filter type
-    config?: FindConfig<FulfillmentDTO>,
+    config?: FindConfig<FulfillmentSetDTO>,
     sharedContext?: Context
-  ): Promise<FulfillmentDTO[]>
+  ): Promise<FulfillmentSetDTO[]>
 
   listAndCount(
     filters?: any, // TODO Create appropriate filter type
-    config?: FindConfig<FulfillmentDTO>,
+    config?: FindConfig<FulfillmentSetDTO>,
     sharedContext?: Context
-  ): Promise<[FulfillmentDTO[], number]>
+  ): Promise<[FulfillmentSetDTO[], number]>
 
   softDelete<TReturnableLinkableKeys extends string = string>(
     fulfillmentIds: string[],
