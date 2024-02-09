@@ -265,7 +265,7 @@ export default class PaymentModuleService<
   ): Promise<void> {
     const session = await this.paymentSessionService_.retrieve(
       id,
-      { select: ["data", "provider_id"] },
+      { select: ["id", "data", "provider_id"] },
       sharedContext
     )
 
@@ -285,7 +285,10 @@ export default class PaymentModuleService<
   ): Promise<PaymentDTO> {
     const session = await this.paymentSessionService_.retrieve(
       id,
-      {},
+      {
+        select: ["id", "data", "provider_id", "amount", "currency_code"],
+        relations: ["payment_collection"],
+      },
       sharedContext
     )
 
@@ -349,7 +352,7 @@ export default class PaymentModuleService<
   ): Promise<PaymentDTO> {
     const session = await this.paymentSessionService_.retrieve(
       data.payment_session_id,
-      {},
+      { select: ["id", "data", "provider_id"] },
       sharedContext
     )
 
@@ -395,7 +398,7 @@ export default class PaymentModuleService<
   ): Promise<PaymentDTO> {
     const payment = await this.paymentService_.retrieve(
       data.payment_id,
-      {},
+      { select: ["id", "data", "provider_id"] },
       sharedContext
     )
 
@@ -462,7 +465,7 @@ export default class PaymentModuleService<
   ): Promise<PaymentDTO> {
     const payment = await this.paymentService_.retrieve(
       data.payment_id,
-      {},
+      { select: ["id", "data", "provider_id"] },
       sharedContext
     )
 
@@ -507,7 +510,7 @@ export default class PaymentModuleService<
   ): Promise<PaymentDTO> {
     const payment = await this.paymentService_.retrieve(
       paymentId,
-      {},
+      { select: ["id", "data", "provider_id"] },
       sharedContext
     )
 
