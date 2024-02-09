@@ -278,8 +278,14 @@ export type RemoteQueryFunction = (
 ) => Promise<any> | null
 
 export interface IModuleService {
+  /**
+   * @ignore
+   */
   __joinerConfig?(): ModuleJoinerConfig
 
+  /**
+   * @ignore
+   */
   __hooks?: {
     onApplicationStart?: () => Promise<void>
   }

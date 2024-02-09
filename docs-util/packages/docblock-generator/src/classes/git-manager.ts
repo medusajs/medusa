@@ -26,6 +26,22 @@ export class GitManager {
     })
   }
 
+  async getCommitFilesSinceRelease(tagName: string) {
+    const { data: release } = await this.octokit.request(
+      "GET /repos/{owner}/{repo}/releases/tags/{tag}",
+      {
+        owner: this.owner,
+        repo: this.repo,
+        tag: tagName,
+        headers: {
+          "X-GitHub-Api-Version": this.gitApiVersion,
+        },
+      }
+    )
+
+    return this.getCommitsFiles(release.published_at)
+  }
+
   async getCommitFilesSinceLastRelease() {
     // list releases to get the latest two releases
     const { data: release } = await this.octokit.request(
@@ -39,13 +55,17 @@ export class GitManager {
       }
     )
 
+    return this.getCommitsFiles(release.published_at)
+  }
+
+  async getCommitsFiles(date?: string | null) {
     // get commits between the last two releases
     const commits = await this.octokit.paginate(
       "GET /repos/{owner}/{repo}/commits",
       {
         owner: this.owner,
         repo: this.repo,
-        since: release.published_at || undefined,
+        since: date || undefined,
         per_page: 100,
       }
     )
