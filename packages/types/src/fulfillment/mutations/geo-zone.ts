@@ -2,6 +2,7 @@ import { GeoZoneType } from "../common"
 
 interface CreateGeoZoneBaseDTO {
   type: GeoZoneType
+  service_zone_id: string
   country_code: string
   metadata?: Record<string, any> | null
 }

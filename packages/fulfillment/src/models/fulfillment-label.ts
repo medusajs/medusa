@@ -28,14 +28,6 @@ const fulfillmentIdIndexStatement = createPsqlIndexStatementHelper({
   where: "deleted_at IS NULL",
 })
 
-const providerIdIndexName = "IDX_fulfillment_label_provider_id"
-const providerIdIndexStatement = createPsqlIndexStatementHelper({
-  name: providerIdIndexName,
-  tableName: "fulfillment_label",
-  columns: "provider_id",
-  where: "deleted_at IS NULL",
-})
-
 const deletedAtIndexName = "IDX_fulfillment_label_deleted_at"
 const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   name: deletedAtIndexName,
@@ -63,8 +55,8 @@ export default class FulfillmentLabel {
 
   @Property({ columnType: "text" })
   @Index({
-    name: providerIdIndexName,
-    expression: providerIdIndexStatement,
+    name: fulfillmentIdIndexName,
+    expression: fulfillmentIdIndexStatement,
   })
   fulfillment_id: string
 

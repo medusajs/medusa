@@ -28,6 +28,14 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
+const shippingOptionIdIndexName = "IDX_shipping_option_type_shipping_option_id"
+const shippingOptionIdIndexStatement = createPsqlIndexStatementHelper({
+  name: shippingOptionIdIndexName,
+  tableName: "shipping_option_type",
+  columns: "shipping_option_id",
+  where: "deleted_at IS NULL",
+})
+
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingOptionType {
@@ -46,6 +54,10 @@ export default class ShippingOptionType {
   code: string
 
   @Property({ columnType: "text" })
+  @Index({
+    name: shippingOptionIdIndexName,
+    expression: shippingOptionIdIndexStatement,
+  })
   shipping_option_id: string
 
   @OneToOne(() => ShippingOption, (so) => so.shipping_option_type)
