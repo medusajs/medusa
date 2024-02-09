@@ -14,8 +14,8 @@ const CommandComponent = ({
   return (
     <div
       className={clx(
-        "bg-ui-code-bg-header border-ui-code-border flex items-center rounded-lg border px-3 py-2",
-        "[&>code]:text-ui-code-text-base [&>code]:txt-compact-small [&>code]:mx-3 [&>code]:font-mono [&>code]:leading-6",
+        "bg-ui-code-bg-base border-ui-code-border flex items-center rounded-lg border px-3 py-2",
+        "[&>code]:text-ui-code-fg-base [&>code]:code-body [&>code]:mx-3",
         className
       )}
       {...props}
@@ -24,6 +24,20 @@ const CommandComponent = ({
 }
 CommandComponent.displayName = "Command"
 
-const Command = Object.assign(CommandComponent, { Copy })
+const CommandCopy = React.forwardRef<
+  React.ElementRef<typeof Copy>,
+  React.ComponentPropsWithoutRef<typeof Copy>
+>(({ className, ...props }, ref) => {
+  return (
+    <Copy
+      {...props}
+      ref={ref}
+      className={clx("!text-ui-code-fg-muted ml-auto", className)}
+    />
+  )
+})
+CommandCopy.displayName = "Command.Copy"
+
+const Command = Object.assign(CommandComponent, { Copy: CommandCopy })
 
 export { Command }

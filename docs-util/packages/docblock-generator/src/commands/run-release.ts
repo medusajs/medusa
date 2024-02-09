@@ -4,12 +4,18 @@ import DocblockGenerator from "../classes/docblock-generator.js"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
 import { GitManager } from "../classes/git-manager.js"
 
-export default async function () {
+type Options = {
+  tag?: string
+}
+
+export default async function ({ tag }: Options) {
   const gitManager = new GitManager()
 
-  console.log("Get files in commits since last release")
+  console.log(`Get files in commits since ${tag || "last release"}`)
 
-  const files = await gitManager.getCommitFilesSinceLastRelease()
+  const files = tag
+    ? await gitManager.getCommitFilesSinceRelease(tag)
+    : await gitManager.getCommitFilesSinceLastRelease()
 
   // filter changed files
   let filteredFiles = filterFiles(files)

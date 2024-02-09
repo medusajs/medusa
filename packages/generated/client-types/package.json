@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/client-types",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Client types for Medusa Commerce Rest API",
   "main": "dist/index.js",
   "files": [
