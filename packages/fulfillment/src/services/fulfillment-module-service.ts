@@ -1,23 +1,19 @@
 import {
   Context,
   DAL,
-  FindConfig,
   FulfillmentTypes,
   IFulfillmentModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-  SoftDeleteReturn,
   UpdateFulfillmentSetDTO,
 } from "@medusajs/types"
-import {
-  InjectManager,
-  InjectTransactionManager,
-  ModulesSdkUtils,
-} from "@medusajs/utils"
+import { InjectTransactionManager, ModulesSdkUtils } from "@medusajs/utils"
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { FulfillmentSet } from "@models"
+import { FulfillmentSet, ServiceZone, ShippingOption } from "@models"
+
+const generateMethodForModels = [ServiceZone, ShippingOption]
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -29,9 +25,13 @@ export default class FulfillmentModuleService<
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
-    any, // TODO Create appropriate DTO
-    {}
-  >(FulfillmentSet, [], entityNameToLinkableKeysMap)
+    FulfillmentTypes.FulfillmentSetDTO,
+    {
+      FulfillmentSet: { dto: FulfillmentTypes.FulfillmentSetDTO }
+      ServiceZone: { dto: FulfillmentTypes.ServiceZoneDTO }
+      ShippingOption: { dto: FulfillmentTypes.ShippingOptionDTO }
+    }
+  >(FulfillmentSet, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IFulfillmentModuleService
 {
   protected baseRepository_: DAL.RepositoryService
@@ -82,7 +82,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.ServiceZoneDTO>
 
   @InjectTransactionManager("baseRepository_")
-  createServiceZones(
+  async createServiceZones(
     data:
       | FulfillmentTypes.CreateServiceZoneDTO[]
       | FulfillmentTypes.CreateServiceZoneDTO,
@@ -90,7 +90,7 @@ export default class FulfillmentModuleService<
   ): Promise<
     FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
   > {
-    return Promise.resolve([])
+    return []
   }
 
   createShippingOptions(
@@ -103,7 +103,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.ShippingOptionDTO>
 
   @InjectTransactionManager("baseRepository_")
-  createShippingOptions(
+  async createShippingOptions(
     data:
       | FulfillmentTypes.CreateShippingOptionDTO[]
       | FulfillmentTypes.CreateShippingOptionDTO,
@@ -111,83 +111,7 @@ export default class FulfillmentModuleService<
   ): Promise<
     FulfillmentTypes.ShippingOptionDTO | FulfillmentTypes.ShippingOptionDTO[]
   > {
-    return Promise.resolve([])
-  }
-
-  deleteServiceZones(ids: string[], sharedContext?: Context): Promise<void>
-  deleteServiceZones(id: string, sharedContext?: Context): Promise<void>
-
-  @InjectTransactionManager("baseRepository_")
-  deleteServiceZones(
-    ids: string[] | string,
-    sharedContext?: Context
-  ): Promise<void> {
-    return Promise.resolve()
-  }
-
-  deleteShippingOptions(ids: string[], sharedContext?: Context): Promise<void>
-  deleteShippingOptions(id: string, sharedContext?: Context): Promise<void>
-
-  @InjectTransactionManager("baseRepository_")
-  deleteShippingOptions(
-    ids: string[] | string,
-    sharedContext?: Context
-  ): Promise<void> {
-    return Promise.resolve()
-  }
-
-  @InjectManager("baseRepository_")
-  listAndCountServiceZones(
-    filters?: FulfillmentTypes.FilterableServiceZoneProps,
-    config?: FindConfig<FulfillmentTypes.ServiceZoneDTO>,
-    sharedContext?: Context
-  ): Promise<[FulfillmentTypes.ServiceZoneDTO[], number]> {
-    return Promise.resolve([[], 0])
-  }
-
-  @InjectManager("baseRepository_")
-  listAndCountShippingOptions(
-    filters?: FulfillmentTypes.FilterableShippingOptionProps,
-    config?: FindConfig<FulfillmentTypes.ShippingOptionDTO>,
-    sharedContext?: Context
-  ): Promise<[FulfillmentTypes.ShippingOptionDTO[], number]> {
-    return Promise.resolve([[], 0])
-  }
-
-  @InjectManager("baseRepository_")
-  listServiceZones(
-    filters?: FulfillmentTypes.FilterableServiceZoneProps,
-    config?: FindConfig<FulfillmentTypes.ServiceZoneDTO>,
-    sharedContext?: Context
-  ): Promise<FulfillmentTypes.ServiceZoneDTO[]> {
-    return Promise.resolve([])
-  }
-
-  @InjectManager("baseRepository_")
-  listShippingOptions(
-    filters?: FulfillmentTypes.FilterableShippingOptionProps,
-    config?: FindConfig<FulfillmentTypes.ShippingOptionDTO>,
-    sharedContext?: Context
-  ): Promise<FulfillmentTypes.ShippingOptionDTO[]> {
-    return Promise.resolve([])
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  softDeleteServiceZones<TReturnableLinkableKeys = string>(
-    serviceZoneIds: string[],
-    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
-    sharedContext?: Context
-  ): Promise<Record<string, string[]> | void> {
-    return Promise.resolve()
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  softDeleteShippingOptions<TReturnableLinkableKeys = string>(
-    shippingOptionsIds: string[],
-    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
-    sharedContext?: Context
-  ): Promise<Record<string, string[]> | void> {
-    return Promise.resolve()
+    return []
   }
 
   update(
@@ -200,13 +124,13 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.FulfillmentSetDTO>
 
   @InjectTransactionManager("baseRepository_")
-  update(
+  async update(
     data: UpdateFulfillmentSetDTO[] | UpdateFulfillmentSetDTO,
     sharedContext?: Context
   ): Promise<
     FulfillmentTypes.FulfillmentSetDTO[] | FulfillmentTypes.FulfillmentSetDTO
   > {
-    return Promise.resolve([])
+    return []
   }
 
   updateServiceZones(
@@ -219,7 +143,7 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.ServiceZoneDTO>
 
   @InjectTransactionManager("baseRepository_")
-  updateServiceZones(
+  async updateServiceZones(
     data:
       | FulfillmentTypes.UpdateServiceZoneDTO[]
       | FulfillmentTypes.UpdateServiceZoneDTO,
@@ -227,7 +151,7 @@ export default class FulfillmentModuleService<
   ): Promise<
     FulfillmentTypes.ServiceZoneDTO[] | FulfillmentTypes.ServiceZoneDTO
   > {
-    return Promise.resolve([])
+    return []
   }
 
   updateShippingOptions(
@@ -240,14 +164,14 @@ export default class FulfillmentModuleService<
   ): Promise<FulfillmentTypes.ShippingOptionDTO>
 
   @InjectTransactionManager("baseRepository_")
-  updateShippingOptions(
+  async updateShippingOptions(
     data:
       | FulfillmentTypes.UpdateShippingOptionDTO[]
       | FulfillmentTypes.UpdateShippingOptionDTO,
     sharedContext?: Context
-  ):
-    | Promise<FulfillmentTypes.ShippingOptionDTO[]>
-    | Promise<FulfillmentTypes.ShippingOptionDTO> {
-    return Promise.resolve([])
+  ): Promise<
+    FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO
+  > {
+    return []
   }
 }

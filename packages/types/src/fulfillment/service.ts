@@ -146,7 +146,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param config
    * @param sharedContext
    */
-  retrieve(
+  retrieveServiceZone(
     id: string,
     config?: FindConfig<ServiceZoneDTO>,
     sharedContext?: Context
@@ -158,7 +158,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param config
    * @param sharedContext
    */
-  retrieve(
+  retrieveShippingOption(
     id: string,
     config?: FindConfig<ShippingOptionDTO>,
     sharedContext?: Context
