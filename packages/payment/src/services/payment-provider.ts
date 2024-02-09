@@ -23,15 +23,16 @@ import {
   CreatePaymentInput,
   PaymentProcessorContext,
 } from "@medusajs/types/src"
+import { EOL } from "os"
 
 type InjectedDependencies = {
   paymentProviderRepository: DAL.RepositoryService
-  [key: `payment_providers_${string}`]: IPaymentProcessor
+  [key: `pp_${string}`]: IPaymentProcessor
 }
 
 export default class PaymentProviderService implements IPaymentProviderService {
-  paymentProviderRepository_: DAL.RepositoryService
   protected readonly container_: InjectedDependencies
+  protected readonly paymentProviderRepository_: DAL.RepositoryService
 
   constructor(
     container: InjectedDependencies,
@@ -88,7 +89,7 @@ export default class PaymentProviderService implements IPaymentProviderService {
 
     const paymentResponse = await provider.initiatePayment(sessionInput)
 
-    if ("error" in paymentResponse) {
+    if (isPaymentProcessorError(paymentResponse)) {
       this.throwFromPaymentProcessorError(paymentResponse)
     }
 
@@ -107,10 +108,8 @@ export default class PaymentProviderService implements IPaymentProviderService {
 
     const paymentResponse = await provider.updatePayment(sessionInput)
 
-    if ((paymentResponse as PaymentProcessorError)?.error) {
-      this.throwFromPaymentProcessorError(
-        paymentResponse as PaymentProcessorError
-      )
+    if (isPaymentProcessorError(paymentResponse)) {
+      this.throwFromPaymentProcessorError(paymentResponse)
     }
 
     return (paymentResponse as PaymentProcessorSessionResponse)?.session_data
@@ -124,7 +123,7 @@ export default class PaymentProviderService implements IPaymentProviderService {
 
     const error = await provider.deletePayment(paymentSession.data)
     if (isPaymentProcessorError(error)) {
-      this.throwFromPaymentProcessorError(error as PaymentProcessorError)
+      this.throwFromPaymentProcessorError(error)
     }
   }
 
@@ -140,8 +139,8 @@ export default class PaymentProviderService implements IPaymentProviderService {
      * NOTE: JUST RETRIEVE
      */
     const paymentData = await provider.retrievePayment(payment_session.data)
-    if ("error" in paymentData) {
-      this.throwFromPaymentProcessorError(paymentData as PaymentProcessorError)
+    if (isPaymentProcessorError(paymentData)) {
+      this.throwFromPaymentProcessorError(paymentData)
     }
 
     return paymentData as Record<string, unknown>
@@ -157,14 +156,12 @@ export default class PaymentProviderService implements IPaymentProviderService {
     const provider = this.retrieveProvider(paymentSession.provider_id)
 
     const res = await provider.authorizePayment(paymentSession.data, context)
-    if ("error" in res) {
+    if (isPaymentProcessorError(res)) {
       this.throwFromPaymentProcessorError(res)
     }
 
-    return {
-      data: (res as PaymentProcessorAuthorizeResponse).data,
-      status: (res as PaymentProcessorAuthorizeResponse).status,
-    }
+    const { data, status } = res as PaymentProcessorAuthorizeResponse
+    return { data, status }
   }
 
   async updateSessionData(
@@ -178,8 +175,8 @@ export default class PaymentProviderService implements IPaymentProviderService {
     const provider = this.retrieveProvider(paymentSession.provider_id)
 
     const res = await provider.updatePaymentData(paymentSession.id, data)
-    if ("error" in res) {
-      this.throwFromPaymentProcessorError(res as PaymentProcessorError)
+    if (isPaymentProcessorError(res)) {
+      this.throwFromPaymentProcessorError(res)
     }
 
     return (res as PaymentProcessorSessionResponse).session_data
@@ -200,8 +197,8 @@ export default class PaymentProviderService implements IPaymentProviderService {
     const provider = this.retrieveProvider(paymentObj.provider_id)
 
     const res = await provider.capturePayment(paymentObj.data)
-    if ("error" in res) {
-      this.throwFromPaymentProcessorError(res as PaymentProcessorError)
+    if (isPaymentProcessorError(res)) {
+      this.throwFromPaymentProcessorError(res)
     }
 
     return res as Record<string, unknown>
@@ -215,7 +212,7 @@ export default class PaymentProviderService implements IPaymentProviderService {
 
     const error = await provider.cancelPayment(payment.data)
     if (isPaymentProcessorError(error)) {
-      this.throwFromPaymentProcessorError(error as PaymentProcessorError)
+      this.throwFromPaymentProcessorError(error)
     }
   }
 
@@ -227,11 +224,17 @@ export default class PaymentProviderService implements IPaymentProviderService {
 
     const res = await provider.refundPayment(payment.data, amount)
     if (isPaymentProcessorError(res)) {
-      this.throwFromPaymentProcessorError(res as PaymentProcessorError)
+      this.throwFromPaymentProcessorError(res)
     }
 
     return res as Record<string, unknown>
   }
 
-  throwFromPaymentProcessorError(error: PaymentProcessorError) {}
+  private throwFromPaymentProcessorError(errObj: PaymentProcessorError) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `${errObj.error}${errObj.detail ? `:${EOL}${errObj.detail}` : ""}`,
+      errObj.code
+    )
+  }
 }

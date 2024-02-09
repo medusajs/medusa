@@ -41,7 +41,7 @@ describe("Payment Module Service", () => {
       await shutdownFunc()
     })
     it("complete payment flow successfully", async () => {
-      let paymentCollection = await service.createPaymentCollection({
+      let paymentCollection = await service.createPaymentCollections({
         currency_code: "USD",
         amount: 200,
         region_id: "reg_123",
@@ -74,7 +74,7 @@ describe("Payment Module Service", () => {
         payment_id: payment.id,
       })
 
-      await service.completePaymentCollection(paymentCollection.id)
+      await service.completePaymentCollections(paymentCollection.id)
 
       paymentCollection = await service.retrievePaymentCollection(
         paymentCollection.id,
@@ -151,7 +151,7 @@ describe("Payment Module Service", () => {
     describe("create", () => {
       it("should throw an error when required params are not passed", async () => {
         let error = await service
-          .createPaymentCollection([
+          .createPaymentCollections([
             {
               amount: 200,
               region_id: "req_123",
@@ -164,7 +164,7 @@ describe("Payment Module Service", () => {
         )
 
         error = await service
-          .createPaymentCollection([
+          .createPaymentCollections([
             {
               currency_code: "USD",
               region_id: "req_123",
@@ -177,7 +177,7 @@ describe("Payment Module Service", () => {
         )
 
         error = await service
-          .createPaymentCollection([
+          .createPaymentCollections([
             {
               currency_code: "USD",
               amount: 200,
@@ -192,7 +192,7 @@ describe("Payment Module Service", () => {
 
       it("should create a payment collection successfully", async () => {
         const [createdPaymentCollection] =
-          await service.createPaymentCollection([
+          await service.createPaymentCollections([
             { currency_code: "USD", amount: 200, region_id: "reg_123" },
           ])
 
@@ -313,7 +313,7 @@ describe("Payment Module Service", () => {
 
     describe("update", () => {
       it("should update a Payment Collection", async () => {
-        await service.updatePaymentCollection({
+        await service.updatePaymentCollections({
           id: "pay-col-id-2",
           currency_code: "eur",
           region_id: "reg-2",
@@ -335,7 +335,7 @@ describe("Payment Module Service", () => {
 
     describe("complete", () => {
       it("should complete a Payment Collection", async () => {
-        await service.completePaymentCollection("pay-col-id-1")
+        await service.completePaymentCollections("pay-col-id-1")
 
         const collection = await service.retrievePaymentCollection(
           "pay-col-id-1"
@@ -422,7 +422,7 @@ describe("Payment Module Service", () => {
 
     describe("authorize", () => {
       it("should authorize a payment session", async () => {
-        const collection = await service.createPaymentCollection({
+        const collection = await service.createPaymentCollections({
           amount: 200,
           region_id: "test-region",
           currency_code: "usd",
@@ -528,7 +528,7 @@ describe("Payment Module Service", () => {
     })
     describe("create", () => {
       it("should create a payment successfully", async () => {
-        const paymentCollection = await service.createPaymentCollection({
+        const paymentCollection = await service.createPaymentCollections({
           currency_code: "usd",
           amount: 200,
           region_id: "reg",

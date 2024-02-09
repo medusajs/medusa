@@ -7,7 +7,7 @@ import * as providers from "../providers"
 
 const registrationFn = async (klass, container, pluginOptions) => {
   container.register({
-    [`payment_provider_${klass.identifier}`]: asFunction(
+    [`pp_${klass.identifier}`]: asFunction(
       (cradle) => new klass(cradle, pluginOptions),
       {
         lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
