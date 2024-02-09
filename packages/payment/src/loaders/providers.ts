@@ -1,6 +1,11 @@
 import { moduleProviderLoader } from "@medusajs/modules-sdk"
 
-import { LoaderOptions, ModuleProvider, ModulesSdkTypes } from "@medusajs/types"
+import {
+  CreatePaymentProviderDTO,
+  LoaderOptions,
+  ModuleProvider,
+  ModulesSdkTypes,
+} from "@medusajs/types"
 import { Lifetime, asFunction } from "awilix"
 
 import * as providers from "../providers"
@@ -46,4 +51,29 @@ export default async ({
     providers: pluginProviders,
     registerServiceFn: registrationFn,
   })
+
+  // TODO: temp impl. until  #6311
+
+  const providersToLoad = container["payment_providers"]
+  const paymentProviderService = container["paymentProviderService"]
+
+  const providers_ = await paymentProviderService.list({
+    // @ts-ignore TODO
+    id: providersToLoad.map((p) => p.getIdentifier()),
+  })
+
+  const loadedProvidersMap = new Map(providers_.map((p) => [p.id, p]))
+  const providersToCreate: CreatePaymentProviderDTO[] = []
+
+  for (const provider of providersToLoad) {
+    if (loadedProvidersMap.has(provider.getIdentifier())) {
+      continue
+    }
+
+    providersToCreate.push({
+      id: provider.getIdentifier(),
+    })
+  }
+
+  await paymentProviderService.create(providersToCreate)
 }

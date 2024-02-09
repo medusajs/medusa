@@ -108,10 +108,6 @@ export default class PaymentModuleService<
     return joinerConfig
   }
 
-  __hooks = {
-    onApplicationStart: async () => await this.createProvidersOnLoad(),
-  }
-
   createPaymentCollections(
     data: CreatePaymentCollectionDTO,
     sharedContext?: Context
@@ -533,30 +529,5 @@ export default class PaymentModuleService<
     )
 
     return await this.retrievePayment(payment.id, {}, sharedContext)
-  }
-
-  private async createProvidersOnLoad() {
-    const providersToLoad = this.__container__["payment_providers"]
-
-    const providers = await this.paymentProviderService_.list({
-      // @ts-ignore TODO
-      id: providersToLoad.map((p) => p.getIdentifier()),
-    })
-
-    const loadedProvidersMap = new Map(providers.map((p) => [p.id, p]))
-
-    const providersToCreate: CreatePaymentProviderDTO[] = []
-
-    for (const provider of providersToLoad) {
-      if (loadedProvidersMap.has(provider.getIdentifier())) {
-        continue
-      }
-
-      providersToCreate.push({
-        id: provider.getIdentifier(),
-      })
-    }
-
-    await this.paymentProviderService_.create(providersToCreate)
   }
 }
