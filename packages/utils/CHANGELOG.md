@@ -1,5 +1,14 @@
 # @medusajs/utils
 
+## 1.11.6
+
+### Patch Changes
+
+- [#6328](https://github.com/medusajs/medusa/pull/6328) [`3fd68d197`](https://github.com/medusajs/medusa/commit/3fd68d1979828e3cde6e028e9e6ab0d0fadcb77b) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(fulfillment): Initialize models work
+
+- Updated dependencies [[`3fd68d197`](https://github.com/medusajs/medusa/commit/3fd68d1979828e3cde6e028e9e6ab0d0fadcb77b)]:
+  - @medusajs/types@1.11.13
+
 ## 1.11.5
 
 ### Patch Changes
