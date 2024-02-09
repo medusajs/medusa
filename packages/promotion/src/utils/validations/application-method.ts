@@ -2,16 +2,13 @@ import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
   ApplicationMethodType,
-  MedusaError,
-  PromotionType,
   isDefined,
   isPresent,
+  MedusaError,
+  PromotionType,
 } from "@medusajs/utils"
 import { Promotion } from "@models"
-import {
-  CreateApplicationMethodDTO,
-  UpdateApplicationMethodDTO,
-} from "../../types"
+import { CreateApplicationMethodDTO, UpdateApplicationMethodDTO } from "@types"
 
 export const allowedAllocationTargetTypes: string[] = [
   ApplicationMethodTargetType.SHIPPING_METHODS,
