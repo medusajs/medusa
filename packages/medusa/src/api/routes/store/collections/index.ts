@@ -1,11 +1,9 @@
 import { Router } from "express"
 import { PaginatedResponse, QueryConfig } from "../../../../types/common"
-import {
-  ProductCollection,
-  StoreGetCollectionsCollectionParams,
-} from "../../../../"
+import { ProductCollection } from "../../../../"
 import middlewares, { transformStoreQuery } from "../../../middlewares"
 import { StoreGetCollectionsParams } from "./list-collections"
+import { StoreGetCollectionsCollectionParams } from "./get-collection"
 
 const route = Router()
 
