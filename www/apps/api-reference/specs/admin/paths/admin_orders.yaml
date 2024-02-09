@@ -215,6 +215,11 @@ get:
       description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
+    - in: query
+      name: order
+      description: A order field to sort-order the retrieved orders by.
+      schema:
+        type: string
   x-codegen:
     method: list
     queryParams: AdminGetOrdersParams

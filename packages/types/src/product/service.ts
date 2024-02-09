@@ -1,3 +1,4 @@
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import {
   CreateProductCategoryDTO,
   CreateProductCollectionDTO,
@@ -28,18 +29,12 @@ import {
   UpdateProductTypeDTO,
   UpdateProductVariantDTO,
 } from "./common"
-import { RestoreReturn, SoftDeleteReturn } from "../dal"
 
-import { Context } from "../shared-context"
 import { FindConfig } from "../common"
-import { ModuleJoinerConfig } from "../modules-sdk"
+import { IModuleService } from "../modules-sdk"
+import { Context } from "../shared-context"
 
-export interface IProductModuleService {
-  /**
-   * @ignore
-   */
-  __joinerConfig(): ModuleJoinerConfig
-
+export interface IProductModuleService extends IModuleService {
   /**
    * This method is used to retrieve a product by its ID
    *

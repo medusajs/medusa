@@ -42,12 +42,6 @@ import {
   ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
-import { ProductEventData, ProductEvents } from "../types/services/product"
-import {
-  ProductCategoryEventData,
-  ProductCategoryEvents,
-} from "../types/services/product-category"
 import {
   ProductCategoryServiceTypes,
   ProductCollectionServiceTypes,
@@ -55,6 +49,12 @@ import {
   ProductServiceTypes,
   ProductVariantServiceTypes,
 } from "@types"
+import { ProductEventData, ProductEvents } from "../types/services/product"
+import {
+  ProductCategoryEventData,
+  ProductCategoryEvents,
+} from "../types/services/product-category"
+import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -371,52 +371,56 @@ export default class ProductModuleService<
   async createTags(
     data: ProductTypes.CreateProductTagDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<ProductTypes.ProductTagDTO[]> {
     const productTags = await this.productTagService_.create(
       data,
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productTags))
+    return await this.baseRepository_.serialize(productTags, { populate: true })
   }
 
   @InjectTransactionManager("baseRepository_")
   async updateTags(
     data: ProductTypes.UpdateProductTagDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<ProductTypes.ProductTagDTO[]> {
     const productTags = await this.productTagService_.update(
       data,
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productTags))
+    return await this.baseRepository_.serialize(productTags, { populate: true })
   }
 
   @InjectTransactionManager("baseRepository_")
   async createTypes(
     data: ProductTypes.CreateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<ProductTypes.ProductTypeDTO[]> {
     const productTypes = await this.productTypeService_.create(
       data,
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productTypes))
+    return await this.baseRepository_.serialize(productTypes, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager("baseRepository_")
   async updateTypes(
     data: ProductTypes.UpdateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<ProductTypes.ProductTypeDTO[]> {
     const productTypes = await this.productTypeService_.update(
       data,
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productTypes))
+    return await this.baseRepository_.serialize(productTypes, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -476,7 +480,7 @@ export default class ProductModuleService<
   async updateCollections(
     data: ProductTypes.UpdateProductCollectionDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<ProductTypes.ProductCollectionDTO[]> {
     const productCollections = await this.productCollectionService_.update(
       data,
       sharedContext
@@ -492,14 +496,16 @@ export default class ProductModuleService<
       }))
     )
 
-    return JSON.parse(JSON.stringify(productCollections))
+    return await this.baseRepository_.serialize(productCollections, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager("baseRepository_")
   async createCategory(
     data: ProductCategoryServiceTypes.CreateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<ProductTypes.ProductCategoryDTO> {
     const productCategory = await this.productCategoryService_.create(
       data,
       sharedContext
@@ -510,7 +516,9 @@ export default class ProductModuleService<
       { id: productCategory.id }
     )
 
-    return JSON.parse(JSON.stringify(productCategory))
+    return await this.baseRepository_.serialize(productCategory, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -518,7 +526,7 @@ export default class ProductModuleService<
     categoryId: string,
     data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<ProductTypes.ProductCategoryDTO> {
     const productCategory = await this.productCategoryService_.update(
       categoryId,
       data,
@@ -530,7 +538,9 @@ export default class ProductModuleService<
       { id: productCategory.id }
     )
 
-    return JSON.parse(JSON.stringify(productCategory))
+    return await this.baseRepository_.serialize(productCategory, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")

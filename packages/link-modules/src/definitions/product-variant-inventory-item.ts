@@ -17,10 +17,13 @@ export const ProductVariantInventoryItem: ModuleJoinerConfig = {
   },
   alias: [
     {
-      name: "product_variant_inventory_item",
-    },
-    {
-      name: "product_variant_inventory_items",
+      name: [
+        "product_variant_inventory_item",
+        "product_variant_inventory_items",
+      ],
+      args: {
+        entity: "LinkProductVariantInventoryItem",
+      },
     },
   ],
   primaryKeys: ["id", "variant_id", "inventory_item_id"],

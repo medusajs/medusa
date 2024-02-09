@@ -1,19 +1,27 @@
 import {
+  EmitData,
   EventBusTypes,
   IEventBusModuleService,
+  Message,
   Subscriber,
 } from "@medusajs/types"
 
 export class EventBusService implements IEventBusModuleService {
-  async emit<T>(
+  emit<T>(
     eventName: string,
     data: T,
-    options: Record<string, unknown>
+    options?: Record<string, unknown>
   ): Promise<void>
+  emit<T>(data: EmitData<T>[]): Promise<void>
+  emit<T>(data: Message<T>[]): Promise<void>
 
-  async emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<void>
-
-  async emit<T, TInput extends string | EventBusTypes.EmitData<T>[] = string>(
+  async emit<
+    T,
+    TInput extends
+      | string
+      | EventBusTypes.EmitData<T>[]
+      | EventBusTypes.Message<T>[] = string
+  >(
     eventOrData: TInput,
     data?: T,
     options: Record<string, unknown> = {}

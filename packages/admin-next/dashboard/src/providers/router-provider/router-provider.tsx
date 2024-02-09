@@ -18,7 +18,6 @@ import {
 import { ProtectedRoute } from "../../components/authentication/require-auth"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout/main-layout"
-import { PublicLayout } from "../../components/layout/public-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 
 import routes from "medusa-admin:routes/pages"
@@ -46,13 +45,27 @@ const settingsExtensions: RouteObject[] = settings.pages.map((ext) => {
 
 const router = createBrowserRouter([
   {
-    element: <PublicLayout />,
+    path: "/login",
+    lazy: () => import("../../routes/login"),
+  },
+  {
+    path: "/reset-password",
+    element: <Outlet />,
     children: [
       {
-        path: "/login",
-        lazy: () => import("../../routes/login"),
+        index: true,
+        lazy: () =>
+          import("../../routes/reset-password/reset-password-request"),
+      },
+      {
+        path: ":token",
+        lazy: () => import("../../routes/reset-password/reset-password-token"),
       },
     ],
+  },
+  {
+    path: "/invite",
+    lazy: () => import("../../routes/invite"),
   },
   {
     element: <ProtectedRoute />,
@@ -74,7 +87,7 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                lazy: () => import("../../routes/orders/list"),
+                lazy: () => import("../../routes/orders/order-list"),
               },
               {
                 path: ":id",

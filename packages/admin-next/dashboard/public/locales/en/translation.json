@@ -23,6 +23,7 @@
     "pages": "pages",
     "next": "Next",
     "prev": "Prev",
+    "is": "is",
     "extensions": "Extensions",
     "settings": "Settings",
     "general": "General",
@@ -35,6 +36,8 @@
     "remove": "Remove",
     "admin": "Admin",
     "store": "Store",
+    "items_one": "{{count}} item",
+    "items_other": "{{count}} items",
     "countSelected": "{{count}} selected",
     "plusCountMore": "+ {{count}} more",
     "areYouSure": "Are you sure?",
@@ -107,7 +110,29 @@
     "deleteCustomerGroupWarning": "You are about to delete the customer group {{name}}. This action cannot be undone."
   },
   "orders": {
-    "domain": "Orders"
+    "domain": "Orders",
+    "paymentStatusLabel": "Payment Status",
+    "paymentStatus": {
+      "notPaid": "Not Paid",
+      "awaiting": "Awaiting",
+      "captured": "Captured",
+      "partiallyRefunded": "Partially Refunded",
+      "refunded": "Refunded",
+      "canceled": "Canceled",
+      "requresAction": "Requires Action"
+    },
+    "fulfillmentStatusLabel": "Fulfillment Status",
+    "fulfillmentStatus": {
+      "notFulfilled": "Not Fulfilled",
+      "partiallyFulfilled": "Partially Fulfilled",
+      "fulfilled": "Fulfilled",
+      "partiallyShipped": "Partially Shipped",
+      "shipped": "Shipped",
+      "partiallyReturned": "Partially Returned",
+      "returned": "Returned",
+      "canceled": "Canceled",
+      "requresAction": "Requires Action"
+    }
   },
   "draftOrders": {
     "domain": "Draft Orders"
@@ -214,6 +239,43 @@
     "createdBy": "Created by",
     "revokedBy": "Revoked by"
   },
+  "login": {
+    "forgotPassword": "Forgot password? - <0>Reset</0>",
+    "title": "Log in",
+    "hint": "to continue to Medusa"
+  },
+  "invite": {
+    "title": "Create your account",
+    "hint": "to continue to Medusa",
+    "createAccount": "Create account",
+    "alreadyHaveAccount": "Already have an account? - <0>Log in</0>",
+    "emailTooltip": "Your email cannot be changed. If you would like to use another email, a new invite must be sent.",
+    "invalidInvite": "The invite is invalid or has expired.",
+    "successTitle": "Your account has been created",
+    "successHint": "Get started with Medusa Admin right away.",
+    "successAction": "Start using Medusa",
+    "invalidTokenTitle": "Your invite token is invalid",
+    "invalidTokenHint": "Try requesting a new invite link."
+  },
+  "resetPassword": {
+    "title": "Reset password",
+    "hint": "Enter your email below, and we will send you instructions on how to reset your password.",
+    "email": "Email",
+    "sendResetInstructions": "Send reset instructions",
+    "backToLogin": "You can always go back - <0>Log in</0>",
+    "newPasswordHint": "Choose a new password below.",
+    "invalidTokenTitle": "Your reset token is invalid",
+    "invalidTokenHint": "Try requesting a new reset link.",
+    "expiredTokenTitle": "Your reset token has expired",
+    "goToResetPassword": "Go to Reset Password",
+    "resetPassword": "Reset password",
+    "tokenExpiresIn": "Token expires in <0>{{time}}</0> minutes",
+    "successfulRequest": "We have sent you an email with instructions on how to reset your password. If you don't receive an email, please check your spam folder or try again."
+  },
+  "errors": {
+    "serverError": "Server error - Try again later.",
+    "invalidCredentials": "Wrong email or password"
+  },
   "fields": {
     "name": "Name",
     "lastName": "Last Name",
@@ -222,7 +284,10 @@
     "description": "Description",
     "email": "Email",
     "password": "Password",
+    "repeatPassword": "Repeat Password",
     "confirmPassword": "Confirm Password",
+    "newPassword": "New Password",
+    "repeatNewPassword": "Repeat New Password",
     "categories": "Categories",
     "category": "Category",
     "collection": "Collection",
@@ -263,6 +328,14 @@
     "total": "Total",
     "created": "Created",
     "key": "Key",
+    "customer": "Customer",
+    "date": "Date",
+    "order": "Order",
+    "fulfillment": "Fulfillment",
+    "payment": "Payment",
+    "items": "Items",
+    "salesChannel": "Sales Channel",
+    "region": "Region",
     "role": "Role",
     "sent": "Sent"
   }

@@ -1,5 +1,33 @@
 # Change Log
 
+## 1.20.2
+
+### Patch Changes
+
+- [#5923](https://github.com/medusajs/medusa/pull/5923) [`3db2f95e65`](https://github.com/medusajs/medusa/commit/3db2f95e65909f4fff432990b48be74509052e83) Thanks [@fPolic](https://github.com/fPolic)! - feat: Sales Channel module
+
+- [#6258](https://github.com/medusajs/medusa/pull/6258) [`90cff0777`](https://github.com/medusajs/medusa/commit/90cff0777fd351771f3713bf84f4c327c64d276c) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Adds support for ordering GET /admin/orders
+
+- [#6263](https://github.com/medusajs/medusa/pull/6263) [`45134e4d1`](https://github.com/medusajs/medusa/commit/45134e4d11cfcdc08dbd10aae687bfbe9e848ab9) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Workflows passing MedusaContext as argument
+
+- [#6333](https://github.com/medusajs/medusa/pull/6333) [`82c728bec`](https://github.com/medusajs/medusa/commit/82c728bec7232a245a67dca0b01b28572ebea75d) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Allow configuring of staged job polling batch size
+
+- [#6218](https://github.com/medusajs/medusa/pull/6218) [`884428a1b`](https://github.com/medusajs/medusa/commit/884428a1b573e499d7659aefed639bf797147428) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Feat: Event Aggregator
+
+- [#6197](https://github.com/medusajs/medusa/pull/6197) [`d1c18a309`](https://github.com/medusajs/medusa/commit/d1c18a3090d71c68a98343fdbb53516f416504c5) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(stock-location, medusa, types): add `q` and `order` query parameters to stock locations list endpoint
+
+- [#6259](https://github.com/medusajs/medusa/pull/6259) [`3ded2314a`](https://github.com/medusajs/medusa/commit/3ded2314a5b56f810c8a7d6727d7cdc9ffc900d1) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa): fix constructor container type for abstract services
+
+- [#6240](https://github.com/medusajs/medusa/pull/6240) [`360c71e39a`](https://github.com/medusajs/medusa/commit/360c71e39a31b96e82828563f46f8269b80595cc) Thanks [@srindom](https://github.com/srindom)! - fix(medusa): improve error message on incorrect service export
+
+- Updated dependencies [[`12054f5c0`](https://github.com/medusajs/medusa/commit/12054f5c01915899223ddc6da734151b31fbb23b), [`3db2f95e65`](https://github.com/medusajs/medusa/commit/3db2f95e65909f4fff432990b48be74509052e83), [`96ba49329`](https://github.com/medusajs/medusa/commit/96ba49329b6b05922c90f0c55f16455cb40aa5ca), [`45134e4d1`](https://github.com/medusajs/medusa/commit/45134e4d11cfcdc08dbd10aae687bfbe9e848ab9), [`884428a1b`](https://github.com/medusajs/medusa/commit/884428a1b573e499d7659aefed639bf797147428), [`882aa549b`](https://github.com/medusajs/medusa/commit/882aa549bdcc6f378934eab2a7c485df354f46aa)]:
+  - @medusajs/utils@1.11.5
+  - @medusajs/modules-sdk@1.12.8
+  - @medusajs/core-flows@0.0.6
+  - @medusajs/link-modules@0.2.8
+  - @medusajs/orchestration@0.5.4
+  - @medusajs/workflows-sdk@0.1.3
+
 ## 1.20.1
 
 ### Patch Changes

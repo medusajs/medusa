@@ -30,7 +30,7 @@ export default class Capture {
     index: "IDX_capture_payment_id",
     fieldName: "payment_id",
   })
-  payment: Payment
+  payment!: Payment
 
   @Property({
     onCreate: () => new Date(),
