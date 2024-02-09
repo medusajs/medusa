@@ -4,7 +4,6 @@ import {
   CreateCaptureDTO,
   CreatePaymentCollectionDTO,
   CreatePaymentDTO,
-  CreatePaymentProviderDTO,
   CreatePaymentSessionDTO,
   CreateRefundDTO,
   DAL,
@@ -232,7 +231,7 @@ export default class PaymentModuleService<
   ): Promise<PaymentSessionDTO> {
     const session = await this.paymentSessionService_.retrieve(
       data.id,
-      {},
+      { select: ["data", "provider_id"] },
       sharedContext
     )
 
@@ -264,7 +263,7 @@ export default class PaymentModuleService<
   ): Promise<void> {
     const session = await this.paymentSessionService_.retrieve(
       id,
-      {},
+      { select: ["data", "provider_id"] },
       sharedContext
     )
 

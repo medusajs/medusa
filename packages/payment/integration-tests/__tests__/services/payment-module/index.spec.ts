@@ -420,6 +420,51 @@ describe("Payment Module Service", () => {
       })
     })
 
+    describe("update", () => {
+      it("should update a payment session successfully", async () => {
+        let session = await service.createPaymentSession("pay-col-id-1", {
+          provider_id: "system",
+          providerContext: {
+            amount: 200,
+            currency_code: "usd",
+            paymentSessionData: {},
+            context: {},
+            customer: {},
+            billing_address: {},
+            email: "test@test.test.com",
+            resource_id: "cart_test",
+          },
+        })
+
+        session = await service.updatePaymentSession({
+          id: session.id,
+          providerContext: {
+            amount: 200,
+            currency_code: "usd",
+            resource_id: "res_id",
+            context: {},
+            customer: {},
+            billing_address: {},
+            email: "new@test.tsst",
+            paymentSessionData: { asd: 123 },
+          },
+        })
+
+        expect(session).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            status: "pending",
+            authorized_at: null,
+            currency_code: "usd",
+            amount: 200,
+            provider_id: "system",
+            email: "new@test.tsst",
+            data: { asd: 123 },
+          })
+        )
+      })
+    })
+
     describe("authorize", () => {
       it("should authorize a payment session", async () => {
         const collection = await service.createPaymentCollections({
