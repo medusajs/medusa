@@ -11,11 +11,11 @@ import {
 import {
   InjectManager,
   InjectTransactionManager,
-  isObject,
-  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  isObject,
+  isString,
 } from "@medusajs/utils"
 import {
   Address,
