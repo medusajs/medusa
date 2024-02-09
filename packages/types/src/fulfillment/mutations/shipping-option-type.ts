@@ -4,3 +4,8 @@ export interface CreateShippingOptionTypeDTO {
   code: string
   shipping_option_id: string
 }
+
+export interface UpdateShippingOptionTypeDTO
+  extends Partial<CreateShippingOptionTypeDTO> {
+  id: string
+}

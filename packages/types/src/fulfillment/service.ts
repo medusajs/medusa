@@ -1,5 +1,12 @@
 import { IModuleService } from "../modules-sdk"
-import { FulfillmentSetDTO, ServiceZoneDTO, ShippingOptionDTO } from "./common"
+import {
+  FilterableFulfillmentSetProps,
+  FilterableServiceZoneProps,
+  FilterableShippingOptionProps,
+  FulfillmentSetDTO,
+  ServiceZoneDTO,
+  ShippingOptionDTO,
+} from "./common"
 import { FindConfig } from "../common"
 import { Context } from "../shared-context"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
@@ -157,8 +164,6 @@ export interface IFulfillmentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<ShippingOptionDTO>
 
-  // TODO Create appropriate filter type
-
   /**
    * List fulfillment sets
    * @param filters
@@ -166,7 +171,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param sharedContext
    */
   list(
-    filters?: any,
+    filters?: FilterableFulfillmentSetProps,
     config?: FindConfig<FulfillmentSetDTO>,
     sharedContext?: Context
   ): Promise<FulfillmentSetDTO[]>
@@ -178,7 +183,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param sharedContext
    */
   listServiceZones(
-    filters?: any,
+    filters?: FilterableServiceZoneProps,
     config?: FindConfig<ServiceZoneDTO>,
     sharedContext?: Context
   ): Promise<ServiceZoneDTO[]>
@@ -190,7 +195,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param sharedContext
    */
   listShippingOptions(
-    filters?: any,
+    filters?: FilterableShippingOptionProps,
     config?: FindConfig<ShippingOptionDTO>,
     sharedContext?: Context
   ): Promise<ShippingOptionDTO[]>
@@ -202,7 +207,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param sharedContext
    */
   listAndCount(
-    filters?: any,
+    filters?: FilterableFulfillmentSetProps,
     config?: FindConfig<FulfillmentSetDTO>,
     sharedContext?: Context
   ): Promise<[FulfillmentSetDTO[], number]>
@@ -214,7 +219,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param sharedContext
    */
   listAndCountServiceZones(
-    filters?: any,
+    filters?: FilterableServiceZoneProps,
     config?: FindConfig<ServiceZoneDTO>,
     sharedContext?: Context
   ): Promise<[ServiceZoneDTO[], number]>
@@ -226,7 +231,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param sharedContext
    */
   listAndCountShippingOptions(
-    filters?: any,
+    filters?: FilterableShippingOptionProps,
     config?: FindConfig<ShippingOptionDTO>,
     sharedContext?: Context
   ): Promise<[ShippingOptionDTO[], number]>

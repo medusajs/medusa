@@ -1,4 +1,5 @@
-import { ServiceZoneDTO } from "./service-zone"
+import { FilterableServiceZoneProps, ServiceZoneDTO } from "./service-zone"
+import { BaseFilterable } from "../../dal"
 
 export interface FulfillmentSetDTO {
   id: string
@@ -9,4 +10,12 @@ export interface FulfillmentSetDTO {
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
+}
+
+export interface FilterableFulfillmentSetProps
+  extends BaseFilterable<FilterableFulfillmentSetProps> {
+  id?: string | string[]
+  name?: string | string[]
+  type?: string | string[]
+  service_zones?: FilterableServiceZoneProps
 }

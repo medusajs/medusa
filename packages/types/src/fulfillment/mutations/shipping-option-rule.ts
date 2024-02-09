@@ -4,3 +4,8 @@ export interface CreateShippingOptionRuleDTO {
   value: string | string[]
   shipping_option_id: string
 }
+
+export interface UpdateShippingOptionRuleDTO
+  extends Partial<CreateShippingOptionRuleDTO> {
+  id: string
+}

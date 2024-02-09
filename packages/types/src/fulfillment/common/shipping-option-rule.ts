@@ -1,4 +1,5 @@
 import { ShippingOptionDTO } from "./shipping-option"
+import { BaseFilterable } from "../../dal"
 
 export interface ShippingOptionRuleDTO {
   id: string
@@ -10,4 +11,12 @@ export interface ShippingOptionRuleDTO {
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
+}
+
+export interface FilterableShippingOptionRuleProps
+  extends BaseFilterable<FilterableShippingOptionRuleProps> {
+  id?: string | string[]
+  attribute?: string | string[]
+  operator?: string | string[]
+  value?: string | string[]
 }

@@ -1,6 +1,7 @@
 import { FulfillmentSetDTO } from "./fulfillment-set"
-import { GeoZoneDTO } from "./geo-zone"
+import { FilterableGeoZoneProps, GeoZoneDTO } from "./geo-zone"
 import { ShippingOptionDTO } from "./shipping-option"
+import { BaseFilterable } from "../../dal"
 
 export interface ServiceZoneDTO {
   id: string
@@ -12,4 +13,12 @@ export interface ServiceZoneDTO {
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
+}
+
+export interface FilterableServiceZoneProps
+  extends BaseFilterable<FilterableServiceZoneProps> {
+  id?: string | string[]
+  name?: string | string[]
+  geo_zones?: FilterableGeoZoneProps
+  shipping_options?: any // TODO
 }

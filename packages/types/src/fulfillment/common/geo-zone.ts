@@ -1,3 +1,5 @@
+import { BaseFilterable } from "../../dal"
+
 export type GeoZoneType = "country" | "province" | "city" | "zip"
 
 export interface GeoZoneDTO {
@@ -11,4 +13,14 @@ export interface GeoZoneDTO {
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
+}
+
+export interface FilterableGeoZoneProps
+  extends BaseFilterable<FilterableGeoZoneProps> {
+  id?: string | string[]
+  type?: GeoZoneType | GeoZoneType[]
+  country_code?: string | string[]
+  province_code?: string | string[]
+  city?: string | string[]
+  // postal_expression?: Record<string, unknown> | Record<string, unknown>[] // TODO: Add support for postal_expression filtering
 }
