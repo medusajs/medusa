@@ -21,11 +21,11 @@ import { FindConfig } from "../common"
 export interface IPaymentModuleService extends IModuleService {
   /* ********** PAYMENT COLLECTION ********** */
 
-  createPaymentCollection(
+  createPaymentCollections(
     data: CreatePaymentCollectionDTO[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
-  createPaymentCollection(
+  createPaymentCollections(
     data: CreatePaymentCollectionDTO,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
@@ -48,11 +48,11 @@ export interface IPaymentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<[PaymentCollectionDTO[], number]>
 
-  updatePaymentCollection(
+  updatePaymentCollections(
     data: UpdatePaymentCollectionDTO[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
-  updatePaymentCollection(
+  updatePaymentCollections(
     data: UpdatePaymentCollectionDTO,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
@@ -66,11 +66,11 @@ export interface IPaymentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
 
-  completePaymentCollection(
+  completePaymentCollections(
     paymentCollectionId: string,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
-  completePaymentCollection(
+  completePaymentCollections(
     paymentCollectionId: string[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>

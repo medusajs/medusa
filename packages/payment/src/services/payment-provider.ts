@@ -26,6 +26,7 @@ import {
 
 type InjectedDependencies = {
   paymentProviderRepository: DAL.RepositoryService
+  [key: `payment_providers_${string}`]: IPaymentProcessor
 }
 
 export default class PaymentProviderService implements IPaymentProviderService {
@@ -34,6 +35,7 @@ export default class PaymentProviderService implements IPaymentProviderService {
 
   constructor(
     container: InjectedDependencies,
+
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.container_ = container

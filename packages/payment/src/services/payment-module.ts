@@ -112,24 +112,18 @@ export default class PaymentModuleService<
     onApplicationStart: async () => await this.createProvidersOnLoad(),
   }
 
-  /**
-   *
-   * ********** PAYMENT COLLECTION **********
-   *
-   */
-
-  createPaymentCollection(
+  createPaymentCollections(
     data: CreatePaymentCollectionDTO,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
 
-  createPaymentCollection(
+  createPaymentCollections(
     data: CreatePaymentCollectionDTO[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
 
   @InjectTransactionManager("baseRepository_")
-  async createPaymentCollection(
+  async createPaymentCollections(
     data: CreatePaymentCollectionDTO | CreatePaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentCollectionDTO | PaymentCollectionDTO[]> {
@@ -148,17 +142,17 @@ export default class PaymentModuleService<
     )
   }
 
-  updatePaymentCollection(
+  updatePaymentCollections(
     data: UpdatePaymentCollectionDTO[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
-  updatePaymentCollection(
+  updatePaymentCollections(
     data: UpdatePaymentCollectionDTO,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
 
   @InjectTransactionManager("baseRepository_")
-  async updatePaymentCollection(
+  async updatePaymentCollections(
     data: UpdatePaymentCollectionDTO | UpdatePaymentCollectionDTO[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO | PaymentCollectionDTO[]> {
@@ -176,17 +170,17 @@ export default class PaymentModuleService<
     )
   }
 
-  completePaymentCollection(
+  completePaymentCollections(
     paymentCollectionId: string,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
-  completePaymentCollection(
+  completePaymentCollections(
     paymentCollectionId: string[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
 
   @InjectTransactionManager("baseRepository_")
-  async completePaymentCollection(
+  async completePaymentCollections(
     paymentCollectionId: string | string[],
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentCollectionDTO | PaymentCollectionDTO[]> {
@@ -210,12 +204,6 @@ export default class PaymentModuleService<
     )
   }
 
-  /**
-   *
-   * ********** PAYMENT SESSION **********
-   *
-   */
-
   @InjectTransactionManager("baseRepository_")
   async createPaymentSession(
     paymentCollectionId: string,
@@ -238,7 +226,7 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize(created, { populate: true })
+    return await this.baseRepository_.serialize(created, { populate: true })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -354,14 +342,8 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    return this.retrievePayment(payment.id, {}, sharedContext)
+    return await this.retrievePayment(payment.id, {}, sharedContext)
   }
-
-  /**
-   *
-   * ********** PAYMENT **********
-   *
-   */
 
   @InjectTransactionManager("baseRepository_")
   async createPayment(
@@ -550,7 +532,7 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    return this.retrievePayment(payment.id, {}, sharedContext)
+    return await this.retrievePayment(payment.id, {}, sharedContext)
   }
 
   private async createProvidersOnLoad() {
