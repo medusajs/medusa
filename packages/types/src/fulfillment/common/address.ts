@@ -1,4 +1,4 @@
-export interface AddressDTO {
+export interface FulfillmentAddressDTO {
   id: string
   fulfillment_id: string | null
   company: string | null
