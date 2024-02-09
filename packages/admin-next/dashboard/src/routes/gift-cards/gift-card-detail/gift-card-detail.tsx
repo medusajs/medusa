@@ -1,12 +1,19 @@
 import { useAdminGiftCard } from "medusa-react"
-import { Outlet, useParams } from "react-router-dom"
+import { Outlet, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { GiftCardGeneralSection } from "./components/gift-card-general-section"
+import { giftCardLoader } from "./loader"
 
 export const GiftCardDetail = () => {
   const { id } = useParams()
 
-  const { gift_card, isLoading, isError, error } = useAdminGiftCard(id!)
+  const initialData = useLoaderData() as Awaited<
+    ReturnType<typeof giftCardLoader>
+  >
+
+  const { gift_card, isLoading, isError, error } = useAdminGiftCard(id!, {
+    initialData,
+  })
 
   if (isLoading || !gift_card) {
     return null

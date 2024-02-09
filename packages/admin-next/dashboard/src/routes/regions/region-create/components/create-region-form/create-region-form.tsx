@@ -43,7 +43,7 @@ export const CreateRegionForm = ({ subscribe }: CreateRegionFormProps) => {
 
   useEffect(() => {
     subscribe(isDirty)
-  }, [isDirty])
+  }, [isDirty, subscribe])
 
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -89,7 +89,7 @@ export const CreateRegionForm = ({ subscribe }: CreateRegionFormProps) => {
           </div>
         </FocusModal.Header>
         <FocusModal.Body className="flex h-full w-full flex-col items-center overflow-y-auto py-16">
-          <div className="w-full max-w-[720px] flex flex-col gap-y-8">
+          <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
               <Heading>{t("regions.createRegion")}</Heading>
               <Text size="small" className="text-ui-fg-subtle">

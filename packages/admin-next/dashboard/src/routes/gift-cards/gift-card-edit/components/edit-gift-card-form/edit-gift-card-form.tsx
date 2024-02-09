@@ -141,7 +141,7 @@ export const EditGiftCardForm = ({
           <Form.Field
             control={form.control}
             name="balance"
-            render={({ field }) => {
+            render={({ field: { onChange, ...field } }) => {
               return (
                 <Form.Item>
                   <Form.Label>{t("fields.balance")}</Form.Label>
@@ -156,6 +156,7 @@ export const EditGiftCardForm = ({
                           .symbol_native
                       }`}
                       min={0}
+                      onValueChange={onChange}
                       {...field}
                     />
                   </Form.Control>
@@ -215,49 +216,48 @@ export const EditGiftCardForm = ({
               )
             }}
           />
-          <div>
-            <Collapsible.Root open={showDateFields}>
-              <div className="flex flex-col gap-y-1">
-                <div className="flex items-center justify-between">
-                  <Text size="small" leading="compact" weight="plus">
-                    {t("fields.expiryDate")}
-                  </Text>
-                  <Switch
-                    checked={showDateFields}
-                    onCheckedChange={handleOpenChange}
-                  />
-                </div>
-                <Text size="small" className="text-ui-fg-subtle text-pretty">
-                  {t("giftCards.expiryDateHint")}
-                </Text>
-              </div>
-              <Collapsible.Content>
-                <div className="pt-4">
-                  <Form.Field
-                    control={form.control}
-                    name="ends_at"
-                    render={({
-                      field: { value, onChange, ref: _ref, ...field },
-                    }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Control>
-                            <DatePicker
-                              value={value ?? undefined}
-                              onChange={(v) => {
-                                onChange(v ?? null)
-                              }}
-                              {...field}
-                            />
-                          </Form.Control>
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                </div>
-              </Collapsible.Content>
-            </Collapsible.Root>
-          </div>
+          <Form.Field
+            control={form.control}
+            name="ends_at"
+            render={({ field: { value, onChange, ref: _ref, ...field } }) => {
+              return (
+                <Form.Item>
+                  <Collapsible.Root open={showDateFields}>
+                    <div className="flex flex-col gap-y-1">
+                      <div className="flex items-center justify-between">
+                        <Form.Label optional>
+                          {t("fields.expiryDate")}
+                        </Form.Label>
+                        <Switch
+                          checked={showDateFields}
+                          onCheckedChange={handleOpenChange}
+                        />
+                      </div>
+                      <Text
+                        size="small"
+                        className="text-ui-fg-subtle text-pretty"
+                      >
+                        {t("giftCards.expiryDateHint")}
+                      </Text>
+                    </div>
+                    <Collapsible.Content>
+                      <div className="pt-4">
+                        <Form.Control>
+                          <DatePicker
+                            value={value ?? undefined}
+                            onChange={(v) => {
+                              onChange(v ?? null)
+                            }}
+                            {...field}
+                          />
+                        </Form.Control>
+                      </div>
+                    </Collapsible.Content>
+                  </Collapsible.Root>
+                </Form.Item>
+              )
+            }}
+          />
         </Drawer.Body>
         <Drawer.Footer>
           <div className="flex items-center gap-x-2">

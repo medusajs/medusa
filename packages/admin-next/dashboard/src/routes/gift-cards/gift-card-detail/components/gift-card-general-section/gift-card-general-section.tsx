@@ -1,6 +1,7 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { GiftCard } from "@medusajs/medusa"
 import {
+  Badge,
   Container,
   Copy,
   Heading,
@@ -11,7 +12,7 @@ import {
 import format from "date-fns/format"
 import { useAdminDeleteGiftCard } from "medusa-react"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { currencies } from "../../../../../lib/currencies"
@@ -134,17 +135,38 @@ export const GiftCardGeneralSection = ({
         <Text size="small" leading="compact" weight="plus">
           {t("fields.region")}
         </Text>
-        <Text size="small" leading="compact">
-          {giftCard.region.name}
-        </Text>
+        <Badge
+          size="2xsmall"
+          color="purple"
+          className="hover:bg-ui-tag-purple-bg-hover transition-fg w-fit"
+          asChild
+        >
+          <Link to={`/settings/regions/${giftCard.region.id}`}>
+            {giftCard.region.name}
+          </Link>
+        </Badge>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.order")}
         </Text>
-        <Text size="small" leading="compact">
-          {giftCard.order?.display_id ? `#${giftCard.order.display_id}` : "-"}
-        </Text>
+
+        {giftCard.order?.display_id ? (
+          <Badge
+            size="2xsmall"
+            color="blue"
+            className="hover:bg-ui-tag-blue-bg-hover transition-fg w-fit"
+            asChild
+          >
+            <Link
+              to={`/settings/regions/${giftCard.region.id}`}
+            >{`#${giftCard.order.display_id}`}</Link>
+          </Badge>
+        ) : (
+          <Text size="small" leading="compact">
+            -
+          </Text>
+        )}
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">

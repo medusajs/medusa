@@ -2,6 +2,7 @@ import type {
   AdminCollectionsRes,
   AdminCustomerGroupsRes,
   AdminCustomersRes,
+  AdminGiftCardsRes,
   AdminProductsRes,
   AdminPublishableApiKeysRes,
   AdminRegionsRes,
@@ -275,10 +276,20 @@ const router = createBrowserRouter([
               {
                 path: "",
                 lazy: () => import("../../routes/gift-cards/gift-card-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/gift-cards/gift-card-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
                 lazy: () => import("../../routes/gift-cards/gift-card-detail"),
+                handle: {
+                  crumb: (data: AdminGiftCardsRes) => data.gift_card.code,
+                },
                 children: [
                   {
                     path: "edit",
