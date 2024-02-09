@@ -1,11 +1,8 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-
 import { IPaymentModuleService } from "@medusajs/types"
 import { initModules } from "medusa-test-utils"
 import { Modules } from "@medusajs/modules-sdk"
 
-import { initialize } from "../../../../src"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MikroOrmWrapper } from "../../../utils"
 import {
   createPaymentCollections,
   createPaymentSessions,
@@ -16,21 +13,9 @@ import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 jest.setTimeout(30000)
 
 describe("Payment Module Service", () => {
-  let service: IPaymentModuleService
-
-  describe("Payment Module Flow", () => {
-    let repositoryManager: SqlEntityManager
+  describe("Payment Flow", () => {
+    let service: IPaymentModuleService
     let shutdownFunc: () => Promise<void>
-
-    beforeAll(async () => {
-      const initModulesConfig = getInitModuleConfig()
-
-      const { medusaApp, shutdown } = await initModules(initModulesConfig)
-
-      service = medusaApp.modules[Modules.PAYMENT]
-
-      shutdownFunc = shutdown
-    })
 
     afterAll(async () => {
       await shutdownFunc()
@@ -38,18 +23,13 @@ describe("Payment Module Service", () => {
 
     beforeEach(async () => {
       await MikroOrmWrapper.setupDatabase()
-      repositoryManager = await MikroOrmWrapper.forkManager()
+      const repositoryManager = await MikroOrmWrapper.forkManager()
 
-      service = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PAYMNET_DB_SCHEMA,
-        },
-      })
+      const initModulesConfig = getInitModuleConfig()
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+      service = medusaApp.modules[Modules.PAYMENT]
 
-      if (service.__hooks?.onApplicationStart) {
-        await service.__hooks.onApplicationStart()
-      }
+      shutdownFunc = shutdown
 
       await createPaymentCollections(repositoryManager)
       await createPaymentSessions(repositoryManager)
@@ -58,8 +38,8 @@ describe("Payment Module Service", () => {
 
     afterEach(async () => {
       await MikroOrmWrapper.clearDatabase()
+      await shutdownFunc()
     })
-
     it("complete payment flow successfully", async () => {
       let paymentCollection = await service.createPaymentCollection({
         currency_code: "USD",
@@ -141,18 +121,8 @@ describe("Payment Module Service", () => {
   })
 
   describe("PaymentCollection", () => {
-    let repositoryManager: SqlEntityManager
+    let service: IPaymentModuleService
     let shutdownFunc: () => Promise<void>
-
-    beforeAll(async () => {
-      const initModulesConfig = getInitModuleConfig()
-
-      const { medusaApp, shutdown } = await initModules(initModulesConfig)
-
-      service = medusaApp.modules[Modules.PAYMENT]
-
-      shutdownFunc = shutdown
-    })
 
     afterAll(async () => {
       await shutdownFunc()
@@ -160,18 +130,13 @@ describe("Payment Module Service", () => {
 
     beforeEach(async () => {
       await MikroOrmWrapper.setupDatabase()
-      repositoryManager = await MikroOrmWrapper.forkManager()
+      const repositoryManager = await MikroOrmWrapper.forkManager()
 
-      service = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PAYMNET_DB_SCHEMA,
-        },
-      })
+      const initModulesConfig = getInitModuleConfig()
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+      service = medusaApp.modules[Modules.PAYMENT]
 
-      if (service.__hooks?.onApplicationStart) {
-        await service.__hooks.onApplicationStart()
-      }
+      shutdownFunc = shutdown
 
       await createPaymentCollections(repositoryManager)
       await createPaymentSessions(repositoryManager)
@@ -180,6 +145,7 @@ describe("Payment Module Service", () => {
 
     afterEach(async () => {
       await MikroOrmWrapper.clearDatabase()
+      await shutdownFunc()
     })
 
     describe("create", () => {
@@ -386,29 +352,31 @@ describe("Payment Module Service", () => {
   })
 
   describe("PaymentSession", () => {
-    let repositoryManager: SqlEntityManager
+    let service: IPaymentModuleService
+    let shutdownFunc: () => Promise<void>
+
+    afterAll(async () => {
+      await shutdownFunc()
+    })
 
     beforeEach(async () => {
       await MikroOrmWrapper.setupDatabase()
-      repositoryManager = await MikroOrmWrapper.forkManager()
+      const repositoryManager = await MikroOrmWrapper.forkManager()
 
-      service = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PAYMNET_DB_SCHEMA,
-        },
-      })
+      const initModulesConfig = getInitModuleConfig()
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+      service = medusaApp.modules[Modules.PAYMENT]
 
-      if (service.__hooks?.onApplicationStart) {
-        await service.__hooks.onApplicationStart()
-      }
+      shutdownFunc = shutdown
 
       await createPaymentCollections(repositoryManager)
       await createPaymentSessions(repositoryManager)
+      await createPayments(repositoryManager)
     })
 
     afterEach(async () => {
       await MikroOrmWrapper.clearDatabase()
+      await shutdownFunc()
     })
 
     describe("create", () => {
@@ -532,22 +500,22 @@ describe("Payment Module Service", () => {
   })
 
   describe("Payment", () => {
-    let repositoryManager: SqlEntityManager
+    let service: IPaymentModuleService
+    let shutdownFunc: () => Promise<void>
+
+    afterAll(async () => {
+      await shutdownFunc()
+    })
 
     beforeEach(async () => {
       await MikroOrmWrapper.setupDatabase()
-      repositoryManager = await MikroOrmWrapper.forkManager()
+      const repositoryManager = await MikroOrmWrapper.forkManager()
 
-      service = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PAYMNET_DB_SCHEMA,
-        },
-      })
+      const initModulesConfig = getInitModuleConfig()
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+      service = medusaApp.modules[Modules.PAYMENT]
 
-      if (service.__hooks?.onApplicationStart) {
-        await service.__hooks.onApplicationStart()
-      }
+      shutdownFunc = shutdown
 
       await createPaymentCollections(repositoryManager)
       await createPaymentSessions(repositoryManager)
@@ -556,8 +524,8 @@ describe("Payment Module Service", () => {
 
     afterEach(async () => {
       await MikroOrmWrapper.clearDatabase()
+      await shutdownFunc()
     })
-
     describe("create", () => {
       it("should create a payment successfully", async () => {
         const paymentCollection = await service.createPaymentCollection({
