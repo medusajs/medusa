@@ -1,9 +1,6 @@
 import {
   BeforeCreate,
-  Cascade,
   Entity,
-  Index,
-  ManyToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
