@@ -156,6 +156,7 @@ function buildLocalCommands(cli, isLocalProject) {
         }),
       handler: handlerP(
         getCommandHandler(`seed`, (args, cmd) => {
+          if(!process.env.NODE_ENV)
           process.env.NODE_ENV ??= `development`
           return cmd(args)
         })
@@ -172,6 +173,7 @@ function buildLocalCommands(cli, isLocalProject) {
       },
       handler: handlerP(
         getCommandHandler(`migrate`, (args, cmd) => {
+          if(!process.env.NODE_ENV)
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
           return cmd(args)
         })
@@ -196,6 +198,7 @@ function buildLocalCommands(cli, isLocalProject) {
         }),
       handler: handlerP(
         getCommandHandler(`develop`, (args, cmd) => {
+          if(!process.env.NODE_ENV)
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
           cmd(args)
           // Return an empty promise to prevent handlerP from exiting early.
@@ -224,6 +227,7 @@ function buildLocalCommands(cli, isLocalProject) {
         }),
       handler: handlerP(
         getCommandHandler(`start`, (args, cmd) => {
+          if(!process.env.NODE_ENV)
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
           cmd(args)
           // Return an empty promise to prevent handlerP from exiting early.
@@ -260,6 +264,7 @@ function buildLocalCommands(cli, isLocalProject) {
           }),
       handler: handlerP(
         getCommandHandler(`start-cluster`, (args, cmd) => {
+          if(!process.env.NODE_ENV)
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
           cmd(args)
           // Return an empty promise to prevent handlerP from exiting early.
