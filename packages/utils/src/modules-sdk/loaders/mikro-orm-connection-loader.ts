@@ -11,6 +11,16 @@ import { ContainerRegistrationKeys, MedusaError } from "../../common"
 import { mikroOrmCreateConnection } from "../../dal"
 import { loadDatabaseConfig } from "../load-module-database-config"
 
+/**
+ * Load a MikroORM connection into the container
+ *
+ * @param moduleName
+ * @param container
+ * @param options
+ * @param moduleDeclaration
+ * @param entities
+ * @param pathToMigrations
+ */
 export async function mikroOrmConnectionLoader({
   moduleName,
   container,

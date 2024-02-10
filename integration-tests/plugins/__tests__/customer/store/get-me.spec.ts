@@ -3,7 +3,6 @@ import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { ICustomerModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
-import customer from "../../../../development/database/customer"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
@@ -41,12 +40,7 @@ describe("GET /store/customers", () => {
   })
 
   it("should retrieve auth user's customer", async () => {
-    const { jwt_secret } = appContainer.resolve("configModule").projectConfig
-    const { customer, jwt } = await createAuthenticatedCustomer(
-      customerModuleService,
-      appContainer.resolve(ModuleRegistrationName.AUTH),
-      jwt_secret
-    )
+    const { customer, jwt } = await createAuthenticatedCustomer(appContainer)
 
     const api = useApi() as any
     const response = await api.get(`/store/customers/me`, {

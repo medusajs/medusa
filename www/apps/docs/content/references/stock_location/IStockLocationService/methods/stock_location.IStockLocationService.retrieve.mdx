@@ -9,7 +9,7 @@ This method is used to retrieve a stock location by its ID
 A simple example that retrieves a inventory item by its ID:
 
 ```ts
-import { 
+import {
   initialize as initializeStockLocationModule,
 } from "@medusajs/stock-location"
 
@@ -17,7 +17,7 @@ async function retrieveStockLocation (id: string) {
   const stockLocationModule = await initializeStockLocationModule({})
 
   const stockLocation = await stockLocationModule.retrieve(id)
-  
+
   // do something with the stock location or return it
 }
 ```
@@ -25,7 +25,7 @@ async function retrieveStockLocation (id: string) {
 To specify relations that should be retrieved:
 
 ```ts
-import { 
+import {
   initialize as initializeStockLocationModule,
 } from "@medusajs/stock-location"
 
@@ -35,7 +35,7 @@ async function retrieveStockLocation (id: string) {
   const stockLocation = await stockLocationModule.retrieve(id, {
     relations: ["address"]
   })
-  
+
   // do something with the stock location or return it
 }
 ```

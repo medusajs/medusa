@@ -15,13 +15,16 @@ class EmailPasswordProvider extends AbstractAuthModuleProvider {
   protected readonly authUserSerivce_: AuthUserService
 
   constructor({ authUserService }: { authUserService: AuthUserService }) {
-    super(arguments[0])
+    super(arguments[0], {
+      provider: EmailPasswordProvider.PROVIDER,
+      displayName: EmailPasswordProvider.DISPLAY_NAME,
+    })
 
     this.authUserSerivce_ = authUserService
   }
 
-  private getHashConfig(scope: string) {
-    const scopeConfig = this.scopes_[scope].hashConfig as
+  private getHashConfig() {
+    const scopeConfig = this.scopeConfig_.hashConfig as
       | Scrypt.ScryptParams
       | undefined
 
@@ -58,16 +61,13 @@ class EmailPasswordProvider extends AbstractAuthModuleProvider {
       )
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
-        const password_hash = await Scrypt.kdf(
-          password,
-          this.getHashConfig(userData.authScope)
-        )
+        const password_hash = await Scrypt.kdf(password, this.getHashConfig())
 
         const [createdAuthUser] = await this.authUserSerivce_.create([
           {
             entity_id: email,
             provider: EmailPasswordProvider.PROVIDER,
-            scope: userData.authScope,
+            scope: this.scope_,
             provider_metadata: {
               password: password_hash.toString("base64"),
             },

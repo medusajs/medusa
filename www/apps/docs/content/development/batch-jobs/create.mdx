@@ -361,7 +361,7 @@ For example, this creates a batch job of the type `publish-products`:
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/batch-jobs' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "type": "publish-products",
@@ -433,7 +433,7 @@ You can retrieve the batch job afterward to get its status and view details abou
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     # <BATCH_JOB_ID> is the ID of the batch job
     ```
 
@@ -517,7 +517,7 @@ To process the batch job, send a request to [confirm the batch job](https://docs
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     # <BATCH_JOB_ID> is the ID of the batch job
     ```
 

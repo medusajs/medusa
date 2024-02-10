@@ -5,6 +5,7 @@ import {
   ManyToOne,
   OneToOne,
   OnInit,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -15,6 +16,8 @@ import Payment from "./payment"
 
 @Entity({ tableName: "payment_session" })
 export default class PaymentSession {
+  [OptionalProps]?: "status"
+
   @PrimaryKey({ columnType: "text" })
   id: string
 
@@ -36,7 +39,7 @@ export default class PaymentSession {
   @Enum({
     items: () => PaymentSessionStatus,
   })
-  status: PaymentSessionStatus
+  status: PaymentSessionStatus = PaymentSessionStatus.PENDING
 
   @Property({
     columnType: "timestamptz",
@@ -47,15 +50,17 @@ export default class PaymentSession {
   @ManyToOne({
     index: "IDX_payment_session_payment_collection_id",
     fieldName: "payment_collection_id",
+    onDelete: "cascade",
   })
   payment_collection!: PaymentCollection
 
   @OneToOne({
     entity: () => Payment,
-    mappedBy: (payment) => payment.session,
+    mappedBy: (payment) => payment.payment_session,
     cascade: ["soft-remove"] as any,
+    nullable: true,
   })
-  payment!: Payment
+  payment?: Payment | null
 
   @BeforeCreate()
   onCreate() {
