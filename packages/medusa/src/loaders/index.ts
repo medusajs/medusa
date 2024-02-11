@@ -8,7 +8,10 @@ import { Express, NextFunction, Request, Response } from "express"
 import databaseLoader, { dataSource } from "./database"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 
-import { ContainerRegistrationKeys, isString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  isString
+} from "@medusajs/utils"
 import { asValue } from "awilix"
 import { createMedusaContainer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
