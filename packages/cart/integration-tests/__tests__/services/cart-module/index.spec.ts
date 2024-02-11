@@ -481,14 +481,14 @@ describe("Cart Module Service", () => {
       const error = await service
         .addLineItems(createdCart.id, [
           {
-            quantity: 1,
+            unit_price: 10,
             title: "test",
           },
         ] as any)
         .catch((e) => e)
 
       expect(error.message).toContain(
-        "Value for LineItem.unit_price is required, 'undefined' found"
+        "Value for LineItem.quantity is required, 'undefined' found"
       )
     })
 
@@ -503,14 +503,14 @@ describe("Cart Module Service", () => {
         .addLineItems([
           {
             cart_id: createdCart.id,
-            quantity: 1,
+            unit_price: 10,
             title: "test",
           },
         ] as any)
         .catch((e) => e)
 
       expect(error.message).toContain(
-        "Value for LineItem.unit_price is required, 'undefined' found"
+        "Value for LineItem.quantity is required, 'undefined' found"
       )
     })
   })
