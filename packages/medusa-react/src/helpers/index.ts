@@ -387,7 +387,7 @@ export const formatAmount = ({
 }
 
 // we should probably add a more extensive list
-const noDivisionCurrencies = ["krw", "jpy", "vnd"]
+const noDivisionCurrencies = ["krw", "jpy", "vnd","afn"]
 
 const convertToDecimal = (amount: number, region: RegionInfo) => {
   const divisor = noDivisionCurrencies.includes(
