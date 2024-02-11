@@ -25,6 +25,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const updateRegions = updateRegionsWorkflow(req.scope)
+
   const { result, errors } = await updateRegions.run({
     input: {
       selector: { id: req.params.id },

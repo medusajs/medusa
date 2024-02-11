@@ -1,5 +1,11 @@
 # Change Log
 
+## 6.1.7
+
+### Patch Changes
+
+- [`20cefa033`](https://github.com/medusajs/medusa/commit/20cefa0335384e3c37f593c9698651895765234e) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa-js): add axios adapter to config
+
 ## 6.1.6
 
 ### Patch Changes

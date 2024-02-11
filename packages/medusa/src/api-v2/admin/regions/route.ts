@@ -7,12 +7,7 @@ import { defaultAdminRegionFields } from "./query-config"
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const remoteQuery = req.scope.resolve("remoteQuery")
 
-  const variables = {
-    filters: req.filterableFields,
-    order: req.listConfig.order,
-    skip: req.listConfig.skip,
-    take: req.listConfig.take,
-  }
+  const variables = { filters: req.filterableFields }
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "region",
@@ -20,17 +15,10 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     fields: defaultAdminRegionFields,
   })
 
-  const {
-    rows: regions,
-    metadata: { count },
-  } = await remoteQuery(queryObject)
+  // TODO: Add count, offset, limit
+  const regions = await remoteQuery(queryObject)
 
-  res.json({
-    count,
-    regions,
-    offset: req.listConfig.skip,
-    limit: req.listConfig.take,
-  })
+  res.json({ regions })
 }
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {

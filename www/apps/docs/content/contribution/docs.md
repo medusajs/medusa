@@ -365,7 +365,7 @@ import TabItem from '@theme/TabItem';
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/uploads' \
-      -H 'Authorization: Bearer <API_TOKEN>' \
+      -H 'x-medusa-access-token: <API_TOKEN>' \
       -H 'Content-Type: text/csv' \
       -F 'files=@"<FILE_PATH_1>"'
     ```

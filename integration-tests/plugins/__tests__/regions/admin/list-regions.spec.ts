@@ -55,11 +55,11 @@ describe("GET /admin/regions", () => {
     const response = await api.get(`/admin/regions`, adminHeaders)
 
     expect(response.status).toEqual(200)
-    expect(response.data.count).toEqual(1)
-    expect(response.data.customers).toEqual([
+    expect(response.data.regions).toEqual([
       expect.objectContaining({
         id: expect.any(String),
         name: "Test",
+        currency_code: "usd",
       }),
     ])
   })

@@ -184,7 +184,7 @@ export default class RegionModuleService<
   ): Promise<void> {
     const [countries, count] = await this.countryService_.listAndCount(
       {},
-      { select: ["id", "iso_2"], take: COUNTRIES_LIMIT },
+      { select: ["iso_2"], take: COUNTRIES_LIMIT },
       sharedContext
     )
 

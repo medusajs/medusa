@@ -16,3 +16,12 @@ export const defaultAdminRegionFields = [
   "currency.symbol_native",
   "currency.name",
 ]
+
+export const retrieveTransformQueryConfig = {
+  isList: false,
+}
+
+export const listTransformQueryConfig = {
+  defaultLimit: 20,
+  isList: true,
+}
