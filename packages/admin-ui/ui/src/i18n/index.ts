@@ -10,6 +10,10 @@ export const supportedLanguages = [
     name: "English",
   },
   {
+    locale: "tr",
+    name: "Türkçe",
+  },
+  {
     locale: "de",
     name: "Deutsch",
   },
