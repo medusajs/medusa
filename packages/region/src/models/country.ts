@@ -4,7 +4,7 @@ import {
   ManyToOne,
   OnInit,
   PrimaryKey,
-  Property,
+  Property
 } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
@@ -30,13 +30,15 @@ export default class Country {
   @Property({ columnType: "text" })
   display_name: string
 
+  @Property({ columnType: "text", nullable: true })
+  region_id?: string
+
   @ManyToOne({
     entity: () => Region,
-    fieldName: "region_id",
     index: "IDX_country_region_id",
     nullable: true,
   })
-  region: Region | null = null
+  region?: Region | null = null
 
   @BeforeCreate()
   onCreate() {

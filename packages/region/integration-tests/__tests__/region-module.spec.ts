@@ -86,6 +86,68 @@ describe("Region Module Service", () => {
     )
   })
 
+  it("should create a region with countries", async () => {
+    const createdRegion = await service.create({
+      name: "North America",
+      currency_code: "USD",
+      countries: ["us", "ca"],
+    })
+
+    const region = await service.retrieve(createdRegion.id, {
+      relations: ["countries", "currency"],
+    })
+
+    expect(region).toEqual(
+      expect.objectContaining({
+        id: region.id,
+        name: "North America",
+        currency_code: "usd",
+        currency: expect.objectContaining({
+          code: "usd",
+          name: "US Dollar",
+        }),
+        countries: [
+          expect.objectContaining({
+            display_name: "Canada",
+            iso_2: "ca",
+          }),
+          expect.objectContaining({
+            display_name: "United States",
+            iso_2: "us",
+          }),
+        ],
+      })
+    )
+  })
+
+  it("should throw when country doesn't exist", async () => {
+    await expect(
+      service.create({
+        name: "North America",
+        currency_code: "USD",
+        countries: ["neverland"],
+      })
+    ).rejects.toThrowError("Countries with codes neverland does not exist")
+  })
+
+  it("should throw when country is already assigned to a region", async () => {
+    await service.create({
+      name: "North America",
+      currency_code: "USD",
+      countries: ["us"],
+    })
+
+    await expect(
+      service.create({
+        name: "United States",
+        currency_code: "USD",
+        countries: ["us"],
+      })
+    ).rejects.toThrowError(
+      "Country with code us is already assigned to a region"
+    )
+  })
+
   it("should fail when currency does not exist", async () => {
     await expect(
       service.create({
