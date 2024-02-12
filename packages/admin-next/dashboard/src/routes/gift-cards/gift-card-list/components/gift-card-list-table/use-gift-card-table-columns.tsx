@@ -21,7 +21,11 @@ export const useGiftCardTableColumns = () => {
       columnHelper.accessor("code", {
         header: t("fields.code"),
         cell: ({ getValue }) => {
-          return <Badge size="2xsmall">{getValue()}</Badge>
+          return (
+            <Badge size="2xsmall" className="overflow-hidden truncate">
+              {getValue()}
+            </Badge>
+          )
         },
       }),
       columnHelper.accessor("order", {
