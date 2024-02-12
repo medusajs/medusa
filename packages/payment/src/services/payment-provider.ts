@@ -4,7 +4,6 @@ import {
   DAL,
   InternalModuleDeclaration,
   IPaymentProcessor,
-  IPaymentProviderService,
   PaymentProcessorAuthorizeResponse,
   PaymentProcessorError,
   PaymentProcessorSessionResponse,
@@ -30,7 +29,7 @@ type InjectedDependencies = {
   [key: `pp_${string}`]: IPaymentProcessor
 }
 
-export default class PaymentProviderService implements IPaymentProviderService {
+export default class PaymentProviderService {
   protected readonly container_: InjectedDependencies
   protected readonly paymentProviderRepository_: DAL.RepositoryService
 

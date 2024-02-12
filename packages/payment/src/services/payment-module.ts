@@ -293,10 +293,12 @@ export default class PaymentModuleService<
     )
 
     if (session.authorized_at) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Session is already authorized."
+      const payment = await this.paymentService_.retrieve(
+        { session_id: session.id },
+        {},
+        sharedContext
       )
+      return await this.baseRepository_.serialize(payment, { populate: true })
     }
 
     const { data, status } =
