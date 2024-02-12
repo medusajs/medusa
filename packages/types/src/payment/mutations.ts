@@ -78,13 +78,6 @@ export interface UpdatePaymentSessionDTO {
   providerContext: PaymentProviderContext
 }
 
-export interface SetPaymentSessionsDTO {
-  provider_id: string
-  amount: number
-  currency_code: string
-  session_id?: string
-}
-
 /**
  * Payment Provider
  */

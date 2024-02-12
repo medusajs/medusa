@@ -2,13 +2,13 @@ import { EOL } from "os"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   Context,
-  CreatePaymentInput,
   CreatePaymentProviderDTO,
   DAL,
   InternalModuleDeclaration,
   IPaymentProvider,
   PaymentProviderAuthorizeResponse,
   PaymentProviderContext,
+  PaymentProviderDataInput,
   PaymentProviderError,
   PaymentProviderSessionResponse,
   PaymentSessionStatus,
@@ -67,10 +67,10 @@ export default class PaymentProviderService {
   }
 
   async createSession(
-    provider_id: string,
+    providerId: string,
     sessionInput: PaymentProviderContext
   ): Promise<PaymentProviderSessionResponse["session_data"]> {
-    const provider = this.retrieveProvider(provider_id)
+    const provider = this.retrieveProvider(providerId)
 
     if (
       !isDefined(sessionInput.currency_code) ||
@@ -92,14 +92,10 @@ export default class PaymentProviderService {
   }
 
   async updateSession(
-    paymentSession: {
-      id: string
-      data: Record<string, unknown>
-      provider_id: string
-    },
+    providerId: string,
     sessionInput: PaymentProviderContext
   ): Promise<Record<string, unknown> | undefined> {
-    const provider = this.retrieveProvider(paymentSession.provider_id)
+    const provider = this.retrieveProvider(providerId)
 
     const paymentResponse = await provider.updatePayment(sessionInput)
 
@@ -110,30 +106,24 @@ export default class PaymentProviderService {
     return (paymentResponse as PaymentProviderSessionResponse)?.session_data
   }
 
-  async deleteSession(paymentSession: {
-    provider_id: string
-    data: Record<string, unknown>
-  }): Promise<void> {
-    const provider = this.retrieveProvider(paymentSession.provider_id)
+  async deleteSession(input: PaymentProviderDataInput): Promise<void> {
+    const provider = this.retrieveProvider(input.provider_id)
 
-    const error = await provider.deletePayment(paymentSession.data)
+    const error = await provider.deletePayment(input.data)
     if (isPaymentProviderError(error)) {
       this.throwPaymentProviderError(error)
     }
   }
 
   async createPayment(
-    data: CreatePaymentInput
+    input: PaymentProviderDataInput
   ): Promise<Record<string, unknown>> {
-    const { payment_session, provider_id } = data
-    const providerId = provider_id ?? payment_session.provider_id
-
-    const provider = this.retrieveProvider(providerId)
+    const provider = this.retrieveProvider(input.provider_id)
 
     /**
      * NOTE: JUST RETRIEVE
      */
-    const paymentData = await provider.retrievePayment(payment_session.data)
+    const paymentData = await provider.retrievePayment(input.data)
     if (isPaymentProviderError(paymentData)) {
       this.throwPaymentProviderError(paymentData)
     }
@@ -142,15 +132,12 @@ export default class PaymentProviderService {
   }
 
   async authorizePayment(
-    paymentSession: {
-      provider_id: string
-      data: Record<string, unknown>
-    },
+    input: PaymentProviderDataInput,
     context: Record<string, unknown>
   ): Promise<{ data: Record<string, unknown>; status: PaymentSessionStatus }> {
-    const provider = this.retrieveProvider(paymentSession.provider_id)
+    const provider = this.retrieveProvider(input.provider_id)
 
-    const res = await provider.authorizePayment(paymentSession.data, context)
+    const res = await provider.authorizePayment(input.data, context)
     if (isPaymentProviderError(res)) {
       this.throwPaymentProviderError(res)
     }
@@ -159,39 +146,19 @@ export default class PaymentProviderService {
     return { data, status }
   }
 
-  async updateSessionData(
-    paymentSession: {
-      id: string
-      provider_id: string
-      data: Record<string, unknown>
-    },
-    data: Record<string, unknown>
+  async getStatus(
+    input: PaymentProviderDataInput
+  ): Promise<PaymentSessionStatus> {
+    const provider = this.retrieveProvider(input.provider_id)
+    return await provider.getPaymentStatus(input.data)
+  }
+
+  async capturePayment(
+    input: PaymentProviderDataInput
   ): Promise<Record<string, unknown>> {
-    const provider = this.retrieveProvider(paymentSession.provider_id)
+    const provider = this.retrieveProvider(input.provider_id)
 
-    const res = await provider.updatePaymentData(paymentSession.id, data)
-    if (isPaymentProviderError(res)) {
-      this.throwPaymentProviderError(res)
-    }
-
-    return (res as PaymentProviderSessionResponse).session_data
-  }
-
-  async getStatus(payment: {
-    provider_id: string
-    data: Record<string, unknown>
-  }): Promise<PaymentSessionStatus> {
-    const provider = this.retrieveProvider(payment.provider_id)
-    return await provider.getPaymentStatus(payment.data)
-  }
-
-  async capturePayment(paymentObj: {
-    provider_id: string
-    data: Record<string, unknown>
-  }): Promise<Record<string, unknown>> {
-    const provider = this.retrieveProvider(paymentObj.provider_id)
-
-    const res = await provider.capturePayment(paymentObj.data)
+    const res = await provider.capturePayment(input.data)
     if (isPaymentProviderError(res)) {
       this.throwPaymentProviderError(res)
     }
@@ -199,25 +166,22 @@ export default class PaymentProviderService {
     return res as Record<string, unknown>
   }
 
-  async cancelPayment(payment: {
-    data: Record<string, unknown>
-    provider_id: string
-  }): Promise<void> {
-    const provider = this.retrieveProvider(payment.provider_id)
+  async cancelPayment(input: PaymentProviderDataInput): Promise<void> {
+    const provider = this.retrieveProvider(input.provider_id)
 
-    const error = await provider.cancelPayment(payment.data)
+    const error = await provider.cancelPayment(input.data)
     if (isPaymentProviderError(error)) {
       this.throwPaymentProviderError(error)
     }
   }
 
   async refundPayment(
-    payment: { data: Record<string, unknown>; provider_id: string },
+    input: PaymentProviderDataInput,
     amount: number
   ): Promise<Record<string, unknown>> {
-    const provider = this.retrieveProvider(payment.provider_id)
+    const provider = this.retrieveProvider(input.provider_id)
 
-    const res = await provider.refundPayment(payment.data, amount)
+    const res = await provider.refundPayment(input.data, amount)
     if (isPaymentProviderError(res)) {
       this.throwPaymentProviderError(res)
     }

@@ -49,10 +49,6 @@ export class SystemProviderService extends AbstractPaymentProvider {
     return { data: {}, status: PaymentSessionStatus.AUTHORIZED }
   }
 
-  async updatePaymentData(_): Promise<Record<string, unknown>> {
-    return {}
-  }
-
   async updatePayment(
     _
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {

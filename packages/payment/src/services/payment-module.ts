@@ -237,11 +237,7 @@ export default class PaymentModuleService<
     )
 
     const sessionData = await this.paymentProviderService_.updateSession(
-      {
-        id: session.id,
-        data: session.data,
-        provider_id: session.provider_id,
-      },
+      session.provider_id,
       data.providerContext
     )
 
@@ -360,11 +356,8 @@ export default class PaymentModuleService<
 
     // just retrieve latest data from provider
     const paymentData = await this.paymentProviderService_.createPayment({
-      payment_session: session as unknown as PaymentSessionDTO,
-      amount: data.amount,
       provider_id: data.provider_id,
-      currency_code: data.currency_code,
-      resource_id: data.order_edit_id || data.order_id || data.cart_id,
+      data: session.data,
     })
 
     const payment = await this.paymentService_.create(

@@ -129,14 +129,7 @@ export abstract class AbstractPaymentProvider implements IPaymentProvider {
 
   abstract updatePayment(
     context: PaymentProviderContext
-  ): Promise<PaymentProviderError | PaymentProviderSessionResponse | void>
-
-  abstract updatePaymentData(
-    sessionId: string,
-    data: Record<string, unknown>
-  ): Promise<
-    PaymentProviderError | PaymentProviderSessionResponse["session_data"]
-  >
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse>
 }
 
 export function isPaymentProviderError(obj: any): obj is PaymentProviderError {

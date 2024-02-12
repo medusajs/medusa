@@ -1,4 +1,4 @@
-import { PaymentSessionDTO, PaymentSessionStatus } from "./common"
+import { PaymentSessionStatus } from "./common"
 
 /**
  * @interface
@@ -48,15 +48,6 @@ export type PaymentProviderContext = {
  */
 export type PaymentProviderSessionResponse = {
   /**
-   * Used to specify data that should be updated in the Medusa backend.
-   */
-  update_requests?: {
-    /**
-     * Specifies a new value of the `metadata` field of the customer associated with the payment.
-     */
-    customer_metadata?: Record<string, unknown>
-  }
-  /**
    * The data to be stored in the `data` field of the Payment Session to be created.
    * The `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.
    */
@@ -74,12 +65,9 @@ export type PaymentProviderAuthorizeResponse = {
   data: PaymentProviderSessionResponse["session_data"]
 }
 
-export type CreatePaymentInput = {
-  amount: number
-  currency_code: string
-  provider_id?: string
-  payment_session: PaymentSessionDTO
-  resource_id?: string
+export type PaymentProviderDataInput = {
+  provider_id: string
+  data: Record<string, unknown>
 }
 
 /**
@@ -119,27 +107,23 @@ export interface IPaymentProvider {
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse>
 
   /**
-   * This method is used to update the payment session when the payment amount changes.
+   * This method is used to update the payment session.
    *
    * @param {PaymentProviderContext} context - The context of the payment.
    * @returns {Promise<PaymentProviderError | PaymentProviderSessionResponse | void>} Either the payment's data or an error object.
    */
   updatePayment(
     context: PaymentProviderContext
-  ): Promise<PaymentProviderError | PaymentProviderSessionResponse | void>
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse>
 
   /**
-   * This method is used to refund a payment. This is typically triggered manually by the store operator from the admin. The refund amount might be the total amount or part of it.
+   * This method is used to perform any actions necessary before a Payment Session is deleted. The Payment Session is deleted in one of the following cases:
    *
-   * You can utilize this method to interact with the third-party provider and perform any actions necessary to refund the payment.
-   *
-   * @param {Record<string, unknown>} paymentSessionData - The `data` field of a Payment.
-   * @param {number} refundAmount - the amount to refund.
-   * @returns Either an error object or a value that's stored in the `data` field of the Payment.
+   * @param {Record<string, unknown>} paymentSessionData - The `data` field of the Payment Session.
+   * @returns Either an error object or an empty object.
    */
-  refundPayment(
-    paymentSessionData: Record<string, unknown>,
-    refundAmount: number
+  deletePayment(
+    paymentSessionData: Record<string, unknown>
   ): Promise<
     PaymentProviderError | PaymentProviderSessionResponse["session_data"]
   >
@@ -182,13 +166,17 @@ export interface IPaymentProvider {
   >
 
   /**
-   * This method is used to perform any actions necessary before a Payment Session is deleted. The Payment Session is deleted in one of the following cases:
+   * This method is used to refund a payment. This is typically triggered manually by the store operator from the admin. The refund amount might be the total amount or part of it.
    *
-   * @param {Record<string, unknown>} paymentSessionData - The `data` field of the Payment Session.
-   * @returns Either an error object or an empty object.
+   * You can utilize this method to interact with the third-party provider and perform any actions necessary to refund the payment.
+   *
+   * @param {Record<string, unknown>} paymentSessionData - The `data` field of a Payment.
+   * @param {number} refundAmount - the amount to refund.
+   * @returns Either an error object or a value that's stored in the `data` field of the Payment.
    */
-  deletePayment(
-    paymentSessionData: Record<string, unknown>
+  refundPayment(
+    paymentSessionData: Record<string, unknown>,
+    refundAmount: number
   ): Promise<
     PaymentProviderError | PaymentProviderSessionResponse["session_data"]
   >
@@ -231,21 +219,4 @@ export interface IPaymentProvider {
   getPaymentStatus(
     paymentSessionData: Record<string, unknown>
   ): Promise<PaymentSessionStatus>
-
-  /**
-   * This method is used to update the `data` field of a payment session.
-   *
-   * This method can also be used to update the data in the third-party payment provider, if necessary.
-   *
-   * @param {string} sessionId - The ID of the payment session.
-   * @param {Record<string, unknown>} data - The data to be updated in the payment session.
-   * @returns {Promise<PaymentProviderError | PaymentProviderSessionResponse["session_data"]>} the data to store in the `data` field of the payment session.
-   * You can keep the data as-is, or make changes to it by communicating with the third-party provider.
-   */
-  updatePaymentData(
-    sessionId: string,
-    data: Record<string, unknown>
-  ): Promise<
-    PaymentProviderError | PaymentProviderSessionResponse["session_data"]
-  >
 }
