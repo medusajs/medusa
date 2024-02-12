@@ -2,6 +2,8 @@ import { moduleProviderLoader } from "@medusajs/modules-sdk"
 import { LoaderOptions, ModuleProvider, ModulesSdkTypes } from "@medusajs/types"
 import { Lifetime, asFunction, asValue } from "awilix"
 
+import * as providers from "../providers"
+
 const registrationFn = async (klass, container, pluginOptions) => {
   Object.entries(pluginOptions.config).map(([k, v]) => {
     const key = `pp_${klass.PROVIDER}_${k}`
@@ -24,12 +26,14 @@ export default async ({
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   ) & { providers: ModuleProvider[] }
 >): Promise<void> => {
-  const pluginProviders =
-    options?.providers?.filter((provider) => provider.resolve) || []
+  // Local providers
+  for (const provider of Object.values(providers)) {
+    await registrationFn(provider, container, {})
+  }
 
   await moduleProviderLoader({
     container,
-    providers: pluginProviders,
+    providers: options?.providers || [],
     registerServiceFn: registrationFn,
   })
 }

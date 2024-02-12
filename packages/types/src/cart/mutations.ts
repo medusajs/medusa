@@ -156,7 +156,7 @@ export interface CreateLineItemDTO {
   is_tax_inclusive?: boolean
 
   compare_at_unit_price?: number
-  unit_price: number
+  unit_price: number | string
 
   tax_lines?: CreateTaxLineDTO[]
   adjustments?: CreateAdjustmentDTO[]

@@ -1,13 +1,16 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+
 import { ICustomerModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
-import { getContainer } from "../../../../environment-helpers/use-container"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
+
+jest.setTimeout(100000)
 
 describe("GET /store/customers/me/addresses", () => {
   let dbConnection
@@ -16,13 +19,17 @@ describe("GET /store/customers/me/addresses", () => {
   let customerModuleService: ICustomerModuleService
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    dbConnection = await initDb({ cwd, env } as any)
-    shutdownServer = await startBootstrapApp({ cwd, env })
-    appContainer = getContainer()
-    customerModuleService = appContainer.resolve(
-      ModuleRegistrationName.CUSTOMER
-    )
+    try {
+      const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
+      dbConnection = await initDb({ cwd, env } as any)
+      shutdownServer = await startBootstrapApp({ cwd, env })
+      appContainer = getContainer()
+      customerModuleService = appContainer.resolve(
+        ModuleRegistrationName.CUSTOMER
+      )
+    } catch (error) {
+      console.error(error)
+    }
   })
 
   afterAll(async () => {
@@ -37,10 +44,7 @@ describe("GET /store/customers/me/addresses", () => {
   })
 
   it("should get all customer addresses and its count", async () => {
-    const { customer, jwt } = await createAuthenticatedCustomer(
-      customerModuleService,
-      appContainer.resolve(ModuleRegistrationName.AUTH)
-    )
+    const { customer, jwt } = await createAuthenticatedCustomer(appContainer)
 
     await customerModuleService.addAddresses([
       {

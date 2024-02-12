@@ -21,7 +21,7 @@ export const unsetForCreate = async (
     [field]: true,
   })
 
-  await customerService.updateAddress(
+  await customerService.updateAddresses(
     { customer_id: customerIds, [field]: true },
     { [field]: false }
   )

@@ -8,6 +8,7 @@ import {
   PriceSet,
   PriceSetMoneyAmount,
 } from "@models"
+import schema from "./schema"
 
 export const LinkableKeys = {
   money_amount_id: MoneyAmount.name,
@@ -32,45 +33,30 @@ export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRICING,
   primaryKeys: ["id"],
   linkableKeys: LinkableKeys,
+  schema,
   alias: [
     {
-      name: "price_set",
+      name: ["price_set", "price_sets"],
+      args: {
+        entity: "PriceSet",
+      },
     },
     {
-      name: "price_sets",
-    },
-    {
-      name: "money_amount",
+      name: ["money_amount", "money_amounts"],
       args: {
         methodSuffix: "MoneyAmounts",
+        entity: "MoneyAmount",
       },
     },
     {
-      name: "money_amounts",
-      args: {
-        methodSuffix: "MoneyAmounts",
-      },
-    },
-    {
-      name: "currency",
+      name: ["currency", "currencies"],
       args: {
         methodSuffix: "Currencies",
+        entity: "Currency",
       },
     },
     {
-      name: "currencies",
-      args: {
-        methodSuffix: "Currencies",
-      },
-    },
-    {
-      name: "price_list",
-      args: {
-        methodSuffix: "PriceLists",
-      },
-    },
-    {
-      name: "price_lists",
+      name: ["price_list", "price_lists"],
       args: {
         methodSuffix: "PriceLists",
       },

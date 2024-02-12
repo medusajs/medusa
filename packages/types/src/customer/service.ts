@@ -3,15 +3,15 @@ import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
-  CustomerDTO,
-  CustomerGroupDTO,
-  CustomerGroupCustomerDTO,
-  FilterableCustomerGroupCustomerProps,
-  FilterableCustomerProps,
-  FilterableCustomerGroupProps,
-  GroupCustomerPair,
-  FilterableCustomerAddressProps,
   CustomerAddressDTO,
+  CustomerDTO,
+  CustomerGroupCustomerDTO,
+  CustomerGroupDTO,
+  FilterableCustomerAddressProps,
+  FilterableCustomerGroupCustomerProps,
+  FilterableCustomerGroupProps,
+  FilterableCustomerProps,
+  GroupCustomerPair,
 } from "./common"
 import {
   CreateCustomerAddressDTO,
@@ -58,11 +58,13 @@ export interface ICustomerModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
 
+  // TODO should be pluralized
   createCustomerGroup(
     data: CreateCustomerGroupDTO[],
     sharedContext?: Context
   ): Promise<CustomerGroupDTO[]>
 
+  // TODO should be pluralized
   createCustomerGroup(
     data: CreateCustomerGroupDTO,
     sharedContext?: Context
@@ -74,28 +76,30 @@ export interface ICustomerModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<CustomerGroupDTO>
 
-  updateCustomerGroup(
+  updateCustomerGroups(
     groupId: string,
     data: CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerGroupDTO>
-  updateCustomerGroup(
+
+  updateCustomerGroups(
     groupIds: string[],
     data: CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerGroupDTO[]>
-  updateCustomerGroup(
+
+  updateCustomerGroups(
     selector: FilterableCustomerGroupProps,
     data: CustomerGroupUpdatableFields,
     sharedContext?: Context
   ): Promise<CustomerGroupDTO[]>
 
-  deleteCustomerGroup(groupId: string, sharedContext?: Context): Promise<void>
-  deleteCustomerGroup(
+  deleteCustomerGroups(groupId: string, sharedContext?: Context): Promise<void>
+  deleteCustomerGroups(
     groupIds: string[],
     sharedContext?: Context
   ): Promise<void>
-  deleteCustomerGroup(
+  deleteCustomerGroups(
     selector: FilterableCustomerGroupProps,
     sharedContext?: Context
   ): Promise<void>
@@ -110,10 +114,13 @@ export interface ICustomerModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<{ id: string }[]>
 
+  // TODO should be pluralized
   removeCustomerFromGroup(
     groupCustomerPair: GroupCustomerPair,
     sharedContext?: Context
   ): Promise<void>
+
+  // TODO should be pluralized
   removeCustomerFromGroup(
     groupCustomerPairs: GroupCustomerPair[],
     sharedContext?: Context
@@ -128,25 +135,26 @@ export interface ICustomerModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<CustomerAddressDTO>
 
-  updateAddress(
+  updateAddresses(
     addressId: string,
     data: UpdateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerAddressDTO>
-  updateAddress(
+  updateAddresses(
     addressIds: string[],
     data: UpdateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerAddressDTO[]>
-  updateAddress(
+
+  updateAddresses(
     selector: FilterableCustomerAddressProps,
     data: UpdateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerAddressDTO[]>
 
-  deleteAddress(addressId: string, sharedContext?: Context): Promise<void>
-  deleteAddress(addressIds: string[], sharedContext?: Context): Promise<void>
-  deleteAddress(
+  deleteAddresses(addressId: string, sharedContext?: Context): Promise<void>
+  deleteAddresses(addressIds: string[], sharedContext?: Context): Promise<void>
+  deleteAddresses(
     selector: FilterableCustomerAddressProps,
     sharedContext?: Context
   ): Promise<void>
@@ -163,7 +171,7 @@ export interface ICustomerModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<[CustomerAddressDTO[], number]>
 
-  listCustomerGroupRelations(
+  listCustomerGroupCustomers(
     filters?: FilterableCustomerGroupCustomerProps,
     config?: FindConfig<CustomerGroupCustomerDTO>,
     sharedContext?: Context
@@ -205,13 +213,13 @@ export interface ICustomerModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
 
-  softDeleteCustomerGroup<TReturnableLinkableKeys extends string = string>(
+  softDeleteCustomerGroups<TReturnableLinkableKeys extends string = string>(
     groupIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
 
-  restoreCustomerGroup<TReturnableLinkableKeys extends string = string>(
+  restoreCustomerGroups<TReturnableLinkableKeys extends string = string>(
     groupIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context

@@ -5,24 +5,26 @@ import {
   FilterablePaymentCollectionProps,
   PaymentCollectionDTO,
   PaymentDTO,
+  PaymentSessionDTO,
 } from "./common"
 import {
+  CreateCaptureDTO,
   CreatePaymentCollectionDTO,
-  CreatePaymentDTO,
   CreatePaymentSessionDTO,
-  SetPaymentSessionsDTO,
+  CreateRefundDTO,
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
+  UpdatePaymentSessionDTO
 } from "./mutations"
 
 export interface IPaymentModuleService extends IModuleService {
   /* ********** PAYMENT COLLECTION ********** */
 
-  createPaymentCollection(
+  createPaymentCollections(
     data: CreatePaymentCollectionDTO[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
-  createPaymentCollection(
+  createPaymentCollections(
     data: CreatePaymentCollectionDTO,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
@@ -45,58 +47,32 @@ export interface IPaymentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<[PaymentCollectionDTO[], number]>
 
-  updatePaymentCollection(
+  updatePaymentCollections(
     data: UpdatePaymentCollectionDTO[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
-  updatePaymentCollection(
+  updatePaymentCollections(
     data: UpdatePaymentCollectionDTO,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
 
-  deletePaymentCollection(
+  deletePaymentCollections(
     paymentCollectionId: string[],
     sharedContext?: Context
   ): Promise<void>
-  deletePaymentCollection(
+  deletePaymentCollections(
     paymentCollectionId: string,
     sharedContext?: Context
   ): Promise<void>
 
-  authorizePaymentCollection(
+  completePaymentCollections(
     paymentCollectionId: string,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
-
-  completePaymentCollection(
-    paymentCollectionId: string,
+  completePaymentCollections(
+    paymentCollectionId: string[],
     sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
-
-  /* ********** PAYMENT ********** */
-
-  createPayment(data: CreatePaymentDTO): Promise<PaymentDTO>
-  createPayment(data: CreatePaymentDTO[]): Promise<PaymentDTO[]>
-
-  capturePayment(
-    paymentId: string,
-    amount: number,
-    sharedContext?: Context
-  ): Promise<PaymentDTO>
-  refundPayment(
-    paymentId: string,
-    amount: number,
-    sharedContext?: Context
-  ): Promise<PaymentDTO>
-
-  updatePayment(
-    data: UpdatePaymentDTO,
-    sharedContext?: Context
-  ): Promise<PaymentDTO>
-  updatePayment(
-    data: UpdatePaymentDTO[],
-    sharedContext?: Context
-  ): Promise<PaymentDTO[]>
+  ): Promise<PaymentCollectionDTO[]>
 
   /* ********** PAYMENT SESSION ********** */
 
@@ -104,28 +80,39 @@ export interface IPaymentModuleService extends IModuleService {
     paymentCollectionId: string,
     data: CreatePaymentSessionDTO,
     sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
-  createPaymentSession(
-    paymentCollectionId: string,
-    data: CreatePaymentSessionDTO[],
-    sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
+  ): Promise<PaymentSessionDTO>
 
-  authorizePaymentSessions(
-    paymentCollectionId: string,
-    sessionIds: string[],
+  updatePaymentSession(
+    data: UpdatePaymentSessionDTO,
     sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
+  ): Promise<PaymentSessionDTO>
 
-  completePaymentSessions(
-    paymentCollectionId: string,
-    sessionIds: string[],
-    sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
+  deletePaymentSession(id: string, sharedContext?: Context): Promise<void>
 
-  setPaymentSessions(
-    paymentCollectionId: string,
-    data: SetPaymentSessionsDTO[],
+  authorizePaymentSession(
+    id: string,
+    context: Record<string, unknown>,
     sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
+  ): Promise<PaymentDTO>
+
+  /* ********** PAYMENT ********** */
+
+  updatePayment(
+    data: UpdatePaymentDTO,
+    sharedContext?: Context
+  ): Promise<PaymentDTO>
+
+  capturePayment(
+    data: CreateCaptureDTO,
+    sharedContext?: Context
+  ): Promise<PaymentDTO>
+
+  refundPayment(
+    data: CreateRefundDTO,
+    sharedContext?: Context
+  ): Promise<PaymentDTO>
+
+  cancelPayment(paymentId: string, sharedContext?: Context): Promise<PaymentDTO>
+
+  createProvidersOnLoad(): Promise<void>
 }

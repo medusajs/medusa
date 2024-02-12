@@ -4,9 +4,9 @@ import {
   InternalModuleDeclaration,
   LinkModuleDefinition,
   LoadedModule,
+  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-  MedusaContainer,
   ModuleBootstrapDeclaration,
   ModuleDefinition,
   ModuleExports,
@@ -59,6 +59,11 @@ export type ModuleBootstrapOptions = {
   sharedContainer?: MedusaContainer
   moduleDefinition?: ModuleDefinition
   injectedDependencies?: Record<string, any>
+  /**
+   * In this mode, all instances are partially loaded, meaning that the module will not be fully loaded and the services will not be available.
+   * Don't forget to clear the instances (MedusaModule.clearInstances()) after the migration are done.
+   */
+  migrationOnly?: boolean
 }
 
 export type LinkModuleBootstrapOptions = {
@@ -69,7 +74,8 @@ export type LinkModuleBootstrapOptions = {
 }
 
 export class MedusaModule {
-  private static instances_: Map<string, any> = new Map()
+  private static instances_: Map<string, { [key: string]: IModuleService }> =
+    new Map()
   private static modules_: Map<string, ModuleAlias[]> = new Map()
   private static loading_: Map<string, Promise<any>> = new Map()
   private static joinerConfig_: Map<string, ModuleJoinerConfig> = new Map()
@@ -86,13 +92,16 @@ export class MedusaModule {
       return MedusaModule.getModuleInstance(key)
     })
   }
-  
-  public static onApplicationStart(): void {
+
+  public static onApplicationStart(onApplicationStartCb?: () => void): void {
     for (const instances of MedusaModule.instances_.values()) {
       for (const instance of Object.values(instances) as IModuleService[]) {
         if (instance?.__hooks) {
           instance.__hooks?.onApplicationStart
             ?.bind(instance)()
+            .then(() => {
+              onApplicationStartCb?.()
+            })
             .catch(() => {
               // The module should handle this and log it
               return void 0
@@ -209,6 +218,7 @@ export class MedusaModule {
     sharedContainer,
     moduleDefinition,
     injectedDependencies,
+    migrationOnly,
   }: ModuleBootstrapOptions): Promise<{
     [key: string]: T
   }> {
@@ -217,7 +227,9 @@ export class MedusaModule {
     )
 
     if (MedusaModule.instances_.has(hashKey)) {
-      return MedusaModule.instances_.get(hashKey)
+      return MedusaModule.instances_.get(hashKey)! as {
+        [key: string]: T
+      }
     }
 
     if (MedusaModule.loading_.has(hashKey)) {
@@ -249,7 +261,12 @@ export class MedusaModule {
       }
     }
 
-    const container = createMedusaContainer({}, sharedContainer)
+    // TODO: Only do that while legacy modules sharing the manager exists then remove the ternary in favor of createMedusaContainer({}, globalContainer)
+    const container =
+      modDeclaration.scope === MODULE_SCOPE.INTERNAL &&
+      modDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
+        ? sharedContainer ?? createMedusaContainer()
+        : createMedusaContainer({}, sharedContainer)
 
     if (injectedDependencies) {
       for (const service in injectedDependencies) {
@@ -272,6 +289,7 @@ export class MedusaModule {
         container,
         moduleResolutions,
         logger,
+        migrationOnly,
       })
     } catch (err) {
       errorLoading(err)
@@ -354,7 +372,6 @@ export class MedusaModule {
       dependencies: definition.dependencies,
       defaultPackage: "",
       label: definition.label,
-      canOverride: true,
       isRequired: false,
       isQueryable: true,
       defaultModuleDeclaration: definition.defaultModuleDeclaration,

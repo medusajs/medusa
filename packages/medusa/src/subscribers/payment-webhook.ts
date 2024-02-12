@@ -1,5 +1,5 @@
-import { type SubscriberArgs, type SubscriberConfig } from "@medusajs/medusa"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { SubscriberArgs, SubscriberConfig } from "../types/subscribers"
 
 export default async function paymentWebhookHandler({
   data,

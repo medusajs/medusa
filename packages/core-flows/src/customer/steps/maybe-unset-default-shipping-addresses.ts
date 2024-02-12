@@ -1,12 +1,12 @@
 import {
-  ICustomerModuleService,
   CreateCustomerAddressDTO,
-  FilterableCustomerAddressProps,
   CustomerAddressDTO,
+  FilterableCustomerAddressProps,
+  ICustomerModuleService,
 } from "@medusajs/types"
 import { createStep } from "@medusajs/workflows-sdk"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { unsetForUpdate, unsetForCreate } from "./utils"
+import { unsetForCreate, unsetForUpdate } from "./utils"
 import { isDefined } from "@medusajs/utils"
 
 type StepInput = {
@@ -52,7 +52,7 @@ export const maybeUnsetDefaultShippingAddressesStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    await customerModuleService.updateAddress(
+    await customerModuleService.updateAddresses(
       { id: addressesToSet },
       { is_default_shipping: true }
     )

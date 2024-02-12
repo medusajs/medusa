@@ -18,7 +18,6 @@ describe("module definitions loader", () => {
     label: "TestService",
     isLegacy: true,
     isRequired: false,
-    canOverride: true,
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,

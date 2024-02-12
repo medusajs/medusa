@@ -15,12 +15,12 @@ This method is used to retrieve an inventory level for an inventory item and a l
 ## Example
 
 ```ts
-import { 
+import {
   initialize as initializeInventoryModule,
 } from "@medusajs/inventory"
 
 async function retrieveInventoryLevel (
-  inventoryItemId: string, 
+  inventoryItemId: string,
   locationId: string
 ) {
   const inventoryModule = await initializeInventoryModule({})

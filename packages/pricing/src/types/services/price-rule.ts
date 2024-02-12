@@ -1,4 +1,4 @@
-import { BaseFilterable, PriceSetDTO, PriceSetMoneyAmountDTO, RuleTypeDTO } from "@medusajs/types"
+import { BaseFilterable, PriceSetDTO, RuleTypeDTO } from "@medusajs/types"
 import { PriceSet, PriceSetMoneyAmount, RuleType } from "@models"
 
 export interface CreatePriceRuleDTO {

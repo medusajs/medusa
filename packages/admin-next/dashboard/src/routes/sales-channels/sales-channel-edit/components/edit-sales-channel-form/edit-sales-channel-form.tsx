@@ -66,9 +66,9 @@ export const EditSalesChannelForm = ({
     <Form {...form}>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col overflow-hidden flex-1"
+        className="flex flex-1 flex-col overflow-hidden"
       >
-        <Drawer.Body className="flex flex-col gap-y-8 overflow-y-auto flex-1 max-w-full">
+        <Drawer.Body className="flex max-w-full flex-1 flex-col gap-y-8 overflow-y-auto">
           <Form.Field
             control={form.control}
             name="name"
@@ -126,11 +126,11 @@ export const EditSalesChannelForm = ({
           <div className="flex items-center justify-end gap-x-2">
             <Drawer.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
             </Drawer.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
         </Drawer.Footer>
