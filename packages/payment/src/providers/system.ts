@@ -1,12 +1,12 @@
 import {
-  PaymentProcessorContext,
-  PaymentProcessorError,
-  PaymentProcessorSessionResponse,
+  PaymentProviderContext,
+  PaymentProviderError,
+  PaymentProviderSessionResponse,
   PaymentSessionStatus,
 } from "@medusajs/types"
-import { AbstractPaymentProcessor } from "@medusajs/utils"
+import { AbstractPaymentProvider } from "@medusajs/utils"
 
-export class SystemProviderService extends AbstractPaymentProcessor {
+export class SystemProviderService extends AbstractPaymentProvider {
   static identifier = "system"
 
   async createPayment(_): Promise<Record<string, unknown>> {
@@ -22,8 +22,8 @@ export class SystemProviderService extends AbstractPaymentProcessor {
   }
 
   async initiatePayment(
-    context: PaymentProcessorContext
-  ): Promise<PaymentProcessorSessionResponse> {
+    context: PaymentProviderContext
+  ): Promise<PaymentProviderSessionResponse> {
     return { session_data: {} }
   }
 
@@ -35,15 +35,15 @@ export class SystemProviderService extends AbstractPaymentProcessor {
 
   async retrievePayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<Record<string, unknown> | PaymentProcessorError> {
+  ): Promise<Record<string, unknown> | PaymentProviderError> {
     return {}
   }
 
   async authorizePayment(_): Promise<
-    | PaymentProcessorError
+    | PaymentProviderError
     | {
         status: PaymentSessionStatus
-        data: PaymentProcessorSessionResponse["session_data"]
+        data: PaymentProviderSessionResponse["session_data"]
       }
   > {
     return { data: {}, status: PaymentSessionStatus.AUTHORIZED }
@@ -55,8 +55,8 @@ export class SystemProviderService extends AbstractPaymentProcessor {
 
   async updatePayment(
     _
-  ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse> {
-    return { session_data: {} } as PaymentProcessorSessionResponse
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
+    return { session_data: {} } as PaymentProviderSessionResponse
   }
 
   async deletePayment(_): Promise<Record<string, unknown>> {

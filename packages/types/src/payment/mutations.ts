@@ -1,5 +1,5 @@
 import { PaymentCollectionStatus } from "./common"
-import { PaymentProcessorContext } from "./processors"
+import { PaymentProviderContext } from "./provider"
 
 /**
  * Payment Collection
@@ -70,12 +70,12 @@ export interface CreateRefundDTO {
 
 export interface CreatePaymentSessionDTO {
   provider_id: string
-  providerContext: PaymentProcessorContext
+  providerContext: PaymentProviderContext
 }
 
 export interface UpdatePaymentSessionDTO {
   id: string
-  providerContext: PaymentProcessorContext
+  providerContext: PaymentProviderContext
 }
 
 export interface SetPaymentSessionsDTO {

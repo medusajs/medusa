@@ -1,32 +1,30 @@
+import { EOL } from "os"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   Context,
+  CreatePaymentInput,
   CreatePaymentProviderDTO,
   DAL,
   InternalModuleDeclaration,
-  IPaymentProcessor,
-  PaymentProcessorAuthorizeResponse,
-  PaymentProcessorError,
-  PaymentProcessorSessionResponse,
+  IPaymentProvider,
+  PaymentProviderAuthorizeResponse,
+  PaymentProviderContext,
+  PaymentProviderError,
+  PaymentProviderSessionResponse,
   PaymentSessionStatus,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
-  isPaymentProcessorError,
+  isPaymentProviderError,
   MedusaContext,
 } from "@medusajs/utils"
-import { PaymentProvider } from "@models"
 
-import { isDefined, MedusaError } from "medusa-core-utils"
-import {
-  CreatePaymentInput,
-  PaymentProcessorContext,
-} from "@medusajs/types/src"
-import { EOL } from "os"
+import { PaymentProvider } from "@models"
 
 type InjectedDependencies = {
   paymentProviderRepository: DAL.RepositoryService
-  [key: `pp_${string}`]: IPaymentProcessor
+  [key: `pp_${string}`]: IPaymentProvider
 }
 
 export default class PaymentProviderService {
@@ -57,9 +55,9 @@ export default class PaymentProviderService {
     return await this.paymentProviderRepository_.find(undefined, sharedContext)
   }
 
-  retrieveProvider(providerId: string): IPaymentProcessor {
+  retrieveProvider(providerId: string): IPaymentProvider {
     try {
-      return this.container_[`pp_${providerId}`] as IPaymentProcessor
+      return this.container_[`pp_${providerId}`] as IPaymentProvider
     } catch (e) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -70,8 +68,8 @@ export default class PaymentProviderService {
 
   async createSession(
     provider_id: string,
-    sessionInput: PaymentProcessorContext
-  ): Promise<PaymentProcessorSessionResponse["session_data"]> {
+    sessionInput: PaymentProviderContext
+  ): Promise<PaymentProviderSessionResponse["session_data"]> {
     const provider = this.retrieveProvider(provider_id)
 
     if (
@@ -86,11 +84,11 @@ export default class PaymentProviderService {
 
     const paymentResponse = await provider.initiatePayment(sessionInput)
 
-    if (isPaymentProcessorError(paymentResponse)) {
-      this.throwFromPaymentProcessorError(paymentResponse)
+    if (isPaymentProviderError(paymentResponse)) {
+      this.throwPaymentProviderError(paymentResponse)
     }
 
-    return (paymentResponse as PaymentProcessorSessionResponse).session_data
+    return (paymentResponse as PaymentProviderSessionResponse).session_data
   }
 
   async updateSession(
@@ -99,17 +97,17 @@ export default class PaymentProviderService {
       data: Record<string, unknown>
       provider_id: string
     },
-    sessionInput: PaymentProcessorContext
+    sessionInput: PaymentProviderContext
   ): Promise<Record<string, unknown> | undefined> {
     const provider = this.retrieveProvider(paymentSession.provider_id)
 
     const paymentResponse = await provider.updatePayment(sessionInput)
 
-    if (isPaymentProcessorError(paymentResponse)) {
-      this.throwFromPaymentProcessorError(paymentResponse)
+    if (isPaymentProviderError(paymentResponse)) {
+      this.throwPaymentProviderError(paymentResponse)
     }
 
-    return (paymentResponse as PaymentProcessorSessionResponse)?.session_data
+    return (paymentResponse as PaymentProviderSessionResponse)?.session_data
   }
 
   async deleteSession(paymentSession: {
@@ -119,8 +117,8 @@ export default class PaymentProviderService {
     const provider = this.retrieveProvider(paymentSession.provider_id)
 
     const error = await provider.deletePayment(paymentSession.data)
-    if (isPaymentProcessorError(error)) {
-      this.throwFromPaymentProcessorError(error)
+    if (isPaymentProviderError(error)) {
+      this.throwPaymentProviderError(error)
     }
   }
 
@@ -136,8 +134,8 @@ export default class PaymentProviderService {
      * NOTE: JUST RETRIEVE
      */
     const paymentData = await provider.retrievePayment(payment_session.data)
-    if (isPaymentProcessorError(paymentData)) {
-      this.throwFromPaymentProcessorError(paymentData)
+    if (isPaymentProviderError(paymentData)) {
+      this.throwPaymentProviderError(paymentData)
     }
 
     return paymentData as Record<string, unknown>
@@ -153,11 +151,11 @@ export default class PaymentProviderService {
     const provider = this.retrieveProvider(paymentSession.provider_id)
 
     const res = await provider.authorizePayment(paymentSession.data, context)
-    if (isPaymentProcessorError(res)) {
-      this.throwFromPaymentProcessorError(res)
+    if (isPaymentProviderError(res)) {
+      this.throwPaymentProviderError(res)
     }
 
-    const { data, status } = res as PaymentProcessorAuthorizeResponse
+    const { data, status } = res as PaymentProviderAuthorizeResponse
     return { data, status }
   }
 
@@ -172,11 +170,11 @@ export default class PaymentProviderService {
     const provider = this.retrieveProvider(paymentSession.provider_id)
 
     const res = await provider.updatePaymentData(paymentSession.id, data)
-    if (isPaymentProcessorError(res)) {
-      this.throwFromPaymentProcessorError(res)
+    if (isPaymentProviderError(res)) {
+      this.throwPaymentProviderError(res)
     }
 
-    return (res as PaymentProcessorSessionResponse).session_data
+    return (res as PaymentProviderSessionResponse).session_data
   }
 
   async getStatus(payment: {
@@ -194,8 +192,8 @@ export default class PaymentProviderService {
     const provider = this.retrieveProvider(paymentObj.provider_id)
 
     const res = await provider.capturePayment(paymentObj.data)
-    if (isPaymentProcessorError(res)) {
-      this.throwFromPaymentProcessorError(res)
+    if (isPaymentProviderError(res)) {
+      this.throwPaymentProviderError(res)
     }
 
     return res as Record<string, unknown>
@@ -208,26 +206,26 @@ export default class PaymentProviderService {
     const provider = this.retrieveProvider(payment.provider_id)
 
     const error = await provider.cancelPayment(payment.data)
-    if (isPaymentProcessorError(error)) {
-      this.throwFromPaymentProcessorError(error)
+    if (isPaymentProviderError(error)) {
+      this.throwPaymentProviderError(error)
     }
   }
 
-  async refundFromPayment(
+  async refundPayment(
     payment: { data: Record<string, unknown>; provider_id: string },
     amount: number
   ): Promise<Record<string, unknown>> {
     const provider = this.retrieveProvider(payment.provider_id)
 
     const res = await provider.refundPayment(payment.data, amount)
-    if (isPaymentProcessorError(res)) {
-      this.throwFromPaymentProcessorError(res)
+    if (isPaymentProviderError(res)) {
+      this.throwPaymentProviderError(res)
     }
 
     return res as Record<string, unknown>
   }
 
-  private throwFromPaymentProcessorError(errObj: PaymentProcessorError) {
+  private throwPaymentProviderError(errObj: PaymentProviderError) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `${errObj.error}${errObj.detail ? `:${EOL}${errObj.detail}` : ""}`,

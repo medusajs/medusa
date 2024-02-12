@@ -479,7 +479,7 @@ export default class PaymentModuleService<
     //   )
     // }
 
-    const paymentData = await this.paymentProviderService_.refundFromPayment(
+    const paymentData = await this.paymentProviderService_.refundPayment(
       {
         data: payment.data!,
         provider_id: payment.provider_id,
