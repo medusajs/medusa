@@ -66,7 +66,7 @@ export * from "./routes/admin/tax-rates"
 export * from "./routes/admin/uploads"
 export * from "./routes/admin/users"
 export * from "./routes/admin/variants"
-export * from "./routes/admin/workflows"
+export * from "./routes/admin/workflows-executions"
 // Store
 export * from "./routes/store/auth"
 export * from "./routes/store/carts"

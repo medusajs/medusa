@@ -10,7 +10,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     ModuleRegistrationName.WORKFLOW_ENGINE
   )
 
-  const { id: workflow_id, transaction_id } = req.query as any
+  const { workflow_id, transaction_id } = req.query as any
 
   const subscriberId = "__sub__" + Math.random().toString(36).substring(2, 9)
   res.writeHead(200, {

@@ -12,7 +12,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     ModuleRegistrationName.WORKFLOW_ENGINE
   )
 
-  const { id: workflow_id, transaction_id, step_id } = req.params
+  const { workflow_id, transaction_id, step_id } = req.params
 
   const body = req.validatedBody as AdminPostWorkflowsAsyncResponseReq
 
@@ -22,7 +22,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     : undefined
   const stepAction = body.action || TransactionHandlerType.INVOKE
 
-  await workflowEngineService.setStepSuccess({
+  await workflowEngineService.setStepFailure({
     idempotencyKey: {
       action: stepAction,
       transactionId: transaction_id,

@@ -11,6 +11,7 @@ import {
   InjectSharedContext,
   MedusaContext,
   MedusaError,
+  isString,
 } from "@medusajs/utils"
 import type {
   IWorkflowEngineService,
@@ -51,18 +52,24 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
 
   @InjectManager("baseRepository_")
   async retrieveWorkflowExecution(
-    idOrObject: {
-      workflow_id: string
-      transaction_id: string
-    },
+    idOrObject:
+      | string
+      | {
+          workflow_id: string
+          transaction_id: string
+        },
     config: FindConfig<WorkflowOrchestratorTypes.WorkflowExecutionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<WorkflowOrchestratorTypes.WorkflowExecutionDTO> {
+    const objValue = isString(idOrObject)
+      ? { id: idOrObject }
+      : {
+          workflow_id: idOrObject.workflow_id,
+          transaction_id: idOrObject.transaction_id,
+        }
+
     const wfExecution = await this.workflowExecutionService_.list(
-      {
-        workflow_id: idOrObject.workflow_id,
-        transaction_id: idOrObject.transaction_id,
-      },
+      objValue,
       config,
       sharedContext
     )
@@ -70,9 +77,9 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
     if (wfExecution.length === 0) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `WorkflowExecution with workflow_id, transaction_id: ${Object.values(
-          idOrObject
-        ).join(", ")} was not found`
+        `WorkflowExecution with ${Object.keys(objValue).join(
+          ", "
+        )}: ${Object.values(objValue).join(", ")} was not found`
       )
     }
 

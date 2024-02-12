@@ -81,12 +81,12 @@ describe("Workflow Engine API", () => {
       )
     })
 
-    it("Should list all workflows in execution or completed", async () => {
+    it("Should list all workflows in execution or completed and retrieve them by id", async () => {
       const api = useApi()! as AxiosInstance
 
       for (let i = 3; i--; ) {
         await api.post(
-          `/admin/workflows/my-workflow-name/run`,
+          `/admin/workflows-executions/my-workflow-name/run`,
           {
             input: {
               initial: "abc",
@@ -97,7 +97,7 @@ describe("Workflow Engine API", () => {
       }
 
       const executions = await api.get(
-        `/admin/workflows/execution`,
+        `/admin/workflows-executions`,
         adminHeaders
       )
 
@@ -112,6 +112,15 @@ describe("Workflow Engine API", () => {
         updated_at: expect.any(String),
         deleted_at: null,
       })
+
+      const retrivedById = await api.get(
+        `/admin/workflows-executions/` +
+          executions.data.workflow_executions[0].id,
+        adminHeaders
+      )
+      expect(retrivedById.data.workflow_execution).toEqual(
+        expect.objectContaining(executions.data.workflow_executions[0])
+      )
     })
 
     it("Should list all workflows matching the filters", async () => {
@@ -119,7 +128,7 @@ describe("Workflow Engine API", () => {
 
       for (let i = 3; i--; ) {
         await api.post(
-          `/admin/workflows/my-workflow-name/run`,
+          `/admin/workflows-executions/my-workflow-name/run`,
           {
             input: {
               initial: "abc",
@@ -131,7 +140,7 @@ describe("Workflow Engine API", () => {
       }
 
       const executions = await api.get(
-        `/admin/workflows/execution?transaction_id[]=transaction_1&transaction_id[]=transaction_2`,
+        `/admin/workflows-executions?transaction_id[]=transaction_1&transaction_id[]=transaction_2`,
         adminHeaders
       )
 
@@ -161,7 +170,7 @@ describe("Workflow Engine API", () => {
       const api = useApi()! as AxiosInstance
 
       const wf = await api.post(
-        `/admin/workflows/my-workflow-name/run`,
+        `/admin/workflows-executions/my-workflow-name/run`,
         {
           input: {
             initial: "abc",
@@ -179,7 +188,7 @@ describe("Workflow Engine API", () => {
       })
 
       const execution = await api.get(
-        `/admin/workflows/my-workflow-name/trx_123`,
+        `/admin/workflows-executions/my-workflow-name/trx_123`,
         adminHeaders
       )
 
@@ -221,7 +230,7 @@ describe("Workflow Engine API", () => {
       })
 
       const respondAsync = await api.post(
-        `/admin/workflows/my-workflow-name/trx_123/my-step-async/success`,
+        `/admin/workflows-executions/my-workflow-name/trx_123/my-step-async/success`,
         {
           response: {
             all: "good",
@@ -233,7 +242,7 @@ describe("Workflow Engine API", () => {
       expect(respondAsync.data.success).toEqual(true)
 
       const completed = await api.get(
-        `/admin/workflows/my-workflow-name/trx_123`,
+        `/admin/workflows-executions/my-workflow-name/trx_123`,
         adminHeaders
       )
 

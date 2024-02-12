@@ -33,16 +33,16 @@ const listTransformQueryConfig = {
 }
 
 export default (app) => {
-  app.use("/workflows", route)
+  app.use("/workflows-executions", route)
 
   route.get(
-    "/execution",
+    "/",
     transformQuery(AdminGetWorkflowExecutionsParams, listTransformQueryConfig),
     middlewares.wrap(require("./list-execution").default)
   )
 
   route.get(
-    "/:id/:transaction_id",
+    "/:id",
     transformQuery(
       AdminGetWorkflowExecutionDetailsParams,
       retrieveTransformQueryConfig
@@ -50,10 +50,13 @@ export default (app) => {
     middlewares.wrap(require("./get-execution").default)
   )
 
-  route.post(
-    "/:id/run",
-    transformBody(AdminPostWorkflowsRunReq),
-    middlewares.wrap(require("./run-workflow").default)
+  route.get(
+    "/:workflow_id/:transaction_id",
+    transformQuery(
+      AdminGetWorkflowExecutionDetailsParams,
+      retrieveTransformQueryConfig
+    ),
+    middlewares.wrap(require("./get-execution").default)
   )
 
   route.post(
@@ -66,6 +69,12 @@ export default (app) => {
     "/:id/:transaction_id/:step_id/failure",
     transformBody(AdminPostWorkflowsAsyncResponseReq),
     middlewares.wrap(require("./set-step-failure").default)
+  )
+
+  route.post(
+    "/:id/run",
+    transformBody(AdminPostWorkflowsRunReq),
+    middlewares.wrap(require("./run-workflow").default)
   )
 
   return app

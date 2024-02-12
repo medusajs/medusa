@@ -4,7 +4,7 @@ import { adminCustomerGroupRoutesMiddlewares } from "./admin/customer-groups/mid
 import { adminCustomerRoutesMiddlewares } from "./admin/customers/middlewares"
 import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
 import { adminRegionRoutesMiddlewares } from "./admin/regions/middlewares"
-import { adminWorkflowsMiddlewares } from "./admin/workflows/middlewares"
+import { adminWorkflowsExecutionsMiddlewares } from "./admin/workflows-executions/middlewares"
 import { authRoutesMiddlewares } from "./auth/middlewares"
 import { storeCartRoutesMiddlewares } from "./store/carts/middlewares"
 import { storeCustomerRoutesMiddlewares } from "./store/customers/middlewares"
@@ -18,7 +18,7 @@ export const config: MiddlewaresConfig = {
     ...storeCustomerRoutesMiddlewares,
     ...storeCartRoutesMiddlewares,
     ...authRoutesMiddlewares,
-    ...adminWorkflowsMiddlewares,
+    ...adminWorkflowsExecutionsMiddlewares,
     ...adminRegionRoutesMiddlewares,
   ],
 }

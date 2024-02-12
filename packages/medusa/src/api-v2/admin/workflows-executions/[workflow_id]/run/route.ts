@@ -11,7 +11,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     ModuleRegistrationName.WORKFLOW_ENGINE
   )
 
-  const { id: workflow_id } = req.params
+  const { workflow_id } = req.params
 
   const { transaction_id, input } =
     req.validatedBody as AdminPostWorkflowsRunReq

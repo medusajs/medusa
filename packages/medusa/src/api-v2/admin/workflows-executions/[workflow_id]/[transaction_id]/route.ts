@@ -1,13 +1,13 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 
-export default async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const workflowEngineService: IWorkflowEngineService = req.scope.resolve(
     ModuleRegistrationName.WORKFLOW_ENGINE
   )
 
-  const { id: workflow_id, transaction_id } = req.params
+  const { workflow_id, transaction_id } = req.params
 
   const execution = await workflowEngineService.retrieveWorkflowExecution(
     {

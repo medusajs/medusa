@@ -8,10 +8,10 @@ import {
   AdminPostWorkflowsRunReq,
 } from "./validators"
 
-export const adminWorkflowsMiddlewares: MiddlewareRoute[] = [
+export const adminWorkflowsExecutionsMiddlewares: MiddlewareRoute[] = [
   {
     method: ["GET"],
-    matcher: "/admin/workflows/execution",
+    matcher: "/admin/workflows-executions",
     middlewares: [
       transformQuery(
         AdminGetWorkflowExecutionsParams,
@@ -21,7 +21,17 @@ export const adminWorkflowsMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["GET"],
-    matcher: "/admin/workflows/:id/:transaction_id",
+    matcher: "/admin/workflows-executions/:id",
+    middlewares: [
+      transformQuery(
+        AdminGetWorkflowExecutionDetailsParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/workflows-executions/:workflow_id/:transaction_id",
     middlewares: [
       transformQuery(
         AdminGetWorkflowExecutionDetailsParams,
@@ -31,17 +41,17 @@ export const adminWorkflowsMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/workflows/:id/run",
+    matcher: "/admin/workflows-executions/:id/run",
     middlewares: [transformBody(AdminPostWorkflowsRunReq)],
   },
   {
     method: ["POST"],
-    matcher: "/admin/workflows/:id/:transaction_id/:step_id/success",
+    matcher: "/admin/workflows-executions/:id/:transaction_id/:step_id/success",
     middlewares: [transformBody(AdminPostWorkflowsAsyncResponseReq)],
   },
   {
     method: ["POST"],
-    matcher: "/admin/workflows/:id/:transaction_id/:step_id/failure",
+    matcher: "/admin/workflows-executions/:id/:transaction_id/:step_id/failure",
     middlewares: [transformBody(AdminPostWorkflowsAsyncResponseReq)],
   },
 ]

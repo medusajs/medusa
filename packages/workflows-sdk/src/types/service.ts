@@ -33,10 +33,12 @@ export type IdempotencyKeyParts = {
 
 export interface IWorkflowEngineService extends IModuleService {
   retrieveWorkflowExecution(
-    idOrObject: {
-      workflow_id: string
-      transaction_id: string
-    },
+    idOrObject:
+      | string
+      | {
+          workflow_id: string
+          transaction_id: string
+        },
     config?: FindConfig<WorkflowExecutionDTO>,
     sharedContext?: Context
   )
