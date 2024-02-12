@@ -6,8 +6,8 @@ import {
   LoadedModule,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  MedusaAppOptions,
   MedusaAppOutput,
-  MedusaContainer,
   MedusaModuleConfig,
   ModuleDefinition,
   ModuleExports,
@@ -15,7 +15,6 @@ import {
   ModuleServiceInitializeOptions,
   RemoteJoinerQuery,
   RunMigrationFn,
-  SharedResources,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -38,7 +37,7 @@ import * as Servers from "./utils/servers"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
 
-async function loadModules(modulesConfig, sharedContainer) {
+async function loadModules(modulesConfig, sharedContainer, migrationOnly) {
   const allModules = {}
 
   await Promise.all(
@@ -77,6 +76,7 @@ async function loadModules(modulesConfig, sharedContainer) {
         sharedContainer,
         moduleDefinition: definition as ModuleDefinition,
         moduleExports,
+        migrationOnly,
       })) as LoadedModule
 
       const service = loaded[moduleName]
@@ -152,7 +152,7 @@ function registerCustomJoinerConfigs(servicesConfig: ModuleJoinerConfig[]) {
   }
 }
 
-export async function MedusaApp({
+async function MedusaApp_({
   sharedContainer,
   sharedResourcesConfig,
   servicesConfig,
@@ -161,23 +161,12 @@ export async function MedusaApp({
   modulesConfig,
   linkModules,
   remoteFetchData,
-  injectedDependencies,
+  injectedDependencies = {},
   onApplicationStartCb,
-}: {
-  sharedContainer?: MedusaContainer
-  sharedResourcesConfig?: SharedResources
-  loadedModules?: LoadedModule[]
-  servicesConfig?: ModuleJoinerConfig[]
-  modulesConfigPath?: string
-  modulesConfigFileName?: string
-  modulesConfig?: MedusaModuleConfig
-  linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
-  remoteFetchData?: RemoteFetchDataCallback
-  injectedDependencies?: any
-  onApplicationStartCb?: () => void
+  migrationOnly = false,
+}: MedusaAppOptions<RemoteFetchDataCallback> & {
+  migrationOnly?: boolean
 } = {}): Promise<MedusaAppOutput> {
-  injectedDependencies ??= {}
-
   const sharedContainer_ = createMedusaContainer({}, sharedContainer)
 
   const modules: MedusaModuleConfig =
@@ -231,7 +220,7 @@ export async function MedusaApp({
     })
   }
 
-  const allModules = await loadModules(modules, sharedContainer_)
+  const allModules = await loadModules(modules, sharedContainer_, migrationOnly)
 
   // Share Event bus with link modules
   injectedDependencies[ModuleRegistrationName.EVENT_BUS] =
@@ -318,4 +307,27 @@ export async function MedusaApp({
   } finally {
     MedusaModule.onApplicationStart(onApplicationStartCb)
   }
+}
+
+export async function MedusaApp(
+  options: MedusaAppOptions<RemoteFetchDataCallback> = {}
+): Promise<MedusaAppOutput> {
+  try {
+    return await MedusaApp_(options)
+  } finally {
+    MedusaModule.onApplicationStart(options.onApplicationStartCb)
+  }
+}
+
+export async function MedusaAppMigrateUp(
+  options: MedusaAppOptions<RemoteFetchDataCallback> = {}
+): Promise<void> {
+  const migrationOnly = true
+
+  const { runMigrations } = await MedusaApp_({
+    ...options,
+    migrationOnly,
+  })
+
+  await runMigrations().finally(MedusaModule.clearInstances)
 }

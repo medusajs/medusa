@@ -128,7 +128,7 @@ export abstract class AbstractTaxCalculationStrategy
    * You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.
    * Additionally, if you’re creating your tax calculation strategy as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor.
    *
-   * @param {MedusaContainer} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.
+   * @param {Record<string, unknown>} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.
    * @param {Record<string, unknown>} config - If this tax calculation strategy is created in a plugin, the plugin's options are passed in this parameter.
    *
    * @example
@@ -156,7 +156,7 @@ export abstract class AbstractTaxCalculationStrategy
    * export default TaxCalculationStrategy
    */
   protected constructor(
-    protected readonly container: MedusaContainer,
+    protected readonly container: Record<string, unknown>,
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
   ) {
     super(container, config)

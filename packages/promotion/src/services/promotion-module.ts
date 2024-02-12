@@ -751,7 +751,7 @@ export default class PromotionModuleService<
       sharedContext
     )
 
-    return this.retrieve(
+    return await this.retrieve(
       promotionId,
       { relations: ["rules", "rules.values"] },
       sharedContext
@@ -784,7 +784,7 @@ export default class PromotionModuleService<
       sharedContext
     )
 
-    return this.retrieve(
+    return await this.retrieve(
       promotionId,
       {
         relations: [
@@ -825,7 +825,7 @@ export default class PromotionModuleService<
       sharedContext
     )
 
-    return this.retrieve(
+    return await this.retrieve(
       promotionId,
       {
         relations: [
@@ -882,7 +882,7 @@ export default class PromotionModuleService<
   ): Promise<PromotionTypes.PromotionDTO> {
     await this.removePromotionRules_(promotionId, rulesData, sharedContext)
 
-    return this.retrieve(
+    return await this.retrieve(
       promotionId,
       { relations: ["rules", "rules.values"] },
       sharedContext
@@ -926,7 +926,7 @@ export default class PromotionModuleService<
       sharedContext
     )
 
-    return this.retrieve(
+    return await this.retrieve(
       promotionId,
       {
         relations: [
@@ -954,7 +954,7 @@ export default class PromotionModuleService<
       sharedContext
     )
 
-    return this.retrieve(
+    return await this.retrieve(
       promotionId,
       {
         relations: [

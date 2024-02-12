@@ -950,7 +950,7 @@ export default class PricingModuleService<
       priceListsToCreate
     )) as unknown as PricingTypes.PriceListDTO[]
 
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       const { rules = {}, prices = [] } = data[i]
       const priceList = priceLists[i]
 
