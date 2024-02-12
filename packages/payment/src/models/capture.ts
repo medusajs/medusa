@@ -1,3 +1,4 @@
+import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -7,8 +8,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-
-import { generateEntityId } from "@medusajs/utils"
 import Payment from "./payment"
 
 type OptionalCaptureProps = "created_at"

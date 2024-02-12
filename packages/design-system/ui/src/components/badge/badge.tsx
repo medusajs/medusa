@@ -24,18 +24,72 @@ const badgeColorVariants = cva({
 })
 
 const badgeSizeVariants = cva({
-  base: "inline-flex items-center gap-x-0.5 border",
+  base: "inline-flex items-center gap-x-0.5 border box-border",
   variants: {
     size: {
-      small: "txt-compact-xsmall-plus px-1.5",
-      base: "txt-compact-small-plus px-2 py-0.5",
-      large: "txt-compact-medium-plus px-2.5 py-1",
+      "2xsmall": "txt-compact-xsmall-plus h-5",
+      xsmall: "txt-compact-xsmall-plus py-px h-6",
+      small: "txt-compact-xsmall-plus py-[3px] h-7",
+      base: "txt-compact-small-plus py-[5px] h-8",
+      large: "txt-compact-medium-plus py-[7px] h-10",
     },
     rounded: {
       base: "rounded-md",
       full: "rounded-full",
     },
   },
+  compoundVariants: [
+    {
+      size: "2xsmall",
+      rounded: "full",
+      className: "px-1.5",
+    },
+    {
+      size: "2xsmall",
+      rounded: "base",
+      className: "px-1",
+    },
+    {
+      size: "xsmall",
+      rounded: "full",
+      className: "px-2",
+    },
+    {
+      size: "xsmall",
+      rounded: "base",
+      className: "px-1.5",
+    },
+    {
+      size: "small",
+      rounded: "full",
+      className: "px-2.5",
+    },
+    {
+      size: "small",
+      rounded: "base",
+      className: "px-2",
+    },
+    {
+      size: "base",
+      rounded: "full",
+      className: "px-3",
+    },
+    {
+      size: "base",
+      rounded: "base",
+      className: "px-2.5",
+    },
+    {
+      size: "large",
+      rounded: "full",
+      className: "px-3.5",
+    },
+    {
+      size: "large",
+      rounded: "base",
+      className: "px-3",
+    },
+  ],
   defaultVariants: {
     size: "base",
     rounded: "base",

@@ -1,5 +1,4 @@
 import { useAdminStore } from "medusa-react"
-import { useTranslation } from "react-i18next"
 import { Outlet, useLoaderData } from "react-router-dom"
 
 import { JsonViewSection } from "../../../components/common/json-view-section/json-view-section.tsx"
@@ -13,8 +12,6 @@ export const StoreDetail = () => {
   const { store, isLoading, isError, error } = useAdminStore({
     initialData: initialData,
   })
-
-  const { t } = useTranslation()
 
   if (isLoading) {
     return <div>Loading...</div>

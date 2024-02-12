@@ -67,7 +67,7 @@ export const Login = () => {
   })
 
   return (
-    <div className="min-h-dvh w-dvw bg-ui-bg-base flex items-center justify-center">
+    <div className="bg-ui-bg-base flex min-h-dvh w-dvw items-center justify-center">
       <div className="m-4 flex w-full max-w-[300px] flex-col items-center">
         <LogoBox className="mb-4" />
         <div className="mb-4 flex flex-col items-center">
@@ -118,7 +118,7 @@ export const Login = () => {
               />
             </div>
             <Button className="w-full" type="submit" isLoading={isLoading}>
-              {t("general.continue")}
+              {t("actions.continue")}
             </Button>
           </form>
         </Form>

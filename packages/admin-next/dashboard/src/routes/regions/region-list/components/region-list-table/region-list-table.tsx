@@ -71,7 +71,7 @@ export const RegionListTable = () => {
         <Heading level="h2">{t("regions.domain")}</Heading>
         <Link to="/settings/regions/create">
           <Button size="small" variant="secondary">
-            {t("general.create")}
+            {t("actions.create")}
           </Button>
         </Link>
       </div>
@@ -147,8 +147,8 @@ const RegionActions = ({ region }: { region: Region }) => {
       }),
       verificationText: region.name,
       verificationInstruction: t("general.typeToConfirm"),
-      confirmText: t("general.confirm"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!res) {
@@ -164,7 +164,7 @@ const RegionActions = ({ region }: { region: Region }) => {
         {
           actions: [
             {
-              label: t("general.edit"),
+              label: t("actions.edit"),
               to: `/settings/regions/${region.id}/edit`,
               icon: <PencilSquare />,
             },
@@ -173,7 +173,7 @@ const RegionActions = ({ region }: { region: Region }) => {
         {
           actions: [
             {
-              label: t("general.delete"),
+              label: t("actions.delete"),
               onClick: handleDelete,
               icon: <Trash />,
             },

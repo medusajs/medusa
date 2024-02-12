@@ -1,6 +1,5 @@
 import { AbstractAuthModuleProvider, MedusaError } from "@medusajs/utils"
 import {
-  AuthProviderScope,
   AuthenticationInput,
   AuthenticationResponse,
   ModulesSdkTypes,

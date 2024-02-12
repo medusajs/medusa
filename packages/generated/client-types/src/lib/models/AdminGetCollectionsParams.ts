@@ -25,6 +25,10 @@ export interface AdminGetCollectionsParams {
    */
   q?: string
   /**
+   * A field to sort-order the retrieved collections by.
+   */
+  order?: string
+  /**
    * Filter collections by a discount condition ID associated with them.
    */
   discount_condition_id?: string
