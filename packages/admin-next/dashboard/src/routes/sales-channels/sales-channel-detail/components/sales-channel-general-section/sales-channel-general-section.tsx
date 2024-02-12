@@ -28,8 +28,8 @@ export const SalesChannelGeneralSection = ({
       }),
       verificationInstruction: t("general.typeToConfirm"),
       verificationText: salesChannel.name,
-      confirmText: t("general.delete"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!confirm) {
@@ -62,7 +62,7 @@ export const SalesChannelGeneralSection = ({
                 actions: [
                   {
                     icon: <PencilSquare />,
-                    label: t("general.edit"),
+                    label: t("actions.edit"),
                     to: `/settings/sales-channels/${salesChannel.id}/edit`,
                   },
                 ],
@@ -71,7 +71,7 @@ export const SalesChannelGeneralSection = ({
                 actions: [
                   {
                     icon: <Trash />,
-                    label: t("general.delete"),
+                    label: t("actions.delete"),
                     onClick: handleDelete,
                   },
                 ],

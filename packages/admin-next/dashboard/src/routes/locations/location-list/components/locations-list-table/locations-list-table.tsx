@@ -85,7 +85,7 @@ export const LocationsListTable = () => {
         <div>
           <Link to="create">
             <Button size="small" variant="secondary">
-              {t("general.create")}
+              {t("actions.create")}
             </Button>
           </Link>
         </div>
@@ -176,8 +176,8 @@ const LocationActions = ({
       }),
       verificationText: location.name,
       verificationInstruction: t("general.typeToConfirm"),
-      confirmText: t("general.delete"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!res) {
@@ -194,12 +194,12 @@ const LocationActions = ({
           actions: [
             {
               icon: <PencilSquare />,
-              label: t("general.edit"),
+              label: t("actions.edit"),
               to: `/settings/locations/${location.id}/edit`,
             },
             {
               icon: <Trash />,
-              label: t("general.delete"),
+              label: t("actions.delete"),
               onClick: handleDelete,
             },
           ],

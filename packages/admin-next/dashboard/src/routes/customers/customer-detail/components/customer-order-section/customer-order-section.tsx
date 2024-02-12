@@ -60,7 +60,7 @@ export const CustomerOrderSection = ({
         <Heading level="h2">{t("orders.domain")}</Heading>
         <div className="flex items-center gap-x-2">
           <Button size="small" variant="secondary">
-            {t("general.create")}
+            {t("actions.create")}
           </Button>
         </div>
       </div>

@@ -1,9 +1,9 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 
+import { Type } from "class-transformer"
 import { CustomerGroupService } from "../../../../services"
 import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
-import { Type } from "class-transformer"
 
 /**
  * @oas [get] /admin/customer-groups
@@ -100,6 +100,7 @@ import { Type } from "class-transformer"
  *            format: date
  *   - (query) limit=10 {integer} The number of customer groups to return.
  *   - (query) expand {string} Comma-separated relations that should be expanded in the returned customer groups.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned customer groups.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetCustomerGroupsParams
@@ -231,4 +232,11 @@ export class AdminGetCustomerGroupsParams extends FilterableCustomerGroupProps {
   @IsString()
   @IsOptional()
   expand?: string
+
+  /**
+   * {@inheritDoc FindPaginationParams.fields}
+   */
+  @IsString()
+  @IsOptional()
+  fields?: string
 }
