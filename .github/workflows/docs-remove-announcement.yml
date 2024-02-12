@@ -39,6 +39,10 @@ jobs:
         run: yarn generate:announcement --expire
         working-directory: docs-util/packages/scripts
 
+      - name: Generate Changeset
+        run: "yarn generate:changeset"
+        working-directory: docs-util/packages/scripts
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
