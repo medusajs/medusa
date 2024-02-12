@@ -137,8 +137,6 @@ export default class FulfillmentModuleService<
        * to create.
        */
 
-      // TODO manage the geo zones as well
-
       if (service_zones?.length) {
         const serviceZoneTuple: [
           string,
