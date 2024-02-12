@@ -4337,21 +4337,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/ui-preset@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "@medusajs/ui-preset@npm:1.1.1"
+"@medusajs/ui-preset@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@medusajs/ui-preset@npm:1.1.2"
   dependencies:
     "@tailwindcss/forms": ^0.5.3
     tailwindcss-animate: ^1.0.6
   peerDependencies:
     tailwindcss: ">=3.0.0"
-  checksum: ff883a4e01bc695e44b59d658d6a3a0fc8f4e6f22aec12d2a1eae911b8a647aa43b3bda50966aa65293cd799d597ba88524e288ea419f5286beaad4256f81089
+  checksum: 63b525eee5d5a6a7d2d9596f6cc9015c221a3a55c83f524511d35eeb6916261baeae472e8748725480016a38e379f6a1a34e373d4ca824bbabdb151605086f94
   languageName: node
   linkType: hard
 
-"@medusajs/ui@npm:^2.4.0":
-  version: 2.4.0
-  resolution: "@medusajs/ui@npm:2.4.0"
+"@medusajs/ui@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "@medusajs/ui@npm:2.4.1"
   dependencies:
     "@medusajs/icons": ^1.2.0
     "@radix-ui/react-accordion": ^1.1.2
@@ -4384,7 +4384,7 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 572583339a9745dda93f395d21b963b66a78d91843e5e426b4a2b41f5ff389fd446b7f7035ff8d16260d05754a7d7d73663dcff357abc4562ab47d2a256abe9d
+  checksum: 1d044632044b9a3e06ed86d574ad67ccefe797a23b839f32f9d15a2563c4c40fc74b0faf1826bef4aa256b34c30dcae8dc1f11d456de2bfc506162d92fe512d5
   languageName: node
   linkType: hard
 
@@ -12091,7 +12091,7 @@ __metadata:
   resolution: "docs-ui@workspace:packages/docs-ui"
   dependencies:
     "@medusajs/icons": ^1.2.0
-    "@medusajs/ui": ^2.4.0
+    "@medusajs/ui": ^2.4.1
     "@octokit/request": ^8.1.1
     "@react-hook/resize-observer": ^1.2.6
     "@segment/analytics-next": ^1.55.0
@@ -22032,7 +22032,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tailwind@workspace:packages/tailwind"
   dependencies:
-    "@medusajs/ui-preset": ^1.1.1
+    "@medusajs/ui-preset": ^1.1.2
     eslint-config-docs: "*"
     tailwindcss-animate: ^1.0.7
   peerDependencies:
@@ -22736,8 +22736,8 @@ __metadata:
   dependencies:
     "@faker-js/faker": ^8.0.2
     "@medusajs/icons": ^1.2.0
-    "@medusajs/ui": ^2.4.0
-    "@medusajs/ui-preset": ^1.1.1
+    "@medusajs/ui": ^2.4.1
+    "@medusajs/ui-preset": ^1.1.2
     "@radix-ui/react-dialog": ^1.0.4
     "@radix-ui/react-scroll-area": ^1.0.4
     "@radix-ui/react-tabs": ^1.0.4
