@@ -4,12 +4,11 @@ import {
   CreateFulfillmentSetDTO,
   IFulfillmentModuleService,
 } from "@medusajs/types"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { getInitModuleConfig, MikroOrmWrapper } from "../utils"
+import { GeoZoneType } from "@medusajs/utils"
 
 describe("fulfillment module service", function () {
   let service: IFulfillmentModuleService
-  let testManager: SqlEntityManager
   let shutdownFunc: () => Promise<void>
 
   beforeAll(async () => {
@@ -24,7 +23,6 @@ describe("fulfillment module service", function () {
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
-    testManager = MikroOrmWrapper.forkManager()
   })
 
   afterEach(async () => {
@@ -167,6 +165,137 @@ describe("fulfillment module service", function () {
     // The two first fulfillment sets share the same service zone
     expect(fulfillmentSets[0].service_zones[0].id).toEqual(
       fulfillmentSets[1].service_zones[0].id
+    )
+  })
+
+  it("should create a collection of fulfillment sets with new service zones and existing service zones", async function () {
+    // TODO
+  })
+
+  it("should create a new fulfillment set with new service zones and new geo zones", async function () {
+    const data: CreateFulfillmentSetDTO = {
+      name: "test",
+      type: "test-type",
+      service_zones: [
+        {
+          name: "test",
+          geo_zones: [
+            {
+              type: GeoZoneType.COUNTRY,
+              country_code: "fr",
+            },
+          ],
+        },
+      ],
+    }
+
+    const fulfillmentSets = await service.create(data)
+
+    expect(fulfillmentSets).toHaveLength(1)
+    expect(fulfillmentSets[0]).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        name: data.name,
+        type: data.type,
+        service_zones: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            name: (data.service_zones![0] as any).name,
+            geo_zones: expect.arrayContaining([
+              expect.objectContaining({
+                type: (data.service_zones![0] as any).geo_zones[0].type,
+                country_code: (data.service_zones![0] as any).geo_zones[0]
+                  .country_code,
+              }),
+            ]),
+          }),
+        ]),
+      })
+    )
+  })
+
+  it("should create a collection of fulfillment sets with new service zones and new geo zones", async function () {
+    const data: CreateFulfillmentSetDTO[] = [
+      {
+        name: "test",
+        type: "test-type",
+        service_zones: [
+          {
+            name: "test",
+            geo_zones: [
+              {
+                type: GeoZoneType.COUNTRY,
+                country_code: "fr",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "test2",
+        type: "test-type2",
+        service_zones: [
+          {
+            name: "test",
+            geo_zones: [
+              {
+                type: GeoZoneType.COUNTRY,
+                country_code: "fr",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "test3",
+        type: "test-type3",
+        service_zones: [
+          {
+            name: "test2",
+            geo_zones: [
+              {
+                type: GeoZoneType.CITY,
+                country_code: "fr",
+                city: "lyon",
+              },
+            ],
+          },
+        ],
+      },
+    ]
+
+    const fulfillmentSets = await service.create(data)
+
+    expect(fulfillmentSets).toHaveLength(3)
+
+    let i = 0
+    for (const data_ of data) {
+      expect(fulfillmentSets[i]).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: data_.name,
+          type: data_.type,
+          service_zones: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              name: (data_.service_zones![0] as any).name,
+              geo_zones: expect.arrayContaining([
+                expect.objectContaining({
+                  type: (data_.service_zones![0] as any).geo_zones[0].type,
+                  country_code: (data_.service_zones![0] as any).geo_zones[0]
+                    .country_code,
+                }),
+              ]),
+            }),
+          ]),
+        })
+      )
+      ++i
+    }
+
+    // The two first fulfillment sets share the same service zone
+    expect(fulfillmentSets[0].service_zones[0].geo_zones[0].id).toEqual(
+      fulfillmentSets[1].service_zones[0].geo_zones[0].id
     )
   })
 
