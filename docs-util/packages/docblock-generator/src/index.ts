@@ -36,6 +36,10 @@ program
   .description(
     "Generate TSDoc doc-blocks for files part of the latest release. It will retrieve the files of commits between the latest two releases."
   )
+  .option(
+    "--tag <tag>",
+    "Specify a release tag to use rather than the latest release."
+  )
   .action(runRelease)
 
 program.parse()

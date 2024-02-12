@@ -117,7 +117,7 @@ You can list orders by sending a request to the [List Orders API Route](https://
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -200,7 +200,7 @@ For example, you can filter the orders by one or more status:
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders?status[]=completed' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -287,7 +287,7 @@ Another example is filtering the orders by a sales channel:
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders?sales_channel_id[]=<CHANNEL_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -370,7 +370,7 @@ You can also combine filters together:
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders?status[]=completed&sales_channel_id[]=<CHANNEL_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -438,7 +438,7 @@ You can retrieve an order by sending a request to the [Get an Order API Route](h
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -537,7 +537,7 @@ You can update any of the above details of an order by sending a request to the 
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "email": "user@example.com"
@@ -620,7 +620,7 @@ You can capture an orderâ€™s payment by sending a request to the [Capture Orderâ
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/capture' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -711,7 +711,7 @@ To refund payment, send a request to the [Refund Payment API Route](https://docs
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/refund' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "amount": 1000,
@@ -828,7 +828,7 @@ You can create a fulfillment by sending a request to the [Create a Fulfillment A
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/fulfillment' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "items": [
@@ -931,7 +931,7 @@ You can create a shipment for a fulfillment by sending a request to the [Create 
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/shipment' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "fulfillment_id": "<FUL_ID>"
@@ -1014,7 +1014,7 @@ You can cancel a fulfillment by sending a request to the [Cancel Fulfillment API
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/fulfillments/<FUL_ID>/cancel' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -1089,7 +1089,7 @@ You can mark an order completed, changing its status, by sending a request to th
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/complete' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -1164,7 +1164,7 @@ You can cancel an order by sending a request to the [Cancel Order API Route](htt
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/cancel' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -1239,7 +1239,7 @@ You can archive an order by sending a request to the [Archive Order API Route](h
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/archive' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

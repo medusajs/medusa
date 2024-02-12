@@ -4,6 +4,7 @@
     "outDir": "./dist",
     "module": "ESNext",
     "moduleResolution": "node",
+    "rootDir": ".",
   },
   "include": ["*.ts"],
   "ts-node": {

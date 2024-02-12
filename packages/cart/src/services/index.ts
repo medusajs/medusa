@@ -1,1 +1,1 @@
-export { default as CartModuleService } from "./cart-module"
+export { default as CartModuleService } from "./cart-module";

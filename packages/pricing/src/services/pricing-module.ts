@@ -48,9 +48,9 @@ import {
   PriceRuleService,
   RuleTypeService,
 } from "@services"
-import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
-import {validatePriceListDates} from "@utils"
-import {ServiceTypes} from "@types"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { validatePriceListDates } from "@utils"
+import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -950,7 +950,7 @@ export default class PricingModuleService<
       priceListsToCreate
     )) as unknown as PricingTypes.PriceListDTO[]
 
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       const { rules = {}, prices = [] } = data[i]
       const priceList = priceLists[i]
 
@@ -1167,12 +1167,11 @@ export default class PricingModuleService<
   ): Promise<PricingTypes.PriceListRuleDTO[]> {
     const priceLists = await this.createPriceListRules_(data, sharedContext)
 
-    return await this.baseRepository_.serialize<PricingTypes.PriceListRuleDTO[]>(
-      priceLists,
-      {
-        populate: true,
-      }
-    )
+    return await this.baseRepository_.serialize<
+      PricingTypes.PriceListRuleDTO[]
+    >(priceLists, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -1193,12 +1192,11 @@ export default class PricingModuleService<
       sharedContext
     )
 
-    return await this.baseRepository_.serialize<PricingTypes.PriceListRuleDTO[]>(
-      priceLists,
-      {
-        populate: true,
-      }
-    )
+    return await this.baseRepository_.serialize<
+      PricingTypes.PriceListRuleDTO[]
+    >(priceLists, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")

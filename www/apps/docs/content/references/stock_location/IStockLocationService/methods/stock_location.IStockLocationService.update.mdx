@@ -7,7 +7,7 @@ This method is used to update a stock location.
 ## Example
 
 ```ts
-import { 
+import {
   initialize as initializeStockLocationModule,
 } from "@medusajs/stock-location"
 
@@ -17,7 +17,7 @@ async function updateStockLocation (id:string, name: string) {
   const stockLocation = await stockLocationModule.update(id, {
     name
   })
-  
+
   // do something with the stock location or return it
 }
 ```

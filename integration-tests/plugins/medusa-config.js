@@ -91,5 +91,10 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/cart",
     },
+    [Modules.REGION]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/region",
+    },
   },
 }

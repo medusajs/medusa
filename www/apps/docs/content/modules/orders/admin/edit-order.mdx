@@ -144,7 +144,7 @@ To do that, send a request to the [Create an OrderEdit API Route](https://docs.m
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/order-edits' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "order_id": "<ORDER_ID>"
@@ -252,7 +252,7 @@ To add a new item to the original order, send a request to the [Add Line Item AP
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "quantity": 1,
@@ -344,7 +344,7 @@ To update an item, send a request to the [Update Line Item API Route](https://do
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "quantity": 2
@@ -429,7 +429,7 @@ You can remove an item from the original order by sending a request to the [Remo
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -510,7 +510,7 @@ To revert an item change, send a request to the [Delete Item Change API Route](h
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/changes/<CHANGE_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -601,7 +601,7 @@ To move an Order Edit into the request state, send a request to the [Request Con
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/request' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -702,7 +702,7 @@ To confirm an Order Edit, send a request to the [Confirm Order Edit API Route](h
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/confirm' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -794,7 +794,7 @@ If the payment is authorized by the customer, it can be captured by sending a re
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/payments/<PAYMENT_ID>/capture' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -891,7 +891,7 @@ To refund the difference to the customer, send a request to the [Refund Payment 
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/payments/<PAYMENT_ID>/refund' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "amount": 1000,

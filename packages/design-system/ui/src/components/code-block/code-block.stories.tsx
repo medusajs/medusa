@@ -41,7 +41,9 @@ export const Default: Story = {
         <CodeBlock snippets={snippets}>
           <CodeBlock.Header>
             <CodeBlock.Header.Meta>
-              <Label weight={"plus"}>/product-detail.js</Label>
+              <Label size="small" weight={"plus"}>
+                /product-detail.js
+              </Label>
             </CodeBlock.Header.Meta>
           </CodeBlock.Header>
           <CodeBlock.Body />
