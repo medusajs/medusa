@@ -48,6 +48,7 @@ describe("POST /admin/regions", () => {
     const response = await api.post(
       `/admin/regions`,
       {
+        name: "Test Region",
         currency_code: "usd",
       },
       adminHeaders
