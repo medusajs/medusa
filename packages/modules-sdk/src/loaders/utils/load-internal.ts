@@ -16,7 +16,8 @@ import { asFunction, asValue } from "awilix"
 export async function loadInternalModule(
   container: MedusaContainer,
   resolution: ModuleResolution,
-  logger: Logger
+  logger: Logger,
+  migrationOnly?: boolean
 ): Promise<{ error?: Error } | void> {
   const registrationName = resolution.definition.registrationName
 
@@ -62,6 +63,17 @@ export async function loadInternalModule(
         "No service found in module. Make sure your module exports a service."
       ),
     }
+  }
+
+  if (migrationOnly) {
+    // Partially loaded module, only register the service __joinerConfig function to be able to resolve it later
+    const moduleService = {
+      __joinerConfig: loadedModule.service.prototype.__joinerConfig,
+    }
+    container.register({
+      [registrationName]: asValue(moduleService),
+    })
+    return
   }
 
   const localContainer = createMedusaContainer()
