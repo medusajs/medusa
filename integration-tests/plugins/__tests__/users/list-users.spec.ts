@@ -28,7 +28,6 @@ describe("GET /admin/users", () => {
     shutdownServer = await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
     userModuleService = appContainer.resolve(ModuleRegistrationName.USER)
-    console.warn("userModuleService", userModuleService)
   })
 
   beforeEach(async () => {
@@ -57,15 +56,17 @@ describe("GET /admin/users", () => {
 
     const response = await api.get(`/admin/users`, adminHeaders)
 
-    console.log(response)
     expect(response.status).toEqual(200)
-    // expect(response.data.customer).toEqual(
-    //   expect.objectContaining({
-    //     id: customer.id,
-    //     first_name: "John",
-    //     last_name: "Doe",
-    //     email: "john@me.com",
-    //   })
-    // )
+    expect(response.data).toEqual({
+      users: expect.arrayContaining([
+        expect.objectContaining({
+          email: "admin@medusa.js",
+        }),
+        expect.objectContaining({ email: "member@test.com" }),
+      ]),
+      count: 2,
+      offset: 0,
+      limit: 50,
+    })
   })
 })

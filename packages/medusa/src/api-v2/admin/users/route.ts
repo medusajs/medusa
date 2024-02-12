@@ -11,18 +11,24 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const query = remoteQueryObjectFromString({
     entryPoint: "user",
     variables: {
-      ...req.filterableFields,
+      filters: req.filterableFields,
+      order: req.listConfig.order,
+      skip: req.listConfig.skip,
+      take: req.listConfig.take,
     },
     fields: req.listConfig.select as string[],
   })
 
-  const users = await remoteQuery({
+  const { rows: users, metadata } = await remoteQuery({
     ...query,
   })
 
-  console.warn("users", users)
-
-  res.status(200).json({})
+  res.status(200).json({
+    users,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
+  })
 }
 
 // Create user
