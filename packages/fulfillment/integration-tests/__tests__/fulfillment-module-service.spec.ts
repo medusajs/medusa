@@ -304,10 +304,10 @@ describe("fulfillment module service", function () {
         }
 
         await service.create(data)
-        await service.create(data)
+        const err = await service.create(data).catch((e) => e)
 
-        const ful = await service.list({})
-        console.log(JSON.stringify(ful, null, 2))
+        expect(err).toBeDefined()
+        expect(err.constraint).toBe("IDX_fulfillment_set_name_unique")
       })
     })
   })
