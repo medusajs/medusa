@@ -15,7 +15,7 @@ import { AdminListCustomerSelector } from "../../../../types/customers"
  *   - (query) limit=50 {integer} The number of customers to return.
  *   - (query) offset=0 {integer} The number of customers to skip when retrieving the customers.
  *   - (query) expand {string} Comma-separated relations that should be expanded in the returned customers.
- *   - {query} fields { string } Comma-separated fields that should be included in the returned customers.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned customers.
  *   - (query) q {string} term to search customers' email, first_name, and last_name fields.
  *   - (query) has_account {boolean} Filter customers by whether they have an account.
  *   - (query) order {string} A field to sort-order the retrieved customers by.

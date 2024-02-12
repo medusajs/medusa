@@ -4,4 +4,4 @@
 "@medusajs/medusa": patch
 ---
 
-fix(medusa,ui): Fixes list query params of several endpoints.
+fix(medusa,ui): Fixes list query params for the following endpoints: "/admin/customers", "/admin/customer-groups", "/admin/gift-cards", and "/admin/collections".
