@@ -16,7 +16,7 @@ type BulkCommand = {
   action: (selection: Record<string, boolean>) => Promise<void>
 }
 
-export interface DataTableRootProps<TData, TValue> {
+export interface DataTableRootProps<TData> {
   /**
    * The table instance to render
    */
@@ -24,7 +24,7 @@ export interface DataTableRootProps<TData, TValue> {
   /**
    * The columns to render
    */
-  columns: ColumnDef<TData, TValue>[]
+  columns: ColumnDef<TData, any>[]
   /**
    * Function to generate a link to navigate to when clicking on a row
    */
@@ -61,7 +61,7 @@ export interface DataTableRootProps<TData, TValue> {
 /**
  * Table component for rendering a table with pagination, filtering and ordering.
  */
-export const DataTableRoot = <TData, TValue>({
+export const DataTableRoot = <TData,>({
   table,
   columns,
   pagination,
@@ -69,7 +69,7 @@ export const DataTableRoot = <TData, TValue>({
   commands,
   count = 0,
   noResults = false,
-}: DataTableRootProps<TData, TValue>) => {
+}: DataTableRootProps<TData>) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [showStickyBorder, setShowStickyBorder] = useState(false)
@@ -165,6 +165,7 @@ export const DataTableRoot = <TData, TValue>({
                 return (
                   <Table.Row
                     key={row.id}
+                    data-selected={row.getIsSelected()}
                     className={clx(
                       "transition-fg group/row [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
                       "[&:has(td_a:focus-visible)_td]:bg-ui-bg-base-pressed",
@@ -194,7 +195,7 @@ export const DataTableRoot = <TData, TValue>({
                         <Table.Cell
                           key={cell.id}
                           className={clx("has-[a]:cursor-pointer", {
-                            "bg-ui-bg-base group-[:has(td_a:focus)]/row:bg-ui-bg-base-pressed group-hover/row:bg-ui-bg-base-hover transition-fg sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                            "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-[:has(td_a:focus)]/row:bg-ui-bg-base-pressed group-hover/row:bg-ui-bg-base-hover transition-fg sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                               isStickyCell,
                             "after:bg-ui-border-base":
                               showStickyBorder && isStickyCell,

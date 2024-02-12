@@ -1,7 +1,6 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { ArrowUpRightOnBox, PencilSquare, Trash } from "@medusajs/icons"
 import { GiftCard } from "@medusajs/medusa"
 import {
-  Badge,
   Container,
   Copy,
   Heading,
@@ -37,8 +36,8 @@ export const GiftCardGeneralSection = ({
       description: t("giftCards.deleteGiftCardWarning", {
         code: giftCard.code,
       }),
-      confirmText: t("general.delete"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!res) {
@@ -91,7 +90,7 @@ export const GiftCardGeneralSection = ({
                 actions: [
                   {
                     icon: <PencilSquare />,
-                    label: t("general.edit"),
+                    label: t("actions.edit"),
                     to: "edit",
                   },
                 ],
@@ -99,7 +98,7 @@ export const GiftCardGeneralSection = ({
               {
                 actions: [
                   {
-                    label: t("general.delete"),
+                    label: t("actions.delete"),
                     icon: <Trash />,
                     onClick: handleDelete,
                   },
@@ -135,33 +134,27 @@ export const GiftCardGeneralSection = ({
         <Text size="small" leading="compact" weight="plus">
           {t("fields.region")}
         </Text>
-        <Badge
-          size="2xsmall"
-          color="purple"
-          className="hover:bg-ui-tag-purple-bg-hover transition-fg w-fit"
-          asChild
+        <Link
+          to={`/settings/regions/${giftCard.region.id}`}
+          className="txt-compact-small text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg focus:shadow-borders-focus flex w-fit items-center gap-x-1.5 rounded-[4px] outline-none"
         >
-          <Link to={`/settings/regions/${giftCard.region.id}`}>
-            {giftCard.region.name}
-          </Link>
-        </Badge>
+          <span>{giftCard.region.name}</span>
+          <ArrowUpRightOnBox />
+        </Link>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.order")}
         </Text>
 
-        {giftCard.order?.display_id ? (
-          <Badge
-            size="2xsmall"
-            color="blue"
-            className="hover:bg-ui-tag-blue-bg-hover transition-fg w-fit"
-            asChild
+        {giftCard.order ? (
+          <Link
+            to={`/orders/${giftCard.order.id}`}
+            className="txt-compact-small text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg focus:shadow-borders-focus flex w-fit items-center gap-x-1.5 rounded-[4px] outline-none"
           >
-            <Link
-              to={`/settings/regions/${giftCard.region.id}`}
-            >{`#${giftCard.order.display_id}`}</Link>
-          </Badge>
+            <span>{`#${giftCard.order.display_id}`}</span>
+            <ArrowUpRightOnBox />
+          </Link>
         ) : (
           <Text size="small" leading="compact">
             -

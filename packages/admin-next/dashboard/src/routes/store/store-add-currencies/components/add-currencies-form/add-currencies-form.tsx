@@ -136,17 +136,17 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
           <div className="flex items-center justify-end gap-x-2">
             <FocusModal.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
             </FocusModal.Close>
             <Button size="small" type="submit" isLoading={isMutating}>
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
         </div>
       </FocusModal.Header>
       <FocusModal.Body className="flex flex-1 flex-col overflow-hidden">
-        <div className="px-6 py-4 flex items-center justify-between border-b">
+        <div className="flex items-center justify-between border-b px-6 py-4">
           <div></div>
           <div className="flex items-center gap-x-2">
             <OrderBy keys={["code"]} />

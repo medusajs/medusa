@@ -94,8 +94,8 @@ const GiftCardActions = ({ giftCard }: { giftCard: GiftCard }) => {
       description: t("giftCards.deleteGiftCardWarning", {
         code: giftCard.code,
       }),
-      confirmText: t("general.delete"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!res) {
@@ -112,7 +112,7 @@ const GiftCardActions = ({ giftCard }: { giftCard: GiftCard }) => {
           actions: [
             {
               icon: <PencilSquare />,
-              label: t("general.edit"),
+              label: t("actions.edit"),
               to: `/gift-cards/${giftCard.id}/edit`,
             },
           ],
@@ -121,7 +121,7 @@ const GiftCardActions = ({ giftCard }: { giftCard: GiftCard }) => {
           actions: [
             {
               icon: <Trash />,
-              label: t("general.delete"),
+              label: t("actions.delete"),
               onClick: handleDelete,
             },
           ],

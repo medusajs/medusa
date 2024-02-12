@@ -46,7 +46,7 @@ export const GiftCardListTable = () => {
         <Heading>{t("giftCards.domain")}</Heading>
         <div className="flex items-center gap-x-2">
           <Button size="small" variant="secondary" asChild>
-            <Link to="create">{t("general.create")}</Link>
+            <Link to="create">{t("actions.create")}</Link>
           </Button>
         </div>
       </div>

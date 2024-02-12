@@ -26,8 +26,8 @@ export const useRouteModalState = (): [
   const promptValues = {
     title: t("general.unsavedChangesTitle"),
     description: t("general.unsavedChangesDescription"),
-    cancelText: t("general.cancel"),
-    confirmText: t("general.continue"),
+    cancelText: t("actions.cancel"),
+    confirmText: t("actions.continue"),
     variant: "confirmation" as const,
   }
 

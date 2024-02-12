@@ -68,8 +68,8 @@ export const CollectionProductSection = ({
       description: t("collections.removeProductsWarning", {
         count: ids.length,
       }),
-      confirmText: t("general.confirm"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.remove"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!res) {
@@ -117,7 +117,7 @@ export const CollectionProductSection = ({
         commands={[
           {
             action: handleRemove,
-            label: t("general.remove"),
+            label: t("actions.remove"),
             shortcut: "r",
           },
         ]}
@@ -143,8 +143,8 @@ const ProductActions = ({
       description: t("collections.removeSingleProductWarning", {
         title: product.title,
       }),
-      confirmText: t("general.confirm"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.remove"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!res) {
@@ -163,7 +163,7 @@ const ProductActions = ({
           actions: [
             {
               icon: <PencilSquare />,
-              label: t("general.edit"),
+              label: t("actions.edit"),
               to: `/products/${product.id}/edit`,
             },
           ],
@@ -172,7 +172,7 @@ const ProductActions = ({
           actions: [
             {
               icon: <Trash />,
-              label: t("general.remove"),
+              label: t("actions.remove"),
               onClick: handleRemove,
             },
           ],

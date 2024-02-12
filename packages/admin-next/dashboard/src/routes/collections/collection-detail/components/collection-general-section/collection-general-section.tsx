@@ -42,7 +42,7 @@ export const CollectionGeneralSection = ({
               actions: [
                 {
                   icon: <PencilSquare />,
-                  label: t("general.edit"),
+                  label: t("actions.edit"),
                   to: `/collections/${collection.id}/edit`,
                 },
               ],
@@ -51,7 +51,7 @@ export const CollectionGeneralSection = ({
               actions: [
                 {
                   icon: <Trash />,
-                  label: t("general.delete"),
+                  label: t("actions.delete"),
                   onClick: handleDelete,
                 },
               ],
@@ -64,12 +64,6 @@ export const CollectionGeneralSection = ({
           {t("fields.handle")}
         </Text>
         <Text size="small">/{collection.handle}</Text>
-      </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" leading="compact" weight="plus">
-          {t("fields.products")}
-        </Text>
-        <Text size="small">{collection.products?.length || "-"}</Text>
       </div>
     </Container>
   )

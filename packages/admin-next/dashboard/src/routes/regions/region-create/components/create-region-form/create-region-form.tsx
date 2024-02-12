@@ -80,11 +80,11 @@ export const CreateRegionForm = ({ subscribe }: CreateRegionFormProps) => {
           <div className="flex items-center justify-end gap-x-2">
             <FocusModal.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
             </FocusModal.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
         </FocusModal.Header>

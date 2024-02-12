@@ -10,9 +10,9 @@ import {
 import { useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
-type UseDataTableProps<TData, TValue> = {
+type UseDataTableProps<TData> = {
   data?: TData[]
-  columns: ColumnDef<TData, TValue>[]
+  columns: ColumnDef<TData, any>[]
   count?: number
   pageSize?: number
   enableRowSelection?: boolean | ((row: Row<TData>) => boolean)
@@ -22,7 +22,7 @@ type UseDataTableProps<TData, TValue> = {
   prefix?: string
 }
 
-export const useDataTable = <TData, TValue>({
+export const useDataTable = <TData,>({
   data = [],
   columns,
   count = 0,
@@ -32,7 +32,7 @@ export const useDataTable = <TData, TValue>({
   getRowId,
   meta,
   prefix,
-}: UseDataTableProps<TData, TValue>) => {
+}: UseDataTableProps<TData>) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const offsetKey = `${prefix ? `${prefix}_` : ""}offset`
   const offset = searchParams.get(offsetKey)

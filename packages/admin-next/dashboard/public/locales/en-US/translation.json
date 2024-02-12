@@ -3,16 +3,7 @@
   "general": {
     "ascending": "Ascending",
     "descending": "Descending",
-    "cancel": "Cancel",
-    "close": "Close",
-    "save": "Save",
-    "create": "Create",
-    "delete": "Delete",
-    "invite": "Invite",
-    "edit": "Edit",
-    "confirm": "Confirm",
     "add": "Add",
-    "continue": "Continue",
     "start": "Start",
     "end": "End",
     "apply": "Apply",
@@ -32,9 +23,7 @@
     "disabled": "Disabled",
     "expired": "Expired",
     "active": "Active",
-    "revoke": "Revoke",
     "revoked": "Revoked",
-    "remove": "Remove",
     "admin": "Admin",
     "store": "Store",
     "items_one": "{{count}} item",
@@ -50,6 +39,16 @@
     "noRecordsMessage": "There are no records to show",
     "unsavedChangesTitle": "Are you sure you want to leave this page?",
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page."
+  },
+  "actions": {
+    "create": "Create",
+    "delete": "Delete",
+    "remove": "Remove",
+    "revoke": "Revoke",
+    "cancel": "Cancel",
+    "save": "Save",
+    "continue": "Continue",
+    "edit": "Edit"
   },
   "products": {
     "domain": "Products",
@@ -70,8 +69,7 @@
     "createCollectionHint": "Create a new collection to organize your products.",
     "editCollection": "Edit Collection",
     "handleTooltip": "The handle is used to reference the collection in your storefront. If not specified, the handle will be generated from the collection title.",
-    "deleteWarning_one": "You are about to delete {{count}} collection. This action cannot be undone.",
-    "deleteWarning_other": "You are about to delete {{count}} collections. This action cannot be undone.",
+    "deleteWarning": "You are about to delete the collection {{title}}. This action cannot be undone.",
     "removeSingleProductWarning": "You are about to remove the product {{title}} from the collection. This action cannot be undone.",
     "removeProductsWarning_one": "You are about to remove {{count}} product from the collection. This action cannot be undone.",
     "removeProductsWarning_other": "You are about to remove {{count}} products from the collection. This action cannot be undone."
@@ -110,7 +108,8 @@
     "guest": "Guest",
     "registered": "Registered",
     "firstSeen": "First seen",
-    "viewOrder": "View order"
+    "viewOrder": "View order",
+    "groups": "Groups"
   },
   "customerGroups": {
     "domain": "Customer Groups",
@@ -188,7 +187,9 @@
       "admin": "Admin",
       "developer": "Developer",
       "member": "Member"
-    }
+    },
+    "deleteUserWarning": "You are about to delete the user {{name}}. This action cannot be undone.",
+    "invite": "Invite"
   },
   "store": {
     "domain": "Store",
