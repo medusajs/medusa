@@ -1,6 +1,6 @@
 import { DateComparisonOperator } from "../common"
 
-export type UserDTO = {
+export interface UserDTO {
   id: string
   email: string
   first_name?: string | null
@@ -12,14 +12,14 @@ export type UserDTO = {
   deleted_at?: Date | null
 }
 
-export type FilterableUserProps = {
+export interface FilterableUserProps {
   id?: string | string[]
   email?: string | string[]
   first_name?: string | string[]
   last_name?: string | string[]
 }
 
-export type InviteDTO = {
+export interface InviteDTO {
   id: string
   email: string
   accepted: boolean
@@ -31,7 +31,7 @@ export type InviteDTO = {
   deleted_at?: Date | null
 }
 
-export type FilterableInviteProps = {
+export interface FilterableInviteProps {
   id?: string | string[]
   email?: string | string[]
   expires_at?: DateComparisonOperator
