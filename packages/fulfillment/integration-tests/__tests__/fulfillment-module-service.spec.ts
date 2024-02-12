@@ -168,10 +168,6 @@ describe("fulfillment module service", function () {
     )
   })
 
-  it("should create a collection of fulfillment sets with new service zones and existing service zones", async function () {
-    // TODO
-  })
-
   it("should create a new fulfillment set with new service zones and new geo zones", async function () {
     const data: CreateFulfillmentSetDTO = {
       name: "test",
@@ -297,9 +293,5 @@ describe("fulfillment module service", function () {
     expect(fulfillmentSets[0].service_zones[0].geo_zones[0].id).toEqual(
       fulfillmentSets[1].service_zones[0].geo_zones[0].id
     )
-  })
-
-  it("should create a collection of fulfillment sets with new service zones and existing service zones", async function () {
-    // TODO
   })
 })
