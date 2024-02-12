@@ -3,16 +3,7 @@
   "general": {
     "ascending": "Ascending",
     "descending": "Descending",
-    "cancel": "Cancel",
-    "close": "Close",
-    "save": "Save",
-    "create": "Create",
-    "delete": "Delete",
-    "invite": "Invite",
-    "edit": "Edit",
-    "confirm": "Confirm",
     "add": "Add",
-    "continue": "Continue",
     "start": "Start",
     "end": "End",
     "apply": "Apply",
@@ -30,10 +21,9 @@
     "details": "Details",
     "enabled": "Enabled",
     "disabled": "Disabled",
+    "expired": "Expired",
     "active": "Active",
-    "revoke": "Revoke",
     "revoked": "Revoked",
-    "remove": "Remove",
     "admin": "Admin",
     "store": "Store",
     "items_one": "{{count}} item",
@@ -49,6 +39,16 @@
     "noRecordsMessage": "There are no records to show",
     "unsavedChangesTitle": "Are you sure you want to leave this page?",
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page."
+  },
+  "actions": {
+    "create": "Create",
+    "delete": "Delete",
+    "remove": "Remove",
+    "revoke": "Revoke",
+    "cancel": "Cancel",
+    "save": "Save",
+    "continue": "Continue",
+    "edit": "Edit"
   },
   "products": {
     "domain": "Products",
@@ -69,8 +69,7 @@
     "createCollectionHint": "Create a new collection to organize your products.",
     "editCollection": "Edit Collection",
     "handleTooltip": "The handle is used to reference the collection in your storefront. If not specified, the handle will be generated from the collection title.",
-    "deleteWarning_one": "You are about to delete {{count}} collection. This action cannot be undone.",
-    "deleteWarning_other": "You are about to delete {{count}} collections. This action cannot be undone.",
+    "deleteWarning": "You are about to delete the collection {{title}}. This action cannot be undone.",
     "removeSingleProductWarning": "You are about to remove the product {{title}} from the collection. This action cannot be undone.",
     "removeProductsWarning_one": "You are about to remove {{count}} product from the collection. This action cannot be undone.",
     "removeProductsWarning_other": "You are about to remove {{count}} products from the collection. This action cannot be undone."
@@ -82,7 +81,22 @@
     "domain": "Inventory"
   },
   "giftCards": {
-    "domain": "Gift Cards"
+    "domain": "Gift Cards",
+    "editGiftCard": "Edit Gift Card",
+    "createGiftCard": "Create Gift Card",
+    "createGiftCardHint": "Manually create a gift card that can be used as a payment method in your store.",
+    "selectRegionFirst": "Select a region first",
+    "deleteGiftCardWarning": "You are about to delete the gift card {{code}}. This action cannot be undone.",
+    "balanceHigherThanValue": "The balance cannot be higher than the original amount.",
+    "balanceLowerThanZero": "The balance cannot be negative.",
+    "expiryDateHint": "Countries have different laws regarding gift card expiry dates. Make sure to check local regulations before setting an expiry date.",
+    "regionHint": "Changing the region of the gift card will also change its currency, potentially affecting its monetary value.",
+    "enabledHint": "Specify if the gift card is enabled or disabled.",
+    "balance": "Balance",
+    "currentBalance": "Current balance",
+    "initialBalance": "Initial balance",
+    "personalMessage": "Personal message",
+    "recipient": "Recipient"
   },
   "customers": {
     "domain": "Customers",
@@ -96,7 +110,8 @@
     "guest": "Guest",
     "registered": "Registered",
     "firstSeen": "First seen",
-    "viewOrder": "View order"
+    "viewOrder": "View order",
+    "groups": "Groups"
   },
   "customerGroups": {
     "domain": "Customer Groups",
@@ -174,7 +189,9 @@
       "admin": "Admin",
       "developer": "Developer",
       "member": "Member"
-    }
+    },
+    "deleteUserWarning": "You are about to delete the user {{name}}. This action cannot be undone.",
+    "invite": "Invite"
   },
   "store": {
     "domain": "Store",
@@ -337,6 +354,17 @@
     "salesChannel": "Sales Channel",
     "region": "Region",
     "role": "Role",
-    "sent": "Sent"
+    "sent": "Sent",
+    "salesChannels": "Sales Channels",
+    "product": "Product",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "true": "True",
+    "false": "False",
+    "giftCard": "Gift Card",
+    "tag": "Tag",
+    "dateIssued": "Date issued",
+    "issuedDate": "Issued date",
+    "expiryDate": "Expiry date"
   }
 }

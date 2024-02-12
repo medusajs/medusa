@@ -77,15 +77,15 @@ export const UserListTable = () => {
   }
 
   return (
-    <Container className="p-0 divide-y">
+    <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("users.domain")}</Heading>
         <Button size="small" variant="secondary" asChild>
-          <Link to="invite">{t("general.invite")}</Link>
+          <Link to="invite">{t("users.invite")}</Link>
         </Button>
       </div>
       {!noRecords && (
-        <div className="px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center justify-between px-6 py-4">
           <div></div>
           <div className="flex items-center gap-x-2">
             <Query />
@@ -117,7 +117,7 @@ export const UserListTable = () => {
                   return (
                     <Table.Row
                       key={headerGroup.id}
-                      className="[&_th]:w-1/3 [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap"
+                      className="[&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th]:w-1/3"
                     >
                       {headerGroup.headers.map((header) => {
                         return (
@@ -185,7 +185,7 @@ const UserActions = ({ user }: { user: Omit<User, "password_hash"> }) => {
           actions: [
             {
               icon: <PencilSquare />,
-              label: t("general.edit"),
+              label: t("actions.edit"),
               to: `${user.id}/edit`,
             },
           ],

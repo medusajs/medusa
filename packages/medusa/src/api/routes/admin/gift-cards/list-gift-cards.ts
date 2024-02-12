@@ -1,10 +1,10 @@
 import { IsInt, IsOptional, IsString } from "class-validator"
 
-import { GiftCardService } from "../../../../services"
 import { Type } from "class-transformer"
 import { pickBy } from "lodash"
-import { validator } from "../../../../utils/validator"
 import { isDefined } from "medusa-core-utils"
+import { GiftCardService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /admin/gift-cards
@@ -16,6 +16,7 @@ import { isDefined } from "medusa-core-utils"
  *   - (query) offset=0 {number} The number of gift cards to skip when retrieving the gift cards.
  *   - (query) limit=50 {number} Limit the number of gift cards returned.
  *   - (query) q {string} a term to search gift cards' code or display ID
+ *   - (query) order {string} A gift card field to sort-order the retrieved gift cards by.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetGiftCardsParams
@@ -135,4 +136,11 @@ export class AdminGetGiftCardsParams {
   @IsOptional()
   @IsString()
   q?: string
+
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
+  @IsOptional()
+  @IsString()
+  order?: string
 }
