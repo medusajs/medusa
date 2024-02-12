@@ -51,7 +51,7 @@ export type PaymentProviderSessionResponse = {
    * The data to be stored in the `data` field of the Payment Session to be created.
    * The `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.
    */
-  session_data: Record<string, unknown>
+  data: Record<string, unknown>
 }
 
 export type PaymentProviderAuthorizeResponse = {
@@ -62,7 +62,7 @@ export type PaymentProviderAuthorizeResponse = {
   /**
    * The `data` to be stored in the payment session's `data` field.
    */
-  data: PaymentProviderSessionResponse["session_data"]
+  data: PaymentProviderSessionResponse["data"]
 }
 
 export type PaymentProviderDataInput = {
@@ -124,9 +124,7 @@ export interface IPaymentProvider {
    */
   deletePayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<
-    PaymentProviderError | PaymentProviderSessionResponse["session_data"]
-  >
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
   /**
    * This method is used to authorize payment using the Payment Session.
@@ -161,9 +159,7 @@ export interface IPaymentProvider {
    */
   capturePayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<
-    PaymentProviderError | PaymentProviderSessionResponse["session_data"]
-  >
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
   /**
    * This method is used to refund a payment. This is typically triggered manually by the store operator from the admin. The refund amount might be the total amount or part of it.
@@ -177,9 +173,7 @@ export interface IPaymentProvider {
   refundPayment(
     paymentSessionData: Record<string, unknown>,
     refundAmount: number
-  ): Promise<
-    PaymentProviderError | PaymentProviderSessionResponse["session_data"]
-  >
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
   /**
    * This method is used to provide a uniform way of retrieving the payment information from the third-party provider.
@@ -191,9 +185,7 @@ export interface IPaymentProvider {
    */
   retrievePayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<
-    PaymentProviderError | PaymentProviderSessionResponse["session_data"]
-  >
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
   /**
    * This method is used to cancel a payment. This method is typically triggered by one of the following situations:
@@ -205,9 +197,7 @@ export interface IPaymentProvider {
    */
   cancelPayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<
-    PaymentProviderError | PaymentProviderSessionResponse["session_data"]
-  >
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
   /**
    * This method is used to get the status of a Payment or a Payment Session.

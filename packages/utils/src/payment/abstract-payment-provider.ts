@@ -79,9 +79,7 @@ export abstract class AbstractPaymentProvider implements IPaymentProvider {
 
   abstract capturePayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<
-    PaymentProviderError | PaymentProviderSessionResponse["session_data"]
-  >
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
   abstract authorizePayment(
     paymentSessionData: Record<string, unknown>,
@@ -90,15 +88,13 @@ export abstract class AbstractPaymentProvider implements IPaymentProvider {
     | PaymentProviderError
     | {
         status: PaymentSessionStatus
-        data: PaymentProviderSessionResponse["session_data"]
+        data: PaymentProviderSessionResponse["data"]
       }
   >
 
   abstract cancelPayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<
-    PaymentProviderError | PaymentProviderSessionResponse["session_data"]
-  >
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
   abstract initiatePayment(
     context: PaymentProviderContext
@@ -106,9 +102,7 @@ export abstract class AbstractPaymentProvider implements IPaymentProvider {
 
   abstract deletePayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<
-    PaymentProviderError | PaymentProviderSessionResponse["session_data"]
-  >
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
   abstract getPaymentStatus(
     paymentSessionData: Record<string, unknown>
@@ -117,15 +111,11 @@ export abstract class AbstractPaymentProvider implements IPaymentProvider {
   abstract refundPayment(
     paymentSessionData: Record<string, unknown>,
     refundAmount: number
-  ): Promise<
-    PaymentProviderError | PaymentProviderSessionResponse["session_data"]
-  >
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
   abstract retrievePayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<
-    PaymentProviderError | PaymentProviderSessionResponse["session_data"]
-  >
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
   abstract updatePayment(
     context: PaymentProviderContext

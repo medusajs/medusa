@@ -69,7 +69,7 @@ export default class PaymentProviderService {
   async createSession(
     providerId: string,
     sessionInput: PaymentProviderContext
-  ): Promise<PaymentProviderSessionResponse["session_data"]> {
+  ): Promise<PaymentProviderSessionResponse["data"]> {
     const provider = this.retrieveProvider(providerId)
 
     if (
@@ -88,7 +88,7 @@ export default class PaymentProviderService {
       this.throwPaymentProviderError(paymentResponse)
     }
 
-    return (paymentResponse as PaymentProviderSessionResponse).session_data
+    return (paymentResponse as PaymentProviderSessionResponse).data
   }
 
   async updateSession(
@@ -103,7 +103,7 @@ export default class PaymentProviderService {
       this.throwPaymentProviderError(paymentResponse)
     }
 
-    return (paymentResponse as PaymentProviderSessionResponse)?.session_data
+    return (paymentResponse as PaymentProviderSessionResponse)?.data
   }
 
   async deleteSession(input: PaymentProviderDataInput): Promise<void> {

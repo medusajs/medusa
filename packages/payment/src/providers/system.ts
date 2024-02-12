@@ -24,7 +24,7 @@ export class SystemProviderService extends AbstractPaymentProvider {
   async initiatePayment(
     context: PaymentProviderContext
   ): Promise<PaymentProviderSessionResponse> {
-    return { session_data: {} }
+    return { data: {} }
   }
 
   async getPaymentStatus(
@@ -43,7 +43,7 @@ export class SystemProviderService extends AbstractPaymentProvider {
     | PaymentProviderError
     | {
         status: PaymentSessionStatus
-        data: PaymentProviderSessionResponse["session_data"]
+        data: PaymentProviderSessionResponse["data"]
       }
   > {
     return { data: {}, status: PaymentSessionStatus.AUTHORIZED }
@@ -52,7 +52,7 @@ export class SystemProviderService extends AbstractPaymentProvider {
   async updatePayment(
     _
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
-    return { session_data: {} } as PaymentProviderSessionResponse
+    return { data: {} } as PaymentProviderSessionResponse
   }
 
   async deletePayment(_): Promise<Record<string, unknown>> {
