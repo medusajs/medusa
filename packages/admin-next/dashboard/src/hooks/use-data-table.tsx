@@ -26,7 +26,7 @@ export const useDataTable = <TData,>({
   data = [],
   columns,
   count = 0,
-  pageSize: _pageSize = 50,
+  pageSize: _pageSize = 20,
   enablePagination = true,
   enableRowSelection = false,
   getRowId,

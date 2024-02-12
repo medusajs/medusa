@@ -179,7 +179,7 @@ export const CreateGiftCardForm = ({ subscribe }: CreateGiftCardFormProps) => {
                 render={({ field: { onChange, ...field } }) => {
                   return (
                     <Form.Item>
-                      <Form.Label>{t("fields.balance")}</Form.Label>
+                      <Form.Label>{t("giftCards.balance")}</Form.Label>
                       <Form.Control>
                         {!currencyCode || !nativeSymbol ? (
                           <Tooltip content={t("giftCards.selectRegionFirst")}>

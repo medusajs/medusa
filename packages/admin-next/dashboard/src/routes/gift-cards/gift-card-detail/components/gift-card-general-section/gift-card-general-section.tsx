@@ -72,6 +72,8 @@ export const GiftCardGeneralSection = ({
     text = t("general.expired")
   }
 
+  const recipient = giftCard.metadata?.email as string | undefined
+
   const currencyCode = giftCard.region.currency_code.toUpperCase()
   const nativeSymbol = currencies[currencyCode].symbol_native
 
@@ -128,6 +130,14 @@ export const GiftCardGeneralSection = ({
             giftCard.value,
             currencyCode
           )} ${currencyCode}`}
+        </Text>
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("giftCards.recipient")}
+        </Text>
+        <Text size="small" leading="compact">
+          {recipient ?? "-"}
         </Text>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">

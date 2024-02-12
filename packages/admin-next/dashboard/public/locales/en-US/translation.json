@@ -92,9 +92,11 @@
     "expiryDateHint": "Countries have different laws regarding gift card expiry dates. Make sure to check local regulations before setting an expiry date.",
     "regionHint": "Changing the region of the gift card will also change its currency, potentially affecting its monetary value.",
     "enabledHint": "Specify if the gift card is enabled or disabled.",
+    "balance": "Balance",
     "currentBalance": "Current balance",
     "initialBalance": "Initial balance",
-    "personalMessage": "Personal message"
+    "personalMessage": "Personal message",
+    "recipient": "Recipient"
   },
   "customers": {
     "domain": "Customers",
@@ -363,8 +365,6 @@
     "tag": "Tag",
     "dateIssued": "Date issued",
     "issuedDate": "Issued date",
-    "expiryDate": "Expiry date",
-    "balance": "Balance",
-    "originalAmount": "Original amount"
+    "expiryDate": "Expiry date"
   }
 }

@@ -60,7 +60,7 @@ export const useGiftCardTableColumns = () => {
         },
       }),
       columnHelper.accessor("value", {
-        header: t("fields.originalAmount"),
+        header: t("giftCards.initialBalance"),
         cell: ({ getValue, row }) => {
           const currencyCode = row.original.region.currency_code
           const value = getValue()
@@ -69,7 +69,7 @@ export const useGiftCardTableColumns = () => {
         },
       }),
       columnHelper.accessor("balance", {
-        header: t("fields.balance"),
+        header: t("giftCards.currentBalance"),
         cell: ({ getValue, row }) => {
           const currencyCode = row.original.region.currency_code
           const value = getValue()
