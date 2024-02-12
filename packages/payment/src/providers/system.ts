@@ -9,10 +9,6 @@ import { AbstractPaymentProvider } from "@medusajs/utils"
 export class SystemProviderService extends AbstractPaymentProvider {
   static identifier = "system"
 
-  async createPayment(_): Promise<Record<string, unknown>> {
-    return {}
-  }
-
   async getStatus(_): Promise<string> {
     return "authorized"
   }

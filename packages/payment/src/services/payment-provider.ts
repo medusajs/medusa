@@ -115,22 +115,6 @@ export default class PaymentProviderService {
     }
   }
 
-  async createPayment(
-    input: PaymentProviderDataInput
-  ): Promise<Record<string, unknown>> {
-    const provider = this.retrieveProvider(input.provider_id)
-
-    /**
-     * NOTE: JUST RETRIEVE
-     */
-    const paymentData = await provider.retrievePayment(input.data)
-    if (isPaymentProviderError(paymentData)) {
-      this.throwPaymentProviderError(paymentData)
-    }
-
-    return paymentData as Record<string, unknown>
-  }
-
   async authorizePayment(
     input: PaymentProviderDataInput,
     context: Record<string, unknown>

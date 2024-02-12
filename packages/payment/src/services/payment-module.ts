@@ -344,36 +344,6 @@ export default class PaymentModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  async createPayment(
-    data: CreatePaymentDTO,
-    @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentDTO> {
-    const session = await this.paymentSessionService_.retrieve(
-      data.payment_session_id,
-      { select: ["id", "data", "provider_id"] },
-      sharedContext
-    )
-
-    // just retrieve latest data from provider
-    const paymentData = await this.paymentProviderService_.createPayment({
-      provider_id: data.provider_id,
-      data: session.data,
-    })
-
-    const payment = await this.paymentService_.create(
-      {
-        ...data,
-        payment_collection: data.payment_collection_id,
-        payment_session: data.payment_session_id,
-        data: paymentData,
-      },
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<PaymentDTO>(payment)
-  }
-
-  @InjectTransactionManager("baseRepository_")
   async updatePayment(
     data: UpdatePaymentDTO,
     @MedusaContext() sharedContext?: Context

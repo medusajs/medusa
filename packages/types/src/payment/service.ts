@@ -98,11 +98,6 @@ export interface IPaymentModuleService extends IModuleService {
 
   /* ********** PAYMENT ********** */
 
-  createPayment(
-    data: CreatePaymentDTO,
-    sharedContext?: Context
-  ): Promise<PaymentDTO>
-
   updatePayment(
     data: UpdatePaymentDTO,
     sharedContext?: Context
