@@ -295,5 +295,20 @@ describe("fulfillment module service", function () {
         fulfillmentSets[1].service_zones[0].geo_zones[0].id
       )
     })
+
+    describe("should fail", () => {
+      it(`on duplicated fulfillment set name`, async function () {
+        const data: CreateFulfillmentSetDTO = {
+          name: "test",
+          type: "test-type",
+        }
+
+        await service.create(data)
+        await service.create(data)
+
+        const ful = await service.list({})
+        console.log(JSON.stringify(ful, null, 2))
+      })
+    })
   })
 })
