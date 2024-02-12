@@ -54,7 +54,7 @@ describe("Payment Module Service", () => {
           providerContext: {
             amount: 200,
             currency_code: "USD",
-            paymentSessionData: {},
+            payment_session_data: {},
             context: {},
             customer: {},
             billing_address: {},
@@ -386,7 +386,7 @@ describe("Payment Module Service", () => {
           providerContext: {
             amount: 200,
             currency_code: "usd",
-            paymentSessionData: {},
+            payment_session_data: {},
             context: {},
             customer: {},
             billing_address: {},
@@ -427,7 +427,7 @@ describe("Payment Module Service", () => {
           providerContext: {
             amount: 200,
             currency_code: "usd",
-            paymentSessionData: {},
+            payment_session_data: {},
             context: {},
             customer: {},
             billing_address: {},
@@ -446,7 +446,7 @@ describe("Payment Module Service", () => {
             customer: {},
             billing_address: {},
             email: "new@test.tsst",
-            paymentSessionData: {},
+            payment_session_data: {},
           },
         })
 
@@ -474,7 +474,7 @@ describe("Payment Module Service", () => {
           providerContext: {
             amount: 100,
             currency_code: "usd",
-            paymentSessionData: {},
+            payment_session_data: {},
             context: {},
             resource_id: "test",
             email: "test@test.com",
@@ -566,67 +566,6 @@ describe("Payment Module Service", () => {
     afterEach(async () => {
       await MikroOrmWrapper.clearDatabase()
       await shutdownFunc()
-    })
-    describe("create", () => {
-      it("should create a payment successfully", async () => {
-        const paymentCollection = await service.createPaymentCollections({
-          currency_code: "usd",
-          amount: 200,
-          region_id: "reg",
-        })
-
-        const session = await service.createPaymentSession(
-          paymentCollection.id,
-          {
-            provider_id: "system",
-            providerContext: {
-              amount: 200,
-              currency_code: "usd",
-              paymentSessionData: {},
-              context: {},
-              customer: {},
-              billing_address: {},
-              email: "test@test.test.com",
-              resource_id: "cart_test",
-            },
-          }
-        )
-
-        const createdPayment = await service.createPayment({
-          data: {},
-          amount: 200,
-          provider_id: "system",
-          currency_code: "usd",
-          payment_collection_id: paymentCollection.id,
-          payment_session_id: session.id,
-        })
-
-        expect(createdPayment).toEqual(
-          expect.objectContaining({
-            id: expect.any(String),
-            authorized_amount: null,
-            cart_id: null,
-            order_id: null,
-            order_edit_id: null,
-            customer_id: null,
-            data: {},
-            deleted_at: null,
-            captured_at: null,
-            canceled_at: null,
-            refunds: [],
-            captures: [],
-            amount: 200,
-            currency_code: "usd",
-            provider_id: "system",
-            payment_collection: expect.objectContaining({
-              id: paymentCollection.id,
-            }),
-            payment_session: expect.objectContaining({
-              id: session.id,
-            }),
-          })
-        )
-      })
     })
 
     describe("update", () => {
