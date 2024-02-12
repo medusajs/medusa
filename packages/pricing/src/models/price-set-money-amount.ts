@@ -4,11 +4,10 @@ import {
   Collection,
   Entity,
   Filter,
-  Index,
   ManyToOne,
-  OnInit,
   OneToMany,
   OneToOne,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   PrimaryKeyType,
@@ -84,7 +83,11 @@ export default class PriceSetMoneyAmount {
   })
   updated_at: Date
 
-  @Property({ columnType: "timestamptz", nullable: true , index: "IDX_price_set_money_amount_deleted_at"})
+  @Property({
+    columnType: "timestamptz",
+    nullable: true,
+    index: "IDX_price_set_money_amount_deleted_at",
+  })
   deleted_at: Date | null
 
   @BeforeCreate()
