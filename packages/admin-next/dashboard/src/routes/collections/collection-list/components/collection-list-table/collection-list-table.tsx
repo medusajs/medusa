@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useCollectionTableColumns } from "./use-collection-table-columns"
+import { useCollectionTableFilters } from "./use-collection-table-filters"
 import { useCollectionTableQuery } from "./use-collection-table-query"
 
 const PAGE_SIZE = 20
@@ -22,6 +23,7 @@ export const CollectionListTable = () => {
     }
   )
 
+  const filters = useCollectionTableFilters()
   const columns = useCollectionTableColumns()
 
   const { table } = useDataTable({
@@ -52,6 +54,7 @@ export const CollectionListTable = () => {
         columns={columns}
         rowCount={PAGE_SIZE}
         count={count}
+        filters={filters}
         orderBy={["title", "handle", "created_at", "updated_at"]}
         search
         navigateTo={(row) => `/collections/${row.original.id}`}
