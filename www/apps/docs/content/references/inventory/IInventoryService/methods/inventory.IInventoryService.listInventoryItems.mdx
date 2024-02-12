@@ -17,7 +17,7 @@ This method is used to retrieve a paginated list of inventory items along with t
 To retrieve a list of inventory items using their IDs:
 
 ```ts
-import { 
+import {
   initialize as initializeInventoryModule,
 } from "@medusajs/inventory"
 
@@ -35,7 +35,7 @@ async function retrieveInventoryItems (ids: string[]) {
 To specify relations that should be retrieved within the inventory items:
 
 ```ts
-import { 
+import {
   initialize as initializeInventoryModule,
 } from "@medusajs/inventory"
 
@@ -55,7 +55,7 @@ async function retrieveInventoryItems (ids: string[]) {
 By default, only the first `10` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
 
 ```ts
-import { 
+import {
   initialize as initializeInventoryModule,
 } from "@medusajs/inventory"
 

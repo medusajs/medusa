@@ -1,5 +1,11 @@
 # @medusajs/client-types
 
+## 0.2.9
+
+### Patch Changes
+
+- [#6258](https://github.com/medusajs/medusa/pull/6258) [`90cff0777`](https://github.com/medusajs/medusa/commit/90cff0777fd351771f3713bf84f4c327c64d276c) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Adds support for ordering GET /admin/orders
+
 ## 0.2.8
 
 ### Patch Changes

@@ -1,4 +1,4 @@
-export function generatePostgresAlterColummnsStatement(
+export function generatePostgresAlterColummnIfExistStatement(
   tableName: string,
   columns: string[],
   alterExpression: string
