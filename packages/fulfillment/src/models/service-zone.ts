@@ -32,6 +32,15 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
+const nameIndexName = "IDX_service_zone_name_unique"
+const nameIndexStatement = createPsqlIndexStatementHelper({
+  name: nameIndexName,
+  tableName: "service_zone",
+  columns: "name",
+  unique: true,
+  where: "deleted_at IS NOT NULL",
+})
+
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ServiceZone {
@@ -41,6 +50,10 @@ export default class ServiceZone {
   id: string
 
   @Property({ columnType: "text" })
+  @Index({
+    name: nameIndexName,
+    expression: nameIndexStatement,
+  })
   name: string
 
   @Property({ columnType: "jsonb", nullable: true })

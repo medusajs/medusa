@@ -5,6 +5,7 @@
  * @param columns The columns to index
  * @param type The type of index (e.g GIN, GIST, BTREE, etc)
  * @param where The where clause
+ * @param unique If the index should be a unique index
  *
  * @example
  * createPsqlIndexStatementHelper({
@@ -32,16 +33,19 @@ export function createPsqlIndexStatementHelper({
   columns,
   type,
   where,
+  unique,
 }: {
   name: string
   tableName: string
   columns: string | string[]
   type?: string
   where?: string
+  unique?: boolean
 }) {
   columns = Array.isArray(columns) ? columns.join(", ") : columns
   const typeStr = type ? ` USING ${type}` : ""
   const optionsStr = where ? ` WHERE ${where}` : ""
+  const uniqueStr = unique ? " UNIQUE" : ""
 
-  return `CREATE INDEX IF NOT EXISTS ${name} ON ${tableName}${typeStr} (${columns})${optionsStr}`
+  return `CREATE${uniqueStr} INDEX IF NOT EXISTS ${name} ON ${tableName}${typeStr} (${columns})${optionsStr}`
 }

@@ -3,7 +3,7 @@ import { CreateServiceZoneDTO } from "./service-zone"
 export interface CreateFulfillmentSetDTO {
   name: string
   type: string
-  service_zones: Omit<CreateServiceZoneDTO, "fulfillment_set_id">[]
+  service_zones?: (CreateServiceZoneDTO | { id: string })[]
 }
 
 export interface UpdateFulfillmentSetDTO

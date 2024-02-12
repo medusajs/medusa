@@ -11,17 +11,21 @@ import {
 import { InjectTransactionManager, ModulesSdkUtils } from "@medusajs/utils"
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { FulfillmentSet, ServiceZone, ShippingOption } from "@models"
+import { FulfillmentSet, GeoZone, ServiceZone, ShippingOption } from "@models"
 
 const generateMethodForModels = [ServiceZone, ShippingOption]
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  fulfillmentService: ModulesSdkTypes.InternalModuleService<any>
+  fulfillmentSetService: ModulesSdkTypes.InternalModuleService<any>
+  serviceZoneService: ModulesSdkTypes.InternalModuleService<any>
+  geoZoneService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 export default class FulfillmentModuleService<
-    TEntity extends FulfillmentSet = FulfillmentSet
+    TEntity extends FulfillmentSet = FulfillmentSet,
+    TServiceZoneEntity extends ServiceZone = ServiceZone,
+    TGeoZoneEntity extends GeoZone = GeoZone
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -35,16 +39,25 @@ export default class FulfillmentModuleService<
   implements IFulfillmentModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly fulfillmentService_: ModulesSdkTypes.InternalModuleService<TEntity>
+  protected readonly fulfillmentSetService_: ModulesSdkTypes.InternalModuleService<TEntity>
+  protected readonly serviceZoneService_: ModulesSdkTypes.InternalModuleService<TServiceZoneEntity>
+  protected readonly geoZoneService_: ModulesSdkTypes.InternalModuleService<TGeoZoneEntity>
 
   constructor(
-    { baseRepository, fulfillmentService }: InjectedDependencies,
+    {
+      baseRepository,
+      fulfillmentSetService,
+      serviceZoneService,
+      geoZoneService,
+    }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
     super(...arguments)
     this.baseRepository_ = baseRepository
-    this.fulfillmentService_ = fulfillmentService
+    this.fulfillmentSetService_ = fulfillmentSetService
+    this.serviceZoneService_ = serviceZoneService
+    this.geoZoneService_ = geoZoneService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -69,7 +82,125 @@ export default class FulfillmentModuleService<
   ): Promise<
     FulfillmentTypes.FulfillmentSetDTO | FulfillmentTypes.FulfillmentSetDTO[]
   > {
-    return []
+    const data_: FulfillmentTypes.CreateFulfillmentSetDTO[] = Array.isArray(
+      data
+    )
+      ? data
+      : [data]
+
+    const fulfillmentSetMap = new Map<
+      string,
+      FulfillmentTypes.CreateFulfillmentSetDTO
+    >()
+
+    const fulfillmentSetServiceZonesMap = new Map<
+      string,
+      Map<
+        string,
+        Required<FulfillmentTypes.CreateFulfillmentSetDTO>["service_zones"][number]
+      >
+    >()
+
+    const serviceZoneToCreate: FulfillmentTypes.CreateServiceZoneDTO[] = []
+
+    const serviceZoneIds = data_
+      .map(({ service_zones }) => service_zones?.map(({ id }: any) => id))
+      .flat()
+      .filter(Boolean)
+
+    let existingServiceZones: TServiceZoneEntity[] = []
+    let existingServiceZonesMap = new Map()
+    if (serviceZoneIds.length) {
+      existingServiceZones = await this.serviceZoneService_.list(
+        {
+          id: serviceZoneIds,
+        },
+        {
+          select: ["id", "name"],
+        },
+        sharedContext
+      )
+
+      existingServiceZonesMap = new Map(
+        existingServiceZones.map((serviceZone) => [serviceZone.id, serviceZone])
+      )
+    }
+
+    data_.forEach(({ service_zones, ...fulfillmentSetDataOnly }) => {
+      fulfillmentSetMap.set(fulfillmentSetDataOnly.name, fulfillmentSetDataOnly)
+
+      /**
+       * If there is any service zone to process
+       * store the service zones to create while populating the fulfillment set service zone map
+       * in order to be able after creating the service zones to re update the map with the
+       * newly create service zones and then assign them to the fulfillment sets to be
+       * to create.
+       */
+
+      // TODO manage the geo zones as well
+
+      if (service_zones?.length) {
+        const serviceZoneTuple: [
+          string,
+          Required<FulfillmentTypes.CreateFulfillmentSetDTO>["service_zones"][number]
+        ][] = service_zones.map((serviceZone) => {
+          let existingZone =
+            "id" in serviceZone
+              ? existingServiceZonesMap.get(serviceZone.id)!
+              : null
+          if (!("id" in serviceZone)) {
+            serviceZoneToCreate.push(serviceZone)
+          }
+
+          const serviceZoneIdentifier =
+            "id" in serviceZone ? serviceZone.id : serviceZone.name
+
+          return [serviceZoneIdentifier, existingZone ?? serviceZone]
+        })
+
+        fulfillmentSetServiceZonesMap.set(
+          fulfillmentSetDataOnly.name,
+          new Map(serviceZoneTuple)
+        )
+      }
+    })
+
+    if (serviceZoneToCreate.length) {
+      const createdServiceZones = await this.serviceZoneService_.create(
+        serviceZoneToCreate,
+        sharedContext
+      )
+      const createdServiceZoneMap = new Map(
+        createdServiceZones.map((serviceZone: ServiceZone) => [
+          serviceZone.name,
+          serviceZone,
+        ])
+      )
+
+      for (const [
+        fulfillmentSetName,
+        serviceZoneToCreateMap,
+      ] of fulfillmentSetServiceZonesMap) {
+        ;[...createdServiceZoneMap.values()].forEach((serviceZone) => {
+          if (serviceZoneToCreateMap.has(serviceZone.name)) {
+            serviceZoneToCreateMap.set(serviceZone.name, serviceZone)
+          }
+        })
+
+        const fulfillmentSet = fulfillmentSetMap.get(fulfillmentSetName)!
+        fulfillmentSet.service_zones = [...serviceZoneToCreateMap.values()]
+        fulfillmentSetMap.set(fulfillmentSetName, fulfillmentSet)
+      }
+    }
+
+    const createdFulfillmentSets = await this.fulfillmentSetService_.create(
+      [...fulfillmentSetMap.values()],
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize(createdFulfillmentSets, {
+      populate: true,
+    })
   }
 
   createServiceZones(
