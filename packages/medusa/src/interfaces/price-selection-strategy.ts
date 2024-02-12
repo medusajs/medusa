@@ -225,7 +225,7 @@ export abstract class AbstractPriceSelectionStrategy
   /**
    * You can use the `constructor` of your price-selection strategy to access the different services in Medusa through dependency injection.
    *
-   * @param {MedusaContainer} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.
+   * @param {Record<string, unknown>} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.
    * @param {Record<string, unknown>} config - If this price-selection strategy is created in a plugin, the plugin's options are passed in this parameter.
    *
    * @example
@@ -254,7 +254,7 @@ export abstract class AbstractPriceSelectionStrategy
    * export default  MyStrategy
    */
   protected constructor(
-    protected readonly container: MedusaContainer,
+    protected readonly container: Record<string, unknown>,
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
   ) {
     super(container, config)

@@ -1,8 +1,9 @@
 import {
-  MODULE_PACKAGE_NAMES,
   MedusaApp,
+  MedusaAppMigrateUp,
   MedusaAppOutput,
   MedusaModule,
+  MODULE_PACKAGE_NAMES,
   Modules,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
@@ -12,9 +13,12 @@ import {
   MedusaContainer,
   ModuleDefinition,
 } from "@medusajs/types"
-import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
-
-import { ContainerRegistrationKeys, isObject } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  FlagRouter,
+  isObject,
+  MedusaV2Flag,
+} from "@medusajs/utils"
 import { asValue } from "awilix"
 import { remoteQueryFetchData } from ".."
 import { joinerConfig } from "../joiner-config"
@@ -35,6 +39,67 @@ export function mergeDefaultModules(
   }
 
   return configModules
+}
+
+export async function migrateMedusaApp(
+  {
+    configModule,
+    container,
+  }: {
+    configModule: {
+      modules?: CommonTypes.ConfigModule["modules"]
+      projectConfig: CommonTypes.ConfigModule["projectConfig"]
+    }
+    container: MedusaContainer
+  },
+  config = { registerInContainer: true }
+): Promise<void> {
+  const featureFlagRouter = container.resolve<FlagRouter>("featureFlagRouter")
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
+  const injectedDependencies = {
+    [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
+      ContainerRegistrationKeys.PG_CONNECTION
+    ),
+  }
+
+  const sharedResourcesConfig = {
+    database: {
+      clientUrl: configModule.projectConfig.database_url,
+      driverOptions: configModule.projectConfig.database_extra,
+    },
+  }
+
+  const configModules = mergeDefaultModules(configModule.modules)
+
+  // Apply default options to legacy modules
+  for (const moduleKey of Object.keys(configModules)) {
+    if (!ModulesDefinition[moduleKey].isLegacy) {
+      continue
+    }
+
+    if (isObject(configModules[moduleKey])) {
+      ;(
+        configModules[moduleKey] as Partial<InternalModuleDeclaration>
+      ).options ??= {
+        database: {
+          type: "postgres",
+          url: configModule.projectConfig.database_url,
+          extra: configModule.projectConfig.database_extra,
+          schema: configModule.projectConfig.database_schema,
+          logging: configModule.projectConfig.database_logging,
+        },
+      }
+    }
+  }
+
+  await MedusaAppMigrateUp({
+    modulesConfig: configModules,
+    servicesConfig: joinerConfig,
+    remoteFetchData: remoteQueryFetchData(container),
+    sharedContainer: container,
+    sharedResourcesConfig,
+    injectedDependencies,
+  })
 }
 
 export const loadMedusaApp = async (
