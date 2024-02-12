@@ -49,6 +49,6 @@ export function createPsqlIndexStatementHelper({
   if (!unique) {
     return `CREATE INDEX IF NOT EXISTS "${name}" ON "${tableName}"${typeStr} (${columns})${optionsStr}`
   } else {
-    return `ALTER TABLE IF EXISTS "${tableName}" ADD CONSTRAINT "${name}" UNIQUE (${columns})`
+    return `ALTER TABLE IF EXISTS "${tableName}" ADD CONSTRAINT "${name}" UNIQUE (${columns})${optionsStr}`
   }
 }
