@@ -41,7 +41,7 @@ export interface IWorkflowEngineService extends IModuleService {
         },
     config?: FindConfig<WorkflowExecutionDTO>,
     sharedContext?: Context
-  )
+  ): Promise<WorkflowExecutionDTO>
 
   listWorkflowExecution(
     filters?: FilterableWorkflowExecutionProps,
