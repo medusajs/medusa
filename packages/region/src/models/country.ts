@@ -3,15 +3,20 @@ import {
   Entity,
   ManyToOne,
   OnInit,
+  OptionalProps,
   PrimaryKey,
-  Property
+  Property,
 } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
 import Region from "./region"
 
+type CountryOptionalProps = "region" | "region_id"
+
 @Entity({ tableName: "region_country" })
 export default class Country {
+  [OptionalProps]?: CountryOptionalProps
+
   @PrimaryKey({ columnType: "text" })
   id: string
 
@@ -31,14 +36,14 @@ export default class Country {
   display_name: string
 
   @Property({ columnType: "text", nullable: true })
-  region_id?: string
+  region_id?: string | null = null
 
   @ManyToOne({
     entity: () => Region,
     index: "IDX_country_region_id",
     nullable: true,
   })
-  region?: Region | null = null
+  region?: Region | null
 
   @BeforeCreate()
   onCreate() {

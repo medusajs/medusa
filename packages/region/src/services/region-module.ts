@@ -23,7 +23,11 @@ import {
 import { Country, Currency, Region } from "@models"
 
 import { DefaultsUtils } from "@medusajs/utils"
-import { CreateCountryDTO, CreateCurrencyDTO } from "@types"
+import {
+  CreateCountryDTO,
+  CreateCurrencyDTO,
+  CreateRegionDTO as InternalCreateRegionDTO,
+} from "@types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 const COUNTRIES_LIMIT = 1000
@@ -104,42 +108,6 @@ export default class RegionModuleService<
     )
   }
 
-  private validateAndSetCountriesForRegion(
-    region: CreateRegionDTO,
-    countriesInDb: Map<string, TCountry>,
-    countriesToAdd: string[]
-  ) {
-    const notInDb = countriesToAdd.filter(
-      (c) => !countriesInDb.has(c.toLowerCase())
-    )
-
-    if (notInDb.length) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Countries with codes ${countriesToAdd.join(", ")} does not exist`
-      )
-    }
-
-    const regionCountries = countriesToAdd.map((code) => {
-      const country = countriesInDb.get(code.toLowerCase())
-
-      if (country?.region_id) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Country with code ${code} is already assigned to a region`
-        )
-      }
-
-      return country
-    }) as unknown as TCountry[]
-
-    if (regionCountries?.length) {
-      // TODO: Fix TS error
-      // @ts-ignore
-      region.countries = regionCountries
-    }
-  }
-
   @InjectTransactionManager("baseRepository_")
   async create_(
     data: CreateRegionDTO[],
@@ -151,10 +119,6 @@ export default class RegionModuleService<
       sharedContext
     )
 
-    const regionCountriesMap = new Map<string, string[]>(
-      data.map((d) => [d.name, d?.countries || []])
-    )
-
     const countriesInDb = await this.countryService_.list(
       { iso_2: data.map((d) => d.countries).flat() },
       { select: ["iso_2", "region_id"] },
@@ -162,19 +126,42 @@ export default class RegionModuleService<
     )
 
     const countriesInDbMap = new Map(countriesInDb.map((c) => [c.iso_2, c]))
+
     const currencyMap = new Map(
       currencies.map((c) => [c.code.toLowerCase(), c])
     )
 
+    const toCreate: InternalCreateRegionDTO[] = []
     for (const region of data) {
-      const countriesToAdd = regionCountriesMap.get(region.name)
+      const reg = { ...region } as InternalCreateRegionDTO
+      const countriesToAdd = region.countries || []
 
       if (countriesToAdd) {
-        this.validateAndSetCountriesForRegion(
-          region,
-          countriesInDbMap,
-          countriesToAdd
+        const notInDb = countriesToAdd.filter(
+          (c) => !countriesInDbMap.has(c.toLowerCase())
         )
+
+        if (notInDb.length) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Countries with codes ${countriesToAdd.join(", ")} does not exist`
+          )
+        }
+
+        const regionCountries = countriesToAdd.map((code) => {
+          const country = countriesInDbMap.get(code.toLowerCase())
+
+          if (country?.region_id) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Country with code ${code} is already assigned to a region`
+            )
+          }
+
+          return country
+        }) as unknown as TCountry[]
+
+        reg.countries = regionCountries
       }
 
       const lowerCasedCurrency = region.currency_code.toLowerCase()
@@ -185,10 +172,12 @@ export default class RegionModuleService<
         )
       }
 
-      region.currency_code = lowerCasedCurrency
+      reg.currency_code = lowerCasedCurrency
+
+      toCreate.push(reg as InternalCreateRegionDTO)
     }
 
-    const result = await this.regionService_.create(data, sharedContext)
+    const result = await this.regionService_.create(toCreate, sharedContext)
 
     return result
   }
