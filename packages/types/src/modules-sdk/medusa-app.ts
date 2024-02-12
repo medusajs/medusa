@@ -3,6 +3,8 @@ import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   LoadedModule,
+  MedusaContainer,
+  ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
 } from "./common"
 
@@ -47,9 +49,23 @@ export type MedusaAppOutput = {
   entitiesMap?: Record<string, any>
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
-  listen: (
+  listen?: (
     protocol: "http" | "grpc",
     port: number,
     options?: Record<string, any>
   ) => Promise<void>
+}
+
+export type MedusaAppOptions<TRemoteFetch> = {
+  sharedContainer?: MedusaContainer
+  sharedResourcesConfig?: SharedResources
+  loadedModules?: LoadedModule[]
+  servicesConfig?: ModuleJoinerConfig[]
+  modulesConfigPath?: string
+  modulesConfigFileName?: string
+  modulesConfig?: MedusaModuleConfig
+  linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
+  remoteFetchData?: TRemoteFetch
+  injectedDependencies?: any
+  onApplicationStartCb?: () => void
 }
