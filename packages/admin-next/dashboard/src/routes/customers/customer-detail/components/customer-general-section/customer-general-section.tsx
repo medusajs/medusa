@@ -1,9 +1,8 @@
+import { PencilSquare } from "@medusajs/icons"
 import { Customer } from "@medusajs/medusa"
-import { Button, Container, Heading, Text } from "@medusajs/ui"
-import format from "date-fns/format"
-import { ReactNode } from "react"
+import { Container, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 
 type CustomerGeneralSectionProps = {
   customer: Customer
@@ -14,60 +13,52 @@ export const CustomerGeneralSection = ({
 }: CustomerGeneralSectionProps) => {
   const { t } = useTranslation()
 
+  const name = [customer.first_name, customer.last_name]
+    .filter(Boolean)
+    .join(" ")
+
+  const statusColor = customer.has_account ? "green" : "orange"
+  const statusText = customer.has_account
+    ? t("customers.registered")
+    : t("customers.guest")
+
   return (
-    <Container className="px-6 py-4 flex flex-col gap-y-3">
-      <div className="flex items-center justify-between">
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
         <Heading>{customer.email}</Heading>
-        <Link to={`/customers/${customer.id}/edit`}>
-          <Button size="small" variant="secondary">
-            {t("general.edit")}
-          </Button>
-        </Link>
+        <div className="flex items-center gap-x-2">
+          <StatusBadge color={statusColor}>{statusText}</StatusBadge>
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.edit"),
+                    icon: <PencilSquare />,
+                    to: "edit",
+                  },
+                ],
+              },
+            ]}
+          />
+        </div>
       </div>
-      <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <Bulletpoint
-          title={t("fields.name")}
-          value={
-            customer.first_name && customer.last_name
-              ? `${customer.first_name} ${customer.last_name}`
-              : customer.last_name
-                ? customer.last_name
-                : customer.first_name
-                  ? customer.first_name
-                  : null
-          }
-        />
-        <Bulletpoint
-          title={t("customers.firstSeen")}
-          value={format(new Date(customer.created_at), "MMM d, yyyy")}
-        />
-        <Bulletpoint title="Phone" value={customer.phone} />
-        <Bulletpoint title="Orders" value={customer.orders.length} />
-        <Bulletpoint
-          title={t("fields.account")}
-          value={
-            customer.has_account
-              ? t("customers.registered")
-              : t("customers.guest")
-          }
-        />
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("fields.name")}
+        </Text>
+        <Text size="small" leading="compact">
+          {name ?? "-"}
+        </Text>
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("fields.phone")}
+        </Text>
+        <Text size="small" leading="compact">
+          {customer.phone ?? "-"}
+        </Text>
       </div>
     </Container>
-  )
-}
-
-const Bulletpoint = ({ title, value }: { title: string; value: ReactNode }) => {
-  return (
-    <div className="flex flex-col flex-1">
-      <Text
-        size="small"
-        weight="plus"
-        leading="compact"
-        className="text-ui-fg-muted"
-      >
-        {title}
-      </Text>
-      <div className="text-ui-fg-subtle txt-small-plus">{value ?? "-"}</div>
-    </div>
   )
 }

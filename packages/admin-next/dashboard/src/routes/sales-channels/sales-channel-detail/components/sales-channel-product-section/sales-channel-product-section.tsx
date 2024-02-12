@@ -111,8 +111,8 @@ export const SalesChannelProductSection = ({
         count: ids.length,
         sales_channel: salesChannel.name,
       }),
-      confirmText: t("general.delete"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!result) {
@@ -137,7 +137,7 @@ export const SalesChannelProductSection = ({
   }
 
   return (
-    <Container className="p-0 divide-y">
+    <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.domain")}</Heading>
         <Link to={`/settings/sales-channels/${salesChannel.id}/add-products`}>
@@ -222,7 +222,7 @@ export const SalesChannelProductSection = ({
             <CommandBar.Command
               action={onRemove}
               shortcut="r"
-              label={t("general.remove")}
+              label={t("actions.remove")}
             />
           </CommandBar.Bar>
         </CommandBar>
@@ -329,7 +329,7 @@ const ProductListCellActions = ({
           actions: [
             {
               icon: <PencilSquare />,
-              label: t("general.edit"),
+              label: t("actions.edit"),
               to: `/products/${productId}`,
             },
           ],
@@ -338,7 +338,7 @@ const ProductListCellActions = ({
           actions: [
             {
               icon: <Trash />,
-              label: t("general.remove"),
+              label: t("actions.remove"),
               onClick: onRemove,
             },
           ],

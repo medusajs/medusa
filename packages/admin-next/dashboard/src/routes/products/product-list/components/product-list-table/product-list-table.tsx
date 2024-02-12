@@ -90,7 +90,7 @@ export const ProductListTable = () => {
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.domain")}</Heading>
         <Button size="small" variant="secondary">
-          {t("general.create")}
+          {t("actions.create")}
         </Button>
       </div>
       <div>
@@ -162,7 +162,7 @@ export const ProductListTable = () => {
               console.log("Delete")
             }}
             shortcut="d"
-            label={t("general.delete")}
+            label={t("actions.delete")}
           />
         </CommandBar.Bar>
       </CommandBar>
@@ -185,7 +185,7 @@ const ProductActions = ({ id }: { id: string }) => {
           actions: [
             {
               icon: <PencilSquare />,
-              label: t("general.edit"),
+              label: t("actions.edit"),
               to: `/products/${id}/edit`,
             },
           ],
@@ -194,7 +194,7 @@ const ProductActions = ({ id }: { id: string }) => {
           actions: [
             {
               icon: <Trash />,
-              label: t("general.delete"),
+              label: t("actions.delete"),
               onClick: handleDelete,
             },
           ],
