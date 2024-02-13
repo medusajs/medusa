@@ -109,8 +109,8 @@ export const ApiKeySalesChannelSection = ({
       description: t("apiKeyManagement.removeSalesChannelsWarning", {
         count: keys.length,
       }),
-      confirmText: t("general.continue"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.continue"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!res) {
@@ -136,15 +136,15 @@ export const ApiKeySalesChannelSection = ({
   }
 
   return (
-    <Container className="p-0 divide-y">
-      <div className="px-6 py-4 flex items-center justify-between">
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("salesChannels.domain")}</Heading>
         <Button variant="secondary" size="small" asChild>
           <Link to="add-sales-channels">{t("general.add")}</Link>
         </Button>
       </div>
       {!noRecords && (
-        <div className="px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center justify-between px-6 py-4">
           <div></div>
           <div className="flex items-center gap-x-2">
             <Query />
@@ -162,7 +162,7 @@ export const ApiKeySalesChannelSection = ({
                   return (
                     <Table.Row
                       key={headerGroup.id}
-                      className="[&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th]:w-1/3"
+                      className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th]:w-1/3"
                     >
                       {headerGroup.headers.map((header) => {
                         return (
@@ -229,7 +229,7 @@ export const ApiKeySalesChannelSection = ({
               <CommandBar.Command
                 action={handleRemove}
                 shortcut="r"
-                label={t("general.remove")}
+                label={t("actions.remove")}
               />
             </CommandBar.Bar>
           </CommandBar>
@@ -255,8 +255,8 @@ const SalesChannelActions = ({
     const res = await prompt({
       title: t("general.areYouSure"),
       description: t("apiKeyManagement.removeSalesChannelWarning"),
-      confirmText: t("general.delete"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!res) {
@@ -275,7 +275,7 @@ const SalesChannelActions = ({
           actions: [
             {
               icon: <PencilSquare />,
-              label: t("general.edit"),
+              label: t("actions.edit"),
               to: `/settings/sales-channels/${salesChannel.id}/edit`,
             },
           ],
@@ -284,7 +284,7 @@ const SalesChannelActions = ({
           actions: [
             {
               icon: <Trash />,
-              label: t("general.delete"),
+              label: t("actions.delete"),
               onClick: handleDelete,
             },
           ],

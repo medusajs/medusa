@@ -4,8 +4,8 @@ import { DataTableQuery, DataTableQueryProps } from "./data-table-query"
 import { DataTableRoot, DataTableRootProps } from "./data-table-root"
 import { DataTableSkeleton } from "./data-table-skeleton"
 
-interface DataTableProps<TData, TValue>
-  extends DataTableRootProps<TData, TValue>,
+interface DataTableProps<TData>
+  extends DataTableRootProps<TData>,
     DataTableQueryProps {
   isLoading?: boolean
   rowCount: number
@@ -15,7 +15,7 @@ interface DataTableProps<TData, TValue>
 const MemoizedDataTableRoot = memo(DataTableRoot) as typeof DataTableRoot
 const MemoizedDataTableQuery = memo(DataTableQuery)
 
-export const DataTable = <TData, TValue>({
+export const DataTable = <TData,>({
   table,
   columns,
   pagination,
@@ -29,7 +29,7 @@ export const DataTable = <TData, TValue>({
   queryObject = {},
   rowCount,
   isLoading = false,
-}: DataTableProps<TData, TValue>) => {
+}: DataTableProps<TData>) => {
   if (isLoading) {
     return (
       <DataTableSkeleton

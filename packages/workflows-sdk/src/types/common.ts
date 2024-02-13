@@ -1,4 +1,4 @@
-import { BaseFilterable } from "@medusajs/types"
+import { BaseFilterable, OperatorMap } from "@medusajs/types"
 
 export interface WorkflowExecutionDTO {
   id: string
@@ -14,8 +14,8 @@ export interface WorkflowExecutionDTO {
 
 export interface FilterableWorkflowExecutionProps
   extends BaseFilterable<FilterableWorkflowExecutionProps> {
-  id?: string[]
-  workflow_id?: string[]
-  transaction_id?: string[]
-  state?: any[]
+  id?: string | string[] | OperatorMap<string>
+  workflow_id?: string | string[] | OperatorMap<string>
+  transaction_id?: string | string[] | OperatorMap<string>
+  state?: string | string[] | OperatorMap<string>
 }
