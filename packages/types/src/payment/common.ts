@@ -240,6 +240,23 @@ export interface PaymentDTO {
   payment_session?: PaymentSessionDTO
 }
 
+export interface FilterablePaymentProps
+  extends BaseFilterable<FilterablePaymentProps> {
+  id?: string | string[]
+
+  session_id?: string | string[] | OperatorMap<string>
+
+  customer_id?: string | string[] | OperatorMap<string>
+  cart_id?: string | string[] | OperatorMap<string>
+  order_id?: string | string[] | OperatorMap<string>
+  order_edit_id?: string | string[] | OperatorMap<string>
+
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  captured_at?: OperatorMap<string>
+  canceled_at?: OperatorMap<string>
+}
+
 export interface CaptureDTO {
   /**
    * The ID of the Capture

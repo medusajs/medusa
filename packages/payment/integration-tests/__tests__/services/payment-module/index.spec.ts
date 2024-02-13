@@ -40,6 +40,7 @@ describe("Payment Module Service", () => {
       await MikroOrmWrapper.clearDatabase()
       await shutdownFunc()
     })
+
     it("complete payment flow successfully", async () => {
       let paymentCollection = await service.createPaymentCollections({
         currency_code: "USD",

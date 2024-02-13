@@ -119,7 +119,11 @@ export default class Payment {
   })
   payment_collection!: PaymentCollection
 
-  @OneToOne({ owner: true, fieldName: "session_id" })
+  @OneToOne({
+    owner: true,
+    fieldName: "session_id",
+    index: "IDX_payment_payment_session_id",
+  })
   payment_session!: PaymentSession
 
   /** COMPUTED PROPERTIES START **/

@@ -6,7 +6,7 @@ import {
   StripeIdealService,
   StripeProviderService,
   StripePrzelewy24Service,
-} from "./services/index"
+} from "./services"
 
 const services = [
   StripeBancontactService,

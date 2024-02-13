@@ -222,10 +222,13 @@ export default class PaymentModuleService<
         { ...data.providerContext, resource_id: created.id }
       )
 
-      await this.paymentSessionService_.update({
-        id: created.id,
-        data: sessionData,
-      })
+      await this.paymentSessionService_.update(
+        {
+          id: created.id,
+          data: sessionData,
+        },
+        sharedContext
+      )
 
       return await this.baseRepository_.serialize(created, { populate: true })
     } catch (e) {

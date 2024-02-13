@@ -1,7 +1,16 @@
+import { EOL } from "os"
+
+import Stripe from "stripe"
+
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { PostgresError } from "@medusajs/utils"
-import { EOL } from "os"
-import Stripe from "stripe"
+import { IPaymentModuleService } from "@medusajs/types"
+
+export enum StripeWebhookEvent {
+  IntentSucceeded = "payment_intent.succeeded",
+  IntentFailed = "payment_intent.payment_failed",
+  AmountCapturableUpdated = "payment_intent.amount_capturable_updated",
+}
 
 export async function handlePaymentHook({
   event,
@@ -17,7 +26,7 @@ export async function handlePaymentHook({
   const paymentSessionId = paymentIntent.metadata?.resource_id
 
   switch (event.type) {
-    case "payment_intent.succeeded":
+    case StripeWebhookEvent.IntentSucceeded:
       try {
         await onPaymentIntentSucceeded({
           paymentIntent,
@@ -31,7 +40,7 @@ export async function handlePaymentHook({
       }
 
       break
-    case "payment_intent.amount_capturable_updated":
+    case StripeWebhookEvent.AmountCapturableUpdated:
       try {
         await onPaymentAmountCapturableUpdate({
           eventId: event.id,
@@ -45,7 +54,7 @@ export async function handlePaymentHook({
       }
 
       break
-    case "payment_intent.payment_failed": {
+    case StripeWebhookEvent.IntentFailed: {
       const message =
         paymentIntent.last_payment_error &&
         paymentIntent.last_payment_error.message
@@ -90,14 +99,19 @@ async function capturePaymentIfNecessary({
   paymentSessionId: string
   container: any
 }) {
-  const paymentModuleService = container.resolve(ModuleRegistrationName.PAYMENT)
+  const paymentModuleService: IPaymentModuleService = container.resolve(
+    ModuleRegistrationName.PAYMENT
+  )
 
-  const payment = await paymentModuleService
-    .retrievePayment({ session_id: paymentSessionId })
-    .catch(() => undefined)
+  const [payment] = await paymentModuleService.listPayments({
+    session_id: paymentSessionId,
+  })
 
   if (payment && !payment.captured_at) {
-    await paymentModuleService.capturePayment(payment.id)
+    await paymentModuleService.capturePayment({
+      payment_id: payment.id,
+      amount: payment.amount, // TODO: pull amount from the event
+    })
   }
 }
 

@@ -3,6 +3,7 @@ import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   FilterablePaymentCollectionProps,
+  FilterablePaymentProps,
   PaymentCollectionDTO,
   PaymentDTO,
   PaymentSessionDTO,
@@ -97,6 +98,12 @@ export interface IPaymentModuleService extends IModuleService {
   ): Promise<PaymentDTO>
 
   /* ********** PAYMENT ********** */
+
+  listPayments(
+    filters?: FilterablePaymentProps,
+    config?: FindConfig<PaymentDTO>,
+    sharedContext?: Context
+  ): Promise<PaymentDTO[]>
 
   updatePayment(
     data: UpdatePaymentDTO,
