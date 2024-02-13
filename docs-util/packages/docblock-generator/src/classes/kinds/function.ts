@@ -14,7 +14,7 @@ export type FunctionNode =
   | ts.FunctionDeclaration
   | ts.ArrowFunction
 
-type VariableNode = ts.VariableDeclaration | ts.VariableStatement
+export type VariableNode = ts.VariableDeclaration | ts.VariableStatement
 
 export type FunctionOrVariableNode = FunctionNode | ts.VariableStatement
 
