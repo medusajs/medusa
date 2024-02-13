@@ -1,9 +1,10 @@
 import ts from "typescript"
 import FunctionKindGenerator from "./function.js"
-import DefaultKindGenerator from "./default.js"
+import DefaultKindGenerator, { GeneratorOptions } from "./default.js"
 import MedusaReactHooksKindGenerator from "./medusa-react-hooks.js"
 import SourceFileKindGenerator from "./source-file.js"
 import DTOPropertyGenerator from "./dto-property.js"
+import OasKindGenerator from "./oas.js"
 
 /**
  * A class that is used as a registry for the kind generators.
@@ -12,14 +13,20 @@ class KindsRegistry {
   protected kindInstances: DefaultKindGenerator[]
   protected defaultKindGenerator: DefaultKindGenerator
 
-  constructor(checker: ts.TypeChecker) {
+  constructor(
+    options: Pick<
+      GeneratorOptions,
+      "checker" | "generatorEventManager" | "additionalOptions"
+    >
+  ) {
     this.kindInstances = [
-      new MedusaReactHooksKindGenerator({ checker }),
-      new FunctionKindGenerator({ checker }),
-      new SourceFileKindGenerator({ checker }),
-      new DTOPropertyGenerator({ checker }),
+      new OasKindGenerator(options),
+      new MedusaReactHooksKindGenerator(options),
+      new FunctionKindGenerator(options),
+      new SourceFileKindGenerator(options),
+      new DTOPropertyGenerator(options),
     ]
-    this.defaultKindGenerator = new DefaultKindGenerator({ checker })
+    this.defaultKindGenerator = new DefaultKindGenerator(options)
   }
 
   /**

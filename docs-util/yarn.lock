@@ -450,6 +450,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@faker-js/faker@npm:^8.4.0":
+  version: 8.4.0
+  resolution: "@faker-js/faker@npm:8.4.0"
+  checksum: 2dd9a3f6a38a70baa8d8ae222d9d371eea2b56eba4bd12bb138230e9481687686330fddee7581d3f285cf8ea8fe1534e08e43a110de8743e561a6eccc3fdc670
+  languageName: node
+  linkType: hard
+
 "@fastify/busboy@npm:^2.0.0":
   version: 2.1.0
   resolution: "@fastify/busboy@npm:2.1.0"
@@ -2213,15 +2220,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "docblock-generator@workspace:packages/docblock-generator"
   dependencies:
+    "@faker-js/faker": ^8.4.0
     "@octokit/core": ^5.0.2
     "@types/node": ^20.9.4
     commander: ^11.1.0
     dotenv: ^16.3.1
     eslint: ^8.56.0
     minimatch: ^9.0.3
+    openapi-types: ^12.1.3
+    pluralize: ^8.0.0
+    prettier: ^3.2.4
     ts-node: ^10.9.1
     typescript: 5.2
     utils: "*"
+    yaml: ^2.3.4
   bin:
     workflow-diagrams-generator: dist/index.js
   languageName: unknown
@@ -3863,6 +3875,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"openapi-types@npm:^12.1.3":
+  version: 12.1.3
+  resolution: "openapi-types@npm:12.1.3"
+  checksum: 4ad4eb91ea834c237edfa6ab31394e87e00c888fc2918009763389c00d02342345195d6f302d61c3fd807f17723cd48df29b47b538b68375b3827b3758cd520f
+  languageName: node
+  linkType: hard
+
 "optionator@npm:^0.9.3":
   version: 0.9.3
   resolution: "optionator@npm:0.9.3"
@@ -4127,6 +4146,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pluralize@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "pluralize@npm:8.0.0"
+  checksum: 2044cfc34b2e8c88b73379ea4a36fc577db04f651c2909041b054c981cd863dd5373ebd030123ab058d194ae615d3a97cfdac653991e499d10caf592e8b3dc33
+  languageName: node
+  linkType: hard
+
 "pony-cause@npm:^2.1.2":
   version: 2.1.10
   resolution: "pony-cause@npm:2.1.10"
@@ -4186,6 +4212,15 @@ __metadata:
   bin:
     prettier: bin/prettier.cjs
   checksum: a45ea70aa97fde162ea4c4aba3dfc7859aa6a732a1db34458d9535dc3c2c16d3bc3fb5689e6cd76aa835562555303b02d9449fd2e15af3b73c8053557e25c5b6
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^3.2.4":
+  version: 3.2.4
+  resolution: "prettier@npm:3.2.4"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 88dfeb78ac6096522c9a5b81f1413d875f568420d9bb6a5e5103527912519b993f2bcdcac311fcff5718d5869671d44e4f85827d3626f3a6ce32b9abc65d88e0
   languageName: node
   linkType: hard
 
@@ -5441,7 +5476,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.3.3":
+"yaml@npm:^2.3.3, yaml@npm:^2.3.4":
   version: 2.3.4
   resolution: "yaml@npm:2.3.4"
   checksum: cf03b68f8fef5e8516b0f0b54edaf2459f1648317fc6210391cf606d247e678b449382f4bd01f77392538429e306c7cba8ff46ff6b37cac4de9a76aff33bd9e1
