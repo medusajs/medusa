@@ -124,7 +124,9 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
     context: PaymentProviderContext
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse>
 
-  abstract onWebhookReceived(data: ProviderWebhookPayload): Promise<void>
+  abstract onWebhookReceived(
+    data: ProviderWebhookPayload["data"]
+  ): Promise<void>
 }
 
 export function isPaymentProviderError(obj: any): obj is PaymentProviderError {
