@@ -1,10 +1,11 @@
-import getMonorepoRoot from "../utils/get-monorepo-root.js"
+import getMonorepoRoot from "../../utils/get-monorepo-root.js"
 import { ESLint, Linter } from "eslint"
 import path from "path"
-import dirname from "../utils/dirname.js"
+import dirname from "../../utils/dirname.js"
 import { minimatch } from "minimatch"
 import { existsSync } from "fs"
-import getRelativePaths from "../utils/get-relative-paths.js"
+import * as prettier from "prettier"
+import getRelativePaths from "../../utils/get-relative-paths.js"
 
 /**
  * A class used to apply formatting to files using ESLint and other formatting options.
@@ -70,10 +71,10 @@ class Formatter {
         )
 
         newConfig.parserOptions.project = [
-          existsSync(tsConfigSpecPath)
-            ? tsConfigSpecPath
-            : existsSync(tsConfigPath)
-              ? tsConfigPath
+          existsSync(tsConfigPath)
+            ? tsConfigPath
+            : existsSync(tsConfigSpecPath)
+              ? tsConfigSpecPath
               : [
                   ...getRelativePaths(
                     newConfig.parserOptions.project || [],
@@ -170,6 +171,10 @@ class Formatter {
     content: string,
     fileName: string
   ): Promise<string> {
+    const prettifiedContent = await this.formatStrWithPrettier(
+      content,
+      fileName
+    )
     const relevantConfig = await this.getESLintOverridesConfigForFile(fileName)
 
     const eslint = new ESLint({
@@ -183,8 +188,8 @@ class Formatter {
       ignore: false,
     })
 
-    let newContent = content
-    const result = await eslint.lintText(content, {
+    let newContent = prettifiedContent
+    const result = await eslint.lintText(prettifiedContent, {
       filePath: fileName,
     })
 
@@ -193,6 +198,27 @@ class Formatter {
     }
 
     return newContent
+  }
+
+  /**
+   * Format a file's content with prettier.
+   *
+   * @param content - The content to format.
+   * @param fileName - The name of the file the content belongs to.
+   * @returns The formatted content
+   */
+  async formatStrWithPrettier(
+    content: string,
+    fileName: string
+  ): Promise<string> {
+    // load config of the file
+    const prettierConfig = (await prettier.resolveConfig(fileName)) || undefined
+
+    if (prettierConfig && !prettierConfig.parser) {
+      prettierConfig.parser = "babel-ts"
+    }
+
+    return await prettier.format(content, prettierConfig)
   }
 
   /**
