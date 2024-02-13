@@ -56,7 +56,7 @@ export const CreateCollectionForm = ({
           <div className="flex items-center justify-end gap-x-2">
             <FocusModal.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
             </FocusModal.Close>
             <Button
@@ -65,12 +65,12 @@ export const CreateCollectionForm = ({
               type="submit"
               isLoading={isLoading}
             >
-              {t("general.create")}
+              {t("actions.create")}
             </Button>
           </div>
         </FocusModal.Header>
         <FocusModal.Body className="flex flex-col items-center py-16">
-          <div className="w-full max-w-[720px] flex flex-col gap-y-8">
+          <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
               <Heading>{t("collections.createCollection")}</Heading>
               <Text size="small" className="text-ui-fg-subtle">
@@ -107,7 +107,7 @@ export const CreateCollectionForm = ({
                       </Form.Label>
                       <Form.Control>
                         <div className="relative">
-                          <div className="absolute left-0 inset-y-0 w-8 border-r z-10 flex items-center justify-center">
+                          <div className="absolute inset-y-0 left-0 z-10 flex w-8 items-center justify-center border-r">
                             <Text
                               className="text-ui-fg-muted"
                               size="small"
