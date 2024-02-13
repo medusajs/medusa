@@ -1,17 +1,14 @@
 name: Generate Docblocks [Automated]
 
 on:
-  pull_request:
+  push:
     branches:
       - develop
-    types:
-      - closed
   workflow_dispatch:
 
 jobs:
-  generate-tsdocs:
-    if: github.event_name == 'workflow_dispatch' || (startsWith(github.head_ref, 'changeset-release/develop') && github.event.pull_request.merged == true)
-    name: Generated TSDoc PR
+  generate:
+    name: Generated TSDoc PRs
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -32,9 +29,19 @@ jobs:
       - name: Build packages
         run: yarn build
         working-directory: docs-util
+      
+      - name: Check Commit
+        id: check-commit
+        run: 'yarn check:release-commit ${{ github.sha }}'
+        working-directory: docs-util/packages/scripts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_OWNER: ${{ github.repository_owner }}
+          GIT_REPO: medusa
 
       - name: Run docblock generator
-        run: "yarn start run:release --type docs"
+        if: steps.check-commit.outputs.is_release_commit == 'true'
+        run: "yarn start run:release"
         working-directory: docs-util/packages/docblock-generator
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -42,6 +49,7 @@ jobs:
           GIT_REPO: medusa
 
       - name: Create Pull Request
+        if: steps.check-commit.outputs.is_release_commit == 'true'
         uses: peter-evans/create-pull-request@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -52,7 +60,6 @@ jobs:
           team-reviewers: "@medusajs/docs"
           add-paths: packages/**
   generate-oas:
-    if: github.event_name == 'workflow_dispatch' || (startsWith(github.head_ref, 'changeset-release/develop') && github.event.pull_request.merged == true)
     name: Generated OAS PR
     runs-on: ubuntu-latest
     steps:
@@ -74,8 +81,18 @@ jobs:
       - name: Build packages
         run: yarn build
         working-directory: docs-util
+      
+      - name: Check Commit
+        id: check-commit
+        run: 'yarn check:release-commit ${{ github.sha }}'
+        working-directory: docs-util/packages/scripts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_OWNER: ${{ github.repository_owner }}
+          GIT_REPO: medusa
 
       - name: Run docblock generator
+        if: steps.check-commit.outputs.is_release_commit == 'true'
         run: "yarn start run ../../../packages/medusa/src/api-v2 --type oas && yarn start clean:oas"
         working-directory: docs-util/packages/docblock-generator
         env:
@@ -84,6 +101,7 @@ jobs:
           GIT_REPO: medusa
 
       - name: Create Pull Request
+        if: steps.check-commit.outputs.is_release_commit == 'true'
         uses: peter-evans/create-pull-request@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

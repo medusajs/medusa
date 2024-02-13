@@ -6,12 +6,14 @@ import { GitManager } from "../classes/helpers/git-manager.js"
 import OasGenerator from "../classes/generators/oas.js"
 import { CommonCliOptions } from "../types/index.js"
 
-export default async function ({ type, ...options }: CommonCliOptions) {
+export default async function ({ type, tag, ...options }: CommonCliOptions) {
   const gitManager = new GitManager()
 
-  console.log("Get files in commits since last release")
+  console.log(`Get files in commits since ${tag || "last release"}`)
 
-  const files = await gitManager.getCommitFilesSinceLastRelease()
+  const files = tag
+    ? await gitManager.getCommitFilesSinceRelease(tag)
+    : await gitManager.getCommitFilesSinceLastRelease()
 
   // filter changed files
   let filteredFiles = filterFiles(files)

@@ -6,7 +6,7 @@
 	"flags": {},
 	"children": [
 		{
-			"id": 168,
+			"id": 154,
 			"name": "FindConfig",
 			"variant": "declaration",
 			"kind": 256,
@@ -29,7 +29,7 @@
 			},
 			"children": [
 				{
-					"id": 169,
+					"id": 155,
 					"name": "select",
 					"variant": "declaration",
 					"kind": 1024,
@@ -58,7 +58,7 @@
 									"operator": "keyof",
 									"target": {
 										"type": "reference",
-										"target": 178,
+										"target": 164,
 										"name": "Entity",
 										"package": "@medusajs/types",
 										"qualifiedName": "FindConfig.Entity",
@@ -70,7 +70,7 @@
 					}
 				},
 				{
-					"id": 170,
+					"id": 156,
 					"name": "skip",
 					"variant": "declaration",
 					"kind": 1024,
@@ -100,7 +100,7 @@
 					}
 				},
 				{
-					"id": 171,
+					"id": 157,
 					"name": "take",
 					"variant": "declaration",
 					"kind": 1024,
@@ -130,7 +130,7 @@
 					}
 				},
 				{
-					"id": 172,
+					"id": 158,
 					"name": "relations",
 					"variant": "declaration",
 					"kind": 1024,
@@ -154,7 +154,7 @@
 					}
 				},
 				{
-					"id": 173,
+					"id": 159,
 					"name": "order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -188,20 +188,20 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 174,
+							"id": 160,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"indexSignature": {
-								"id": 175,
+								"id": 161,
 								"name": "__index",
 								"variant": "signature",
 								"kind": 8192,
 								"flags": {},
 								"parameters": [
 									{
-										"id": 176,
+										"id": 162,
 										"name": "K",
 										"variant": "param",
 										"kind": 32768,
@@ -230,7 +230,7 @@
 					}
 				},
 				{
-					"id": 177,
+					"id": 163,
 					"name": "withDeleted",
 					"variant": "declaration",
 					"kind": 1024,
@@ -263,18 +263,18 @@
 				{
 					"title": "Properties",
 					"children": [
-						169,
-						170,
-						171,
-						172,
-						173,
-						177
+						155,
+						156,
+						157,
+						158,
+						159,
+						163
 					]
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 178,
+					"id": 164,
 					"name": "Entity",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -283,14 +283,14 @@
 			]
 		},
 		{
-			"id": 303,
+			"id": 298,
 			"name": "StringComparisonOperator",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 304,
+					"id": 299,
 					"name": "lt",
 					"variant": "declaration",
 					"kind": 1024,
@@ -303,7 +303,7 @@
 					}
 				},
 				{
-					"id": 305,
+					"id": 300,
 					"name": "gt",
 					"variant": "declaration",
 					"kind": 1024,
@@ -316,7 +316,7 @@
 					}
 				},
 				{
-					"id": 306,
+					"id": 301,
 					"name": "gte",
 					"variant": "declaration",
 					"kind": 1024,
@@ -329,7 +329,7 @@
 					}
 				},
 				{
-					"id": 307,
+					"id": 302,
 					"name": "lte",
 					"variant": "declaration",
 					"kind": 1024,
@@ -342,7 +342,7 @@
 					}
 				},
 				{
-					"id": 308,
+					"id": 303,
 					"name": "contains",
 					"variant": "declaration",
 					"kind": 1024,
@@ -355,7 +355,7 @@
 					}
 				},
 				{
-					"id": 309,
+					"id": 304,
 					"name": "starts_with",
 					"variant": "declaration",
 					"kind": 1024,
@@ -368,7 +368,7 @@
 					}
 				},
 				{
-					"id": 310,
+					"id": 305,
 					"name": "ends_with",
 					"variant": "declaration",
 					"kind": 1024,
@@ -385,26 +385,26 @@
 				{
 					"title": "Properties",
 					"children": [
+						299,
+						300,
+						301,
+						302,
+						303,
 						304,
-						305,
-						306,
-						307,
-						308,
-						309,
-						310
+						305
 					]
 				}
 			]
 		},
 		{
-			"id": 311,
+			"id": 306,
 			"name": "NumericalComparisonOperator",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 312,
+					"id": 307,
 					"name": "lt",
 					"variant": "declaration",
 					"kind": 1024,
@@ -417,7 +417,7 @@
 					}
 				},
 				{
-					"id": 313,
+					"id": 308,
 					"name": "gt",
 					"variant": "declaration",
 					"kind": 1024,
@@ -430,7 +430,7 @@
 					}
 				},
 				{
-					"id": 314,
+					"id": 309,
 					"name": "gte",
 					"variant": "declaration",
 					"kind": 1024,
@@ -443,7 +443,7 @@
 					}
 				},
 				{
-					"id": 315,
+					"id": 310,
 					"name": "lte",
 					"variant": "declaration",
 					"kind": 1024,
@@ -460,16 +460,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						312,
-						313,
-						314,
-						315
+						307,
+						308,
+						309,
+						310
 					]
 				}
 			]
 		},
 		{
-			"id": 179,
+			"id": 165,
 			"name": "InventoryItemDTO",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -483,14 +483,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 180,
+					"id": 166,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 181,
+							"id": 167,
 							"name": "id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -509,7 +509,7 @@
 							}
 						},
 						{
-							"id": 182,
+							"id": 168,
 							"name": "sku",
 							"variant": "declaration",
 							"kind": 1024,
@@ -539,7 +539,7 @@
 							}
 						},
 						{
-							"id": 183,
+							"id": 169,
 							"name": "origin_country",
 							"variant": "declaration",
 							"kind": 1024,
@@ -569,7 +569,7 @@
 							}
 						},
 						{
-							"id": 184,
+							"id": 170,
 							"name": "hs_code",
 							"variant": "declaration",
 							"kind": 1024,
@@ -599,7 +599,7 @@
 							}
 						},
 						{
-							"id": 185,
+							"id": 171,
 							"name": "requires_shipping",
 							"variant": "declaration",
 							"kind": 1024,
@@ -618,7 +618,7 @@
 							}
 						},
 						{
-							"id": 186,
+							"id": 172,
 							"name": "mid_code",
 							"variant": "declaration",
 							"kind": 1024,
@@ -648,7 +648,7 @@
 							}
 						},
 						{
-							"id": 187,
+							"id": 173,
 							"name": "material",
 							"variant": "declaration",
 							"kind": 1024,
@@ -678,7 +678,7 @@
 							}
 						},
 						{
-							"id": 188,
+							"id": 174,
 							"name": "weight",
 							"variant": "declaration",
 							"kind": 1024,
@@ -708,7 +708,7 @@
 							}
 						},
 						{
-							"id": 189,
+							"id": 175,
 							"name": "length",
 							"variant": "declaration",
 							"kind": 1024,
@@ -738,7 +738,7 @@
 							}
 						},
 						{
-							"id": 190,
+							"id": 176,
 							"name": "height",
 							"variant": "declaration",
 							"kind": 1024,
@@ -768,7 +768,7 @@
 							}
 						},
 						{
-							"id": 191,
+							"id": 177,
 							"name": "width",
 							"variant": "declaration",
 							"kind": 1024,
@@ -798,7 +798,7 @@
 							}
 						},
 						{
-							"id": 192,
+							"id": 178,
 							"name": "title",
 							"variant": "declaration",
 							"kind": 1024,
@@ -828,7 +828,7 @@
 							}
 						},
 						{
-							"id": 193,
+							"id": 179,
 							"name": "description",
 							"variant": "declaration",
 							"kind": 1024,
@@ -858,7 +858,7 @@
 							}
 						},
 						{
-							"id": 194,
+							"id": 180,
 							"name": "thumbnail",
 							"variant": "declaration",
 							"kind": 1024,
@@ -888,7 +888,7 @@
 							}
 						},
 						{
-							"id": 195,
+							"id": 181,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -933,7 +933,7 @@
 							}
 						},
 						{
-							"id": 196,
+							"id": 182,
 							"name": "created_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -966,7 +966,7 @@
 							}
 						},
 						{
-							"id": 197,
+							"id": 183,
 							"name": "updated_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -999,7 +999,7 @@
 							}
 						},
 						{
-							"id": 198,
+							"id": 184,
 							"name": "deleted_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1040,24 +1040,24 @@
 						{
 							"title": "Properties",
 							"children": [
+								167,
+								168,
+								169,
+								170,
+								171,
+								172,
+								173,
+								174,
+								175,
+								176,
+								177,
+								178,
+								179,
+								180,
 								181,
 								182,
 								183,
-								184,
-								185,
-								186,
-								187,
-								188,
-								189,
-								190,
-								191,
-								192,
-								193,
-								194,
-								195,
-								196,
-								197,
-								198
+								184
 							]
 						}
 					]
@@ -1065,7 +1065,7 @@
 			}
 		},
 		{
-			"id": 211,
+			"id": 197,
 			"name": "ReservationItemDTO",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1084,14 +1084,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 212,
+					"id": 198,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 213,
+							"id": 199,
 							"name": "id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1110,7 +1110,7 @@
 							}
 						},
 						{
-							"id": 214,
+							"id": 200,
 							"name": "location_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1129,7 +1129,7 @@
 							}
 						},
 						{
-							"id": 215,
+							"id": 201,
 							"name": "inventory_item_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1148,7 +1148,7 @@
 							}
 						},
 						{
-							"id": 216,
+							"id": 202,
 							"name": "quantity",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1167,7 +1167,7 @@
 							}
 						},
 						{
-							"id": 217,
+							"id": 203,
 							"name": "line_item_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1189,7 +1189,7 @@
 							}
 						},
 						{
-							"id": 218,
+							"id": 204,
 							"name": "description",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1219,7 +1219,7 @@
 							}
 						},
 						{
-							"id": 219,
+							"id": 205,
 							"name": "created_by",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1249,7 +1249,7 @@
 							}
 						},
 						{
-							"id": 220,
+							"id": 206,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1292,7 +1292,7 @@
 							}
 						},
 						{
-							"id": 221,
+							"id": 207,
 							"name": "created_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1325,7 +1325,7 @@
 							}
 						},
 						{
-							"id": 222,
+							"id": 208,
 							"name": "updated_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1358,7 +1358,7 @@
 							}
 						},
 						{
-							"id": 223,
+							"id": 209,
 							"name": "deleted_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1399,17 +1399,17 @@
 						{
 							"title": "Properties",
 							"children": [
-								213,
-								214,
-								215,
-								216,
-								217,
-								218,
-								219,
-								220,
-								221,
-								222,
-								223
+								199,
+								200,
+								201,
+								202,
+								203,
+								204,
+								205,
+								206,
+								207,
+								208,
+								209
 							]
 						}
 					]
@@ -1417,7 +1417,7 @@
 			}
 		},
 		{
-			"id": 230,
+			"id": 216,
 			"name": "InventoryLevelDTO",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1431,14 +1431,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 231,
+					"id": 217,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 232,
+							"id": 218,
 							"name": "id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1449,7 +1449,7 @@
 							}
 						},
 						{
-							"id": 233,
+							"id": 219,
 							"name": "inventory_item_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1460,7 +1460,7 @@
 							}
 						},
 						{
-							"id": 234,
+							"id": 220,
 							"name": "location_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1479,7 +1479,7 @@
 							}
 						},
 						{
-							"id": 235,
+							"id": 221,
 							"name": "stocked_quantity",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1498,7 +1498,7 @@
 							}
 						},
 						{
-							"id": 236,
+							"id": 222,
 							"name": "reserved_quantity",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1517,7 +1517,7 @@
 							}
 						},
 						{
-							"id": 237,
+							"id": 223,
 							"name": "incoming_quantity",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1536,7 +1536,7 @@
 							}
 						},
 						{
-							"id": 238,
+							"id": 224,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1579,7 +1579,7 @@
 							}
 						},
 						{
-							"id": 239,
+							"id": 225,
 							"name": "created_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1612,7 +1612,7 @@
 							}
 						},
 						{
-							"id": 240,
+							"id": 226,
 							"name": "updated_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1645,7 +1645,7 @@
 							}
 						},
 						{
-							"id": 241,
+							"id": 227,
 							"name": "deleted_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1686,16 +1686,16 @@
 						{
 							"title": "Properties",
 							"children": [
-								232,
-								233,
-								234,
-								235,
-								236,
-								237,
-								238,
-								239,
-								240,
-								241
+								218,
+								219,
+								220,
+								221,
+								222,
+								223,
+								224,
+								225,
+								226,
+								227
 							]
 						}
 					]
@@ -1703,7 +1703,7 @@
 			}
 		},
 		{
-			"id": 202,
+			"id": 188,
 			"name": "FilterableReservationItemProps",
 			"variant": "declaration",
 			"kind": 256,
@@ -1718,7 +1718,7 @@
 			},
 			"children": [
 				{
-					"id": 203,
+					"id": 189,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1751,7 +1751,7 @@
 					}
 				},
 				{
-					"id": 205,
+					"id": 191,
 					"name": "line_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1784,7 +1784,7 @@
 					}
 				},
 				{
-					"id": 206,
+					"id": 192,
 					"name": "inventory_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1817,7 +1817,7 @@
 					}
 				},
 				{
-					"id": 207,
+					"id": 193,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1850,7 +1850,7 @@
 					}
 				},
 				{
-					"id": 208,
+					"id": 194,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1882,7 +1882,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 303,
+								"target": 298,
 								"name": "StringComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -1890,7 +1890,7 @@
 					}
 				},
 				{
-					"id": 209,
+					"id": 195,
 					"name": "created_by",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1923,7 +1923,7 @@
 					}
 				},
 				{
-					"id": 210,
+					"id": 196,
 					"name": "quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1955,7 +1955,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 311,
+								"target": 306,
 								"name": "NumericalComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -1967,19 +1967,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						203,
-						205,
-						206,
-						207,
-						208,
-						209,
-						210
+						189,
+						191,
+						192,
+						193,
+						194,
+						195,
+						196
 					]
 				}
 			]
 		},
 		{
-			"id": 160,
+			"id": 146,
 			"name": "FilterableInventoryItemProps",
 			"variant": "declaration",
 			"kind": 256,
@@ -1994,7 +1994,7 @@
 			},
 			"children": [
 				{
-					"id": 161,
+					"id": 147,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2027,7 +2027,7 @@
 					}
 				},
 				{
-					"id": 162,
+					"id": 148,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2060,7 +2060,7 @@
 					}
 				},
 				{
-					"id": 163,
+					"id": 149,
 					"name": "q",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2081,7 +2081,7 @@
 					}
 				},
 				{
-					"id": 164,
+					"id": 150,
 					"name": "sku",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2112,7 +2112,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 303,
+								"target": 298,
 								"name": "StringComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -2120,7 +2120,7 @@
 					}
 				},
 				{
-					"id": 165,
+					"id": 151,
 					"name": "origin_country",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2153,7 +2153,7 @@
 					}
 				},
 				{
-					"id": 166,
+					"id": 152,
 					"name": "hs_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2184,7 +2184,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 303,
+								"target": 298,
 								"name": "StringComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -2192,7 +2192,7 @@
 					}
 				},
 				{
-					"id": 167,
+					"id": 153,
 					"name": "requires_shipping",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2217,19 +2217,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						161,
-						162,
-						163,
-						164,
-						165,
-						166,
-						167
+						147,
+						148,
+						149,
+						150,
+						151,
+						152,
+						153
 					]
 				}
 			]
 		},
 		{
-			"id": 251,
+			"id": 237,
 			"name": "CreateInventoryItemInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -2244,7 +2244,7 @@
 			},
 			"children": [
 				{
-					"id": 252,
+					"id": 238,
 					"name": "sku",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2274,7 +2274,7 @@
 					}
 				},
 				{
-					"id": 253,
+					"id": 239,
 					"name": "origin_country",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2304,7 +2304,7 @@
 					}
 				},
 				{
-					"id": 254,
+					"id": 240,
 					"name": "mid_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2334,7 +2334,7 @@
 					}
 				},
 				{
-					"id": 255,
+					"id": 241,
 					"name": "material",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2364,7 +2364,7 @@
 					}
 				},
 				{
-					"id": 256,
+					"id": 242,
 					"name": "weight",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2394,7 +2394,7 @@
 					}
 				},
 				{
-					"id": 257,
+					"id": 243,
 					"name": "length",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2424,7 +2424,7 @@
 					}
 				},
 				{
-					"id": 258,
+					"id": 244,
 					"name": "height",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2454,7 +2454,7 @@
 					}
 				},
 				{
-					"id": 259,
+					"id": 245,
 					"name": "width",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2484,7 +2484,7 @@
 					}
 				},
 				{
-					"id": 260,
+					"id": 246,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2514,7 +2514,7 @@
 					}
 				},
 				{
-					"id": 261,
+					"id": 247,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2544,7 +2544,7 @@
 					}
 				},
 				{
-					"id": 262,
+					"id": 248,
 					"name": "thumbnail",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2574,7 +2574,7 @@
 					}
 				},
 				{
-					"id": 263,
+					"id": 249,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2619,7 +2619,7 @@
 					}
 				},
 				{
-					"id": 264,
+					"id": 250,
 					"name": "hs_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2649,7 +2649,7 @@
 					}
 				},
 				{
-					"id": 265,
+					"id": 251,
 					"name": "requires_shipping",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2674,26 +2674,26 @@
 				{
 					"title": "Properties",
 					"children": [
-						252,
-						253,
-						254,
-						255,
-						256,
-						257,
-						258,
-						259,
-						260,
-						261,
-						262,
-						263,
-						264,
-						265
+						238,
+						239,
+						240,
+						241,
+						242,
+						243,
+						244,
+						245,
+						246,
+						247,
+						248,
+						249,
+						250,
+						251
 					]
 				}
 			]
 		},
 		{
-			"id": 242,
+			"id": 228,
 			"name": "CreateReservationItemInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -2708,7 +2708,7 @@
 			},
 			"children": [
 				{
-					"id": 243,
+					"id": 229,
 					"name": "line_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2729,7 +2729,7 @@
 					}
 				},
 				{
-					"id": 244,
+					"id": 230,
 					"name": "inventory_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2748,7 +2748,7 @@
 					}
 				},
 				{
-					"id": 245,
+					"id": 231,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2767,7 +2767,7 @@
 					}
 				},
 				{
-					"id": 246,
+					"id": 232,
 					"name": "quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2786,7 +2786,7 @@
 					}
 				},
 				{
-					"id": 247,
+					"id": 233,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2807,7 +2807,7 @@
 					}
 				},
 				{
-					"id": 248,
+					"id": 234,
 					"name": "created_by",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2828,7 +2828,7 @@
 					}
 				},
 				{
-					"id": 249,
+					"id": 235,
 					"name": "external_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2849,7 +2849,7 @@
 					}
 				},
 				{
-					"id": 250,
+					"id": 236,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2898,20 +2898,20 @@
 				{
 					"title": "Properties",
 					"children": [
-						243,
-						244,
-						245,
-						246,
-						247,
-						248,
-						249,
-						250
+						229,
+						230,
+						231,
+						232,
+						233,
+						234,
+						235,
+						236
 					]
 				}
 			]
 		},
 		{
-			"id": 224,
+			"id": 210,
 			"name": "FilterableInventoryLevelProps",
 			"variant": "declaration",
 			"kind": 256,
@@ -2926,7 +2926,7 @@
 			},
 			"children": [
 				{
-					"id": 225,
+					"id": 211,
 					"name": "inventory_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2959,7 +2959,7 @@
 					}
 				},
 				{
-					"id": 226,
+					"id": 212,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2992,7 +2992,7 @@
 					}
 				},
 				{
-					"id": 227,
+					"id": 213,
 					"name": "stocked_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3024,7 +3024,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 311,
+								"target": 306,
 								"name": "NumericalComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -3032,7 +3032,7 @@
 					}
 				},
 				{
-					"id": 228,
+					"id": 214,
 					"name": "reserved_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3064,7 +3064,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 311,
+								"target": 306,
 								"name": "NumericalComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -3072,7 +3072,7 @@
 					}
 				},
 				{
-					"id": 229,
+					"id": 215,
 					"name": "incoming_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3104,7 +3104,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 311,
+								"target": 306,
 								"name": "NumericalComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -3116,17 +3116,17 @@
 				{
 					"title": "Properties",
 					"children": [
-						225,
-						226,
-						227,
-						228,
-						229
+						211,
+						212,
+						213,
+						214,
+						215
 					]
 				}
 			]
 		},
 		{
-			"id": 266,
+			"id": 252,
 			"name": "CreateInventoryLevelInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -3141,7 +3141,7 @@
 			},
 			"children": [
 				{
-					"id": 267,
+					"id": 253,
 					"name": "inventory_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3160,7 +3160,7 @@
 					}
 				},
 				{
-					"id": 268,
+					"id": 254,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3179,7 +3179,7 @@
 					}
 				},
 				{
-					"id": 269,
+					"id": 255,
 					"name": "stocked_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3198,7 +3198,7 @@
 					}
 				},
 				{
-					"id": 270,
+					"id": 256,
 					"name": "reserved_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3219,7 +3219,7 @@
 					}
 				},
 				{
-					"id": 271,
+					"id": 257,
 					"name": "incoming_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3244,17 +3244,17 @@
 				{
 					"title": "Properties",
 					"children": [
-						267,
-						268,
-						269,
-						270,
-						271
+						253,
+						254,
+						255,
+						256,
+						257
 					]
 				}
 			]
 		},
 		{
-			"id": 277,
+			"id": 263,
 			"name": "UpdateInventoryLevelInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -3269,7 +3269,7 @@
 			},
 			"children": [
 				{
-					"id": 278,
+					"id": 264,
 					"name": "stocked_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3290,7 +3290,7 @@
 					}
 				},
 				{
-					"id": 279,
+					"id": 265,
 					"name": "incoming_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3315,14 +3315,14 @@
 				{
 					"title": "Properties",
 					"children": [
-						278,
-						279
+						264,
+						265
 					]
 				}
 			]
 		},
 		{
-			"id": 272,
+			"id": 258,
 			"name": "BulkUpdateInventoryLevelInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -3337,7 +3337,7 @@
 			},
 			"children": [
 				{
-					"id": 275,
+					"id": 261,
 					"name": "stocked_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3358,7 +3358,7 @@
 					}
 				},
 				{
-					"id": 276,
+					"id": 262,
 					"name": "incoming_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3379,7 +3379,7 @@
 					}
 				},
 				{
-					"id": 273,
+					"id": 259,
 					"name": "inventory_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3398,7 +3398,7 @@
 					}
 				},
 				{
-					"id": 274,
+					"id": 260,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3421,16 +3421,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						275,
-						276,
-						273,
-						274
+						261,
+						262,
+						259,
+						260
 					]
 				}
 			]
 		},
 		{
-			"id": 280,
+			"id": 266,
 			"name": "UpdateReservationItemInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -3445,7 +3445,7 @@
 			},
 			"children": [
 				{
-					"id": 281,
+					"id": 267,
 					"name": "quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3466,7 +3466,7 @@
 					}
 				},
 				{
-					"id": 282,
+					"id": 268,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3487,7 +3487,7 @@
 					}
 				},
 				{
-					"id": 283,
+					"id": 269,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3508,7 +3508,7 @@
 					}
 				},
 				{
-					"id": 284,
+					"id": 270,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3557,10 +3557,10 @@
 				{
 					"title": "Properties",
 					"children": [
-						281,
-						282,
-						283,
-						284
+						267,
+						268,
+						269,
+						270
 					]
 				}
 			]
@@ -3573,14 +3573,14 @@
 			"flags": {},
 			"children": [
 				{
-					"id": 4,
+					"id": 2,
 					"name": "listInventoryItems",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 5,
+							"id": 3,
 							"name": "listInventoryItems",
 							"variant": "signature",
 							"kind": 4096,
@@ -3611,7 +3611,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItems (ids: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryItems, count] = await inventoryModule.listInventoryItems({\n    id: ids\n  })\n\n  // do something with the inventory items or return them\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItems (ids: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryItems, count] = await inventoryModule.listInventoryItems({\n    id: ids\n  })\n\n  // do something with the inventory items or return them\n}\n```"
 											},
 											{
 												"kind": "text",
@@ -3619,7 +3619,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItems (ids: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryItems, count] = await inventoryModule.listInventoryItems({\n    id: ids\n  }, {\n    relations: [\"inventory_level\"]\n  })\n\n  // do something with the inventory items or return them\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItems (ids: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryItems, count] = await inventoryModule.listInventoryItems({\n    id: ids\n  }, {\n    relations: [\"inventory_level\"]\n  })\n\n  // do something with the inventory items or return them\n}\n```"
 											},
 											{
 												"kind": "text",
@@ -3659,7 +3659,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItems (ids: string[], skip: number, take: number) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryItems, count] = await inventoryModule.listInventoryItems({\n    id: ids\n  }, {\n    relations: [\"inventory_level\"],\n    skip,\n    take\n  })\n\n  // do something with the inventory items or return them\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItems (ids: string[], skip: number, take: number) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryItems, count] = await inventoryModule.listInventoryItems({\n    id: ids\n  }, {\n    relations: [\"inventory_level\"],\n    skip,\n    take\n  })\n\n  // do something with the inventory items or return them\n}\n```"
 											}
 										]
 									}
@@ -3667,7 +3667,7 @@
 							},
 							"parameters": [
 								{
-									"id": 6,
+									"id": 4,
 									"name": "selector",
 									"variant": "param",
 									"kind": 32768,
@@ -3682,13 +3682,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 160,
+										"target": 146,
 										"name": "FilterableInventoryItemProps",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 7,
+									"id": 5,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -3721,11 +3721,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 168,
+										"target": 154,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 179,
+												"target": 165,
 												"name": "InventoryItemDTO",
 												"package": "@medusajs/types"
 											}
@@ -3735,7 +3735,7 @@
 									}
 								},
 								{
-									"id": 8,
+									"id": 6,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -3752,7 +3752,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -3772,7 +3772,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 179,
+													"target": 165,
 													"name": "InventoryItemDTO",
 													"package": "@medusajs/types"
 												}
@@ -3791,14 +3791,14 @@
 					]
 				},
 				{
-					"id": 9,
+					"id": 7,
 					"name": "listReservationItems",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 10,
+							"id": 8,
 							"name": "listReservationItems",
 							"variant": "signature",
 							"kind": 4096,
@@ -3829,7 +3829,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservationItems (ids: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [reservationItems, count] = await inventoryModule.listReservationItems({\n    id: ids\n  })\n\n  // do something with the reservation items or return them\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservationItems (ids: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [reservationItems, count] = await inventoryModule.listReservationItems({\n    id: ids\n  })\n\n  // do something with the reservation items or return them\n}\n```"
 											},
 											{
 												"kind": "text",
@@ -3837,7 +3837,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservationItems (ids: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [reservationItems, count] = await inventoryModule.listReservationItems({\n    id: ids\n  }, {\n    relations: [\"inventory_item\"]\n  })\n\n  // do something with the reservation items or return them\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservationItems (ids: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [reservationItems, count] = await inventoryModule.listReservationItems({\n    id: ids\n  }, {\n    relations: [\"inventory_item\"]\n  })\n\n  // do something with the reservation items or return them\n}\n```"
 											},
 											{
 												"kind": "text",
@@ -3877,7 +3877,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservationItems (ids: string[], skip: number, take: number) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [reservationItems, count] = await inventoryModule.listReservationItems({\n    id: ids\n  }, {\n    relations: [\"inventory_item\"],\n    skip,\n    take\n  })\n\n  // do something with the reservation items or return them\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservationItems (ids: string[], skip: number, take: number) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [reservationItems, count] = await inventoryModule.listReservationItems({\n    id: ids\n  }, {\n    relations: [\"inventory_item\"],\n    skip,\n    take\n  })\n\n  // do something with the reservation items or return them\n}\n```"
 											}
 										]
 									}
@@ -3885,7 +3885,7 @@
 							},
 							"parameters": [
 								{
-									"id": 11,
+									"id": 9,
 									"name": "selector",
 									"variant": "param",
 									"kind": 32768,
@@ -3900,13 +3900,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 202,
+										"target": 188,
 										"name": "FilterableReservationItemProps",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 12,
+									"id": 10,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -3939,11 +3939,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 168,
+										"target": 154,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 211,
+												"target": 197,
 												"name": "ReservationItemDTO",
 												"package": "@medusajs/types"
 											}
@@ -3953,7 +3953,7 @@
 									}
 								},
 								{
-									"id": 13,
+									"id": 11,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -3970,7 +3970,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -3990,7 +3990,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 211,
+													"target": 197,
 													"name": "ReservationItemDTO",
 													"package": "@medusajs/types"
 												}
@@ -4009,14 +4009,14 @@
 					]
 				},
 				{
-					"id": 14,
+					"id": 12,
 					"name": "listInventoryLevels",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 15,
+							"id": 13,
 							"name": "listInventoryLevels",
 							"variant": "signature",
 							"kind": 4096,
@@ -4047,7 +4047,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryLevels (inventoryItemIds: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryLevels, count] = await inventoryModule.listInventoryLevels({\n    inventory_item_id: inventoryItemIds\n  })\n\n  // do something with the inventory levels or return them\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryLevels (inventoryItemIds: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryLevels, count] = await inventoryModule.listInventoryLevels({\n    inventory_item_id: inventoryItemIds\n  })\n\n  // do something with the inventory levels or return them\n}\n```"
 											},
 											{
 												"kind": "text",
@@ -4055,7 +4055,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryLevels (inventoryItemIds: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryLevels, count] = await inventoryModule.listInventoryLevels({\n    inventory_item_id: inventoryItemIds\n  }, {\n    relations: [\"inventory_item\"]\n  })\n\n  // do something with the inventory levels or return them\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryLevels (inventoryItemIds: string[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryLevels, count] = await inventoryModule.listInventoryLevels({\n    inventory_item_id: inventoryItemIds\n  }, {\n    relations: [\"inventory_item\"]\n  })\n\n  // do something with the inventory levels or return them\n}\n```"
 											},
 											{
 												"kind": "text",
@@ -4095,7 +4095,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryLevels (inventoryItemIds: string[], skip: number, take: number) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryLevels, count] = await inventoryModule.listInventoryLevels({\n    inventory_item_id: inventoryItemIds\n  }, {\n    relations: [\"inventory_item\"],\n    skip,\n    take\n  })\n\n  // do something with the inventory levels or return them\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryLevels (inventoryItemIds: string[], skip: number, take: number) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const [inventoryLevels, count] = await inventoryModule.listInventoryLevels({\n    inventory_item_id: inventoryItemIds\n  }, {\n    relations: [\"inventory_item\"],\n    skip,\n    take\n  })\n\n  // do something with the inventory levels or return them\n}\n```"
 											}
 										]
 									}
@@ -4103,7 +4103,7 @@
 							},
 							"parameters": [
 								{
-									"id": 16,
+									"id": 14,
 									"name": "selector",
 									"variant": "param",
 									"kind": 32768,
@@ -4118,13 +4118,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 224,
+										"target": 210,
 										"name": "FilterableInventoryLevelProps",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 17,
+									"id": 15,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -4157,11 +4157,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 168,
+										"target": 154,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 230,
+												"target": 216,
 												"name": "InventoryLevelDTO",
 												"package": "@medusajs/types"
 											}
@@ -4171,7 +4171,7 @@
 									}
 								},
 								{
-									"id": 18,
+									"id": 16,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -4188,7 +4188,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4208,7 +4208,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 230,
+													"target": 216,
 													"name": "InventoryLevelDTO",
 													"package": "@medusajs/types"
 												}
@@ -4227,14 +4227,14 @@
 					]
 				},
 				{
-					"id": 19,
+					"id": 17,
 					"name": "retrieveInventoryItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 20,
+							"id": 18,
 							"name": "retrieveInventoryItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -4265,7 +4265,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItem (id: string) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryItem = await inventoryModule.retrieveInventoryItem(id)\n\n  // do something with the inventory item or return it\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItem (id: string) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryItem = await inventoryModule.retrieveInventoryItem(id)\n\n  // do something with the inventory item or return it\n}\n```"
 											},
 											{
 												"kind": "text",
@@ -4273,7 +4273,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItem (id: string) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryItem = await inventoryModule.retrieveInventoryItem(id, {\n    relations: [\"inventory_level\"]\n  })\n\n  // do something with the inventory item or return it\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryItem (id: string) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryItem = await inventoryModule.retrieveInventoryItem(id, {\n    relations: [\"inventory_level\"]\n  })\n\n  // do something with the inventory item or return it\n}\n```"
 											}
 										]
 									}
@@ -4281,7 +4281,7 @@
 							},
 							"parameters": [
 								{
-									"id": 21,
+									"id": 19,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -4300,7 +4300,7 @@
 									}
 								},
 								{
-									"id": 22,
+									"id": 20,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -4333,11 +4333,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 168,
+										"target": 154,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 179,
+												"target": 165,
 												"name": "InventoryItemDTO",
 												"package": "@medusajs/types"
 											}
@@ -4347,7 +4347,7 @@
 									}
 								},
 								{
-									"id": 23,
+									"id": 21,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -4364,7 +4364,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4379,7 +4379,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 179,
+										"target": 165,
 										"name": "InventoryItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -4391,14 +4391,14 @@
 					]
 				},
 				{
-					"id": 24,
+					"id": 22,
 					"name": "retrieveInventoryLevel",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 25,
+							"id": 23,
 							"name": "retrieveInventoryLevel",
 							"variant": "signature",
 							"kind": 4096,
@@ -4425,7 +4425,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryLevel (\n  inventoryItemId: string, \n  locationId: string\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevel = await inventoryModule.retrieveInventoryLevel(\n    inventoryItemId,\n    locationId\n  )\n\n  // do something with the inventory level or return it\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveInventoryLevel (\n  inventoryItemId: string,\n  locationId: string\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevel = await inventoryModule.retrieveInventoryLevel(\n    inventoryItemId,\n    locationId\n  )\n\n  // do something with the inventory level or return it\n}\n```"
 											}
 										]
 									}
@@ -4433,7 +4433,7 @@
 							},
 							"parameters": [
 								{
-									"id": 26,
+									"id": 24,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -4452,7 +4452,7 @@
 									}
 								},
 								{
-									"id": 27,
+									"id": 25,
 									"name": "locationId",
 									"variant": "param",
 									"kind": 32768,
@@ -4471,7 +4471,7 @@
 									}
 								},
 								{
-									"id": 28,
+									"id": 26,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -4488,7 +4488,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4503,7 +4503,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 230,
+										"target": 216,
 										"name": "InventoryLevelDTO",
 										"package": "@medusajs/types"
 									}
@@ -4515,14 +4515,14 @@
 					]
 				},
 				{
-					"id": 29,
+					"id": 27,
 					"name": "retrieveReservationItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 30,
+							"id": 28,
 							"name": "retrieveReservationItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -4549,7 +4549,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservationItem (id: string) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const reservationItem = await inventoryModule.retrieveReservationItem(id)\n\n  // do something with the reservation item or return it\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservationItem (id: string) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const reservationItem = await inventoryModule.retrieveReservationItem(id)\n\n  // do something with the reservation item or return it\n}\n```"
 											}
 										]
 									}
@@ -4557,7 +4557,7 @@
 							},
 							"parameters": [
 								{
-									"id": 31,
+									"id": 29,
 									"name": "reservationId",
 									"variant": "param",
 									"kind": 32768,
@@ -4576,7 +4576,7 @@
 									}
 								},
 								{
-									"id": 32,
+									"id": 30,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -4593,7 +4593,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4608,7 +4608,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 211,
+										"target": 197,
 										"name": "ReservationItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -4620,14 +4620,14 @@
 					]
 				},
 				{
-					"id": 33,
+					"id": 31,
 					"name": "createReservationItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34,
+							"id": 32,
 							"name": "createReservationItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -4654,7 +4654,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createReservationItem (item: {\n  inventory_item_id: string,\n  location_id: string,\n  quantity: number\n}) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const reservationItem = await inventoryModule.createReservationItems(\n    item\n  )\n\n  // do something with the reservation item or return them\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createReservationItem (item: {\n  inventory_item_id: string,\n  location_id: string,\n  quantity: number\n}) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const reservationItem = await inventoryModule.createReservationItems(\n    item\n  )\n\n  // do something with the reservation item or return them\n}\n```"
 											}
 										]
 									}
@@ -4662,7 +4662,7 @@
 							},
 							"parameters": [
 								{
-									"id": 35,
+									"id": 33,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -4677,13 +4677,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 242,
+										"target": 228,
 										"name": "CreateReservationItemInput",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 36,
+									"id": 34,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -4700,7 +4700,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4715,7 +4715,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 211,
+										"target": 197,
 										"name": "ReservationItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -4727,14 +4727,14 @@
 					]
 				},
 				{
-					"id": 37,
+					"id": 35,
 					"name": "createReservationItems",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 38,
+							"id": 36,
 							"name": "createReservationItems",
 							"variant": "signature",
 							"kind": 4096,
@@ -4761,7 +4761,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createReservationItems (items: {\n  inventory_item_id: string,\n  location_id: string,\n  quantity: number\n}[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const reservationItems = await inventoryModule.createReservationItems(\n    items\n  )\n\n  // do something with the reservation items or return them\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createReservationItems (items: {\n  inventory_item_id: string,\n  location_id: string,\n  quantity: number\n}[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const reservationItems = await inventoryModule.createReservationItems(\n    items\n  )\n\n  // do something with the reservation items or return them\n}\n```"
 											}
 										]
 									}
@@ -4769,7 +4769,7 @@
 							},
 							"parameters": [
 								{
-									"id": 39,
+									"id": 37,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -4786,14 +4786,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 242,
+											"target": 228,
 											"name": "CreateReservationItemInput",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 40,
+									"id": 38,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -4810,7 +4810,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4827,7 +4827,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 211,
+											"target": 197,
 											"name": "ReservationItemDTO",
 											"package": "@medusajs/types"
 										}
@@ -4840,14 +4840,14 @@
 					]
 				},
 				{
-					"id": 41,
+					"id": 39,
 					"name": "createInventoryItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 42,
+							"id": 40,
 							"name": "createInventoryItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -4874,7 +4874,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createInventoryItem (item: {\n  sku: string,\n  requires_shipping: boolean\n}) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryItem = await inventoryModule.createInventoryItem(\n    item\n  )\n\n  // do something with the inventory item or return it\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createInventoryItem (item: {\n  sku: string,\n  requires_shipping: boolean\n}) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryItem = await inventoryModule.createInventoryItem(\n    item\n  )\n\n  // do something with the inventory item or return it\n}\n```"
 											}
 										]
 									}
@@ -4882,7 +4882,7 @@
 							},
 							"parameters": [
 								{
-									"id": 43,
+									"id": 41,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -4897,13 +4897,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 251,
+										"target": 237,
 										"name": "CreateInventoryItemInput",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 44,
+									"id": 42,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -4920,7 +4920,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4935,7 +4935,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 179,
+										"target": 165,
 										"name": "InventoryItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -4947,14 +4947,14 @@
 					]
 				},
 				{
-					"id": 45,
+					"id": 43,
 					"name": "createInventoryItems",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 46,
+							"id": 44,
 							"name": "createInventoryItems",
 							"variant": "signature",
 							"kind": 4096,
@@ -4981,7 +4981,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createInventoryItems (items: {\n  sku: string,\n  requires_shipping: boolean\n}[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryItems = await inventoryModule.createInventoryItems(\n    items\n  )\n\n  // do something with the inventory items or return them\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createInventoryItems (items: {\n  sku: string,\n  requires_shipping: boolean\n}[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryItems = await inventoryModule.createInventoryItems(\n    items\n  )\n\n  // do something with the inventory items or return them\n}\n```"
 											}
 										]
 									}
@@ -4989,7 +4989,7 @@
 							},
 							"parameters": [
 								{
-									"id": 47,
+									"id": 45,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -5006,14 +5006,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 251,
+											"target": 237,
 											"name": "CreateInventoryItemInput",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 48,
+									"id": 46,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5030,7 +5030,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5047,7 +5047,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 179,
+											"target": 165,
 											"name": "InventoryItemDTO",
 											"package": "@medusajs/types"
 										}
@@ -5060,14 +5060,14 @@
 					]
 				},
 				{
-					"id": 49,
+					"id": 47,
 					"name": "createInventoryLevel",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 50,
+							"id": 48,
 							"name": "createInventoryLevel",
 							"variant": "signature",
 							"kind": 4096,
@@ -5094,7 +5094,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createInventoryLevel (item: {\n  inventory_item_id: string\n  location_id: string\n  stocked_quantity: number\n}) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevel = await inventoryModule.createInventoryLevel(\n    item\n  )\n\n  // do something with the inventory level or return it\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createInventoryLevel (item: {\n  inventory_item_id: string\n  location_id: string\n  stocked_quantity: number\n}) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevel = await inventoryModule.createInventoryLevel(\n    item\n  )\n\n  // do something with the inventory level or return it\n}\n```"
 											}
 										]
 									}
@@ -5102,7 +5102,7 @@
 							},
 							"parameters": [
 								{
-									"id": 51,
+									"id": 49,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -5117,13 +5117,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 266,
+										"target": 252,
 										"name": "CreateInventoryLevelInput",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 52,
+									"id": 50,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5140,7 +5140,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5155,7 +5155,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 230,
+										"target": 216,
 										"name": "InventoryLevelDTO",
 										"package": "@medusajs/types"
 									}
@@ -5167,14 +5167,14 @@
 					]
 				},
 				{
-					"id": 53,
+					"id": 51,
 					"name": "createInventoryLevels",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 54,
+							"id": 52,
 							"name": "createInventoryLevels",
 							"variant": "signature",
 							"kind": 4096,
@@ -5201,7 +5201,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createInventoryLevels (items: {\n  inventory_item_id: string\n  location_id: string\n  stocked_quantity: number\n}[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevels = await inventoryModule.createInventoryLevels(\n    items\n  )\n\n  // do something with the inventory levels or return them\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function createInventoryLevels (items: {\n  inventory_item_id: string\n  location_id: string\n  stocked_quantity: number\n}[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevels = await inventoryModule.createInventoryLevels(\n    items\n  )\n\n  // do something with the inventory levels or return them\n}\n```"
 											}
 										]
 									}
@@ -5209,7 +5209,7 @@
 							},
 							"parameters": [
 								{
-									"id": 55,
+									"id": 53,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -5226,14 +5226,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 266,
+											"target": 252,
 											"name": "CreateInventoryLevelInput",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 56,
+									"id": 54,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5250,7 +5250,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5267,7 +5267,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 230,
+											"target": 216,
 											"name": "InventoryLevelDTO",
 											"package": "@medusajs/types"
 										}
@@ -5280,14 +5280,14 @@
 					]
 				},
 				{
-					"id": 57,
+					"id": 55,
 					"name": "updateInventoryLevels",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 58,
+							"id": 56,
 							"name": "updateInventoryLevels",
 							"variant": "signature",
 							"kind": 4096,
@@ -5314,7 +5314,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function updateInventoryLevels (items: {\n  inventory_item_id: string,\n  location_id: string,\n  stocked_quantity: number\n}[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevels = await inventoryModule.updateInventoryLevels(\n    items\n  )\n\n  // do something with the inventory levels or return them\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function updateInventoryLevels (items: {\n  inventory_item_id: string,\n  location_id: string,\n  stocked_quantity: number\n}[]) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevels = await inventoryModule.updateInventoryLevels(\n    items\n  )\n\n  // do something with the inventory levels or return them\n}\n```"
 											}
 										]
 									}
@@ -5322,7 +5322,7 @@
 							},
 							"parameters": [
 								{
-									"id": 59,
+									"id": 57,
 									"name": "updates",
 									"variant": "param",
 									"kind": 32768,
@@ -5339,14 +5339,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 272,
+											"target": 258,
 											"name": "BulkUpdateInventoryLevelInput",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 60,
+									"id": 58,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5363,7 +5363,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5380,7 +5380,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 230,
+											"target": 216,
 											"name": "InventoryLevelDTO",
 											"package": "@medusajs/types"
 										}
@@ -5393,14 +5393,14 @@
 					]
 				},
 				{
-					"id": 61,
+					"id": 59,
 					"name": "updateInventoryLevel",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 62,
+							"id": 60,
 							"name": "updateInventoryLevel",
 							"variant": "signature",
 							"kind": 4096,
@@ -5427,7 +5427,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function updateInventoryLevel (\n  inventoryItemId: string,\n  locationId: string,\n  stockedQuantity: number\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevel = await inventoryModule.updateInventoryLevels(\n    inventoryItemId,\n    locationId,\n    {\n      stocked_quantity: stockedQuantity\n    }\n  )\n\n  // do something with the inventory level or return it\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function updateInventoryLevel (\n  inventoryItemId: string,\n  locationId: string,\n  stockedQuantity: number\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevel = await inventoryModule.updateInventoryLevels(\n    inventoryItemId,\n    locationId,\n    {\n      stocked_quantity: stockedQuantity\n    }\n  )\n\n  // do something with the inventory level or return it\n}\n```"
 											}
 										]
 									}
@@ -5435,7 +5435,7 @@
 							},
 							"parameters": [
 								{
-									"id": 63,
+									"id": 61,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -5454,7 +5454,7 @@
 									}
 								},
 								{
-									"id": 64,
+									"id": 62,
 									"name": "locationId",
 									"variant": "param",
 									"kind": 32768,
@@ -5473,7 +5473,7 @@
 									}
 								},
 								{
-									"id": 65,
+									"id": 63,
 									"name": "update",
 									"variant": "param",
 									"kind": 32768,
@@ -5488,13 +5488,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 277,
+										"target": 263,
 										"name": "UpdateInventoryLevelInput",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 66,
+									"id": 64,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5511,7 +5511,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5526,7 +5526,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 230,
+										"target": 216,
 										"name": "InventoryLevelDTO",
 										"package": "@medusajs/types"
 									}
@@ -5538,14 +5538,14 @@
 					]
 				},
 				{
-					"id": 67,
+					"id": 65,
 					"name": "updateInventoryItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 68,
+							"id": 66,
 							"name": "updateInventoryItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -5572,7 +5572,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function updateInventoryItem (\n  inventoryItemId: string,\n  sku: string\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryItem = await inventoryModule.updateInventoryItem(\n    inventoryItemId,\n    {\n      sku\n    }\n  )\n\n  // do something with the inventory item or return it\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function updateInventoryItem (\n  inventoryItemId: string,\n  sku: string\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryItem = await inventoryModule.updateInventoryItem(\n    inventoryItemId,\n    {\n      sku\n    }\n  )\n\n  // do something with the inventory item or return it\n}\n```"
 											}
 										]
 									}
@@ -5580,7 +5580,7 @@
 							},
 							"parameters": [
 								{
-									"id": 69,
+									"id": 67,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -5599,7 +5599,7 @@
 									}
 								},
 								{
-									"id": 70,
+									"id": 68,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -5621,7 +5621,7 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 251,
+												"target": 237,
 												"name": "CreateInventoryItemInput",
 												"package": "@medusajs/types"
 											}
@@ -5631,7 +5631,7 @@
 									}
 								},
 								{
-									"id": 71,
+									"id": 69,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5648,7 +5648,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5663,7 +5663,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 179,
+										"target": 165,
 										"name": "InventoryItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -5675,14 +5675,14 @@
 					]
 				},
 				{
-					"id": 72,
+					"id": 70,
 					"name": "updateReservationItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 73,
+							"id": 71,
 							"name": "updateReservationItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -5709,7 +5709,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function updateReservationItem (\n  reservationItemId: string,\n  quantity: number\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const reservationItem = await inventoryModule.updateReservationItem(\n    reservationItemId,\n    {\n      quantity\n    }\n  )\n\n  // do something with the reservation item or return it\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function updateReservationItem (\n  reservationItemId: string,\n  quantity: number\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const reservationItem = await inventoryModule.updateReservationItem(\n    reservationItemId,\n    {\n      quantity\n    }\n  )\n\n  // do something with the reservation item or return it\n}\n```"
 											}
 										]
 									}
@@ -5717,7 +5717,7 @@
 							},
 							"parameters": [
 								{
-									"id": 74,
+									"id": 72,
 									"name": "reservationItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -5736,7 +5736,7 @@
 									}
 								},
 								{
-									"id": 75,
+									"id": 73,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -5751,13 +5751,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 280,
+										"target": 266,
 										"name": "UpdateReservationItemInput",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 76,
+									"id": 74,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5774,7 +5774,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5789,7 +5789,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 211,
+										"target": 197,
 										"name": "ReservationItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -5801,14 +5801,14 @@
 					]
 				},
 				{
-					"id": 77,
+					"id": 75,
 					"name": "deleteReservationItemsByLineItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 78,
+							"id": 76,
 							"name": "deleteReservationItemsByLineItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -5835,7 +5835,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteReservationItemsByLineItem (\n  lineItemIds: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteReservationItemsByLineItem(\n    lineItemIds\n  )\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteReservationItemsByLineItem (\n  lineItemIds: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteReservationItemsByLineItem(\n    lineItemIds\n  )\n}\n```"
 											}
 										]
 									}
@@ -5843,7 +5843,7 @@
 							},
 							"parameters": [
 								{
-									"id": 79,
+									"id": 77,
 									"name": "lineItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -5874,7 +5874,7 @@
 									}
 								},
 								{
-									"id": 80,
+									"id": 78,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -5891,7 +5891,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5916,14 +5916,14 @@
 					]
 				},
 				{
-					"id": 81,
+					"id": 79,
 					"name": "deleteReservationItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 82,
+							"id": 80,
 							"name": "deleteReservationItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -5950,7 +5950,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteReservationItems (\n  reservationItemIds: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteReservationItem(\n    reservationItemIds\n  )\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteReservationItems (\n  reservationItemIds: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteReservationItem(\n    reservationItemIds\n  )\n}\n```"
 											}
 										]
 									}
@@ -5958,7 +5958,7 @@
 							},
 							"parameters": [
 								{
-									"id": 83,
+									"id": 81,
 									"name": "reservationItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -5989,7 +5989,7 @@
 									}
 								},
 								{
-									"id": 84,
+									"id": 82,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6006,7 +6006,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6031,14 +6031,14 @@
 					]
 				},
 				{
-					"id": 85,
+					"id": 83,
 					"name": "deleteInventoryItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 86,
+							"id": 84,
 							"name": "deleteInventoryItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -6053,7 +6053,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "restoreInventoryItem",
-										"target": 89,
+										"target": 87,
 										"tsLinkText": ""
 									},
 									{
@@ -6076,7 +6076,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteInventoryItem (\n  inventoryItems: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteInventoryItem(\n    inventoryItems\n  )\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteInventoryItem (\n  inventoryItems: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteInventoryItem(\n    inventoryItems\n  )\n}\n```"
 											}
 										]
 									}
@@ -6084,7 +6084,7 @@
 							},
 							"parameters": [
 								{
-									"id": 87,
+									"id": 85,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -6115,7 +6115,7 @@
 									}
 								},
 								{
-									"id": 88,
+									"id": 86,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6132,7 +6132,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6157,14 +6157,14 @@
 					]
 				},
 				{
-					"id": 89,
+					"id": 87,
 					"name": "restoreInventoryItem",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 90,
+							"id": 88,
 							"name": "restoreInventoryItem",
 							"variant": "signature",
 							"kind": 4096,
@@ -6179,7 +6179,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "deleteInventoryItem",
-										"target": 85,
+										"target": 83,
 										"tsLinkText": ""
 									},
 									{
@@ -6202,7 +6202,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function restoreInventoryItem (\n  inventoryItems: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.restoreInventoryItem(\n    inventoryItems\n  )\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function restoreInventoryItem (\n  inventoryItems: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.restoreInventoryItem(\n    inventoryItems\n  )\n}\n```"
 											}
 										]
 									}
@@ -6210,7 +6210,7 @@
 							},
 							"parameters": [
 								{
-									"id": 91,
+									"id": 89,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -6241,7 +6241,7 @@
 									}
 								},
 								{
-									"id": 92,
+									"id": 90,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6258,7 +6258,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6283,14 +6283,14 @@
 					]
 				},
 				{
-					"id": 93,
+					"id": 91,
 					"name": "deleteInventoryItemLevelByLocationId",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 94,
+							"id": 92,
 							"name": "deleteInventoryItemLevelByLocationId",
 							"variant": "signature",
 							"kind": 4096,
@@ -6317,7 +6317,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteInventoryItemLevelByLocationId (\n  locationIds: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteInventoryItemLevelByLocationId(\n    locationIds\n  )\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteInventoryItemLevelByLocationId (\n  locationIds: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteInventoryItemLevelByLocationId(\n    locationIds\n  )\n}\n```"
 											}
 										]
 									}
@@ -6325,7 +6325,7 @@
 							},
 							"parameters": [
 								{
-									"id": 95,
+									"id": 93,
 									"name": "locationId",
 									"variant": "param",
 									"kind": 32768,
@@ -6356,7 +6356,7 @@
 									}
 								},
 								{
-									"id": 96,
+									"id": 94,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6373,7 +6373,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6398,14 +6398,14 @@
 					]
 				},
 				{
-					"id": 97,
+					"id": 95,
 					"name": "deleteReservationItemByLocationId",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 98,
+							"id": 96,
 							"name": "deleteReservationItemByLocationId",
 							"variant": "signature",
 							"kind": 4096,
@@ -6432,7 +6432,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteReservationItemByLocationId (\n  locationIds: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteReservationItemByLocationId(\n    locationIds\n  )\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteReservationItemByLocationId (\n  locationIds: string[]\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteReservationItemByLocationId(\n    locationIds\n  )\n}\n```"
 											}
 										]
 									}
@@ -6440,7 +6440,7 @@
 							},
 							"parameters": [
 								{
-									"id": 99,
+									"id": 97,
 									"name": "locationId",
 									"variant": "param",
 									"kind": 32768,
@@ -6471,7 +6471,7 @@
 									}
 								},
 								{
-									"id": 100,
+									"id": 98,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6488,7 +6488,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6513,14 +6513,14 @@
 					]
 				},
 				{
-					"id": 101,
+					"id": 99,
 					"name": "deleteInventoryLevel",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 102,
+							"id": 100,
 							"name": "deleteInventoryLevel",
 							"variant": "signature",
 							"kind": 4096,
@@ -6547,7 +6547,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteInventoryLevel (\n  inventoryItemId: string,\n  locationId: string\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteInventoryLevel(\n    inventoryItemId,\n    locationId\n  )\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function deleteInventoryLevel (\n  inventoryItemId: string,\n  locationId: string\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  await inventoryModule.deleteInventoryLevel(\n    inventoryItemId,\n    locationId\n  )\n}\n```"
 											}
 										]
 									}
@@ -6555,7 +6555,7 @@
 							},
 							"parameters": [
 								{
-									"id": 103,
+									"id": 101,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -6574,7 +6574,7 @@
 									}
 								},
 								{
-									"id": 104,
+									"id": 102,
 									"name": "locationId",
 									"variant": "param",
 									"kind": 32768,
@@ -6593,7 +6593,7 @@
 									}
 								},
 								{
-									"id": 105,
+									"id": 103,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6610,7 +6610,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6635,14 +6635,14 @@
 					]
 				},
 				{
-					"id": 106,
+					"id": 104,
 					"name": "adjustInventory",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 107,
+							"id": 105,
 							"name": "adjustInventory",
 							"variant": "signature",
 							"kind": 4096,
@@ -6669,7 +6669,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function adjustInventory (\n  inventoryItemId: string,\n  locationId: string,\n  adjustment: number\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevel = await inventoryModule.adjustInventory(\n    inventoryItemId,\n    locationId,\n    adjustment\n  )\n\n  // do something with the inventory level or return it.\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function adjustInventory (\n  inventoryItemId: string,\n  locationId: string,\n  adjustment: number\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const inventoryLevel = await inventoryModule.adjustInventory(\n    inventoryItemId,\n    locationId,\n    adjustment\n  )\n\n  // do something with the inventory level or return it.\n}\n```"
 											}
 										]
 									}
@@ -6677,7 +6677,7 @@
 							},
 							"parameters": [
 								{
-									"id": 108,
+									"id": 106,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -6696,7 +6696,7 @@
 									}
 								},
 								{
-									"id": 109,
+									"id": 107,
 									"name": "locationId",
 									"variant": "param",
 									"kind": 32768,
@@ -6715,7 +6715,7 @@
 									}
 								},
 								{
-									"id": 110,
+									"id": 108,
 									"name": "adjustment",
 									"variant": "param",
 									"kind": 32768,
@@ -6734,7 +6734,7 @@
 									}
 								},
 								{
-									"id": 111,
+									"id": 109,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6751,7 +6751,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6766,7 +6766,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 230,
+										"target": 216,
 										"name": "InventoryLevelDTO",
 										"package": "@medusajs/types"
 									}
@@ -6778,14 +6778,14 @@
 					]
 				},
 				{
-					"id": 112,
+					"id": 110,
 					"name": "confirmInventory",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 113,
+							"id": 111,
 							"name": "confirmInventory",
 							"variant": "signature",
 							"kind": 4096,
@@ -6812,7 +6812,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function confirmInventory (\n  inventoryItemId: string,\n  locationIds: string[],\n  quantity: number\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  return await inventoryModule.confirmInventory(\n    inventoryItemId,\n    locationIds,\n    quantity\n  )\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function confirmInventory (\n  inventoryItemId: string,\n  locationIds: string[],\n  quantity: number\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  return await inventoryModule.confirmInventory(\n    inventoryItemId,\n    locationIds,\n    quantity\n  )\n}\n```"
 											}
 										]
 									}
@@ -6820,7 +6820,7 @@
 							},
 							"parameters": [
 								{
-									"id": 114,
+									"id": 112,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -6839,7 +6839,7 @@
 									}
 								},
 								{
-									"id": 115,
+									"id": 113,
 									"name": "locationIds",
 									"variant": "param",
 									"kind": 32768,
@@ -6861,7 +6861,7 @@
 									}
 								},
 								{
-									"id": 116,
+									"id": 114,
 									"name": "quantity",
 									"variant": "param",
 									"kind": 32768,
@@ -6880,7 +6880,7 @@
 									}
 								},
 								{
-									"id": 117,
+									"id": 115,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -6897,7 +6897,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6922,14 +6922,14 @@
 					]
 				},
 				{
-					"id": 118,
+					"id": 116,
 					"name": "retrieveAvailableQuantity",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 119,
+							"id": 117,
 							"name": "retrieveAvailableQuantity",
 							"variant": "signature",
 							"kind": 4096,
@@ -6956,7 +6956,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveAvailableQuantity (\n  inventoryItemId: string,\n  locationIds: string[],\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const quantity = await inventoryModule.retrieveAvailableQuantity(\n    inventoryItemId,\n    locationIds,\n  )\n  \n  // do something with the quantity or return it\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveAvailableQuantity (\n  inventoryItemId: string,\n  locationIds: string[],\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const quantity = await inventoryModule.retrieveAvailableQuantity(\n    inventoryItemId,\n    locationIds,\n  )\n\n  // do something with the quantity or return it\n}\n```"
 											}
 										]
 									}
@@ -6964,7 +6964,7 @@
 							},
 							"parameters": [
 								{
-									"id": 120,
+									"id": 118,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -6983,7 +6983,7 @@
 									}
 								},
 								{
-									"id": 121,
+									"id": 119,
 									"name": "locationIds",
 									"variant": "param",
 									"kind": 32768,
@@ -7005,7 +7005,7 @@
 									}
 								},
 								{
-									"id": 122,
+									"id": 120,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -7022,7 +7022,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -7047,14 +7047,14 @@
 					]
 				},
 				{
-					"id": 123,
+					"id": 121,
 					"name": "retrieveStockedQuantity",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 124,
+							"id": 122,
 							"name": "retrieveStockedQuantity",
 							"variant": "signature",
 							"kind": 4096,
@@ -7081,7 +7081,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveStockedQuantity (\n  inventoryItemId: string,\n  locationIds: string[],\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const quantity = await inventoryModule.retrieveStockedQuantity(\n    inventoryItemId,\n    locationIds,\n  )\n  \n  // do something with the quantity or return it\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveStockedQuantity (\n  inventoryItemId: string,\n  locationIds: string[],\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const quantity = await inventoryModule.retrieveStockedQuantity(\n    inventoryItemId,\n    locationIds,\n  )\n\n  // do something with the quantity or return it\n}\n```"
 											}
 										]
 									}
@@ -7089,7 +7089,7 @@
 							},
 							"parameters": [
 								{
-									"id": 125,
+									"id": 123,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -7108,7 +7108,7 @@
 									}
 								},
 								{
-									"id": 126,
+									"id": 124,
 									"name": "locationIds",
 									"variant": "param",
 									"kind": 32768,
@@ -7130,7 +7130,7 @@
 									}
 								},
 								{
-									"id": 127,
+									"id": 125,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -7147,7 +7147,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -7172,14 +7172,14 @@
 					]
 				},
 				{
-					"id": 128,
+					"id": 126,
 					"name": "retrieveReservedQuantity",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 129,
+							"id": 127,
 							"name": "retrieveReservedQuantity",
 							"variant": "signature",
 							"kind": 4096,
@@ -7206,7 +7206,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport { \n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservedQuantity (\n  inventoryItemId: string,\n  locationIds: string[],\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const quantity = await inventoryModule.retrieveReservedQuantity(\n    inventoryItemId,\n    locationIds,\n  )\n  \n  // do something with the quantity or return it\n}\n```"
+												"text": "```ts\nimport {\n  initialize as initializeInventoryModule,\n} from \"@medusajs/inventory\"\n\nasync function retrieveReservedQuantity (\n  inventoryItemId: string,\n  locationIds: string[],\n) {\n  const inventoryModule = await initializeInventoryModule({})\n\n  const quantity = await inventoryModule.retrieveReservedQuantity(\n    inventoryItemId,\n    locationIds,\n  )\n\n  // do something with the quantity or return it\n}\n```"
 											}
 										]
 									}
@@ -7214,7 +7214,7 @@
 							},
 							"parameters": [
 								{
-									"id": 130,
+									"id": 128,
 									"name": "inventoryItemId",
 									"variant": "param",
 									"kind": 32768,
@@ -7233,7 +7233,7 @@
 									}
 								},
 								{
-									"id": 131,
+									"id": 129,
 									"name": "locationIds",
 									"variant": "param",
 									"kind": 32768,
@@ -7255,7 +7255,7 @@
 									}
 								},
 								{
-									"id": 132,
+									"id": 130,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -7272,7 +7272,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 199,
+										"target": 185,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -7301,40 +7301,48 @@
 				{
 					"title": "Methods",
 					"children": [
-						4,
-						9,
-						14,
-						19,
-						24,
-						29,
-						33,
-						37,
-						41,
-						45,
-						49,
-						53,
-						57,
-						61,
-						67,
-						72,
-						77,
-						81,
-						85,
-						89,
-						93,
-						97,
-						101,
-						106,
-						112,
-						118,
-						123,
-						128
+						2,
+						7,
+						12,
+						17,
+						22,
+						27,
+						31,
+						35,
+						39,
+						43,
+						47,
+						51,
+						55,
+						59,
+						65,
+						70,
+						75,
+						79,
+						83,
+						87,
+						91,
+						95,
+						99,
+						104,
+						110,
+						116,
+						121,
+						126
 					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": 138,
+					"name": "IModuleService",
+					"package": "@medusajs/types"
 				}
 			]
 		},
 		{
-			"id": 319,
+			"id": 332,
 			"name": "JoinerRelationship",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -7342,14 +7350,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 320,
+					"id": 333,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 321,
+							"id": 334,
 							"name": "alias",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7360,7 +7368,7 @@
 							}
 						},
 						{
-							"id": 322,
+							"id": 335,
 							"name": "foreignKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7371,7 +7379,7 @@
 							}
 						},
 						{
-							"id": 323,
+							"id": 336,
 							"name": "primaryKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7382,7 +7390,7 @@
 							}
 						},
 						{
-							"id": 324,
+							"id": 337,
 							"name": "serviceName",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7393,7 +7401,7 @@
 							}
 						},
 						{
-							"id": 325,
+							"id": 338,
 							"name": "isInternalService",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7414,7 +7422,7 @@
 							}
 						},
 						{
-							"id": 326,
+							"id": 339,
 							"name": "inverse",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7435,7 +7443,7 @@
 							}
 						},
 						{
-							"id": 327,
+							"id": 340,
 							"name": "isList",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7456,7 +7464,7 @@
 							}
 						},
 						{
-							"id": 328,
+							"id": 341,
 							"name": "args",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7496,14 +7504,14 @@
 						{
 							"title": "Properties",
 							"children": [
-								321,
-								322,
-								323,
-								324,
-								325,
-								326,
-								327,
-								328
+								334,
+								335,
+								336,
+								337,
+								338,
+								339,
+								340,
+								341
 							]
 						}
 					]
@@ -7511,14 +7519,14 @@
 			}
 		},
 		{
-			"id": 316,
+			"id": 329,
 			"name": "JoinerServiceConfigAlias",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 317,
+					"id": 330,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7541,7 +7549,7 @@
 					}
 				},
 				{
-					"id": 318,
+					"id": 331,
 					"name": "args",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7581,21 +7589,21 @@
 				{
 					"title": "Properties",
 					"children": [
-						317,
-						318
+						330,
+						331
 					]
 				}
 			]
 		},
 		{
-			"id": 285,
+			"id": 311,
 			"name": "JoinerServiceConfig",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 286,
+					"id": 312,
 					"name": "serviceName",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7606,7 +7614,7 @@
 					}
 				},
 				{
-					"id": 287,
+					"id": 313,
 					"name": "alias",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7626,7 +7634,7 @@
 						"types": [
 							{
 								"type": "reference",
-								"target": 316,
+								"target": 329,
 								"name": "JoinerServiceConfigAlias",
 								"package": "@medusajs/types"
 							},
@@ -7634,7 +7642,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 316,
+									"target": 329,
 									"name": "JoinerServiceConfigAlias",
 									"package": "@medusajs/types"
 								}
@@ -7643,7 +7651,7 @@
 					}
 				},
 				{
-					"id": 288,
+					"id": 314,
 					"name": "fieldAlias",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7679,14 +7687,14 @@
 									{
 										"type": "reflection",
 										"declaration": {
-											"id": 289,
+											"id": 315,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 290,
+													"id": 316,
 													"name": "path",
 													"variant": "declaration",
 													"kind": 1024,
@@ -7697,7 +7705,7 @@
 													}
 												},
 												{
-													"id": 291,
+													"id": 317,
 													"name": "forwardArgumentsOnPath",
 													"variant": "declaration",
 													"kind": 1024,
@@ -7715,8 +7723,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														290,
-														291
+														316,
+														317
 													]
 												}
 											]
@@ -7730,7 +7738,7 @@
 					}
 				},
 				{
-					"id": 292,
+					"id": 318,
 					"name": "primaryKeys",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7744,7 +7752,7 @@
 					}
 				},
 				{
-					"id": 293,
+					"id": 319,
 					"name": "relationships",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7755,14 +7763,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 319,
+							"target": 332,
 							"name": "JoinerRelationship",
 							"package": "@medusajs/types"
 						}
 					}
 				},
 				{
-					"id": 294,
+					"id": 320,
 					"name": "extends",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7774,14 +7782,14 @@
 						"elementType": {
 							"type": "reflection",
 							"declaration": {
-								"id": 295,
+								"id": 321,
 								"name": "__type",
 								"variant": "declaration",
 								"kind": 65536,
 								"flags": {},
 								"children": [
 									{
-										"id": 296,
+										"id": 322,
 										"name": "serviceName",
 										"variant": "declaration",
 										"kind": 1024,
@@ -7792,14 +7800,14 @@
 										}
 									},
 									{
-										"id": 297,
+										"id": 323,
 										"name": "relationship",
 										"variant": "declaration",
 										"kind": 1024,
 										"flags": {},
 										"type": {
 											"type": "reference",
-											"target": 319,
+											"target": 332,
 											"name": "JoinerRelationship",
 											"package": "@medusajs/types"
 										}
@@ -7809,8 +7817,8 @@
 									{
 										"title": "Properties",
 										"children": [
-											296,
-											297
+											322,
+											323
 										]
 									}
 								]
@@ -7819,7 +7827,7 @@
 					}
 				},
 				{
-					"id": 298,
+					"id": 324,
 					"name": "args",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7859,19 +7867,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						286,
-						287,
-						288,
-						292,
-						293,
-						294,
-						298
+						312,
+						313,
+						314,
+						318,
+						319,
+						320,
+						324
 					]
 				}
 			]
 		},
 		{
-			"id": 133,
+			"id": 271,
 			"name": "ModuleJoinerConfig",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -7888,7 +7896,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 285,
+								"target": 311,
 								"name": "JoinerServiceConfig",
 								"package": "@medusajs/types"
 							},
@@ -7920,14 +7928,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 134,
+							"id": 272,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 135,
+									"id": 273,
 									"name": "schema",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7948,7 +7956,7 @@
 									}
 								},
 								{
-									"id": 136,
+									"id": 274,
 									"name": "relationships",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7959,14 +7967,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 299,
+											"target": 325,
 											"name": "ModuleJoinerRelationship",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 137,
+									"id": 275,
 									"name": "extends",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7978,14 +7986,14 @@
 										"elementType": {
 											"type": "reflection",
 											"declaration": {
-												"id": 138,
+												"id": 276,
 												"name": "__type",
 												"variant": "declaration",
 												"kind": 65536,
 												"flags": {},
 												"children": [
 													{
-														"id": 139,
+														"id": 277,
 														"name": "serviceName",
 														"variant": "declaration",
 														"kind": 1024,
@@ -7996,7 +8004,7 @@
 														}
 													},
 													{
-														"id": 140,
+														"id": 278,
 														"name": "fieldAlias",
 														"variant": "declaration",
 														"kind": 1024,
@@ -8024,14 +8032,14 @@
 																		{
 																			"type": "reflection",
 																			"declaration": {
-																				"id": 141,
+																				"id": 279,
 																				"name": "__type",
 																				"variant": "declaration",
 																				"kind": 65536,
 																				"flags": {},
 																				"children": [
 																					{
-																						"id": 142,
+																						"id": 280,
 																						"name": "path",
 																						"variant": "declaration",
 																						"kind": 1024,
@@ -8042,7 +8050,7 @@
 																						}
 																					},
 																					{
-																						"id": 143,
+																						"id": 281,
 																						"name": "forwardArgumentsOnPath",
 																						"variant": "declaration",
 																						"kind": 1024,
@@ -8060,8 +8068,8 @@
 																					{
 																						"title": "Properties",
 																						"children": [
-																							142,
-																							143
+																							280,
+																							281
 																						]
 																					}
 																				]
@@ -8075,14 +8083,14 @@
 														}
 													},
 													{
-														"id": 144,
+														"id": 282,
 														"name": "relationship",
 														"variant": "declaration",
 														"kind": 1024,
 														"flags": {},
 														"type": {
 															"type": "reference",
-															"target": 299,
+															"target": 325,
 															"name": "ModuleJoinerRelationship",
 															"package": "@medusajs/types"
 														}
@@ -8092,9 +8100,9 @@
 													{
 														"title": "Properties",
 														"children": [
-															139,
-															140,
-															144
+															277,
+															278,
+															282
 														]
 													}
 												]
@@ -8103,7 +8111,7 @@
 									}
 								},
 								{
-									"id": 145,
+									"id": 283,
 									"name": "serviceName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8116,7 +8124,7 @@
 									}
 								},
 								{
-									"id": 146,
+									"id": 284,
 									"name": "primaryKeys",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8132,7 +8140,7 @@
 									}
 								},
 								{
-									"id": 147,
+									"id": 285,
 									"name": "isLink",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8153,7 +8161,7 @@
 									}
 								},
 								{
-									"id": 148,
+									"id": 286,
 									"name": "linkableKeys",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8189,7 +8197,7 @@
 									}
 								},
 								{
-									"id": 149,
+									"id": 287,
 									"name": "isReadOnlyLink",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8210,7 +8218,7 @@
 									}
 								},
 								{
-									"id": 150,
+									"id": 288,
 									"name": "databaseConfig",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8220,14 +8228,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 151,
+											"id": 289,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 152,
+													"id": 290,
 													"name": "tableName",
 													"variant": "declaration",
 													"kind": 1024,
@@ -8248,7 +8256,7 @@
 													}
 												},
 												{
-													"id": 153,
+													"id": 291,
 													"name": "idPrefix",
 													"variant": "declaration",
 													"kind": 1024,
@@ -8269,7 +8277,7 @@
 													}
 												},
 												{
-													"id": 154,
+													"id": 292,
 													"name": "extraFields",
 													"variant": "declaration",
 													"kind": 1024,
@@ -8290,14 +8298,14 @@
 															{
 																"type": "reflection",
 																"declaration": {
-																	"id": 155,
+																	"id": 293,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"children": [
 																		{
-																			"id": 156,
+																			"id": 294,
 																			"name": "type",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -8393,7 +8401,7 @@
 																			}
 																		},
 																		{
-																			"id": 157,
+																			"id": 295,
 																			"name": "defaultValue",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -8406,7 +8414,7 @@
 																			}
 																		},
 																		{
-																			"id": 158,
+																			"id": 296,
 																			"name": "nullable",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -8419,7 +8427,7 @@
 																			}
 																		},
 																		{
-																			"id": 159,
+																			"id": 297,
 																			"name": "options",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -8459,10 +8467,10 @@
 																		{
 																			"title": "Properties",
 																			"children": [
-																				156,
-																				157,
-																				158,
-																				159
+																				294,
+																				295,
+																				296,
+																				297
 																			]
 																		}
 																	]
@@ -8478,9 +8486,9 @@
 												{
 													"title": "Properties",
 													"children": [
-														152,
-														153,
-														154
+														290,
+														291,
+														292
 													]
 												}
 											]
@@ -8492,15 +8500,15 @@
 								{
 									"title": "Properties",
 									"children": [
-										135,
-										136,
-										137,
-										145,
-										146,
-										147,
-										148,
-										149,
-										150
+										273,
+										274,
+										275,
+										283,
+										284,
+										285,
+										286,
+										287,
+										288
 									]
 								}
 							]
@@ -8510,7 +8518,7 @@
 			}
 		},
 		{
-			"id": 299,
+			"id": 325,
 			"name": "ModuleJoinerRelationship",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -8520,21 +8528,21 @@
 				"types": [
 					{
 						"type": "reference",
-						"target": 319,
+						"target": 332,
 						"name": "JoinerRelationship",
 						"package": "@medusajs/types"
 					},
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 300,
+							"id": 326,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 301,
+									"id": 327,
 									"name": "isInternalService",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8555,7 +8563,7 @@
 									}
 								},
 								{
-									"id": 302,
+									"id": 328,
 									"name": "deleteCascade",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8580,8 +8588,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										301,
-										302
+										327,
+										328
 									]
 								}
 							]
@@ -8591,22 +8599,50 @@
 			}
 		},
 		{
-			"id": 199,
+			"id": 138,
+			"name": "IModuleService",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"extendedBy": [
+				{
+					"type": "reference",
+					"target": 1,
+					"name": "IInventoryService"
+				}
+			]
+		},
+		{
+			"id": 185,
 			"name": "SharedContext",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"comment": {
-				"summary": [
+				"summary": [],
+				"blockTags": [
 					{
-						"kind": "text",
-						"text": "A context used to share resources, such as transaction manager, between the application and the module."
+						"tag": "@deprecated",
+						"content": [
+							{
+								"kind": "text",
+								"text": "use "
+							},
+							{
+								"kind": "code",
+								"text": "`Context`"
+							},
+							{
+								"kind": "text",
+								"text": " instead\n\n\nA context used to share resources, such as transaction manager, between the application and the module."
+							}
+						]
 					}
 				]
 			},
 			"children": [
 				{
-					"id": 200,
+					"id": 186,
 					"name": "transactionManager",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8632,7 +8668,7 @@
 					}
 				},
 				{
-					"id": 201,
+					"id": 187,
 					"name": "manager",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8662,8 +8698,8 @@
 				{
 					"title": "Properties",
 					"children": [
-						200,
-						201
+						186,
+						187
 					]
 				}
 			]
@@ -8673,33 +8709,34 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				168,
-				303,
-				311,
-				202,
-				160,
-				251,
-				242,
-				224,
+				154,
+				298,
+				306,
+				188,
+				146,
+				237,
+				228,
+				210,
+				252,
+				263,
+				258,
 				266,
-				277,
-				272,
-				280,
 				1,
-				316,
-				285,
-				199
+				329,
+				311,
+				138,
+				185
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				179,
-				211,
-				230,
-				319,
-				133,
-				299
+				165,
+				197,
+				216,
+				332,
+				271,
+				325
 			]
 		}
 	],
@@ -8713,969 +8750,921 @@
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService"
 		},
-		"4": {
+		"2": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "IInventoryService.listInventoryItems"
+		},
+		"3": {
+			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
+			"qualifiedName": "IInventoryService.listInventoryItems"
+		},
+		"4": {
+			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
+			"qualifiedName": "selector"
 		},
 		"5": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.listInventoryItems"
+			"qualifiedName": "config"
 		},
 		"6": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "selector"
+			"qualifiedName": "context"
 		},
 		"7": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "IInventoryService.listReservationItems"
 		},
 		"8": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.listReservationItems"
 		},
 		"9": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.listReservationItems"
+			"qualifiedName": "selector"
 		},
 		"10": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.listReservationItems"
+			"qualifiedName": "config"
 		},
 		"11": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "selector"
+			"qualifiedName": "context"
 		},
 		"12": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "IInventoryService.listInventoryLevels"
 		},
 		"13": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.listInventoryLevels"
 		},
 		"14": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.listInventoryLevels"
+			"qualifiedName": "selector"
 		},
 		"15": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.listInventoryLevels"
+			"qualifiedName": "config"
 		},
 		"16": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "selector"
+			"qualifiedName": "context"
 		},
 		"17": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "IInventoryService.retrieveInventoryItem"
 		},
 		"18": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.retrieveInventoryItem"
 		},
 		"19": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.retrieveInventoryItem"
+			"qualifiedName": "inventoryItemId"
 		},
 		"20": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.retrieveInventoryItem"
+			"qualifiedName": "config"
 		},
 		"21": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "inventoryItemId"
+			"qualifiedName": "context"
 		},
 		"22": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "IInventoryService.retrieveInventoryLevel"
 		},
 		"23": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.retrieveInventoryLevel"
 		},
 		"24": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.retrieveInventoryLevel"
+			"qualifiedName": "inventoryItemId"
 		},
 		"25": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.retrieveInventoryLevel"
+			"qualifiedName": "locationId"
 		},
 		"26": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "inventoryItemId"
+			"qualifiedName": "context"
 		},
 		"27": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "locationId"
+			"qualifiedName": "IInventoryService.retrieveReservationItem"
 		},
 		"28": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.retrieveReservationItem"
 		},
 		"29": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.retrieveReservationItem"
+			"qualifiedName": "reservationId"
 		},
 		"30": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.retrieveReservationItem"
+			"qualifiedName": "context"
 		},
 		"31": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "reservationId"
+			"qualifiedName": "IInventoryService.createReservationItem"
 		},
 		"32": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.createReservationItem"
 		},
 		"33": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.createReservationItem"
+			"qualifiedName": "input"
 		},
 		"34": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.createReservationItem"
+			"qualifiedName": "context"
 		},
 		"35": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "input"
+			"qualifiedName": "IInventoryService.createReservationItems"
 		},
 		"36": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.createReservationItems"
 		},
 		"37": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.createReservationItems"
+			"qualifiedName": "input"
 		},
 		"38": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.createReservationItems"
+			"qualifiedName": "context"
 		},
 		"39": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "input"
+			"qualifiedName": "IInventoryService.createInventoryItem"
 		},
 		"40": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.createInventoryItem"
 		},
 		"41": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.createInventoryItem"
+			"qualifiedName": "input"
 		},
 		"42": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.createInventoryItem"
+			"qualifiedName": "context"
 		},
 		"43": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "input"
+			"qualifiedName": "IInventoryService.createInventoryItems"
 		},
 		"44": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.createInventoryItems"
 		},
 		"45": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.createInventoryItems"
+			"qualifiedName": "input"
 		},
 		"46": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.createInventoryItems"
+			"qualifiedName": "context"
 		},
 		"47": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "input"
+			"qualifiedName": "IInventoryService.createInventoryLevel"
 		},
 		"48": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.createInventoryLevel"
 		},
 		"49": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.createInventoryLevel"
+			"qualifiedName": "data"
 		},
 		"50": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.createInventoryLevel"
+			"qualifiedName": "context"
 		},
 		"51": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "data"
+			"qualifiedName": "IInventoryService.createInventoryLevels"
 		},
 		"52": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.createInventoryLevels"
 		},
 		"53": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.createInventoryLevels"
+			"qualifiedName": "data"
 		},
 		"54": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.createInventoryLevels"
+			"qualifiedName": "context"
 		},
 		"55": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "data"
+			"qualifiedName": "IInventoryService.updateInventoryLevels"
 		},
 		"56": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.updateInventoryLevels"
 		},
 		"57": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.updateInventoryLevels"
+			"qualifiedName": "updates"
 		},
 		"58": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.updateInventoryLevels"
+			"qualifiedName": "context"
 		},
 		"59": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "updates"
+			"qualifiedName": "IInventoryService.updateInventoryLevel"
 		},
 		"60": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.updateInventoryLevel"
 		},
 		"61": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.updateInventoryLevel"
+			"qualifiedName": "inventoryItemId"
 		},
 		"62": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.updateInventoryLevel"
+			"qualifiedName": "locationId"
 		},
 		"63": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "inventoryItemId"
+			"qualifiedName": "update"
 		},
 		"64": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "locationId"
+			"qualifiedName": "context"
 		},
 		"65": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "update"
+			"qualifiedName": "IInventoryService.updateInventoryItem"
 		},
 		"66": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.updateInventoryItem"
 		},
 		"67": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.updateInventoryItem"
+			"qualifiedName": "inventoryItemId"
 		},
 		"68": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.updateInventoryItem"
+			"qualifiedName": "input"
 		},
 		"69": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "inventoryItemId"
+			"qualifiedName": "context"
 		},
 		"70": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "input"
+			"qualifiedName": "IInventoryService.updateReservationItem"
 		},
 		"71": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.updateReservationItem"
 		},
 		"72": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.updateReservationItem"
+			"qualifiedName": "reservationItemId"
 		},
 		"73": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.updateReservationItem"
+			"qualifiedName": "input"
 		},
 		"74": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "reservationItemId"
+			"qualifiedName": "context"
 		},
 		"75": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "input"
+			"qualifiedName": "IInventoryService.deleteReservationItemsByLineItem"
 		},
 		"76": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.deleteReservationItemsByLineItem"
 		},
 		"77": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.deleteReservationItemsByLineItem"
+			"qualifiedName": "lineItemId"
 		},
 		"78": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.deleteReservationItemsByLineItem"
+			"qualifiedName": "context"
 		},
 		"79": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "lineItemId"
+			"qualifiedName": "IInventoryService.deleteReservationItem"
 		},
 		"80": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.deleteReservationItem"
 		},
 		"81": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.deleteReservationItem"
+			"qualifiedName": "reservationItemId"
 		},
 		"82": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.deleteReservationItem"
+			"qualifiedName": "context"
 		},
 		"83": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "reservationItemId"
+			"qualifiedName": "IInventoryService.deleteInventoryItem"
 		},
 		"84": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.deleteInventoryItem"
 		},
 		"85": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.deleteInventoryItem"
+			"qualifiedName": "inventoryItemId"
 		},
 		"86": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.deleteInventoryItem"
+			"qualifiedName": "context"
 		},
 		"87": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "inventoryItemId"
+			"qualifiedName": "IInventoryService.restoreInventoryItem"
 		},
 		"88": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.restoreInventoryItem"
 		},
 		"89": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.restoreInventoryItem"
+			"qualifiedName": "inventoryItemId"
 		},
 		"90": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.restoreInventoryItem"
+			"qualifiedName": "context"
 		},
 		"91": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "inventoryItemId"
+			"qualifiedName": "IInventoryService.deleteInventoryItemLevelByLocationId"
 		},
 		"92": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.deleteInventoryItemLevelByLocationId"
 		},
 		"93": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.deleteInventoryItemLevelByLocationId"
+			"qualifiedName": "locationId"
 		},
 		"94": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.deleteInventoryItemLevelByLocationId"
+			"qualifiedName": "context"
 		},
 		"95": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "locationId"
+			"qualifiedName": "IInventoryService.deleteReservationItemByLocationId"
 		},
 		"96": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.deleteReservationItemByLocationId"
 		},
 		"97": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.deleteReservationItemByLocationId"
+			"qualifiedName": "locationId"
 		},
 		"98": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.deleteReservationItemByLocationId"
+			"qualifiedName": "context"
 		},
 		"99": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "locationId"
+			"qualifiedName": "IInventoryService.deleteInventoryLevel"
 		},
 		"100": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.deleteInventoryLevel"
 		},
 		"101": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.deleteInventoryLevel"
+			"qualifiedName": "inventoryItemId"
 		},
 		"102": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.deleteInventoryLevel"
+			"qualifiedName": "locationId"
 		},
 		"103": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "inventoryItemId"
+			"qualifiedName": "context"
 		},
 		"104": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "locationId"
+			"qualifiedName": "IInventoryService.adjustInventory"
 		},
 		"105": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.adjustInventory"
 		},
 		"106": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.adjustInventory"
+			"qualifiedName": "inventoryItemId"
 		},
 		"107": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.adjustInventory"
+			"qualifiedName": "locationId"
 		},
 		"108": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "inventoryItemId"
+			"qualifiedName": "adjustment"
 		},
 		"109": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "locationId"
+			"qualifiedName": "context"
 		},
 		"110": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "adjustment"
+			"qualifiedName": "IInventoryService.confirmInventory"
 		},
 		"111": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.confirmInventory"
 		},
 		"112": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.confirmInventory"
+			"qualifiedName": "inventoryItemId"
 		},
 		"113": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.confirmInventory"
+			"qualifiedName": "locationIds"
 		},
 		"114": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "inventoryItemId"
+			"qualifiedName": "quantity"
 		},
 		"115": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "locationIds"
+			"qualifiedName": "context"
 		},
 		"116": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "quantity"
+			"qualifiedName": "IInventoryService.retrieveAvailableQuantity"
 		},
 		"117": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.retrieveAvailableQuantity"
 		},
 		"118": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.retrieveAvailableQuantity"
+			"qualifiedName": "inventoryItemId"
 		},
 		"119": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.retrieveAvailableQuantity"
+			"qualifiedName": "locationIds"
 		},
 		"120": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "inventoryItemId"
+			"qualifiedName": "context"
 		},
 		"121": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "locationIds"
+			"qualifiedName": "IInventoryService.retrieveStockedQuantity"
 		},
 		"122": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.retrieveStockedQuantity"
 		},
 		"123": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.retrieveStockedQuantity"
+			"qualifiedName": "inventoryItemId"
 		},
 		"124": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.retrieveStockedQuantity"
+			"qualifiedName": "locationIds"
 		},
 		"125": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "inventoryItemId"
+			"qualifiedName": "context"
 		},
 		"126": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "locationIds"
+			"qualifiedName": "IInventoryService.retrieveReservedQuantity"
 		},
 		"127": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "IInventoryService.retrieveReservedQuantity"
 		},
 		"128": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.retrieveReservedQuantity"
+			"qualifiedName": "inventoryItemId"
 		},
 		"129": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "IInventoryService.retrieveReservedQuantity"
+			"qualifiedName": "locationIds"
 		},
 		"130": {
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "inventoryItemId"
-		},
-		"131": {
-			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
-			"qualifiedName": "locationIds"
-		},
-		"132": {
-			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
-		},
-		"133": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "ModuleJoinerConfig"
-		},
-		"134": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
-		},
-		"135": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.schema"
-		},
-		"136": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.relationships"
-		},
-		"137": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.extends"
 		},
 		"138": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
-		},
-		"139": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.serviceName"
-		},
-		"140": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.fieldAlias"
-		},
-		"141": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
-		},
-		"142": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.path"
-		},
-		"143": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.forwardArgumentsOnPath"
-		},
-		"144": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.relationship"
-		},
-		"145": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.serviceName"
+			"qualifiedName": "IModuleService"
 		},
 		"146": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.primaryKeys"
-		},
-		"147": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.isLink"
-		},
-		"148": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.linkableKeys"
-		},
-		"149": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.isReadOnlyLink"
-		},
-		"150": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.databaseConfig"
-		},
-		"151": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
-		},
-		"152": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.tableName"
-		},
-		"153": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.idPrefix"
-		},
-		"154": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.extraFields"
-		},
-		"155": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
-		},
-		"156": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.type"
-		},
-		"157": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.defaultValue"
-		},
-		"158": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.nullable"
-		},
-		"159": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.options"
-		},
-		"160": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "FilterableInventoryItemProps"
 		},
-		"161": {
+		"147": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.id"
 		},
-		"162": {
+		"148": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"163": {
+		"149": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.q"
 		},
-		"164": {
+		"150": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.sku"
 		},
-		"165": {
+		"151": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.origin_country"
 		},
-		"166": {
+		"152": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.hs_code"
 		},
-		"167": {
+		"153": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.requires_shipping"
 		},
-		"168": {
+		"154": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig"
 		},
-		"169": {
+		"155": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.select"
 		},
-		"170": {
+		"156": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.skip"
 		},
-		"171": {
+		"157": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.take"
 		},
-		"172": {
+		"158": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.relations"
 		},
-		"173": {
+		"159": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.order"
 		},
-		"174": {
+		"160": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "__type"
 		},
-		"175": {
+		"161": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "__type.__index"
 		},
-		"177": {
+		"163": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.withDeleted"
 		},
-		"178": {
+		"164": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.Entity"
 		},
-		"179": {
+		"165": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "InventoryItemDTO"
 		},
-		"180": {
+		"166": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type"
 		},
-		"181": {
+		"167": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.id"
 		},
-		"182": {
+		"168": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.sku"
 		},
-		"183": {
+		"169": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.origin_country"
 		},
-		"184": {
+		"170": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.hs_code"
 		},
-		"185": {
+		"171": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.requires_shipping"
 		},
-		"186": {
+		"172": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.mid_code"
 		},
-		"187": {
+		"173": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.material"
 		},
-		"188": {
+		"174": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.weight"
 		},
-		"189": {
+		"175": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.length"
 		},
-		"190": {
+		"176": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.height"
 		},
-		"191": {
+		"177": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.width"
 		},
-		"192": {
+		"178": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.title"
 		},
-		"193": {
+		"179": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.description"
 		},
-		"194": {
+		"180": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.thumbnail"
 		},
-		"195": {
+		"181": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.metadata"
 		},
-		"196": {
+		"182": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.created_at"
 		},
-		"197": {
+		"183": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.updated_at"
 		},
-		"198": {
+		"184": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.deleted_at"
 		},
-		"199": {
+		"185": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "SharedContext"
 		},
-		"200": {
+		"186": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "__type.transactionManager"
 		},
-		"201": {
+		"187": {
 			"sourceFileName": "../../../packages/types/src/shared-context.ts",
 			"qualifiedName": "__type.manager"
 		},
-		"202": {
+		"188": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "FilterableReservationItemProps"
 		},
-		"203": {
+		"189": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.id"
 		},
-		"205": {
+		"191": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.line_item_id"
 		},
-		"206": {
+		"192": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.inventory_item_id"
 		},
-		"207": {
+		"193": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"208": {
+		"194": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.description"
 		},
-		"209": {
+		"195": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.created_by"
 		},
-		"210": {
+		"196": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.quantity"
 		},
-		"211": {
+		"197": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "ReservationItemDTO"
 		},
-		"212": {
+		"198": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type"
 		},
-		"213": {
+		"199": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.id"
 		},
-		"214": {
+		"200": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"215": {
+		"201": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.inventory_item_id"
 		},
-		"216": {
+		"202": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.quantity"
 		},
-		"217": {
+		"203": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.line_item_id"
 		},
-		"218": {
+		"204": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.description"
 		},
-		"219": {
+		"205": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.created_by"
 		},
-		"220": {
+		"206": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.metadata"
 		},
-		"221": {
+		"207": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.created_at"
 		},
-		"222": {
+		"208": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.updated_at"
 		},
-		"223": {
+		"209": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.deleted_at"
 		},
-		"224": {
+		"210": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "FilterableInventoryLevelProps"
 		},
-		"225": {
+		"211": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.inventory_item_id"
 		},
-		"226": {
+		"212": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"227": {
+		"213": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.stocked_quantity"
 		},
-		"228": {
+		"214": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.reserved_quantity"
 		},
-		"229": {
+		"215": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.incoming_quantity"
 		},
-		"230": {
+		"216": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "InventoryLevelDTO"
 		},
-		"231": {
+		"217": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type"
 		},
-		"232": {
+		"218": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.id"
 		},
-		"233": {
+		"219": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.inventory_item_id"
 		},
-		"234": {
+		"220": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"235": {
+		"221": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.stocked_quantity"
 		},
-		"236": {
+		"222": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.reserved_quantity"
 		},
-		"237": {
+		"223": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.incoming_quantity"
 		},
-		"238": {
+		"224": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.metadata"
 		},
-		"239": {
+		"225": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.created_at"
 		},
-		"240": {
+		"226": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.updated_at"
 		},
-		"241": {
+		"227": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.deleted_at"
 		},
-		"242": {
+		"228": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "CreateReservationItemInput"
 		},
-		"243": {
+		"229": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.line_item_id"
 		},
-		"244": {
+		"230": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.inventory_item_id"
 		},
-		"245": {
+		"231": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"246": {
+		"232": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.quantity"
+		},
+		"233": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.description"
+		},
+		"234": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.created_by"
+		},
+		"235": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.external_id"
+		},
+		"236": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"237": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "CreateInventoryItemInput"
+		},
+		"238": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.sku"
+		},
+		"239": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.origin_country"
+		},
+		"240": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.mid_code"
+		},
+		"241": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.material"
+		},
+		"242": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.weight"
+		},
+		"243": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.length"
+		},
+		"244": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.height"
+		},
+		"245": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.width"
+		},
+		"246": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.title"
 		},
 		"247": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
@@ -9683,83 +9672,83 @@
 		},
 		"248": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.created_by"
+			"qualifiedName": "__type.thumbnail"
 		},
 		"249": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.external_id"
+			"qualifiedName": "__type.metadata"
 		},
 		"250": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.metadata"
+			"qualifiedName": "__type.hs_code"
 		},
 		"251": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "CreateInventoryItemInput"
+			"qualifiedName": "__type.requires_shipping"
 		},
 		"252": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.sku"
+			"qualifiedName": "CreateInventoryLevelInput"
 		},
 		"253": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.origin_country"
+			"qualifiedName": "__type.inventory_item_id"
 		},
 		"254": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.mid_code"
+			"qualifiedName": "__type.location_id"
 		},
 		"255": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.material"
+			"qualifiedName": "__type.stocked_quantity"
 		},
 		"256": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.weight"
+			"qualifiedName": "__type.reserved_quantity"
 		},
 		"257": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.length"
+			"qualifiedName": "__type.incoming_quantity"
 		},
 		"258": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.height"
+			"qualifiedName": "BulkUpdateInventoryLevelInput"
 		},
 		"259": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.width"
+			"qualifiedName": "__type.inventory_item_id"
 		},
 		"260": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.title"
+			"qualifiedName": "__type.location_id"
 		},
 		"261": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.description"
+			"qualifiedName": "__type.stocked_quantity"
 		},
 		"262": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.thumbnail"
+			"qualifiedName": "__type.incoming_quantity"
 		},
 		"263": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.metadata"
+			"qualifiedName": "UpdateInventoryLevelInput"
 		},
 		"264": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.hs_code"
+			"qualifiedName": "__type.stocked_quantity"
 		},
 		"265": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.requires_shipping"
+			"qualifiedName": "__type.incoming_quantity"
 		},
 		"266": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "CreateInventoryLevelInput"
+			"qualifiedName": "UpdateReservationItemInput"
 		},
 		"267": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.inventory_item_id"
+			"qualifiedName": "__type.quantity"
 		},
 		"268": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
@@ -9767,241 +9756,293 @@
 		},
 		"269": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.stocked_quantity"
+			"qualifiedName": "__type.description"
 		},
 		"270": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.reserved_quantity"
-		},
-		"271": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.incoming_quantity"
-		},
-		"272": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "BulkUpdateInventoryLevelInput"
-		},
-		"273": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.inventory_item_id"
-		},
-		"274": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.location_id"
-		},
-		"275": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.stocked_quantity"
-		},
-		"276": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.incoming_quantity"
-		},
-		"277": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "UpdateInventoryLevelInput"
-		},
-		"278": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.stocked_quantity"
-		},
-		"279": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.incoming_quantity"
-		},
-		"280": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "UpdateReservationItemInput"
-		},
-		"281": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.quantity"
-		},
-		"282": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.location_id"
-		},
-		"283": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.description"
-		},
-		"284": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.metadata"
 		},
+		"271": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "ModuleJoinerConfig"
+		},
+		"272": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"273": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.schema"
+		},
+		"274": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.relationships"
+		},
+		"275": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.extends"
+		},
+		"276": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"277": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"278": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.fieldAlias"
+		},
+		"279": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"280": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.path"
+		},
+		"281": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.forwardArgumentsOnPath"
+		},
+		"282": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.relationship"
+		},
+		"283": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"284": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.primaryKeys"
+		},
 		"285": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isLink"
 		},
 		"286": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.serviceName"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.linkableKeys"
 		},
 		"287": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.alias"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isReadOnlyLink"
 		},
 		"288": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.fieldAlias"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.databaseConfig"
 		},
 		"289": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
 		"290": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.path"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.tableName"
 		},
 		"291": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.forwardArgumentsOnPath"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.idPrefix"
 		},
 		"292": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.primaryKeys"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.extraFields"
 		},
 		"293": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.relationships"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
 		},
 		"294": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.extends"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.type"
 		},
 		"295": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.defaultValue"
 		},
 		"296": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.serviceName"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.nullable"
 		},
 		"297": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.relationship"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.options"
 		},
 		"298": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.args"
-		},
-		"299": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "ModuleJoinerRelationship"
-		},
-		"300": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
-		},
-		"301": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.isInternalService"
-		},
-		"302": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.deleteCascade"
-		},
-		"303": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator"
 		},
-		"304": {
+		"299": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.lt"
 		},
-		"305": {
+		"300": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.gt"
 		},
-		"306": {
+		"301": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.gte"
 		},
-		"307": {
+		"302": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.lte"
 		},
-		"308": {
+		"303": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.contains"
 		},
-		"309": {
+		"304": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.starts_with"
 		},
-		"310": {
+		"305": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.ends_with"
 		},
-		"311": {
+		"306": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator"
 		},
-		"312": {
+		"307": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator.lt"
 		},
-		"313": {
+		"308": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator.gt"
 		},
-		"314": {
+		"309": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator.gte"
 		},
-		"315": {
+		"310": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator.lte"
 		},
-		"316": {
+		"311": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias"
+			"qualifiedName": "JoinerServiceConfig"
 		},
-		"317": {
+		"312": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias.name"
+			"qualifiedName": "JoinerServiceConfig.serviceName"
 		},
-		"318": {
+		"313": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias.args"
+			"qualifiedName": "JoinerServiceConfig.alias"
 		},
-		"319": {
+		"314": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerRelationship"
+			"qualifiedName": "JoinerServiceConfig.fieldAlias"
 		},
-		"320": {
+		"315": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type"
 		},
+		"316": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.path"
+		},
+		"317": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.forwardArgumentsOnPath"
+		},
+		"318": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.primaryKeys"
+		},
+		"319": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.relationships"
+		},
+		"320": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.extends"
+		},
 		"321": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.alias"
+			"qualifiedName": "__type"
 		},
 		"322": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.foreignKey"
+			"qualifiedName": "__type.serviceName"
 		},
 		"323": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.primaryKey"
+			"qualifiedName": "__type.relationship"
 		},
 		"324": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.serviceName"
+			"qualifiedName": "JoinerServiceConfig.args"
 		},
 		"325": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "ModuleJoinerRelationship"
+		},
+		"326": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"327": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isInternalService"
+		},
+		"328": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.deleteCascade"
+		},
+		"329": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias"
+		},
+		"330": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias.name"
+		},
+		"331": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias.args"
+		},
+		"332": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerRelationship"
+		},
+		"333": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"334": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.alias"
+		},
+		"335": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.foreignKey"
+		},
+		"336": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.primaryKey"
+		},
+		"337": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"338": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.isInternalService"
 		},
-		"326": {
+		"339": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.inverse"
 		},
-		"327": {
+		"340": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.isList"
 		},
-		"328": {
+		"341": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.args"
 		}

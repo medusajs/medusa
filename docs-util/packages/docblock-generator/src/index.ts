@@ -55,6 +55,10 @@ program
   )
   .addOption(typeOption)
   .addOption(generateExamplesOption)
+  .option(
+    "--tag <tag>",
+    "Specify a release tag to use rather than the latest release."
+  )
   .action(runRelease)
 
 program

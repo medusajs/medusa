@@ -4,9 +4,9 @@ import {
   InternalModuleDeclaration,
   LinkModuleDefinition,
   LoadedModule,
+  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-  MedusaContainer,
   ModuleBootstrapDeclaration,
   ModuleDefinition,
   ModuleExports,
@@ -59,6 +59,11 @@ export type ModuleBootstrapOptions = {
   sharedContainer?: MedusaContainer
   moduleDefinition?: ModuleDefinition
   injectedDependencies?: Record<string, any>
+  /**
+   * In this mode, all instances are partially loaded, meaning that the module will not be fully loaded and the services will not be available.
+   * Don't forget to clear the instances (MedusaModule.clearInstances()) after the migration are done.
+   */
+  migrationOnly?: boolean
 }
 
 export type LinkModuleBootstrapOptions = {
@@ -213,6 +218,7 @@ export class MedusaModule {
     sharedContainer,
     moduleDefinition,
     injectedDependencies,
+    migrationOnly,
   }: ModuleBootstrapOptions): Promise<{
     [key: string]: T
   }> {
@@ -283,6 +289,7 @@ export class MedusaModule {
         container,
         moduleResolutions,
         logger,
+        migrationOnly,
       })
     } catch (err) {
       errorLoading(err)
