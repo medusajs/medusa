@@ -274,7 +274,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_fulfillment_set_name_unique\" ON \"fulfillment_set\" (name) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_fulfillment_set_name_unique\" ON \"fulfillment_set\" (name) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_fulfillment_set_deleted_at",
@@ -612,7 +612,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_service_zone_name_unique\" ON \"service_zone\" (name) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_service_zone_name_unique\" ON \"service_zone\" (name) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_service_zone_deleted_at",

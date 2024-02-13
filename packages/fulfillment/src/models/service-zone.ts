@@ -38,7 +38,7 @@ const nameIndexStatement = createPsqlIndexStatementHelper({
   tableName: "service_zone",
   columns: "name",
   unique: true,
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 @Entity()

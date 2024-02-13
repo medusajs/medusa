@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20240213164003 extends Migration {
+export class Migration20240213165503 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table if not exists "fulfillment_address" ("id" text not null, "fulfillment_id" text null, "company" text null, "first_name" text null, "last_name" text null, "address_1" text null, "address_2" text null, "city" text null, "country_code" text null, "province" text null, "postal_code" text null, "phone" text null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "fulfillment_address_pkey" primary key ("id"));');
@@ -8,7 +8,7 @@ export class Migration20240213164003 extends Migration {
     this.addSql('CREATE INDEX IF NOT EXISTS "IDX_fulfillment_address_deleted_at" ON "fulfillment_address" (deleted_at) WHERE deleted_at IS NOT NULL;');
 
     this.addSql('create table if not exists "fulfillment_set" ("id" text not null, "name" text not null, "type" text not null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "fulfillment_set_pkey" primary key ("id"));');
-    this.addSql('CREATE UNIQUE INDEX IF NOT EXISTS "IDX_fulfillment_set_name_unique" ON "fulfillment_set" (name) WHERE deleted_at IS NOT NULL;');
+    this.addSql('CREATE UNIQUE INDEX IF NOT EXISTS "IDX_fulfillment_set_name_unique" ON "fulfillment_set" (name) WHERE deleted_at IS NULL;');
     this.addSql('CREATE INDEX IF NOT EXISTS "IDX_fulfillment_set_deleted_at" ON "fulfillment_set" (deleted_at) WHERE deleted_at IS NOT NULL;');
 
     this.addSql('create table if not exists "geo_zone" ("id" text not null, "type" text check ("type" in (\'country\', \'province\', \'city\', \'zip\')) not null default \'country\', "country_code" text not null, "province_code" text null, "city" text null, "postal_expression" jsonb null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "geo_zone_pkey" primary key ("id"));');
@@ -21,7 +21,7 @@ export class Migration20240213164003 extends Migration {
     this.addSql('CREATE INDEX IF NOT EXISTS "IDX_service_provider_deleted_at" ON "service_provider" (deleted_at) WHERE deleted_at IS NOT NULL;');
 
     this.addSql('create table if not exists "service_zone" ("id" text not null, "name" text not null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "service_zone_pkey" primary key ("id"));');
-    this.addSql('CREATE UNIQUE INDEX IF NOT EXISTS "IDX_service_zone_name_unique" ON "service_zone" (name) WHERE deleted_at IS NOT NULL;');
+    this.addSql('CREATE UNIQUE INDEX IF NOT EXISTS "IDX_service_zone_name_unique" ON "service_zone" (name) WHERE deleted_at IS NULL;');
     this.addSql('CREATE INDEX IF NOT EXISTS "IDX_service_zone_deleted_at" ON "service_zone" (deleted_at) WHERE deleted_at IS NOT NULL;');
 
     this.addSql('create table if not exists "service_zone_geo_zones" ("id" serial primary key, "service_zone_id" text not null, "geo_zone_id" text not null);');

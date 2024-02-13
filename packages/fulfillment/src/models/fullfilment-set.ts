@@ -35,7 +35,7 @@ const nameIndexStatement = createPsqlIndexStatementHelper({
   tableName: "fulfillment_set",
   columns: "name",
   unique: true,
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 @Entity()
