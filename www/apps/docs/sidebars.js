@@ -2246,7 +2246,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "troubleshooting/admin-webpack-build-error",
+          id: "troubleshooting/admin-webpack-build-types",
           label: "Webpack Build Error",
         },
       ],
