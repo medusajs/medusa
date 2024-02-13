@@ -4,6 +4,7 @@ import {
   CreateFulfillmentSetDTO,
   CreateGeoZoneDTO,
   CreateServiceZoneDTO,
+  FulfillmentSetDTO,
   GeoZoneDTO,
   IFulfillmentModuleService,
   ServiceZoneDTO,
@@ -582,6 +583,54 @@ describe("fulfillment module service", function () {
       })
     })
 
+    describe("on create geo zones", () => {
+      it("should create a new geo zone", async function () {
+        const data: CreateGeoZoneDTO = {
+          type: GeoZoneType.COUNTRY,
+          country_code: "fr",
+        }
+
+        const geoZone = await service.createGeoZones(data)
+
+        expect(geoZone).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            type: data.type,
+            country_code: data.country_code,
+          })
+        )
+      })
+
+      it("should create a collection of geo zones", async function () {
+        const data: CreateGeoZoneDTO[] = [
+          {
+            type: GeoZoneType.COUNTRY,
+            country_code: "fr",
+          },
+          {
+            type: GeoZoneType.COUNTRY,
+            country_code: "us",
+          },
+        ]
+
+        const geoZones = await service.createGeoZones(data)
+
+        expect(geoZones).toHaveLength(2)
+
+        let i = 0
+        for (const data_ of data) {
+          expect(geoZones[i]).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              type: data_.type,
+              country_code: data_.country_code,
+            })
+          )
+          ++i
+        }
+      })
+    })
+
     describe("on update", () => {
       it("should update an existing fulfillment set", async function () {
         const createData: CreateFulfillmentSetDTO = {
@@ -1127,54 +1176,6 @@ describe("fulfillment module service", function () {
       })
     })
 
-    describe("on create geo zones", () => {
-      it("should create a new geo zone", async function () {
-        const data: CreateGeoZoneDTO = {
-          type: GeoZoneType.COUNTRY,
-          country_code: "fr",
-        }
-
-        const geoZone = await service.createGeoZones(data)
-
-        expect(geoZone).toEqual(
-          expect.objectContaining({
-            id: expect.any(String),
-            type: data.type,
-            country_code: data.country_code,
-          })
-        )
-      })
-
-      it("should create a collection of geo zones", async function () {
-        const data: CreateGeoZoneDTO[] = [
-          {
-            type: GeoZoneType.COUNTRY,
-            country_code: "fr",
-          },
-          {
-            type: GeoZoneType.COUNTRY,
-            country_code: "us",
-          },
-        ]
-
-        const geoZones = await service.createGeoZones(data)
-
-        expect(geoZones).toHaveLength(2)
-
-        let i = 0
-        for (const data_ of data) {
-          expect(geoZones[i]).toEqual(
-            expect.objectContaining({
-              id: expect.any(String),
-              type: data_.type,
-              country_code: data_.country_code,
-            })
-          )
-          ++i
-        }
-      })
-    })
-
     describe("on update geo zones", () => {
       it("should update an existing geo zone", async function () {
         const createData: CreateGeoZoneDTO = {
@@ -1238,6 +1239,79 @@ describe("fulfillment module service", function () {
           )
           ++i
         }
+      })
+    })
+
+    describe("on delete", () => {
+      it("should delete a fulfillment set", async function () {
+        const createdSet = await service.create({
+          name: "test",
+          type: "test-type",
+          service_zones: [
+            {
+              name: "test",
+              geo_zones: [
+                {
+                  type: GeoZoneType.COUNTRY,
+                  country_code: "fr",
+                },
+              ],
+            },
+          ],
+        })
+
+        await service.delete(createdSet.id)
+
+        let retrievedSet: FulfillmentSetDTO | undefined
+        await service
+          .retrieve(createdSet.id)
+          .then((set) => (retrievedSet = set))
+          .catch((e) => e)
+
+        expect(retrievedSet).toBeUndefined()
+      })
+    })
+
+    describe("on delete service zones", () => {
+      it("should delete a service zone", async function () {
+        const createdZone = await service.createServiceZones({
+          name: "test",
+          geo_zones: [
+            {
+              type: GeoZoneType.COUNTRY,
+              country_code: "fr",
+            },
+          ],
+        })
+
+        await service.deleteServiceZones(createdZone.id)
+
+        let retrievedZone: ServiceZoneDTO | undefined
+        await service
+          .retrieveServiceZone(createdZone.id)
+          .then((zone) => (retrievedZone = zone))
+          .catch((e) => e)
+
+        expect(retrievedZone).toBeUndefined()
+      })
+    })
+
+    describe("on delete geo zones", () => {
+      it("should delete a geo zone", async function () {
+        const createdZone = await service.createGeoZones({
+          type: GeoZoneType.COUNTRY,
+          country_code: "fr",
+        })
+
+        await service.deleteGeoZones(createdZone.id)
+
+        let retrievedZone: GeoZoneDTO | undefined
+        await service
+          .retrieveGeoZone(createdZone.id)
+          .then((zone) => (retrievedZone = zone))
+          .catch((e) => e)
+
+        expect(retrievedZone).toBeUndefined()
       })
     })
   })
