@@ -8,7 +8,11 @@ import {
   ModulesSdkTypes,
   UpdateFulfillmentSetDTO,
 } from "@medusajs/types"
-import { InjectTransactionManager, ModulesSdkUtils } from "@medusajs/utils"
+import {
+  InjectTransactionManager,
+  ModulesSdkUtils,
+  promiseAll,
+} from "@medusajs/utils"
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { FulfillmentSet, GeoZone, ServiceZone, ShippingOption } from "@models"
@@ -82,11 +86,7 @@ export default class FulfillmentModuleService<
   ): Promise<
     FulfillmentTypes.FulfillmentSetDTO | FulfillmentTypes.FulfillmentSetDTO[]
   > {
-    const data_: FulfillmentTypes.CreateFulfillmentSetDTO[] = Array.isArray(
-      data
-    )
-      ? data
-      : [data]
+    const data_ = Array.isArray(data) ? data : [data]
 
     const fulfillmentSetMap = new Map<
       string,
@@ -101,29 +101,110 @@ export default class FulfillmentModuleService<
       >
     >()
 
-    const serviceZoneToCreate: FulfillmentTypes.CreateServiceZoneDTO[] = []
+    const serviceZoneGeoZonesMap = new Map<
+      string,
+      Map<string, FulfillmentTypes.CreateGeoZoneDTO | { id: string }>
+    >()
 
-    const serviceZoneIds = data_
-      .map(({ service_zones }) => service_zones?.map(({ id }: any) => id))
-      .flat()
-      .filter(Boolean)
+    const serviceZonesToCreate: FulfillmentTypes.CreateServiceZoneDTO[] = []
+    const geoZonesToCreate: FulfillmentTypes.CreateGeoZoneDTO[] = []
+    let serviceZoneIds: string[] = []
+    let geoZoneIds: string[] = []
+
+    data_.forEach(({ service_zones }) => {
+      service_zones?.forEach((serviceZone) => {
+        if ("id" in serviceZone) {
+          serviceZoneIds.push(serviceZone.id)
+        }
+
+        if ("geo_zones" in serviceZone && serviceZone.geo_zones) {
+          serviceZone.geo_zones.forEach((geoZone) => {
+            if ("id" in geoZone) {
+              geoZoneIds.push(geoZone.id)
+            }
+          })
+        }
+      })
+    })
+
+    serviceZoneIds = serviceZoneIds.filter(Boolean)
+    geoZoneIds = geoZoneIds.filter(Boolean)
 
     let existingServiceZones: TServiceZoneEntity[] = []
     let existingServiceZonesMap = new Map()
-    if (serviceZoneIds.length) {
-      existingServiceZones = await this.serviceZoneService_.list(
-        {
-          id: serviceZoneIds,
-        },
-        {
-          select: ["id", "name"],
-        },
-        sharedContext
-      )
+    let existingGeoZones: TGeoZoneEntity[] = []
+    let existingGeoZonesMap = new Map()
+    const promises: Promise<any>[] = []
 
-      existingServiceZonesMap = new Map(
-        existingServiceZones.map((serviceZone) => [serviceZone.id, serviceZone])
+    if (serviceZoneIds.length) {
+      promises.push(
+        this.serviceZoneService_
+          .list(
+            {
+              id: serviceZoneIds,
+            },
+            {
+              select: ["id", "name"],
+            },
+            sharedContext
+          )
+          .then((serviceZones) => {
+            existingServiceZones = serviceZones
+            existingServiceZonesMap = new Map(
+              existingServiceZones.map((serviceZone) => [
+                serviceZone.id,
+                serviceZone,
+              ])
+            )
+          })
       )
+    }
+
+    if (geoZoneIds.length) {
+      promises.push(
+        this.geoZoneService_
+          .list(
+            {
+              id: geoZoneIds,
+            },
+            {},
+            sharedContext
+          )
+          .then((geoZones) => {
+            existingGeoZones = geoZones
+            existingGeoZonesMap = new Map(
+              existingGeoZones.map((geoZone) => [geoZone.id, geoZone])
+            )
+          })
+      )
+    }
+
+    await promiseAll(promises)
+
+    const getGeoZoneIdentifier = (
+      geoZone: FulfillmentTypes.CreateGeoZoneDTO | { id: string },
+      { preventIdUsage = false }: { preventIdUsage?: boolean } = {}
+    ) => {
+      if (!preventIdUsage && "id" in geoZone) {
+        return geoZone.id
+      }
+
+      let identifier = ("type" in geoZone && geoZone.type) || ""
+
+      if ("country_code" in geoZone && geoZone.country_code) {
+        identifier += geoZone.country_code
+      }
+      if ("province_code" in geoZone && geoZone.province_code) {
+        identifier += geoZone.province_code
+      }
+      if ("city" in geoZone && geoZone.city) {
+        identifier += geoZone.city
+      }
+      if ("postal_expression" in geoZone && geoZone.postal_expression) {
+        identifier += JSON.stringify(geoZone.postal_expression)
+      }
+
+      return identifier
     }
 
     data_.forEach(({ service_zones, ...fulfillmentSetDataOnly }) => {
@@ -133,8 +214,8 @@ export default class FulfillmentModuleService<
        * If there is any service zone to process
        * store the service zones to create while populating the fulfillment set service zone map
        * in order to be able after creating the service zones to re update the map with the
-       * newly create service zones and then assign them to the fulfillment sets to be
-       * to create.
+       * newly created service zones and then assign them to the fulfillment sets to be
+       * create attached.
        */
 
       if (service_zones?.length) {
@@ -142,16 +223,45 @@ export default class FulfillmentModuleService<
           string,
           Required<FulfillmentTypes.CreateFulfillmentSetDTO>["service_zones"][number]
         ][] = service_zones.map((serviceZone) => {
+          let geoZoneTuple: [
+            string,
+            FulfillmentTypes.CreateGeoZoneDTO | { id: string }
+          ][] = []
+
+          if ("geo_zones" in serviceZone && serviceZone.geo_zones) {
+            const geo_zones = serviceZone.geo_zones
+            delete serviceZone.geo_zones
+
+            geoZoneTuple = geo_zones.map((geoZone) => {
+              let existingGeoZone =
+                "id" in geoZone ? existingGeoZonesMap.get(geoZone.id)! : null
+
+              if (!("id" in geoZone)) {
+                geoZonesToCreate.push(geoZone)
+              }
+
+              const geoZoneIdentifier = getGeoZoneIdentifier(geoZone)
+
+              return [geoZoneIdentifier, existingGeoZone ?? geoZone]
+            })
+          }
+
           let existingZone =
             "id" in serviceZone
               ? existingServiceZonesMap.get(serviceZone.id)!
               : null
+
           if (!("id" in serviceZone)) {
-            serviceZoneToCreate.push(serviceZone)
+            serviceZonesToCreate.push(serviceZone)
           }
 
           const serviceZoneIdentifier =
             "id" in serviceZone ? serviceZone.id : serviceZone.name
+
+          serviceZoneGeoZonesMap.set(
+            serviceZoneIdentifier,
+            new Map(geoZoneTuple)
+          )
 
           return [serviceZoneIdentifier, existingZone ?? serviceZone]
         })
@@ -163,30 +273,63 @@ export default class FulfillmentModuleService<
       }
     })
 
-    if (serviceZoneToCreate.length) {
-      const createdServiceZones = await this.serviceZoneService_.create(
-        serviceZoneToCreate,
+    if (geoZonesToCreate.length) {
+      // deduplicate geo zones to create
+      const geoZoneToCreateMap = new Map(
+        geoZonesToCreate.map((geoZone) => [
+          getGeoZoneIdentifier(geoZone),
+          geoZone,
+        ])
+      )
+      const createdGeoZones = await this.geoZoneService_.create(
+        [...geoZoneToCreateMap.values()],
         sharedContext
       )
-      const createdServiceZoneMap = new Map(
-        createdServiceZones.map((serviceZone: ServiceZone) => [
+
+      for (const [serviceZoneName, geoZoneMap] of serviceZoneGeoZonesMap) {
+        for (const createdGeoZone of createdGeoZones) {
+          const geoZoneIdentifier = getGeoZoneIdentifier(createdGeoZone, {
+            preventIdUsage: true,
+          })
+
+          if (geoZoneMap.has(geoZoneIdentifier)) {
+            geoZoneMap.set(geoZoneIdentifier, createdGeoZone)
+          }
+        }
+
+        for (const serviceZone of serviceZonesToCreate) {
+          if (serviceZone.name === serviceZoneName) {
+            serviceZone.geo_zones = [...geoZoneMap.values()]
+          }
+        }
+      }
+    }
+
+    if (serviceZonesToCreate.length) {
+      // Deduplicate service zones to create
+      const serviceZoneToCreateMap = new Map(
+        serviceZonesToCreate.map((serviceZone) => [
           serviceZone.name,
           serviceZone,
         ])
       )
+      const createdServiceZones = await this.serviceZoneService_.create(
+        [...serviceZoneToCreateMap.values()],
+        sharedContext
+      )
 
       for (const [
         fulfillmentSetName,
-        serviceZoneToCreateMap,
+        serviceZoneMap,
       ] of fulfillmentSetServiceZonesMap) {
-        ;[...createdServiceZoneMap.values()].forEach((serviceZone) => {
-          if (serviceZoneToCreateMap.has(serviceZone.name)) {
-            serviceZoneToCreateMap.set(serviceZone.name, serviceZone)
+        for (const createdServiceZone of createdServiceZones) {
+          if (serviceZoneMap.has(createdServiceZone.name)) {
+            serviceZoneMap.set(createdServiceZone.name, createdServiceZone)
           }
-        })
+        }
 
         const fulfillmentSet = fulfillmentSetMap.get(fulfillmentSetName)!
-        fulfillmentSet.service_zones = [...serviceZoneToCreateMap.values()]
+        fulfillmentSet.service_zones = [...serviceZoneMap.values()]
         fulfillmentSetMap.set(fulfillmentSetName, fulfillmentSet)
       }
     }

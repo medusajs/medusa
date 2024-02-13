@@ -126,7 +126,7 @@ describe("fulfillment module service", function () {
           type: "test-type2",
           service_zones: [
             {
-              name: "test2",
+              name: "test",
             },
           ],
         },
@@ -135,7 +135,7 @@ describe("fulfillment module service", function () {
           type: "test-type3",
           service_zones: [
             {
-              name: "test3",
+              name: "test2",
             },
           ],
         },
@@ -162,6 +162,11 @@ describe("fulfillment module service", function () {
         )
         ++i
       }
+
+      // expect the first and second fulfillment set to have the same service zone
+      expect(fulfillmentSets[0].service_zones[0].id).toEqual(
+        fulfillmentSets[1].service_zones[0].id
+      )
     })
 
     it("should create a new fulfillment set with new service zones and new geo zones", async function () {
@@ -284,6 +289,11 @@ describe("fulfillment module service", function () {
         )
         ++i
       }
+
+      // expect the first and second fulfillment set to have the same geo zone for their service zone
+      expect(fulfillmentSets[0].service_zones[0].geo_zones[0].id).toEqual(
+        fulfillmentSets[1].service_zones[0].geo_zones[0].id
+      )
     })
 
     describe("should fail", () => {
