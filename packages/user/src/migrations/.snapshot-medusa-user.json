@@ -108,14 +108,14 @@
           "unique": false
         },
         {
-          "keyName": "invite_user_identifier_index",
+          "keyName": "IDX_invite_email",
           "columnNames": [
             "email"
           ],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "create unique index \"IDX_invite_email\" on \"invite\" (\"email\") where deleted_at is null;"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS IDX_invite_email ON invite (email) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "invite_pkey",
@@ -223,13 +223,24 @@
       "schema": "public",
       "indexes": [
         {
+          "keyName": "IDX_user_email",
+          "columnNames": [
+            "email"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS IDX_user_email ON user (email) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_user_deleted_at",
           "columnNames": [
             "deleted_at"
           ],
           "composite": false,
-          "keyName": "IDX_user_deleted_at",
           "primary": false,
-          "unique": false
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS IDX_user_deleted_at ON user (deleted_at)"
         },
         {
           "keyName": "user_pkey",

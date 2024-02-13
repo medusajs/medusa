@@ -69,14 +69,14 @@ export default class UserModuleService<
     sharedContext?: Context
   ): Promise<UserTypes.UserDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async create(
     data: UserTypes.CreateUserDTO[] | UserTypes.CreateUserDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.UserDTO | UserTypes.UserDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
-    const users = await this.create_(input, sharedContext)
+    const users = await this.userService_.create(data, sharedContext)
 
     const serializedUsers = await this.baseRepository_.serialize<
       UserTypes.UserDTO[]
@@ -85,14 +85,6 @@ export default class UserModuleService<
     })
 
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async create_(
-    data: UserTypes.CreateUserDTO[],
-    @MedusaContext() sharedContext: Context
-  ): Promise<TUser[]> {
-    return await this.userService_.create(data, sharedContext)
   }
 
   update(
@@ -104,14 +96,14 @@ export default class UserModuleService<
     sharedContext?: Context
   ): Promise<UserTypes.UserDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async update(
     data: UserTypes.UpdateUserDTO | UserTypes.UpdateUserDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.UserDTO | UserTypes.UserDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
-    const updatedUsers = await this.update_(input, sharedContext)
+    const updatedUsers = await this.userService_.update(data, sharedContext)
 
     const serializedUsers = await this.baseRepository_.serialize<
       UserTypes.UserDTO[]
@@ -122,25 +114,17 @@ export default class UserModuleService<
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
-  protected async update_(
-    data: UserTypes.UpdateUserDTO[],
-    @MedusaContext() sharedContext: Context
-  ): Promise<TUser[]> {
-    return await this.userService_.update(data, sharedContext)
-  }
-
-  createInvite(
+  createInvites(
     data: UserTypes.CreateInviteDTO[],
     sharedContext?: Context
   ): Promise<UserTypes.InviteDTO[]>
-  createInvite(
+  createInvites(
     data: UserTypes.CreateInviteDTO,
     sharedContext?: Context
   ): Promise<UserTypes.InviteDTO>
 
-  @InjectManager("baseRepository_")
-  async createInvite(
+  @InjectTransactionManager("baseRepository_")
+  async createInvites(
     data: UserTypes.CreateInviteDTO[] | UserTypes.CreateInviteDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.InviteDTO | UserTypes.InviteDTO[]> {
@@ -157,17 +141,17 @@ export default class UserModuleService<
     return serializedInvites
   }
 
-  updateInvite(
+  updateInvites(
     data: UserTypes.UpdateInviteDTO[],
     sharedContext?: Context
   ): Promise<UserTypes.InviteDTO[]>
-  updateInvite(
+  updateInvites(
     data: UserTypes.UpdateInviteDTO,
     sharedContext?: Context
   ): Promise<UserTypes.InviteDTO>
 
-  @InjectManager("baseRepository_")
-  async updateInvite(
+  @InjectTransactionManager("baseRepository_")
+  async updateInvites(
     data: UserTypes.UpdateInviteDTO | UserTypes.UpdateInviteDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.InviteDTO | UserTypes.InviteDTO[]> {

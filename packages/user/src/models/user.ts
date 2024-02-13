@@ -11,6 +11,22 @@ import {
 
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 import { DAL } from "@medusajs/types"
+import { createPsqlIndexStatementHelper } from "@medusajs/utils"
+
+const userEmailIndexName = "IDX_user_email"
+const userEmailIndexStatement = createPsqlIndexStatementHelper({
+  name: userEmailIndexName,
+  tableName: "user",
+  columns: "email",
+  where: "deleted_at IS NULL",
+})
+
+const userDeletedAtIndexName = "IDX_user_deleted_at"
+const userDeletedAtIndexStatement = createPsqlIndexStatementHelper({
+  name: userDeletedAtIndexName,
+  tableName: "user",
+  columns: "deleted_at",
+})
 
 type OptionalFields =
   | "first_name"
@@ -33,6 +49,10 @@ export default class User {
   last_name: string
 
   @Property({ columnType: "text" })
+  @Index({
+    name: userEmailIndexName,
+    expression: userEmailIndexStatement,
+  })
   email: string
 
   @Property({ columnType: "text", nullable: true })
@@ -56,7 +76,10 @@ export default class User {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_user_deleted_at" })
+  @Index({
+    name: userDeletedAtIndexName,
+    expression: userDeletedAtIndexStatement,
+  })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at?: Date
 

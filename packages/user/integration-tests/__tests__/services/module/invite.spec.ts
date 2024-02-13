@@ -59,9 +59,8 @@ describe("UserModuleService - Invite", () => {
       await createInvites(testManager, defaultInviteData)
 
       const invites = await service.listInvites()
-      const serialized = JSON.parse(JSON.stringify(invites))
 
-      expect(serialized).toEqual([
+      expect(invites).toEqual([
         expect.objectContaining({
           id: "1",
         }),
@@ -89,10 +88,9 @@ describe("UserModuleService - Invite", () => {
     it("should list and count invites", async () => {
       await createInvites(testManager, defaultInviteData)
       const [invites, count] = await service.listAndCountInvites()
-      const serialized = JSON.parse(JSON.stringify(invites))
 
       expect(count).toEqual(2)
-      expect(serialized).toEqual([
+      expect(invites).toEqual([
         expect.objectContaining({
           id: "1",
         }),
@@ -121,14 +119,7 @@ describe("UserModuleService - Invite", () => {
     const id = "1"
 
     it("should return an invite for the given id", async () => {
-      await createInvites(testManager, [
-        {
-          id,
-          email: "user_1@test.com",
-          token: "test",
-          expires_at: expireDate,
-        },
-      ])
+      await createInvites(testManager, defaultInviteData)
       const invite = await service.retrieveInvite(id)
 
       expect(invite).toEqual(
@@ -165,21 +156,12 @@ describe("UserModuleService - Invite", () => {
     })
 
     it("should return invite based on config select param", async () => {
-      await createInvites(testManager, [
-        {
-          id,
-          email: "user_1@test.com",
-          token: "test",
-          expires_at: expireDate,
-        },
-      ])
+      await createInvites(testManager, defaultInviteData)
       const invite = await service.retrieveInvite(id, {
         select: ["id"],
       })
 
-      const serialized = JSON.parse(JSON.stringify(invite))
-
-      expect(serialized).toEqual({
+      expect(invite).toEqual({
         id,
       })
     })
@@ -189,14 +171,7 @@ describe("UserModuleService - Invite", () => {
     const id = "1"
 
     it("should delete the Invite given an id successfully", async () => {
-      await createInvites(testManager, [
-        {
-          id,
-          email: "user_1@test.com",
-          token: "test",
-          expires_at: expireDate,
-        },
-      ])
+      await createInvites(testManager, defaultInviteData)
       await service.deleteInvites([id])
 
       const invites = await service.listInvites({
@@ -212,7 +187,7 @@ describe("UserModuleService - Invite", () => {
       let error
 
       try {
-        await service.updateInvite([
+        await service.updateInvites([
           {
             id: "does-not-exist",
           },
@@ -227,14 +202,7 @@ describe("UserModuleService - Invite", () => {
 
   describe("createInvitie", () => {
     it("should create an invite successfully", async () => {
-      await service.createInvite([
-        {
-          id: "1",
-          email: "user_1@test.com",
-          token: "test",
-          expires_at: expireDate,
-        },
-      ])
+      await service.createInvites(defaultInviteData)
 
       const [invites, count] = await service.listAndCountInvites({
         id: ["1"],

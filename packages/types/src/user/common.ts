@@ -1,4 +1,5 @@
 import { DateComparisonOperator } from "../common"
+import { BaseFilterable } from "../dal"
 
 export interface UserDTO {
   id: string
@@ -12,7 +13,7 @@ export interface UserDTO {
   deleted_at?: Date | null
 }
 
-export interface FilterableUserProps {
+export interface FilterableUserProps extends BaseFilterable<UserDTO> {
   id?: string | string[]
   email?: string | string[]
   first_name?: string | string[]

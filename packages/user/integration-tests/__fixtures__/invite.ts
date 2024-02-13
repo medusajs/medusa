@@ -4,7 +4,7 @@ import { CreateInviteDTO } from "../../../types/dist"
 
 export const createInvites = async (
   manager: SqlEntityManager,
-  inviteData: CreateInviteDTO[]
+  inviteData: (CreateInviteDTO & { id?: string })[]
 ) => {
   const invites: Invite[] = []
 
