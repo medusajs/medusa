@@ -1,5 +1,5 @@
 import { Constructor, ILinkModule, ModuleJoinerConfig } from "@medusajs/types"
-import { LinkModuleService } from "@services"
+import { LinkModuleService } from "../services"
 
 export function getModuleService(
   joinerConfig: ModuleJoinerConfig

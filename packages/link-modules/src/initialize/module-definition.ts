@@ -3,8 +3,8 @@ import {
   ModuleExports,
   ModuleJoinerConfig,
 } from "@medusajs/types"
-import { getModuleService, getReadOnlyModuleService } from "@services"
 import { getLoaders } from "../loaders"
+import { getModuleService, getReadOnlyModuleService } from "../services"
 
 export function getLinkModuleDefinition(
   joinerConfig: ModuleJoinerConfig,
