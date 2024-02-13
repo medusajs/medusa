@@ -28,7 +28,7 @@ export default async ({
 >): Promise<void> => {
   // Local providers
   for (const provider of Object.values(providers)) {
-    await registrationFn(provider, container, {})
+    await registrationFn(provider, container, { config: { default: {} } })
   }
 
   await moduleProviderLoader({

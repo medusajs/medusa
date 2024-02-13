@@ -509,20 +509,18 @@ export default class PaymentModuleService<
 
     const providers = await this.paymentProviderService_.list({
       // @ts-ignore TODO
-      id: providersToLoad.map((p) => p.getIdentifier()),
+      id: providersToLoad,
     })
 
     const loadedProvidersMap = new Map(providers.map((p) => [p.id, p]))
 
     const providersToCreate: CreatePaymentProviderDTO[] = []
-    for (const provider of providersToLoad) {
-      if (loadedProvidersMap.has(provider.getIdentifier())) {
+    for (const id of providersToLoad) {
+      if (loadedProvidersMap.has(id)) {
         continue
       }
 
-      providersToCreate.push({
-        id: provider.getIdentifier(),
-      })
+      providersToCreate.push({ id })
     }
 
     await this.paymentProviderService_.create(providersToCreate)

@@ -50,7 +50,7 @@ describe("Payment Module Service", () => {
       const paymentSession = await service.createPaymentSession(
         paymentCollection.id,
         {
-          provider_id: "system",
+          provider_id: "system_default",
           providerContext: {
             amount: 200,
             currency_code: "USD",
@@ -97,7 +97,7 @@ describe("Payment Module Service", () => {
               id: expect.any(String),
               currency_code: "USD",
               amount: 200,
-              provider_id: "system",
+              provider_id: "system_default",
               status: "authorized",
               authorized_at: expect.any(Date),
             }),
@@ -107,7 +107,7 @@ describe("Payment Module Service", () => {
               id: expect.any(String),
               amount: 200,
               currency_code: "USD",
-              provider_id: "system",
+              provider_id: "system_default",
               captures: [
                 expect.objectContaining({
                   amount: 200,
@@ -382,7 +382,7 @@ describe("Payment Module Service", () => {
     describe("create", () => {
       it("should create a payment session successfully", async () => {
         await service.createPaymentSession("pay-col-id-1", {
-          provider_id: "system",
+          provider_id: "system_default",
           providerContext: {
             amount: 200,
             currency_code: "usd",
@@ -412,7 +412,7 @@ describe("Payment Module Service", () => {
                 authorized_at: null,
                 currency_code: "usd",
                 amount: 200,
-                provider_id: "system",
+                provider_id: "system_default",
               }),
             ]),
           })
@@ -423,7 +423,7 @@ describe("Payment Module Service", () => {
     describe("update", () => {
       it("should update a payment session successfully", async () => {
         let session = await service.createPaymentSession("pay-col-id-1", {
-          provider_id: "system",
+          provider_id: "system_default",
           providerContext: {
             amount: 200,
             currency_code: "usd",
@@ -470,7 +470,7 @@ describe("Payment Module Service", () => {
         })
 
         const session = await service.createPaymentSession(collection.id, {
-          provider_id: "system",
+          provider_id: "system_default",
           providerContext: {
             amount: 100,
             currency_code: "usd",
@@ -491,7 +491,7 @@ describe("Payment Module Service", () => {
             amount: 100,
             authorized_amount: 100,
             currency_code: "usd",
-            provider_id: "system",
+            provider_id: "system_default",
 
             refunds: [],
             captures: [],
@@ -510,7 +510,7 @@ describe("Payment Module Service", () => {
               id: expect.any(String),
               currency_code: "usd",
               amount: 100,
-              provider_id: "system",
+              provider_id: "system_default",
               data: {},
               status: "authorized",
               authorized_at: expect.any(Date),
@@ -531,7 +531,7 @@ describe("Payment Module Service", () => {
                 captures: [],
                 amount: 100,
                 currency_code: "usd",
-                provider_id: "system",
+                provider_id: "system_default",
               }),
             },
           })

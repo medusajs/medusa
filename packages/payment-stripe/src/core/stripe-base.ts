@@ -16,6 +16,8 @@ import {
 } from "@medusajs/utils"
 import { isDefined } from "medusa-core-utils"
 
+import * as webhookHandlers from "../utils/webhook-handlers"
+
 import {
   ErrorCodes,
   ErrorIntentStatus,
@@ -316,20 +318,18 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     }
   }
 
-  // async onWebhookReceived(data: StripeWebhookEventData): Promise<void> {
-  //   const event = this.constructWebhookEvent(data)
+  async onWebhookReceived(data: StripeWebhookEventData): Promise<void> {
+    const event = this.constructWebhookEvent(data)
+    const paymentIntent = await this.stripe_.paymentIntents.retrieve(
+      (event.data.object as Stripe.PaymentIntent).id
+    )
 
-  //   switch (event.type) {
-  //     case "payment_intent.succeeded":
-  //       return this.onPaymentIntentSucceeded(event)
-  //     case "payment_intent.amount_capturable_updated":
-  //       return this.onPaymentAmountCapturableUpdate(event)
-  //     case "payment_intent.payment_failed":
-  //       return this.onPaymentIntentFailed(event)
-  //     default:
-  //       return
-  //   }
-  // }
+    await webhookHandlers.handlePaymentHook({
+      event,
+      container: this.container_,
+      paymentIntent,
+    })
+  }
 
   /**
    * Constructs Stripe Webhook event
