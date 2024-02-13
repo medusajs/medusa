@@ -47,5 +47,5 @@ export function createPsqlIndexStatementHelper({
   const optionsStr = where ? ` WHERE ${where}` : ""
   const uniqueStr = unique ? "UNIQUE " : ""
 
-  return `CREATE ${uniqueStr}INDEX IF NOT EXISTS ${name} ON ${tableName}${typeStr} (${columns})${optionsStr}`
+  return `CREATE ${uniqueStr}INDEX IF NOT EXISTS "${name}" ON "${tableName}"${typeStr} (${columns})${optionsStr}`
 }
