@@ -40,10 +40,9 @@ describe("fulfillment module service", function () {
         type: "test-type",
       }
 
-      const fulfillmentSets = await service.create(data)
+      const fulfillmentSet = await service.create(data)
 
-      expect(fulfillmentSets).toHaveLength(1)
-      expect(fulfillmentSets[0]).toEqual(
+      expect(fulfillmentSet).toEqual(
         expect.objectContaining({
           id: expect.any(String),
           name: data.name,
@@ -92,10 +91,9 @@ describe("fulfillment module service", function () {
         ],
       }
 
-      const fulfillmentSets = await service.create(data)
+      const fulfillmentSet = await service.create(data)
 
-      expect(fulfillmentSets).toHaveLength(1)
-      expect(fulfillmentSets[0]).toEqual(
+      expect(fulfillmentSet).toEqual(
         expect.objectContaining({
           id: expect.any(String),
           name: data.name,
@@ -186,10 +184,9 @@ describe("fulfillment module service", function () {
         ],
       }
 
-      const fulfillmentSets = await service.create(data)
+      const fulfillmentSet = await service.create(data)
 
-      expect(fulfillmentSets).toHaveLength(1)
-      expect(fulfillmentSets[0]).toEqual(
+      expect(fulfillmentSet).toEqual(
         expect.objectContaining({
           id: expect.any(String),
           name: data.name,
