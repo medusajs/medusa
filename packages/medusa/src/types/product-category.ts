@@ -1,11 +1,6 @@
+import { Selector } from "@medusajs/types"
 import { Transform } from "class-transformer"
-import {
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsBoolean,
-  ValidateIf,
-} from "class-validator"
+import { IsBoolean, IsOptional, IsString, ValidateIf } from "class-validator"
 import { isDefined } from "medusa-core-utils"
 import { ProductCategory } from "../models"
 
@@ -18,6 +13,10 @@ type ProductCategoryInput = {
   parent_category?: ProductCategory | null
   rank?: number
   metadata?: Record<string, unknown>
+}
+
+export type ProductCategorySelector = Selector<ProductCategory> & {
+  include_ancestors_tree?: boolean
 }
 
 export type CreateProductCategoryInput = ProductCategoryInput & {

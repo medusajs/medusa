@@ -50,6 +50,12 @@
     "continue": "Continue",
     "edit": "Edit"
   },
+  "status": {
+    "private": "Private",
+    "public": "Public",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
   "products": {
     "domain": "Products",
     "variants": "Variants",
@@ -75,7 +81,11 @@
     "removeProductsWarning_other": "You are about to remove {{count}} products from the collection. This action cannot be undone."
   },
   "categories": {
-    "domain": "Categories"
+    "domain": "Categories",
+    "deleteWarning": "You are about to delete the category {{name}}. This action cannot be undone.",
+    "removeProductWarning": "You are about to remove the product {{title}} from the category. This action cannot be undone.",
+    "removeProductsWarning_one": "You are about to remove {{count}} product from the category. This action cannot be undone.",
+    "removeProductsWarning_other": "You are about to remove {{count}} products from the category. This action cannot be undone."
   },
   "inventory": {
     "domain": "Inventory"
@@ -365,6 +375,7 @@
     "tag": "Tag",
     "dateIssued": "Date issued",
     "issuedDate": "Issued date",
-    "expiryDate": "Expiry date"
+    "expiryDate": "Expiry date",
+    "visibility": "Visibility"
   }
 }

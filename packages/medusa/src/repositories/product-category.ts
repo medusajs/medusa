@@ -1,3 +1,5 @@
+import { objectToStringPath, promiseAll } from "@medusajs/utils"
+import { isEmpty } from "lodash"
 import {
   DeleteResult,
   FindOneOptions,
@@ -5,30 +7,32 @@ import {
   ILike,
   In,
 } from "typeorm"
+import { dataSource } from "../loaders/database"
 import { ProductCategory } from "../models/product-category"
 import { ExtendedFindConfig, QuerySelector } from "../types/common"
-import { dataSource } from "../loaders/database"
-import { objectToStringPath, promiseAll } from "@medusajs/utils"
-import { isEmpty } from "lodash"
 
 export const ProductCategoryRepository = dataSource
   .getTreeRepository(ProductCategory)
   .extend({
     async findOneWithDescendants(
       query: FindOneOptions<ProductCategory>,
-      treeScope: QuerySelector<ProductCategory> = {}
+      treeScope: QuerySelector<ProductCategory> = {},
+      includeAncestorsTree = false
     ): Promise<ProductCategory | null> {
-      const productCategory = await this.findOne(query)
+      let productCategory = await this.findOne(query)
 
       if (!productCategory) {
         return productCategory
       }
 
-      return sortChildren(
-        // Returns the productCategory with all of its descendants until the last child node
-        await this.findDescendantsTree(productCategory),
-        treeScope
-      )
+      productCategory = await this.findDescendantsTree(productCategory)
+
+      console.log("Include Ancestors Tree", includeAncestorsTree)
+      if (includeAncestorsTree) {
+        productCategory = await this.findAncestorsTree(productCategory)
+      }
+
+      return sortChildren(productCategory, treeScope)
     },
 
     async getFreeTextSearchResultsAndCount(
@@ -37,7 +41,8 @@ export const ProductCategoryRepository = dataSource
       },
       q?: string,
       treeScope: QuerySelector<ProductCategory> = {},
-      includeTree = false
+      includeDescendantsTree = false,
+      includeAncestorsTree = false
     ): Promise<[ProductCategory[], number]> {
       const entityName = "product_category"
       const options_ = { ...options }
@@ -117,8 +122,12 @@ export const ProductCategoryRepository = dataSource
 
       categories = await promiseAll(
         categories.map(async (productCategory) => {
-          if (includeTree) {
+          if (includeDescendantsTree) {
             productCategory = await this.findDescendantsTree(productCategory)
+          }
+
+          if (includeAncestorsTree) {
+            productCategory = await this.findAncestorsTree(productCategory)
           }
 
           return sortChildren(productCategory, treeScope)

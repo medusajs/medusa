@@ -1,6 +1,6 @@
-import { IsOptional, IsString, IsBoolean } from "class-validator"
-import { Request, Response } from "express"
 import { Transform } from "class-transformer"
+import { IsBoolean, IsOptional, IsString } from "class-validator"
+import { Request, Response } from "express"
 
 import { ProductCategoryService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
@@ -151,6 +151,14 @@ export class AdminGetProductCategoriesParams extends extendedFindParamsMixin({
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value))
   include_descendants_tree?: boolean
+
+  /**
+   * Whether to include parent product categories in the response.
+   */
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
+  include_ancestors_tree?: boolean
 
   /**
    * Filter product categories by whether they're internal.
