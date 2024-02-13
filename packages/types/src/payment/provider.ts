@@ -26,7 +26,7 @@ export type PaymentProviderContext = {
    */
   amount: number
   /**
-   * The ID of the resource the payment is associated with. For example, the cart's ID.
+   * The ID of the resource the payment is associated with i.e. the ID of the PaymentSession in Medusa
    */
   resource_id: string
   /**

@@ -14,14 +14,14 @@ export async function handlePaymentHook({
 }): Promise<{ statusCode: number }> {
   const logger = container.resolve("logger")
 
-  const paymentCollectionId = paymentIntent.metadata?.payment_collection_id // TODO: how do we get this here
+  const paymentSessionId = paymentIntent.metadata?.resource_id
 
   switch (event.type) {
     case "payment_intent.succeeded":
       try {
         await onPaymentIntentSucceeded({
           paymentIntent,
-          paymentCollectionId,
+          paymentSessionId,
           container,
         })
       } catch (err) {
@@ -35,7 +35,7 @@ export async function handlePaymentHook({
       try {
         await onPaymentAmountCapturableUpdate({
           eventId: event.id,
-          paymentCollectionId,
+          paymentSessionId,
           container,
         })
       } catch (err) {
@@ -63,65 +63,41 @@ export async function handlePaymentHook({
 
 async function onPaymentIntentSucceeded({
   paymentIntent,
-  paymentCollectionId,
+  paymentSessionId,
   container,
 }) {
-  await capturePaymentCollectionIfNecessary({
+  await capturePaymentIfNecessary({
     paymentIntent,
-    paymentCollectionId,
+    paymentSessionId,
     container,
   })
 }
 
 async function onPaymentAmountCapturableUpdate({
-  paymentCollectionId,
+  paymentSessionId,
   eventId,
   container,
 }) {
   // TODO: Call complete cart workflow??
 }
 
-async function capturePaymentCollectionIfNecessary({
+async function capturePaymentIfNecessary({
   paymentIntent,
-  paymentCollectionId,
+  paymentSessionId,
   container,
 }: {
   paymentIntent: Partial<Stripe.PaymentIntent>
-  paymentCollectionId: string
+  paymentSessionId: string
   container: any
 }) {
   const paymentModuleService = container.resolve(ModuleRegistrationName.PAYMENT)
 
-  const paycol = await paymentModuleService
-    .retrieve(paymentCollectionId, { relations: ["payments"] })
+  const payment = await paymentModuleService
+    .retrievePayment({ session_id: paymentSessionId })
     .catch(() => undefined)
 
-  if (paycol?.payments?.length) {
-    const payment = paycol.payments.find(
-      (pay) => pay.data.id === paymentIntent.id
-    )
-
-    if (payment && !payment.captured_at) {
-      await paymentModuleService.capture(payment.id)
-    }
-  }
-}
-
-async function capturePaymentIfNecessary({
-  cartId,
-  transactionManager,
-  container,
-}) {
-  const orderService = container.resolve("orderService")
-  const order = await orderService
-    .withTransaction(transactionManager)
-    .retrieveByCartId(cartId)
-    .catch(() => undefined)
-
-  if (order && order.payment_status !== "captured") {
-    await orderService
-      .withTransaction(transactionManager)
-      .capturePayment(order.id)
+  if (payment && !payment.captured_at) {
+    await paymentModuleService.capturePayment(payment.id)
   }
 }
 

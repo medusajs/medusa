@@ -206,23 +206,32 @@ export default class PaymentModuleService<
     data: CreatePaymentSessionDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentSessionDTO> {
-    const sessionData = await this.paymentProviderService_.createSession(
-      data.provider_id,
-      data.providerContext
-    )
-
     const created = await this.paymentSessionService_.create(
       {
         provider_id: data.provider_id,
         amount: data.providerContext.amount,
         currency_code: data.providerContext.currency_code,
         payment_collection: paymentCollectionId,
-        data: sessionData,
       },
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(created, { populate: true })
+    try {
+      const sessionData = await this.paymentProviderService_.createSession(
+        data.provider_id,
+        { ...data.providerContext, resource_id: created.id }
+      )
+
+      await this.paymentSessionService_.update({
+        id: created.id,
+        data: sessionData,
+      })
+
+      return await this.baseRepository_.serialize(created, { populate: true })
+    } catch (e) {
+      await this.paymentSessionService_.delete([created.id], sharedContext)
+      throw e
+    }
   }
 
   @InjectTransactionManager("baseRepository_")
