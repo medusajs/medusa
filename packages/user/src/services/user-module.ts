@@ -76,7 +76,7 @@ export default class UserModuleService<
   ): Promise<UserTypes.UserDTO | UserTypes.UserDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
-    const users = await this.userService_.create(data, sharedContext)
+    const users = await this.userService_.create(input, sharedContext)
 
     const serializedUsers = await this.baseRepository_.serialize<
       UserTypes.UserDTO[]
@@ -103,7 +103,7 @@ export default class UserModuleService<
   ): Promise<UserTypes.UserDTO | UserTypes.UserDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
-    const updatedUsers = await this.userService_.update(data, sharedContext)
+    const updatedUsers = await this.userService_.update(input, sharedContext)
 
     const serializedUsers = await this.baseRepository_.serialize<
       UserTypes.UserDTO[]
