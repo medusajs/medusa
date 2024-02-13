@@ -1,54 +1,35 @@
 /* eslint-disable no-case-declarations */
 import ts from "typescript"
-import Formatter from "./formatter.js"
-import KindsRegistry from "./kinds/registry.js"
-import nodeHasComments from "../utils/node-has-comments.js"
-
-export type Options = {
-  paths: string[]
-  dryRun?: boolean
-}
+import { GeneratorEvent } from "../helpers/generator-event-manager.js"
+import AbstractGenerator from "./index.js"
+import { minimatch } from "minimatch"
 
 /**
  * A class used to generate docblock for one or multiple file paths.
  */
-class DocblockGenerator {
-  protected options: Options
-  protected program?: ts.Program
-  protected checker?: ts.TypeChecker
-  protected formatter: Formatter
-  protected kindsRegistry?: KindsRegistry
-
-  constructor(options: Options) {
-    this.options = options
-    this.formatter = new Formatter()
-  }
-
+class DocblockGenerator extends AbstractGenerator {
   /**
-   * Generate the docblock for the paths specified in the {@link options} class property.
+   * Generate docblocks for the files in the `options`.
    */
   async run() {
-    this.program = ts.createProgram(this.options.paths, {})
-
-    this.checker = this.program.getTypeChecker()
-
-    this.kindsRegistry = new KindsRegistry(this.checker)
+    this.init()
 
     const printer = ts.createPrinter({
       removeComments: false,
     })
 
     await Promise.all(
-      this.program.getSourceFiles().map(async (file) => {
+      this.program!.getSourceFiles().map(async (file) => {
         // Ignore .d.ts files
         if (file.isDeclarationFile || !this.isFileIncluded(file.fileName)) {
           return
         }
 
-        console.log(`Generating for ${file.fileName}...`)
+        console.log(`[Docblock] Generating for ${file.fileName}...`)
 
         let fileContent = file.getFullText()
         let fileComments: string = ""
+        const commentsToRemove: string[] = []
 
         const documentChild = (node: ts.Node, topLevel = false) => {
           const isSourceFile = ts.isSourceFile(node)
@@ -56,7 +37,7 @@ class DocblockGenerator {
           const nodeKindGenerator = this.kindsRegistry?.getKindGenerator(node)
           let docComment: string | undefined
 
-          if (nodeKindGenerator && this.canDocumentNode(node)) {
+          if (nodeKindGenerator?.canDocumentNode(node)) {
             docComment = nodeKindGenerator.getDocBlock(node)
             if (docComment.length) {
               if (isSourceFile) {
@@ -92,6 +73,9 @@ class DocblockGenerator {
         documentChild(file, true)
 
         if (!this.options.dryRun) {
+          commentsToRemove.forEach((commentToRemove) => {
+            fileContent = fileContent.replace(commentToRemove, "")
+          })
           ts.sys.writeFile(
             file.fileName,
             this.formatter.addCommentsToSourceFile(
@@ -101,44 +85,30 @@ class DocblockGenerator {
           )
         }
 
-        console.log(`Finished generating docblock for ${file.fileName}.`)
+        console.log(
+          `[Docblock] Finished generating docblock for ${file.fileName}.`
+        )
       })
     )
 
+    this.generatorEventManager.emit(GeneratorEvent.FINISHED_GENERATE_EVENT)
     this.reset()
   }
 
   /**
-   * Checks whether a file is included in the specified files.
+   * Checks whether the specified file path is included in the program
+   * and isn't an API file.
    *
-   * @param {string} fileName - The file to check for.
-   * @returns {boolean} Whether the file can have docblocks generated for it.
+   * @param fileName - The file path to check
+   * @returns Whether the docblock generator can run on this file.
    */
   isFileIncluded(fileName: string): boolean {
-    return this.options.paths.some((path) => path.includes(fileName))
-  }
-
-  /**
-   * Checks whether a node can be documented.
-   *
-   * @privateRemark
-   * I'm leaving this method in case other conditions arise for a node to be documented.
-   * Otherwise, we can directly use the {@link nodeHasComments} function.
-   *
-   * @param {ts.Node} node - The node to check for.
-   * @returns {boolean} Whether the node can be documented.
-   */
-  canDocumentNode(node: ts.Node): boolean {
-    // check if node already has docblock
-    return !nodeHasComments(node)
-  }
-
-  /**
-   * Reset the generator's properties for new usage.
-   */
-  reset() {
-    this.program = undefined
-    this.checker = undefined
+    return (
+      super.isFileIncluded(fileName) &&
+      !minimatch(this.getBasePath(fileName), "packages/medusa/**/api**/**", {
+        matchBase: true,
+      })
+    )
   }
 }
 
