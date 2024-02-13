@@ -68,50 +68,65 @@ export default class FulfillmentModuleService<
     return joinerConfig
   }
 
-  create(
+  /**
+   * Returns the identifier of a geo zone. The identifier is a string that is
+   * generated based on the type of the geo zone and the properties of the geo
+   * zone. The identifier is used for map building and retrieval.
+   *
+   * @param geoZone
+   * @param preventIdUsage
+   * @protected
+   */
+  protected static getGeoZoneIdentifier(
+    geoZone: Partial<FulfillmentTypes.GeoZoneDTO>,
+    { preventIdUsage = false }: { preventIdUsage?: boolean } = {}
+  ): string {
+    if (!preventIdUsage && "id" in geoZone) {
+      return geoZone.id!
+    }
+
+    let identifier = ("type" in geoZone && geoZone.type) || ""
+
+    if ("country_code" in geoZone && geoZone.country_code) {
+      identifier += geoZone.country_code
+    }
+    if ("province_code" in geoZone && geoZone.province_code) {
+      identifier += geoZone.province_code
+    }
+    if ("city" in geoZone && geoZone.city) {
+      identifier += geoZone.city
+    }
+    if ("postal_expression" in geoZone && geoZone.postal_expression) {
+      identifier += JSON.stringify(geoZone.postal_expression)
+    }
+
+    return identifier
+  }
+
+  /**
+   * Preparation step of the fulfillment set creation. This method is responsible for
+   * extracting the service zones and geo zones from the data and then from that
+   * data extract the ids of the service zones and geo zones that are already
+   * existing in the database. Then it will fetch the existing service zones and
+   * geo zones from the database and return them.
+   *
+   * @param data
+   * @param sharedContext
+   * @protected
+   */
+  protected async prepareCreateData(
     data: FulfillmentTypes.CreateFulfillmentSetDTO[],
     sharedContext?: Context
-  ): Promise<FulfillmentTypes.FulfillmentSetDTO[]>
-  create(
-    data: FulfillmentTypes.CreateFulfillmentSetDTO,
-    sharedContext?: Context
-  ): Promise<FulfillmentTypes.FulfillmentSetDTO>
-
-  @InjectTransactionManager("baseRepository_")
-  async create(
-    data:
-      | FulfillmentTypes.CreateFulfillmentSetDTO
-      | FulfillmentTypes.CreateFulfillmentSetDTO[],
-    sharedContext?: Context
-  ): Promise<
-    FulfillmentTypes.FulfillmentSetDTO | FulfillmentTypes.FulfillmentSetDTO[]
-  > {
-    const data_ = Array.isArray(data) ? data : [data]
-
-    const fulfillmentSetMap = new Map<
-      string,
-      FulfillmentTypes.CreateFulfillmentSetDTO
-    >()
-
-    const fulfillmentSetServiceZonesMap = new Map<
-      string,
-      Map<
-        string,
-        Required<FulfillmentTypes.CreateFulfillmentSetDTO>["service_zones"][number]
-      >
-    >()
-
-    const serviceZoneGeoZonesMap = new Map<
-      string,
-      Map<string, FulfillmentTypes.CreateGeoZoneDTO | { id: string }>
-    >()
-
-    const serviceZonesToCreate: FulfillmentTypes.CreateServiceZoneDTO[] = []
-    const geoZonesToCreate: FulfillmentTypes.CreateGeoZoneDTO[] = []
+  ): Promise<{
+    existingServiceZones: TServiceZoneEntity[]
+    existingServiceZonesMap: Map<string, TServiceZoneEntity>
+    existingGeoZones: TGeoZoneEntity[]
+    existingGeoZonesMap: Map<string, TGeoZoneEntity>
+  }> {
     let serviceZoneIds: string[] = []
     let geoZoneIds: string[] = []
 
-    data_.forEach(({ service_zones }) => {
+    data.forEach(({ service_zones }) => {
       service_zones?.forEach((serviceZone) => {
         if ("id" in serviceZone) {
           serviceZoneIds.push(serviceZone.id)
@@ -181,31 +196,61 @@ export default class FulfillmentModuleService<
 
     await promiseAll(promises)
 
-    const getGeoZoneIdentifier = (
-      geoZone: FulfillmentTypes.CreateGeoZoneDTO | { id: string },
-      { preventIdUsage = false }: { preventIdUsage?: boolean } = {}
-    ) => {
-      if (!preventIdUsage && "id" in geoZone) {
-        return geoZone.id
-      }
-
-      let identifier = ("type" in geoZone && geoZone.type) || ""
-
-      if ("country_code" in geoZone && geoZone.country_code) {
-        identifier += geoZone.country_code
-      }
-      if ("province_code" in geoZone && geoZone.province_code) {
-        identifier += geoZone.province_code
-      }
-      if ("city" in geoZone && geoZone.city) {
-        identifier += geoZone.city
-      }
-      if ("postal_expression" in geoZone && geoZone.postal_expression) {
-        identifier += JSON.stringify(geoZone.postal_expression)
-      }
-
-      return identifier
+    return {
+      existingServiceZones,
+      existingServiceZonesMap,
+      existingGeoZones,
+      existingGeoZonesMap,
     }
+  }
+
+  create(
+    data: FulfillmentTypes.CreateFulfillmentSetDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.FulfillmentSetDTO[]>
+  create(
+    data: FulfillmentTypes.CreateFulfillmentSetDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.FulfillmentSetDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async create(
+    data:
+      | FulfillmentTypes.CreateFulfillmentSetDTO
+      | FulfillmentTypes.CreateFulfillmentSetDTO[],
+    sharedContext?: Context
+  ): Promise<
+    FulfillmentTypes.FulfillmentSetDTO | FulfillmentTypes.FulfillmentSetDTO[]
+  > {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    const fulfillmentSetMap = new Map<
+      string,
+      FulfillmentTypes.CreateFulfillmentSetDTO
+    >()
+
+    const fulfillmentSetServiceZonesMap = new Map<
+      string,
+      Map<
+        string,
+        Required<FulfillmentTypes.CreateFulfillmentSetDTO>["service_zones"][number]
+      >
+    >()
+
+    const serviceZoneGeoZonesMap = new Map<
+      string,
+      Map<string, FulfillmentTypes.CreateGeoZoneDTO | { id: string }>
+    >()
+
+    const serviceZonesToCreate: FulfillmentTypes.CreateServiceZoneDTO[] = []
+    const geoZonesToCreate: FulfillmentTypes.CreateGeoZoneDTO[] = []
+
+    const {
+      existingServiceZones,
+      existingServiceZonesMap,
+      existingGeoZones,
+      existingGeoZonesMap,
+    } = await this.prepareCreateData(data_, sharedContext)
 
     data_.forEach(({ service_zones, ...fulfillmentSetDataOnly }) => {
       fulfillmentSetMap.set(fulfillmentSetDataOnly.name, fulfillmentSetDataOnly)
@@ -240,7 +285,8 @@ export default class FulfillmentModuleService<
                 geoZonesToCreate.push(geoZone)
               }
 
-              const geoZoneIdentifier = getGeoZoneIdentifier(geoZone)
+              const geoZoneIdentifier =
+                FulfillmentModuleService.getGeoZoneIdentifier(geoZone)
 
               return [geoZoneIdentifier, existingGeoZone ?? geoZone]
             })
@@ -277,7 +323,7 @@ export default class FulfillmentModuleService<
       // deduplicate geo zones to create
       const geoZoneToCreateMap = new Map(
         geoZonesToCreate.map((geoZone) => [
-          getGeoZoneIdentifier(geoZone),
+          FulfillmentModuleService.getGeoZoneIdentifier(geoZone),
           geoZone,
         ])
       )
@@ -288,9 +334,10 @@ export default class FulfillmentModuleService<
 
       for (const [serviceZoneName, geoZoneMap] of serviceZoneGeoZonesMap) {
         for (const createdGeoZone of createdGeoZones) {
-          const geoZoneIdentifier = getGeoZoneIdentifier(createdGeoZone, {
-            preventIdUsage: true,
-          })
+          const geoZoneIdentifier =
+            FulfillmentModuleService.getGeoZoneIdentifier(createdGeoZone, {
+              preventIdUsage: true,
+            })
 
           if (geoZoneMap.has(geoZoneIdentifier)) {
             geoZoneMap.set(geoZoneIdentifier, createdGeoZone)
