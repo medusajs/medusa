@@ -92,13 +92,13 @@ export interface IUserModuleService extends IModuleService {
 
   deleteInvites(ids: string[], sharedContext?: Context): Promise<void>
 
-  softDelete<TReturnableLinkableKeys extends string = string>(
+  softDeleteInvites<TReturnableLinkableKeys extends string = string>(
     inviteIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
 
-  restore<TReturnableLinkableKeys extends string = string>(
+  restoreInvites<TReturnableLinkableKeys extends string = string>(
     inviteIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
