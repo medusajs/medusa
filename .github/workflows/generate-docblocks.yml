@@ -48,6 +48,11 @@ jobs:
           GIT_OWNER: ${{ github.repository_owner }}
           GIT_REPO: medusa
 
+      - name: Generate Changeset
+        if: steps.check-commit.outputs.is_release_commit == 'true'
+        run: "yarn generate:changeset"
+        working-directory: docs-util/packages/scripts
+
       - name: Create Pull Request
         if: steps.check-commit.outputs.is_release_commit == 'true'
         uses: peter-evans/create-pull-request@v5
