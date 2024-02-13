@@ -604,22 +604,11 @@ export default class FulfillmentModuleService<
 
     const serviceZoneGeoZonesMap = new Map<
       string,
-      Map<
-        string,
-        | FulfillmentTypes.CreateGeoZoneDTO
-        | FulfillmentTypes.UpdateGeoZoneDTO
-        | { id: string }
-      >
+      Map<string, FulfillmentTypes.CreateGeoZoneDTO | { id: string }>
     >()
 
-    const serviceZonesToCreate: (
-      | FulfillmentTypes.UpdateServiceZoneDTO
-      | FulfillmentTypes.CreateServiceZoneDTO
-    )[] = []
-    const geoZonesToCreate: (
-      | FulfillmentTypes.UpdateGeoZoneDTO
-      | FulfillmentTypes.CreateGeoZoneDTO
-    )[] = []
+    const serviceZonesToCreate: FulfillmentTypes.CreateServiceZoneDTO[] = []
+    const geoZonesToCreate: FulfillmentTypes.CreateGeoZoneDTO[] = []
 
     const {
       existingServiceZones,
@@ -638,11 +627,7 @@ export default class FulfillmentModuleService<
         ][] = service_zones.map((serviceZone) => {
           let geoZoneTuple: [
             string,
-            (
-              | FulfillmentTypes.CreateGeoZoneDTO
-              | FulfillmentTypes.UpdateGeoZoneDTO
-              | { id: string }
-            )
+            FulfillmentTypes.CreateGeoZoneDTO | { id: string }
           ][] = []
 
           if ("geo_zones" in serviceZone && serviceZone.geo_zones) {
