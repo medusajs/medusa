@@ -156,16 +156,16 @@ export const AddSalesChannelsToApiKeyForm = ({
             )}
             <FocusModal.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
             </FocusModal.Close>
             <Button size="small" type="submit" isLoading={isMutating}>
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
         </FocusModal.Header>
-        <FocusModal.Body className="flex h-full w-full flex-col items-center overflow-y-auto divide-y">
-          <div className="flex items-center justify-between w-full px-6 py-4">
+        <FocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
+          <div className="flex w-full items-center justify-between px-6 py-4">
             <div></div>
             <div className="flex items-center gap-x-2">
               <Query />

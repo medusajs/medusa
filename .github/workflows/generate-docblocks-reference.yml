@@ -64,6 +64,10 @@ jobs:
         run: "yarn generate:reference all"
         working-directory: docs-util/packages/scripts
 
+      - name: Generate Changeset
+        run: "yarn generate:changeset"
+        working-directory: docs-util/packages/scripts
+
       - name: Get PR Message
         id: pr-message
         run: yarn generate:message

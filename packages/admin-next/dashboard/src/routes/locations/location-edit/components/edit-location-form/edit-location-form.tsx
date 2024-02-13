@@ -206,10 +206,10 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
           <div className="flex items-center justify-end gap-x-2">
             <Drawer.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
             </Drawer.Close>
-            <Button size="small">{t("general.save")}</Button>
+            <Button size="small">{t("actions.save")}</Button>
           </div>
         </Drawer.Footer>
       </form>

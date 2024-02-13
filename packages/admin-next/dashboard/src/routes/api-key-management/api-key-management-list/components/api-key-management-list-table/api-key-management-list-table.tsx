@@ -82,12 +82,12 @@ export const ApiKeyManagementListTable = () => {
   }
 
   return (
-    <Container className="p-0 divide-y">
-      <div className="px-6 py-4 flex items-center justify-between">
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("apiKeyManagement.domain")}</Heading>
         <Link to="create">
           <Button variant="secondary" size="small">
-            {t("general.create")}
+            {t("actions.create")}
           </Button>
         </Link>
       </div>
@@ -186,8 +186,8 @@ const KeyActions = ({ apiKey }: { apiKey: PublishableApiKey }) => {
       description: t("apiKeyManagement.deleteKeyWarning", {
         title: apiKey.title,
       }),
-      confirmText: t("general.delete"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!res) {
@@ -204,7 +204,7 @@ const KeyActions = ({ apiKey }: { apiKey: PublishableApiKey }) => {
         title: apiKey.title,
       }),
       confirmText: t("apiKeyManagement.revoke"),
-      cancelText: t("general.cancel"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!res) {
@@ -221,7 +221,7 @@ const KeyActions = ({ apiKey }: { apiKey: PublishableApiKey }) => {
           actions: [
             {
               icon: <PencilSquare />,
-              label: t("general.edit"),
+              label: t("actions.edit"),
               to: `/settings/api-key-management/${apiKey.id}`,
             },
           ],
@@ -235,7 +235,7 @@ const KeyActions = ({ apiKey }: { apiKey: PublishableApiKey }) => {
             },
             {
               icon: <Trash />,
-              label: t("general.delete"),
+              label: t("actions.delete"),
               onClick: handleDelete,
             },
           ],
@@ -263,7 +263,7 @@ const useColumns = () => {
 
           return (
             <div
-              className="bg-ui-bg-subtle border border-ui-border-base flex items-center gap-x-0.5 w-fit max-w-[220px] rounded-full pl-2 pr-1 box-border cursor-default overflow-hidden"
+              className="bg-ui-bg-subtle border-ui-border-base box-border flex w-fit max-w-[220px] cursor-default items-center gap-x-0.5 overflow-hidden rounded-full border pl-2 pr-1"
               onClick={(e) => e.stopPropagation()}
             >
               <Text size="xsmall" leading="compact" className="truncate">

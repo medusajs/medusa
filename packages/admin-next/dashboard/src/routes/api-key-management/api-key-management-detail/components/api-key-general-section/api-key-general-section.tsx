@@ -39,8 +39,8 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
       description: t("apiKeyManagement.deleteKeyWarning", {
         title: apiKey.title,
       }),
-      confirmText: t("general.delete"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!res) {
@@ -57,7 +57,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
         title: apiKey.title,
       }),
       confirmText: t("apiKeyManagement.revoke"),
-      cancelText: t("general.cancel"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!res) {
@@ -70,7 +70,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   const dangerousActions = [
     {
       icon: <Trash />,
-      label: t("general.delete"),
+      label: t("actions.delete"),
       onClick: handleDelete,
     },
   ]
@@ -84,8 +84,8 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   }
 
   return (
-    <Container className="p-0 divide-y">
-      <div className="px-6 py-4 flex items-center justify-between">
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
         <Heading>{apiKey.title}</Heading>
         <div className="flex items-center gap-x-2">
           <StatusBadge color={apiKey.revoked_at ? "red" : "green"}>
@@ -96,7 +96,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
               {
                 actions: [
                   {
-                    label: t("general.edit"),
+                    label: t("actions.edit"),
                     icon: <PencilSquare />,
                     to: `/settings/api-key-management/${apiKey.id}/edit`,
                   },
@@ -109,11 +109,11 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
           />
         </div>
       </div>
-      <div className="grid grid-cols-2 px-6 py-4 items-center">
+      <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.key")}
         </Text>
-        <div className="bg-ui-bg-subtle border border-ui-border-base flex items-center gap-x-0.5 w-fit rounded-full pl-2 pr-1 box-border cursor-default overflow-hidden">
+        <div className="bg-ui-bg-subtle border-ui-border-base box-border flex w-fit cursor-default items-center gap-x-0.5 overflow-hidden rounded-full border pl-2 pr-1">
           <Text size="xsmall" leading="compact" className="truncate">
             {apiKey.id}
           </Text>
@@ -124,14 +124,14 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
           />
         </div>
       </div>
-      <div className="grid grid-cols-2 px-6 py-4 items-center">
+      <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("apiKeyManagement.createdBy")}
         </Text>
         <ActionBy userId={apiKey.created_by} />
       </div>
       {apiKey.revoked_at && (
-        <div className="grid grid-cols-2 px-6 py-4 items-center">
+        <div className="grid grid-cols-2 items-center px-6 py-4">
           <Text size="small" leading="compact" weight="plus">
             {t("apiKeyManagement.revokedBy")}
           </Text>
@@ -162,8 +162,8 @@ const ActionBy = ({ userId }: { userId: string | null }) => {
   if (isLoading) {
     return (
       <div className="grid grid-cols-[20px_1fr]">
-        <Skeleton className="w-5 h-5 rounded-full" />
-        <Skeleton className="max-w-[220px] w-full" />
+        <Skeleton className="h-5 w-5 rounded-full" />
+        <Skeleton className="w-full max-w-[220px]" />
       </div>
     )
   }

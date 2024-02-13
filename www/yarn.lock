@@ -2680,6 +2680,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.23.7":
+  version: 7.23.9
+  resolution: "@babel/runtime@npm:7.23.9"
+  dependencies:
+    regenerator-runtime: ^0.14.0
+  checksum: e71205fdd7082b2656512cc98e647d9ea7e222e4fe5c36e9e5adc026446fcc3ba7b3cdff8b0b694a0b78bb85db83e7b1e3d4c56ef90726682b74f13249cf952d
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.22.15, @babel/template@npm:^7.22.5":
   version: 7.22.15
   resolution: "@babel/template@npm:7.22.15"
@@ -4319,15 +4328,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/icons@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@medusajs/icons@npm:1.0.0"
-  peerDependencies:
-    react: ^16.x || ^17.x || ^18.x
-  checksum: 3bf8d754a9e55460e6b6ab593c470ed1f0018a0b98d7fd53dd651359788d9f293dab3cc32719a2042834e71b252fd1d76dd32b60c076fe11f98999f6bea149de
-  languageName: node
-  linkType: hard
-
 "@medusajs/icons@npm:^1.2.0":
   version: 1.2.0
   resolution: "@medusajs/icons@npm:1.2.0"
@@ -4337,30 +4337,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/icons@npm:latest":
-  version: 1.0.1
-  resolution: "@medusajs/icons@npm:1.0.1"
-  peerDependencies:
-    react: ^16.x || ^17.x || ^18.x
-  checksum: 7b800035c4553a336f03c0e2ba454c83fc1701badef0629b9b9a5745a26b0ac75ad0bcbd2b674fb294fe3fca47ee8f74760a26ffe84a094409703eca25f24b12
-  languageName: node
-  linkType: hard
-
-"@medusajs/ui-preset@npm:latest":
-  version: 1.0.1
-  resolution: "@medusajs/ui-preset@npm:1.0.1"
+"@medusajs/ui-preset@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@medusajs/ui-preset@npm:1.1.2"
   dependencies:
     "@tailwindcss/forms": ^0.5.3
     tailwindcss-animate: ^1.0.6
   peerDependencies:
     tailwindcss: ">=3.0.0"
-  checksum: 80c4cb6ba5b3bd70c95cf0dad16f05a33636b7640b95aca96871bb4e1fcb9957c9254fe69ca16e19109a83da5cd2eb29afa6cc5798209117e6970934a20ce96a
+  checksum: 63b525eee5d5a6a7d2d9596f6cc9015c221a3a55c83f524511d35eeb6916261baeae472e8748725480016a38e379f6a1a34e373d4ca824bbabdb151605086f94
   languageName: node
   linkType: hard
 
-"@medusajs/ui@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "@medusajs/ui@npm:2.3.0"
+"@medusajs/ui@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "@medusajs/ui@npm:2.4.1"
   dependencies:
     "@medusajs/icons": ^1.2.0
     "@radix-ui/react-accordion": ^1.1.2
@@ -4389,11 +4380,11 @@ __metadata:
     prism-react-renderer: ^2.0.6
     react-currency-input-field: ^3.6.11
     react-day-picker: ^8.8.0
-    tailwind-merge: ^1.13.2
+    tailwind-merge: ^2.2.1
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: a76976812186eaf4600817b83c8303e05ddb272556a2062508b33ed262e2d1d03c91477d35381db4094c8b26ae3828ed0dd95fdc2c0e00bd617e11ff1f2e9e6f
+  checksum: 1d044632044b9a3e06ed86d574ad67ccefe797a23b839f32f9d15a2563c4c40fc74b0faf1826bef4aa256b34c30dcae8dc1f11d456de2bfc506162d92fe512d5
   languageName: node
   linkType: hard
 
@@ -9577,7 +9568,7 @@ __metadata:
   dependencies:
     "@mdx-js/loader": ^2.3.0
     "@mdx-js/react": ^2.3.0
-    "@medusajs/icons": ^1.0.0
+    "@medusajs/icons": ^1.2.0
     "@next/bundle-analyzer": ^13.4.19
     "@next/mdx": 13.4.19
     "@readme/openapi-parser": ^2.5.0
@@ -12099,8 +12090,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "docs-ui@workspace:packages/docs-ui"
   dependencies:
-    "@medusajs/icons": latest
-    "@medusajs/ui": ^2.3.0
+    "@medusajs/icons": ^1.2.0
+    "@medusajs/ui": ^2.4.1
     "@octokit/request": ^8.1.1
     "@react-hook/resize-observer": ^1.2.6
     "@segment/analytics-next": ^1.55.0
@@ -12153,7 +12144,7 @@ __metadata:
     "@docusaurus/types": ^3.1.0
     "@mdx-js/mdx": 3.0.0
     "@mdx-js/react": 3
-    "@medusajs/icons": ^1.0.0
+    "@medusajs/icons": ^1.2.0
     "@svgr/webpack": 6.2.1
     "@swc/core": ^1.3.102
     "@types/react": ^18.2.0
@@ -22028,10 +22019,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:^1.13.2":
-  version: 1.14.0
-  resolution: "tailwind-merge@npm:1.14.0"
-  checksum: a66f5ab1a2bb2b0f5a40a031867a6bc900de98eb3339b2a51759351221527a3d600eecb6cb5a038830aa89548eba72bb63aa3856cb9f31c9a3918b42eb3df350
+"tailwind-merge@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "tailwind-merge@npm:2.2.1"
+  dependencies:
+    "@babel/runtime": ^7.23.7
+  checksum: 14ab965ec897e9377484b7593f7a700dde09b8035b762ad42652622a3ed1f202b203f48c0f235c0b1b38e9390470d94458f6f9010d33a5a18d71b15f38b986a6
   languageName: node
   linkType: hard
 
@@ -22039,7 +22032,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tailwind@workspace:packages/tailwind"
   dependencies:
-    "@medusajs/ui-preset": latest
+    "@medusajs/ui-preset": ^1.1.2
     eslint-config-docs: "*"
     tailwindcss-animate: ^1.0.7
   peerDependencies:
@@ -22742,9 +22735,9 @@ __metadata:
   resolution: "ui@workspace:apps/ui"
   dependencies:
     "@faker-js/faker": ^8.0.2
-    "@medusajs/icons": latest
-    "@medusajs/ui": ^2.3.0
-    "@medusajs/ui-preset": latest
+    "@medusajs/icons": ^1.2.0
+    "@medusajs/ui": ^2.4.1
+    "@medusajs/ui-preset": ^1.1.2
     "@radix-ui/react-dialog": ^1.0.4
     "@radix-ui/react-scroll-area": ^1.0.4
     "@radix-ui/react-tabs": ^1.0.4

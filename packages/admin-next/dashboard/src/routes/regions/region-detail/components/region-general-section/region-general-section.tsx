@@ -27,18 +27,22 @@ export const RegionGeneralSection = ({ region }: RegionGeneralSectionProps) => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <div>
-          <Heading>{region.name}</Heading>
-          <RegionCountries countries={region.countries} />
-        </div>
+        <Heading>{region.name}</Heading>
+
         <RegionActions region={region} />
+      </div>
+      <div className="grid grid-cols-2 items-center px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("fields.countries")}
+        </Text>
+        <RegionCountries countries={region.countries} />
       </div>
       <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.currency")}
         </Text>
         <div className="flex items-center gap-x-2">
-          <Badge rounded="full" className="uppercase">
+          <Badge size="2xsmall" className="uppercase">
             {region.currency_code}
           </Badge>
           <Text size="small" leading="compact">
@@ -94,8 +98,8 @@ const RegionActions = ({ region }: { region: Region }) => {
       }),
       verificationText: region.name,
       verificationInstruction: t("general.typeToConfirm"),
-      confirmText: t("general.delete"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!res) {
@@ -112,7 +116,7 @@ const RegionActions = ({ region }: { region: Region }) => {
           actions: [
             {
               icon: <PencilSquare />,
-              label: t("general.edit"),
+              label: t("actions.edit"),
               to: `/settings/regions/${region.id}/edit`,
             },
           ],
@@ -121,7 +125,7 @@ const RegionActions = ({ region }: { region: Region }) => {
           actions: [
             {
               icon: <Trash />,
-              label: t("general.delete"),
+              label: t("actions.delete"),
               onClick: handleDelete,
             },
           ],
@@ -134,6 +138,8 @@ const RegionActions = ({ region }: { region: Region }) => {
 const RegionCountries = ({ countries }: { countries: Country[] }) => {
   const { t } = useTranslation()
 
+  const countIsGreaterThanTwo = countries.length > 2
+
   return (
     <div className="text-ui-fg-subtle flex items-center gap-x-2">
       <Text leading="compact" size="small">
@@ -141,8 +147,9 @@ const RegionCountries = ({ countries }: { countries: Country[] }) => {
           .slice(0, 2)
           .map((c) => c.display_name)
           .join(", ")}
+        {countIsGreaterThanTwo && ", "}
       </Text>
-      {countries.length > 2 && (
+      {countIsGreaterThanTwo && (
         <Tooltip
           content={
             <ul>
@@ -204,8 +211,8 @@ const EditRegionDrawer = ({ region }: { region: Region }) => {
         </Drawer.Header>
         <Drawer.Body></Drawer.Body>
         <Drawer.Footer className="flex items-center justify-end gap-x-2">
-          <Button variant="secondary">{t("general.cancel")}</Button>
-          <Button>{t("general.save")}</Button>
+          <Button variant="secondary">{t("actions.cancel")}</Button>
+          <Button>{t("actions.save")}</Button>
         </Drawer.Footer>
       </Drawer.Content>
     </Drawer>
