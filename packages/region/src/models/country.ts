@@ -3,7 +3,6 @@ import {
   Entity,
   ManyToOne,
   OnInit,
-  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -11,12 +10,8 @@ import {
 import { generateEntityId } from "@medusajs/utils"
 import Region from "./region"
 
-type CountryOptionalProps = "region" | "region_id"
-
 @Entity({ tableName: "region_country" })
 export default class Country {
-  [OptionalProps]?: CountryOptionalProps
-
   @PrimaryKey({ columnType: "text" })
   id: string
 
