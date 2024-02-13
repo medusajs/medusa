@@ -4,7 +4,7 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type DeleteUsersStepInput = string[]
 
-export const deleteUsersStepId = "delete-users"
+export const deleteUsersStepId = "delete-users-step"
 export const deleteUsersStep = createStep(
   deleteUsersStepId,
   async (input: DeleteUsersStepInput, { container }) => {
