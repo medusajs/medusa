@@ -274,7 +274,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "ALTER TABLE IF EXISTS \"fulfillment_set\" ADD CONSTRAINT \"IDX_fulfillment_set_name_unique\" UNIQUE (name)"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_fulfillment_set_name_unique\" ON \"fulfillment_set\" (name) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "IDX_fulfillment_set_deleted_at",
@@ -612,7 +612,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "ALTER TABLE IF EXISTS \"service_zone\" ADD CONSTRAINT \"IDX_service_zone_name_unique\" UNIQUE (name)"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_service_zone_name_unique\" ON \"service_zone\" (name) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "IDX_service_zone_deleted_at",
@@ -639,6 +639,15 @@
     },
     {
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "service_zone_id": {
           "name": "service_zone_id",
           "type": "text",
@@ -664,10 +673,9 @@
         {
           "keyName": "service_zone_geo_zones_pkey",
           "columnNames": [
-            "service_zone_id",
-            "geo_zone_id"
+            "id"
           ],
-          "composite": true,
+          "composite": false,
           "primary": true,
           "unique": true
         }
@@ -704,6 +712,15 @@
     },
     {
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
         "fulfillment_set_id": {
           "name": "fulfillment_set_id",
           "type": "text",
@@ -729,10 +746,9 @@
         {
           "keyName": "fulfillment_set_service_zones_pkey",
           "columnNames": [
-            "fulfillment_set_id",
-            "service_zone_id"
+            "id"
           ],
-          "composite": true,
+          "composite": false,
           "primary": true,
           "unique": true
         }

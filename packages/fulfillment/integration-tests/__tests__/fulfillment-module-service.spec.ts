@@ -757,6 +757,19 @@ describe("fulfillment module service", function () {
             ]),
           })
         )
+
+        // Validate pivot table no oprhan data left
+        const pivotTableData = await MikroOrmWrapper.forkManager().execute(
+          "SELECT * from fulfillment_set_service_zones"
+        )
+
+        expect(pivotTableData).toHaveLength(1)
+        expect(pivotTableData[0]).toEqual(
+          expect.objectContaining({
+            fulfillment_set_id: createdFulfillmentSet.id,
+            service_zone_id: updatedFulfillmentSet.service_zones[0].id,
+          })
+        )
       })
 
       it("should update an existing fulfillment set and add a new service zone", async function () {
@@ -938,6 +951,25 @@ describe("fulfillment module service", function () {
           )
           ++i
         }
+
+        // Validate pivot table no oprhan data left
+        const pivotTableData = await MikroOrmWrapper.forkManager().execute(
+          "SELECT * from fulfillment_set_service_zones"
+        )
+
+        expect(pivotTableData).toHaveLength(2)
+        expect(pivotTableData).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              fulfillment_set_id: updatedFulfillmentSets[0].id,
+              service_zone_id: updatedFulfillmentSets[0].service_zones[0].id,
+            }),
+            expect.objectContaining({
+              fulfillment_set_id: updatedFulfillmentSets[1].id,
+              service_zone_id: updatedFulfillmentSets[1].service_zones[0].id,
+            }),
+          ])
+        )
       })
 
       it("should update a collection of fulfillment sets and add new service zones", async function () {
@@ -1028,6 +1060,33 @@ describe("fulfillment module service", function () {
           )
           ++i
         }
+
+        // Validate pivot table no oprhan data left
+        const pivotTableData = await MikroOrmWrapper.forkManager().execute(
+          "SELECT * from fulfillment_set_service_zones"
+        )
+
+        expect(pivotTableData).toHaveLength(4)
+        expect(pivotTableData).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              fulfillment_set_id: updatedFulfillmentSets[0].id,
+              service_zone_id: updatedFulfillmentSets[0].service_zones[0].id,
+            }),
+            expect.objectContaining({
+              fulfillment_set_id: updatedFulfillmentSets[1].id,
+              service_zone_id: updatedFulfillmentSets[1].service_zones[0].id,
+            }),
+            expect.objectContaining({
+              fulfillment_set_id: updatedFulfillmentSets[0].id,
+              service_zone_id: updatedFulfillmentSets[0].service_zones[1].id,
+            }),
+            expect.objectContaining({
+              fulfillment_set_id: updatedFulfillmentSets[1].id,
+              service_zone_id: updatedFulfillmentSets[1].service_zones[1].id,
+            }),
+          ])
+        )
       })
     })
 

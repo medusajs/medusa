@@ -64,6 +64,7 @@ export default class FulfillmentSet {
     pivotTable: "fulfillment_set_service_zones",
     joinColumn: "fulfillment_set_id",
     inverseJoinColumn: "service_zone_id",
+    fixedOrder: true,
   })
   service_zones = new Collection<ServiceZone>(this)
 

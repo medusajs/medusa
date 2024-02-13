@@ -70,6 +70,7 @@ export default class ServiceZone {
     pivotTable: "service_zone_geo_zones",
     joinColumn: "service_zone_id",
     inverseJoinColumn: "geo_zone_id",
+    fixedOrder: true,
   })
   geo_zones = new Collection<GeoZone>(this)
 
