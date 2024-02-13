@@ -12,6 +12,7 @@
     "@medusajs/cache-inmemory": "workspace:*",
     "@medusajs/event-bus-local": "workspace:*",
     "@medusajs/medusa": "workspace:*",
+    "@medusajs/workflow-engine-inmemory": "workspace:*",
     "faker": "^5.5.3",
     "medusa-interfaces": "workspace:*",
     "pg": "^8.11.0",
