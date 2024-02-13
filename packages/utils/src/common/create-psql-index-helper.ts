@@ -45,10 +45,7 @@ export function createPsqlIndexStatementHelper({
   columns = Array.isArray(columns) ? columns.join(", ") : columns
   const typeStr = type ? ` USING ${type}` : ""
   const optionsStr = where ? ` WHERE ${where}` : ""
+  const uniqueStr = unique ? "UNIQUE " : ""
 
-  if (!unique) {
-    return `CREATE INDEX IF NOT EXISTS "${name}" ON "${tableName}"${typeStr} (${columns})${optionsStr}`
-  } else {
-    return `ALTER TABLE IF EXISTS "${tableName}" ADD CONSTRAINT "${name}" UNIQUE (${columns})${optionsStr}`
-  }
+  return `CREATE ${uniqueStr}INDEX IF NOT EXISTS ${name} ON ${tableName}${typeStr} (${columns})${optionsStr}`
 }
