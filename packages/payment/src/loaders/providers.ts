@@ -5,12 +5,12 @@ import { Lifetime, asFunction, asValue } from "awilix"
 import * as providers from "../providers"
 
 const registrationFn = async (klass, container, pluginOptions) => {
-  Object.entries(pluginOptions.config).map(([k, v]) => {
-    const key = `pp_${klass.PROVIDER}_${k}`
+  Object.entries(pluginOptions.config || []).map(([name, config]) => {
+    const key = `pp_${klass.PROVIDER}_${name}`
     container.register({
       [key]: asFunction((cradle) => new klass(cradle, pluginOptions), {
         lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-      }).inject(() => ({ config: v })),
+      }).inject(() => ({ config })),
     })
 
     container.registerAdd("payment_providers", asValue(key))

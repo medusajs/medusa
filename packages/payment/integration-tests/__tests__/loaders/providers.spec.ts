@@ -33,28 +33,6 @@ describe("Payment Module Service", () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = await MikroOrmWrapper.forkManager()
 
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PAYMNET_DB_SCHEMA,
-      },
-      providers: [
-        {
-          resolve: "@medusajs/payment-stripe",
-          options: {
-            config: {
-              dkk: {
-                apiKey: "pk_test_123",
-              },
-              usd: {
-                apiKey: "pk_test_456",
-              },
-            },
-          },
-        },
-      ],
-    })
-
     await createPaymentCollections(repositoryManager)
   })
 
