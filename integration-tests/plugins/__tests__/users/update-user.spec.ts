@@ -53,7 +53,6 @@ describe("POST /admin/users/:id", () => {
     const api = useApi()! as AxiosInstance
 
     const body = {
-      email: "member_2@test.com",
       first_name: "John",
       last_name: "Doe",
     }

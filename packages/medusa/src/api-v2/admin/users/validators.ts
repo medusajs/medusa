@@ -104,10 +104,6 @@ export class AdminUpdateUserRequest {
 
   @IsString()
   @IsOptional()
-  email?: string
-
-  @IsString()
-  @IsOptional()
   last_name?: string
 
   @IsString()

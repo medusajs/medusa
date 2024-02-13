@@ -8,7 +8,18 @@ export class Migration20240213092656 extends Migration {
     this.addSql(
       'alter table "invite" add column if not exists "email" text not null;'
     )
-    this.addSql('alter table "invite" alter column "user_email" drop not null;')
+
+    this.addSql(`
+    DO $$
+    BEGIN
+      IF EXISTS(SELECT *
+        FROM information_schema.columns
+        WHERE table_name='invite' and column_name='user_email')
+      THEN
+          ALTER TABLE "public"."invite" alter column "user_email" drop not null;
+      END IF;
+    END $$;
+`)
 
     this.addSql(
       'create index if not exists "IDX_invite_deleted_at" on "invite" ("deleted_at");'
