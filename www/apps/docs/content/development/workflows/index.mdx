@@ -356,7 +356,7 @@ const updateProduct = createStep(
     const productService: ProductService = 
       context.container.resolve("productService")
 
-    productService.update(id, previousProductData)
+    await productService.update(id, previousProductData)
   }
 )
 ```
