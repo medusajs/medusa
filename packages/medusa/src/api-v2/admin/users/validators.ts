@@ -98,4 +98,26 @@ export class AdminCreateUserRequest {
   @IsOptional()
   @IsString()
   last_name?: string
+
+  @IsString()
+  @IsOptional()
+  avatar_url: string
+}
+
+export class AdminUpdateUserRequest {
+  @IsString()
+  @IsOptional()
+  first_name?: string
+
+  @IsString()
+  @IsOptional()
+  email?: string
+
+  @IsString()
+  @IsOptional()
+  last_name?: string
+
+  @IsString()
+  @IsOptional()
+  avatar_url: string
 }

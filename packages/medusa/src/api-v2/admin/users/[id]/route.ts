@@ -3,9 +3,10 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
-import { deleteUsersWorkflow } from "@medusajs/core-flows"
-import { IUserModuleService } from "@medusajs/types"
+import { deleteUsersWorkflow, updateUsersWorkflow } from "@medusajs/core-flows"
+import { IUserModuleService, UpdateUserDTO } from "@medusajs/types"
 import { ModuleRegistrationName } from "../../../../../../modules-sdk/dist"
+import { AdminUpdateUserRequest } from "../validators"
 
 // Get user
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
@@ -21,7 +22,22 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
 // update user
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  res.status(200).json({})
+  const workflow = updateUsersWorkflow(req.scope)
+
+  const input = {
+    updates: [
+      {
+        id: req.params.id,
+        ...(req.validatedBody as AdminUpdateUserRequest),
+      } as UpdateUserDTO,
+    ],
+  }
+
+  const { result } = await workflow.run({ input })
+
+  const [user] = result
+
+  res.status(200).json({ user })
 }
 
 // delete user

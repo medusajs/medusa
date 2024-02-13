@@ -3,6 +3,7 @@ import {
   AdminCreateUserRequest,
   AdminGetUsersParams,
   AdminGetUsersUserParams,
+  AdminUpdateUserRequest,
 } from "./validators"
 import * as QueryConfig from "./query-config"
 import { MiddlewareRoute } from "../../../types/middlewares"
@@ -30,9 +31,9 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
       ),
     ],
   },
-  // {
-  //   method: ["POST"],
-  //   matcher: "/admin/users/:id",
-  //   middlewares: [transformBody(AdminPostUsersUserReq)],
-  // },
+  {
+    method: ["POST"],
+    matcher: "/admin/users/:id",
+    middlewares: [transformBody(AdminUpdateUserRequest)],
+  },
 ]
