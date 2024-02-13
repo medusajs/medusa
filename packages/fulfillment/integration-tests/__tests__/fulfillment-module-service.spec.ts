@@ -2,7 +2,13 @@ import { Modules } from "@medusajs/modules-sdk"
 import { initModules } from "medusa-test-utils/dist"
 import {
   CreateFulfillmentSetDTO,
+  CreateGeoZoneDTO,
+  CreateServiceZoneDTO,
+  GeoZoneDTO,
   IFulfillmentModuleService,
+  ServiceZoneDTO,
+  UpdateFulfillmentSetDTO,
+  UpdateGeoZoneDTO,
 } from "@medusajs/types"
 import { getInitModuleConfig, MikroOrmWrapper } from "../utils"
 import { GeoZoneType } from "@medusajs/utils"
@@ -472,7 +478,7 @@ describe("fulfillment module service", function () {
 
     describe("on create service zones", () => {
       it("should create a new service zone", async function () {
-        const data = {
+        const data: CreateServiceZoneDTO = {
           name: "test",
           geo_zones: [
             {
@@ -490,8 +496,8 @@ describe("fulfillment module service", function () {
             name: data.name,
             geo_zones: expect.arrayContaining([
               expect.objectContaining({
-                type: data.geo_zones[0].type,
-                country_code: data.geo_zones[0].country_code,
+                type: (data.geo_zones![0] as GeoZoneDTO).type,
+                country_code: (data.geo_zones![0] as GeoZoneDTO).country_code,
               }),
             ]),
           })
@@ -499,7 +505,7 @@ describe("fulfillment module service", function () {
       })
 
       it("should create a collection of service zones", async function () {
-        const data = [
+        const data: CreateServiceZoneDTO[] = [
           {
             name: "test",
             geo_zones: [
@@ -541,8 +547,9 @@ describe("fulfillment module service", function () {
               name: data_.name,
               geo_zones: expect.arrayContaining([
                 expect.objectContaining({
-                  type: data_.geo_zones[0].type,
-                  country_code: data_.geo_zones[0].country_code,
+                  type: (data_.geo_zones![0] as GeoZoneDTO).type,
+                  country_code: (data_.geo_zones![0] as GeoZoneDTO)
+                    .country_code,
                 }),
               ]),
             })
@@ -557,7 +564,7 @@ describe("fulfillment module service", function () {
       })
 
       it("should fail on duplicated service zone name", async function () {
-        const data = {
+        const data: CreateServiceZoneDTO = {
           name: "test",
           geo_zones: [
             {
@@ -659,7 +666,7 @@ describe("fulfillment module service", function () {
 
         const createdFulfillmentSet = await service.create(createData)
 
-        const createServiceZoneData = {
+        const createServiceZoneData: CreateServiceZoneDTO = {
           name: "service-zone-test2",
           geo_zones: [
             {
@@ -669,7 +676,7 @@ describe("fulfillment module service", function () {
           ],
         }
 
-        const updateData = {
+        const updateData: UpdateFulfillmentSetDTO = {
           id: createdFulfillmentSet.id,
           name: "updated-test",
           type: "updated-test-type",
@@ -686,13 +693,15 @@ describe("fulfillment module service", function () {
             service_zones: expect.arrayContaining([
               expect.objectContaining({
                 id: expect.any(String),
-                name: updateData.service_zones[0].name,
+                name: (updateData.service_zones![0] as ServiceZoneDTO).name,
                 geo_zones: expect.arrayContaining([
                   expect.objectContaining({
                     id: expect.any(String),
-                    type: updateData.service_zones[0].geo_zones[0].type,
-                    country_code:
-                      updateData.service_zones[0].geo_zones[0].country_code,
+                    type: (updateData.service_zones![0] as ServiceZoneDTO)
+                      .geo_zones[0].type,
+                    country_code: (
+                      updateData.service_zones![0] as ServiceZoneDTO
+                    ).geo_zones[0].country_code,
                   }),
                 ]),
               }),
@@ -720,7 +729,7 @@ describe("fulfillment module service", function () {
 
         const createdFulfillmentSet = await service.create(createData)
 
-        const createServiceZoneData = {
+        const createServiceZoneData: CreateServiceZoneDTO = {
           name: "service-zone-test2",
           geo_zones: [
             {
@@ -730,7 +739,7 @@ describe("fulfillment module service", function () {
           ],
         }
 
-        const updateData = {
+        const updateData: UpdateFulfillmentSetDTO = {
           id: createdFulfillmentSet.id,
           name: "updated-test",
           type: "updated-test-type",
@@ -753,13 +762,15 @@ describe("fulfillment module service", function () {
               }),
               expect.objectContaining({
                 id: expect.any(String),
-                name: updateData.service_zones[1].name,
+                name: (updateData.service_zones![1] as ServiceZoneDTO).name,
                 geo_zones: expect.arrayContaining([
                   expect.objectContaining({
                     id: expect.any(String),
-                    type: updateData.service_zones[1].geo_zones[0].type,
-                    country_code:
-                      updateData.service_zones[1].geo_zones[0].country_code,
+                    type: (updateData.service_zones![1] as ServiceZoneDTO)
+                      .geo_zones[0].type,
+                    country_code: (
+                      updateData.service_zones![1] as ServiceZoneDTO
+                    ).geo_zones[0].country_code,
                   }),
                 ]),
               }),
@@ -830,8 +841,8 @@ describe("fulfillment module service", function () {
 
         const createdFulfillmentSets = await service.create(createData)
 
-        const updateData = createdFulfillmentSets.map(
-          (fulfillmentSet, index) => ({
+        const updateData: UpdateFulfillmentSetDTO[] =
+          createdFulfillmentSets.map((fulfillmentSet, index) => ({
             id: fulfillmentSet.id,
             name: `updated-test${index + 1}`,
             type: `updated-test-type${index + 1}`,
@@ -846,8 +857,7 @@ describe("fulfillment module service", function () {
                 ],
               },
             ],
-          })
-        )
+          }))
 
         const updatedFulfillmentSets = await service.update(updateData)
 
@@ -863,13 +873,14 @@ describe("fulfillment module service", function () {
               service_zones: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
-                  name: data_.service_zones[0].name,
+                  name: (data_.service_zones![0] as ServiceZoneDTO).name,
                   geo_zones: expect.arrayContaining([
                     expect.objectContaining({
                       id: expect.any(String),
-                      type: data_.service_zones[0].geo_zones[0].type,
-                      country_code:
-                        data_.service_zones[0].geo_zones[0].country_code,
+                      type: (data_.service_zones![0] as ServiceZoneDTO)
+                        .geo_zones[0].type,
+                      country_code: (data_.service_zones![0] as ServiceZoneDTO)
+                        .geo_zones[0].country_code,
                     }),
                   ]),
                 }),
@@ -916,8 +927,8 @@ describe("fulfillment module service", function () {
 
         const createdFulfillmentSets = await service.create(createData)
 
-        const updateData = createdFulfillmentSets.map(
-          (fulfillmentSet, index) => ({
+        const updateData: UpdateFulfillmentSetDTO[] =
+          createdFulfillmentSets.map((fulfillmentSet, index) => ({
             id: fulfillmentSet.id,
             name: `updated-test${index + 1}`,
             type: `updated-test-type${index + 1}`,
@@ -933,8 +944,7 @@ describe("fulfillment module service", function () {
                 ],
               },
             ],
-          })
-        )
+          }))
 
         const updatedFulfillmentSets = await service.update(updateData)
 
@@ -953,13 +963,14 @@ describe("fulfillment module service", function () {
                 }),
                 expect.objectContaining({
                   id: expect.any(String),
-                  name: data_.service_zones[1].name,
+                  name: (data_.service_zones![1] as ServiceZoneDTO).name,
                   geo_zones: expect.arrayContaining([
                     expect.objectContaining({
                       id: expect.any(String),
-                      type: data_.service_zones[1].geo_zones[0].type,
-                      country_code:
-                        data_.service_zones[1].geo_zones[0].country_code,
+                      type: (data_.service_zones![1] as ServiceZoneDTO)
+                        .geo_zones[0].type,
+                      country_code: (data_.service_zones![1] as ServiceZoneDTO)
+                        .geo_zones[0].country_code,
                     }),
                   ]),
                 }),
@@ -973,7 +984,7 @@ describe("fulfillment module service", function () {
 
     describe("on update service zones", () => {
       it("should update an existing service zone", async function () {
-        const createData = {
+        const createData: CreateServiceZoneDTO = {
           name: "service-zone-test",
           geo_zones: [
             {
@@ -1015,7 +1026,7 @@ describe("fulfillment module service", function () {
       })
 
       it("should update a collection of service zones", async function () {
-        const createData = [
+        const createData: CreateServiceZoneDTO[] = [
           {
             name: "service-zone-test",
             geo_zones: [
@@ -1074,7 +1085,7 @@ describe("fulfillment module service", function () {
       })
 
       it("should fail on duplicated service zone name", async function () {
-        const createData = [
+        const createData: CreateServiceZoneDTO[] = [
           {
             name: "service-zone-test",
             geo_zones: [
@@ -1118,7 +1129,7 @@ describe("fulfillment module service", function () {
 
     describe("on create geo zones", () => {
       it("should create a new geo zone", async function () {
-        const data = {
+        const data: CreateGeoZoneDTO = {
           type: GeoZoneType.COUNTRY,
           country_code: "fr",
         }
@@ -1135,7 +1146,7 @@ describe("fulfillment module service", function () {
       })
 
       it("should create a collection of geo zones", async function () {
-        const data = [
+        const data: CreateGeoZoneDTO[] = [
           {
             type: GeoZoneType.COUNTRY,
             country_code: "fr",
@@ -1166,14 +1177,14 @@ describe("fulfillment module service", function () {
 
     describe("on update geo zones", () => {
       it("should update an existing geo zone", async function () {
-        const createData = {
+        const createData: CreateGeoZoneDTO = {
           type: GeoZoneType.COUNTRY,
           country_code: "fr",
         }
 
         const createdGeoZone = await service.createGeoZones(createData)
 
-        const updateData = {
+        const updateData: UpdateGeoZoneDTO = {
           id: createdGeoZone.id,
           type: GeoZoneType.COUNTRY,
           country_code: "us",
@@ -1191,7 +1202,7 @@ describe("fulfillment module service", function () {
       })
 
       it("should update a collection of geo zones", async function () {
-        const createData = [
+        const createData: CreateGeoZoneDTO[] = [
           {
             type: GeoZoneType.COUNTRY,
             country_code: "fr",
@@ -1204,11 +1215,13 @@ describe("fulfillment module service", function () {
 
         const createdGeoZones = await service.createGeoZones(createData)
 
-        const updateData = createdGeoZones.map((geoZone, index) => ({
-          id: geoZone.id,
-          type: GeoZoneType.COUNTRY,
-          country_code: index % 2 === 0 ? "us" : "fr",
-        }))
+        const updateData: UpdateGeoZoneDTO[] = createdGeoZones.map(
+          (geoZone, index) => ({
+            id: geoZone.id,
+            type: GeoZoneType.COUNTRY,
+            country_code: index % 2 === 0 ? "us" : "fr",
+          })
+        )
 
         const updatedGeoZones = await service.updateGeoZones(updateData)
 
