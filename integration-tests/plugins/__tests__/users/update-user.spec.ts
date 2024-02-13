@@ -46,7 +46,7 @@ describe("POST /admin/users/:id", () => {
   })
 
   it("should update a single user", async () => {
-    const a = await userModuleService.create({
+    const user = await userModuleService.create({
       email: "member@test.com",
     })
 
@@ -57,7 +57,11 @@ describe("POST /admin/users/:id", () => {
       first_name: "John",
       last_name: "Doe",
     }
-    const response = await api.post(`/admin/users/${a.id}`, body, adminHeaders)
+    const response = await api.post(
+      `/admin/users/${user.id}`,
+      body,
+      adminHeaders
+    )
 
     expect(response.status).toEqual(200)
     expect(response.data.user).toEqual(expect.objectContaining(body))

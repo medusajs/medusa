@@ -4,7 +4,7 @@ import { createUsersStep } from "../steps"
 
 export const createUsersWorkflowId = "create-users-workflow"
 
-export type CreateUsersInput = {
+interface CreateUsersInput {
   users: CreateUserDTO[]
 }
 

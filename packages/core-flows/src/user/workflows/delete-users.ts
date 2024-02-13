@@ -1,7 +1,7 @@
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { deleteUsersStep } from "../steps"
 
-type WorkflowInput = {
+interface WorkflowInput {
   ids: string[]
 }
 

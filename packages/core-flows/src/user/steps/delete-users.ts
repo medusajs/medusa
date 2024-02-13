@@ -2,12 +2,10 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IUserModuleService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type DeleteUsersStepInput = string[]
-
 export const deleteUsersStepId = "delete-users-step"
 export const deleteUsersStep = createStep(
   deleteUsersStepId,
-  async (input: DeleteUsersStepInput, { container }) => {
+  async (input: string[], { container }) => {
     const service: IUserModuleService = container.resolve(
       ModuleRegistrationName.USER
     )

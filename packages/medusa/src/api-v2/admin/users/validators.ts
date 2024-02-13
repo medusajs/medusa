@@ -21,13 +21,6 @@ export class AdminGetUsersParams extends extendedFindParamsMixin({
   id?: string | string[]
 
   /**
-   * Search terms to search users' first name, last name, and email.
-   */
-  @IsOptional()
-  @IsString()
-  q?: string
-
-  /**
    * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
    */
   @IsString()

@@ -46,13 +46,13 @@ describe("GET /admin/users/:id", () => {
   })
 
   it("should retrieve a single user", async () => {
-    const a = await userModuleService.create({
+    const user = await userModuleService.create({
       email: "member@test.com",
     })
 
     const api = useApi()! as AxiosInstance
 
-    const response = await api.get(`/admin/users/${a.id}`, adminHeaders)
+    const response = await api.get(`/admin/users/${user.id}`, adminHeaders)
 
     expect(response.status).toEqual(200)
     expect(response.data.user).toEqual(

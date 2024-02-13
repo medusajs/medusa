@@ -46,23 +46,23 @@ describe("DELETE /admin/users/:id", () => {
   })
 
   it("should delete a single user", async () => {
-    const a = await userModuleService.create({
+    const user = await userModuleService.create({
       email: "member@test.com",
     })
 
     const api = useApi()! as AxiosInstance
 
-    const response = await api.delete(`/admin/users/${a.id}`, adminHeaders)
+    const response = await api.delete(`/admin/users/${user.id}`, adminHeaders)
 
     expect(response.status).toEqual(200)
     expect(response.data).toEqual({
-      id: a.id,
+      id: user.id,
       object: "user",
       deleted: true,
     })
 
     const { response: deletedResponse } = await api
-      .get(`/admin/users/${a.id}`, adminHeaders)
+      .get(`/admin/users/${user.id}`, adminHeaders)
       .catch((e) => e)
 
     expect(deletedResponse.status).toEqual(404)
