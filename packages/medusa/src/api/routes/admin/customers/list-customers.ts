@@ -1,8 +1,9 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 
-import { AdminListCustomerSelector } from "../../../../types/customers"
 import { Type } from "class-transformer"
+import { Request, Response } from "express"
 import customerController from "../../../../controllers/customers"
+import { AdminListCustomerSelector } from "../../../../types/customers"
 
 /**
  * @oas [get] /admin/customers
@@ -13,8 +14,11 @@ import customerController from "../../../../controllers/customers"
  * parameters:
  *   - (query) limit=50 {integer} The number of customers to return.
  *   - (query) offset=0 {integer} The number of customers to skip when retrieving the customers.
- *   - (query) expand {string} Comma-separated relations that should be expanded in the returned customer.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned customers.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned customers.
  *   - (query) q {string} term to search customers' email, first_name, and last_name fields.
+ *   - (query) has_account {boolean} Filter customers by whether they have an account.
+ *   - (query) order {string} A field to sort-order the retrieved customers by.
  *   - in: query
  *     name: groups
  *     style: form
@@ -24,6 +28,50 @@ import customerController from "../../../../controllers/customers"
  *       type: array
  *       items:
  *         type: string
+ *   - in: query
+ *     name: created_at
+ *     description: Filter by a creation date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Filter by an update date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetCustomersParams
@@ -96,7 +144,7 @@ import customerController from "../../../../controllers/customers"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const result = await customerController.listAndCount(
     req.scope,
     req.query,
@@ -135,4 +183,11 @@ export class AdminGetCustomersParams extends AdminListCustomerSelector {
   @IsString()
   @IsOptional()
   expand?: string
+
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
+  @IsString()
+  @IsOptional()
+  fields?: string
 }

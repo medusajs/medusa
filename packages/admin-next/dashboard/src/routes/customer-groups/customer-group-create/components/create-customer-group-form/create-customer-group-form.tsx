@@ -56,10 +56,10 @@ export const CreateCustomerGroupForm = ({
     <Form {...form}>
       <form onSubmit={handleSubmit}>
         <FocusModal.Header>
-          <div className="flex items-center gap-x-2 justify-end">
+          <div className="flex items-center justify-end gap-x-2">
             <FocusModal.Close asChild>
               <Button variant="secondary" size="small">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
             </FocusModal.Close>
             <Button
@@ -68,12 +68,12 @@ export const CreateCustomerGroupForm = ({
               size="small"
               isLoading={isLoading}
             >
-              {t("general.create")}
+              {t("actions.create")}
             </Button>
           </div>
         </FocusModal.Header>
         <FocusModal.Body className="flex flex-col items-center pt-[72px]">
-          <div className="w-full max-w-[720px] flex flex-col gap-y-8">
+          <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
               <Heading>{t("customerGroups.createCustomerGroup")}</Heading>
               <Text size="small" className="text-ui-fg-subtle">
