@@ -15,6 +15,7 @@ import {
   PaymentDTO,
   PaymentSessionDTO,
   PaymentSessionStatus,
+  ProviderWebhookPayload,
   RefundDTO,
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
@@ -497,6 +498,10 @@ export default class PaymentModuleService<
     )
 
     return await this.retrievePayment(payment.id, {}, sharedContext)
+  }
+
+  async onWebhookReceived(data: ProviderWebhookPayload): Promise<void> {
+    await this.paymentProviderService_.onWebhookReceived(data)
   }
 
   async createProvidersOnLoad() {

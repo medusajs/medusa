@@ -85,3 +85,11 @@ export interface CreatePaymentProviderDTO {
   id: string
   is_enabled?: boolean
 }
+
+/**
+ * Webhook
+ */
+export interface ProviderWebhookPayload {
+  provider: string
+  data: Record<string, unknown>
+}

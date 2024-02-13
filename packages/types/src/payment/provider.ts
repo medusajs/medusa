@@ -1,6 +1,7 @@
 import { PaymentSessionStatus } from "./common"
 import { CustomerDTO } from "../customer"
 import { AddressDTO } from "../address"
+import { ProviderWebhookPayload } from "./mutations"
 
 /**
  * @interface
@@ -211,4 +212,11 @@ export interface IPaymentProvider {
   getPaymentStatus(
     paymentSessionData: Record<string, unknown>
   ): Promise<PaymentSessionStatus>
+
+  /**
+   * The method is called when å webhook call for this particular provider is received.
+   *
+   * @param data - object containing provider id and data from the provider
+   */
+  onWebhookReceived(data: ProviderWebhookPayload["data"]): Promise<void>
 }

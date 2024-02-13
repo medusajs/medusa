@@ -12,6 +12,7 @@ import {
   PaymentProviderError,
   PaymentProviderSessionResponse,
   PaymentSessionStatus,
+  ProviderWebhookPayload,
 } from "@medusajs/types"
 import {
   InjectManager,
@@ -171,6 +172,12 @@ export default class PaymentProviderService {
     }
 
     return res as Record<string, unknown>
+  }
+
+  async onWebhookReceived(data: ProviderWebhookPayload): Promise<void> {
+    const provider = this.retrieveProvider(data.provider)
+
+    await provider.onWebhookReceived(data.data)
   }
 
   private throwPaymentProviderError(errObj: PaymentProviderError) {

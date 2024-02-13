@@ -12,9 +12,10 @@ import {
   CreatePaymentCollectionDTO,
   CreatePaymentSessionDTO,
   CreateRefundDTO,
+  ProviderWebhookPayload,
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
-  UpdatePaymentSessionDTO
+  UpdatePaymentSessionDTO,
 } from "./mutations"
 
 export interface IPaymentModuleService extends IModuleService {
@@ -115,4 +116,8 @@ export interface IPaymentModuleService extends IModuleService {
   cancelPayment(paymentId: string, sharedContext?: Context): Promise<PaymentDTO>
 
   createProvidersOnLoad(): Promise<void>
+
+  /* ********** HOOKS ********** */
+
+  onWebhookReceived(data: ProviderWebhookPayload): Promise<void>
 }

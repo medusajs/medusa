@@ -14,7 +14,7 @@ export async function handlePaymentHook({
 }): Promise<{ statusCode: number }> {
   const logger = container.resolve("logger")
 
-  const paymentCollectionId = paymentIntent.metadata?.payment_collection_id
+  const paymentCollectionId = paymentIntent.metadata?.payment_collection_id // TODO: how do we get this here
 
   switch (event.type) {
     case "payment_intent.succeeded":
