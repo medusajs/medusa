@@ -2,9 +2,12 @@ import { Type } from "class-transformer"
 import { IsOptional, IsString, ValidateNested } from "class-validator"
 import {
   DateComparisonOperator,
+  FindParams,
   extendedFindParamsMixin,
 } from "../../../types/common"
 import { IsType } from "../../../utils"
+
+export class AdminGetUsersUserParams extends FindParams {}
 
 export class AdminGetUsersParams extends extendedFindParamsMixin({
   limit: 50,

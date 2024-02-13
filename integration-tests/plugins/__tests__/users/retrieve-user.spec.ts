@@ -16,7 +16,7 @@ const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("GET /admin/users", () => {
+describe("GET /admin/users/:id", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -45,28 +45,21 @@ describe("GET /admin/users", () => {
     await db.teardown()
   })
 
-  it("should list users", async () => {
-    await userModuleService.create([
-      {
-        email: "member@test.com",
-      },
-    ])
+  it("should retrieve a single user", async () => {
+    const a = await userModuleService.create({
+      email: "member@test.com",
+    })
+
+    console.warn(userModuleService)
+    console.warn(a)
 
     const api = useApi()! as AxiosInstance
 
-    const response = await api.get(`/admin/users`, adminHeaders)
+    const response = await api.get(`/admin/users/${a.id}`, adminHeaders)
 
     expect(response.status).toEqual(200)
-    expect(response.data).toEqual({
-      users: expect.arrayContaining([
-        expect.objectContaining({
-          email: "admin@medusa.js",
-        }),
-        expect.objectContaining({ email: "member@test.com" }),
-      ]),
-      count: 2,
-      offset: 0,
-      limit: 50,
-    })
+    expect(response.data.user).toEqual(
+      expect.objectContaining({ email: "member@test.com" })
+    )
   })
 })

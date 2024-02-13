@@ -1,8 +1,24 @@
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
 // Get user
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  res.status(200).json({})
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+
+  const query = remoteQueryObjectFromString({
+    entryPoint: "user",
+    variables: {
+      id: req.params.id,
+    },
+    fields: req.listConfig.select as string[],
+  })
+
+  const [user] = await remoteQuery(query)
+
+  res.status(200).json({ user })
 }
 
 // update user
