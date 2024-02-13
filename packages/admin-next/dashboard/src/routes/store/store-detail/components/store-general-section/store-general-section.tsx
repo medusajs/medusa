@@ -21,7 +21,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
         </div>
         <Link to={"/settings/store/edit"}>
           <Button size="small" variant="secondary">
-            {t("general.edit")}
+            {t("actions.edit")}
           </Button>
         </Link>
       </div>
@@ -38,7 +38,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           {t("store.defaultCurrency")}
         </Text>
         <div className="flex items-center gap-x-2">
-          <Badge rounded="full">
+          <Badge size="2xsmall">
             {store.default_currency_code.toUpperCase()}
           </Badge>
           <Text size="small" leading="compact">
@@ -51,7 +51,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           {t("store.swapLinkTemplate")}
         </Text>
         {store.swap_link_template ? (
-          <div className="bg-ui-bg-subtle border border-ui-border-base flex items-center gap-x-0.5 w-fit rounded-full pl-2 pr-1 box-border cursor-default overflow-hidden">
+          <div className="bg-ui-bg-subtle border-ui-border-base box-border flex w-fit cursor-default items-center gap-x-0.5 overflow-hidden rounded-full border pl-2 pr-1">
             <Text size="xsmall" leading="compact" className="truncate">
               {store.swap_link_template}
             </Text>
@@ -72,7 +72,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           {t("store.paymentLinkTemplate")}
         </Text>
         {store.payment_link_template ? (
-          <div className="bg-ui-bg-subtle border border-ui-border-base flex items-center gap-x-0.5 w-fit rounded-full pl-2 pr-1 box-border cursor-default overflow-hidden">
+          <div className="bg-ui-bg-subtle border-ui-border-base box-border flex w-fit cursor-default items-center gap-x-0.5 overflow-hidden rounded-full border pl-2 pr-1">
             <Text size="xsmall" leading="compact" className="truncate">
               {store.payment_link_template}
             </Text>
@@ -93,7 +93,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           {t("store.inviteLinkTemplate")}
         </Text>
         {store.invite_link_template ? (
-          <div className="bg-ui-bg-subtle border border-ui-border-base flex items-center gap-x-0.5 w-fit rounded-full pl-2 pr-1 box-border cursor-default overflow-hidden">
+          <div className="bg-ui-bg-subtle border-ui-border-base box-border flex w-fit cursor-default items-center gap-x-0.5 overflow-hidden rounded-full border pl-2 pr-1">
             <Text size="xsmall" leading="compact" className="truncate">
               {store.invite_link_template}
             </Text>

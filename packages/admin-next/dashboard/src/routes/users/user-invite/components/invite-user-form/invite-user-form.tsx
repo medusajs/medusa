@@ -72,7 +72,7 @@ export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
 
   useEffect(() => {
     subscribe(isDirty)
-  }, [isDirty])
+  }, [isDirty, subscribe])
 
   const { invites, isLoading, isError, error } = useAdminInvites()
   const count = invites?.length ?? 0
@@ -115,15 +115,7 @@ export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
-        <FocusModal.Header>
-          <div className="flex items-center justify-end gap-x-2">
-            <FocusModal.Close asChild>
-              <Button size="small" variant="secondary">
-                {t("general.close")}
-              </Button>
-            </FocusModal.Close>
-          </div>
-        </FocusModal.Header>
+        <FocusModal.Header />
         <FocusModal.Body className="flex flex-1 flex-col overflow-hidden">
           <div className="flex flex-1 flex-col items-center overflow-y-auto">
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
@@ -190,7 +182,7 @@ export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
               </div>
               <div className="flex flex-col gap-y-4">
                 <Heading level="h2">{t("users.pendingInvites")}</Heading>
-                <Container className="p-0 overflow-hidden">
+                <Container className="overflow-hidden p-0">
                   {!noRecords ? (
                     <div>
                       <Table>
@@ -199,7 +191,7 @@ export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
                             return (
                               <Table.Row
                                 key={headerGroup.id}
-                                className="[&_th]:w-1/3 [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap"
+                                className="[&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th]:w-1/3"
                               >
                                 {headerGroup.headers.map((header) => {
                                   return (
@@ -276,8 +268,8 @@ const InviteActions = ({ invite }: { invite: Invite }) => {
       description: t("users.revokeInviteWarning", {
         email: invite.user_email,
       }),
-      cancelText: t("general.cancel"),
-      confirmText: t("general.confirm"),
+      cancelText: t("actions.cancel"),
+      confirmText: t("actions.revoke"),
     })
 
     if (!res) {
@@ -328,7 +320,7 @@ const InviteActions = ({ invite }: { invite: Invite }) => {
           actions: [
             {
               icon: <XCircle />,
-              label: t("general.revoke"),
+              label: t("actions.revoke"),
               onClick: handleRevoke,
             },
           ],
@@ -403,8 +395,8 @@ const useColumns = () => {
                 <Trans
                   i18nKey={"users.validFromUntil"}
                   components={[
-                    <span className="font-medium" />,
-                    <span className="font-medium" />,
+                    <span key="from" className="font-medium" />,
+                    <span key="untill" className="font-medium" />,
                   ]}
                   values={{
                     from: format(
