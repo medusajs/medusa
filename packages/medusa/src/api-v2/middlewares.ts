@@ -7,6 +7,7 @@ import { adminRegionRoutesMiddlewares } from "./admin/regions/middlewares"
 import { authRoutesMiddlewares } from "./auth/middlewares"
 import { storeCartRoutesMiddlewares } from "./store/carts/middlewares"
 import { storeCustomerRoutesMiddlewares } from "./store/customers/middlewares"
+import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
 
 export const config: MiddlewaresConfig = {
   routes: [
@@ -17,6 +18,7 @@ export const config: MiddlewaresConfig = {
     ...storeCustomerRoutesMiddlewares,
     ...storeCartRoutesMiddlewares,
     ...authRoutesMiddlewares,
+    ...storeRegionRoutesMiddlewares,
     ...adminRegionRoutesMiddlewares,
   ],
 }
