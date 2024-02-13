@@ -8,7 +8,7 @@ import {
 import getSymbol from "../../utils/get-symbol.js"
 import KnowledgeBaseFactory, {
   RetrieveOptions,
-} from "../knowledge-base-factory.js"
+} from "../helpers/knowledge-base-factory.js"
 import {
   getCustomNamespaceTag,
   shouldHaveCustomNamespace,
@@ -18,10 +18,14 @@ import {
   capitalize,
   normalizeName,
 } from "../../utils/str-formatting.js"
+import GeneratorEventManager from "../helpers/generator-event-manager.js"
+import { CommonCliOptions } from "../../types/index.js"
 
 export type GeneratorOptions = {
   checker: ts.TypeChecker
   kinds?: ts.SyntaxKind[]
+  generatorEventManager: GeneratorEventManager
+  additionalOptions: Pick<CommonCliOptions, "generateExamples">
 }
 
 export type GetDocBlockOptions = {
@@ -54,11 +58,20 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
   protected checker: ts.TypeChecker
   protected defaultSummary = "{summary}"
   protected knowledgeBaseFactory: KnowledgeBaseFactory
+  protected generatorEventManager: GeneratorEventManager
+  protected options: Pick<CommonCliOptions, "generateExamples">
 
-  constructor({ checker, kinds }: GeneratorOptions) {
+  constructor({
+    checker,
+    kinds,
+    generatorEventManager,
+    additionalOptions,
+  }: GeneratorOptions) {
     this.allowedKinds = kinds || DefaultKindGenerator.DEFAULT_ALLOWED_NODE_KINDS
     this.checker = checker
     this.knowledgeBaseFactory = new KnowledgeBaseFactory()
+    this.generatorEventManager = generatorEventManager
+    this.options = additionalOptions
   }
 
   /**
@@ -136,7 +149,11 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
      */
     nodeType?: ts.Type
   }): string {
-    const knowledgeBaseOptions = this.getKnowledgeOptions(node)
+    const syntheticComments = ts.getSyntheticLeadingComments(node)
+    if (syntheticComments?.length) {
+      return syntheticComments.map((comment) => comment.text).join(" ")
+    }
+    const knowledgeBaseOptions = this.getKnowledgeBaseOptions(node)
     if (!nodeType) {
       nodeType =
         "type" in node && node.type && ts.isTypeNode(node.type as ts.Node)
@@ -170,7 +187,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
    * @param {ts.Type} nodeType - The type of a node.
    * @returns {string} The summary comment.
    */
-  private getTypeDocBlock(
+  protected getTypeDocBlock(
     nodeType: ts.Type,
     knowledgeBaseOptions?: Partial<RetrieveOptions>
   ): string {
@@ -226,7 +243,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
    * @param {ts.Symbol} symbol - The symbol to retrieve its docblock.
    * @returns {string} The symbol's docblock.
    */
-  private getSymbolDocBlock(
+  protected getSymbolDocBlock(
     symbol: ts.Symbol,
     knowledgeBaseOptions?: Partial<RetrieveOptions>
   ): string {
@@ -395,26 +412,9 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     }
 
     // check for default value
-    if (
-      "initializer" in node &&
-      node.initializer &&
-      ts.isExpression(node.initializer as ts.Node)
-    ) {
-      const initializer = node.initializer as ts.Expression
-
-      // retrieve default value only if the value is numeric, string, or boolean
-      const defaultValue =
-        ts.isNumericLiteral(initializer) || ts.isStringLiteral(initializer)
-          ? initializer.getText()
-          : initializer.kind === ts.SyntaxKind.FalseKeyword
-            ? "false"
-            : initializer.kind === ts.SyntaxKind.TrueKeyword
-              ? "true"
-              : ""
-
-      if (defaultValue.length) {
-        tags.add(`@defaultValue ${defaultValue}`)
-      }
+    const defaultValue = this.getDefaultValue(node)
+    if (defaultValue?.length) {
+      tags.add(`@defaultValue ${defaultValue}`)
     }
 
     let str = ""
@@ -481,7 +481,13 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     )
   }
 
-  getKnowledgeOptions(node: ts.Node): Partial<RetrieveOptions> {
+  /**
+   * Get knowledge base options for a specified node.
+   *
+   * @param node - The node to retrieve its knowledge base options.
+   * @returns The knowledge base options.
+   */
+  getKnowledgeBaseOptions(node: ts.Node): Partial<RetrieveOptions> {
     const rawParentName =
       "name" in node.parent &&
       node.parent.name &&
@@ -497,6 +503,88 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
           : undefined,
       },
     }
+  }
+
+  /**
+   * Get the default value of a node.
+   *
+   * @param node - The node to get its default value.
+   * @returns The default value, if any.
+   */
+  getDefaultValue(node: ts.Node): string | undefined {
+    if (
+      "initializer" in node &&
+      node.initializer &&
+      ts.isExpression(node.initializer as ts.Node)
+    ) {
+      const initializer = node.initializer as ts.Expression
+
+      // retrieve default value only if the value is numeric, string, or boolean
+      const defaultValue =
+        ts.isNumericLiteral(initializer) || ts.isStringLiteral(initializer)
+          ? initializer.getText()
+          : initializer.kind === ts.SyntaxKind.FalseKeyword
+            ? "false"
+            : initializer.kind === ts.SyntaxKind.TrueKeyword
+              ? "true"
+              : ""
+
+      if (defaultValue.length) {
+        return defaultValue
+      }
+    }
+  }
+
+  /**
+   * Checks whether a node can be documented.
+   *
+   * @param {ts.Node} node - The node to check for.
+   * @returns {boolean} Whether the node can be documented.
+   */
+  canDocumentNode(node: ts.Node): boolean {
+    // check if node already has docblock
+    return !this.nodeHasComments(node)
+  }
+
+  /**
+   * Get the comments range of a node.
+   * @param node - The node to get its comment range.
+   * @returns The comment range of the node if available.
+   */
+  getNodeCommentsRange(node: ts.Node): ts.CommentRange[] | undefined {
+    return ts.getLeadingCommentRanges(
+      node.getSourceFile().getFullText(),
+      node.getFullStart()
+    )
+  }
+
+  /**
+   * Get a node's comment from its range.
+   *
+   * @param node - The node to get its comment range.
+   * @returns The comment if available.
+   */
+  getNodeCommentsFromRange(node: ts.Node): string | undefined {
+    const commentRange = this.getNodeCommentsRange(node)
+
+    if (!commentRange?.length) {
+      return
+    }
+
+    return node
+      .getSourceFile()
+      .getFullText()
+      .slice(commentRange[0].pos, commentRange[0].end)
+  }
+
+  /**
+   * Check whether a node has comments.
+   *
+   * @param node - The node to check.
+   * @returns Whether the node has comments.
+   */
+  nodeHasComments(node: ts.Node): boolean {
+    return this.getNodeCommentsFromRange(node) !== undefined
   }
 }
 
