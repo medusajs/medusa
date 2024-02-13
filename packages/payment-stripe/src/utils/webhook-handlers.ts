@@ -66,18 +66,22 @@ async function onPaymentIntentSucceeded({
   paymentCollectionId,
   container,
 }) {
-  await capturePaymenCollectiontIfNecessary({
+  await capturePaymentCollectionIfNecessary({
     paymentIntent,
     paymentCollectionId,
     container,
   })
 }
 
-async function onPaymentAmountCapturableUpdate({ paymentCollectionId }) {
-  // TODO: Call complete cart workflow?? 
+async function onPaymentAmountCapturableUpdate({
+  paymentCollectionId,
+  eventId,
+  container,
+}) {
+  // TODO: Call complete cart workflow??
 }
 
-async function capturePaymenCollectiontIfNecessary({
+async function capturePaymentCollectionIfNecessary({
   paymentIntent,
   paymentCollectionId,
   container,

@@ -1,4 +1,6 @@
 import { PaymentSessionStatus } from "./common"
+import { CustomerDTO } from "../customer"
+import { AddressDTO } from "../address"
 
 /**
  * @interface
@@ -9,7 +11,7 @@ export type PaymentProviderContext = {
   /**
    * The payment's billing address.
    */
-  billing_address?: Record<string, unknown> | null // TODO: revisit types
+  billing_address?: AddressDTO
   /**
    * The customer's email.
    */
@@ -29,7 +31,7 @@ export type PaymentProviderContext = {
   /**
    * The customer associated with this payment.
    */
-  customer?: Record<string, unknown> // TODO: type
+  customer?: CustomerDTO
   /**
    * The context.
    */

@@ -7,7 +7,9 @@ import {
   PaymentSessionStatus,
 } from "@medusajs/types"
 
-export abstract class AbstractPaymentProvider implements IPaymentProvider {
+export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
+  implements IPaymentProvider
+{
   /**
    * You can use the `constructor` of your Payment Provider to have access to different services in Medusa through [dependency injection](https://docs.medusajs.com/development/fundamentals/dependency-injection).
    *
@@ -38,7 +40,7 @@ export abstract class AbstractPaymentProvider implements IPaymentProvider {
    */
   protected constructor(
     protected readonly container: MedusaContainer,
-    protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
+    protected readonly config: TConfig = {} as TConfig // eslint-disable-next-line @typescript-eslint/no-empty-function
   ) {}
 
   static _isPaymentProvider = true

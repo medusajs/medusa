@@ -1,15 +1,21 @@
-import {
-  isPaymentProcessorError,
-  PaymentProcessorContext,
-  PaymentProcessorError,
-  PaymentProcessorSessionResponse,
-  PaymentSessionStatus,
-} from "@medusajs/medusa"
-import { MedusaContainer } from "@medusajs/types"
-import { AbstractPaymentModuleProvider, MedusaError } from "@medusajs/utils"
-import { isDefined } from "medusa-core-utils"
 import { EOL } from "os"
+
 import Stripe from "stripe"
+
+import {
+  MedusaContainer,
+  PaymentSessionStatus,
+  PaymentProviderContext,
+  PaymentProviderError,
+  PaymentProviderSessionResponse,
+} from "@medusajs/types"
+import {
+  AbstractPaymentProvider,
+  isPaymentProviderError,
+  MedusaError,
+} from "@medusajs/utils"
+import { isDefined } from "medusa-core-utils"
+
 import {
   ErrorCodes,
   ErrorIntentStatus,
@@ -25,7 +31,7 @@ type StripeWebhookEventData = {
   } & Record<string, unknown>
 }
 
-abstract class StripeBase extends AbstractPaymentModuleProvider {
+abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
   protected readonly options_: StripeOptions
   protected stripe_: Stripe
   protected container_: MedusaContainer
@@ -41,9 +47,9 @@ abstract class StripeBase extends AbstractPaymentModuleProvider {
   }
 
   protected init() {
-    this.validateOptions(this.config_ as StripeCredentials)
+    this.validateOptions(this.config)
 
-    return new Stripe(this.config_.api_key)
+    return new Stripe(this.config.api_key)
   }
 
   abstract get paymentIntentOptions(): PaymentIntentOptions
@@ -101,8 +107,8 @@ abstract class StripeBase extends AbstractPaymentModuleProvider {
   }
 
   async initiatePayment(
-    context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse> {
+    context: PaymentProviderContext
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
     const intentRequestData = this.getPaymentIntentOptions()
     const {
       email,
@@ -160,14 +166,15 @@ abstract class StripeBase extends AbstractPaymentModuleProvider {
     }
 
     return {
-      session_data,
-      update_requests: customer?.metadata?.stripe_id
-        ? undefined
-        : {
-            customer_metadata: {
-              stripe_id: intentRequest.customer,
-            },
-          },
+      data: session_data,
+      // TODO: REVISIT
+      // update_requests: customer?.metadata?.stripe_id
+      //   ? undefined
+      //   : {
+      //       customer_metadata: {
+      //         stripe_id: intentRequest.customer,
+      //       },
+      //     },
     }
   }
 
@@ -175,10 +182,10 @@ abstract class StripeBase extends AbstractPaymentModuleProvider {
     paymentSessionData: Record<string, unknown>,
     context: Record<string, unknown>
   ): Promise<
-    | PaymentProcessorError
+    | PaymentProviderError
     | {
         status: PaymentSessionStatus
-        data: PaymentProcessorSessionResponse["session_data"]
+        data: PaymentProviderSessionResponse["data"]
       }
   > {
     const status = await this.getPaymentStatus(paymentSessionData)
@@ -187,14 +194,12 @@ abstract class StripeBase extends AbstractPaymentModuleProvider {
 
   async cancelPayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<
-    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
-  > {
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]> {
     try {
       const id = paymentSessionData.id as string
       return (await this.stripe_.paymentIntents.cancel(
         id
-      )) as unknown as PaymentProcessorSessionResponse["session_data"]
+      )) as unknown as PaymentProviderSessionResponse["data"]
     } catch (error) {
       if (error.payment_intent?.status === ErrorIntentStatus.CANCELED) {
         return error.payment_intent
@@ -206,13 +211,11 @@ abstract class StripeBase extends AbstractPaymentModuleProvider {
 
   async capturePayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<
-    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
-  > {
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]> {
     const id = paymentSessionData.id as string
     try {
       const intent = await this.stripe_.paymentIntents.capture(id)
-      return intent as unknown as PaymentProcessorSessionResponse["session_data"]
+      return intent as unknown as PaymentProviderSessionResponse["data"]
     } catch (error) {
       if (error.code === ErrorCodes.PAYMENT_INTENT_UNEXPECTED_STATE) {
         if (error.payment_intent?.status === ErrorIntentStatus.SUCCEEDED) {
@@ -226,18 +229,14 @@ abstract class StripeBase extends AbstractPaymentModuleProvider {
 
   async deletePayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<
-    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
-  > {
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]> {
     return await this.cancelPayment(paymentSessionData)
   }
 
   async refundPayment(
     paymentSessionData: Record<string, unknown>,
     refundAmount: number
-  ): Promise<
-    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
-  > {
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]> {
     const id = paymentSessionData.id as string
 
     try {
@@ -254,27 +253,25 @@ abstract class StripeBase extends AbstractPaymentModuleProvider {
 
   async retrievePayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<
-    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
-  > {
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]> {
     try {
       const id = paymentSessionData.id as string
       const intent = await this.stripe_.paymentIntents.retrieve(id)
-      return intent as unknown as PaymentProcessorSessionResponse["session_data"]
+      return intent as unknown as PaymentProviderSessionResponse["data"]
     } catch (e) {
       return this.buildError("An error occurred in retrievePayment", e)
     }
   }
 
   async updatePayment(
-    context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse | void> {
-    const { amount, customer, paymentSessionData } = context
+    context: PaymentProviderContext
+  ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
+    const { amount, customer, payment_session_data } = context
     const stripeId = customer?.metadata?.stripe_id
 
-    if (stripeId !== paymentSessionData.customer) {
+    if (stripeId !== payment_session_data.customer) {
       const result = await this.initiatePayment(context)
-      if (isPaymentProcessorError(result)) {
+      if (isPaymentProviderError(result)) {
         return this.buildError(
           "An error occurred in updatePayment during the initiate of the new payment for the new customer",
           result
@@ -283,17 +280,17 @@ abstract class StripeBase extends AbstractPaymentModuleProvider {
 
       return result
     } else {
-      if (amount && paymentSessionData.amount === Math.round(amount)) {
-        return
+      if (amount && payment_session_data.amount === Math.round(amount)) {
+        return { data: payment_session_data }
       }
 
       try {
-        const id = paymentSessionData.id as string
+        const id = payment_session_data.id as string
         const sessionData = (await this.stripe_.paymentIntents.update(id, {
           amount: Math.round(amount),
-        })) as unknown as PaymentProcessorSessionResponse["session_data"]
+        })) as unknown as PaymentProviderSessionResponse["data"]
 
-        return { session_data: sessionData }
+        return { data: sessionData }
       } catch (e) {
         return this.buildError("An error occurred in updatePayment", e)
       }
@@ -313,7 +310,7 @@ abstract class StripeBase extends AbstractPaymentModuleProvider {
 
       return (await this.stripe_.paymentIntents.update(sessionId, {
         ...data,
-      })) as unknown as PaymentProcessorSessionResponse["session_data"]
+      })) as unknown as PaymentProviderSessionResponse["data"]
     } catch (e) {
       return this.buildError("An error occurred in updatePaymentData", e)
     }
@@ -347,18 +344,18 @@ abstract class StripeBase extends AbstractPaymentModuleProvider {
     return this.stripe_.webhooks.constructEvent(
       data.data,
       signature,
-      this.config_.webhook_secret
+      this.config.webhook_secret
     )
   }
 
   protected buildError(
     message: string,
-    error: Stripe.StripeRawError | PaymentProcessorError | Error
-  ): PaymentProcessorError {
+    error: Stripe.StripeRawError | PaymentProviderError | Error
+  ): PaymentProviderError {
     return {
       error: message,
       code: "code" in error ? error.code : "unknown",
-      detail: isPaymentProcessorError(error)
+      detail: isPaymentProviderError(error)
         ? `${error.error}${EOL}${error.detail ?? ""}`
         : "detail" in error
         ? error.detail
