@@ -3,6 +3,7 @@ import {
   PaymentProviderError,
   PaymentProviderSessionResponse,
   PaymentSessionStatus,
+  ProviderWebhookPayload,
 } from "@medusajs/types"
 import { AbstractPaymentProvider } from "@medusajs/utils"
 
@@ -65,6 +66,10 @@ export class SystemProviderService extends AbstractPaymentProvider {
 
   async cancelPayment(_): Promise<Record<string, unknown>> {
     return {}
+  }
+
+  async onWebhookReceived(data: ProviderWebhookPayload["data"]): Promise<void> {
+    return
   }
 }
 
