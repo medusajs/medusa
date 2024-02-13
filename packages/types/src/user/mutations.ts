@@ -1,22 +1,15 @@
 export interface CreateUserDTO {
-  id?: string
   email: string
   first_name?: string
   last_name?: string
   avatar_url?: string
   metadata?: Record<string, unknown>
 }
-export interface UpdateUserDTO {
+export interface UpdateUserDTO extends Partial<CreateUserDTO> {
   id: string
-  email?: string
-  first_name?: string
-  last_name?: string
-  avatar_url?: string
-  metadata?: Record<string, unknown>
 }
 
 export interface CreateInviteDTO {
-  id?: string
   email?: string
   accepted?: boolean
   token: string
@@ -24,11 +17,6 @@ export interface CreateInviteDTO {
   metadata?: Record<string, unknown>
 }
 
-export interface UpdateInviteDTO {
+export interface UpdateInviteDTO extends Partial<CreateInviteDTO> {
   id: string
-  email?: string
-  accepted?: boolean
-  token?: string
-  expires_at?: Date
-  metadata?: Record<string, unknown>
 }

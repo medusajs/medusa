@@ -57,22 +57,22 @@ export interface IUserModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<[InviteDTO[], number]>
 
-  createInvite(
+  createInvites(
     data: CreateInviteDTO[],
     sharedContext?: Context
   ): Promise<InviteDTO[]>
 
-  createInvite(
+  createInvites(
     data: CreateInviteDTO,
     sharedContext?: Context
   ): Promise<InviteDTO>
 
-  updateInvite(
+  updateInvites(
     data: UpdateInviteDTO[],
     sharedContext?: Context
   ): Promise<InviteDTO[]>
 
-  updateInvite(
+  updateInvites(
     data: UpdateInviteDTO,
     sharedContext?: Context
   ): Promise<InviteDTO>

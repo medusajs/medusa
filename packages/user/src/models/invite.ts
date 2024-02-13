@@ -9,8 +9,21 @@ import {
   OptionalProps,
 } from "@mikro-orm/core"
 
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  generateEntityId,
+  createPsqlIndexStatementHelper,
+} from "@medusajs/utils"
 import { DAL } from "@medusajs/types"
+
+const inviteEmailIndexName = "IDX_invite_email"
+const inviteEmailIndexStatement = createPsqlIndexStatementHelper({
+  name: inviteEmailIndexName,
+  tableName: "invite",
+  columns: "email",
+  where: "deleted_at IS NULL",
+  unique: true,
+})
 
 type OptionalFields =
   | "metadata"
@@ -25,8 +38,8 @@ export default class Invite {
   id: string
 
   @Index({
-    name: "invite_user_identifier_index",
-    expression: `create unique index "IDX_invite_email" on "invite" ("email") where deleted_at is null;`,
+    name: inviteEmailIndexName,
+    expression: inviteEmailIndexStatement,
   })
   @Property({ columnType: "text" })
   email: string

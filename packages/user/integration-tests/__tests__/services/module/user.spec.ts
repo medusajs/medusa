@@ -52,9 +52,8 @@ describe("UserModuleService - User", () => {
       await createUsers(testManager, defaultUserData)
 
       const users = await service.list()
-      const serialized = JSON.parse(JSON.stringify(users))
 
-      expect(serialized).toEqual([
+      expect(users).toEqual([
         expect.objectContaining({
           id: "1",
         }),
@@ -82,10 +81,9 @@ describe("UserModuleService - User", () => {
     it("should list and count users", async () => {
       await createUsers(testManager, defaultUserData)
       const [users, count] = await service.listAndCount()
-      const serialized = JSON.parse(JSON.stringify(users))
 
       expect(count).toEqual(2)
-      expect(serialized).toEqual([
+      expect(users).toEqual([
         expect.objectContaining({
           id: "1",
         }),
