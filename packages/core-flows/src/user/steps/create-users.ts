@@ -1,11 +1,14 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { CreateUserDTO, IUserModuleService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createUsersStepId = "create-users-step"
 export const createUsersStep = createStep(
   createUsersStepId,
-  async (input, { container }) => {
-    const service = container.resolve(ModuleRegistrationName.USER)
+  async (input: CreateUserDTO[], { container }) => {
+    const service: IUserModuleService = container.resolve(
+      ModuleRegistrationName.USER
+    )
     const users = await service.create(input)
     return new StepResponse(users)
   },

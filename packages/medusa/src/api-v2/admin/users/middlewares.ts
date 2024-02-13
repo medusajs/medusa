@@ -1,5 +1,9 @@
-import { transformQuery } from "../../../api/middlewares"
-import { AdminGetUsersParams, AdminGetUsersUserParams } from "./validators"
+import { transformBody, transformQuery } from "../../../api/middlewares"
+import {
+  AdminCreateUserRequest,
+  AdminGetUsersParams,
+  AdminGetUsersUserParams,
+} from "./validators"
 import * as QueryConfig from "./query-config"
 import { MiddlewareRoute } from "../../../types/middlewares"
 
@@ -11,11 +15,11 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
       transformQuery(AdminGetUsersParams, QueryConfig.listTransformQueryConfig),
     ],
   },
-  // {
-  //   method: ["POST"],
-  //   matcher: "/admin/users",
-  //   middlewares: [transformBody(AdminPostUsersReq)],
-  // },
+  {
+    method: ["POST"],
+    matcher: "/admin/users",
+    middlewares: [transformBody(AdminCreateUserRequest)],
+  },
   {
     method: ["GET"],
     matcher: "/admin/users/:id",

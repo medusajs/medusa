@@ -57,7 +57,7 @@ export default class User {
   email: string
 
   @Property({ columnType: "text", nullable: true })
-  avatar_url: string
+  avatar_url: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null

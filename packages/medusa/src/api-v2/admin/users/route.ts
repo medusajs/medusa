@@ -3,6 +3,8 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+import { createUsersWorkflow } from "@medusajs/core-flows"
+import { CreateUserDTO } from "@medusajs/types"
 
 // List users
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
@@ -33,5 +35,16 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
 // Create user
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  res.status(200).json({})
+  const workflow = createUsersWorkflow(req.scope)
+
+  const input = {
+    input: {
+      users: [req.validatedBody as CreateUserDTO],
+    },
+  }
+
+  const { result } = await workflow.run(input)
+
+  const [user] = result
+  res.status(200).json({ user })
 }

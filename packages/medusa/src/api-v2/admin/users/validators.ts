@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsOptional, IsString, ValidateNested } from "class-validator"
+import { IsEmail, IsOptional, IsString, ValidateNested } from "class-validator"
 import {
   DateComparisonOperator,
   FindParams,
@@ -85,4 +85,17 @@ export class AdminGetUsersParams extends extendedFindParamsMixin({
   @IsOptional()
   @IsString()
   fields?: string
+}
+
+export class AdminCreateUserRequest {
+  @IsEmail()
+  email: string
+
+  @IsOptional()
+  @IsString()
+  first_name?: string
+
+  @IsOptional()
+  @IsString()
+  last_name?: string
 }
