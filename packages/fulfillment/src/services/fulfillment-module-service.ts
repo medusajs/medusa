@@ -9,6 +9,7 @@ import {
   UpdateFulfillmentSetDTO,
 } from "@medusajs/types"
 import {
+  InjectManager,
   InjectTransactionManager,
   ModulesSdkUtils,
   promiseAll,
@@ -115,7 +116,10 @@ export default class FulfillmentModuleService<
    * @protected
    */
   protected async prepareCreateData(
-    data: FulfillmentTypes.CreateFulfillmentSetDTO[],
+    data: (
+      | FulfillmentTypes.CreateFulfillmentSetDTO
+      | FulfillmentTypes.UpdateFulfillmentSetDTO
+    )[],
     sharedContext?: Context
   ): Promise<{
     existingServiceZones: TServiceZoneEntity[]
@@ -213,7 +217,7 @@ export default class FulfillmentModuleService<
     sharedContext?: Context
   ): Promise<FulfillmentTypes.FulfillmentSetDTO>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async create(
     data:
       | FulfillmentTypes.CreateFulfillmentSetDTO
@@ -222,6 +226,22 @@ export default class FulfillmentModuleService<
   ): Promise<
     FulfillmentTypes.FulfillmentSetDTO | FulfillmentTypes.FulfillmentSetDTO[]
   > {
+    const createdFulfillmentSets = await this.create_(data, sharedContext)
+
+    return await this.baseRepository_.serialize<
+      FulfillmentTypes.FulfillmentSetDTO | FulfillmentTypes.FulfillmentSetDTO[]
+    >(createdFulfillmentSets, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async create_(
+    data:
+      | FulfillmentTypes.CreateFulfillmentSetDTO
+      | FulfillmentTypes.CreateFulfillmentSetDTO[],
+    sharedContext?: Context
+  ): Promise<TEntity | TEntity[]> {
     const data_ = Array.isArray(data) ? data : [data]
 
     const fulfillmentSetMap = new Map<
@@ -386,16 +406,9 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    const serializedFulfillmentSets = await this.baseRepository_.serialize(
-      createdFulfillmentSets,
-      {
-        populate: true,
-      }
-    )
-
     return Array.isArray(data)
-      ? serializedFulfillmentSets
-      : serializedFulfillmentSets[0]
+      ? createdFulfillmentSets
+      : createdFulfillmentSets[0]
   }
 
   createServiceZones(
@@ -407,7 +420,7 @@ export default class FulfillmentModuleService<
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ServiceZoneDTO>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async createServiceZones(
     data:
       | FulfillmentTypes.CreateServiceZoneDTO[]
@@ -416,6 +429,25 @@ export default class FulfillmentModuleService<
   ): Promise<
     FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
   > {
+    const createdServiceZones = await this.createServiceZones_(
+      data,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
+    >(createdServiceZones, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async createServiceZones_(
+    data:
+      | FulfillmentTypes.CreateServiceZoneDTO[]
+      | FulfillmentTypes.CreateServiceZoneDTO,
+    sharedContext?: Context
+  ): Promise<TServiceZoneEntity | TServiceZoneEntity[]> {
     const data_ = Array.isArray(data) ? data : [data]
 
     const geoZonesToCreate: FulfillmentTypes.CreateGeoZoneDTO[] = []
@@ -491,17 +523,7 @@ export default class FulfillmentModuleService<
       data_,
       sharedContext
     )
-
-    const serializedServiceZones = await this.baseRepository_.serialize(
-      createdServiceZones,
-      {
-        populate: true,
-      }
-    )
-
-    return Array.isArray(data)
-      ? serializedServiceZones
-      : serializedServiceZones[0]
+    return Array.isArray(data) ? createdServiceZones : createdServiceZones[0]
   }
 
   createShippingOptions(
@@ -534,14 +556,211 @@ export default class FulfillmentModuleService<
     sharedContext?: Context
   ): Promise<FulfillmentTypes.FulfillmentSetDTO>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async update(
     data: UpdateFulfillmentSetDTO[] | UpdateFulfillmentSetDTO,
     sharedContext?: Context
   ): Promise<
     FulfillmentTypes.FulfillmentSetDTO[] | FulfillmentTypes.FulfillmentSetDTO
   > {
-    return []
+    const updatedFulfillmentSets = await this.update_(data, sharedContext)
+
+    return await this.baseRepository_.serialize<
+      FulfillmentTypes.FulfillmentSetDTO | FulfillmentTypes.FulfillmentSetDTO[]
+    >(updatedFulfillmentSets, {
+      populate: true,
+    })
+  }
+
+  /**
+   * Update fulfillment sets. This method is responsible for updating the fulfillment
+   * sets and the service zones that are attached to the fulfillment. The geo zones are
+   * discarded here because they are not directly attached to the fulfillment set.
+   * Instead, the user can create and update the geo zones through the service zone
+   * or create a new service zone to be attached to the fulfillment set.
+   *
+   * @param data
+   * @param sharedContext
+   */
+  @InjectTransactionManager("baseRepository_")
+  async update_(
+    data: UpdateFulfillmentSetDTO[] | UpdateFulfillmentSetDTO,
+    sharedContext?: Context
+  ): Promise<TEntity[] | TEntity> {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    const fulfillmentSetMap = new Map<
+      string,
+      FulfillmentTypes.UpdateFulfillmentSetDTO
+    >()
+
+    const fulfillmentSetServiceZonesMap = new Map<
+      string,
+      Map<
+        string,
+        Required<FulfillmentTypes.UpdateFulfillmentSetDTO>["service_zones"][number]
+      >
+    >()
+
+    const serviceZoneGeoZonesMap = new Map<
+      string,
+      Map<
+        string,
+        | FulfillmentTypes.CreateGeoZoneDTO
+        | FulfillmentTypes.UpdateGeoZoneDTO
+        | { id: string }
+      >
+    >()
+
+    const serviceZonesToCreate: (
+      | FulfillmentTypes.UpdateServiceZoneDTO
+      | FulfillmentTypes.CreateServiceZoneDTO
+    )[] = []
+    const geoZonesToCreate: (
+      | FulfillmentTypes.UpdateGeoZoneDTO
+      | FulfillmentTypes.CreateGeoZoneDTO
+    )[] = []
+
+    const {
+      existingServiceZones,
+      existingServiceZonesMap,
+      existingGeoZones,
+      existingGeoZonesMap,
+    } = await this.prepareCreateData(data_, sharedContext)
+
+    data_.forEach(({ service_zones, ...fulfillmentSetDataOnly }) => {
+      fulfillmentSetMap.set(fulfillmentSetDataOnly.id, fulfillmentSetDataOnly)
+
+      if (service_zones?.length) {
+        const serviceZoneTuple: [
+          string,
+          Required<FulfillmentTypes.UpdateFulfillmentSetDTO>["service_zones"][number]
+        ][] = service_zones.map((serviceZone) => {
+          let geoZoneTuple: [
+            string,
+            (
+              | FulfillmentTypes.CreateGeoZoneDTO
+              | FulfillmentTypes.UpdateGeoZoneDTO
+              | { id: string }
+            )
+          ][] = []
+
+          if ("geo_zones" in serviceZone && serviceZone.geo_zones) {
+            const geo_zones = serviceZone.geo_zones
+            delete serviceZone.geo_zones
+
+            geoZoneTuple = geo_zones.map((geoZone) => {
+              let existingGeoZone =
+                "id" in geoZone ? existingGeoZonesMap.get(geoZone.id)! : null
+
+              if (!("id" in geoZone)) {
+                geoZonesToCreate.push(geoZone)
+              }
+
+              const geoZoneIdentifier =
+                FulfillmentModuleService.getGeoZoneIdentifier(geoZone)
+
+              return [geoZoneIdentifier, existingGeoZone ?? geoZone]
+            })
+          }
+
+          let existingZone =
+            "id" in serviceZone
+              ? existingServiceZonesMap.get(serviceZone.id)!
+              : null
+
+          if (!("id" in serviceZone)) {
+            serviceZonesToCreate.push(serviceZone)
+          }
+
+          const serviceZoneIdentifier =
+            "id" in serviceZone ? serviceZone.id : serviceZone.name
+
+          serviceZoneGeoZonesMap.set(
+            serviceZoneIdentifier,
+            new Map(geoZoneTuple)
+          )
+
+          return [serviceZoneIdentifier, existingZone ?? serviceZone]
+        })
+
+        fulfillmentSetServiceZonesMap.set(
+          fulfillmentSetDataOnly.id,
+          new Map(serviceZoneTuple)
+        )
+      }
+    })
+
+    if (geoZonesToCreate.length) {
+      const geoZoneToUpdateMap = new Map(
+        geoZonesToCreate.map((geoZone) => [
+          FulfillmentModuleService.getGeoZoneIdentifier(geoZone),
+          geoZone,
+        ])
+      )
+
+      const createdGeoZones = await this.geoZoneService_.create(
+        [...geoZoneToUpdateMap.values()],
+        sharedContext
+      )
+
+      for (const [serviceZoneName, geoZoneMap] of serviceZoneGeoZonesMap) {
+        for (const createdGeoZone of createdGeoZones) {
+          const geoZoneIdentifier =
+            FulfillmentModuleService.getGeoZoneIdentifier(createdGeoZone, {
+              preventIdUsage: true,
+            })
+
+          if (geoZoneMap.has(geoZoneIdentifier)) {
+            geoZoneMap.set(geoZoneIdentifier, createdGeoZone)
+          }
+        }
+
+        for (const serviceZone of serviceZonesToCreate) {
+          if (serviceZone.name === serviceZoneName) {
+            serviceZone.geo_zones = [...geoZoneMap.values()]
+          }
+        }
+      }
+    }
+
+    if (serviceZonesToCreate.length) {
+      const serviceZoneToUpdateMap = new Map(
+        serviceZonesToCreate.map((serviceZone) => [
+          serviceZone.name,
+          serviceZone,
+        ])
+      )
+
+      const createdServiceZones = await this.serviceZoneService_.create(
+        [...serviceZoneToUpdateMap.values()],
+        sharedContext
+      )
+
+      for (const [
+        fulfillmentSetName,
+        serviceZoneMap,
+      ] of fulfillmentSetServiceZonesMap) {
+        for (const updatedServiceZone of createdServiceZones) {
+          if (serviceZoneMap.has(updatedServiceZone.name)) {
+            serviceZoneMap.set(updatedServiceZone.name, updatedServiceZone)
+          }
+        }
+
+        const fulfillmentSet = fulfillmentSetMap.get(fulfillmentSetName)!
+        fulfillmentSet.service_zones = [...serviceZoneMap.values()]
+        fulfillmentSetMap.set(fulfillmentSetName, fulfillmentSet)
+      }
+    }
+
+    const updatedFulfillmentSets = await this.fulfillmentSetService_.update(
+      [...fulfillmentSetMap.values()],
+      sharedContext
+    )
+
+    return Array.isArray(data)
+      ? updatedFulfillmentSets
+      : updatedFulfillmentSets[0]
   }
 
   updateServiceZones(

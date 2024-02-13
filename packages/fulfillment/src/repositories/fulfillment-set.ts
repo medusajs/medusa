@@ -1,8 +1,7 @@
-/*
 import { Context, FulfillmentTypes } from "@medusajs/types"
 import { DALUtils, promiseAll } from "@medusajs/utils"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { FulfillmentSet, ServiceZone } from "@models"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 interface CreateFulfillmentSetDTO
   extends FulfillmentTypes.CreateFulfillmentSetDTO {
@@ -12,34 +11,47 @@ interface CreateFulfillmentSetDTO
 export class FulfillmentSetRepository extends DALUtils.mikroOrmBaseRepositoryFactory<FulfillmentSet>(
   FulfillmentSet
 ) {
-  async create(
-    data: CreateFulfillmentSetDTO[],
-    context: Context = {}
+  async update(
+    data: {
+      entity: FulfillmentSet
+      update: FulfillmentTypes.FulfillmentSetDTO
+    }[],
+    context?: Context
   ): Promise<FulfillmentSet[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    return await promiseAll(
-      data.map(async (fulfillmentSetData) => {
-        const { service_zones, ...fulfillmentSetDataOnly } = fulfillmentSetData
-        const fulfillmentSet = manager.create(
-          FulfillmentSet,
-          fulfillmentSetDataOnly
-        )
-
-        console.log(JSON.stringify(service_zones, null, 2))
-        if (service_zones?.length) {
-          console.log(JSON.stringify(fulfillmentSet.service_zones, null, 2))
-          fulfillmentSet.service_zones.add(
-            service_zones.map((serviceZone) =>
-              manager.create(ServiceZone, serviceZone)
-            )
-          )
-        }
-
-        manager.persist(fulfillmentSet)
-        return fulfillmentSet
+    // init all service zones collections
+    await promiseAll(
+      data.map(async ({ entity }) => {
+        return await entity.service_zones.init()
       })
     )
+
+    const flfillmentSetsToUpdate = data.map(({ entity, update }) => {
+      const { service_zones, ...restToUpdate } = update
+
+      const currentServiceZones = entity.service_zones.getItems()
+      const serviceZonesToDetach = currentServiceZones.filter(
+        (serviceZone) =>
+          !update.service_zones.find(
+            (newServiceZone) => newServiceZone.id === serviceZone.id
+          )
+      )
+      const serviceZonesToAttach = update.service_zones.filter(
+        (newServiceZone) =>
+          !currentServiceZones.find(
+            (serviceZone) => serviceZone.id === newServiceZone.id
+          )
+      )
+
+      entity.service_zones.remove(serviceZonesToDetach)
+      entity.service_zones.add(serviceZonesToAttach as unknown as ServiceZone[])
+
+      return manager.assign(entity, restToUpdate)
+    })
+
+    manager.persist(flfillmentSetsToUpdate)
+
+    return flfillmentSetsToUpdate
   }
 }
-*/
