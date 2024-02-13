@@ -4,7 +4,7 @@ import { CreateUserDTO } from "../../../types/dist"
 
 export const createUsers = async (
   manager: SqlEntityManager,
-  userData: CreateUserDTO[]
+  userData: (CreateUserDTO & { id?: string })[]
 ) => {
   const users: User[] = []
 

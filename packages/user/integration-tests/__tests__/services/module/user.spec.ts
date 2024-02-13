@@ -128,13 +128,7 @@ describe("UserModuleService - User", () => {
     })
 
     it("should throw an error when an user with the given id does not exist", async () => {
-      let error
-
-      try {
-        await service.retrieve("does-not-exist")
-      } catch (e) {
-        error = e
-      }
+      const error = await service.retrieve("does-not-exist").catch((e) => e)
 
       expect(error.message).toEqual(
         "User with id: does-not-exist was not found"
@@ -142,13 +136,9 @@ describe("UserModuleService - User", () => {
     })
 
     it("should throw an error when a userId is not provided", async () => {
-      let error
-
-      try {
-        await service.retrieve(undefined as unknown as string)
-      } catch (e) {
-        error = e
-      }
+      const error = await service
+        .retrieve(undefined as unknown as string)
+        .catch((e) => e)
 
       expect(error.message).toEqual("user - id must be defined")
     })
@@ -194,17 +184,13 @@ describe("UserModuleService - User", () => {
 
   describe("update", () => {
     it("should throw an error when a id does not exist", async () => {
-      let error
-
-      try {
-        await service.update([
+      const error = await service
+        .update([
           {
             id: "does-not-exist",
           },
         ])
-      } catch (e) {
-        error = e
-      }
+        .catch((e) => e)
 
       expect(error.message).toEqual('User with id "does-not-exist" not found')
     })

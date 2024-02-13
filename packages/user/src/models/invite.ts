@@ -25,6 +25,14 @@ const inviteEmailIndexStatement = createPsqlIndexStatementHelper({
   unique: true,
 })
 
+const inviteTokenIndexName = "IDX_invite_token"
+const inviteTokenIndexStatement = createPsqlIndexStatementHelper({
+  name: inviteTokenIndexName,
+  tableName: "invite",
+  columns: "token",
+  where: "deleted_at IS NULL",
+})
+
 type OptionalFields =
   | "metadata"
   | "accepted"
@@ -47,6 +55,10 @@ export default class Invite {
   @Property({ columnType: "boolean" })
   accepted: boolean = false
 
+  @Index({
+    name: inviteTokenIndexName,
+    expression: inviteTokenIndexStatement,
+  })
   @Property({ columnType: "text" })
   token: string
 
