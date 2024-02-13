@@ -346,7 +346,7 @@ const updateProduct = createStep(
         select: ["title", "description", "images"],
       }
     )
-    const product = productService.update(id, updateData)
+    const product = await productService.update(id, updateData)
 
     return new StepResponse(product, {
       id,
