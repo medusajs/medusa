@@ -4,9 +4,9 @@ import {
   TransactionCheckpoint,
   TransactionStep,
 } from "@medusajs/orchestration"
+import { ModulesSdkTypes } from "@medusajs/types"
 import { TransactionState } from "@medusajs/utils"
 import { WorkflowOrchestratorService } from "@services"
-import { ModulesSdkTypes } from "@medusajs/types"
 
 // eslint-disable-next-line max-len
 export class InMemoryDistributedTransactionStorage extends DistributedTransactionStorage {
@@ -55,6 +55,22 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
     ])
   }
 
+  private stringifyWithSymbol(key, value) {
+    if (key === "__type" && typeof value === "symbol") {
+      return Symbol.keyFor(value)
+    }
+
+    return value
+  }
+
+  private jsonWithSymbol(key, value) {
+    if (key === "__type" && typeof value === "string") {
+      return Symbol.for(value)
+    }
+
+    return value
+  }
+
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
     return this.storage.get(key)
   }
@@ -89,10 +105,13 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
       })
     }
 
+    const stringifiedData = JSON.stringify(data, this.stringifyWithSymbol)
+    const parsedData = JSON.parse(stringifiedData)
+
     if (hasFinished && !retentionTime) {
-      await this.deleteFromDb(data)
+      await this.deleteFromDb(parsedData)
     } else {
-      await this.saveToDb(data)
+      await this.saveToDb(parsedData)
     }
 
     if (hasFinished) {
