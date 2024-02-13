@@ -9,9 +9,11 @@ export default async (req: MedusaRequest, res: MedusaResponse) => {
     ModuleRegistrationName.WORKFLOW_ENGINE
   )
 
-  const { id: workflow_id, transaction_id, step_id } = req.params
+  const { id: workflow_id } = req.params
 
   const body = req.validatedBody as AdminPostWorkflowsAsyncResponseReq
+
+  const { transaction_id, step_id } = body
 
   const compensateInput = body.compensate_input
   const stepResponse = isDefined(body.response)

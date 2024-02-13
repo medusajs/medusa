@@ -1,20 +1,19 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { TransactionHandlerType, isDefined } from "@medusajs/utils"
 import { IWorkflowEngineService, StepResponse } from "@medusajs/workflows-sdk"
-import {
-  MedusaRequest,
-  MedusaResponse,
-} from "../../../../../../../types/routing"
-import { AdminPostWorkflowsAsyncResponseReq } from "../../../../validators"
+import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
+import { AdminPostWorkflowsAsyncResponseReq } from "../../../validators"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const workflowEngineService: IWorkflowEngineService = req.scope.resolve(
     ModuleRegistrationName.WORKFLOW_ENGINE
   )
 
-  const { workflow_id, transaction_id, step_id } = req.params
+  const { workflow_id } = req.params
 
   const body = req.validatedBody as AdminPostWorkflowsAsyncResponseReq
+
+  const { transaction_id, step_id } = body
 
   const compensateInput = body.compensate_input
   const stepResponse = isDefined(body.response)
@@ -22,7 +21,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     : undefined
   const stepAction = body.action || TransactionHandlerType.INVOKE
 
-  await workflowEngineService.setStepSuccess({
+  await workflowEngineService.setStepFailure({
     idempotencyKey: {
       action: stepAction,
       transactionId: transaction_id,

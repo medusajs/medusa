@@ -46,12 +46,13 @@ export const adminWorkflowsExecutionsMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/workflows-executions/:id/:transaction_id/:step_id/success",
+
+    matcher: "/admin/workflows-executions/:id/steps/success",
     middlewares: [transformBody(AdminPostWorkflowsAsyncResponseReq)],
   },
   {
     method: ["POST"],
-    matcher: "/admin/workflows-executions/:id/:transaction_id/:step_id/failure",
+    matcher: "/admin/workflows-executions/:id/steps/failure",
     middlewares: [transformBody(AdminPostWorkflowsAsyncResponseReq)],
   },
 ]

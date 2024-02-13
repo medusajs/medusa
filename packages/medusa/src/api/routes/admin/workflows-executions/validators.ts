@@ -35,6 +35,12 @@ export class AdminPostWorkflowsRunReq {
 }
 
 export class AdminPostWorkflowsAsyncResponseReq {
+  @IsString()
+  transaction_id: string
+
+  @IsString()
+  step_id: string
+
   @IsOptional()
   response?: unknown
 

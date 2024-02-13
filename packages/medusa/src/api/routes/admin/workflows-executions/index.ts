@@ -60,13 +60,13 @@ export default (app) => {
   )
 
   route.post(
-    "/:id/:transaction_id/:step_id/success",
+    "/:id/steps/success",
     transformBody(AdminPostWorkflowsAsyncResponseReq),
     middlewares.wrap(require("./set-step-success").default)
   )
 
   route.post(
-    "/:id/:transaction_id/:step_id/failure",
+    "/:id/steps/failure",
     transformBody(AdminPostWorkflowsAsyncResponseReq),
     middlewares.wrap(require("./set-step-failure").default)
   )

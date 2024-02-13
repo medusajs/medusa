@@ -98,6 +98,22 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
     config: FindConfig<WorkflowOrchestratorTypes.WorkflowExecutionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<WorkflowOrchestratorTypes.WorkflowExecutionDTO[]> {
+    if (filters.transaction_id) {
+      if (Array.isArray(filters.transaction_id)) {
+        filters.transaction_id = {
+          $in: filters.transaction_id,
+        }
+      }
+    }
+
+    if (filters.workflow_id) {
+      if (Array.isArray(filters.workflow_id)) {
+        filters.workflow_id = {
+          $in: filters.workflow_id,
+        }
+      }
+    }
+
     const wfExecutions = await this.workflowExecutionService_.list(
       filters,
       config,
@@ -117,6 +133,22 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
     config: FindConfig<WorkflowOrchestratorTypes.WorkflowExecutionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[WorkflowOrchestratorTypes.WorkflowExecutionDTO[], number]> {
+    if (filters.transaction_id) {
+      if (Array.isArray(filters.transaction_id)) {
+        filters.transaction_id = {
+          $in: filters.transaction_id,
+        }
+      }
+    }
+
+    if (filters.workflow_id) {
+      if (Array.isArray(filters.workflow_id)) {
+        filters.workflow_id = {
+          $in: filters.workflow_id,
+        }
+      }
+    }
+
     const [wfExecutions, count] =
       await this.workflowExecutionService_.listAndCount(
         filters,
