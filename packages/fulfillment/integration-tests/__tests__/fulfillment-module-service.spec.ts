@@ -296,19 +296,122 @@ describe("fulfillment module service", function () {
       )
     })
 
-    describe("should fail", () => {
-      it(`on duplicated fulfillment set name`, async function () {
-        const data: CreateFulfillmentSetDTO = {
+    it(`should fail on duplicated fulfillment set name`, async function () {
+      const data: CreateFulfillmentSetDTO = {
+        name: "test",
+        type: "test-type",
+      }
+
+      await service.create(data)
+      const err = await service.create(data).catch((e) => e)
+
+      expect(err).toBeDefined()
+      expect(err.constraint).toBe("IDX_fulfillment_set_name_unique")
+    })
+  })
+
+  describe("on create service zones", () => {
+    it("should create a new service zone", async function () {
+      const data = {
+        name: "test",
+        geo_zones: [
+          {
+            type: GeoZoneType.COUNTRY,
+            country_code: "fr",
+          },
+        ],
+      }
+
+      const serviceZone = await service.createServiceZones(data)
+
+      expect(serviceZone).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: data.name,
+          geo_zones: expect.arrayContaining([
+            expect.objectContaining({
+              type: data.geo_zones[0].type,
+              country_code: data.geo_zones[0].country_code,
+            }),
+          ]),
+        })
+      )
+    })
+
+    it("should create a collection of service zones", async function () {
+      const data = [
+        {
           name: "test",
-          type: "test-type",
-        }
+          geo_zones: [
+            {
+              type: GeoZoneType.COUNTRY,
+              country_code: "fr",
+            },
+          ],
+        },
+        {
+          name: "test2",
+          geo_zones: [
+            {
+              type: GeoZoneType.COUNTRY,
+              country_code: "fr",
+            },
+          ],
+        },
+        {
+          name: "test3",
+          geo_zones: [
+            {
+              type: GeoZoneType.COUNTRY,
+              country_code: "uk",
+            },
+          ],
+        },
+      ]
 
-        await service.create(data)
-        const err = await service.create(data).catch((e) => e)
+      const serviceZones = await service.createServiceZones(data)
 
-        expect(err).toBeDefined()
-        expect(err.constraint).toBe("IDX_fulfillment_set_name_unique")
-      })
+      expect(serviceZones).toHaveLength(3)
+
+      let i = 0
+      for (const data_ of data) {
+        expect(serviceZones[i]).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            name: data_.name,
+            geo_zones: expect.arrayContaining([
+              expect.objectContaining({
+                type: data_.geo_zones[0].type,
+                country_code: data_.geo_zones[0].country_code,
+              }),
+            ]),
+          })
+        )
+        ++i
+      }
+
+      // expect the first and second service zone to have the same geo zone
+      expect(serviceZones[0].geo_zones[0].id).toEqual(
+        serviceZones[1].geo_zones[0].id
+      )
+    })
+
+    it("should fail on duplicated service zone name", async function () {
+      const data = {
+        name: "test",
+        geo_zones: [
+          {
+            type: GeoZoneType.COUNTRY,
+            country_code: "fr",
+          },
+        ],
+      }
+
+      await service.createServiceZones(data)
+      const err = await service.createServiceZones(data).catch((e) => e)
+
+      expect(err).toBeDefined()
+      expect(err.constraint).toBe("IDX_service_zone_name_unique")
     })
   })
 })

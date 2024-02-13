@@ -386,9 +386,16 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(createdFulfillmentSets, {
-      populate: true,
-    })
+    const serializedFulfillmentSets = await this.baseRepository_.serialize(
+      createdFulfillmentSets,
+      {
+        populate: true,
+      }
+    )
+
+    return Array.isArray(data)
+      ? serializedFulfillmentSets
+      : serializedFulfillmentSets[0]
   }
 
   createServiceZones(
@@ -409,7 +416,92 @@ export default class FulfillmentModuleService<
   ): Promise<
     FulfillmentTypes.ServiceZoneDTO | FulfillmentTypes.ServiceZoneDTO[]
   > {
-    return []
+    const data_ = Array.isArray(data) ? data : [data]
+
+    const geoZonesToCreate: FulfillmentTypes.CreateGeoZoneDTO[] = []
+    const serviceZoneGeoZonesMap = new Map<
+      string,
+      Map<string, FulfillmentTypes.CreateGeoZoneDTO | { id: string }>
+    >()
+
+    /**
+     * The reasoning behind the following code that we want to deduplicate potential
+     * duplicated in order to be able to reuse the same one even though the
+     * user provides the same geo zone in multiple service zones.
+     */
+
+    data_.forEach((serviceZone) => {
+      if ("geo_zones" in serviceZone && serviceZone.geo_zones) {
+        const geo_zones = serviceZone.geo_zones
+        delete serviceZone.geo_zones
+
+        const geoZoneTuple: [
+          string,
+          FulfillmentTypes.CreateGeoZoneDTO | { id: string }
+        ][] = geo_zones.map((geoZone) => {
+          if (!("id" in geoZone)) {
+            geoZonesToCreate.push(geoZone)
+          }
+
+          const geoZoneIdentifier =
+            FulfillmentModuleService.getGeoZoneIdentifier(geoZone)
+
+          return [geoZoneIdentifier, geoZone]
+        })
+
+        serviceZoneGeoZonesMap.set(serviceZone.name, new Map(geoZoneTuple))
+      }
+    })
+
+    if (geoZonesToCreate.length) {
+      // Deduplicate geo zones to create
+      const geoZoneToCreateMap = new Map(
+        geoZonesToCreate.map((geoZone) => [
+          FulfillmentModuleService.getGeoZoneIdentifier(geoZone),
+          geoZone,
+        ])
+      )
+
+      const createdGeoZones = await this.geoZoneService_.create(
+        [...geoZoneToCreateMap.values()],
+        sharedContext
+      )
+
+      for (const [serviceZoneName, geoZoneMap] of serviceZoneGeoZonesMap) {
+        for (const createdGeoZone of createdGeoZones) {
+          const geoZoneIdentifier =
+            FulfillmentModuleService.getGeoZoneIdentifier(createdGeoZone, {
+              preventIdUsage: true,
+            })
+
+          if (geoZoneMap.has(geoZoneIdentifier)) {
+            geoZoneMap.set(geoZoneIdentifier, createdGeoZone)
+          }
+        }
+
+        for (const serviceZone of data_) {
+          if (serviceZone.name === serviceZoneName) {
+            serviceZone.geo_zones = [...geoZoneMap.values()]
+          }
+        }
+      }
+    }
+
+    const createdServiceZones = await this.serviceZoneService_.create(
+      data_,
+      sharedContext
+    )
+
+    const serializedServiceZones = await this.baseRepository_.serialize(
+      createdServiceZones,
+      {
+        populate: true,
+      }
+    )
+
+    return Array.isArray(data)
+      ? serializedServiceZones
+      : serializedServiceZones[0]
   }
 
   createShippingOptions(
