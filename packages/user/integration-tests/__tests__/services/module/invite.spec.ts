@@ -130,13 +130,9 @@ describe("UserModuleService - Invite", () => {
     })
 
     it("should throw an error when an invite with the given id does not exist", async () => {
-      let error
-
-      try {
-        await service.retrieveInvite("does-not-exist")
-      } catch (e) {
-        error = e
-      }
+      const error = await service
+        .retrieveInvite("does-not-exist")
+        .catch((e) => e)
 
       expect(error.message).toEqual(
         "Invite with id: does-not-exist was not found"
@@ -144,13 +140,9 @@ describe("UserModuleService - Invite", () => {
     })
 
     it("should throw an error when inviteId is not provided", async () => {
-      let error
-
-      try {
-        await service.retrieveInvite(undefined as unknown as string)
-      } catch (e) {
-        error = e
-      }
+      const error = await service
+        .retrieveInvite(undefined as unknown as string)
+        .catch((e) => e)
 
       expect(error.message).toEqual("invite - id must be defined")
     })
@@ -184,17 +176,13 @@ describe("UserModuleService - Invite", () => {
 
   describe("updateInvite", () => {
     it("should throw an error when an id does not exist", async () => {
-      let error
-
-      try {
-        await service.updateInvites([
+      const error = await service
+        .updateInvites([
           {
             id: "does-not-exist",
           },
         ])
-      } catch (e) {
-        error = e
-      }
+        .catch((e) => e)
 
       expect(error.message).toEqual('Invite with id "does-not-exist" not found')
     })

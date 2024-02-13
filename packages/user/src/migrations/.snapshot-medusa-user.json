@@ -118,6 +118,16 @@
           "expression": "CREATE UNIQUE INDEX IF NOT EXISTS IDX_invite_email ON invite (email) WHERE deleted_at IS NULL"
         },
         {
+          "keyName": "IDX_invite_token",
+          "columnNames": [
+            "token"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS IDX_invite_token ON invite (token) WHERE deleted_at IS NULL"
+        },
+        {
           "keyName": "invite_pkey",
           "columnNames": [
             "id"
