@@ -4,7 +4,6 @@ module.exports = {
     "^@services": "<rootDir>/src/services",
     "^@repositories": "<rootDir>/src/repositories",
     "^@types": "<rootDir>/src/types",
-    "^@migrations": "<rootDir>/src/migrations",
   },
   transform: {
     "^.+\\.[jt]s?$": [
