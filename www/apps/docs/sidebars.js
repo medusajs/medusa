@@ -2244,6 +2244,11 @@ module.exports = {
           id: "troubleshooting/custom-hooks-error",
           label: "Custom Hooks Error",
         },
+        {
+          type: "doc",
+          id: "troubleshooting/admin-webpack-build-error",
+          label: "Webpack Build Error",
+        },
       ],
     },
     {
