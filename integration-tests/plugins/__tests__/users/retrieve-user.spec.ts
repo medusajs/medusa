@@ -50,9 +50,6 @@ describe("GET /admin/users/:id", () => {
       email: "member@test.com",
     })
 
-    console.warn(userModuleService)
-    console.warn(a)
-
     const api = useApi()! as AxiosInstance
 
     const response = await api.get(`/admin/users/${a.id}`, adminHeaders)

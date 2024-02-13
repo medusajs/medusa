@@ -13,7 +13,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     variables: {
       id: req.params.id,
     },
-    fields: req.listConfig.select as string[],
+    fields: req.retrieveConfig.select as string[],
   })
 
   const [user] = await remoteQuery(query)
