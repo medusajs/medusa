@@ -364,24 +364,6 @@ export interface CreateCustomerGroupDTO {
 }
 
 /**
- * @privateRemarks
- *
- * This seems to be the same as {@link CustomerGroupUpdatableFields} but with
- * a typo?
- */
-export interface CustomerGroupUpdatableFileds {
-  /**
-   * {summary}
-   */
-  name?: string
-
-  /**
-   * Holds custom data in key-value pairs.
-   */
-  metadata?: Record<string, unknown> | null
-}
-
-/**
  * The attributes to update in the customer group.
  */
 export interface UpdateCustomerGroupDTO {

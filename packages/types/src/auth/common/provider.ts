@@ -21,7 +21,7 @@ export type AuthenticationResponse = {
   error?: string
 
   /**
-   * {summary}
+   * Redirect location. Location takes precedence over success.
    */
   location?: string
 }
@@ -29,16 +29,16 @@ export type AuthenticationResponse = {
 /**
  * @interface
  *
- * {summary}
+ * Provider configuration for the Medusa auth module.
  */
 export type AuthModuleProviderConfig = {
   /**
-   * {summary}
+   * Provider name
    */
   name: string
 
   /**
-   * Construct a type with a set of properties K of type T
+   * Scope configurations for the provider
    */
   scopes: Record<string, AuthProviderScope>
 }
@@ -46,43 +46,43 @@ export type AuthModuleProviderConfig = {
 /**
  * @interface
  *
- * {summary}
+ * Configuration of a single provider scope
  */
 export type AuthProviderScope = Record<string, unknown>
 
 /**
  * @interface
  *
- * {summary}
+ * Input for authentication and callback validation methods.
  */
 export type AuthenticationInput = {
   /**
-   * {summary}
+   * url of incoming authentication request.
    */
   url: string
 
   /**
-   * Construct a type with a set of properties K of type T
+   * Headers of incoming authentication request.
    */
   headers: Record<string, string>
 
   /**
-   * Construct a type with a set of properties K of type T
+   *  Query params of incoming authentication request.
    */
   query: Record<string, string>
 
   /**
-   * Construct a type with a set of properties K of type T
+   * Body of incoming authentication request.
    */
   body: Record<string, string>
 
   /**
-   * {summary}
+   * Scope for authentication request.
    */
   authScope: string
 
   /**
-   * {summary}
+   * Protocol of incoming authentication request (For example, `https`).
    */
   protocol: string
 }

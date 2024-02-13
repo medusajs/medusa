@@ -17,7 +17,7 @@ export type AuthUserDTO = {
   provider: string
 
   /**
-   * The associated entity's ID.
+   * The associated providers entity's ID.
    */
   entity_id: string
 
