@@ -1,3 +1,4 @@
+/*
 import { Context, FulfillmentTypes } from "@medusajs/types"
 import { DALUtils, promiseAll } from "@medusajs/utils"
 import { FulfillmentSet, ServiceZone } from "@models"
@@ -55,3 +56,4 @@ export class FulfillmentSetRepository extends DALUtils.mikroOrmBaseRepositoryFac
     return flfillmentSetsToUpdate
   }
 }
+*/

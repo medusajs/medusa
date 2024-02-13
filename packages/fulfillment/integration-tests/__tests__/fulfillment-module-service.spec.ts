@@ -678,7 +678,7 @@ describe("fulfillment module service", function () {
               geo_zones: [
                 {
                   type: GeoZoneType.COUNTRY,
-                  country_code: index % 2 === 0 ? "us" : "fr",
+                  country_code: "test",
                 },
               ],
             },
@@ -765,7 +765,7 @@ describe("fulfillment module service", function () {
               geo_zones: [
                 {
                   type: GeoZoneType.COUNTRY,
-                  country_code: index % 2 === 0 ? "us" : "fr",
+                  country_code: "test",
                 },
               ],
             },
@@ -805,6 +805,151 @@ describe("fulfillment module service", function () {
         )
         ++i
       }
+    })
+  })
+
+  describe("on update service zones", () => {
+    it("should update an existing service zone", async function () {
+      const createData = {
+        name: "service-zone-test",
+        geo_zones: [
+          {
+            type: GeoZoneType.COUNTRY,
+            country_code: "fr",
+          },
+        ],
+      }
+
+      const createdServiceZone = await service.createServiceZones(createData)
+
+      const updateData = {
+        id: createdServiceZone.id,
+        name: "updated-service-zone-test",
+        geo_zones: [
+          {
+            id: createdServiceZone.geo_zones[0].id,
+            type: GeoZoneType.COUNTRY,
+            country_code: "us",
+          },
+        ],
+      }
+
+      const updatedServiceZone = await service.updateServiceZones(updateData)
+
+      expect(updatedServiceZone).toEqual(
+        expect.objectContaining({
+          id: updateData.id,
+          name: updateData.name,
+          geo_zones: expect.arrayContaining([
+            expect.objectContaining({
+              id: updateData.geo_zones[0].id,
+              type: updateData.geo_zones[0].type,
+              country_code: updateData.geo_zones[0].country_code,
+            }),
+          ]),
+        })
+      )
+    })
+
+    it("should update a collection of service zones", async function () {
+      const createData = [
+        {
+          name: "service-zone-test",
+          geo_zones: [
+            {
+              type: GeoZoneType.COUNTRY,
+              country_code: "fr",
+            },
+          ],
+        },
+        {
+          name: "service-zone-test2",
+          geo_zones: [
+            {
+              type: GeoZoneType.COUNTRY,
+              country_code: "us",
+            },
+          ],
+        },
+      ]
+
+      const createdServiceZones = await service.createServiceZones(createData)
+
+      const updateData = createdServiceZones.map((serviceZone, index) => ({
+        id: serviceZone.id,
+        name: `updated-service-zone-test${index + 1}`,
+        geo_zones: [
+          {
+            id: serviceZone.geo_zones[0].id,
+            type: GeoZoneType.COUNTRY,
+            country_code: index % 2 === 0 ? "us" : "fr",
+          },
+        ],
+      }))
+
+      const updatedServiceZones = await service.updateServiceZones(updateData)
+
+      expect(updatedServiceZones).toHaveLength(2)
+
+      let i = 0
+      for (const data_ of updateData) {
+        expect(updatedServiceZones[i]).toEqual(
+          expect.objectContaining({
+            id: data_.id,
+            name: data_.name,
+            geo_zones: expect.arrayContaining([
+              expect.objectContaining({
+                id: data_.geo_zones[0].id,
+                type: data_.geo_zones[0].type,
+                country_code: data_.geo_zones[0].country_code,
+              }),
+            ]),
+          })
+        )
+        ++i
+      }
+    })
+
+    it("should fail on duplicated service zone name", async function () {
+      const createData = [
+        {
+          name: "service-zone-test",
+          geo_zones: [
+            {
+              type: GeoZoneType.COUNTRY,
+              country_code: "fr",
+            },
+          ],
+        },
+        {
+          name: "service-zone-test2",
+          geo_zones: [
+            {
+              type: GeoZoneType.COUNTRY,
+              country_code: "us",
+            },
+          ],
+        },
+      ]
+
+      const createdServiceZones = await service.createServiceZones(createData)
+
+      const updateData = {
+        id: createdServiceZones[1].id,
+        name: "service-zone-test", // This is the name of the first service zone
+        geo_zones: [
+          {
+            id: createdServiceZones[1].geo_zones[0].id,
+            type: GeoZoneType.COUNTRY,
+            country_code: "us",
+          },
+        ],
+      }
+
+      const err = await service.updateServiceZones(updateData).catch((e) => e)
+
+      expect(err).toBeDefined()
+      expect(err.constraint).toBe("IDX_service_zone_name_unique")
     })
   })
 })
