@@ -14,6 +14,7 @@ export declare type OpenApiOperation = Partial<OpenAPIV3.OperationObject> & {
 export declare type CommonCliOptions = {
   type: "all" | "oas" | "docs"
   generateExamples?: boolean
+  tag?: string
 }
 
 export declare type OpenApiSchema = OpenAPIV3.SchemaObject & {
