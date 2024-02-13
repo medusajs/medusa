@@ -18,7 +18,7 @@ import {
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { FulfillmentSet, GeoZone, ServiceZone, ShippingOption } from "@models"
 
-const generateMethodForModels = [ServiceZone, ShippingOption]
+const generateMethodForModels = [ServiceZone, ShippingOption, GeoZone]
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -39,6 +39,7 @@ export default class FulfillmentModuleService<
       FulfillmentSet: { dto: FulfillmentTypes.FulfillmentSetDTO }
       ServiceZone: { dto: FulfillmentTypes.ServiceZoneDTO }
       ShippingOption: { dto: FulfillmentTypes.ShippingOptionDTO }
+      GeoZone: { dto: FulfillmentTypes.GeoZoneDTO }
     }
   >(FulfillmentSet, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IFulfillmentModuleService
@@ -554,6 +555,35 @@ export default class FulfillmentModuleService<
     return []
   }
 
+  createGeoZones(
+    data: FulfillmentTypes.CreateGeoZoneDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.GeoZoneDTO[]>
+  createGeoZones(
+    data: FulfillmentTypes.CreateGeoZoneDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.GeoZoneDTO>
+
+  @InjectManager("baseRepository_")
+  async createGeoZones(
+    data:
+      | FulfillmentTypes.CreateGeoZoneDTO
+      | FulfillmentTypes.CreateGeoZoneDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.GeoZoneDTO | FulfillmentTypes.GeoZoneDTO[]> {
+    const createdGeoZones = await this.geoZoneService_.create(
+      data,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<FulfillmentTypes.GeoZoneDTO[]>(
+      createdGeoZones,
+      {
+        populate: true,
+      }
+    )
+  }
+
   update(
     data: FulfillmentTypes.UpdateFulfillmentSetDTO[],
     sharedContext?: Context
@@ -874,7 +904,7 @@ export default class FulfillmentModuleService<
         sharedContext
       )
 
-      for (const [serviceZoneId, geoZoneMap] of serviceZoneGeoZonesMap) {
+      for (const [, geoZoneMap] of serviceZoneGeoZonesMap) {
         for (const createdGeoZone of createdGeoZones) {
           const geoZoneIdentifier =
             FulfillmentModuleService.getGeoZoneIdentifier(createdGeoZone, {
@@ -923,5 +953,35 @@ export default class FulfillmentModuleService<
     FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO
   > {
     return []
+  }
+
+  updateGeoZones(
+    data: FulfillmentTypes.UpdateGeoZoneDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.GeoZoneDTO[]>
+  updateGeoZones(
+    data: FulfillmentTypes.UpdateGeoZoneDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.GeoZoneDTO>
+
+  @InjectManager("baseRepository_")
+  async updateGeoZones(
+    data:
+      | FulfillmentTypes.UpdateGeoZoneDTO
+      | FulfillmentTypes.UpdateGeoZoneDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.GeoZoneDTO | FulfillmentTypes.GeoZoneDTO[]> {
+    const updatedGeoZones = await this.geoZoneService_.update(
+      data,
+      sharedContext
+    )
+
+    const serialized = await this.baseRepository_.serialize<
+      FulfillmentTypes.GeoZoneDTO[]
+    >(updatedGeoZones, {
+      populate: true,
+    })
+
+    return Array.isArray(data) ? serialized : serialized[0]
   }
 }

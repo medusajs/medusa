@@ -1,9 +1,11 @@
 import { IModuleService } from "../modules-sdk"
 import {
   FilterableFulfillmentSetProps,
+  FilterableGeoZoneProps,
   FilterableServiceZoneProps,
   FilterableShippingOptionProps,
   FulfillmentSetDTO,
+  GeoZoneDTO,
   ServiceZoneDTO,
   ShippingOptionDTO,
 } from "./common"
@@ -12,9 +14,11 @@ import { Context } from "../shared-context"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import {
   CreateFulfillmentSetDTO,
+  CreateGeoZoneDTO,
   CreateServiceZoneDTO,
   CreateShippingOptionDTO,
   UpdateFulfillmentSetDTO,
+  UpdateGeoZoneDTO,
   UpdateServiceZoneDTO,
   UpdateShippingOptionDTO,
 } from "./mutations"
@@ -63,6 +67,20 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<ShippingOptionDTO>
 
   /**
+   * Create a new geo zone
+   * @param data
+   * @param sharedContext
+   */
+  createGeoZones(
+    data: CreateGeoZoneDTO[],
+    sharedContext?: Context
+  ): Promise<GeoZoneDTO[]>
+  createGeoZones(
+    data: CreateGeoZoneDTO,
+    sharedContext?: Context
+  ): Promise<GeoZoneDTO>
+
+  /**
    * Update a fulfillment set
    * @param data
    * @param sharedContext
@@ -105,6 +123,20 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<ShippingOptionDTO>
 
   /**
+   * Update a geo zone
+   * @param data
+   * @param sharedContext
+   */
+  updateGeoZones(
+    data: UpdateGeoZoneDTO[],
+    sharedContext?: Context
+  ): Promise<GeoZoneDTO[]>
+  updateGeoZones(
+    data: UpdateGeoZoneDTO,
+    sharedContext?: Context
+  ): Promise<GeoZoneDTO>
+
+  /**
    * Delete a fulfillment set
    * @param ids
    * @param sharedContext
@@ -127,6 +159,14 @@ export interface IFulfillmentModuleService extends IModuleService {
    */
   deleteShippingOptions(ids: string[], sharedContext?: Context): Promise<void>
   deleteShippingOptions(id: string, sharedContext?: Context): Promise<void>
+
+  /**
+   * Delete a geo zone
+   * @param ids
+   * @param sharedContext
+   */
+  deleteGeoZones(ids: string[], sharedContext?: Context): Promise<void>
+  deleteGeoZones(id: string, sharedContext?: Context): Promise<void>
 
   /**
    * Retrieve a fulfillment set
@@ -165,6 +205,18 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<ShippingOptionDTO>
 
   /**
+   * Retrieve a geo zone
+   * @param id
+   * @param config
+   * @param sharedContext
+   */
+  retrieveGeoZone(
+    id: string,
+    config?: FindConfig<GeoZoneDTO>,
+    sharedContext?: Context
+  ): Promise<GeoZoneDTO>
+
+  /**
    * List fulfillment sets
    * @param filters
    * @param config
@@ -199,6 +251,18 @@ export interface IFulfillmentModuleService extends IModuleService {
     config?: FindConfig<ShippingOptionDTO>,
     sharedContext?: Context
   ): Promise<ShippingOptionDTO[]>
+
+  /**
+   * List geo zones
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listGeoZones(
+    filters?: FilterableGeoZoneProps,
+    config?: FindConfig<GeoZoneDTO>,
+    sharedContext?: Context
+  ): Promise<GeoZoneDTO[]>
 
   /**
    * List and count fulfillment sets
@@ -237,6 +301,18 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<[ShippingOptionDTO[], number]>
 
   /**
+   * List and count geo zones
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listAndCountGeoZones(
+    filters?: FilterableGeoZoneProps,
+    config?: FindConfig<GeoZoneDTO>,
+    sharedContext?: Context
+  ): Promise<[GeoZoneDTO[], number]>
+
+  /**
    * Soft delete fulfillment sets
    * @param fulfillmentIds
    * @param config
@@ -268,6 +344,18 @@ export interface IFulfillmentModuleService extends IModuleService {
    */
   softDeleteShippingOptions<TReturnableLinkableKeys extends string = string>(
     shippingOptionsIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * Soft delete geo zones
+   * @param geoZoneIds
+   * @param config
+   * @param sharedContext
+   */
+  softDeleteGeoZones<TReturnableLinkableKeys extends string = string>(
+    geoZoneIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>

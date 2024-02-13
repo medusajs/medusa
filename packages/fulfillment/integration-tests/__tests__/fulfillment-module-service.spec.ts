@@ -952,4 +952,116 @@ describe("fulfillment module service", function () {
       expect(err.constraint).toBe("IDX_service_zone_name_unique")
     })
   })
+
+  describe("on create geo zones", () => {
+    it("should create a new geo zone", async function () {
+      const data = {
+        type: GeoZoneType.COUNTRY,
+        country_code: "fr",
+      }
+
+      const geoZone = await service.createGeoZones(data)
+
+      expect(geoZone).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          type: data.type,
+          country_code: data.country_code,
+        })
+      )
+    })
+
+    it("should create a collection of geo zones", async function () {
+      const data = [
+        {
+          type: GeoZoneType.COUNTRY,
+          country_code: "fr",
+        },
+        {
+          type: GeoZoneType.COUNTRY,
+          country_code: "us",
+        },
+      ]
+
+      const geoZones = await service.createGeoZones(data)
+
+      expect(geoZones).toHaveLength(2)
+
+      let i = 0
+      for (const data_ of data) {
+        expect(geoZones[i]).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            type: data_.type,
+            country_code: data_.country_code,
+          })
+        )
+        ++i
+      }
+    })
+  })
+
+  describe("on update geo zones", () => {
+    it("should update an existing geo zone", async function () {
+      const createData = {
+        type: GeoZoneType.COUNTRY,
+        country_code: "fr",
+      }
+
+      const createdGeoZone = await service.createGeoZones(createData)
+
+      const updateData = {
+        id: createdGeoZone.id,
+        type: GeoZoneType.COUNTRY,
+        country_code: "us",
+      }
+
+      const updatedGeoZone = await service.updateGeoZones(updateData)
+
+      expect(updatedGeoZone).toEqual(
+        expect.objectContaining({
+          id: updateData.id,
+          type: updateData.type,
+          country_code: updateData.country_code,
+        })
+      )
+    })
+
+    it("should update a collection of geo zones", async function () {
+      const createData = [
+        {
+          type: GeoZoneType.COUNTRY,
+          country_code: "fr",
+        },
+        {
+          type: GeoZoneType.COUNTRY,
+          country_code: "us",
+        },
+      ]
+
+      const createdGeoZones = await service.createGeoZones(createData)
+
+      const updateData = createdGeoZones.map((geoZone, index) => ({
+        id: geoZone.id,
+        type: GeoZoneType.COUNTRY,
+        country_code: index % 2 === 0 ? "us" : "fr",
+      }))
+
+      const updatedGeoZones = await service.updateGeoZones(updateData)
+
+      expect(updatedGeoZones).toHaveLength(2)
+
+      let i = 0
+      for (const data_ of updateData) {
+        expect(updatedGeoZones[i]).toEqual(
+          expect.objectContaining({
+            id: data_.id,
+            type: data_.type,
+            country_code: data_.country_code,
+          })
+        )
+        ++i
+      }
+    })
+  })
 })
