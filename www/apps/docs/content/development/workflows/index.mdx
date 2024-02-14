@@ -393,7 +393,7 @@ const myWorkflow = createWorkflow<WorkflowInput, WorkflowOutput>
 - Since the constructor function only defines how the workflow works, you can’t directly manipulate data within the function. To do that, you must use the `transform` function:
 
 ```ts
-1// Don't
+// Don't
 const myWorkflow = createWorkflow<
   WorkflowInput, 
   WorkflowOutput
