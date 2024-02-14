@@ -30,7 +30,7 @@ export interface InviteDTO {
   metadata: Record<string, unknown> | null
   created_at: Date
   updated_at: Date
-  deleted_at?: Date | null
+  deleted_at: Date | null
 }
 
 export interface FilterableInviteProps
