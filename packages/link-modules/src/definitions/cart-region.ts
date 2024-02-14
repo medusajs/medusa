@@ -11,10 +11,7 @@ export const CartRegion: ModuleJoinerConfig = {
   },
   alias: [
     {
-      name: "cart_region",
-    },
-    {
-      name: "cart_regions",
+      name: ["cart_region", "cart_regions"],
     },
   ],
   primaryKeys: ["id", "cart_id", "region_id"],

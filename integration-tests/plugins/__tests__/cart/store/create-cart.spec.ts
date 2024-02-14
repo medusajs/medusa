@@ -35,6 +35,9 @@ describe("POST /store/carts", () => {
 
   beforeEach(async () => {
     await adminSeeder(dbConnection)
+
+    // @ts-ignore
+    await regionModuleService.createDefaultCountriesAndCurrencies()
   })
 
   afterEach(async () => {
@@ -69,8 +72,7 @@ describe("POST /store/carts", () => {
     )
   })
 
-  // TODO: Figure out why currencies are not created for the second test
-  it.skip("should use any region", async () => {
+  it("should use any region", async () => {
     await regionModuleService.create({
       name: "US",
       currency_code: "usd",
