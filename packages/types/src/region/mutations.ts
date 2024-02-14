@@ -1,11 +1,13 @@
 export interface CreateRegionDTO {
   name: string
   currency_code: string
+  countries?: string[]
 }
 
 export interface UpdateRegionDTO {
   id: string
   currency_code?: string
+  countries: string[]
   name?: string
 }
 
