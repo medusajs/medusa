@@ -6,6 +6,7 @@ import {
   PaymentProviderSessionResponse,
   PaymentSessionStatus,
   ProviderWebhookPayload,
+  WebhookActionData,
 } from "@medusajs/types"
 
 export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
@@ -124,9 +125,9 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
     context: PaymentProviderContext
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse>
 
-  abstract onWebhookReceived(
+  abstract getWebhookAction(
     data: ProviderWebhookPayload["data"]
-  ): Promise<void>
+  ): Promise<WebhookActionData>
 }
 
 export function isPaymentProviderError(obj: any): obj is PaymentProviderError {

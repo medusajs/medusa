@@ -3,6 +3,12 @@ import { CustomerDTO } from "../customer"
 import { AddressDTO } from "../address"
 import { ProviderWebhookPayload } from "./mutations"
 
+enum PaymentActions {
+  CAPTURED = "captured",
+  AUTHORIZED = "authorized",
+  FAILED = "failed",
+}
+
 /**
  * @interface
  *
@@ -89,6 +95,11 @@ export interface PaymentProviderError {
    * Any additional helpful details.
    */
   detail?: any
+}
+
+export interface WebhookActionData {
+  action: PaymentActions
+  data: Record<string, unknown>
 }
 
 export interface IPaymentProvider {
@@ -216,7 +227,11 @@ export interface IPaymentProvider {
   /**
    * The method is called when å webhook call for this particular provider is received.
    *
+   * The method is responsible for normalizing the received event and provide
+   *
    * @param data - object containing provider id and data from the provider
    */
-  onWebhookReceived(data: ProviderWebhookPayload["data"]): Promise<void>
+  getWebhookAction(
+    data: ProviderWebhookPayload["data"]
+  ): Promise<WebhookActionData>
 }

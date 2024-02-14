@@ -26,6 +26,7 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  PaymentActions,
 } from "@medusajs/utils"
 import {
   Capture,
@@ -300,6 +301,7 @@ export default class PaymentModuleService<
       sharedContext
     )
 
+    // this method needs to be idempotent
     if (session.authorized_at) {
       const payment = await this.paymentService_.retrieve(
         { session_id: session.id },
@@ -386,11 +388,9 @@ export default class PaymentModuleService<
       )
     }
 
+    // this method needs to be idempotent
     if (payment.captured_at) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `The payment: ${payment.id} is already fully captured.`
-      )
+      return this.retrievePayment(data.payment_id)
     }
 
     // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
@@ -512,8 +512,36 @@ export default class PaymentModuleService<
     return await this.retrievePayment(payment.id, {}, sharedContext)
   }
 
-  async onWebhookReceived(data: ProviderWebhookPayload): Promise<void> {
-    await this.paymentProviderService_.onWebhookReceived(data)
+  @InjectTransactionManager("baseRepository_")
+  async processEvent(
+    eventData: ProviderWebhookPayload,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<void> {
+    const { action, data } = await this.paymentProviderService_.processEvent(
+      eventData.provider,
+      eventData.data
+    )
+
+    switch (action) {
+      case PaymentActions.CAPTURED: {
+        const [payment] = await this.listPayments({
+          session_id: data.resource_id,
+        })
+
+        if (payment) {
+          await this.capturePayment(
+            { payment_id: payment.id, amount: payment.authorized_amount },
+            sharedContext
+          )
+        }
+      }
+      case PaymentActions.AUTHORIZED:
+        await this.authorizePaymentSession(
+          data.resource_id as string,
+          {},
+          sharedContext
+        )
+    }
   }
 
   async createProvidersOnLoad() {

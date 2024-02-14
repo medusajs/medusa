@@ -13,6 +13,7 @@ import {
   AbstractPaymentProvider,
   isPaymentProviderError,
   MedusaError,
+  PaymentActions,
 } from "@medusajs/utils"
 import { isDefined } from "medusa-core-utils"
 
@@ -318,39 +319,22 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     }
   }
 
-  /**
-   * Called when a webhook event is received.
-   *
-   * @param {object} data - webhook payload
-   */
-  async onWebhookReceived(data: StripeWebhookEventData): Promise<void> {
-    const event = this.constructWebhookEvent(data)
-    const paymentIntent = await this.stripe_.paymentIntents.retrieve(
-      (event.data.object as Stripe.PaymentIntent).id
-    )
+  getWebhookAction(webhookData) {
+    const { event } = webhookData
 
-    await handlePaymentHook({
-      event,
-      paymentIntent,
-      container: this.container_,
-    })
-  }
+    // const data = formatData(webhookData)
+    const data = webhookData.data // TODO
 
-  /**
-   * Constructs Stripe Webhook event
-   * @param {object} data - the data of the webhook request: req.body
-   * @param {object} signature - the Stripe signature on the event, that
-   *    ensures integrity of the webhook event
-   * @return {object} Stripe Webhook event
-   */
-  constructWebhookEvent(data: StripeWebhookEventData): Stripe.Event {
-    const signature = data.headers["stripe-signature"]
-
-    return this.stripe_.webhooks.constructEvent(
-      data.data,
-      signature,
-      this.config.webhook_secret
-    )
+    switch (event.type) {
+      case "payment_intent.succeeded":
+        return { action: PaymentActions.CAPTURED, data }
+      case "payment_intent.succeeded":
+        return { action: PaymentActions.AUTHORIZED, data }
+      case "payment_intent.payment_failed":
+        return { action: PaymentActions.FAILED, data }
+      default:
+        return { action: event, data }
+    }
   }
 
   protected buildError(

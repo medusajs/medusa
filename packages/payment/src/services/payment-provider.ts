@@ -22,6 +22,7 @@ import {
 } from "@medusajs/utils"
 
 import { PaymentProvider } from "@models"
+import { WebhookActionData } from "@medusajs/types/src"
 
 type InjectedDependencies = {
   paymentProviderRepository: DAL.RepositoryService
@@ -174,10 +175,13 @@ export default class PaymentProviderService {
     return res as Record<string, unknown>
   }
 
-  async onWebhookReceived(data: ProviderWebhookPayload): Promise<void> {
-    const provider = this.retrieveProvider(data.provider)
+  async processEvent(
+    providerId: string,
+    data: ProviderWebhookPayload
+  ): Promise<WebhookActionData> {
+    const provider = this.retrieveProvider(providerId)
 
-    await provider.onWebhookReceived(data.data)
+    return await provider.getWebhookAction(data.data)
   }
 
   private throwPaymentProviderError(errObj: PaymentProviderError) {
