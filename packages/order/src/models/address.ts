@@ -1,5 +1,8 @@
 import { DAL } from "@medusajs/types"
-import { generateEntityId } from "@medusajs/utils"
+import {
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -9,7 +12,12 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-type OptionalAddressProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
+type OptionalAddressProps = DAL.EntityDateColumns
+
+const customerIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_address",
+  columns: "customer_id",
+})
 
 @Entity({ tableName: "order_address" })
 export default class Address {
@@ -19,6 +27,7 @@ export default class Address {
   id!: string
 
   @Property({ columnType: "text", nullable: true })
+  @customerIdIndex.MikroORMIndex()
   customer_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })

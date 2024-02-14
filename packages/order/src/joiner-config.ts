@@ -2,9 +2,10 @@ import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { MapToConfig } from "@medusajs/utils"
 
-// TODO manage the config
-
-export const LinkableKeys: Record<string, string> = {}
+export const LinkableKeys: Record<string, string> = {
+  order_id: "Order",
+  order_item_id: "OrderLineItem",
+}
 
 const entityLinkableKeysMap: MapToConfig = {}
 Object.entries(LinkableKeys).forEach(([key, value]) => {

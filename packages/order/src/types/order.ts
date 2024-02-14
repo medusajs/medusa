@@ -1,3 +1,4 @@
+import { OrderStatus } from "@medusajs/utils"
 import {
   CreateOrderLineItemAdjustmentDTO,
   UpdateOrderLineItemAdjustmentDTO,
@@ -9,6 +10,8 @@ export interface CreateOrderDTO {
   sales_channel_id?: string
   email?: string
   currency_code: string
+  status?: OrderStatus
+  no_notification?: boolean
   metadata?: Record<string, unknown>
 }
 
@@ -19,6 +22,8 @@ export interface UpdateOrderDTO {
   sales_channel_id?: string
   email?: string
   currency_code?: string
+  status?: OrderStatus
+  no_notification?: boolean
   metadata?: Record<string, unknown>
 
   adjustments?: (

@@ -29,12 +29,14 @@ export interface CreateOrderDTO {
   region_id?: string
   customer_id?: string
   sales_channel_id?: string
+  status?: string
   email?: string
   currency_code: string
   shipping_address_id?: string
   billing_address_id?: string
   shipping_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO
   billing_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO
+  no_notification?: boolean
   metadata?: Record<string, unknown>
 
   items?: CreateOrderLineItemDTO[]
@@ -45,16 +47,14 @@ export interface UpdateOrderDTO {
   region_id?: string
   customer_id?: string
   sales_channel_id?: string
-
+  status?: string
   email?: string
   currency_code?: string
-
   shipping_address_id?: string
   billing_address_id?: string
-
   billing_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO
   shipping_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO
-
+  no_notification?: boolean
   metadata?: Record<string, unknown>
 }
 

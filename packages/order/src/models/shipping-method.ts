@@ -1,5 +1,9 @@
 import { BigNumberRawValue } from "@medusajs/types"
-import { BigNumber, generateEntityId } from "@medusajs/utils"
+import {
+  BigNumber,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -17,6 +21,11 @@ import Order from "./order"
 import ShippingMethodAdjustment from "./shipping-method-adjustment"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"
 
+const shippingOptionIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_shipping_method",
+  columns: "shipping_option_id",
+})
+
 @Entity({ tableName: "order_shipping_method" })
 @Check<ShippingMethod>({ expression: (columns) => `${columns.amount} >= 0` })
 export default class ShippingMethod {
@@ -28,6 +37,7 @@ export default class ShippingMethod {
 
   @ManyToOne({
     entity: () => Order,
+    fieldName: "order_id",
     index: "IDX_order_shipping_method_order_id",
     cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
@@ -51,8 +61,8 @@ export default class ShippingMethod {
   @Property({
     columnType: "text",
     nullable: true,
-    index: "IDX_order_shipping_method_option_id",
   })
+  @shippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })

@@ -1,10 +1,15 @@
 import { DAL } from "@medusajs/types"
-import { generateEntityId } from "@medusajs/utils"
+import {
+  OrderStatus,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
+  Enum,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -21,6 +26,36 @@ type OptionalOrderProps =
   | "billing_address"
   | DAL.EntityDateColumns
 
+const regionIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order",
+  columns: "region_id",
+  where: "deleted_at IS NOT NULL",
+})
+
+const customerIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order",
+  columns: "customer_id",
+  where: "deleted_at IS NOT NULL",
+})
+
+const salesChannelIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order",
+  columns: "customer_id",
+  where: "deleted_at IS NOT NULL",
+})
+
+const orderDeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "order",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
+const currencyCodeIndex = createPsqlIndexStatementHelper({
+  tableName: "order",
+  columns: "currency_code",
+  where: "deleted_at IS NOT NULL",
+})
+
 @Entity({ tableName: "order" })
 export default class Order {
   [OptionalProps]?: OptionalOrderProps
@@ -31,28 +66,32 @@ export default class Order {
   @Property({
     columnType: "text",
     nullable: true,
-    index: "IDX_order_region_id",
   })
+  @regionIdIndex.MikroORMIndex()
   region_id: string | null = null
 
   @Property({
     columnType: "text",
     nullable: true,
-    index: "IDX_order_customer_id",
   })
+  @customerIdIndex.MikroORMIndex()
   customer_id: string | null = null
 
   @Property({
     columnType: "text",
     nullable: true,
-    index: "IDX_order_sales_channel_id",
   })
+  @salesChannelIdIndex.MikroORMIndex()
   sales_channel_id: string | null = null
+
+  @Enum({ items: () => OrderStatus, default: OrderStatus.PENDING })
+  status: OrderStatus
 
   @Property({ columnType: "text", nullable: true })
   email: string | null = null
 
-  @Property({ columnType: "text", index: "IDX_order_curency_code" })
+  @Property({ columnType: "text" })
+  @currencyCodeIndex.MikroORMIndex()
   currency_code: string
 
   @Property({ columnType: "text", nullable: true })
@@ -78,6 +117,9 @@ export default class Order {
     cascade: [Cascade.PERSIST],
   })
   billing_address?: Address | null
+
+  @Property({ columnType: "boolean", nullable: true })
+  no_notification: boolean | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
@@ -108,7 +150,11 @@ export default class Order {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
+  @orderDeletedAtIndex.MikroORMIndex()
   deleted_at: Date | null = null
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  canceled_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

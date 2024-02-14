@@ -1,5 +1,9 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
-import { BigNumber, generateEntityId } from "@medusajs/utils"
+import {
+  BigNumber,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   BeforeUpdate,
@@ -24,6 +28,16 @@ type OptionalLineItemProps =
   | "requires_shipping"
   | "order"
   | DAL.EntityDateColumns
+
+const productIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_line_item",
+  columns: "product_id",
+})
+
+const variantIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_line_item",
+  columns: "variant_id",
+})
 
 @Entity({ tableName: "order_line_item" })
 export default class LineItem {
@@ -58,15 +72,15 @@ export default class LineItem {
   @Property({
     columnType: "text",
     nullable: true,
-    index: "IDX_line_item_variant_id",
   })
+  @variantIdIndex.MikroORMIndex()
   variant_id: string | null = null
 
   @Property({
     columnType: "text",
     nullable: true,
-    index: "IDX_line_item_product_id",
   })
+  @productIdIndex.MikroORMIndex()
   product_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })

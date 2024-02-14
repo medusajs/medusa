@@ -1,7 +1,7 @@
 import { DAL } from "@medusajs/types"
 import { OptionalProps, PrimaryKey, Property } from "@mikro-orm/core"
 
-type OptionalAdjustmentLineProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
+type OptionalAdjustmentLineProps = DAL.EntityDateColumns
 
 /**
  * As per the Mikro ORM docs, superclasses should use the abstract class definition

@@ -14,7 +14,8 @@ import ShippingMethod from "./shipping-method"
 export default class ShippingMethodAdjustment extends AdjustmentLine {
   @ManyToOne({
     entity: () => ShippingMethod,
-    index: "IDX_order_adjustment_shipping_method_id",
+    fieldName: "shipping_method_id",
+    index: "IDX_order_shipping_method_adjustment_shipping_method_id",
     cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
   shipping_method: ShippingMethod

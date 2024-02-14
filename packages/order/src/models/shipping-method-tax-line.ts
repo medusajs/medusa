@@ -14,6 +14,7 @@ import TaxLine from "./tax-line"
 export default class ShippingMethodTaxLine extends TaxLine {
   @ManyToOne({
     entity: () => ShippingMethod,
+    fieldName: "shipping_method_id",
     index: "IDX_order_tax_line_shipping_method_id",
     cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
