@@ -434,7 +434,8 @@ export default class CartModuleService<
     itemIdsOrSelector: string | string[] | Partial<CartTypes.CartLineItemDTO>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    let toDelete: string[] = []
+    let toDelete: string[]
+
     if (isObject(itemIdsOrSelector)) {
       const items = await this.listLineItems(
         { ...itemIdsOrSelector } as Partial<CartTypes.CartLineItemDTO>,
@@ -549,7 +550,7 @@ export default class CartModuleService<
   ): Promise<
     CartTypes.CartShippingMethodDTO[] | CartTypes.CartShippingMethodDTO
   > {
-    let methods: ShippingMethod[] = []
+    let methods: ShippingMethod[]
     if (isString(cartIdOrData)) {
       methods = await this.addShippingMethods_(
         cartIdOrData,
@@ -619,7 +620,7 @@ export default class CartModuleService<
       | Partial<CartTypes.CartShippingMethodDTO>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    let toDelete: string[] = []
+    let toDelete: string[]
     if (isObject(methodIdsOrSelector)) {
       const methods = await this.listShippingMethods(
         {
@@ -773,7 +774,7 @@ export default class CartModuleService<
       | Partial<CartTypes.LineItemAdjustmentDTO>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    let ids: string[] = []
+    let ids: string[]
     if (isObject(adjustmentIdsOrSelector)) {
       const adjustments = await this.listLineItemAdjustments(
         {
@@ -942,7 +943,7 @@ export default class CartModuleService<
       | Partial<CartTypes.ShippingMethodAdjustmentDTO>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    let ids: string[] = []
+    let ids: string[]
     if (isObject(adjustmentIdsOrSelector)) {
       const adjustments = await this.listShippingMethodAdjustments(
         {
@@ -987,7 +988,7 @@ export default class CartModuleService<
       | CartTypes.CreateLineItemTaxLineDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.LineItemTaxLineDTO[] | CartTypes.LineItemTaxLineDTO> {
-    let addedTaxLines: LineItemTaxLine[] = []
+    let addedTaxLines: LineItemTaxLine[]
     if (isString(cartIdOrData)) {
       // existence check
       await this.retrieve(cartIdOrData, { select: ["id"] }, sharedContext)
@@ -1096,7 +1097,7 @@ export default class CartModuleService<
       | CartTypes.FilterableShippingMethodTaxLineProps,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    let ids: string[] = []
+    let ids: string[]
     if (isObject(taxLineIdsOrSelector)) {
       const taxLines = await this.listLineItemTaxLines(
         {
@@ -1143,7 +1144,7 @@ export default class CartModuleService<
   ): Promise<
     CartTypes.ShippingMethodTaxLineDTO[] | CartTypes.ShippingMethodTaxLineDTO
   > {
-    let addedTaxLines: ShippingMethodTaxLine[] = []
+    let addedTaxLines: ShippingMethodTaxLine[]
     if (isString(cartIdOrData)) {
       // existence check
       await this.retrieve(cartIdOrData, { select: ["id"] }, sharedContext)
@@ -1253,7 +1254,7 @@ export default class CartModuleService<
       | CartTypes.FilterableShippingMethodTaxLineProps,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    let ids: string[] = []
+    let ids: string[]
     if (isObject(taxLineIdsOrSelector)) {
       const taxLines = await this.listShippingMethodTaxLines(
         {

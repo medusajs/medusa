@@ -5,7 +5,7 @@ import {
   MedusaError,
   PromotionType,
 } from "@medusajs/utils"
-import { areRulesValidForContext } from "../validations/promotion-rule"
+import { areRulesValidForContext } from "../validations"
 import { computeActionForBudgetExceeded } from "./usage"
 
 export function getComputedActionsForBuyGet(

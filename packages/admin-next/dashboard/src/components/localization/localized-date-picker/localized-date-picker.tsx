@@ -18,7 +18,7 @@ export const LocalizedDatePicker = ({
     ?.date_locale
 
   const translations = {
-    cancel: t("general.cancel"),
+    cancel: t("actions.cancel"),
     apply: t("general.apply"),
     end: t("general.end"),
     start: t("general.start"),

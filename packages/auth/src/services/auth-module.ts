@@ -19,7 +19,6 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import {
   AbstractAuthModuleProvider,
   InjectManager,
-  InjectTransactionManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
@@ -74,13 +73,12 @@ export default class AuthModuleService<TAuthUser extends AuthUser = AuthUser>
   ): Promise<AuthTypes.AuthUserDTO | AuthTypes.AuthUserDTO[]> {
     const authUsers = await this.authUserService_.create(data, sharedContext)
 
-    const serializedUsers = await this.baseRepository_.serialize<
-      AuthTypes.AuthUserDTO[]
-    >(authUsers, {
-      populate: true,
-    })
-
-    return serializedUsers
+    return await this.baseRepository_.serialize<AuthTypes.AuthUserDTO[]>(
+      authUsers,
+      {
+        populate: true,
+      }
+    )
   }
 
   update(
