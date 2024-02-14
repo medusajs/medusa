@@ -37,7 +37,7 @@ const nameIndexStatement = createPsqlIndexStatementHelper({
   columns: "name",
   unique: true,
   where: "deleted_at IS NULL",
-})
+}).expression
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

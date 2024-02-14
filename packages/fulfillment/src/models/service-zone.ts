@@ -40,7 +40,7 @@ const nameIndexStatement = createPsqlIndexStatementHelper({
   columns: "name",
   unique: true,
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const fulfillmentSetIdIndexName = "IDX_service_zone_fulfillment_set_id"
 const fulfillmentSetIdIndexStatement = createPsqlIndexStatementHelper({
@@ -48,7 +48,7 @@ const fulfillmentSetIdIndexStatement = createPsqlIndexStatementHelper({
   tableName: "service_zone",
   columns: "fulfillment_set_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
