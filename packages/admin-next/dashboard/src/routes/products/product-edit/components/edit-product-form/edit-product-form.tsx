@@ -13,7 +13,7 @@ import {
 import { useAdminUpdateProduct } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import { useTranslation } from "react-i18next"
+import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
@@ -129,11 +129,6 @@ export const EditProductForm = ({
                         <Input {...field} />
                       </Form.Control>
                       <Form.ErrorMessage />
-                      <Form.Hint>
-                        Give your product a short and clear title.
-                        <br /> 50-60 characters is the recommended length for
-                        search engines.
-                      </Form.Hint>
                     </Form.Item>
                   )
                 }}
@@ -144,7 +139,7 @@ export const EditProductForm = ({
                 render={({ field }) => {
                   return (
                     <Form.Item>
-                      <Form.Label>{t("fields.subtitle")}</Form.Label>
+                      <Form.Label optional>{t("fields.subtitle")}</Form.Label>
                       <Form.Control>
                         <Input {...field} />
                       </Form.Control>
@@ -153,6 +148,19 @@ export const EditProductForm = ({
                   )
                 }}
               />
+              <Text
+                size="small"
+                leading="compact"
+                className="text-ui-fg-subtle"
+              >
+                <Trans
+                  i18nKey="products.titleHint"
+                  t={t}
+                  components={[<br key="break" />]}
+                />
+              </Text>
+            </div>
+            <div className="flex flex-col gap-y-4">
               <Form.Field
                 control={form.control}
                 name="handle"
@@ -180,15 +188,13 @@ export const EditProductForm = ({
                   )
                 }}
               />
-            </div>
-            <div className="flex flex-col gap-y-4">
               <Form.Field
                 control={form.control}
                 name="material"
                 render={({ field }) => {
                   return (
                     <Form.Item>
-                      <Form.Label>{t("fields.material")}</Form.Label>
+                      <Form.Label optional>{t("fields.material")}</Form.Label>
                       <Form.Control>
                         <Input {...field} />
                       </Form.Control>
@@ -211,9 +217,11 @@ export const EditProductForm = ({
                       </Form.Control>
                       <Form.ErrorMessage />
                       <Form.Hint>
-                        Give your product a short and clear description.
-                        <br /> 120-160 characters is the recommended length for
-                        search engines.
+                        <Trans
+                          i18nKey="products.descriptionHint"
+                          t={t}
+                          components={[<br key="break" />]}
+                        />
                       </Form.Hint>
                     </Form.Item>
                   )
