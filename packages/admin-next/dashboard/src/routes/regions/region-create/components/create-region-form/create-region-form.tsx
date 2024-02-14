@@ -43,7 +43,7 @@ export const CreateRegionForm = ({ subscribe }: CreateRegionFormProps) => {
 
   useEffect(() => {
     subscribe(isDirty)
-  }, [isDirty])
+  }, [isDirty, subscribe])
 
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -80,16 +80,16 @@ export const CreateRegionForm = ({ subscribe }: CreateRegionFormProps) => {
           <div className="flex items-center justify-end gap-x-2">
             <FocusModal.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
             </FocusModal.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
         </FocusModal.Header>
         <FocusModal.Body className="flex h-full w-full flex-col items-center overflow-y-auto py-16">
-          <div className="w-full max-w-[720px] flex flex-col gap-y-8">
+          <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
               <Heading>{t("regions.createRegion")}</Heading>
               <Text size="small" className="text-ui-fg-subtle">

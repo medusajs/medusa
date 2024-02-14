@@ -65,8 +65,8 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
       description: t("store.removeCurrencyWarning", {
         count: ids.length,
       }),
-      confirmText: t("general.remove"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.remove"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!result) {
@@ -160,7 +160,7 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
           <CommandBar.Command
             action={handleDeleteCurrencies}
             shortcut="r"
-            label={t("general.remove")}
+            label={t("actions.remove")}
           />
         </CommandBar.Bar>
       </CommandBar>
@@ -187,8 +187,8 @@ const CurrencyActions = ({
       }),
       verificationInstruction: t("general.typeToConfirm"),
       verificationText: currency.name,
-      confirmText: t("general.remove"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.remove"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!result) {
@@ -207,7 +207,7 @@ const CurrencyActions = ({
           actions: [
             {
               icon: <Trash />,
-              label: t("general.remove"),
+              label: t("actions.remove"),
               onClick: handleRemove,
             },
           ],

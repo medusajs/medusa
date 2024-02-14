@@ -156,7 +156,7 @@ export interface AdminGetOrdersParams {
    */
   fields?: string
   /**
-   * A order field to sort-order the retrieved orders by.
+   * Field to sort retrieved orders by.
    */
   order?: string
 }
