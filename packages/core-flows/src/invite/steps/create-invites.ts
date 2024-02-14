@@ -12,10 +12,10 @@ export const createInviteStep = createStep(
 
     const createdInvites = await service.createInvites(input)
 
-    return new StepResponse(createdInvites)
+    return new StepResponse(createdInvites, createdInvites.map(inv => inv.id))
   },
-  async (createdInvites, { container }) => {
-    if (!createdInvites?.length) {
+  async (createdInvitesIds, { container }) => {
+    if (!createdInvitesIds?.length) {
       return
     }
 
@@ -23,8 +23,6 @@ export const createInviteStep = createStep(
       ModuleRegistrationName.USER
     )
 
-    await service.deleteInvites(
-      createdInvites.map((invite: InviteDTO) => invite.id)
-    )
+    await service.deleteInvites(createdInvitesIds)
   }
 )
