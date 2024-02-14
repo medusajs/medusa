@@ -60,7 +60,7 @@ const serviceZoneIdStatement = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "service_zone_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
