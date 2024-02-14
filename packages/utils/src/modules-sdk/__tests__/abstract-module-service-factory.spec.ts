@@ -85,7 +85,7 @@ describe("Abstract Module Service Factory", () => {
       instance = new abstractModuleService(containerMock)
     })
 
-    test("should have retrieve method", async () => {
+    it("should have retrieve method", async () => {
       const result = await instance.retrieve("1")
       expect(result).toEqual({ id: "1", name: "Item" })
       expect(containerMock.mainModelMockService.retrieve).toHaveBeenCalledWith(
@@ -95,7 +95,7 @@ describe("Abstract Module Service Factory", () => {
       )
     })
 
-    test("should have list method", async () => {
+    it("should have list method", async () => {
       const result = await instance.list()
       expect(result).toEqual([{ id: "1", name: "Item" }])
       expect(containerMock.mainModelMockService.list).toHaveBeenCalledWith(
@@ -105,7 +105,7 @@ describe("Abstract Module Service Factory", () => {
       )
     })
 
-    test("should have delete method", async () => {
+    it("should have delete method", async () => {
       await instance.delete("1")
       expect(containerMock.mainModelMockService.delete).toHaveBeenCalledWith(
         ["1"],
@@ -113,7 +113,7 @@ describe("Abstract Module Service Factory", () => {
       )
     })
 
-    test("should have softDelete method", async () => {
+    it("should have softDelete method", async () => {
       const result = await instance.softDelete("1")
       expect(result).toEqual(undefined)
       expect(
@@ -121,7 +121,7 @@ describe("Abstract Module Service Factory", () => {
       ).toHaveBeenCalledWith(["1"], defaultTransactionContext)
     })
 
-    test("should have restore method", async () => {
+    it("should have restore method", async () => {
       const result = await instance.restore("1")
       expect(result).toEqual(undefined)
       expect(containerMock.mainModelMockService.restore).toHaveBeenCalledWith(
@@ -130,7 +130,7 @@ describe("Abstract Module Service Factory", () => {
       )
     })
 
-    test("should have delete method with selector", async () => {
+    it("should have delete method with selector", async () => {
       await instance.delete({ selector: { id: "1" } })
       expect(containerMock.mainModelMockService.delete).toHaveBeenCalledWith(
         [{ selector: { id: "1" } }],
@@ -147,7 +147,7 @@ describe("Abstract Module Service Factory", () => {
       instance = new abstractModuleService(containerMock)
     })
 
-    test("should have retrieve method for other models", async () => {
+    it("should have retrieve method for other models", async () => {
       const result = await instance.retrieveOtherModelMock1("1")
       expect(result).toEqual({ id: "1", name: "Item" })
       expect(
@@ -155,7 +155,7 @@ describe("Abstract Module Service Factory", () => {
       ).toHaveBeenCalledWith("1", undefined, defaultContext)
     })
 
-    test("should have list method for other models", async () => {
+    it("should have list method for other models", async () => {
       const result = await instance.listOtherModelMock1s()
       expect(result).toEqual([{ id: "1", name: "Item" }])
       expect(containerMock.otherModelMock1Service.list).toHaveBeenCalledWith(
@@ -165,7 +165,7 @@ describe("Abstract Module Service Factory", () => {
       )
     })
 
-    test("should have delete method for other models", async () => {
+    it("should have delete method for other models", async () => {
       await instance.deleteOtherModelMock1s("1")
       expect(containerMock.otherModelMock1Service.delete).toHaveBeenCalledWith(
         ["1"],
@@ -173,7 +173,7 @@ describe("Abstract Module Service Factory", () => {
       )
     })
 
-    test("should have softDelete method for other models", async () => {
+    it("should have softDelete method for other models", async () => {
       const result = await instance.softDeleteOtherModelMock1s("1")
       expect(result).toEqual(undefined)
       expect(
@@ -181,7 +181,7 @@ describe("Abstract Module Service Factory", () => {
       ).toHaveBeenCalledWith(["1"], defaultTransactionContext)
     })
 
-    test("should have restore method for other models", async () => {
+    it("should have restore method for other models", async () => {
       const result = await instance.restoreOtherModelMock1s("1")
       expect(result).toEqual(undefined)
       expect(containerMock.otherModelMock1Service.restore).toHaveBeenCalledWith(
@@ -190,7 +190,7 @@ describe("Abstract Module Service Factory", () => {
       )
     })
 
-    test("should have delete method for other models with selector", async () => {
+    it("should have delete method for other models with selector", async () => {
       await instance.deleteOtherModelMock1s({ selector: { id: "1" } })
       expect(containerMock.otherModelMock1Service.delete).toHaveBeenCalledWith(
         [{ selector: { id: "1" } }],

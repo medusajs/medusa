@@ -8910,7 +8910,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/user@workspace:packages/user":
+"@medusajs/user@workspace:^, @medusajs/user@workspace:packages/user":
   version: 0.0.0-use.local
   resolution: "@medusajs/user@workspace:packages/user"
   dependencies:
@@ -8980,7 +8980,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflow-engine-inmemory@workspace:packages/workflow-engine-inmemory":
+"@medusajs/workflow-engine-inmemory@workspace:*, @medusajs/workflow-engine-inmemory@workspace:packages/workflow-engine-inmemory":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-inmemory@workspace:packages/workflow-engine-inmemory"
   dependencies:
@@ -31879,6 +31879,7 @@ __metadata:
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/medusa": "workspace:*"
+    "@medusajs/workflow-engine-inmemory": "workspace:*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
@@ -31908,7 +31909,9 @@ __metadata:
     "@medusajs/promotion": "workspace:^"
     "@medusajs/region": "workspace:^"
     "@medusajs/types": "workspace:^"
+    "@medusajs/user": "workspace:^"
     "@medusajs/utils": "workspace:^"
+    "@medusajs/workflow-engine-inmemory": "workspace:*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3

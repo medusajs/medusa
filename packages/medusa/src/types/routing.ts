@@ -1,6 +1,5 @@
 import type { NextFunction, Request, Response } from "express"
 import type { Customer, User } from "../models"
-
 import type { MedusaContainer } from "./global"
 
 export interface MedusaRequest extends Request {
