@@ -4,9 +4,6 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   UserTypes,
-  CreateUserDTO,
-  UpdateUserDTO,
-  UserDTO,
   ModulesSdkTypes,
 } from "@medusajs/types"
 import {
@@ -17,20 +14,28 @@ import {
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
-import { User } from "@models"
+import { Invite, User } from "@models"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   userService: ModulesSdkTypes.InternalModuleService<any>
+  inviteService: ModulesSdkTypes.InternalModuleService<any>
 }
 
-const generateMethodForModels = []
+const generateMethodForModels = [Invite]
 
-export default class UserModuleService<TUser extends User = User>
+export default class UserModuleService<
+    TUser extends User = User,
+    TInvite extends Invite = Invite
+  >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
-    UserDTO,
-    {}
+    UserTypes.UserDTO,
+    {
+      Invite: {
+        dto: UserTypes.InviteDTO
+      }
+    }
   >(User, generateMethodForModels, entityNameToLinkableKeysMap)
   implements UserTypes.IUserModuleService
 {
@@ -41,9 +46,10 @@ export default class UserModuleService<TUser extends User = User>
   protected baseRepository_: DAL.RepositoryService
 
   protected readonly userService_: ModulesSdkTypes.InternalModuleService<TUser>
+  protected readonly inviteService_: ModulesSdkTypes.InternalModuleService<TInvite>
 
   constructor(
-    { userService, baseRepository }: InjectedDependencies,
+    { userService, inviteService, baseRepository }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
@@ -51,22 +57,29 @@ export default class UserModuleService<TUser extends User = User>
 
     this.baseRepository_ = baseRepository
     this.userService_ = userService
+    this.inviteService_ = inviteService
   }
 
-  create(data: CreateUserDTO[], sharedContext?: Context): Promise<UserDTO[]>
-  create(data: CreateUserDTO, sharedContext?: Context): Promise<UserDTO>
+  create(
+    data: UserTypes.CreateUserDTO[],
+    sharedContext?: Context
+  ): Promise<UserTypes.UserDTO[]>
+  create(
+    data: UserTypes.CreateUserDTO,
+    sharedContext?: Context
+  ): Promise<UserTypes.UserDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async create(
-    data: CreateUserDTO[] | CreateUserDTO,
+    data: UserTypes.CreateUserDTO[] | UserTypes.CreateUserDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.UserDTO | UserTypes.UserDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
-    const users = await this.create_(input, sharedContext)
+    const users = await this.userService_.create(input, sharedContext)
 
     const serializedUsers = await this.baseRepository_.serialize<
-      UserTypes.UserDTO[]
+      UserTypes.UserDTO[] | UserTypes.UserDTO
     >(users, {
       populate: true,
     })
@@ -74,25 +87,23 @@ export default class UserModuleService<TUser extends User = User>
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
+  update(
+    data: UserTypes.UpdateUserDTO[],
+    sharedContext?: Context
+  ): Promise<UserTypes.UserDTO[]>
+  update(
+    data: UserTypes.UpdateUserDTO,
+    sharedContext?: Context
+  ): Promise<UserTypes.UserDTO>
+
   @InjectTransactionManager("baseRepository_")
-  protected async create_(
-    data: CreateUserDTO[],
-    @MedusaContext() sharedContext: Context
-  ): Promise<TUser[]> {
-    return await this.userService_.create(data, sharedContext)
-  }
-
-  update(data: UpdateUserDTO[], sharedContext?: Context): Promise<UserDTO[]>
-  update(data: UpdateUserDTO, sharedContext?: Context): Promise<UserDTO>
-
-  @InjectManager("baseRepository_")
   async update(
-    data: UpdateUserDTO | UpdateUserDTO[],
+    data: UserTypes.UpdateUserDTO | UserTypes.UpdateUserDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.UserDTO | UserTypes.UserDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
-    const updatedUsers = await this.update_(input, sharedContext)
+    const updatedUsers = await this.userService_.update(input, sharedContext)
 
     const serializedUsers = await this.baseRepository_.serialize<
       UserTypes.UserDTO[]
@@ -103,11 +114,60 @@ export default class UserModuleService<TUser extends User = User>
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
+  createInvites(
+    data: UserTypes.CreateInviteDTO[],
+    sharedContext?: Context
+  ): Promise<UserTypes.InviteDTO[]>
+  createInvites(
+    data: UserTypes.CreateInviteDTO,
+    sharedContext?: Context
+  ): Promise<UserTypes.InviteDTO>
+
   @InjectTransactionManager("baseRepository_")
-  protected async update_(
-    data: UpdateUserDTO[],
-    @MedusaContext() sharedContext: Context
-  ): Promise<TUser[]> {
-    return await this.userService_.update(data, sharedContext)
+  async createInvites(
+    data: UserTypes.CreateInviteDTO[] | UserTypes.CreateInviteDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<UserTypes.InviteDTO | UserTypes.InviteDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+
+    const invites = await this.inviteService_.create(input, sharedContext)
+
+    const serializedInvites = await this.baseRepository_.serialize<
+      UserTypes.InviteDTO[] | UserTypes.InviteDTO
+    >(invites, {
+      populate: true,
+    })
+
+    return Array.isArray(data) ? serializedInvites : serializedInvites[0]
+  }
+
+  updateInvites(
+    data: UserTypes.UpdateInviteDTO[],
+    sharedContext?: Context
+  ): Promise<UserTypes.InviteDTO[]>
+  updateInvites(
+    data: UserTypes.UpdateInviteDTO,
+    sharedContext?: Context
+  ): Promise<UserTypes.InviteDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async updateInvites(
+    data: UserTypes.UpdateInviteDTO | UserTypes.UpdateInviteDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<UserTypes.InviteDTO | UserTypes.InviteDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+
+    const updatedInvites = await this.inviteService_.update(
+      input,
+      sharedContext
+    )
+
+    const serializedInvites = await this.baseRepository_.serialize<
+      UserTypes.InviteDTO[]
+    >(updatedInvites, {
+      populate: true,
+    })
+
+    return Array.isArray(data) ? serializedInvites : serializedInvites[0]
   }
 }

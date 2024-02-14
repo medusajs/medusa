@@ -8806,7 +8806,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/user@workspace:packages/user":
+"@medusajs/user@workspace:^, @medusajs/user@workspace:packages/user":
   version: 0.0.0-use.local
   resolution: "@medusajs/user@workspace:packages/user"
   dependencies:
@@ -31576,6 +31576,7 @@ __metadata:
     "@medusajs/promotion": "workspace:^"
     "@medusajs/region": "workspace:^"
     "@medusajs/types": "workspace:^"
+    "@medusajs/user": "workspace:^"
     "@medusajs/utils": "workspace:^"
     "@medusajs/workflow-engine-inmemory": "workspace:*"
     babel-preset-medusa-package: "*"

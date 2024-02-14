@@ -8,6 +8,7 @@ import { adminWorkflowsExecutionsMiddlewares } from "./admin/workflows-execution
 import { authRoutesMiddlewares } from "./auth/middlewares"
 import { storeCartRoutesMiddlewares } from "./store/carts/middlewares"
 import { storeCustomerRoutesMiddlewares } from "./store/customers/middlewares"
+import { adminUserRoutesMiddlewares } from "./admin/users/middlewares"
 import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
 
 export const config: MiddlewaresConfig = {
@@ -23,5 +24,6 @@ export const config: MiddlewaresConfig = {
     ...adminWorkflowsExecutionsMiddlewares,
     ...storeRegionRoutesMiddlewares,
     ...adminRegionRoutesMiddlewares,
+    ...adminUserRoutesMiddlewares,
   ],
 }
