@@ -79,7 +79,8 @@ export default class ServiceZone {
   fulfillment_set: FulfillmentSet
 
   @OneToMany(() => GeoZone, "service_zone", {
-    cascade: [Cascade.REMOVE, "soft-remove"] as any,
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+    orphanRemoval: true,
   })
   geo_zones = new Collection<GeoZone>(this)
 
@@ -114,10 +115,12 @@ export default class ServiceZone {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "serzo")
+    this.fulfillment_set_id ??= this.fulfillment_set?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "serzo")
+    this.fulfillment_set_id ??= this.fulfillment_set?.id
   }
 }

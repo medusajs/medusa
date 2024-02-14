@@ -61,7 +61,8 @@ export default class FulfillmentSet {
   metadata: Record<string, unknown> | null = null
 
   @OneToMany(() => ServiceZone, "fulfillment_set", {
-    cascade: [Cascade.REMOVE, "soft-remove"] as any,
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+    orphanRemoval: true,
   })
   service_zones = new Collection<ServiceZone>(this)
 
