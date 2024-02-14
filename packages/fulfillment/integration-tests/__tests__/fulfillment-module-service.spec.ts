@@ -330,11 +330,6 @@ describe("fulfillment module service", function () {
           )
           ++i
         }
-
-        // expect the first and second fulfillment set to have the same service zone
-        expect(fulfillmentSets[0].service_zones[0].id).toEqual(
-          fulfillmentSets[1].service_zones[0].id
-        )
       })
 
       it("should create a new fulfillment set with new service zones and new geo zones", async function () {
@@ -456,11 +451,6 @@ describe("fulfillment module service", function () {
           )
           ++i
         }
-
-        // expect the first and second fulfillment set to have the same geo zone for their service zone
-        expect(fulfillmentSets[0].service_zones[0].geo_zones[0].id).toEqual(
-          fulfillmentSets[1].service_zones[0].geo_zones[0].id
-        )
       })
 
       it(`should fail on duplicated fulfillment set name`, async function () {
@@ -479,8 +469,14 @@ describe("fulfillment module service", function () {
 
     describe("on create service zones", () => {
       it("should create a new service zone", async function () {
+        const fulfillmentSet = await service.create({
+          name: "test",
+          type: "test-type",
+        })
+
         const data: CreateServiceZoneDTO = {
           name: "test",
+          fulfillment_set_id: fulfillmentSet.id,
           geo_zones: [
             {
               type: GeoZoneType.COUNTRY,
@@ -506,9 +502,15 @@ describe("fulfillment module service", function () {
       })
 
       it("should create a collection of service zones", async function () {
+        const fulfillmentSet = await service.create({
+          name: "test",
+          type: "test-type",
+        })
+
         const data: CreateServiceZoneDTO[] = [
           {
             name: "test",
+            fulfillment_set_id: fulfillmentSet.id,
             geo_zones: [
               {
                 type: GeoZoneType.COUNTRY,
@@ -518,6 +520,7 @@ describe("fulfillment module service", function () {
           },
           {
             name: "test2",
+            fulfillment_set_id: fulfillmentSet.id,
             geo_zones: [
               {
                 type: GeoZoneType.COUNTRY,
@@ -527,6 +530,7 @@ describe("fulfillment module service", function () {
           },
           {
             name: "test3",
+            fulfillment_set_id: fulfillmentSet.id,
             geo_zones: [
               {
                 type: GeoZoneType.COUNTRY,
@@ -557,16 +561,17 @@ describe("fulfillment module service", function () {
           )
           ++i
         }
-
-        // expect the first and second service zone to have the same geo zone
-        expect(serviceZones[0].geo_zones[0].id).toEqual(
-          serviceZones[1].geo_zones[0].id
-        )
       })
 
       it("should fail on duplicated service zone name", async function () {
+        const fulfillmentSet = await service.create({
+          name: "test",
+          type: "test-type",
+        })
+
         const data: CreateServiceZoneDTO = {
           name: "test",
+          fulfillment_set_id: fulfillmentSet.id,
           geo_zones: [
             {
               type: GeoZoneType.COUNTRY,
@@ -585,7 +590,17 @@ describe("fulfillment module service", function () {
 
     describe("on create geo zones", () => {
       it("should create a new geo zone", async function () {
+        const fulfillmentSet = await service.create({
+          name: "test",
+          type: "test-type",
+        })
+        const serviceZone = await service.createServiceZones({
+          name: "test",
+          fulfillment_set_id: fulfillmentSet.id,
+        })
+
         const data: CreateGeoZoneDTO = {
+          service_zone_id: serviceZone.id,
           type: GeoZoneType.COUNTRY,
           country_code: "fr",
         }
@@ -602,12 +617,23 @@ describe("fulfillment module service", function () {
       })
 
       it("should create a collection of geo zones", async function () {
+        const fulfillmentSet = await service.create({
+          name: "test",
+          type: "test-type",
+        })
+        const serviceZone = await service.createServiceZones({
+          name: "test",
+          fulfillment_set_id: fulfillmentSet.id,
+        })
+
         const data: CreateGeoZoneDTO[] = [
           {
+            service_zone_id: serviceZone.id,
             type: GeoZoneType.COUNTRY,
             country_code: "fr",
           },
           {
+            service_zone_id: serviceZone.id,
             type: GeoZoneType.COUNTRY,
             country_code: "us",
           },

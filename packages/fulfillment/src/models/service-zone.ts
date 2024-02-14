@@ -6,11 +6,12 @@ import {
 
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   Filter,
   Index,
-  ManyToMany,
+  ManyToOne,
   OneToMany,
   OnInit,
   OptionalProps,
@@ -41,6 +42,14 @@ const nameIndexStatement = createPsqlIndexStatementHelper({
   where: "deleted_at IS NULL",
 })
 
+const fulfillmentSetIdIndexName = "IDX_service_zone_fulfillment_set_id"
+const fulfillmentSetIdIndexStatement = createPsqlIndexStatementHelper({
+  name: fulfillmentSetIdIndexName,
+  tableName: "service_zone",
+  columns: "fulfillment_set_id",
+  where: "deleted_at IS NULL",
+})
+
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ServiceZone {
@@ -59,18 +68,18 @@ export default class ServiceZone {
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @ManyToMany(
-    () => FulfillmentSet,
-    (fulfillmentSet) => fulfillmentSet.service_zones
-  )
-  fulfillment_sets = new Collection<FulfillmentSet>(this)
+  @Property({ columnType: "text" })
+  @Index({
+    name: fulfillmentSetIdIndexName,
+    expression: fulfillmentSetIdIndexStatement,
+  })
+  fulfillment_set_id: string
 
-  @ManyToMany(() => GeoZone, "service_zones", {
-    owner: true,
-    pivotTable: "service_zone_geo_zones",
-    joinColumn: "service_zone_id",
-    inverseJoinColumn: "geo_zone_id",
-    fixedOrder: true,
+  @ManyToOne(() => FulfillmentSet, { persist: false })
+  fulfillment_set: FulfillmentSet
+
+  @OneToMany(() => GeoZone, "service_zone", {
+    cascade: [Cascade.REMOVE, "soft-remove"] as any,
   })
   geo_zones = new Collection<GeoZone>(this)
 

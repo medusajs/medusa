@@ -6,11 +6,12 @@ import {
 
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   Filter,
   Index,
-  ManyToMany,
+  OneToMany,
   OnInit,
   OptionalProps,
   PrimaryKey,
@@ -59,12 +60,8 @@ export default class FulfillmentSet {
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @ManyToMany(() => ServiceZone, "fulfillment_sets", {
-    owner: true,
-    pivotTable: "fulfillment_set_service_zones",
-    joinColumn: "fulfillment_set_id",
-    inverseJoinColumn: "service_zone_id",
-    fixedOrder: true,
+  @OneToMany(() => ServiceZone, "fulfillment_set", {
+    cascade: [Cascade.REMOVE, "soft-remove"] as any,
   })
   service_zones = new Collection<ServiceZone>(this)
 

@@ -310,167 +310,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'country'",
-          "enumItems": [
-            "country",
-            "province",
-            "city",
-            "zip"
-          ],
-          "mappedType": "enum"
-        },
-        "country_code": {
-          "name": "country_code",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "province_code": {
-          "name": "province_code",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "city": {
-          "name": "city",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "postal_expression": {
-          "name": "postal_expression",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "json"
-        },
-        "metadata": {
-          "name": "metadata",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "json"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "geo_zone",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_geo_zone_country_code",
-          "columnNames": [
-            "country_code"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_country_code\" ON \"geo_zone\" (country_code) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_geo_zone_province_code",
-          "columnNames": [
-            "province_code"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_province_code\" ON \"geo_zone\" (province_code) WHERE deleted_at IS NULL AND province_code IS NOT NULL"
-        },
-        {
-          "keyName": "IDX_geo_zone_city",
-          "columnNames": [
-            "city"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_city\" ON \"geo_zone\" (city) WHERE deleted_at IS NULL AND city IS NOT NULL"
-        },
-        {
-          "keyName": "IDX_geo_zone_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_deleted_at\" ON \"geo_zone\" (deleted_at) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "geo_zone_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
         "metadata": {
           "name": "metadata",
           "type": "jsonb",
@@ -568,6 +407,15 @@
           "nullable": true,
           "mappedType": "json"
         },
+        "fulfillment_set_id": {
+          "name": "fulfillment_set_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamptz",
@@ -615,6 +463,16 @@
           "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_service_zone_name_unique\" ON \"service_zone\" (name) WHERE deleted_at IS NULL"
         },
         {
+          "keyName": "IDX_service_zone_fulfillment_set_id",
+          "columnNames": [
+            "fulfillment_set_id"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_service_zone_fulfillment_set_id\" ON \"service_zone\" (fulfillment_set_id) WHERE deleted_at IS NULL"
+        },
+        {
           "keyName": "IDX_service_zone_deleted_at",
           "columnNames": [
             "deleted_at"
@@ -635,77 +493,17 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "service_zone_id": {
-          "name": "service_zone_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "geo_zone_id": {
-          "name": "geo_zone_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        }
-      },
-      "name": "service_zone_geo_zones",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "service_zone_geo_zones_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
       "foreignKeys": {
-        "service_zone_geo_zones_service_zone_id_foreign": {
-          "constraintName": "service_zone_geo_zones_service_zone_id_foreign",
+        "service_zone_fulfillment_set_id_foreign": {
+          "constraintName": "service_zone_fulfillment_set_id_foreign",
           "columnNames": [
-            "service_zone_id"
+            "fulfillment_set_id"
           ],
-          "localTableName": "public.service_zone_geo_zones",
+          "localTableName": "public.service_zone",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.service_zone",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "service_zone_geo_zones_geo_zone_id_foreign": {
-          "constraintName": "service_zone_geo_zones_geo_zone_id_foreign",
-          "columnNames": [
-            "geo_zone_id"
-          ],
-          "localTableName": "public.service_zone_geo_zones",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.geo_zone",
-          "deleteRule": "cascade",
+          "referencedTableName": "public.fulfillment_set",
           "updateRule": "cascade"
         }
       }
@@ -714,20 +512,54 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "fulfillment_set_id": {
-          "name": "fulfillment_set_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "mappedType": "text"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'country'",
+          "enumItems": [
+            "country",
+            "province",
+            "city",
+            "zip"
+          ],
+          "mappedType": "enum"
+        },
+        "country_code": {
+          "name": "country_code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "province_code": {
+          "name": "province_code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "city": {
+          "name": "city",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "service_zone_id": {
@@ -738,13 +570,113 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "postal_expression": {
+          "name": "postal_expression",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
-      "name": "fulfillment_set_service_zones",
+      "name": "geo_zone",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "fulfillment_set_service_zones_pkey",
+          "keyName": "IDX_geo_zone_country_code",
+          "columnNames": [
+            "country_code"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_country_code\" ON \"geo_zone\" (country_code) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_geo_zone_province_code",
+          "columnNames": [
+            "province_code"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_province_code\" ON \"geo_zone\" (province_code) WHERE deleted_at IS NULL AND province_code IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_geo_zone_city",
+          "columnNames": [
+            "city"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_city\" ON \"geo_zone\" (city) WHERE deleted_at IS NULL AND city IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_geo_zone_service_zone_id",
+          "columnNames": [
+            "service_zone_id"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_service_zone_id\" ON \"geo_zone\" (service_zone_id) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_geo_zone_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_geo_zone_deleted_at\" ON \"geo_zone\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "geo_zone_pkey",
           "columnNames": [
             "id"
           ],
@@ -755,30 +687,16 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "fulfillment_set_service_zones_fulfillment_set_id_foreign": {
-          "constraintName": "fulfillment_set_service_zones_fulfillment_set_id_foreign",
-          "columnNames": [
-            "fulfillment_set_id"
-          ],
-          "localTableName": "public.fulfillment_set_service_zones",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.fulfillment_set",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "fulfillment_set_service_zones_service_zone_id_foreign": {
-          "constraintName": "fulfillment_set_service_zones_service_zone_id_foreign",
+        "geo_zone_service_zone_id_foreign": {
+          "constraintName": "geo_zone_service_zone_id_foreign",
           "columnNames": [
             "service_zone_id"
           ],
-          "localTableName": "public.fulfillment_set_service_zones",
+          "localTableName": "public.geo_zone",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.service_zone",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
