@@ -88,7 +88,12 @@ const DbTestUtil = {
 const instance = DbTestUtil
 
 module.exports = {
-  initDb: async function ({ cwd, database_extra, env }) {
+  initDb: async function ({
+    cwd,
+    database_extra,
+    env,
+    force_modules_migration,
+  }) {
     if (isObject(env)) {
       Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
     }
@@ -149,7 +154,10 @@ module.exports = {
 
     instance.setDb(dbDataSource)
 
-    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    if (
+      force_modules_migration ||
+      featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
+    ) {
       const pgConnectionLoader =
         require("@medusajs/medusa/dist/loaders/pg-connection").default
 

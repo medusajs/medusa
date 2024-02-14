@@ -96,6 +96,7 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/cart",
     },
+    [Modules.WORKFLOW_ENGINE]: true,
     [Modules.REGION]: {
       scope: "internal",
       resources: "shared",
