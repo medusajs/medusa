@@ -176,7 +176,7 @@ export interface UpdateLineItemWithSelectorDTO {
 
 export interface UpdateCartWithSelectorDTO {
   selector: Partial<CartDTO>
-  data: Partial<UpdateCartDTO>
+  data: UpdateCartDTO
 }
 
 export interface UpdateLineItemDTO

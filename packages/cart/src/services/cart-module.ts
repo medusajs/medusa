@@ -11,11 +11,11 @@ import {
 import {
   InjectManager,
   InjectTransactionManager,
-  isObject,
-  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  isObject,
+  isString,
 } from "@medusajs/utils"
 import {
   Address,
@@ -211,6 +211,26 @@ export default class CartModuleService<
     data?: CartTypes.UpdateCartDataDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartDTO[] | CartTypes.CartDTO> {
+    const result = await this.update_(dataOrIdOrSelector, data, sharedContext)
+
+    const serializedResult = await this.baseRepository_.serialize<
+      CartTypes.CartDTO[]
+    >(result, {
+      populate: true,
+    })
+
+    return isString(dataOrIdOrSelector) ? serializedResult[0] : serializedResult
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async update_(
+    dataOrIdOrSelector:
+      | CartTypes.UpdateCartDTO[]
+      | string
+      | Partial<CartTypes.CartDTO>,
+    data?: CartTypes.UpdateCartDataDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
     let toUpdate: CartTypes.UpdateCartDTO[] = []
     if (isString(dataOrIdOrSelector)) {
       toUpdate = [
@@ -228,7 +248,6 @@ export default class CartModuleService<
         sharedContext
       )
 
-
       toUpdate = carts.map((cart) => {
         return {
           ...data,
@@ -238,22 +257,7 @@ export default class CartModuleService<
     }
 
     const result = await this.cartService_.update(toUpdate, sharedContext)
-
-    const serializedResult = await this.baseRepository_.serialize<
-      CartTypes.CartDTO[]
-    >(result, {
-      populate: true,
-    })
-
-    return isString(dataOrIdOrSelector) ? serializedResult[0] : serializedResult
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async update_(
-    data: CartTypes.UpdateCartDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    return await this.cartService_.update(data, sharedContext)
+    return result
   }
 
   addLineItems(
