@@ -47,6 +47,7 @@ export const updateCartsStep = createStep(
     )
 
     const toRestore = previousCarts.map((c) => ({
+      id: c.id,
       region_id: c.region_id,
       customer_id: c.customer_id,
       sales_channel_id: c.sales_channel_id,
