@@ -1,17 +1,24 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { SubscriberArgs, SubscriberConfig } from "../types/subscribers"
+import { PaymentWebhookEvents } from "@medusajs/utils"
 
-export default async function paymentWebhookHandler({
-  data,
-  container,
-}: SubscriberArgs) {
-  const paymentModuleService = container.resolve(ModuleRegistrationName.PAYMENT)
-  await paymentModuleService.onWebhookReceived(data)
+import { IEventBusService } from "@medusajs/types"
+import { AwilixContainer } from "awilix"
+
+class PaymentWebhookSubscriber {
+  private readonly eventBusService_: IEventBusService
+
+  constructor(container: AwilixContainer) {
+    this.eventBusService_ = container.resolve("eventBusService")
+
+    const paymentModuleService = container.resolve(
+      ModuleRegistrationName.PAYMENT
+    )
+
+    this.eventBusService_.subscribe(
+      PaymentWebhookEvents.WebhookReceived,
+      paymentModuleService.onWebhookReceived
+    )
+  }
 }
 
-export const config: SubscriberConfig = {
-  event: "payment.webhook_received",
-  context: {
-    subscriberId: "payment.webhook_received",
-  },
-}
+export default PaymentWebhookSubscriber

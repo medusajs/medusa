@@ -1,4 +1,5 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { PaymentWebhookEvents } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
@@ -14,7 +15,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     // const validated = await paymentModuleService.validateWebhook(data)
 
     // we delay the processing of the event to avoid a conflict caused by a race condition
-    await eventBus.emit("payment.webhook_received", event, {
+    await eventBus.emit(PaymentWebhookEvents.WebhookReceived, event, {
       delay: options.webhook_delay || 5000,
       attempts: options.webhook_retries || 3,
     })
