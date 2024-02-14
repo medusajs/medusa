@@ -1,10 +1,12 @@
 import ts from "typescript"
-import { DOCBLOCK_DOUBLE_LINES, DOCBLOCK_NEW_LINE } from "../constants.js"
+import { DOCBLOCK_DOUBLE_LINES, DOCBLOCK_NEW_LINE } from "../../constants.js"
 import {
   camelToTitle,
   camelToWords,
   normalizeName,
-} from "../utils/str-formatting.js"
+  snakeToWords,
+} from "../../utils/str-formatting.js"
+import pluralize from "pluralize"
 
 type TemplateOptions = {
   parentName?: string
@@ -16,7 +18,10 @@ type KnowledgeBase = {
   startsWith?: string
   endsWith?: string
   exact?: string
-  template: string | ((str: string, options?: TemplateOptions) => string)
+  pattern?: RegExp
+  template:
+    | string
+    | ((str: string, options?: TemplateOptions) => string | undefined)
   kind?: ts.SyntaxKind[]
 }
 
@@ -213,6 +218,27 @@ class KnowledgeBaseFactory {
       template: `An object that includes the IDs of related records that were restored, such as the ID of associated {relation name}. ${DOCBLOCK_NEW_LINE}The object's keys are the ID attribute names of the {type name} entity's relations, such as \`{relation ID field name}\`, ${DOCBLOCK_NEW_LINE}and its value is an array of strings, each being the ID of the record associated with the money amount through this relation, ${DOCBLOCK_NEW_LINE}such as the IDs of associated {relation name}.`,
     },
   ]
+  private oasDescriptionKnowledgeBase: KnowledgeBase[] = [
+    {
+      pattern: /.*/,
+      template(str, options) {
+        if (!options?.parentName) {
+          return
+        }
+
+        const formattedName = str === "id" ? "ID" : snakeToWords(str)
+        const formattedParentName = pluralize.singular(
+          snakeToWords(options.parentName)
+        )
+
+        if (formattedName === formattedParentName) {
+          return `The ${formattedParentName}'s details.`
+        }
+
+        return `The ${formattedParentName}'s ${formattedName}.`
+      },
+    },
+  ]
 
   /**
    * Tries to find in a specified knowledge base a template relevant to the specified name.
@@ -233,6 +259,10 @@ class KnowledgeBaseFactory {
     const foundItem = knowledgeBase.find((item) => {
       if (item.exact) {
         return str === item.exact
+      }
+
+      if (item.pattern) {
+        return item.pattern.test(str)
       }
 
       if (item.kind?.length && (!kind || !item.kind.includes(kind))) {
@@ -318,6 +348,23 @@ class KnowledgeBaseFactory {
       ...options,
       str: symbol.getName(),
       knowledgeBase: this.functionReturnKnowledgeBase,
+    })
+  }
+
+  /**
+   * Tries to retrieve the description template of an OAS property from the {@link oasDescriptionKnowledgeBase}.
+   *
+   * @returns {string | undefined} The matching knowledgebase template, if found.
+   */
+  tryToGetOasDescription({
+    str,
+    ...options
+  }: RetrieveOptions): string | undefined {
+    const normalizedTypeStr = str.replaceAll("[]", "")
+    return this.tryToFindInKnowledgeBase({
+      ...options,
+      str: normalizedTypeStr,
+      knowledgeBase: this.oasDescriptionKnowledgeBase,
     })
   }
 }
