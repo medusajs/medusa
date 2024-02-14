@@ -125,13 +125,16 @@ export default class RegionModuleService<
       sharedContext
     )
 
-    const countriesInDbMap = new Map(countriesInDb.map((c) => [c.iso_2, c]))
+    const countriesInDbMap = new Map<string, Country>(
+      countriesInDb.map((c) => [c.iso_2, c])
+    )
 
     const currencyMap = new Map(
       currencies.map((c) => [c.code.toLowerCase(), c])
     )
 
     const toCreate: InternalCreateRegionDTO[] = []
+    const seenCountries = new Set<string>()
     for (const region of data) {
       const reg = { ...region } as InternalCreateRegionDTO
       const countriesToAdd = region.countries || []
@@ -151,12 +154,14 @@ export default class RegionModuleService<
         const regionCountries = countriesToAdd.map((code) => {
           const country = countriesInDbMap.get(code.toLowerCase())
 
-          if (country?.region_id) {
+          if (country?.region_id || seenCountries.has(code.toLowerCase())) {
             throw new MedusaError(
               MedusaError.Types.INVALID_DATA,
               `Country with code ${code} is already assigned to a region`
             )
           }
+
+          seenCountries.add(code.toLowerCase())
 
           return country
         }) as unknown as TCountry[]

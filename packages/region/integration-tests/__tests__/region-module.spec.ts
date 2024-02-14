@@ -148,6 +148,25 @@ describe("Region Module Service", () => {
     )
   })
 
+  it("should throw when country is being assigned to multiple regions", async () => {
+    await expect(
+      service.create([
+        {
+          name: "United States",
+          currency_code: "USD",
+          countries: ["us"],
+        },
+        {
+          name: "North America",
+          currency_code: "USD",
+          countries: ["us"],
+        },
+      ])
+    ).rejects.toThrowError(
+      "Country with code us is already assigned to a region"
+    )
+  })
+
   it("should fail when currency does not exist", async () => {
     await expect(
       service.create({
