@@ -6,6 +6,7 @@ import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import { createInvitesWorkflow } from "@medusajs/core-flows"
 import { CreateInviteDTO, CreateUserDTO } from "@medusajs/types"
 
+// List invites
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -32,6 +33,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   })
 }
 
+// Create invite
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const workflow = createInvitesWorkflow(req.scope)
 

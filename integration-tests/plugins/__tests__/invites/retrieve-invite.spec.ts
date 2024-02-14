@@ -16,7 +16,7 @@ const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("GET /admin/users/:id", () => {
+describe("GET /admin/invites/:id", () => {
   let dbConnection
   let appContainer
   let shutdownServer

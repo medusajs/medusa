@@ -14,7 +14,7 @@ export class AdminGetInvitesParams extends extendedFindParamsMixin({
   offset: 0,
 }) {
   /**
-   * IDs to filter users by.
+   * IDs to filter invites by.
    */
   @IsOptional()
   @IsType([String, [String]])
@@ -28,7 +28,7 @@ export class AdminGetInvitesParams extends extendedFindParamsMixin({
   order?: string
 
   /**
-   * Date filters to apply on the users' `update_at` date.
+   * Date filters to apply on the invites' `update_at` date.
    */
   @IsOptional()
   @ValidateNested()
@@ -36,7 +36,7 @@ export class AdminGetInvitesParams extends extendedFindParamsMixin({
   updated_at?: DateComparisonOperator
 
   /**
-   * Date filters to apply on the customer users' `created_at` date.
+   * Date filters to apply on the customer invites' `created_at` date.
    */
   @IsOptional()
   @ValidateNested()
@@ -44,7 +44,7 @@ export class AdminGetInvitesParams extends extendedFindParamsMixin({
   created_at?: DateComparisonOperator
 
   /**
-   * Date filters to apply on the users' `deleted_at` date.
+   * Date filters to apply on the invites' `deleted_at` date.
    */
   @IsOptional()
   @ValidateNested()
@@ -52,14 +52,14 @@ export class AdminGetInvitesParams extends extendedFindParamsMixin({
   deleted_at?: DateComparisonOperator
 
   /**
-   * Filter to apply on the users' `email` field.
+   * Filter to apply on the invites' `email` field.
    */
   @IsOptional()
   @IsString()
   email?: string
 
   /**
-   * Comma-separated fields that should be included in the returned users.
+   * Comma-separated fields that should be included in the returned invites.
    */
   @IsOptional()
   @IsString()
