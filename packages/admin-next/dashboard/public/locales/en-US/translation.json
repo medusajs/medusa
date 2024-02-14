@@ -66,6 +66,7 @@
     "deleteWarning": "You are about to delete the product {{title}}. This action cannot be undone.",
     "variants": "Variants",
     "attributes": "Attributes",
+    "editProduct": "Edit Product",
     "editAttributes": "Edit Attributes",
     "organization": "Organization",
     "editOrganization": "Edit Organization",
@@ -394,6 +395,7 @@
     "midCode": "MID Code",
     "hsCode": "HS Code",
     "countryOfOrigin": "Country of Origin",
+    "material": "Material",
     "thumbnail": "Thumbnail"
   }
 }

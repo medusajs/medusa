@@ -361,23 +361,23 @@ class ProductVariantReq {
 
   @IsString()
   @IsOptional()
-  sku?: string
+  sku?: string | null
 
   @IsString()
   @IsOptional()
-  ean?: string
+  ean?: string | null
 
   @IsString()
   @IsOptional()
-  upc?: string
+  upc?: string | null
 
   @IsString()
   @IsOptional()
-  barcode?: string
+  barcode?: string | null
 
   @IsString()
   @IsOptional()
-  hs_code?: string
+  hs_code?: string | null
 
   @IsInt()
   @IsOptional()

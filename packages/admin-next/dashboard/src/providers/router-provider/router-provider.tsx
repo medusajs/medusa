@@ -130,6 +130,10 @@ const router = createBrowserRouter([
                 },
                 children: [
                   {
+                    path: "edit",
+                    lazy: () => import("../../routes/products/product-edit"),
+                  },
+                  {
                     path: "attributes",
                     lazy: () =>
                       import("../../routes/products/product-attributes"),

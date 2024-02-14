@@ -57,7 +57,15 @@ export const ProductAttributesForm = ({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
-      {},
+      {
+        weight: data.weight ? parseFloat(data.weight) : undefined,
+        length: data.length ? parseFloat(data.length) : undefined,
+        width: data.width ? parseFloat(data.width) : undefined,
+        height: data.height ? parseFloat(data.height) : undefined,
+        mid_code: data.mid_code,
+        hs_code: data.hs_code,
+        origin_country: data.origin_country,
+      },
       {
         onSuccess: () => {
           onSuccessfulSubmit()
