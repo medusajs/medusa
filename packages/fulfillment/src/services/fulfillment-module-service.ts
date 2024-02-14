@@ -15,11 +15,11 @@ import {
   MedusaError,
   ModulesSdkUtils,
   promiseAll,
+  getSetDifference
 } from "@medusajs/utils"
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { FulfillmentSet, GeoZone, ServiceZone, ShippingOption } from "@models"
-import { getSetDifference } from "@medusajs/medusa/dist/utils/diff-set"
 
 const generateMethodForModels = [ServiceZone, ShippingOption, GeoZone]
 
