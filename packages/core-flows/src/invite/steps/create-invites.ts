@@ -12,7 +12,10 @@ export const createInviteStep = createStep(
 
     const createdInvites = await service.createInvites(input)
 
-    return new StepResponse(createdInvites, createdInvites.map(inv => inv.id))
+    return new StepResponse(
+      createdInvites,
+      createdInvites.map((inv) => inv.id)
+    )
   },
   async (createdInvitesIds, { container }) => {
     if (!createdInvitesIds?.length) {
