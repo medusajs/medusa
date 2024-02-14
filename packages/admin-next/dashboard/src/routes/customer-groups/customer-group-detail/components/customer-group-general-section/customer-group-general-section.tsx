@@ -27,7 +27,7 @@ export const CustomerGroupGeneralSection = ({
   }
 
   return (
-    <Container className="px-6 py-4 flex items-center justify-between">
+    <Container className="flex items-center justify-between px-6 py-4">
       <Heading>{group.name}</Heading>
       <ActionMenu
         groups={[
@@ -35,7 +35,7 @@ export const CustomerGroupGeneralSection = ({
             actions: [
               {
                 icon: <PencilSquare />,
-                label: t("general.edit"),
+                label: t("actions.edit"),
                 to: `/customer-groups/${group.id}/edit`,
               },
             ],
@@ -44,7 +44,7 @@ export const CustomerGroupGeneralSection = ({
             actions: [
               {
                 icon: <Trash />,
-                label: t("general.delete"),
+                label: t("actions.delete"),
                 onClick: handleDelete,
               },
             ],

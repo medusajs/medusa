@@ -1,4 +1,4 @@
-import { BaseFilterable } from "../dal"
+import { BaseFilterable, OperatorMap } from "../dal"
 
 /**
  * The region details.
@@ -28,6 +28,9 @@ export interface RegionDTO {
    * The countries of the region.
    */
   countries: CountryDTO[]
+  metadata?: Record<string, any>
+  created_at: string
+  updated_at: string
 }
 
 /**
@@ -71,14 +74,29 @@ export interface CountryDTO {
 export interface FilterableRegionProps
   extends BaseFilterable<FilterableRegionProps> {
   /**
-   * The IDs to filter the region by.
+   * The IDs to filter the regions by.
    */
-  id?: string[]
-
+  id?: string[] | string
   /**
    * Filter regions by their name.
    */
-  name?: string[]
+  name?: string | OperatorMap<string>
+  /**
+   * Filter regions by their currency code.
+   */
+  currency_code?: string | OperatorMap<string>
+  /**
+   * Filter regions by their metadata.
+   */
+  metadata?: Record<string, unknown> | OperatorMap<Record<string, unknown>>
+  /**
+   * Filter regions by their creation date.
+   */
+  created_at?: OperatorMap<string>
+  /**
+   * Filter regions by their update date.
+   */
+  updated_at?: OperatorMap<string>
 }
 
 /**

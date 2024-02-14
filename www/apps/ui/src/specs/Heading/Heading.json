@@ -11,8 +11,12 @@
       "description": "The heading level which specifies which heading element is used.",
       "tsType": {
         "name": "union",
-        "raw": "\"h2\" \\| \"h3\" \\| \"h1\"",
+        "raw": "\"h1\" \\| \"h2\" \\| \"h3\"",
         "elements": [
+          {
+            "name": "literal",
+            "value": "\"h1\""
+          },
           {
             "name": "literal",
             "value": "\"h2\""
@@ -20,10 +24,6 @@
           {
             "name": "literal",
             "value": "\"h3\""
-          },
-          {
-            "name": "literal",
-            "value": "\"h1\""
           }
         ]
       },

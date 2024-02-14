@@ -6,14 +6,15 @@ import {
   CreatePaymentDTO,
   CreatePaymentSessionDTO,
   CreateRefundDTO,
-  SetPaymentSessionsDTO,
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
+  UpdatePaymentSessionDTO,
 } from "./mutations"
 import {
   FilterablePaymentCollectionProps,
   PaymentCollectionDTO,
   PaymentDTO,
+  PaymentSessionDTO,
 } from "./common"
 import { FindConfig } from "../common"
 
@@ -22,22 +23,33 @@ import { FindConfig } from "../common"
  */
 export interface IPaymentModuleService extends IModuleService {
   /* ********** PAYMENT COLLECTION ********** */
-  createPaymentCollection(
+
+  /**
+   * This method creates payment collections.
+   *
+   * @param {CreatePaymentCollectionDTO[]} data - The payment collections to create.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PaymentCollectionDTO[]>} The created payment collections.
+   *
+   * @example
+   * {example-code}
+   */
+  createPaymentCollections(
     data: CreatePaymentCollectionDTO[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
 
   /**
-   * This method creates a payment collection
+   * This method creates a payment collection.
    *
-   * @param {CreatePaymentCollectionDTO} data - The payment collection to be created.
+   * @param {CreatePaymentCollectionDTO} data - The payment collection to create.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PaymentCollectionDTO>} The created payment collection.
    *
    * @example
    * {example-code}
    */
-  createPaymentCollection(
+  createPaymentCollections(
     data: CreatePaymentCollectionDTO,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
@@ -147,14 +159,14 @@ export interface IPaymentModuleService extends IModuleService {
   /**
    * This method updates existing payment collections.
    *
-   * @param {UpdatePaymentCollectionDTO[]} data - The attributes to update in each payment collection.
+   * @param {UpdatePaymentCollectionDTO[]} data - The attributes to update in payment collections.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PaymentCollectionDTO[]>} The updated payment collections.
    *
    * @example
    * {example-code}
    */
-  updatePaymentCollection(
+  updatePaymentCollections(
     data: UpdatePaymentCollectionDTO[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
@@ -162,14 +174,14 @@ export interface IPaymentModuleService extends IModuleService {
   /**
    * This method updates an existing payment collection.
    *
-   * @param {UpdatePaymentCollectionDTO} data - The attributes to update in the payment collection.
+   * @param {UpdatePaymentCollectionDTO} data - The attributes to update in a payment collection.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentCollectionDTO>} The updated payment collection.
+   * @returns {Promise<PaymentCollectionDTO[]>} The updated payment collection.
    *
    * @example
    * {example-code}
    */
-  updatePaymentCollection(
+  updatePaymentCollections(
     data: UpdatePaymentCollectionDTO,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
@@ -205,21 +217,6 @@ export interface IPaymentModuleService extends IModuleService {
   ): Promise<void>
 
   /**
-   * This method authorizes a payment collection
-   *
-   * @param {string} paymentCollectionId - The payment collection's ID.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentCollectionDTO>} The payment collection's details.
-   *
-   * @example
-   * {example-code}
-   */
-  authorizePaymentCollection(
-    paymentCollectionId: string,
-    sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
-
-  /**
    * This method completes a payment collection.
    *
    * @param {string} paymentCollectionId - The payment collection's ID.
@@ -229,125 +226,90 @@ export interface IPaymentModuleService extends IModuleService {
    * @example
    * {example-code}
    */
-  completePaymentCollection(
+  completePaymentCollections(
     paymentCollectionId: string,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
+
+  /**
+   * This method completes payment collections.
+   *
+   * @param {string[]} paymentCollectionId - The payment collections' IDs.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PaymentCollectionDTO[]>} The payment collections' details.
+   *
+   * @example
+   * {example-code}
+   */
+  completePaymentCollections(
+    paymentCollectionId: string[],
+    sharedContext?: Context
+  ): Promise<PaymentCollectionDTO[]>
+
+  /* ********** PAYMENT SESSION ********** */
+
+  /**
+   * This method creates a payment session for a payment collection.
+   *
+   * @param {string} paymentCollectionId - The ID of the payment collection to create the session for.
+   * @param {CreatePaymentSessionDTO} data - The details of the payment session.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PaymentCollectionDTO>} The payment collection's details.
+   *
+   * @example
+   * {example-code}
+   */
+  createPaymentSession(
+    paymentCollectionId: string,
+    data: CreatePaymentSessionDTO,
+    sharedContext?: Context
+  ): Promise<PaymentSessionDTO>
+
+  /**
+   * This method updates a payment session.
+   *
+   * @param {UpdatePaymentSessionDTO} data - The attributes to update in the payment session.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PaymentSessionDTO>} The payment session's details.
+   *
+   * @example
+   * {example-code}
+   */
+  updatePaymentSession(
+    data: UpdatePaymentSessionDTO,
+    sharedContext?: Context
+  ): Promise<PaymentSessionDTO>
+
+  /**
+   * This method deletes a payment session.
+   *
+   * @param {string} id - The ID of the payment session.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves whent the payment session is deleted.
+   *
+   * @example
+   * {example-code}
+   */
+  deletePaymentSession(id: string, sharedContext?: Context): Promise<void>
+
+  /**
+   * This method authorizes a payment session.
+   *
+   * @param {string} id - The payment session's ID.
+   * @param {Record<string, unknown>} context - The associated payment provider's context.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PaymentDTO>} The details of the payment created from the authorized payment session.
+   *
+   * @example
+   * {example-code}
+   */
+  authorizePaymentSession(
+    id: string,
+    context: Record<string, unknown>,
+    sharedContext?: Context
+  ): Promise<PaymentDTO>
+
   /* ********** PAYMENT ********** */
-
-  /**
-   * This method creates a payment.
-   *
-   * @param {CreatePaymentDTO} data - The payment to be created.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentDTO>} The created payment.
-   */
-  createPayment(
-    data: CreatePaymentDTO,
-    sharedContext?: Context
-  ): Promise<PaymentDTO>
-
-  /**
-   * This method creates payments.
-   *
-   * @param {CreatePaymentDTO[]} data - The payments to be created.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentDTO[]>} The created payments.
-   *
-   * @example
-   * {example-code}
-   */
-  createPayment(
-    data: CreatePaymentDTO[],
-    sharedContext?: Context
-  ): Promise<PaymentDTO[]>
-
-  /**
-   * This method captures a payment.
-   *
-   * @param {CreateCaptureDTO} data - The payment capture to be created.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentDTO>} The payment's details.
-   *
-   * @example
-   * {example-code}
-   */
-  capturePayment(
-    data: CreateCaptureDTO,
-    sharedContext?: Context
-  ): Promise<PaymentDTO>
-
-  /**
-   * This method captures payments.
-   *
-   * @param {CreateCaptureDTO[]} data - The payment captures to be created.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentDTO[]>} The payments' details.
-   *
-   * @example
-   * {example-code}
-   */
-  capturePayment(
-    data: CreateCaptureDTO[],
-    sharedContext?: Context
-  ): Promise<PaymentDTO[]>
-
-  /**
-   * This method refunds a payment.
-   *
-   * @param {CreateRefundDTO} data - The refund to be created.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentDTO>} The payment's details.
-   *
-   * @example
-   * {example-code}
-   */
-  refundPayment(
-    data: CreateRefundDTO,
-    sharedContext?: Context
-  ): Promise<PaymentDTO>
-
-  /**
-   * This method refunds payments
-   *
-   * @param {CreateRefundDTO[]} data - The refunds to be created.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentDTO[]>} The payments' details.
-   *
-   * @example
-   * {example-code}
-   */
-  refundPayment(
-    data: CreateRefundDTO[],
-    sharedContext?: Context
-  ): Promise<PaymentDTO[]>
-
-  /**
-   * This method cancels a payment
-   *
-   * @param {string} paymentId - The payment's ID.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentDTO>} The payment's details.
-   *
-   * @example
-   * {example-code}
-   */
-  cancelPayment(paymentId: string, sharedContext?: Context): Promise<PaymentDTO>
-
-  /**
-   * This method cancels payments
-   *
-   * @param {string[]} paymentId - The payment's ID.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentDTO[]>} The payments' details.
-   *
-   * @example
-   * {example-code}
-   */
-  cancelPayment(
-    paymentId: string[],
-    sharedContext?: Context
-  ): Promise<PaymentDTO[]>
 
   /**
    * This method updates an existing payment.
@@ -365,100 +327,52 @@ export interface IPaymentModuleService extends IModuleService {
   ): Promise<PaymentDTO>
 
   /**
-   * This method updates existing payments.
+   * This method captures a payment.
    *
-   * @param {UpdatePaymentDTO[]} data - The attributes to update in each payment.
+   * @param {CreateCaptureDTO} data - The payment capture to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentDTO[]>} The updated payments.
+   * @returns {Promise<PaymentDTO>} The payment's details.
    *
    * @example
    * {example-code}
    */
-  updatePayment(
-    data: UpdatePaymentDTO[],
+  capturePayment(
+    data: CreateCaptureDTO,
     sharedContext?: Context
-  ): Promise<PaymentDTO[]>
-  /* ********** PAYMENT SESSION ********** */
+  ): Promise<PaymentDTO>
 
   /**
-   * This method creates a payment session for a payment collection.
+   * This method refunds a payment.
    *
-   * @param {string} paymentCollectionId - The ID of the payment collection to create the session for.
-   * @param {CreatePaymentSessionDTO} data - The details of the payment session.
+   * @param {CreateRefundDTO} data - The refund to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentCollectionDTO>} The payment collection's details.
-   */
-  createPaymentSession(
-    paymentCollectionId: string,
-    data: CreatePaymentSessionDTO,
-    sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
-
-  /**
-   * This method creates payment sessions for a payment collection
-   *
-   * @param {string} paymentCollectionId - The payment collection's ID.
-   * @param {CreatePaymentSessionDTO[]} data - The payment sessions to be created.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentCollectionDTO>} The payment collection's details.
+   * @returns {Promise<PaymentDTO>} The payment's details.
    *
    * @example
    * {example-code}
    */
-  createPaymentSession(
-    paymentCollectionId: string,
-    data: CreatePaymentSessionDTO[],
+  refundPayment(
+    data: CreateRefundDTO,
     sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
+  ): Promise<PaymentDTO>
 
   /**
-   * This method authorizes payment sessions.
+   * This method cancels a payment
    *
-   * @param {string} paymentCollectionId - The payment collection's ID.
-   * @param {string[]} sessionIds - The list of IDs of payment sessions to authorize.
+   * @param {string} paymentId - The payment's ID.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentCollectionDTO>} The payment collection's details.
+   * @returns {Promise<PaymentDTO>} The payment's details.
    *
    * @example
    * {example-code}
    */
-  authorizePaymentSessions(
-    paymentCollectionId: string,
-    sessionIds: string[],
-    sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
+  cancelPayment(paymentId: string, sharedContext?: Context): Promise<PaymentDTO>
 
   /**
-   * This method completes payment sessions of a payment collection.
-   *
-   * @param {string} paymentCollectionId - The payment collection's ID.
-   * @param {string[]} sessionIds - The list of IDs of a payment session to complete.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentCollectionDTO>} The payment collection's details.
+   * This method creates providers on load.
    *
    * @example
    * {example-code}
    */
-  completePaymentSessions(
-    paymentCollectionId: string,
-    sessionIds: string[],
-    sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
-
-  /**
-   * This method sets payment sessions of a payment collection.
-   *
-   * @param {string} paymentCollectionId - The payment collection's ID.
-   * @param {SetPaymentSessionsDTO[]} data - The details of the payment sessions to set.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentCollectionDTO>} The payment collection's ID.
-   *
-   * @example
-   * {example-code}
-   */
-  setPaymentSessions(
-    paymentCollectionId: string,
-    data: SetPaymentSessionsDTO[],
-    sharedContext?: Context
-  ): Promise<PaymentCollectionDTO>
+  createProvidersOnLoad(): Promise<void>
 }

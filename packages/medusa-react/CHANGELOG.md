@@ -1,5 +1,14 @@
 # Change Log
 
+## 9.0.15
+
+### Patch Changes
+
+- [`ef64f3740`](https://github.com/medusajs/medusa/commit/ef64f3740d90a8b8565ed10d33e8e35a640cd1ae) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset for medusa-react
+
+- Updated dependencies [[`20cefa033`](https://github.com/medusajs/medusa/commit/20cefa0335384e3c37f593c9698651895765234e)]:
+  - @medusajs/medusa-js@6.1.7
+
 ## 9.0.14
 
 ### Patch Changes

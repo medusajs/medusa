@@ -7,6 +7,31 @@ type ExampleType = {
 }
 
 export const ExampleRegistry: Record<string, ExampleType> = {
+  "alert-demo": {
+    name: "alert-demo",
+    component: React.lazy(async () => import("@/examples/alert-demo")),
+    file: "src/examples/alert-demo.tsx",
+  },
+  "alert-dismissable": {
+    name: "alert-dismissable",
+    component: React.lazy(async () => import("@/examples/alert-dismissable")),
+    file: "src/examples/alert-dismissable.tsx",
+  },
+  "alert-error": {
+    name: "alert-error",
+    component: React.lazy(async () => import("@/examples/alert-error")),
+    file: "src/examples/alert-error.tsx",
+  },
+  "alert-success": {
+    name: "alert-success",
+    component: React.lazy(async () => import("@/examples/alert-success")),
+    file: "src/examples/alert-demo.tsx",
+  },
+  "alert-warning": {
+    name: "alert-warning",
+    component: React.lazy(async () => import("@/examples/alert-warning")),
+    file: "src/examples/alert-demo.tsx",
+  },
   "avatar-demo": {
     name: "avatar-demo",
     component: React.lazy(async () => import("@/examples/avatar-demo")),

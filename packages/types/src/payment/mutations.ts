@@ -1,7 +1,8 @@
 import { PaymentCollectionStatus } from "./common"
+import { PaymentProviderContext } from "./provider"
 
 /**
- * Payment Collection
+ * The payment collection to be created.
  */
 export interface CreatePaymentCollectionDTO {
   /**
@@ -52,7 +53,7 @@ export interface UpdatePaymentCollectionDTO
 }
 
 /**
- * Payment
+ * The payment to be created.
  */
 export interface CreatePaymentDTO {
   /**
@@ -134,11 +135,6 @@ export interface UpdatePaymentDTO {
    * The associated customer's ID.
    */
   customer_id?: string
-
-  /**
-   * The data of the payment.
-   */
-  data?: Record<string, unknown>
 }
 
 /**
@@ -182,56 +178,43 @@ export interface CreateRefundDTO {
 }
 
 /**
- * Payment Session
+ * The payment session to be created.
  */
 export interface CreatePaymentSessionDTO {
   /**
-   * The amount of the payment session.
-   */
-  amount: number
-
-  /**
-   * The currency code of the payment session.
-   */
-  currency_code: string
-
-  /**
-   * The associated provider's ID.
+   * The provider's ID.
    */
   provider_id: string
-
   /**
-   * The associated cart's ID.
+   * The provider's context.
    */
-  cart_id?: string
-
-  /**
-   * The associated resource's ID.
-   */
-  resource_id?: string
-
-  /**
-   * The associated customer's ID.
-   */
-  customer_id?: string
+  providerContext: PaymentProviderContext
 }
 
 /**
- * The details to set a payment session.
+ * The attributes to update in a payment session.
  */
-export interface SetPaymentSessionsDTO {
+export interface UpdatePaymentSessionDTO {
   /**
-   * The associated provider's ID.
+   * The payment session's ID.
    */
-  provider_id: string
+  id: string
+  /**
+   * The payment session's context.
+   */
+  providerContext: PaymentProviderContext
+}
 
+/**
+ * The payment provider to be created.
+ */
+export interface CreatePaymentProviderDTO {
   /**
-   * The amount of the set payment sessions.
+   * The provider's ID.
    */
-  amount: number
-
+  id: string
   /**
-   * The associated session's ID.
+   * Whether the provider is enabled.
    */
-  session_id?: string
+  is_enabled?: boolean
 }
