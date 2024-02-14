@@ -7,11 +7,12 @@ import {
 import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   Filter,
   Index,
-  ManyToMany,
+  ManyToOne,
   OneToMany,
   OnInit,
   OptionalProps,
@@ -32,6 +33,23 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 }).expression
 
+const nameIndexName = "IDX_service_zone_name_unique"
+const nameIndexStatement = createPsqlIndexStatementHelper({
+  name: nameIndexName,
+  tableName: "service_zone",
+  columns: "name",
+  unique: true,
+  where: "deleted_at IS NULL",
+})
+
+const fulfillmentSetIdIndexName = "IDX_service_zone_fulfillment_set_id"
+const fulfillmentSetIdIndexStatement = createPsqlIndexStatementHelper({
+  name: fulfillmentSetIdIndexName,
+  tableName: "service_zone",
+  columns: "fulfillment_set_id",
+  where: "deleted_at IS NULL",
+})
+
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ServiceZone {
@@ -41,22 +59,28 @@ export default class ServiceZone {
   id: string
 
   @Property({ columnType: "text" })
+  @Index({
+    name: nameIndexName,
+    expression: nameIndexStatement,
+  })
   name: string
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @ManyToMany(
-    () => FulfillmentSet,
-    (fulfillmentSet) => fulfillmentSet.service_zones
-  )
-  fulfillment_sets = new Collection<FulfillmentSet>(this)
+  @Property({ columnType: "text" })
+  @Index({
+    name: fulfillmentSetIdIndexName,
+    expression: fulfillmentSetIdIndexStatement,
+  })
+  fulfillment_set_id: string
 
-  @ManyToMany(() => GeoZone, "service_zones", {
-    owner: true,
-    pivotTable: "service_zone_geo_zones",
-    joinColumn: "service_zone_id",
-    inverseJoinColumn: "geo_zone_id",
+  @ManyToOne(() => FulfillmentSet, { persist: false })
+  fulfillment_set: FulfillmentSet
+
+  @OneToMany(() => GeoZone, "service_zone", {
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+    orphanRemoval: true,
   })
   geo_zones = new Collection<GeoZone>(this)
 
@@ -91,10 +115,12 @@ export default class ServiceZone {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "serzo")
+    this.fulfillment_set_id ??= this.fulfillment_set?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "serzo")
+    this.fulfillment_set_id ??= this.fulfillment_set?.id
   }
 }
