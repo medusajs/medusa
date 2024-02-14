@@ -23,7 +23,11 @@ import {
 import { Country, Currency, Region } from "@models"
 
 import { DefaultsUtils } from "@medusajs/utils"
-import { CreateCountryDTO, CreateCurrencyDTO } from "@types"
+import {
+  CreateCountryDTO,
+  CreateCurrencyDTO,
+  CreateRegionDTO as InternalCreateRegionDTO,
+} from "@types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 const COUNTRIES_LIMIT = 1000
@@ -115,20 +119,70 @@ export default class RegionModuleService<
       sharedContext
     )
 
-    let currencyMap = new Map(currencies.map((c) => [c.code.toLowerCase(), c]))
-    for (const reg of data) {
-      const lowerCasedCurrency = reg.currency_code.toLowerCase()
+    const countriesInDb = await this.countryService_.list(
+      { iso_2: data.map((d) => d.countries).flat() },
+      { select: ["iso_2", "region_id"] },
+      sharedContext
+    )
+
+    const countriesInDbMap = new Map<string, Country>(
+      countriesInDb.map((c) => [c.iso_2, c])
+    )
+
+    const currencyMap = new Map(
+      currencies.map((c) => [c.code.toLowerCase(), c])
+    )
+
+    const toCreate: InternalCreateRegionDTO[] = []
+    const seenCountries = new Set<string>()
+    for (const region of data) {
+      const reg = { ...region } as InternalCreateRegionDTO
+      const countriesToAdd = region.countries || []
+
+      if (countriesToAdd) {
+        const notInDb = countriesToAdd.filter(
+          (c) => !countriesInDbMap.has(c.toLowerCase())
+        )
+
+        if (notInDb.length) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Countries with codes ${countriesToAdd.join(", ")} does not exist`
+          )
+        }
+
+        const regionCountries = countriesToAdd.map((code) => {
+          const country = countriesInDbMap.get(code.toLowerCase())
+
+          if (country?.region_id || seenCountries.has(code.toLowerCase())) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Country with code ${code} is already assigned to a region`
+            )
+          }
+
+          seenCountries.add(code.toLowerCase())
+
+          return country
+        }) as unknown as TCountry[]
+
+        reg.countries = regionCountries
+      }
+
+      const lowerCasedCurrency = region.currency_code.toLowerCase()
       if (!currencyMap.has(lowerCasedCurrency)) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Currency with code: ${reg.currency_code} was not found`
+          `Currency with code: ${region.currency_code} was not found`
         )
       }
 
       reg.currency_code = lowerCasedCurrency
+
+      toCreate.push(reg as InternalCreateRegionDTO)
     }
 
-    const result = await this.regionService_.create(data, sharedContext)
+    const result = await this.regionService_.create(toCreate, sharedContext)
 
     return result
   }
