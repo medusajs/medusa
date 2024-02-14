@@ -1,6 +1,7 @@
 import { Type } from "class-transformer"
 import {
   IsArray,
+  IsEmail,
   IsInt,
   IsNotEmpty,
   IsObject,
@@ -8,7 +9,8 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { FindParams } from "../../../types/common"
+import { AddressPayload, FindParams } from "../../../types/common"
+import { IsType } from "../../../utils"
 
 export class StoreGetCartsCartParams extends FindParams {}
 
@@ -35,6 +37,7 @@ export class StorePostCartReq {
   @IsString()
   email?: string
 
+  // TODO: Remove in favor of using region currencies, as in the core
   @IsOptional()
   @IsString()
   currency_code?: string
@@ -52,4 +55,46 @@ export class StorePostCartReq {
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
+}
+
+export class StorePostCartsCartReq {
+  @IsOptional()
+  @IsString()
+  region_id?: string
+
+  @IsEmail()
+  @IsOptional()
+  email?: string
+
+  @IsOptional()
+  @IsType([AddressPayload, String])
+  billing_address?: AddressPayload | string
+
+  @IsOptional()
+  @IsType([AddressPayload, String])
+  shipping_address?: AddressPayload | string
+
+  @IsString()
+  @IsOptional()
+  customer_id?: string
+
+  @IsEmail()
+  @IsOptional()
+  sales_channel_id?: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
+
+  // @IsOptional()
+  // @IsArray()
+  // @ValidateNested({ each: true })
+  // @Type(() => GiftCard)
+  // gift_cards?: GiftCard[]
+
+  // @IsOptional()
+  // @IsArray()
+  // @ValidateNested({ each: true })
+  // @Type(() => Discount)
+  // discounts?: Discount[]
 }
