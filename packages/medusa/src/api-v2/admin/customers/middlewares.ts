@@ -6,6 +6,9 @@ import {
   AdminGetCustomersCustomerParams,
   AdminPostCustomersReq,
   AdminPostCustomersCustomerReq,
+  AdminPostCustomersCustomerAddressesReq,
+  AdminGetCustomersCustomerAddressesParams,
+  AdminPostCustomersCustomerAddressesAddressReq,
 } from "./validators"
 
 export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
@@ -38,5 +41,25 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/customers/:id",
     middlewares: [transformBody(AdminPostCustomersCustomerReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/customers/:id/addresses",
+    middlewares: [transformBody(AdminPostCustomersCustomerAddressesReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/customers/:id/addresses/:address_id",
+    middlewares: [transformBody(AdminPostCustomersCustomerAddressesAddressReq)],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/customers/:id/addresses",
+    middlewares: [
+      transformQuery(
+        AdminGetCustomersCustomerAddressesParams,
+        QueryConfig.listAddressesTransformQueryConfig
+      ),
+    ],
   },
 ]

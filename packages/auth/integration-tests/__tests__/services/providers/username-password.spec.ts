@@ -1,17 +1,15 @@
-import { AuthenticationInput, IAuthModuleService } from "@medusajs/types"
 import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 
+import { IAuthModuleService } from "@medusajs/types"
 import { MikroOrmWrapper } from "../../../utils"
 import Scrypt from "scrypt-kdf"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { createAuthProviders } from "../../../__fixtures__/auth-provider"
 import { createAuthUsers } from "../../../__fixtures__/auth-user"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 const seedDefaultData = async (testManager) => {
-  await createAuthProviders(testManager)
   await createAuthUsers(testManager)
 }
 
@@ -62,6 +60,7 @@ describe("AuthModuleService - AuthProvider", () => {
         {
           provider: "emailpass",
           entity_id: email,
+          scope: "store",
           provider_metadata: {
             password: passwordHash,
           },
@@ -73,8 +72,8 @@ describe("AuthModuleService - AuthProvider", () => {
           email: "test@test.com",
           password: password,
         },
-        scope: "store",
-      })
+        authScope: "store",
+      } as any)
 
       expect(res).toEqual({
         success: true,
@@ -86,14 +85,12 @@ describe("AuthModuleService - AuthProvider", () => {
     })
 
     it("fails when no password is given", async () => {
-      const email = "test@test.com"
-
       await seedDefaultData(testManager)
 
       const res = await service.authenticate("emailpass", {
         body: { email: "test@test.com" },
-        scope: "store",
-      })
+        authScope: "store",
+      } as any)
 
       expect(res).toEqual({
         success: false,
@@ -106,8 +103,8 @@ describe("AuthModuleService - AuthProvider", () => {
 
       const res = await service.authenticate("emailpass", {
         body: { password: "supersecret" },
-        scope: "store",
-      })
+        authScope: "store",
+      } as any)
 
       expect(res).toEqual({
         success: false,
@@ -127,6 +124,7 @@ describe("AuthModuleService - AuthProvider", () => {
         // Add authenticated user
         {
           provider: "emailpass",
+          scope: "store",
           entity_id: email,
           provider_metadata: {
             password_hash: passwordHash,
@@ -139,8 +137,8 @@ describe("AuthModuleService - AuthProvider", () => {
           email: "test@test.com",
           password: "password",
         },
-        scope: "store",
-      })
+        authScope: "store",
+      } as any)
 
       expect(res).toEqual({
         success: false,

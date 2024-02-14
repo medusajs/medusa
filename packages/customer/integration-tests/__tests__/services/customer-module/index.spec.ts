@@ -1,8 +1,8 @@
 import { ICustomerModuleService } from "@medusajs/types"
 import { MikroOrmWrapper } from "../../../utils"
 import { Modules } from "@medusajs/modules-sdk"
-import { initModules } from "medusa-test-utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -80,27 +80,54 @@ describe("Customer Module Service", () => {
       }
       const customer = await service.create(customerData)
 
-      expect(customer).toEqual(
+      const [address] = await service.listAddresses({
+        customer_id: customer.id,
+      })
+
+      expect(address).toEqual(
         expect.objectContaining({
           id: expect.any(String),
-          company_name: "Acme Corp",
-          first_name: "John",
-          last_name: "Doe",
-          addresses: expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              address_1: "Testvej 1",
-              address_2: "Testvej 2",
-              city: "Testby",
-              country_code: "DK",
-              province: "Test",
-              postal_code: "8000",
-              phone: "123456789",
-              metadata: expect.objectContaining({ membership: "gold" }),
-              is_default_shipping: true,
-            }),
-          ]),
+          address_1: "Testvej 1",
+          address_2: "Testvej 2",
+          city: "Testby",
+          country_code: "DK",
+          province: "Test",
+          postal_code: "8000",
+          phone: "123456789",
+          metadata: expect.objectContaining({ membership: "gold" }),
+          is_default_shipping: true,
         })
+      )
+    })
+
+    it("should fail to create two default shipping", async () => {
+      const customerData = {
+        company_name: "Acme Corp",
+        first_name: "John",
+        last_name: "Doe",
+        addresses: [
+          {
+            address_1: "Testvej 1",
+            address_2: "Testvej 2",
+            city: "Testby",
+            country_code: "DK",
+            province: "Test",
+            postal_code: "8000",
+            phone: "123456789",
+            metadata: { membership: "gold" },
+            is_default_shipping: true,
+          },
+          {
+            address_1: "Test Ave 1",
+            address_2: "Test Ave 2",
+            city: "Testville",
+            country_code: "US",
+            is_default_shipping: true,
+          },
+        ],
+      }
+      await expect(service.create(customerData)).rejects.toThrow(
+        "A default shipping address already exists"
       )
     })
 
@@ -508,7 +535,7 @@ describe("Customer Module Service", () => {
 
       await service.delete(customer.id)
 
-      const res = await service.listCustomerGroupRelations({
+      const res = await service.listCustomerGroupCustomers({
         customer_id: customer.id,
         customer_group_id: group.id,
       })
@@ -519,7 +546,7 @@ describe("Customer Module Service", () => {
   describe("deleteCustomerGroup", () => {
     it("should delete a single customer group", async () => {
       const [group] = await service.createCustomerGroup([{ name: "VIP" }])
-      await service.deleteCustomerGroup(group.id)
+      await service.deleteCustomerGroups(group.id)
 
       await expect(
         service.retrieveCustomerGroup(group.id)
@@ -533,7 +560,7 @@ describe("Customer Module Service", () => {
       ])
 
       const groupIds = groups.map((group) => group.id)
-      await service.deleteCustomerGroup(groupIds)
+      await service.deleteCustomerGroups(groupIds)
 
       for (const group of groups) {
         await expect(
@@ -548,7 +575,7 @@ describe("Customer Module Service", () => {
       await service.createCustomerGroup([{ name: "VIP" }, { name: "Regular" }])
 
       const selector = { name: "VIP" }
-      await service.deleteCustomerGroup(selector)
+      await service.deleteCustomerGroups(selector)
 
       const remainingGroups = await service.listCustomerGroups({ name: "VIP" })
       expect(remainingGroups.length).toBe(0)
@@ -568,9 +595,9 @@ describe("Customer Module Service", () => {
         customer_group_id: group.id,
       })
 
-      await service.deleteCustomerGroup(group.id)
+      await service.deleteCustomerGroups(group.id)
 
-      const res = await service.listCustomerGroupRelations({
+      const res = await service.listCustomerGroupCustomers({
         customer_id: customer.id,
         customer_group_id: group.id,
       })
@@ -666,7 +693,7 @@ describe("Customer Module Service", () => {
           country_code: "US",
           is_default_shipping: true,
         })
-      ).rejects.toThrow()
+      ).rejects.toThrow("A default shipping address already exists")
     })
 
     it("should only be possible to add one default billing address per customer", async () => {
@@ -700,7 +727,7 @@ describe("Customer Module Service", () => {
           country_code: "US",
           is_default_billing: true,
         })
-      ).rejects.toThrow()
+      ).rejects.toThrow("A default billing address already exists")
     })
   })
 
@@ -716,7 +743,7 @@ describe("Customer Module Service", () => {
         address_1: "123 Main St",
       })
 
-      await service.updateAddress(address.id, {
+      await service.updateAddresses(address.id, {
         address_name: "Work",
         address_1: "456 Main St",
       })
@@ -751,7 +778,7 @@ describe("Customer Module Service", () => {
         address_1: "456 Main St",
       })
 
-      await service.updateAddress(
+      await service.updateAddresses(
         { customer_id: customer.id },
         {
           address_name: "Under Construction",
@@ -795,7 +822,7 @@ describe("Customer Module Service", () => {
         },
       ])
 
-      await service.updateAddress([address1.id, address2.id], {
+      await service.updateAddresses([address1.id, address2.id], {
         address_name: "Under Construction",
       })
 
@@ -816,6 +843,29 @@ describe("Customer Module Service", () => {
           }),
         ])
       )
+    })
+
+    it("should fail when updating address to a default shipping address when one already exists", async () => {
+      const customer = await service.create({
+        first_name: "John",
+        last_name: "Doe",
+        addresses: [
+          {
+            address_name: "Home",
+            address_1: "123 Main St",
+            is_default_shipping: true,
+          },
+        ],
+      })
+      const address = await service.addAddresses({
+        customer_id: customer.id,
+        address_name: "Work",
+        address_1: "456 Main St",
+      })
+
+      await expect(
+        service.updateAddresses(address.id, { is_default_shipping: true })
+      ).rejects.toThrow("A default shipping address already exists")
     })
   })
 
@@ -1037,7 +1087,7 @@ describe("Customer Module Service", () => {
   describe("softDeleteCustomerGroup", () => {
     it("should soft delete a single customer group", async () => {
       const [group] = await service.createCustomerGroup([{ name: "VIP" }])
-      await service.softDeleteCustomerGroup([group.id])
+      await service.softDeleteCustomerGroups([group.id])
 
       const res = await service.listCustomerGroups({ id: group.id })
       expect(res.length).toBe(0)
@@ -1055,7 +1105,7 @@ describe("Customer Module Service", () => {
         { name: "Regular" },
       ])
       const groupIds = groups.map((group) => group.id)
-      await service.softDeleteCustomerGroup(groupIds)
+      await service.softDeleteCustomerGroups(groupIds)
 
       const res = await service.listCustomerGroups({ id: groupIds })
       expect(res.length).toBe(0)
@@ -1071,12 +1121,12 @@ describe("Customer Module Service", () => {
   describe("restoreCustomerGroup", () => {
     it("should restore a single customer group", async () => {
       const [group] = await service.createCustomerGroup([{ name: "VIP" }])
-      await service.softDeleteCustomerGroup([group.id])
+      await service.softDeleteCustomerGroups([group.id])
 
       const res = await service.listCustomerGroups({ id: group.id })
       expect(res.length).toBe(0)
 
-      await service.restoreCustomerGroup([group.id])
+      await service.restoreCustomerGroups([group.id])
 
       const restoredGroup = await service.retrieveCustomerGroup(group.id, {
         withDeleted: true,
@@ -1090,12 +1140,12 @@ describe("Customer Module Service", () => {
         { name: "Regular" },
       ])
       const groupIds = groups.map((group) => group.id)
-      await service.softDeleteCustomerGroup(groupIds)
+      await service.softDeleteCustomerGroups(groupIds)
 
       const res = await service.listCustomerGroups({ id: groupIds })
       expect(res.length).toBe(0)
 
-      await service.restoreCustomerGroup(groupIds)
+      await service.restoreCustomerGroups(groupIds)
 
       const restoredGroups = await service.listCustomerGroups(
         { id: groupIds },

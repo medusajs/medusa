@@ -17,8 +17,8 @@ import {
   DALUtils,
   isDefined,
   MedusaError,
-  promiseAll,
   ProductUtils,
+  promiseAll,
 } from "@medusajs/utils"
 
 import { ProductServiceTypes } from "../types/services"
@@ -118,7 +118,10 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Pr
   }
 
   async update(
-    data: WithRequiredProperty<ProductServiceTypes.UpdateProductDTO, "id">[],
+    data: {
+      entity: Product
+      update: WithRequiredProperty<ProductServiceTypes.UpdateProductDTO, "id">
+    }[],
     context: Context = {}
   ): Promise<Product[]> {
     let categoryIds: string[] = []
@@ -128,7 +131,7 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Pr
     // TODO: use the getter method (getActiveManager)
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    data.forEach((productData) => {
+    data.forEach(({ update: productData }) => {
       categoryIds = categoryIds.concat(
         productData?.categories?.map((c) => c.id) || []
       )
@@ -143,16 +146,6 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Pr
         typeIds.push(productData.type_id)
       }
     })
-
-    const productsToUpdate = await manager.find(
-      Product,
-      {
-        id: data.map((updateData) => updateData.id),
-      },
-      {
-        populate: ["tags", "categories"],
-      }
-    )
 
     const collectionsToAssign = collectionIds.length
       ? await manager.find(ProductCollection, {
@@ -195,11 +188,11 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Pr
     )
 
     const productsToUpdateMap = new Map<string, Product>(
-      productsToUpdate.map((product) => [product.id, product])
+      data.map(({ entity }) => [entity.id, entity])
     )
 
     const products = await promiseAll(
-      data.map(async (updateData) => {
+      data.map(async ({ update: updateData }) => {
         const product = productsToUpdateMap.get(updateData.id)
 
         if (!product) {

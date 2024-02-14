@@ -192,7 +192,7 @@ describe("PricingModule Service - PriceSetMoneyAmountRules", () => {
       }
 
       expect(error.message).toEqual(
-        '"priceSetMoneyAmountRulesId" must be defined'
+        "priceSetMoneyAmountRules - id must be defined"
       )
     })
 

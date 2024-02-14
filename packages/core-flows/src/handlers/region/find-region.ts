@@ -1,12 +1,13 @@
-import { MedusaError } from "@medusajs/utils"
 import { RegionTypes } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 import { isDefined } from "medusa-core-utils"
 
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type RegionResultDTO = {
   region_id?: string
-  region?: RegionTypes.RegionDTO
+  //  TODO: Replace with RegionDTO from Region Module
+  region?: RegionTypes.RegionDTO__legacy
 }
 
 type HandlerInputData = {

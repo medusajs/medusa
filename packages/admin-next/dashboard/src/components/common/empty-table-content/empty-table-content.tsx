@@ -1,18 +1,24 @@
 import { ExclamationCircle, MagnifyingGlass } from "@medusajs/icons"
-import { Button, Text } from "@medusajs/ui"
+import { Button, Text, clx } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
 type NoResultsProps = {
   title?: string
   message?: string
+  className?: string
 }
 
-export const NoResults = ({ title, message }: NoResultsProps) => {
+export const NoResults = ({ title, message, className }: NoResultsProps) => {
   const { t } = useTranslation()
 
   return (
-    <div className="flex h-[400px] w-full items-center justify-center">
+    <div
+      className={clx(
+        "flex h-[400px] w-full items-center justify-center",
+        className
+      )}
+    >
       <div className="flex flex-col items-center gap-y-2">
         <MagnifyingGlass />
         <Text size="small" leading="compact" weight="plus">
@@ -33,13 +39,24 @@ type NoRecordsProps = {
     to: string
     label: string
   }
+  className?: string
 }
 
-export const NoRecords = ({ title, message, action }: NoRecordsProps) => {
+export const NoRecords = ({
+  title,
+  message,
+  action,
+  className,
+}: NoRecordsProps) => {
   const { t } = useTranslation()
 
   return (
-    <div className="flex h-[400px] w-full flex-col items-center justify-center gap-y-6">
+    <div
+      className={clx(
+        "flex h-[400px] w-full flex-col items-center justify-center gap-y-6",
+        className
+      )}
+    >
       <div className="flex flex-col items-center gap-y-2">
         <ExclamationCircle />
         <Text size="small" leading="compact" weight="plus">

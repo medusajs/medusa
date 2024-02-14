@@ -2,10 +2,12 @@ import type {
   AdminCollectionsRes,
   AdminCustomerGroupsRes,
   AdminCustomersRes,
+  AdminGiftCardsRes,
   AdminProductsRes,
   AdminPublishableApiKeysRes,
   AdminRegionsRes,
   AdminSalesChannelsRes,
+  AdminUserRes,
 } from "@medusajs/medusa"
 import {
   Outlet,
@@ -17,7 +19,6 @@ import {
 import { ProtectedRoute } from "../../components/authentication/require-auth"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout/main-layout"
-import { PublicLayout } from "../../components/layout/public-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 
 import routes from "medusa-admin:routes/pages"
@@ -45,13 +46,27 @@ const settingsExtensions: RouteObject[] = settings.pages.map((ext) => {
 
 const router = createBrowserRouter([
   {
-    element: <PublicLayout />,
+    path: "/login",
+    lazy: () => import("../../routes/login"),
+  },
+  {
+    path: "/reset-password",
+    element: <Outlet />,
     children: [
       {
-        path: "/login",
-        lazy: () => import("../../routes/login"),
+        index: true,
+        lazy: () =>
+          import("../../routes/reset-password/reset-password-request"),
+      },
+      {
+        path: ":token",
+        lazy: () => import("../../routes/reset-password/reset-password-token"),
       },
     ],
+  },
+  {
+    path: "/invite",
+    lazy: () => import("../../routes/invite"),
   },
   {
     element: <ProtectedRoute />,
@@ -73,7 +88,7 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                lazy: () => import("../../routes/orders/list"),
+                lazy: () => import("../../routes/orders/order-list"),
               },
               {
                 path: ":id",
@@ -259,12 +274,29 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/gift-cards/list"),
+                path: "",
+                lazy: () => import("../../routes/gift-cards/gift-card-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/gift-cards/gift-card-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/gift-cards/details"),
+                lazy: () => import("../../routes/gift-cards/gift-card-detail"),
+                handle: {
+                  crumb: (data: AdminGiftCardsRes) => data.gift_card.code,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../routes/gift-cards/gift-card-edit"),
+                  },
+                ],
               },
             ],
           },
@@ -439,6 +471,9 @@ const router = createBrowserRouter([
               {
                 path: ":id",
                 lazy: () => import("../../routes/users/user-detail"),
+                handle: {
+                  crumb: (data: AdminUserRes) => data.user.email,
+                },
                 children: [
                   {
                     path: "edit",

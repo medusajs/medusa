@@ -4,15 +4,13 @@ import {
   TransactionCheckpoint,
   TransactionStep,
 } from "@medusajs/orchestration"
+import { ModulesSdkTypes } from "@medusajs/types"
 import { TransactionState } from "@medusajs/utils"
-import {
-  WorkflowExecutionService,
-  WorkflowOrchestratorService,
-} from "@services"
+import { WorkflowOrchestratorService } from "@services"
 
 // eslint-disable-next-line max-len
 export class InMemoryDistributedTransactionStorage extends DistributedTransactionStorage {
-  private workflowExecutionService_: WorkflowExecutionService
+  private workflowExecutionService_: ModulesSdkTypes.InternalModuleService<any>
   private workflowOrchestratorService_: WorkflowOrchestratorService
 
   private storage: Map<string, TransactionCheckpoint> = new Map()
@@ -22,7 +20,7 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
   constructor({
     workflowExecutionService,
   }: {
-    workflowExecutionService: WorkflowExecutionService
+    workflowExecutionService: ModulesSdkTypes.InternalModuleService<any>
   }) {
     super()
 
@@ -55,6 +53,22 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
         transaction_id: data.flow.transactionId,
       },
     ])
+  }
+
+  private stringifyWithSymbol(key, value) {
+    if (key === "__type" && typeof value === "symbol") {
+      return Symbol.keyFor(value)
+    }
+
+    return value
+  }
+
+  private jsonWithSymbol(key, value) {
+    if (key === "__type" && typeof value === "string") {
+      return Symbol.for(value)
+    }
+
+    return value
   }
 
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
@@ -91,10 +105,13 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
       })
     }
 
+    const stringifiedData = JSON.stringify(data, this.stringifyWithSymbol)
+    const parsedData = JSON.parse(stringifiedData)
+
     if (hasFinished && !retentionTime) {
-      await this.deleteFromDb(data)
+      await this.deleteFromDb(parsedData)
     } else {
-      await this.saveToDb(data)
+      await this.saveToDb(parsedData)
     }
 
     if (hasFinished) {

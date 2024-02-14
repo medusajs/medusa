@@ -3,13 +3,14 @@ import {
   Entity,
   Filter,
   Index,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
-import { DALUtils, generateEntityId } from "@medusajs/utils"
 import { DAL } from "@medusajs/types"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 
 type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
@@ -45,6 +46,11 @@ class ProductType {
   @Index({ name: "IDX_product_type_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at?: Date
+
+  @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "ptyp")
+  }
 
   @BeforeCreate()
   onCreate() {

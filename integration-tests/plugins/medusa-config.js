@@ -42,6 +42,16 @@ module.exports = {
     },
   },
   modules: {
+    [Modules.AUTH]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/auth",
+    },
+    [Modules.USER]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/user",
+    },
     [Modules.STOCK_LOCATION]: {
       scope: "internal",
       resources: "shared",
@@ -85,6 +95,12 @@ module.exports = {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/cart",
+    },
+    [Modules.WORKFLOW_ENGINE]: true,
+    [Modules.REGION]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/region",
     },
   },
 }

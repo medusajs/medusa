@@ -183,7 +183,7 @@ describe("Currency Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"currencyCode" must be defined')
+      expect(error.message).toEqual("currency - code must be defined")
     })
 
     it("should return currency based on config select param", async () => {

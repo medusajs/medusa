@@ -1,12 +1,12 @@
+import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService, ProductTypes } from "@medusajs/types"
-import { Product, ProductCategory } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { getInitModuleConfig, TestDatabase } from "../../../utils"
+import { Product, ProductCategory } from "@models"
+import { initModules } from "medusa-test-utils"
+import { EventBusService } from "../../../__fixtures__/event-bus"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import { productCategoriesRankData } from "../../../__fixtures__/product-category/data"
-import { EventBusService } from "../../../__fixtures__/event-bus"
-import { MedusaModule, Modules } from "@medusajs/modules-sdk"
-import { initModules } from "medusa-test-utils/dist"
+import { TestDatabase, getInitModuleConfig } from "../../../utils"
 
 describe("ProductModuleService product categories", () => {
   let service: IProductModuleService

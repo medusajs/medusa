@@ -5,7 +5,7 @@ import { initModules } from "medusa-test-utils"
 import { MikroOrmWrapper } from "../../../utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 describe("Cart Module Service", () => {
   let service: ICartModuleService
@@ -258,6 +258,56 @@ describe("Cart Module Service", () => {
         })
       )
     })
+
+    it("should update a cart with selector successfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [updatedCart] = await service.update(
+        { id: createdCart.id },
+        {
+          email: "test@email.com",
+        }
+      )
+
+      const [cart] = await service.list({ id: [createdCart.id] })
+
+      expect(cart).toEqual(
+        expect.objectContaining({
+          id: createdCart.id,
+          currency_code: "eur",
+          email: updatedCart.email,
+        })
+      )
+    })
+
+    it("should update a cart with id successfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const updatedCart = await service.update(
+        createdCart.id,
+        {
+          email: "test@email.com",
+        }
+      )
+
+      const [cart] = await service.list({ id: [createdCart.id] })
+
+      expect(cart).toEqual(
+        expect.objectContaining({
+          id: createdCart.id,
+          currency_code: "eur",
+          email: updatedCart.email,
+        })
+      )
+    })
   })
 
   describe("delete", () => {
@@ -481,14 +531,14 @@ describe("Cart Module Service", () => {
       const error = await service
         .addLineItems(createdCart.id, [
           {
-            quantity: 1,
+            unit_price: 10,
             title: "test",
           },
         ] as any)
         .catch((e) => e)
 
       expect(error.message).toContain(
-        "Value for LineItem.unit_price is required, 'undefined' found"
+        "Value for LineItem.quantity is required, 'undefined' found"
       )
     })
 
@@ -503,14 +553,14 @@ describe("Cart Module Service", () => {
         .addLineItems([
           {
             cart_id: createdCart.id,
-            quantity: 1,
+            unit_price: 10,
             title: "test",
           },
         ] as any)
         .catch((e) => e)
 
       expect(error.message).toContain(
-        "Value for LineItem.unit_price is required, 'undefined' found"
+        "Value for LineItem.quantity is required, 'undefined' found"
       )
     })
   })

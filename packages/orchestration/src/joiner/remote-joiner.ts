@@ -53,7 +53,7 @@ export class RemoteJoiner {
     }, {})
 
     if (expands) {
-      for (const key in expands) {
+      for (const key of Object.keys(expands ?? {})) {
         const expand = expands[key]
         if (expand) {
           if (Array.isArray(data[key])) {
@@ -146,11 +146,13 @@ export class RemoteJoiner {
       const isReadOnlyDefinition =
         service.serviceName === undefined || service.isReadOnlyLink
       if (!isReadOnlyDefinition) {
-        if (!service.alias) {
-          service.alias = [{ name: service.serviceName!.toLowerCase() }]
-        } else if (!Array.isArray(service.alias)) {
+        service.alias ??= []
+
+        if (!Array.isArray(service.alias)) {
           service.alias = [service.alias]
         }
+
+        service.alias.push({ name: service.serviceName! })
 
         // handle alias.name as array
         for (let idx = 0; idx < service.alias.length; idx++) {
@@ -173,6 +175,11 @@ export class RemoteJoiner {
         for (const alias of service.alias) {
           if (this.serviceConfigCache.has(`alias_${alias.name}}`)) {
             const defined = this.serviceConfigCache.get(`alias_${alias.name}}`)
+
+            if (service.serviceName === defined?.serviceName) {
+              continue
+            }
+
             throw new Error(
               `Cannot add alias "${alias.name}" for "${service.serviceName}". It is already defined for Service "${defined?.serviceName}".`
             )
@@ -223,7 +230,9 @@ export class RemoteJoiner {
           (rel) => rel.isInternalService === true
         )
 
-        if (isInternalServicePresent) continue
+        if (isInternalServicePresent) {
+          continue
+        }
 
         throw new Error(`Service "${serviceName}" was not found`)
       }
@@ -338,7 +347,9 @@ export class RemoteJoiner {
       relationship
     )
     const isObj = isDefined(response.path)
-    const resData = isObj ? response.data[response.path!] : response.data
+    let resData = isObj ? response.data[response.path!] : response.data
+
+    resData = Array.isArray(resData) ? resData : [resData]
 
     const filteredDataArray = resData.map((data: any) =>
       RemoteJoiner.filterFields(data, expand.fields, expand.expands)

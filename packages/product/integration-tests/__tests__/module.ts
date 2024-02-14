@@ -2,6 +2,7 @@ import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
 import { kebabCase } from "@medusajs/utils"
 import { knex } from "knex"
+import { initModules } from "medusa-test-utils"
 import * as CustomRepositories from "../__fixtures__/module"
 import {
   buildProductAndRelationsData,
@@ -9,7 +10,6 @@ import {
 } from "../__fixtures__/product"
 import { productsData } from "../__fixtures__/product/data"
 import { DB_URL, TestDatabase } from "../utils"
-import { initModules } from "medusa-test-utils"
 import { getInitModuleConfig } from "../utils/get-init-module-config"
 
 const sharedPgConnection = knex<any, any>({
@@ -238,7 +238,23 @@ describe("Product module", function () {
         thumbnail: images[0],
       })
 
-      const products = await module.create([data])
+      const productsCreated = await module.create([data])
+
+      const products = await module.list(
+        { id: productsCreated[0].id },
+        {
+          relations: [
+            "images",
+            "categories",
+            "variants",
+            "variants.options",
+            "options",
+            "options.values",
+            "tags",
+            "type",
+          ],
+        }
+      )
 
       expect(products).toHaveLength(1)
 

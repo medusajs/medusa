@@ -5,7 +5,7 @@ slug: /development/backend/configurations
 
 import ParameterTypes from "@site/src/components/ParameterTypes"
 
-# ConfigModule
+# Configure Medusa Backend
 
 In this document, you’ll learn how to create a file service in the Medusa backend and the methods you must implement in it.
 
@@ -436,6 +436,22 @@ module.exports = {
 #### Properties
 
 <ParameterTypes parameters={[{"name":"enabled","type":"`boolean`","description":"Whether HTTP compression is enabled. By default, it's `false`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"level","type":"`number`","description":"The level of zlib compression to apply to responses. A higher level will result in better compression but will take longer to complete. \nA lower level will result in less compression but will be much faster. The default value is `6`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"memLevel","type":"`number`","description":"How much memory should be allocated to the internal compression state. It's an integer in the range of 1 (minimum level) and 9 (maximum level). \nThe default value is `8`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"threshold","type":"`string` \\| `number`","description":"The minimum response body size that compression is applied on. Its value can be the number of bytes or any string accepted by the \n[bytes](https://www.npmjs.com/package/bytes) module. The default value is `1024`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="http_compression"/>
+
+### jobs\_batch\_size
+
+Configure the number of staged jobs that are polled from the database. Default is 1000.
+
+#### Example
+
+```js title="medusa-config.js"
+module.exports = {
+  projectConfig: {
+    jobs_batch_size: 100
+    // ...
+  },
+  // ...
+}
+```
 
 ___
 

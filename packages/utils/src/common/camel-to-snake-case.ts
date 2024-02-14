@@ -1,2 +1,2 @@
 export const camelToSnakeCase = (string) =>
-  string.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)
+  string.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase()

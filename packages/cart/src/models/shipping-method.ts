@@ -1,4 +1,5 @@
-import { generateEntityId } from "@medusajs/utils"
+import { BigNumberRawValue } from "@medusajs/types"
+import { BigNumber, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -11,6 +12,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { BeforeUpdate } from "typeorm"
 import Cart from "./cart"
 import ShippingMethodAdjustment from "./shipping-method-adjustment"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"
@@ -37,8 +39,11 @@ export default class ShippingMethod {
   @Property({ columnType: "jsonb", nullable: true })
   description: string | null = null
 
-  @Property({ columnType: "numeric", serializer: Number })
-  amount: number
+  @Property({ columnType: "numeric" })
+  amount: BigNumber | number
+
+  @Property({ columnType: "jsonb" })
+  raw_amount: BigNumberRawValue
 
   @Property({ columnType: "boolean" })
   is_tax_inclusive = false
@@ -92,10 +97,28 @@ export default class ShippingMethod {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "casm")
+
+    const val = new BigNumber(this.raw_amount ?? this.amount)
+
+    this.amount = val.numeric
+    this.raw_amount = val.raw!
+  }
+
+  @BeforeUpdate()
+  onUpdate() {
+    const val = new BigNumber(this.raw_amount ?? this.amount)
+
+    this.amount = val.numeric
+    this.raw_amount = val.raw as BigNumberRawValue
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "casm")
+
+    const val = new BigNumber(this.raw_amount ?? this.amount)
+
+    this.amount = val.numeric
+    this.raw_amount = val.raw!
   }
 }

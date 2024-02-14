@@ -177,7 +177,7 @@ const ErrorMessage = forwardRef<
   const { error, formErrorMessageId } = useFormField()
   const msg = error ? String(error?.message) : children
 
-  if (!msg) {
+  if (!msg || msg === "undefined") {
     return null
   }
 

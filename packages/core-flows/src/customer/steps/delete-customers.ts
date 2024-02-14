@@ -4,9 +4,9 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 type DeleteCustomerStepInput = string[]
 
-export const deleteCustomerStepId = "delete-customer"
-export const deleteCustomerStep = createStep(
-  deleteCustomerStepId,
+export const deleteCustomersStepId = "delete-customers"
+export const deleteCustomersStep = createStep(
+  deleteCustomersStepId,
   async (ids: DeleteCustomerStepInput, { container }) => {
     const service = container.resolve<ICustomerModuleService>(
       ModuleRegistrationName.CUSTOMER

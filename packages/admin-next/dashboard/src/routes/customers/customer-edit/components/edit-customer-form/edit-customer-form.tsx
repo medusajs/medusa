@@ -135,7 +135,7 @@ export const EditCustomerForm = ({
           <div className="flex items-center justify-end gap-x-2">
             <Drawer.Close asChild>
               <Button variant="secondary" size="small">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
             </Drawer.Close>
             <Button
@@ -144,7 +144,7 @@ export const EditCustomerForm = ({
               variant="primary"
               size="small"
             >
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
         </Drawer.Footer>

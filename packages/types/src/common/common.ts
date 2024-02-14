@@ -4,11 +4,11 @@ import {
   FindOperator,
   FindOptionsSelect,
   FindOptionsWhere,
-  OrderByCondition
-} from "typeorm";
+  OrderByCondition,
+} from "typeorm"
 
-import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder";
-import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations";
+import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
+import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
 
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
@@ -230,3 +230,17 @@ export interface FindPaginationParams {
   offset?: number
   limit?: number
 }
+
+export type Pluralize<Singular extends string> = Singular extends `${infer R}y`
+  ? `${R}ies`
+  : Singular extends `${infer R}es`
+  ? `${Singular}`
+  : Singular extends
+      | `${infer R}ss`
+      | `${infer R}sh`
+      | `${infer R}ch`
+      | `${infer R}x`
+      | `${infer R}z`
+      | `${infer R}o`
+  ? `${Singular}es`
+  : `${Singular}s`
