@@ -99,15 +99,6 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "keyName": "IDX_invite_deleted_at",
-          "primary": false,
-          "unique": false
-        },
-        {
           "keyName": "IDX_invite_email",
           "columnNames": [
             "email"
@@ -126,6 +117,16 @@
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_invite_token\" ON \"invite\" (token) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_invite_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_invite_token\" ON \"invite\" (deleted_at) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "invite_pkey",
@@ -250,7 +251,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_user_deleted_at\" ON \"user\" (deleted_at)"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_user_deleted_at\" ON \"user\" (deleted_at) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "user_pkey",

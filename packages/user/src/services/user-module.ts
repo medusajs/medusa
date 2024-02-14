@@ -84,7 +84,7 @@ export default class UserModuleService<
       populate: true,
     })
 
-    return serializedUsers
+    return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
   update(
@@ -138,7 +138,7 @@ export default class UserModuleService<
       populate: true,
     })
 
-    return serializedInvites
+    return Array.isArray(data) ? serializedInvites : serializedInvites[0]
   }
 
   updateInvites(

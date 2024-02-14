@@ -35,7 +35,7 @@ const inviteTokenIndexStatement = createPsqlIndexStatementHelper({
 
 const inviteDeletedAtIndexName = "IDX_invite_deleted_at"
 const inviteDeletedAtIndexStatement = createPsqlIndexStatementHelper({
-  name: inviteTokenIndexName,
+  name: inviteDeletedAtIndexName,
   tableName: "invite",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
