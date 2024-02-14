@@ -14,12 +14,12 @@ export interface CreateCartDTO {
 
 export interface UpdateCartDTO {
   id: string
-  region_id?: string
-  customer_id?: string
-  sales_channel_id?: string
-  email?: string
-  currency_code?: string
-  metadata?: Record<string, unknown>
+  region_id?: string | null
+  customer_id?: string | null
+  sales_channel_id?: string | null
+  email?: string | null
+  currency_code?: string | null
+  metadata?: Record<string, unknown> | null
 
   adjustments?: (CreateLineItemAdjustmentDTO | UpdateLineItemAdjustmentDTO)[]
 }
