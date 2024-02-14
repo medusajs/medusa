@@ -12,8 +12,6 @@ export interface UpdateUserDTO extends Partial<Omit<CreateUserDTO, "email">> {
 export interface CreateInviteDTO {
   email: string
   accepted?: boolean
-  token: string
-  expires_at: Date
   metadata?: Record<string, unknown> | null
 }
 

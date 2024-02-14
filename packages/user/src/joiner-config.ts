@@ -1,10 +1,11 @@
-import { User } from "@models"
+import { Invite, User } from "@models"
 import { MapToConfig } from "@medusajs/utils"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
 
 export const LinkableKeys = {
   user_id: User.name,
+  invite_id: Invite.name,
 }
 
 const entityLinkableKeysMap: MapToConfig = {}
@@ -22,10 +23,19 @@ export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.USER,
   primaryKeys: ["id"],
   linkableKeys: LinkableKeys,
-  alias: {
-    name: ["user", "users"],
-    args: {
-      entity: User.name,
+  alias: [
+    {
+      name: ["user", "users"],
+      args: {
+        entity: User.name,
+      },
     },
-  },
+    {
+      name: ["invite", "invites"],
+      args: {
+        entity: Invite.name,
+        methodSuffix: "Invites",
+      },
+    },
+  ],
 }
