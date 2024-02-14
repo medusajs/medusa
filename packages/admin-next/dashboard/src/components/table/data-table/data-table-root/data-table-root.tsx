@@ -45,6 +45,10 @@ export interface DataTableRootProps<TData> {
    * Whether the table is empty due to no results from the active query
    */
   noResults?: boolean
+  /**
+   * The layout of the table
+   */
+  layout?: "fill" | "fit"
 }
 
 /**
@@ -69,6 +73,7 @@ export const DataTableRoot = <TData,>({
   commands,
   count = 0,
   noResults = false,
+  layout = "fit",
 }: DataTableRootProps<TData>) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -101,8 +106,18 @@ export const DataTableRoot = <TData,>({
   }
 
   return (
-    <div className="w-full">
-      <div onScroll={handleHorizontalScroll} className="w-full overflow-x-auto">
+    <div
+      className={clx("flex w-full flex-col overflow-hidden", {
+        "flex flex-1 flex-col": layout === "fill",
+      })}
+    >
+      <div
+        onScroll={handleHorizontalScroll}
+        className={clx("w-full", {
+          "flex-grow overflow-auto": layout === "fill",
+          "overflow-x-auto": layout === "fit",
+        })}
+      >
         {!noResults ? (
           <Table className="w-full">
             <Table.Header className="border-t-0">
@@ -275,5 +290,11 @@ const Pagination = (props: PaginationProps) => {
     next: t("general.next"),
   }
 
-  return <Table.Pagination {...props} translations={translations} />
+  return (
+    <Table.Pagination
+      className="flex-shrink-0"
+      {...props}
+      translations={translations}
+    />
+  )
 }

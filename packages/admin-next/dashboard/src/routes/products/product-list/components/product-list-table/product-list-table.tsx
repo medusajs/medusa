@@ -62,7 +62,7 @@ export const ProductListTable = () => {
         table={table}
         columns={columns}
         count={count}
-        rowCount={PAGE_SIZE}
+        pageSize={PAGE_SIZE}
         filters={filters}
         search
         pagination

@@ -107,7 +107,7 @@ export const CollectionProductSection = ({
         columns={columns}
         search
         pagination
-        rowCount={PAGE_SIZE}
+        pageSize={PAGE_SIZE}
         navigateTo={({ original }) => `/products/${original.id}`}
         count={count}
         filters={filters}

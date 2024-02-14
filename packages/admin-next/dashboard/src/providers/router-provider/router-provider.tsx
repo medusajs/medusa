@@ -134,6 +134,11 @@ const router = createBrowserRouter([
                     lazy: () => import("../../routes/products/product-edit"),
                   },
                   {
+                    path: "sales-channels",
+                    lazy: () =>
+                      import("../../routes/products/product-sales-channels"),
+                  },
+                  {
                     path: "attributes",
                     lazy: () =>
                       import("../../routes/products/product-attributes"),

@@ -52,7 +52,7 @@ export const CollectionListTable = () => {
       <DataTable
         table={table}
         columns={columns}
-        rowCount={PAGE_SIZE}
+        pageSize={PAGE_SIZE}
         count={count}
         filters={filters}
         orderBy={["title", "handle", "created_at", "updated_at"]}

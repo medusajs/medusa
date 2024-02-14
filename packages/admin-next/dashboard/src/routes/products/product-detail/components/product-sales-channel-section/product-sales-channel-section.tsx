@@ -48,30 +48,36 @@ export const ProductSalesChannelSection = ({
             <Channels className="text-ui-fg-subtle" />
           </div>
         </div>
-        <div className="flex items-center gap-x-1">
-          <Text size="small" leading="compact">
-            {firstChannels.map((sc) => sc.name).join(", ")}
-          </Text>
-          {restChannels.length > 0 && (
-            <Tooltip
-              content={
-                <ul>
-                  {restChannels.map((sc) => (
-                    <li key={sc.id}>{sc.name}</li>
-                  ))}
-                </ul>
-              }
-            >
-              <Text
-                size="small"
-                leading="compact"
-                className="text-ui-fg-subtle"
+        {availableInSalesChannels.length > 0 ? (
+          <div className="flex items-center gap-x-1">
+            <Text size="small" leading="compact">
+              {firstChannels.map((sc) => sc.name).join(", ")}
+            </Text>
+            {restChannels.length > 0 && (
+              <Tooltip
+                content={
+                  <ul>
+                    {restChannels.map((sc) => (
+                      <li key={sc.id}>{sc.name}</li>
+                    ))}
+                  </ul>
+                }
               >
-                {`+${restChannels.length}`}
-              </Text>
-            </Tooltip>
-          )}
-        </div>
+                <Text
+                  size="small"
+                  leading="compact"
+                  className="text-ui-fg-subtle"
+                >
+                  {`+${restChannels.length}`}
+                </Text>
+              </Tooltip>
+            )}
+          </div>
+        ) : (
+          <Text size="small" leading="compact" className="text-ui-fg-subtle">
+            {t("products.noSalesChannels")}
+          </Text>
+        )}
       </div>
       <div>
         <Text className="text-ui-fg-subtle" size="small" leading="compact">
