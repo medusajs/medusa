@@ -58,7 +58,7 @@ export interface UpdateCartDataDTO {
 }
 
 export interface UpdateCartDTO extends UpdateCartDataDTO {
-  id: string
+  id?: string
 }
 
 /** CART END */
