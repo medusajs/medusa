@@ -48,11 +48,32 @@
     "cancel": "Cancel",
     "save": "Save",
     "continue": "Continue",
-    "edit": "Edit"
+    "edit": "Edit",
+    "download": "Download"
+  },
+  "errorBoundary": {
+    "badRequestTitle": "Bad request",
+    "badRequestMessage": "The request was invalid.",
+    "notFoundTitle": "Not found",
+    "notFoundMessage": "The page you are looking for does not exist.",
+    "internalServerErrorTitle": "Internal server error",
+    "internalServerErrorMessage": "An error occurred on the server.",
+    "defaultTitle": "An error occurred",
+    "defaultMessage": "An error occurred while rendering this page."
   },
   "products": {
     "domain": "Products",
+    "deleteWarning": "You are about to delete the product {{title}}. This action cannot be undone.",
     "variants": "Variants",
+    "attributes": "Attributes",
+    "editAttributes": "Edit Attributes",
+    "organization": "Organization",
+    "editOrganization": "Edit Organization",
+    "options": "Options",
+    "editOptions": "Edit Options",
+    "media": "Media",
+    "editMedia": "Edit Media",
+    "gallery": "Gallery",
     "availableInSalesChannels": "Available in <0>{{x}}</0> of <1>{{y}}</1> sales channels",
     "variantCount_one": "{{count}} variant",
     "variantCount_other": "{{count}} variants",
@@ -365,6 +386,14 @@
     "tag": "Tag",
     "dateIssued": "Date issued",
     "issuedDate": "Issued date",
-    "expiryDate": "Expiry date"
+    "expiryDate": "Expiry date",
+    "height": "Height",
+    "width": "Width",
+    "length": "Length",
+    "weight": "Weight",
+    "midCode": "MID Code",
+    "hsCode": "HS Code",
+    "countryOfOrigin": "Country of Origin",
+    "thumbnail": "Thumbnail"
   }
 }

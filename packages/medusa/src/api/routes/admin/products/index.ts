@@ -105,6 +105,7 @@ export const defaultAdminProductRelations = [
   "profiles",
   "images",
   "options",
+  "options.values",
   "tags",
   "type",
   "collection",

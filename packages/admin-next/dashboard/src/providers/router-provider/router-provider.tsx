@@ -128,6 +128,17 @@ const router = createBrowserRouter([
                 handle: {
                   crumb: (data: AdminProductsRes) => data.product.title,
                 },
+                children: [
+                  {
+                    path: "attributes",
+                    lazy: () =>
+                      import("../../routes/products/product-attributes"),
+                  },
+                  {
+                    path: "gallery",
+                    lazy: () => import("../../routes/products/product-gallery"),
+                  },
+                ],
               },
             ],
           },
