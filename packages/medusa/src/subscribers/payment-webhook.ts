@@ -1,22 +1,27 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { PaymentWebhookEvents } from "@medusajs/utils"
 
-import { IEventBusService } from "@medusajs/types"
-import { AwilixContainer } from "awilix"
+import {
+  IEventBusService,
+  IPaymentModuleService,
+  ProviderWebhookPayload,
+} from "@medusajs/types"
+import { EventBusService } from "../services"
+
+type InjectedDependencies = {
+  paymentModuleService: IPaymentModuleService
+  eventBusService: EventBusService
+}
 
 class PaymentWebhookSubscriber {
   private readonly eventBusService_: IEventBusService
 
-  constructor(container: AwilixContainer) {
-    this.eventBusService_ = container.resolve("eventBusService")
-
-    const paymentModuleService = container.resolve(
-      ModuleRegistrationName.PAYMENT
-    )
+  constructor({ eventBusService, paymentModuleService }: InjectedDependencies) {
+    this.eventBusService_ = eventBusService
 
     this.eventBusService_.subscribe(
       PaymentWebhookEvents.WebhookReceived,
-      paymentModuleService.onWebhookReceived
+      async (data) =>
+        paymentModuleService.onWebhookReceived(data as ProviderWebhookPayload)
     )
   }
 }
