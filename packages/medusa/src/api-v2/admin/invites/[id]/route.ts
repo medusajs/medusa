@@ -1,5 +1,6 @@
 import {
   ContainerRegistrationKeys,
+  MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
@@ -10,11 +11,24 @@ import { ModuleRegistrationName } from "../../../../../../modules-sdk/dist"
 // Get invite
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { id } = req.params
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const moduleService: IUserModuleService = req.scope.resolve(
-    ModuleRegistrationName.USER
-  )
-  const invite = await moduleService.retrieveInvite(id, req.retrieveConfig)
+  const query = remoteQueryObjectFromString({
+    entryPoint: "invite",
+    variables: {
+      id,
+    },
+    fields: req.retrieveConfig.select as string[],
+  })
+
+  const [invite] = await remoteQuery(query)
+
+  if (!invite) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Invite with id: ${id} was not found`
+    )
+  }
 
   res.status(200).json({ invite })
 }
