@@ -130,7 +130,7 @@ export default class UserModuleService<
   ): Promise<UserTypes.InviteDTO | UserTypes.InviteDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
-    const invites = await this.inviteService_.create(input, sharedContext)
+    const invites = await this.createInvites_(input, sharedContext)
 
     const serializedInvites = await this.baseRepository_.serialize<
       UserTypes.InviteDTO[] | UserTypes.InviteDTO
@@ -139,6 +139,25 @@ export default class UserModuleService<
     })
 
     return Array.isArray(data) ? serializedInvites : serializedInvites[0]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  private async createInvites_(
+    data: UserTypes.CreateInviteDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TInvite[]> {
+    // expiration date in 10 days
+    const expirationDate = new Date().setDate(new Date().getDate() + 10)
+
+    const toCreate = data.map((invite) => {
+      return {
+        ...invite,
+        expires_at: new Date(expirationDate),
+        token: "placeholder", // TODO: generate token
+      }
+    })
+
+    return await this.inviteService_.create(toCreate)
   }
 
   updateInvites(
