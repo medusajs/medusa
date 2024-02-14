@@ -530,7 +530,7 @@ export default class PaymentModuleService<
 
         if (payment) {
           await this.capturePayment(
-            { payment_id: payment.id, amount: payment.authorized_amount },
+            { payment_id: payment.id, amount: payment.amount },
             sharedContext
           )
         }

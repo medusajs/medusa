@@ -126,5 +126,5 @@ export interface IPaymentModuleService extends IModuleService {
 
   /* ********** HOOKS ********** */
 
-  processEvent(provider: string, data: ProviderWebhookPayload): Promise<void>
+  processEvent(data: ProviderWebhookPayload): Promise<void>
 }

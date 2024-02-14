@@ -177,11 +177,11 @@ export default class PaymentProviderService {
 
   async processEvent(
     providerId: string,
-    data: ProviderWebhookPayload
+    data: ProviderWebhookPayload["data"]
   ): Promise<WebhookActionData> {
     const provider = this.retrieveProvider(providerId)
 
-    return await provider.getWebhookAction(data.data)
+    return await provider.getWebhookAction(data)
   }
 
   private throwPaymentProviderError(errObj: PaymentProviderError) {
