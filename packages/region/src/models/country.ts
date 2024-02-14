@@ -30,13 +30,15 @@ export default class Country {
   @Property({ columnType: "text" })
   display_name: string
 
+  @Property({ columnType: "text", nullable: true })
+  region_id?: string | null = null
+
   @ManyToOne({
     entity: () => Region,
-    fieldName: "region_id",
     index: "IDX_country_region_id",
     nullable: true,
   })
-  region: Region | null = null
+  region?: Region | null
 
   @BeforeCreate()
   onCreate() {
