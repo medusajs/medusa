@@ -20,7 +20,7 @@ import {
   isDefined,
   mapObjectTo,
 } from "@medusajs/utils"
-import { LinkService } from "../services"
+import { LinkService } from "@services"
 import { shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {

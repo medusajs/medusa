@@ -1,5 +1,5 @@
-import { BaseRepository, getLinkRepository } from "../repositories"
-import { LinkService, getModuleService } from "../services"
+import { BaseRepository, getLinkRepository } from "@repositories"
+import { LinkService, getModuleService } from "@services"
 
 import { LoaderOptions } from "@medusajs/modules-sdk"
 import {
