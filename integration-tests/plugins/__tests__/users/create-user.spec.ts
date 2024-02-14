@@ -52,9 +52,7 @@ describe("POST /admin/users", () => {
 
     expect(response.status).toEqual(200)
     expect(response.data).toEqual({
-      user: expect.objectContaining({
-        email: "test_member@test.com",
-      }),
+      user: expect.objectContaining(body),
     })
   })
 })

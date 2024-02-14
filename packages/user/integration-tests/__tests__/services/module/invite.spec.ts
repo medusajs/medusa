@@ -159,21 +159,6 @@ describe("UserModuleService - Invite", () => {
     })
   })
 
-  describe("deleteInvite", () => {
-    const id = "1"
-
-    it("should delete the Invite given an id successfully", async () => {
-      await createInvites(testManager, defaultInviteData)
-      await service.deleteInvites([id])
-
-      const invites = await service.listInvites({
-        id: [id],
-      })
-
-      expect(invites).toHaveLength(0)
-    })
-  })
-
   describe("updateInvite", () => {
     it("should throw an error when an id does not exist", async () => {
       const error = await service

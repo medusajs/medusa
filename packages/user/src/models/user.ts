@@ -26,6 +26,7 @@ const userDeletedAtIndexStatement = createPsqlIndexStatementHelper({
   name: userDeletedAtIndexName,
   tableName: "user",
   columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
 })
 
 type OptionalFields =
@@ -44,10 +45,10 @@ export default class User {
   id!: string
 
   @Property({ columnType: "text", nullable: true })
-  first_name: string
+  first_name: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  last_name: string
+  last_name: string | null = null
 
   @Property({ columnType: "text" })
   @Index({
@@ -60,7 +61,7 @@ export default class User {
   avatar_url: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  metadata: Record<string, unknown> | null
+  metadata: Record<string, unknown> | null = null
 
   @Property({
     onCreate: () => new Date(),
@@ -82,7 +83,7 @@ export default class User {
     expression: userDeletedAtIndexStatement,
   })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date
+  deleted_at?: Date | null = null
 
   @BeforeCreate()
   onCreate() {

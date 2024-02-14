@@ -79,12 +79,12 @@ export default class UserModuleService<
     const users = await this.userService_.create(input, sharedContext)
 
     const serializedUsers = await this.baseRepository_.serialize<
-      UserTypes.UserDTO[]
+      UserTypes.UserDTO[] | UserTypes.UserDTO
     >(users, {
       populate: true,
     })
 
-    return Array.isArray(data) ? serializedUsers : serializedUsers[0]
+    return serializedUsers
   }
 
   update(
@@ -133,7 +133,7 @@ export default class UserModuleService<
     const invites = await this.inviteService_.create(input, sharedContext)
 
     const serializedInvites = await this.baseRepository_.serialize<
-      UserTypes.InviteDTO[]
+      UserTypes.InviteDTO[] | UserTypes.InviteDTO
     >(invites, {
       populate: true,
     })

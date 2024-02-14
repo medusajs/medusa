@@ -1,15 +1,14 @@
 import { CreateUserDTO, UserDTO } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { createUsersStep } from "../steps"
-
-interface CreateUsersInput {
-  users: CreateUserDTO[]
-}
+import { UserWorkflow } from "@medusajs/types"
 
 export const createUsersWorkflowId = "create-users-workflow"
 export const createUsersWorkflow = createWorkflow(
   createUsersWorkflowId,
-  (input: WorkflowData<CreateUsersInput>): WorkflowData<UserDTO[]> => {
+  (
+    input: WorkflowData<UserWorkflow.CreateUsersWorkflowInputDTO>
+  ): WorkflowData<UserDTO[]> => {
     return createUsersStep(input.users)
   }
 )

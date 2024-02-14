@@ -33,6 +33,14 @@ const inviteTokenIndexStatement = createPsqlIndexStatementHelper({
   where: "deleted_at IS NULL",
 })
 
+const inviteDeletedAtIndexName = "IDX_invite_deleted_at"
+const inviteDeletedAtIndexStatement = createPsqlIndexStatementHelper({
+  name: inviteTokenIndexName,
+  tableName: "invite",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
+
 type OptionalFields =
   | "metadata"
   | "accepted"
@@ -66,7 +74,7 @@ export default class Invite {
   expires_at: Date
 
   @Property({ columnType: "jsonb", nullable: true })
-  metadata: Record<string, unknown> | null
+  metadata: Record<string, unknown> | null = null
 
   @Property({
     onCreate: () => new Date(),
@@ -83,9 +91,12 @@ export default class Invite {
   })
   updated_at: Date
 
-  @Index({ name: "IDX_invite_deleted_at" })
+  @Index({
+    name: inviteDeletedAtIndexName,
+    expression: inviteDeletedAtIndexStatement,
+  })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date
+  deleted_at: Date | null = null
 
   @OnInit()
   onInit() {

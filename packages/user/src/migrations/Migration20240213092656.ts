@@ -1,3 +1,4 @@
+import { generatePostgresAlterColummnIfExistStatement } from "@medusajs/utils"
 import { Migration } from "@mikro-orm/migrations"
 
 export class Migration20240213092656 extends Migration {
@@ -9,17 +10,13 @@ export class Migration20240213092656 extends Migration {
       'alter table "invite" add column if not exists "email" text not null;'
     )
 
-    this.addSql(`
-    DO $$
-    BEGIN
-      IF EXISTS(SELECT *
-        FROM information_schema.columns
-        WHERE table_name='invite' and column_name='user_email')
-      THEN
-          ALTER TABLE "public"."invite" alter column "user_email" drop not null;
-      END IF;
-    END $$;
-`)
+    this.addSql(
+      generatePostgresAlterColummnIfExistStatement(
+        "invite",
+        ["user_email"],
+        "DROP NOT NULL"
+      )
+    )
 
     this.addSql(
       'create index if not exists "IDX_invite_deleted_at" on "invite" ("deleted_at");'
@@ -47,8 +44,8 @@ export class Migration20240213092656 extends Migration {
   }
 
   async down(): Promise<void> {
-    this.addSql('drop table if exists "invite" cascade;')
+    this.addSql('drop table if exists "invite";')
 
-    this.addSql('drop table if exists "user" cascade;')
+    this.addSql('drop table if exists "user";')
   }
 }

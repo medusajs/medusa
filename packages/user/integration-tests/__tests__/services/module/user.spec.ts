@@ -112,12 +112,8 @@ describe("UserModuleService - User", () => {
     const id = "1"
 
     it("should return an user for the given id", async () => {
-      await createUsers(testManager, [
-        {
-          id,
-          email: "user_1@test.com",
-        },
-      ])
+      await createUsers(testManager, defaultUserData)
+
       const user = await service.retrieve(id)
 
       expect(user).toEqual(
@@ -144,12 +140,8 @@ describe("UserModuleService - User", () => {
     })
 
     it("should return user based on config select param", async () => {
-      await createUsers(testManager, [
-        {
-          id,
-          email: "user_1@test.com",
-        },
-      ])
+      await createUsers(testManager, defaultUserData)
+
       const User = await service.retrieve(id, {
         select: ["id"],
       })
@@ -166,12 +158,8 @@ describe("UserModuleService - User", () => {
     const id = "1"
 
     it("should delete the users given an id successfully", async () => {
-      await createUsers(testManager, [
-        {
-          id,
-          email: "user_1@test.com",
-        },
-      ])
+      await createUsers(testManager, defaultUserData)
+
       await service.delete([id])
 
       const users = await service.list({
@@ -198,12 +186,7 @@ describe("UserModuleService - User", () => {
 
   describe("create", () => {
     it("should create a user successfully", async () => {
-      await service.create([
-        {
-          id: "1",
-          email: "test@test.com",
-        },
-      ])
+      await service.create(defaultUserData)
 
       const [User, count] = await service.listAndCount({
         id: ["1"],

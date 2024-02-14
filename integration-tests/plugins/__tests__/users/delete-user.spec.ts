@@ -61,9 +61,10 @@ describe("DELETE /admin/users/:id", () => {
       deleted: true,
     })
 
-    const { response: deletedResponse } = await api
-      .get(`/admin/users/${user.id}`, adminHeaders)
-      .catch((e) => e)
+    const { response: deletedResponse } = await api.get(
+      `/admin/users/${user.id}`,
+      adminHeaders
+    )
 
     expect(deletedResponse.status).toEqual(404)
     expect(deletedResponse.data.type).toEqual("not_found")

@@ -1,14 +1,13 @@
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { deleteUsersStep } from "../steps"
-
-interface WorkflowInput {
-  ids: string[]
-}
+import { UserWorkflow } from "@medusajs/types"
 
 export const deleteUsersWorkflowId = "delete-user"
 export const deleteUsersWorkflow = createWorkflow(
-  "delete-user",
-  (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
+  deleteUsersWorkflowId,
+  (
+    input: WorkflowData<UserWorkflow.DeleteUserWorkflowInput>
+  ): WorkflowData<void> => {
     return deleteUsersStep(input.ids)
   }
 )
