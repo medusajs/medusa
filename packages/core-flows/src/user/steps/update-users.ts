@@ -10,6 +10,10 @@ export const updateUsersStep = createStep(
       ModuleRegistrationName.USER
     )
 
+    if (!input.length) {
+      return new StepResponse([], [])
+    }
+
     const originalUsers = await service.list({
       id: input.map((u) => u.id),
     })
