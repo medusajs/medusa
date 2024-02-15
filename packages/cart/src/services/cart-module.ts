@@ -11,11 +11,11 @@ import {
 import {
   InjectManager,
   InjectTransactionManager,
-  isObject,
-  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  isObject,
+  isString,
 } from "@medusajs/utils"
 import {
   Address,
@@ -190,43 +190,74 @@ export default class CartModuleService<
     return createdCarts
   }
 
+  async update(data: CartTypes.UpdateCartDTO[]): Promise<CartTypes.CartDTO[]>
   async update(
-    data: CartTypes.UpdateCartDTO[],
+    cartId: string,
+    data: CartTypes.UpdateCartDataDTO,
+    sharedContext?: Context
+  ): Promise<CartTypes.CartDTO>
+  async update(
+    selector: Partial<CartTypes.CartDTO>,
+    data: CartTypes.UpdateCartDataDTO,
     sharedContext?: Context
   ): Promise<CartTypes.CartDTO[]>
 
-  async update(
-    data: CartTypes.UpdateCartDTO,
-    sharedContext?: Context
-  ): Promise<CartTypes.CartDTO>
-
   @InjectManager("baseRepository_")
   async update(
-    data: CartTypes.UpdateCartDTO[] | CartTypes.UpdateCartDTO,
+    dataOrIdOrSelector:
+      | CartTypes.UpdateCartDTO[]
+      | string
+      | Partial<CartTypes.CartDTO>,
+    data?: CartTypes.UpdateCartDataDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartDTO[] | CartTypes.CartDTO> {
-    const input = Array.isArray(data) ? data : [data]
-    const carts = await this.update_(input, sharedContext)
+    const result = await this.update_(dataOrIdOrSelector, data, sharedContext)
 
-    const result = await this.list(
-      { id: carts.map((p) => p!.id) },
-      {
-        relations: ["shipping_address", "billing_address"],
-      },
-      sharedContext
-    )
+    const serializedResult = await this.baseRepository_.serialize<
+      CartTypes.CartDTO[]
+    >(result, {
+      populate: true,
+    })
 
-    return (Array.isArray(data) ? result : result[0]) as
-      | CartTypes.CartDTO
-      | CartTypes.CartDTO[]
+    return isString(dataOrIdOrSelector) ? serializedResult[0] : serializedResult
   }
 
   @InjectTransactionManager("baseRepository_")
   protected async update_(
-    data: CartTypes.UpdateCartDTO[],
+    dataOrIdOrSelector:
+      | CartTypes.UpdateCartDTO[]
+      | string
+      | Partial<CartTypes.CartDTO>,
+    data?: CartTypes.UpdateCartDataDTO,
     @MedusaContext() sharedContext: Context = {}
   ) {
-    return await this.cartService_.update(data, sharedContext)
+    let toUpdate: CartTypes.UpdateCartDTO[] = []
+    if (isString(dataOrIdOrSelector)) {
+      toUpdate = [
+        {
+          id: dataOrIdOrSelector,
+          ...data,
+        },
+      ]
+    } else if (Array.isArray(dataOrIdOrSelector)) {
+      toUpdate = dataOrIdOrSelector
+    } else {
+      const carts = await this.cartService_.list(
+        { ...dataOrIdOrSelector },
+        { select: ["id"] },
+        sharedContext
+      )
+
+      toUpdate = carts.map((cart) => {
+        return {
+          ...data,
+          id: cart.id,
+        }
+      })
+    }
+
+    const result = await this.cartService_.update(toUpdate, sharedContext)
+    return result
   }
 
   addLineItems(
@@ -403,7 +434,8 @@ export default class CartModuleService<
     itemIdsOrSelector: string | string[] | Partial<CartTypes.CartLineItemDTO>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    let toDelete: string[] = []
+    let toDelete: string[]
+
     if (isObject(itemIdsOrSelector)) {
       const items = await this.listLineItems(
         { ...itemIdsOrSelector } as Partial<CartTypes.CartLineItemDTO>,
@@ -518,7 +550,7 @@ export default class CartModuleService<
   ): Promise<
     CartTypes.CartShippingMethodDTO[] | CartTypes.CartShippingMethodDTO
   > {
-    let methods: ShippingMethod[] = []
+    let methods: ShippingMethod[]
     if (isString(cartIdOrData)) {
       methods = await this.addShippingMethods_(
         cartIdOrData,
@@ -588,7 +620,7 @@ export default class CartModuleService<
       | Partial<CartTypes.CartShippingMethodDTO>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    let toDelete: string[] = []
+    let toDelete: string[]
     if (isObject(methodIdsOrSelector)) {
       const methods = await this.listShippingMethods(
         {
@@ -742,7 +774,7 @@ export default class CartModuleService<
       | Partial<CartTypes.LineItemAdjustmentDTO>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    let ids: string[] = []
+    let ids: string[]
     if (isObject(adjustmentIdsOrSelector)) {
       const adjustments = await this.listLineItemAdjustments(
         {
@@ -911,7 +943,7 @@ export default class CartModuleService<
       | Partial<CartTypes.ShippingMethodAdjustmentDTO>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    let ids: string[] = []
+    let ids: string[]
     if (isObject(adjustmentIdsOrSelector)) {
       const adjustments = await this.listShippingMethodAdjustments(
         {
@@ -956,7 +988,7 @@ export default class CartModuleService<
       | CartTypes.CreateLineItemTaxLineDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.LineItemTaxLineDTO[] | CartTypes.LineItemTaxLineDTO> {
-    let addedTaxLines: LineItemTaxLine[] = []
+    let addedTaxLines: LineItemTaxLine[]
     if (isString(cartIdOrData)) {
       // existence check
       await this.retrieve(cartIdOrData, { select: ["id"] }, sharedContext)
@@ -1065,7 +1097,7 @@ export default class CartModuleService<
       | CartTypes.FilterableShippingMethodTaxLineProps,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    let ids: string[] = []
+    let ids: string[]
     if (isObject(taxLineIdsOrSelector)) {
       const taxLines = await this.listLineItemTaxLines(
         {
@@ -1112,7 +1144,7 @@ export default class CartModuleService<
   ): Promise<
     CartTypes.ShippingMethodTaxLineDTO[] | CartTypes.ShippingMethodTaxLineDTO
   > {
-    let addedTaxLines: ShippingMethodTaxLine[] = []
+    let addedTaxLines: ShippingMethodTaxLine[]
     if (isString(cartIdOrData)) {
       // existence check
       await this.retrieve(cartIdOrData, { select: ["id"] }, sharedContext)
@@ -1222,7 +1254,7 @@ export default class CartModuleService<
       | CartTypes.FilterableShippingMethodTaxLineProps,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    let ids: string[] = []
+    let ids: string[]
     if (isObject(taxLineIdsOrSelector)) {
       const taxLines = await this.listShippingMethodTaxLines(
         {

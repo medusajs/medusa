@@ -104,6 +104,11 @@ export const docsConfig: DocsConfig = {
         title: "Components",
         children: [
           {
+            title: "Alert",
+            path: "/components/alert",
+            isPathHref: true,
+          },
+          {
             title: "Avatar",
             path: "/components/avatar",
             isPathHref: true,

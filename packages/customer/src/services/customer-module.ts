@@ -176,7 +176,7 @@ export default class CustomerModuleService<
       | {
           selector: CustomerTypes.FilterableCustomerProps
           data: CustomerTypes.CustomerUpdatableFields
-        } = []
+        }
 
     if (isString(idsOrSelector)) {
       updateData = {
@@ -269,7 +269,7 @@ export default class CustomerModuleService<
       | {
           selector: CustomerTypes.FilterableCustomerGroupProps
           data: CustomerTypes.CustomerGroupUpdatableFields
-        } = []
+        }
 
     if (isString(groupIdOrSelector) || Array.isArray(groupIdOrSelector)) {
       const groupIdOrSelectorArray = Array.isArray(groupIdOrSelector)
@@ -373,12 +373,10 @@ export default class CustomerModuleService<
       | CustomerTypes.CreateCustomerAddressDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const addresses = await this.addressService_.create(
+    return await this.addressService_.create(
       Array.isArray(data) ? data : [data],
       sharedContext
     )
-
-    return addresses
   }
 
   async updateAddresses(
@@ -411,7 +409,7 @@ export default class CustomerModuleService<
       | {
           selector: CustomerTypes.FilterableCustomerAddressProps
           data: CustomerTypes.UpdateCustomerAddressDTO
-        } = []
+        }
     if (isString(addressIdOrSelector)) {
       updateData = [
         {

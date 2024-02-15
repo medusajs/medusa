@@ -128,7 +128,7 @@ import cors from "cors"
 export const config: MiddlewaresConfig = {
   routes: [
     {
-      matcher: "/custom/*",
+      matcher: "/custom*",
       middlewares: [
         cors({
           origin: "*",

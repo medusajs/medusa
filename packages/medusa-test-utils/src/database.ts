@@ -1,6 +1,6 @@
-import { TSMigrationGenerator } from "@mikro-orm/migrations"
 import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
 import * as process from "process"
+import { Migrator } from "@mikro-orm/migrations"
 
 export function getDatabaseURL(): string {
   const DB_HOST = process.env.DB_HOST ?? "localhost"
@@ -15,7 +15,8 @@ export function getDatabaseURL(): string {
 
 export function getMikroOrmConfig(
   mikroOrmEntities: any[],
-  pathToMigrations: string
+  pathToMigrations: string, // deprecated, auto inferred
+  schema?: string
 ): Options {
   const DB_URL = getDatabaseURL()
 
@@ -23,23 +24,17 @@ export function getMikroOrmConfig(
     type: "postgresql",
     clientUrl: DB_URL,
     entities: Object.values(mikroOrmEntities),
-    schema: process.env.MEDUSA_DB_SCHEMA,
+    schema: schema ?? process.env.MEDUSA_DB_SCHEMA,
     debug: false,
-    migrations: {
-      path: pathToMigrations,
-      pathTs: pathToMigrations,
-      glob: "!(*.d).{js,ts}",
-      silent: true,
-      dropTables: true,
-      transactional: true,
-      allOrNothing: true,
-      safe: false,
-      generator: TSMigrationGenerator,
-    },
+    extensions: [Migrator],
   }
 }
 
 export interface TestDatabase {
+  mikroOrmEntities: any[]
+  pathToMigrations: any // deprecated, auto inferred
+  schema?: string
+
   orm: MikroORM | null
   manager: SqlEntityManager | null
 
@@ -52,9 +47,14 @@ export interface TestDatabase {
 
 export function getMikroOrmWrapper(
   mikroOrmEntities: any[],
-  pathToMigrations: string
+  pathToMigrations: string, // deprecated, auto inferred
+  schema?: string
 ): TestDatabase {
   return {
+    mikroOrmEntities,
+    pathToMigrations, // deprecated, auto inferred
+    schema: schema ?? process.env.MEDUSA_DB_SCHEMA,
+
     orm: null,
     manager: null,
 
@@ -83,18 +83,36 @@ export function getMikroOrmWrapper(
     },
 
     async setupDatabase() {
-      const OrmConfig = getMikroOrmConfig(mikroOrmEntities, pathToMigrations)
+      const OrmConfig = getMikroOrmConfig(
+        this.mikroOrmEntities,
+        this.pathToMigrations,
+        this.schema
+      )
 
       // Initializing the ORM
       this.orm = await MikroORM.init(OrmConfig)
 
-      if (this.orm === null) {
-        throw new Error("ORM not configured")
+      this.manager = this.orm.em
+
+      try {
+        await this.orm.getSchemaGenerator().ensureDatabase()
+      } catch (err) {}
+
+      await this.manager?.execute(
+        `CREATE SCHEMA IF NOT EXISTS "${this.schema ?? "public"}";`
+      )
+
+      const pendingMigrations = await this.orm
+        .getMigrator()
+        .getPendingMigrations()
+
+      if (pendingMigrations && pendingMigrations.length > 0) {
+        await this.orm
+          .getMigrator()
+          .up({ migrations: pendingMigrations.map((m) => m.name!) })
+      } else {
+        await this.orm.schema.refreshDatabase() // ensure db exists and is fresh
       }
-
-      this.manager = await this.orm.em
-
-      await this.orm.schema.refreshDatabase() // ensure db exists and is fresh
     },
 
     async clearDatabase() {
@@ -102,7 +120,17 @@ export function getMikroOrmWrapper(
         throw new Error("ORM not configured")
       }
 
-      await this.orm.close()
+      await this.manager?.execute(
+        `DROP SCHEMA IF EXISTS "${this.schema ?? "public"}" CASCADE;`
+      )
+
+      await this.manager?.execute(
+        `CREATE SCHEMA IF NOT EXISTS "${this.schema ?? "public"}";`
+      )
+
+      try {
+        await this.orm.close()
+      } catch {}
 
       this.orm = null
       this.manager = null

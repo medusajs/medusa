@@ -1,9 +1,14 @@
 import path from "path"
-import DocblockGenerator from "../classes/docblock-generator.js"
+import DocblockGenerator from "../classes/generators/docblock.js"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
-import { GitManager } from "../classes/git-manager.js"
+import { GitManager } from "../classes/helpers/git-manager.js"
+import { CommonCliOptions } from "../types/index.js"
+import OasGenerator from "../classes/generators/oas.js"
 
-export default async function runGitChanges() {
+export default async function runGitChanges({
+  type,
+  ...options
+}: CommonCliOptions) {
   const monorepoPath = getMonorepoRoot()
   // retrieve the changed files under `packages` in the monorepo root.
   const gitManager = new GitManager()
@@ -20,12 +25,23 @@ export default async function runGitChanges() {
 
   files = files.map((filePath) => path.resolve(monorepoPath, filePath))
 
-  // generate docblocks for each of the files.
-  const docblockGenerator = new DocblockGenerator({
-    paths: files,
-  })
+  if (type === "all" || type === "docs") {
+    const docblockGenerator = new DocblockGenerator({
+      paths: files,
+      ...options,
+    })
 
-  await docblockGenerator.run()
+    await docblockGenerator.run()
+  }
+
+  if (type === "all" || type === "oas") {
+    const oasGenerator = new OasGenerator({
+      paths: files,
+      ...options,
+    })
+
+    oasGenerator.run()
+  }
 
   console.log(`Finished generating docs for ${files.length} files.`)
 }
