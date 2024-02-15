@@ -42,9 +42,9 @@ export interface CreateCartDTO {
 
 export interface UpdateCartDTO {
   id: string
-  region_id?: string
-  customer_id?: string
-  sales_channel_id?: string
+  region_id?: string | null
+  customer_id?: string | null
+  sales_channel_id?: string | null
 
   email?: string
   currency_code?: string

@@ -104,4 +104,36 @@ describe("POST /store/carts", () => {
       })
     ).rejects.toThrow()
   })
+
+  it("should create a cart", async () => {
+    const region = await regionModuleService.create({
+      name: "US",
+      currency_code: "usd",
+    })
+
+    await regionModuleService.create({
+      name: "Europe",
+      currency_code: "eur",
+    })
+
+    const api = useApi() as any
+    const response = await api.post(`/store/carts`, {
+      email: "tony@stark.com",
+      currency_code: "usd",
+      region_id: region.id,
+    })
+
+    expect(response.status).toEqual(200)
+    expect(response.data.cart).toEqual(
+      expect.objectContaining({
+        id: response.data.cart.id,
+        currency_code: "usd",
+        email: "tony@stark.com",
+        region: expect.objectContaining({
+          id: region.id,
+          currency_code: "usd",
+        }),
+      })
+    )
+  })
 })
