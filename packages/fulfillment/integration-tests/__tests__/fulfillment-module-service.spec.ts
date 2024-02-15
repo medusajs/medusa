@@ -805,6 +805,7 @@ describe("fulfillment module service", function () {
             data: createData.data,
             rules: expect.arrayContaining([
               expect.objectContaining({
+                id: expect.any(String),
                 attribute: createData.rules[0].attribute,
                 operator: createData.rules[0].operator,
                 value: createData.rules[0].value,
@@ -906,6 +907,7 @@ describe("fulfillment module service", function () {
               data: data_.data,
               rules: expect.arrayContaining([
                 expect.objectContaining({
+                  id: expect.any(String),
                   attribute: data_.rules[0].attribute,
                   operator: data_.rules[0].operator,
                   value: data_.rules[0].value,
