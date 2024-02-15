@@ -3,5 +3,8 @@ export * from "./customer-group"
 export * from "./definition"
 export * from "./definitions"
 export * as Handlers from "./handlers"
+export * from "./invite"
 export * from "./promotion"
 export * from "./region"
+export * from "./user"
+

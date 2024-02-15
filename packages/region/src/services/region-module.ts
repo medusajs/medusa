@@ -11,10 +11,12 @@ import {
   RegionCurrencyDTO,
   RegionDTO,
   UpdatableRegionFields,
+  UpdateRegionDTO,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
+  isObject,
   isString,
   MedusaContext,
   MedusaError,
@@ -199,27 +201,59 @@ export default class RegionModuleService<
     data: UpdatableRegionFields,
     sharedContext?: Context
   ): Promise<RegionDTO>
-  @InjectTransactionManager("baseRepository_")
+  async update(data: UpdateRegionDTO[]): Promise<RegionDTO[]>
+  @InjectManager("baseRepository_")
   async update(
-    idOrSelector: string | FilterableRegionProps,
-    data: UpdatableRegionFields,
+    idOrSelectorOrData: string | FilterableRegionProps | UpdateRegionDTO[],
+    data?: UpdatableRegionFields,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<RegionDTO | RegionDTO[]> {
-    let updateData: {
-      selector?: FilterableRegionProps
-      data?: UpdatableRegionFields
-    } = {}
-    if (isString(idOrSelector)) {
-      updateData = { selector: { id: idOrSelector }, data }
-    } else {
-      updateData = {
-        selector: idOrSelector,
-        data,
-      }
-    }
-    const result = await this.regionService_.update(updateData, sharedContext)
+    const result = await this.update_(idOrSelectorOrData, data, sharedContext)
 
-    return await this.baseRepository_.serialize<RegionDTO[] | RegionDTO>(result)
+    const regions = await this.baseRepository_.serialize<
+      RegionDTO[] | RegionDTO
+    >(result)
+
+    return isString(idOrSelectorOrData) ? regions[0] : regions
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async update_(
+    idOrSelectorOrData: string | FilterableRegionProps | UpdateRegionDTO[],
+    data?: UpdatableRegionFields,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<Region[]> {
+    let result: Region[] = []
+    if (isString(idOrSelectorOrData)) {
+      result = await this.regionService_.update(
+        [{ id: idOrSelectorOrData, ...data }],
+        sharedContext
+      )
+    }
+
+    if (Array.isArray(idOrSelectorOrData)) {
+      result = await this.regionService_.update(
+        idOrSelectorOrData,
+        sharedContext
+      )
+    }
+
+    if (isObject(idOrSelectorOrData)) {
+      let toUpdate: Partial<UpdateRegionDTO>[] = []
+      const regions = await this.regionService_.list(
+        { ...idOrSelectorOrData },
+        {},
+        sharedContext
+      )
+
+      regions.forEach((region) => {
+        toUpdate.push({ id: region.id, ...data })
+      })
+
+      result = await this.regionService_.update(toUpdate, sharedContext)
+    }
+
+    return result
   }
 
   @InjectManager("baseRepository_")

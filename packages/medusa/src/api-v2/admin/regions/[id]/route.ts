@@ -24,9 +24,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  const updateRegions = updateRegionsWorkflow(req.scope)
-
-  const { result, errors } = await updateRegions.run({
+  const { result, errors } = await updateRegionsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       update: req.validatedBody as UpdatableRegionFields,
@@ -43,9 +41,8 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
 export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
   const id = req.params.id
-  const deleteRegions = deleteRegionsWorkflow(req.scope)
 
-  const { errors } = await deleteRegions.run({
+  const { errors } = await deleteRegionsWorkflow(req.scope).run({
     input: { ids: [id] },
     throwOnError: false,
   })

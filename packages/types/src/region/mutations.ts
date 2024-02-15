@@ -7,7 +7,7 @@ export interface CreateRegionDTO {
 export interface UpdateRegionDTO {
   id: string
   currency_code?: string
-  countries: string[]
+  countries?: string[]
   name?: string
 }
 

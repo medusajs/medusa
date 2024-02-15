@@ -4,10 +4,7 @@ import {
   IRegionModuleService,
   UpdatableRegionFields,
 } from "@medusajs/types"
-import {
-  getSelectsAndRelationsFromObjectArray,
-  promiseAll,
-} from "@medusajs/utils"
+import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type UpdateRegionsStepInput = {
@@ -45,15 +42,13 @@ export const updateRegionsStep = createStep(
       ModuleRegistrationName.REGION
     )
 
-    await promiseAll(
-      prevData.map(
-        async (region) =>
-          await service.update(region.id, {
-            name: region.name,
-            currency_code: region.currency_code,
-            metadata: region.metadata,
-          })
-      )
+    await service.update(
+      prevData.map((r) => ({
+        id: r.id,
+        name: r.name,
+        currency_code: r.currency_code,
+        metadata: r.metadata,
+      }))
     )
   }
 )
