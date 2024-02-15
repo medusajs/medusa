@@ -90,6 +90,9 @@ describe("POST /store/carts", () => {
         id: response.data.cart.id,
         currency_code: "usd",
         email: "tony@stark.com",
+        region: expect.objectContaining({
+          id: expect.any(String),
+        }),
       })
     )
   })

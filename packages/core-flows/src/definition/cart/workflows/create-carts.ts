@@ -1,5 +1,9 @@
 import { CartDTO, CreateCartDTO } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  createWorkflow,
+  transform,
+} from "@medusajs/workflows-sdk"
 import { createCartsStep, findOneOrAnyRegionStep } from "../steps"
 
 type WorkflowInput = { cartData: CreateCartDTO }
@@ -12,7 +16,17 @@ export const createCartWorkflow = createWorkflow(
       regionId: input.cartData.region_id,
     })
 
-    const cart = createCartsStep([{ ...input.cartData, region_id: region.id }])
+    const cartInput = transform(
+      { cartData: input.cartData, region },
+      (input) => {
+        return {
+          ...input.cartData,
+          region_id: input.region.id,
+        }
+      }
+    )
+
+    const cart = createCartsStep([cartInput])
 
     return cart
   }

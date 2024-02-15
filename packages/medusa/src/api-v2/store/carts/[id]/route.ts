@@ -8,12 +8,11 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
   const query = {
     cart: {
-      __args: variables,
       ...defaultStoreCartRemoteQueryObject,
     },
   }
 
-  const [cart] = await remoteQuery(query)
+  const [cart] = await remoteQuery(query, { cart: variables })
 
   res.json({ cart })
 }
