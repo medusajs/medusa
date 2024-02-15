@@ -1,3 +1,5 @@
+import { BigNumberRawValue } from "@medusajs/types"
+import { BigNumber } from "@medusajs/utils"
 import { PrimaryKey, Property } from "@mikro-orm/core"
 
 /**
@@ -20,8 +22,11 @@ export default abstract class TaxLine {
   @Property({ columnType: "text" })
   code: string
 
-  @Property({ columnType: "numeric", serializer: Number })
-  rate: number
+  @Property({ columnType: "numeric" })
+  rate: BigNumber | number
+
+  @Property({ columnType: "jsonb" })
+  raw_rate: BigNumberRawValue
 
   @Property({ columnType: "text", nullable: true })
   provider_id?: string | null

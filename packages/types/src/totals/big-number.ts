@@ -5,8 +5,4 @@ export type BigNumberRawValue = {
   [key: string]: unknown
 }
 
-export type BigNumberRawPriceInput =
-  | BigNumberRawValue
-  | number
-  | string
-  | BigNumber
+export type BigNumberInput = BigNumberRawValue | number | string | BigNumber

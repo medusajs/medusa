@@ -1,3 +1,5 @@
+import { BigNumberInput } from "@medusajs/types"
+
 interface PartialUpsertOrderLineItemDTO {
   subtitle?: string
   thumbnail?: string
@@ -20,13 +22,13 @@ interface PartialUpsertOrderLineItemDTO {
   is_discountable?: boolean
   is_tax_inclusive?: boolean
 
-  compare_at_unit_price?: number
+  compare_at_unit_price?: BigNumberInput
 }
 
 export interface CreateOrderLineItemDTO extends PartialUpsertOrderLineItemDTO {
   title: string
-  quantity: number
-  unit_price: number | string
+  quantity: BigNumberInput
+  unit_price: BigNumberInput
   order_id: string
 }
 

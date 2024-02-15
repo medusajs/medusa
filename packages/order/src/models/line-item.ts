@@ -66,8 +66,11 @@ export default class LineItem {
   @Property({ columnType: "text", nullable: true })
   thumbnail: string | null = null
 
-  @Property({ columnType: "integer" })
-  quantity: number
+  @Property({ columnType: "numeric" })
+  quantity: BigNumber | number
+
+  @Property({ columnType: "jsonb" })
+  raw_quantity: BigNumberRawValue
 
   @Property({
     columnType: "text",
