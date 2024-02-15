@@ -9,7 +9,6 @@ import {
   BeforeCreate,
   Entity,
   Filter,
-  Index,
   ManyToOne,
   OnInit,
   OptionalProps,
@@ -20,20 +19,13 @@ import ShippingOption from "./shipping-option"
 
 type ShippingOptionRuleOptionalProps = DAL.SoftDeletableEntityDateColumns
 
-// TODO: need some test to see if we continue with this kind of structure or we change it
-// More adjustments can appear as I move forward
-
-const deletedAtIndexName = "IDX_shipping_option_rule_deleted_at"
-const deletedAtIndexStatement = createPsqlIndexStatementHelper({
-  name: deletedAtIndexName,
+const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option_rule",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-}).expression
+})
 
-const shippingOptionIdIndexName = "IDX_shipping_option_rule_shipping_option_id"
-const shippingOptionIdIndexStatement = createPsqlIndexStatementHelper({
-  name: shippingOptionIdIndexName,
+const ShippingOptionIdIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option_rule",
   columns: "shipping_option_id",
   where: "deleted_at IS NULL",
@@ -57,10 +49,7 @@ export default class ShippingOptionRule {
   value: { value: string | string[] } | null = null
 
   @Property({ columnType: "text" })
-  @Index({
-    name: shippingOptionIdIndexName,
-    expression: shippingOptionIdIndexStatement,
-  })
+  @ShippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string
 
   @ManyToOne(() => ShippingOption, { persist: false })
@@ -81,10 +70,7 @@ export default class ShippingOptionRule {
   })
   updated_at: Date
 
-  @Index({
-    name: deletedAtIndexName,
-    expression: deletedAtIndexStatement,
-  })
+  @DeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

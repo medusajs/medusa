@@ -13,7 +13,6 @@ import {
   Entity,
   Enum,
   Filter,
-  Index,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -31,49 +30,38 @@ import ShippingProfile from "./shipping-profile"
 
 type ShippingOptionOptionalProps = DAL.SoftDeletableEntityDateColumns
 
-const deletedAtIndexName = "IDX_shipping_option_deleted_at"
-const deletedAtIndexStatement = createPsqlIndexStatementHelper({
-  name: deletedAtIndexName,
+const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-}).expression
+})
 
-const serviceZoneIdIndexName = "IDX_shipping_option_service_zone_id"
-const serviceZoneIdIndexStatement = createPsqlIndexStatementHelper({
-  name: serviceZoneIdIndexName,
+const ServiceZoneIdIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option",
   columns: "service_zone_id",
   where: "deleted_at IS NULL",
-}).expression
+})
 
-const shippingProfileIdIndexName = "IDX_shipping_option_shipping_profile_id"
-const shippingProfileIdIndexStatement = createPsqlIndexStatementHelper({
-  name: shippingProfileIdIndexName,
+const ShippingProfileIdIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option",
   columns: "shipping_profile_id",
   where: "deleted_at IS NULL",
-}).expression
+})
 
-const serviceProviderIdIndexName = "IDX_shipping_option_service_provider_id"
-const serviceProviderIdIndexStatement = createPsqlIndexStatementHelper({
-  name: serviceProviderIdIndexName,
+const ServiceProviderIdIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option",
   columns: "service_provider_id",
   where: "deleted_at IS NULL",
-}).expression
+})
 
-const shippingOptionTypeIdIndexName =
-  "IDX_shipping_option_shipping_option_type_id"
-const shippingOptionTypeIdIndexStatement = createPsqlIndexStatementHelper({
-  name: shippingOptionTypeIdIndexName,
+const ShippingOptionTypeIdIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option",
   columns: "shipping_option_type_id",
   where: "deleted_at IS NULL",
-}).expression
+})
 
 const nameIndexName = "IDX_shipping_option_name_unique"
-const nameIndexStatement = createPsqlIndexStatementHelper({
+const NameIndex = createPsqlIndexStatementHelper({
   name: nameIndexName,
   tableName: "shipping_option",
   columns: "name",
@@ -90,10 +78,7 @@ export default class ShippingOption {
   id: string
 
   @Property({ columnType: "text" })
-  @Index({
-    name: nameIndexName,
-    expression: nameIndexStatement,
-  })
+  @NameIndex.MikroORMIndex()
   name: string
 
   @Enum({
@@ -103,31 +88,19 @@ export default class ShippingOption {
   price_type: ShippingOptionPriceType
 
   @Property({ columnType: "text" })
-  @Index({
-    name: serviceZoneIdIndexName,
-    expression: serviceZoneIdIndexStatement,
-  })
+  @ServiceZoneIdIndex.MikroORMIndex()
   service_zone_id: string
 
   @Property({ columnType: "text", nullable: true })
-  @Index({
-    name: shippingProfileIdIndexName,
-    expression: shippingProfileIdIndexStatement,
-  })
+  @ShippingProfileIdIndex.MikroORMIndex()
   shipping_profile_id: string | null
 
   @Property({ columnType: "text", nullable: true })
-  @Index({
-    name: serviceProviderIdIndexName,
-    expression: serviceProviderIdIndexStatement,
-  })
+  @ServiceProviderIdIndex.MikroORMIndex()
   service_provider_id: string
 
   @Property({ columnType: "text", persist: false })
-  @Index({
-    name: shippingOptionTypeIdIndexName,
-    expression: shippingOptionTypeIdIndexStatement,
-  })
+  @ShippingOptionTypeIdIndex.MikroORMIndex()
   shipping_option_type_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
@@ -182,10 +155,7 @@ export default class ShippingOption {
   })
   updated_at: Date
 
-  @Index({
-    name: deletedAtIndexName,
-    expression: deletedAtIndexStatement,
-  })
+  @DeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

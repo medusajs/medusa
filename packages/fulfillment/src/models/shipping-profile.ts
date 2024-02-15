@@ -12,7 +12,6 @@ import {
   Entity,
   Enum,
   Filter,
-  Index,
   OneToMany,
   OnInit,
   OptionalProps,
@@ -23,17 +22,13 @@ import ShippingOption from "./shipping-option"
 
 type ShippingProfileOptionalProps = DAL.SoftDeletableEntityDateColumns
 
-const deletedAtIndexName = "IDX_shipping_profile_deleted_at"
-const deletedAtIndexStatement = createPsqlIndexStatementHelper({
-  name: deletedAtIndexName,
+const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_profile",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-}).expression
+})
 
-const shippingProfileTypeIndexName = "IDX_shipping_profile_name_unique"
-const shippingProfileTypeIndexStatement = createPsqlIndexStatementHelper({
-  name: shippingProfileTypeIndexName,
+const ShippingProfileTypeIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_profile",
   columns: "name",
   unique: true,
@@ -49,10 +44,7 @@ export default class ShippingProfile {
   id: string
 
   @Property({ columnType: "text" })
-  @Index({
-    name: shippingProfileTypeIndexName,
-    expression: shippingProfileTypeIndexStatement,
-  })
+  @ShippingProfileTypeIndex.MikroORMIndex()
   name: string
 
   @Enum({
@@ -85,10 +77,7 @@ export default class ShippingProfile {
   })
   updated_at: Date
 
-  @Index({
-    name: deletedAtIndexName,
-    expression: deletedAtIndexStatement,
-  })
+  @DeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
