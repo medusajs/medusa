@@ -431,9 +431,6 @@ describe("fulfillment module service", function () {
                     country_code: "fr",
                     city: "lyon",
                   },
-                  {
-                    type: GeoZoneType.COUNTRY,
-                  },
                 ],
               },
             ],
