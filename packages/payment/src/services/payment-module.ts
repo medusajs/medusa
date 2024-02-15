@@ -344,7 +344,6 @@ export default class PaymentModuleService<
       {
         amount: session.amount,
         currency_code: session.currency_code,
-        authorized_amount: session.amount,
         payment_session: session.id,
         payment_collection: session.payment_collection!.id,
         provider_id: session.provider_id,
@@ -398,7 +397,7 @@ export default class PaymentModuleService<
     }
 
     // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
-    // if (payment.captured_amount + input.amount > payment.authorized_amount) {
+    // if (payment.captured_amount + input.amount > payment.amount) {
     //   throw new MedusaError(
     //     MedusaError.Types.INVALID_DATA,
     //     `Total captured amount for payment: ${payment.id} exceeds authorized amount.`
