@@ -20,13 +20,13 @@ import {
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
+  PaymentActions,
 } from "@medusajs/types"
 import {
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  PaymentActions,
 } from "@medusajs/utils"
 import {
   Capture,
@@ -519,7 +519,7 @@ export default class PaymentModuleService<
   ): Promise<void> {
     const { action, data } = await this.paymentProviderService_.processEvent(
       eventData.provider,
-      eventData.data
+      eventData.payload
     )
 
     switch (action) {

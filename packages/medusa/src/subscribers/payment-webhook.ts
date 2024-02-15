@@ -21,7 +21,7 @@ class PaymentWebhookSubscriber {
     this.eventBusService_.subscribe(
       PaymentWebhookEvents.WebhookReceived,
       async (data) =>
-        paymentModuleService.onWebhookReceived(data as ProviderWebhookPayload)
+        paymentModuleService.processEvent(data as ProviderWebhookPayload)
     )
   }
 }

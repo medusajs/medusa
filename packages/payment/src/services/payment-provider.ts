@@ -177,7 +177,7 @@ export default class PaymentProviderService {
 
   async processEvent(
     providerId: string,
-    data: ProviderWebhookPayload["data"]
+    data: ProviderWebhookPayload["payload"]
   ): Promise<WebhookActionData> {
     const provider = this.retrieveProvider(providerId)
 

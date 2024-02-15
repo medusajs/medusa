@@ -3,10 +3,11 @@ import { CustomerDTO } from "../customer"
 import { AddressDTO } from "../address"
 import { ProviderWebhookPayload } from "./mutations"
 
-enum PaymentActions {
+export enum PaymentActions {
   CAPTURED = "captured",
   AUTHORIZED = "authorized",
   FAILED = "failed",
+  NOT_SUPPORTED = "not_supported",
 }
 
 /**
@@ -232,6 +233,6 @@ export interface IPaymentProvider {
    * @param data - object containing provider id and data from the provider
    */
   getWebhookAction(
-    data: ProviderWebhookPayload["data"]
+    data: ProviderWebhookPayload["payload"]
   ): Promise<WebhookActionData>
 }

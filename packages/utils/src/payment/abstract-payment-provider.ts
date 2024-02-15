@@ -126,7 +126,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse>
 
   abstract getWebhookAction(
-    data: ProviderWebhookPayload["data"]
+    data: ProviderWebhookPayload["payload"]
   ): Promise<WebhookActionData>
 }
 

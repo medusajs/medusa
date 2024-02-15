@@ -8,16 +8,16 @@ import {
   PaymentProviderContext,
   PaymentProviderError,
   PaymentProviderSessionResponse,
+  ProviderWebhookPayload,
+  WebhookActionData,
+  PaymentActions,
 } from "@medusajs/types"
 import {
   AbstractPaymentProvider,
   isPaymentProviderError,
   MedusaError,
-  PaymentActions,
 } from "@medusajs/utils"
 import { isDefined } from "medusa-core-utils"
-
-import { handlePaymentHook } from "../utils/webhook-handlers"
 
 import {
   ErrorCodes,
@@ -26,13 +26,6 @@ import {
   StripeCredentials,
   StripeOptions,
 } from "../types"
-
-type StripeWebhookEventData = {
-  data: string | Buffer
-  headers: {
-    "stripe-signature": string | string[] | Buffer
-  } & Record<string, unknown>
-}
 
 abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
   protected readonly options_: StripeOptions
@@ -319,11 +312,12 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     }
   }
 
-  getWebhookAction(webhookData) {
-    const { event } = webhookData
+  async getWebhookAction(
+    webhookData: ProviderWebhookPayload["payload"]
+  ): Promise<WebhookActionData> {
+    const event = this.constructWebhookEvent(webhookData)
 
-    // const data = formatData(webhookData)
-    const data = webhookData.data // TODO
+    const data = event.data.object as Record<string, unknown>
 
     switch (event.type) {
       case "payment_intent.succeeded":
@@ -333,10 +327,25 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
       case "payment_intent.payment_failed":
         return { action: PaymentActions.FAILED, data }
       default:
-        return { action: event, data }
+        return { action: PaymentActions.NOT_SUPPORTED, data }
     }
   }
 
+  /**
+   * Constructs Stripe Webhook event
+   * @param {object} data - the data of the webhook request: req.body
+   *    ensures integrity of the webhook event
+   * @return {object} Stripe Webhook event
+   */
+  constructWebhookEvent(data: ProviderWebhookPayload["payload"]): Stripe.Event {
+    const signature = data.headers["stripe-signature"] as string
+
+    return this.stripe_.webhooks.constructEvent(
+      data.data,
+      signature,
+      this.config.webhook_secret
+    )
+  }
   protected buildError(
     message: string,
     error: Stripe.StripeRawError | PaymentProviderError | Error
