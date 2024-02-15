@@ -676,8 +676,14 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
   ) {}
 
+  /**
+  * @ignore
+  */
   static _isPaymentProcessor = true
 
+  /**
+  * @ignore
+  */
   static isPaymentProcessor(object): boolean {
     return object?.constructor?._isPaymentProcessor
   }
