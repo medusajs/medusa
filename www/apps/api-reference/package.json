@@ -14,7 +14,7 @@
   "dependencies": {
     "@mdx-js/loader": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
-    "@medusajs/icons": "^1.0.0",
+    "@medusajs/icons": "^1.2.0",
     "@next/mdx": "13.4.19",
     "@readme/openapi-parser": "^2.5.0",
     "@types/mapbox__rehype-prism": "^0.8.0",

@@ -34,7 +34,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       className,
       children,
       ...props
-    },
+    }: AlertProps,
     ref
   ) => {
     const [dismissed, setDismissed] = React.useState(false)

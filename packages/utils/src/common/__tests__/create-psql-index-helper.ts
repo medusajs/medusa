@@ -10,7 +10,7 @@ describe("createPsqlIndexStatementHelper", function () {
 
     const indexStatement = createPsqlIndexStatementHelper(options)
     expect(indexStatement).toEqual(
-      `CREATE INDEX IF NOT EXISTS ${options.name} ON ${options.tableName} (${options.columns})`
+      `CREATE INDEX IF NOT EXISTS "${options.name}" ON "${options.tableName}" (${options.columns})`
     )
   })
 
@@ -23,9 +23,9 @@ describe("createPsqlIndexStatementHelper", function () {
 
     const indexStatement = createPsqlIndexStatementHelper(options)
     expect(indexStatement).toEqual(
-      `CREATE INDEX IF NOT EXISTS ${options.name} ON ${
+      `CREATE INDEX IF NOT EXISTS "${options.name}" ON "${
         options.tableName
-      } (${options.columns.join(", ")})`
+      }" (${options.columns.join(", ")})`
     )
   })
 
@@ -39,9 +39,9 @@ describe("createPsqlIndexStatementHelper", function () {
 
     const indexStatement = createPsqlIndexStatementHelper(options)
     expect(indexStatement).toEqual(
-      `CREATE INDEX IF NOT EXISTS ${options.name} ON ${
+      `CREATE INDEX IF NOT EXISTS "${options.name}" ON "${
         options.tableName
-      } (${options.columns.join(", ")}) WHERE ${options.where}`
+      }" (${options.columns.join(", ")}) WHERE ${options.where}`
     )
   })
 
@@ -56,9 +56,26 @@ describe("createPsqlIndexStatementHelper", function () {
 
     const indexStatement = createPsqlIndexStatementHelper(options)
     expect(indexStatement).toEqual(
-      `CREATE INDEX IF NOT EXISTS ${options.name} ON ${
+      `CREATE INDEX IF NOT EXISTS "${options.name}" ON "${
         options.tableName
-      } USING GIN (${options.columns.join(", ")}) WHERE ${options.where}`
+      }" USING GIN (${options.columns.join(", ")}) WHERE ${options.where}`
+    )
+  })
+
+  it("should generate unique constraint", function () {
+    const options = {
+      name: "index_name",
+      tableName: "table_name",
+      columns: ["column_name_1", "column_name_2"],
+      unique: true,
+      where: "column_name_1 IS NOT NULL",
+    }
+
+    const indexStatement = createPsqlIndexStatementHelper(options)
+    expect(indexStatement).toEqual(
+      `CREATE UNIQUE INDEX IF NOT EXISTS "${options.name}" ON "${
+        options.tableName
+      }" (${options.columns.join(", ")}) WHERE ${options.where}`
     )
   })
 })
