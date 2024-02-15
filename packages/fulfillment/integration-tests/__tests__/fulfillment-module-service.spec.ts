@@ -4,6 +4,7 @@ import {
   CreateFulfillmentSetDTO,
   CreateGeoZoneDTO,
   CreateServiceZoneDTO,
+  CreateShippingProfileDTO,
   GeoZoneDTO,
   IFulfillmentModuleService,
   ServiceZoneDTO,
@@ -18,6 +19,8 @@ describe("fulfillment module service", function () {
   let shutdownFunc: () => Promise<void>
 
   beforeAll(async () => {
+    await MikroOrmWrapper.setupDatabase()
+
     const initModulesConfig = getInitModuleConfig()
 
     const { medusaApp, shutdown } = await initModules(initModulesConfig)
@@ -671,6 +674,72 @@ describe("fulfillment module service", function () {
           )
           ++i
         }
+      })
+    })
+
+    describe("on create shipping profiles", () => {
+      it("should create a new shipping profile", async function () {
+        const createData: CreateShippingProfileDTO = {
+          name: "test-default-profile",
+          type: "default",
+        }
+
+        const createdShippingProfile = await service.createShippingProfiles(
+          createData
+        )
+
+        expect(createdShippingProfile).toEqual(
+          expect.objectContaining({
+            name: createData.name,
+            type: createData.type,
+          })
+        )
+      })
+
+      it("should create multiple new shipping profiles", async function () {
+        const createData: CreateShippingProfileDTO[] = [
+          {
+            name: "test-profile-1",
+            type: "default",
+          },
+          {
+            name: "test-profile-2",
+            type: "custom",
+          },
+        ]
+
+        const createdShippingProfiles = await service.createShippingProfiles(
+          createData
+        )
+
+        expect(createdShippingProfiles).toHaveLength(2)
+
+        let i = 0
+        for (const data_ of createData) {
+          expect(createdShippingProfiles[i]).toEqual(
+            expect.objectContaining({
+              name: data_.name,
+              type: data_.type,
+            })
+          )
+          ++i
+        }
+      })
+
+      it("should fail on duplicated shipping profile name", async function () {
+        const createData: CreateShippingProfileDTO = {
+          name: "test-default-profile",
+          type: "default",
+        }
+
+        await service.createShippingProfiles(createData)
+
+        const err = await service
+          .createShippingProfiles(createData)
+          .catch((e) => e)
+
+        expect(err).toBeDefined()
+        expect(err.constraint).toBe("IDX_shipping_profile_name_unique")
       })
     })
 

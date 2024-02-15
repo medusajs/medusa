@@ -31,7 +31,7 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
-const shippingProfileTypeIndexName = "IDX_shipping_profile_name"
+const shippingProfileTypeIndexName = "IDX_shipping_profile_name_unique"
 const shippingProfileTypeIndexStatement = createPsqlIndexStatementHelper({
   name: shippingProfileTypeIndexName,
   tableName: "shipping_profile",

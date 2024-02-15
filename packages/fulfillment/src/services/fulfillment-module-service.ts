@@ -39,12 +39,14 @@ type InjectedDependencies = {
   fulfillmentSetService: ModulesSdkTypes.InternalModuleService<any>
   serviceZoneService: ModulesSdkTypes.InternalModuleService<any>
   geoZoneService: ModulesSdkTypes.InternalModuleService<any>
+  shippingProfileService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 export default class FulfillmentModuleService<
     TEntity extends FulfillmentSet = FulfillmentSet,
     TServiceZoneEntity extends ServiceZone = ServiceZone,
-    TGeoZoneEntity extends GeoZone = GeoZone
+    TGeoZoneEntity extends GeoZone = GeoZone,
+    TShippingProfileEntity extends ShippingProfile = ShippingProfile
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -63,6 +65,7 @@ export default class FulfillmentModuleService<
   protected readonly fulfillmentSetService_: ModulesSdkTypes.InternalModuleService<TEntity>
   protected readonly serviceZoneService_: ModulesSdkTypes.InternalModuleService<TServiceZoneEntity>
   protected readonly geoZoneService_: ModulesSdkTypes.InternalModuleService<TGeoZoneEntity>
+  protected readonly shippingProfileService_: ModulesSdkTypes.InternalModuleService<TShippingProfileEntity>
 
   constructor(
     {
@@ -70,6 +73,7 @@ export default class FulfillmentModuleService<
       fulfillmentSetService,
       serviceZoneService,
       geoZoneService,
+      shippingProfileService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -79,6 +83,7 @@ export default class FulfillmentModuleService<
     this.fulfillmentSetService_ = fulfillmentSetService
     this.serviceZoneService_ = serviceZoneService
     this.geoZoneService_ = geoZoneService
+    this.shippingProfileService_ = shippingProfileService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -221,7 +226,40 @@ export default class FulfillmentModuleService<
   ): Promise<
     FulfillmentTypes.ShippingProfileDTO | FulfillmentTypes.ShippingProfileDTO[]
   > {
-    return []
+    const createdShippingProfiles = await this.createShippingProfiles_(
+      data,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      | FulfillmentTypes.ShippingProfileDTO
+      | FulfillmentTypes.ShippingProfileDTO[]
+    >(createdShippingProfiles, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async createShippingProfiles_(
+    data:
+      | FulfillmentTypes.CreateShippingProfileDTO[]
+      | FulfillmentTypes.CreateShippingProfileDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TShippingProfileEntity[] | TShippingProfileEntity> {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    if (!data_.length) {
+      return []
+    }
+
+    const createdShippingProfiles = await this.shippingProfileService_.create(
+      data_,
+      sharedContext
+    )
+
+    return Array.isArray(data)
+      ? createdShippingProfiles
+      : createdShippingProfiles[0]
   }
 
   createGeoZones(

@@ -1,6 +1,6 @@
 import { ShippingProfileType } from "@medusajs/utils"
 import { LoaderOptions } from "@medusajs/types"
-import { Modules } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export async function createDefaultShippingProfilesLoader({
   container,
@@ -16,7 +16,7 @@ export async function createDefaultShippingProfilesLoader({
     },
   ]
 
-  const service = container.resolve(Modules.FULFILLMENT)
+  const service = container.resolve(ModuleRegistrationName.FULFILLMENT)
   const shippingProfiles = await service.listShippingProfiles({
     type: { $in: [ShippingProfileType.DEFAULT, ShippingProfileType.GIFT_CARD] },
   })
