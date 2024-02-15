@@ -5,6 +5,7 @@ import {
   ShippingOptionPriceType,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Cascade,
@@ -21,13 +22,12 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
-import ServiceZone from "./service-zone"
-import ShippingProfile from "./shipping-profile"
-import ServiceProvider from "./service-provider"
-import ShippingOptionType from "./shipping-option-type"
-import ShippingOptionRule from "./shipping-option-rule"
 import Fulfillment from "./fulfillment"
+import ServiceProvider from "./service-provider"
+import ServiceZone from "./service-zone"
+import ShippingOptionRule from "./shipping-option-rule"
+import ShippingOptionType from "./shipping-option-type"
+import ShippingProfile from "./shipping-profile"
 
 type ShippingOptionOptionalProps = DAL.SoftDeletableEntityDateColumns
 
@@ -37,7 +37,7 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   tableName: "shipping_option",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-})
+}).expression
 
 const serviceZoneIdIndexName = "IDX_shipping_option_service_zone_id"
 const serviceZoneIdIndexStatement = createPsqlIndexStatementHelper({
@@ -45,7 +45,7 @@ const serviceZoneIdIndexStatement = createPsqlIndexStatementHelper({
   tableName: "shipping_option",
   columns: "service_zone_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const shippingProfileIdIndexName = "IDX_shipping_option_shipping_profile_id"
 const shippingProfileIdIndexStatement = createPsqlIndexStatementHelper({
@@ -53,7 +53,7 @@ const shippingProfileIdIndexStatement = createPsqlIndexStatementHelper({
   tableName: "shipping_option",
   columns: "shipping_profile_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const serviceProviderIdIndexName = "IDX_shipping_option_service_provider_id"
 const serviceProviderIdIndexStatement = createPsqlIndexStatementHelper({
@@ -61,7 +61,7 @@ const serviceProviderIdIndexStatement = createPsqlIndexStatementHelper({
   tableName: "shipping_option",
   columns: "service_provider_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const shippingOptionTypeIdIndexName =
   "IDX_shipping_option_shipping_option_type_id"
@@ -70,7 +70,7 @@ const shippingOptionTypeIdIndexStatement = createPsqlIndexStatementHelper({
   tableName: "shipping_option",
   columns: "shipping_option_type_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const nameIndexName = "IDX_shipping_option_name_unique"
 const nameIndexStatement = createPsqlIndexStatementHelper({

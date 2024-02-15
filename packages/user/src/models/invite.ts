@@ -1,20 +1,20 @@
 import {
   BeforeCreate,
   Entity,
+  Filter,
+  Index,
   OnInit,
+  OptionalProps,
   PrimaryKey,
   Property,
-  Index,
-  Filter,
-  OptionalProps,
 } from "@mikro-orm/core"
 
+import { DAL } from "@medusajs/types"
 import {
   DALUtils,
-  generateEntityId,
   createPsqlIndexStatementHelper,
+  generateEntityId,
 } from "@medusajs/utils"
-import { DAL } from "@medusajs/types"
 
 const inviteEmailIndexName = "IDX_invite_email"
 const inviteEmailIndexStatement = createPsqlIndexStatementHelper({
@@ -23,7 +23,7 @@ const inviteEmailIndexStatement = createPsqlIndexStatementHelper({
   columns: "email",
   where: "deleted_at IS NULL",
   unique: true,
-})
+}).expression
 
 const inviteTokenIndexName = "IDX_invite_token"
 const inviteTokenIndexStatement = createPsqlIndexStatementHelper({
@@ -31,7 +31,7 @@ const inviteTokenIndexStatement = createPsqlIndexStatementHelper({
   tableName: "invite",
   columns: "token",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const inviteDeletedAtIndexName = "IDX_invite_deleted_at"
 const inviteDeletedAtIndexStatement = createPsqlIndexStatementHelper({
@@ -39,7 +39,7 @@ const inviteDeletedAtIndexStatement = createPsqlIndexStatementHelper({
   tableName: "invite",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-})
+}).expression
 
 type OptionalFields =
   | "metadata"

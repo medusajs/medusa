@@ -4,6 +4,7 @@ import {
   generateEntityId,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Cascade,
@@ -18,7 +19,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 import FulfillmentSet from "./fullfilment-set"
 import GeoZone from "./geo-zone"
 import ShippingOption from "./shipping-option"
@@ -31,7 +31,7 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   tableName: "service_zone",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-})
+}).expression
 
 const nameIndexName = "IDX_service_zone_name_unique"
 const nameIndexStatement = createPsqlIndexStatementHelper({
@@ -40,7 +40,7 @@ const nameIndexStatement = createPsqlIndexStatementHelper({
   columns: "name",
   unique: true,
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const fulfillmentSetIdIndexName = "IDX_service_zone_fulfillment_set_id"
 const fulfillmentSetIdIndexStatement = createPsqlIndexStatementHelper({
@@ -48,7 +48,7 @@ const fulfillmentSetIdIndexStatement = createPsqlIndexStatementHelper({
   tableName: "service_zone",
   columns: "fulfillment_set_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

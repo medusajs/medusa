@@ -1,4 +1,4 @@
-import { BigNumberRawPriceInput } from "@medusajs/types"
+import { BigNumberInput } from "@medusajs/types"
 import { BigNumber as BigNumberJs } from "bignumber.js"
 import { isDefined, toCamelCase } from "../common"
 import { BigNumber } from "./big-number"
@@ -18,7 +18,7 @@ export function toBigNumberJs<T, V extends string>(
 ): Output<V> {
   return fields.reduce((acc, field: string) => {
     const camelCased = toCamelCase(field)
-    let val: BigNumberRawPriceInput = 0
+    let val: BigNumberInput = 0
 
     if (isDefined(entity[field])) {
       const entityField = entity[field]

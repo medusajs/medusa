@@ -4,6 +4,7 @@ import {
   generateEntityId,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Entity,
@@ -15,7 +16,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 import ShippingOption from "./shipping-option"
 
 type ShippingOptionTypeOptionalProps = DAL.SoftDeletableEntityDateColumns
@@ -26,7 +26,7 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   tableName: "shipping_option_type",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-})
+}).expression
 
 const shippingOptionIdIndexName = "IDX_shipping_option_type_shipping_option_id"
 const shippingOptionIdIndexStatement = createPsqlIndexStatementHelper({
@@ -34,7 +34,7 @@ const shippingOptionIdIndexStatement = createPsqlIndexStatementHelper({
   tableName: "shipping_option_type",
   columns: "shipping_option_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

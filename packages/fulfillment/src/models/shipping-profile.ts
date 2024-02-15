@@ -5,6 +5,7 @@ import {
   ShippingProfileType,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Collection,
@@ -18,7 +19,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 import ShippingOption from "./shipping-option"
 
 type ShippingProfileOptionalProps = DAL.SoftDeletableEntityDateColumns
@@ -29,7 +29,7 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   tableName: "shipping_profile",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-})
+}).expression
 
 const shippingProfileTypeIndexName = "IDX_shipping_profile_name_unique"
 const shippingProfileTypeIndexStatement = createPsqlIndexStatementHelper({
