@@ -10,6 +10,7 @@ import {
 import {
   CommonTypes,
   InternalModuleDeclaration,
+  LoadedModule,
   MedusaContainer,
   ModuleDefinition,
 } from "@medusajs/types"
@@ -73,7 +74,7 @@ export async function migrateMedusaApp(
 
   // Apply default options to legacy modules
   for (const moduleKey of Object.keys(configModules)) {
-    if (!ModulesDefinition[moduleKey].isLegacy) {
+    if (!ModulesDefinition[moduleKey]?.isLegacy) {
       continue
     }
 
@@ -137,7 +138,7 @@ export const loadMedusaApp = async (
 
   // Apply default options to legacy modules
   for (const moduleKey of Object.keys(configModules)) {
-    if (!ModulesDefinition[moduleKey].isLegacy) {
+    if (!ModulesDefinition[moduleKey]?.isLegacy) {
       continue
     }
 
@@ -202,9 +203,10 @@ export const loadMedusaApp = async (
     asValue(medusaApp.query)
   )
 
-  for (const [serviceKey, moduleService] of Object.entries(medusaApp.modules)) {
+  for (const moduleService of Object.values(medusaApp.modules)) {
+    const loadedModule = moduleService as LoadedModule
     container.register(
-      ModulesDefinition[serviceKey].registrationName,
+      loadedModule.__definition.registrationName,
       asValue(moduleService)
     )
   }
