@@ -84,7 +84,7 @@ describe("createPsqlIndexStatementHelper", function () {
 
     const indexStatement = createPsqlIndexStatementHelper(options)
     expect(indexStatement.expression).toEqual(
-      `CREATE UNIQUE INDEX IF NOT EXISTS "IDX_table_name_column_name_1_column_name_2" ON "${
+      `CREATE UNIQUE INDEX IF NOT EXISTS "IDX_table_name_column_name_1_column_name_2_unique" ON "${
         options.tableName
       }" (${options.columns.join(", ")}) WHERE ${options.where}`
     )
