@@ -12,11 +12,11 @@ All features guarded by the `medusa_v2` flag are not ready for production and wi
 
 :::
 
-Experimental Features are guarded in the Medusa backend by a feature flag.
+To enable the experimental features:
 
-To use them, [enable the `medusa_v2` feature flag](../development/feature-flags/toggle.md) in your backend.
-
-Then, run migrations in your backend with the following command:
+1. [Enable the `medusa_v2` feature flag](../development/feature-flags/toggle.md) in your backend.
+2. Install the [Product](./product/install-medusa.mdx) and [Pricing](./pricing/install-medusa.mdx) modules and add them to the Medusa configurations.
+3. Finally, run migrations in your backend with the following command:
 
 ```bash
 npx medusa migrations run
