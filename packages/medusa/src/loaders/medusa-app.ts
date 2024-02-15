@@ -55,11 +55,12 @@ export async function migrateMedusaApp(
   },
   config = { registerInContainer: true }
 ): Promise<void> {
-  const featureFlagRouter = container.resolve<FlagRouter>("featureFlagRouter")
-  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION
+    ),
+    [ContainerRegistrationKeys.LOGGER]: container.resolve(
+      ContainerRegistrationKeys.LOGGER
     ),
   }
 
@@ -121,6 +122,9 @@ export const loadMedusaApp = async (
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION
+    ),
+    [ContainerRegistrationKeys.LOGGER]: container.resolve(
+      ContainerRegistrationKeys.LOGGER
     ),
   }
 
