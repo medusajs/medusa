@@ -14,12 +14,6 @@ export const LINKS = {
     Modules.PRICING,
     "price_set_id"
   ),
-  CartRegion: composeLinkName(
-    Modules.CART,
-    "cart_id",
-    Modules.REGION,
-    "region_id"
-  ),
 
   // Internal services
   ProductShippingProfile: composeLinkName(
