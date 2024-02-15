@@ -872,14 +872,14 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_shipping_profile_name",
+          "keyName": "IDX_shipping_profile_name_unique",
           "columnNames": [
             "name"
           ],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_shipping_profile_name\" ON \"shipping_profile\" (name) WHERE deleted_at IS NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_shipping_profile_name_unique\" ON \"shipping_profile\" (name) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_shipping_profile_deleted_at",
@@ -962,7 +962,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "shipping_option_type_id": {
@@ -1134,6 +1134,7 @@
             "id"
           ],
           "referencedTableName": "public.service_provider",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "shipping_option_shipping_option_type_id_foreign": {
@@ -1146,6 +1147,7 @@
             "id"
           ],
           "referencedTableName": "public.shipping_option_type",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -1254,20 +1256,7 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {
-        "shipping_option_rule_shipping_option_id_foreign": {
-          "constraintName": "shipping_option_rule_shipping_option_id_foreign",
-          "columnNames": [
-            "shipping_option_id"
-          ],
-          "localTableName": "public.shipping_option_rule",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.shipping_option",
-          "updateRule": "cascade"
-        }
-      }
+      "foreignKeys": {}
     },
     {
       "columns": {

@@ -7,6 +7,7 @@ import {
 
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   Enum,
@@ -102,7 +103,7 @@ export default class ShippingOption {
   })
   shipping_profile_id: string | null
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", nullable: true })
   @Index({
     name: serviceProviderIdIndexName,
     expression: serviceProviderIdIndexStatement,
@@ -131,15 +132,22 @@ export default class ShippingOption {
   })
   shipping_profile: ShippingProfile | null
 
-  @ManyToOne(() => ServiceProvider)
+  @ManyToOne(() => ServiceProvider, {
+    persist: false,
+    nullable: true,
+  })
   service_provider: ServiceProvider
 
   @OneToOne(() => ShippingOptionType, (so) => so.shipping_option, {
     owner: true,
+    cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove"] as any,
   })
   shipping_option_type: ShippingOptionType
 
-  @OneToMany(() => ShippingOptionRule, (sor) => sor.shipping_option)
+  @OneToMany(() => ShippingOptionRule, (sor) => sor.shipping_option, {
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+    orphanRemoval: true,
+  })
   rules = new Collection<ShippingOptionRule>(this)
 
   @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.shipping_option)

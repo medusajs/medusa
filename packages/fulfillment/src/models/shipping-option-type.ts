@@ -60,7 +60,9 @@ export default class ShippingOptionType {
   })
   shipping_option_id: string
 
-  @OneToOne(() => ShippingOption, (so) => so.shipping_option_type)
+  @OneToOne(() => ShippingOption, (so) => so.shipping_option_type, {
+    persist: false,
+  })
   shipping_option: ShippingOption
 
   @Property({

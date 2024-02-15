@@ -51,7 +51,7 @@ export default class ShippingOptionRule {
   @Property({ columnType: "text" })
   shipping_option_id: string
 
-  @ManyToOne(() => ShippingOption)
+  @ManyToOne(() => ShippingOption, { persist: false })
   shipping_option: ShippingOption
 
   @Property({
