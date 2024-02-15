@@ -9,19 +9,30 @@ import {
   UpdateFulfillmentSetDTO,
 } from "@medusajs/types"
 import {
+  getSetDifference,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   promiseAll,
-  getSetDifference
 } from "@medusajs/utils"
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { FulfillmentSet, GeoZone, ServiceZone, ShippingOption } from "@models"
+import {
+  FulfillmentSet,
+  GeoZone,
+  ServiceZone,
+  ShippingOption,
+  ShippingProfile,
+} from "@models"
 
-const generateMethodForModels = [ServiceZone, ShippingOption, GeoZone]
+const generateMethodForModels = [
+  ServiceZone,
+  ShippingOption,
+  GeoZone,
+  ShippingProfile,
+]
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -43,6 +54,7 @@ export default class FulfillmentModuleService<
       ServiceZone: { dto: FulfillmentTypes.ServiceZoneDTO }
       ShippingOption: { dto: FulfillmentTypes.ShippingOptionDTO }
       GeoZone: { dto: FulfillmentTypes.GeoZoneDTO }
+      ShippingProfile: { dto: FulfillmentTypes.ShippingProfileDTO }
     }
   >(FulfillmentSet, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IFulfillmentModuleService
@@ -187,6 +199,27 @@ export default class FulfillmentModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     FulfillmentTypes.ShippingOptionDTO | FulfillmentTypes.ShippingOptionDTO[]
+  > {
+    return []
+  }
+
+  createShippingProfiles(
+    data: FulfillmentTypes.CreateShippingProfileDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingProfileDTO[]>
+  createShippingProfiles(
+    data: FulfillmentTypes.CreateShippingProfileDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingProfileDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async createShippingProfiles(
+    data:
+      | FulfillmentTypes.CreateShippingProfileDTO[]
+      | FulfillmentTypes.CreateShippingProfileDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    FulfillmentTypes.ShippingProfileDTO | FulfillmentTypes.ShippingProfileDTO[]
   > {
     return []
   }
@@ -473,7 +506,6 @@ export default class FulfillmentModuleService<
       serviceZones.map((s) => [s.id, s])
     )
 
-    const serviceZoneIdsToDelete: string[] = []
     const geoZoneIdsToDelete: string[] = []
 
     data_.forEach((serviceZone) => {
@@ -563,6 +595,27 @@ export default class FulfillmentModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO
+  > {
+    return []
+  }
+
+  updateShippingProfiles(
+    data: FulfillmentTypes.UpdateShippingProfileDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingProfileDTO[]>
+  updateShippingProfiles(
+    data: FulfillmentTypes.UpdateShippingProfileDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingProfileDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async updateShippingProfiles(
+    data:
+      | FulfillmentTypes.UpdateShippingProfileDTO
+      | FulfillmentTypes.UpdateShippingProfileDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    FulfillmentTypes.ShippingProfileDTO | FulfillmentTypes.ShippingProfileDTO[]
   > {
     return []
   }

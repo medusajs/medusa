@@ -95,12 +95,12 @@ export default class ShippingOption {
   })
   service_zone_id: string
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", nullable: true })
   @Index({
     name: shippingProfileIdIndexName,
     expression: shippingProfileIdIndexStatement,
   })
-  shipping_profile_id: string
+  shipping_profile_id: string | null
 
   @Property({ columnType: "text" })
   @Index({
@@ -125,8 +125,11 @@ export default class ShippingOption {
   @ManyToOne(() => ServiceZone)
   service_zone: ServiceZone
 
-  @ManyToOne(() => ShippingProfile)
-  shipping_profile: ShippingProfile
+  @ManyToOne(() => ShippingProfile, {
+    persist: false,
+    nullable: true,
+  })
+  shipping_profile: ShippingProfile | null
 
   @ManyToOne(() => ServiceProvider)
   service_provider: ServiceProvider

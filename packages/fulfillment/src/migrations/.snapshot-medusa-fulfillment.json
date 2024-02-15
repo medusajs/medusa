@@ -493,20 +493,7 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {
-        "service_zone_fulfillment_set_id_foreign": {
-          "constraintName": "service_zone_fulfillment_set_id_foreign",
-          "columnNames": [
-            "fulfillment_set_id"
-          ],
-          "localTableName": "public.service_zone",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.fulfillment_set",
-          "updateRule": "cascade"
-        }
-      }
+      "foreignKeys": {}
     },
     {
       "columns": {
@@ -686,20 +673,7 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {
-        "geo_zone_service_zone_id_foreign": {
-          "constraintName": "geo_zone_service_zone_id_foreign",
-          "columnNames": [
-            "service_zone_id"
-          ],
-          "localTableName": "public.geo_zone",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.service_zone",
-          "updateRule": "cascade"
-        }
-      }
+      "foreignKeys": {}
     },
     {
       "columns": {
@@ -828,6 +802,21 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'default'",
+          "enumItems": [
+            "default",
+            "gift_card",
+            "custom"
+          ],
+          "mappedType": "enum"
+        },
         "metadata": {
           "name": "metadata",
           "type": "jsonb",
@@ -945,7 +934,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "service_provider_id": {
@@ -1113,6 +1102,7 @@
             "id"
           ],
           "referencedTableName": "public.shipping_profile",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "shipping_option_service_provider_id_foreign": {

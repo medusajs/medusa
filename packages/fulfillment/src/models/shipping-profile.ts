@@ -2,12 +2,14 @@ import {
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
+  ShippingProfileType,
 } from "@medusajs/utils"
 
 import {
   BeforeCreate,
   Collection,
   Entity,
+  Enum,
   Filter,
   Index,
   OneToMany,
@@ -36,6 +38,12 @@ export default class ShippingProfile {
 
   @PrimaryKey({ columnType: "text" })
   id: string
+
+  @Enum({
+    items: () => ShippingProfileType,
+    default: ShippingProfileType.DEFAULT,
+  })
+  type: ShippingProfileType = ShippingProfileType.DEFAULT
 
   @OneToMany(
     () => ShippingOption,
