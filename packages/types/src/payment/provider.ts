@@ -10,6 +10,10 @@ export enum PaymentActions {
   NOT_SUPPORTED = "not_supported",
 }
 
+export type PaymentAddressDTO = Partial<AddressDTO>
+
+export type PaymentCustomerDTO = Partial<CustomerDTO>
+
 /**
  * @interface
  *
@@ -19,7 +23,7 @@ export type PaymentProviderContext = {
   /**
    * The payment's billing address.
    */
-  billing_address?: AddressDTO
+  billing_address?: PaymentAddressDTO
   /**
    * The customer's email.
    */
@@ -39,7 +43,7 @@ export type PaymentProviderContext = {
   /**
    * The customer associated with this payment.
    */
-  customer?: CustomerDTO
+  customer?: PaymentCustomerDTO
   /**
    * The context.
    */
@@ -98,10 +102,19 @@ export interface PaymentProviderError {
   detail?: any
 }
 
-export interface WebhookActionData {
-  action: PaymentActions
-  data: Record<string, unknown>
+export type WebhookActionData = {
+  resource_id: string
+  amount: number
 }
+
+export type WebhookActionResult =
+  | {
+      action: PaymentActions.NOT_SUPPORTED
+    }
+  | {
+      action: PaymentActions
+      data: WebhookActionData
+    }
 
 export interface IPaymentProvider {
   /**
@@ -234,5 +247,5 @@ export interface IPaymentProvider {
    */
   getWebhookAction(
     data: ProviderWebhookPayload["payload"]
-  ): Promise<WebhookActionData>
+  ): Promise<WebhookActionResult>
 }

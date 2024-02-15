@@ -92,7 +92,7 @@ export interface CreatePaymentProviderDTO {
 export interface ProviderWebhookPayload {
   provider: string
   payload: {
-    data: string
+    data: string | Buffer | Record<string, unknown>
     headers: Record<string, unknown>
   }
 }

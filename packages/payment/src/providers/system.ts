@@ -4,7 +4,7 @@ import {
   PaymentProviderSessionResponse,
   PaymentSessionStatus,
   ProviderWebhookPayload,
-  WebhookActionData,
+  WebhookActionResult,
   PaymentActions,
 } from "@medusajs/types"
 import { AbstractPaymentProvider } from "@medusajs/utils"
@@ -73,8 +73,8 @@ export class SystemProviderService extends AbstractPaymentProvider {
 
   async getWebhookAction(
     data: ProviderWebhookPayload["payload"]
-  ): Promise<WebhookActionData> {
-    return { action: PaymentActions.AUTHORIZED, data: {} }
+  ): Promise<WebhookActionResult> {
+    return { action: PaymentActions.NOT_SUPPORTED }
   }
 }
 

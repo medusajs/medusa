@@ -11,6 +11,7 @@ import {
   ProviderWebhookPayload,
   WebhookActionData,
   PaymentActions,
+  WebhookActionResult,
 } from "@medusajs/types"
 import {
   AbstractPaymentProvider,
@@ -314,20 +315,41 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
 
   async getWebhookAction(
     webhookData: ProviderWebhookPayload["payload"]
-  ): Promise<WebhookActionData> {
+  ): Promise<WebhookActionResult> {
     const event = this.constructWebhookEvent(webhookData)
-
-    const data = event.data.object as Record<string, unknown>
+    const object = event.data.object
 
     switch (event.type) {
+      case "payment_intent.amount_capturable_updated":
+        return {
+          action: PaymentActions.CAPTURED,
+          data: this.formatWebhookActionResponse(
+            object as Stripe.PaymentIntent
+          ),
+        }
       case "payment_intent.succeeded":
-        return { action: PaymentActions.CAPTURED, data }
-      case "payment_intent.succeeded":
-        return { action: PaymentActions.AUTHORIZED, data }
+        return {
+          action: PaymentActions.AUTHORIZED,
+          data: this.formatWebhookActionResponse(
+            object as Stripe.PaymentIntent
+          ),
+        }
       case "payment_intent.payment_failed":
-        return { action: PaymentActions.FAILED, data }
+        return {
+          action: PaymentActions.FAILED,
+          data: this.formatWebhookActionResponse(
+            object as Stripe.PaymentIntent
+          ),
+        }
       default:
-        return { action: PaymentActions.NOT_SUPPORTED, data }
+        return { action: PaymentActions.NOT_SUPPORTED }
+    }
+  }
+
+  formatWebhookActionResponse(intent: Stripe.PaymentIntent): WebhookActionData {
+    return {
+      resource_id: intent.metadata.resource_id,
+      amount: intent.amount_capturable,
     }
   }
 
@@ -341,7 +363,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     const signature = data.headers["stripe-signature"] as string
 
     return this.stripe_.webhooks.constructEvent(
-      data.data,
+      data.data as string | Buffer,
       signature,
       this.config.webhook_secret
     )

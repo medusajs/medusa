@@ -11,6 +11,7 @@ import {
   IPaymentModuleService,
   ModuleJoinerConfig,
   ModulesSdkTypes,
+  PaymentActions,
   PaymentCollectionDTO,
   PaymentDTO,
   PaymentSessionDTO,
@@ -20,7 +21,6 @@ import {
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
-  PaymentActions,
 } from "@medusajs/types"
 import {
   InjectTransactionManager,
@@ -390,7 +390,11 @@ export default class PaymentModuleService<
 
     // this method needs to be idempotent
     if (payment.captured_at) {
-      return this.retrievePayment(data.payment_id)
+      return this.retrievePayment(
+        data.payment_id,
+        { relations: ["captures"] },
+        sharedContext
+      )
     }
 
     // TODO: revisit when https://github.com/medusajs/medusa/pull/6253 is merged
@@ -517,27 +521,32 @@ export default class PaymentModuleService<
     eventData: ProviderWebhookPayload,
     @MedusaContext() sharedContext?: Context
   ): Promise<void> {
-    const { action, data } = await this.paymentProviderService_.processEvent(
+    const event = await this.paymentProviderService_.processEvent(
       eventData.provider,
       eventData.payload
     )
 
-    switch (action) {
+    if (event.action === PaymentActions.NOT_SUPPORTED) {
+      return
+    }
+
+    switch (event.action) {
       case PaymentActions.CAPTURED: {
         const [payment] = await this.listPayments({
-          session_id: data.resource_id,
+          session_id: event.data.resource_id,
         })
 
         if (payment) {
           await this.capturePayment(
-            { payment_id: payment.id, amount: payment.amount },
+            { payment_id: payment.id, amount: event.data.amount },
             sharedContext
           )
         }
+        break
       }
       case PaymentActions.AUTHORIZED:
         await this.authorizePaymentSession(
-          data.resource_id as string,
+          event.data.resource_id as string,
           {},
           sharedContext
         )
