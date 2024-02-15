@@ -4,6 +4,7 @@ import {
   FilterableGeoZoneProps,
   FilterableServiceZoneProps,
   FilterableShippingOptionProps,
+  FilterableShippingProfileProps,
   FulfillmentSetDTO,
   GeoZoneDTO,
   ServiceZoneDTO,
@@ -310,7 +311,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param sharedContext
    */
   listShippingProfiles(
-    filters?: FilterableShippingOptionProps,
+    filters?: FilterableShippingProfileProps,
     config?: FindConfig<ShippingProfileDTO>,
     sharedContext?: Context
   ): Promise<ShippingProfileDTO[]>
@@ -370,7 +371,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param sharedContext
    */
   listAndCountShippingProfiles(
-    filters?: FilterableShippingOptionProps,
+    filters?: FilterableShippingProfileProps,
     config?: FindConfig<ShippingProfileDTO>,
     sharedContext?: Context
   ): Promise<[ShippingProfileDTO[], number]>
