@@ -21,7 +21,7 @@ const fulfillmentIdIndexStatement = createPsqlIndexStatementHelper({
   tableName: "fulfillment_address",
   columns: "fulfillment_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const fulfillmentDeletedAtIndexName = "IDX_fulfillment_address_deleted_at"
 const fulfillmentDeletedAtIndexStatement = createPsqlIndexStatementHelper({
@@ -29,7 +29,7 @@ const fulfillmentDeletedAtIndexStatement = createPsqlIndexStatementHelper({
   tableName: "fulfillment_address",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-})
+}).expression
 
 @Entity({ tableName: "fulfillment_address" })
 export default class Address {
