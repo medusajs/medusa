@@ -102,8 +102,6 @@ export const useProductVariantTableColumns = (product?: Product) => {
       : []
   }, [product])
 
-  console.log(optionColumns)
-
   return useMemo(
     () => [
       columnHelper.accessor("title", {
