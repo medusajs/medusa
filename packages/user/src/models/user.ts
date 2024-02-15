@@ -1,17 +1,20 @@
 import {
   BeforeCreate,
   Entity,
+  Filter,
+  Index,
   OnInit,
+  OptionalProps,
   PrimaryKey,
   Property,
-  Index,
-  OptionalProps,
-  Filter,
 } from "@mikro-orm/core"
 
-import { DALUtils, generateEntityId } from "@medusajs/utils"
 import { DAL } from "@medusajs/types"
-import { createPsqlIndexStatementHelper } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 
 const userEmailIndexName = "IDX_user_email"
 const userEmailIndexStatement = createPsqlIndexStatementHelper({
@@ -19,7 +22,7 @@ const userEmailIndexStatement = createPsqlIndexStatementHelper({
   tableName: "user",
   columns: "email",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const userDeletedAtIndexName = "IDX_user_deleted_at"
 const userDeletedAtIndexStatement = createPsqlIndexStatementHelper({
@@ -27,7 +30,7 @@ const userDeletedAtIndexStatement = createPsqlIndexStatementHelper({
   tableName: "user",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-})
+}).expression
 
 type OptionalFields =
   | "first_name"
