@@ -6,8 +6,14 @@ import {
 } from "./validators"
 import * as QueryConfig from "./query-config"
 import { MiddlewareRoute } from "../../../types/middlewares"
+import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
+  {
+    method: "ALL",
+    matcher: "/admin/invites*",
+    middlewares: [authenticate("admin", ["session", "bearer"])],
+  },
   {
     method: ["GET"],
     matcher: "/admin/invites",

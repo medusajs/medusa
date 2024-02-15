@@ -8,6 +8,8 @@ export const createInvitesWorkflow = createWorkflow(
   (
     input: WorkflowData<InviteWorkflow.CreateInvitesWorkflowInputDTO>
   ): WorkflowData<InviteDTO[]> => {
-    return createInviteStep(input.invites)
+    const invites = createInviteStep(input.invites)
+
+    return invites
   }
 )

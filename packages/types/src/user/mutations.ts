@@ -15,6 +15,7 @@ export interface CreateInviteDTO {
   metadata?: Record<string, unknown> | null
 }
 
-export interface UpdateInviteDTO extends Partial<CreateInviteDTO> {
+export interface UpdateInviteDTO
+  extends Partial<Omit<CreateInviteDTO, "email">> {
   id: string
 }
