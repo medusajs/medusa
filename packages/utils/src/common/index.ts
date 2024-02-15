@@ -1,5 +1,6 @@
 export * from "./alter-columns-helper"
 export * from "./array-difference"
+export * from "./get-set-difference"
 export * from "./build-query"
 export * from "./camel-to-snake-case"
 export * from "./container"
@@ -46,4 +47,3 @@ export * from "./to-pascal-case"
 export * from "./transaction"
 export * from "./upper-case-first"
 export * from "./wrap-handler"
-

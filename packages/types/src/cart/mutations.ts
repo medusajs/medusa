@@ -1,4 +1,4 @@
-import { CartLineItemDTO } from "./common"
+import { CartDTO, CartLineItemDTO } from "./common"
 
 /** ADDRESS START */
 export interface UpsertAddressDTO {
@@ -40,22 +40,25 @@ export interface CreateCartDTO {
   items?: CreateLineItemDTO[]
 }
 
-export interface UpdateCartDTO {
-  id: string
-  region_id?: string
-  customer_id?: string
-  sales_channel_id?: string
+export interface UpdateCartDataDTO {
+  region_id?: string | null
+  customer_id?: string | null
+  sales_channel_id?: string | null
 
-  email?: string
-  currency_code?: string
+  email?: string | null
+  currency_code?: string | null
 
-  shipping_address_id?: string
-  billing_address_id?: string
+  shipping_address_id?: string | null
+  billing_address_id?: string | null
 
-  billing_address?: CreateAddressDTO | UpdateAddressDTO
-  shipping_address?: CreateAddressDTO | UpdateAddressDTO
+  billing_address?: CreateAddressDTO | UpdateAddressDTO | null
+  shipping_address?: CreateAddressDTO | UpdateAddressDTO | null
 
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
+}
+
+export interface UpdateCartDTO extends UpdateCartDataDTO {
+  id?: string
 }
 
 /** CART END */
@@ -169,6 +172,11 @@ export interface CreateLineItemForCartDTO extends CreateLineItemDTO {
 export interface UpdateLineItemWithSelectorDTO {
   selector: Partial<CartLineItemDTO>
   data: Partial<UpdateLineItemDTO>
+}
+
+export interface UpdateCartWithSelectorDTO {
+  selector: Partial<CartDTO>
+  data: UpdateCartDTO
 }
 
 export interface UpdateLineItemDTO
