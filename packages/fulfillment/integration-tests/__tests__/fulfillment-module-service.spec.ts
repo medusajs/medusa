@@ -11,6 +11,7 @@ import {
   ServiceZoneDTO,
   UpdateFulfillmentSetDTO,
   UpdateGeoZoneDTO,
+  UpdateServiceZoneDTO,
 } from "@medusajs/types"
 import { getInitModuleConfig, MikroOrmWrapper } from "../utils"
 import { GeoZoneType } from "@medusajs/utils"
@@ -210,6 +211,107 @@ describe("fulfillment module service", function () {
         expect(listedZones).not.toEqual(
           expect.arrayContaining([
             expect.objectContaining({ id: createdZone1.id }),
+          ])
+        )
+      })
+    })
+
+    describe("shipping options", () => {
+      it("should list shipping options with a filter", async function () {
+        const [defaultShippingProfile] = await service.listShippingProfiles({
+          type: "default",
+        })
+        const fulfillmentSet = await service.create({
+          name: "test",
+          type: "test-type",
+        })
+        const serviceZone = await service.createServiceZones({
+          name: "test",
+          fulfillment_set_id: fulfillmentSet.id,
+        })
+
+        // TODO: change that for a real provider instead of fake data manual inserted data
+        const [{ id: providerId }] =
+          await MikroOrmWrapper.forkManager().execute(
+            "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
+          )
+
+        const createData: CreateShippingOptionDTO[] = [
+          {
+            name: "test-option",
+            price_type: "flat",
+            service_zone_id: serviceZone.id,
+            shipping_profile_id: defaultShippingProfile.id,
+            service_provider_id: providerId,
+            type: {
+              code: "test-type",
+              description: "test-description",
+              label: "test-label",
+            },
+            data: {
+              amount: 1000,
+            },
+            rules: [
+              {
+                attribute: "test-attribute",
+                operator: "in",
+                value: "test-value",
+              },
+            ],
+          },
+          {
+            name: "test-option-2",
+            price_type: "flat",
+            service_zone_id: serviceZone.id,
+            shipping_profile_id: defaultShippingProfile.id,
+            service_provider_id: providerId,
+            type: {
+              code: "test-type",
+              description: "test-description",
+              label: "test-label",
+            },
+            data: {
+              amount: 1000,
+            },
+            rules: [
+              {
+                attribute: "test-attribute",
+                operator: "in",
+                value: "test-value",
+              },
+            ],
+          },
+        ]
+
+        await service.createShippingOptions(createData)
+
+        let listedOptions = await service.listShippingOptions({
+          name: createData[0].name,
+        })
+
+        expect(listedOptions).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              name: createData[0].name,
+            }),
+          ])
+        )
+
+        listedOptions = await service.listShippingOptions({
+          name: { $in: [createData[0].name, createData[1].name] },
+        })
+
+        expect(listedOptions).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              name: createData[0].name,
+            }),
+            expect.objectContaining({
+              id: expect.any(String),
+              name: createData[1].name,
+            }),
           ])
         )
       })
@@ -803,9 +905,9 @@ describe("fulfillment module service", function () {
             rules: expect.arrayContaining([
               expect.objectContaining({
                 id: expect.any(String),
-                attribute: createData.rules[0].attribute,
-                operator: createData.rules[0].operator,
-                value: createData.rules[0].value,
+                attribute: createData.rules![0].attribute,
+                operator: createData.rules![0].operator,
+                value: createData.rules![0].value,
               }),
             ]),
           })
@@ -905,9 +1007,9 @@ describe("fulfillment module service", function () {
               rules: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
-                  attribute: data_.rules[0].attribute,
-                  operator: data_.rules[0].operator,
-                  value: data_.rules[0].value,
+                  attribute: data_.rules![0].attribute,
+                  operator: data_.rules![0].operator,
+                  value: data_.rules![0].value,
                 }),
               ]),
             })
@@ -1294,10 +1396,10 @@ describe("fulfillment module service", function () {
         expect(serviceZones).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
-              name: updateData[0].service_zones![0].name,
+              name: (updateData[0].service_zones![0] as ServiceZoneDTO).name,
             }),
             expect.objectContaining({
-              name: updateData[1].service_zones![0].name,
+              name: (updateData[1].service_zones![0] as ServiceZoneDTO).name,
             }),
           ])
         )
@@ -1404,10 +1506,10 @@ describe("fulfillment module service", function () {
               name: createdFulfillmentSets[1].service_zones![0].name,
             }),
             expect.objectContaining({
-              name: updateData[0].service_zones![1].name,
+              name: (updateData[0].service_zones![1] as ServiceZoneDTO).name,
             }),
             expect.objectContaining({
-              name: updateData[1].service_zones![1].name,
+              name: (updateData[1].service_zones![1] as ServiceZoneDTO).name,
             }),
           ])
         )
@@ -1494,16 +1596,18 @@ describe("fulfillment module service", function () {
 
         const createdServiceZones = await service.createServiceZones(createData)
 
-        const updateData = createdServiceZones.map((serviceZone, index) => ({
-          id: serviceZone.id,
-          name: `updated-service-zone-test${index + 1}`,
-          geo_zones: [
-            {
-              type: GeoZoneType.COUNTRY,
-              country_code: index % 2 === 0 ? "us" : "fr",
-            },
-          ],
-        }))
+        const updateData: UpdateServiceZoneDTO[] = createdServiceZones.map(
+          (serviceZone, index) => ({
+            id: serviceZone.id,
+            name: `updated-service-zone-test${index + 1}`,
+            geo_zones: [
+              {
+                type: GeoZoneType.COUNTRY,
+                country_code: index % 2 === 0 ? "us" : "fr",
+              },
+            ],
+          })
+        )
 
         const updatedServiceZones = await service.updateServiceZones(updateData)
 
@@ -1517,8 +1621,9 @@ describe("fulfillment module service", function () {
               name: data_.name,
               geo_zones: expect.arrayContaining([
                 expect.objectContaining({
-                  type: data_.geo_zones[0].type,
-                  country_code: data_.geo_zones[0].country_code,
+                  type: (data_.geo_zones![0] as GeoZoneDTO).type,
+                  country_code: (data_.geo_zones![0] as GeoZoneDTO)
+                    .country_code,
                 }),
               ]),
             })
@@ -1558,7 +1663,7 @@ describe("fulfillment module service", function () {
 
         const createdServiceZones = await service.createServiceZones(createData)
 
-        const updateData = {
+        const updateData: UpdateServiceZoneDTO = {
           id: createdServiceZones[1].id,
           name: "service-zone-test",
           geo_zones: [
