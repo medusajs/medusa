@@ -4,6 +4,7 @@ import {
   CreateFulfillmentSetDTO,
   CreateGeoZoneDTO,
   CreateServiceZoneDTO,
+  CreateShippingOptionDTO,
   CreateShippingProfileDTO,
   GeoZoneDTO,
   IFulfillmentModuleService,
@@ -18,7 +19,7 @@ describe("fulfillment module service", function () {
   let service: IFulfillmentModuleService
   let shutdownFunc: () => Promise<void>
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
 
     const initModulesConfig = getInitModuleConfig()
@@ -30,15 +31,8 @@ describe("fulfillment module service", function () {
     shutdownFunc = shutdown
   })
 
-  beforeEach(async () => {
-    await MikroOrmWrapper.setupDatabase()
-  })
-
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
-  })
-
-  afterAll(async () => {
     await shutdownFunc()
   })
 
@@ -437,6 +431,9 @@ describe("fulfillment module service", function () {
                     country_code: "fr",
                     city: "lyon",
                   },
+                  {
+                    type: GeoZoneType.COUNTRY,
+                  },
                 ],
               },
             ],
@@ -740,6 +737,236 @@ describe("fulfillment module service", function () {
 
         expect(err).toBeDefined()
         expect(err.constraint).toBe("IDX_shipping_profile_name_unique")
+      })
+    })
+
+    describe("on create shipping options", () => {
+      it("should create a new shipping option", async function () {
+        const [defaultShippingProfile] = await service.listShippingProfiles({
+          type: "default",
+        })
+        const fulfillmentSet = await service.create({
+          name: "test",
+          type: "test-type",
+        })
+        const serviceZone = await service.createServiceZones({
+          name: "test",
+          fulfillment_set_id: fulfillmentSet.id,
+        })
+
+        // TODO: change that for a real provider instead of fake data manual inserted data
+        const [{ id: providerId }] =
+          await MikroOrmWrapper.forkManager().execute(
+            "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
+          )
+
+        const createData: CreateShippingOptionDTO = {
+          name: "test-option",
+          price_type: "flat",
+          service_zone_id: serviceZone.id,
+          shipping_profile_id: defaultShippingProfile.id,
+          service_provider_id: providerId,
+          type: {
+            code: "test-type",
+            description: "test-description",
+            label: "test-label",
+          },
+          data: {
+            amount: 1000,
+          },
+          rules: [
+            {
+              attribute: "test-attribute",
+              operator: "in",
+              value: "test-value",
+            },
+          ],
+        }
+
+        const createdShippingOption = await service.createShippingOptions(
+          createData
+        )
+
+        expect(createdShippingOption).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            name: createData.name,
+            price_type: createData.price_type,
+            service_zone_id: createData.service_zone_id,
+            shipping_profile_id: createData.shipping_profile_id,
+            service_provider_id: createData.service_provider_id,
+            shipping_option_type_id: expect.any(String),
+            type: expect.objectContaining({
+              id: expect.any(String),
+              code: createData.type.code,
+              description: createData.type.description,
+              label: createData.type.label,
+            }),
+            data: createData.data,
+            rules: expect.arrayContaining([
+              expect.objectContaining({
+                attribute: createData.rules[0].attribute,
+                operator: createData.rules[0].operator,
+                value: createData.rules[0].value,
+              }),
+            ]),
+          })
+        )
+      })
+
+      it("should create multiple new shipping options", async function () {
+        const [defaultShippingProfile] = await service.listShippingProfiles({
+          type: "default",
+        })
+        const fulfillmentSet = await service.create({
+          name: "test",
+          type: "test-type",
+        })
+        const serviceZone = await service.createServiceZones({
+          name: "test",
+          fulfillment_set_id: fulfillmentSet.id,
+        })
+
+        // TODO: change that for a real provider instead of fake data manual inserted data
+        const [{ id: providerId }] =
+          await MikroOrmWrapper.forkManager().execute(
+            "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
+          )
+
+        const createData: CreateShippingOptionDTO[] = [
+          {
+            name: "test-option",
+            price_type: "flat",
+            service_zone_id: serviceZone.id,
+            shipping_profile_id: defaultShippingProfile.id,
+            service_provider_id: providerId,
+            type: {
+              code: "test-type",
+              description: "test-description",
+              label: "test-label",
+            },
+            data: {
+              amount: 1000,
+            },
+            rules: [
+              {
+                attribute: "test-attribute",
+                operator: "in",
+                value: "test-value",
+              },
+            ],
+          },
+          {
+            name: "test-option-2",
+            price_type: "calculated",
+            service_zone_id: serviceZone.id,
+            shipping_profile_id: defaultShippingProfile.id,
+            service_provider_id: providerId,
+            type: {
+              code: "test-type",
+              description: "test-description",
+              label: "test-label",
+            },
+            data: {
+              amount: 1000,
+            },
+            rules: [
+              {
+                attribute: "test-attribute",
+                operator: "in",
+                value: "test-value",
+              },
+            ],
+          },
+        ]
+
+        const createdShippingOptions = await service.createShippingOptions(
+          createData
+        )
+
+        expect(createdShippingOptions).toHaveLength(2)
+
+        let i = 0
+        for (const data_ of createData) {
+          expect(createdShippingOptions[i]).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              name: data_.name,
+              price_type: data_.price_type,
+              service_zone_id: data_.service_zone_id,
+              shipping_profile_id: data_.shipping_profile_id,
+              service_provider_id: data_.service_provider_id,
+              shipping_option_type_id: expect.any(String),
+              type: expect.objectContaining({
+                id: expect.any(String),
+                code: data_.type.code,
+                description: data_.type.description,
+                label: data_.type.label,
+              }),
+              data: data_.data,
+              rules: expect.arrayContaining([
+                expect.objectContaining({
+                  attribute: data_.rules[0].attribute,
+                  operator: data_.rules[0].operator,
+                  value: data_.rules[0].value,
+                }),
+              ]),
+            })
+          )
+          ++i
+        }
+      })
+
+      it("should fail on duplicated shipping option name", async function () {
+        const [defaultShippingProfile] = await service.listShippingProfiles({
+          type: "default",
+        })
+        const fulfillmentSet = await service.create({
+          name: "test",
+          type: "test-type",
+        })
+        const serviceZone = await service.createServiceZones({
+          name: "test",
+          fulfillment_set_id: fulfillmentSet.id,
+        })
+
+        // TODO: change that for a real provider instead of fake data manual inserted data
+        const [{ id: providerId }] =
+          await MikroOrmWrapper.forkManager().execute(
+            "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
+          )
+
+        const createData: CreateShippingOptionDTO = {
+          name: "test-option",
+          price_type: "flat",
+          service_zone_id: serviceZone.id,
+          shipping_profile_id: defaultShippingProfile.id,
+          service_provider_id: providerId,
+          type: {
+            code: "test-type",
+            description: "test-description",
+            label: "test-label",
+          },
+          data: {
+            amount: 1000,
+          },
+          rules: [
+            {
+              attribute: "test-attribute",
+              operator: "in",
+              value: "test-value",
+            },
+          ],
+        }
+
+        await service.createShippingOptions(createData)
+
+        const err = await service
+          .createShippingOptions(createData)
+          .catch((e) => e)
+
+        expect(err).toBeDefined()
+        expect(err.constraint).toBe("IDX_shipping_option_name_unique")
       })
     })
 

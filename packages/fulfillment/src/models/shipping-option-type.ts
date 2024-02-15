@@ -60,7 +60,7 @@ export default class ShippingOptionType {
   })
   shipping_option_id: string
 
-  @OneToOne(() => ShippingOption, (so) => so.shipping_option_type, {
+  @OneToOne(() => ShippingOption, (so) => so.type, {
     persist: false,
   })
   shipping_option: ShippingOption
@@ -90,10 +90,12 @@ export default class ShippingOptionType {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "sotype")
+    this.shipping_option_id ??= this.shipping_option?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "sotype")
+    this.shipping_option_id ??= this.shipping_option?.id
   }
 }

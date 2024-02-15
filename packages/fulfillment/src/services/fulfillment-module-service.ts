@@ -18,7 +18,7 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 
-import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import {
   FulfillmentSet,
   GeoZone,
@@ -88,7 +88,7 @@ export default class FulfillmentModuleService<
     this.serviceZoneService_ = serviceZoneService
     this.geoZoneService_ = geoZoneService
     this.shippingProfileService_ = shippingProfileService
-    this.shippingProfileService_ = shippingProfileService
+    this.shippingOptionService_ = shippingOptionService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -240,7 +240,9 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    return Array.isArray(data) ? createdShippingOptions : createdShippingOptions[0]
+    return Array.isArray(data)
+      ? createdShippingOptions
+      : createdShippingOptions[0]
   }
 
   createShippingProfiles(

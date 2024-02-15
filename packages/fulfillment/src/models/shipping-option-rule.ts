@@ -31,6 +31,14 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
+const shippingOptionIdIndexName = "IDX_shipping_option_rule_shipping_option_id"
+const shippingOptionIdIndexStatement = createPsqlIndexStatementHelper({
+  name: shippingOptionIdIndexName,
+  tableName: "shipping_option_rule",
+  columns: "shipping_option_id",
+  where: "deleted_at IS NULL",
+})
+
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingOptionRule {
@@ -49,6 +57,10 @@ export default class ShippingOptionRule {
   value: { value: string | string[] } | null = null
 
   @Property({ columnType: "text" })
+  @Index({
+    name: shippingOptionIdIndexName,
+    expression: shippingOptionIdIndexStatement,
+  })
   shipping_option_id: string
 
   @ManyToOne(() => ShippingOption, { persist: false })
@@ -79,10 +91,12 @@ export default class ShippingOptionRule {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "sorul")
+    this.shipping_option_id ??= this.shipping_option?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "sorul")
+    this.shipping_option_id ??= this.shipping_option?.id
   }
 }

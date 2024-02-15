@@ -1038,6 +1038,16 @@
           "unique": true
         },
         {
+          "keyName": "IDX_shipping_option_name_unique",
+          "columnNames": [
+            "name"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_shipping_option_name_unique\" ON \"shipping_option\" (name) WHERE deleted_at IS NULL"
+        },
+        {
           "keyName": "IDX_shipping_option_service_zone_id",
           "columnNames": [
             "service_zone_id"
@@ -1099,18 +1109,6 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "shipping_option_service_zone_id_foreign": {
-          "constraintName": "shipping_option_service_zone_id_foreign",
-          "columnNames": [
-            "service_zone_id"
-          ],
-          "localTableName": "public.shipping_option",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.service_zone",
-          "updateRule": "cascade"
-        },
         "shipping_option_shipping_profile_id_foreign": {
           "constraintName": "shipping_option_shipping_profile_id_foreign",
           "columnNames": [
@@ -1235,6 +1233,16 @@
       "name": "shipping_option_rule",
       "schema": "public",
       "indexes": [
+        {
+          "keyName": "IDX_shipping_option_rule_shipping_option_id",
+          "columnNames": [
+            "shipping_option_id"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_rule_shipping_option_id\" ON \"shipping_option_rule\" (shipping_option_id) WHERE deleted_at IS NULL"
+        },
         {
           "keyName": "IDX_shipping_option_rule_deleted_at",
           "columnNames": [

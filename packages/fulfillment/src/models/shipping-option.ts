@@ -72,6 +72,15 @@ const shippingOptionTypeIdIndexStatement = createPsqlIndexStatementHelper({
   where: "deleted_at IS NULL",
 })
 
+const nameIndexName = "IDX_shipping_option_name_unique"
+const nameIndexStatement = createPsqlIndexStatementHelper({
+  name: nameIndexName,
+  tableName: "shipping_option",
+  columns: "name",
+  unique: true,
+  where: "deleted_at IS NULL",
+})
+
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingOption {
@@ -81,6 +90,10 @@ export default class ShippingOption {
   id: string
 
   @Property({ columnType: "text" })
+  @Index({
+    name: nameIndexName,
+    expression: nameIndexStatement,
+  })
   name: string
 
   @Enum({
@@ -110,7 +123,7 @@ export default class ShippingOption {
   })
   service_provider_id: string
 
-  @Property({ columnType: "text", nullable: true })
+  @Property({ columnType: "text", persist: false })
   @Index({
     name: shippingOptionTypeIdIndexName,
     expression: shippingOptionTypeIdIndexStatement,
@@ -123,7 +136,7 @@ export default class ShippingOption {
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @ManyToOne(() => ServiceZone)
+  @ManyToOne(() => ServiceZone, { persist: false })
   service_zone: ServiceZone
 
   @ManyToOne(() => ShippingProfile, {
@@ -141,10 +154,11 @@ export default class ShippingOption {
   @OneToOne(() => ShippingOptionType, (so) => so.shipping_option, {
     owner: true,
     cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove"] as any,
+    fieldName: "shipping_option_type_id",
   })
-  shipping_option_type: ShippingOptionType
+  type: ShippingOptionType
 
-  @OneToMany(() => ShippingOptionRule, (sor) => sor.shipping_option, {
+  @OneToMany(() => ShippingOptionRule, "shipping_option", {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
     orphanRemoval: true,
   })
@@ -178,10 +192,12 @@ export default class ShippingOption {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "so")
+    this.shipping_option_type_id ??= this.type?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "so")
+    this.shipping_option_type_id ??= this.type?.id
   }
 }
