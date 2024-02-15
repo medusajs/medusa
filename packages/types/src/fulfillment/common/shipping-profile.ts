@@ -4,6 +4,7 @@ export type ShippingProfileType = "default" | "gift_card" | "custom"
 
 export interface ShippingProfileDTO {
   id: string
+  name: string
   type: ShippingProfileType
   metadata: Record<string, unknown> | null
   shipping_options: ShippingOptionDTO[]

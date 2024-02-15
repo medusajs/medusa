@@ -802,6 +802,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "type": {
           "name": "type",
           "type": "text",
@@ -862,6 +871,16 @@
       "name": "shipping_profile",
       "schema": "public",
       "indexes": [
+        {
+          "keyName": "IDX_shipping_profile_name",
+          "columnNames": [
+            "name"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_shipping_profile_name\" ON \"shipping_profile\" (name) WHERE deleted_at IS NULL"
+        },
         {
           "keyName": "IDX_shipping_profile_deleted_at",
           "columnNames": [

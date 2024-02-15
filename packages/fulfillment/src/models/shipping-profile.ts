@@ -31,6 +31,15 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
+const shippingProfileTypeIndexName = "IDX_shipping_profile_name"
+const shippingProfileTypeIndexStatement = createPsqlIndexStatementHelper({
+  name: shippingProfileTypeIndexName,
+  tableName: "shipping_profile",
+  columns: "name",
+  unique: true,
+  where: "deleted_at IS NULL",
+})
+
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingProfile {
@@ -38,6 +47,13 @@ export default class ShippingProfile {
 
   @PrimaryKey({ columnType: "text" })
   id: string
+
+  @Property({ columnType: "text" })
+  @Index({
+    name: shippingProfileTypeIndexName,
+    expression: shippingProfileTypeIndexStatement,
+  })
+  name: string
 
   @Enum({
     items: () => ShippingProfileType,
