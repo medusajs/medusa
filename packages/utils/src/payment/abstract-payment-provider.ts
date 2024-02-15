@@ -41,8 +41,14 @@ export abstract class AbstractPaymentProvider implements IPaymentProvider {
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
   ) {}
 
+  /**
+   * @ignore
+   */
   static _isPaymentProvider = true
 
+  /**
+   * @ignore
+   */
   static isPaymentProvider(object): boolean {
     return object?.constructor?._isPaymentProvider
   }
