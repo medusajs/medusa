@@ -4,19 +4,20 @@ import {
   generateEntityId,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   Filter,
   Index,
-  ManyToMany,
+  OneToMany,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 import ServiceZone from "./service-zone"
 
 type FulfillmentSetOptionalProps = DAL.SoftDeletableEntityDateColumns
@@ -27,7 +28,16 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   tableName: "fulfillment_set",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-})
+}).expression
+
+const nameIndexName = "IDX_fulfillment_set_name_unique"
+const nameIndexStatement = createPsqlIndexStatementHelper({
+  name: nameIndexName,
+  tableName: "fulfillment_set",
+  columns: "name",
+  unique: true,
+  where: "deleted_at IS NULL",
+}).expression
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -38,6 +48,10 @@ export default class FulfillmentSet {
   id: string
 
   @Property({ columnType: "text" })
+  @Index({
+    name: nameIndexName,
+    expression: nameIndexStatement,
+  })
   name: string
 
   @Property({ columnType: "text" })
@@ -46,11 +60,9 @@ export default class FulfillmentSet {
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @ManyToMany(() => ServiceZone, "fulfillment_sets", {
-    owner: true,
-    pivotTable: "fulfillment_set_service_zones",
-    joinColumn: "fulfillment_set_id",
-    inverseJoinColumn: "service_zone_id",
+  @OneToMany(() => ServiceZone, "fulfillment_set", {
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+    orphanRemoval: true,
   })
   service_zones = new Collection<ServiceZone>(this)
 

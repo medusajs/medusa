@@ -8494,6 +8494,33 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/order@workspace:packages/order":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/order@workspace:packages/order"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.12.4
+    "@medusajs/types": ^1.11.8
+    "@medusajs/utils": ^1.11.1
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    dotenv: ^16.1.4
+    jest: ^29.6.3
+    knex: 2.4.2
+    medusa-test-utils: ^1.1.40
+    rimraf: ^3.0.2
+    ts-jest: ^29.1.1
+    ts-node: ^10.9.1
+    tsc-alias: ^1.8.6
+    typescript: ^5.1.6
+  bin:
+    medusa-order-seed: dist/scripts/bin/run-seed.js
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/payment@workspace:packages/payment":
   version: 0.0.0-use.local
   resolution: "@medusajs/payment@workspace:packages/payment"
@@ -8605,7 +8632,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/region@workspace:packages/region":
+"@medusajs/region@workspace:^, @medusajs/region@workspace:packages/region":
   version: 0.0.0-use.local
   resolution: "@medusajs/region@workspace:packages/region"
   dependencies:
@@ -8806,7 +8833,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/user@workspace:packages/user":
+"@medusajs/user@workspace:^, @medusajs/user@workspace:packages/user":
   version: 0.0.0-use.local
   resolution: "@medusajs/user@workspace:packages/user"
   dependencies:
@@ -8876,7 +8903,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflow-engine-inmemory@workspace:packages/workflow-engine-inmemory":
+"@medusajs/workflow-engine-inmemory@workspace:*, @medusajs/workflow-engine-inmemory@workspace:packages/workflow-engine-inmemory":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-inmemory@workspace:packages/workflow-engine-inmemory"
   dependencies:
@@ -31546,6 +31573,7 @@ __metadata:
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/medusa": "workspace:*"
+    "@medusajs/workflow-engine-inmemory": "workspace:*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
@@ -31573,8 +31601,11 @@ __metadata:
     "@medusajs/pricing": "workspace:^"
     "@medusajs/product": "workspace:^"
     "@medusajs/promotion": "workspace:^"
+    "@medusajs/region": "workspace:^"
     "@medusajs/types": "workspace:^"
+    "@medusajs/user": "workspace:^"
     "@medusajs/utils": "workspace:^"
+    "@medusajs/workflow-engine-inmemory": "workspace:*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3

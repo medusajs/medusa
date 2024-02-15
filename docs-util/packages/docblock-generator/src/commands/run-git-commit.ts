@@ -1,10 +1,15 @@
 import filterFiles from "../utils/filter-files.js"
 import path from "path"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
-import DocblockGenerator from "../classes/docblock-generator.js"
-import { GitManager } from "../classes/git-manager.js"
+import DocblockGenerator from "../classes/generators/docblock.js"
+import OasGenerator from "../classes/generators/oas.js"
+import { CommonCliOptions } from "../types/index.js"
+import { GitManager } from "../classes/helpers/git-manager.js"
 
-export default async function (commitSha: string) {
+export default async function (
+  commitSha: string,
+  { type, ...options }: CommonCliOptions
+) {
   const monorepoPath = getMonorepoRoot()
   // retrieve the files changed in the commit
   const gitManager = new GitManager()
@@ -28,11 +33,23 @@ export default async function (commitSha: string) {
   )
 
   // generate docblocks for each of the files.
-  const docblockGenerator = new DocblockGenerator({
-    paths: filteredFiles,
-  })
+  if (type === "all" || type === "docs") {
+    const docblockGenerator = new DocblockGenerator({
+      paths: filteredFiles,
+      ...options,
+    })
 
-  await docblockGenerator.run()
+    await docblockGenerator.run()
+  }
+
+  if (type === "all" || type === "oas") {
+    const oasGenerator = new OasGenerator({
+      paths: filteredFiles,
+      ...options,
+    })
+
+    oasGenerator.run()
+  }
 
   console.log(`Finished generating docs for ${filteredFiles.length} files.`)
 }

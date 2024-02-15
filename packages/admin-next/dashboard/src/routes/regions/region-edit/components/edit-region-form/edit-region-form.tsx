@@ -91,11 +91,11 @@ export const EditRegionForm = ({ region }: EditRegionFormProps) => {
           <div className="flex items-center gap-x-2">
             <Drawer.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
             </Drawer.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
         </Drawer.Footer>

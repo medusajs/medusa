@@ -21,11 +21,11 @@ export const ProfileGeneralSection = ({ user }: ProfileGeneralSectionProps) => {
         </div>
         <Link to="/settings/profile/edit">
           <Button size="small" variant="secondary">
-            {t("general.edit")}
+            {t("actions.edit")}
           </Button>
         </Link>
       </div>
-      <div className="grid grid-cols-2 px-6 py-4 items-center">
+      <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.name")}
         </Text>
@@ -33,7 +33,7 @@ export const ProfileGeneralSection = ({ user }: ProfileGeneralSectionProps) => {
           {user.first_name} {user.last_name}
         </Text>
       </div>
-      <div className="grid grid-cols-2 px-6 py-4 items-center">
+      <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.email")}
         </Text>
@@ -41,7 +41,7 @@ export const ProfileGeneralSection = ({ user }: ProfileGeneralSectionProps) => {
           {user.email}
         </Text>
       </div>
-      <div className="grid grid-cols-2 px-6 py-4 items-center">
+      <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.role")}
         </Text>
@@ -49,7 +49,7 @@ export const ProfileGeneralSection = ({ user }: ProfileGeneralSectionProps) => {
           {t(`users.roles.${user.role}`)}
         </Text>
       </div>
-      <div className="grid grid-cols-2 px-6 py-4 items-center">
+      <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("profile.language")}
         </Text>
@@ -58,7 +58,7 @@ export const ProfileGeneralSection = ({ user }: ProfileGeneralSectionProps) => {
             ?.display_name || "-"}
         </Text>
       </div>
-      <div className="grid grid-cols-2 px-6 py-4 items-center">
+      <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("profile.usageInsights")}
         </Text>

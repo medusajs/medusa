@@ -10,27 +10,29 @@ import {
 import { useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
-type UseDataTableProps<TData, TValue> = {
+type UseDataTableProps<TData> = {
   data?: TData[]
-  columns: ColumnDef<TData, TValue>[]
+  columns: ColumnDef<TData, any>[]
   count?: number
   pageSize?: number
   enableRowSelection?: boolean | ((row: Row<TData>) => boolean)
   enablePagination?: boolean
   getRowId?: (original: TData, index: number) => string
+  meta?: Record<string, unknown>
   prefix?: string
 }
 
-export const useDataTable = <TData, TValue>({
+export const useDataTable = <TData,>({
   data = [],
   columns,
   count = 0,
-  pageSize: _pageSize = 50,
+  pageSize: _pageSize = 20,
   enablePagination = true,
   enableRowSelection = false,
   getRowId,
+  meta,
   prefix,
-}: UseDataTableProps<TData, TValue>) => {
+}: UseDataTableProps<TData>) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const offsetKey = `${prefix ? `${prefix}_` : ""}offset`
   const offset = searchParams.get(offsetKey)
@@ -106,6 +108,7 @@ export const useDataTable = <TData, TValue>({
       ? getPaginationRowModel()
       : undefined,
     manualPagination: enablePagination ? true : undefined,
+    meta,
   })
 
   return { table }

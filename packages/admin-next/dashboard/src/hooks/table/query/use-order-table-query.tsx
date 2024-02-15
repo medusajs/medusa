@@ -6,13 +6,9 @@ type UseOrderTableQueryProps = {
   pageSize?: number
 }
 
-/**
- * TODO: Enable `order` query param when staging is updated
- */
-
 export const useOrderTableQuery = ({
   prefix,
-  pageSize = 50,
+  pageSize = 20,
 }: UseOrderTableQueryProps) => {
   const queryObject = useQueryParams(
     [
@@ -24,6 +20,7 @@ export const useOrderTableQuery = ({
       "sales_channel_id",
       "payment_status",
       "fulfillment_status",
+      "order",
     ],
     prefix
   )

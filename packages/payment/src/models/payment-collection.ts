@@ -43,19 +43,21 @@ export default class PaymentCollection {
   })
   amount: number
 
-  @Property({
-    columnType: "numeric",
-    nullable: true,
-    serializer: optionalNumericSerializer,
-  })
-  authorized_amount: number | null = null
+  // TODO: make this computed properties
 
-  @Property({
-    columnType: "numeric",
-    nullable: true,
-    serializer: optionalNumericSerializer,
-  })
-  refunded_amount: number | null = null
+  // @Property({
+  //   columnType: "numeric",
+  //   nullable: true,
+  //   serializer: optionalNumericSerializer,
+  // })
+  // authorized_amount: number | null = null
+  //
+  // @Property({
+  //   columnType: "numeric",
+  //   nullable: true,
+  //   serializer: optionalNumericSerializer,
+  // })
+  // refunded_amount: number | null = null
 
   @Property({ columnType: "text", index: "IDX_payment_collection_region_id" })
   region_id: string
