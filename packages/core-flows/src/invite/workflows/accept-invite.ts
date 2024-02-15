@@ -19,7 +19,19 @@ export const acceptInviteWorkflow = createWorkflow(
     // validate token
     const invite = validateTokenStep(input.invite_token)
 
-    const users = createUsersStep([input.user])
+    const createUserInput = transform(
+      { input, invite },
+      ({ input, invite }) => {
+        return [
+          {
+            ...input.user,
+            email: invite.email,
+          },
+        ]
+      }
+    )
+
+    const users = createUsersStep(createUserInput)
 
     const authUserInput = transform({ input, users }, ({ input, users }) => {
       const createdUser = users[0]

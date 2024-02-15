@@ -3,6 +3,7 @@ import {
   AdminCreateInviteRequest,
   AdminGetInvitesParams,
   AdminGetInvitesInviteParams,
+  AdminPostInvitesInviteAcceptReq,
 } from "./validators"
 import * as QueryConfig from "./query-config"
 import { MiddlewareRoute } from "../../../types/middlewares"
@@ -28,6 +29,11 @@ export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/invites",
     middlewares: [transformBody(AdminCreateInviteRequest)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/invites/accept",
+    middlewares: [transformBody(AdminPostInvitesInviteAcceptReq)],
   },
   {
     method: ["GET"],

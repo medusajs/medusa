@@ -30,7 +30,7 @@ export default class InviteService<
   }
 
   public withModuleOptions(options: any) {
-    const service = new InviteService(this.__container__)
+    const service = new InviteService<TEntity>(this.__container__)
 
     service.options = options
 
@@ -68,7 +68,7 @@ export default class InviteService<
       }
     })
 
-    return super.update(updates, context)
+    return await super.update(updates, context)
   }
 
   @InjectTransactionManager("inviteRepository_")
@@ -78,7 +78,7 @@ export default class InviteService<
   ): Promise<TEntity> {
     const decoded = this.validateToken(token)
 
-    return await super.retrieve(decoded.id, {}, context)
+    return await super.retrieve(decoded.payload.id, {}, context)
   }
 
   private generateToken(data: any): string {

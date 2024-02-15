@@ -68,7 +68,7 @@ export default class UserModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.InviteDTO> {
     return await this.inviteService_
-      .withModuleOptions(this.moduleDeclaration.options)
+      .withModuleOptions(this.moduleDeclaration)
       .validateInviteToken(token, sharedContext)
   }
 
@@ -166,7 +166,9 @@ export default class UserModuleService<
       }
     })
 
-    return await this.inviteService_.create(toCreate)
+    return await this.inviteService_
+      .withModuleOptions(this.moduleDeclaration)
+      .create(toCreate)
   }
 
   updateInvites(
