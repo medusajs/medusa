@@ -81,6 +81,7 @@
     "noSalesChannels": "Not available in any sales channels",
     "variantCount_one": "{{count}} variant",
     "variantCount_other": "{{count}} variants",
+    "deleteVariantWarning": "You are about to delete the variant {{title}}. This action cannot be undone.",
     "productStatus": {
       "draft": "Draft",
       "published": "Published",
@@ -399,6 +400,8 @@
     "hsCode": "HS Code",
     "countryOfOrigin": "Country of Origin",
     "material": "Material",
-    "thumbnail": "Thumbnail"
+    "thumbnail": "Thumbnail",
+    "sku": "SKU",
+    "managedInventory": "Managed inventory"
   }
 }

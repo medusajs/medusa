@@ -1,8 +1,10 @@
 import {
   AdminGetProductParams,
   AdminGetProductsParams,
+  AdminGetProductsVariantsParams,
   AdminProductsListRes,
   AdminProductsListTagsRes,
+  AdminProductsListVariantsRes,
   AdminProductsRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
@@ -13,24 +15,33 @@ import { queryKeysFactory } from "../../utils/index"
 
 const ADMIN_PRODUCTS_QUERY_KEY = `admin_products` as const
 
-export const adminProductKeys = queryKeysFactory(ADMIN_PRODUCTS_QUERY_KEY)
+export const adminProductKeys = {
+  ...queryKeysFactory(ADMIN_PRODUCTS_QUERY_KEY),
+  detailVariants(id: string, query?: any) {
+    return [
+      ...this.detail(id),
+      "variants" as const,
+      { ...(query || {}) },
+    ] as const
+  },
+}
 
 type ProductQueryKeys = typeof adminProductKeys
 
 /**
- * This hook retrieves a list of products. The products can be filtered by fields such as `q` or `status` passed in 
+ * This hook retrieves a list of products. The products can be filtered by fields such as `q` or `status` passed in
  * the `query` parameter. The products can also be sorted or paginated.
- * 
+ *
  * @example
  * To list products:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminProducts } from "medusa-react"
- * 
+ *
  * const Products = () => {
  *   const { products, isLoading } = useAdminProducts()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -45,21 +56,21 @@ type ProductQueryKeys = typeof adminProductKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Products
  * ```
- * 
+ *
  * To specify relations that should be retrieved within the products:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminProducts } from "medusa-react"
- * 
+ *
  * const Products = () => {
  *   const { products, isLoading } = useAdminProducts({
  *     expand: "images"
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -74,19 +85,19 @@ type ProductQueryKeys = typeof adminProductKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Products
  * ```
- * 
+ *
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminProducts } from "medusa-react"
- * 
+ *
  * const Products = () => {
- *   const { 
- *     products, 
+ *   const {
+ *     products,
  *     limit,
  *     offset,
  *     isLoading
@@ -95,7 +106,7 @@ type ProductQueryKeys = typeof adminProductKeys
  *     limit: 20,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -110,10 +121,10 @@ type ProductQueryKeys = typeof adminProductKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Products
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Products
  * @category Queries
  */
@@ -139,32 +150,32 @@ export const useAdminProducts = (
 
 /**
  * This hook retrieves a product's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminProduct } from "medusa-react"
- * 
+ *
  * type Props = {
  *   productId: string
  * }
- * 
+ *
  * const Product = ({ productId }: Props) => {
- *   const { 
- *     product, 
- *     isLoading, 
+ *   const {
+ *     product,
+ *     isLoading,
  *   } = useAdminProduct(productId)
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
  *       {product && <span>{product.title}</span>}
- *       
+ *
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Product
- * 
+ *
  * @customNamespace Hooks.Admin.Products
  * @category Queries
  */
@@ -192,16 +203,40 @@ export const useAdminProduct = (
   return { ...data, ...rest } as const
 }
 
+export const useAdminProductVariants = (
+  /**
+   * The product's ID.
+   */
+  id: string,
+  /**
+   * Configurations to apply on the retrieved product variants.
+   */
+  query?: AdminGetProductsVariantsParams,
+  options?: UseQueryOptionsWrapper<
+    Response<AdminProductsListVariantsRes>,
+    Error,
+    ReturnType<ProductQueryKeys["detailVariants"]>
+  >
+) => {
+  const { client } = useMedusa()
+  const { data, ...rest } = useQuery(
+    adminProductKeys.detailVariants(id, query),
+    () => client.admin.products.listVariants(id, query),
+    options
+  )
+  return { ...data, ...rest } as const
+}
+
 /**
  * This hook retrieves a list of Product Tags with how many times each is used in products.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminProductTagUsage } from "medusa-react"
- * 
+ *
  * const ProductTags = (productId: string) => {
  *   const { tags, isLoading } = useAdminProductTagUsage()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -216,9 +251,9 @@ export const useAdminProduct = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default ProductTags
- * 
+ *
  * @customNamespace Hooks.Admin.Products
  * @category Queries
  */

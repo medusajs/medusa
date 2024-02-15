@@ -25,23 +25,18 @@ export const EditSalesChannelsForm = ({
 }: EditSalesChannelsFormProps) => {
   const { t } = useTranslation()
 
-  const initialState = useMemo(
-    () =>
-      product.sales_channels?.reduce((acc, curr) => {
-        acc[curr.id] = true
-        return acc
-      }, {} as RowSelectionState) ?? {},
-    [product.sales_channels]
-  )
+  const initialState =
+    product.sales_channels?.reduce((acc, curr) => {
+      acc[curr.id] = true
+      return acc
+    }, {} as RowSelectionState) ?? {}
 
   const [rowSelection, setRowSelection] =
     useState<RowSelectionState>(initialState)
 
-  const isDirty = useMemo(() => {
-    return Object.entries(initialState).some(
-      ([key, value]) => value !== rowSelection[key]
-    )
-  }, [rowSelection, initialState])
+  const isDirty = Object.entries(initialState).some(
+    ([key, value]) => value !== rowSelection[key]
+  )
 
   useEffect(() => {
     subscribe(isDirty)

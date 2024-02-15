@@ -1,17 +1,59 @@
 import { PencilSquare } from "@medusajs/icons"
 import { Product } from "@medusajs/medusa"
 import { Container, Heading } from "@medusajs/ui"
+import { useAdminProductVariants } from "medusa-react"
 import { useTranslation } from "react-i18next"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { DataTable } from "../../../../../components/table/data-table"
+import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useProductVariantTableColumns } from "./use-variant-table-columns"
+import { useProductVariantTableFilters } from "./use-variant-table-filters"
+import { useProductVariantTableQuery } from "./use-variant-table-query"
 
 type ProductVariantSectionProps = {
   product: Product
 }
 
+const PAGE_SIZE = 10
+
 export const ProductVariantSection = ({
   product,
 }: ProductVariantSectionProps) => {
   const { t } = useTranslation()
+
+  const { searchParams, raw } = useProductVariantTableQuery({
+    pageSize: PAGE_SIZE,
+  })
+  const { variants, count, isLoading, isError, error } =
+    useAdminProductVariants(
+      product.id,
+      {
+        ...searchParams,
+      },
+      {
+        keepPreviousData: true,
+      }
+    )
+
+  const filters = useProductVariantTableFilters()
+  const columns = useProductVariantTableColumns(product)
+
+  const { table } = useDataTable({
+    data: variants ?? [],
+    columns,
+    count,
+    enablePagination: true,
+    getRowId: (row) => row.id,
+    pageSize: PAGE_SIZE,
+    meta: {
+      product,
+    },
+  })
+
+  if (isError) {
+    throw error
+  }
 
   return (
     <Container className="divide-y p-0">
@@ -31,6 +73,18 @@ export const ProductVariantSection = ({
           ]}
         />
       </div>
+      <DataTable
+        table={table}
+        columns={columns}
+        filters={filters}
+        count={count}
+        pageSize={PAGE_SIZE}
+        isLoading={isLoading}
+        orderBy={["title", "created_at", "updated_at"]}
+        pagination
+        search
+        queryObject={raw}
+      />
     </Container>
   )
 }
