@@ -8,7 +8,7 @@ As Medusa moves towards modularization, commerce concepts such as Products or Pr
 
 :::danger[Production Warning]
 
-All features guarded by the `medusa_v2` flag are not ready for production and will cause unexpected issues in your production server.
+All features guarded by the `medusa_v2` flag are not ready for production and will cause unexpected issues in your production server. This also leads to disabling the core Store and Admin API Routes as migrating them to use `medusa_v2` features is still in progress.
 
 :::
 
