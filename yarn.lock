@@ -8062,6 +8062,7 @@ __metadata:
     "@radix-ui/react-hover-card": ^1.0.7
     "@tanstack/react-query": 4.22.0
     "@tanstack/react-table": 8.10.7
+    "@tanstack/react-virtual": ^3.0.4
     "@types/node": ^20.11.15
     "@types/react": 18.2.43
     "@types/react-dom": 18.2.17
@@ -16706,6 +16707,18 @@ __metadata:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: 2b9464dab8a975734b651211402a4eaf10e4ae6d9570138576891db350cfabe11e444fea8f17ef0b26ef8ede0adc230bec9c8fe859e61ca66147831076b77bb2
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-virtual@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "@tanstack/react-virtual@npm:3.0.4"
+  dependencies:
+    "@tanstack/virtual-core": 3.0.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 6222dc1254843fa52bdb93deca74282e2b8aabd17337d7b35596441bb70d1d7e333b1679acfb50240847799d63ee24eb184958ad8c7f1ca84c4ff0c13aefa7ec
   languageName: node
   linkType: hard
 

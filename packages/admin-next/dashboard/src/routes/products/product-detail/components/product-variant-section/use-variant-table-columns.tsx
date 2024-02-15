@@ -5,6 +5,7 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { useAdminDeleteVariant } from "medusa-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
 
