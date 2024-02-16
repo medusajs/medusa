@@ -24,6 +24,10 @@ export const createCartWorkflow = createWorkflow(
       }
     })
 
+    // add customer
+
+    // add line items
+
     const cart = createCartsStep([cartInput])
 
     return cart
