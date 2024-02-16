@@ -6,7 +6,7 @@ import {
 import { RemoteQueryFunction } from "@medusajs/types"
 import { TransactionHandlerType } from "@medusajs/utils"
 import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
-import knex from "knex"
+import { knex } from "knex"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
