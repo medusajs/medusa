@@ -2,10 +2,16 @@ import { acceptInviteWorkflow } from "@medusajs/core-flows"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 import { InviteWorkflow } from "@medusajs/types"
 import { AdminPostInvitesInviteAcceptReq } from "../validators"
+import { IUserModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   if (req.auth_user?.app_metadata?.user_id) {
-    res.status(200).json({ user: req.auth_user })
+    const moduleService: IUserModuleService = req.scope.resolve(
+      ModuleRegistrationName.USER
+    )
+    const user = moduleService.retrieve(req.auth_user.app_metadata.user_id)
+    res.status(200).json({ user })
     return
   }
 
