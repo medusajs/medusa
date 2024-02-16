@@ -5,6 +5,7 @@ import {
   GeoZoneType,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Entity,
@@ -17,7 +18,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 import ServiceZone from "./service-zone"
 
 type GeoZoneOptionalProps = DAL.SoftDeletableEntityDateColumns
@@ -28,7 +28,7 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-})
+}).expression
 
 const countryCodeIndexName = "IDX_geo_zone_country_code"
 const countryCodeIndexStatement = createPsqlIndexStatementHelper({
@@ -36,7 +36,7 @@ const countryCodeIndexStatement = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "country_code",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const provinceCodeIndexName = "IDX_geo_zone_province_code"
 const provinceCodeIndexStatement = createPsqlIndexStatementHelper({
@@ -44,7 +44,7 @@ const provinceCodeIndexStatement = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "province_code",
   where: "deleted_at IS NULL AND province_code IS NOT NULL",
-})
+}).expression
 
 const cityIndexName = "IDX_geo_zone_city"
 const cityIndexStatement = createPsqlIndexStatementHelper({
@@ -52,7 +52,7 @@ const cityIndexStatement = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "city",
   where: "deleted_at IS NULL AND city IS NOT NULL",
-})
+}).expression
 
 const serviceZoneIdIndexName = "IDX_geo_zone_service_zone_id"
 const serviceZoneIdStatement = createPsqlIndexStatementHelper({
@@ -60,7 +60,7 @@ const serviceZoneIdStatement = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "service_zone_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
