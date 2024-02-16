@@ -80,21 +80,7 @@ export class AdminCreateInviteRequest {
 /**
  * Details of the use accepting the invite.
  */
-export class AdminPostInvitesInviteAcceptUserReq {
-  /**
-   * The invite's first name.
-   */
-  @IsString()
-  @IsOptional()
-  first_name: string
-
-  /**
-   * The invite's last name.
-   */
-  @IsString()
-  @IsOptional()
-  last_name: string
-}
+export class AdminPostInvitesInviteAcceptUserReq {}
 
 /**
  * @schema AdminPostInvitesInviteAcceptReq
@@ -127,12 +113,26 @@ export class AdminPostInvitesInviteAcceptUserReq {
  *         format: password
  */
 export class AdminPostInvitesInviteAcceptReq {
+  /**
+   * The invite's first name.
+   */
+  @IsString()
+  @IsOptional()
+  first_name: string
+
+  /**
+   * The invite's last name.
+   */
+  @IsString()
+  @IsOptional()
+  last_name: string
+}
+
+export class AdminPostInvitesInviteAcceptParams {
   @IsString()
   @IsNotEmpty()
   token: string
 
-  @IsNotEmpty()
-  @ValidateNested()
-  @Type(() => AdminPostInvitesInviteAcceptUserReq)
-  user: AdminPostInvitesInviteAcceptUserReq
+  @IsOptional()
+  expand = undefined
 }

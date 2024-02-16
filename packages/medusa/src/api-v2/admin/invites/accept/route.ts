@@ -15,14 +15,12 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     return
   }
 
-  const { token, user } = req.validatedBody as AdminPostInvitesInviteAcceptReq
-
   const workflow = acceptInviteWorkflow(req.scope)
 
   const input = {
-    invite_token: token,
+    invite_token: req.filterableFields.token as string,
     auth_user_id: req.auth_user!.id,
-    user: user,
+    user: req.validatedBody as AdminPostInvitesInviteAcceptReq,
   } as InviteWorkflow.AcceptInviteWorkflowInputDTO
 
   const { result: users } = await workflow.run({ input })
