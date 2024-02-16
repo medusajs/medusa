@@ -50,7 +50,7 @@ export interface TestDatabase {
 
 export function getMikroOrmWrapper(
   mikroOrmEntities: any[],
-  pathToMigrations: string, // deprecated, auto inferred
+  pathToMigrations: string | null, // deprecated, auto inferred
   schema?: string
 ): TestDatabase {
   return {

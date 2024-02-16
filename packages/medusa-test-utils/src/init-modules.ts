@@ -6,7 +6,7 @@ import {
 } from "@medusajs/modules-sdk"
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
 
-interface InitModulesOptions {
+export interface InitModulesOptions {
   injectedDependencies?: Record<string, unknown>
   databaseConfig: {
     clientUrl: string
