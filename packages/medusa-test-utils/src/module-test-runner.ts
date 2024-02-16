@@ -2,9 +2,10 @@ import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 import { MedusaAppOutput, ModulesDefinition } from "@medusajs/modules-sdk"
 import { initModules, InitModulesOptions } from "./init-modules"
 
-interface SuiteOptions {
+export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase
   medusaApp: MedusaAppOutput
+  service: TService
 }
 
 export function moduleIntegrationTestRunner({
@@ -23,7 +24,7 @@ export function moduleIntegrationTestRunner({
   describeName?: string
   schema?: string
   dbName: string
-  testSuite: (options: SuiteOptions) => () => void
+  testSuite: <TService = unknown>(options: SuiteOptions<TService>) => () => void
 }) {
   moduleModels = Object.values(require(`${process.cwd()}/src/models`))
   migrationPath ??= process.cwd() + "/src/migrations/!(*.d).{js,ts,cjs}"
@@ -72,6 +73,7 @@ export function moduleIntegrationTestRunner({
   const options = {
     MikroOrmWrapper,
     medusaApp: undefined,
+    service: undefined,
   } as unknown as SuiteOptions
 
   const beforeEach_ = async () => {
@@ -79,6 +81,7 @@ export function moduleIntegrationTestRunner({
     const output = await initModules(moduleOptions)
     shutdown = output.shutdown
     options.medusaApp = output.medusaApp
+    options.service = output.medusaApp.modules[moduleName]
 
     return output.medusaApp
   }

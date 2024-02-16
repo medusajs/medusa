@@ -13,26 +13,20 @@ import {
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
 import { GeoZoneType } from "@medusajs/utils"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 moduleIntegrationTestRunner({
   moduleName: Modules.FULFILLMENT,
-  testSuite: (options) => {
-    let service: IFulfillmentModuleService
-
-    beforeEach(() => {
-      service = options.medusaApp.modules[Modules.FULFILLMENT]
-    })
-
+  testSuite: (testRunnerOptions: SuiteOptions<IFulfillmentModuleService>) => {
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         describe("fulfillment set", () => {
           it("should list fulfillment sets with a filter", async function () {
-            const createdSet1 = await service.create({
+            const createdSet1 = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
-            const createdSet2 = await service.create({
+            const createdSet2 = await testRunnerOptions.service.create({
               name: "test2",
               type: "test-type",
               service_zones: [
@@ -48,7 +42,9 @@ moduleIntegrationTestRunner({
               ],
             })
 
-            let listedSets = await service.list({ type: createdSet1.type })
+            let listedSets = await testRunnerOptions.service.list({
+              type: createdSet1.type,
+            })
 
             expect(listedSets).toEqual(
               expect.arrayContaining([
@@ -57,20 +53,9 @@ moduleIntegrationTestRunner({
               ])
             )
 
-            listedSets = await service.list({ name: createdSet2.name })
-
-            expect(listedSets).toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet2.id }),
-              ])
-            )
-            expect(listedSets).not.toEqual(
-              expect.arrayContaining([
-                expect.objectContaining({ id: createdSet1.id }),
-              ])
-            )
-
-            listedSets = await service.list({ service_zones: { name: "test" } })
+            listedSets = await testRunnerOptions.service.list({
+              name: createdSet2.name,
+            })
 
             expect(listedSets).toEqual(
               expect.arrayContaining([
@@ -83,7 +68,22 @@ moduleIntegrationTestRunner({
               ])
             )
 
-            listedSets = await service.list({
+            listedSets = await testRunnerOptions.service.list({
+              service_zones: { name: "test" },
+            })
+
+            expect(listedSets).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({ id: createdSet2.id }),
+              ])
+            )
+            expect(listedSets).not.toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({ id: createdSet1.id }),
+              ])
+            )
+
+            listedSets = await testRunnerOptions.service.list({
               service_zones: { geo_zones: { country_code: "fr" } },
             })
 
@@ -102,27 +102,29 @@ moduleIntegrationTestRunner({
 
         describe("service zones", () => {
           it("should list service zones with a filter", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
 
-            const createdZone1 = await service.createServiceZones({
-              name: "test",
-              fulfillment_set_id: fulfillmentSet.id,
-            })
-            const createdZone2 = await service.createServiceZones({
-              name: "test2",
-              fulfillment_set_id: fulfillmentSet.id,
-              geo_zones: [
-                {
-                  type: GeoZoneType.COUNTRY,
-                  country_code: "fr",
-                },
-              ],
-            })
+            const createdZone1 =
+              await testRunnerOptions.service.createServiceZones({
+                name: "test",
+                fulfillment_set_id: fulfillmentSet.id,
+              })
+            const createdZone2 =
+              await testRunnerOptions.service.createServiceZones({
+                name: "test2",
+                fulfillment_set_id: fulfillmentSet.id,
+                geo_zones: [
+                  {
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "fr",
+                  },
+                ],
+              })
 
-            let listedZones = await service.listServiceZones({
+            let listedZones = await testRunnerOptions.service.listServiceZones({
               name: createdZone2.name,
             })
 
@@ -137,7 +139,7 @@ moduleIntegrationTestRunner({
               ])
             )
 
-            listedZones = await service.listServiceZones({
+            listedZones = await testRunnerOptions.service.listServiceZones({
               geo_zones: { country_code: "fr" },
             })
 
@@ -156,27 +158,32 @@ moduleIntegrationTestRunner({
 
         describe("geo zones", () => {
           it("should list geo zones with a filter", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
-            const serviceZone = await service.createServiceZones({
-              name: "test",
-              fulfillment_set_id: fulfillmentSet.id,
-            })
+            const serviceZone =
+              await testRunnerOptions.service.createServiceZones({
+                name: "test",
+                fulfillment_set_id: fulfillmentSet.id,
+              })
 
-            const createdZone1 = await service.createGeoZones({
-              service_zone_id: serviceZone.id,
-              type: GeoZoneType.COUNTRY,
-              country_code: "fr",
-            })
-            const createdZone2 = await service.createGeoZones({
-              service_zone_id: serviceZone.id,
-              type: GeoZoneType.COUNTRY,
-              country_code: "us",
-            })
+            const createdZone1 = await testRunnerOptions.service.createGeoZones(
+              {
+                service_zone_id: serviceZone.id,
+                type: GeoZoneType.COUNTRY,
+                country_code: "fr",
+              }
+            )
+            const createdZone2 = await testRunnerOptions.service.createGeoZones(
+              {
+                service_zone_id: serviceZone.id,
+                type: GeoZoneType.COUNTRY,
+                country_code: "us",
+              }
+            )
 
-            let listedZones = await service.listGeoZones({
+            let listedZones = await testRunnerOptions.service.listGeoZones({
               type: createdZone1.type,
             })
 
@@ -187,7 +194,7 @@ moduleIntegrationTestRunner({
               ])
             )
 
-            listedZones = await service.listGeoZones({
+            listedZones = await testRunnerOptions.service.listGeoZones({
               country_code: createdZone2.country_code,
             })
 
@@ -213,7 +220,7 @@ moduleIntegrationTestRunner({
               type: "test-type",
             }
 
-            const fulfillmentSet = await service.create(data)
+            const fulfillmentSet = await testRunnerOptions.service.create(data)
 
             expect(fulfillmentSet).toEqual(
               expect.objectContaining({
@@ -236,7 +243,7 @@ moduleIntegrationTestRunner({
               },
             ]
 
-            const fulfillmentSets = await service.create(data)
+            const fulfillmentSets = await testRunnerOptions.service.create(data)
 
             expect(fulfillmentSets).toHaveLength(2)
 
@@ -264,7 +271,7 @@ moduleIntegrationTestRunner({
               ],
             }
 
-            const fulfillmentSet = await service.create(data)
+            const fulfillmentSet = await testRunnerOptions.service.create(data)
 
             expect(fulfillmentSet).toEqual(
               expect.objectContaining({
@@ -312,7 +319,7 @@ moduleIntegrationTestRunner({
               },
             ]
 
-            const fulfillmentSets = await service.create(data)
+            const fulfillmentSets = await testRunnerOptions.service.create(data)
 
             expect(fulfillmentSets).toHaveLength(3)
 
@@ -352,7 +359,7 @@ moduleIntegrationTestRunner({
               ],
             }
 
-            const fulfillmentSet = await service.create(data)
+            const fulfillmentSet = await testRunnerOptions.service.create(data)
 
             expect(fulfillmentSet).toEqual(
               expect.objectContaining({
@@ -426,7 +433,7 @@ moduleIntegrationTestRunner({
               },
             ]
 
-            const fulfillmentSets = await service.create(data)
+            const fulfillmentSets = await testRunnerOptions.service.create(data)
 
             expect(fulfillmentSets).toHaveLength(3)
 
@@ -463,8 +470,10 @@ moduleIntegrationTestRunner({
               type: "test-type",
             }
 
-            await service.create(data)
-            const err = await service.create(data).catch((e) => e)
+            await testRunnerOptions.service.create(data)
+            const err = await testRunnerOptions.service
+              .create(data)
+              .catch((e) => e)
 
             expect(err).toBeDefined()
             expect(err.constraint).toBe("IDX_fulfillment_set_name_unique")
@@ -473,7 +482,7 @@ moduleIntegrationTestRunner({
 
         describe("on create service zones", () => {
           it("should create a new service zone", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
@@ -489,7 +498,8 @@ moduleIntegrationTestRunner({
               ],
             }
 
-            const serviceZone = await service.createServiceZones(data)
+            const serviceZone =
+              await testRunnerOptions.service.createServiceZones(data)
 
             expect(serviceZone).toEqual(
               expect.objectContaining({
@@ -507,7 +517,7 @@ moduleIntegrationTestRunner({
           })
 
           it("should create a collection of service zones", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
@@ -545,7 +555,8 @@ moduleIntegrationTestRunner({
               },
             ]
 
-            const serviceZones = await service.createServiceZones(data)
+            const serviceZones =
+              await testRunnerOptions.service.createServiceZones(data)
 
             expect(serviceZones).toHaveLength(3)
 
@@ -569,7 +580,7 @@ moduleIntegrationTestRunner({
           })
 
           it("should fail on duplicated service zone name", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
@@ -585,8 +596,10 @@ moduleIntegrationTestRunner({
               ],
             }
 
-            await service.createServiceZones(data)
-            const err = await service.createServiceZones(data).catch((e) => e)
+            await testRunnerOptions.service.createServiceZones(data)
+            const err = await testRunnerOptions.service
+              .createServiceZones(data)
+              .catch((e) => e)
 
             expect(err).toBeDefined()
             expect(err.constraint).toBe("IDX_service_zone_name_unique")
@@ -595,14 +608,15 @@ moduleIntegrationTestRunner({
 
         describe("on create geo zones", () => {
           it("should create a new geo zone", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
-            const serviceZone = await service.createServiceZones({
-              name: "test",
-              fulfillment_set_id: fulfillmentSet.id,
-            })
+            const serviceZone =
+              await testRunnerOptions.service.createServiceZones({
+                name: "test",
+                fulfillment_set_id: fulfillmentSet.id,
+              })
 
             const data: CreateGeoZoneDTO = {
               service_zone_id: serviceZone.id,
@@ -610,7 +624,7 @@ moduleIntegrationTestRunner({
               country_code: "fr",
             }
 
-            const geoZone = await service.createGeoZones(data)
+            const geoZone = await testRunnerOptions.service.createGeoZones(data)
 
             expect(geoZone).toEqual(
               expect.objectContaining({
@@ -622,14 +636,15 @@ moduleIntegrationTestRunner({
           })
 
           it("should create a collection of geo zones", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
-            const serviceZone = await service.createServiceZones({
-              name: "test",
-              fulfillment_set_id: fulfillmentSet.id,
-            })
+            const serviceZone =
+              await testRunnerOptions.service.createServiceZones({
+                name: "test",
+                fulfillment_set_id: fulfillmentSet.id,
+              })
 
             const data: CreateGeoZoneDTO[] = [
               {
@@ -644,7 +659,9 @@ moduleIntegrationTestRunner({
               },
             ]
 
-            const geoZones = await service.createGeoZones(data)
+            const geoZones = await testRunnerOptions.service.createGeoZones(
+              data
+            )
 
             expect(geoZones).toHaveLength(2)
 
@@ -669,9 +686,8 @@ moduleIntegrationTestRunner({
               type: "default",
             }
 
-            const createdShippingProfile = await service.createShippingProfiles(
-              createData
-            )
+            const createdShippingProfile =
+              await testRunnerOptions.service.createShippingProfiles(createData)
 
             expect(createdShippingProfile).toEqual(
               expect.objectContaining({
@@ -694,7 +710,7 @@ moduleIntegrationTestRunner({
             ]
 
             const createdShippingProfiles =
-              await service.createShippingProfiles(createData)
+              await testRunnerOptions.service.createShippingProfiles(createData)
 
             expect(createdShippingProfiles).toHaveLength(2)
 
@@ -716,9 +732,9 @@ moduleIntegrationTestRunner({
               type: "default",
             }
 
-            await service.createShippingProfiles(createData)
+            await testRunnerOptions.service.createShippingProfiles(createData)
 
-            const err = await service
+            const err = await testRunnerOptions.service
               .createShippingProfiles(createData)
               .catch((e) => e)
 
@@ -729,23 +745,23 @@ moduleIntegrationTestRunner({
 
         describe("on create shipping options", () => {
           it("should create a new shipping option", async function () {
-            const [defaultShippingProfile] = await service.listShippingProfiles(
-              {
+            const [defaultShippingProfile] =
+              await testRunnerOptions.service.listShippingProfiles({
                 type: "default",
-              }
-            )
-            const fulfillmentSet = await service.create({
+              })
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
-            const serviceZone = await service.createServiceZones({
-              name: "test",
-              fulfillment_set_id: fulfillmentSet.id,
-            })
+            const serviceZone =
+              await testRunnerOptions.service.createServiceZones({
+                name: "test",
+                fulfillment_set_id: fulfillmentSet.id,
+              })
 
             // TODO: change that for a real provider instead of fake data manual inserted data
             const [{ id: providerId }] =
-              await options.MikroOrmWrapper.forkManager().execute(
+              await testRunnerOptions.MikroOrmWrapper.forkManager().execute(
                 "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
               )
 
@@ -772,9 +788,8 @@ moduleIntegrationTestRunner({
               ],
             }
 
-            const createdShippingOption = await service.createShippingOptions(
-              createData
-            )
+            const createdShippingOption =
+              await testRunnerOptions.service.createShippingOptions(createData)
 
             expect(createdShippingOption).toEqual(
               expect.objectContaining({
@@ -805,23 +820,23 @@ moduleIntegrationTestRunner({
           })
 
           it("should create multiple new shipping options", async function () {
-            const [defaultShippingProfile] = await service.listShippingProfiles(
-              {
+            const [defaultShippingProfile] =
+              await testRunnerOptions.service.listShippingProfiles({
                 type: "default",
-              }
-            )
-            const fulfillmentSet = await service.create({
+              })
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
-            const serviceZone = await service.createServiceZones({
-              name: "test",
-              fulfillment_set_id: fulfillmentSet.id,
-            })
+            const serviceZone =
+              await testRunnerOptions.service.createServiceZones({
+                name: "test",
+                fulfillment_set_id: fulfillmentSet.id,
+              })
 
             // TODO: change that for a real provider instead of fake data manual inserted data
             const [{ id: providerId }] =
-              await options.MikroOrmWrapper.forkManager().execute(
+              await testRunnerOptions.MikroOrmWrapper.forkManager().execute(
                 "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
               )
 
@@ -872,9 +887,8 @@ moduleIntegrationTestRunner({
               },
             ]
 
-            const createdShippingOptions = await service.createShippingOptions(
-              createData
-            )
+            const createdShippingOptions =
+              await testRunnerOptions.service.createShippingOptions(createData)
 
             expect(createdShippingOptions).toHaveLength(2)
 
@@ -911,23 +925,23 @@ moduleIntegrationTestRunner({
           })
 
           it("should fail on duplicated shipping option name", async function () {
-            const [defaultShippingProfile] = await service.listShippingProfiles(
-              {
+            const [defaultShippingProfile] =
+              await testRunnerOptions.service.listShippingProfiles({
                 type: "default",
-              }
-            )
-            const fulfillmentSet = await service.create({
+              })
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
-            const serviceZone = await service.createServiceZones({
-              name: "test",
-              fulfillment_set_id: fulfillmentSet.id,
-            })
+            const serviceZone =
+              await testRunnerOptions.service.createServiceZones({
+                name: "test",
+                fulfillment_set_id: fulfillmentSet.id,
+              })
 
             // TODO: change that for a real provider instead of fake data manual inserted data
             const [{ id: providerId }] =
-              await options.MikroOrmWrapper.forkManager().execute(
+              await testRunnerOptions.MikroOrmWrapper.forkManager().execute(
                 "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
               )
 
@@ -954,9 +968,9 @@ moduleIntegrationTestRunner({
               ],
             }
 
-            await service.createShippingOptions(createData)
+            await testRunnerOptions.service.createShippingOptions(createData)
 
-            const err = await service
+            const err = await testRunnerOptions.service
               .createShippingOptions(createData)
               .catch((e) => e)
 
@@ -972,7 +986,8 @@ moduleIntegrationTestRunner({
               type: "test-type",
             }
 
-            const createdFulfillmentSet = await service.create(createData)
+            const createdFulfillmentSet =
+              await testRunnerOptions.service.create(createData)
 
             const updateData = {
               id: createdFulfillmentSet.id,
@@ -980,7 +995,8 @@ moduleIntegrationTestRunner({
               type: "updated-test-type",
             }
 
-            const updatedFulfillmentSets = await service.update(updateData)
+            const updatedFulfillmentSets =
+              await testRunnerOptions.service.update(updateData)
 
             expect(updatedFulfillmentSets).toEqual(
               expect.objectContaining({
@@ -1003,7 +1019,8 @@ moduleIntegrationTestRunner({
               },
             ]
 
-            const createdFulfillmentSets = await service.create(createData)
+            const createdFulfillmentSets =
+              await testRunnerOptions.service.create(createData)
 
             const updateData = createdFulfillmentSets.map(
               (fulfillmentSet, index) => ({
@@ -1013,7 +1030,8 @@ moduleIntegrationTestRunner({
               })
             )
 
-            const updatedFulfillmentSets = await service.update(updateData)
+            const updatedFulfillmentSets =
+              await testRunnerOptions.service.update(updateData)
 
             expect(updatedFulfillmentSets).toHaveLength(2)
 
@@ -1047,7 +1065,8 @@ moduleIntegrationTestRunner({
               ],
             }
 
-            const createdFulfillmentSet = await service.create(createData)
+            const createdFulfillmentSet =
+              await testRunnerOptions.service.create(createData)
 
             const createServiceZoneData: CreateServiceZoneDTO = {
               fulfillment_set_id: createdFulfillmentSet.id,
@@ -1067,7 +1086,8 @@ moduleIntegrationTestRunner({
               service_zones: [createServiceZoneData],
             }
 
-            const updatedFulfillmentSet = await service.update(updateData)
+            const updatedFulfillmentSet =
+              await testRunnerOptions.service.update(updateData)
 
             expect(updatedFulfillmentSet).toEqual(
               expect.objectContaining({
@@ -1093,7 +1113,8 @@ moduleIntegrationTestRunner({
               })
             )
 
-            const serviceZones = await service.listServiceZones()
+            const serviceZones =
+              await testRunnerOptions.service.listServiceZones()
 
             expect(serviceZones).toHaveLength(1)
             expect(serviceZones[0]).toEqual(
@@ -1120,7 +1141,8 @@ moduleIntegrationTestRunner({
               ],
             }
 
-            const createdFulfillmentSet = await service.create(createData)
+            const createdFulfillmentSet =
+              await testRunnerOptions.service.create(createData)
 
             const createServiceZoneData: CreateServiceZoneDTO = {
               fulfillment_set_id: createdFulfillmentSet.id,
@@ -1143,7 +1165,8 @@ moduleIntegrationTestRunner({
               ],
             }
 
-            const updatedFulfillmentSet = await service.update(updateData)
+            const updatedFulfillmentSet =
+              await testRunnerOptions.service.update(updateData)
 
             expect(updatedFulfillmentSet).toEqual(
               expect.objectContaining({
@@ -1185,7 +1208,8 @@ moduleIntegrationTestRunner({
               },
             ]
 
-            const createdFulfillmentSets = await service.create(createData)
+            const createdFulfillmentSets =
+              await testRunnerOptions.service.create(createData)
 
             const updateData = {
               id: createdFulfillmentSets[1].id,
@@ -1193,7 +1217,9 @@ moduleIntegrationTestRunner({
               type: "updated-test-type2",
             }
 
-            const err = await service.update(updateData).catch((e) => e)
+            const err = await testRunnerOptions.service
+              .update(updateData)
+              .catch((e) => e)
 
             expect(err).toBeDefined()
             expect(err.constraint).toBe("IDX_fulfillment_set_name_unique")
@@ -1233,7 +1259,8 @@ moduleIntegrationTestRunner({
               },
             ]
 
-            const createdFulfillmentSets = await service.create(createData)
+            const createdFulfillmentSets =
+              await testRunnerOptions.service.create(createData)
 
             const updateData: UpdateFulfillmentSetDTO[] =
               createdFulfillmentSets.map((fulfillmentSet, index) => ({
@@ -1253,7 +1280,8 @@ moduleIntegrationTestRunner({
                 ],
               }))
 
-            const updatedFulfillmentSets = await service.update(updateData)
+            const updatedFulfillmentSets =
+              await testRunnerOptions.service.update(updateData)
 
             expect(updatedFulfillmentSets).toHaveLength(2)
 
@@ -1285,7 +1313,8 @@ moduleIntegrationTestRunner({
               ++i
             }
 
-            const serviceZones = await service.listServiceZones()
+            const serviceZones =
+              await testRunnerOptions.service.listServiceZones()
 
             expect(serviceZones).toHaveLength(2)
             expect(serviceZones).toEqual(
@@ -1336,7 +1365,8 @@ moduleIntegrationTestRunner({
               },
             ]
 
-            const createdFulfillmentSets = await service.create(createData)
+            const createdFulfillmentSets =
+              await testRunnerOptions.service.create(createData)
 
             const updateData: UpdateFulfillmentSetDTO[] =
               createdFulfillmentSets.map((fulfillmentSet, index) => ({
@@ -1357,7 +1387,8 @@ moduleIntegrationTestRunner({
                 ],
               }))
 
-            const updatedFulfillmentSets = await service.update(updateData)
+            const updatedFulfillmentSets =
+              await testRunnerOptions.service.update(updateData)
 
             expect(updatedFulfillmentSets).toHaveLength(2)
 
@@ -1392,7 +1423,8 @@ moduleIntegrationTestRunner({
               ++i
             }
 
-            const serviceZones = await service.listServiceZones()
+            const serviceZones =
+              await testRunnerOptions.service.listServiceZones()
 
             expect(serviceZones).toHaveLength(4)
             expect(serviceZones).toEqual(
@@ -1418,7 +1450,7 @@ moduleIntegrationTestRunner({
 
         describe("on update service zones", () => {
           it("should update an existing service zone", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
@@ -1434,9 +1466,8 @@ moduleIntegrationTestRunner({
               ],
             }
 
-            const createdServiceZone = await service.createServiceZones(
-              createData
-            )
+            const createdServiceZone =
+              await testRunnerOptions.service.createServiceZones(createData)
 
             const updateData = {
               id: createdServiceZone.id,
@@ -1450,9 +1481,8 @@ moduleIntegrationTestRunner({
               ],
             }
 
-            const updatedServiceZone = await service.updateServiceZones(
-              updateData
-            )
+            const updatedServiceZone =
+              await testRunnerOptions.service.updateServiceZones(updateData)
 
             expect(updatedServiceZone).toEqual(
               expect.objectContaining({
@@ -1470,7 +1500,7 @@ moduleIntegrationTestRunner({
           })
 
           it("should update a collection of service zones", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
@@ -1498,9 +1528,8 @@ moduleIntegrationTestRunner({
               },
             ]
 
-            const createdServiceZones = await service.createServiceZones(
-              createData
-            )
+            const createdServiceZones =
+              await testRunnerOptions.service.createServiceZones(createData)
 
             const updateData: UpdateServiceZoneDTO[] = createdServiceZones.map(
               (serviceZone, index) => ({
@@ -1515,9 +1544,8 @@ moduleIntegrationTestRunner({
               })
             )
 
-            const updatedServiceZones = await service.updateServiceZones(
-              updateData
-            )
+            const updatedServiceZones =
+              await testRunnerOptions.service.updateServiceZones(updateData)
 
             expect(updatedServiceZones).toHaveLength(2)
 
@@ -1541,7 +1569,7 @@ moduleIntegrationTestRunner({
           })
 
           it("should fail on duplicated service zone name", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
@@ -1569,9 +1597,8 @@ moduleIntegrationTestRunner({
               },
             ]
 
-            const createdServiceZones = await service.createServiceZones(
-              createData
-            )
+            const createdServiceZones =
+              await testRunnerOptions.service.createServiceZones(createData)
 
             const updateData: UpdateServiceZoneDTO = {
               id: createdServiceZones[1].id,
@@ -1584,7 +1611,7 @@ moduleIntegrationTestRunner({
               ],
             }
 
-            const err = await service
+            const err = await testRunnerOptions.service
               .updateServiceZones(updateData)
               .catch((e) => e)
 
@@ -1595,15 +1622,16 @@ moduleIntegrationTestRunner({
 
         describe("on update geo zones", () => {
           it("should update an existing geo zone", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
 
-            const serviceZone = await service.createServiceZones({
-              name: "test",
-              fulfillment_set_id: fulfillmentSet.id,
-            })
+            const serviceZone =
+              await testRunnerOptions.service.createServiceZones({
+                name: "test",
+                fulfillment_set_id: fulfillmentSet.id,
+              })
 
             const createData: CreateGeoZoneDTO = {
               service_zone_id: serviceZone.id,
@@ -1611,7 +1639,8 @@ moduleIntegrationTestRunner({
               country_code: "fr",
             }
 
-            const createdGeoZone = await service.createGeoZones(createData)
+            const createdGeoZone =
+              await testRunnerOptions.service.createGeoZones(createData)
 
             const updateData: UpdateGeoZoneDTO = {
               id: createdGeoZone.id,
@@ -1619,7 +1648,8 @@ moduleIntegrationTestRunner({
               country_code: "us",
             }
 
-            const updatedGeoZone = await service.updateGeoZones(updateData)
+            const updatedGeoZone =
+              await testRunnerOptions.service.updateGeoZones(updateData)
 
             expect(updatedGeoZone).toEqual(
               expect.objectContaining({
@@ -1631,15 +1661,16 @@ moduleIntegrationTestRunner({
           })
 
           it("should update a collection of geo zones", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await testRunnerOptions.service.create({
               name: "test",
               type: "test-type",
             })
 
-            const serviceZone = await service.createServiceZones({
-              name: "test",
-              fulfillment_set_id: fulfillmentSet.id,
-            })
+            const serviceZone =
+              await testRunnerOptions.service.createServiceZones({
+                name: "test",
+                fulfillment_set_id: fulfillmentSet.id,
+              })
 
             const createData: CreateGeoZoneDTO[] = [
               {
@@ -1654,7 +1685,8 @@ moduleIntegrationTestRunner({
               },
             ]
 
-            const createdGeoZones = await service.createGeoZones(createData)
+            const createdGeoZones =
+              await testRunnerOptions.service.createGeoZones(createData)
 
             const updateData: UpdateGeoZoneDTO[] = createdGeoZones.map(
               (geoZone, index) => ({
@@ -1664,7 +1696,8 @@ moduleIntegrationTestRunner({
               })
             )
 
-            const updatedGeoZones = await service.updateGeoZones(updateData)
+            const updatedGeoZones =
+              await testRunnerOptions.service.updateGeoZones(updateData)
 
             expect(updatedGeoZones).toHaveLength(2)
 
