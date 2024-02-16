@@ -4,6 +4,7 @@ import {
   generateEntityId,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Collection,
@@ -17,12 +18,11 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
-import ShippingOption from "./shipping-option"
-import ServiceProvider from "./service-provider"
 import Address from "./address"
 import FulfillmentItem from "./fulfillment-item"
 import FulfillmentLabel from "./fulfillment-label"
+import ServiceProvider from "./service-provider"
+import ShippingOption from "./shipping-option"
 
 type FulfillmentOptionalProps = DAL.SoftDeletableEntityDateColumns
 
@@ -32,7 +32,7 @@ const fulfillmentDeletedAtIndexStatement = createPsqlIndexStatementHelper({
   tableName: "fulfillment",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-})
+}).expression
 
 const fulfillmentProviderIdIndexName = "IDX_fulfillment_provider_id"
 const fulfillmentProviderIdIndexStatement = createPsqlIndexStatementHelper({
@@ -40,7 +40,7 @@ const fulfillmentProviderIdIndexStatement = createPsqlIndexStatementHelper({
   tableName: "fulfillment",
   columns: "provider_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const fulfillmentLocationIdIndexName = "IDX_fulfillment_location_id"
 const fulfillmentLocationIdIndexStatement = createPsqlIndexStatementHelper({
@@ -48,7 +48,7 @@ const fulfillmentLocationIdIndexStatement = createPsqlIndexStatementHelper({
   tableName: "fulfillment",
   columns: "location_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const fulfillmentShippingOptionIdIndexName =
   "IDX_fulfillment_shipping_option_id"
@@ -58,7 +58,7 @@ const fulfillmentShippingOptionIdIndexStatement =
     tableName: "fulfillment",
     columns: "shipping_option_id",
     where: "deleted_at IS NULL",
-  })
+  }).expression
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
