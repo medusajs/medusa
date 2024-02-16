@@ -14,15 +14,9 @@ import {
 } from "@medusajs/types"
 import { GeoZoneType } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import * as Models from "@models"
-import { resolve } from "path"
 
 moduleIntegrationTestRunner({
   moduleName: Modules.FULFILLMENT,
-  moduleModels: Object.values(Models),
-  migrationPath: resolve(
-    `${__dirname}/../../src/migrations/!(*.d).{js,ts,cjs}`
-  ),
   testSuite: ({ MikroOrmWrapper, beforeEach_, afterEach_ }) => {
     let service: IFulfillmentModuleService
 

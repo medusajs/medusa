@@ -18,7 +18,7 @@ export function moduleIntegrationTestRunner({
   testSuite,
 }: {
   moduleName: string
-  moduleModels: any
+  moduleModels?: any[]
   joinerConfig?: any[]
   migrationPath?: string
   describeName?: string
@@ -26,6 +26,9 @@ export function moduleIntegrationTestRunner({
   dbName: string
   testSuite: (options: SuiteOptions) => () => void
 }) {
+  moduleModels = Object.values(require(`${process.cwd}/src/models`))
+  migrationPath ??= process.cwd + "/src/migrations/!(*.d).{js,ts,cjs}"
+
   if (typeof process.env.DB_TEMP_NAME === "undefined") {
     const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
     process.env.DB_TEMP_NAME = `medusa-${moduleName.toLowerCase()}-integration-${tempName}`
