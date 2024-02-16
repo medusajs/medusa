@@ -61,7 +61,7 @@ import {
 } from "../types/common"
 import { buildQuery, isString, setMetadata } from "../utils"
 
-import { Modules, RemoteLink } from "@medusajs/modules-sdk"
+import { RemoteLink } from "@medusajs/modules-sdk"
 import { RemoteQueryFunction } from "@medusajs/types"
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
@@ -500,14 +500,7 @@ class CartService extends TransactionBaseService {
             data.sales_channel_id
           )
 
-          await this.remoteLink_.create({
-            [Modules.CART]: {
-              cart_id: cart.id,
-            },
-            [Modules.SALES_CHANNEL]: {
-              sales_channel_id: salesChannel.id,
-            },
-          })
+          cart.sales_channel_id = salesChannel.id
         }
 
         await this.eventBus_
@@ -1287,33 +1280,7 @@ class CartService extends TransactionBaseService {
 
           await this.onSalesChannelChange(cart, data.sales_channel_id)
 
-          /**
-           * TODO: remove this once update cart workflow is build
-           * since this will be handled in a handler by the workflow
-           */
-          if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
-            if (cart.sales_channel_id) {
-              await this.remoteLink_.dismiss({
-                [Modules.CART]: {
-                  cart_id: cart.id,
-                },
-                [Modules.SALES_CHANNEL]: {
-                  sales_channel_id: cart.sales_channel_id,
-                },
-              })
-            }
-
-            await this.remoteLink_.create({
-              [Modules.CART]: {
-                cart_id: cart.id,
-              },
-              [Modules.SALES_CHANNEL]: {
-                sales_channel_id: salesChannel.id,
-              },
-            })
-          } else {
-            cart.sales_channel_id = salesChannel.id
-          }
+          cart.sales_channel_id = salesChannel.id
         }
 
         if (isDefined(data.discounts) && data.discounts.length) {
