@@ -2,6 +2,7 @@ export interface CreateRegionDTO {
   name: string
   currency_code: string
   countries?: string[]
+  metadata?: Record<string, unknown>
 }
 
 export interface UpdateRegionDTO {
@@ -9,6 +10,7 @@ export interface UpdateRegionDTO {
   currency_code?: string
   countries?: string[]
   name?: string
+  metadata?: Record<string, unknown>
 }
 
 export interface UpdatableRegionFields {

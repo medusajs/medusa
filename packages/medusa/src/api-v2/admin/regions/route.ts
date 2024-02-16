@@ -2,6 +2,7 @@ import { createRegionsWorkflow } from "@medusajs/core-flows"
 import { CreateRegionDTO } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+import { defaultAdminRegionFields } from "./query-config"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const remoteQuery = req.scope.resolve("remoteQuery")
@@ -14,7 +15,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       skip: req.listConfig.skip,
       take: req.listConfig.take,
     },
-    fields: req.listConfig.select as string[],
+    fields: defaultAdminRegionFields,
   })
 
   const { rows: regions, metadata } = await remoteQuery(queryObject)
