@@ -1,9 +1,5 @@
 import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
-import {
-  MedusaAppOutput,
-  Modules,
-  ModulesDefinition,
-} from "@medusajs/modules-sdk"
+import { MedusaAppOutput, ModulesDefinition } from "@medusajs/modules-sdk"
 import { initModules, InitModulesOptions } from "./init-modules"
 
 interface SuiteOptions {
@@ -47,7 +43,7 @@ export function moduleIntegrationTestRunner({
   const DB_URL = getDatabaseURL()
 
   const modulesConfig_ = {
-    [Modules.FULFILLMENT]: {
+    [moduleName]: {
       definition: ModulesDefinition[moduleName],
       options: {
         defaultAdapterOptions: {
