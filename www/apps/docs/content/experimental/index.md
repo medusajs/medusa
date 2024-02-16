@@ -8,7 +8,7 @@ As Medusa moves towards modularization, commerce concepts such as Products or Pr
 
 :::danger[Production Warning]
 
-All features guarded by the `medusa_v2` flag are not ready for production and will cause unexpected issues in your production server. Additionally, the core Store and Admin API routes are not registered if the flag is enabled – only routes in the `src/api-v2/*` folder.
+All features guarded by the `medusa_v2` flag are not ready for production and will cause unexpected issues in your production server. Additionally, the core Store and Admin API routes are not registered if the flag is enabled – only routes in the `dist/api-v2/*` directory of the `@medusajs/medusa` package.
 
 :::
 
