@@ -1,23 +1,6 @@
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 
 import { DB_URL } from "./database"
-import { knex } from "@mikro-orm/knex"
-
-let connection
-
-function getConnection() {
-  if (!connection) {
-    connection = knex<any, any>({
-      client: "pg",
-      searchPath: process.env.MEDUSA_FULFILLMENT_DB_SCHEMA,
-      connection: {
-        connectionString: DB_URL,
-      },
-    })
-  }
-
-  return connection
-}
 
 export function getInitModuleConfig() {
   const moduleOptions = {
@@ -29,9 +12,7 @@ export function getInitModuleConfig() {
     },
   }
 
-  const injectedDependencies = {
-    /*[ContainerRegistrationKeys.PG_CONNECTION]: getConnection(),*/
-  }
+  const injectedDependencies = {}
 
   const modulesConfig_ = {
     [Modules.FULFILLMENT]: {
