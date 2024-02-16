@@ -1,5 +1,5 @@
 import { Modules } from "@medusajs/modules-sdk"
-import { initModules } from "medusa-test-utils/dist"
+import { initModules } from "medusa-test-utils"
 import {
   CreateFulfillmentSetDTO,
   CreateGeoZoneDTO,
@@ -15,12 +15,15 @@ import {
 } from "@medusajs/types"
 import { getInitModuleConfig, MikroOrmWrapper } from "../utils"
 import { GeoZoneType } from "@medusajs/utils"
+import {
+  createDefaultShippingProfilesLoader
+} from "../../src/loaders/create-default-shipping-profiles";
 
 describe("fulfillment module service", function () {
   let service: IFulfillmentModuleService
   let shutdownFunc: () => Promise<void>
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     await MikroOrmWrapper.setupDatabase()
 
     const initModulesConfig = getInitModuleConfig()
@@ -32,8 +35,20 @@ describe("fulfillment module service", function () {
     shutdownFunc = shutdown
   })
 
+  beforeEach(async () => {
+    await MikroOrmWrapper.setupDatabase()
+    await createDefaultShippingProfilesLoader({
+      container: {
+        resolve: () => service,
+      },
+    } as any)
+  })
+
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
+  })
+
+  afterAll(async () => {
     await shutdownFunc()
   })
 
