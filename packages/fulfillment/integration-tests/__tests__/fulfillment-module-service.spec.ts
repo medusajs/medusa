@@ -20,7 +20,7 @@ moduleIntegrationTestRunner({
   testSuite: (options) => {
     let service: IFulfillmentModuleService
 
-    return describe("Fulfillment Module Service", () => {
+    describe("Fulfillment Module Service", () => {
       beforeEach(async () => {
         service = options.medusaApp.modules[Modules.FULFILLMENT]
       })
