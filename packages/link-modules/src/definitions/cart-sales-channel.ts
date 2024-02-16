@@ -18,8 +18,8 @@ export const CartSalesChannel: ModuleJoinerConfig = {
       serviceName: Modules.SALES_CHANNEL,
       relationship: {
         serviceName: Modules.CART,
-        primaryKey: "id",
-        foreignKey: "cart_id",
+        primaryKey: "sales_channel_id",
+        foreignKey: "id",
         alias: "carts",
         isList: true,
       },
