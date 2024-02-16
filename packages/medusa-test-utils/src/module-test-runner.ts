@@ -26,8 +26,8 @@ export function moduleIntegrationTestRunner({
   dbName: string
   testSuite: (options: SuiteOptions) => () => void
 }) {
-  moduleModels = Object.values(require(`${process.cwd}/src/models`))
-  migrationPath ??= process.cwd + "/src/migrations/!(*.d).{js,ts,cjs}"
+  moduleModels = Object.values(require(`${process.cwd()}/src/models`))
+  migrationPath ??= process.cwd() + "/src/migrations/!(*.d).{js,ts,cjs}"
 
   if (typeof process.env.DB_TEMP_NAME === "undefined") {
     const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
