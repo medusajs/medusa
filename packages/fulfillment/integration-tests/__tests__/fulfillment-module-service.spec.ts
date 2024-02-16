@@ -15,15 +15,12 @@ import {
 } from "@medusajs/types"
 import { getInitModuleConfig, MikroOrmWrapper } from "../utils"
 import { GeoZoneType } from "@medusajs/utils"
-import {
-  createDefaultShippingProfilesLoader
-} from "../../src/loaders/create-default-shipping-profiles";
 
 describe("fulfillment module service", function () {
   let service: IFulfillmentModuleService
   let shutdownFunc: () => Promise<void>
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
 
     const initModulesConfig = getInitModuleConfig()
@@ -35,45 +32,35 @@ describe("fulfillment module service", function () {
     shutdownFunc = shutdown
   })
 
-  beforeEach(async () => {
-    await MikroOrmWrapper.setupDatabase()
-    await createDefaultShippingProfilesLoader({
-      container: {
-        resolve: () => service,
-      },
-    } as any)
-  })
-
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
-  })
-
-  afterAll(async () => {
     await shutdownFunc()
   })
 
   describe("read", () => {
     describe("fulfillment set", () => {
       it("should list fulfillment sets with a filter", async function () {
-        const createdSet1 = await service.create({
-          name: "test",
-          type: "test-type",
-        })
-        const createdSet2 = await service.create({
-          name: "test2",
-          type: "test-type",
-          service_zones: [
-            {
-              name: "test",
-              geo_zones: [
-                {
-                  type: GeoZoneType.COUNTRY,
-                  country_code: "fr",
-                },
-              ],
-            },
-          ],
-        })
+        const [createdSet1, createdSet2] = await service.create([
+          {
+            name: "test",
+            type: "test-type",
+          },
+          {
+            name: "test2",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "test",
+                geo_zones: [
+                  {
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "fr",
+                  },
+                ],
+              },
+            ],
+          },
+        ])
 
         let listedSets = await service.list({ type: createdSet1.type })
 
@@ -134,20 +121,22 @@ describe("fulfillment module service", function () {
           type: "test-type",
         })
 
-        const createdZone1 = await service.createServiceZones({
-          name: "test",
-          fulfillment_set_id: fulfillmentSet.id,
-        })
-        const createdZone2 = await service.createServiceZones({
-          name: "test2",
-          fulfillment_set_id: fulfillmentSet.id,
-          geo_zones: [
-            {
-              type: GeoZoneType.COUNTRY,
-              country_code: "fr",
-            },
-          ],
-        })
+        const [createdZone1, createdZone2] = await service.createServiceZones([
+          {
+            name: "test",
+            fulfillment_set_id: fulfillmentSet.id,
+          },
+          {
+            name: "test2",
+            fulfillment_set_id: fulfillmentSet.id,
+            geo_zones: [
+              {
+                type: GeoZoneType.COUNTRY,
+                country_code: "fr",
+              },
+            ],
+          },
+        ])
 
         let listedZones = await service.listServiceZones({
           name: createdZone2.name,
@@ -192,16 +181,18 @@ describe("fulfillment module service", function () {
           fulfillment_set_id: fulfillmentSet.id,
         })
 
-        const createdZone1 = await service.createGeoZones({
-          service_zone_id: serviceZone.id,
-          type: GeoZoneType.COUNTRY,
-          country_code: "fr",
-        })
-        const createdZone2 = await service.createGeoZones({
-          service_zone_id: serviceZone.id,
-          type: GeoZoneType.COUNTRY,
-          country_code: "us",
-        })
+        const [createdZone1, createdZone2] = await service.createGeoZones([
+          {
+            service_zone_id: serviceZone.id,
+            type: GeoZoneType.COUNTRY,
+            country_code: "fr",
+          },
+          {
+            service_zone_id: serviceZone.id,
+            type: GeoZoneType.COUNTRY,
+            country_code: "us",
+          },
+        ])
 
         let listedZones = await service.listGeoZones({
           type: createdZone1.type,

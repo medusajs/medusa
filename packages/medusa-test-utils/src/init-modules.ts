@@ -1,11 +1,10 @@
-import { knex } from "knex"
 import {
   MedusaApp,
   MedusaModule,
   MedusaModuleConfig,
   ModuleJoinerConfig,
 } from "@medusajs/modules-sdk"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
 
 interface InitModulesOptions {
   injectedDependencies?: Record<string, unknown>
@@ -28,13 +27,11 @@ export async function initModules({
   let sharedPgConnection =
     injectedDependencies?.[ContainerRegistrationKeys.PG_CONNECTION]
 
+  let shouldDestroyConnectionAutomatically = !sharedPgConnection
   if (!sharedPgConnection) {
-    sharedPgConnection = knex<any, any>({
-      client: "pg",
-      searchPath: databaseConfig.schema,
-      connection: {
-        connectionString: databaseConfig.clientUrl,
-      },
+    sharedPgConnection = ModulesSdkUtils.createPgConnection({
+      clientUrl: databaseConfig.clientUrl,
+      schema: databaseConfig.schema,
     })
 
     injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] =
@@ -48,7 +45,14 @@ export async function initModules({
   })
 
   async function shutdown() {
-    await (sharedPgConnection as any).context?.destroy()
+    if (shouldDestroyConnectionAutomatically) {
+      await (sharedPgConnection as any).context?.destroy()
+      await (sharedPgConnection as any).destroy()
+    } else {
+      console.warn(
+        `You are using a custom shared connection, do not forget to destroy it if needed.`
+      )
+    }
     MedusaModule.clearInstances()
   }
 

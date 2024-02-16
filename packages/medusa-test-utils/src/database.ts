@@ -27,6 +27,9 @@ export function getMikroOrmConfig(
     schema: schema ?? process.env.MEDUSA_DB_SCHEMA,
     debug: false,
     extensions: [Migrator],
+    migrations: {
+      silent: true,
+    },
   }
 }
 
