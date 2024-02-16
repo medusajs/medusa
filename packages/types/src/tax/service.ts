@@ -6,7 +6,7 @@ import { CreateTaxRateDTO } from "./mutations"
 
 export interface ITaxRateModuleService extends IModuleService {
   retrieve(
-    orderId: string,
+    taxRateId: string,
     config?: FindConfig<TaxRateDTO>,
     sharedContext?: Context
   ): Promise<TaxRateDTO>
@@ -29,6 +29,6 @@ export interface ITaxRateModuleService extends IModuleService {
   ): Promise<TaxRateDTO[]>
   create(data: CreateTaxRateDTO, sharedContext?: Context): Promise<TaxRateDTO>
 
-  delete(orderIds: string[], sharedContext?: Context): Promise<void>
-  delete(orderId: string, sharedContext?: Context): Promise<void>
+  delete(taxRateIds: string[], sharedContext?: Context): Promise<void>
+  delete(taxRateId: string, sharedContext?: Context): Promise<void>
 }
