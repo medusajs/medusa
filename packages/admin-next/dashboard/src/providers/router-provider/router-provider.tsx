@@ -119,8 +119,14 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () => import("../../routes/products/product-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () => import("../../routes/products/product-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
@@ -142,6 +148,10 @@ const router = createBrowserRouter([
                     path: "attributes",
                     lazy: () =>
                       import("../../routes/products/product-attributes"),
+                  },
+                  {
+                    path: "options",
+                    lazy: () => import("../../routes/products/product-options"),
                   },
                   {
                     path: "gallery",
