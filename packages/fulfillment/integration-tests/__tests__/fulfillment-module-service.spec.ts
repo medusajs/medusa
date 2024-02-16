@@ -17,16 +17,13 @@ import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 moduleIntegrationTestRunner({
   moduleName: Modules.FULFILLMENT,
-  testSuite: ({ MikroOrmWrapper, beforeEach_, afterEach_ }) => {
+  testSuite: (options) => {
     let service: IFulfillmentModuleService
 
     return describe("Fulfillment Module Service", () => {
       beforeEach(async () => {
-        const medusaApp = await beforeEach_()
-        service = medusaApp.modules[Modules.FULFILLMENT]
+        service = options.medusaApp.modules[Modules.FULFILLMENT]
       })
-
-      afterEach(afterEach_)
 
       describe("read", () => {
         describe("fulfillment set", () => {
@@ -748,7 +745,7 @@ moduleIntegrationTestRunner({
 
             // TODO: change that for a real provider instead of fake data manual inserted data
             const [{ id: providerId }] =
-              await MikroOrmWrapper.forkManager().execute(
+              await options.MikroOrmWrapper.forkManager().execute(
                 "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
               )
 
@@ -824,7 +821,7 @@ moduleIntegrationTestRunner({
 
             // TODO: change that for a real provider instead of fake data manual inserted data
             const [{ id: providerId }] =
-              await MikroOrmWrapper.forkManager().execute(
+              await options.MikroOrmWrapper.forkManager().execute(
                 "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
               )
 
@@ -930,7 +927,7 @@ moduleIntegrationTestRunner({
 
             // TODO: change that for a real provider instead of fake data manual inserted data
             const [{ id: providerId }] =
-              await MikroOrmWrapper.forkManager().execute(
+              await options.MikroOrmWrapper.forkManager().execute(
                 "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
               )
 

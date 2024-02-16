@@ -4,8 +4,7 @@ import { initModules, InitModulesOptions } from "./init-modules"
 
 interface SuiteOptions {
   MikroOrmWrapper: TestDatabase
-  beforeEach_: () => Promise<MedusaAppOutput>
-  afterEach_: () => Promise<void>
+  medusaApp: MedusaAppOutput
 }
 
 export function moduleIntegrationTestRunner({
@@ -75,23 +74,24 @@ export function moduleIntegrationTestRunner({
     medusaApp: undefined,
   } as unknown as SuiteOptions
 
-  const beforeEach = async () => {
+  const beforeEach_ = async () => {
     await MikroOrmWrapper.setupDatabase()
     const output = await initModules(moduleOptions)
     shutdown = output.shutdown
+    options.medusaApp = output.medusaApp
 
     return output.medusaApp
   }
 
-  const afterEach = async () => {
+  const afterEach_ = async () => {
     await MikroOrmWrapper.clearDatabase()
     await shutdown()
   }
 
-  return testSuite({
-    ...options,
-    MikroOrmWrapper,
-    beforeEach_: beforeEach,
-    afterEach_: afterEach,
+  return describe("", () => {
+    beforeEach(beforeEach_)
+    afterEach(afterEach_)
+
+    testSuite(options)
   })
 }
