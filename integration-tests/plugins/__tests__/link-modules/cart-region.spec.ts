@@ -4,7 +4,6 @@ import path from "path"
 import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
 import { getContainer } from "../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../environment-helpers/use-db"
-import adminSeeder from "../../../helpers/admin-seeder"
 
 jest.setTimeout(50000)
 
@@ -35,8 +34,6 @@ describe("Link: Cart Region", () => {
   })
 
   beforeEach(async () => {
-    await adminSeeder(dbConnection)
-
     // @ts-ignore
     await regionModule.createDefaultCountriesAndCurrencies()
   })
