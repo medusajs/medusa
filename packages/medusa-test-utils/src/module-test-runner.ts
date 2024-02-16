@@ -77,14 +77,6 @@ export function moduleIntegrationTestRunner({
   let moduleService = {}
   let medusaApp: MedusaAppOutput = {} as MedusaAppOutput
 
-  function createProxy(target: object, source: object) {
-    return new Proxy(target, {
-      get: (target, prop) => {
-        return source[prop]
-      },
-    })
-  }
-
   const options = {
     MikroOrmWrapper,
     medusaApp: new Proxy(
