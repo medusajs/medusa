@@ -6,12 +6,12 @@ import {
 } from "@medusajs/workflows-sdk"
 import { createCartsStep, findOneOrAnyRegionStep } from "../steps"
 
-type WorkflowInput = CreateCartWorkflowInputDTO
-
 export const createCartWorkflowId = "create-cart"
 export const createCartWorkflow = createWorkflow(
   createCartWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<CartDTO[]> => {
+  (
+    input: WorkflowData<CreateCartWorkflowInputDTO>
+  ): WorkflowData<CartDTO[]> => {
     const region = findOneOrAnyRegionStep({
       regionId: input.region_id,
     })
