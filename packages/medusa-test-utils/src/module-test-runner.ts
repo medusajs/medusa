@@ -1,6 +1,7 @@
 import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 import { MedusaAppOutput, ModulesDefinition } from "@medusajs/modules-sdk"
 import { initModules, InitModulesOptions } from "./init-modules"
+import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
 
 export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase
@@ -37,13 +38,18 @@ export function moduleIntegrationTestRunner({
   const schemaEnvKey = `MEDUSA_${moduleName.toUpperCase()}_DB_SCHEMA`
   process.env[schemaEnvKey] = schema
 
+  // Use a unique connection for all the test suite
+  const dbUrl = getDatabaseURL()
+  const connection = ModulesSdkUtils.createPgConnection({
+    clientUrl: dbUrl,
+    schema: schema,
+  })
+
   const MikroOrmWrapper = getMikroOrmWrapper(
     moduleModels,
     migrationPath || null,
     process.env[schemaEnvKey]
   )
-
-  const DB_URL = getDatabaseURL()
 
   const modulesConfig_ = {
     [moduleName]: {
@@ -51,7 +57,7 @@ export function moduleIntegrationTestRunner({
       options: {
         defaultAdapterOptions: {
           database: {
-            clientUrl: DB_URL,
+            clientUrl: dbUrl,
             schema: process.env[schemaEnvKey],
           },
         },
@@ -60,12 +66,16 @@ export function moduleIntegrationTestRunner({
   }
 
   const moduleOptions: InitModulesOptions = {
+    injectedDependencies: {
+      [ContainerRegistrationKeys.PG_CONNECTION]: connection,
+    },
     modulesConfig: modulesConfig_,
     databaseConfig: {
-      clientUrl: DB_URL,
+      clientUrl: dbUrl,
       schema: process.env[schemaEnvKey],
     },
     joinerConfig,
+    preventConnectionDestroyWarning: true,
   }
 
   let shutdown: () => Promise<void>
@@ -112,6 +122,10 @@ export function moduleIntegrationTestRunner({
   return describe("", () => {
     beforeEach(beforeEach_)
     afterEach(afterEach_)
+    afterAll(async () => {
+      await (connection as any).context?.destroy()
+      await (connection as any).destroy()
+    })
 
     testSuite(options)
   })

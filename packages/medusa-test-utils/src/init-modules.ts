@@ -14,6 +14,7 @@ export interface InitModulesOptions {
   }
   modulesConfig: MedusaModuleConfig
   joinerConfig?: ModuleJoinerConfig[]
+  preventConnectionDestroyWarning?: boolean
 }
 
 export async function initModules({
@@ -21,6 +22,7 @@ export async function initModules({
   databaseConfig,
   modulesConfig,
   joinerConfig,
+  preventConnectionDestroyWarning = false,
 }: InitModulesOptions) {
   injectedDependencies ??= {}
 
@@ -49,9 +51,11 @@ export async function initModules({
       await (sharedPgConnection as any).context?.destroy()
       await (sharedPgConnection as any).destroy()
     } else {
-      console.warn(
-        `You are using a custom shared connection, do not forget to destroy it if needed.`
-      )
+      if (!preventConnectionDestroyWarning) {
+        console.info(
+          `You are using a custom shared connection. The connection won't be destroyed automatically.`
+        )
+      }
     }
     MedusaModule.clearInstances()
   }
