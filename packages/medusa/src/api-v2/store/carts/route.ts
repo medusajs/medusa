@@ -7,7 +7,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const workflow = createCartWorkflow(req.scope)
 
   const { result, errors } = await workflow.run({
-    input: { cartData: req.validatedBody as CreateCartDTO },
+    input: req.validatedBody as CreateCartDTO,
     throwOnError: false,
   })
 

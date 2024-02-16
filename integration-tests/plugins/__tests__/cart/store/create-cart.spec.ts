@@ -97,6 +97,30 @@ describe("POST /store/carts", () => {
     )
   })
 
+  it("should use region currency code", async () => {
+    await regionModuleService.create({
+      name: "US",
+      currency_code: "usd",
+    })
+
+    const api = useApi() as any
+    const response = await api.post(`/store/carts`, {
+      email: "tony@stark.com",
+    })
+
+    expect(response.status).toEqual(200)
+    expect(response.data.cart).toEqual(
+      expect.objectContaining({
+        id: response.data.cart.id,
+        currency_code: "usd",
+        email: "tony@stark.com",
+        region: expect.objectContaining({
+          id: expect.any(String),
+        }),
+      })
+    )
+  })
+
   it("should throw when no regions exist", async () => {
     const api = useApi() as any
 
