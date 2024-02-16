@@ -18,8 +18,8 @@ export const CartRegion: ModuleJoinerConfig = {
       serviceName: Modules.REGION,
       relationship: {
         serviceName: Modules.CART,
-        primaryKey: "id",
-        foreignKey: "cart_id",
+        primaryKey: "region_id",
+        foreignKey: "id",
         alias: "carts",
         isList: true,
       },
