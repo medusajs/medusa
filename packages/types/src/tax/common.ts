@@ -21,7 +21,7 @@ export interface TaxRateDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata: Record<string, unknown> | null
   /**
    * When the Tax Rate was created.
    */
