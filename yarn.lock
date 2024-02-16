@@ -8076,6 +8076,7 @@ __metadata:
     i18next-browser-languagedetector: 7.2.0
     i18next-http-backend: 2.4.2
     medusa-react: "workspace:^"
+    popmotion: ^11.0.5
     postcss: ^8.4.33
     prettier: ^3.1.1
     react: 18.2.0
@@ -28722,6 +28723,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"framesync@npm:6.1.2":
+  version: 6.1.2
+  resolution: "framesync@npm:6.1.2"
+  dependencies:
+    tslib: 2.4.0
+  checksum: 9e7d240ddf0bbe062bc9b71ffffd889b9923ee5d9c638ed84f2fe31aaa42e25e624eaf0b28ccca1d08f5ae170b8d083a6dabe5983f5dabea6bbbe6d4a9f8d27a
+  languageName: node
+  linkType: hard
+
 "fresh@npm:0.5.2":
   version: 0.5.2
   resolution: "fresh@npm:0.5.2"
@@ -30635,6 +30645,13 @@ __metadata:
   version: 0.0.19
   resolution: "helpertypes@npm:0.0.19"
   checksum: 2d4035f97d8dfa135c5e12f5828354df9d2345e83e3a7e7af4ed1c08fca6415980711d7dd9592cb0f730b9cff0e80a845dc5c3d53b91fe29347d549fba298674
+  languageName: node
+  linkType: hard
+
+"hey-listen@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "hey-listen@npm:1.0.8"
+  checksum: 38db3028b4756f3d536c0f6a92da53bad577ab649b06dddfd0a4d953f9a46bbc6a7f693c8c5b466a538d6d23dbc469260c848427f0de14198a2bbecbac37b39e
   languageName: node
   linkType: hard
 
@@ -41320,6 +41337,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"popmotion@npm:^11.0.5":
+  version: 11.0.5
+  resolution: "popmotion@npm:11.0.5"
+  dependencies:
+    framesync: 6.1.2
+    hey-listen: ^1.0.8
+    style-value-types: 5.1.2
+    tslib: 2.4.0
+  checksum: b89189fbe24f3051a555aa4a86658f11046c6f818f0a2e6e5afb14575db02bc45f64fe24bc1cead1e1fe692185ba92be8b2cebc68668ba1f4b7ffa55bdb52509
+  languageName: node
+  linkType: hard
+
 "posix-character-classes@npm:^0.1.0":
   version: 0.1.1
   resolution: "posix-character-classes@npm:0.1.1"
@@ -47712,6 +47741,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"style-value-types@npm:5.1.2":
+  version: 5.1.2
+  resolution: "style-value-types@npm:5.1.2"
+  dependencies:
+    hey-listen: ^1.0.8
+    tslib: 2.4.0
+  checksum: c9d82c21ead726196cdf056bfd00591800eb695c6282ef2107c27b9b917e94c91797a1810c6fbda8ac0e4a4dda1453790a91f0cbfd56ef7107c66785c6f90889
+  languageName: node
+  linkType: hard
+
 "styled-components@npm:^6.0.7":
   version: 6.1.8
   resolution: "styled-components@npm:6.1.8"
@@ -49188,6 +49227,13 @@ __metadata:
   version: 2.3.1
   resolution: "tslib@npm:2.3.1"
   checksum: 4efd888895bdb3b987086b2b7793ad1013566f882b0eb7a328384e5ecc0d71cafb16bbeab3196200cbf7f01a73ccc25acc2f131d4ea6ee959be7436a8a306482
+  languageName: node
+  linkType: hard
+
+"tslib@npm:2.4.0":
+  version: 2.4.0
+  resolution: "tslib@npm:2.4.0"
+  checksum: eb19bda3ae545b03caea6a244b34593468e23d53b26bf8649fbc20fce43e9b21a71127fd6d2b9662c0fe48ee6ff668ead48fd00d3b88b2b716b1c12edae25b5d
   languageName: node
   linkType: hard
 

@@ -1,16 +1,26 @@
-import { ArrowDownTray, Trash, XMarkMini } from "@medusajs/icons"
+import {
+  ArrowDownTray,
+  ChevronLeftMini,
+  ChevronRightMini,
+  ThumbnailBadge,
+  Trash,
+  XMarkMini,
+} from "@medusajs/icons"
 import { Product } from "@medusajs/medusa"
 import { Button, IconButton, Kbd, Tooltip } from "@medusajs/ui"
 import * as Dialog from "@radix-ui/react-dialog"
 import { Variants, motion } from "framer-motion"
 import { useAdminProduct } from "medusa-react"
-import { useCallback, useEffect, useMemo } from "react"
+import { wrap } from "popmotion"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useParams, useSearchParams } from "react-router-dom"
+
 import { useRouteModalState } from "../../../hooks/use-route-modal-state"
 
 export const ProductGallery = () => {
   const [open, onOpenChange] = useRouteModalState()
+  const [[page, direction], setPage] = useState([0, 0])
 
   const { id } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -23,7 +33,20 @@ export const ProductGallery = () => {
     return product ? getMedia(product) : []
   }, [product])
 
-  const currentId = searchParams.get("img")
+  // We only have 3 images, but we paginate them absolutely (ie 1, 2, 3, 4, 5...) and
+  // then wrap that within 0-2 to find our image ID in the array below. By passing an
+  // absolute page index as the `motion` component's `key` prop, `AnimatePresence` will
+  // detect it as an entirely new image. So you can infinitely paginate as few as 1 images.
+  const imageIndex = wrap(0, media.length, page)
+
+  const paginate = useCallback(
+    (newDirection: number) => {
+      setPage([page + newDirection, newDirection])
+    },
+    [page]
+  )
+
+  const currentId = searchParams.get("img") ?? media[0]?.id
 
   const getSelectedMedia = (media: Media[], currentId: string | null) => {
     if (currentId) {
@@ -39,47 +62,15 @@ export const ProductGallery = () => {
     return media[0]
   }
 
-  const getSurroundingMedia = (media: Media[], selectedMedia: Media) => {
-    const index = media.indexOf(selectedMedia)
-    const length = media.length
-
-    const leftImages = [
-      media[(index - 2 + length) % length],
-      media[(index - 1 + length) % length],
-    ]
-
-    const rightImages = [
-      media[(index + 1) % length],
-      media[(index + 2) % length],
-    ]
-
-    return { leftImages, rightImages }
-  }
-
   const curr = getSelectedMedia(media, currentId)
-  const surrounding = getSurroundingMedia(media, curr)
-
-  const handleNext = useCallback(() => {
-    const index = media.indexOf(curr)
-    const next = media[(index + 1) % media.length]
-    setSearchParams({ img: next.id })
-  }, [curr, media, setSearchParams])
-
-  const handlePrev = useCallback(() => {
-    const index = media.indexOf(curr)
-    const prev = media[(index - 1 + media.length) % media.length]
-    setSearchParams({ img: prev.id })
-  }, [curr, media, setSearchParams])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") {
-        e.preventDefault()
-        handleNext()
+        paginate(1)
       }
       if (e.key === "ArrowLeft") {
-        e.preventDefault()
-        handlePrev()
+        paginate(-1)
       }
     }
 
@@ -88,7 +79,7 @@ export const ProductGallery = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown)
     }
-  }, [handleNext, handlePrev])
+  }, [paginate])
 
   const indicatorVariants: Variants = {
     active: {
@@ -158,48 +149,47 @@ export const ProductGallery = () => {
               </Button>
             </div>
           </div>
-          <main className="h-full py-16">
-            <div className="flex h-full items-center justify-center gap-16 overflow-hidden px-4">
-              {surrounding.leftImages.map((img) => (
-                <div
-                  key={img.id}
-                  className={`flex h-full flex-shrink-0 items-center opacity-40`}
-                >
-                  <img
-                    src={img.url}
-                    alt=""
-                    className="h-4/5 rounded-2xl object-cover"
-                  />
-                </div>
-              ))}
-              <div className="h-full flex-shrink-0">
+          <main className="relative flex h-full w-screen items-center justify-center py-16">
+            <div
+              key={page}
+              className="absolute h-full max-w-[100vw] rounded-2xl py-16"
+            >
+              <div className="relative h-full w-fit">
+                {media[imageIndex].isThumbnail && (
+                  <div className="absolute left-3 top-3">
+                    <Tooltip content={t("fields.thumbnail")} className="dark">
+                      <ThumbnailBadge />
+                    </Tooltip>
+                  </div>
+                )}
                 <img
-                  src={curr.url}
+                  src={media[imageIndex].url}
                   alt=""
-                  className="h-full rounded-2xl object-cover object-center"
+                  className="object-fit h-full rounded-2xl"
                 />
               </div>
-              {surrounding.rightImages.map((img) => (
-                <div
-                  key={img.id}
-                  className={`flex h-full flex-shrink-0 items-center opacity-40`}
-                >
-                  <img
-                    src={img.url}
-                    alt=""
-                    className="h-4/5 rounded-2xl object-cover"
-                  />
-                </div>
-              ))}
             </div>
+
+            <IconButton
+              onClick={() => paginate(-1)}
+              className="absolute left-4 top-1/2 z-[2] rounded-full"
+            >
+              <ChevronLeftMini className="text-ui-fg-subtle" />
+            </IconButton>
+            <IconButton
+              onClick={() => paginate(1)}
+              className="absolute right-4 top-1/2 z-[2] rounded-full"
+            >
+              <ChevronRightMini className="text-ui-fg-subtle" />
+            </IconButton>
           </main>
           <div className="flex items-center justify-center gap-1">
-            {media.map((img) => (
+            {media.map((img, index) => (
               <motion.div
                 key={img.id}
                 className="h-1.5 rounded-full"
                 variants={indicatorVariants}
-                animate={img.id === curr.id ? "active" : "inactive"}
+                animate={index === imageIndex ? "active" : "inactive"}
               />
             ))}
           </div>

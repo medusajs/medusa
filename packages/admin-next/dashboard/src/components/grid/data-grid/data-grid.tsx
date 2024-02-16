@@ -8,7 +8,13 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { useVirtualizer } from "@tanstack/react-virtual"
-import { MouseEvent, useRef, useState } from "react"
+import {
+  MouseEvent as ReactMouseEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import { DefaultValues, useForm } from "react-hook-form"
 import { infer as Infer, ZodObject } from "zod"
 import { CellCoordinates } from "./types"
@@ -61,9 +67,11 @@ export const DataGrid = <TData, TSchema extends ZodObject<any, any, any>>({
     overscan: 5,
   })
 
+  const [isDragging, setIsDragging] = useState(false)
   const [anchor, setAnchor] = useState<CellCoordinates | null>(null)
+  const [selection, setSelection] = useState<CellCoordinates[]>([])
 
-  const handleCellClick = (e: MouseEvent<HTMLTableCellElement>) => {
+  const handleMouseDown = (e: ReactMouseEvent<HTMLTableCellElement>) => {
     const target = e.target
 
     /**
@@ -80,15 +88,154 @@ export const DataGrid = <TData, TSchema extends ZodObject<any, any, any>>({
     const rowIndex = parseInt(e.currentTarget.dataset.rowIndex!)
     const columnIndex = parseInt(e.currentTarget.dataset.columnIndex!)
 
-    setAnchor({
+    setIsDragging(true)
+
+    const coordinates: CellCoordinates = {
       row: rowIndex,
       column: columnIndex,
-    })
+    }
+
+    setSelection([coordinates])
+    setAnchor(coordinates)
   }
 
   const getIsAnchor = (rowIndex: number, columnIndex: number) => {
     return anchor?.row === rowIndex && anchor?.column === columnIndex
   }
+
+  const handleMouseOver = (e: ReactMouseEvent<HTMLTableCellElement>) => {
+    /**
+     * If we're not dragging or there is no anchor,
+     * then we don't want to do anything.
+     */
+    if (!isDragging || !anchor) {
+      return
+    }
+
+    const target = e.target
+
+    /**
+     * Check if the click was on a presentation element.
+     * If so, we don't want to add it to the selection.
+     */
+    if (
+      target instanceof HTMLElement &&
+      target.querySelector("[data-role=presentation]")
+    ) {
+      return
+    }
+
+    const rowIndex = parseInt(e.currentTarget.dataset.rowIndex!)
+    const columnIndex = parseInt(e.currentTarget.dataset.columnIndex!)
+
+    /**
+     * If the target column is not the same as the anchor column,
+     * we don't want to add it to the selection.
+     */
+    if (anchor?.column !== columnIndex) {
+      return
+    }
+
+    const direction =
+      rowIndex > anchor.row ? "down" : rowIndex < anchor.row ? "up" : "none"
+
+    const last = selection[selection.length - 1] ?? anchor
+
+    /**
+     * Check if the current cell is a direct neighbour of the last cell
+     * in the selection.
+     */
+    const isNeighbour = Math.abs(rowIndex - last.row) === 1
+
+    /**
+     * If the current cell is a neighbour, we can simply update
+     * the selection based on the direction.
+     */
+    if (isNeighbour) {
+      setSelection((prev) => {
+        return prev
+          .filter((cell) => {
+            if (direction === "down") {
+              return (
+                (cell.row <= rowIndex && cell.row >= anchor.row) ||
+                cell.row === anchor.row
+              )
+            }
+
+            if (direction === "up") {
+              return (
+                (cell.row >= rowIndex && cell.row <= anchor.row) ||
+                cell.row === anchor.row
+              )
+            }
+
+            return cell.row === anchor.row
+          })
+          .concat({ row: rowIndex, column: columnIndex })
+      })
+
+      return
+    }
+
+    /**
+     * If the current cell is not a neighbour, we instead
+     * need to calculate all the valid cells between the
+     * anchor and the current cell.
+     */
+    const cells: CellCoordinates[] = []
+
+    function selectCell(i: number, columnIndex: number) {
+      const possibleCell = document.querySelector(
+        `[data-row-index="${i}"][data-column-index="${columnIndex}"]`
+      )
+
+      if (!possibleCell) {
+        return
+      }
+
+      const isPresentation = possibleCell.querySelector(
+        "[data-role=presentation]"
+      )
+
+      if (isPresentation) {
+        return
+      }
+
+      cells.push({ row: i, column: columnIndex })
+    }
+
+    if (direction === "down") {
+      for (let i = anchor.row; i <= rowIndex; i++) {
+        selectCell(i, columnIndex)
+      }
+    }
+
+    if (direction === "up") {
+      for (let i = anchor.row; i >= rowIndex; i--) {
+        selectCell(i, columnIndex)
+      }
+    }
+
+    setSelection(cells)
+  }
+
+  const getIsSelected = (rowIndex: number, columnIndex: number) => {
+    return selection.some(
+      (cell) => cell.row === rowIndex && cell.column === columnIndex
+    )
+  }
+
+  const handleMouseUp = useCallback((_e: MouseEvent) => {
+    setIsDragging(false)
+  }, [])
+
+  useEffect(() => {
+    document.addEventListener("mouseup", handleMouseUp)
+
+    return () => {
+      document.removeEventListener("mouseup", handleMouseUp)
+    }
+  }, [handleMouseUp])
 
   return (
     <Container className="overflow-hidden p-0">
@@ -99,6 +246,7 @@ export const DataGrid = <TData, TSchema extends ZodObject<any, any, any>>({
           overflow: "auto",
           position: "relative",
           height: "600px",
+          userSelect: isDragging ? "none" : "auto",
         }}
       >
         <table className="text-ui-fg-subtle grid">
@@ -150,14 +298,19 @@ export const DataGrid = <TData, TSchema extends ZodObject<any, any, any>>({
                         style={{
                           width: cell.column.getSize(),
                         }}
-                        onClick={handleCellClick}
+                        onMouseDown={handleMouseDown}
+                        onMouseOver={handleMouseOver}
                         data-row-index={virtualRow.index}
                         data-column-index={index}
                         className={clx(
                           "bg-ui-bg-base has-[:disabled]:bg-ui-bg-subtle relative flex items-center border-b border-r px-4 py-2.5 outline-none",
-                          "after:transition-fg after:border-ui-fg-interactive after:absolute after:-bottom-px after:-left-px after:-right-px after:-top-px after:box-border after:border after:border-[2px] after:opacity-0 after:content-['']",
+                          "after:transition-fg after:border-ui-fg-interactive after:invisible after:absolute after:-bottom-px after:-left-px after:-right-px after:-top-px after:box-border after:border-[2px] after:content-['']",
                           {
-                            "after:opacity-100": getIsAnchor(
+                            "after:visible": getIsAnchor(
+                              virtualRow.index,
+                              index
+                            ),
+                            "bg-ui-bg-highlight": getIsSelected(
                               virtualRow.index,
                               index
                             ),
