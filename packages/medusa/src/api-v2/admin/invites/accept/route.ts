@@ -27,5 +27,10 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
   const { result: users } = await workflow.run({ input })
 
+  // Set customer_id on session user if we are in session
+  if (req.session.auth_user) {
+    req.session.auth_user.app_metadata.user_id = users[0].id
+  }
+
   res.status(200).json({ user: users[0] })
 }
