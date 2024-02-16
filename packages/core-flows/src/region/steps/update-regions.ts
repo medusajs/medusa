@@ -48,6 +48,7 @@ export const updateRegionsStep = createStep(
         name: r.name,
         currency_code: r.currency_code,
         metadata: r.metadata,
+        countries: r.countries.map((c) => c.iso_2),
       }))
     )
   }

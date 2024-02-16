@@ -1,6 +1,12 @@
 import { OperatorMap } from "@medusajs/types"
 import { Type } from "class-transformer"
-import { IsOptional, IsString, ValidateNested } from "class-validator"
+import {
+  IsArray,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import { OperatorMapValidator } from "../../../types/validators/operator-map"
 
@@ -76,6 +82,14 @@ export class AdminPostRegionsReq {
 
   @IsString()
   currency_code: string
+
+  @IsArray()
+  @IsOptional()
+  countries?: string[]
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
 }
 
 export class AdminPostRegionsRegionReq {
@@ -86,4 +100,12 @@ export class AdminPostRegionsRegionReq {
   @IsString()
   @IsOptional()
   currency_code?: string
+
+  @IsArray()
+  @IsOptional()
+  countries?: string[]
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
 }

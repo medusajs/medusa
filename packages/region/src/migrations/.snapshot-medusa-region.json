@@ -135,7 +135,7 @@
       "indexes": [
         {
           "columnNames": [
-            "currency_id"
+            "currency_code"
           ],
           "composite": false,
           "keyName": "IDX_region_currency_code",
@@ -163,7 +163,7 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "region_currency_id_foreign": {
+        "region_currency_code_foreign": {
           "constraintName": "region_currency_code_foreign",
           "columnNames": [
             "currency_code"
@@ -173,7 +173,7 @@
             "code"
           ],
           "referencedTableName": "public.region_currency",
-          "deleteRule": "cascade",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -248,13 +248,12 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "region_id"
-          ],
+          "keyName": "IDX_region_country_region_id_iso_2_unique",
+          "columnNames": [],
           "composite": false,
-          "keyName": "IDX_country_region_id",
           "primary": false,
-          "unique": false
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_region_country_region_id_iso_2_unique\" ON \"region_country\" (region_id, iso_2)"
         },
         {
           "keyName": "region_country_pkey",
@@ -278,7 +277,7 @@
             "id"
           ],
           "referencedTableName": "public.region",
-          "deleteRule": "cascade",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
