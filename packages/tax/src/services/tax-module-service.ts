@@ -13,32 +13,61 @@ import {
   MedusaContext,
   ModulesSdkUtils,
 } from "@medusajs/utils"
-import { TaxRate, TaxRegion } from "@models"
+import {
+  TaxRate,
+  TaxRegion,
+  ProductTaxRate,
+  ShippingTaxRate,
+  ProductTypeTaxRate,
+} from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   taxRateService: ModulesSdkTypes.InternalModuleService<any>
   taxRegionService: ModulesSdkTypes.InternalModuleService<any>
+  productTypeTaxRateService: ModulesSdkTypes.InternalModuleService<any>
+  productTaxRateService: ModulesSdkTypes.InternalModuleService<any>
+  shippingTaxRateService: ModulesSdkTypes.InternalModuleService<any>
 }
+
+const generateForModels = [
+  TaxRegion,
+  ProductTaxRate,
+  ProductTypeTaxRate,
+  ShippingTaxRate,
+]
 
 export default class TaxModuleService<
     TTaxRate extends TaxRate = TaxRate,
-    TTaxRegion extends TaxRegion = TaxRegion
+    TTaxRegion extends TaxRegion = TaxRegion,
+    TProductTaxRate extends ProductTaxRate = ProductTaxRate,
+    TProductTypeTaxRate extends ProductTypeTaxRate = ProductTypeTaxRate,
+    TShippingTaxRate extends ShippingTaxRate = ShippingTaxRate
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
     TaxTypes.TaxRateDTO,
     { TaxRegion: { dto: TaxTypes.TaxRegionDTO } }
-  >(TaxRate, [TaxRegion], entityNameToLinkableKeysMap)
+  >(TaxRate, generateForModels, entityNameToLinkableKeysMap)
   implements ITaxModuleService
 {
   protected baseRepository_: DAL.RepositoryService
   protected taxRateService_: ModulesSdkTypes.InternalModuleService<TTaxRate>
   protected taxRegionService_: ModulesSdkTypes.InternalModuleService<TTaxRegion>
+  protected productTypeTaxRateService_: ModulesSdkTypes.InternalModuleService<TProductTypeTaxRate>
+  protected productTaxRateService_: ModulesSdkTypes.InternalModuleService<TProductTaxRate>
+  protected shippingTaxRateService_: ModulesSdkTypes.InternalModuleService<TShippingTaxRate>
 
   constructor(
-    { baseRepository, taxRateService, taxRegionService }: InjectedDependencies,
+    {
+      baseRepository,
+      taxRateService,
+      taxRegionService,
+      productTypeTaxRateService,
+      productTaxRateService,
+      shippingTaxRateService,
+    }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
@@ -47,6 +76,9 @@ export default class TaxModuleService<
     this.baseRepository_ = baseRepository
     this.taxRateService_ = taxRateService
     this.taxRegionService_ = taxRegionService
+    this.productTypeTaxRateService_ = productTypeTaxRateService
+    this.productTaxRateService_ = productTaxRateService
+    this.shippingTaxRateService_ = shippingTaxRateService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
