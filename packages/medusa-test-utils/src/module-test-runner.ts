@@ -69,19 +69,35 @@ export function moduleIntegrationTestRunner({
   }
 
   let shutdown: () => Promise<void>
+  let moduleService = {}
+  let medusaApp: MedusaAppOutput = {} as MedusaAppOutput
 
   const options = {
     MikroOrmWrapper,
-    medusaApp: undefined,
-    service: undefined,
-  } as unknown as SuiteOptions
+    medusaApp: new Proxy(
+      {},
+      {
+        get: (target, prop) => {
+          return medusaApp[prop]
+        },
+      }
+    ) as MedusaAppOutput,
+    service: new Proxy(
+      {},
+      {
+        get: (target, prop) => {
+          return moduleService[prop]
+        },
+      }
+    ),
+  } as SuiteOptions
 
   const beforeEach_ = async () => {
     await MikroOrmWrapper.setupDatabase()
     const output = await initModules(moduleOptions)
     shutdown = output.shutdown
-    options.medusaApp = output.medusaApp
-    options.service = output.medusaApp.modules[moduleName]
+    medusaApp = output.medusaApp
+    moduleService = output.medusaApp.modules[moduleName]
 
     return output.medusaApp
   }
@@ -89,6 +105,8 @@ export function moduleIntegrationTestRunner({
   const afterEach_ = async () => {
     await MikroOrmWrapper.clearDatabase()
     await shutdown()
+    moduleService = {}
+    medusaApp = {} as MedusaAppOutput
   }
 
   return describe("", () => {
