@@ -9,6 +9,7 @@ export const defaultStoreCartFields = [
 
 export const defaultStoreCartRelations = [
   "items",
+  "region",
   "shipping_address",
   "billing_address",
   "shipping_methods",
@@ -60,5 +61,8 @@ export const defaultStoreCartRemoteQueryObject = {
       "region_code",
       "phone",
     ],
+  },
+  region: {
+    fields: ["id", "name", "currency_code"],
   },
 }
