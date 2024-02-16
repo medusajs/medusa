@@ -4,10 +4,14 @@ import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import { defaultStoreCartRemoteQueryObject } from "../carts/query-config"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  const workflow = createCartWorkflow(req.scope)
+  const input = req.validatedBody as CreateCartDTO
 
-  const { result, errors } = await workflow.run({
-    input: req.validatedBody as CreateCartDTO,
+  if (req.user && req.user.customer_id) {
+    input.customer_id = req.user.customer_id
+  }
+
+  const { result, errors } = await createCartWorkflow(req.scope).run({
+    input,
     throwOnError: false,
   })
 
