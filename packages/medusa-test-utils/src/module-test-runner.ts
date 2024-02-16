@@ -38,17 +38,18 @@ export function moduleIntegrationTestRunner({
   const schemaEnvKey = `MEDUSA_${moduleName.toUpperCase()}_DB_SCHEMA`
   process.env[schemaEnvKey] = schema
 
+  const dbConfig = {
+    clientUrl: getDatabaseURL(),
+    schema,
+  }
+
   // Use a unique connection for all the test suite
-  const dbUrl = getDatabaseURL()
-  const connection = ModulesSdkUtils.createPgConnection({
-    clientUrl: dbUrl,
-    schema: schema,
-  })
+  const connection = ModulesSdkUtils.createPgConnection(dbConfig)
 
   const MikroOrmWrapper = getMikroOrmWrapper(
     moduleModels,
     migrationPath || null,
-    process.env[schemaEnvKey]
+    schema
   )
 
   const modulesConfig_ = {
@@ -56,10 +57,7 @@ export function moduleIntegrationTestRunner({
       definition: ModulesDefinition[moduleName],
       options: {
         defaultAdapterOptions: {
-          database: {
-            clientUrl: dbUrl,
-            schema: process.env[schemaEnvKey],
-          },
+          database: dbConfig,
         },
       },
     },
@@ -70,10 +68,7 @@ export function moduleIntegrationTestRunner({
       [ContainerRegistrationKeys.PG_CONNECTION]: connection,
     },
     modulesConfig: modulesConfig_,
-    databaseConfig: {
-      clientUrl: dbUrl,
-      schema: process.env[schemaEnvKey],
-    },
+    databaseConfig: dbConfig,
     joinerConfig,
     preventConnectionDestroyWarning: true,
   }
@@ -81,6 +76,14 @@ export function moduleIntegrationTestRunner({
   let shutdown: () => Promise<void>
   let moduleService = {}
   let medusaApp: MedusaAppOutput = {} as MedusaAppOutput
+
+  function createProxy(target: object, source: object) {
+    return new Proxy(target, {
+      get: (target, prop) => {
+        return source[prop]
+      },
+    })
+  }
 
   const options = {
     MikroOrmWrapper,
@@ -103,20 +106,26 @@ export function moduleIntegrationTestRunner({
   } as SuiteOptions
 
   const beforeEach_ = async () => {
-    await MikroOrmWrapper.setupDatabase()
-    const output = await initModules(moduleOptions)
-    shutdown = output.shutdown
-    medusaApp = output.medusaApp
-    moduleService = output.medusaApp.modules[moduleName]
-
-    return output.medusaApp
+    try {
+      await MikroOrmWrapper.setupDatabase()
+      const output = await initModules(moduleOptions)
+      shutdown = output.shutdown
+      medusaApp = output.medusaApp
+      moduleService = output.medusaApp.modules[moduleName]
+    } catch (error) {
+      console.error("Error setting up database:", error)
+    }
   }
 
   const afterEach_ = async () => {
-    await MikroOrmWrapper.clearDatabase()
-    await shutdown()
-    moduleService = {}
-    medusaApp = {} as MedusaAppOutput
+    try {
+      await MikroOrmWrapper.clearDatabase()
+      await shutdown()
+      moduleService = {}
+      medusaApp = {} as MedusaAppOutput
+    } catch (error) {
+      console.error("Error tearing down database:", error)
+    }
   }
 
   return describe("", () => {
