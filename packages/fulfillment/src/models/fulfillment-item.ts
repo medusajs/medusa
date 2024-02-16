@@ -4,6 +4,7 @@ import {
   generateEntityId,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Entity,
@@ -15,7 +16,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 import Fulfillment from "./fulfillment"
 
 type FulfillmentItemOptionalProps = DAL.SoftDeletableEntityDateColumns
@@ -26,7 +26,7 @@ const fulfillmentIdIndexStatement = createPsqlIndexStatementHelper({
   tableName: "fulfillment_item",
   columns: "fulfillment_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const lineItemIndexName = "IDX_fulfillment_item_line_item_id"
 const lineItemIdIndexStatement = createPsqlIndexStatementHelper({
@@ -34,7 +34,7 @@ const lineItemIdIndexStatement = createPsqlIndexStatementHelper({
   tableName: "fulfillment_item",
   columns: "line_item_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const inventoryItemIndexName = "IDX_fulfillment_item_inventory_item_id"
 const inventoryItemIdIndexStatement = createPsqlIndexStatementHelper({
@@ -42,7 +42,7 @@ const inventoryItemIdIndexStatement = createPsqlIndexStatementHelper({
   tableName: "fulfillment_item",
   columns: "inventory_item_id",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const fulfillmentItemDeletedAtIndexName = "IDX_fulfillment_item_deleted_at"
 const fulfillmentItemDeletedAtIndexStatement = createPsqlIndexStatementHelper({
@@ -50,7 +50,7 @@ const fulfillmentItemDeletedAtIndexStatement = createPsqlIndexStatementHelper({
   tableName: "fulfillment_item",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-})
+}).expression
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

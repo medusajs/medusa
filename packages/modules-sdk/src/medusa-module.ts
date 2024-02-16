@@ -18,6 +18,7 @@ import {
   simpleHash,
   stringifyCircular,
 } from "@medusajs/utils"
+import { EOL } from "os"
 import {
   moduleLoader,
   registerMedusaLinkModule,
@@ -311,6 +312,14 @@ export class MedusaModule {
         const joinerConfig: ModuleJoinerConfig = await services[
           keyName
         ].__joinerConfig()
+
+        if (!joinerConfig.primaryKeys) {
+          logger.warn(
+            `Primary keys are not defined by the module ${keyName}. Setting default primary key to 'id'${EOL}`
+          )
+
+          joinerConfig.primaryKeys = ["id"]
+        }
 
         services[keyName].__joinerConfig = joinerConfig
         MedusaModule.setJoinerConfig(keyName, joinerConfig)
