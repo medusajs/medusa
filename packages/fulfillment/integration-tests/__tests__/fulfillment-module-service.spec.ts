@@ -20,11 +20,11 @@ moduleIntegrationTestRunner({
   testSuite: (options) => {
     let service: IFulfillmentModuleService
 
-    describe("Fulfillment Module Service", () => {
-      beforeEach(async () => {
-        service = options.medusaApp.modules[Modules.FULFILLMENT]
-      })
+    beforeEach(() => {
+      service = options.medusaApp.modules[Modules.FULFILLMENT]
+    })
 
+    describe("Fulfillment Module Service", () => {
       describe("read", () => {
         describe("fulfillment set", () => {
           it("should list fulfillment sets with a filter", async function () {
