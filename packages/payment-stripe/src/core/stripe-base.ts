@@ -46,14 +46,14 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
   protected init() {
     this.validateOptions(this.config)
 
-    return new Stripe(this.config.api_key)
+    return new Stripe(this.config.apiKey)
   }
 
   abstract get paymentIntentOptions(): PaymentIntentOptions
 
   private validateOptions(options: StripeCredentials): void {
-    if (!isDefined(options.api_key)) {
-      throw new Error("Required option `api_key` is missing in Stripe plugin")
+    if (!isDefined(options.apiKey)) {
+      throw new Error("Required option `apiKey` is missing in Stripe plugin")
     }
   }
 
@@ -365,7 +365,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     return this.stripe_.webhooks.constructEvent(
       data.data as string | Buffer,
       signature,
-      this.config.webhook_secret
+      this.config.webhookSecret
     )
   }
   protected buildError(

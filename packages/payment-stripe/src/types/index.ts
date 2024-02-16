@@ -1,6 +1,6 @@
 export interface StripeCredentials {
-  api_key: string
-  webhook_secret: string
+  apiKey: string
+  webhookSecret: string
 }
 
 export interface StripeOptions {
