@@ -26,6 +26,7 @@ export type OrderSummary = {
 }
 
 export type ItemSummary = {
+  returnable_quantity: BigNumber
   ordered_quantity: BigNumber
   fulfilled_quantity: BigNumber
   return_requested_quantity: BigNumber

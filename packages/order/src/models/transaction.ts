@@ -93,19 +93,11 @@ export default class Transaction {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "ordli")
+    this.id = generateEntityId(this.id, "ordtrx")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "ordli")
-  }
-}
-
-export function initializeModelBigNumberFields(model, ...fields) {
-  for (const field of fields) {
-    const val = new BigNumber(model[`raw_${field}`] ?? model[field])
-    model[field] = val.numeric
-    model[`raw_${field}`] = val.raw!
+    this.id = generateEntityId(this.id, "ordtrx")
   }
 }

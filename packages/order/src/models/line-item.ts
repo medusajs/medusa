@@ -17,17 +17,15 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { ItemSummary } from "../types/commom"
 import LineItemAdjustment from "./line-item-adjustment"
 import LineItemTaxLine from "./line-item-tax-line"
-import Order from "./order"
+import OrderDetail from "./order-detail"
 
 type OptionalLineItemProps =
   | "is_discoutable"
   | "is_tax_inclusive"
   | "compare_at_unit_price"
   | "requires_shipping"
-  | "order"
   | DAL.EntityDateColumns
 
 const ProductIdIndex = createPsqlIndexStatementHelper({
@@ -40,11 +38,6 @@ const VariantIdIndex = createPsqlIndexStatementHelper({
   columns: "variant_id",
 })
 
-const OrderIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_line_item",
-  columns: "order_id",
-})
-
 @Entity({ tableName: "order_line_item" })
 export default class LineItem {
   [OptionalProps]?: OptionalLineItemProps
@@ -52,16 +45,12 @@ export default class LineItem {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
-  @OrderIdIndex.MikroORMIndex()
-  order_id: string
-
   @ManyToOne({
-    entity: () => Order,
+    entity: () => OrderDetail,
     onDelete: "cascade",
     cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
-  order: Order
+  totals: OrderDetail
 
   @Property({ columnType: "text" })
   title: string
@@ -71,13 +60,6 @@ export default class LineItem {
 
   @Property({ columnType: "text", nullable: true })
   thumbnail: string | null = null
-
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
-  quantity: BigNumber | number
-
-  @Property({ columnType: "jsonb" })
-  raw_quantity: BigNumberRawValue
 
   @Property({
     columnType: "text",
@@ -156,9 +138,6 @@ export default class LineItem {
   })
   adjustments = new Collection<LineItemAdjustment>(this)
 
-  @Property({ columnType: "jsonb" })
-  summary: ItemSummary | null = {} as ItemSummary
-
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
@@ -182,13 +161,5 @@ export default class LineItem {
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordli")
-  }
-}
-
-export function initializeModelBigNumberFields(model, ...fields) {
-  for (const field of fields) {
-    const val = new BigNumber(model[`raw_${field}`] ?? model[field])
-    model[field] = val.numeric
-    model[`raw_${field}`] = val.raw!
   }
 }
