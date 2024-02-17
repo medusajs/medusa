@@ -42,22 +42,28 @@ Handle sending emails to customers related to orders, restock notifications, use
 
 3\. In `medusa-config.js` add the following at the end of the `plugins` array:
 
-  ```ts
+   ```ts
   const plugins = [
     // ...,
     {
-      resolve: `medusa-plugin-sendgrid`,
-      /** @type {import('medusa-plugin-sendgrid').PluginOptions} */
+      resolve: `medusa-plugin-sendgrid-typescript`,
+      /** @type {import('medusa-plugin-sendgrid-typescript').PluginOptions} */
       options: {
         api_key: process.env.SENDGRID_API_KEY,
         from: process.env.SENDGRID_FROM,
         templates: {
-          order_placed_template: process.env.SENDGRID_ORDER_PLACED_ID,
+          order_placed_template: {
+            id: process.env.SENDGRID_ORDER_PLACED_ID,
+            // You can add dynamic data to the template by using {variable_name}
+            subject: "Thank you for your order #{display_id}!",
+          },
         },
         localization: {
           "de-DE": { // locale key
-            order_placed_template:
-              process.env.SENDGRID_ORDER_PLACED_ID_LOCALIZED,
+            order_placed_template: {
+              subject: "Danke für Ihre Bestellung #{display_id}!",
+              id: process.env.SENDGRID_ORDER_PLACED_ID,
+            }
           },
         },
       },

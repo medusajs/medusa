@@ -1,5 +1,4 @@
 import { LineItem, Notification } from "@medusajs/medusa"
-import { LineItemTotals } from "@medusajs/medusa"
 
 export interface AttachmentsArray {
   name: string
@@ -36,7 +35,7 @@ export class SendGridData extends Notification {
 }
 
 export type NewLineItem = Omit<LineItem, "beforeUpdate" | "afterUpdateOrLoad"> & {
-  totals: LineItemTotals
+  totals: any
   thumbnail: string
   discounted_price: string
   price: string
