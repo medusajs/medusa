@@ -7,6 +7,7 @@ import {
   Filter,
   Index,
   ManyToOne,
+  OnInit,
   OneToMany,
   OptionalProps,
   PrimaryKey,
@@ -71,7 +72,7 @@ export default class Region {
     this.id = generateEntityId(this.id, "reg")
   }
 
-  @BeforeCreate()
+  @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "reg")
   }
