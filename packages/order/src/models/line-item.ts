@@ -1,12 +1,12 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
+  BigNumberField,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
-  BeforeUpdate,
   Cascade,
   Collection,
   Entity,
@@ -17,6 +17,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { ItemSummary } from "../types/commom"
 import LineItemAdjustment from "./line-item-adjustment"
 import LineItemTaxLine from "./line-item-tax-line"
 import Order from "./order"
@@ -29,14 +30,19 @@ type OptionalLineItemProps =
   | "order"
   | DAL.EntityDateColumns
 
-const productIdIndex = createPsqlIndexStatementHelper({
+const ProductIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_line_item",
   columns: "product_id",
 })
 
-const variantIdIndex = createPsqlIndexStatementHelper({
+const VariantIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_line_item",
   columns: "variant_id",
+})
+
+const OrderIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_line_item",
+  columns: "order_id",
 })
 
 @Entity({ tableName: "order_line_item" })
@@ -47,12 +53,12 @@ export default class LineItem {
   id: string
 
   @Property({ columnType: "text" })
+  @OrderIdIndex.MikroORMIndex()
   order_id: string
 
   @ManyToOne({
     entity: () => Order,
     onDelete: "cascade",
-    index: "IDX_order_line_item_order_id",
     cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
   order: Order
@@ -67,6 +73,7 @@ export default class LineItem {
   thumbnail: string | null = null
 
   @Property({ columnType: "numeric" })
+  @BigNumberField()
   quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })
@@ -76,14 +83,14 @@ export default class LineItem {
     columnType: "text",
     nullable: true,
   })
-  @variantIdIndex.MikroORMIndex()
+  @VariantIdIndex.MikroORMIndex()
   variant_id: string | null = null
 
   @Property({
     columnType: "text",
     nullable: true,
   })
-  @productIdIndex.MikroORMIndex()
+  @ProductIdIndex.MikroORMIndex()
   product_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
@@ -126,12 +133,14 @@ export default class LineItem {
   is_tax_inclusive = false
 
   @Property({ columnType: "numeric", nullable: true })
+  @BigNumberField({ nullable: true })
   compare_at_unit_price?: BigNumber | number | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
   raw_compare_at_unit_price: BigNumberRawValue | null = null
 
   @Property({ columnType: "numeric" })
+  @BigNumberField()
   unit_price: BigNumber | number
 
   @Property({ columnType: "jsonb" })
@@ -146,6 +155,9 @@ export default class LineItem {
     cascade: [Cascade.REMOVE],
   })
   adjustments = new Collection<LineItemAdjustment>(this)
+
+  @Property({ columnType: "jsonb" })
+  summary: ItemSummary | null = {} as ItemSummary
 
   @Property({
     onCreate: () => new Date(),
@@ -165,28 +177,18 @@ export default class LineItem {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordli")
-
-    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
-
-    this.unit_price = val.numeric
-    this.raw_unit_price = val.raw!
-  }
-
-  @BeforeUpdate()
-  onUpdate() {
-    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
-
-    this.unit_price = val.numeric
-    this.raw_unit_price = val.raw as BigNumberRawValue
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordli")
+  }
+}
 
-    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
-
-    this.unit_price = val.numeric
-    this.raw_unit_price = val.raw!
+export function initializeModelBigNumberFields(model, ...fields) {
+  for (const field of fields) {
+    const val = new BigNumber(model[`raw_${field}`] ?? model[field])
+    model[field] = val.numeric
+    model[`raw_${field}`] = val.raw!
   }
 }

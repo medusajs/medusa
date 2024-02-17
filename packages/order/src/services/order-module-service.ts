@@ -48,6 +48,7 @@ type InjectedDependencies = {
   lineItemAdjustmentService: ModulesSdkTypes.InternalModuleService<any>
   lineItemTaxLineService: ModulesSdkTypes.InternalModuleService<any>
   shippingMethodTaxLineService: ModulesSdkTypes.InternalModuleService<any>
+  transactionService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 const generateMethodForModels = [
@@ -83,6 +84,8 @@ export default class OrderModuleService<
         dto: OrderTypes.OrderShippingMethodAdjustmentDTO
       }
       ShippingMethodTaxLine: { dto: OrderTypes.OrderShippingMethodTaxLineDTO }
+
+      Transaction: { dto: OrderTypes.TransactionDTO }
     }
   >(Order, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IOrderModuleService
@@ -96,6 +99,7 @@ export default class OrderModuleService<
   protected lineItemAdjustmentService_: ModulesSdkTypes.InternalModuleService<TLineItemAdjustment>
   protected lineItemTaxLineService_: ModulesSdkTypes.InternalModuleService<TLineItemTaxLine>
   protected shippingMethodTaxLineService_: ModulesSdkTypes.InternalModuleService<TShippingMethodTaxLine>
+  protected transactionService_: ModulesSdkTypes.InternalModuleService<TShippingMethodTaxLine>
 
   constructor(
     {
@@ -108,6 +112,7 @@ export default class OrderModuleService<
       lineItemAdjustmentService,
       shippingMethodTaxLineService,
       lineItemTaxLineService,
+      transactionService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -123,6 +128,7 @@ export default class OrderModuleService<
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.shippingMethodTaxLineService_ = shippingMethodTaxLineService
     this.lineItemTaxLineService_ = lineItemTaxLineService
+    this.transactionService_ = transactionService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
