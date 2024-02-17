@@ -19,8 +19,7 @@ export function registerPaymentProcessorFromClass(
   context: Context
 ): void {
   if (
-    !AbstractPaymentProcessor.isPaymentProcessor(klass.prototype) &&
-    !PaymentService.isPaymentService(klass.prototype)
+    !AbstractPaymentProcessor.isPaymentProcessor(klass.prototype)
   ) {
     return
   }
