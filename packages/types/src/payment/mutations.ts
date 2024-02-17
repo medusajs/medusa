@@ -70,7 +70,7 @@ export interface CreateRefundDTO {
 
 export interface CreatePaymentSessionDTO {
   provider_id: string
-  providerContext: PaymentProviderContext
+  providerContext: Omit<PaymentProviderContext, "resource_id">
 }
 
 export interface UpdatePaymentSessionDTO {

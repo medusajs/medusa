@@ -3,8 +3,7 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 import { Modules } from "@medusajs/modules-sdk"
 import { initModules } from "medusa-test-utils"
-import { initialize } from "../../../src/initialize"
-import { DB_URL, MikroOrmWrapper } from "../../utils"
+import { MikroOrmWrapper } from "../../utils"
 import { getInitModuleConfig } from "../../utils/get-init-module-config"
 import { createPaymentCollections } from "../../__fixtures__"
 

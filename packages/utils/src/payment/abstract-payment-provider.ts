@@ -131,5 +131,11 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
 }
 
 export function isPaymentProviderError(obj: any): obj is PaymentProviderError {
-  return obj && typeof obj === "object" && obj.error && obj.code && obj.detail
+  return (
+    obj &&
+    typeof obj === "object" &&
+    "error" in obj &&
+    "code" in obj &&
+    "detail" in obj
+  )
 }

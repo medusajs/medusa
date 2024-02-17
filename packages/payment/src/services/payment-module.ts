@@ -220,7 +220,10 @@ export default class PaymentModuleService<
     try {
       const sessionData = await this.paymentProviderService_.createSession(
         data.provider_id,
-        { ...data.providerContext, resource_id: created.id }
+        {
+          ...data.providerContext,
+          resource_id: created.id,
+        }
       )
 
       await this.paymentSessionService_.update(

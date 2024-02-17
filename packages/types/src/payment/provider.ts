@@ -47,7 +47,7 @@ export type PaymentProviderContext = {
   /**
    * The context.
    */
-  context: Record<string, unknown>
+  context: { payment_description?: string } & Record<string, unknown>
   /**
    * If the payment session hasn't been created or initiated yet, it'll be an empty object.
    * If the payment session exists, it'll be the value of the payment session's `data` field.
