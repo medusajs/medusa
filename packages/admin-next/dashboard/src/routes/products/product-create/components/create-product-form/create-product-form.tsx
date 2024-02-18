@@ -84,7 +84,7 @@ export const CreateProductForm = ({ subscribe }: CreateProductFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit} className="h-full">
+      <form onSubmit={handleSubmit} className="flex h-full flex-col">
         <FocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
             <FocusModal.Close asChild>
@@ -97,7 +97,7 @@ export const CreateProductForm = ({ subscribe }: CreateProductFormProps) => {
             </Button>
           </div>
         </FocusModal.Header>
-        <FocusModal.Body className="flex h-full flex-1 flex-col overflow-hidden">
+        <FocusModal.Body className="flex flex-1 flex-col overflow-hidden">
           <div className="flex flex-1 flex-col items-center overflow-y-auto">
             <div className="flex h-full w-full">
               <CreateProductDetails form={form} />

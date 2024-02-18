@@ -25,31 +25,86 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
   const [open, onOpenChange] = useState(false)
 
   return (
-    <PanelGroup direction="horizontal" className="flex h-full justify-center">
+    <PanelGroup
+      direction="horizontal"
+      className="flex h-full justify-center overflow-hidden"
+    >
       <Panel
-        className="flex w-full flex-col items-center"
+        className="flex h-full w-full flex-col items-center"
         minSize={open ? 50 : 100}
       >
-        <div className="flex w-full max-w-[736px] flex-col justify-center px-2 py-16 pb-2">
-          <div className="flex flex-col gap-y-1">
-            <Heading>{t("products.createProductTitle")}</Heading>
-            <Text size="small" className="text-ui-fg-subtle">
-              {t("products.createProductHint")}
-            </Text>
-          </div>
-          <div className="flex flex-col gap-y-8 divide-y [&>div]:pt-8">
-            <div id="general" className="flex flex-col gap-y-8">
-              <div className="flex flex-col gap-y-2">
+        <div className="flex size-full flex-col items-center overflow-auto p-16">
+          <div className="flex w-full max-w-[736px] flex-col justify-center px-2 pb-2">
+            <div className="flex flex-col gap-y-1">
+              <Heading>{t("products.createProductTitle")}</Heading>
+              <Text size="small" className="text-ui-fg-subtle">
+                {t("products.createProductHint")}
+              </Text>
+            </div>
+            <div className="flex flex-col gap-y-8 divide-y [&>div]:pt-8">
+              <div id="general" className="flex flex-col gap-y-8">
+                <div className="flex flex-col gap-y-2">
+                  <div className="grid grid-cols-2 gap-x-4">
+                    <Form.Field
+                      control={form.control}
+                      name="title"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label optional>
+                              {t("fields.title")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Input {...field} />
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                    <Form.Field
+                      control={form.control}
+                      name="subtitle"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label optional>
+                              {t("fields.subtitle")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Input {...field} />
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                  </div>
+                  <Text
+                    size="small"
+                    leading="compact"
+                    className="text-ui-fg-subtle"
+                  >
+                    <Trans
+                      i18nKey="products.titleHint"
+                      t={t}
+                      components={[<br key="break" />]}
+                    />
+                  </Text>
+                </div>
                 <div className="grid grid-cols-2 gap-x-4">
                   <Form.Field
                     control={form.control}
-                    name="title"
+                    name="handle"
                     render={({ field }) => {
                       return (
                         <Form.Item>
-                          <Form.Label optional>{t("fields.title")}</Form.Label>
+                          <Form.Label
+                            tooltip={t("products.handleTooltip")}
+                            optional
+                          >
+                            {t("fields.handle")}
+                          </Form.Label>
                           <Form.Control>
-                            <Input {...field} />
+                            <HandleInput {...field} />
                           </Form.Control>
                         </Form.Item>
                       )
@@ -57,12 +112,12 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                   />
                   <Form.Field
                     control={form.control}
-                    name="subtitle"
+                    name="material"
                     render={({ field }) => {
                       return (
                         <Form.Item>
                           <Form.Label optional>
-                            {t("fields.subtitle")}
+                            {t("fields.material")}
                           </Form.Label>
                           <Form.Control>
                             <Input {...field} />
@@ -72,148 +127,104 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                     }}
                   />
                 </div>
-                <Text
+              </div>
+              <div id="organize" className="flex flex-col gap-y-8">
+                <Heading level="h2">{t("products.organization")}</Heading>
+                <Button
                   size="small"
-                  leading="compact"
-                  className="text-ui-fg-subtle"
+                  variant="secondary"
+                  onClick={() => onOpenChange(!open)}
                 >
-                  <Trans
-                    i18nKey="products.titleHint"
-                    t={t}
-                    components={[<br key="break" />]}
+                  {t("actions.edit")}
+                </Button>
+              </div>
+              <div id="attributes" className="flex flex-col gap-y-8">
+                <Heading level="h2">{t("products.attributes")}</Heading>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-8">
+                  <Form.Field
+                    control={form.control}
+                    name="width"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label optional>{t("fields.width")}</Form.Label>
+                          <Form.Control>
+                            <Input {...field} type="number" min={0} />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
                   />
-                </Text>
-              </div>
-              <div className="grid grid-cols-2 gap-x-4">
-                <Form.Field
-                  control={form.control}
-                  name="handle"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label
-                          tooltip={t("products.handleTooltip")}
-                          optional
-                        >
-                          {t("fields.handle")}
-                        </Form.Label>
-                        <Form.Control>
-                          <HandleInput {...field} />
-                        </Form.Control>
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="material"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label optional>{t("fields.material")}</Form.Label>
-                        <Form.Control>
-                          <Input {...field} />
-                        </Form.Control>
-                      </Form.Item>
-                    )
-                  }}
-                />
-              </div>
-            </div>
-            <div id="organize" className="flex flex-col gap-y-8">
-              <Heading level="h2">{t("products.organization")}</Heading>
-              <Button
-                size="small"
-                variant="secondary"
-                onClick={() => onOpenChange(!open)}
-              >
-                {t("actions.edit")}
-              </Button>
-            </div>
-            <div id="attributes" className="flex flex-col gap-y-8">
-              <Heading level="h2">{t("products.attributes")}</Heading>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-8">
-                <Form.Field
-                  control={form.control}
-                  name="width"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label optional>{t("fields.width")}</Form.Label>
-                        <Form.Control>
-                          <Input {...field} type="number" min={0} />
-                        </Form.Control>
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="length"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label optional>{t("fields.length")}</Form.Label>
-                        <Form.Control>
-                          <Input {...field} type="number" min={0} />
-                        </Form.Control>
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="height"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label optional>{t("fields.height")}</Form.Label>
-                        <Form.Control>
-                          <Input {...field} type="number" min={0} />
-                        </Form.Control>
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="weight"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label optional>{t("fields.weight")}</Form.Label>
-                        <Form.Control>
-                          <Input {...field} type="number" min={0} />
-                        </Form.Control>
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="origin_country"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label optional>
-                          {t("fields.countryOfOrigin")}
-                        </Form.Label>
-                        <Form.Control>
-                          <CountrySelect {...field} />
-                        </Form.Control>
-                      </Form.Item>
-                    )
-                  }}
-                />
+                  <Form.Field
+                    control={form.control}
+                    name="length"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label optional>{t("fields.length")}</Form.Label>
+                          <Form.Control>
+                            <Input {...field} type="number" min={0} />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="height"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label optional>{t("fields.height")}</Form.Label>
+                          <Form.Control>
+                            <Input {...field} type="number" min={0} />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="weight"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label optional>{t("fields.weight")}</Form.Label>
+                          <Form.Control>
+                            <Input {...field} type="number" min={0} />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="origin_country"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label optional>
+                            {t("fields.countryOfOrigin")}
+                          </Form.Label>
+                          <Form.Control>
+                            <CountrySelect {...field} />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </Panel>
+
       {open && (
         <Fragment>
-          <PanelResizeHandle className="bg-ui-bg-subtle flex items-center justify-center border-x px-[4.5px]">
-            <div className="bg-ui-fg-disabled h-6 w-[3px] rounded-full" />
+          <PanelResizeHandle className="bg-ui-bg-subtle group flex items-center justify-center border-x px-[4.5px] outline-none">
+            {/* Is this meant to be resizable? And if so we need some kind of focus state for the handle cc: @ludvig18 */}
+            <div className="bg-ui-fg-disabled group-focus-visible:bg-ui-fg-muted transition-fg h-6 w-[3px] rounded-full" />
           </PanelResizeHandle>
           <Panel defaultSize={50} maxSize={50} minSize={40}>
             <AddSalesChannelsDrawer />
@@ -260,7 +271,7 @@ const AddSalesChannelsDrawer = () => {
   }
 
   return (
-    <div className="flex h-[calc(100%-45px)] flex-1 flex-col overflow-hidden">
+    <div className="flex h-full flex-1 flex-col overflow-hidden">
       <div className="flex-1">
         <DataTable
           table={table}
@@ -269,6 +280,7 @@ const AddSalesChannelsDrawer = () => {
           filters={filters}
           isLoading={isLoading}
           layout="fill"
+          orderBy={["name", "created_at", "updated_at"]}
           queryObject={raw}
           search
           pagination
