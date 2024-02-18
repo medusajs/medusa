@@ -11,7 +11,7 @@ const registrationFn = async (klass, container, pluginOptions) => {
     container.register({
       [key]: asFunction((cradle) => new klass(cradle, config), {
         lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-      }).inject(() => ({ config })),
+      }),
     })
 
     container.registerAdd("payment_providers", asValue(key))
