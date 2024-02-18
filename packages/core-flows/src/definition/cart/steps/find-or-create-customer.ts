@@ -1,20 +1,20 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ICustomerModuleService } from "@medusajs/types"
+import { CustomerDTO, ICustomerModuleService } from "@medusajs/types"
 import { validateEmail } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-export interface StepInput {
+interface StepInput {
   customerId?: string
   email?: string
 }
 
-export interface StepOutput {
-  customer?: any
+interface StepOutput {
+  customer?: CustomerDTO
   email?: string
 }
 
 interface StepCompensateInput {
-  customer?: any
+  customer?: CustomerDTO
   customerWasCreated: boolean
 }
 
