@@ -18,6 +18,7 @@ const CreateProductSchema = zod.object({
   subtitle: zod.string().optional(),
   handle: zod.string().optional(),
   material: zod.string().optional(),
+  description: zod.string().optional(),
   discountable: zod.boolean(),
   sales_channels: zod.array(zod.string()).optional(),
   width: zod.string().optional(),
@@ -42,7 +43,10 @@ export const CreateProductForm = ({ subscribe }: CreateProductFormProps) => {
   const form = useForm<Schema>({
     defaultValues: {
       title: "",
+      subtitle: "",
       handle: "",
+      material: "",
+      description: "",
       discountable: true,
       height: "",
       length: "",
@@ -51,6 +55,8 @@ export const CreateProductForm = ({ subscribe }: CreateProductFormProps) => {
       origin_country: "",
       mid_code: "",
       hs_code: "",
+      sales_channels: [],
+      variants: [],
     },
     resolver: zodResolver(CreateProductSchema),
   })

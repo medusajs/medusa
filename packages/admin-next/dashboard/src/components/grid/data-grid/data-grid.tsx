@@ -15,7 +15,7 @@ import {
   useRef,
   useState,
 } from "react"
-import { DefaultValues, useForm } from "react-hook-form"
+import { DefaultValues, Path, useForm } from "react-hook-form"
 import { infer as Infer, ZodObject } from "zod"
 import { CellCoordinates } from "./types"
 
@@ -50,6 +50,7 @@ export const DataGrid = <TData, TSchema extends ZodObject<any, any, any>>({
     getCoreRowModel: getCoreRowModel(),
     meta: {
       register: form.register,
+      control: form.control,
     },
   })
 
@@ -229,13 +230,49 @@ export const DataGrid = <TData, TSchema extends ZodObject<any, any, any>>({
     setIsDragging(false)
   }, [])
 
+  const getDataFieldId = (cell: { row: number; column: number }) => {
+    const element = document.querySelector(
+      `[data-row-index="${cell.row}"][data-column-index="${cell.column}"]`
+    ) as HTMLTableCellElement
+
+    return element
+      ?.querySelector("[data-field-id]")
+      ?.getAttribute("data-field-id")
+  }
+
+  const handleCopy = useCallback(
+    (e: ClipboardEvent) => {
+      if (selection.length === 0) {
+        return
+      }
+
+      const selectedDataFieldIds = selection.flatMap(getDataFieldId)
+
+      const selectedValues = selectedDataFieldIds.map((dataFieldId) => {
+        return form.getValues(dataFieldId! as Path<Infer<typeof schema>>)
+      })
+
+      const formattedValues = selectedValues.reduce((acc, v, i) => {
+        return acc + (i > 0 ? "\n" : "") + JSON.stringify(v)
+      }, "")
+
+      console.log(formattedValues)
+
+      e.clipboardData?.setData("text/plain", formattedValues)
+      e.preventDefault()
+    },
+    [selection]
+  )
+
   useEffect(() => {
     document.addEventListener("mouseup", handleMouseUp)
+    document.addEventListener("copy", handleCopy)
 
     return () => {
       document.removeEventListener("mouseup", handleMouseUp)
+      document.removeEventListener("copy", handleCopy)
     }
-  }, [handleMouseUp])
+  }, [handleMouseUp, handleCopy])
 
   return (
     <Container className="overflow-hidden p-0">

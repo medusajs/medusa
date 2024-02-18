@@ -1,4 +1,4 @@
-import { Button, Checkbox, Heading, Input, Text } from "@medusajs/ui"
+import { Button, Checkbox, Heading, Input, Text, Textarea } from "@medusajs/ui"
 import { Trans, useTranslation } from "react-i18next"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
 
@@ -51,9 +51,7 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                       render={({ field }) => {
                         return (
                           <Form.Item>
-                            <Form.Label optional>
-                              {t("fields.title")}
-                            </Form.Label>
+                            <Form.Label>{t("fields.title")}</Form.Label>
                             <Form.Control>
                               <Input {...field} />
                             </Form.Control>
@@ -127,6 +125,28 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
                     }}
                   />
                 </div>
+                <Form.Field
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Label optional>
+                          {t("fields.description")}
+                        </Form.Label>
+                        <Form.Control>
+                          <Textarea {...field} />
+                        </Form.Control>
+                        <Form.Hint>
+                          <Trans
+                            i18nKey={"products.descriptionHint"}
+                            components={[<br key="break" />]}
+                          />
+                        </Form.Hint>
+                      </Form.Item>
+                    )
+                  }}
+                />
               </div>
               <div id="organize" className="flex flex-col gap-y-8">
                 <Heading level="h2">{t("products.organization")}</Heading>
@@ -227,7 +247,7 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
             <div className="bg-ui-fg-disabled group-focus-visible:bg-ui-fg-muted transition-fg h-6 w-[3px] rounded-full" />
           </PanelResizeHandle>
           <Panel defaultSize={50} maxSize={50} minSize={40}>
-            <AddSalesChannelsDrawer />
+            <AddSalesChannelsDrawer onCancel={() => onOpenChange(false)} />
           </Panel>
         </Fragment>
       )}
@@ -237,7 +257,7 @@ export const CreateProductDetails = ({ form }: CreateProductPropsProps) => {
 
 const PAGE_SIZE = 20
 
-const AddSalesChannelsDrawer = () => {
+const AddSalesChannelsDrawer = ({ onCancel }: { onCancel: () => void }) => {
   const { t } = useTranslation()
   const [selection, setSelection] = useState<RowSelectionState>({})
 
@@ -288,10 +308,15 @@ const AddSalesChannelsDrawer = () => {
         />
       </div>
       <div className="flex items-center justify-end gap-x-2 border-t px-6 py-4">
-        <Button size="small" variant="secondary">
+        <Button
+          size="small"
+          variant="secondary"
+          onClick={onCancel}
+          type="button"
+        >
           {t("actions.cancel")}
         </Button>
-        <Button size="small" onClick={() => {}}>
+        <Button size="small" onClick={() => {}} type="button">
           {t("actions.save")}
         </Button>
       </div>
