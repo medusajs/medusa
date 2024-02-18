@@ -13,6 +13,11 @@ export interface StepOutput {
   email?: string
 }
 
+interface StepCompensateInput {
+  customer?: any
+  customerWasCreated: boolean
+}
+
 export const findOrCreateCustomerStepId = "find-or-create-customer"
 export const findOrCreateCustomerStep = createStep(
   findOrCreateCustomerStepId,
@@ -22,13 +27,16 @@ export const findOrCreateCustomerStep = createStep(
     )
 
     const customerData: StepOutput = {}
+    let customerWasCreated = false
 
     if (data.customerId) {
       const customer = await service.retrieve(data.customerId)
       customerData.customer = customer
       customerData.email = customer.email
 
-      return new StepResponse(customerData)
+      return new StepResponse(customerData, {
+        customerWasCreated,
+      })
     }
 
     if (data.email) {
@@ -41,12 +49,29 @@ export const findOrCreateCustomerStep = createStep(
 
       if (!customer) {
         customer = await service.create({ email: validatedEmail })
+        customerWasCreated = true
       }
 
       customerData.customer = customer
       customerData.email = customer.email
     }
 
-    return new StepResponse(customerData)
+    return new StepResponse(customerData, {
+      customer: customerData.customer,
+      customerWasCreated,
+    })
+  },
+  async (compData, { container }) => {
+    const { customer, customerWasCreated } = compData as StepCompensateInput
+
+    if (!customerWasCreated || customer?.id) {
+      return
+    }
+
+    const service = container.resolve<ICustomerModuleService>(
+      ModuleRegistrationName.CUSTOMER
+    )
+
+    await service.delete(customer.id)
   }
 )
