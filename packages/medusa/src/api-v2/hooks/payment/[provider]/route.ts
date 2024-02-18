@@ -6,7 +6,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   try {
     const { provider } = req.params
 
-    const options = req.scope.resolve(ModuleRegistrationName.PAYMENT).options
+    const config = req.scope.resolve(ModuleRegistrationName.PAYMENT).config
 
     const event = {
       provider,
@@ -18,14 +18,10 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     // const validated = await paymentModuleService.validateWebhook(data)
 
     // we delay the processing of the event to avoid a conflict caused by a race condition
-    await eventBus.emit(
-      PaymentWebhookEvents.WebhookReceived,
-      event
-      //   {
-      //   delay: options.webhook_delay || 5000,
-      //   attempts: options.webhook_retries || 3,
-      // }
-    )
+    await eventBus.emit(PaymentWebhookEvents.WebhookReceived, event, {
+      delay: config.webhook_delay || 5000,
+      attempts: config.webhook_retries || 3,
+    })
   } catch (err) {
     res.status(400).send(`Webhook Error: ${err.message}`)
     return
