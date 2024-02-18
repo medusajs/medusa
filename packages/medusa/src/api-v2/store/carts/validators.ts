@@ -37,7 +37,6 @@ export class StorePostCartReq {
   @IsString()
   email?: string
 
-  // TODO: Remove in favor of using region currencies, as in the core
   @IsOptional()
   @IsString()
   currency_code?: string

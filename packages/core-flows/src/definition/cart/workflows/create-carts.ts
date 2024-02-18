@@ -20,6 +20,7 @@ export const createCartWorkflow = createWorkflow(
 
     const customerData = findOrCreateCustomerStep({
       customerId: input.customer_id,
+      email: input.email,
     })
 
     const cartInput = transform({ input, region, customerData }, (data) => {
@@ -37,7 +38,7 @@ export const createCartWorkflow = createWorkflow(
       return data_
     })
 
-    // TODO: add line items
+    // TODO: Add line items
 
     const cart = createCartsStep([cartInput])
 

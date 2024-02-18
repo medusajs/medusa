@@ -7,7 +7,8 @@ import { defaultStoreCartFields } from "../carts/query-config"
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const input = req.validatedBody as CreateCartDTO
 
-  if (req.user && req.user.customer_id) {
+  // If the customer is logged in, we auto-assign them to the cart
+  if (req?.user?.customer_id) {
     input.customer_id = req.user.customer_id
   }
 
@@ -22,7 +23,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
   const remoteQuery = req.scope.resolve("remoteQuery")
 
-  const variables = { id: result[0].id }
+  const variables = { id: result.id }
 
   const query = remoteQueryObjectFromString({
     entryPoint: "cart",

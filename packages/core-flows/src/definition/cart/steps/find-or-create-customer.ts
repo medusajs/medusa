@@ -64,7 +64,7 @@ export const findOrCreateCustomerStep = createStep(
   async (compData, { container }) => {
     const { customer, customerWasCreated } = compData as StepCompensateInput
 
-    if (!customerWasCreated || customer?.id) {
+    if (!customerWasCreated || !customer?.id) {
       return
     }
 
