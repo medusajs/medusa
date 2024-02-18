@@ -72,6 +72,7 @@ describe("Cart links", () => {
       currency_code: "usd",
       region_id: region.id,
       sales_channel_id: salesChannel.id,
+      customer_id: customer.id,
     })
 
     const carts = await remoteQuery({
