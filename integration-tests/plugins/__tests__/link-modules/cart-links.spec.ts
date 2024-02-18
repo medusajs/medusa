@@ -3,6 +3,7 @@ import {
   ICartModuleService,
   ICustomerModuleService,
   IRegionModuleService,
+  ISalesChannelModuleService,
 } from "@medusajs/types"
 import path from "path"
 import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
@@ -13,13 +14,14 @@ jest.setTimeout(50000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 
-describe("Cart Links", () => {
+describe("Cart links", () => {
   let dbConnection
   let appContainer
   let shutdownServer
   let cartModuleService: ICartModuleService
   let regionModule: IRegionModuleService
   let customerModule: ICustomerModuleService
+  let scModuleService: ISalesChannelModuleService
   let remoteQuery
 
   beforeAll(async () => {
@@ -30,6 +32,8 @@ describe("Cart Links", () => {
     cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
     regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
     customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
+    scModuleService = appContainer.resolve(ModuleRegistrationName.SALES_CHANNEL)
+    regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
     remoteQuery = appContainer.resolve("remoteQuery")
   })
 
@@ -49,7 +53,7 @@ describe("Cart Links", () => {
     await db.teardown()
   })
 
-  it("should query carts and regions with remote query", async () => {
+  it("should query carts, sales channels, customers, regions with remote query", async () => {
     const region = await regionModule.create({
       name: "Region",
       currency_code: "usd",
@@ -59,10 +63,15 @@ describe("Cart Links", () => {
       email: "tony@stark.com",
     })
 
+    const salesChannel = await scModuleService.create({
+      name: "Webshop",
+    })
+
     const cart = await cartModuleService.create({
+      email: "tony@stark.com",
       currency_code: "usd",
       region_id: region.id,
-      customer_id: customer.id,
+      sales_channel_id: salesChannel.id,
     })
 
     const carts = await remoteQuery({
@@ -74,11 +83,14 @@ describe("Cart Links", () => {
         customer: {
           fields: ["id"],
         },
+        sales_channel: {
+          fields: ["id"],
+        },
       },
     })
 
-    const regions = await remoteQuery({
-      region: {
+    const salesChannels = await remoteQuery({
+      sales_channel: {
         fields: ["id"],
         carts: {
           fields: ["id"],
@@ -95,20 +107,30 @@ describe("Cart Links", () => {
       },
     })
 
+    const regions = await remoteQuery({
+      region: {
+        fields: ["id"],
+        carts: {
+          fields: ["id"],
+        },
+      },
+    })
+
     expect(carts).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           id: cart.id,
-          region: expect.objectContaining({ id: region.id }),
           customer: expect.objectContaining({ id: customer.id }),
+          sales_channel: expect.objectContaining({ id: salesChannel.id }),
+          region: expect.objectContaining({ id: region.id }),
         }),
       ])
     )
 
-    expect(regions).toEqual(
+    expect(salesChannels).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          id: region.id,
+          id: salesChannel.id,
           carts: expect.arrayContaining([
             expect.objectContaining({ id: cart.id }),
           ]),
@@ -120,6 +142,17 @@ describe("Cart Links", () => {
       expect.arrayContaining([
         expect.objectContaining({
           id: customer.id,
+          carts: expect.arrayContaining([
+            expect.objectContaining({ id: cart.id }),
+          ]),
+        }),
+      ])
+    )
+
+    expect(regions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: region.id,
           carts: expect.arrayContaining([
             expect.objectContaining({ id: cart.id }),
           ]),

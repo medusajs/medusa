@@ -9,11 +9,7 @@ import {
   SalesChannelDTO,
   UpdateSalesChannelDTO,
 } from "@medusajs/types"
-import {
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-} from "@medusajs/utils"
+import { MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
 
 import { SalesChannel } from "@models"
 
@@ -61,7 +57,6 @@ export default class SalesChannelModuleService<
     sharedContext?: Context
   ): Promise<SalesChannelDTO>
 
-  @InjectTransactionManager("baseRepository_")
   async create(
     data: CreateSalesChannelDTO | CreateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -88,7 +83,6 @@ export default class SalesChannelModuleService<
     sharedContext?: Context
   ): Promise<SalesChannelDTO>
 
-  @InjectTransactionManager("baseRepository_")
   async update(
     data: UpdateSalesChannelDTO | UpdateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
