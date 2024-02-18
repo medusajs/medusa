@@ -1,13 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Product, ProductVariant } from "@medusajs/medusa"
+import { Button, Container } from "@medusajs/ui"
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 import { useAdminProducts } from "medusa-react"
 import { useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { Button, Container } from "@medusajs/ui"
-import { useTranslation } from "react-i18next"
 import { Thumbnail } from "../common/thumbnail"
 import { DataGrid } from "./data-grid"
 import { TextField } from "./grid-fields/common/text-field"
@@ -91,9 +91,6 @@ export const DataGridDemo = () => {
         getSubRows={getVariantRows}
       />
       <div className="flex items-center justify-end gap-x-2 border-t p-4">
-        <Button size="small" variant="secondary">
-          Reset
-        </Button>
         <Button size="small" onClick={handleSubmit}>
           Submit
         </Button>
@@ -108,7 +105,6 @@ const isProduct = (row: Product | ProductVariant): row is Product => {
 
 /**
  * A hidden input that can be rendered in cell that should not be editable in the current context.
- *
  */
 const DisabledInput = () => {
   return (

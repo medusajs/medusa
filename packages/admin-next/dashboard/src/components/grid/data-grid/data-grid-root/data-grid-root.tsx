@@ -15,7 +15,10 @@ import {
   useState,
 } from "react"
 import { FieldValues, Path, UseFormReturn } from "react-hook-form"
+
+import { useCommandHistory } from "../../../../hooks/use-command-history"
 import { CellCoordinates } from "../types"
+import { GridCommand } from "./grid-command"
 
 export interface DataGridRootProps<
   TData,
@@ -36,8 +39,9 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
   getSubRows,
 }: DataGridRootProps<TData, TFieldValues>) => {
   const tableContainerRef = useRef<HTMLDivElement>(null)
+  const { execute, undo, redo, canRedo, canUndo } = useCommandHistory()
 
-  const { register, control, getValues } = state
+  const { register, control, getValues, setValue } = state
 
   const grid = useReactTable({
     data: data,
@@ -226,15 +230,48 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
     setIsDragging(false)
   }, [])
 
-  const getDataFieldId = (cell: { row: number; column: number }) => {
-    const element = document.querySelector(
-      `[data-row-index="${cell.row}"][data-column-index="${cell.column}"]`
-    ) as HTMLTableCellElement
+  const getSelectionIds = useCallback((fields: CellCoordinates[]) => {
+    return fields
+      .map((field) => {
+        const element = document.querySelector(
+          `[data-row-index="${field.row}"][data-column-index="${field.column}"]`
+        ) as HTMLTableCellElement
 
-    return element
-      ?.querySelector("[data-field-id]")
-      ?.getAttribute("data-field-id")
-  }
+        return element
+          ?.querySelector("[data-field-id]")
+          ?.getAttribute("data-field-id")
+      })
+      .filter(Boolean) as string[]
+  }, [])
+
+  const getSelectionValues = useCallback(
+    (ids: string[]): string[] => {
+      const rawValues = ids.map((id) => {
+        return getValues(id as Path<TFieldValues>)
+      })
+
+      return rawValues.map((v) => JSON.stringify(v))
+    },
+    [getValues]
+  )
+
+  const setSelectionValues = useCallback(
+    (ids: string[], values: string[]) => {
+      ids.forEach((id, i) => {
+        const value = values[i]
+
+        if (!value) {
+          return
+        }
+
+        setValue(id as Path<TFieldValues>, JSON.parse(value), {
+          shouldDirty: true,
+          shouldTouch: true,
+        })
+      })
+    },
+    [setValue]
+  )
 
   const handleCopy = useCallback(
     (e: ClipboardEvent) => {
@@ -242,33 +279,81 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
         return
       }
 
-      const selectedDataFieldIds = selection.flatMap(getDataFieldId)
+      const fieldIds = getSelectionIds(selection)
+      const values = getSelectionValues(fieldIds)
 
-      const selectedValues = selectedDataFieldIds.map((dataFieldId) => {
-        return getValues(dataFieldId! as Path<TFieldValues>)
-      })
+      const clipboardData = values.join("\n")
 
-      const formattedValues = selectedValues.reduce((acc, v, i) => {
-        return acc + (i > 0 ? "\n" : "") + JSON.stringify(v)
-      }, "")
-
-      console.log(formattedValues)
-
-      e.clipboardData?.setData("text/plain", formattedValues)
+      e.clipboardData?.setData("text/plain", clipboardData)
       e.preventDefault()
     },
-    [selection, getValues]
+    [selection, getSelectionIds, getSelectionValues]
+  )
+
+  const handlePaste = useCallback(
+    (e: ClipboardEvent) => {
+      const data = e.clipboardData?.getData("text/plain")
+
+      if (!data) {
+        return
+      }
+
+      const fieldIds = getSelectionIds(selection)
+
+      const prev = getSelectionValues(fieldIds)
+      const next = data.split("\n")
+
+      const command = new GridCommand({
+        next,
+        prev,
+        selection: fieldIds,
+        setter: setSelectionValues,
+      })
+
+      execute(command)
+    },
+    [
+      selection,
+      execute,
+      getSelectionValues,
+      setSelectionValues,
+      getSelectionIds,
+    ]
+  )
+
+  const handleCommandHistory = useCallback(
+    (e: KeyboardEvent) => {
+      if (!canRedo && !canUndo) {
+        return
+      }
+
+      if (e.key === "z" && e.metaKey && !e.shiftKey) {
+        console.log(canUndo)
+        e.preventDefault()
+        undo()
+      }
+
+      if (e.key === "z" && e.metaKey && e.shiftKey) {
+        e.preventDefault()
+        redo()
+      }
+    },
+    [undo, redo, canRedo, canUndo]
   )
 
   useEffect(() => {
     document.addEventListener("mouseup", handleMouseUp)
     document.addEventListener("copy", handleCopy)
+    document.addEventListener("paste", handlePaste)
+    document.addEventListener("keydown", handleCommandHistory)
 
     return () => {
       document.removeEventListener("mouseup", handleMouseUp)
       document.removeEventListener("copy", handleCopy)
+      document.removeEventListener("paste", handlePaste)
+      document.removeEventListener("keydown", handleCommandHistory)
     }
-  }, [handleMouseUp, handleCopy])
+  }, [handleMouseUp, handleCopy, handlePaste, handleCommandHistory])
 
   return (
     <div className="overflow-hidden">
