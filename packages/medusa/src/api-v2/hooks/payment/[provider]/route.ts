@@ -16,8 +16,6 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
     const eventBus = req.scope.resolve("eventBusService")
 
-    // const validated = await paymentModuleService.validateWebhook(data)
-
     // we delay the processing of the event to avoid a conflict caused by a race condition
     await eventBus.emit(PaymentWebhookEvents.WebhookReceived, event, {
       delay: options.webhook_delay || 5000,
