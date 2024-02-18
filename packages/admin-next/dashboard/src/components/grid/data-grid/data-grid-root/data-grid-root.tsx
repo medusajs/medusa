@@ -16,9 +16,15 @@ import {
 } from "react"
 import { FieldValues, Path, UseFormReturn } from "react-hook-form"
 
-import { useCommandHistory } from "../../../../hooks/use-command-history"
-import { CellCoordinates } from "../types"
-import { GridCommand } from "./grid-command"
+import {
+  Command,
+  useCommandHistory,
+} from "../../../../hooks/use-command-history"
+
+type FieldCoordinates = {
+  column: number
+  row: number
+}
 
 export interface DataGridRootProps<
   TData,
@@ -69,8 +75,8 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
   })
 
   const [isDragging, setIsDragging] = useState(false)
-  const [anchor, setAnchor] = useState<CellCoordinates | null>(null)
-  const [selection, setSelection] = useState<CellCoordinates[]>([])
+  const [anchor, setAnchor] = useState<FieldCoordinates | null>(null)
+  const [selection, setSelection] = useState<FieldCoordinates[]>([])
 
   const handleMouseDown = (e: ReactMouseEvent<HTMLTableCellElement>) => {
     const target = e.target
@@ -91,7 +97,7 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
 
     setIsDragging(true)
 
-    const coordinates: CellCoordinates = {
+    const coordinates: FieldCoordinates = {
       row: rowIndex,
       column: columnIndex,
     }
@@ -183,7 +189,7 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
      * need to calculate all the valid cells between the
      * anchor and the current cell.
      */
-    const cells: CellCoordinates[] = []
+    const cells: FieldCoordinates[] = []
 
     function selectCell(i: number, columnIndex: number) {
       const possibleCell = document.querySelector(
@@ -230,7 +236,7 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
     setIsDragging(false)
   }, [])
 
-  const getSelectionIds = useCallback((fields: CellCoordinates[]) => {
+  const getSelectionIds = useCallback((fields: FieldCoordinates[]) => {
     return fields
       .map((field) => {
         const element = document.querySelector(
@@ -450,4 +456,39 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
       </div>
     </div>
   )
+}
+
+type GridCommandArgs = {
+  selection: string[]
+  setter: (selection: string[], values: string[]) => void
+  prev: string[]
+  next: string[]
+}
+
+class GridCommand implements Command {
+  private _selection: string[]
+
+  private _prev: string[]
+  private _next: string[]
+
+  private _setter: (selection: string[], values: string[]) => void
+
+  constructor({ selection, setter, prev, next }: GridCommandArgs) {
+    this._selection = selection
+    this._setter = setter
+    this._prev = prev
+    this._next = next
+  }
+
+  execute() {
+    this._setter(this._selection, this._next)
+  }
+
+  undo() {
+    this._setter(this._selection, this._prev)
+  }
+
+  redo() {
+    this.execute()
+  }
 }
