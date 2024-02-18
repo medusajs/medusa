@@ -31,10 +31,6 @@ export class StorePostCartReq {
 
   @IsOptional()
   @IsString()
-  customer_id?: string
-
-  @IsOptional()
-  @IsString()
   email?: string
 
   @IsOptional()
@@ -72,10 +68,6 @@ export class StorePostCartsCartReq {
   @IsOptional()
   @IsType([AddressPayload, String])
   shipping_address?: AddressPayload | string
-
-  @IsString()
-  @IsOptional()
-  customer_id?: string
 
   @IsEmail()
   @IsOptional()

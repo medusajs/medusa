@@ -1,6 +1,9 @@
-import { CreateLineItemDTO } from "./mutations"
+export interface CreateCartLineItemDTO {
+  variant_id: string
+  quantity: number
+}
 
-export class CreateCartAddressDTO {
+export interface CreateCartAddressDTO {
   first_name?: string
   last_name?: string
   phone?: string
@@ -26,5 +29,5 @@ export interface CreateCartWorkflowInputDTO {
   billing_address?: CreateCartAddressDTO | string
   metadata?: Record<string, unknown>
 
-  items?: CreateLineItemDTO[]
+  items?: CreateCartLineItemDTO[]
 }

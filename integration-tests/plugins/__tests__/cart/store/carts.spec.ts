@@ -15,6 +15,7 @@ import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import adminSeeder from "../../../../helpers/admin-seeder"
+import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
 jest.setTimeout(50000)
 
@@ -76,17 +77,13 @@ describe("Store Carts API", () => {
         name: "Webshop",
       })
 
-      const customer = await customerModule.create({
-        email: "tony@stark.com",
-      })
-
       const api = useApi() as any
 
       const created = await api.post(`/store/carts`, {
+        email: "tony@stark.com",
         currency_code: "usd",
         region_id: region.id,
         sales_channel_id: salesChannel.id,
-        customer_id: customer.id,
       })
 
       expect(created.status).toEqual(200)
@@ -101,7 +98,6 @@ describe("Store Carts API", () => {
           }),
           sales_channel_id: salesChannel.id,
           customer: expect.objectContaining({
-            id: customer.id,
             email: "tony@stark.com",
           }),
         })
@@ -180,6 +176,32 @@ describe("Store Carts API", () => {
       )
     })
 
+    it("should create cart with logged-in customer", async () => {
+      const { customer, jwt } = await createAuthenticatedCustomer(appContainer)
+
+      const api = useApi() as any
+      const response = await api.post(
+        `/store/carts`,
+        {},
+        {
+          headers: { authorization: `Bearer ${jwt}` },
+        }
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.cart).toEqual(
+        expect.objectContaining({
+          id: response.data.cart.id,
+          currency_code: "dkk",
+          email: customer.email,
+          customer: expect.objectContaining({
+            id: customer.id,
+            email: customer.email,
+          }),
+        })
+      )
+    })
+
     it("should throw when no regions exist", async () => {
       const api = useApi() as any
 
@@ -193,23 +215,26 @@ describe("Store Carts API", () => {
       ).rejects.toThrow()
     })
 
+    it("should respond 400 bad request on unknown props", async () => {
+      const api = useApi() as any
+
+      await expect(
+        api.post(`/store/carts`, {
+          foo: "bar",
+        })
+      ).rejects.toThrow()
+    })
+
     describe("compensation", () => {
       it("should delete created customer if cart-creation fails", async () => {
         expect.assertions(2)
         const workflow = createCartWorkflow(appContainer)
 
-        workflow.appendAction(
-          "throw",
-          findOrCreateCustomerStepId,
-          {
-            invoke: async function failStep() {
-              throw new Error(`Failed to create cart`)
-            },
+        workflow.appendAction("throw", findOrCreateCustomerStepId, {
+          invoke: async function failStep() {
+            throw new Error(`Failed to create cart`)
           },
-          {
-            noCompensation: true,
-          }
-        )
+        })
 
         const { errors } = await workflow.run({
           input: {
@@ -238,18 +263,11 @@ describe("Store Carts API", () => {
         expect.assertions(2)
         const workflow = createCartWorkflow(appContainer)
 
-        workflow.appendAction(
-          "throw",
-          findOrCreateCustomerStepId,
-          {
-            invoke: async function failStep() {
-              throw new Error(`Failed to create cart`)
-            },
+        workflow.appendAction("throw", findOrCreateCustomerStepId, {
+          invoke: async function failStep() {
+            throw new Error(`Failed to create cart`)
           },
-          {
-            noCompensation: true,
-          }
-        )
+        })
 
         const customer = await customerModule.create({
           email: "tony@stark-industries.com",
