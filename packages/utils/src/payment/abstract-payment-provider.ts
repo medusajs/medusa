@@ -45,8 +45,14 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
     protected readonly config: TConfig = {} as TConfig // eslint-disable-next-line @typescript-eslint/no-empty-function
   ) {}
 
+  /**
+   * @ignore
+   */
   static _isPaymentProvider = true
 
+  /**
+   * @ignore
+   */
   static isPaymentProvider(object): boolean {
     return object?.constructor?._isPaymentProvider
   }
