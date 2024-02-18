@@ -523,8 +523,10 @@ export default class PaymentModuleService<
     eventData: ProviderWebhookPayload,
     @MedusaContext() sharedContext?: Context
   ): Promise<void> {
+    const providerId = `pp_${eventData.provider}`
+
     const event = await this.paymentProviderService_.processEvent(
-      eventData.provider,
+      providerId,
       eventData.payload
     )
 
