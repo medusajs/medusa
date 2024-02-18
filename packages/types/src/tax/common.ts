@@ -47,3 +47,29 @@ export interface FilterableTaxRateProps
   updated_at?: OperatorMap<string>
   created_by?: string | string[] | OperatorMap<string>
 }
+
+export interface TaxRegionDTO {
+  id: string
+  country_code: string
+  province_code: string | null
+  parent_id: string | null
+  metadata: Record<string, unknown> | null
+  created_at: string | Date
+  updated_at: string | Date
+  created_by: string | null
+}
+
+export interface FilterableTaxRegionProps
+  extends BaseFilterable<FilterableTaxRegionProps> {
+  id?: string | string[]
+  country_code?: string | string[] | OperatorMap<string>
+  province_code?: string | string[] | OperatorMap<string>
+  parent_id?: string | string[] | OperatorMap<string>
+  metadata?:
+    | Record<string, unknown>
+    | Record<string, unknown>[]
+    | OperatorMap<Record<string, unknown>>
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  created_by?: string | string[] | OperatorMap<string>
+}
