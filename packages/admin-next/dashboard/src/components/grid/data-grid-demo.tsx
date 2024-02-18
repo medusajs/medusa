@@ -1,18 +1,27 @@
-import { Currency, Product, ProductVariant, Region } from "@medusajs/medusa"
-import { ColumnDef, Table, createColumnHelper } from "@tanstack/react-table"
-import { useAdminProducts, useAdminRegions, useAdminStore } from "medusa-react"
-import { useMemo } from "react"
-import { DefaultValues, UseFormRegister } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Product, ProductVariant } from "@medusajs/medusa"
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
+import { useAdminProducts } from "medusa-react"
+import { useEffect, useMemo } from "react"
+import { useForm } from "react-hook-form"
 import * as zod from "zod"
+
+import { Button, Container } from "@medusajs/ui"
+import { useTranslation } from "react-i18next"
 import { Thumbnail } from "../common/thumbnail"
 import { DataGrid } from "./data-grid"
+import { TextField } from "./grid-fields/common/text-field"
+import { DataGridMeta } from "./types"
 
 const ProductEditorSchema = zod.object({
   products: zod.record(
     zod.object({
       variants: zod.record(
         zod.object({
+          title: zod.string(),
           sku: zod.string(),
+          ean: zod.string().optional(),
+          upc: zod.string().optional(),
         })
       ),
     })
@@ -20,25 +29,7 @@ const ProductEditorSchema = zod.object({
 })
 
 type ProductEditorSchemaType = zod.infer<typeof ProductEditorSchema>
-type ProductObject = ProductEditorSchemaType["products"]
 type VariantObject = ProductEditorSchemaType["products"]["id"]["variants"]
-
-const productFormatter = (
-  data: (Product | ProductVariant)[]
-): DefaultValues<ProductEditorSchemaType> => {
-  return (data as Product[]).reduce((products, product) => {
-    products[product.id] = {
-      variants: product.variants.reduce((variants, variant) => {
-        variants[variant.id] = {
-          sku: variant.sku ?? "",
-        }
-        return variants
-      }, {} as VariantObject),
-    }
-
-    return products
-  }, {} as ProductObject)
-}
 
 const getVariantRows = (row: Product | ProductVariant) => {
   if ("variants" in row) {
@@ -49,6 +40,12 @@ const getVariantRows = (row: Product | ProductVariant) => {
 }
 
 export const DataGridDemo = () => {
+  const form = useForm<ProductEditorSchemaType>({
+    resolver: zodResolver(ProductEditorSchema),
+  })
+
+  const { setValue } = form
+
   const { products, isLoading } = useAdminProducts(
     {
       expand: "variants,variants.prices",
@@ -58,32 +55,51 @@ export const DataGridDemo = () => {
     }
   )
 
-  const { regions, isLoading: isLoadingRegions } = useAdminRegions({
-    limit: 9999,
-    fields: "id,name,currency_code",
+  useEffect(() => {
+    if (!isLoading && products) {
+      products.forEach((product) => {
+        setValue(`products.${product.id}.variants`, {
+          ...product.variants.reduce((variants, variant) => {
+            variants[variant.id!] = {
+              title: variant.title || "",
+              sku: variant.sku || "",
+              ean: variant.ean || "",
+              upc: variant.upc || "",
+            }
+            return variants
+          }, {} as VariantObject),
+        })
+      })
+    }
+  }, [products, isLoading, setValue])
+
+  const columns = useColumns()
+
+  const initializing = isLoading || !products
+
+  const handleSubmit = form.handleSubmit((data) => {
+    console.log("submitting", data)
   })
-  const { store, isLoading: isLoadingStore } = useAdminStore()
-
-  const columns = useColumns(regions, store?.currencies)
-
-  if (isLoading || !products) {
-    return <div>Loading...</div>
-  }
 
   return (
-    <DataGrid
-      data={products as Product[]}
-      columns={columns}
-      schema={ProductEditorSchema}
-      formatter={productFormatter}
-      getSubRows={getVariantRows}
-    />
+    <Container className="overflow-hidden p-0">
+      <DataGrid
+        isLoading={initializing}
+        data={products as Product[]}
+        columns={columns}
+        state={form}
+        getSubRows={getVariantRows}
+      />
+      <div className="flex items-center justify-end gap-x-2 border-t p-4">
+        <Button size="small" variant="secondary">
+          Reset
+        </Button>
+        <Button size="small" onClick={handleSubmit}>
+          Submit
+        </Button>
+      </div>
+    </Container>
   )
-}
-
-type Meta = {
-  updateData: (rowIndex: number, columnId: string, value: unknown) => void
-  register: UseFormRegister<any>
 }
 
 const isProduct = (row: Product | ProductVariant): row is Product => {
@@ -107,53 +123,15 @@ const DisabledInput = () => {
   )
 }
 
-const TextInput = <TData,>({
-  field,
-  table,
-}: {
-  table: Table<TData>
-  field: string
-}) => {
-  const { register } = table.options.meta as Meta
-
-  return (
-    <input
-      className="w-full"
-      data-input-field="true"
-      data-field-id={field}
-      {...register(field)}
-    />
-  )
-}
-
 const columnHelper = createColumnHelper<Product | ProductVariant>()
 
-const useColumns = (regions?: Region[], currencies?: Currency[]) => {
+const useColumns = () => {
+  const { t } = useTranslation()
+
   const colDefs: ColumnDef<Product | ProductVariant>[] = useMemo(() => {
-    if (!regions || !currencies) {
-      return []
-    }
-
-    const regionColumns = regions.map((region) => {
-      return columnHelper.display({
-        id: `region-${region.id}`,
-        header: () => region.name,
-        cell: ({ row }) => {
-          const entity = row.original
-
-          if (isProduct(entity)) {
-            return <DisabledInput />
-          }
-
-          const price = entity.prices.find((p) => p.region_id === region.id)
-          return price?.amount
-        },
-      })
-    })
-
     return [
       columnHelper.display({
-        id: "title",
+        id: t("fields.title"),
         header: "Title",
         cell: ({ row, table }) => {
           const entity = row.original
@@ -167,14 +145,16 @@ const useColumns = (regions?: Region[], currencies?: Currency[]) => {
             )
           }
 
-          const { title, sku } = entity
-          const display = [title, sku].filter(Boolean).join("  ·  ")
-
-          return display
+          return (
+            <TextField
+              meta={table.options.meta as DataGridMeta<ProductEditorSchemaType>}
+              field={`products.${entity.product_id}.variants.${entity.id}.title`}
+            />
+          )
         },
       }),
       columnHelper.accessor("sku", {
-        header: "SKU",
+        header: t("fields.sku"),
         cell: ({ row, table }) => {
           const entity = row.original
 
@@ -183,16 +163,49 @@ const useColumns = (regions?: Region[], currencies?: Currency[]) => {
           }
 
           return (
-            <TextInput
-              table={table}
+            <TextField
+              meta={table.options.meta as DataGridMeta<ProductEditorSchemaType>}
               field={`products.${entity.product_id}.variants.${entity.id}.sku`}
             />
           )
         },
       }),
-      ...regionColumns,
+      columnHelper.accessor("ean", {
+        header: "EAN",
+        cell: ({ row, table }) => {
+          const entity = row.original
+
+          if (isProduct(entity)) {
+            return <DisabledInput />
+          }
+
+          return (
+            <TextField
+              meta={table.options.meta as DataGridMeta<ProductEditorSchemaType>}
+              field={`products.${entity.product_id}.variants.${entity.id}.ean`}
+            />
+          )
+        },
+      }),
+      columnHelper.accessor("upc", {
+        header: "UPC",
+        cell: ({ row, table }) => {
+          const entity = row.original
+
+          if (isProduct(entity)) {
+            return <DisabledInput />
+          }
+
+          return (
+            <TextField
+              meta={table.options.meta as DataGridMeta<ProductEditorSchemaType>}
+              field={`products.${entity.product_id}.variants.${entity.id}.upc`}
+            />
+          )
+        },
+      }),
     ]
-  }, [regions, currencies])
+  }, [t])
 
   return colDefs
 }

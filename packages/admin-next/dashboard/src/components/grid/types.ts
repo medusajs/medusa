@@ -1,6 +1,6 @@
 import { Control, FieldValues, Path, UseFormRegister } from "react-hook-form"
 
-type DataGridMeta<TFieldValues extends FieldValues = any> = {
+export type DataGridMeta<TFieldValues extends FieldValues = any> = {
   register: UseFormRegister<TFieldValues>
   control: Control<TFieldValues>
 }
