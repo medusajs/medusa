@@ -1,7 +1,7 @@
 import { Octokit } from "octokit"
-import promiseExec from "../utils/promise-exec.js"
-import getMonorepoRoot from "../utils/get-monorepo-root.js"
-import filterFiles from "../utils/filter-files.js"
+import promiseExec from "../../utils/promise-exec.js"
+import getMonorepoRoot from "../../utils/get-monorepo-root.js"
+import filterFiles from "../../utils/filter-files.js"
 
 type Options = {
   owner?: string

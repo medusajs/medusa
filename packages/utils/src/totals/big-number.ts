@@ -1,4 +1,4 @@
-import { BigNumberRawPriceInput, BigNumberRawValue } from "@medusajs/types"
+import { BigNumberInput, BigNumberRawValue } from "@medusajs/types"
 import { BigNumber as BigNumberJS } from "bignumber.js"
 import { isBigNumber, isString } from "../common"
 
@@ -8,11 +8,11 @@ export class BigNumber {
   private numeric_: number
   private raw_?: BigNumberRawValue
 
-  constructor(rawPrice: BigNumberRawPriceInput) {
+  constructor(rawPrice: BigNumberInput) {
     this.setRawPriceOrThrow(rawPrice)
   }
 
-  setRawPriceOrThrow(rawPrice: BigNumberRawPriceInput) {
+  setRawPriceOrThrow(rawPrice: BigNumberInput) {
     if (BigNumberJS.isBigNumber(rawPrice)) {
       /**
        * Example:
@@ -67,7 +67,7 @@ export class BigNumber {
     }
   }
 
-  set numeric(value: BigNumberRawPriceInput) {
+  set numeric(value: BigNumberInput) {
     const newValue = new BigNumber(value)
     this.numeric_ = newValue.numeric_
     this.raw_ = newValue.raw_
@@ -77,7 +77,7 @@ export class BigNumber {
     return this.raw_
   }
 
-  set raw(rawValue: BigNumberRawPriceInput) {
+  set raw(rawValue: BigNumberInput) {
     const newValue = new BigNumber(rawValue)
     this.numeric_ = newValue.numeric_
     this.raw_ = newValue.raw_

@@ -37,15 +37,17 @@ module.exports = {
   },
   featureFlags: {
     medusa_v2: enableMedusaV2,
-    workflows: {
-      [Workflows.CreateCart]: true,
-    },
   },
   modules: {
     [Modules.AUTH]: {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/auth",
+    },
+    [Modules.USER]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/user",
     },
     [Modules.STOCK_LOCATION]: {
       scope: "internal",
@@ -91,6 +93,7 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/cart",
     },
+    [Modules.WORKFLOW_ENGINE]: true,
     [Modules.REGION]: {
       scope: "internal",
       resources: "shared",

@@ -5,20 +5,19 @@ import {
   GeoZoneType,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
-  Collection,
   Entity,
   Enum,
   Filter,
   Index,
-  ManyToMany,
+  ManyToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 import ServiceZone from "./service-zone"
 
 type GeoZoneOptionalProps = DAL.SoftDeletableEntityDateColumns
@@ -29,7 +28,7 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-})
+}).expression
 
 const countryCodeIndexName = "IDX_geo_zone_country_code"
 const countryCodeIndexStatement = createPsqlIndexStatementHelper({
@@ -37,7 +36,7 @@ const countryCodeIndexStatement = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "country_code",
   where: "deleted_at IS NULL",
-})
+}).expression
 
 const provinceCodeIndexName = "IDX_geo_zone_province_code"
 const provinceCodeIndexStatement = createPsqlIndexStatementHelper({
@@ -45,7 +44,7 @@ const provinceCodeIndexStatement = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "province_code",
   where: "deleted_at IS NULL AND province_code IS NOT NULL",
-})
+}).expression
 
 const cityIndexName = "IDX_geo_zone_city"
 const cityIndexStatement = createPsqlIndexStatementHelper({
@@ -53,7 +52,15 @@ const cityIndexStatement = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "city",
   where: "deleted_at IS NULL AND city IS NOT NULL",
-})
+}).expression
+
+const serviceZoneIdIndexName = "IDX_geo_zone_service_zone_id"
+const serviceZoneIdStatement = createPsqlIndexStatementHelper({
+  name: serviceZoneIdIndexName,
+  tableName: "geo_zone",
+  columns: "service_zone_id",
+  where: "deleted_at IS NULL",
+}).expression
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -87,6 +94,13 @@ export default class GeoZone {
   @Property({ columnType: "text", nullable: true })
   city: string | null = null
 
+  @Property({ columnType: "text" })
+  @Index({
+    name: serviceZoneIdIndexName,
+    expression: serviceZoneIdStatement,
+  })
+  service_zone_id: string
+
   // TODO: Do we have an example or idea of what would be stored in this field? like lat/long for example?
   @Property({ columnType: "jsonb", nullable: true })
   postal_expression: Record<string, unknown> | null = null
@@ -94,8 +108,10 @@ export default class GeoZone {
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @ManyToMany(() => ServiceZone, (serviceZone) => serviceZone.geo_zones)
-  service_zones = new Collection<ServiceZone>(this)
+  @ManyToOne(() => ServiceZone, {
+    persist: false,
+  })
+  service_zone: ServiceZone
 
   @Property({
     onCreate: () => new Date(),
@@ -122,10 +138,12 @@ export default class GeoZone {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, " fgz")
+    this.service_zone_id ??= this.service_zone?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "fgz")
+    this.service_zone_id ??= this.service_zone?.id
   }
 }
