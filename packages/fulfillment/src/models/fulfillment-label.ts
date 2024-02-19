@@ -9,7 +9,6 @@ import {
   BeforeCreate,
   Entity,
   Filter,
-  Index,
   ManyToOne,
   OnInit,
   OptionalProps,
@@ -20,21 +19,17 @@ import Fulfillment from "./fulfillment"
 
 type FulfillmentLabelOptionalProps = DAL.SoftDeletableEntityDateColumns
 
-const fulfillmentIdIndexName = "IDX_fulfillment_label_fulfillment_id"
-const fulfillmentIdIndexStatement = createPsqlIndexStatementHelper({
-  name: fulfillmentIdIndexName,
+const FulfillmentIdIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment_label",
   columns: "fulfillment_id",
   where: "deleted_at IS NULL",
-}).expression
+})
 
-const deletedAtIndexName = "IDX_fulfillment_label_deleted_at"
-const deletedAtIndexStatement = createPsqlIndexStatementHelper({
-  name: deletedAtIndexName,
+const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment_label",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-}).expression
+})
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -54,10 +49,7 @@ export default class FulfillmentLabel {
   label_url: string
 
   @Property({ columnType: "text" })
-  @Index({
-    name: fulfillmentIdIndexName,
-    expression: fulfillmentIdIndexStatement,
-  })
+  @FulfillmentIdIndex.MikroORMIndex()
   fulfillment_id: string
 
   @ManyToOne(() => Fulfillment)
@@ -79,10 +71,7 @@ export default class FulfillmentLabel {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  @Index({
-    name: deletedAtIndexName,
-    expression: deletedAtIndexStatement,
-  })
+  @DeletedAtIndex.MikroORMIndex()
   deleted_at: Date | null = null
 
   @BeforeCreate()

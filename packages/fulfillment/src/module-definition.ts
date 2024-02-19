@@ -34,7 +34,7 @@ const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
 })
 
 const service = FulfillmentModuleService
-const loaders = [containerLoader, connectionLoader] as any
+const loaders = [containerLoader, connectionLoader]
 
 export const moduleDefinition: ModuleExports = {
   service,

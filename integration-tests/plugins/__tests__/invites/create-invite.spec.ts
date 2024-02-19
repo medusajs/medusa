@@ -5,6 +5,7 @@ import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../environment-helpers/use-api"
 import adminSeeder from "../../../helpers/admin-seeder"
 import { AxiosInstance } from "axios"
+import { createAdminUser } from "../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -24,7 +25,7 @@ describe("POST /admin/invites", () => {
   })
 
   beforeEach(async () => {
-    await adminSeeder(dbConnection)
+    await createAdminUser(dbConnection, adminHeaders)
   })
 
   afterAll(async () => {

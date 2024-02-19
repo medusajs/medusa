@@ -4,4 +4,4 @@ export type InitializeModuleInjectableDependencies = {
   logger?: Logger
 }
 
-export * as ServiceTypes from "./services"
+export * from "./services"
