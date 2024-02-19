@@ -7,13 +7,16 @@ export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase
   medusaApp: MedusaAppOutput
   service: TService
+  dbConfig: {
+    schema: string
+    clientUrl: string
+  }
 }
 
 export function moduleIntegrationTestRunner({
   moduleName,
   moduleModels,
   joinerConfig = [],
-  describeName = moduleName,
   schema = "public",
   migrationPath,
   testSuite,
@@ -22,34 +25,29 @@ export function moduleIntegrationTestRunner({
   moduleModels?: any[]
   joinerConfig?: any[]
   migrationPath?: string
-  describeName?: string
   schema?: string
-  dbName: string
+  dbName?: string
   testSuite: <TService = unknown>(options: SuiteOptions<TService>) => () => void
 }) {
   moduleModels = Object.values(require(`${process.cwd()}/src/models`))
   migrationPath ??= process.cwd() + "/src/migrations/!(*.d).{js,ts,cjs}"
 
-  if (typeof process.env.DB_TEMP_NAME === "undefined") {
-    const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
-    process.env.DB_TEMP_NAME = `medusa-${moduleName.toLowerCase()}-integration-${tempName}`
-  }
-
-  const schemaEnvKey = `MEDUSA_${moduleName.toUpperCase()}_DB_SCHEMA`
-  process.env[schemaEnvKey] = schema
+  const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
+  const dbName = `medusa-${moduleName.toLowerCase()}-integration-${tempName}`
 
   const dbConfig = {
-    clientUrl: getDatabaseURL(),
+    clientUrl: getDatabaseURL(dbName),
     schema,
   }
 
-  // Use a unique connection for all the test suite
+  // Use a unique connection for all the entire suite
   const connection = ModulesSdkUtils.createPgConnection(dbConfig)
 
   const MikroOrmWrapper = getMikroOrmWrapper(
     moduleModels,
-    migrationPath || null,
-    schema
+    migrationPath,
+    dbConfig.clientUrl,
+    dbConfig.schema
   )
 
   const modulesConfig_ = {
@@ -74,7 +72,7 @@ export function moduleIntegrationTestRunner({
   }
 
   let shutdown: () => Promise<void>
-  let moduleService = {}
+  let moduleService
   let medusaApp: MedusaAppOutput = {} as MedusaAppOutput
 
   const options = {
