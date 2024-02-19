@@ -63,6 +63,48 @@ export function internalModuleServiceFactory<
       return keys.map((k) => data[k]).join("_")
     }
 
+    static applyDefaultOrdering(config: FindConfig<any>) {
+      if (config.order) {
+        return
+      }
+
+      const order: object[] = []
+
+      const primaryKeys = AbstractService_.retrievePrimaryKeys(model)
+      const mainEntityOrder = {}
+      primaryKeys.forEach((pk) => {
+        mainEntityOrder[pk] = "ASC"
+      })
+      order.push(mainEntityOrder)
+
+      if (config.relations?.length) {
+        config.relations.forEach((relation) => {
+          const relation_ = (
+            model.__meta ?? model.prototype.__meta
+          ).relations.find((r) => r.name === relation)
+          const relationPrimaryKeys = relation_.targetMeta.primaryKeys ?? ["id"]
+
+          // create order deep object based on relation segment
+          const relationOrder = {}
+          relation.split(".").reduce((acc, segment, index, segments) => {
+            if (index === segments.length - 1) {
+              acc[segment] = {}
+              relationPrimaryKeys.forEach((pk: string) => {
+                acc[segment][pk] = "ASC"
+              })
+              return acc[segment]
+            }
+            acc[segment] = {}
+            return acc[segment]
+          }, relationOrder)
+
+          order.push(relationOrder)
+        })
+      }
+
+      config.order = order as unknown as FindConfig<any>["order"]
+    }
+
     @InjectManager(propertyRepositoryName)
     async retrieve(
       idOrObject: string | object,
@@ -129,6 +171,7 @@ export function internalModuleServiceFactory<
       config: FindConfig<any> = {},
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity[]> {
+      AbstractService_.applyDefaultOrdering(config)
       const queryOptions = buildQuery(filters, config)
 
       return await this[propertyRepositoryName].find(
@@ -143,6 +186,7 @@ export function internalModuleServiceFactory<
       config: FindConfig<any> = {},
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[TEntity[], number]> {
+      AbstractService_.applyDefaultOrdering(config)
       const queryOptions = buildQuery(filters, config)
 
       return await this[propertyRepositoryName].findAndCount(

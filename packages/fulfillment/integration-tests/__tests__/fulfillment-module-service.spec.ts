@@ -44,12 +44,44 @@ moduleIntegrationTestRunner({
                     },
                   ],
                 },
+                {
+                  name: "test2",
+                  geo_zones: [
+                    {
+                      type: GeoZoneType.COUNTRY,
+                      country_code: "fr",
+                    },
+                  ],
+                },
+                {
+                  name: "_test",
+                  geo_zones: [
+                    {
+                      type: GeoZoneType.COUNTRY,
+                      country_code: "fr",
+                    },
+                  ],
+                },
               ],
             })
 
-            let listedSets = await service.list({
-              type: createdSet1.type,
-            })
+            let listedSets = await service.list(
+              {
+                type: createdSet1.type,
+              },
+              {
+                relations: ["service_zones"],
+              }
+            )
+
+            const listedSets2 = await service.list(
+              {
+                type: createdSet1.type,
+              },
+              {
+                relations: ["service_zones"],
+              }
+            )
 
             expect(listedSets).toEqual(
               expect.arrayContaining([
@@ -57,6 +89,15 @@ moduleIntegrationTestRunner({
                 expect.objectContaining({ id: createdSet2.id }),
               ])
             )
+
+            // Respecting order id by default
+            expect(listedSets[1].service_zones).toEqual([
+              expect.objectContaining({ name: "test" }),
+              expect.objectContaining({ name: "test2" }),
+              expect.objectContaining({ name: "_test" }),
+            ])
+
+            expect(listedSets2).toEqual(listedSets2)
 
             listedSets = await service.list({
               name: createdSet2.name,

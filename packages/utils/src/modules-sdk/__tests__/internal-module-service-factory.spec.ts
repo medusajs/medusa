@@ -3,7 +3,20 @@ import { lowerCaseFirst } from "../../common"
 
 const defaultContext = { __type: "MedusaContext" }
 
-class Model {}
+class Model {
+  static __meta = {
+    primaryKeys: ["id"],
+    relations: [
+      {
+        name: "relation",
+        targetMeta: {
+          primaryKey: ["id"],
+        },
+      },
+    ],
+  }
+}
+
 describe("Internal Module Service Factory", () => {
   const modelRepositoryName = `${lowerCaseFirst(Model.name)}Repository`
 
@@ -112,6 +125,41 @@ describe("Internal Module Service Factory", () => {
 
       const result = await instance.list()
       expect(result).toEqual(entities)
+    })
+
+    it("should list entities and relation with default ordering successfully", async () => {
+      const entities = [
+        { id: "1", name: "Item" },
+        { id: "2", name: "Item2" },
+      ]
+      containerMock[modelRepositoryName].find.mockResolvedValueOnce(entities)
+
+      const result = await instance.list(
+        {},
+        {
+          relations: ["relation"],
+        }
+      )
+
+      expect(result).toEqual(entities)
+      expect(containerMock[modelRepositoryName].find).toHaveBeenCalledWith(
+        expect.objectContaining({
+          options: expect.objectContaining({
+            populate: ["relation"],
+            orderBy: [
+              {
+                id: "ASC",
+              },
+              {
+                relation: {
+                  id: "ASC",
+                },
+              },
+            ],
+          }),
+        }),
+        expect.any(Object)
+      )
     })
 
     it("should list and count entities successfully", async () => {
