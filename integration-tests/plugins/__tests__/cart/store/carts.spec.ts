@@ -225,6 +225,21 @@ describe("Store Carts API", () => {
       ).rejects.toThrow()
     })
 
+    it("should throw if sales channel is disabled", async () => {
+      const api = useApi() as any
+
+      const salesChannel = await scModuleService.create({
+        name: "Webshop",
+        is_disabled: true,
+      })
+
+      await expect(
+        api.post(`/store/carts`, {
+          sales_channel_id: salesChannel.id,
+        })
+      ).rejects.toThrow()
+    })
+
     describe("compensation", () => {
       it("should delete created customer if cart-creation fails", async () => {
         expect.assertions(2)
