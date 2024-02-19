@@ -1,8 +1,6 @@
-import { ShippingProfileType } from "../common"
-
 export interface CreateShippingProfileDTO {
   name: string
-  type?: ShippingProfileType
+  type?: string
   metadata?: Record<string, unknown>
 }
 

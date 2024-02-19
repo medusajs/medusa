@@ -60,15 +60,6 @@ const ShippingOptionTypeIdIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NULL",
 })
 
-const nameIndexName = "IDX_shipping_option_name_unique"
-const NameIndex = createPsqlIndexStatementHelper({
-  name: nameIndexName,
-  tableName: "shipping_option",
-  columns: "name",
-  unique: true,
-  where: "deleted_at IS NULL",
-})
-
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingOption {
@@ -78,7 +69,6 @@ export default class ShippingOption {
   id: string
 
   @Property({ columnType: "text" })
-  @NameIndex.MikroORMIndex()
   name: string
 
   @Enum({

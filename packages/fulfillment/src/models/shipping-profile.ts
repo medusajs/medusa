@@ -2,7 +2,6 @@ import {
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
-  ShippingProfileType,
 } from "@medusajs/utils"
 
 import { DAL } from "@medusajs/types"
@@ -10,7 +9,6 @@ import {
   BeforeCreate,
   Collection,
   Entity,
-  Enum,
   Filter,
   OneToMany,
   OnInit,
@@ -47,11 +45,8 @@ export default class ShippingProfile {
   @ShippingProfileTypeIndex.MikroORMIndex()
   name: string
 
-  @Enum({
-    items: () => ShippingProfileType,
-    default: ShippingProfileType.DEFAULT,
-  })
-  type: ShippingProfileType = ShippingProfileType.DEFAULT
+  @Property({ columnType: "text" })
+  type: string
 
   @OneToMany(
     () => ShippingOption,

@@ -6,7 +6,6 @@ import * as Models from "@models"
 import * as ModuleModels from "@models"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import * as ModuleRepositories from "@repositories"
-import { createDefaultShippingProfilesLoader } from "./loaders/create-default-shipping-profiles"
 
 const migrationScriptOptions = {
   moduleName: Modules.FULFILLMENT,
@@ -35,11 +34,7 @@ const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
 })
 
 const service = FulfillmentModuleService
-const loaders = [
-  containerLoader,
-  connectionLoader,
-  createDefaultShippingProfilesLoader,
-]
+const loaders = [containerLoader, connectionLoader]
 
 export const moduleDefinition: ModuleExports = {
   service,

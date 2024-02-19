@@ -4,12 +4,10 @@ import {
 } from "./shipping-option"
 import { BaseFilterable, OperatorMap } from "../../dal"
 
-export type ShippingProfileType = "default" | "gift_card" | "custom"
-
 export interface ShippingProfileDTO {
   id: string
   name: string
-  type: ShippingProfileType
+  type: string
   metadata: Record<string, unknown> | null
   shipping_options: ShippingOptionDTO[]
   created_at: Date
@@ -21,9 +19,6 @@ export interface FilterableShippingProfileProps
   extends BaseFilterable<FilterableShippingProfileProps> {
   id?: string | string[] | OperatorMap<string | string[]>
   name?: string | string[] | OperatorMap<string | string[]>
-  type?:
-    | ShippingProfileType
-    | ShippingProfileType[]
-    | OperatorMap<ShippingProfileType | ShippingProfileType[]>
+  type?: string | string[] | OperatorMap<string | string[]>
   shipping_options?: FilterableShippingOptionProps
 }

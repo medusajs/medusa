@@ -732,11 +732,10 @@ moduleIntegrationTestRunner({
 
         describe("on create shipping options", () => {
           it("should create a new shipping option", async function () {
-            const [defaultShippingProfile] = await service.listShippingProfiles(
-              {
-                type: "default",
-              }
-            )
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
             const fulfillmentSet = await service.create({
               name: "test",
               type: "test-type",
@@ -756,7 +755,7 @@ moduleIntegrationTestRunner({
               name: "test-option",
               price_type: "flat",
               service_zone_id: serviceZone.id,
-              shipping_profile_id: defaultShippingProfile.id,
+              shipping_profile_id: shippingProfile.id,
               service_provider_id: providerId,
               type: {
                 code: "test-type",
@@ -808,11 +807,10 @@ moduleIntegrationTestRunner({
           })
 
           it("should create multiple new shipping options", async function () {
-            const [defaultShippingProfile] = await service.listShippingProfiles(
-              {
-                type: "default",
-              }
-            )
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
             const fulfillmentSet = await service.create({
               name: "test",
               type: "test-type",
@@ -833,7 +831,7 @@ moduleIntegrationTestRunner({
                 name: "test-option",
                 price_type: "flat",
                 service_zone_id: serviceZone.id,
-                shipping_profile_id: defaultShippingProfile.id,
+                shipping_profile_id: shippingProfile.id,
                 service_provider_id: providerId,
                 type: {
                   code: "test-type",
@@ -855,7 +853,7 @@ moduleIntegrationTestRunner({
                 name: "test-option-2",
                 price_type: "calculated",
                 service_zone_id: serviceZone.id,
-                shipping_profile_id: defaultShippingProfile.id,
+                shipping_profile_id: shippingProfile.id,
                 service_provider_id: providerId,
                 type: {
                   code: "test-type",
@@ -911,60 +909,6 @@ moduleIntegrationTestRunner({
               )
               ++i
             }
-          })
-
-          it("should fail on duplicated shipping option name", async function () {
-            const [defaultShippingProfile] = await service.listShippingProfiles(
-              {
-                type: "default",
-              }
-            )
-            const fulfillmentSet = await service.create({
-              name: "test",
-              type: "test-type",
-            })
-            const serviceZone = await service.createServiceZones({
-              name: "test",
-              fulfillment_set_id: fulfillmentSet.id,
-            })
-
-            // TODO: change that for a real provider instead of fake data manual inserted data
-            const [{ id: providerId }] =
-              await MikroOrmWrapper.forkManager().execute(
-                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
-              )
-
-            const createData: CreateShippingOptionDTO = {
-              name: "test-option",
-              price_type: "flat",
-              service_zone_id: serviceZone.id,
-              shipping_profile_id: defaultShippingProfile.id,
-              service_provider_id: providerId,
-              type: {
-                code: "test-type",
-                description: "test-description",
-                label: "test-label",
-              },
-              data: {
-                amount: 1000,
-              },
-              rules: [
-                {
-                  attribute: "test-attribute",
-                  operator: "in",
-                  value: "test-value",
-                },
-              ],
-            }
-
-            await service.createShippingOptions(createData)
-
-            const err = await service
-              .createShippingOptions(createData)
-              .catch((e) => e)
-
-            expect(err).toBeDefined()
-            expect(err.constraint).toBe("IDX_shipping_option_name_unique")
           })
         })
 
