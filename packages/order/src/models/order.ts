@@ -108,7 +108,6 @@ export default class Order {
     columnType: "integer",
     defaultRaw: "1",
   })
-  @OriginalOrderIdIndex.MikroORMIndex()
   version: number = 1
 
   @Property({

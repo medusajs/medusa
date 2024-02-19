@@ -23,9 +23,13 @@ import {
   LineItemAdjustment,
   LineItemTaxLine,
   Order,
+  OrderChange,
+  OrderChangeAction,
+  OrderDetail,
   ShippingMethod,
   ShippingMethodAdjustment,
   ShippingMethodTaxLine,
+  Transaction,
 } from "@models"
 import {
   CreateOrderLineItemDTO,
@@ -49,6 +53,9 @@ type InjectedDependencies = {
   lineItemTaxLineService: ModulesSdkTypes.InternalModuleService<any>
   shippingMethodTaxLineService: ModulesSdkTypes.InternalModuleService<any>
   transactionService: ModulesSdkTypes.InternalModuleService<any>
+  orderChangeService: ModulesSdkTypes.InternalModuleService<any>
+  orderChangeActionService: ModulesSdkTypes.InternalModuleService<any>
+  orderDetailService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 const generateMethodForModels = [
@@ -59,6 +66,10 @@ const generateMethodForModels = [
   ShippingMethod,
   ShippingMethodAdjustment,
   ShippingMethodTaxLine,
+  Transaction,
+  OrderChange,
+  OrderChangeAction,
+  OrderDetail,
 ]
 
 export default class OrderModuleService<
@@ -69,7 +80,11 @@ export default class OrderModuleService<
     TLineItemTaxLine extends LineItemTaxLine = LineItemTaxLine,
     TShippingMethodAdjustment extends ShippingMethodAdjustment = ShippingMethodAdjustment,
     TShippingMethodTaxLine extends ShippingMethodTaxLine = ShippingMethodTaxLine,
-    TShippingMethod extends ShippingMethod = ShippingMethod
+    TShippingMethod extends ShippingMethod = ShippingMethod,
+    TTransaction extends Transaction = Transaction,
+    TOrderChange extends OrderChange = OrderChange,
+    TOrderChangeAction extends OrderChangeAction = OrderChangeAction,
+    TOrderDetail extends OrderDetail = OrderDetail
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -84,8 +99,9 @@ export default class OrderModuleService<
         dto: OrderTypes.OrderShippingMethodAdjustmentDTO
       }
       ShippingMethodTaxLine: { dto: OrderTypes.OrderShippingMethodTaxLineDTO }
-
-      Transaction: { dto: OrderTypes.TransactionDTO }
+      Transaction: { dto: OrderTypes.OrderTransactionDTO }
+      Change: { dto: OrderTypes.OrderChangeDTO }
+      ChangeAction: { dto: OrderTypes.OrderChangeActionDTO }
     }
   >(Order, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IOrderModuleService
@@ -99,7 +115,10 @@ export default class OrderModuleService<
   protected lineItemAdjustmentService_: ModulesSdkTypes.InternalModuleService<TLineItemAdjustment>
   protected lineItemTaxLineService_: ModulesSdkTypes.InternalModuleService<TLineItemTaxLine>
   protected shippingMethodTaxLineService_: ModulesSdkTypes.InternalModuleService<TShippingMethodTaxLine>
-  protected transactionService_: ModulesSdkTypes.InternalModuleService<TShippingMethodTaxLine>
+  protected transactionService_: ModulesSdkTypes.InternalModuleService<TTransaction>
+  protected orderChangeService_: ModulesSdkTypes.InternalModuleService<TOrderChange>
+  protected orderChangeActionService_: ModulesSdkTypes.InternalModuleService<TOrderChangeAction>
+  protected orderDetailService_: ModulesSdkTypes.InternalModuleService<TOrderDetail>
 
   constructor(
     {
@@ -113,6 +132,9 @@ export default class OrderModuleService<
       shippingMethodTaxLineService,
       lineItemTaxLineService,
       transactionService,
+      orderChangeService,
+      orderChangeActionService,
+      orderDetailService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -129,6 +151,9 @@ export default class OrderModuleService<
     this.shippingMethodTaxLineService_ = shippingMethodTaxLineService
     this.lineItemTaxLineService_ = lineItemTaxLineService
     this.transactionService_ = transactionService
+    this.orderChangeService_ = orderChangeService
+    this.orderChangeActionService_ = orderChangeActionService
+    this.orderDetailService_ = orderDetailService
   }
 
   __joinerConfig(): ModuleJoinerConfig {

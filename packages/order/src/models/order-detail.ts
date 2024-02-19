@@ -12,7 +12,7 @@ import {
   ManyToOne,
   OnInit,
   OptionalProps,
-  PrimaryKeyType,
+  PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { ItemSummary } from "../types/common"
@@ -26,19 +26,25 @@ const IdIndex = createPsqlIndexStatementHelper({
   columns: "id",
 })
 
+const OrderItemVersionIndex = createPsqlIndexStatementHelper({
+  tableName: "order_detail",
+  columns: ["order_id", "item_id", "version"],
+  unique: true,
+})
+
 @Entity({ tableName: "order_detail" })
+@OrderItemVersionIndex.MikroORMIndex()
 export default class OrderDetail {
-  [PrimaryKeyType]: [string, string];
   [OptionalProps]?: OptionalLineItemProps
 
-  @Property({ columnType: "text" })
+  @PrimaryKey({ columnType: "text" })
   @IdIndex.MikroORMIndex()
   id: string
 
-  @Property({ columnType: "text", primary: true })
+  @Property({ columnType: "text" })
   order_id: string
 
-  @Property({ columnType: "interger" })
+  @Property({ columnType: "integer" })
   version: number
   @ManyToOne({
     entity: () => Order,
@@ -47,7 +53,7 @@ export default class OrderDetail {
   })
   order: Order
 
-  @Property({ columnType: "text", primary: true })
+  @Property({ columnType: "text" })
   item_id: string
 
   @ManyToOne({
