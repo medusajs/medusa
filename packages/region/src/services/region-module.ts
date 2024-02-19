@@ -136,7 +136,9 @@ export default class RegionModuleService<
     const dbCountriesMap = asMap(dbCountries, "iso_2")
     normalizedRequest = normalizedRequest.map((d) => ({
       ...d,
-      countries: (d.countries ?? []).map((c) => dbCountriesMap[c]),
+      ...(d.countries
+        ? { countries: d.countries.map((c) => dbCountriesMap[c]) }
+        : {}),
     }))
 
     // Create the regions and update the country region_id
@@ -204,11 +206,16 @@ export default class RegionModuleService<
         : {}),
     }))
 
-    // Bring the countries to a clean slate, before proceeding with the update
+    // If countries are being updated for a region, first make previously set countries' region to null to get to a clean slate.
     // Somewhat less efficient, but region operations will be very rare, so it is better to go with a simple solution
     await this.countryService_.update(
       {
-        selector: { region_id: normalizedRequest.map((d) => d.id).flat() },
+        selector: {
+          region_id: normalizedRequest
+            .filter((d) => d.countries !== undefined)
+            .map((d) => d.id)
+            .flat(),
+        },
         data: { region_id: null },
       },
       sharedContext
@@ -230,7 +237,9 @@ export default class RegionModuleService<
     const dbCountriesMap = asMap(dbCountries, "iso_2")
     normalizedRequest = normalizedRequest.map((d) => ({
       ...d,
-      countries: (d.countries ?? []).map((c) => dbCountriesMap[c]),
+      ...(d.countries
+        ? { countries: d.countries.map((c) => dbCountriesMap[c]) }
+        : {}),
     }))
 
     const result = await this.regionService_.update(
@@ -241,7 +250,7 @@ export default class RegionModuleService<
     return result
   }
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   private async validateCurrencies(
     currencyCodes: (string | undefined)[] | undefined,
     sharedContext: Context
@@ -277,7 +286,7 @@ export default class RegionModuleService<
     }
   }
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   private async validateCountries(
     countries: string[][] | undefined,
     sharedContext: Context

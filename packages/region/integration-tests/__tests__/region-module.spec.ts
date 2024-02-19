@@ -174,14 +174,11 @@ describe("Region Module Service", () => {
       countries: ["us", "ca"],
     })
 
-    await service.update(
-      { id: createdRegion.id },
-      {
-        name: "Americas",
-        currency_code: "MXN",
-        countries: ["us", "mx"],
-      }
-    )
+    await service.update(createdRegion.id, {
+      name: "Americas",
+      currency_code: "MXN",
+      countries: ["us", "mx"],
+    })
 
     const latestRegion = await service.retrieve(createdRegion.id, {
       relations: ["currency", "countries"],
@@ -195,6 +192,34 @@ describe("Region Module Service", () => {
 
     expect(latestRegion.countries.map((c) => c.iso_2).sort()).toEqual([
       "mx",
+      "us",
+    ])
+  })
+
+  it("should update the region without affecting countries if countries are undefined", async () => {
+    const createdRegion = await service.create({
+      name: "North America",
+      currency_code: "USD",
+      countries: ["us", "ca"],
+    })
+
+    await service.update(createdRegion.id, {
+      name: "Americas",
+      currency_code: "MXN",
+    })
+
+    const updatedRegion = await service.retrieve(createdRegion.id, {
+      relations: ["currency", "countries"],
+    })
+
+    expect(updatedRegion).toMatchObject({
+      id: createdRegion.id,
+      name: "Americas",
+      currency_code: "mxn",
+    })
+
+    expect(createdRegion.countries.map((c) => c.iso_2).sort()).toEqual([
+      "ca",
       "us",
     ])
   })
