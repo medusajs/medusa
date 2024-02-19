@@ -64,7 +64,7 @@ export default async ({
   // Therefore, throw if the database is not migrated
   if (!dataSource.migrations?.length) {
     await dataSource
-      .query(`select * from migrations`)
+      .query(`select * from ${schema}.migrations`)
       .catch(handlePostgresDatabaseError)
   }
 
