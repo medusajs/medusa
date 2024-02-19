@@ -535,7 +535,21 @@ export default class PaymentModuleService<
     }
 
     switch (event.action) {
+      // TODO: rename event
       case PaymentActions.CAPTURED: {
+        // WIP
+
+        await this.authorizePaymentSession(
+          event.data.resource_id as string,
+          {},
+          sharedContext
+        )
+
+        break
+      }
+      case PaymentActions.AUTHORIZED:
+        // WIP
+
         const [payment] = await this.listPayments({
           session_id: event.data.resource_id,
         })
@@ -546,14 +560,6 @@ export default class PaymentModuleService<
             sharedContext
           )
         }
-        break
-      }
-      case PaymentActions.AUTHORIZED:
-        await this.authorizePaymentSession(
-          event.data.resource_id as string,
-          {},
-          sharedContext
-        )
     }
   }
 
