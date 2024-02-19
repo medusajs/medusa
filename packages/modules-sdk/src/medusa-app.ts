@@ -293,16 +293,13 @@ async function MedusaApp_({
       allowUnregistered: true,
     })
 
-  const {
-    remoteLink,
-    linkResolution,
-    runMigrations: linkModuleMigration,
-  } = await initializeLinks({
-    config: linkModuleOptions,
-    linkModules,
-    injectedDependencies,
-    moduleExports: isMedusaModule(linkModule) ? linkModule : undefined,
-  })
+  const { remoteLink, runMigrations: linkModuleMigration } =
+    await initializeLinks({
+      config: linkModuleOptions,
+      linkModules,
+      injectedDependencies,
+      moduleExports: isMedusaModule(linkModule) ? linkModule : undefined,
+    })
 
   const loadedSchema = getLoadedSchema()
   const { schema, notFound } = cleanAndMergeSchema(loadedSchema)
