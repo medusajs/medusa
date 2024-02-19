@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Input, Text } from "@medusajs/ui"
-import { useAdminLogin } from "medusa-react"
+import { useAdminV2Login } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import { Link, useLocation, useNavigate } from "react-router-dom"
@@ -30,7 +30,7 @@ export const Login = () => {
     },
   })
 
-  const { mutateAsync, isLoading } = useAdminLogin({
+  const { mutateAsync, isLoading } = useAdminV2Login({
     retry: false,
   })
 

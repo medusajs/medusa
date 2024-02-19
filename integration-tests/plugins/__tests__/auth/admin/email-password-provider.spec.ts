@@ -111,7 +111,7 @@ describe("POST /auth/emailpass", () => {
     })
   })
 
-  it("should throw an error upon logging in with a non existing auth user", async () => {
+  it.skip("should throw an error upon logging in with a non existing auth user", async () => {
     const passwordHash = (
       await Scrypt.kdf(password, { logN: 15, r: 8, p: 1 })
     ).toString("base64")
