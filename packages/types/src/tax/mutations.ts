@@ -21,3 +21,18 @@ export interface CreateTaxRegionDTO {
     metadata?: Record<string, unknown>
   }
 }
+
+export interface CreateShippingTaxRateDTO {
+  shipping_option_id: string
+  tax_rate: Omit<CreateTaxRateDTO, "is_default">
+}
+
+export interface CreateProductTaxRateDTO {
+  product_id: string
+  tax_rate: Omit<CreateTaxRateDTO, "is_default">
+}
+
+export interface CreateProductTypeTaxRateDTO {
+  product_type_id: string
+  tax_rate: Omit<CreateTaxRateDTO, "is_default">
+}

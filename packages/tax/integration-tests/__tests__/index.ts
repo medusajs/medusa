@@ -92,4 +92,126 @@ describe("TaxModuleService", function () {
       ])
     )
   })
+
+  it("should create a shipping tax rate", async () => {
+    const [region] = await service.createTaxRegions([
+      {
+        country_code: "US",
+        default_tax_rate: {
+          name: "Test Rate",
+          rate: 0.2,
+        },
+      },
+    ])
+
+    await service.createShippingTaxRates([
+      {
+        shipping_option_id: "test",
+        tax_rate: {
+          tax_region_id: region.id,
+          name: "Shipping Rate",
+          rate: 8.23,
+        },
+      },
+    ])
+
+    const listedRates = await service.listShippingTaxRates(
+      {},
+      {
+        relations: ["tax_rate"],
+      }
+    )
+    expect(listedRates).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          shipping_option_id: "test",
+          tax_rate: expect.objectContaining({
+            tax_region_id: region.id,
+            name: "Shipping Rate",
+            rate: 8.23,
+          }),
+        }),
+      ])
+    )
+  })
+
+  it("should create a product tax rate", async () => {
+    const [region] = await service.createTaxRegions([
+      {
+        country_code: "US",
+        default_tax_rate: {
+          name: "Test Rate",
+          rate: 0.2,
+        },
+      },
+    ])
+
+    await service.createProductTaxRates([
+      {
+        product_id: "test",
+        tax_rate: {
+          tax_region_id: region.id,
+          name: "Product Rate",
+          rate: 8.23,
+        },
+      },
+    ])
+
+    const listedRates = await service.listProductTaxRates(
+      {},
+      { relations: ["tax_rate"] }
+    )
+    expect(listedRates).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          product_id: "test",
+          tax_rate: expect.objectContaining({
+            tax_region_id: region.id,
+            name: "Product Rate",
+            rate: 8.23,
+          }),
+        }),
+      ])
+    )
+  })
+
+  it("should create a product type tax rate", async () => {
+    const [region] = await service.createTaxRegions([
+      {
+        country_code: "US",
+        default_tax_rate: {
+          name: "Test Rate",
+          rate: 0.2,
+        },
+      },
+    ])
+
+    await service.createProductTypeTaxRates([
+      {
+        product_type_id: "test",
+        tax_rate: {
+          tax_region_id: region.id,
+          name: "Product Rate",
+          rate: 8.23,
+        },
+      },
+    ])
+
+    const listedRates = await service.listProductTypeTaxRates(
+      {},
+      { relations: ["tax_rate"] }
+    )
+    expect(listedRates).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          product_type_id: "test",
+          tax_rate: expect.objectContaining({
+            tax_region_id: region.id,
+            name: "Product Rate",
+            rate: 8.23,
+          }),
+        }),
+      ])
+    )
+  })
 })

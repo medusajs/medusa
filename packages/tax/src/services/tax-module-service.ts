@@ -21,6 +21,7 @@ import {
   ProductTypeTaxRate,
 } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { TaxRegionDTO } from "@medusajs/types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -48,7 +49,12 @@ export default class TaxModuleService<
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
     TaxTypes.TaxRateDTO,
-    { TaxRegion: { dto: TaxTypes.TaxRegionDTO } }
+    {
+      TaxRegion: { dto: TaxTypes.TaxRegionDTO }
+      ShippingTaxRate: { dto: TaxTypes.ShippingTaxRateDTO }
+      ProductTaxRate: { dto: TaxTypes.ProductTaxRateDTO }
+      ProductTypeTaxRate: { dto: TaxTypes.ProductTypeTaxRateDTO }
+    }
   >(TaxRate, generateForModels, entityNameToLinkableKeysMap)
   implements ITaxModuleService
 {
@@ -144,7 +150,7 @@ export default class TaxModuleService<
       sharedContext
     )
 
-    const rates = regions.map((region, i) => {
+    const rates = regions.map((region: TaxRegionDTO, i: number) => {
       return {
         ...defaultRates[i],
         tax_region_id: region.id,
@@ -159,5 +165,69 @@ export default class TaxModuleService<
         populate: true,
       }
     )
+  }
+
+  async createShippingTaxRates(
+    data: TaxTypes.CreateShippingTaxRateDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TaxTypes.ShippingTaxRateDTO[]> {
+    return await this.createTaxRule_<
+      TaxTypes.CreateShippingTaxRateDTO,
+      TaxTypes.ShippingTaxRateDTO
+    >("shipping_option_id", this.shippingTaxRateService_, data, sharedContext)
+  }
+
+  async createProductTaxRates(
+    data: TaxTypes.CreateProductTaxRateDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TaxTypes.ProductTaxRateDTO[]> {
+    return await this.createTaxRule_<
+      TaxTypes.CreateProductTaxRateDTO,
+      TaxTypes.ProductTaxRateDTO
+    >("product_id", this.productTaxRateService_, data, sharedContext)
+  }
+
+  async createProductTypeTaxRates(
+    data: TaxTypes.CreateProductTypeTaxRateDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TaxTypes.ProductTypeTaxRateDTO[]> {
+    return await this.createTaxRule_<
+      TaxTypes.CreateProductTypeTaxRateDTO,
+      TaxTypes.ProductTypeTaxRateDTO
+    >("product_type_id", this.productTypeTaxRateService_, data, sharedContext)
+  }
+
+  private async createTaxRule_<
+    T extends {
+      tax_rate: Omit<TaxTypes.CreateTaxRateDTO, "is_default">
+      [key: string]: any
+    },
+    K
+  >(
+    ruleKey: string,
+    service: ModulesSdkTypes.InternalModuleService<any>,
+    data: T[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const [ruleIds, rates] = data.reduce(
+      (acc, rate) => {
+        acc[0].push(rate[ruleKey])
+        acc[1].push(rate.tax_rate)
+        return acc
+      },
+      [[], []] as [string[], TaxTypes.CreateTaxRateDTO[]]
+    )
+
+    const taxRates = await this.create(rates, sharedContext)
+    const result = await service.create(
+      taxRates.map((rate, i) => {
+        return {
+          [ruleKey]: ruleIds[i],
+          tax_rate_id: rate.id,
+        }
+      }),
+      sharedContext
+    )
+    return await this.baseRepository_.serialize<K[]>(result, { populate: true })
   }
 }

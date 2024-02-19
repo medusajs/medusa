@@ -13,7 +13,7 @@ const TABLE_NAME = "product_type_tax_rate"
 const taxRateIdIndexName = "IDX_product_type_tax_rate_rate_id"
 
 @Entity({ tableName: TABLE_NAME })
-export default class ProductTaxRate {
+export default class ProductTypeTaxRate {
   @PrimaryKey({ columnType: "text" })
   tax_rate_id!: string
 
