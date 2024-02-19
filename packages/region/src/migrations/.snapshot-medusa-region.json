@@ -248,14 +248,6 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_region_country_region_id_iso_2_unique",
-          "columnNames": [],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_region_country_region_id_iso_2_unique\" ON \"region_country\" (region_id, iso_2)"
-        },
-        {
           "keyName": "region_country_pkey",
           "columnNames": [
             "id"

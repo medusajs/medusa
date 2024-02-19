@@ -190,10 +190,7 @@ describe("Region Module Service", () => {
       currency_code: "mxn",
     })
 
-    expect(latestRegion.countries.map((c) => c.iso_2).sort()).toEqual([
-      "mx",
-      "us",
-    ])
+    expect(latestRegion.countries.map((c) => c.iso_2)).toEqual(["mx", "us"])
   })
 
   it("should update the region without affecting countries if countries are undefined", async () => {
@@ -218,10 +215,7 @@ describe("Region Module Service", () => {
       currency_code: "mxn",
     })
 
-    expect(updatedRegion.countries.map((c) => c.iso_2).sort()).toEqual([
-      "ca",
-      "us",
-    ])
+    expect(updatedRegion.countries.map((c) => c.iso_2)).toEqual(["ca", "us"])
   })
 
   it("should remove the countries in a region successfully", async () => {

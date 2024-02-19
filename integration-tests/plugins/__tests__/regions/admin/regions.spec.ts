@@ -67,9 +67,9 @@ describe("Regions - Admin", () => {
         metadata: { foo: "bar" },
       })
     )
-    expect(created.data.region.countries.map((c) => c.iso_2).sort()).toEqual([
-      "ca",
+    expect(created.data.region.countries.map((c) => c.iso_2)).toEqual([
       "us",
+      "ca",
     ])
 
     const updated = await api.post(
@@ -92,9 +92,7 @@ describe("Regions - Admin", () => {
         metadata: { foo: "baz" },
       })
     )
-    expect(updated.data.region.countries.map((c) => c.iso_2).sort()).toEqual([
-      "us",
-    ])
+    expect(updated.data.region.countries.map((c) => c.iso_2)).toEqual(["us"])
 
     const deleted = await api.delete(
       `/admin/regions/${updated.data.region.id}`,
@@ -211,9 +209,9 @@ describe("Regions - Admin", () => {
         metadata: { foo: "bar" },
       }),
     ])
-    expect(
-      response.data.regions[0].countries.map((c) => c.iso_2).sort()
-    ).toEqual(["jp"])
+    expect(response.data.regions[0].countries.map((c) => c.iso_2)).toEqual([
+      "jp",
+    ])
   })
 
   it("should get a region", async () => {
@@ -238,8 +236,6 @@ describe("Regions - Admin", () => {
         metadata: { foo: "bar" },
       })
     )
-    expect(response.data.region.countries.map((c) => c.iso_2).sort()).toEqual([
-      "jp",
-    ])
+    expect(response.data.region.countries.map((c) => c.iso_2)).toEqual(["jp"])
   })
 })
