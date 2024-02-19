@@ -9,7 +9,7 @@ import {
   FilterableShippingOptionRuleProps,
   ShippingOptionRuleDTO,
 } from "./shipping-option-rule"
-import { BaseFilterable } from "../../dal"
+import { BaseFilterable, OperatorMap } from "../../dal"
 
 export type ShippingOptionPriceType = "calculated" | "flat"
 
@@ -35,9 +35,12 @@ export interface ShippingOptionDTO {
 
 export interface FilterableShippingOptionProps
   extends BaseFilterable<FilterableShippingOptionProps> {
-  id?: string | string[]
-  name?: string | string[]
-  price_type?: ShippingOptionPriceType | ShippingOptionPriceType[]
+  id?: string | string[] | OperatorMap<string | string[]>
+  name?: string | string[] | OperatorMap<string | string[]>
+  price_type?:
+    | ShippingOptionPriceType
+    | ShippingOptionPriceType[]
+    | OperatorMap<ShippingOptionPriceType | ShippingOptionPriceType[]>
   service_zone?: FilterableServiceZoneProps
   shipping_option_type?: FilterableShippingOptionTypeProps
   rules?: FilterableShippingOptionRuleProps

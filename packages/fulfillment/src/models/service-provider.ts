@@ -10,7 +10,6 @@ import {
   Collection,
   Entity,
   Filter,
-  Index,
   OneToMany,
   OnInit,
   OptionalProps,
@@ -21,13 +20,11 @@ import ShippingOption from "./shipping-option"
 
 type ServiceProviderOptionalProps = DAL.SoftDeletableEntityDateColumns
 
-const deletedAtIndexName = "IDX_service_provider_deleted_at"
-const deletedAtIndexStatement = createPsqlIndexStatementHelper({
-  name: deletedAtIndexName,
+const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "service_provider",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-}).expression
+})
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -61,10 +58,7 @@ export default class ServiceProvider {
   })
   updated_at: Date
 
-  @Index({
-    name: deletedAtIndexName,
-    expression: deletedAtIndexStatement,
-  })
+  @DeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
