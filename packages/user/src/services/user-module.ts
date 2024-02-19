@@ -59,7 +59,9 @@ export default class UserModuleService<
 
     this.baseRepository_ = baseRepository
     this.userService_ = userService
-    this.inviteService_ = inviteService
+    this.inviteService_ = inviteService.withModuleOptions(
+      this.moduleDeclaration
+    )
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -67,9 +69,7 @@ export default class UserModuleService<
     token: string,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.InviteDTO> {
-    return await this.inviteService_
-      .withModuleOptions(this.moduleDeclaration)
-      .validateInviteToken(token, sharedContext)
+    return await this.inviteService_.validateInviteToken(token, sharedContext)
   }
 
   create(
@@ -166,9 +166,7 @@ export default class UserModuleService<
       }
     })
 
-    return await this.inviteService_
-      .withModuleOptions(this.moduleDeclaration)
-      .create(toCreate)
+    return await this.inviteService_.create(toCreate)
   }
 
   updateInvites(
