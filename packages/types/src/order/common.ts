@@ -721,6 +721,10 @@ export interface OrderTransactionDTO {
    */
   reference: string
   /**
+   * The ID of the reference
+   */
+  reference_id: string
+  /**
    * The metadata of the transaction
    */
   metadata: Record<string, unknown> | null
@@ -805,4 +809,32 @@ export interface FilterableOrderShippingMethodTaxLineProps
   provider_id?: string | string[]
   shipping_method_id?: string | string[]
   shipping_method?: FilterableOrderShippingMethodProps
+}
+
+export interface FilterableOrderChangeProps
+  extends BaseFilterable<FilterableOrderChangeProps> {
+  id?: string | string[]
+  order_id?: string | string[]
+  status?: string | string[]
+  requested_by?: string | string[]
+  confirmed_by?: string | string[]
+  declined_by?: string | string[]
+  canceled_by?: string | string[]
+}
+
+export interface FilterableOrderChangeActionProps
+  extends BaseFilterable<FilterableOrderChangeActionProps> {
+  id?: string | string[]
+  order_change_id?: string | string[]
+  reference?: string | string[]
+  reference_id?: string | string[]
+}
+
+export interface FilterableOrderTransactionProps
+  extends BaseFilterable<FilterableOrderTransactionProps> {
+  id?: string | string[]
+  order_id?: string | string[]
+  currency_code?: string | string[]
+  reference?: string | string[]
+  reference_id?: string | string[]
 }

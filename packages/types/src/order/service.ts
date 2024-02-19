@@ -1,8 +1,11 @@
 import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   FilterableOrderAddressProps,
+  FilterableOrderChangeActionProps,
+  FilterableOrderChangeProps,
   FilterableOrderLineItemAdjustmentProps,
   FilterableOrderLineItemProps,
   FilterableOrderLineItemTaxLineProps,
@@ -10,7 +13,10 @@ import {
   FilterableOrderShippingMethodAdjustmentProps,
   FilterableOrderShippingMethodProps,
   FilterableOrderShippingMethodTaxLineProps,
+  FilterableOrderTransactionProps,
   OrderAddressDTO,
+  OrderChangeActionDTO,
+  OrderChangeDTO,
   OrderDTO,
   OrderLineItemAdjustmentDTO,
   OrderLineItemDTO,
@@ -18,10 +24,13 @@ import {
   OrderShippingMethodAdjustmentDTO,
   OrderShippingMethodDTO,
   OrderShippingMethodTaxLineDTO,
+  OrderTransactionDTO,
 } from "./common"
 import {
   CreateOrderAddressDTO,
   CreateOrderAdjustmentDTO,
+  CreateOrderChangeActionDTO,
+  CreateOrderChangeDTO,
   CreateOrderDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemForOrderDTO,
@@ -30,13 +39,17 @@ import {
   CreateOrderShippingMethodDTO,
   CreateOrderShippingMethodForSingleOrderDTO,
   CreateOrderShippingMethodTaxLineDTO,
+  CreateOrderTransactionDTO,
   UpdateOrderAddressDTO,
+  UpdateOrderChangeActionDTO,
+  UpdateOrderChangeDTO,
   UpdateOrderDTO,
   UpdateOrderLineItemDTO,
   UpdateOrderLineItemTaxLineDTO,
   UpdateOrderLineItemWithSelectorDTO,
   UpdateOrderShippingMethodAdjustmentDTO,
   UpdateOrderShippingMethodTaxLineDTO,
+  UpdateOrderTransactionDTO,
   UpsertOrderLineItemAdjustmentDTO,
 } from "./mutations"
 
@@ -325,4 +338,129 @@ export interface IOrderModuleService extends IModuleService {
     selector: FilterableOrderShippingMethodTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
+
+  retrieveOrderChange(
+    id: string,
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO>
+
+  listOrderChanges(
+    filters: FilterableOrderChangeProps,
+    config?: FindConfig<OrderChangeDTO>,
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO[]>
+
+  createOrderChange(
+    data: CreateOrderChangeDTO,
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO>
+  createOrderChange(
+    data: CreateOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO[]>
+
+  updateOrderChange(
+    data: UpdateOrderChangeDTO,
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO>
+  updateOrderChange(
+    data: UpdateOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO[]>
+
+  softDeleteOrderChange<TReturnableLinkableKeys extends string = string>(
+    serviceZoneIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreOrderChange<TReturnableLinkableKeys extends string = string>(
+    fulfillmentIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  retrieveOrderChangeAction(
+    id: string,
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO>
+
+  listOrderChangeActions(
+    filters: FilterableOrderChangeActionProps,
+    config?: FindConfig<OrderChangeActionDTO>,
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO[]>
+
+  createOrderChangeAction(
+    data: CreateOrderChangeActionDTO,
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO>
+  createOrderChangeAction(
+    data: CreateOrderChangeActionDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO[]>
+
+  updateOrderChangeAction(
+    data: UpdateOrderChangeActionDTO,
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO>
+  updateOrderChangeAction(
+    data: UpdateOrderChangeActionDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO[]>
+
+  softDeleteOrderChangeAction<TReturnableLinkableKeys extends string = string>(
+    serviceZoneIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreOrderChangeAction<TReturnableLinkableKeys extends string = string>(
+    fulfillmentIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  retrieveOrderTransaction(
+    id: string,
+    sharedContext?: Context
+  ): Promise<OrderTransactionDTO>
+
+  listOrderTransactions(
+    filters: FilterableOrderTransactionProps,
+    config?: FindConfig<OrderTransactionDTO>,
+    sharedContext?: Context
+  ): Promise<OrderTransactionDTO[]>
+
+  createOrderTransaction(
+    orderTransaction: CreateOrderTransactionDTO,
+    sharedContext?: Context
+  ): Promise<OrderTransactionDTO>
+  createOrderTransaction(
+    orderTransaction: CreateOrderTransactionDTO[],
+    sharedContext?: Context
+  ): Promise<OrderTransactionDTO[]>
+
+  updateOrderTransaction(
+    id: string,
+    orderTransaction: UpdateOrderTransactionDTO,
+    sharedContext?: Context
+  ): Promise<OrderTransactionDTO>
+  updateOrderTransaction(
+    id: string,
+    orderTransaction: UpdateOrderTransactionDTO[],
+    sharedContext?: Context
+  ): Promise<OrderTransactionDTO[]>
+
+  softDeleteTransaction<TReturnableLinkableKeys extends string = string>(
+    serviceZoneIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreTransaction<TReturnableLinkableKeys extends string = string>(
+    fulfillmentIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }
