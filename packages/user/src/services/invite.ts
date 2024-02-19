@@ -67,12 +67,15 @@ export default class InviteService<
 
     const invites = await super.create(data_, context)
 
+    const expiresIn: number =
+      parseInt(this.getOption("valid_duration")) ||
+      DEFAULT_VALID_INVITE_DURATION
+
     const updates = invites.map((invite) => {
       return {
         id: invite.id,
         expires_at: new Date().setMilliseconds(
-          new Date().getMilliseconds() + this.options_?.valid_duration ||
-            DEFAULT_VALID_INVITE_DURATION
+          new Date().getMilliseconds() + expiresIn
         ),
         token: this.generateToken({ id: invite.id }),
       }
