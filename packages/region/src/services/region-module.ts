@@ -115,18 +115,15 @@ export default class RegionModuleService<
     data: CreateRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Region[]> {
-    let normalizedRequest = data.map((d) => ({
-      ...d,
-      currency_code: d.currency_code.toLowerCase(),
-    }))
+    let normalizedInput = this.normalizeInput(data)
 
     const validations = [
       this.validateCurrencies(
-        normalizedRequest.map((d) => d.currency_code),
+        normalizedInput.map((r) => r.currency_code),
         sharedContext
       ),
       this.validateCountries(
-        normalizedRequest.map((d) => d.countries ?? []),
+        normalizedInput.map((r) => r.countries ?? []).flat(),
         sharedContext
       ),
     ] as const
@@ -134,15 +131,15 @@ export default class RegionModuleService<
     // Assign the full country object so the ORM updates the relationship
     const [, dbCountries] = await Promise.all(validations)
     const dbCountriesMap = asMap(dbCountries, "iso_2")
-    normalizedRequest = normalizedRequest.map((d) => ({
-      ...d,
-      ...(d.countries
-        ? { countries: d.countries.map((c) => dbCountriesMap[c]) }
-        : {}),
-    }))
+    let normalizedDbRegions = normalizedInput.map((region) =>
+      removeUndefined({
+        ...region,
+        countries: region.countries?.map((c) => dbCountriesMap[c]),
+      })
+    )
 
     // Create the regions and update the country region_id
-    return await this.regionService_.create(normalizedRequest, sharedContext)
+    return await this.regionService_.create(normalizedDbRegions, sharedContext)
   }
 
   async update(
@@ -162,11 +159,20 @@ export default class RegionModuleService<
     data?: UpdatableRegionFields,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<RegionDTO | RegionDTO[]> {
-    const result = await this.update_(idOrSelectorOrData, data, sharedContext)
+    const updateResult = await this.update_(
+      idOrSelectorOrData,
+      data,
+      sharedContext
+    )
+    const resultWithRelations = await this.regionService_.list(
+      { id: updateResult.map((r) => r.id) },
+      { relations: ["currency", "countries"] },
+      sharedContext
+    )
 
     const regions = await this.baseRepository_.serialize<
       RegionDTO[] | RegionDTO
-    >(result)
+    >(resultWithRelations)
 
     return isString(idOrSelectorOrData) ? regions[0] : regions
   }
@@ -177,13 +183,13 @@ export default class RegionModuleService<
     data?: UpdatableRegionFields,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Region[]> {
-    let normalizedRequest: UpdateRegionDTO[] = []
+    let normalizedInput: UpdateRegionDTO[] = []
     if (isString(idOrSelectorOrData)) {
-      normalizedRequest = [{ id: idOrSelectorOrData, ...data }]
+      normalizedInput = [{ id: idOrSelectorOrData, ...data }]
     }
 
     if (Array.isArray(idOrSelectorOrData)) {
-      normalizedRequest = idOrSelectorOrData
+      normalizedInput = idOrSelectorOrData
     }
 
     if (isObject(idOrSelectorOrData)) {
@@ -193,27 +199,21 @@ export default class RegionModuleService<
         sharedContext
       )
 
-      normalizedRequest = regions.map((region) => ({
+      normalizedInput = regions.map((region) => ({
         id: region.id,
         ...data,
       }))
     }
-
-    normalizedRequest = normalizedRequest.map((d) => ({
-      ...d,
-      ...(d.currency_code
-        ? { currency_code: d.currency_code.toLowerCase() }
-        : {}),
-    }))
+    normalizedInput = this.normalizeInput(normalizedInput)
 
     // If countries are being updated for a region, first make previously set countries' region to null to get to a clean slate.
     // Somewhat less efficient, but region operations will be very rare, so it is better to go with a simple solution
     await this.countryService_.update(
       {
         selector: {
-          region_id: normalizedRequest
-            .filter((d) => d.countries !== undefined)
-            .map((d) => d.id)
+          region_id: normalizedInput
+            .filter((region) => !!region.countries)
+            .map((region) => region.id)
             .flat(),
         },
         data: { region_id: null },
@@ -223,11 +223,11 @@ export default class RegionModuleService<
 
     const validations = [
       this.validateCurrencies(
-        normalizedRequest.map((d) => d.currency_code),
+        normalizedInput.map((d) => d.currency_code),
         sharedContext
       ),
       this.validateCountries(
-        normalizedRequest.map((d) => d.countries ?? []),
+        normalizedInput.map((d) => d.countries ?? []).flat(),
         sharedContext
       ),
     ] as const
@@ -235,19 +235,25 @@ export default class RegionModuleService<
     // Assign the full country object so the ORM updates the relationship
     const [, dbCountries] = await Promise.all(validations)
     const dbCountriesMap = asMap(dbCountries, "iso_2")
-    normalizedRequest = normalizedRequest.map((d) => ({
-      ...d,
-      ...(d.countries
-        ? { countries: d.countries.map((c) => dbCountriesMap[c]) }
-        : {}),
-    }))
-
-    const result = await this.regionService_.update(
-      normalizedRequest,
-      sharedContext
+    let normalizedDbRegions = normalizedInput.map((region) =>
+      removeUndefined({
+        ...region,
+        countries: region.countries?.map((c) => dbCountriesMap[c]),
+      })
     )
 
-    return result
+    return await this.regionService_.update(normalizedDbRegions, sharedContext)
+  }
+
+  private normalizeInput<T extends UpdatableRegionFields>(regions: T[]): T[] {
+    return regions.map((region) =>
+      removeUndefined({
+        ...region,
+        currency_code: region.currency_code?.toLowerCase(),
+        name: region.name?.trim(),
+        countries: region.countries?.map((country) => country.toLowerCase()),
+      })
+    )
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -288,20 +294,19 @@ export default class RegionModuleService<
 
   @InjectTransactionManager("baseRepository_")
   private async validateCountries(
-    countries: string[][] | undefined,
+    countries: string[] | undefined,
     sharedContext: Context
   ): Promise<TCountry[]> {
-    const flatCountries = countries?.flat()
-    if (!flatCountries || !flatCountries.length) {
+    if (!countries || !countries.length) {
       return []
     }
 
     // The new regions being created have a country conflict
-    const uniqueCountries = Array.from(new Set(flatCountries))
-    if (uniqueCountries.length !== flatCountries.length) {
+    const uniqueCountries = Array.from(new Set(countries))
+    if (uniqueCountries.length !== countries.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Countries with codes: "${getDuplicateEntries(flatCountries).join(
+        `Countries with codes: "${getDuplicateEntries(countries).join(
           ", "
         )}" are already assigned to a region`
       )
@@ -409,6 +414,13 @@ export default class RegionModuleService<
       await this.currencyService_.create(currsToCreate, sharedContext)
     }
   }
+}
+
+// microORM complains if undefined fields are present in the passed data object
+const removeUndefined = <T extends Record<string, any>>(obj: T): T => {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, v]) => v !== undefined)
+  ) as T
 }
 
 const asMap = <T extends Record<string, any>>(

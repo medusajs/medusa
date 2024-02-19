@@ -218,10 +218,36 @@ describe("Region Module Service", () => {
       currency_code: "mxn",
     })
 
-    expect(createdRegion.countries.map((c) => c.iso_2).sort()).toEqual([
+    expect(updatedRegion.countries.map((c) => c.iso_2).sort()).toEqual([
       "ca",
       "us",
     ])
+  })
+
+  it("should remove the countries in a region successfully", async () => {
+    const createdRegion = await service.create({
+      name: "North America",
+      currency_code: "USD",
+      countries: ["us", "ca"],
+    })
+
+    await service.update(createdRegion.id, {
+      name: "Americas",
+      currency_code: "MXN",
+      countries: [],
+    })
+
+    const updatedRegion = await service.retrieve(createdRegion.id, {
+      relations: ["currency", "countries"],
+    })
+
+    expect(updatedRegion).toMatchObject({
+      id: createdRegion.id,
+      name: "Americas",
+      currency_code: "mxn",
+    })
+
+    expect(updatedRegion.countries).toHaveLength(0)
   })
 
   it("should fail updating the region currency to a non-existent one", async () => {
