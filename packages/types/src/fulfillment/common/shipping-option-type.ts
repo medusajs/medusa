@@ -1,5 +1,5 @@
 import { ShippingOptionDTO } from "./shipping-option"
-import { BaseFilterable } from "../../dal"
+import { BaseFilterable, OperatorMap } from "../../dal"
 
 export interface ShippingOptionTypeDTO {
   id: string
@@ -15,8 +15,8 @@ export interface ShippingOptionTypeDTO {
 
 export interface FilterableShippingOptionTypeProps
   extends BaseFilterable<FilterableShippingOptionTypeProps> {
-  id?: string | string[]
-  label?: string | string[]
-  description?: string | string[]
-  code?: string | string[]
+  id?: string | string[] | OperatorMap<string | string[]>
+  label?: string | string[] | OperatorMap<string | string[]>
+  description?: string | string[] | OperatorMap<string | string[]>
+  code?: string | string[] | OperatorMap<string | string[]>
 }
