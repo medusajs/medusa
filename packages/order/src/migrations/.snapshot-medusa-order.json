@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -151,9 +149,7 @@
       "indexes": [
         {
           "keyName": "IDX_order_address_customer_id",
-          "columnNames": [
-            "customer_id"
-          ],
+          "columnNames": ["customer_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -161,9 +157,7 @@
         },
         {
           "keyName": "order_address_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -358,9 +352,7 @@
       "indexes": [
         {
           "keyName": "IDX_order_region_id",
-          "columnNames": [
-            "region_id"
-          ],
+          "columnNames": ["region_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -368,9 +360,7 @@
         },
         {
           "keyName": "IDX_order_customer_id",
-          "columnNames": [
-            "customer_id"
-          ],
+          "columnNames": ["customer_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -378,9 +368,7 @@
         },
         {
           "keyName": "IDX_order_original_order_id",
-          "columnNames": [
-            "original_order_id"
-          ],
+          "columnNames": ["original_order_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -388,9 +376,7 @@
         },
         {
           "keyName": "IDX_order_customer_id",
-          "columnNames": [
-            "sales_channel_id"
-          ],
+          "columnNames": ["sales_channel_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -398,9 +384,7 @@
         },
         {
           "keyName": "IDX_order_currency_code",
-          "columnNames": [
-            "currency_code"
-          ],
+          "columnNames": ["currency_code"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -408,9 +392,7 @@
         },
         {
           "keyName": "IDX_order_shipping_address_id",
-          "columnNames": [
-            "shipping_address_id"
-          ],
+          "columnNames": ["shipping_address_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -418,9 +400,7 @@
         },
         {
           "keyName": "IDX_order_billing_address_id",
-          "columnNames": [
-            "billing_address_id"
-          ],
+          "columnNames": ["billing_address_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -428,9 +408,7 @@
         },
         {
           "keyName": "IDX_order_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -438,9 +416,7 @@
         },
         {
           "keyName": "order_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -450,26 +426,18 @@
       "foreignKeys": {
         "order_shipping_address_id_foreign": {
           "constraintName": "order_shipping_address_id_foreign",
-          "columnNames": [
-            "shipping_address_id"
-          ],
+          "columnNames": ["shipping_address_id"],
           "localTableName": "public.order",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_address",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "order_billing_address_id_foreign": {
           "constraintName": "order_billing_address_id_foreign",
-          "columnNames": [
-            "billing_address_id"
-          ],
+          "columnNames": ["billing_address_id"],
           "localTableName": "public.order",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_address",
           "deleteRule": "set null",
           "updateRule": "cascade"
@@ -662,9 +630,7 @@
       "indexes": [
         {
           "keyName": "IDX_order_change_order_id",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -672,9 +638,7 @@
         },
         {
           "keyName": "IDX_order_change_status",
-          "columnNames": [
-            "status"
-          ],
+          "columnNames": ["status"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -682,9 +646,7 @@
         },
         {
           "keyName": "order_change_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -694,13 +656,9 @@
       "foreignKeys": {
         "order_change_order_id_foreign": {
           "constraintName": "order_change_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.order_change",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -800,9 +758,7 @@
       "indexes": [
         {
           "keyName": "IDX_order_change_action_order_change_id",
-          "columnNames": [
-            "order_change_id"
-          ],
+          "columnNames": ["order_change_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -810,9 +766,7 @@
         },
         {
           "keyName": "IDX_order_change_action_reference_id",
-          "columnNames": [
-            "reference_id"
-          ],
+          "columnNames": ["reference_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -820,9 +774,7 @@
         },
         {
           "keyName": "order_change_action_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -832,13 +784,9 @@
       "foreignKeys": {
         "order_change_action_order_change_id_foreign": {
           "constraintName": "order_change_action_order_change_id_foreign",
-          "columnNames": [
-            "order_change_id"
-          ],
+          "columnNames": ["order_change_id"],
           "localTableName": "public.order_change_action",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_change",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1045,16 +993,6 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_order_detail_id",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_detail_id\" ON \"order_detail\" (id)"
-        },
-        {
           "keyName": "IDX_order_detail_order_id_item_id_version",
           "columnNames": [],
           "composite": false,
@@ -1064,9 +1002,7 @@
         },
         {
           "keyName": "order_detail_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1076,26 +1012,18 @@
       "foreignKeys": {
         "order_detail_order_id_foreign": {
           "constraintName": "order_detail_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.order_detail",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "order_detail_item_id_foreign": {
           "constraintName": "order_detail_item_id_foreign",
-          "columnNames": [
-            "item_id"
-          ],
+          "columnNames": ["item_id"],
           "localTableName": "public.order_detail",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_line_item",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1351,9 +1279,7 @@
       "indexes": [
         {
           "keyName": "IDX_order_line_item_variant_id",
-          "columnNames": [
-            "variant_id"
-          ],
+          "columnNames": ["variant_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1361,9 +1287,7 @@
         },
         {
           "keyName": "IDX_order_line_item_product_id",
-          "columnNames": [
-            "product_id"
-          ],
+          "columnNames": ["product_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1371,9 +1295,7 @@
         },
         {
           "keyName": "order_line_item_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1383,13 +1305,9 @@
       "foreignKeys": {
         "order_line_item_totals_id_foreign": {
           "constraintName": "order_line_item_totals_id_foreign",
-          "columnNames": [
-            "totals_id"
-          ],
+          "columnNames": ["totals_id"],
           "localTableName": "public.order_line_item",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_detail",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1498,9 +1416,7 @@
       "indexes": [
         {
           "keyName": "IDX_order_line_item_tax_line_item_id",
-          "columnNames": [
-            "item_id"
-          ],
+          "columnNames": ["item_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1508,9 +1424,7 @@
         },
         {
           "keyName": "order_line_item_tax_line_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1520,13 +1434,9 @@
       "foreignKeys": {
         "order_line_item_tax_line_item_id_foreign": {
           "constraintName": "order_line_item_tax_line_item_id_foreign",
-          "columnNames": [
-            "item_id"
-          ],
+          "columnNames": ["item_id"],
           "localTableName": "public.order_line_item_tax_line",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_line_item",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1635,9 +1545,7 @@
       "indexes": [
         {
           "keyName": "IDX_order_line_item_adjustment_item_id",
-          "columnNames": [
-            "item_id"
-          ],
+          "columnNames": ["item_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1645,9 +1553,7 @@
         },
         {
           "keyName": "order_line_item_adjustment_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1663,13 +1569,9 @@
       "foreignKeys": {
         "order_line_item_adjustment_item_id_foreign": {
           "constraintName": "order_line_item_adjustment_item_id_foreign",
-          "columnNames": [
-            "item_id"
-          ],
+          "columnNames": ["item_id"],
           "localTableName": "public.order_line_item_adjustment",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_line_item",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1797,9 +1699,7 @@
       "indexes": [
         {
           "keyName": "IDX_order_shipping_method_order_id",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1807,9 +1707,7 @@
         },
         {
           "keyName": "IDX_order_shipping_method_shipping_option_id",
-          "columnNames": [
-            "shipping_option_id"
-          ],
+          "columnNames": ["shipping_option_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1817,9 +1715,7 @@
         },
         {
           "keyName": "order_shipping_method_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1835,13 +1731,9 @@
       "foreignKeys": {
         "order_shipping_method_order_id_foreign": {
           "constraintName": "order_shipping_method_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.order_shipping_method",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1950,9 +1842,7 @@
       "indexes": [
         {
           "keyName": "IDX_order_shipping_method_adjustment_shipping_method_id",
-          "columnNames": [
-            "shipping_method_id"
-          ],
+          "columnNames": ["shipping_method_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1960,9 +1850,7 @@
         },
         {
           "keyName": "order_shipping_method_adjustment_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1972,13 +1860,9 @@
       "foreignKeys": {
         "order_shipping_method_adjustment_shipping_method_id_foreign": {
           "constraintName": "order_shipping_method_adjustment_shipping_method_id_foreign",
-          "columnNames": [
-            "shipping_method_id"
-          ],
+          "columnNames": ["shipping_method_id"],
           "localTableName": "public.order_shipping_method_adjustment",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_shipping_method",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -2087,9 +1971,7 @@
       "indexes": [
         {
           "keyName": "IDX_order_shipping_method_tax_line_shipping_method_id",
-          "columnNames": [
-            "shipping_method_id"
-          ],
+          "columnNames": ["shipping_method_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -2097,9 +1979,7 @@
         },
         {
           "keyName": "order_shipping_method_tax_line_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -2109,13 +1989,9 @@
       "foreignKeys": {
         "order_shipping_method_tax_line_shipping_method_id_foreign": {
           "constraintName": "order_shipping_method_tax_line_shipping_method_id_foreign",
-          "columnNames": [
-            "shipping_method_id"
-          ],
+          "columnNames": ["shipping_method_id"],
           "localTableName": "public.order_shipping_method_tax_line",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_shipping_method",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -2215,9 +2091,7 @@
       "indexes": [
         {
           "keyName": "IDX_order_transaction_order_id",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -2225,9 +2099,7 @@
         },
         {
           "keyName": "IDX_order_transaction_currency_code",
-          "columnNames": [
-            "currency_code"
-          ],
+          "columnNames": ["currency_code"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -2235,9 +2107,7 @@
         },
         {
           "keyName": "IDX_order_transaction_reference_id",
-          "columnNames": [
-            "reference_id"
-          ],
+          "columnNames": ["reference_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -2245,9 +2115,7 @@
         },
         {
           "keyName": "order_transaction_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -2257,13 +2125,9 @@
       "foreignKeys": {
         "order_transaction_order_id_foreign": {
           "constraintName": "order_transaction_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.order_transaction",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "deleteRule": "cascade",
           "updateRule": "cascade"

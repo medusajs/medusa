@@ -224,8 +224,6 @@ export class Migration20240219102530 extends Migration {
           CONSTRAINT "order_detail_pkey" PRIMARY KEY ("id")
       );
 
-      CREATE INDEX IF NOT EXISTS "IDX_order_detail_id" ON "order_detail" (id);
-
       CREATE UNIQUE INDEX IF NOT EXISTS "IDX_order_detail_order_id_item_id_version" ON "order_detail" (
           order_id,
           item_id,

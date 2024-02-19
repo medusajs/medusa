@@ -21,11 +21,6 @@ import Order from "./order"
 
 type OptionalLineItemProps = DAL.EntityDateColumns
 
-const IdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_detail",
-  columns: "id",
-})
-
 const OrderItemVersionIndex = createPsqlIndexStatementHelper({
   tableName: "order_detail",
   columns: ["order_id", "item_id", "version"],
@@ -38,7 +33,6 @@ export default class OrderDetail {
   [OptionalProps]?: OptionalLineItemProps
 
   @PrimaryKey({ columnType: "text" })
-  @IdIndex.MikroORMIndex()
   id: string
 
   @Property({ columnType: "text" })
