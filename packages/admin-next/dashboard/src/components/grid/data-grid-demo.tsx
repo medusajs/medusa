@@ -11,6 +11,7 @@ import * as zod from "zod"
 import { Thumbnail } from "../common/thumbnail"
 import { DataGrid } from "./data-grid"
 import { TextField } from "./grid-fields/common/text-field"
+import { DisplayField } from "./grid-fields/non-interactive/display-field"
 import { DataGridMeta } from "./types"
 
 const ProductEditorSchema = zod.object({
@@ -39,6 +40,11 @@ const getVariantRows = (row: Product | ProductVariant) => {
   return undefined
 }
 
+/**
+ * Demo component to test the data grid.
+ *
+ * To be deleted when the feature is implemented.
+ */
 export const DataGridDemo = () => {
   const form = useForm<ProductEditorSchemaType>({
     resolver: zodResolver(ProductEditorSchema),
@@ -99,24 +105,11 @@ export const DataGridDemo = () => {
   )
 }
 
+/**
+ * Helper function to determine if a row is a product or a variant.
+ */
 const isProduct = (row: Product | ProductVariant): row is Product => {
   return "variants" in row
-}
-
-/**
- * A hidden input that can be rendered in cell that should not be editable in the current context.
- */
-const DisabledInput = () => {
-  return (
-    <input
-      type="checkbox"
-      disabled
-      hidden
-      data-role="presentation"
-      role="presentation"
-      aria-hidden
-    />
-  )
 }
 
 const columnHelper = createColumnHelper<Product | ProductVariant>()
@@ -134,10 +127,12 @@ const useColumns = () => {
 
           if (isProduct(entity)) {
             return (
-              <div className="flex items-center gap-x-2 overflow-hidden">
-                <Thumbnail src={entity.thumbnail} />
-                <span className="truncate">{entity.title}</span>
-              </div>
+              <DisplayField>
+                <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
+                  <Thumbnail src={entity.thumbnail} />
+                  <span className="truncate">{entity.title}</span>
+                </div>
+              </DisplayField>
             )
           }
 
@@ -148,6 +143,7 @@ const useColumns = () => {
             />
           )
         },
+        size: 350,
       }),
       columnHelper.accessor("sku", {
         header: t("fields.sku"),
@@ -155,7 +151,7 @@ const useColumns = () => {
           const entity = row.original
 
           if (isProduct(entity)) {
-            return <DisabledInput />
+            return <DisplayField />
           }
 
           return (
@@ -172,7 +168,7 @@ const useColumns = () => {
           const entity = row.original
 
           if (isProduct(entity)) {
-            return <DisabledInput />
+            return <DisplayField />
           }
 
           return (
@@ -189,7 +185,7 @@ const useColumns = () => {
           const entity = row.original
 
           if (isProduct(entity)) {
-            return <DisabledInput />
+            return <DisplayField />
           }
 
           return (

@@ -74,9 +74,27 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
     overscan: 5,
   })
 
-  const [isDragging, setIsDragging] = useState(false)
   const [anchor, setAnchor] = useState<FieldCoordinates | null>(null)
+
+  const [isSelecting, setIsSelecting] = useState(false)
   const [selection, setSelection] = useState<FieldCoordinates[]>([])
+
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragSelection, setDragSelection] = useState<FieldCoordinates[]>([])
+
+  const handleFocusInner = (target: HTMLElement) => {
+    const editableField = target.querySelector("[data-field-id]")
+
+    if (editableField instanceof HTMLInputElement) {
+      requestAnimationFrame(() => {
+        editableField.focus()
+        editableField.setSelectionRange(
+          editableField.value.length,
+          editableField.value.length
+        )
+      })
+    }
+  }
 
   const handleMouseDown = (e: ReactMouseEvent<HTMLTableCellElement>) => {
     const target = e.target
@@ -95,7 +113,12 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
     const rowIndex = parseInt(e.currentTarget.dataset.rowIndex!)
     const columnIndex = parseInt(e.currentTarget.dataset.columnIndex!)
 
-    setIsDragging(true)
+    const isAnchor = getIsAnchor(rowIndex, columnIndex)
+
+    if (e.detail === 2 || isAnchor) {
+      handleFocusInner(e.currentTarget)
+      return
+    }
 
     const coordinates: FieldCoordinates = {
       row: rowIndex,
@@ -104,6 +127,12 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
 
     setSelection([coordinates])
     setAnchor(coordinates)
+    setIsSelecting(true)
+  }
+
+  const handleDragDown = (e: ReactMouseEvent<HTMLDivElement>) => {
+    e.stopPropagation()
+    setIsDragging(true)
   }
 
   const getIsAnchor = (rowIndex: number, columnIndex: number) => {
@@ -112,10 +141,10 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
 
   const handleMouseOver = (e: ReactMouseEvent<HTMLTableCellElement>) => {
     /**
-     * If we're not dragging or there is no anchor,
+     * If we're not dragging and not selecting or there is no anchor,
      * then we don't want to do anything.
      */
-    if (!isDragging || !anchor) {
+    if ((!isSelecting && !isDragging) || !anchor) {
       return
     }
 
@@ -159,29 +188,61 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
      * the selection based on the direction.
      */
     if (isNeighbour) {
-      setSelection((prev) => {
-        return prev
-          .filter((cell) => {
-            if (direction === "down") {
-              return (
-                (cell.row <= rowIndex && cell.row >= anchor.row) ||
-                cell.row === anchor.row
-              )
-            }
+      if (isSelecting) {
+        setSelection((prev) => {
+          return prev
+            .filter((cell) => {
+              if (direction === "down") {
+                return (
+                  (cell.row <= rowIndex && cell.row >= anchor.row) ||
+                  cell.row === anchor.row
+                )
+              }
 
-            if (direction === "up") {
-              return (
-                (cell.row >= rowIndex && cell.row <= anchor.row) ||
-                cell.row === anchor.row
-              )
-            }
+              if (direction === "up") {
+                return (
+                  (cell.row >= rowIndex && cell.row <= anchor.row) ||
+                  cell.row === anchor.row
+                )
+              }
 
-            return cell.row === anchor.row
-          })
-          .concat({ row: rowIndex, column: columnIndex })
-      })
+              return cell.row === anchor.row
+            })
+            .concat({ row: rowIndex, column: columnIndex })
+        })
 
-      return
+        return
+      }
+
+      if (isDragging) {
+        if (anchor.row === rowIndex) {
+          return
+        }
+
+        setDragSelection((prev) => {
+          return prev
+            .filter((cell) => {
+              if (direction === "down") {
+                return (
+                  (cell.row <= rowIndex && cell.row >= anchor.row) ||
+                  cell.row === anchor.row
+                )
+              }
+
+              if (direction === "up") {
+                return (
+                  (cell.row >= rowIndex && cell.row <= anchor.row) ||
+                  cell.row === anchor.row
+                )
+              }
+
+              return cell.row === anchor.row
+            })
+            .concat({ row: rowIndex, column: columnIndex })
+        })
+
+        return
+      }
     }
 
     /**
@@ -189,7 +250,7 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
      * need to calculate all the valid cells between the
      * anchor and the current cell.
      */
-    const cells: FieldCoordinates[] = []
+    let cells: FieldCoordinates[] = []
 
     function selectCell(i: number, columnIndex: number) {
       const possibleCell = document.querySelector(
@@ -223,7 +284,23 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
       }
     }
 
-    setSelection(cells)
+    if (isSelecting) {
+      setSelection(cells)
+      return
+    }
+
+    if (isDragging) {
+      cells = cells.filter((cell) => cell.row !== anchor.row)
+
+      setDragSelection(cells)
+      return
+    }
+  }
+
+  const getIsDragTarget = (rowIndex: number, columnIndex: number) => {
+    return dragSelection.some(
+      (cell) => cell.row === rowIndex && cell.column === columnIndex
+    )
   }
 
   const getIsSelected = (rowIndex: number, columnIndex: number) => {
@@ -231,10 +308,6 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
       (cell) => cell.row === rowIndex && cell.column === columnIndex
     )
   }
-
-  const handleMouseUp = useCallback((_e: MouseEvent) => {
-    setIsDragging(false)
-  }, [])
 
   const getSelectionIds = useCallback((fields: FieldCoordinates[]) => {
     return fields
@@ -333,18 +406,67 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
         return
       }
 
-      if (e.key === "z" && e.metaKey && !e.shiftKey) {
+      if (e.key.toLowerCase() === "z" && e.metaKey && !e.shiftKey) {
         console.log(canUndo)
         e.preventDefault()
         undo()
       }
 
-      if (e.key === "z" && e.metaKey && e.shiftKey) {
+      if (e.key.toLowerCase() === "z" && e.metaKey && e.shiftKey) {
         e.preventDefault()
         redo()
       }
     },
     [undo, redo, canRedo, canUndo]
+  )
+
+  const handleEndDrag = useCallback(() => {
+    if (!anchor) {
+      return
+    }
+
+    const fieldIds = getSelectionIds(dragSelection)
+    const anchorId = getSelectionIds([anchor])
+
+    const anchorValue = getSelectionValues(anchorId)?.[0]
+
+    const prev = getSelectionValues(fieldIds)
+    const next = prev.map(() => anchorValue)
+
+    const command = new GridCommand({
+      next,
+      prev,
+      selection: fieldIds,
+      setter: setSelectionValues,
+    })
+
+    execute(command)
+
+    setSelection(dragSelection)
+    setDragSelection([])
+    setIsDragging(false)
+  }, [
+    anchor,
+    getSelectionIds,
+    dragSelection,
+    getSelectionValues,
+    setSelectionValues,
+    execute,
+  ])
+
+  const handleMouseUp = useCallback(
+    (_e: MouseEvent) => {
+      if (isSelecting) {
+        setIsSelecting(false)
+        return
+      }
+
+      if (isDragging) {
+        handleEndDrag()
+        return
+      }
+    },
+    [isDragging, isSelecting, handleEndDrag]
   )
 
   useEffect(() => {
@@ -370,7 +492,7 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
           overflow: "auto",
           position: "relative",
           height: "600px",
-          userSelect: isDragging ? "none" : "auto",
+          userSelect: isSelecting || isDragging ? "none" : "auto",
         }}
       >
         <table className="text-ui-fg-subtle grid">
@@ -416,6 +538,13 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
                   className="bg-ui-bg-subtle txt-compact-small absolute flex h-10 w-full"
                 >
                   {row.getVisibleCells().map((cell, index) => {
+                    const isAnchor = getIsAnchor(virtualRow.index, index)
+                    const isSelected = getIsSelected(virtualRow.index, index)
+                    const isDragTarget = getIsDragTarget(
+                      virtualRow.index,
+                      index
+                    )
+
                     return (
                       <td
                         key={cell.id}
@@ -427,24 +556,28 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
                         data-row-index={virtualRow.index}
                         data-column-index={index}
                         className={clx(
-                          "bg-ui-bg-base has-[:disabled]:bg-ui-bg-subtle relative flex items-center border-b border-r px-4 py-2.5 outline-none",
+                          "bg-ui-bg-base has-[[data-role='presentation']]:bg-ui-bg-subtle relative flex items-center border-b border-r p-0 outline-none",
                           "after:transition-fg after:border-ui-fg-interactive after:invisible after:absolute after:-bottom-px after:-left-px after:-right-px after:-top-px after:box-border after:border-[2px] after:content-['']",
                           {
-                            "after:visible": getIsAnchor(
-                              virtualRow.index,
-                              index
-                            ),
-                            "bg-ui-bg-highlight": getIsSelected(
-                              virtualRow.index,
-                              index
-                            ),
+                            "after:visible": isAnchor,
+                            "bg-ui-bg-highlight": isSelected,
+                            "bg-ui-bg-base-hover": isDragTarget,
                           }
                         )}
+                        tabIndex={-1}
                       >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
+                        <div className="relative h-full w-full">
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                          {isAnchor && (
+                            <div
+                              onMouseDown={handleDragDown}
+                              className="bg-ui-fg-interactive absolute bottom-0 right-0 z-[3] size-1.5 cursor-ns-resize"
+                            />
+                          )}
+                        </div>
                       </td>
                     )
                   })}

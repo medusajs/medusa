@@ -11,8 +11,7 @@ import { Button, IconButton, Kbd, Tooltip } from "@medusajs/ui"
 import * as Dialog from "@radix-ui/react-dialog"
 import { Variants, motion } from "framer-motion"
 import { useAdminProduct } from "medusa-react"
-import { wrap } from "popmotion"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 
@@ -20,7 +19,6 @@ import { useRouteModalState } from "../../../hooks/use-route-modal-state"
 
 export const ProductGallery = () => {
   const [open, onOpenChange] = useRouteModalState()
-  const [[page, direction], setPage] = useState([0, 0])
 
   const { id } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -33,43 +31,26 @@ export const ProductGallery = () => {
     return product ? getMedia(product) : []
   }, [product])
 
-  // We only have 3 images, but we paginate them absolutely (ie 1, 2, 3, 4, 5...) and
-  // then wrap that within 0-2 to find our image ID in the array below. By passing an
-  // absolute page index as the `motion` component's `key` prop, `AnimatePresence` will
-  // detect it as an entirely new image. So you can infinitely paginate as few as 1 images.
-  const imageIndex = wrap(0, media.length, page)
+  const currentId = searchParams.get("img") ?? media[0]?.id
+  const currentIndex = media.findIndex((m) => m.id === currentId)
 
   const paginate = useCallback(
     (newDirection: number) => {
-      setPage([page + newDirection, newDirection])
+      const adjustment = newDirection > 0 ? 1 : -1
+      const newIndex = (currentIndex + adjustment + media.length) % media.length
+      setSearchParams({ img: media[newIndex].id }, { replace: true })
     },
-    [page]
+    [currentIndex, media, setSearchParams]
   )
-
-  const currentId = searchParams.get("img") ?? media[0]?.id
-
-  const getSelectedMedia = (media: Media[], currentId: string | null) => {
-    if (currentId) {
-      const selectedMedia = media.find((m) => m.id === currentId)
-      if (selectedMedia) {
-        return selectedMedia
-      }
-
-      setSearchParams({ img: media[0].id }, { replace: true })
-    }
-
-    // If currentId is null or no media exists with currentId, return the first media
-    return media[0]
-  }
-
-  const curr = getSelectedMedia(media, currentId)
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") {
+        e.preventDefault()
         paginate(1)
       }
       if (e.key === "ArrowLeft") {
+        e.preventDefault()
         paginate(-1)
       }
     }
@@ -134,7 +115,7 @@ export const ProductGallery = () => {
                   size="small"
                   asChild
                 >
-                  <Link to={curr.url} download>
+                  <Link to={media[currentIndex].url} download>
                     <ArrowDownTray aria-hidden className="text-ui-fg-subtle" />
                   </Link>
                 </IconButton>
@@ -150,12 +131,9 @@ export const ProductGallery = () => {
             </div>
           </div>
           <main className="relative flex h-full w-screen items-center justify-center py-16">
-            <div
-              key={page}
-              className="absolute h-full max-w-[100vw] rounded-2xl py-16"
-            >
+            <div className="absolute h-full max-w-[100vw] rounded-2xl py-16">
               <div className="relative h-full w-fit">
-                {media[imageIndex].isThumbnail && (
+                {media[currentIndex].isThumbnail && (
                   <div className="absolute left-3 top-3">
                     <Tooltip content={t("fields.thumbnail")} className="dark">
                       <ThumbnailBadge />
@@ -163,7 +141,7 @@ export const ProductGallery = () => {
                   </div>
                 )}
                 <img
-                  src={media[imageIndex].url}
+                  src={media[currentIndex].url}
                   alt=""
                   className="object-fit h-full rounded-2xl"
                 />
@@ -189,7 +167,7 @@ export const ProductGallery = () => {
                 key={img.id}
                 className="h-1.5 rounded-full"
                 variants={indicatorVariants}
-                animate={index === imageIndex ? "active" : "inactive"}
+                animate={index === currentIndex ? "active" : "inactive"}
               />
             ))}
           </div>

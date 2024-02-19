@@ -30,6 +30,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *   - (query) q {string} Search term to search product variants' title, sku, and products' title.
  *   - (query) order {string} The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - (query) manage_inventory {boolean} Filter product variants by whether their inventory is managed or not.
+ *   - (query) allow_backorder {boolean} Filter product variants by whether they are allowed to be backordered or not.
  *   - in: query
  *     name: created_at
  *     description: Filter by a creation date range.
@@ -195,6 +196,14 @@ export class AdminGetProductsVariantsParams {
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   manage_inventory?: boolean
+
+  /**
+   * Filter product variants by whether they are allowed to be backordered or not.
+   */
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
+  allow_backorder?: boolean
 
   /**
    * Date filters to apply on the product variants' `created_at` date.

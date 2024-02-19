@@ -14,7 +14,6 @@ import after from "medusa-admin:widgets/product/details/after"
 import before from "medusa-admin:widgets/product/details/before"
 import sideAfter from "medusa-admin:widgets/product/details/side/after"
 import sideBefore from "medusa-admin:widgets/product/details/side/before"
-import { DataGridDemo } from "../../../components/grid/data-grid-demo"
 import { ProductOrganizationSection } from "./components/product-organization-section"
 
 export const ProductDetail = () => {
@@ -54,7 +53,6 @@ export const ProductDetail = () => {
           <ProductMediaSection product={product} />
           <ProductOptionSection product={product} />
           <ProductVariantSection product={product} />
-          <DataGridDemo />
           <div className="flex flex-col gap-y-2 lg:hidden">
             {sideBefore.widgets.map((w, i) => {
               return (

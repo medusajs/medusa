@@ -1,6 +1,15 @@
 import { PencilSquare, Photo, ThumbnailBadge } from "@medusajs/icons"
 import { Product } from "@medusajs/medusa"
-import { Checkbox, Container, Heading, Tooltip, clx } from "@medusajs/ui"
+import {
+  Checkbox,
+  CommandBar,
+  Container,
+  Heading,
+  Tooltip,
+  clx,
+  usePrompt,
+} from "@medusajs/ui"
+import { useAdminUpdateProduct } from "medusa-react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
@@ -12,6 +21,7 @@ type ProductMedisaSectionProps = {
 
 export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
   const { t } = useTranslation()
+  const prompt = usePrompt()
   const [selection, setSelection] = useState<Record<string, boolean>>({})
 
   const media = getMedia(product)
@@ -24,6 +34,41 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
       } else {
         return { ...prev, [id]: true }
       }
+    })
+  }
+
+  const { mutateAsync } = useAdminUpdateProduct(product.id)
+
+  const handleDelete = async () => {
+    const ids = Object.keys(selection)
+    const includingThumbnail = ids.some(
+      (id) => media.find((m) => m.id === id)?.isThumbnail
+    )
+
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: includingThumbnail
+        ? t("products.deleteMediaAndThumbnail", {
+            count: ids.length,
+          })
+        : t("products.deleteMedia", {
+            count: ids.length,
+          }),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    const mediaToKeep = product.images
+      .filter((i) => !ids.includes(i.id))
+      .map((i) => i.url)
+
+    await mutateAsync({
+      images: mediaToKeep,
+      thumbnail: includingThumbnail ? "" : undefined,
     })
   }
 
@@ -90,6 +135,21 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
           })}
         </div>
       )}
+      <CommandBar open={!!Object.keys(selection).length}>
+        <CommandBar.Bar>
+          <CommandBar.Value>
+            {t("general.countSelected", {
+              count: Object.keys(selection).length,
+            })}
+          </CommandBar.Value>
+          <CommandBar.Seperator />
+          <CommandBar.Command
+            action={handleDelete}
+            label={t("actions.delete")}
+            shortcut="d"
+          />
+        </CommandBar.Bar>
+      </CommandBar>
     </Container>
   )
 }
