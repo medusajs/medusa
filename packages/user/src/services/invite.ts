@@ -22,7 +22,7 @@ export default class InviteService<
 )<TEntity> {
   // eslint-disable-next-line max-len
   protected readonly inviteRepository_: DAL.RepositoryService<TEntity>
-  protected options: any
+  protected options_: { jwt_secret: string; valid_duration: number } | undefined
 
   constructor(container: InjectedDependencies) {
     super(container)
@@ -32,9 +32,19 @@ export default class InviteService<
   public withModuleOptions(options: any) {
     const service = new InviteService<TEntity>(this.__container__)
 
-    service.options = options
+    service.options_ = options
 
     return service
+  }
+
+  private getOption(key: string) {
+    if (!this.options_) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Options are not configured for InviteService, call "withModuleOptions" and provide options`
+      )
+    }
+    return this.options_[key]
   }
 
   create(
@@ -61,7 +71,7 @@ export default class InviteService<
       return {
         id: invite.id,
         expires_at: new Date().setMilliseconds(
-          new Date().getMilliseconds() + this.options?.valid_duration ||
+          new Date().getMilliseconds() + this.options_?.valid_duration ||
             DEFAULT_VALID_INVITE_DURATION
         ),
         token: this.generateToken({ id: invite.id }),
@@ -82,7 +92,10 @@ export default class InviteService<
   }
 
   private generateToken(data: any): string {
-    const jwtSecret = this.options?.jwt_secret as string | undefined
+    const jwtSecret: string = this.getOption("jwt_secret")
+    const expiresIn: number =
+      parseInt(this.getOption("valid_duration")) ||
+      DEFAULT_VALID_INVITE_DURATION
 
     if (!jwtSecret) {
       throw new MedusaError(
@@ -92,11 +105,11 @@ export default class InviteService<
     }
 
     return jwt.sign(data, jwtSecret, {
-      expiresIn: this.options?.valid_duration || DEFAULT_VALID_INVITE_DURATION,
+      expiresIn,
     })
   }
   private validateToken(data: any): JwtPayload {
-    const jwtSecret = this.options?.jwt_secret as string | undefined
+    const jwtSecret = this.getOption("jwt_secret")
 
     if (!jwtSecret) {
       throw new MedusaError(
