@@ -1,5 +1,3 @@
 export { default as TaxRate } from "./tax-rate"
 export { default as TaxRegion } from "./tax-region"
-export { default as ProductTypeTaxRate } from "./product-type-tax-rate"
-export { default as ProductTaxRate } from "./product-tax-rate"
-export { default as ShippingTaxRate } from "./shipping-tax-rate"
+export { default as TaxRateRule } from "./tax-rate-rule"

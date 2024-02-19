@@ -13,13 +13,7 @@ import {
   MedusaContext,
   ModulesSdkUtils,
 } from "@medusajs/utils"
-import {
-  TaxRate,
-  TaxRegion,
-  ProductTaxRate,
-  ShippingTaxRate,
-  ProductTypeTaxRate,
-} from "@models"
+import { TaxRate, TaxRegion, TaxRateRule } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { TaxRegionDTO } from "@medusajs/types"
 
@@ -27,33 +21,22 @@ type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   taxRateService: ModulesSdkTypes.InternalModuleService<any>
   taxRegionService: ModulesSdkTypes.InternalModuleService<any>
-  productTypeTaxRateService: ModulesSdkTypes.InternalModuleService<any>
-  productTaxRateService: ModulesSdkTypes.InternalModuleService<any>
-  shippingTaxRateService: ModulesSdkTypes.InternalModuleService<any>
+  taxRateRuleService: ModulesSdkTypes.InternalModuleService<any>
 }
 
-const generateForModels = [
-  TaxRegion,
-  ProductTaxRate,
-  ProductTypeTaxRate,
-  ShippingTaxRate,
-]
+const generateForModels = [TaxRegion, TaxRateRule]
 
 export default class TaxModuleService<
     TTaxRate extends TaxRate = TaxRate,
     TTaxRegion extends TaxRegion = TaxRegion,
-    TProductTaxRate extends ProductTaxRate = ProductTaxRate,
-    TProductTypeTaxRate extends ProductTypeTaxRate = ProductTypeTaxRate,
-    TShippingTaxRate extends ShippingTaxRate = ShippingTaxRate
+    TTaxRateRule extends TaxRateRule = TaxRateRule
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
     TaxTypes.TaxRateDTO,
     {
       TaxRegion: { dto: TaxTypes.TaxRegionDTO }
-      ShippingTaxRate: { dto: TaxTypes.ShippingTaxRateDTO }
-      ProductTaxRate: { dto: TaxTypes.ProductTaxRateDTO }
-      ProductTypeTaxRate: { dto: TaxTypes.ProductTypeTaxRateDTO }
+      TaxRateRule: { dto: TaxTypes.TaxRateRuleDTO }
     }
   >(TaxRate, generateForModels, entityNameToLinkableKeysMap)
   implements ITaxModuleService
@@ -61,18 +44,14 @@ export default class TaxModuleService<
   protected baseRepository_: DAL.RepositoryService
   protected taxRateService_: ModulesSdkTypes.InternalModuleService<TTaxRate>
   protected taxRegionService_: ModulesSdkTypes.InternalModuleService<TTaxRegion>
-  protected productTypeTaxRateService_: ModulesSdkTypes.InternalModuleService<TProductTypeTaxRate>
-  protected productTaxRateService_: ModulesSdkTypes.InternalModuleService<TProductTaxRate>
-  protected shippingTaxRateService_: ModulesSdkTypes.InternalModuleService<TShippingTaxRate>
+  protected taxRateRuleService_: ModulesSdkTypes.InternalModuleService<TTaxRateRule>
 
   constructor(
     {
       baseRepository,
       taxRateService,
       taxRegionService,
-      productTypeTaxRateService,
-      productTaxRateService,
-      shippingTaxRateService,
+      taxRateRuleService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -82,9 +61,7 @@ export default class TaxModuleService<
     this.baseRepository_ = baseRepository
     this.taxRateService_ = taxRateService
     this.taxRegionService_ = taxRegionService
-    this.productTypeTaxRateService_ = productTypeTaxRateService
-    this.productTaxRateService_ = productTaxRateService
-    this.shippingTaxRateService_ = shippingTaxRateService
+    this.taxRateRuleService_ = taxRateRuleService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -123,6 +100,7 @@ export default class TaxModuleService<
     return await this.taxRateService_.create(data, sharedContext)
   }
 
+  @InjectManager("baseRepository_")
   async createTaxRegions(
     data: TaxTypes.CreateTaxRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -167,67 +145,25 @@ export default class TaxModuleService<
     )
   }
 
-  async createShippingTaxRates(
-    data: TaxTypes.CreateShippingTaxRateDTO[],
+  @InjectManager("baseRepository_")
+  async createTaxRateRules(
+    data: TaxTypes.CreateTaxRateRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TaxTypes.ShippingTaxRateDTO[]> {
-    return await this.createTaxRule_<
-      TaxTypes.CreateShippingTaxRateDTO,
-      TaxTypes.ShippingTaxRateDTO
-    >("shipping_option_id", this.shippingTaxRateService_, data, sharedContext)
+  ): Promise<TaxTypes.TaxRateRuleDTO[]> {
+    const rules = await this.taxRateRuleService_.create(data, sharedContext)
+    const result = await this.baseRepository_.serialize<
+      TaxTypes.TaxRateRuleDTO[]
+    >(rules, {
+      populate: true,
+    })
+    return result
   }
 
-  async createProductTaxRates(
-    data: TaxTypes.CreateProductTaxRateDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TaxTypes.ProductTaxRateDTO[]> {
-    return await this.createTaxRule_<
-      TaxTypes.CreateProductTaxRateDTO,
-      TaxTypes.ProductTaxRateDTO
-    >("product_id", this.productTaxRateService_, data, sharedContext)
-  }
-
-  async createProductTypeTaxRates(
-    data: TaxTypes.CreateProductTypeTaxRateDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TaxTypes.ProductTypeTaxRateDTO[]> {
-    return await this.createTaxRule_<
-      TaxTypes.CreateProductTypeTaxRateDTO,
-      TaxTypes.ProductTypeTaxRateDTO
-    >("product_type_id", this.productTypeTaxRateService_, data, sharedContext)
-  }
-
-  private async createTaxRule_<
-    T extends {
-      tax_rate: Omit<TaxTypes.CreateTaxRateDTO, "is_default">
-      [key: string]: any
-    },
-    K
-  >(
-    ruleKey: string,
-    service: ModulesSdkTypes.InternalModuleService<any>,
-    data: T[],
+  @InjectTransactionManager("baseRepository_")
+  async createTaxRateRules_(
+    data: TaxTypes.CreateTaxRateRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const [ruleIds, rates] = data.reduce(
-      (acc, rate) => {
-        acc[0].push(rate[ruleKey])
-        acc[1].push(rate.tax_rate)
-        return acc
-      },
-      [[], []] as [string[], TaxTypes.CreateTaxRateDTO[]]
-    )
-
-    const taxRates = await this.create(rates, sharedContext)
-    const result = await service.create(
-      taxRates.map((rate, i) => {
-        return {
-          [ruleKey]: ruleIds[i],
-          tax_rate_id: rate.id,
-        }
-      }),
-      sharedContext
-    )
-    return await this.baseRepository_.serialize<K[]>(result, { populate: true })
+    return await this.taxRateRuleService_.create(data, sharedContext)
   }
 }

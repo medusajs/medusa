@@ -6,17 +6,11 @@ import {
   FilterableTaxRateProps,
   TaxRateDTO,
   TaxRegionDTO,
-  ShippingTaxRateDTO,
-  FilterableShippingTaxRateProps,
-  ProductTaxRateDTO,
-  FilterableProductTaxRateProps,
-  ProductTypeTaxRateDTO,
-  FilterableProductTypeTaxRateProps,
+  TaxRateRuleDTO,
+  FilterableTaxRateRuleProps,
 } from "./common"
 import {
-  CreateProductTaxRateDTO,
-  CreateProductTypeTaxRateDTO,
-  CreateShippingTaxRateDTO,
+  CreateTaxRateRuleDTO,
   CreateTaxRateDTO,
   CreateTaxRegionDTO,
 } from "./mutations"
@@ -60,36 +54,14 @@ export interface ITaxModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<TaxRegionDTO[]>
 
-  createShippingTaxRates(
-    data: CreateShippingTaxRateDTO[],
+  createTaxRateRules(
+    data: CreateTaxRateRuleDTO[],
     sharedContext?: Context
-  ): Promise<ShippingTaxRateDTO[]>
+  ): Promise<TaxRateRuleDTO[]>
 
-  listShippingTaxRates(
-    filters?: FilterableShippingTaxRateProps,
-    config?: FindConfig<ShippingTaxRateDTO>,
+  listTaxRateRules(
+    filters?: FilterableTaxRateRuleProps,
+    config?: FindConfig<TaxRateRuleDTO>,
     sharedContext?: Context
-  ): Promise<ShippingTaxRateDTO[]>
-
-  createProductTaxRates(
-    data: CreateProductTaxRateDTO[],
-    sharedContext?: Context
-  ): Promise<ProductTaxRateDTO[]>
-
-  listProductTaxRates(
-    filters?: FilterableProductTaxRateProps,
-    config?: FindConfig<ProductTaxRateDTO>,
-    sharedContext?: Context
-  ): Promise<ProductTaxRateDTO[]>
-
-  createProductTypeTaxRates(
-    data: CreateProductTypeTaxRateDTO[],
-    sharedContext?: Context
-  ): Promise<ProductTypeTaxRateDTO[]>
-
-  listProductTypeTaxRates(
-    filters?: FilterableProductTypeTaxRateProps,
-    config?: FindConfig<ProductTypeTaxRateDTO>,
-    sharedContext?: Context
-  ): Promise<ProductTypeTaxRateDTO[]>
+  ): Promise<TaxRateRuleDTO[]>
 }

@@ -22,17 +22,10 @@ export interface CreateTaxRegionDTO {
   }
 }
 
-export interface CreateShippingTaxRateDTO {
-  shipping_option_id: string
-  tax_rate: Omit<CreateTaxRateDTO, "is_default">
-}
-
-export interface CreateProductTaxRateDTO {
-  product_id: string
-  tax_rate: Omit<CreateTaxRateDTO, "is_default">
-}
-
-export interface CreateProductTypeTaxRateDTO {
-  product_type_id: string
-  tax_rate: Omit<CreateTaxRateDTO, "is_default">
+export interface CreateTaxRateRuleDTO {
+  reference_type: string
+  reference_id: string
+  tax_rate_id: string
+  metadata?: Record<string, unknown>
+  created_by?: string
 }

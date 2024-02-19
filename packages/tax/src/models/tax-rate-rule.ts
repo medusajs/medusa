@@ -8,19 +8,22 @@ import {
 } from "@mikro-orm/core"
 import TaxRate from "./tax-rate"
 
-const TABLE_NAME = "product_tax_rate"
+const TABLE_NAME = "tax_rate_rule"
 
-const taxRateIdIndexName = "IDX_product_tax_rate_rate_id"
+const taxRateIdIndexName = "IDX_tax_rate_rule_tax_rate_id"
 
 @Entity({ tableName: TABLE_NAME })
-export default class ProductTaxRate {
+export default class TaxRateRule {
   @PrimaryKey({ columnType: "text" })
   tax_rate_id!: string
 
   @PrimaryKey({ columnType: "text" })
-  product_id!: string;
+  reference_id!: string;
 
-  [PrimaryKeyProp]?: ["tax_rate_id", "product_id"]
+  [PrimaryKeyProp]?: ["tax_rate_id", "reference_id"]
+
+  @Property({ columnType: "text" })
+  reference_type: string
 
   @ManyToOne(() => TaxRate, {
     fieldName: "tax_rate_id",
