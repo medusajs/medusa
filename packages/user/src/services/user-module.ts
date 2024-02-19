@@ -10,16 +10,18 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 import { Invite, User } from "@models"
+import InviteService from "./invite"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   userService: ModulesSdkTypes.InternalModuleService<any>
-  inviteService: ModulesSdkTypes.InternalModuleService<any>
+  inviteService: InviteService<any>
 }
 
 const generateMethodForModels = [Invite]
@@ -46,7 +48,7 @@ export default class UserModuleService<
   protected baseRepository_: DAL.RepositoryService
 
   protected readonly userService_: ModulesSdkTypes.InternalModuleService<TUser>
-  protected readonly inviteService_: ModulesSdkTypes.InternalModuleService<TInvite>
+  protected readonly inviteService_: InviteService<TInvite>
 
   constructor(
     { userService, inviteService, baseRepository }: InjectedDependencies,
@@ -57,7 +59,17 @@ export default class UserModuleService<
 
     this.baseRepository_ = baseRepository
     this.userService_ = userService
-    this.inviteService_ = inviteService
+    this.inviteService_ = inviteService.withModuleOptions(
+      this.moduleDeclaration
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async validateInviteToken(
+    token: string,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<UserTypes.InviteDTO> {
+    return await this.inviteService_.validateInviteToken(token, sharedContext)
   }
 
   create(
@@ -146,14 +158,11 @@ export default class UserModuleService<
     data: UserTypes.CreateInviteDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TInvite[]> {
-    // expiration date in 10 days
-    const expirationDate = new Date().setDate(new Date().getDate() + 10)
-
     const toCreate = data.map((invite) => {
       return {
         ...invite,
-        expires_at: new Date(expirationDate),
-        token: "placeholder", // TODO: generate token
+        expires_at: new Date(),
+        token: "placeholder",
       }
     })
 

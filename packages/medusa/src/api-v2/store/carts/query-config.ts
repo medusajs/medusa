@@ -10,6 +10,8 @@ export const defaultStoreCartFields = [
   "items.title",
   "items.quantity",
   "items.unit_price",
+  "customer.id",
+  "customer.email",
   "shipping_address.id",
   "shipping_address.first_name",
   "shipping_address.last_name",
@@ -39,6 +41,7 @@ export const defaultStoreCartFields = [
 export const defaultStoreCartRelations = [
   "items",
   "region",
+  "customer",
   "shipping_address",
   "billing_address",
   "shipping_methods",
@@ -47,6 +50,7 @@ export const defaultStoreCartRelations = [
 export const allowedRelations = [
   "items",
   "region",
+  "customer",
   "shipping_address",
   "billing_address",
   "shipping_methods",
