@@ -82,29 +82,29 @@ export default class InviteService<
   }
 
   private generateToken(data: any): string {
-    const jwt_secret = this.options?.jwt_secret as string | undefined
+    const jwtSecret = this.options?.jwt_secret as string | undefined
 
-    if (!jwt_secret) {
+    if (!jwtSecret) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Please configure jwt_secret"
+        "No jwt_secret was provided in the UserModule's options. Please add one."
       )
     }
 
-    return jwt.sign(data, jwt_secret, {
+    return jwt.sign(data, jwtSecret, {
       expiresIn: this.options?.valid_duration || DEFAULT_VALID_INVITE_DURATION,
     })
   }
   private validateToken(data: any): JwtPayload {
-    const jwt_secret = this.options?.jwt_secret as string | undefined
+    const jwtSecret = this.options?.jwt_secret as string | undefined
 
-    if (!jwt_secret) {
+    if (!jwtSecret) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Please configure jwt_secret"
+        "No jwt_secret was provided in the UserModule's options. Please add one."
       )
     }
 
-    return jwt.verify(data, jwt_secret, { complete: true })
+    return jwt.verify(data, jwtSecret, { complete: true })
   }
 }
