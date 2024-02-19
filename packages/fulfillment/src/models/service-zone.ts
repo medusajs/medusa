@@ -33,22 +33,18 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 }).expression
 
-const nameIndexName = "IDX_service_zone_name_unique"
-const nameIndexStatement = createPsqlIndexStatementHelper({
-  name: nameIndexName,
+const NameIndex = createPsqlIndexStatementHelper({
   tableName: "service_zone",
   columns: "name",
   unique: true,
   where: "deleted_at IS NULL",
-}).expression
+})
 
-const fulfillmentSetIdIndexName = "IDX_service_zone_fulfillment_set_id"
-const fulfillmentSetIdIndexStatement = createPsqlIndexStatementHelper({
-  name: fulfillmentSetIdIndexName,
+const FulfillmentSetIdIndex = createPsqlIndexStatementHelper({
   tableName: "service_zone",
   columns: "fulfillment_set_id",
   where: "deleted_at IS NULL",
-}).expression
+})
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -59,20 +55,14 @@ export default class ServiceZone {
   id: string
 
   @Property({ columnType: "text" })
-  @Index({
-    name: nameIndexName,
-    expression: nameIndexStatement,
-  })
+  @NameIndex.MikroORMIndex()
   name: string
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
   @Property({ columnType: "text" })
-  @Index({
-    name: fulfillmentSetIdIndexName,
-    expression: fulfillmentSetIdIndexStatement,
-  })
+  @FulfillmentSetIdIndex.MikroORMIndex()
   fulfillment_set_id: string
 
   @ManyToOne(() => FulfillmentSet, { persist: false })
