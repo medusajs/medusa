@@ -535,31 +535,23 @@ export default class PaymentModuleService<
     }
 
     switch (event.action) {
-      // TODO: rename event
-      case PaymentActions.CAPTURED: {
-        // WIP
+      case PaymentActions.SUCCESSFUL: {
+        const [payment] = await this.listPayments({
+          session_id: event.data.resource_id,
+        })
 
+        await this.capturePayment(
+          { payment_id: payment.id, amount: event.data.amount },
+          sharedContext
+        )
+        break
+      }
+      case PaymentActions.AUTHORIZED:
         await this.authorizePaymentSession(
           event.data.resource_id as string,
           {},
           sharedContext
         )
-
-        break
-      }
-      case PaymentActions.AUTHORIZED:
-        // WIP
-
-        const [payment] = await this.listPayments({
-          session_id: event.data.resource_id,
-        })
-
-        if (payment) {
-          await this.capturePayment(
-            { payment_id: payment.id, amount: event.data.amount },
-            sharedContext
-          )
-        }
     }
   }
 

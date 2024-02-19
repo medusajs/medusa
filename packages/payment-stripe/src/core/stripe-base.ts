@@ -322,7 +322,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     switch (event.type) {
       case "payment_intent.amount_capturable_updated":
         return {
-          action: PaymentActions.CAPTURED,
+          action: PaymentActions.AUTHORIZED,
           data: {
             resource_id: intent.metadata.resource_id,
             amount: intent.amount_capturable,
@@ -330,7 +330,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
         }
       case "payment_intent.succeeded":
         return {
-          action: PaymentActions.AUTHORIZED,
+          action: PaymentActions.SUCCESSFUL,
           data: {
             resource_id: intent.metadata.resource_id,
             amount: intent.amount_received,
