@@ -5,6 +5,7 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createUsers } from "../../../__fixtures__/user"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
+import { EventBusService } from "../../../__fixtures__/event-bus"
 
 jest.setTimeout(30000)
 
@@ -41,6 +42,7 @@ describe("UserModuleService - User", () => {
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
+    jest.clearAllMocks()
   })
 
   afterAll(async () => {
@@ -182,6 +184,30 @@ describe("UserModuleService - User", () => {
 
       expect(error.message).toEqual('User with id "does-not-exist" not found')
     })
+
+    it("should emit user created events", async () => {
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
+      await service.create(defaultUserData)
+
+      jest.clearAllMocks()
+
+      await service.update([
+        {
+          id: "1",
+          first_name: "John",
+        },
+      ])
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: "1",
+          }),
+          eventName: "user.updated",
+        }),
+      ])
+    })
   })
 
   describe("create", () => {
@@ -198,6 +224,27 @@ describe("UserModuleService - User", () => {
           id: "1",
         })
       )
+    })
+
+    it("should emit user created events", async () => {
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
+      await service.create(defaultUserData)
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: "1",
+          }),
+          eventName: "user.created",
+        }),
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: "2",
+          }),
+          eventName: "user.created",
+        }),
+      ])
     })
   })
 })

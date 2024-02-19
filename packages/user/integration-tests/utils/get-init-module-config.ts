@@ -1,4 +1,5 @@
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
+import { EventBusService } from "../__fixtures__/event-bus"
 
 import { DB_URL } from "./database"
 
@@ -13,7 +14,9 @@ export function getInitModuleConfig() {
     jwt_secret: "test",
   }
 
-  const injectedDependencies = {}
+  const injectedDependencies = {
+    eventBusModuleService: new EventBusService(),
+  }
 
   const modulesConfig_ = {
     [Modules.USER]: {

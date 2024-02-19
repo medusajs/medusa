@@ -5,6 +5,7 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createInvites } from "../../../__fixtures__/invite"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
+import { EventBusService } from "../../../__fixtures__/event-bus"
 
 jest.setTimeout(30000)
 
@@ -44,6 +45,7 @@ describe("UserModuleService - Invite", () => {
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     testManager = MikroOrmWrapper.forkManager()
+    jest.clearAllMocks()
   })
 
   afterEach(async () => {
@@ -171,6 +173,30 @@ describe("UserModuleService - Invite", () => {
 
       expect(error.message).toEqual('Invite with id "does-not-exist" not found')
     })
+
+    it("should emit invite updated events", async () => {
+      await createInvites(testManager, defaultInviteData)
+
+      jest.clearAllMocks()
+
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
+      await service.updateInvites([
+        {
+          id: "1",
+          accepted: true,
+        },
+      ])
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: "1",
+          }),
+          eventName: "invite.updated",
+        }),
+      ])
+    })
   })
 
   describe("createInvitie", () => {
@@ -187,6 +213,27 @@ describe("UserModuleService - Invite", () => {
           id: "1",
         })
       )
+    })
+
+    it("should emit invite created events", async () => {
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
+      await service.createInvites(defaultInviteData)
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: "1",
+          }),
+          eventName: "invite.created",
+        }),
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: "2",
+          }),
+          eventName: "invite.created",
+        }),
+      ])
     })
   })
 })
