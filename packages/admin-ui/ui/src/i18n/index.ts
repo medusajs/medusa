@@ -89,7 +89,11 @@ export const supportedLanguages = [
   {
     locale: "zh",
     name: "简体中文",
-  }
+  },
+  {
+    locale: "tr",
+    name: "Türkçe",
+  },
 ].sort((a, b) => a.locale.localeCompare(b.locale))
 
 const adminPath = getFullAdminPath()
