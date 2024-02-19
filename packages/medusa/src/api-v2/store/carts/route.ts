@@ -1,7 +1,8 @@
 import { createCartWorkflow } from "@medusajs/core-flows"
 import { CreateCartDTO } from "@medusajs/types"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
-import { defaultStoreCartRemoteQueryObject } from "../carts/query-config"
+import { defaultStoreCartFields } from "../carts/query-config"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const workflow = createCartWorkflow(req.scope)
@@ -19,11 +20,10 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
   const variables = { id: result[0].id }
 
-  const query = {
-    cart: {
-      ...defaultStoreCartRemoteQueryObject,
-    },
-  }
+  const query = remoteQueryObjectFromString({
+    entryPoint: "cart",
+    fields: defaultStoreCartFields,
+  })
 
   const [cart] = await remoteQuery(query, { cart: variables })
 

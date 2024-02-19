@@ -37,9 +37,6 @@ module.exports = {
   },
   featureFlags: {
     medusa_v2: enableMedusaV2,
-    workflows: {
-      [Workflows.CreateCart]: true,
-    },
   },
   modules: {
     [Modules.AUTH]: {
