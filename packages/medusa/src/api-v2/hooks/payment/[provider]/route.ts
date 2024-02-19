@@ -1,12 +1,14 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { PaymentWebhookEvents } from "@medusajs/utils"
+import { PaymentModuleOptions } from "@medusajs/types"
+
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   try {
     const { provider } = req.params
 
-    const options =
+    const options: PaymentModuleOptions =
       req.scope.resolve(ModuleRegistrationName.PAYMENT).options || {}
 
     const event = {

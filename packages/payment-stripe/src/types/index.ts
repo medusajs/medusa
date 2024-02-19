@@ -17,16 +17,6 @@ export interface StripeOptions {
    * Set a default description on the intent if the context does not provide one
    */
   payment_description?: string
-  /**
-   * The delay in milliseconds before processing the webhook event.
-   * @defaultValue 5000
-   */
-  webhook_delay?: number
-  /**
-   * The number of times to retry the webhook event processing in case of an error.
-   * @defaultValue 3
-   */
-  webhook_retries?: number
 }
 
 export interface PaymentIntentOptions {

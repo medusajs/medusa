@@ -128,3 +128,16 @@ export interface IPaymentModuleService extends IModuleService {
 
   processEvent(data: ProviderWebhookPayload): Promise<void>
 }
+
+export interface PaymentModuleOptions {
+  /**
+   * The delay in milliseconds before processing the webhook event.
+   * @defaultValue 5000
+   */
+  webhook_delay?: number
+  /**
+   * The number of times to retry the webhook event processing in case of an error.
+   * @defaultValue 3
+   */
+  webhook_retries?: number
+}

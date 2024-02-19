@@ -27,6 +27,9 @@ class PaymentWebhookSubscriber {
     )
   }
 
+  /**
+   * TODO: consider moving this to a workflow
+   */
   processEvent = async (data: ProviderWebhookPayload): Promise<void> => {
     await this.paymentModuleService_.processEvent(data)
   }
