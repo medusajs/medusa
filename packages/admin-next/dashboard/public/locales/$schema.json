@@ -86,6 +86,15 @@
       },
       "required": ["domain"]
     },
+    "campaigns": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        }
+      },
+      "required": ["domain"]
+    },
     "customers": {
       "type": "object",
       "properties": {
@@ -122,7 +131,7 @@
       },
       "required": ["domain"]
     },
-    "discounts": {
+    "promotions": {
       "type": "object",
       "properties": {
         "domain": {
@@ -250,7 +259,7 @@
     "customerGroups",
     "orders",
     "draftOrders",
-    "discounts",
+    "promotions",
     "giftCards",
     "pricing",
     "users",

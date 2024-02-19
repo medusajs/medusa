@@ -132,6 +132,22 @@ const router = createBrowserRouter([
             ],
           },
           {
+            path: "/campaigns",
+            handle: {
+              crumb: () => "Categories",
+            },
+            children: [
+              {
+                index: true,
+                lazy: () => import("../../routes/campaigns/list"),
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/campaigns/details"),
+              },
+            ],
+          },
+          {
             path: "/categories",
             handle: {
               crumb: () => "Categories",
@@ -308,18 +324,18 @@ const router = createBrowserRouter([
             lazy: () => import("../../routes/inventory/list"),
           },
           {
-            path: "/discounts",
+            path: "/promotions",
             handle: {
-              crumb: () => "Discounts",
+              crumb: () => "Promotions",
             },
             children: [
               {
                 index: true,
-                lazy: () => import("../../routes/discounts/list"),
+                lazy: () => import("../../routes/promotions/list"),
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/discounts/details"),
+                lazy: () => import("../../routes/promotions/details"),
               },
             ],
           },
