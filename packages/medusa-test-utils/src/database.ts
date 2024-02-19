@@ -13,12 +13,17 @@ export function getDatabaseURL(dbName?: string): string {
   }@${DB_HOST}/${DB_NAME}`
 }
 
-export function getMikroOrmConfig(
-  mikroOrmEntities: any[],
-  pathToMigrations?: string,
-  clientUrl?: string,
+export function getMikroOrmConfig({
+  mikroOrmEntities,
+  pathToMigrations,
+  clientUrl,
+  schema,
+}: {
+  mikroOrmEntities: any[]
+  pathToMigrations?: string
+  clientUrl?: string
   schema?: string
-): Options {
+}): Options {
   const DB_URL = clientUrl ?? getDatabaseURL()
 
   return {
@@ -51,12 +56,17 @@ export interface TestDatabase {
   getOrm(): MikroORM
 }
 
-export function getMikroOrmWrapper(
-  mikroOrmEntities: any[],
-  pathToMigrations?: string,
-  clientUrl?: string,
+export function getMikroOrmWrapper({
+  mikroOrmEntities,
+  pathToMigrations,
+  clientUrl,
+  schema,
+}: {
+  mikroOrmEntities: any[]
+  pathToMigrations?: string
+  clientUrl?: string
   schema?: string
-): TestDatabase {
+}): TestDatabase {
   return {
     mikroOrmEntities,
     pathToMigrations,
@@ -91,12 +101,12 @@ export function getMikroOrmWrapper(
     },
 
     async setupDatabase() {
-      const OrmConfig = getMikroOrmConfig(
-        this.mikroOrmEntities,
-        this.pathToMigrations,
-        this.clientUrl,
-        this.schema
-      )
+      const OrmConfig = getMikroOrmConfig({
+        mikroOrmEntities: this.mikroOrmEntities,
+        pathToMigrations: this.pathToMigrations,
+        clientUrl: this.clientUrl,
+        schema: this.schema,
+      })
 
       // Initializing the ORM
       this.orm = await MikroORM.init(OrmConfig)

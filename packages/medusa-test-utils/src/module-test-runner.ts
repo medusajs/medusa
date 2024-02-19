@@ -43,12 +43,12 @@ export function moduleIntegrationTestRunner({
   // Use a unique connection for all the entire suite
   const connection = ModulesSdkUtils.createPgConnection(dbConfig)
 
-  const MikroOrmWrapper = getMikroOrmWrapper(
-    moduleModels,
-    migrationPath,
-    dbConfig.clientUrl,
-    dbConfig.schema
-  )
+  const MikroOrmWrapper = getMikroOrmWrapper({
+    mikroOrmEntities: moduleModels,
+    pathToMigrations: migrationPath,
+    clientUrl: dbConfig.clientUrl,
+    schema: dbConfig.schema,
+  })
 
   const modulesConfig_ = {
     [moduleName]: {
