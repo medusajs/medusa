@@ -32,7 +32,7 @@ export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [transformBody(AdminCreateInviteRequest)],
   },
   {
-    method: ["POST"],
+    method: "POST",
     matcher: "/admin/invites/accept",
     middlewares: [
       transformBody(AdminPostInvitesInviteAcceptReq),
