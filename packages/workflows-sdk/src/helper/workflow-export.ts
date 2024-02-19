@@ -180,6 +180,8 @@ function createContextualWorkflowRunner<
       const errorMessage = errors
         ?.map((err) => `${err.error?.message}${EOL}${err.error?.stack}`)
         ?.join(`${EOL}`)
+
+      console.log("ERROR", errors)
       throw new Error(errorMessage)
     }
 

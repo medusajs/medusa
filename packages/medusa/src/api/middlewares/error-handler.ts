@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 
-import { Logger } from "../../types/global"
 import { MedusaError } from "medusa-core-utils"
+import { Logger } from "../../types/global"
 import { formatException } from "../../utils"
 
 const QUERY_RUNNER_RELEASED = "QueryRunnerAlreadyReleasedError"
@@ -32,6 +32,8 @@ export default () => {
       type: err.type,
       message: err.message,
     }
+
+    console.error("ERROR", err)
 
     let statusCode = 500
     switch (errorType) {
