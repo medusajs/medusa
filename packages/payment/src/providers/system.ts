@@ -71,7 +71,7 @@ export class SystemProviderService extends AbstractPaymentProvider {
     return {}
   }
 
-  async getWebhookAction(
+  async getWebhookActionAndData(
     data: ProviderWebhookPayload["payload"]
   ): Promise<WebhookActionResult> {
     return { action: PaymentActions.NOT_SUPPORTED }

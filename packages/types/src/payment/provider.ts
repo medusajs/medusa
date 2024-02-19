@@ -245,7 +245,7 @@ export interface IPaymentProvider {
    *
    * @param data - object containing provider id and data from the provider
    */
-  getWebhookAction(
+  getWebhookActionAndData(
     data: ProviderWebhookPayload["payload"]
   ): Promise<WebhookActionResult>
 }

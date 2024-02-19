@@ -313,7 +313,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     }
   }
 
-  async getWebhookAction(
+  async getWebhookActionAndData(
     webhookData: ProviderWebhookPayload["payload"]
   ): Promise<WebhookActionResult> {
     const event = this.constructWebhookEvent(webhookData)

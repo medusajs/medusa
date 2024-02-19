@@ -175,13 +175,13 @@ export default class PaymentProviderService {
     return res as Record<string, unknown>
   }
 
-  async processEvent(
+  async getWebhookActionAndData(
     providerId: string,
     data: ProviderWebhookPayload["payload"]
   ): Promise<WebhookActionResult> {
     const provider = this.retrieveProvider(providerId)
 
-    return await provider.getWebhookAction(data)
+    return await provider.getWebhookActionAndData(data)
   }
 
   private throwPaymentProviderError(errObj: PaymentProviderError) {

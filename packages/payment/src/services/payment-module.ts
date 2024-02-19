@@ -525,7 +525,7 @@ export default class PaymentModuleService<
   ): Promise<void> {
     const providerId = `pp_${eventData.provider}`
 
-    const event = await this.paymentProviderService_.processEvent(
+    const event = await this.paymentProviderService_.getWebhookActionAndData(
       providerId,
       eventData.payload
     )
