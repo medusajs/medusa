@@ -77,15 +77,29 @@ export default class ShippingOption {
   })
   price_type: ShippingOptionPriceType
 
-  @Property({ columnType: "text" })
+  @ManyToOne(() => ShippingProfile, {
+    type: "text",
+    fieldName: "service_zone_id",
+    mapToPk: true,
+  })
   @ServiceZoneIdIndex.MikroORMIndex()
   service_zone_id: string
 
-  @Property({ columnType: "text", nullable: true })
+  @ManyToOne(() => ShippingProfile, {
+    type: "text",
+    fieldName: "shipping_profile_id",
+    mapToPk: true,
+    nullable: true,
+  })
   @ShippingProfileIdIndex.MikroORMIndex()
   shipping_profile_id: string | null
 
-  @Property({ columnType: "text", nullable: true })
+  @ManyToOne(() => ServiceProvider, {
+    type: "text",
+    fieldName: "service_provider_id",
+    mapToPk: true,
+    nullable: true,
+  })
   @ServiceProviderIdIndex.MikroORMIndex()
   service_provider_id: string
 
@@ -104,15 +118,13 @@ export default class ShippingOption {
 
   @ManyToOne(() => ShippingProfile, {
     persist: false,
-    nullable: true,
   })
   shipping_profile: ShippingProfile | null
 
   @ManyToOne(() => ServiceProvider, {
     persist: false,
-    nullable: true,
   })
-  service_provider: ServiceProvider
+  service_provider: ServiceProvider | null
 
   @OneToOne(() => ShippingOptionType, (so) => so.shipping_option, {
     owner: true,

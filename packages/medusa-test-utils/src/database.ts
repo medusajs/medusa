@@ -1,6 +1,4 @@
 import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
-import * as process from "process"
-import { Migrator } from "@mikro-orm/migrations"
 
 export function getDatabaseURL(dbName?: string): string {
   const DB_HOST = process.env.DB_HOST ?? "localhost"
@@ -32,7 +30,6 @@ export function getMikroOrmConfig({
     entities: Object.values(mikroOrmEntities),
     schema: schema ?? process.env.MEDUSA_DB_SCHEMA,
     debug: false,
-    extensions: [Migrator],
     migrations: {
       pathTs: pathToMigrations,
       silent: true,

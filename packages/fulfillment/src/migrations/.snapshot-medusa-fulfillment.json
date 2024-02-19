@@ -818,13 +818,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "'default'",
-          "enumItems": [
-            "default",
-            "gift_card",
-            "custom"
-          ],
-          "mappedType": "enum"
+          "mappedType": "text"
         },
         "metadata": {
           "name": "metadata",
@@ -965,15 +959,6 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "shipping_option_type_id": {
-          "name": "shipping_option_type_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
         "data": {
           "name": "data",
           "type": "jsonb",
@@ -991,6 +976,15 @@
           "primary": false,
           "nullable": true,
           "mappedType": "json"
+        },
+        "shipping_option_type_id": {
+          "name": "shipping_option_type_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         },
         "created_at": {
           "name": "created_at",
@@ -1036,16 +1030,6 @@
           "keyName": "shipping_option_shipping_option_type_id_unique",
           "primary": false,
           "unique": true
-        },
-        {
-          "keyName": "IDX_shipping_option_name_unique",
-          "columnNames": [
-            "name"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_shipping_option_name_unique\" ON \"shipping_option\" (name) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_shipping_option_service_zone_id",
@@ -1766,7 +1750,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_fulfillment_id\" ON \"fulfillment_item\" (line_item_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_line_item_id\" ON \"fulfillment_item\" (line_item_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_fulfillment_item_inventory_item_id",
@@ -1776,7 +1760,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_fulfillment_id\" ON \"fulfillment_item\" (inventory_item_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_inventory_item_id\" ON \"fulfillment_item\" (inventory_item_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_fulfillment_item_fulfillment_id",

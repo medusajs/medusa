@@ -10,9 +10,9 @@ export const MikroOrmWrapper = TestDatabaseUtils.getMikroOrmWrapper({
   pathToMigrations,
 })
 
-export const MikroOrmConfig = TestDatabaseUtils.getMikroOrmConfig(
+export const MikroOrmConfig = TestDatabaseUtils.getMikroOrmConfig({
   mikroOrmEntities,
-  pathToMigrations
-)
+  pathToMigrations,
+})
 
 export const DB_URL = TestDatabaseUtils.getDatabaseURL()

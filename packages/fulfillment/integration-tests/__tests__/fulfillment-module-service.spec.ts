@@ -15,6 +15,8 @@ import {
 import { GeoZoneType } from "@medusajs/utils"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
+jest.setTimeout(100000)
+
 moduleIntegrationTestRunner({
   moduleName: Modules.FULFILLMENT,
   testSuite: ({

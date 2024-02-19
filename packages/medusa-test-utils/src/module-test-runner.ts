@@ -18,19 +18,17 @@ export function moduleIntegrationTestRunner({
   moduleModels,
   joinerConfig = [],
   schema = "public",
-  migrationPath,
   testSuite,
 }: {
   moduleName: string
   moduleModels?: any[]
   joinerConfig?: any[]
-  migrationPath?: string
   schema?: string
   dbName?: string
   testSuite: <TService = unknown>(options: SuiteOptions<TService>) => () => void
 }) {
   moduleModels = Object.values(require(`${process.cwd()}/src/models`))
-  migrationPath ??= process.cwd() + "/src/migrations/!(*.d).{js,ts,cjs}"
+  // migrationPath ??= process.cwd() + "/src/migrations/!(*.d).{js,ts,cjs}"
 
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   const dbName = `medusa-${moduleName.toLowerCase()}-integration-${tempName}`
@@ -45,7 +43,6 @@ export function moduleIntegrationTestRunner({
 
   const MikroOrmWrapper = getMikroOrmWrapper({
     mikroOrmEntities: moduleModels,
-    pathToMigrations: migrationPath,
     clientUrl: dbConfig.clientUrl,
     schema: dbConfig.schema,
   })
