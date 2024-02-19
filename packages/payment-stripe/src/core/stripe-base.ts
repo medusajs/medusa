@@ -325,7 +325,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
           action: PaymentActions.AUTHORIZED,
           data: {
             resource_id: intent.metadata.resource_id,
-            amount: intent.amount_capturable,
+            amount: intent.amount_capturable, // NOTE: revisit when implementing multicapture
           },
         }
       case "payment_intent.succeeded":
