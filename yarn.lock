@@ -8875,6 +8875,7 @@ __metadata:
     cross-env: ^5.2.1
     dotenv: 16.3.1
     jest: ^29.6.3
+    jsonwebtoken: ^9.0.2
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
     rimraf: ^3.0.2
