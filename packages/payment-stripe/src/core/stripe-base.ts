@@ -317,39 +317,35 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     webhookData: ProviderWebhookPayload["payload"]
   ): Promise<WebhookActionResult> {
     const event = this.constructWebhookEvent(webhookData)
-    const object = event.data.object
+    const intent = event.data.object as Stripe.PaymentIntent
 
     switch (event.type) {
       case "payment_intent.amount_capturable_updated":
         return {
           action: PaymentActions.CAPTURED,
-          data: this.formatWebhookActionResponse(
-            object as Stripe.PaymentIntent
-          ),
+          data: {
+            resource_id: intent.metadata.resource_id,
+            amount: intent.amount_capturable,
+          },
         }
       case "payment_intent.succeeded":
         return {
           action: PaymentActions.AUTHORIZED,
-          data: this.formatWebhookActionResponse(
-            object as Stripe.PaymentIntent
-          ),
+          data: {
+            resource_id: intent.metadata.resource_id,
+            amount: intent.amount_received,
+          },
         }
       case "payment_intent.payment_failed":
         return {
           action: PaymentActions.FAILED,
-          data: this.formatWebhookActionResponse(
-            object as Stripe.PaymentIntent
-          ),
+          data: {
+            resource_id: intent.metadata.resource_id,
+            amount: intent.amount,
+          },
         }
       default:
         return { action: PaymentActions.NOT_SUPPORTED }
-    }
-  }
-
-  formatWebhookActionResponse(intent: Stripe.PaymentIntent): WebhookActionData {
-    return {
-      resource_id: intent.metadata.resource_id,
-      amount: intent.amount_capturable,
     }
   }
 

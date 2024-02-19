@@ -8,6 +8,11 @@ import {
 } from "@medusajs/types"
 import { EventBusService } from "../services"
 
+type SerializedBuffer = {
+  data: ArrayBuffer
+  type: "Buffer"
+}
+
 type InjectedDependencies = {
   paymentModuleService: IPaymentModuleService
   eventBusService: EventBusService
@@ -31,6 +36,11 @@ class PaymentWebhookSubscriber {
    * TODO: consider moving this to a workflow
    */
   processEvent = async (data: ProviderWebhookPayload): Promise<void> => {
+    if ((data.payload.data as unknown as SerializedBuffer).type === "Buffer") {
+      data.payload.data = Buffer.from(
+        (data.payload.data as unknown as SerializedBuffer).data
+      )
+    }
     await this.paymentModuleService_.processEvent(data)
   }
 }
