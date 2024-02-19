@@ -314,7 +314,7 @@ export class RoutesLoader {
           const shouldAddCors =
             import_["CORS"] !== undefined ? (import_["CORS"] as boolean) : true
 
-          if (route.startsWith("/admin")) {
+          if (route.startsWith("/admin") || route.startsWith("/auth/admin")) {
             if (shouldAddCors) {
               config.shouldAppendAdminCors = true
             }
