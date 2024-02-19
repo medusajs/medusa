@@ -15,7 +15,7 @@ import { Cart } from "./cart"
 
 /**
  * @enum
- * 
+ *
  * The status of a payment session.
  */
 export enum PaymentSessionStatus {
@@ -27,6 +27,10 @@ export enum PaymentSessionStatus {
    * The payment is pending.
    */
   PENDING = "pending",
+  /**
+   * The payment is captured.
+   */
+  CAPTURED = "captured",
   /**
    * The payment requires an action.
    */
