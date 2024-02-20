@@ -82,7 +82,7 @@ export const authenticate = (
       authUser &&
       (isRegistered || (!isRegistered && options.allowUnregistered))
     ) {
-      req.session.auth_user = {
+      req.auth_user = {
         id: authUser.id,
         app_metadata: authUser.app_metadata,
         scope: authUser.scope,

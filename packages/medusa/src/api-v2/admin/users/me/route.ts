@@ -6,7 +6,7 @@ import {
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const userId = req.session.auth_user?.app_metadata.user_id
+  const userId = req.auth_user?.app_metadata.user_id
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const query = remoteQueryObjectFromString({
