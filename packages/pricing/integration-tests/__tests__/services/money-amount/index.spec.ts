@@ -214,8 +214,8 @@ describe("MoneyAmount Service", () => {
       expect(count).toEqual(3)
       expect(serialized).toEqual([
         {
-          id: "money-amount-USD",
-          amount: 500,
+          id: "money-amount-CAD",
+          amount: 600,
         },
       ])
     })
