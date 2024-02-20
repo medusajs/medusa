@@ -75,7 +75,7 @@ export interface FilterableTaxRegionProps
 }
 
 export interface TaxRateRuleDTO {
-  reference_type: string
+  reference: string
   reference_id: string
   tax_rate_id: string
   tax_rate?: TaxRateDTO
@@ -87,7 +87,7 @@ export interface TaxRateRuleDTO {
 
 export interface FilterableTaxRateRuleProps
   extends BaseFilterable<FilterableTaxRateRuleProps> {
-  reference_type?: string | string[] | OperatorMap<string>
+  reference?: string | string[] | OperatorMap<string>
   reference_id?: string | string[] | OperatorMap<string>
   tax_rate_id?: string | string[] | OperatorMap<string>
   tax_rate?: FilterableTaxRateProps

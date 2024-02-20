@@ -23,7 +23,7 @@ export default class TaxRateRule {
   [PrimaryKeyProp]?: ["tax_rate_id", "reference_id"]
 
   @Property({ columnType: "text" })
-  reference_type: string
+  reference: string
 
   @ManyToOne(() => TaxRate, {
     fieldName: "tax_rate_id",

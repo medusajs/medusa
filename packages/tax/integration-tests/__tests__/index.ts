@@ -113,7 +113,7 @@ describe("TaxModuleService", function () {
     await service.createTaxRateRules([
       {
         tax_rate_id: rate.id,
-        reference_type: "product",
+        reference: "product",
         reference_id: "prod_1234",
       },
     ])
@@ -127,7 +127,7 @@ describe("TaxModuleService", function () {
     expect(listedRules).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          reference_type: "product",
+          reference: "product",
           reference_id: "prod_1234",
           tax_rate: expect.objectContaining({
             tax_region_id: region.id,
