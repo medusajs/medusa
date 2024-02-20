@@ -6,8 +6,14 @@ import {
   FilterableTaxRateProps,
   TaxRateDTO,
   TaxRegionDTO,
+  TaxRateRuleDTO,
+  FilterableTaxRateRuleProps,
 } from "./common"
-import { CreateTaxRateDTO, CreateTaxRegionDTO } from "./mutations"
+import {
+  CreateTaxRateRuleDTO,
+  CreateTaxRateDTO,
+  CreateTaxRegionDTO,
+} from "./mutations"
 
 export interface ITaxModuleService extends IModuleService {
   retrieve(
@@ -47,4 +53,15 @@ export interface ITaxModuleService extends IModuleService {
     config?: FindConfig<TaxRegionDTO>,
     sharedContext?: Context
   ): Promise<TaxRegionDTO[]>
+
+  createTaxRateRules(
+    data: CreateTaxRateRuleDTO[],
+    sharedContext?: Context
+  ): Promise<TaxRateRuleDTO[]>
+
+  listTaxRateRules(
+    filters?: FilterableTaxRateRuleProps,
+    config?: FindConfig<TaxRateRuleDTO>,
+    sharedContext?: Context
+  ): Promise<TaxRateRuleDTO[]>
 }
