@@ -6,14 +6,6 @@ const defaultContext = { __type: "MedusaContext" }
 class Model {
   static __meta = {
     primaryKeys: ["id"],
-    relations: [
-      {
-        name: "relation",
-        targetMeta: {
-          primaryKey: ["id"],
-        },
-      },
-    ],
   }
 }
 
@@ -146,16 +138,9 @@ describe("Internal Module Service Factory", () => {
         expect.objectContaining({
           options: expect.objectContaining({
             populate: ["relation"],
-            orderBy: [
-              {
-                id: "ASC",
-              },
-              {
-                relation: {
-                  id: "ASC",
-                },
-              },
-            ],
+            orderBy: {
+              id: "ASC",
+            },
           }),
         }),
         expect.any(Object)

@@ -63,46 +63,22 @@ export function internalModuleServiceFactory<
       return keys.map((k) => data[k]).join("_")
     }
 
+    /**
+     * Only apply top level default ordering as the relation
+     * default ordering is already applied through the foreign key
+     * @param config
+     */
     static applyDefaultOrdering(config: FindConfig<any>) {
       if (config.order) {
         return
       }
 
-      const order: object[] = []
+      config.order = {}
 
       const primaryKeys = AbstractService_.retrievePrimaryKeys(model)
-      const mainEntityOrder = {}
-      primaryKeys.forEach((pk) => {
-        mainEntityOrder[pk] = "ASC"
+      primaryKeys.forEach((primaryKey) => {
+        config.order![primaryKey] = "ASC"
       })
-      order.push(mainEntityOrder)
-
-      if (config.relations?.length) {
-        config.relations.forEach((relation) => {
-          const relation_ = (
-            model.__meta ?? model.prototype.__meta
-          ).relations.find((r) => r.name === relation)
-          const relationPrimaryKeys = relation_.targetMeta.primaryKeys ?? ["id"]
-
-          // create order deep object based on relation segment
-          const relationOrder = {}
-          relation.split(".").reduce((acc, segment, index, segments) => {
-            if (index === segments.length - 1) {
-              acc[segment] = {}
-              relationPrimaryKeys.forEach((pk: string) => {
-                acc[segment][pk] = "ASC"
-              })
-              return acc[segment]
-            }
-            acc[segment] = {}
-            return acc[segment]
-          }, relationOrder)
-
-          order.push(relationOrder)
-        })
-      }
-
-      config.order = order as unknown as FindConfig<any>["order"]
     }
 
     @InjectManager(propertyRepositoryName)
