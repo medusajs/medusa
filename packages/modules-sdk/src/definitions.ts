@@ -19,11 +19,13 @@ export enum Modules {
   PRODUCT = "productService",
   PROMOTION = "promotion",
   SALES_CHANNEL = "salesChannel",
+  TAX = "tax",
   FULFILLMENT = "fulfillment",
   STOCK_LOCATION = "stockLocationService",
   USER = "user",
   WORKFLOW_ENGINE = "workflows",
   REGION = "region",
+  ORDER = "order",
 }
 
 export enum ModuleRegistrationName {
@@ -40,9 +42,11 @@ export enum ModuleRegistrationName {
   SALES_CHANNEL = "salesChannelModuleService",
   FULFILLMENT = "fulfillmentModuleService",
   STOCK_LOCATION = "stockLocationService",
+  TAX = "taxModuleService",
   USER = "userModuleService",
   WORKFLOW_ENGINE = "workflowsModuleService",
   REGION = "regionModuleService",
+  ORDER = "orderModuleService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
@@ -60,9 +64,11 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.SALES_CHANNEL]: "@medusajs/sales-channel",
   [Modules.FULFILLMENT]: "@medusajs/fulfillment",
   [Modules.STOCK_LOCATION]: "@medusajs/stock-location",
+  [Modules.TAX]: "@medusajs/tax",
   [Modules.USER]: "@medusajs/user",
   [Modules.WORKFLOW_ENGINE]: "@medusajs/workflow-engine-inmemory",
   [Modules.REGION]: "@medusajs/region",
+  [Modules.ORDER]: "@medusajs/order",
 }
 
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
@@ -271,6 +277,32 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isRequired: false,
       isQueryable: true,
       dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.ORDER]: {
+      key: Modules.ORDER,
+      registrationName: ModuleRegistrationName.ORDER,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.ORDER),
+      isRequired: false,
+      isQueryable: true,
+      dependencies: ["logger", "eventBusService"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.TAX]: {
+      key: Modules.TAX,
+      registrationName: ModuleRegistrationName.TAX,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.TAX),
+      isRequired: false,
+      isQueryable: true,
+      dependencies: ["logger", "eventBusService"],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,

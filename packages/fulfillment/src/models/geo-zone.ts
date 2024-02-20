@@ -5,58 +5,47 @@ import {
   GeoZoneType,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Entity,
   Enum,
   Filter,
-  Index,
   ManyToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 import ServiceZone from "./service-zone"
 
 type GeoZoneOptionalProps = DAL.SoftDeletableEntityDateColumns
 
-const deletedAtIndexName = "IDX_geo_zone_deleted_at"
-const deletedAtIndexStatement = createPsqlIndexStatementHelper({
-  name: deletedAtIndexName,
+const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
-const countryCodeIndexName = "IDX_geo_zone_country_code"
-const countryCodeIndexStatement = createPsqlIndexStatementHelper({
-  name: countryCodeIndexName,
+const CountryCodeIndex = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "country_code",
   where: "deleted_at IS NULL",
 })
 
-const provinceCodeIndexName = "IDX_geo_zone_province_code"
-const provinceCodeIndexStatement = createPsqlIndexStatementHelper({
-  name: provinceCodeIndexName,
+const ProvinceCodeIndex = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "province_code",
   where: "deleted_at IS NULL AND province_code IS NOT NULL",
 })
 
-const cityIndexName = "IDX_geo_zone_city"
-const cityIndexStatement = createPsqlIndexStatementHelper({
-  name: cityIndexName,
+const CityIndex = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "city",
   where: "deleted_at IS NULL AND city IS NOT NULL",
 })
 
-const serviceZoneIdIndexName = "IDX_geo_zone_service_zone_id"
-const serviceZoneIdStatement = createPsqlIndexStatementHelper({
-  name: serviceZoneIdIndexName,
+const ServiceZoneIdIndex = createPsqlIndexStatementHelper({
   tableName: "geo_zone",
   columns: "service_zone_id",
   where: "deleted_at IS NULL",
@@ -73,32 +62,20 @@ export default class GeoZone {
   @Enum({ items: () => GeoZoneType, default: GeoZoneType.COUNTRY })
   type: GeoZoneType
 
-  @Index({
-    name: countryCodeIndexName,
-    expression: countryCodeIndexStatement,
-  })
+  @CountryCodeIndex.MikroORMIndex()
   @Property({ columnType: "text" })
   country_code: string
 
-  @Index({
-    name: provinceCodeIndexName,
-    expression: provinceCodeIndexStatement,
-  })
+  @ProvinceCodeIndex.MikroORMIndex()
   @Property({ columnType: "text", nullable: true })
   province_code: string | null = null
 
-  @Index({
-    name: cityIndexName,
-    expression: cityIndexStatement,
-  })
+  @CityIndex.MikroORMIndex()
   @Property({ columnType: "text", nullable: true })
   city: string | null = null
 
   @Property({ columnType: "text" })
-  @Index({
-    name: serviceZoneIdIndexName,
-    expression: serviceZoneIdStatement,
-  })
+  @ServiceZoneIdIndex.MikroORMIndex()
   service_zone_id: string
 
   // TODO: Do we have an example or idea of what would be stored in this field? like lat/long for example?
@@ -128,10 +105,7 @@ export default class GeoZone {
   })
   updated_at: Date
 
-  @Index({
-    name: deletedAtIndexName,
-    expression: deletedAtIndexStatement,
-  })
+  @DeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

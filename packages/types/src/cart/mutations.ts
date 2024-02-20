@@ -33,8 +33,8 @@ export interface CreateCartDTO {
   currency_code: string
   shipping_address_id?: string
   billing_address_id?: string
-  shipping_address?: CreateAddressDTO | UpdateAddressDTO
-  billing_address?: CreateAddressDTO | UpdateAddressDTO
+  shipping_address?: CreateAddressDTO | string
+  billing_address?: CreateAddressDTO | string
   metadata?: Record<string, unknown>
 
   items?: CreateLineItemDTO[]
