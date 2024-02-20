@@ -296,6 +296,7 @@ export class RoutesLoader {
             shouldRequireAdminAuth: false,
             shouldRequireCustomerAuth: false,
             shouldAppendCustomer: false,
+            shouldAppendAuthCors: false,
           }
 
           /**
@@ -314,7 +315,7 @@ export class RoutesLoader {
           const shouldAddCors =
             import_["CORS"] !== undefined ? (import_["CORS"] as boolean) : true
 
-          if (route.startsWith("/admin") || route.startsWith("/auth/admin")) {
+          if (route.startsWith("/admin")) {
             if (shouldAddCors) {
               config.shouldAppendAdminCors = true
             }
@@ -330,6 +331,10 @@ export class RoutesLoader {
             if (shouldAddCors) {
               config.shouldAppendStoreCors = true
             }
+          }
+
+          if (route.startsWith("/auth") && shouldAddCors) {
+            config.shouldAppendAuthCors = true
           }
 
           if (shouldRequireAuth && route.startsWith("/store/me")) {
@@ -595,6 +600,21 @@ export class RoutesLoader {
           cors({
             origin: parseCorsOrigins(
               this.configModule.projectConfig.admin_cors || ""
+            ),
+            credentials: true,
+          })
+        )
+      }
+
+      if (descriptor.config.shouldAppendAuthCors) {
+        /**
+         * Apply the admin cors
+         */
+        this.router.use(
+          descriptor.route,
+          cors({
+            origin: parseCorsOrigins(
+              this.configModule.projectConfig.auth_cors || ""
             ),
             credentials: true,
           })

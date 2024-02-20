@@ -1,9 +1,10 @@
-import { RedisOptions } from "ioredis"
-import { LoggerOptions } from "typeorm"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
 } from "../modules-sdk"
+
+import { LoggerOptions } from "typeorm"
+import { RedisOptions } from "ioredis"
 
 /**
  * @interface
@@ -174,6 +175,7 @@ export type ProjectConfigOptions = {
    * ```
    */
   admin_cors?: string
+  auth_cors?: string
   /**
    * A random string used to create cookie tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.
    *

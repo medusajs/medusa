@@ -1,3 +1,5 @@
+import * as Dialog from "@radix-ui/react-dialog"
+
 import {
   ArrowRightOnRectangle,
   BellAlert,
@@ -10,9 +12,6 @@ import {
   User as UserIcon,
 } from "@medusajs/icons"
 import { Avatar, DropdownMenu, IconButton, Kbd, Text, clx } from "@medusajs/ui"
-import * as Dialog from "@radix-ui/react-dialog"
-import { useAdminDeleteSession, useAdminGetSession } from "medusa-react"
-import { PropsWithChildren } from "react"
 import {
   Link,
   Outlet,
@@ -21,9 +20,10 @@ import {
   useMatches,
   useNavigate,
 } from "react-router-dom"
+import { useAdminDeleteSession, useAdminGetSession } from "medusa-react"
 
+import { PropsWithChildren } from "react"
 import { Skeleton } from "../../common/skeleton"
-
 import { queryClient } from "../../../lib/medusa"
 import { useSearch } from "../../../providers/search-provider"
 import { useSidebar } from "../../../providers/sidebar-provider"
@@ -116,7 +116,11 @@ const Breadcrumbs = () => {
 }
 
 const UserBadge = () => {
-  const { user, isLoading, isError, error } = useAdminGetSession()
+  // const { user, isLoading, isError, error } = useAdminGetSession()
+  const user = { first_name: "John", last_name: "Doe", email: "tet" }
+  const isLoading = false
+  const isError = false
+  const error = new Error("test")
 
   const name = [user?.first_name, user?.last_name].filter(Boolean).join(" ")
   const displayName = name || user?.email
