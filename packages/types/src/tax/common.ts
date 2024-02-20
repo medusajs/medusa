@@ -73,3 +73,29 @@ export interface FilterableTaxRegionProps
   updated_at?: OperatorMap<string>
   created_by?: string | string[] | OperatorMap<string>
 }
+
+export interface TaxRateRuleDTO {
+  reference: string
+  reference_id: string
+  tax_rate_id: string
+  tax_rate?: TaxRateDTO
+  metadata?: Record<string, unknown> | null
+  created_at: string | Date
+  updated_at: string | Date
+  created_by: string | null
+}
+
+export interface FilterableTaxRateRuleProps
+  extends BaseFilterable<FilterableTaxRateRuleProps> {
+  reference?: string | string[] | OperatorMap<string>
+  reference_id?: string | string[] | OperatorMap<string>
+  tax_rate_id?: string | string[] | OperatorMap<string>
+  tax_rate?: FilterableTaxRateProps
+  metadata?:
+    | Record<string, unknown>
+    | Record<string, unknown>[]
+    | OperatorMap<Record<string, unknown>>
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  created_by?: string | string[] | OperatorMap<string>
+}

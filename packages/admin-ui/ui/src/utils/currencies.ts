@@ -448,7 +448,7 @@ export const currencies: CurrenciesType = {
   INR: {
     symbol: "Rs",
     name: "Indian Rupee",
-    symbol_native: "টকা",
+    symbol_native: "₹",
     decimal_digits: 2,
     rounding: 0,
     code: "INR",
