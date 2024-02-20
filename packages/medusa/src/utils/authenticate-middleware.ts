@@ -1,8 +1,9 @@
+import { AuthUserDTO, IUserModuleService } from "@medusajs/types"
 import { MedusaRequest, MedusaResponse } from "../types/routing"
 import { NextFunction, RequestHandler } from "express"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
-import { AuthUserDTO } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { stringEqualsOrRegexMatch } from "@medusajs/utils"
 
 const SESSION_AUTH = "session"
@@ -96,4 +97,39 @@ export const authenticate = (
 
     res.status(401).json({ message: "Unauthorized" })
   }
+}
+
+export const validateInviteToken = async (req, res, next) => {
+  const { scope } = req.params
+
+  if (scope !== "admin") {
+    return next()
+  }
+
+  const authHeader = req.headers.authorization
+  if (authHeader) {
+    const re = /(\S+)\s+(\S+)/
+    const matches = authHeader.match(re)
+    if (matches) {
+      const tokenType = matches[1]
+      const token = matches[2]
+      if (tokenType.toLowerCase() === "bearer") {
+        const userModule: IUserModuleService = req.scope.resolve(
+          ModuleRegistrationName.USER
+        )
+
+        try {
+          const invite = await userModule.validateInviteToken(token)
+
+          if (invite) {
+            return next()
+          }
+        } catch (e) {
+          // noop
+        }
+      }
+    }
+  }
+
+  res.status(401).json({ message: "Unauthorized" })
 }

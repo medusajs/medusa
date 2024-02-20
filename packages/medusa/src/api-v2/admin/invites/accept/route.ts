@@ -1,9 +1,10 @@
-import { acceptInviteWorkflow } from "@medusajs/core-flows"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
-import { InviteWorkflow } from "@medusajs/types"
+
 import { AdminPostInvitesInviteAcceptReq } from "../validators"
 import { IUserModuleService } from "@medusajs/types"
+import { InviteWorkflow } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { acceptInviteWorkflow } from "@medusajs/core-flows"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   if (req.auth_user?.app_metadata?.user_id) {
@@ -23,7 +24,17 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     user: req.validatedBody as AdminPostInvitesInviteAcceptReq,
   } as InviteWorkflow.AcceptInviteWorkflowInputDTO
 
-  const { result: users } = await workflow.run({ input })
+  let users
+  try {
+    const { result: userss } = await workflow.run({ input })
+    users = userss
+  } catch (e) {
+    if (e.message.startsWith("jwt malformed")) {
+      res.status(401).json({ message: "Unauthorized" })
+      return
+    }
+    throw e
+  }
 
   // Set customer_id on session user if we are in session
   if (req.session.auth_user) {
