@@ -99,3 +99,58 @@ export interface FilterableTaxRateRuleProps
   updated_at?: OperatorMap<string>
   created_by?: string | string[] | OperatorMap<string>
 }
+// HEAD
+export interface TaxableItemDTO {
+  id: string
+  product_id: string
+  product_name?: string
+  product_category_id?: string
+  product_categories?: string[]
+  product_sku?: string
+  product_type?: string
+  product_type_id?: string
+  quantity?: number
+  unit_price?: number
+  currency_code?: string
+}
+
+export interface TaxableShippingDTO {
+  id: string
+  shipping_option_id: string
+  unit_price?: number
+  currency_code?: string
+}
+
+export interface TaxCalculationContext {
+  address: {
+    country_code: string
+    province_code?: string | null
+    address_1?: string
+    address_2?: string | null
+    city?: string
+    postal_code?: string
+  }
+  customer?: {
+    id: string
+    email: string
+    customer_groups: string[]
+  }
+  is_return?: boolean
+}
+
+interface TaxLineDTO {
+  rate_id: string
+  rate: number | null
+  code: string | null
+  name: string
+}
+
+export interface ItemTaxLineDTO extends TaxLineDTO {
+  line_item_id: string
+}
+
+export interface ShippingTaxLineDTO extends TaxLineDTO {
+  shipping_line_id: string
+}
+//
+//origin/develop

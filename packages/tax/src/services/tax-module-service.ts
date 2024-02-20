@@ -12,6 +12,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
+  promiseAll,
 } from "@medusajs/utils"
 import { TaxRate, TaxRegion, TaxRateRule } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
@@ -128,7 +129,7 @@ export default class TaxModuleService<
       sharedContext
     )
 
-    const rates = regions.map((region, i) => {
+    const rates = regions.map((region: TaxRegionDTO, i: number) => {
       return {
         ...defaultRates[i],
         tax_region_id: region.id,
@@ -165,5 +166,146 @@ export default class TaxModuleService<
     @MedusaContext() sharedContext: Context = {}
   ) {
     return await this.taxRateRuleService_.create(data, sharedContext)
+  }
+
+  async getTaxLines(
+    items: (TaxTypes.TaxableItemDTO | TaxTypes.TaxableShippingDTO)[],
+    calculationContext: TaxTypes.TaxCalculationContext,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<(TaxTypes.ItemTaxLineDTO | TaxTypes.ShippingTaxLineDTO)[]> {
+    const regions = await this.taxRegionService_.list(
+      {
+        $or: [
+          {
+            country_code: calculationContext.address.country_code,
+            province_code: null,
+          },
+          {
+            country_code: calculationContext.address.country_code,
+            province_code: calculationContext.address.province_code,
+          },
+        ],
+      },
+      {},
+      sharedContext
+    )
+
+    const toReturn = await promiseAll(
+      items.map(async (item) => {
+        const isShipping = "shipping_option_id" in item
+        let ruleQuery = isShipping
+          ? [
+              {
+                reference: "shipping_option",
+                reference_id: item.shipping_option_id,
+              },
+            ]
+          : [
+              {
+                reference: "product",
+                reference_id: item.product_id,
+              },
+              {
+                reference: "product_type",
+                reference_id: item.product_type_id,
+              },
+            ]
+
+        const rates = await this.taxRateService_.list(
+          {
+            $and: [
+              { tax_region_id: { $in: regions.map((r) => r.id) } },
+              { $or: [{ is_default: true }, { rules: { $or: ruleQuery } }] },
+            ],
+          },
+          { relations: ["rules", "tax_region"] },
+          sharedContext
+        )
+
+        const prioritizedRates = this.prioritizeRates(rates, item)
+
+        const rate = prioritizedRates[0]
+        const toReturn = {
+          rate_id: rate.id,
+          rate: rate.rate,
+          code: rate.code,
+          name: rate.name,
+        }
+
+        if (isShipping) {
+          return [{ shipping_line_id: item.id, ...toReturn }]
+        }
+
+        return [{ line_item_id: item.id, ...toReturn }]
+      })
+    )
+
+    return toReturn.flat()
+  }
+
+  private prioritizeRates(
+    rates: TTaxRate[],
+    item: TaxTypes.TaxableItemDTO | TaxTypes.TaxableShippingDTO
+  ) {
+    const isShipping = "shipping_option_id" in item
+
+    const decoratedRates: (TTaxRate & {
+      priority_score: number
+    })[] = rates.map((rate) => {
+      let isProductMatch = false
+      let isProductTypeMatch = false
+      if (rate.rules.length !== 0) {
+        const matchingRules = rate.rules.filter((rule) => {
+          if (isShipping) {
+            return (
+              rule.reference === "shipping" &&
+              rule.reference_id === item.shipping_option_id
+            )
+          }
+          return (
+            (rule.reference === "product" &&
+              rule.reference_id === item.product_id) ||
+            (rule.reference === "product_type" &&
+              rule.reference_id === item.product_type_id)
+          )
+        })
+
+        if (matchingRules.length !== 0) {
+          if (matchingRules.some((rule) => rule.reference === "product")) {
+            isProductMatch = true
+          } else {
+            isProductTypeMatch = true
+          }
+        }
+      }
+
+      const isProvince = rate.tax_region.province_code !== null
+      const isDefault = rate.is_default
+
+      if ((isShipping || isProductMatch) && isProvince) {
+        return { ...rate, priority_score: 1 }
+      }
+      if (isProductTypeMatch && isProvince) {
+        return { ...rate, priority_score: 2 }
+      }
+      if (isDefault && isProvince) {
+        return { ...rate, priority_score: 3 }
+      }
+      if (isProductMatch && !isProvince) {
+        return { ...rate, priority_score: 4 }
+      }
+      if (isProductTypeMatch && !isProvince) {
+        return { ...rate, priority_score: 5 }
+      }
+      if (isDefault && !isProvince) {
+        return { ...rate, priority_score: 6 }
+      }
+
+      return { ...rate, priority_score: 7 }
+    })
+
+    return decoratedRates.sort(
+      (a, b) => (a as any).priority_score - (b as any).priority_score
+    )
   }
 }
