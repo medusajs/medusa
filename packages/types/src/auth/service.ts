@@ -22,7 +22,7 @@ export type JWTGenerationOptions = {
  */
 export interface IAuthModuleService extends IModuleService {
   /**
-   * This method represents the completion of an asynchronous operation
+   * Handle the incoming authentication request. This method is the first invoked method of the authentication flow.
    *
    * @param {string} provider - The provider to use for authentication.
    * @param {AuthenticationInput} providerData - The authentication data necessary to pass to the provider
