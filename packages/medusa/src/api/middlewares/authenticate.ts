@@ -8,7 +8,7 @@ export default (): RequestHandler => {
     const featureFlagRouter = req.scope.resolve(
       ContainerRegistrationKeys.FEATURE_FLAG_ROUTER
     )
-    if (featureFlagRouter.isEnabled(MedusaV2Flag.key)) {
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       return next()
     }
     passport.authenticate(
