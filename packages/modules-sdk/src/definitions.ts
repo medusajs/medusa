@@ -26,6 +26,7 @@ export enum Modules {
   WORKFLOW_ENGINE = "workflows",
   REGION = "region",
   ORDER = "order",
+  API_KEY = "apiKey",
 }
 
 export enum ModuleRegistrationName {
@@ -47,6 +48,7 @@ export enum ModuleRegistrationName {
   WORKFLOW_ENGINE = "workflowsModuleService",
   REGION = "regionModuleService",
   ORDER = "orderModuleService",
+  API_KEY = "apiKeyModuleService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
@@ -69,6 +71,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.WORKFLOW_ENGINE]: "@medusajs/workflow-engine-inmemory",
   [Modules.REGION]: "@medusajs/region",
   [Modules.ORDER]: "@medusajs/order",
+  [Modules.API_KEY]: "@medusajs/api-key",
 }
 
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
@@ -303,6 +306,19 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isRequired: false,
       isQueryable: true,
       dependencies: ["logger", "eventBusService"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.API_KEY]: {
+      key: Modules.API_KEY,
+      registrationName: ModuleRegistrationName.API_KEY,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.API_KEY),
+      isRequired: false,
+      isQueryable: true,
+      dependencies: ["logger"],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,

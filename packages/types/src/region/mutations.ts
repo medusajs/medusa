@@ -1,29 +1,21 @@
-import { RegionCurrencyDTO } from "./common"
-
 export interface CreateRegionDTO {
   name: string
   currency_code: string
-  currency?: RegionCurrencyDTO
   countries?: string[]
-  tax_code?: string
-  tax_rate?: number
-  tax_provider_id?: string
+  metadata?: Record<string, unknown>
 }
 
 export interface UpdateRegionDTO {
   id: string
-  currency_code?: string
-  currency?: RegionCurrencyDTO
-  countries: string[]
   name?: string
-  tax_code?: string
-  tax_rate?: number
-  tax_provider_id?: string
+  currency_code?: string
+  countries?: string[]
+  metadata?: Record<string, unknown>
 }
 
-export interface AddCountryToRegionDTO {
-  region_id: string
-  country_id: string
+export interface UpdatableRegionFields {
+  name?: string
+  currency_code?: string
+  countries?: string[]
+  metadata?: Record<string, unknown>
 }
-
-export interface RemoveCountryFromRegionDTO extends AddCountryToRegionDTO {}
