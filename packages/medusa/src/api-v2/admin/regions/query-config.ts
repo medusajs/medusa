@@ -1,3 +1,5 @@
+export const defaultAdminRegionRelations = ["countries", "currency"]
+export const allowedAdminRegionRelations = ["countries", "currency"]
 export const defaultAdminRegionFields = [
   "id",
   "name",
@@ -18,6 +20,9 @@ export const defaultAdminRegionFields = [
 ]
 
 export const retrieveTransformQueryConfig = {
+  defaultFields: defaultAdminRegionFields,
+  defaultRelations: defaultAdminRegionRelations,
+  allowedRelations: allowedAdminRegionRelations,
   isList: false,
 }
 
