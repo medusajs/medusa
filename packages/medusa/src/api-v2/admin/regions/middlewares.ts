@@ -1,9 +1,11 @@
-import { transformQuery } from "../../../api/middlewares"
+import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import * as QueryConfig from "./query-config"
 import {
   AdminGetRegionsParams,
   AdminGetRegionsRegionParams,
+  AdminPostRegionsRegionReq,
+  AdminPostRegionsReq,
 } from "./validators"
 
 export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
@@ -26,5 +28,15 @@ export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/regions",
+    middlewares: [transformBody(AdminPostRegionsReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/regions/:id",
+    middlewares: [transformBody(AdminPostRegionsRegionReq)],
   },
 ]

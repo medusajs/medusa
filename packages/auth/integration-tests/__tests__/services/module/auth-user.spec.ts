@@ -44,13 +44,13 @@ describe("AuthModuleService - AuthUser", () => {
 
       expect(authUsers).toEqual([
         expect.objectContaining({
-          provider: "manual",
-        }),
-        expect.objectContaining({
-          provider: "manual",
-        }),
-        expect.objectContaining({
           provider: "store",
+        }),
+        expect.objectContaining({
+          provider: "manual",
+        }),
+        expect.objectContaining({
+          provider: "manual",
         }),
       ])
     })
@@ -90,13 +90,13 @@ describe("AuthModuleService - AuthUser", () => {
       expect(count).toEqual(3)
       expect(authUsers).toEqual([
         expect.objectContaining({
-          provider: "manual",
-        }),
-        expect.objectContaining({
-          provider: "manual",
-        }),
-        expect.objectContaining({
           provider: "store",
+        }),
+        expect.objectContaining({
+          provider: "manual",
+        }),
+        expect.objectContaining({
+          provider: "manual",
         }),
       ])
     })
