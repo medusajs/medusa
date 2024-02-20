@@ -52,6 +52,8 @@ describe("Regions - Admin", () => {
       {
         name: "Test Region",
         currency_code: "usd",
+        countries: ["us", "ca"],
+        metadata: { foo: "bar" },
       },
       adminHeaders
     )
@@ -62,14 +64,21 @@ describe("Regions - Admin", () => {
         id: created.data.region.id,
         name: "Test Region",
         currency_code: "usd",
+        metadata: { foo: "bar" },
       })
     )
+    expect(created.data.region.countries.map((c) => c.iso_2)).toEqual([
+      "us",
+      "ca",
+    ])
 
     const updated = await api.post(
-      `/admin/regions`,
+      `/admin/regions/${created.data.region.id}`,
       {
         name: "United States",
         currency_code: "usd",
+        countries: ["us"],
+        metadata: { foo: "baz" },
       },
       adminHeaders
     )
@@ -78,9 +87,12 @@ describe("Regions - Admin", () => {
     expect(updated.data.region).toEqual(
       expect.objectContaining({
         id: updated.data.region.id,
+        name: "United States",
         currency_code: "usd",
+        metadata: { foo: "baz" },
       })
     )
+    expect(updated.data.region.countries.map((c) => c.iso_2)).toEqual(["us"])
 
     const deleted = await api.delete(
       `/admin/regions/${updated.data.region.id}`,
@@ -129,7 +141,7 @@ describe("Regions - Admin", () => {
 
     expect(error.response.status).toEqual(400)
     expect(error.response.data.message).toEqual(
-      "Currency with code: foo was not found"
+      'Currencies with codes: "foo" were not found'
     )
   })
 
@@ -180,6 +192,8 @@ describe("Regions - Admin", () => {
       {
         name: "Test",
         currency_code: "usd",
+        countries: ["jp"],
+        metadata: { foo: "bar" },
       },
     ])
 
@@ -192,7 +206,11 @@ describe("Regions - Admin", () => {
         id: expect.any(String),
         name: "Test",
         currency_code: "usd",
+        metadata: { foo: "bar" },
       }),
+    ])
+    expect(response.data.regions[0].countries.map((c) => c.iso_2)).toEqual([
+      "jp",
     ])
   })
 
@@ -201,6 +219,8 @@ describe("Regions - Admin", () => {
       {
         name: "Test",
         currency_code: "usd",
+        countries: ["jp"],
+        metadata: { foo: "bar" },
       },
     ])
 
@@ -213,7 +233,9 @@ describe("Regions - Admin", () => {
         id: region.id,
         name: "Test",
         currency_code: "usd",
+        metadata: { foo: "bar" },
       })
     )
+    expect(response.data.region.countries.map((c) => c.iso_2)).toEqual(["jp"])
   })
 })
