@@ -298,7 +298,7 @@ export const currencies: Record<string, CurrencyInfo> = {
   INR: {
     code: "INR",
     name: "Indian Rupee",
-    symbol_native: "টকা",
+    symbol_native: "₹",
     decimal_digits: 2,
   },
   IQD: {
