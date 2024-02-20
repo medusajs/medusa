@@ -4,10 +4,9 @@ import * as Models from "@models"
 
 const mikroOrmEntities = Models as unknown as any[]
 
-export const MikroOrmWrapper = TestDatabaseUtils.getMikroOrmWrapper(
+export const MikroOrmWrapper = TestDatabaseUtils.getMikroOrmWrapper({
   mikroOrmEntities,
-  null,
-  process.env.MEDUSA_TAX_DB_SCHEMA
-)
+  schema: process.env.MEDUSA_ORDER_DB_SCHEMA,
+})
 
 export const DB_URL = TestDatabaseUtils.getDatabaseURL()

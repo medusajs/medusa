@@ -10,11 +10,11 @@ import {
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Cart } from "./cart"
 import { Currency } from "./currency"
 import { Order } from "./order"
 import { Swap } from "./swap"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Index(["cart_id"], { where: "canceled_at IS NOT NULL" })
 @Index("UniquePaymentActive", ["cart_id"], {
