@@ -69,3 +69,21 @@ export class AdminGetRegionsParams extends extendedFindParamsMixin({
   @Type(() => AdminGetRegionsParams)
   $or?: AdminGetRegionsParams[]
 }
+
+export class AdminPostRegionsReq {
+  @IsString()
+  name: string
+
+  @IsString()
+  currency_code: string
+}
+
+export class AdminPostRegionsRegionReq {
+  @IsString()
+  @IsOptional()
+  name?: string
+
+  @IsString()
+  @IsOptional()
+  currency_code?: string
+}
