@@ -22,7 +22,7 @@ export type JWTGenerationOptions = {
  */
 export interface IAuthModuleService extends IModuleService {
   /**
-   * Handle the incoming authentication request. This method is the first invoked method of the authentication flow.
+   * This method is the first invoked method of the authentication flow. It handles the incoming authentication request.
    *
    * @param {string} provider - The provider to use for authentication.
    * @param {AuthenticationInput} providerData - The authentication data necessary to pass to the provider
@@ -37,7 +37,7 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthenticationResponse>
 
   /**
-   * Handle callback from an authentication provider. When an authentication has been initialized and the user is redirected this method handles the callback.
+   * This method handles the callback from an authentication provider when an authentication has been initialized and the user is redirected.
    *
    * @param {string} provider - The provider to use for callback validation.
    * @param {AuthenticationInput} providerData - The authentication data necessary to pass to the provider
