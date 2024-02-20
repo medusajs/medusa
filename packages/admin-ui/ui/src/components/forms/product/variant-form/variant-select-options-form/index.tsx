@@ -32,6 +32,13 @@ const VariantSelectOptionsForm = ({ form, options, onCreateOption }: Props) => {
     keyName: "fieldId",
   })
 
+  const updatedOptions = options.map((item) => {
+    const temp = { ...item }
+    if (item.label.hasOwnProperty("label")) temp["label"] = item.label.label
+    if (item.label.hasOwnProperty("value")) temp["value"] = item.value.value
+    return temp
+  })
+
   return (
     <div className="gap-large pb-2xsmall grid grid-cols-2">
       {fields.map((field, index) => {
@@ -51,7 +58,7 @@ const VariantSelectOptionsForm = ({ form, options, onCreateOption }: Props) => {
                   placeholder="Choose an option"
                   required
                   options={
-                    options.filter((o) => o.option_id === field.option_id) || []
+                    updatedOptions.filter((o) => o.option_id === field.option_id) || []
                   }
                   onCreateOption={(value) => {
                     const newOption = {
