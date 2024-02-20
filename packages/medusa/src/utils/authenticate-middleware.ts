@@ -37,10 +37,6 @@ export const authenticate = (
       ) {
         authUser = session.auth_user
       }
-
-      if (authUser) {
-        return next()
-      }
     }
 
     if (!authUser && authTypes.includes(BEARER_AUTH)) {

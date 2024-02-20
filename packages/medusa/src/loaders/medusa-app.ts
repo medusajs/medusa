@@ -1,4 +1,13 @@
 import {
+  MedusaApp,
+  MedusaAppMigrateUp,
+  MedusaAppOutput,
+  MedusaModule,
+  MODULE_PACKAGE_NAMES,
+  Modules,
+  ModulesDefinition,
+} from "@medusajs/modules-sdk"
+import {
   CommonTypes,
   InternalModuleDeclaration,
   LoadedModule,
@@ -8,22 +17,12 @@ import {
 import {
   ContainerRegistrationKeys,
   FlagRouter,
-  MedusaV2Flag,
   isObject,
+  MedusaV2Flag,
 } from "@medusajs/utils"
-import {
-  MODULE_PACKAGE_NAMES,
-  MedusaApp,
-  MedusaAppMigrateUp,
-  MedusaAppOutput,
-  MedusaModule,
-  Modules,
-  ModulesDefinition,
-} from "@medusajs/modules-sdk"
-
 import { asValue } from "awilix"
-import { joinerConfig } from "../joiner-config"
 import { remoteQueryFetchData } from ".."
+import { joinerConfig } from "../joiner-config"
 
 export function mergeDefaultModules(
   modulesConfig: CommonTypes.ConfigModule["modules"]
@@ -60,9 +59,9 @@ export async function migrateMedusaApp(
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION
     ),
-    // [ContainerRegistrationKeys.LOGGER]: container.resolve(
-    //   ContainerRegistrationKeys.LOGGER
-    // ),
+    [ContainerRegistrationKeys.LOGGER]: container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    ),
   }
 
   const sharedResourcesConfig = {
@@ -124,9 +123,9 @@ export const loadMedusaApp = async (
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION
     ),
-    // [ContainerRegistrationKeys.LOGGER]: container.resolve(
-    //   ContainerRegistrationKeys.LOGGER
-    // ),
+    [ContainerRegistrationKeys.LOGGER]: container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    ),
   }
 
   const sharedResourcesConfig = {

@@ -608,7 +608,7 @@ export class RoutesLoader {
 
       if (descriptor.config.shouldAppendAuthCors) {
         /**
-         * Apply the admin cors
+         * Apply the auth cors
          */
         this.router.use(
           descriptor.route,

@@ -10,7 +10,6 @@ import {
 } from "@medusajs/icons"
 import { Avatar, Text } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
-import { useAdminStore } from "medusa-react"
 import { useTranslation } from "react-i18next"
 
 import { Skeleton } from "../../common/skeleton"
@@ -45,7 +44,9 @@ const MainSidebar = () => {
 }
 
 const Header = () => {
-  const { store, isError, error } = useAdminStore()
+  // TODO: renable this when store module is done with endpoints
+  // const { store, isError, error } = useAdminStore()
+  const { store, isError, error } = {}
 
   const name = store?.name
   const fallback = store?.name?.slice(0, 1).toUpperCase()
