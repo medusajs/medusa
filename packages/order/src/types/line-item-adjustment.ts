@@ -1,13 +1,7 @@
-import { BigNumberInput } from "@medusajs/types"
+import { OrderTypes } from "@medusajs/types"
 
-export interface CreateOrderLineItemAdjustmentDTO {
-  item_id: string
-  amount: BigNumberInput
-  code?: string
-  description?: string
-  promotion_id?: string
-  provider_id?: string
-}
+export type CreateOrderLineItemAdjustmentDTO =
+  OrderTypes.CreateOrderLineItemAdjustmentDTO
 
 export interface UpdateOrderLineItemAdjustmentDTO
   extends Partial<CreateOrderLineItemAdjustmentDTO> {
