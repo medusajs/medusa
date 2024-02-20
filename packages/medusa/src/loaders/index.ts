@@ -1,41 +1,37 @@
+import { ContainerRegistrationKeys, isString } from "@medusajs/utils"
+import { Express, NextFunction, Request, Response } from "express"
 import {
   InternalModuleDeclaration,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
-import { MODULE_RESOURCE_TYPE } from "@medusajs/types"
-import { Express, NextFunction, Request, Response } from "express"
-
 import databaseLoader, { dataSource } from "./database"
+import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 
-import {
-  ContainerRegistrationKeys,
-  isString
-} from "@medusajs/utils"
-import { asValue } from "awilix"
-import { createMedusaContainer } from "medusa-core-utils"
-import { track } from "medusa-telemetry"
-import { EOL } from "os"
-import requestIp from "request-ip"
 import { Connection } from "typeorm"
-import { v4 } from "uuid"
+import { EOL } from "os"
+import Logger from "./logger"
+import { MODULE_RESOURCE_TYPE } from "@medusajs/types"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
-import loadConfig from "./config"
+import { asValue } from "awilix"
+import { createMedusaContainer } from "medusa-core-utils"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
-import Logger from "./logger"
-import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
+import loadConfig from "./config"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
 import pgConnectionLoader from "./pg-connection"
 import redisLoader from "./redis"
 import repositoriesLoader from "./repositories"
+import requestIp from "request-ip"
 import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
+import { track } from "medusa-telemetry"
+import { v4 } from "uuid"
 
 type Options = {
   directory: string
