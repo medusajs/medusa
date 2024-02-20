@@ -216,7 +216,12 @@
     "taxInclusiveHint": "When enabled all prices in the region will be tax inclusive.",
     "providersHint": "The providers that are available in the region.",
     "shippingOptions": "Shipping Options",
-    "returnShippingOptions": "Return Shipping Options"
+    "returnShippingOptions": "Return Shipping Options",
+    "return": "Return",
+    "outbound": "Outbound",
+    "priceType": "Price Type",
+    "flatRate": "Flat Rate",
+    "calculated": "Calculated"
   },
   "locations": {
     "domain": "Locations",
@@ -365,6 +370,7 @@
     "tag": "Tag",
     "dateIssued": "Date issued",
     "issuedDate": "Issued date",
-    "expiryDate": "Expiry date"
+    "expiryDate": "Expiry date",
+    "price": "Price"
   }
 }

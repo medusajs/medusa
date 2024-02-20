@@ -62,6 +62,7 @@ export const RegionListTable = () => {
         isLoading={isLoading}
         filters={filters}
         orderBy={["name", "created_at", "updated_at"]}
+        navigateTo={(row) => `${row.original.id}`}
         pagination
         search
         queryObject={raw}
