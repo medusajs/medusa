@@ -5,4 +5,5 @@ export const ContainerRegistrationKeys = {
   LOGGER: "logger",
   REMOTE_QUERY: "remoteQuery",
   REMOTE_LINK: "remoteLink",
+  FEATURE_FLAG_ROUTER: "featureFlagRouter",
 }

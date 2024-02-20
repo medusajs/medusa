@@ -18,7 +18,7 @@ type AuthType = "session" | "bearer"
 export const authenticate = (
   authScope: string | RegExp,
   authType: AuthType | AuthType[],
-  options: { allowUnauthenticated?: boolean } = {}
+  options: { allowUnauthenticated?: boolean; allowUnregistered?: boolean } = {}
 ): RequestHandler => {
   return async (
     req: MedusaRequest,
@@ -67,7 +67,21 @@ export const authenticate = (
       }
     }
 
-    if (authUser) {
+    const isMedusaScope =
+      stringEqualsOrRegexMatch(authScope, "admin") ||
+      stringEqualsOrRegexMatch(authScope, "store")
+
+    const isRegistered =
+      !isMedusaScope ||
+      (authUser?.app_metadata?.user_id &&
+        stringEqualsOrRegexMatch(authScope, "admin")) ||
+      (authUser?.app_metadata?.customer_id &&
+        stringEqualsOrRegexMatch(authScope, "store"))
+
+    if (
+      authUser &&
+      (isRegistered || (!isRegistered && options.allowUnregistered))
+    ) {
       req.auth_user = {
         id: authUser.id,
         app_metadata: authUser.app_metadata,
