@@ -128,7 +128,7 @@ export default class TaxModuleService<
       sharedContext
     )
 
-    const rates = regions.map((region: TaxRegionDTO, i: number) => {
+    const rates = regions.map((region, i) => {
       return {
         ...defaultRates[i],
         tax_region_id: region.id,
