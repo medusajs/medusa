@@ -50,6 +50,7 @@ export const authenticate = (
         if (matches) {
           const tokenType = matches[1]
           const token = matches[2]
+
           if (tokenType.toLowerCase() === BEARER_AUTH) {
             // get config jwt secret
             // verify token and set authUser
@@ -81,11 +82,12 @@ export const authenticate = (
       authUser &&
       (isRegistered || (!isRegistered && options.allowUnregistered))
     ) {
-      req.auth_user = {
+      req.session.auth_user = {
         id: authUser.id,
         app_metadata: authUser.app_metadata,
         scope: authUser.scope,
       }
+
       return next()
     }
 
