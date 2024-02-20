@@ -77,7 +77,7 @@ export default class ShippingOption {
   })
   price_type: ShippingOptionPriceType
 
-  @ManyToOne(() => ShippingProfile, {
+  @ManyToOne(() => ServiceZone, {
     type: "text",
     fieldName: "service_zone_id",
     mapToPk: true,

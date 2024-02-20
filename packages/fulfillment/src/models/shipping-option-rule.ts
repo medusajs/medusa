@@ -48,7 +48,11 @@ export default class ShippingOptionRule {
   @Property({ columnType: "jsonb", nullable: true })
   value: { value: string | string[] } | null = null
 
-  @Property({ columnType: "text" })
+  @ManyToOne(() => ShippingOption, {
+    type: "text",
+    mapToPk: true,
+    fieldName: "shipping_option_id",
+  })
   @ShippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string
 
@@ -77,12 +81,10 @@ export default class ShippingOptionRule {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "sorul")
-    this.shipping_option_id ??= this.shipping_option?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "sorul")
-    this.shipping_option_id ??= this.shipping_option?.id
   }
 }

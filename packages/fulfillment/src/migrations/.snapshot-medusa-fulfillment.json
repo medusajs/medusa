@@ -493,7 +493,20 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {
+        "service_zone_fulfillment_set_id_foreign": {
+          "constraintName": "service_zone_fulfillment_set_id_foreign",
+          "columnNames": [
+            "fulfillment_set_id"
+          ],
+          "localTableName": "public.service_zone",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.fulfillment_set",
+          "updateRule": "cascade"
+        }
+      }
     },
     {
       "columns": {
@@ -673,7 +686,20 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {
+        "geo_zone_service_zone_id_foreign": {
+          "constraintName": "geo_zone_service_zone_id_foreign",
+          "columnNames": [
+            "service_zone_id"
+          ],
+          "localTableName": "public.geo_zone",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.service_zone",
+          "updateRule": "cascade"
+        }
+      }
     },
     {
       "columns": {
@@ -706,15 +732,6 @@
         },
         "code": {
           "name": "code",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "shipping_option_id": {
-          "name": "shipping_option_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -758,16 +775,6 @@
       "name": "shipping_option_type",
       "schema": "public",
       "indexes": [
-        {
-          "keyName": "IDX_shipping_option_type_shipping_option_id",
-          "columnNames": [
-            "shipping_option_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_type_shipping_option_id\" ON \"shipping_option_type\" (shipping_option_id) WHERE deleted_at IS NULL"
-        },
         {
           "keyName": "IDX_shipping_option_type_deleted_at",
           "columnNames": [
@@ -1093,6 +1100,18 @@
       ],
       "checks": [],
       "foreignKeys": {
+        "shipping_option_service_zone_id_foreign": {
+          "constraintName": "shipping_option_service_zone_id_foreign",
+          "columnNames": [
+            "service_zone_id"
+          ],
+          "localTableName": "public.shipping_option",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.service_zone",
+          "updateRule": "cascade"
+        },
         "shipping_option_shipping_profile_id_foreign": {
           "constraintName": "shipping_option_shipping_profile_id_foreign",
           "columnNames": [
@@ -1248,7 +1267,20 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {
+        "shipping_option_rule_shipping_option_id_foreign": {
+          "constraintName": "shipping_option_rule_shipping_option_id_foreign",
+          "columnNames": [
+            "shipping_option_id"
+          ],
+          "localTableName": "public.shipping_option_rule",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.shipping_option",
+          "updateRule": "cascade"
+        }
+      }
     },
     {
       "columns": {
