@@ -99,7 +99,6 @@ export interface FilterableTaxRateRuleProps
   updated_at?: OperatorMap<string>
   created_by?: string | string[] | OperatorMap<string>
 }
-// HEAD
 export interface TaxableItemDTO {
   id: string
   product_id: string
@@ -152,5 +151,3 @@ export interface ItemTaxLineDTO extends TaxLineDTO {
 export interface ShippingTaxLineDTO extends TaxLineDTO {
   shipping_line_id: string
 }
-//
-//origin/develop
