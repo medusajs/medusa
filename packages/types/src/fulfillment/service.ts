@@ -4,11 +4,15 @@ import {
   FilterableGeoZoneProps,
   FilterableServiceZoneProps,
   FilterableShippingOptionProps,
+  FilterableShippingOptionRuleProps,
+  FilterableShippingOptionTypeProps,
   FilterableShippingProfileProps,
   FulfillmentSetDTO,
   GeoZoneDTO,
   ServiceZoneDTO,
   ShippingOptionDTO,
+  ShippingOptionRuleDTO,
+  ShippingOptionTypeDTO,
   ShippingProfileDTO,
 } from "./common"
 import { FindConfig } from "../common"
@@ -269,6 +273,30 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<GeoZoneDTO>
 
   /**
+   * Retrieve a shipping option rule
+   * @param id
+   * @param config
+   * @param sharedContext
+   */
+  retrieveShippingOptionRule(
+    id: string,
+    config?: FindConfig<ShippingOptionRuleDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingOptionRuleDTO>
+
+  /**
+   * Retrieve a shipping option type
+   * @param id
+   * @param config
+   * @param sharedContext
+   */
+  retrieveShippingOptionType(
+    id: string,
+    config?: FindConfig<ShippingOptionTypeDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingOptionTypeDTO>
+
+  /**
    * List fulfillment sets
    * @param filters
    * @param config
@@ -329,6 +357,30 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<GeoZoneDTO[]>
 
   /**
+   * List shipping option rules
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listShippingOptionRules(
+    filters?: FilterableShippingOptionRuleProps,
+    config?: FindConfig<ShippingOptionRuleDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingOptionRuleDTO[]>
+
+  /**
+   * List shipping option types
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listShippingOptionTypes(
+    filters?: FilterableShippingOptionTypeProps,
+    config?: FindConfig<ShippingOptionTypeDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingOptionTypeDTO[]>
+
+  /**
    * List and count fulfillment sets
    * @param filters
    * @param config
@@ -387,6 +439,30 @@ export interface IFulfillmentModuleService extends IModuleService {
     config?: FindConfig<GeoZoneDTO>,
     sharedContext?: Context
   ): Promise<[GeoZoneDTO[], number]>
+
+  /**
+   * List and count shipping option rules
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listAndCountShippingOptionRules(
+    filters?: FilterableShippingOptionRuleProps,
+    config?: FindConfig<ShippingOptionRuleDTO>,
+    sharedContext?: Context
+  ): Promise<[ShippingOptionRuleDTO[], number]>
+
+  /**
+   * List and count shipping options types
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listAndCountShippingOptionsTypes(
+    filters?: FilterableShippingOptionTypeProps,
+    config?: FindConfig<ShippingOptionTypeDTO>,
+    sharedContext?: Context
+  ): Promise<[ShippingOptionTypeDTO[], number]>
 
   /**
    * Soft delete fulfillment sets
@@ -454,5 +530,5 @@ export interface IFulfillmentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
-  // TODO defined the other restore methods
+  // TODO define needed soft delete/delete/restore methods
 }

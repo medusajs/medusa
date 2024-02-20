@@ -24,6 +24,8 @@ import {
   GeoZone,
   ServiceZone,
   ShippingOption,
+  ShippingOptionRule,
+  ShippingOptionType,
   ShippingProfile,
 } from "@models"
 
@@ -32,6 +34,8 @@ const generateMethodForModels = [
   ShippingOption,
   GeoZone,
   ShippingProfile,
+  ShippingOptionRule,
+  ShippingOptionType,
 ]
 
 type InjectedDependencies = {
@@ -41,6 +45,8 @@ type InjectedDependencies = {
   geoZoneService: ModulesSdkTypes.InternalModuleService<any>
   shippingProfileService: ModulesSdkTypes.InternalModuleService<any>
   shippingOptionService: ModulesSdkTypes.InternalModuleService<any>
+  shippingOptionRuleService: ModulesSdkTypes.InternalModuleService<any>
+  shippingOptionTypeService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 export default class FulfillmentModuleService<
@@ -48,7 +54,9 @@ export default class FulfillmentModuleService<
     TServiceZoneEntity extends ServiceZone = ServiceZone,
     TGeoZoneEntity extends GeoZone = GeoZone,
     TShippingProfileEntity extends ShippingProfile = ShippingProfile,
-    TShippingOptionEntity extends ShippingOption = ShippingOption
+    TShippingOptionEntity extends ShippingOption = ShippingOption,
+    TShippingOptionRuleEntity extends ShippingOptionRule = ShippingOptionRule,
+    TSippingOptionTypeEntity extends ShippingOptionType = ShippingOptionType
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -59,6 +67,8 @@ export default class FulfillmentModuleService<
       ShippingOption: { dto: FulfillmentTypes.ShippingOptionDTO }
       GeoZone: { dto: FulfillmentTypes.GeoZoneDTO }
       ShippingProfile: { dto: FulfillmentTypes.ShippingProfileDTO }
+      ShippingOptionRule: { dto: FulfillmentTypes.ShippingOptionRuleDTO }
+      ShippingOptionType: { dto: FulfillmentTypes.ShippingOptionTypeDTO }
     }
   >(FulfillmentSet, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IFulfillmentModuleService
@@ -69,6 +79,8 @@ export default class FulfillmentModuleService<
   protected readonly geoZoneService_: ModulesSdkTypes.InternalModuleService<TGeoZoneEntity>
   protected readonly shippingProfileService_: ModulesSdkTypes.InternalModuleService<TShippingProfileEntity>
   protected readonly shippingOptionService_: ModulesSdkTypes.InternalModuleService<TShippingOptionEntity>
+  protected readonly shippingOptionRuleService_: ModulesSdkTypes.InternalModuleService<TShippingOptionRuleEntity>
+  protected readonly shippingOptionTypeService_: ModulesSdkTypes.InternalModuleService<TSippingOptionTypeEntity>
 
   constructor(
     {
@@ -78,6 +90,8 @@ export default class FulfillmentModuleService<
       geoZoneService,
       shippingProfileService,
       shippingOptionService,
+      shippingOptionRuleService,
+      shippingOptionTypeService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -89,6 +103,8 @@ export default class FulfillmentModuleService<
     this.geoZoneService_ = geoZoneService
     this.shippingProfileService_ = shippingProfileService
     this.shippingOptionService_ = shippingOptionService
+    this.shippingOptionRuleService_ = shippingOptionRuleService
+    this.shippingOptionTypeService_ = shippingOptionTypeService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -662,7 +678,7 @@ export default class FulfillmentModuleService<
     sharedContext?: Context
   ): Promise<FulfillmentTypes.ShippingOptionDTO>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async updateShippingOptions(
     data:
       | FulfillmentTypes.UpdateShippingOptionDTO[]
@@ -671,7 +687,129 @@ export default class FulfillmentModuleService<
   ): Promise<
     FulfillmentTypes.ShippingOptionDTO[] | FulfillmentTypes.ShippingOptionDTO
   > {
-    return []
+    const updatedShippingOptions = await this.updateShippingOptions_(
+      data,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      FulfillmentTypes.ShippingOptionDTO | FulfillmentTypes.ShippingOptionDTO[]
+    >(updatedShippingOptions, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async updateShippingOptions_(
+    data:
+      | FulfillmentTypes.UpdateShippingOptionDTO[]
+      | FulfillmentTypes.UpdateShippingOptionDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TShippingOptionEntity | TShippingOptionEntity[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    if (!data_.length) {
+      return []
+    }
+
+    const shippingOptionIds = data_.map((s) => s.id)
+    if (!shippingOptionIds.length) {
+      return []
+    }
+
+    const shippingOptions = await this.shippingOptionService_.list(
+      {
+        id: shippingOptionIds,
+      },
+      {
+        relations: ["rules"],
+      },
+      sharedContext
+    )
+
+    const shippingOptionSet = new Set(shippingOptions.map((s) => s.id))
+    const expectedShippingOptionSet = new Set(data_.map((s) => s.id))
+    const missingShippingOptionIds = getSetDifference(
+      expectedShippingOptionSet,
+      shippingOptionSet
+    )
+
+    if (missingShippingOptionIds.size) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `The following shipping options do not exist: ${Array.from(
+          missingShippingOptionIds
+        ).join(", ")}`
+      )
+    }
+
+    const ruleIdsToDelete: string[] = []
+    data_.forEach((shippingOption) => {
+      if (shippingOption.rules) {
+        const existingShippingOption = shippingOptions.find(
+          (s) => s.id === shippingOption.id
+        )!
+        const existingRules = existingShippingOption.rules
+
+        const rulesMap = new Map(existingRules.map((rule) => [rule.id, rule]))
+        const rulesSet = new Set(
+          existingRules
+            .map((r) => "id" in r && r.id)
+            .filter((id): id is string => !!id)
+        )
+        const expectedRuleSet = new Set(
+          shippingOption.rules
+            .map((r) => "id" in r && r.id)
+            .filter((id): id is string => !!id)
+        )
+        const missingRuleIds = getSetDifference(expectedRuleSet, rulesSet)
+
+        if (missingRuleIds.size) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `The following rules does not exists: ${Array.from(
+              missingRuleIds
+            ).join(", ")} on shipping option ${shippingOption.id}`
+          )
+        }
+
+        const updatedRules = shippingOption.rules
+        const toDeleteRuleIds = getSetDifference(
+          new Set(existingRules.map((r) => r.id)),
+          new Set(
+            updatedRules
+              .map((r) => "id" in r && r.id)
+              .filter((id): id is string => !!id)
+          )
+        )
+        if (toDeleteRuleIds.size) {
+          ruleIdsToDelete.push(...Array.from(toDeleteRuleIds))
+        }
+
+        shippingOption.rules = shippingOption.rules.map((rule) => {
+          if (!("id" in rule)) {
+            return rule
+          }
+          return rulesMap.get(rule.id)!
+        })
+      }
+    })
+
+    if (ruleIdsToDelete.length) {
+      await this.shippingOptionRuleService_.delete(
+        ruleIdsToDelete,
+        sharedContext
+      )
+    }
+
+    const updatedShippingOptions = await this.shippingOptionService_.update(
+      data_,
+      sharedContext
+    )
+
+    return Array.isArray(data)
+      ? updatedShippingOptions
+      : updatedShippingOptions[0]
   }
 
   updateShippingProfiles(

@@ -129,6 +129,7 @@ export default class ShippingOption {
   @OneToOne(() => ShippingOptionType, (so) => so.shipping_option, {
     owner: true,
     cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove"] as any,
+    orphanRemoval: true,
     fieldName: "shipping_option_type_id",
   })
   type: ShippingOptionType

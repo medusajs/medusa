@@ -56,7 +56,9 @@ export default class ShippingOptionRule {
   @ShippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string
 
-  @ManyToOne(() => ShippingOption, { persist: false })
+  @ManyToOne(() => ShippingOption, {
+    persist: false,
+  })
   shipping_option: ShippingOption
 
   @Property({
@@ -81,10 +83,12 @@ export default class ShippingOptionRule {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "sorul")
+    this.shipping_option_id ??= this.shipping_option.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "sorul")
+    this.shipping_option_id ??= this.shipping_option.id
   }
 }
