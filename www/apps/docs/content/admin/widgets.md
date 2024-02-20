@@ -534,7 +534,13 @@ Added at the top of the product collection details page
 </td>
 <td>
 
-\-
+Type `ProductCollectionDetailsWidgetProps` imported from `@medusajs/admin`.
+
+```ts noCopy noReport
+{
+  productCollection, // Collection object
+}
+```
 
 </td>
 </tr>
@@ -552,7 +558,13 @@ Added at the bottom of the product collections list page
 </td>
 <td>
 
-\-
+Type `ProductCollectionDetailsWidgetProps` imported from `@medusajs/admin`.
+
+```ts noCopy noReport
+{
+  productCollection, // Collection object
+}
+```
 
 </td>
 </tr>
