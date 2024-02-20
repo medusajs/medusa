@@ -1,6 +1,6 @@
-import { MedusaRequest, MedusaResponse } from "../types/routing"
 import { NextFunction, RequestHandler } from "express"
 import jwt, { JwtPayload } from "jsonwebtoken"
+import { MedusaRequest, MedusaResponse } from "../types/routing"
 
 import { AuthUserDTO } from "@medusajs/types"
 import { stringEqualsOrRegexMatch } from "@medusajs/utils"
@@ -29,7 +29,6 @@ export const authenticate = (
 
     // @ts-ignore
     const session: MedusaSession = req.session || {}
-
     let authUser: AuthUserDTO | null = null
     if (authTypes.includes(SESSION_AUTH)) {
       if (
@@ -37,6 +36,10 @@ export const authenticate = (
         stringEqualsOrRegexMatch(authScope, session.auth_user.scope)
       ) {
         authUser = session.auth_user
+      }
+
+      if (authUser) {
+        return next()
       }
     }
 

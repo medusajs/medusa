@@ -11,6 +11,14 @@ class AdminV2AuthResource extends BaseResource {
 
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
+
+  getSession(
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminAuthRes> {
+    const path = `/admin/users/me`
+
+    return this.client.request("GET", path, undefined, {}, customHeaders)
+  }
 }
 
 export default AdminV2AuthResource

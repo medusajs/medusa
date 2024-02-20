@@ -12,6 +12,7 @@ import {
   User as UserIcon,
 } from "@medusajs/icons"
 import { Avatar, DropdownMenu, IconButton, Kbd, Text, clx } from "@medusajs/ui"
+import { useAdminDeleteSession } from "medusa-react"
 import {
   Link,
   Outlet,
@@ -20,14 +21,13 @@ import {
   useMatches,
   useNavigate,
 } from "react-router-dom"
-import { useAdminDeleteSession, useAdminGetSession } from "medusa-react"
 
 import { PropsWithChildren } from "react"
-import { Skeleton } from "../../common/skeleton"
 import { queryClient } from "../../../lib/medusa"
 import { useSearch } from "../../../providers/search-provider"
 import { useSidebar } from "../../../providers/sidebar-provider"
 import { useTheme } from "../../../providers/theme-provider"
+import { Skeleton } from "../../common/skeleton"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   return (
@@ -116,7 +116,7 @@ const Breadcrumbs = () => {
 }
 
 const UserBadge = () => {
-  // const { user, isLoading, isError, error } = useAdminGetSession()
+  // const { user, isLoading, isError, error } = useAdminV2GetSession()
   const user = { first_name: "John", last_name: "Doe", email: "tet" }
   const isLoading = false
   const isError = false

@@ -1,9 +1,9 @@
-import { useAdminGetSession } from "medusa-react"
+import { useAdminV2GetSession } from "medusa-react"
 import { Outlet, json } from "react-router-dom"
 import { ProfileGeneralSection } from "./components/profile-general-section"
 
 export const ProfileDetail = () => {
-  const { user, isLoading, isError, error } = useAdminGetSession()
+  const { user, isLoading, isError, error } = useAdminV2GetSession()
 
   if (isLoading) {
     return <div>Loading...</div>

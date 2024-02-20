@@ -1,5 +1,5 @@
 import { Drawer, Heading } from "@medusajs/ui"
-import { useAdminGetSession } from "medusa-react"
+import { useAdminV2GetSession } from "medusa-react"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
@@ -9,7 +9,7 @@ export const ProfileEdit = () => {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
 
-  const { user, isLoading, isError, error } = useAdminGetSession()
+  const { user, isLoading, isError, error } = useAdminV2GetSession()
 
   const { t } = useTranslation()
 

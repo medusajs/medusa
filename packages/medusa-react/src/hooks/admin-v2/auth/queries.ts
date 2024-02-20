@@ -12,6 +12,7 @@ export const adminV2AuthKeys = queryKeysFactory(ADMIN_AUTH_QUERY_KEY)
 type AuthQueryKey = typeof adminV2AuthKeys
 
 export const useAdminV2GetSession = (
+  custom_headers?: Record<any, any>,
   options?: UseQueryOptionsWrapper<
     Response<AdminAuthRes>,
     Error,
@@ -21,8 +22,9 @@ export const useAdminV2GetSession = (
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminV2AuthKeys.details(),
-    () => client.admin.auth.getSession(),
+    () => client.adminV2.auth.getSession(custom_headers),
     options
   )
+
   return { ...data, ...rest } as const
 }
