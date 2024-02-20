@@ -458,7 +458,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @param config
    * @param sharedContext
    */
-  listAndCountShippingOptionsTypes(
+  listAndCountShippingOptionTypes(
     filters?: FilterableShippingOptionTypeProps,
     config?: FindConfig<ShippingOptionTypeDTO>,
     sharedContext?: Context
