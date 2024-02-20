@@ -127,8 +127,14 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
     },
     {
       icon: <ReceiptPercent />,
-      label: t("discounts.domain"),
-      to: "/discounts",
+      label: t("promotions.domain"),
+      to: "/promotions",
+      items: [
+        {
+          label: t("campaigns.domain"),
+          to: "/campaigns",
+        },
+      ],
     },
     {
       icon: <CurrencyDollar />,
