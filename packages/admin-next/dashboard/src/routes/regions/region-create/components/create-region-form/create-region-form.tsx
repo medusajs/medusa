@@ -33,6 +33,7 @@ export const CreateRegionForm = ({ subscribe }: CreateRegionFormProps) => {
       fulfillment_providers: [],
       payment_providers: [],
       tax_code: "",
+      tax_rate: 0,
     },
     resolver: zodResolver(CreateRegionSchema),
   })
