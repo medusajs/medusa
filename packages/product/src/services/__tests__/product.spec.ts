@@ -91,6 +91,9 @@ describe("Product service", function () {
           fields: undefined,
           limit: 15,
           offset: 0,
+          orderBy: {
+            id: "ASC",
+          },
           populate: [],
           withDeleted: undefined,
         },
@@ -129,6 +132,9 @@ describe("Product service", function () {
           fields: undefined,
           limit: 15,
           offset: 0,
+          orderBy: {
+            id: "ASC",
+          },
           populate: [],
           withDeleted: undefined,
         },
@@ -167,6 +173,9 @@ describe("Product service", function () {
           fields: undefined,
           limit: 15,
           offset: 0,
+          orderBy: {
+            id: "ASC",
+          },
           withDeleted: undefined,
           populate: ["tags"],
         },
@@ -205,6 +214,9 @@ describe("Product service", function () {
           fields: undefined,
           limit: 15,
           offset: 0,
+          orderBy: {
+            id: "ASC",
+          },
           withDeleted: undefined,
           populate: ["tags"],
         },
