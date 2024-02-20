@@ -37,7 +37,7 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthenticationResponse>
 
   /**
-   * This method Represents the completion of an asynchronous operation
+   * Handle callback from an authentication provider. When an authentication has been initialized and the user is redirected this method handles the callback.
    *
    * @param {string} provider - {summary}
    * @param {AuthenticationInput} providerData - {summary}
