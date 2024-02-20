@@ -39,13 +39,13 @@ describe("AuthUser Service", () => {
 
       expect(serialized).toEqual([
         expect.objectContaining({
-          provider: "manual",
-        }),
-        expect.objectContaining({
-          provider: "manual",
-        }),
-        expect.objectContaining({
           provider: "store",
+        }),
+        expect.objectContaining({
+          provider: "manual",
+        }),
+        expect.objectContaining({
+          provider: "manual",
         }),
       ])
     })
@@ -88,13 +88,13 @@ describe("AuthUser Service", () => {
       expect(count).toEqual(3)
       expect(serialized).toEqual([
         expect.objectContaining({
-          provider: "manual",
-        }),
-        expect.objectContaining({
-          provider: "manual",
-        }),
-        expect.objectContaining({
           provider: "store",
+        }),
+        expect.objectContaining({
+          provider: "manual",
+        }),
+        expect.objectContaining({
+          provider: "manual",
         }),
       ])
     })
