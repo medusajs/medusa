@@ -536,6 +536,8 @@ Added at the top of the product collection details page
 
 Type `ProductCollectionDetailsWidgetProps` imported from `@medusajs/admin`.
 
+<!-- eslint-skip -->
+
 ```ts noCopy noReport
 {
   productCollection, // Collection object
@@ -559,6 +561,8 @@ Added at the bottom of the product collections list page
 <td>
 
 Type `ProductCollectionDetailsWidgetProps` imported from `@medusajs/admin`.
+
+<!-- eslint-skip -->
 
 ```ts noCopy noReport
 {
