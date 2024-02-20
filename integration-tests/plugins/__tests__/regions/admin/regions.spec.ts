@@ -37,7 +37,6 @@ describe("Regions - Admin", () => {
   beforeEach(async () => {
     await adminSeeder(dbConnection)
 
-    // @ts-ignore
     await service.createDefaultCountriesAndCurrencies()
   })
 
@@ -105,20 +104,20 @@ describe("Regions - Admin", () => {
 
   it("should throw on missing required properties in create", async () => {
     const api = useApi() as any
-    try {
-      await api.post(`/admin/regions`, {}, adminHeaders)
-    } catch (error) {
-      expect(error.response.status).toEqual(400)
-      expect(error.response.data.message).toEqual(
-        "name must be a string, currency_code must be a string"
-      )
-    }
+    const err = await api
+      .post(`/admin/regions`, {}, adminHeaders)
+      .catch((e) => e)
+
+    expect(err.response.status).toEqual(400)
+    expect(err.response.data.message).toEqual(
+      "name must be a string, currency_code must be a string"
+    )
   })
 
   it("should throw on unknown currency in create", async () => {
     const api = useApi() as any
-    try {
-      await api.post(
+    const error = await api
+      .post(
         `/admin/regions`,
         {
           currency_code: "foo",
@@ -126,18 +125,18 @@ describe("Regions - Admin", () => {
         },
         adminHeaders
       )
-    } catch (error) {
-      expect(error.response.status).toEqual(400)
-      expect(error.response.data.message).toEqual(
-        "Currency with code: foo was not found"
-      )
-    }
+      .catch((e) => e)
+
+    expect(error.response.status).toEqual(400)
+    expect(error.response.data.message).toEqual(
+      "Currency with code: foo was not found"
+    )
   })
 
   it("should throw on unknown properties in create", async () => {
     const api = useApi() as any
-    try {
-      await api.post(
+    const error = await api
+      .post(
         `/admin/regions`,
         {
           foo: "bar",
@@ -146,12 +145,10 @@ describe("Regions - Admin", () => {
         },
         adminHeaders
       )
-    } catch (error) {
-      expect(error.response.status).toEqual(400)
-      expect(error.response.data.message).toEqual(
-        "property foo should not exist"
-      )
-    }
+      .catch((e) => e)
+
+    expect(error.response.status).toEqual(400)
+    expect(error.response.data.message).toEqual("property foo should not exist")
   })
 
   it("should throw on unknown properties in update", async () => {
@@ -162,8 +159,8 @@ describe("Regions - Admin", () => {
       currency_code: "usd",
     })
 
-    try {
-      await api.post(
+    const error = await api
+      .post(
         `/admin/regions/${created.id}`,
         {
           foo: "bar",
@@ -172,12 +169,10 @@ describe("Regions - Admin", () => {
         },
         adminHeaders
       )
-    } catch (error) {
-      expect(error.response.status).toEqual(400)
-      expect(error.response.data.message).toEqual(
-        "property foo should not exist"
-      )
-    }
+      .catch((e) => e)
+
+    expect(error.response.status).toEqual(400)
+    expect(error.response.data.message).toEqual("property foo should not exist")
   })
 
   it("should get all regions and count", async () => {
