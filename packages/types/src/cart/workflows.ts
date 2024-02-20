@@ -1,6 +1,7 @@
-export interface CreateLineItemDTO {
+export interface CreateCartCreateLineItemDTO {
   quantity: number
-  title: string
+  variant_id: string
+  title?: string
 
   subtitle?: string
   thumbnail?: string
@@ -13,7 +14,6 @@ export interface CreateLineItemDTO {
   product_collection?: string
   product_handle?: string
 
-  variant_id: string
   variant_sku?: string
   variant_barcode?: string
   variant_title?: string
@@ -22,10 +22,10 @@ export interface CreateLineItemDTO {
   requires_shipping?: boolean
   is_discountable?: boolean
   is_tax_inclusive?: boolean
-  is_giftcard: boolean
+  is_giftcard?: boolean
 
   compare_at_unit_price?: number
-  unit_price: number | string
+  unit_price?: number | string
 
   metadata?: Record<string, unknown>
 }
@@ -56,5 +56,5 @@ export interface CreateCartWorkflowInputDTO {
   billing_address?: CreateCartAddressDTO | string
   metadata?: Record<string, unknown>
 
-  items?: CreateLineItemDTO[]
+  items?: CreateCartCreateLineItemDTO[]
 }

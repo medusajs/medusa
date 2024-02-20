@@ -6,6 +6,8 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
+  IPricingModuleService,
+  IProductModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
 } from "@medusajs/types"
@@ -29,6 +31,9 @@ describe("Store Carts API", () => {
   let regionModuleService: IRegionModuleService
   let scModuleService: ISalesChannelModuleService
   let customerModule: ICustomerModuleService
+  let productModule: IProductModuleService
+  let pricingModule: IPricingModuleService
+  let remoteLink
 
   let defaultRegion
 
@@ -41,6 +46,9 @@ describe("Store Carts API", () => {
     regionModuleService = appContainer.resolve(ModuleRegistrationName.REGION)
     scModuleService = appContainer.resolve(ModuleRegistrationName.SALES_CHANNEL)
     customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
+    productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
+    pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
+    remoteLink = appContainer.resolve("remoteLink")
   })
 
   afterAll(async () => {
@@ -67,7 +75,7 @@ describe("Store Carts API", () => {
   })
 
   describe("POST /store/carts", () => {
-    it("should create a cart", async () => {
+    it.only("should create a cart", async () => {
       const region = await regionModuleService.create({
         name: "US",
         currency_code: "usd",
@@ -77,6 +85,35 @@ describe("Store Carts API", () => {
         name: "Webshop",
       })
 
+      const [product] = await productModule.create([
+        {
+          title: "Test product",
+          variants: [
+            {
+              title: "Test variant",
+            },
+          ],
+        },
+      ])
+
+      const priceSet = await pricingModule.create({
+        prices: [
+          {
+            amount: 3000,
+            currency_code: "usd",
+          },
+        ],
+      })
+
+      await remoteLink.create({
+        productService: {
+          variant_id: product.variants[0].id,
+        },
+        pricingService: {
+          price_set_id: priceSet.id,
+        },
+      })
+
       const api = useApi() as any
 
       const created = await api.post(`/store/carts`, {
@@ -84,6 +121,12 @@ describe("Store Carts API", () => {
         currency_code: "usd",
         region_id: region.id,
         sales_channel_id: salesChannel.id,
+        items: [
+          {
+            variant_id: product.variants[0].id,
+            quantity: 1,
+          },
+        ],
       })
 
       expect(created.status).toEqual(200)
@@ -202,24 +245,17 @@ describe("Store Carts API", () => {
       )
     })
 
-    it.only("should throw when no regions exist", async () => {
+    it("should throw when no regions exist", async () => {
       const api = useApi() as any
 
       await regionModuleService.delete(defaultRegion.id)
 
-      try {
-        await api.post(`/store/carts`, {
+      await expect(
+        api.post(`/store/carts`, {
           email: "tony@stark.com",
           currency_code: "usd",
         })
-      } catch (error) {}
-
-      // await expect(
-      //   api.post(`/store/carts`, {
-      //     email: "tony@stark.com",
-      //     currency_code: "usd",
-      //   })
-      // ).rejects.toThrow()
+      ).rejects.toThrow()
     })
 
     it("should respond 400 bad request on unknown props", async () => {

@@ -10,7 +10,10 @@ import {
   findOneOrAnyRegionStep,
   findOrCreateCustomerStep,
   findSalesChannelStep,
+  getVariantPriceSetsStep,
+  validateVariantsExistStep,
 } from "../steps"
+import { prepareLineItemData } from "../utils/prepare-line-item-data"
 
 export const createCartWorkflowId = "create-cart"
 export const createCartWorkflow = createWorkflow(
@@ -28,6 +31,17 @@ export const createCartWorkflow = createWorkflow(
         email: input.email,
       })
     )
+
+    const variantIds = transform({ input }, (data) => {
+      return (data.input.items ?? []).map((i) => i.variant_id)
+    })
+
+    const variants = validateVariantsExistStep({ variantIds })
+
+    const priceSets = getVariantPriceSetsStep({
+      variantIds,
+      region,
+    })
 
     const cartInput = transform(
       { input, region, customerData, salesChannel },
@@ -51,9 +65,29 @@ export const createCartWorkflow = createWorkflow(
       }
     )
 
-    // TODO: Add line items
+    const lineItems = transform({ priceSets, input, variants }, (data) => {
+      const items = (data.input.items ?? []).map((item) => {
+        const variant = data.variants[item.variant_id]
 
-    const cart = createCartsStep([cartInput])
+        return prepareLineItemData({
+          variant: variant,
+          variantPrice: data.priceSets[item.variant_id].calculated_amount,
+          quantity: item.quantity,
+          metadata: item?.metadata ?? {},
+        })
+      })
+
+      return items
+    })
+
+    const cartToCreate = transform({ lineItems, cartInput }, (data) => {
+      return {
+        ...data.cartInput,
+        items: data.lineItems,
+      }
+    })
+
+    const cart = createCartsStep([cartToCreate])
 
     return cart[0]
   }
