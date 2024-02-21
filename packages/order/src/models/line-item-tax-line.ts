@@ -1,4 +1,7 @@
-import { generateEntityId } from "@medusajs/utils"
+import {
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -10,16 +13,21 @@ import {
 import LineItem from "./line-item"
 import TaxLine from "./tax-line"
 
+const ItemIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_line_item_tax_line",
+  columns: "item_id",
+})
+
 @Entity({ tableName: "order_line_item_tax_line" })
 export default class LineItemTaxLine extends TaxLine {
   @ManyToOne({
     entity: () => LineItem,
-    index: "IDX_order_line_item_tax_line_item_id",
     cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
   item: LineItem
 
   @Property({ columnType: "text" })
+  @ItemIdIndex.MikroORMIndex()
   item_id: string
 
   @BeforeCreate()

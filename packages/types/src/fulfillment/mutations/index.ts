@@ -1,3 +1,4 @@
+export * from "./shipping-profile"
 export * from "./shipping-option-type"
 export * from "./shipping-option-rule"
 export * from "./geo-zone"

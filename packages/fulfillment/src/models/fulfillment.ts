@@ -10,7 +10,6 @@ import {
   Collection,
   Entity,
   Filter,
-  Index,
   ManyToOne,
   OneToMany,
   OnInit,
@@ -26,39 +25,29 @@ import ShippingOption from "./shipping-option"
 
 type FulfillmentOptionalProps = DAL.SoftDeletableEntityDateColumns
 
-const fulfillmentDeletedAtIndexName = "IDX_fulfillment_deleted_at"
-const fulfillmentDeletedAtIndexStatement = createPsqlIndexStatementHelper({
-  name: fulfillmentDeletedAtIndexName,
+const FulfillmentDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-}).expression
+})
 
-const fulfillmentProviderIdIndexName = "IDX_fulfillment_provider_id"
-const fulfillmentProviderIdIndexStatement = createPsqlIndexStatementHelper({
-  name: fulfillmentProviderIdIndexName,
+const FulfillmentProviderIdIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment",
   columns: "provider_id",
   where: "deleted_at IS NULL",
-}).expression
+})
 
-const fulfillmentLocationIdIndexName = "IDX_fulfillment_location_id"
-const fulfillmentLocationIdIndexStatement = createPsqlIndexStatementHelper({
-  name: fulfillmentLocationIdIndexName,
+const FulfillmentLocationIdIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment",
   columns: "location_id",
   where: "deleted_at IS NULL",
-}).expression
+})
 
-const fulfillmentShippingOptionIdIndexName =
-  "IDX_fulfillment_shipping_option_id"
-const fulfillmentShippingOptionIdIndexStatement =
-  createPsqlIndexStatementHelper({
-    name: fulfillmentShippingOptionIdIndexName,
-    tableName: "fulfillment",
-    columns: "shipping_option_id",
-    where: "deleted_at IS NULL",
-  }).expression
+const FulfillmentShippingOptionIdIndex = createPsqlIndexStatementHelper({
+  tableName: "fulfillment",
+  columns: "shipping_option_id",
+  where: "deleted_at IS NULL",
+})
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -69,10 +58,7 @@ export default class Fulfillment {
   id: string
 
   @Property({ columnType: "text" })
-  @Index({
-    name: fulfillmentLocationIdIndexName,
-    expression: fulfillmentLocationIdIndexStatement,
-  })
+  @FulfillmentLocationIdIndex.MikroORMIndex()
   location_id: string
 
   @Property({
@@ -103,17 +89,11 @@ export default class Fulfillment {
   data: Record<string, unknown> | null = null
 
   @Property({ columnType: "text" })
-  @Index({
-    name: fulfillmentProviderIdIndexName,
-    expression: fulfillmentProviderIdIndexStatement,
-  })
+  @FulfillmentProviderIdIndex.MikroORMIndex()
   provider_id: string
 
   @Property({ columnType: "text", nullable: true })
-  @Index({
-    name: fulfillmentShippingOptionIdIndexName,
-    expression: fulfillmentShippingOptionIdIndexStatement,
-  })
+  @FulfillmentShippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
@@ -149,10 +129,7 @@ export default class Fulfillment {
   })
   updated_at: Date
 
-  @Index({
-    name: fulfillmentDeletedAtIndexName,
-    expression: fulfillmentDeletedAtIndexStatement,
-  })
+  @FulfillmentDeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

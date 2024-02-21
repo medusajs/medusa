@@ -1,24 +1,28 @@
 import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
-import * as process from "process"
-import { Migrator } from "@mikro-orm/migrations"
 
-export function getDatabaseURL(): string {
+export function getDatabaseURL(dbName?: string): string {
   const DB_HOST = process.env.DB_HOST ?? "localhost"
   const DB_USERNAME = process.env.DB_USERNAME ?? ""
   const DB_PASSWORD = process.env.DB_PASSWORD
-  const DB_NAME = process.env.DB_TEMP_NAME
+  const DB_NAME = dbName ?? process.env.DB_TEMP_NAME
 
   return `postgres://${DB_USERNAME}${
     DB_PASSWORD ? `:${DB_PASSWORD}` : ""
   }@${DB_HOST}/${DB_NAME}`
 }
 
-export function getMikroOrmConfig(
-  mikroOrmEntities: any[],
-  pathToMigrations: string, // deprecated, auto inferred
+export function getMikroOrmConfig({
+  mikroOrmEntities,
+  pathToMigrations,
+  clientUrl,
+  schema,
+}: {
+  mikroOrmEntities: any[]
+  pathToMigrations?: string
+  clientUrl?: string
   schema?: string
-): Options {
-  const DB_URL = getDatabaseURL()
+}): Options {
+  const DB_URL = clientUrl ?? getDatabaseURL()
 
   return {
     type: "postgresql",
@@ -26,14 +30,18 @@ export function getMikroOrmConfig(
     entities: Object.values(mikroOrmEntities),
     schema: schema ?? process.env.MEDUSA_DB_SCHEMA,
     debug: false,
-    extensions: [Migrator],
+    migrations: {
+      pathTs: pathToMigrations,
+      silent: true,
+    },
   }
 }
 
 export interface TestDatabase {
   mikroOrmEntities: any[]
-  pathToMigrations: any // deprecated, auto inferred
+  pathToMigrations?: string
   schema?: string
+  clientUrl?: string
 
   orm: MikroORM | null
   manager: SqlEntityManager | null
@@ -45,14 +53,21 @@ export interface TestDatabase {
   getOrm(): MikroORM
 }
 
-export function getMikroOrmWrapper(
-  mikroOrmEntities: any[],
-  pathToMigrations: string, // deprecated, auto inferred
+export function getMikroOrmWrapper({
+  mikroOrmEntities,
+  pathToMigrations,
+  clientUrl,
+  schema,
+}: {
+  mikroOrmEntities: any[]
+  pathToMigrations?: string
+  clientUrl?: string
   schema?: string
-): TestDatabase {
+}): TestDatabase {
   return {
     mikroOrmEntities,
-    pathToMigrations, // deprecated, auto inferred
+    pathToMigrations,
+    clientUrl: clientUrl ?? getDatabaseURL(),
     schema: schema ?? process.env.MEDUSA_DB_SCHEMA,
 
     orm: null,
@@ -83,11 +98,12 @@ export function getMikroOrmWrapper(
     },
 
     async setupDatabase() {
-      const OrmConfig = getMikroOrmConfig(
-        this.mikroOrmEntities,
-        this.pathToMigrations,
-        this.schema
-      )
+      const OrmConfig = getMikroOrmConfig({
+        mikroOrmEntities: this.mikroOrmEntities,
+        pathToMigrations: this.pathToMigrations,
+        clientUrl: this.clientUrl,
+        schema: this.schema,
+      })
 
       // Initializing the ORM
       this.orm = await MikroORM.init(OrmConfig)
@@ -96,7 +112,9 @@ export function getMikroOrmWrapper(
 
       try {
         await this.orm.getSchemaGenerator().ensureDatabase()
-      } catch (err) {}
+      } catch (err) {
+        console.log(err)
+      }
 
       await this.manager?.execute(
         `CREATE SCHEMA IF NOT EXISTS "${this.schema ?? "public"}";`

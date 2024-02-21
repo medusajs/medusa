@@ -3,7 +3,7 @@ import {
   TransactionStepTimeoutError,
   TransactionTimeoutError,
 } from "@medusajs/orchestration"
-import { RemoteJoinerQuery } from "@medusajs/types"
+import { RemoteQueryFunction } from "@medusajs/types"
 import { TransactionHandlerType } from "@medusajs/utils"
 import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
 import { knex } from "knex"
@@ -27,10 +27,7 @@ const afterEach_ = async () => {
 describe("Workflow Orchestrator module", function () {
   describe("Testing basic workflow", function () {
     let workflowOrcModule: IWorkflowEngineService
-    let query: (
-      query: string | RemoteJoinerQuery | object,
-      variables?: Record<string, unknown>
-    ) => Promise<any>
+    let query: RemoteQueryFunction
 
     afterEach(afterEach_)
 

@@ -97,13 +97,6 @@ export interface AbstractModuleServiceBase<TContainer, TMainModelDTO> {
   ): Promise<Record<string, string[]> | void>
 }
 
-/**
- * Multiple issues on typescript around mapped types function are open, so
- * when overriding a method from the base class that is mapped dynamically from the
- * other models, we will have to ignore the error (2425)
- *
- * see: https://github.com/microsoft/TypeScript/issues/48125
- */
 export type AbstractModuleService<
   TContainer,
   TMainModelDTO,
