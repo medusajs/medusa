@@ -44,13 +44,17 @@ export const createCartWorkflow = createWorkflow(
       validateVariantsExistStep({ variantIds })
     )
 
-    // TODO: Needs to be more flexible
-    const pricingContext = transform({ input, region }, (data) => {
-      return {
-        currency_code: data.input.currency_code ?? data.region.currency_code,
-        region_id: data.region.id,
+    // TODO: This is on par with the context used in v1.*, but we can be more flexible.
+    const pricingContext = transform(
+      { input, region, customerData },
+      (data) => {
+        return {
+          currency_code: data.input.currency_code ?? data.region.currency_code,
+          region_id: data.region.id,
+          customer_id: data.customerData.customer?.id,
+        }
       }
-    })
+    )
 
     const priceSets = getVariantPriceSetsStep({
       variantIds,
