@@ -1,6 +1,6 @@
-import { isString, MedusaError, pickValueFromObject } from "@medusajs/utils"
+import {isString, MedusaError, pickValueFromObject} from "@medusajs/utils"
 
-type Rule = {
+export type Rule = {
   attribute: string
   operator: RuleOperator
   value: string | string[]
@@ -91,7 +91,7 @@ export function isContextValidForRules(
  * Validate contextValue rule object
  * @param rule
  */
-export function validateRule(rule: Rule): boolean {
+export function validateRule(rule: Record<string, unknown>): boolean {
   if (!rule.attribute || !rule.operator || !rule.value) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
@@ -113,7 +113,7 @@ export function validateRule(rule: Rule): boolean {
     )
   }
 
-  if (!availableOperators.includes(rule.operator)) {
+  if (!availableOperators.includes(rule.operator as RuleOperator)) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `Rule operator ${
@@ -138,7 +138,7 @@ export function validateRule(rule: Rule): boolean {
  * Validate contextValue set of rules
  * @param rules
  */
-export function validateRules(rules: Rule[]): boolean {
+export function validateRules(rules: Record<string, unknown>[]): boolean {
   rules.forEach(validateRule)
   return true
 }
