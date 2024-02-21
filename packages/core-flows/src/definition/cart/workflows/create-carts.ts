@@ -40,7 +40,8 @@ export const createCartWorkflow = createWorkflow(
 
     const priceSets = getVariantPriceSetsStep({
       variantIds,
-      region,
+      regionId: region.id,
+      currencyCode: input.currency_code ?? region.currency_code,
     })
 
     const cartInput = transform(
@@ -71,7 +72,7 @@ export const createCartWorkflow = createWorkflow(
 
         return prepareLineItemData({
           variant: variant,
-          variantPrice: data.priceSets[item.variant_id].calculated_amount,
+          unitPrice: data.priceSets[item.variant_id].calculated_amount,
           quantity: item.quantity,
           metadata: item?.metadata ?? {},
         })
@@ -87,6 +88,7 @@ export const createCartWorkflow = createWorkflow(
       }
     })
 
+    // @ts-ignore
     const cart = createCartsStep([cartToCreate])
 
     return cart[0]

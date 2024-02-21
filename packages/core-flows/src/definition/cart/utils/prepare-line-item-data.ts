@@ -3,13 +3,14 @@ import { ProductVariantDTO } from "@medusajs/types"
 interface Input {
   quantity: number
   metadata?: Record<string, any>
-  variantPrice: number
+  unitPrice: number
   variant: ProductVariantDTO
+  cartId?: string
 }
 
 export function prepareLineItemData(data: Input) {
-  const { variant, variantPrice, quantity, metadata } = data
-  return {
+  const { variant, unitPrice, quantity, metadata, cartId } = data
+  const lineItem: any = {
     quantity,
     title: variant.title,
 
@@ -29,7 +30,13 @@ export function prepareLineItemData(data: Input) {
     variant_barcode: variant.barcode,
     variant_title: variant.title,
 
-    unit_price: variantPrice,
+    unit_price: unitPrice,
     metadata,
   }
+
+  if (cartId) {
+    lineItem.cart_id = cartId
+  }
+
+  return lineItem
 }
