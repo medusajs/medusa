@@ -1,4 +1,5 @@
 import { BigNumber } from "../../totals/big-number"
+import { isDefined } from "../../common"
 
 const bigNumberFields = new WeakMap<
   object,
@@ -30,15 +31,15 @@ export function BigNumberField(options: { nullable?: boolean } = {}) {
 }
 
 function registerGlobalHook(entity: any) {
-  const originalOnLoad = entity.prototype.onLoad
+  const originalOnInit = entity.prototype.onInit
   const originalOnCreate = entity.prototype.onCreate
   const originalOnUpdate = entity.prototype.onUpdate
 
-  entity.prototype.onLoad = function (...args: any[]) {
+  entity.prototype.onInit = function (...args: any[]) {
     initializeBigNumberFields(this)
 
-    if (originalOnLoad) {
-      originalOnLoad.apply(this, args)
+    if (originalOnInit) {
+      originalOnInit.apply(this, args)
     }
   }
 
@@ -68,7 +69,10 @@ function initializeBigNumberFields(entity: any) {
     const rawValue = entity[`raw_${prop}`]
     const value = entity[prop]
 
-    if (options.nullable && rawValue === null && value === null) {
+    if (
+      !isDefined(rawValue ?? value) ||
+      (options.nullable && rawValue === null && value === null)
+    ) {
       return
     }
 
