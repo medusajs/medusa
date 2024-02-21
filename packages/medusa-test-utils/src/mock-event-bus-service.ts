@@ -6,7 +6,7 @@ import {
   Subscriber,
 } from "@medusajs/types"
 
-export class EventBusService implements IEventBusModuleService {
+export default class EventBusService implements IEventBusModuleService {
   emit<T>(
     eventName: string,
     data: T,

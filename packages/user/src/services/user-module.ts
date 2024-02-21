@@ -101,18 +101,16 @@ export default class UserModuleService<
       populate: true,
     })
 
-    sharedContext.messageAggregator?.save(
-      buildEventMessages(
-        users.map((user) => ({
-          eventName: UserEvents.CREATED,
-          metadata: {
-            service: this.constructor.name,
-            action: "create",
-            object: "user",
-          },
-          data: user.id,
-        }))
-      )
+    sharedContext.messageAggregator?.saveRawMessageData(
+      users.map((user) => ({
+        eventName: UserEvents.CREATED,
+        metadata: {
+          service: this.constructor.name,
+          action: "create",
+          object: "user",
+        },
+        data: user.id,
+      }))
     )
 
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
@@ -143,18 +141,16 @@ export default class UserModuleService<
       populate: true,
     })
 
-    sharedContext.messageAggregator?.save(
-      buildEventMessages(
-        updatedUsers.map((user) => ({
-          eventName: UserEvents.UPDATED,
-          metadata: {
-            service: this.constructor.name,
-            action: "update",
-            object: "user",
-          },
-          data: user.id,
-        }))
-      )
+    sharedContext.messageAggregator?.saveRawMessageData(
+      updatedUsers.map((user) => ({
+        eventName: UserEvents.UPDATED,
+        metadata: {
+          service: this.constructor.name,
+          action: "update",
+          object: "user",
+        },
+        data: user.id,
+      }))
     )
 
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
@@ -185,18 +181,16 @@ export default class UserModuleService<
       populate: true,
     })
 
-    sharedContext.messageAggregator?.save(
-      buildEventMessages(
-        invites.map((invite) => ({
-          eventName: UserEvents.INVITE_CREATED,
-          metadata: {
-            service: this.constructor.name,
-            action: "createInvites",
-            object: "invite",
-          },
-          data: invite.id,
-        }))
-      )
+    sharedContext.messageAggregator?.saveRawMessageData(
+      invites.map((invite) => ({
+        eventName: UserEvents.INVITE_CREATED,
+        metadata: {
+          service: this.constructor.name,
+          action: "createInvites",
+          object: "invite",
+        },
+        data: invite.id,
+      }))
     )
 
     return Array.isArray(data) ? serializedInvites : serializedInvites[0]
@@ -246,18 +240,16 @@ export default class UserModuleService<
       populate: true,
     })
 
-    sharedContext.messageAggregator?.save(
-      buildEventMessages(
-        serializedInvites.map((invite) => ({
-          eventName: UserEvents.INVITE_UPDATED,
-          metadata: {
-            service: this.constructor.name,
-            action: "updateInvites",
-            object: "invite",
-          },
-          data: invite.id,
-        }))
-      )
+    sharedContext.messageAggregator?.saveRawMessageData(
+      serializedInvites.map((invite) => ({
+        eventName: UserEvents.INVITE_UPDATED,
+        metadata: {
+          service: this.constructor.name,
+          action: "updateInvites",
+          object: "invite",
+        },
+        data: invite.id,
+      }))
     )
 
     return Array.isArray(data) ? serializedInvites : serializedInvites[0]

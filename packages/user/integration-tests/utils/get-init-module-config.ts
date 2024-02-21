@@ -1,7 +1,7 @@
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
-import { EventBusService } from "../__fixtures__/event-bus"
 
 import { DB_URL } from "./database"
+import { MockEventBusService } from "medusa-test-utils"
 
 export function getInitModuleConfig() {
   const moduleOptions = {
@@ -15,7 +15,7 @@ export function getInitModuleConfig() {
   }
 
   const injectedDependencies = {
-    eventBusModuleService: new EventBusService(),
+    eventBusModuleService: new MockEventBusService(),
   }
 
   const modulesConfig_ = {

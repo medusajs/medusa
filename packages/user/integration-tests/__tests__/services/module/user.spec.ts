@@ -1,11 +1,11 @@
 import { IUserModuleService } from "@medusajs/types/dist/user"
 import { MikroOrmWrapper } from "../../../utils"
+import { MockEventBusService } from "medusa-test-utils"
 import { Modules } from "@medusajs/modules-sdk"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createUsers } from "../../../__fixtures__/user"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
-import { EventBusService } from "../../../__fixtures__/event-bus"
 
 jest.setTimeout(30000)
 
@@ -186,7 +186,7 @@ describe("UserModuleService - User", () => {
     })
 
     it("should emit user created events", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
+      const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
       await service.create(defaultUserData)
 
       jest.clearAllMocks()
@@ -227,7 +227,7 @@ describe("UserModuleService - User", () => {
     })
 
     it("should emit user created events", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
+      const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
       await service.create(defaultUserData)
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)

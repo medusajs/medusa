@@ -1,11 +1,11 @@
 import { IUserModuleService } from "@medusajs/types/dist/user"
 import { MikroOrmWrapper } from "../../../utils"
+import { MockEventBusService } from "medusa-test-utils"
 import { Modules } from "@medusajs/modules-sdk"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createInvites } from "../../../__fixtures__/invite"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
-import { EventBusService } from "../../../__fixtures__/event-bus"
 
 jest.setTimeout(30000)
 
@@ -179,7 +179,7 @@ describe("UserModuleService - Invite", () => {
 
       jest.clearAllMocks()
 
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
+      const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
       await service.updateInvites([
         {
           id: "1",
@@ -216,7 +216,7 @@ describe("UserModuleService - Invite", () => {
     })
 
     it("should emit invite created events", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
+      const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
       await service.createInvites(defaultInviteData)
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
