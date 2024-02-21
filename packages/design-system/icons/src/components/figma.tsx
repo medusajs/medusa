@@ -21,7 +21,7 @@ const Figma = React.forwardRef<SVGSVGElement, Omit<IconProps, "color">>(
         />
         <path
           fill="#FF7262"
-          d="M10 1.092V7.03h2.97a2.97 2.97 0 1 0 0-5.94H10Z"
+          d="M10 1.092V7.03h2.97a2.97 2.97 0 1 0 0-5.938H10Z"
         />
         <path
           fill="#F24E1E"

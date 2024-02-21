@@ -1,6 +1,6 @@
 import * as React from "react"
 import type { IconProps } from "../types"
-const Sidebar = React.forwardRef<SVGSVGElement, IconProps>(
+const Stopwatch = React.forwardRef<SVGSVGElement, IconProps>(
   ({ color = "currentColor", ...props }, ref) => {
     return (
       <svg
@@ -16,11 +16,11 @@ const Sidebar = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M5.5 6v8m-3-7.125V15a1.875 1.875 0 0 0 1.875 1.875h11.25A1.875 1.875 0 0 0 17.5 15V5a1.875 1.875 0 0 0-1.875-1.875H4.375A1.875 1.875 0 0 0 2.5 5v1.875Z"
+          d="M7.75 2.25h4.5M10 2.25v2.5M10 17.25a6.25 6.25 0 1 0 0-12.5 6.25 6.25 0 0 0 0 12.5ZM7.702 8.702 10 11M15.25 3.75l2 2"
         />
       </svg>
     )
   }
 )
-Sidebar.displayName = "Sidebar"
-export default Sidebar
+Stopwatch.displayName = "Stopwatch"
+export default Stopwatch

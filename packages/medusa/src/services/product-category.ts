@@ -1,23 +1,19 @@
+import { selectorConstraintsToString } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { Between, EntityManager, MoreThanOrEqual, Not } from "typeorm"
 import { EventBusService } from "."
 import { TransactionBaseService } from "../interfaces"
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
-import {
-  FindConfig,
-  QuerySelector,
-  Selector,
-  TreeQuerySelector,
-} from "../types/common"
+import { FindConfig, QuerySelector, TreeQuerySelector } from "../types/common"
 import {
   CreateProductCategoryInput,
+  ProductCategorySelector,
   ReorderConditions,
   tempReorderRank,
   UpdateProductCategoryInput,
 } from "../types/product-category"
 import { buildQuery, nullableValue, setMetadata } from "../utils"
-import {selectorConstraintsToString} from "@medusajs/utils";
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -69,6 +65,8 @@ class ProductCategoryService extends TransactionBaseService {
   ): Promise<[ProductCategory[], number]> {
     const includeDescendantsTree = !!selector.include_descendants_tree
     delete selector.include_descendants_tree
+    const includeAncestorsTree = !!selector.include_ancestors_tree
+    delete selector.include_ancestors_tree
 
     const productCategoryRepo = this.activeManager_.withRepository(
       this.productCategoryRepo_
@@ -88,7 +86,8 @@ class ProductCategoryService extends TransactionBaseService {
       query,
       q,
       treeSelector,
-      includeDescendantsTree
+      includeDescendantsTree,
+      includeAncestorsTree
     )
   }
 
@@ -102,17 +101,21 @@ class ProductCategoryService extends TransactionBaseService {
    */
   protected async retrieve_(
     config: FindConfig<ProductCategory> = {},
-    selector: Selector<ProductCategory> = {},
+    selector: ProductCategorySelector = {},
     treeSelector: QuerySelector<ProductCategory> = {}
   ) {
+    const includeAncestorsTree = selector.include_ancestors_tree
+    delete selector.include_ancestors_tree
+
     const productCategoryRepo = this.activeManager_.withRepository(
       this.productCategoryRepo_
     )
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config as FindConfig<ProductCategory>)
     const productCategory = await productCategoryRepo.findOneWithDescendants(
       query,
-      treeSelector
+      treeSelector,
+      includeAncestorsTree
     )
 
     if (!productCategory) {
@@ -138,7 +141,7 @@ class ProductCategoryService extends TransactionBaseService {
   async retrieve(
     productCategoryId: string,
     config: FindConfig<ProductCategory> = {},
-    selector: Selector<ProductCategory> = {},
+    selector: ProductCategorySelector = {},
     treeSelector: QuerySelector<ProductCategory> = {}
   ): Promise<ProductCategory> {
     if (!isDefined(productCategoryId)) {
@@ -149,6 +152,7 @@ class ProductCategoryService extends TransactionBaseService {
     }
 
     const selectors = Object.assign({ id: productCategoryId }, selector)
+
     return this.retrieve_(config, selectors, treeSelector)
   }
 
@@ -164,7 +168,7 @@ class ProductCategoryService extends TransactionBaseService {
   async retrieveByHandle(
     handle: string,
     config: FindConfig<ProductCategory> = {},
-    selector: Selector<ProductCategory> = {},
+    selector: ProductCategorySelector = {},
     treeSelector: QuerySelector<ProductCategory> = {}
   ) {
     if (!isDefined(handle)) {

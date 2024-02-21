@@ -1,8 +1,10 @@
 import { Request, Response } from "express"
 
+import { Transform } from "class-transformer"
+import { IsBoolean, IsOptional } from "class-validator"
 import ProductCategoryService from "../../../../services/product-category"
 import { FindParams } from "../../../../types/common"
-import { defaultAdminProductCategoryRelations } from "."
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [get] /admin/product-categories/{id}
@@ -97,11 +99,24 @@ export default async (req: Request, res: Response) => {
     "productCategoryService"
   )
 
-  const productCategory = await productCategoryService.retrieve(id, {
-    relations: defaultAdminProductCategoryRelations,
-  })
+  console.log("config", req.retrieveConfig)
+  console.log("selectors", req.filterableFields)
+
+  const productCategory = await productCategoryService.retrieve(
+    id,
+    req.retrieveConfig,
+    req.filterableFields
+  )
 
   res.status(200).json({ product_category: productCategory })
 }
 
-export class AdminGetProductCategoryParams extends FindParams {}
+export class AdminGetProductCategoryParams extends FindParams {
+  /**
+   * Whether to include parent product categories in the response.
+   */
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
+  include_ancestors_tree?: boolean
+}
