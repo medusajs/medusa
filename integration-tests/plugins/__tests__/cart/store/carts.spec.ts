@@ -59,7 +59,6 @@ describe("Store Carts API", () => {
 
   beforeEach(async () => {
     await adminSeeder(dbConnection)
-    // @ts-ignore
     await regionModuleService.createDefaultCountriesAndCurrencies()
 
     // Here, so we don't have to create a region for each test
@@ -75,7 +74,7 @@ describe("Store Carts API", () => {
   })
 
   describe("POST /store/carts", () => {
-    it.only("should create a cart", async () => {
+    it("should create a cart", async () => {
       const region = await regionModuleService.create({
         name: "US",
         currency_code: "usd",
@@ -92,6 +91,9 @@ describe("Store Carts API", () => {
             {
               title: "Test variant",
             },
+            {
+              title: "Test variant 2",
+            },
           ],
         },
       ])
@@ -105,14 +107,33 @@ describe("Store Carts API", () => {
         ],
       })
 
-      await remoteLink.create({
-        productService: {
-          variant_id: product.variants[0].id,
-        },
-        pricingService: {
-          price_set_id: priceSet.id,
-        },
+      const priceSetTwo = await pricingModule.create({
+        prices: [
+          {
+            amount: 4000,
+            currency_code: "usd",
+          },
+        ],
       })
+
+      await remoteLink.create([
+        {
+          productService: {
+            variant_id: product.variants[0].id,
+          },
+          pricingService: {
+            price_set_id: priceSet.id,
+          },
+        },
+        {
+          productService: {
+            variant_id: product.variants[1].id,
+          },
+          pricingService: {
+            price_set_id: priceSetTwo.id,
+          },
+        },
+      ])
 
       const api = useApi() as any
 
@@ -125,6 +146,10 @@ describe("Store Carts API", () => {
           {
             variant_id: product.variants[0].id,
             quantity: 1,
+          },
+          {
+            variant_id: product.variants[1].id,
+            quantity: 2,
           },
         ],
       })
@@ -143,6 +168,16 @@ describe("Store Carts API", () => {
           customer: expect.objectContaining({
             email: "tony@stark.com",
           }),
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              quantity: 1,
+              unit_price: 3000,
+            }),
+            expect.objectContaining({
+              quantity: 2,
+              unit_price: 4000,
+            }),
+          ]),
         })
       )
     })

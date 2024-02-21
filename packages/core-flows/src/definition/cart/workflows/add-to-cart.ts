@@ -36,10 +36,16 @@ export const addToCartWorkflow = createWorkflow(
       return data.carts[0]
     })
 
+    const pricingContext = transform({ cart }, (data) => {
+      return {
+        currency_code: data.cart.currency_code,
+        region_id: data.cart.region_id,
+      }
+    })
+
     const priceSets = getVariantPriceSetsStep({
       variantIds,
-      regionId: cart.region_id,
-      currencyCode: cart.currency_code,
+      context: pricingContext,
     })
 
     const lineItems = transform(

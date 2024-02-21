@@ -38,10 +38,16 @@ export const createCartWorkflow = createWorkflow(
 
     const variants = validateVariantsExistStep({ variantIds })
 
+    const pricingContext = transform({ input, region }, (data) => {
+      return {
+        currency_code: data.input.currency_code ?? data.region.currency_code,
+        region_id: data.region.id,
+      }
+    })
+
     const priceSets = getVariantPriceSetsStep({
       variantIds,
-      regionId: region.id,
-      currencyCode: input.currency_code ?? region.currency_code,
+      context: pricingContext,
     })
 
     const cartInput = transform(
