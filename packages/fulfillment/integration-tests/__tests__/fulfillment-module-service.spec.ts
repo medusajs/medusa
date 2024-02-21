@@ -1004,19 +1004,24 @@ moduleIntegrationTestRunner({
             )
 
             const updatedFulfillmentSets = await service.update(updateData)
+            const fullfillmentSets = await service.list({
+              id: updateData.map((ud) => ud.id),
+            })
 
             expect(updatedFulfillmentSets).toHaveLength(2)
 
-            let i = 0
             for (const data_ of updateData) {
-              expect(updatedFulfillmentSets[i]).toEqual(
+              const currentFullfillmentSet = fullfillmentSets.find(
+                (fs) => fs.id === data_.id
+              )
+
+              expect(currentFullfillmentSet).toEqual(
                 expect.objectContaining({
-                  id: createdFulfillmentSets[i].id,
+                  id: data_.id,
                   name: data_.name,
                   type: data_.type,
                 })
               )
-              ++i
             }
           })
 

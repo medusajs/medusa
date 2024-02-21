@@ -57,7 +57,7 @@ export const CustomerGroupListTable = () => {
       <DataTable
         table={table}
         columns={columns}
-        rowCount={PAGE_SIZE}
+        pageSize={PAGE_SIZE}
         count={count}
         filters={filters}
         search

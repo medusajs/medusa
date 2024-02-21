@@ -58,7 +58,7 @@ export const OrderListTable = () => {
         count={count}
         search
         isLoading={isLoading}
-        rowCount={PAGE_SIZE}
+        pageSize={PAGE_SIZE}
         orderBy={["display_id", "created_at", "updated_at"]}
         queryObject={raw}
       />

@@ -119,8 +119,14 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () => import("../../routes/products/product-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () => import("../../routes/products/product-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
@@ -128,6 +134,30 @@ const router = createBrowserRouter([
                 handle: {
                   crumb: (data: AdminProductsRes) => data.product.title,
                 },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/products/product-edit"),
+                  },
+                  {
+                    path: "sales-channels",
+                    lazy: () =>
+                      import("../../routes/products/product-sales-channels"),
+                  },
+                  {
+                    path: "attributes",
+                    lazy: () =>
+                      import("../../routes/products/product-attributes"),
+                  },
+                  {
+                    path: "options",
+                    lazy: () => import("../../routes/products/product-options"),
+                  },
+                  {
+                    path: "gallery",
+                    lazy: () => import("../../routes/products/product-gallery"),
+                  },
+                ],
               },
             ],
           },

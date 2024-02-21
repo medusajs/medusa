@@ -23,7 +23,8 @@ export const useCustomerTableQuery = ({
     prefix
   )
 
-  const { offset, groups, has_account, q, order } = queryObject
+  const { offset, groups, created_at, updated_at, has_account, q, order } =
+    queryObject
 
   const searchParams: AdminGetCustomersParams = {
     limit: pageSize,
@@ -31,12 +32,8 @@ export const useCustomerTableQuery = ({
     groups: groups?.split(","),
     has_account: has_account ? has_account === "true" : undefined,
     order,
-    created_at: queryObject.created_at
-      ? JSON.parse(queryObject.created_at)
-      : undefined,
-    updated_at: queryObject.updated_at
-      ? JSON.parse(queryObject.updated_at)
-      : undefined,
+    created_at: created_at ? JSON.parse(created_at) : undefined,
+    updated_at: updated_at ? JSON.parse(updated_at) : undefined,
     q,
   }
 
