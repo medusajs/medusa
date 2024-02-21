@@ -13,7 +13,7 @@ import {
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
 import { GeoZoneType } from "@medusajs/utils"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
@@ -2098,6 +2098,126 @@ moduleIntegrationTestRunner({
                   label: updateData[1].type.label,
                 }),
               ])
+            )
+          })
+
+          it("should fail to update a non-existent shipping option", async () => {
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+            })
+            const serviceZone = await service.createServiceZones({
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+            })
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+
+            const [serviceProvider] =
+              await MikroOrmWrapper.forkManager().execute(
+                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
+              )
+
+            const shippingOptionData = {
+              id: "sp_jdafwfleiwuonl",
+              name: "test",
+              price_type: "flat",
+              service_zone_id: serviceZone.id,
+              shipping_profile_id: shippingProfile.id,
+              service_provider_id: serviceProvider.id,
+              type: {
+                code: "test",
+                description: "test",
+                label: "test",
+              },
+              data: {
+                amount: 1000,
+              },
+              rules: [
+                {
+                  attribute: "test",
+                  operator: "test",
+                  value: "test",
+                },
+              ],
+            }
+
+            const err = await service
+              .updateShippingOptions(shippingOptionData)
+              .catch((e) => e)
+
+            expect(err).toBeDefined()
+            expect(err.message).toBe(
+              `The following shipping options do not exist: ${shippingOptionData.id}`
+            )
+          })
+
+          it("should fail to update a shipping option when adding non existing rules", async () => {
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+            })
+            const serviceZone = await service.createServiceZones({
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+            })
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+
+            const [serviceProvider] =
+              await MikroOrmWrapper.forkManager().execute(
+                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
+              )
+
+            const shippingOptionData = {
+              name: "test",
+              price_type: "flat",
+              service_zone_id: serviceZone.id,
+              shipping_profile_id: shippingProfile.id,
+              service_provider_id: serviceProvider.id,
+              type: {
+                code: "test",
+                description: "test",
+                label: "test",
+              },
+              data: {
+                amount: 1000,
+              },
+              rules: [
+                {
+                  attribute: "test",
+                  operator: "test",
+                  value: "test",
+                },
+              ],
+            }
+
+            const shippingOption = await service.createShippingOptions(
+              shippingOptionData
+            )
+
+            const updateData = [
+              {
+                id: shippingOption.id,
+                rules: [
+                  {
+                    id: "sp_jdafwfleiwuonl",
+                  },
+                ],
+              },
+            ]
+
+            const err = await service
+              .updateShippingOptions(updateData)
+              .catch((e) => e)
+
+            expect(err).toBeDefined()
+            expect(err.message).toBe(
+              `The following rules does not exists: ${updateData[0].rules[0].id} on shipping option ${shippingOption.id}`
             )
           })
         })

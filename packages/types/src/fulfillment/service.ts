@@ -23,10 +23,12 @@ import {
   CreateGeoZoneDTO,
   CreateServiceZoneDTO,
   CreateShippingOptionDTO,
+  CreateShippingOptionRuleDTO,
   UpdateFulfillmentSetDTO,
   UpdateGeoZoneDTO,
   UpdateServiceZoneDTO,
   UpdateShippingOptionDTO,
+  UpdateShippingOptionRuleDTO,
 } from "./mutations"
 import { CreateShippingProfileDTO } from "./mutations/shipping-profile"
 
@@ -103,6 +105,20 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<GeoZoneDTO>
 
   /**
+   * Create a new shipping option rules
+   * @param data
+   * @param sharedContext
+   */
+  createShippingOptionRules(
+    data: CreateShippingOptionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<ShippingOptionRuleDTO[]>
+  createShippingOptionRules(
+    data: CreateShippingOptionRuleDTO,
+    sharedContext?: Context
+  ): Promise<ShippingOptionRuleDTO>
+
+  /**
    * Update a fulfillment set
    * @param data
    * @param sharedContext
@@ -173,6 +189,20 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<GeoZoneDTO>
 
   /**
+   * Update a shipping option rule
+   * @param data
+   * @param sharedContext
+   */
+  updateShippingOptionRules(
+    data: UpdateShippingOptionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<ShippingOptionRuleDTO[]>
+  updateShippingOptionRules(
+    data: UpdateShippingOptionRuleDTO,
+    sharedContext?: Context
+  ): Promise<ShippingOptionRuleDTO>
+
+  /**
    * Delete a fulfillment set
    * @param ids
    * @param sharedContext
@@ -211,6 +241,17 @@ export interface IFulfillmentModuleService extends IModuleService {
    */
   deleteGeoZones(ids: string[], sharedContext?: Context): Promise<void>
   deleteGeoZones(id: string, sharedContext?: Context): Promise<void>
+
+  /**
+   * Delete a shipping option rule
+   * @param ids
+   * @param sharedContext
+   */
+  deleteShippingOptionRules(
+    ids: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  deleteShippingOptionRules(id: string, sharedContext?: Context): Promise<void>
 
   /**
    * Retrieve a fulfillment set
