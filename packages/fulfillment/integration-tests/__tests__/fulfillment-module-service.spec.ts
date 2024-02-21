@@ -811,7 +811,7 @@ moduleIntegrationTestRunner({
               rules: [
                 {
                   attribute: "test-attribute",
-                  operator: "in",
+                  operator: "eq",
                   value: "test-value",
                 },
               ],
@@ -887,7 +887,7 @@ moduleIntegrationTestRunner({
                 rules: [
                   {
                     attribute: "test-attribute",
-                    operator: "in",
+                    operator: "eq",
                     value: "test-value",
                   },
                 ],
@@ -909,7 +909,7 @@ moduleIntegrationTestRunner({
                 rules: [
                   {
                     attribute: "test-attribute",
-                    operator: "in",
+                    operator: "eq",
                     value: "test-value",
                   },
                 ],
@@ -953,6 +953,57 @@ moduleIntegrationTestRunner({
               ++i
             }
           })
+
+          it("should fail to create a new shipping option with invalid rules", async function () {
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+            })
+            const serviceZone = await service.createServiceZones({
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+            })
+
+            // TODO: change that for a real provider instead of fake data manual inserted data
+            const [{ id: providerId }] =
+              await MikroOrmWrapper.forkManager().execute(
+                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
+              )
+
+            const createData: CreateShippingOptionDTO = {
+              name: "test-option",
+              price_type: "flat",
+              service_zone_id: serviceZone.id,
+              shipping_profile_id: shippingProfile.id,
+              service_provider_id: providerId,
+              type: {
+                code: "test-type",
+                description: "test-description",
+                label: "test-label",
+              },
+              data: {
+                amount: 1000,
+              },
+              rules: [
+                {
+                  attribute: "test-attribute",
+                  operator: "invalid",
+                  value: "test-value",
+                },
+              ],
+            }
+
+            const err = await service.createShippingOptions(
+              createData
+            ).catch((e) => e)
+
+            expect(err).toBeDefined()
+            expect(err.message).toBe("Rule operator invalid is not supported. Must be one of in, eq, ne, gt, gte, lt, lte, nin")
+          })
         })
 
         describe("on create shipping option rules", () => {
@@ -993,7 +1044,7 @@ moduleIntegrationTestRunner({
               rules: [
                 {
                   attribute: "test-attribute",
-                  operator: "in",
+                  operator: "eq",
                   value: "test-value",
                 },
               ],
@@ -1001,7 +1052,7 @@ moduleIntegrationTestRunner({
 
             const ruleData = {
               attribute: "test-attribute",
-              operator: "in",
+              operator: "eq",
               value: "test-value",
               shipping_option_id: shippingOption.id,
             }
@@ -1804,7 +1855,7 @@ moduleIntegrationTestRunner({
               rules: [
                 {
                   attribute: "test",
-                  operator: "test",
+                  operator: "eq",
                   value: "test",
                 },
               ],
@@ -1832,7 +1883,7 @@ moduleIntegrationTestRunner({
               rules: [
                 {
                   attribute: "new-test",
-                  operator: "new-test",
+                  operator: "eq",
                   value: "new-test",
                 },
               ],
@@ -1924,7 +1975,7 @@ moduleIntegrationTestRunner({
               rules: [
                 {
                   attribute: "test",
-                  operator: "test",
+                  operator: "eq",
                   value: "test",
                 },
               ],
@@ -2038,7 +2089,7 @@ moduleIntegrationTestRunner({
                 rules: [
                   {
                     attribute: "test",
-                    operator: "test",
+                    operator: "eq",
                     value: "test",
                   },
                 ],
@@ -2060,7 +2111,7 @@ moduleIntegrationTestRunner({
                 rules: [
                   {
                     attribute: "test",
-                    operator: "test",
+                    operator: "eq",
                     value: "test",
                   },
                 ],
@@ -2090,7 +2141,7 @@ moduleIntegrationTestRunner({
                 rules: [
                   {
                     attribute: "new-test",
-                    operator: "new-test",
+                    operator: "eq",
                     value: "new-test",
                   },
                 ],
@@ -2113,7 +2164,7 @@ moduleIntegrationTestRunner({
                 rules: [
                   {
                     attribute: "new-test",
-                    operator: "new-test",
+                    operator: "eq",
                     value: "new-test",
                   },
                 ],
@@ -2224,7 +2275,7 @@ moduleIntegrationTestRunner({
               rules: [
                 {
                   attribute: "test",
-                  operator: "test",
+                  operator: "eq",
                   value: "test",
                 },
               ],
@@ -2276,7 +2327,7 @@ moduleIntegrationTestRunner({
               rules: [
                 {
                   attribute: "test",
-                  operator: "test",
+                  operator: "eq",
                   value: "test",
                 },
               ],
@@ -2304,6 +2355,75 @@ moduleIntegrationTestRunner({
             expect(err).toBeDefined()
             expect(err.message).toBe(
               `The following rules does not exists: ${updateData[0].rules[0].id} on shipping option ${shippingOption.id}`
+            )
+          })
+
+          it("should fail to update a shipping option when adding invalid rules", async () => {
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+            })
+            const serviceZone = await service.createServiceZones({
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+            })
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+
+            const [serviceProvider] =
+              await MikroOrmWrapper.forkManager().execute(
+                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
+              )
+
+            const shippingOptionData = {
+              name: "test",
+              price_type: "flat",
+              service_zone_id: serviceZone.id,
+              shipping_profile_id: shippingProfile.id,
+              service_provider_id: serviceProvider.id,
+              type: {
+                code: "test",
+                description: "test",
+                label: "test",
+              },
+              data: {
+                amount: 1000,
+              },
+              rules: [
+                {
+                  attribute: "test",
+                  operator: "eq",
+                  value: "test",
+                },
+              ],
+            }
+
+            const shippingOption = await service.createShippingOptions(
+              shippingOptionData
+            )
+
+            const updateData = [
+              {
+                id: shippingOption.id,
+                rules: [
+                  {
+                    attribute: "test",
+                    operator: "invalid",
+                    value: "test",
+                  },
+                ],
+              },
+            ]
+
+            const err = await service
+              .updateShippingOptions(updateData)
+              .catch((e) => e)
+
+            expect(err).toBeDefined()
+            expect(err.message).toBe(
+              `Rule operator invalid is not supported. Must be one of in, eq, ne, gt, gte, lt, lte, nin`
             )
           })
         })
@@ -2344,7 +2464,7 @@ moduleIntegrationTestRunner({
               rules: [
                 {
                   attribute: "test",
-                  operator: "test",
+                  operator: "eq",
                   value: "test",
                 },
               ],
@@ -2353,7 +2473,7 @@ moduleIntegrationTestRunner({
             const updateData = {
               id: shippingOption.rules[0].id,
               attribute: "updated-test",
-              operator: "updated-test",
+              operator: "eq",
               value: "updated-test",
             }
 
@@ -2375,7 +2495,7 @@ moduleIntegrationTestRunner({
             const updateData = {
               id: "sp_jdafwfleiwuonl",
               attribute: "updated-test",
-              operator: "updated-test",
+              operator: "eq",
               value: "updated-test",
             }
 

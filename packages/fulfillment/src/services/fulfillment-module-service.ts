@@ -845,6 +845,14 @@ export default class FulfillmentModuleService<
           ruleIdsToDelete.push(...Array.from(toDeleteRuleIds))
         }
 
+        const rulesToBeValidated = updatedRules.map((rule) => {
+          if (!("id" in rule)) {
+            return rule
+          }
+          return
+        }).filter(Boolean)
+        validateRules(rulesToBeValidated as Record<string, unknown>[])
+
         shippingOption.rules = shippingOption.rules.map((rule) => {
           if (!("id" in rule)) {
             return rule

@@ -118,7 +118,7 @@ export function validateRule(rule: Record<string, unknown>): boolean {
       MedusaError.Types.INVALID_DATA,
       `Rule operator ${
         rule.operator
-      } is not supported. Must be one of ${availableOperators.join(",")}`
+      } is not supported. Must be one of ${availableOperators.join(", ")}`
     )
   }
 
