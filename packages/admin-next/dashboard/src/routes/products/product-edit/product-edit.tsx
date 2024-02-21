@@ -1,4 +1,4 @@
-import { Drawer, Heading } from "@medusajs/ui"
+import { Heading } from "@medusajs/ui"
 import { useAdminProduct } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
@@ -18,9 +18,9 @@ export const ProductEdit = () => {
 
   return (
     <RouteDrawer>
-      <Drawer.Header>
+      <RouteDrawer.Header>
         <Heading>{t("products.editProduct")}</Heading>
-      </Drawer.Header>
+      </RouteDrawer.Header>
       {!isLoading && product && <EditProductForm product={product} />}
     </RouteDrawer>
   )

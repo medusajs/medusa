@@ -1,4 +1,4 @@
-import { Drawer, Heading } from "@medusajs/ui"
+import { Heading } from "@medusajs/ui"
 import { useAdminPublishableApiKey } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
@@ -18,9 +18,9 @@ export const ApiKeyManagementEdit = () => {
 
   return (
     <RouteDrawer>
-      <Drawer.Header>
+      <RouteDrawer.Header>
         <Heading>{t("apiKeyManagement.editKey")}</Heading>
-      </Drawer.Header>
+      </RouteDrawer.Header>
       {!isLoading && publishable_api_key && (
         <EditApiKeyForm apiKey={publishable_api_key} />
       )}
