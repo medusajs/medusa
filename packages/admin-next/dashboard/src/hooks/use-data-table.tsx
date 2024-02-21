@@ -3,6 +3,7 @@ import {
   OnChangeFn,
   PaginationState,
   Row,
+  RowSelectionState,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
@@ -16,6 +17,10 @@ type UseDataTableProps<TData> = {
   count?: number
   pageSize?: number
   enableRowSelection?: boolean | ((row: Row<TData>) => boolean)
+  rowSelection?: {
+    state: RowSelectionState
+    updater: OnChangeFn<RowSelectionState>
+  }
   enablePagination?: boolean
   getRowId?: (original: TData, index: number) => string
   meta?: Record<string, unknown>
@@ -29,6 +34,7 @@ export const useDataTable = <TData,>({
   pageSize: _pageSize = 20,
   enablePagination = true,
   enableRowSelection = false,
+  rowSelection: _rowSelection,
   getRowId,
   meta,
   prefix,
@@ -48,7 +54,9 @@ export const useDataTable = <TData,>({
     }),
     [pageIndex, pageSize]
   )
-  const [rowSelection, setRowSelection] = useState({})
+  const [localRowSelection, setLocalRowSelection] = useState({})
+  const rowSelection = _rowSelection?.state ?? localRowSelection
+  const setRowSelection = _rowSelection?.updater ?? setLocalRowSelection
 
   useEffect(() => {
     if (!enablePagination) {
@@ -93,7 +101,7 @@ export const useDataTable = <TData,>({
     data,
     columns,
     state: {
-      rowSelection,
+      rowSelection: rowSelection, // We always pass a selection state to the table even if it's not enabled
       pagination: enablePagination ? pagination : undefined,
     },
     pageCount: Math.ceil((count ?? 0) / pageSize),

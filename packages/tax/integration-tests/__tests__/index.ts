@@ -92,4 +92,50 @@ describe("TaxModuleService", function () {
       ])
     )
   })
+
+  it("should create a tax rate rule", async () => {
+    const [region] = await service.createTaxRegions([
+      {
+        country_code: "US",
+        default_tax_rate: {
+          name: "Test Rate",
+          rate: 0.2,
+        },
+      },
+    ])
+
+    const rate = await service.create({
+      tax_region_id: region.id,
+      name: "Shipping Rate",
+      rate: 8.23,
+    })
+
+    await service.createTaxRateRules([
+      {
+        tax_rate_id: rate.id,
+        reference: "product",
+        reference_id: "prod_1234",
+      },
+    ])
+
+    const listedRules = await service.listTaxRateRules(
+      {},
+      {
+        relations: ["tax_rate"],
+      }
+    )
+    expect(listedRules).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          reference: "product",
+          reference_id: "prod_1234",
+          tax_rate: expect.objectContaining({
+            tax_region_id: region.id,
+            name: "Shipping Rate",
+            rate: 8.23,
+          }),
+        }),
+      ])
+    )
+  })
 })

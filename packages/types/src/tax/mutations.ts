@@ -21,3 +21,11 @@ export interface CreateTaxRegionDTO {
     metadata?: Record<string, unknown>
   }
 }
+
+export interface CreateTaxRateRuleDTO {
+  reference: string
+  reference_id: string
+  tax_rate_id: string
+  metadata?: Record<string, unknown>
+  created_by?: string
+}
