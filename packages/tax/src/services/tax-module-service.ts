@@ -13,32 +13,46 @@ import {
   MedusaContext,
   ModulesSdkUtils,
 } from "@medusajs/utils"
-import { TaxRate, TaxRegion } from "@models"
+import { TaxRate, TaxRegion, TaxRateRule } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { TaxRegionDTO } from "@medusajs/types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   taxRateService: ModulesSdkTypes.InternalModuleService<any>
   taxRegionService: ModulesSdkTypes.InternalModuleService<any>
+  taxRateRuleService: ModulesSdkTypes.InternalModuleService<any>
 }
+
+const generateForModels = [TaxRegion, TaxRateRule]
 
 export default class TaxModuleService<
     TTaxRate extends TaxRate = TaxRate,
-    TTaxRegion extends TaxRegion = TaxRegion
+    TTaxRegion extends TaxRegion = TaxRegion,
+    TTaxRateRule extends TaxRateRule = TaxRateRule
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
     TaxTypes.TaxRateDTO,
-    { TaxRegion: { dto: TaxTypes.TaxRegionDTO } }
-  >(TaxRate, [TaxRegion], entityNameToLinkableKeysMap)
+    {
+      TaxRegion: { dto: TaxTypes.TaxRegionDTO }
+      TaxRateRule: { dto: TaxTypes.TaxRateRuleDTO }
+    }
+  >(TaxRate, generateForModels, entityNameToLinkableKeysMap)
   implements ITaxModuleService
 {
   protected baseRepository_: DAL.RepositoryService
   protected taxRateService_: ModulesSdkTypes.InternalModuleService<TTaxRate>
   protected taxRegionService_: ModulesSdkTypes.InternalModuleService<TTaxRegion>
+  protected taxRateRuleService_: ModulesSdkTypes.InternalModuleService<TTaxRateRule>
 
   constructor(
-    { baseRepository, taxRateService, taxRegionService }: InjectedDependencies,
+    {
+      baseRepository,
+      taxRateService,
+      taxRegionService,
+      taxRateRuleService,
+    }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
@@ -47,6 +61,7 @@ export default class TaxModuleService<
     this.baseRepository_ = baseRepository
     this.taxRateService_ = taxRateService
     this.taxRegionService_ = taxRegionService
+    this.taxRateRuleService_ = taxRateRuleService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -85,6 +100,7 @@ export default class TaxModuleService<
     return await this.taxRateService_.create(data, sharedContext)
   }
 
+  @InjectManager("baseRepository_")
   async createTaxRegions(
     data: TaxTypes.CreateTaxRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -127,5 +143,27 @@ export default class TaxModuleService<
         populate: true,
       }
     )
+  }
+
+  @InjectManager("baseRepository_")
+  async createTaxRateRules(
+    data: TaxTypes.CreateTaxRateRuleDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TaxTypes.TaxRateRuleDTO[]> {
+    const rules = await this.taxRateRuleService_.create(data, sharedContext)
+    const result = await this.baseRepository_.serialize<
+      TaxTypes.TaxRateRuleDTO[]
+    >(rules, {
+      populate: true,
+    })
+    return result
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async createTaxRateRules_(
+    data: TaxTypes.CreateTaxRateRuleDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    return await this.taxRateRuleService_.create(data, sharedContext)
   }
 }

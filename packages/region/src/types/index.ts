@@ -24,9 +24,3 @@ export type CreateCountryDTO = {
   name: string
   display_name: string
 }
-
-export type CreateRegionDTO = {
-  name: string
-  currency_code: string
-  countries?: Country[]
-}

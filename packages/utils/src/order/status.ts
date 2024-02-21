@@ -29,3 +29,31 @@ export enum OrderStatus {
    */
   REQUIRES_ACTION = "requires_action",
 }
+
+/**
+ * @enum
+ *
+ * The order change's status.
+ */
+export enum OrderChangeStatus {
+  /**
+   * The order change is confirmed.
+   */
+  CONFIRMED = "confirmed",
+  /**
+   * The order change is declined.
+   */
+  DECLINED = "declined",
+  /**
+   * The order change is requested.
+   */
+  REQUESTED = "requested",
+  /**
+   * The order change is pending.
+   */
+  PENDING = "pending",
+  /**
+   * The order change is canceled.
+   */
+  CANCELED = "canceled",
+}
