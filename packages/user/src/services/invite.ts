@@ -1,12 +1,14 @@
 import { Context, DAL } from "@medusajs/types"
 import {
+  InjectSharedContext,
   InjectTransactionManager,
   MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
+import jwt, { JwtPayload } from "jsonwebtoken"
+
 import { Invite } from "@models"
 import { InviteServiceTypes } from "@types"
-import jwt, { JwtPayload } from "jsonwebtoken"
 
 type InjectedDependencies = {
   inviteRepository: DAL.RepositoryService
@@ -66,6 +68,46 @@ export default class InviteService<
     const data_ = Array.isArray(data) ? data : [data]
 
     const invites = await super.create(data_, context)
+
+    const expiresIn: number =
+      parseInt(this.getOption("valid_duration")) ||
+      DEFAULT_VALID_INVITE_DURATION
+
+    const updates = invites.map((invite) => {
+      return {
+        id: invite.id,
+        expires_at: new Date().setMilliseconds(
+          new Date().getMilliseconds() + expiresIn
+        ),
+        token: this.generateToken({ id: invite.id }),
+      }
+    })
+
+    return await super.update(updates, context)
+  }
+
+  @InjectTransactionManager("inviteRepository_")
+  async resendInvites(
+    inviteIds: string[],
+    context: Context = {}
+  ): Promise<TEntity[]> {
+    const [invites, count] = await super.listAndCount(
+      { id: inviteIds },
+      {},
+      context
+    )
+
+    if (count !== inviteIds.length) {
+      const invitesInDbSet = new Set(invites.map((invite) => invite.id))
+      const missing = inviteIds.filter((id) => !invitesInDbSet.has(id))
+
+      if (missing.length > 0) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `The following invites do not exist: ${missing.join(", ")}`
+        )
+      }
+    }
 
     const expiresIn: number =
       parseInt(this.getOption("valid_duration")) ||

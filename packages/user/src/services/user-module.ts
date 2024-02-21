@@ -74,7 +74,50 @@ export default class UserModuleService<
     token: string,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.InviteDTO> {
-    return await this.inviteService_.validateInviteToken(token, sharedContext)
+    const invite = await this.inviteService_.validateInviteToken(
+      token,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<UserTypes.InviteDTO>(invite, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async resendInvites_(
+    inviteIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    return await this.inviteService_.resendInvites(inviteIds, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
+  @EmitEvents()
+  async resendInvites(
+    inviteIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<UserTypes.InviteDTO[]> {
+    const invites = await this.resendInvites_(inviteIds, sharedContext)
+
+    sharedContext.messageAggregator?.saveRawMessageData(
+      invites.map((invite) => ({
+        eventName: UserEvents.INVITE_TOKEN_GENERATED,
+        metadata: {
+          service: this.constructor.name,
+          action: "createInvites",
+          object: "invite",
+        },
+        data: invite.id,
+      }))
+    )
+
+    return await this.baseRepository_.serialize<UserTypes.InviteDTO[]>(
+      invites,
+      {
+        populate: true,
+      }
+    )
   }
 
   create(
@@ -194,6 +237,18 @@ export default class UserModuleService<
       }))
     )
 
+    sharedContext.messageAggregator?.saveRawMessageData(
+      invites.map((invite) => ({
+        eventName: UserEvents.INVITE_TOKEN_GENERATED,
+        metadata: {
+          service: this.constructor.name,
+          action: "createInvites",
+          object: "invite",
+        },
+        data: invite.id,
+      }))
+    )
+
     return Array.isArray(data) ? serializedInvites : serializedInvites[0]
   }
 
@@ -210,7 +265,7 @@ export default class UserModuleService<
       }
     })
 
-    return await this.inviteService_.create(toCreate)
+    return await this.inviteService_.create(toCreate, sharedContext)
   }
 
   updateInvites(
