@@ -1,15 +1,10 @@
-import { FocusModal } from "@medusajs/ui"
-import { useRouteModalState } from "../../../hooks/use-route-modal-state"
+import { RouteFocusModal } from "../../../components/route-modal"
 import { CreateCustomerGroupForm } from "./components/create-customer-group-form"
 
 export const CustomerGroupCreate = () => {
-  const [open, onOpenChange, subscribe] = useRouteModalState()
-
   return (
-    <FocusModal open={open} onOpenChange={onOpenChange}>
-      <FocusModal.Content>
-        <CreateCustomerGroupForm subscribe={subscribe} />
-      </FocusModal.Content>
-    </FocusModal>
+    <RouteFocusModal>
+      <CreateCustomerGroupForm />
+    </RouteFocusModal>
   )
 }

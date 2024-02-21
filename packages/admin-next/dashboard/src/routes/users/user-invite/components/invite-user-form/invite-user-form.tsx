@@ -4,7 +4,6 @@ import { Invite } from "@medusajs/medusa"
 import {
   Button,
   Container,
-  FocusModal,
   Heading,
   Input,
   Select,
@@ -30,7 +29,7 @@ import {
   useAdminResendInvite,
   useAdminStore,
 } from "medusa-react"
-import { useEffect, useMemo } from "react"
+import { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -38,10 +37,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { Form } from "../../../../../components/common/form"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
-
-type InviteUserFormProps = {
-  subscribe: (state: boolean) => void
-}
+import { RouteFocusModal } from "../../../../../components/route-modal"
 
 enum UserRole {
   MEMBER = "member",
@@ -56,7 +52,9 @@ const InviteUserSchema = zod.object({
 
 const PAGE_SIZE = 10
 
-export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
+export const InviteUserForm = () => {
+  const { t } = useTranslation()
+
   const form = useForm<zod.infer<typeof InviteUserSchema>>({
     defaultValues: {
       user: "",
@@ -64,15 +62,6 @@ export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
     },
     resolver: zodResolver(InviteUserSchema),
   })
-  const { mutateAsync, isLoading: isMutating } = useAdminCreateInvite()
-
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty, subscribe])
 
   const { invites, isLoading, isError, error } = useAdminInvites()
   const count = invites?.length ?? 0
@@ -89,7 +78,7 @@ export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
     getPaginationRowModel: getPaginationRowModel(),
   })
 
-  const { t } = useTranslation()
+  const { mutateAsync, isLoading: isMutating } = useAdminCreateInvite()
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
@@ -110,13 +99,13 @@ export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
   }
 
   return (
-    <Form {...form}>
+    <RouteFocusModal.Form form={form}>
       <form
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
-        <FocusModal.Header />
-        <FocusModal.Body className="flex flex-1 flex-col overflow-hidden">
+        <RouteFocusModal.Header />
+        <RouteFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
           <div className="flex flex-1 flex-col items-center overflow-y-auto">
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
               <div>
@@ -249,9 +238,9 @@ export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
               </div>
             </div>
           </div>
-        </FocusModal.Body>
+        </RouteFocusModal.Body>
       </form>
-    </Form>
+    </RouteFocusModal.Form>
   )
 }
 
