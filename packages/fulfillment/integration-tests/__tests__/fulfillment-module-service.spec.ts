@@ -955,6 +955,92 @@ moduleIntegrationTestRunner({
           })
         })
 
+        describe("on create shipping option rules", () => {
+          it("should create a new rule", async () => {
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+            })
+            const serviceZone = await service.createServiceZones({
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+            })
+
+            // service provider
+            const [{ id: providerId }] =
+              await MikroOrmWrapper.forkManager().execute(
+                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
+              )
+
+            const shippingOption = await service.createShippingOptions({
+              name: "test-option",
+              price_type: "flat",
+              service_zone_id: serviceZone.id,
+              shipping_profile_id: shippingProfile.id,
+              service_provider_id: providerId,
+              type: {
+                code: "test-type",
+                description: "test-description",
+                label: "test-label",
+              },
+              data: {
+                amount: 1000,
+              },
+              rules: [
+                {
+                  attribute: "test-attribute",
+                  operator: "in",
+                  value: "test-value",
+                },
+              ],
+            })
+
+            const ruleData = {
+              attribute: "test-attribute",
+              operator: "in",
+              value: "test-value",
+              shipping_option_id: shippingOption.id,
+            }
+
+            const rule = await service.createShippingOptionRules(ruleData)
+
+            expect(rule).toEqual(
+              expect.objectContaining({
+                id: expect.any(String),
+                attribute: ruleData.attribute,
+                operator: ruleData.operator,
+                value: ruleData.value,
+                shipping_option_id: ruleData.shipping_option_id,
+              })
+            )
+
+            const rules = await service.listShippingOptionRules()
+            expect(rules).toHaveLength(2)
+            expect(rules).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({
+                  id: rule.id,
+                  attribute: ruleData.attribute,
+                  operator: ruleData.operator,
+                  value: ruleData.value,
+                  shipping_option_id: shippingOption.id,
+                }),
+                expect.objectContaining({
+                  id: shippingOption.rules[0].id,
+                  attribute: shippingOption.rules[0].attribute,
+                  operator: shippingOption.rules[0].operator,
+                  value: shippingOption.rules[0].value,
+                  shipping_option_id: shippingOption.id,
+                }),
+              ])
+            )
+          })
+        })
+
         describe("on update", () => {
           it("should update an existing fulfillment set", async function () {
             const createData: CreateFulfillmentSetDTO = {
@@ -2218,6 +2304,88 @@ moduleIntegrationTestRunner({
             expect(err).toBeDefined()
             expect(err.message).toBe(
               `The following rules does not exists: ${updateData[0].rules[0].id} on shipping option ${shippingOption.id}`
+            )
+          })
+        })
+
+        describe("on update shipping option rules", () => {
+          it("should update a shipping option rule", async () => {
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+            })
+            const serviceZone = await service.createServiceZones({
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+            })
+            const [serviceProvider] =
+              await MikroOrmWrapper.forkManager().execute(
+                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
+              )
+
+            const shippingOption = await service.createShippingOptions({
+              name: "test",
+              price_type: "flat",
+              service_zone_id: serviceZone.id,
+              shipping_profile_id: shippingProfile.id,
+              service_provider_id: serviceProvider.id,
+              type: {
+                code: "test",
+                description: "test",
+                label: "test",
+              },
+              data: {
+                amount: 1000,
+              },
+              rules: [
+                {
+                  attribute: "test",
+                  operator: "test",
+                  value: "test",
+                },
+              ],
+            })
+
+            const updateData = {
+              id: shippingOption.rules[0].id,
+              attribute: "updated-test",
+              operator: "updated-test",
+              value: "updated-test",
+            }
+
+            const updatedRule = await service.updateShippingOptionRules(
+              updateData
+            )
+
+            expect(updatedRule).toEqual(
+              expect.objectContaining({
+                id: updateData.id,
+                attribute: updateData.attribute,
+                operator: updateData.operator,
+                value: updateData.value,
+              })
+            )
+          })
+
+          it("should fail to update a non-existent shipping option rule", async () => {
+            const updateData = {
+              id: "sp_jdafwfleiwuonl",
+              attribute: "updated-test",
+              operator: "updated-test",
+              value: "updated-test",
+            }
+
+            const err = await service
+              .updateShippingOptionRules(updateData)
+              .catch((e) => e)
+
+            expect(err).toBeDefined()
+            expect(err.message).toBe(
+              `ShippingOptionRule with id "${updateData.id}" not found`
             )
           })
         })

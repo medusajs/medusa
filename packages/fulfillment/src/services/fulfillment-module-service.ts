@@ -344,6 +344,59 @@ export default class FulfillmentModuleService<
     )
   }
 
+  async createShippingOptionRules(
+    data: FulfillmentTypes.CreateShippingOptionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionRuleDTO[]>
+  async createShippingOptionRules(
+    data: FulfillmentTypes.CreateShippingOptionRuleDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionRuleDTO>
+
+  @InjectManager("baseRepository_")
+  async createShippingOptionRules(
+    data:
+      | FulfillmentTypes.CreateShippingOptionRuleDTO[]
+      | FulfillmentTypes.CreateShippingOptionRuleDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    | FulfillmentTypes.ShippingOptionRuleDTO
+    | FulfillmentTypes.ShippingOptionRuleDTO[]
+  > {
+    const createdShippingOptionRules = await this.createShippingOptionRules_(
+      data,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      | FulfillmentTypes.ShippingOptionRuleDTO
+      | FulfillmentTypes.ShippingOptionRuleDTO[]
+    >(createdShippingOptionRules, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async createShippingOptionRules_(
+    data:
+      | FulfillmentTypes.CreateShippingOptionRuleDTO[]
+      | FulfillmentTypes.CreateShippingOptionRuleDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TShippingOptionRuleEntity | TShippingOptionRuleEntity[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    if (!data_.length) {
+      return []
+    }
+
+    const createdShippingOptionRules =
+      await this.shippingOptionRuleService_.create(data_, sharedContext)
+
+    return Array.isArray(data)
+      ? createdShippingOptionRules
+      : createdShippingOptionRules[0]
+  }
+
   update(
     data: FulfillmentTypes.UpdateFulfillmentSetDTO[],
     sharedContext?: Context
@@ -861,5 +914,58 @@ export default class FulfillmentModuleService<
     })
 
     return Array.isArray(data) ? serialized : serialized[0]
+  }
+
+  updateShippingOptionRules(
+    data: FulfillmentTypes.UpdateShippingOptionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionRuleDTO[]>
+  updateShippingOptionRules(
+    data: FulfillmentTypes.UpdateShippingOptionRuleDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionRuleDTO>
+
+  @InjectManager("baseRepository_")
+  async updateShippingOptionRules(
+    data:
+      | FulfillmentTypes.UpdateShippingOptionRuleDTO[]
+      | FulfillmentTypes.UpdateShippingOptionRuleDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    | FulfillmentTypes.ShippingOptionRuleDTO[]
+    | FulfillmentTypes.ShippingOptionRuleDTO
+  > {
+    const updatedShippingOptionRules = await this.updateShippingOptionRules_(
+      data,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      | FulfillmentTypes.ShippingOptionRuleDTO
+      | FulfillmentTypes.ShippingOptionRuleDTO[]
+    >(updatedShippingOptionRules, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async updateShippingOptionRules_(
+    data:
+      | FulfillmentTypes.UpdateShippingOptionRuleDTO[]
+      | FulfillmentTypes.UpdateShippingOptionRuleDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TShippingOptionRuleEntity | TShippingOptionRuleEntity[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    if (!data_.length) {
+      return []
+    }
+
+    const updatedShippingOptionRules =
+      await this.shippingOptionRuleService_.update(data_, sharedContext)
+
+    return Array.isArray(data)
+      ? updatedShippingOptionRules
+      : updatedShippingOptionRules[0]
   }
 }
