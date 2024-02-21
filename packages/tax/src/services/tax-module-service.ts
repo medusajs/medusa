@@ -168,6 +168,7 @@ export default class TaxModuleService<
     return await this.taxRateRuleService_.create(data, sharedContext)
   }
 
+  @InjectManager("baseRepository_")
   async getTaxLines(
     items: (TaxTypes.TaxableItemDTO | TaxTypes.TaxableShippingDTO)[],
     calculationContext: TaxTypes.TaxCalculationContext,
@@ -193,35 +194,15 @@ export default class TaxModuleService<
     const toReturn = await promiseAll(
       items.map(async (item) => {
         const isShipping = "shipping_option_id" in item
-        let ruleQuery = isShipping
-          ? [
-              {
-                reference: "shipping_option",
-                reference_id: item.shipping_option_id,
-              },
-            ]
-          : [
-              {
-                reference: "product",
-                reference_id: item.product_id,
-              },
-              {
-                reference: "product_type",
-                reference_id: item.product_type_id,
-              },
-            ]
-
+        const rateQuery = this.getTaxRateQueryForItem(
+          item,
+          regions.map((r) => r.id)
+        )
         const rates = await this.taxRateService_.list(
-          {
-            $and: [
-              { tax_region_id: { $in: regions.map((r) => r.id) } },
-              { $or: [{ is_default: true }, { rules: { $or: ruleQuery } }] },
-            ],
-          },
-          { relations: ["rules", "tax_region"] },
+          rateQuery,
+          { relations: ["tax_region", "rules"] },
           sharedContext
         )
-
         const prioritizedRates = this.prioritizeRates(rates, item)
 
         const rate = prioritizedRates[0]
@@ -243,65 +224,109 @@ export default class TaxModuleService<
     return toReturn.flat()
   }
 
+  private getTaxRateQueryForItem(
+    item: TaxTypes.TaxableItemDTO | TaxTypes.TaxableShippingDTO,
+    regionIds: string[]
+  ) {
+    const isShipping = "shipping_option_id" in item
+    let ruleQuery = isShipping
+      ? [
+          {
+            reference: "shipping_option",
+            reference_id: item.shipping_option_id,
+          },
+        ]
+      : [
+          {
+            reference: "product",
+            reference_id: item.product_id,
+          },
+          {
+            reference: "product_type",
+            reference_id: item.product_type_id,
+          },
+        ]
+
+    return {
+      $and: [
+        { tax_region_id: regionIds },
+        { $or: [{ is_default: true }, { rules: { $or: ruleQuery } }] },
+      ],
+    }
+  }
+
+  private checkRuleMatches(
+    rate: TTaxRate,
+    item: TaxTypes.TaxableItemDTO | TaxTypes.TaxableShippingDTO
+  ) {
+    if (rate.rules.length === 0) {
+      return {
+        isProductMatch: false,
+        isProductTypeMatch: false,
+        isShippingMatch: false,
+      }
+    }
+
+    let isProductMatch = false
+    const isShipping = "shipping_option_id" in item
+    const matchingRules = rate.rules.filter((rule) => {
+      if (isShipping) {
+        return (
+          rule.reference === "shipping" &&
+          rule.reference_id === item.shipping_option_id
+        )
+      }
+      return (
+        (rule.reference === "product" &&
+          rule.reference_id === item.product_id) ||
+        (rule.reference === "product_type" &&
+          rule.reference_id === item.product_type_id)
+      )
+    })
+
+    if (matchingRules.some((rule) => rule.reference === "product")) {
+      isProductMatch = true
+    }
+
+    return {
+      isProductMatch,
+      isProductTypeMatch: matchingRules.length > 0,
+      isShippingMatch: isShipping && matchingRules.length > 0,
+    }
+  }
+
   private prioritizeRates(
     rates: TTaxRate[],
     item: TaxTypes.TaxableItemDTO | TaxTypes.TaxableShippingDTO
   ) {
-    const isShipping = "shipping_option_id" in item
-
     const decoratedRates: (TTaxRate & {
       priority_score: number
     })[] = rates.map((rate) => {
-      let isProductMatch = false
-      let isProductTypeMatch = false
-      if (rate.rules.length !== 0) {
-        const matchingRules = rate.rules.filter((rule) => {
-          if (isShipping) {
-            return (
-              rule.reference === "shipping" &&
-              rule.reference_id === item.shipping_option_id
-            )
-          }
-          return (
-            (rule.reference === "product" &&
-              rule.reference_id === item.product_id) ||
-            (rule.reference === "product_type" &&
-              rule.reference_id === item.product_type_id)
-          )
-        })
-
-        if (matchingRules.length !== 0) {
-          if (matchingRules.some((rule) => rule.reference === "product")) {
-            isProductMatch = true
-          } else {
-            isProductTypeMatch = true
-          }
-        }
-      }
+      const { isProductMatch, isProductTypeMatch, isShippingMatch } =
+        this.checkRuleMatches(rate, item)
 
       const isProvince = rate.tax_region.province_code !== null
       const isDefault = rate.is_default
 
-      if ((isShipping || isProductMatch) && isProvince) {
-        return { ...rate, priority_score: 1 }
-      }
-      if (isProductTypeMatch && isProvince) {
-        return { ...rate, priority_score: 2 }
-      }
-      if (isDefault && isProvince) {
-        return { ...rate, priority_score: 3 }
-      }
-      if (isProductMatch && !isProvince) {
-        return { ...rate, priority_score: 4 }
-      }
-      if (isProductTypeMatch && !isProvince) {
-        return { ...rate, priority_score: 5 }
-      }
-      if (isDefault && !isProvince) {
-        return { ...rate, priority_score: 6 }
+      const decoratedRate = {
+        ...rate,
+        priority_score: 7,
       }
 
-      return { ...rate, priority_score: 7 }
+      if ((isShippingMatch || isProductMatch) && isProvince) {
+        decoratedRate.priority_score = 1
+      } else if (isProductTypeMatch && isProvince) {
+        decoratedRate.priority_score = 2
+      } else if (isDefault && isProvince) {
+        decoratedRate.priority_score = 3
+      } else if ((isShippingMatch || isProductMatch) && !isProvince) {
+        decoratedRate.priority_score = 4
+      } else if (isProductTypeMatch && !isProvince) {
+        decoratedRate.priority_score = 5
+      } else if (isDefault && !isProvince) {
+        decoratedRate.priority_score = 6
+      }
+      return decoratedRate
     })
 
     return decoratedRates.sort(
