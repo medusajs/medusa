@@ -201,7 +201,7 @@ describe("PricingModule Service - MoneyAmount", () => {
       expect(count).toEqual(3)
       expect(serialized).toEqual([
         {
-          id: "money-amount-USD",
+          id: "money-amount-CAD",
           amount: null,
         },
       ])

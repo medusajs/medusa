@@ -1,5 +1,5 @@
 import { BigNumberRawValue } from "@medusajs/types"
-import { BigNumber } from "@medusajs/utils"
+import { BigNumber, BigNumberField } from "@medusajs/utils"
 import { PrimaryKey, Property } from "@mikro-orm/core"
 
 /**
@@ -23,6 +23,7 @@ export default abstract class TaxLine {
   code: string
 
   @Property({ columnType: "numeric" })
+  @BigNumberField()
   rate: BigNumber | number
 
   @Property({ columnType: "jsonb" })
