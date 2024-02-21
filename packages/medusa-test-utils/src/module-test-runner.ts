@@ -3,6 +3,8 @@ import { InitModulesOptions, initModules } from "./init-modules"
 import { MedusaAppOutput, ModulesDefinition } from "@medusajs/modules-sdk"
 import { TestDatabase, getDatabaseURL, getMikroOrmWrapper } from "./database"
 
+import { MockEventBusService } from "."
+
 export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase
   medusaApp: MedusaAppOutput
@@ -61,6 +63,7 @@ export function moduleIntegrationTestRunner({
   const moduleOptions: InitModulesOptions = {
     injectedDependencies: {
       [ContainerRegistrationKeys.PG_CONNECTION]: connection,
+      eventBusService: new MockEventBusService(),
     },
     modulesConfig: modulesConfig_,
     databaseConfig: dbConfig,
