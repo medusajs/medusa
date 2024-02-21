@@ -12,6 +12,14 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
     this: CreateWorkflowComposerContext
   ) => WorkflowData<{ [K in keyof TOutput]: TOutput[K] }>
 
+export type StepFunctionInput<TInput> = TInput extends object
+  ? { [K in keyof TInput]: StepFunctionInput<TInput[K]> | TInput[K] }
+  : WorkflowData<TInput> | TInput
+
+export type StepFunctionOutput<TOutput> = WorkflowData<{
+  [K in keyof TOutput]: TOutput[K]
+}>
+
 /**
  * A step function to be used in a workflow.
  *
@@ -21,23 +29,12 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
 export type StepFunction<TInput, TOutput = unknown> = (keyof TInput extends []
   ? // Function that doesn't expect any input
     {
-      (): WorkflowData<{
-        [K in keyof TOutput]: TOutput[K]
-      }>
+      (): StepFunctionOutput<TOutput>
     }
   : // function that expects an input object
     {
-      (
-        input: TInput extends object
-          ? { [K in keyof TInput]: WorkflowData<TInput[K]> | TInput[K] }
-          : WorkflowData<TInput> | TInput
-      ): WorkflowData<{
-        [K in keyof TOutput]: TOutput[K]
-      }>
+      (input: StepFunctionInput<TInput>): StepFunctionOutput<TOutput>
     }) &
-  WorkflowDataProperties<{
-    [K in keyof TOutput]: TOutput[K]
-  }> &
   WorkflowDataProperties<{
     [K in keyof TOutput]: TOutput[K]
   }>
