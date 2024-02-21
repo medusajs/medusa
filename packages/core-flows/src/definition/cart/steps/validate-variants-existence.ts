@@ -20,11 +20,11 @@ export const validateVariantsExistStep = createStep(
         id: data.variantIds,
       },
       {
-        relations: ["product"],
+        select: ["id"],
       }
     )
 
-    const variantIdToData = new Map(variants.map((v) => [v.id, v]))
+    const variantIdToData = new Set(variants.map((v) => v.id))
 
     const notFoundVariants = new Set(
       [...data.variantIds].filter((x) => !variantIdToData.has(x))
@@ -37,6 +37,6 @@ export const validateVariantsExistStep = createStep(
       )
     }
 
-    return new StepResponse(Object.fromEntries(variants.map((v) => [v.id, v])))
+    return new StepResponse(Array.from(variants.map((v) => [v.id, v])))
   }
 )

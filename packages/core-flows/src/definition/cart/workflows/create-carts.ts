@@ -11,6 +11,7 @@ import {
   findOrCreateCustomerStep,
   findSalesChannelStep,
   getVariantPriceSetsStep,
+  getVariantsStep,
   validateVariantsExistStep,
 } from "../steps"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
@@ -19,6 +20,10 @@ export const createCartWorkflowId = "create-cart"
 export const createCartWorkflow = createWorkflow(
   createCartWorkflowId,
   (input: WorkflowData<CreateCartWorkflowInputDTO>): WorkflowData<CartDTO> => {
+    const variantIds = transform({ input }, (data) => {
+      return (data.input.items ?? []).map((i) => i.variant_id)
+    })
+
     const [salesChannel, region, customerData] = parallelize(
       findSalesChannelStep({
         salesChannelId: input.sales_channel_id,
@@ -29,15 +34,11 @@ export const createCartWorkflow = createWorkflow(
       findOrCreateCustomerStep({
         customerId: input.customer_id,
         email: input.email,
-      })
+      }),
+      validateVariantsExistStep({ variantIds })
     )
 
-    const variantIds = transform({ input }, (data) => {
-      return (data.input.items ?? []).map((i) => i.variant_id)
-    })
-
-    const variants = validateVariantsExistStep({ variantIds })
-
+    // TODO: Needs to be more flexible
     const pricingContext = transform({ input, region }, (data) => {
       return {
         currency_code: data.input.currency_code ?? data.region.currency_code,
@@ -71,6 +72,28 @@ export const createCartWorkflow = createWorkflow(
         return data_
       }
     )
+
+    const variants = getVariantsStep({
+      // @ts-ignore
+      filter: { id: variantIds },
+      config: {
+        select: [
+          "id",
+          "title",
+          "sku",
+          "barcode",
+          "product.id",
+          "product.title",
+          "product.description",
+          "product.subtitle",
+          "product.thumbnail",
+          "product.type",
+          "product.collection",
+          "product.handle",
+        ],
+        relations: ["product"],
+      },
+    })
 
     const lineItems = transform({ priceSets, input, variants }, (data) => {
       const items = (data.input.items ?? []).map((item) => {

@@ -7,8 +7,12 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { getVariantPriceSetsStep, validateVariantsExistStep } from "../steps"
-import { addToCartStep } from "../steps/add-to-cart"
+import {
+  addToCartStep,
+  getVariantPriceSetsStep,
+  getVariantsStep,
+  validateVariantsExistStep,
+} from "../steps"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 
 export const addToCartWorkflowId = "add-to-cart"
@@ -19,8 +23,9 @@ export const addToCartWorkflow = createWorkflow(
       return (data.input.items ?? []).map((i) => i.variant_id)
     })
 
-    const variants = validateVariantsExistStep({ variantIds })
+    validateVariantsExistStep({ variantIds })
 
+    // TODO: Needs to be more flexible
     const pricingContext = transform({ cart: input.cart }, (data) => {
       return {
         currency_code: data.cart.currency_code,
@@ -31,6 +36,28 @@ export const addToCartWorkflow = createWorkflow(
     const priceSets = getVariantPriceSetsStep({
       variantIds,
       context: pricingContext,
+    })
+
+    const variants = getVariantsStep({
+      // @ts-ignore
+      filter: { id: variantIds },
+      config: {
+        select: [
+          "id",
+          "title",
+          "sku",
+          "barcode",
+          "product.id",
+          "product.title",
+          "product.description",
+          "product.subtitle",
+          "product.thumbnail",
+          "product.type",
+          "product.collection",
+          "product.handle",
+        ],
+        relations: ["product"],
+      },
     })
 
     const lineItems = transform(
