@@ -1,4 +1,7 @@
-import { generateEntityId } from "@medusajs/utils"
+import {
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -11,6 +14,11 @@ import {
 import AdjustmentLine from "./adjustment-line"
 import LineItem from "./line-item"
 
+const ItemIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_line_item_adjustment",
+  columns: "item_id",
+})
+
 @Entity({ tableName: "order_line_item_adjustment" })
 @Check<LineItemAdjustment>({
   expression: (columns) => `${columns.amount} >= 0`,
@@ -18,12 +26,12 @@ import LineItem from "./line-item"
 export default class LineItemAdjustment extends AdjustmentLine {
   @ManyToOne({
     entity: () => LineItem,
-    index: "IDX_order_line_item_adjustment_item_id",
     cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
   item: LineItem
 
   @Property({ columnType: "text" })
+  @ItemIdIndex.MikroORMIndex()
   item_id: string
 
   @BeforeCreate()
