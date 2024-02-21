@@ -1,24 +1,15 @@
 import {
   ActionTypeDefinition,
+  EVENT_STATUS,
+  InternalOrderChangeEvent,
   OrderChangeEvent,
   OrderSummary,
   OrderTransaction,
   VirtualOrder,
 } from "@types"
 
-enum EVENT_STATUS {
-  PENDING = "pending",
-  VOIDED = "voided",
-  DONE = "done",
-}
-
 type InternalOrderSummary = OrderSummary & {
   futureTemporarySum: number
-}
-
-type InternalOrderChangeEvent = OrderChangeEvent & {
-  status?: EVENT_STATUS
-  _original?: InternalOrderChangeEvent
 }
 
 export class OrderChangeProcessing {

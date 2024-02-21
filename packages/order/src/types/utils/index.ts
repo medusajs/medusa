@@ -20,6 +20,12 @@ export type VirtualOrder = {
   shipping_total: number
 }
 
+export enum EVENT_STATUS {
+  PENDING = "pending",
+  VOIDED = "voided",
+  DONE = "done",
+}
+
 export interface OrderSummary {
   currentOrderTotal: number
   originalOrderTotal: number
@@ -55,14 +61,19 @@ export interface OrderChangeEvent {
   }
 }
 
+export type InternalOrderChangeEvent = OrderChangeEvent & {
+  status?: EVENT_STATUS
+  original_?: InternalOrderChangeEvent
+}
+
 export type OrderReferences = {
-  action: OrderChangeEvent
-  previousEvents?: OrderChangeEvent[]
+  action: InternalOrderChangeEvent
+  previousEvents?: InternalOrderChangeEvent[]
   currentOrder: VirtualOrder
   summary: OrderSummary
   transactions: OrderTransaction[]
   type: ActionTypeDefinition
-  actions: OrderChangeEvent[]
+  actions: InternalOrderChangeEvent[]
 }
 
 export interface ActionTypeDefinition {
