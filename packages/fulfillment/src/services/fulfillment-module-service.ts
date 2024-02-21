@@ -28,7 +28,7 @@ import {
   ShippingOptionType,
   ShippingProfile,
 } from "@models"
-import {Rule, validateRules} from "@utils"
+import { validateRules } from "@utils"
 
 const generateMethodForModels = [
   ServiceZone,
@@ -394,6 +394,8 @@ export default class FulfillmentModuleService<
     if (!data_.length) {
       return []
     }
+
+    validateRules(data_ as unknown as Record<string, unknown>[])
 
     const createdShippingOptionRules =
       await this.shippingOptionRuleService_.create(data_, sharedContext)
@@ -765,13 +767,13 @@ export default class FulfillmentModuleService<
       | FulfillmentTypes.UpdateShippingOptionDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TShippingOptionEntity | TShippingOptionEntity[]> {
-    const data_ = Array.isArray(data) ? data : [data]
+    const dataArray = Array.isArray(data) ? data : [data]
 
-    if (!data_.length) {
+    if (!dataArray.length) {
       return []
     }
 
-    const shippingOptionIds = data_.map((s) => s.id)
+    const shippingOptionIds = dataArray.map((s) => s.id)
     if (!shippingOptionIds.length) {
       return []
     }
@@ -786,80 +788,60 @@ export default class FulfillmentModuleService<
       sharedContext
     )
 
-    const shippingOptionSet = new Set(shippingOptions.map((s) => s.id))
-    const expectedShippingOptionSet = new Set(data_.map((s) => s.id))
-    const missingShippingOptionIds = getSetDifference(
-      expectedShippingOptionSet,
-      shippingOptionSet
+    FulfillmentModuleService.validateMissingShippingOptions_(
+      shippingOptions,
+      dataArray
     )
 
-    if (missingShippingOptionIds.size) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `The following shipping options do not exist: ${Array.from(
-          missingShippingOptionIds
-        ).join(", ")}`
-      )
-    }
-
     const ruleIdsToDelete: string[] = []
-    data_.forEach((shippingOption) => {
-      if (shippingOption.rules) {
-        const existingShippingOption = shippingOptions.find(
-          (s) => s.id === shippingOption.id
-        )!
-        const existingRules = existingShippingOption.rules
+    dataArray.forEach((shippingOption) => {
+      if (!shippingOption.rules) {
+        return
+      }
 
-        const rulesMap = new Map(existingRules.map((rule) => [rule.id, rule]))
-        const rulesSet = new Set(
-          existingRules
+      const existingShippingOption = shippingOptions.find(
+        (s) => s.id === shippingOption.id
+      )!
+      const existingRules = existingShippingOption.rules
+
+      FulfillmentModuleService.validateMissingShippingOptionRules(
+        existingShippingOption,
+        shippingOption
+      )
+
+      const existingRulesMap = new Map(
+        existingRules.map((rule) => [rule.id, rule])
+      )
+      const updatedRules = shippingOption.rules
+      const toDeleteRuleIds = getSetDifference(
+        new Set(existingRules.map((r) => r.id)),
+        new Set(
+          updatedRules
             .map((r) => "id" in r && r.id)
             .filter((id): id is string => !!id)
         )
-        const expectedRuleSet = new Set(
-          shippingOption.rules
-            .map((r) => "id" in r && r.id)
-            .filter((id): id is string => !!id)
-        )
-        const missingRuleIds = getSetDifference(expectedRuleSet, rulesSet)
+      )
+      if (toDeleteRuleIds.size) {
+        ruleIdsToDelete.push(...Array.from(toDeleteRuleIds))
+      }
 
-        if (missingRuleIds.size) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `The following rules does not exists: ${Array.from(
-              missingRuleIds
-            ).join(", ")} on shipping option ${shippingOption.id}`
-          )
-        }
-
-        const updatedRules = shippingOption.rules
-        const toDeleteRuleIds = getSetDifference(
-          new Set(existingRules.map((r) => r.id)),
-          new Set(
-            updatedRules
-              .map((r) => "id" in r && r.id)
-              .filter((id): id is string => !!id)
-          )
-        )
-        if (toDeleteRuleIds.size) {
-          ruleIdsToDelete.push(...Array.from(toDeleteRuleIds))
-        }
-
-        const rulesToBeValidated = updatedRules.map((rule) => {
+      const newRules = updatedRules
+        .map((rule) => {
           if (!("id" in rule)) {
             return rule
           }
           return
-        }).filter(Boolean)
-        validateRules(rulesToBeValidated as Record<string, unknown>[])
-
-        shippingOption.rules = shippingOption.rules.map((rule) => {
-          if (!("id" in rule)) {
-            return rule
-          }
-          return rulesMap.get(rule.id)!
         })
-      }
+        .filter(Boolean)
+
+      validateRules(newRules as Record<string, unknown>[])
+
+      shippingOption.rules = shippingOption.rules.map((rule) => {
+        if (!("id" in rule)) {
+          return rule
+        }
+        return existingRulesMap.get(rule.id)!
+      })
     })
 
     if (ruleIdsToDelete.length) {
@@ -870,7 +852,7 @@ export default class FulfillmentModuleService<
     }
 
     const updatedShippingOptions = await this.shippingOptionService_.update(
-      data_,
+      dataArray,
       sharedContext
     )
 
@@ -975,11 +957,65 @@ export default class FulfillmentModuleService<
       return []
     }
 
+    validateRules(data_ as unknown as Record<string, unknown>[])
+
     const updatedShippingOptionRules =
       await this.shippingOptionRuleService_.update(data_, sharedContext)
 
     return Array.isArray(data)
       ? updatedShippingOptionRules
       : updatedShippingOptionRules[0]
+  }
+
+  protected static validateMissingShippingOptions_(
+    shippingOptions: ShippingOption[],
+    shippingOptionsData: FulfillmentTypes.UpdateShippingOptionDTO[]
+  ) {
+    const shippingOptionSet = new Set(shippingOptions.map((s) => s.id))
+    const expectedShippingOptionSet = new Set(
+      shippingOptionsData.map((s) => s.id)
+    )
+    const missingShippingOptionIds = getSetDifference(
+      expectedShippingOptionSet,
+      shippingOptionSet
+    )
+
+    if (missingShippingOptionIds.size) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `The following shipping options do not exist: ${Array.from(
+          missingShippingOptionIds
+        ).join(", ")}`
+      )
+    }
+  }
+
+  protected static validateMissingShippingOptionRules(
+    shippingOption: ShippingOption,
+    shippingOptionUpdateData: FulfillmentTypes.UpdateShippingOptionDTO
+  ) {
+    if (!shippingOptionUpdateData.rules) {
+      return
+    }
+
+    const existingRules = shippingOption.rules
+
+    const rulesSet = new Set(existingRules.map((r) => r.id))
+    // Only validate the rules that have an id to validate that they really exists in the shipping option
+    const expectedRuleSet = new Set(
+      shippingOptionUpdateData.rules
+        .map((r) => "id" in r && r.id)
+        .filter((id): id is string => !!id)
+    )
+    const nonAlreadyExistingRules = getSetDifference(expectedRuleSet, rulesSet)
+
+    if (nonAlreadyExistingRules.size) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `The following rules does not exists: ${Array.from(
+          nonAlreadyExistingRules
+        ).join(", ")} on shipping option ${shippingOptionUpdateData.id}`
+      )
+    }
   }
 }
