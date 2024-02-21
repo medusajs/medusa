@@ -1,4 +1,4 @@
-import { isString, MedusaError } from "@medusajs/utils"
+import { isString, MedusaError, pickValueFromObject } from "@medusajs/utils"
 
 type Rule = {
   attribute: string
@@ -35,15 +35,11 @@ export function isContextValidForRules(
   let { atLeastOneValidRule } = options
   atLeastOneValidRule ??= false
 
-  function getDeepValue(obj: Record<string, any>, path: string): any {
-    return path.split(".").reduce((acc, key) => acc[key], obj)
-  }
-
   const loopComparator = atLeastOneValidRule ? rules.some : rules.every
 
   return loopComparator((rule) => {
     const { attribute, operator, value } = rule
-    const contextValue = getDeepValue(context, attribute)
+    const contextValue = pickValueFromObject(attribute, context)
     return operatorsPredicate[operator](contextValue, value)
   })
 }
