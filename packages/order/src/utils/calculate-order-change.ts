@@ -1,14 +1,24 @@
 import {
   ActionTypeDefinition,
-  EVENT_STATUS,
   OrderChangeEvent,
   OrderSummary,
   OrderTransaction,
   VirtualOrder,
 } from "@types"
 
+enum EVENT_STATUS {
+  PENDING = "pending",
+  VOIDED = "voided",
+  DONE = "done",
+}
+
 type InternalOrderSummary = OrderSummary & {
   futureTemporarySum: number
+}
+
+type InternalOrderChangeEvent = OrderChangeEvent & {
+  status?: EVENT_STATUS
+  _original?: InternalOrderChangeEvent
 }
 
 export class OrderChangeProcessing {
@@ -20,9 +30,9 @@ export class OrderChangeProcessing {
 
   private order: VirtualOrder
   private transactions: OrderTransaction[]
-  private actions: OrderChangeEvent[]
+  private actions: InternalOrderChangeEvent[]
 
-  private actionsProcessed: { [key: string]: OrderChangeEvent[] } = {}
+  private actionsProcessed: { [key: string]: InternalOrderChangeEvent[] } = {}
   private groupTotal: Record<string, number> = {}
   private summary: InternalOrderSummary
 
@@ -37,7 +47,7 @@ export class OrderChangeProcessing {
   }: {
     order: VirtualOrder
     transactions: OrderTransaction[]
-    actions: OrderChangeEvent[]
+    actions: InternalOrderChangeEvent[]
   }) {
     this.order = JSON.parse(JSON.stringify(order))
     this.transactions = JSON.parse(JSON.stringify(transactions ?? []))
@@ -60,7 +70,7 @@ export class OrderChangeProcessing {
     }
   }
 
-  private isEventActive(action: OrderChangeEvent): boolean {
+  private isEventActive(action: InternalOrderChangeEvent): boolean {
     const status = action.status
     return (
       status === undefined ||
@@ -68,12 +78,12 @@ export class OrderChangeProcessing {
       status === EVENT_STATUS.DONE
     )
   }
-  private isEventDone(action: OrderChangeEvent): boolean {
+  private isEventDone(action: InternalOrderChangeEvent): boolean {
     const status = action.status
     return status === EVENT_STATUS.DONE
   }
 
-  private isEventPending(action: OrderChangeEvent): boolean {
+  private isEventPending(action: InternalOrderChangeEvent): boolean {
     const status = action.status
     return status === undefined || status === EVENT_STATUS.PENDING
   }
@@ -142,7 +152,7 @@ export class OrderChangeProcessing {
   }
 
   private processAction_(
-    action: OrderChangeEvent,
+    action: InternalOrderChangeEvent,
     isReplay = false
   ): number | void {
     const type = {
@@ -156,7 +166,7 @@ export class OrderChangeProcessing {
       this.actionsProcessed[action.action].push(action)
     }
 
-    let previousEvents: OrderChangeEvent[] | undefined
+    let previousEvents: InternalOrderChangeEvent[] | undefined
     if (type.commitsAction) {
       previousEvents = (this.actionsProcessed[type.commitsAction] ?? []).filter(
         (action) =>
@@ -210,7 +220,7 @@ export class OrderChangeProcessing {
     return calculatedAmount
   }
 
-  private resolveReferences(self: OrderChangeEvent): void {
+  private resolveReferences(self: InternalOrderChangeEvent): void {
     const resolve = self.resolve
     const resolveType = OrderChangeProcessing.typeDefinition[self.action]
 
@@ -229,7 +239,7 @@ export class OrderChangeProcessing {
         }
 
         if (type.revert && (action.evaluationOnly || resolveType.void)) {
-          let previousEvents: OrderChangeEvent[] | undefined
+          let previousEvents: InternalOrderChangeEvent[] | undefined
           if (type.commitsAction) {
             previousEvents = (
               this.actionsProcessed[type.commitsAction] ?? []
@@ -263,7 +273,7 @@ export class OrderChangeProcessing {
     })
   }
 
-  private resolveGroup(self: OrderChangeEvent): void {
+  private resolveGroup(self: InternalOrderChangeEvent): void {
     const resolve = self.resolve
 
     Object.keys(this.actionsProcessed).forEach((actionKey) => {
@@ -280,7 +290,7 @@ export class OrderChangeProcessing {
           action.status !== EVENT_STATUS.VOIDED &&
           (action.evaluationOnly || type.void)
         ) {
-          let previousEvents: OrderChangeEvent[] | undefined
+          let previousEvents: InternalOrderChangeEvent[] | undefined
           if (type.commitsAction) {
             previousEvents = (
               this.actionsProcessed[type.commitsAction] ?? []

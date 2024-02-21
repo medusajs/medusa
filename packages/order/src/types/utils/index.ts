@@ -20,12 +20,6 @@ export type VirtualOrder = {
   shipping_total: number
 }
 
-export enum EVENT_STATUS {
-  PENDING = "pending",
-  VOIDED = "voided",
-  DONE = "done",
-}
-
 export interface OrderSummary {
   currentOrderTotal: number
   originalOrderTotal: number
@@ -39,7 +33,6 @@ export interface OrderSummary {
 
 export interface OrderTransaction {
   amount: number
-  [key: string]: unknown
 }
 
 export interface OrderChangeEvent {
@@ -54,14 +47,12 @@ export interface OrderChangeEvent {
   evaluationOnly?: boolean
 
   details?: any
-  status?: EVENT_STATUS
 
   resolve?: {
     group_id?: string
     reference_id?: string
     amount?: number
   }
-  original_?: OrderChangeEvent
 }
 
 export type OrderReferences = {
