@@ -21,12 +21,14 @@ export function moduleIntegrationTestRunner({
   joinerConfig = [],
   schema = "public",
   testSuite,
+  injectedDependencies = {},
 }: {
   moduleName: string
   moduleModels?: any[]
   joinerConfig?: any[]
   schema?: string
   dbName?: string
+  injectedDependencies?: Record<string, any>
   testSuite: <TService = unknown>(options: SuiteOptions<TService>) => () => void
 }) {
   moduleModels = Object.values(require(`${process.cwd()}/src/models`))
@@ -64,6 +66,7 @@ export function moduleIntegrationTestRunner({
     injectedDependencies: {
       [ContainerRegistrationKeys.PG_CONNECTION]: connection,
       eventBusService: new MockEventBusService(),
+      ...injectedDependencies,
     },
     modulesConfig: modulesConfig_,
     databaseConfig: dbConfig,
