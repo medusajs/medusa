@@ -64,7 +64,7 @@ export const addToCartWorkflow = createWorkflow(
       { priceSets, input, variants, cart: input.cart },
       (data) => {
         const items = (data.input.items ?? []).map((item) => {
-          const variant = data.variants[item.variant_id]
+          const variant = data.variants.find((v) => v.id === item.variant_id)!
 
           return prepareLineItemData({
             variant: variant,

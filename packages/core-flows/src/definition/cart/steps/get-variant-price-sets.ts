@@ -26,30 +26,41 @@ export const getVariantPriceSetsStep = createStep(
     const remoteQuery = container.resolve("remoteQuery")
 
     const variantPriceSets = await remoteQuery(
-      `
-      query {
-        variant (id: $id) {
-          id
-          price {
-            price_set_id
-          }
-        }       
-      }
-    `,
       {
-        id: data.variantIds,
+        variant: {
+          fields: ["id"],
+          price: {
+            fields: ["price_set_id"],
+          },
+        },
+      },
+      {
+        variant: {
+          id: data.variantIds,
+        },
       }
     )
 
-    if (variantPriceSets.length !== data.variantIds.length) {
+    const notFound: string[] = []
+    const priceSetIds: string[] = []
+
+    variantPriceSets.forEach((v) => {
+      if (v.price?.price_set_id) {
+        priceSetIds.push(v.price.price_set_id)
+      } else {
+        notFound.push(v.id)
+      }
+    })
+
+    if (notFound.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Not all variants have a price associated with them"
+        `Variants with IDs ${notFound.join(", ")} do not have a price`
       )
     }
 
     const calculatedPriceSets = await pricingModuleService.calculatePrices(
-      { id: [...variantPriceSets.map((v) => v.price.price_set_id)] },
+      { id: priceSetIds },
       { context: data.context }
     )
 
@@ -57,13 +68,17 @@ export const getVariantPriceSetsStep = createStep(
       calculatedPriceSets.map((p) => [p.id, p])
     )
 
-    const variantToCalculatedPriceSets: Record<string, any> = {}
+    const variantToCalculatedPriceSets = variantPriceSets.reduce(
+      (acc, { id, price }) => {
+        const calculatedPriceSet = idToPriceSet.get(price?.price_set_id)
+        if (calculatedPriceSet) {
+          acc[id] = calculatedPriceSet
+        }
 
-    for (const variantPriceSet of variantPriceSets) {
-      const priceSetId = variantPriceSet.price.price_set_id
-      const calculatedPriceSet = idToPriceSet.get(priceSetId)
-      variantToCalculatedPriceSets[variantPriceSet.id] = calculatedPriceSet
-    }
+        return acc
+      },
+      {}
+    )
 
     return new StepResponse(variantToCalculatedPriceSets)
   }

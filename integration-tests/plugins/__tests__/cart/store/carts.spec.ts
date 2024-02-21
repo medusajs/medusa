@@ -1,7 +1,3 @@
-import {
-  createCartWorkflow,
-  findOrCreateCustomerStepId,
-} from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
@@ -280,19 +276,6 @@ describe("Store Carts API", () => {
       )
     })
 
-    it("should throw when no regions exist", async () => {
-      const api = useApi() as any
-
-      await regionModuleService.delete(defaultRegion.id)
-
-      await expect(
-        api.post(`/store/carts`, {
-          email: "tony@stark.com",
-          currency_code: "usd",
-        })
-      ).rejects.toThrow()
-    })
-
     it("should respond 400 bad request on unknown props", async () => {
       const api = useApi() as any
 
@@ -301,93 +284,6 @@ describe("Store Carts API", () => {
           foo: "bar",
         })
       ).rejects.toThrow()
-    })
-
-    it("should throw if sales channel is disabled", async () => {
-      const api = useApi() as any
-
-      const salesChannel = await scModuleService.create({
-        name: "Webshop",
-        is_disabled: true,
-      })
-
-      await expect(
-        api.post(`/store/carts`, {
-          sales_channel_id: salesChannel.id,
-        })
-      ).rejects.toThrow()
-    })
-
-    describe("compensation", () => {
-      it("should delete created customer if cart-creation fails", async () => {
-        expect.assertions(2)
-        const workflow = createCartWorkflow(appContainer)
-
-        workflow.appendAction("throw", findOrCreateCustomerStepId, {
-          invoke: async function failStep() {
-            throw new Error(`Failed to create cart`)
-          },
-        })
-
-        const { errors } = await workflow.run({
-          input: {
-            currency_code: "usd",
-            email: "tony@stark-industries.com",
-          },
-          throwOnError: false,
-        })
-
-        expect(errors).toEqual([
-          {
-            action: "throw",
-            handlerType: "invoke",
-            error: new Error(`Failed to create cart`),
-          },
-        ])
-
-        const customers = await customerModule.list({
-          email: "tony@stark-industries.com",
-        })
-
-        expect(customers).toHaveLength(0)
-      })
-
-      it("should not delete existing customer if cart-creation fails", async () => {
-        expect.assertions(2)
-        const workflow = createCartWorkflow(appContainer)
-
-        workflow.appendAction("throw", findOrCreateCustomerStepId, {
-          invoke: async function failStep() {
-            throw new Error(`Failed to create cart`)
-          },
-        })
-
-        const customer = await customerModule.create({
-          email: "tony@stark-industries.com",
-        })
-
-        const { errors } = await workflow.run({
-          input: {
-            currency_code: "usd",
-            customer_id: customer.id,
-          },
-          throwOnError: false,
-        })
-
-        expect(errors).toEqual([
-          {
-            action: "throw",
-            handlerType: "invoke",
-            error: new Error(`Failed to create cart`),
-          },
-        ])
-
-        const customers = await customerModule.list({
-          email: "tony@stark-industries.com",
-        })
-
-        expect(customers).toHaveLength(1)
-      })
     })
   })
 

@@ -10,7 +10,6 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const cartModuleService = req.scope.resolve<ICartModuleService>(
     ModuleRegistrationName.CART
   )
-  const remoteQuery = req.scope.resolve("remoteQuery")
 
   const cart = await cartModuleService.retrieve(req.params.id, {
     select: ["id", "region_id", "currency_code"],
@@ -23,11 +22,14 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
   const { errors } = await addToCartWorkflow(req.scope).run({
     input: workflowInput,
+    throwOnError: false,
   })
 
   if (Array.isArray(errors) && errors[0]) {
     throw errors[0].error
   }
+
+  const remoteQuery = req.scope.resolve("remoteQuery")
 
   const query = remoteQueryObjectFromString({
     entryPoint: "cart",

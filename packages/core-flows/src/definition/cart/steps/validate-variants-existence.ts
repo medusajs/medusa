@@ -37,6 +37,6 @@ export const validateVariantsExistStep = createStep(
       )
     }
 
-    return new StepResponse(Array.from(variants.map((v) => [v.id, v])))
+    return new StepResponse(Array.from(variants.map((v) => v.id)))
   }
 )

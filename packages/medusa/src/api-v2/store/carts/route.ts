@@ -12,9 +12,14 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     workflowInput.customer_id = req.auth_user!.app_metadata?.customer_id
   }
 
-  const { result } = await createCartWorkflow(req.scope).run({
+  const { result, errors } = await createCartWorkflow(req.scope).run({
     input: workflowInput,
+    throwOnError: false,
   })
+
+  if (Array.isArray(errors) && errors[0]) {
+    throw errors[0].error
+  }
 
   const remoteQuery = req.scope.resolve("remoteQuery")
 
