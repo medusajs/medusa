@@ -52,7 +52,7 @@ export default class ShippingOptionRule {
   operator: ruleOperator
 
   @Property({ columnType: "jsonb", nullable: true })
-  value: { value: string | string[] } | null = null
+  value: string | string[] | null = null
 
   @ManyToOne(() => ShippingOption, {
     type: "text",

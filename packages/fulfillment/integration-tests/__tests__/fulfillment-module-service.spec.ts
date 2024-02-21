@@ -811,8 +811,8 @@ moduleIntegrationTestRunner({
               rules: [
                 {
                   attribute: "test-attribute",
-                  operator: "eq",
-                  value: "test-value",
+                  operator: "in",
+                  value: ["test-value"],
                 },
               ],
             }
@@ -997,12 +997,14 @@ moduleIntegrationTestRunner({
               ],
             }
 
-            const err = await service.createShippingOptions(
-              createData
-            ).catch((e) => e)
+            const err = await service
+              .createShippingOptions(createData)
+              .catch((e) => e)
 
             expect(err).toBeDefined()
-            expect(err.message).toBe("Rule operator invalid is not supported. Must be one of in, eq, ne, gt, gte, lt, lte, nin")
+            expect(err.message).toBe(
+              "Rule operator invalid is not supported. Must be one of in, eq, ne, gt, gte, lt, lte, nin"
+            )
           })
         })
 
