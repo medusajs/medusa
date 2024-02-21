@@ -49,6 +49,7 @@ export function getComputedActionsForItems(
   )
 }
 
+// TODO: calculations should eventually move to a totals util outside of the module
 export function applyPromotionToItems(
   promotion: PromotionTypes.PromotionDTO,
   items: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.ITEMS],
@@ -63,6 +64,10 @@ export function applyPromotionToItems(
     [allocation, allocationOverride].includes(ApplicationMethodAllocation.EACH)
   ) {
     for (const method of items!) {
+      if (!method.subtotal || !method.quantity) {
+        continue
+      }
+
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
       const quantityMultiplier = Math.min(
         method.quantity,
@@ -112,14 +117,18 @@ export function applyPromotionToItems(
   ) {
     const totalApplicableValue = items!.reduce((acc, method) => {
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
-      return (
-        acc +
-        (method.subtotal / method.quantity) * method.quantity -
-        appliedPromoValue
-      )
+      const perItemCost = method.subtotal
+        ? method.subtotal / method.quantity
+        : 0
+
+      return acc + perItemCost * method.quantity - appliedPromoValue
     }, 0)
 
     for (const method of items!) {
+      if (!method.subtotal || !method.quantity) {
+        continue
+      }
+
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
       const promotionValue = parseFloat(applicationMethod!.value!)
       const applicableTotal =

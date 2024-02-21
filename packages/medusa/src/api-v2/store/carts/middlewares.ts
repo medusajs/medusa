@@ -5,6 +5,7 @@ import * as QueryConfig from "./query-config"
 import {
   StoreGetCartsCartParams,
   StorePostCartReq,
+  StorePostCartsCartPromotionsReq,
   StorePostCartsCartReq,
 } from "./validators"
 
@@ -37,5 +38,10 @@ export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/store/carts/:id",
     middlewares: [transformBody(StorePostCartsCartReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/store/carts/:id/promotions",
+    middlewares: [transformBody(StorePostCartsCartPromotionsReq)],
   },
 ]

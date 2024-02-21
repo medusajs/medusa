@@ -52,6 +52,12 @@ export class StorePostCartReq {
   metadata?: Record<string, unknown>
 }
 
+export class StorePostCartsCartPromotionsReq {
+  @IsArray()
+  @Type(() => String)
+  promo_codes: string[]
+}
+
 export class StorePostCartsCartReq {
   @IsOptional()
   @IsString()

@@ -55,6 +55,10 @@ export function applyPromotionToShippingMethods(
 
   if (allocation === ApplicationMethodAllocation.EACH) {
     for (const method of shippingMethods!) {
+      if (!method.subtotal) {
+        continue
+      }
+
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
       let promotionValue = parseFloat(applicationMethod!.value!)
       const applicableTotal = method.subtotal - appliedPromoValue
@@ -95,7 +99,7 @@ export function applyPromotionToShippingMethods(
     const totalApplicableValue = shippingMethods!.reduce((acc, method) => {
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
 
-      return acc + method.subtotal - appliedPromoValue
+      return acc + (method.subtotal || 0) - appliedPromoValue
     }, 0)
 
     if (totalApplicableValue <= 0) {
@@ -103,6 +107,10 @@ export function applyPromotionToShippingMethods(
     }
 
     for (const method of shippingMethods!) {
+      if (!method.subtotal) {
+        continue
+      }
+
       const promotionValue = parseFloat(applicationMethod!.value!)
       const applicableTotal = method.subtotal
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0

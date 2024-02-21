@@ -67,6 +67,11 @@ function initializeBigNumberFields(entity: any) {
 
     const rawValue = entity[`raw_${prop}`]
     const value = entity[prop]
+
+    if (!entity.hasOwnProperty(prop)) {
+      return
+    }
+
     if (options.nullable && rawValue === null && value === null) {
       return
     }

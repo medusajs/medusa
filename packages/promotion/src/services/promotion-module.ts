@@ -11,11 +11,11 @@ import {
   CampaignBudgetType,
   InjectManager,
   InjectTransactionManager,
-  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   PromotionType,
+  isString,
 } from "@medusajs/utils"
 import {
   ApplicationMethod,
@@ -38,9 +38,9 @@ import {
   UpdatePromotionDTO,
 } from "@types"
 import {
+  ComputeActionUtils,
   allowedAllocationForQuantity,
   areRulesValidForContext,
-  ComputeActionUtils,
   validateApplicationMethodAttributes,
   validatePromotionRuleAttributes,
 } from "@utils"
@@ -225,10 +225,12 @@ export default class PromotionModuleService<
     }
   }
 
+  @InjectManager("baseRepository_")
   async computeActions(
     promotionCodes: string[],
     applicationContext: PromotionTypes.ComputeActionContext,
-    options: PromotionTypes.ComputeActionOptions = {}
+    options: PromotionTypes.ComputeActionOptions = {},
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<PromotionTypes.ComputeActions[]> {
     const { prevent_auto_promotions: preventAutoPromotions } = options
     const computedActions: PromotionTypes.ComputeActions[] = []
@@ -243,7 +245,11 @@ export default class PromotionModuleService<
     const methodIdPromoValueMap = new Map<string, number>()
     const automaticPromotions = preventAutoPromotions
       ? []
-      : await this.list({ is_automatic: true }, { select: ["code"] })
+      : await this.list(
+          { is_automatic: true },
+          { select: ["code"] },
+          sharedContext
+        )
 
     const automaticPromotionCodes = automaticPromotions.map((p) => p.code!)
     const promotionCodesToApply = [
@@ -289,9 +295,11 @@ export default class PromotionModuleService<
           "campaign",
           "campaign.budget",
         ],
-      }
+      },
+      sharedContext
     )
 
+    const appliedCodes = [...appliedShippingCodes, ...appliedItemCodes]
     const sortedPermissionsToApply = promotions
       .filter((p) => promotionCodesToApply.includes(p.code!))
       .sort(ComputeActionUtils.sortByBuyGetType)
@@ -300,7 +308,7 @@ export default class PromotionModuleService<
       promotions.map((promotion) => [promotion.code!, promotion])
     )
 
-    for (const appliedCode of [...appliedShippingCodes, ...appliedItemCodes]) {
+    for (const appliedCode of appliedCodes) {
       const promotion = existingPromotionsMap.get(appliedCode)
 
       if (!promotion) {
@@ -308,10 +316,6 @@ export default class PromotionModuleService<
           MedusaError.Types.INVALID_DATA,
           `Applied Promotion for code (${appliedCode}) not found`
         )
-      }
-
-      if (promotionCodes.includes(appliedCode)) {
-        continue
       }
 
       if (appliedItemCodes.includes(appliedCode)) {
