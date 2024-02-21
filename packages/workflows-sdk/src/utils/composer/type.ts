@@ -48,7 +48,7 @@ export type WorkflowData<T = unknown> = (T extends object
         TransactionStepsDefinition,
         "next" | "uuid" | "action"
       >
-    ): WorkflowData<T> | T
+    ): WorkflowData<T>
   }
 
 export type CreateWorkflowComposerContext = {
