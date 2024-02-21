@@ -1,4 +1,12 @@
-import {isString, MedusaError, pickValueFromObject} from "@medusajs/utils"
+import { isString, MedusaError, pickValueFromObject } from "@medusajs/utils"
+
+/**
+ * The rule engine here is kept inside the module as of now, but it could be moved
+ * to the utils package and be used across the different modules that provides context
+ * based rule filtering.
+ *
+ * TODO: discussion around that should happen at some point
+ */
 
 export type Rule = {
   attribute: string
