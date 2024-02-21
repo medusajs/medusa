@@ -1,4 +1,7 @@
-import { generateEntityId } from "@medusajs/utils"
+import {
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 
 import {
   BeforeCreate,
@@ -6,13 +9,44 @@ import {
   OnInit,
   PrimaryKey,
   Property,
+  Enum,
 } from "@mikro-orm/core"
 
-// TODO:
+const TypeIndex = createPsqlIndexStatementHelper({
+  tableName: "api_key",
+  columns: "type",
+})
+
 @Entity()
 export default class ApiKey {
   @PrimaryKey({ columnType: "text" })
   id: string
+
+  @Property({ columnType: "text" })
+  token: string
+
+  @Property({ columnType: "text" })
+  salt: string
+
+  @Property({ columnType: "text" })
+  redacted: string
+
+  @Property({ columnType: "text" })
+  title: string
+
+  @Property({ columnType: "text" })
+  @Enum({ items: ["publishable", "secret"] })
+  @TypeIndex.MikroORMIndex()
+  type: "publishable" | "secret"
+
+  @Property({
+    columnType: "timestamptz",
+    nullable: true,
+  })
+  last_used_at: Date | null = null
+
+  @Property({ columnType: "text" })
+  created_by: string
 
   @Property({
     onCreate: () => new Date(),
@@ -21,13 +55,14 @@ export default class ApiKey {
   })
   created_at: Date
 
+  @Property({ columnType: "text", nullable: true })
+  revoked_by: string | null = null
+
   @Property({
-    onCreate: () => new Date(),
-    onUpdate: () => new Date(),
     columnType: "timestamptz",
-    defaultRaw: "now()",
+    nullable: true,
   })
-  updated_at: Date
+  revoked_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

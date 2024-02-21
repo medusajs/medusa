@@ -2,7 +2,7 @@ import { IModuleService } from "../modules-sdk"
 import { ApiKeyDTO, FilterableApiKeyProps } from "./common"
 import { FindConfig } from "../common"
 import { Context } from "../shared-context"
-import { CreateApiKeyDTO, UpdateApiKeyDTO } from "./mutations"
+import { CreateApiKeyDTO, RevokeApiKeyDTO, UpdateApiKeyDTO } from "./mutations"
 
 export interface IApiKeyModuleService extends IModuleService {
   /**
@@ -67,10 +67,11 @@ export interface IApiKeyModuleService extends IModuleService {
 
   /**
    * Revokes an api key
-   * @param id
+   * @param data
    * @param sharedContext
    */
-  revoke(id: string, sharedContext?: Context): Promise<void>
+  revoke(data: RevokeApiKeyDTO[], sharedContext?: Context): Promise<ApiKeyDTO[]>
+  revoke(data: RevokeApiKeyDTO, sharedContext?: Context): Promise<ApiKeyDTO>
 
   /**
    * Check the validity of an api key
