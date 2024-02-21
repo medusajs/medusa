@@ -8,9 +8,7 @@ import {
 import { Context, MedusaContainer } from "@medusajs/types"
 
 export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
-  (
-    this: CreateWorkflowComposerContext
-  ) => WorkflowData<{ [K in keyof TOutput]: TOutput[K] }>
+  (this: CreateWorkflowComposerContext) => WorkflowData<TOutput>
 
 /**
  * A step function to be used in a workflow.
@@ -21,23 +19,13 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
 export type StepFunction<TInput, TOutput = unknown> = (keyof TInput extends []
   ? // Function that doesn't expect any input
     {
-      (): WorkflowData<{
-        [K in keyof TOutput]: TOutput[K]
-      }>
+      (): WorkflowData<TOutput>
     }
   : // function that expects an input object
     {
-      (
-        input: TInput extends object
-          ? { [K in keyof TInput]: WorkflowData<TInput[K]> | TInput[K] }
-          : WorkflowData<TInput> | TInput
-      ): WorkflowData<{
-        [K in keyof TOutput]: TOutput[K]
-      }>
+      (input: WorkflowData<TInput> | TInput): WorkflowData<TOutput>
     }) &
-  WorkflowDataProperties<{
-    [K in keyof TOutput]: TOutput[K]
-  }>
+  WorkflowDataProperties<TOutput>
 
 export type WorkflowDataProperties<T = unknown> = {
   __type: Symbol
@@ -60,15 +48,7 @@ export type WorkflowData<T = unknown> = (T extends object
         TransactionStepsDefinition,
         "next" | "uuid" | "action"
       >
-    ): T extends object
-      ? WorkflowData<
-          T extends object
-            ? {
-                [K in keyof T]: T[K]
-              }
-            : T
-        >
-      : T
+    ): WorkflowData<T> | T
   }
 
 export type CreateWorkflowComposerContext = {
