@@ -9,7 +9,12 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { generateEntityId, PaymentSessionStatus } from "@medusajs/utils"
+import {
+  BigNumber,
+  BigNumberField,
+  generateEntityId,
+  PaymentSessionStatus,
+} from "@medusajs/utils"
 
 import PaymentCollection from "./payment-collection"
 import Payment from "./payment"
@@ -24,11 +29,48 @@ export default class PaymentSession {
   @Property({ columnType: "text" })
   currency_code: string
 
-  @Property({
+  @Property({ columnType: "numeric" })
+  @BigNumberField()
+  amount: BigNumber | number
+
+  /*@Property({
     columnType: "numeric",
-    serializer: Number,
+    fieldName: "amount",
   })
-  amount: number
+  amount_: BigNumber | number
+
+  @Property({ persist: false, getter: true })
+  get amount(): BigNumber | number {
+    if (!this.amount_ && !this.raw_amount_) {
+      return 0
+    }
+
+    return !this.raw_amount_ && isString(this.amount_)
+      ? new BigNumber(this.raw_amount_ ?? this.amount_).numeric
+      : this.amount_
+  }
+
+  set amount(value: number) {
+    this.amount_ = value
+  }
+
+  @Property({ columnType: "jsonb", fieldName: "raw_amount" })
+  raw_amount_: BigNumberRawValue
+
+  @Property({ persist: false, getter: true })
+  get raw_amount(): BigNumberRawValue {
+    if (!this.amount_ && !this.raw_amount_) {
+      return new BigNumber(0).raw!
+    }
+
+    return !this.raw_amount_ && isString(this.amount_)
+      ? new BigNumber(this.raw_amount_ ?? this.amount_).raw!
+      : this.raw_amount_
+  }*/
+
+  /*set raw_amount(value: BigNumberRawValue) {
+    this.raw_amount_ = value
+  }*/
 
   @Property({ columnType: "text" })
   provider_id: string

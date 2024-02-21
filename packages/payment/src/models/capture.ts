@@ -1,4 +1,4 @@
-import { generateEntityId } from "@medusajs/utils"
+import { BigNumber, BigNumberField, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -8,6 +8,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+
 import Payment from "./payment"
 
 type OptionalCaptureProps = "created_at"
@@ -19,11 +20,9 @@ export default class Capture {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({
-    columnType: "numeric",
-    serializer: Number,
-  })
-  amount: number
+  @Property({ columnType: "numeric" })
+  @BigNumberField()
+  amount: BigNumber | number
 
   @ManyToOne(() => Payment, {
     onDelete: "cascade",

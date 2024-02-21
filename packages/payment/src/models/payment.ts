@@ -15,9 +15,10 @@ import {
 import { DAL } from "@medusajs/types"
 
 import {
+  BigNumber,
+  BigNumberField,
   DALUtils,
   generateEntityId,
-  optionalNumericSerializer,
 } from "@medusajs/utils"
 import Refund from "./refund"
 import Capture from "./capture"
@@ -34,18 +35,13 @@ export default class Payment {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({
-    columnType: "numeric",
-    serializer: Number,
-  })
-  amount: number
+  @Property({ columnType: "numeric" })
+  @BigNumberField()
+  amount: BigNumber | number
 
-  @Property({
-    columnType: "numeric",
-    nullable: true,
-    serializer: optionalNumericSerializer,
-  })
-  authorized_amount: number | null = null
+  @Property({ columnType: "numeric", nullable: true })
+  @BigNumberField()
+  authorized_amount: BigNumber | number | null = null
 
   @Property({ columnType: "text" })
   currency_code: string
@@ -124,8 +120,8 @@ export default class Payment {
 
   /** COMPUTED PROPERTIES START **/
 
-  captured_amount: number // sum of the associated captures
-  refunded_amount: number // sum of the associated refunds
+  captured_amount: BigNumber // sum of the associated captures
+  refunded_amount: BigNumber // sum of the associated refunds
 
   /** COMPUTED PROPERTIES END **/
 

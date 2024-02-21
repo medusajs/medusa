@@ -15,9 +15,10 @@ import {
 import { DAL } from "@medusajs/types"
 
 import {
+  BigNumber,
+  BigNumberField,
   DALUtils,
   generateEntityId,
-  optionalNumericSerializer,
   PaymentCollectionStatus,
 } from "@medusajs/utils"
 import PaymentProvider from "./payment-provider"
@@ -37,11 +38,9 @@ export default class PaymentCollection {
   @Property({ columnType: "text" })
   currency_code: string
 
-  @Property({
-    columnType: "numeric",
-    serializer: Number,
-  })
-  amount: number
+  @Property({ columnType: "numeric" })
+  @BigNumberField()
+  amount: BigNumber | number
 
   // TODO: make this computed properties
 
