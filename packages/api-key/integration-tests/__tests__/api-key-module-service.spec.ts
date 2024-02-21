@@ -53,7 +53,7 @@ moduleIntegrationTestRunner({
             expect.objectContaining({
               title: "Test API Key",
               type: ApiKeyType.PUBLISHABLE,
-              salt: "",
+              salt: undefined,
               created_by: "test",
               last_used_at: null,
               revoked_by: null,
@@ -75,7 +75,7 @@ moduleIntegrationTestRunner({
             expect.objectContaining({
               title: "Secret key",
               type: ApiKeyType.SECRET,
-              salt: "44de31ebcf085fa423fc584aa8540670",
+              salt: undefined,
               created_by: "test",
               last_used_at: null,
               revoked_by: null,
@@ -136,6 +136,16 @@ moduleIntegrationTestRunner({
           )
         })
 
+        it("should do nothing if the revokal list is empty", async function () {
+          const firstApiKey = await service.create(createSecretKeyFixture)
+          let revokedKeys = await service.revoke([])
+          expect(revokedKeys).toHaveLength(0)
+
+          const apiKey = await service.retrieve(firstApiKey.id)
+          expect(apiKey.revoked_at).toBeFalsy()
+          expect(apiKey.revoked_by).toBeFalsy()
+        })
+
         it("should not allow revoking an already revoked API key", async function () {
           const firstApiKey = await service.create(createSecretKeyFixture)
           await service.revoke({
@@ -180,7 +190,6 @@ moduleIntegrationTestRunner({
 
           // These should not be returned on an update
           createdApiKey.token = ""
-          createdApiKey.salt = ""
           expect(createdApiKey).toEqual(updatedApiKey)
         })
       })

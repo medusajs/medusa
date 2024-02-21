@@ -114,6 +114,16 @@
       "schema": "public",
       "indexes": [
         {
+          "keyName": "IDX_api_key_token_unique",
+          "columnNames": [
+            "token"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_api_key_token_unique\" ON \"api_key\" (token)"
+        },
+        {
           "keyName": "IDX_api_key_type",
           "columnNames": [
             "type"

@@ -17,12 +17,19 @@ const TypeIndex = createPsqlIndexStatementHelper({
   columns: "type",
 })
 
+const TokenIndex = createPsqlIndexStatementHelper({
+  tableName: "api_key",
+  columns: "token",
+  unique: true,
+})
+
 @Entity()
 export default class ApiKey {
   @PrimaryKey({ columnType: "text" })
   id: string
 
   @Property({ columnType: "text" })
+  @TokenIndex.MikroORMIndex()
   token: string
 
   @Property({ columnType: "text" })

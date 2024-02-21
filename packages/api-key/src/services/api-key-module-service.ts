@@ -89,6 +89,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
       token:
         generatedTokens.find((t) => t.hashedToken === key.token)?.rawToken ??
         key.token,
+      salt: undefined,
     }))
 
     return Array.isArray(data) ? responseWithRawToken : responseWithRawToken[0]
@@ -99,7 +100,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     data: ApiKeyTypes.CreateApiKeyDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], TokenDTO[]]> {
-    await this.validateCreateApiKeys(data, sharedContext)
+    await this.validateCreateApiKeys_(data, sharedContext)
 
     const normalizedInput: CreateApiKeyDTO[] = []
     const generatedTokens: TokenDTO[] = []
@@ -201,7 +202,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
       sharedContext
     )
 
-    return this.baseRepository_.serialize<ApiKeyTypes.ApiKeyDTO[]>(
+    return await this.baseRepository_.serialize<ApiKeyTypes.ApiKeyDTO[]>(
       apiKeys.map(omitToken),
       {
         populate: true,
@@ -215,17 +216,15 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     config?: FindConfig<ApiKeyTypes.ApiKeyDTO>,
     sharedContext?: Context
   ): Promise<[ApiKeyTypes.ApiKeyDTO[], number]> {
-    const result = await this.apiKeyService_.listAndCount(
+    const [apiKeys, count] = await this.apiKeyService_.listAndCount(
       filters,
       config,
       sharedContext
     )
-    const withoutToken = result[0].map(omitToken)
-    const count = result[1]
 
     return [
       await this.baseRepository_.serialize<ApiKeyTypes.ApiKeyDTO[]>(
-        withoutToken,
+        apiKeys.map(omitToken),
         {
           populate: true,
         }
@@ -267,7 +266,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     data: ApiKeyTypes.RevokeApiKeyDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    await this.validateRevokeApiKeys(data)
+    await this.validateRevokeApiKeys_(data)
 
     const updateRequest = data.map((k) => ({
       id: k.id,
@@ -292,7 +291,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     return Promise.resolve(false)
   }
 
-  protected async validateCreateApiKeys(
+  protected async validateCreateApiKeys_(
     data: ApiKeyTypes.CreateApiKeyDTO[],
     sharedContext: Context = {}
   ): Promise<void> {
@@ -327,12 +326,19 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     }
   }
 
-  protected async validateRevokeApiKeys(
+  protected async validateRevokeApiKeys_(
     data: ApiKeyTypes.RevokeApiKeyDTO[],
     sharedContext: Context = {}
   ): Promise<void> {
     if (!data.length) {
       return
+    }
+
+    if (data.some((k) => !k.id)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `You must provide an api key id field when revoking a key.`
+      )
     }
 
     if (data.some((k) => !k.revoked_by)) {
@@ -387,9 +393,12 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
 }
 
 // We are mutating the object here as what microORM relies on non-enumerable fields for serialization, among other things.
-const omitToken = (key: ApiKey): ApiKey => {
+const omitToken = (
+  // We have to make salt optional before deleting it (and we do want it required in the DB)
+  key: Omit<ApiKey, "salt"> & { salt?: string }
+): Omit<ApiKey, "salt"> => {
   key.token = key.type === ApiKeyType.SECRET ? "" : key.token
-  key.salt = ""
+  delete key.salt
   return key
 }
 
