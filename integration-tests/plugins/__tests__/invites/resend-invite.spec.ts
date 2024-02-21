@@ -58,8 +58,6 @@ describe("POST /admin/invites/:id/resend", () => {
       adminHeaders
     )
 
-    // console.log(response.data)
-
     expect(response.status).toEqual(200)
     expect(response.data.invite.token).not.toEqual(invite.token)
     expect(response.data.invite).toEqual(

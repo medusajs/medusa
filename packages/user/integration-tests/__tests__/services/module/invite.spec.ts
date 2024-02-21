@@ -234,6 +234,18 @@ describe("UserModuleService - Invite", () => {
           }),
           eventName: UserEvents.invite_created,
         }),
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: "1",
+          }),
+          eventName: "invite.token_generated",
+        }),
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: "2",
+          }),
+          eventName: "invite.token_generated",
+        }),
       ])
     })
   })
