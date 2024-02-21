@@ -1,4 +1,4 @@
-import { DateComparisonOperator, FindConfig, Selector } from "./common"
+import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -15,14 +15,14 @@ import {
   ProductStatus,
   SalesChannel,
 } from "../models"
-import { Transform, Type } from "class-transformer"
+import { DateComparisonOperator, FindConfig, Selector } from "./common"
 
-import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
 import { FindOperator } from "typeorm"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
+import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
+import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { IsType } from "../utils/validators/is-type"
 import { PriceListLoadConfig } from "./price-list"
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
-import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 
 /**
  * Filters to apply on retrieved products.

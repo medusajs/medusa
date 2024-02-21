@@ -1,4 +1,4 @@
-import { forwardRef } from "react"
+import { ComponentPropsWithoutRef, forwardRef } from "react"
 
 import { TrianglesMini } from "@medusajs/icons"
 import { clx } from "@medusajs/ui"
@@ -7,7 +7,7 @@ import { countries } from "../../../lib/countries"
 
 export const CountrySelect = forwardRef<
   HTMLSelectElement,
-  React.ComponentPropsWithoutRef<"select"> & { placeholder?: string }
+  ComponentPropsWithoutRef<"select"> & { placeholder?: string }
 >(({ className, disabled, placeholder, ...props }, ref) => {
   const { t } = useTranslation()
 
@@ -15,7 +15,7 @@ export const CountrySelect = forwardRef<
     <div className="relative">
       <TrianglesMini
         className={clx(
-          "absolute right-2 top-1/2 -translate-y-1/2 text-ui-fg-muted transition-fg pointer-events-none",
+          "text-ui-fg-muted transition-fg pointer-events-none absolute right-2 top-1/2 -translate-y-1/2",
           {
             "text-ui-fg-disabled": disabled,
           }
@@ -24,7 +24,7 @@ export const CountrySelect = forwardRef<
       <select
         disabled={disabled}
         className={clx(
-          "appearance-none bg-ui-bg-field shadow-buttons-neutral transition-fg flex w-full select-none items-center justify-between rounded-md outline-none px-2 py-1 txt-compact-small",
+          "bg-ui-bg-field shadow-buttons-neutral transition-fg txt-compact-small flex w-full select-none appearance-none items-center justify-between rounded-md px-2 py-1.5 outline-none",
           "placeholder:text-ui-fg-muted text-ui-fg-base",
           "hover:bg-ui-bg-field-hover",
           "focus-visible:shadow-borders-interactive-with-active data-[state=open]:!shadow-borders-interactive-with-active",
