@@ -28,6 +28,7 @@ import {
   ShippingOptionType,
   ShippingProfile,
 } from "@models"
+import {validateRules} from "../utils";
 
 const generateMethodForModels = [
   ServiceZone,
@@ -249,6 +250,11 @@ export default class FulfillmentModuleService<
 
     if (!data_.length) {
       return []
+    }
+
+    const rules = data_.flatMap((d) => d.rules)
+    if (rules.length) {
+      validateRules(rules)
     }
 
     const createdShippingOptions = await this.shippingOptionService_.create(
