@@ -8,6 +8,7 @@ import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Entity,
+  Enum,
   Filter,
   ManyToOne,
   OnInit,
@@ -31,6 +32,8 @@ const ShippingOptionIdIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NULL",
 })
 
+type ruleOperator = "in" | "eq" | "ne" | "gt" | "gte" | "lt" | "lte" | "nin"
+
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingOptionRule {
@@ -42,8 +45,11 @@ export default class ShippingOptionRule {
   @Property({ columnType: "text" })
   attribute: string
 
-  @Property({ columnType: "text" })
-  operator: string
+  @Enum({
+    items: () => ["in", "eq", "ne", "gt", "gte", "lt", "lte", "nin"],
+    columnType: "text",
+  })
+  operator: ruleOperator
 
   @Property({ columnType: "jsonb", nullable: true })
   value: { value: string | string[] } | null = null

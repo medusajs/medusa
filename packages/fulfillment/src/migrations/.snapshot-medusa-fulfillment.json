@@ -1180,7 +1180,17 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "text"
+          "enumItems": [
+            "in",
+            "eq",
+            "ne",
+            "gt",
+            "gte",
+            "lt",
+            "lte",
+            "nin"
+          ],
+          "mappedType": "enum"
         },
         "value": {
           "name": "value",

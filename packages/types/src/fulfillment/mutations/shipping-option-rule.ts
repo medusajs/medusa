@@ -1,6 +1,6 @@
 export interface CreateShippingOptionRuleDTO {
   attribute: string
-  operator: string
+  operator: "in" | "eq" | "ne" | "gt" | "gte" | "lt" | "lte" | "nin"
   value: string | string[]
   shipping_option_id: string
 }

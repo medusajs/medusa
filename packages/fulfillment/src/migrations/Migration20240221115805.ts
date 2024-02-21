@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20240220135151 extends Migration {
+export class Migration20240221115805 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table if not exists "fulfillment_address" ("id" text not null, "fulfillment_id" text null, "company" text null, "first_name" text null, "last_name" text null, "address_1" text null, "address_2" text null, "city" text null, "country_code" text null, "province" text null, "postal_code" text null, "phone" text null, "metadata" jsonb null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "fulfillment_address_pkey" primary key ("id"));');
@@ -41,7 +41,7 @@ export class Migration20240220135151 extends Migration {
     this.addSql('CREATE INDEX IF NOT EXISTS "IDX_shipping_option_shipping_option_type_id" ON "shipping_option" (shipping_option_type_id) WHERE deleted_at IS NULL;');
     this.addSql('CREATE INDEX IF NOT EXISTS "IDX_shipping_option_deleted_at" ON "shipping_option" (deleted_at) WHERE deleted_at IS NOT NULL;');
 
-    this.addSql('create table if not exists "shipping_option_rule" ("id" text not null, "attribute" text not null, "operator" text not null, "value" jsonb null, "shipping_option_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "shipping_option_rule_pkey" primary key ("id"));');
+    this.addSql('create table if not exists "shipping_option_rule" ("id" text not null, "attribute" text not null, "operator" text check ("operator" in (\'in\', \'eq\', \'ne\', \'gt\', \'gte\', \'lt\', \'lte\', \'nin\')) not null, "value" jsonb null, "shipping_option_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "shipping_option_rule_pkey" primary key ("id"));');
     this.addSql('CREATE INDEX IF NOT EXISTS "IDX_shipping_option_rule_shipping_option_id" ON "shipping_option_rule" (shipping_option_id) WHERE deleted_at IS NULL;');
     this.addSql('CREATE INDEX IF NOT EXISTS "IDX_shipping_option_rule_deleted_at" ON "shipping_option_rule" (deleted_at) WHERE deleted_at IS NOT NULL;');
 
