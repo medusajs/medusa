@@ -16,14 +16,25 @@ type ProductAttributesFormProps = {
   onSuccessfulSubmit: () => void
 }
 
+const dimension = zod
+  .union([zod.string(), zod.number()])
+  .transform((value) => {
+    if (value === "") {
+      return null
+    }
+    return Number(value)
+  })
+  .optional()
+  .nullable()
+
 const ProductAttributesSchema = zod.object({
-  weight: zod.string(),
-  length: zod.string(),
-  width: zod.string(),
-  height: zod.string(),
-  mid_code: zod.string(),
-  hs_code: zod.string(),
-  origin_country: zod.string(),
+  weight: dimension,
+  length: dimension,
+  width: dimension,
+  height: dimension,
+  mid_code: zod.string().optional(),
+  hs_code: zod.string().optional(),
+  origin_country: zod.string().optional(),
 })
 
 export const ProductAttributesForm = ({
@@ -33,10 +44,10 @@ export const ProductAttributesForm = ({
 }: ProductAttributesFormProps) => {
   const form = useForm<zod.infer<typeof ProductAttributesSchema>>({
     defaultValues: {
-      height: product.height ? product.height.toString() : "",
-      width: product.width ? product.width.toString() : "",
-      length: product.length ? product.length.toString() : "",
-      weight: product.weight ? product.weight.toString() : "",
+      height: product.height ? product.height : null,
+      width: product.width ? product.width : null,
+      length: product.length ? product.length : null,
+      weight: product.weight ? product.weight : null,
       mid_code: product.mid_code || "",
       hs_code: product.hs_code || "",
       origin_country: product.origin_country || "",
@@ -58,10 +69,10 @@ export const ProductAttributesForm = ({
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
       {
-        weight: data.weight ? parseFloat(data.weight) : undefined,
-        length: data.length ? parseFloat(data.length) : undefined,
-        width: data.width ? parseFloat(data.width) : undefined,
-        height: data.height ? parseFloat(data.height) : undefined,
+        weight: data.weight ? data.weight : undefined,
+        length: data.length ? data.length : undefined,
+        width: data.width ? data.width : undefined,
+        height: data.height ? data.height : undefined,
         mid_code: data.mid_code,
         hs_code: data.hs_code,
         origin_country: data.origin_country,
@@ -127,7 +138,7 @@ export const ProductAttributesForm = ({
                             if (value === "") {
                               onChange(null)
                             } else {
-                              onChange(parseFloat(value))
+                              onChange(Number(value))
                             }
                           }}
                           {...field}
@@ -156,7 +167,7 @@ export const ProductAttributesForm = ({
                             if (value === "") {
                               onChange(null)
                             } else {
-                              onChange(parseFloat(value))
+                              onChange(Number(value))
                             }
                           }}
                           {...field}
@@ -185,7 +196,7 @@ export const ProductAttributesForm = ({
                             if (value === "") {
                               onChange(null)
                             } else {
-                              onChange(parseFloat(value))
+                              onChange(Number(value))
                             }
                           }}
                           {...field}

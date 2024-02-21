@@ -28,7 +28,7 @@ type FieldCoordinates = {
 
 export interface DataGridRootProps<
   TData,
-  TFieldValues extends FieldValues = any,
+  TFieldValues extends FieldValues = FieldValues,
 > {
   data: TData[]
   columns: ColumnDef<TData>[]
@@ -38,15 +38,18 @@ export interface DataGridRootProps<
 
 const ROW_HEIGHT = 40
 
-export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
+export const DataGridRoot = <
+  TData,
+  TFieldValues extends FieldValues = FieldValues,
+>({
   data,
   columns,
   state,
   getSubRows,
 }: DataGridRootProps<TData, TFieldValues>) => {
   const tableContainerRef = useRef<HTMLDivElement>(null)
-  const { execute, undo, redo, canRedo, canUndo } = useCommandHistory()
 
+  const { execute, undo, redo, canRedo, canUndo } = useCommandHistory()
   const { register, control, getValues, setValue } = state
 
   const grid = useReactTable({
@@ -253,7 +256,7 @@ export const DataGridRoot = <TData, TFieldValues extends FieldValues = any>({
     let cells: FieldCoordinates[] = []
 
     function selectCell(i: number, columnIndex: number) {
-      const possibleCell = document.querySelector(
+      const possibleCell = tableContainerRef.current?.querySelector(
         `[data-row-index="${i}"][data-column-index="${columnIndex}"]`
       )
 

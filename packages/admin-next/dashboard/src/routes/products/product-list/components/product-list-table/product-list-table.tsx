@@ -31,6 +31,7 @@ export const ProductListTable = () => {
     },
     {
       initialData,
+      keepPreviousData: true,
     }
   )
 
