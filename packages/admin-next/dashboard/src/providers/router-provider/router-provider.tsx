@@ -92,7 +92,7 @@ const router = createBrowserRouter([
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/orders/details"),
+                lazy: () => import("../../routes/orders/order-detail"),
               },
             ],
           },
