@@ -92,6 +92,9 @@ describe("Currency service", function () {
           fields: undefined,
           limit: 15,
           offset: 0,
+          orderBy: {
+            code: "ASC",
+          },
           populate: [],
           withDeleted: undefined,
         },
@@ -130,6 +133,9 @@ describe("Currency service", function () {
           fields: undefined,
           limit: 15,
           offset: 0,
+          orderBy: {
+            code: "ASC",
+          },
           populate: [],
           withDeleted: undefined,
         },
@@ -168,6 +174,9 @@ describe("Currency service", function () {
           fields: undefined,
           limit: 15,
           offset: 0,
+          orderBy: {
+            code: "ASC",
+          },
           withDeleted: undefined,
           populate: ["tags"],
         },
@@ -206,6 +215,9 @@ describe("Currency service", function () {
           fields: undefined,
           limit: 15,
           offset: 0,
+          orderBy: {
+            code: "ASC",
+          },
           withDeleted: undefined,
           populate: ["tags"],
         },

@@ -1,6 +1,7 @@
 import { BigNumberRawValue } from "@medusajs/types"
 import {
   BigNumber,
+  BigNumberField,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
@@ -16,14 +17,18 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { BeforeUpdate } from "typeorm"
 import Order from "./order"
 import ShippingMethodAdjustment from "./shipping-method-adjustment"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"
 
-const shippingOptionIdIndex = createPsqlIndexStatementHelper({
+const ShippingOptionIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_shipping_method",
   columns: "shipping_option_id",
+})
+
+const OrderIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_shipping_method",
+  columns: "order_id",
 })
 
 @Entity({ tableName: "order_shipping_method" })
@@ -33,12 +38,12 @@ export default class ShippingMethod {
   id: string
 
   @Property({ columnType: "text" })
+  @OrderIdIndex.MikroORMIndex()
   order_id: string
 
   @ManyToOne({
     entity: () => Order,
     fieldName: "order_id",
-    index: "IDX_order_shipping_method_order_id",
     cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
   order: Order
@@ -50,6 +55,7 @@ export default class ShippingMethod {
   description: string | null = null
 
   @Property({ columnType: "numeric" })
+  @BigNumberField()
   amount: BigNumber | number
 
   @Property({ columnType: "jsonb" })
@@ -62,7 +68,7 @@ export default class ShippingMethod {
     columnType: "text",
     nullable: true,
   })
-  @shippingOptionIdIndex.MikroORMIndex()
+  @ShippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
@@ -107,28 +113,9 @@ export default class ShippingMethod {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordsm")
-
-    const val = new BigNumber(this.raw_amount ?? this.amount)
-
-    this.amount = val.numeric
-    this.raw_amount = val.raw!
   }
-
-  @BeforeUpdate()
-  onUpdate() {
-    const val = new BigNumber(this.raw_amount ?? this.amount)
-
-    this.amount = val.numeric
-    this.raw_amount = val.raw as BigNumberRawValue
-  }
-
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordsm")
-
-    const val = new BigNumber(this.raw_amount ?? this.amount)
-
-    this.amount = val.numeric
-    this.raw_amount = val.raw!
   }
 }

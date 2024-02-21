@@ -13,7 +13,7 @@ import {
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
 import { GeoZoneType } from "@medusajs/utils"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
@@ -44,12 +44,44 @@ moduleIntegrationTestRunner({
                     },
                   ],
                 },
+                {
+                  name: "test2",
+                  geo_zones: [
+                    {
+                      type: GeoZoneType.COUNTRY,
+                      country_code: "fr",
+                    },
+                  ],
+                },
+                {
+                  name: "_test",
+                  geo_zones: [
+                    {
+                      type: GeoZoneType.COUNTRY,
+                      country_code: "fr",
+                    },
+                  ],
+                },
               ],
             })
 
-            let listedSets = await service.list({
-              type: createdSet1.type,
-            })
+            let listedSets = await service.list(
+              {
+                type: createdSet1.type,
+              },
+              {
+                relations: ["service_zones"],
+              }
+            )
+
+            const listedSets2 = await service.list(
+              {
+                type: createdSet1.type,
+              },
+              {
+                relations: ["service_zones"],
+              }
+            )
 
             expect(listedSets).toEqual(
               expect.arrayContaining([
@@ -57,6 +89,15 @@ moduleIntegrationTestRunner({
                 expect.objectContaining({ id: createdSet2.id }),
               ])
             )
+
+            // Respecting order id by default
+            expect(listedSets[1].service_zones).toEqual([
+              expect.objectContaining({ name: "test" }),
+              expect.objectContaining({ name: "test2" }),
+              expect.objectContaining({ name: "_test" }),
+            ])
+
+            expect(listedSets2).toEqual(listedSets2)
 
             listedSets = await service.list({
               name: createdSet2.name,
@@ -963,19 +1004,24 @@ moduleIntegrationTestRunner({
             )
 
             const updatedFulfillmentSets = await service.update(updateData)
+            const fullfillmentSets = await service.list({
+              id: updateData.map((ud) => ud.id),
+            })
 
             expect(updatedFulfillmentSets).toHaveLength(2)
 
-            let i = 0
             for (const data_ of updateData) {
-              expect(updatedFulfillmentSets[i]).toEqual(
+              const currentFullfillmentSet = fullfillmentSets.find(
+                (fs) => fs.id === data_.id
+              )
+
+              expect(currentFullfillmentSet).toEqual(
                 expect.objectContaining({
-                  id: createdFulfillmentSets[i].id,
+                  id: data_.id,
                   name: data_.name,
                   type: data_.type,
                 })
               )
-              ++i
             }
           })
 
@@ -1206,9 +1252,11 @@ moduleIntegrationTestRunner({
 
             expect(updatedFulfillmentSets).toHaveLength(2)
 
-            let i = 0
             for (const data_ of updateData) {
-              expect(updatedFulfillmentSets[i]).toEqual(
+              const expectedFulfillmentSet = updatedFulfillmentSets.find(
+                (f) => f.id === data_.id
+              )
+              expect(expectedFulfillmentSet).toEqual(
                 expect.objectContaining({
                   id: data_.id,
                   name: data_.name,
@@ -1231,7 +1279,6 @@ moduleIntegrationTestRunner({
                   ]),
                 })
               )
-              ++i
             }
 
             const serviceZones = await service.listServiceZones()
@@ -1310,16 +1357,18 @@ moduleIntegrationTestRunner({
 
             expect(updatedFulfillmentSets).toHaveLength(2)
 
-            let i = 0
             for (const data_ of updateData) {
-              expect(updatedFulfillmentSets[i]).toEqual(
+              const expectedFulfillmentSet = updatedFulfillmentSets.find(
+                (f) => f.id === data_.id
+              )
+              expect(expectedFulfillmentSet).toEqual(
                 expect.objectContaining({
                   id: data_.id,
                   name: data_.name,
                   type: data_.type,
                   service_zones: expect.arrayContaining([
                     expect.objectContaining({
-                      id: createdFulfillmentSets[i].service_zones[0].id,
+                      id: expect.any(String),
                     }),
                     expect.objectContaining({
                       id: expect.any(String),
@@ -1338,7 +1387,6 @@ moduleIntegrationTestRunner({
                   ]),
                 })
               )
-              ++i
             }
 
             const serviceZones = await service.listServiceZones()
@@ -1470,9 +1518,11 @@ moduleIntegrationTestRunner({
 
             expect(updatedServiceZones).toHaveLength(2)
 
-            let i = 0
             for (const data_ of updateData) {
-              expect(updatedServiceZones[i]).toEqual(
+              const expectedServiceZone = updatedServiceZones.find(
+                (serviceZone) => serviceZone.id === data_.id
+              )
+              expect(expectedServiceZone).toEqual(
                 expect.objectContaining({
                   id: data_.id,
                   name: data_.name,
@@ -1485,7 +1535,6 @@ moduleIntegrationTestRunner({
                   ]),
                 })
               )
-              ++i
             }
           })
 
@@ -1617,16 +1666,17 @@ moduleIntegrationTestRunner({
 
             expect(updatedGeoZones).toHaveLength(2)
 
-            let i = 0
             for (const data_ of updateData) {
-              expect(updatedGeoZones[i]).toEqual(
+              const expectedGeoZone = updatedGeoZones.find(
+                (geoZone) => geoZone.id === data_.id
+              )
+              expect(expectedGeoZone).toEqual(
                 expect.objectContaining({
                   id: data_.id,
                   type: data_.type,
                   country_code: data_.country_code,
                 })
               )
-              ++i
             }
           })
         })
