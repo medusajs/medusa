@@ -30,15 +30,15 @@ export function BigNumberField(options: { nullable?: boolean } = {}) {
 }
 
 function registerGlobalHook(entity: any) {
-  const originalOnInit = entity.prototype.onInit
+  const originalOnLoad = entity.prototype.onLoad
   const originalOnCreate = entity.prototype.onCreate
   const originalOnUpdate = entity.prototype.onUpdate
 
-  entity.prototype.onInit = function (...args: any[]) {
+  entity.prototype.onLoad = function (...args: any[]) {
     initializeBigNumberFields(this)
 
-    if (originalOnInit) {
-      originalOnInit.apply(this, args)
+    if (originalOnLoad) {
+      originalOnLoad.apply(this, args)
     }
   }
 
@@ -67,6 +67,7 @@ function initializeBigNumberFields(entity: any) {
 
     const rawValue = entity[`raw_${prop}`]
     const value = entity[prop]
+
     if (options.nullable && rawValue === null && value === null) {
       return
     }
