@@ -1,5 +1,5 @@
 import { usePrompt } from "@medusajs/ui"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
@@ -23,13 +23,16 @@ export const useRouteModalState = (): [
   const prompt = usePrompt()
   const { t } = useTranslation()
 
-  const promptValues = {
-    title: t("general.unsavedChangesTitle"),
-    description: t("general.unsavedChangesDescription"),
-    cancelText: t("actions.cancel"),
-    confirmText: t("actions.continue"),
-    variant: "confirmation" as const,
-  }
+  const promptValues = useMemo(
+    () => ({
+      title: t("general.unsavedChangesTitle"),
+      description: t("general.unsavedChangesDescription"),
+      cancelText: t("actions.cancel"),
+      confirmText: t("actions.continue"),
+      variant: "confirmation" as const,
+    }),
+    [t]
+  )
 
   useEffect(() => {
     setOpen(true)
@@ -37,17 +40,9 @@ export const useRouteModalState = (): [
 
   const onOpenChange = async (open: boolean, ignore = false) => {
     if (!open) {
-      if (shouldPrompt && !ignore) {
-        const confirmed = await prompt(promptValues)
-
-        if (!confirmed) {
-          return
-        }
-      }
-
-      setTimeout(() => {
-        navigate("..", { replace: true })
-      }, 200)
+      document.body.style.pointerEvents = "auto"
+      navigate("..", { replace: true })
+      return
     }
 
     setOpen(open)

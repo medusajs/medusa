@@ -15,7 +15,11 @@ export const useShippingOptionColumns = () => {
     () => [
       columnHelper.accessor("name", {
         header: t("fields.name"),
-        cell: (cell) => cell.getValue(),
+        cell: ({ getValue }) => (
+          <div className="flex size-full items-center overflow-hidden">
+            <span className="truncate">{getValue()}</span>
+          </div>
+        ),
       }),
       columnHelper.accessor("price_type", {
         header: t("regions.priceType"),
@@ -90,6 +94,18 @@ export const useShippingOptionColumns = () => {
           return (
             <StatusCell color={value ? "blue" : "green"}>
               {value ? t("general.admin") : t("general.store")}
+            </StatusCell>
+          )
+        },
+      }),
+      columnHelper.accessor("is_return", {
+        header: t("fields.type"),
+        cell: (cell) => {
+          const value = cell.getValue()
+
+          return (
+            <StatusCell color={value ? "blue" : "green"}>
+              {value ? t("regions.return") : t("regions.outbound")}
             </StatusCell>
           )
         },

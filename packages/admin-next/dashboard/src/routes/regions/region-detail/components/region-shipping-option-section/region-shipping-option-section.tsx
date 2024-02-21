@@ -7,6 +7,8 @@ import { PricedShippingOption } from "@medusajs/medusa/dist/types/pricing"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useShippingOptionColumns } from "./use-shipping-option-table-columns"
+import { useShippingOptionTableFilters } from "./use-shipping-option-table-filters"
+import { useShippingOptionTableQuery } from "./use-shipping-option-table-query"
 
 type RegionShippingOptionSectionProps = {
   region: Region
@@ -17,12 +19,21 @@ const PAGE_SIZE = 10
 export const RegionShippingOptionSection = ({
   region,
 }: RegionShippingOptionSectionProps) => {
+  const { searchParams, raw } = useShippingOptionTableQuery({
+    pageSize: PAGE_SIZE,
+    regionId: region.id,
+  })
   const { shipping_options, count, isError, error, isLoading } =
-    useAdminShippingOptions({
-      region_id: region.id,
-      is_return: false,
-    })
+    useAdminShippingOptions(
+      {
+        ...searchParams,
+      },
+      {
+        keepPreviousData: true,
+      }
+    )
 
+  const filters = useShippingOptionTableFilters()
   const columns = useShippingOptionColumns()
 
   const { table } = useDataTable({
@@ -49,10 +60,21 @@ export const RegionShippingOptionSection = ({
         table={table}
         columns={columns}
         count={count}
+        filters={filters}
+        orderBy={[
+          "name",
+          "price_type",
+          "price_incl_tax",
+          "is_return",
+          "admin_only",
+          "created_at",
+          "updated_at",
+        ]}
         isLoading={isLoading}
         rowCount={PAGE_SIZE}
         pagination
         search
+        queryObject={raw}
       />
     </Container>
   )
