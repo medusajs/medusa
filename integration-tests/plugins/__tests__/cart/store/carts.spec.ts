@@ -488,4 +488,64 @@ describe("Store Carts API", () => {
       )
     })
   })
+
+  describe("POST /store/carts/:id/line-items", () => {
+    it("should add item to cart", async () => {
+      const cart = await cartModuleService.create({
+        currency_code: "usd",
+      })
+
+      const [product] = await productModule.create([
+        {
+          title: "Test product",
+          variants: [
+            {
+              title: "Test variant",
+            },
+          ],
+        },
+      ])
+
+      const priceSet = await pricingModule.create({
+        prices: [
+          {
+            amount: 3000,
+            currency_code: "usd",
+          },
+        ],
+      })
+
+      await remoteLink.create([
+        {
+          productService: {
+            variant_id: product.variants[0].id,
+          },
+          pricingService: {
+            price_set_id: priceSet.id,
+          },
+        },
+      ])
+
+      const api = useApi() as any
+      const response = await api.post(`/store/carts/${cart.id}/line-items`, {
+        variant_id: product.variants[0].id,
+        quantity: 1,
+      })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.cart).toEqual(
+        expect.objectContaining({
+          id: cart.id,
+          currency_code: "usd",
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              unit_price: 3000,
+              quantity: 1,
+              title: "Test variant",
+            }),
+          ]),
+        })
+      )
+    })
+  })
 })

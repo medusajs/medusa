@@ -1,3 +1,5 @@
+import { CartDTO } from "./common"
+
 export interface CreateCartCreateLineItemDTO {
   quantity: number
   variant_id: string
@@ -57,4 +59,9 @@ export interface CreateCartWorkflowInputDTO {
   metadata?: Record<string, unknown>
 
   items?: CreateCartCreateLineItemDTO[]
+}
+
+export interface AddToCartWorkflowInputDTO {
+  items: CreateCartCreateLineItemDTO[]
+  cart: CartDTO
 }

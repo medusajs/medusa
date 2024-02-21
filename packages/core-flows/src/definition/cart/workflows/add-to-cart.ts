@@ -1,4 +1,7 @@
-import { CartDTO } from "@medusajs/types"
+import {
+  AddToCartWorkflowInputDTO,
+  CreateLineItemForCartDTO,
+} from "@medusajs/types"
 import {
   WorkflowData,
   createWorkflow,
@@ -6,37 +9,19 @@ import {
 } from "@medusajs/workflows-sdk"
 import { getVariantPriceSetsStep, validateVariantsExistStep } from "../steps"
 import { addToCartStep } from "../steps/add-to-cart"
-import { getCartsStep } from "../steps/get-cart"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
-
-interface Item {
-  variant_id: string
-  quantity: number
-  metadata?: Record<string, unknown> | undefined
-}
-
-export interface AddToCartWorkflowInputDTO {
-  items: Item[]
-  cartIds: string[]
-}
 
 export const addToCartWorkflowId = "add-to-cart"
 export const addToCartWorkflow = createWorkflow(
   addToCartWorkflowId,
-  (input: WorkflowData<AddToCartWorkflowInputDTO>): WorkflowData<CartDTO> => {
+  (input: WorkflowData<AddToCartWorkflowInputDTO>) => {
     const variantIds = transform({ input }, (data) => {
       return (data.input.items ?? []).map((i) => i.variant_id)
     })
 
     const variants = validateVariantsExistStep({ variantIds })
 
-    const carts = getCartsStep({ cartIds: input.cartIds })
-
-    const cart = transform({ carts }, (data) => {
-      return data.carts[0]
-    })
-
-    const pricingContext = transform({ cart }, (data) => {
+    const pricingContext = transform({ cart: input.cart }, (data) => {
       return {
         currency_code: data.cart.currency_code,
         region_id: data.cart.region_id,
@@ -49,7 +34,7 @@ export const addToCartWorkflow = createWorkflow(
     })
 
     const lineItems = transform(
-      { priceSets, input, variants, cart },
+      { priceSets, input, variants, cart: input.cart },
       (data) => {
         const items = (data.input.items ?? []).map((item) => {
           const variant = data.variants[item.variant_id]
@@ -60,16 +45,15 @@ export const addToCartWorkflow = createWorkflow(
             quantity: item.quantity,
             metadata: item?.metadata ?? {},
             cartId: data.cart.id,
-          })
+          }) as CreateLineItemForCartDTO
         })
 
         return items
       }
     )
 
-    // @ts-ignore
     const items = addToCartStep({ items: lineItems })
 
-    return cart[0]
+    return items
   }
 )
