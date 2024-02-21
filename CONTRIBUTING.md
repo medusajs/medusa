@@ -39,7 +39,9 @@ Strive towards keeping your commits small and isolated - this helps the reviewer
 
 ### Pull Requests
 
-Once your changes are ready you must submit your branch as a pull request. Your pull request should be opened against the `develop` branch in the main Medusa repo.
+If your changes should result in a new version of Medusa, you will need to generate a **changelog**. Follow [this guide](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md) on how to generate a changeset.
+
+Finally, submit your branch as a pull request. Your pull request should be opened against the `develop` branch in the main Medusa repo.
 
 In your PR's description you should follow the structure:
 
