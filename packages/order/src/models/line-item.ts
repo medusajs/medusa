@@ -1,9 +1,8 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
-  BigNumber,
-  BigNumberField,
   createPsqlIndexStatementHelper,
   generateEntityId,
+  MikroOrmBigNumberProperty,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -11,8 +10,8 @@ import {
   Collection,
   Entity,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -114,16 +113,22 @@ export default class LineItem {
   @Property({ columnType: "boolean" })
   is_tax_inclusive = false
 
-  @Property({ columnType: "numeric", nullable: true })
-  @BigNumberField({ nullable: true })
-  compare_at_unit_price?: BigNumber | number | null = null
+  @MikroOrmBigNumberProperty({
+    columnType: "numeric",
+
+    nullable: true,
+  })
+  compare_at_unit_price?: number | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
   raw_compare_at_unit_price: BigNumberRawValue | null = null
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
-  unit_price: BigNumber | number
+  @MikroOrmBigNumberProperty({
+    columnType: "numeric",
+
+    nullable: true,
+  })
+  unit_price: number
 
   @Property({ columnType: "jsonb" })
   raw_unit_price: BigNumberRawValue

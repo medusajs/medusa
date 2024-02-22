@@ -1,9 +1,8 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
-  BigNumber,
-  BigNumberField,
   createPsqlIndexStatementHelper,
   generateEntityId,
+  MikroOrmBigNumberProperty,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -57,51 +56,58 @@ export default class OrderDetail {
   })
   item: LineItem
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
-  quantity: BigNumber | number
+  @MikroOrmBigNumberProperty({
+    columnType: "numeric",
+  })
+  quantity: number
 
   @Property({ columnType: "jsonb" })
   raw_quantity: BigNumberRawValue
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
-  fulfilled_quantity: BigNumber | number
+  @MikroOrmBigNumberProperty({
+    columnType: "numeric",
+  })
+  fulfilled_quantity: number
 
   @Property({ columnType: "jsonb" })
   raw_fulfilled_quantity: BigNumberRawValue
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
-  shipped_quantity: BigNumber | number
+  @MikroOrmBigNumberProperty({
+    columnType: "numeric",
+  })
+  shipped_quantity: number
 
   @Property({ columnType: "jsonb" })
   raw_shipped_quantity: BigNumberRawValue
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
-  return_requested_quantity: BigNumber | number
+  @MikroOrmBigNumberProperty({
+    columnType: "numeric",
+  })
+  return_requested_quantity: number
 
   @Property({ columnType: "jsonb" })
   raw_return_requested_quantity: BigNumberRawValue
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
-  return_received_quantity: BigNumber | number
+  @MikroOrmBigNumberProperty({
+    columnType: "numeric",
+  })
+  return_received_quantity: number
 
   @Property({ columnType: "jsonb" })
   raw_return_received_quantity: BigNumberRawValue
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
-  return_dismissed_quantity: BigNumber | number
+  @MikroOrmBigNumberProperty({
+    columnType: "numeric",
+  })
+  return_dismissed_quantity: number
 
   @Property({ columnType: "jsonb" })
   raw_return_dismissed_quantity: BigNumberRawValue
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
-  written_off_quantity: BigNumber | number
+  @MikroOrmBigNumberProperty({
+    columnType: "numeric",
+  })
+  written_off_quantity: number
 
   @Property({ columnType: "jsonb" })
   raw_written_off_quantity: BigNumberRawValue

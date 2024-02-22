@@ -5,8 +5,8 @@ import { Modules } from "@medusajs/modules-sdk"
 import { MikroOrmWrapper } from "../../../utils"
 import {
   createPaymentCollections,
-  createPaymentSessions,
   createPayments,
+  createPaymentSessions,
 } from "../../../__fixtures__"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 
@@ -462,7 +462,7 @@ describe("Payment Module Service", () => {
     })
 
     describe("authorize", () => {
-      it("should authorize a payment session", async () => {
+      it.only("should authorize a payment session", async () => {
         const collection = await service.createPaymentCollections({
           amount: 200,
           region_id: "test-region",

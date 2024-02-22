@@ -1,78 +1,45 @@
 import { BigNumber } from "../../totals/big-number"
+import { Property } from "@mikro-orm/core"
+import { isDefined } from "../../common"
+import { BigNumberInput } from "@medusajs/types"
 
-const bigNumberFields = new WeakMap<
-  object,
-  { prop: string; options: { nullable?: boolean } }[]
->()
-
-export function BigNumberField(options: { nullable?: boolean } = {}) {
-  return function (target: any, prop: string) {
-    const entity = target.constructor
-    if (!bigNumberFields.has(entity)) {
-      bigNumberFields.set(entity, [])
-    }
-
-    if (prop.startsWith("raw_")) {
-      const suggestedPropName = prop.replace("raw_", "")
-      throw new Error(
-        `BigNumberField decorator has to be used on the property "${suggestedPropName}" and ${prop} typed as BigNumberRawValue.`
-      )
-    }
-
-    bigNumberFields.get(entity)?.push({ prop, options })
-
-    if (!entity.prototype.__bigNumberInitialized) {
-      entity.prototype.__bigNumberInitialized = true
-
-      registerGlobalHook(entity)
-    }
+export function MikroOrmBigNumberProperty(
+  options: Parameters<typeof Property>[0] & {
+    rawColumnName?: string
   }
-}
+) {
+  return function (target: any, columnName: string) {
+    const targetColumn = columnName + "_"
+    const rawColumnName = options.rawColumnName ?? `raw_${columnName}`
 
-function registerGlobalHook(entity: any) {
-  const originalOnInit = entity.prototype.onInit
-  const originalOnCreate = entity.prototype.onCreate
-  const originalOnUpdate = entity.prototype.onUpdate
+    Object.defineProperty(target, columnName, {
+      get() {
+        if (!isDefined(this[rawColumnName]) && !isDefined(this[targetColumn])) {
+          return null
+        }
 
-  entity.prototype.onInit = function (...args: any[]) {
-    initializeBigNumberFields(this)
+        return this[targetColumn] instanceof BigNumber
+          ? this[targetColumn].numeric
+          : new BigNumber(this[rawColumnName] ?? this[targetColumn]).numeric
+      },
+      set(value: BigNumberInput) {
+        const bigNumber =
+          value instanceof BigNumber ? value : new BigNumber(value)
+        this[targetColumn] = bigNumber.numeric
+        this[rawColumnName] = bigNumber.raw
+      },
+    })
 
-    if (originalOnInit) {
-      originalOnInit.apply(this, args)
-    }
-  }
+    Reflect.defineMetadata("design:type", "number", target, targetColumn)
 
-  entity.prototype.onCreate = function (...args: any[]) {
-    initializeBigNumberFields(this)
+    Property({
+      ...options,
+      fieldName: columnName,
+    })(target, targetColumn)
 
-    if (originalOnCreate) {
-      originalOnCreate.apply(this, args)
-    }
-  }
-
-  entity.prototype.onUpdate = function (...args: any[]) {
-    initializeBigNumberFields(this)
-
-    if (originalOnUpdate) {
-      originalOnUpdate.apply(this, args)
-    }
-  }
-}
-
-function initializeBigNumberFields(entity: any) {
-  const fields = bigNumberFields.get(entity.constructor) ?? []
-
-  for (const field of fields) {
-    const { prop, options } = field
-
-    const rawValue = entity[`raw_${prop}`]
-    const value = entity[prop]
-    if (options.nullable && rawValue === null && value === null) {
-      return
-    }
-
-    const val = new BigNumber(rawValue ?? value)
-    entity[prop] = val.numeric
-    entity[`raw_${prop}`] = val.raw
+    Property({
+      persist: false,
+      getter: true,
+    })(target, columnName)
   }
 }

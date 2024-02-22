@@ -1,9 +1,8 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
-  BigNumber,
-  BigNumberField,
   createPsqlIndexStatementHelper,
   generateEntityId,
+  MikroOrmBigNumberProperty,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -52,9 +51,10 @@ export default class Transaction {
   })
   order: Order
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
-  amount: BigNumber | number
+  @MikroOrmBigNumberProperty({
+    columnType: "numeric",
+  })
+  amount: number
 
   @Property({ columnType: "jsonb" })
   raw_amount: BigNumberRawValue

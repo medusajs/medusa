@@ -17,6 +17,7 @@ import { DAL } from "@medusajs/types"
 import {
   DALUtils,
   generateEntityId,
+  MikroOrmBigNumberProperty,
   optionalNumericSerializer,
 } from "@medusajs/utils"
 import Refund from "./refund"
@@ -34,9 +35,8 @@ export default class Payment {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({
+  @MikroOrmBigNumberProperty({
     columnType: "numeric",
-    serializer: Number,
   })
   amount: number
 
