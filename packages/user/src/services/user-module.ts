@@ -102,10 +102,10 @@ export default class UserModuleService<
 
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
-        eventName: UserEvents.INVITE_TOKEN_GENERATED,
+        eventName: UserEvents.invite_token_generated,
         metadata: {
           service: this.constructor.name,
-          action: "createInvites",
+          action: "token_generated",
           object: "invite",
         },
         data: invite.id,
@@ -239,13 +239,13 @@ export default class UserModuleService<
 
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
-        eventName: UserEvents.INVITE_TOKEN_GENERATED,
+        eventName: UserEvents.invite_token_generated,
         metadata: {
           service: this.constructor.name,
-          action: "createInvites",
+          action: "token_generated",
           object: "invite",
         },
-        data: invite.id,
+        data: { id: invite.id },
       }))
     )
 
