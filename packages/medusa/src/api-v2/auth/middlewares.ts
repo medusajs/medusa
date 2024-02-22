@@ -1,19 +1,10 @@
-import {
-  authenticate,
-  validateInviteToken,
-} from "../../utils/authenticate-middleware"
-
 import { MiddlewareRoute } from "../../types/middlewares"
+import { authenticate } from "../../utils/authenticate-middleware"
 
 export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/session",
     middlewares: [authenticate(/.*/, "bearer")],
-  },
-  {
-    method: ["POST", "GET"],
-    matcher: "/auth/:scope/:authProvider",
-    middlewares: [validateInviteToken],
   },
 ]
