@@ -1,6 +1,7 @@
+import * as crypto from "crypto"
+
 import { Context, DAL } from "@medusajs/types"
 import {
-  InjectSharedContext,
   InjectTransactionManager,
   MedusaError,
   ModulesSdkUtils,
@@ -14,8 +15,8 @@ type InjectedDependencies = {
   inviteRepository: DAL.RepositoryService
 }
 
-// 7 days
-const DEFAULT_VALID_INVITE_DURATION = 1000 * 60 * 60 * 24 * 7
+// 1 day
+const DEFAULT_VALID_INVITE_DURATION = 60 * 60 * 24
 
 export default class InviteService<
   TEntity extends Invite = Invite
@@ -151,8 +152,10 @@ export default class InviteService<
 
     return jwt.sign(data, jwtSecret, {
       expiresIn,
+      jwtid: crypto.randomUUID(),
     })
   }
+
   private validateToken(data: any): JwtPayload {
     const jwtSecret = this.getOption("jwt_secret")
 
