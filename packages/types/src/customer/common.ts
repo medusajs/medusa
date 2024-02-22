@@ -78,6 +78,7 @@ export interface FilterableCustomerProps
   company_name?: string | string[] | OperatorMap<string> | null
   first_name?: string | string[] | OperatorMap<string> | null
   last_name?: string | string[] | OperatorMap<string> | null
+  has_account?: boolean | OperatorMap<boolean>
   created_by?: string | string[] | null
   created_at?: OperatorMap<string>
   updated_at?: OperatorMap<string>

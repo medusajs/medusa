@@ -45,6 +45,10 @@ export interface DataTableRootProps<TData> {
    * Whether the table is empty due to no results from the active query
    */
   noResults?: boolean
+  /**
+   * The layout of the table
+   */
+  layout?: "fill" | "fit"
 }
 
 /**
@@ -69,6 +73,7 @@ export const DataTableRoot = <TData,>({
   commands,
   count = 0,
   noResults = false,
+  layout = "fit",
 }: DataTableRootProps<TData>) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -101,8 +106,18 @@ export const DataTableRoot = <TData,>({
   }
 
   return (
-    <div className="w-full">
-      <div onScroll={handleHorizontalScroll} className="w-full overflow-x-auto">
+    <div
+      className={clx("flex w-full flex-col overflow-hidden", {
+        "flex flex-1 flex-col": layout === "fill",
+      })}
+    >
+      <div
+        onScroll={handleHorizontalScroll}
+        className={clx("w-full", {
+          "min-h-0 flex-grow overflow-auto": layout === "fill",
+          "overflow-x-auto": layout === "fit",
+        })}
+      >
         {!noResults ? (
           <Table className="w-full">
             <Table.Header className="border-t-0">
@@ -144,8 +159,12 @@ export const DataTableRoot = <TData,>({
                           className={clx({
                             "bg-ui-bg-base sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                               isStickyHeader,
+                            "left-[68px]":
+                              isStickyHeader && hasSelect && !isSelectHeader,
                             "after:bg-ui-border-base":
-                              showStickyBorder && isStickyHeader,
+                              showStickyBorder &&
+                              isStickyHeader &&
+                              !isSpecialHeader,
                           })}
                         >
                           {flexRender(
@@ -179,14 +198,14 @@ export const DataTableRoot = <TData,>({
                   >
                     {row.getVisibleCells().map((cell, index) => {
                       const visibleCells = row.getVisibleCells()
-                      const isSelectCell = cell.id === "select"
+                      const isSelectCell = cell.column.id === "select"
 
                       const firstCell = visibleCells.findIndex(
-                        (h) => h.id !== "select"
+                        (h) => h.column.id !== "select"
                       )
                       const isFirstCell =
                         firstCell !== -1
-                          ? cell.id === visibleCells[firstCell].id
+                          ? cell.column.id === visibleCells[firstCell].column.id
                           : index === 0
 
                       const isStickyCell = isSelectCell || isFirstCell
@@ -197,8 +216,10 @@ export const DataTableRoot = <TData,>({
                           className={clx("has-[a]:cursor-pointer", {
                             "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-[:has(td_a:focus)]/row:bg-ui-bg-base-pressed group-hover/row:bg-ui-bg-base-hover transition-fg sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                               isStickyCell,
+                            "left-[68px]":
+                              isStickyCell && hasSelect && !isSelectCell,
                             "after:bg-ui-border-base":
-                              showStickyBorder && isStickyCell,
+                              showStickyBorder && isStickyCell && !isSelectCell,
                           })}
                         >
                           {flexRender(
@@ -214,22 +235,24 @@ export const DataTableRoot = <TData,>({
             </Table.Body>
           </Table>
         ) : (
-          <div className="border-b">
+          <div className={clx({ "border-b": layout === "fit" })}>
             <NoResults />
           </div>
         )}
       </div>
       {pagination && (
-        <Pagination
-          canNextPage={table.getCanNextPage()}
-          canPreviousPage={table.getCanPreviousPage()}
-          nextPage={table.nextPage}
-          previousPage={table.previousPage}
-          count={count}
-          pageIndex={pageIndex}
-          pageCount={table.getPageCount()}
-          pageSize={pageSize}
-        />
+        <div className={clx({ "border-t": layout === "fill" })}>
+          <Pagination
+            canNextPage={table.getCanNextPage()}
+            canPreviousPage={table.getCanPreviousPage()}
+            nextPage={table.nextPage}
+            previousPage={table.previousPage}
+            count={count}
+            pageIndex={pageIndex}
+            pageCount={table.getPageCount()}
+            pageSize={pageSize}
+          />
+        </div>
       )}
       {hasCommandBar && (
         <CommandBar open={!!Object.keys(rowSelection).length}>
@@ -275,5 +298,11 @@ const Pagination = (props: PaginationProps) => {
     next: t("general.next"),
   }
 
-  return <Table.Pagination {...props} translations={translations} />
+  return (
+    <Table.Pagination
+      className="flex-shrink-0"
+      {...props}
+      translations={translations}
+    />
+  )
 }

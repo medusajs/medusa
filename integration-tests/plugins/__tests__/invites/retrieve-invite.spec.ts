@@ -1,13 +1,13 @@
 import { initDb, useDb } from "../../../environment-helpers/use-db"
 
-import { IUserModuleService } from "@medusajs/types"
+import { IAuthModuleService, IUserModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { getContainer } from "../../../environment-helpers/use-container"
 import path from "path"
 import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../environment-helpers/use-api"
-import adminSeeder from "../../../helpers/admin-seeder"
 import { AxiosInstance } from "axios"
+import { createAdminUser } from "../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -31,7 +31,7 @@ describe("GET /admin/invites/:id", () => {
   })
 
   beforeEach(async () => {
-    await adminSeeder(dbConnection)
+    await createAdminUser(dbConnection, adminHeaders)
   })
 
   afterAll(async () => {
@@ -48,8 +48,6 @@ describe("GET /admin/invites/:id", () => {
   it("should retrieve a single invite", async () => {
     const invite = await userModuleService.createInvites({
       email: "potential_member@test.com",
-      token: "test",
-      expires_at: new Date(),
     })
 
     const api = useApi()! as AxiosInstance

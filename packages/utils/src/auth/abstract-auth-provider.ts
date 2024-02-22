@@ -46,7 +46,7 @@ export abstract class AbstractAuthModuleProvider {
 
     const cloned = new (this.constructor as any)(this.container_)
     cloned.scope_ = scope
-    cloned.scopeConfg_ = this.scopes_[scope]
+    cloned.scopeConfig_ = this.scopes_[scope]
 
     return cloned
   }

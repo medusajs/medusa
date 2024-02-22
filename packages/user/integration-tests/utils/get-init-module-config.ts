@@ -10,6 +10,7 @@ export function getInitModuleConfig() {
         schema: process.env.MEDUSA_USER_DB_SCHEMA,
       },
     },
+    jwt_secret: "test",
   }
 
   const injectedDependencies = {}
