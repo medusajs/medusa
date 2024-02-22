@@ -1,5 +1,6 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
+  BigNumber,
   createPsqlIndexStatementHelper,
   generateEntityId,
   MikroOrmBigNumberProperty,
@@ -56,58 +57,44 @@ export default class OrderDetail {
   })
   item: LineItem
 
-  @MikroOrmBigNumberProperty({
-    columnType: "numeric",
-  })
-  quantity: number
+  @MikroOrmBigNumberProperty()
+  quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_quantity: BigNumberRawValue
 
-  @MikroOrmBigNumberProperty({
-    columnType: "numeric",
-  })
-  fulfilled_quantity: number
+  @MikroOrmBigNumberProperty()
+  fulfilled_quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_fulfilled_quantity: BigNumberRawValue
 
-  @MikroOrmBigNumberProperty({
-    columnType: "numeric",
-  })
-  shipped_quantity: number
+  @MikroOrmBigNumberProperty()
+  shipped_quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_shipped_quantity: BigNumberRawValue
 
-  @MikroOrmBigNumberProperty({
-    columnType: "numeric",
-  })
-  return_requested_quantity: number
+  @MikroOrmBigNumberProperty()
+  return_requested_quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_return_requested_quantity: BigNumberRawValue
 
-  @MikroOrmBigNumberProperty({
-    columnType: "numeric",
-  })
-  return_received_quantity: number
+  @MikroOrmBigNumberProperty()
+  return_received_quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_return_received_quantity: BigNumberRawValue
 
-  @MikroOrmBigNumberProperty({
-    columnType: "numeric",
-  })
-  return_dismissed_quantity: number
+  @MikroOrmBigNumberProperty()
+  return_dismissed_quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_return_dismissed_quantity: BigNumberRawValue
 
-  @MikroOrmBigNumberProperty({
-    columnType: "numeric",
-  })
-  written_off_quantity: number
+  @MikroOrmBigNumberProperty()
+  written_off_quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_written_off_quantity: BigNumberRawValue

@@ -10,6 +10,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 import {
+  BigNumber,
   generateEntityId,
   MikroOrmBigNumberProperty,
   PaymentSessionStatus,
@@ -29,10 +30,8 @@ export default class PaymentSession {
   @Property({ columnType: "text" })
   currency_code: string
 
-  @MikroOrmBigNumberProperty({
-    columnType: "numeric",
-  })
-  amount: number
+  @MikroOrmBigNumberProperty()
+  amount: BigNumber | number
 
   @Property({
     columnType: "jsonb",

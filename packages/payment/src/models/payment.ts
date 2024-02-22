@@ -15,6 +15,7 @@ import {
 import { DAL } from "@medusajs/types"
 
 import {
+  BigNumber,
   DALUtils,
   generateEntityId,
   MikroOrmBigNumberProperty,
@@ -35,10 +36,8 @@ export default class Payment {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @MikroOrmBigNumberProperty({
-    columnType: "numeric",
-  })
-  amount: number
+  @MikroOrmBigNumberProperty()
+  amount: BigNumber | number
 
   @Property({
     columnType: "numeric",

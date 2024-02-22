@@ -1,5 +1,5 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
-import { MikroOrmBigNumberProperty } from "@medusajs/utils"
+import { BigNumber, MikroOrmBigNumberProperty } from "@medusajs/utils"
 import { OptionalProps, PrimaryKey, Property } from "@mikro-orm/core"
 
 type OptionalAdjustmentLineProps = DAL.EntityDateColumns
@@ -26,10 +26,8 @@ export default abstract class AdjustmentLine {
   @Property({ columnType: "text", nullable: true })
   code: string | null = null
 
-  @MikroOrmBigNumberProperty({
-    columnType: "numeric",
-  })
-  amount: number
+  @MikroOrmBigNumberProperty()
+  amount: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_amount: BigNumberRawValue

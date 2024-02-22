@@ -6,7 +6,7 @@ import { BigNumberInput } from "@medusajs/types"
 export function MikroOrmBigNumberProperty(
   options: Parameters<typeof Property>[0] & {
     rawColumnName?: string
-  }
+  } = {}
 ) {
   return function (target: any, columnName: string) {
     const targetColumn = columnName + "_"
@@ -33,8 +33,9 @@ export function MikroOrmBigNumberProperty(
     Reflect.defineMetadata("design:type", "number", target, targetColumn)
 
     Property({
-      ...options,
+      columnType: "numeric",
       fieldName: columnName,
+      ...options,
     })(target, targetColumn)
 
     Property({
