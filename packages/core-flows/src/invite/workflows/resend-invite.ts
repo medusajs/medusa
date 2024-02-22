@@ -3,7 +3,7 @@ import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 
 import { resendInvitesStep } from "../steps/resend-invites"
 
-export const resendInvitesWorkflowId = "resend-invite-step"
+export const resendInvitesWorkflowId = "resend-invite-workflow"
 export const resendInvitesWorkflow = createWorkflow(
   resendInvitesWorkflowId,
   (
