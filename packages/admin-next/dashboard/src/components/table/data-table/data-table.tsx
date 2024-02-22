@@ -1,3 +1,4 @@
+import { clx } from "@medusajs/ui"
 import { memo } from "react"
 import { NoRecords } from "../../common/empty-table-content"
 import { DataTableQuery, DataTableQueryProps } from "./data-table-query"
@@ -5,14 +6,15 @@ import { DataTableRoot, DataTableRootProps } from "./data-table-root"
 import { DataTableSkeleton } from "./data-table-skeleton"
 
 interface DataTableProps<TData>
-  extends DataTableRootProps<TData>,
+  extends Omit<DataTableRootProps<TData>, "noResults">,
     DataTableQueryProps {
   isLoading?: boolean
-  rowCount: number
+  pageSize: number
   queryObject?: Record<string, any>
 }
 
-const MemoizedDataTableRoot = memo(DataTableRoot) as typeof DataTableRoot
+// Maybe we should use the memoized version of DataTableRoot
+// const MemoizedDataTableRoot = memo(DataTableRoot) as typeof DataTableRoot
 const MemoizedDataTableQuery = memo(DataTableQuery)
 
 export const DataTable = <TData,>({
@@ -27,14 +29,15 @@ export const DataTable = <TData,>({
   filters,
   prefix,
   queryObject = {},
-  rowCount,
+  pageSize,
   isLoading = false,
+  layout = "fit",
 }: DataTableProps<TData>) => {
   if (isLoading) {
     return (
       <DataTableSkeleton
         columns={columns}
-        rowCount={rowCount}
+        rowCount={pageSize}
         searchable={search}
         filterable={!!filters?.length}
         orderBy={!!orderBy?.length}
@@ -53,14 +56,18 @@ export const DataTable = <TData,>({
   }
 
   return (
-    <div className="divide-y">
+    <div
+      className={clx("divide-y", {
+        "flex h-full flex-col overflow-hidden": layout === "fill",
+      })}
+    >
       <MemoizedDataTableQuery
         search={search}
         orderBy={orderBy}
         filters={filters}
         prefix={prefix}
       />
-      <MemoizedDataTableRoot
+      <DataTableRoot
         table={table}
         count={count}
         columns={columns}
@@ -68,6 +75,7 @@ export const DataTable = <TData,>({
         navigateTo={navigateTo}
         commands={commands}
         noResults={noResults}
+        layout={layout}
       />
     </div>
   )
