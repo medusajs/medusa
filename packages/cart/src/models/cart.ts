@@ -89,12 +89,12 @@ export default class Cart {
   metadata: Record<string, unknown> | null = null
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.cart, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
   items = new Collection<LineItem>(this)
 
   @OneToMany(() => ShippingMethod, (shippingMethod) => shippingMethod.cart, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
   shipping_methods = new Collection<ShippingMethod>(this)
 

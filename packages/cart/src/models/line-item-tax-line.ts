@@ -1,7 +1,6 @@
 import { DALUtils, createPsqlIndexStatementHelper, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
-  Cascade,
   Entity,
   Filter,
   ManyToOne,
@@ -16,12 +15,11 @@ import TaxLine from "./tax-line"
 export default class LineItemTaxLine extends TaxLine {
   @ManyToOne({
     entity: () => LineItem,
-    index: "IDX_tax_line_item_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST]
+    persist: false,
   })
   item: LineItem
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", index: "IDX_tax_line_item_id" })
   item_id: string
 
   @Property({

@@ -38,13 +38,12 @@ export default class ShippingMethod {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", index: "IDX_shipping_method_cart_id" })
   cart_id: string
 
   @ManyToOne({
     entity: () => Cart,
-    index: "IDX_shipping_method_cart_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    persist: false,
   })
   cart: Cart
 
@@ -80,7 +79,7 @@ export default class ShippingMethod {
     () => ShippingMethodTaxLine,
     (taxLine) => taxLine.shipping_method,
     {
-      cascade: [Cascade.REMOVE],
+      cascade: [Cascade.PERSIST, "soft-remove"] as any,
     }
   )
   tax_lines = new Collection<ShippingMethodTaxLine>(this)
@@ -89,7 +88,7 @@ export default class ShippingMethod {
     () => ShippingMethodAdjustment,
     (adjustment) => adjustment.shipping_method,
     {
-      cascade: [Cascade.REMOVE],
+      cascade: [Cascade.PERSIST, "soft-remove"] as any,
     }
   )
   adjustments = new Collection<ShippingMethodAdjustment>(this)

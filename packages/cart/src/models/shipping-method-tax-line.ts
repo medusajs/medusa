@@ -5,12 +5,11 @@ import {
 } from "@medusajs/utils"
 import {
   BeforeCreate,
-  Cascade,
   Entity,
   Filter,
   ManyToOne,
   OnInit,
-  Property,
+  Property
 } from "@mikro-orm/core"
 import ShippingMethod from "./shipping-method"
 import TaxLine from "./tax-line"
@@ -20,12 +19,11 @@ import TaxLine from "./tax-line"
 export default class ShippingMethodTaxLine extends TaxLine {
   @ManyToOne({
     entity: () => ShippingMethod,
-    index: "IDX_tax_line_shipping_method_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    persist: false,
   })
   shipping_method: ShippingMethod
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", index: "IDX_tax_line_shipping_method_id" })
   shipping_method_id: string
 
   @Property({

@@ -39,14 +39,12 @@ export default class LineItem {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", index: "IDX_line_item_cart_id" })
   cart_id: string
 
   @ManyToOne({
     entity: () => Cart,
-    onDelete: "cascade",
-    index: "IDX_line_item_cart_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    persist: false,
   })
   cart: Cart
 
@@ -128,12 +126,12 @@ export default class LineItem {
   raw_unit_price: BigNumberRawValue
 
   @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
   tax_lines = new Collection<LineItemTaxLine>(this)
 
   @OneToMany(() => LineItemAdjustment, (adjustment) => adjustment.item, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
   adjustments = new Collection<LineItemAdjustment>(this)
 

@@ -5,12 +5,11 @@ import {
 } from "@medusajs/utils"
 import {
   BeforeCreate,
-  Cascade,
   Entity,
   Filter,
   ManyToOne,
   OnInit,
-  Property,
+  Property
 } from "@mikro-orm/core"
 import AdjustmentLine from "./adjustment-line"
 import ShippingMethod from "./shipping-method"
@@ -20,12 +19,11 @@ import ShippingMethod from "./shipping-method"
 export default class ShippingMethodAdjustment extends AdjustmentLine {
   @ManyToOne({
     entity: () => ShippingMethod,
-    index: "IDX_adjustment_shipping_method_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    persist: false,
   })
   shipping_method: ShippingMethod
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", index: "IDX_adjustment_shipping_method_id" })
   shipping_method_id: string
 
   @Property({

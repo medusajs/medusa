@@ -5,7 +5,6 @@ import {
 } from "@medusajs/utils"
 import {
   BeforeCreate,
-  Cascade,
   Check,
   Entity,
   Filter,
@@ -24,12 +23,11 @@ import LineItem from "./line-item"
 export default class LineItemAdjustment extends AdjustmentLine {
   @ManyToOne({
     entity: () => LineItem,
-    index: "IDX_adjustment_item_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    persist: false,
   })
   item: LineItem
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", index: "IDX_adjustment_item_id" })
   item_id: string
 
   @Property({
