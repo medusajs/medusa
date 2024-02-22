@@ -39,13 +39,16 @@ export default class LineItem {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text", index: "IDX_line_item_cart_id" })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_line_item_cart_id",
+    tableName: "cart_line_item",
+    columns: "cart_id",
+    where: "deleted_at IS NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text" })
   cart_id: string
 
-  @ManyToOne({
-    entity: () => Cart,
-    persist: false,
-  })
+  @ManyToOne({ entity: () => Cart })
   cart: Cart
 
   @Property({ columnType: "text" })
@@ -60,18 +63,22 @@ export default class LineItem {
   @Property({ columnType: "integer" })
   quantity: number
 
-  @Property({
-    columnType: "text",
-    nullable: true,
-    index: "IDX_line_item_variant_id",
-  })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_line_item_variant_id",
+    tableName: "cart_line_item",
+    columns: "variant_id",
+    where: "deleted_at IS NULL AND variant_id IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text", nullable: true })
   variant_id: string | null = null
 
-  @Property({
-    columnType: "text",
-    nullable: true,
-    index: "IDX_line_item_product_id",
-  })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_line_item_product_id",
+    tableName: "cart_line_item",
+    columns: "product_id",
+    where: "deleted_at IS NULL AND product_id IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text", nullable: true })
   product_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })

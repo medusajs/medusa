@@ -1,4 +1,8 @@
-import { DALUtils, createPsqlIndexStatementHelper, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -19,15 +23,23 @@ export default class LineItemTaxLine extends TaxLine {
   })
   item: LineItem
 
-  @Property({ columnType: "text", index: "IDX_tax_line_item_id" })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_tax_line_item_id",
+    tableName: "cart_line_item_tax_line",
+    columns: "item_id",
+    where: "deleted_at IS NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text" })
   item_id: string
 
-  @Property({
-    columnType: "text",
-    nullable: true,
-    index: "IDX_line_item_tax_line_tax_rate_id"
-  })
-  tax_rate_id?: string | null
+  @createPsqlIndexStatementHelper({
+    name: "IDX_line_item_tax_line_tax_rate_id",
+    tableName: "cart_line_item_tax_line",
+    columns: "tax_rate_id",
+    where: "deleted_at IS NULL AND tax_rate_id IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text", nullable: true })
+  tax_rate_id: string | null = null
 
   @createPsqlIndexStatementHelper({
     tableName: "cart_line_item_tax_line",

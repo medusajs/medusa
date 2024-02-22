@@ -9,7 +9,7 @@ import {
   Filter,
   ManyToOne,
   OnInit,
-  Property
+  Property,
 } from "@mikro-orm/core"
 import AdjustmentLine from "./adjustment-line"
 import ShippingMethod from "./shipping-method"
@@ -23,14 +23,22 @@ export default class ShippingMethodAdjustment extends AdjustmentLine {
   })
   shipping_method: ShippingMethod
 
-  @Property({ columnType: "text", index: "IDX_adjustment_shipping_method_id" })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_adjustment_shipping_method_id",
+    tableName: "cart_shipping_method_adjustment",
+    columns: "shipping_method_id",
+    where: "deleted_at IS NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text" })
   shipping_method_id: string
 
-  @Property({
-    columnType: "text",
-    nullable: true,
-    index: "IDX_shipping_method_adjustment_promotion_id",
-  })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_shipping_method_adjustment_promotion_id",
+    tableName: "cart_shipping_method_adjustment",
+    columns: "promotion_id",
+    where: "deleted_at IS NULL and promotion_id IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text", nullable: true })
   promotion_id: string | null = null
 
   @createPsqlIndexStatementHelper({

@@ -1,6 +1,6 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20240222121713 extends Migration {
+export class Migration20240222170223 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       `
@@ -32,11 +32,11 @@ export class Migration20240222121713 extends Migration {
     ALTER TABLE "cart" DROP CONSTRAINT IF EXISTS "FK_a2bd3c26f42e754b9249ba78fd6";
     ALTER TABLE "cart" DROP CONSTRAINT IF EXISTS "FK_ced15a9a695d2b5db9dabce763d";
     
-    CREATE INDEX IF NOT EXISTS "IDX_cart_customer_id" ON "cart" ("customer_id");
-    CREATE INDEX IF NOT EXISTS "IDX_cart_shipping_address_id" ON "cart" ("shipping_address_id");
-    CREATE INDEX IF NOT EXISTS "IDX_cart_billing_address_id" ON "cart" ("billing_address_id");
-    CREATE INDEX IF NOT EXISTS "IDX_cart_region_id" ON "cart" ("region_id");
-    CREATE INDEX IF NOT EXISTS "IDX_cart_sales_channel_id" ON "cart" ("sales_channel_id");
+    CREATE INDEX IF NOT EXISTS "IDX_cart_customer_id" ON "cart" ("customer_id") WHERE deleted_at IS NULL AND customer_id IS NOT NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_cart_shipping_address_id" ON "cart" ("shipping_address_id") WHERE deleted_at IS NULL AND shipping_address_id IS NOT NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_cart_billing_address_id" ON "cart" ("billing_address_id") WHERE deleted_at IS NULL AND billing_address_id IS NOT NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_cart_region_id" ON "cart" ("region_id") WHERE deleted_at IS NULL AND region_id IS NOT NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_cart_sales_channel_id" ON "cart" ("sales_channel_id") WHERE deleted_at IS NULL AND sales_channel_id IS NOT NULL;
     CREATE INDEX IF NOT EXISTS "IDX_cart_currency_code" ON "cart" ("currency_code");
     
     CREATE TABLE IF NOT EXISTS "cart_address" (
@@ -95,9 +95,9 @@ export class Migration20240222121713 extends Migration {
     ALTER TABLE "cart" ADD CONSTRAINT "cart_shipping_address_id_foreign" FOREIGN KEY ("shipping_address_id") REFERENCES "cart_address" ("id") ON UPDATE CASCADE ON DELETE SET NULL;
     ALTER TABLE "cart" ADD CONSTRAINT "cart_billing_address_id_foreign" FOREIGN KEY ("billing_address_id") REFERENCES "cart_address" ("id") ON UPDATE CASCADE ON DELETE SET NULL;
     
-    CREATE INDEX IF NOT EXISTS "IDX_line_item_cart_id" ON "cart_line_item" ("cart_id");
-    CREATE INDEX IF NOT EXISTS "IDX_line_item_product_id" ON "cart_line_item" ("product_id");
-    CREATE INDEX IF NOT EXISTS "IDX_line_item_variant_id" ON "cart_line_item" ("variant_id");
+    CREATE INDEX IF NOT EXISTS "IDX_line_item_cart_id" ON "cart_line_item" ("cart_id") WHERE deleted_at IS NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_line_item_product_id" ON "cart_line_item" ("product_id") WHERE deleted_at IS NULL AND product_id IS NOT NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_line_item_variant_id" ON "cart_line_item" ("variant_id") WHERE deleted_at IS NULL AND variant_id IS NOT NULL;
     
     
     CREATE TABLE IF NOT EXISTS "cart_line_item_adjustment" (
@@ -115,8 +115,8 @@ export class Migration20240222121713 extends Migration {
         CONSTRAINT cart_line_item_adjustment_check CHECK (amount >= 0)
     );
     
-    CREATE INDEX IF NOT EXISTS "IDX_adjustment_item_id" ON "cart_line_item_adjustment" ("item_id");
-    CREATE INDEX IF NOT EXISTS "IDX_line_item_adjustment_promotion_id" ON "cart_line_item_adjustment" ("promotion_id");
+    CREATE INDEX IF NOT EXISTS "IDX_adjustment_item_id" ON "cart_line_item_adjustment" ("item_id") WHERE deleted_at IS NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_line_item_adjustment_promotion_id" ON "cart_line_item_adjustment" ("promotion_id") WHERE deleted_at IS NULL AND promotion_id IS NOT NULL;
     
     CREATE TABLE IF NOT EXISTS "cart_line_item_tax_line" (
       "id" TEXT NOT NULL,
@@ -132,8 +132,8 @@ export class Migration20240222121713 extends Migration {
       CONSTRAINT "cart_line_item_tax_line_pkey" PRIMARY KEY ("id")
   );
     
-    CREATE INDEX IF NOT EXISTS "IDX_tax_line_item_id" ON "cart_line_item_tax_line" ("item_id");
-    CREATE INDEX IF NOT EXISTS "IDX_line_item_tax_line_tax_rate_id" ON "cart_line_item_tax_line" ("tax_rate_id");
+    CREATE INDEX IF NOT EXISTS "IDX_tax_line_item_id" ON "cart_line_item_tax_line" ("item_id") WHERE deleted_at IS NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_line_item_tax_line_tax_rate_id" ON "cart_line_item_tax_line" ("tax_rate_id") WHERE deleted_at IS NULL AND tax_rate_id IS NOT NULL;
     
     CREATE TABLE IF NOT EXISTS "cart_shipping_method" (
       "id" TEXT NOT NULL,
@@ -153,8 +153,8 @@ export class Migration20240222121713 extends Migration {
       CONSTRAINT cart_shipping_method_check CHECK (amount >= 0)
   );
     
-    CREATE INDEX IF NOT EXISTS "IDX_shipping_method_cart_id" ON "cart_shipping_method" ("cart_id");
-    CREATE INDEX IF NOT EXISTS "IDX_shipping_method_option_id" ON "cart_shipping_method" ("shipping_option_id");
+    CREATE INDEX IF NOT EXISTS "IDX_shipping_method_cart_id" ON "cart_shipping_method" ("cart_id") WHERE deleted_at IS NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_shipping_method_option_id" ON "cart_shipping_method" ("shipping_option_id") WHERE deleted_at IS NULL AND shipping_option_id IS NOT NULL;
 
     CREATE TABLE IF NOT EXISTS "cart_shipping_method_adjustment" (
       "id" TEXT NOT NULL,
@@ -170,8 +170,8 @@ export class Migration20240222121713 extends Migration {
       CONSTRAINT "cart_shipping_method_adjustment_pkey" PRIMARY KEY ("id")
     );
 
-    CREATE INDEX IF NOT EXISTS "IDX_adjustment_shipping_method_id" ON "cart_shipping_method_adjustment" ("shipping_method_id");
-    CREATE INDEX IF NOT EXISTS "IDX_shipping_method_adjustment_promotion_id" ON "cart_shipping_method_adjustment" ("promotion_id");
+    CREATE INDEX IF NOT EXISTS "IDX_adjustment_shipping_method_id" ON "cart_shipping_method_adjustment" ("shipping_method_id") WHERE deleted_at IS NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_shipping_method_adjustment_promotion_id" ON "cart_shipping_method_adjustment" ("promotion_id") WHERE deleted_at IS NULL AND promotion_id IS NOT NULL;
 
     CREATE TABLE IF NOT EXISTS "cart_shipping_method_tax_line" (
       "id" TEXT NOT NULL,
@@ -187,8 +187,8 @@ export class Migration20240222121713 extends Migration {
       CONSTRAINT "cart_shipping_method_tax_line_pkey" PRIMARY KEY ("id")
     );
 
-    CREATE INDEX IF NOT EXISTS "IDX_tax_line_shipping_method_id" ON "cart_shipping_method_tax_line" ("shipping_method_id");
-    CREATE INDEX IF NOT EXISTS "IDX_shipping_method_tax_line_tax_rate_id" ON "cart_shipping_method_tax_line" ("tax_rate_id");
+    CREATE INDEX IF NOT EXISTS "IDX_tax_line_shipping_method_id" ON "cart_shipping_method_tax_line" ("shipping_method_id") WHERE deleted_at IS NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_shipping_method_tax_line_tax_rate_id" ON "cart_shipping_method_tax_line" ("tax_rate_id") WHERE deleted_at IS NULL AND tax_rate_id IS NOT NULL;
 
     ALTER TABLE "cart_line_item" ADD CONSTRAINT "cart_line_item_cart_id_foreign" FOREIGN KEY ("cart_id") REFERENCES "cart" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
     ALTER TABLE "cart_line_item_adjustment" ADD CONSTRAINT "cart_line_item_adjustment_item_id_foreign" FOREIGN KEY ("item_id") REFERENCES "cart_line_item" ("id") ON UPDATE CASCADE ON DELETE CASCADE;

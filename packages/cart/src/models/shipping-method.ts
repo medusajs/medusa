@@ -38,13 +38,16 @@ export default class ShippingMethod {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text", index: "IDX_shipping_method_cart_id" })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_shipping_method_cart_id",
+    tableName: "cart_shipping_method",
+    columns: "cart_id",
+    where: "deleted_at IS NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text" })
   cart_id: string
 
-  @ManyToOne({
-    entity: () => Cart,
-    persist: false,
-  })
+  @ManyToOne({ entity: () => Cart })
   cart: Cart
 
   @Property({ columnType: "text" })
@@ -62,11 +65,13 @@ export default class ShippingMethod {
   @Property({ columnType: "boolean" })
   is_tax_inclusive = false
 
-  @Property({
-    columnType: "text",
-    nullable: true,
-    index: "IDX_shipping_method_option_id",
-  })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_shipping_method_option_id",
+    tableName: "cart_shipping_method",
+    columns: "shipping_option_id",
+    where: "deleted_at IS NULL AND shipping_option_id IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text", nullable: true })
   shipping_option_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })

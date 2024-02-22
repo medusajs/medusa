@@ -9,7 +9,7 @@ import {
   Filter,
   ManyToOne,
   OnInit,
-  Property
+  Property,
 } from "@mikro-orm/core"
 import ShippingMethod from "./shipping-method"
 import TaxLine from "./tax-line"
@@ -23,15 +23,23 @@ export default class ShippingMethodTaxLine extends TaxLine {
   })
   shipping_method: ShippingMethod
 
-  @Property({ columnType: "text", index: "IDX_tax_line_shipping_method_id" })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_tax_line_shipping_method_id",
+    tableName: "cart_shipping_method_tax_line",
+    columns: "shipping_method_id",
+    where: "deleted_at IS NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text" })
   shipping_method_id: string
 
-  @Property({
-    columnType: "text",
-    nullable: true,
-    index: "IDX_shipping_method_tax_line_tax_rate_id",
-  })
-  tax_rate_id?: string | null
+  @createPsqlIndexStatementHelper({
+    name: "IDX_shipping_method_tax_line_tax_rate_id",
+    tableName: "cart_shipping_method_tax_line",
+    columns: "tax_rate_id",
+    where: "deleted_at IS NULL AND tax_rate_id IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text", nullable: true })
+  tax_rate_id: string | null = null
 
   @createPsqlIndexStatementHelper({
     tableName: "cart_shipping_method_tax_line",

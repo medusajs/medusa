@@ -27,14 +27,22 @@ export default class LineItemAdjustment extends AdjustmentLine {
   })
   item: LineItem
 
-  @Property({ columnType: "text", index: "IDX_adjustment_item_id" })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_adjustment_item_id",
+    tableName: "cart_line_item_adjustment",
+    columns: "item_id",
+    where: "deleted_at IS NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text" })
   item_id: string
 
-  @Property({
-    columnType: "text",
-    nullable: true,
-    index: "IDX_line_item_adjustment_promotion_id"
-  })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_line_item_adjustment_promotion_id",
+    tableName: "cart_line_item_adjustment",
+    columns: "promotion_id",
+    where: "deleted_at IS NULL and promotion_id IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text", nullable: true })
   promotion_id: string | null = null
 
   @createPsqlIndexStatementHelper({
