@@ -8,7 +8,7 @@ import {
   createLineItemAdjustmentsStep,
   createShippingMethodAdjustmentsStep,
   getActionsToComputeFromPromotionsStep,
-  prepareAdjustmentsForPromotionsStep,
+  prepareAdjustmentsFromPromotionsStep,
   removeLineItemAdjustmentsStep,
   removeShippingMethodAdjustmentsStep,
   retrieveCartStep,
@@ -34,7 +34,7 @@ export const addPromotionsToCartWorkflow = createWorkflow(
       lineItemAdjustmentIdsToRemove,
       shippingMethodAdjustmentsToCreate,
       shippingMethodAdjustmentIdsToRemove,
-    } = prepareAdjustmentsForPromotionsStep({ actionsToCompute })
+    } = prepareAdjustmentsFromPromotionsStep({ actionsToCompute })
 
     removeLineItemAdjustmentsStep({ lineItemAdjustmentIdsToRemove })
     removeShippingMethodAdjustmentsStep({ shippingMethodAdjustmentIdsToRemove })
