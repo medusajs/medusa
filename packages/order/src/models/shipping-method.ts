@@ -1,9 +1,9 @@
 import { BigNumberRawValue } from "@medusajs/types"
 import {
   BigNumber,
-  BigNumberField,
   createPsqlIndexStatementHelper,
   generateEntityId,
+  MikroOrmBigNumberProperty,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -12,8 +12,8 @@ import {
   Collection,
   Entity,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -54,8 +54,7 @@ export default class ShippingMethod {
   @Property({ columnType: "jsonb", nullable: true })
   description: string | null = null
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
+  @MikroOrmBigNumberProperty()
   amount: BigNumber | number
 
   @Property({ columnType: "jsonb" })
