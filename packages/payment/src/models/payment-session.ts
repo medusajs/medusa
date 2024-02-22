@@ -28,7 +28,7 @@ export default class PaymentSession {
   id: string
 
   @Property({ columnType: "text" })
-  currency_code: string
+  currency_code: string | number
 
   @MikroOrmBigNumberProperty()
   amount: BigNumber | number

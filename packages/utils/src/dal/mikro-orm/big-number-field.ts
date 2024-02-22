@@ -30,17 +30,21 @@ export function MikroOrmBigNumberProperty(
       },
     })
 
-    Reflect.defineMetadata("design:type", "number", target, targetColumn)
-
     Property({
+      type: "number",
       columnType: "numeric",
       fieldName: columnName,
+      serializer: (value) => {
+        return undefined
+      },
       ...options,
     })(target, targetColumn)
 
     Property({
+      type: "number",
       persist: false,
       getter: true,
+      setter: true,
     })(target, columnName)
   }
 }
