@@ -20,6 +20,7 @@ export function moduleIntegrationTestRunner({
   moduleModels,
   joinerConfig = [],
   schema = "public",
+  debug = false,
   testSuite,
   injectedDependencies = {},
 }: {
@@ -29,6 +30,7 @@ export function moduleIntegrationTestRunner({
   schema?: string
   dbName?: string
   injectedDependencies?: Record<string, any>
+  debug?: boolean
   testSuite: <TService = unknown>(options: SuiteOptions<TService>) => () => void
 }) {
   moduleModels = Object.values(require(`${process.cwd()}/src/models`))
@@ -40,6 +42,7 @@ export function moduleIntegrationTestRunner({
   const dbConfig = {
     clientUrl: getDatabaseURL(dbName),
     schema,
+    debug,
   }
 
   // Use a unique connection for all the entire suite
@@ -58,6 +61,7 @@ export function moduleIntegrationTestRunner({
         defaultAdapterOptions: {
           database: dbConfig,
         },
+        database: dbConfig,
       },
     },
   }

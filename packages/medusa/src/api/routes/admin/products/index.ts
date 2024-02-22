@@ -10,6 +10,7 @@ import { PricedProduct } from "../../../../types/pricing"
 import { validateSalesChannelsExist } from "../../../middlewares/validators/sales-channel-existence"
 import { AdminGetProductParams } from "./get-product"
 import { AdminGetProductsParams } from "./list-products"
+import { AdminGetProductsVariantsParams } from "./list-variants"
 
 const route = Router()
 
@@ -42,7 +43,11 @@ export default (app, featureFlagRouter: FlagRouter) => {
 
   route.get(
     "/:id/variants",
-    middlewares.normalizeQuery(),
+    transformQuery(AdminGetProductsVariantsParams, {
+      defaultRelations: defaultAdminGetProductsVariantsRelations,
+      defaultFields: defaultAdminGetProductsVariantsFields,
+      isList: true,
+    }),
     middlewares.wrap(require("./list-variants").default)
   )
   route.post(
@@ -105,6 +110,7 @@ export const defaultAdminProductRelations = [
   "profiles",
   "images",
   "options",
+  "options.values",
   "tags",
   "type",
   "collection",
@@ -137,7 +143,33 @@ export const defaultAdminProductFields: (keyof Product)[] = [
   "metadata",
 ]
 
-export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
+export const defaultAdminGetProductsVariantsFields = [
+  "id",
+  "product_id",
+  "title",
+  "sku",
+  "inventory_quantity",
+  "allow_backorder",
+  "manage_inventory",
+  "hs_code",
+  "origin_country",
+  "mid_code",
+  "material",
+  "weight",
+  "length",
+  "height",
+  "width",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  "metadata",
+  "variant_rank",
+  "ean",
+  "upc",
+  "barcode",
+]
+
+export const defaultAdminGetProductsVariantsRelations = ["options", "prices"]
 
 /**
  * This is temporary.

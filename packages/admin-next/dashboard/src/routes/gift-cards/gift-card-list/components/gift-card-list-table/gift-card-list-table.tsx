@@ -59,7 +59,7 @@ export const GiftCardListTable = () => {
         count={count}
         search
         isLoading={isLoading}
-        rowCount={PAGE_SIZE}
+        pageSize={PAGE_SIZE}
         orderBy={["created_at", "updated_at"]}
         queryObject={raw}
       />
