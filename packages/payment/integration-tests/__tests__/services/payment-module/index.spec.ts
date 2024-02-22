@@ -466,7 +466,7 @@ moduleIntegrationTestRunner({
                   id: expect.any(String),
                   currency_code: "usd",
                   amount: 100,
-                  raw_amount: { value: "100.00000000000000000" },
+                  raw_amount: { value: "100.00000000000000000", precision: 20 },
                   provider_id: "system",
                   data: {},
                   status: "authorized",

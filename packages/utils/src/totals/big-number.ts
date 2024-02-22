@@ -38,6 +38,7 @@ export class BigNumber {
       this.numeric_ = bigNum.toNumber()
       this.raw_ = this.raw_ = {
         value: bigNum.toPrecision(precision),
+        precision,
       }
     } else if (isBigNumber(rawPrice)) {
       /**
