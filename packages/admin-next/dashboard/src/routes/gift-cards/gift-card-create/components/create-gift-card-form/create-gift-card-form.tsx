@@ -3,7 +3,6 @@ import {
   Button,
   CurrencyInput,
   DatePicker,
-  FocusModal,
   Heading,
   Input,
   Select,
@@ -14,19 +13,18 @@ import {
 } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import { useAdminCreateGiftCard, useAdminRegions } from "medusa-react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { useNavigate } from "react-router-dom"
 import { Form } from "../../../../../components/common/form"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 import { currencies } from "../../../../../lib/currencies"
 import { getDbAmount } from "../../../../../lib/money-amount-helpers"
-
-type CreateGiftCardFormProps = {
-  subscribe: (state: boolean) => void
-}
 
 const CreateGiftCardSchema = zod.object({
   region_id: zod.string(),
@@ -37,7 +35,7 @@ const CreateGiftCardSchema = zod.object({
   personal_message: zod.string().optional(),
 })
 
-export const CreateGiftCardForm = ({ subscribe }: CreateGiftCardFormProps) => {
+export const CreateGiftCardForm = () => {
   const [showDateFields, setShowDateFields] = useState(false)
 
   const { regions } = useAdminRegions({
@@ -45,7 +43,7 @@ export const CreateGiftCardForm = ({ subscribe }: CreateGiftCardFormProps) => {
     fields: "id,name,currency_code",
   })
   const { t } = useTranslation()
-  const navigate = useNavigate()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof CreateGiftCardSchema>>({
     defaultValues: {
@@ -59,11 +57,7 @@ export const CreateGiftCardForm = ({ subscribe }: CreateGiftCardFormProps) => {
     resolver: zodResolver(CreateGiftCardSchema),
   })
 
-  const {
-    formState: { isDirty },
-    setValue,
-    setError,
-  } = form
+  const { setValue, setError } = form
 
   const regionId = useWatch({
     control: form.control,
@@ -74,10 +68,6 @@ export const CreateGiftCardForm = ({ subscribe }: CreateGiftCardFormProps) => {
   const nativeSymbol = currencyCode
     ? currencies[currencyCode.toUpperCase()].symbol_native
     : undefined
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty, subscribe])
 
   const { mutateAsync, isLoading } = useAdminCreateGiftCard()
 
@@ -95,7 +85,7 @@ export const CreateGiftCardForm = ({ subscribe }: CreateGiftCardFormProps) => {
     if (!currencyCode) {
       setError("region_id", {
         type: "manual",
-        message: "Region not found",
+        message: t("giftCards.selectRegionFirst"),
       })
 
       return
@@ -114,31 +104,31 @@ export const CreateGiftCardForm = ({ subscribe }: CreateGiftCardFormProps) => {
       },
       {
         onSuccess: ({ gift_card }) => {
-          navigate(`../${gift_card.id}`, { replace: true })
+          handleSuccess(`../${gift_card.id}`)
         },
       }
     )
   })
 
   return (
-    <Form {...form}>
+    <RouteFocusModal.Form form={form}>
       <form
         className="flex h-full flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
-        <FocusModal.Header>
+        <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
-            <FocusModal.Close asChild>
+            <RouteFocusModal.Close asChild>
               <Button size="small" variant="secondary">
                 {t("actions.cancel")}
               </Button>
-            </FocusModal.Close>
+            </RouteFocusModal.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
               {t("actions.save")}
             </Button>
           </div>
-        </FocusModal.Header>
-        <FocusModal.Body className="flex h-full w-full flex-col items-center overflow-y-auto py-16">
+        </RouteFocusModal.Header>
+        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center overflow-y-auto py-16">
           <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
               <Heading>{t("giftCards.createGiftCard")}</Heading>
@@ -304,8 +294,8 @@ export const CreateGiftCardForm = ({ subscribe }: CreateGiftCardFormProps) => {
               />
             </div>
           </div>
-        </FocusModal.Body>
+        </RouteFocusModal.Body>
       </form>
-    </Form>
+    </RouteFocusModal.Form>
   )
 }

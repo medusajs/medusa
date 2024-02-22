@@ -1,27 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Product } from "@medusajs/medusa"
 import { ProductStatus } from "@medusajs/types"
-import {
-  Button,
-  Drawer,
-  Input,
-  Select,
-  Switch,
-  Text,
-  Textarea,
-} from "@medusajs/ui"
+import { Button, Input, Select, Switch, Text, Textarea } from "@medusajs/ui"
 import { useAdminUpdateProduct } from "medusa-react"
-import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 
 type EditProductFormProps = {
   product: Product
-  subscribe: (state: boolean) => void
-  onSuccessfulSubmit: () => void
 }
 
 const EditProductSchema = zod.object({
@@ -34,11 +27,10 @@ const EditProductSchema = zod.object({
   discountable: zod.boolean(),
 })
 
-export const EditProductForm = ({
-  product,
-  subscribe,
-  onSuccessfulSubmit,
-}: EditProductFormProps) => {
+export const EditProductForm = ({ product }: EditProductFormProps) => {
+  const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
+
   const form = useForm<zod.infer<typeof EditProductSchema>>({
     defaultValues: {
       status: product.status,
@@ -52,15 +44,6 @@ export const EditProductForm = ({
     resolver: zodResolver(EditProductSchema),
   })
 
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty, subscribe])
-
-  const { t } = useTranslation()
   const { mutateAsync, isLoading } = useAdminUpdateProduct(product.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
@@ -71,16 +54,16 @@ export const EditProductForm = ({
       },
       {
         onSuccess: () => {
-          onSuccessfulSubmit()
+          handleSuccess()
         },
       }
     )
   })
 
   return (
-    <Form {...form}>
+    <RouteDrawer.Form form={form}>
       <form onSubmit={handleSubmit} className="flex h-full flex-col">
-        <Drawer.Body>
+        <RouteDrawer.Body>
           <div className="flex h-full flex-col gap-y-8">
             <div className="flex flex-col gap-y-4">
               <Form.Field
@@ -247,8 +230,7 @@ export const EditProductForm = ({
                       </Form.Control>
                     </div>
                     <Form.Hint className="!mt-1">
-                      When unchecked discounts will not be applied to this
-                      product.
+                      {t("products.discountableHint")}
                     </Form.Hint>
                     <Form.ErrorMessage />
                   </Form.Item>
@@ -256,20 +238,20 @@ export const EditProductForm = ({
               }}
             />
           </div>
-        </Drawer.Body>
-        <Drawer.Footer>
+        </RouteDrawer.Body>
+        <RouteDrawer.Footer>
           <div className="flex items-center justify-end gap-x-2">
-            <Drawer.Close asChild>
+            <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
                 {t("actions.cancel")}
               </Button>
-            </Drawer.Close>
+            </RouteDrawer.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
               {t("actions.save")}
             </Button>
           </div>
-        </Drawer.Footer>
+        </RouteDrawer.Footer>
       </form>
-    </Form>
+    </RouteDrawer.Form>
   )
 }

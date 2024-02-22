@@ -1,16 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, FocusModal, Heading, Input, Text } from "@medusajs/ui"
+import { Button, Heading, Input, Text } from "@medusajs/ui"
 import { useAdminCreateCustomer } from "medusa-react"
-import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
 import * as zod from "zod"
-import { Form } from "../../../../../components/common/form"
 
-type CreateCustomerFormProps = {
-  subscribe: (state: boolean) => void
-}
+import { Form } from "../../../../../components/common/form"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 
 const CreateCustomerSchema = zod
   .object({
@@ -31,9 +30,9 @@ const CreateCustomerSchema = zod
     }
   })
 
-export const CreateCustomerForm = ({ subscribe }: CreateCustomerFormProps) => {
+export const CreateCustomerForm = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof CreateCustomerSchema>>({
     defaultValues: {
@@ -46,13 +45,6 @@ export const CreateCustomerForm = ({ subscribe }: CreateCustomerFormProps) => {
     },
     resolver: zodResolver(CreateCustomerSchema),
   })
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
 
   const { mutateAsync, isLoading } = useAdminCreateCustomer()
 
@@ -67,22 +59,22 @@ export const CreateCustomerForm = ({ subscribe }: CreateCustomerFormProps) => {
       },
       {
         onSuccess: ({ customer }) => {
-          navigate(`/customers/${customer.id}`, { replace: true })
+          handleSuccess(`/customers/${customer.id}`)
         },
       }
     )
   })
 
   return (
-    <Form {...form}>
+    <RouteFocusModal.Form form={form}>
       <form onSubmit={handleSubmit}>
-        <FocusModal.Header>
+        <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
-            <FocusModal.Close asChild>
+            <RouteFocusModal.Close asChild>
               <Button size="small" variant="secondary">
                 {t("actions.cancel")}
               </Button>
-            </FocusModal.Close>
+            </RouteFocusModal.Close>
             <Button
               size="small"
               variant="primary"
@@ -92,8 +84,8 @@ export const CreateCustomerForm = ({ subscribe }: CreateCustomerFormProps) => {
               {t("actions.create")}
             </Button>
           </div>
-        </FocusModal.Header>
-        <FocusModal.Body className="flex flex-col items-center py-16">
+        </RouteFocusModal.Header>
+        <RouteFocusModal.Body className="flex flex-col items-center py-16">
           <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
               <Heading>{t("customers.createCustomer")}</Heading>
@@ -214,8 +206,8 @@ export const CreateCustomerForm = ({ subscribe }: CreateCustomerFormProps) => {
               </div>
             </div>
           </div>
-        </FocusModal.Body>
+        </RouteFocusModal.Body>
       </form>
-    </Form>
+    </RouteFocusModal.Form>
   )
 }
