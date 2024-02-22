@@ -6,10 +6,7 @@ jest.setTimeout(30000)
 
 moduleIntegrationTestRunner({
   moduleName: Modules.TAX,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<ITaxModuleService>) => {
+  testSuite: ({ service }: SuiteOptions<ITaxModuleService>) => {
     describe("TaxModuleService", function () {
       it("should create a tax region", async () => {
         const [region] = await service.createTaxRegions([
@@ -197,7 +194,7 @@ moduleIntegrationTestRunner({
         ])
       })
 
-      it.only("applies default province rules when no specific product or product type rule matches", async () => {
+      it("applies default province rules when no specific product or product type rule matches", async () => {
         await setupTaxStructure(service)
         const item = {
           id: "item_test",

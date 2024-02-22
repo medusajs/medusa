@@ -187,18 +187,24 @@ export default class TaxModuleService<
           },
         ],
       },
-      { select: ["id"] },
+      {},
       sharedContext
     )
 
     const toReturn = await promiseAll(
-      items.map((item) =>
-        this.getTaxRatesForItem(
-          item,
-          regions.map((r) => r.id),
+      items.map(async (item) => {
+        const regionIds = regions.map((r) => r.id)
+        const rateQuery = this.getTaxRateQueryForItem(item, regionIds)
+        const rates = await this.taxRateService_.list(
+          rateQuery,
+          {
+            relations: ["tax_region", "rules"],
+          },
           sharedContext
         )
-      )
+
+        return await this.getTaxRatesForItem(item, rates)
+      })
     )
 
     return toReturn.flat()
@@ -206,24 +212,13 @@ export default class TaxModuleService<
 
   private async getTaxRatesForItem(
     item: TaxTypes.TaxableItemDTO | TaxTypes.TaxableShippingDTO,
-    regionIds: string[],
-    sharedContext: Context
+    rates: TTaxRate[]
   ): Promise<(TaxTypes.ItemTaxLineDTO | TaxTypes.ShippingTaxLineDTO)[]> {
-    const rateQuery = this.getTaxRateQueryForItem(item, regionIds)
-    const rates = await this.taxRateService_.list(
-      rateQuery,
-      {
-        relations: ["tax_region", "rules"],
-      },
-      sharedContext
-    )
-
     if (!rates.length) {
       return []
     }
 
     const prioritizedRates = this.prioritizeRates(rates, item)
-    console.log(prioritizedRates[0].tax_region)
     const rate = prioritizedRates[0]
 
     const ratesToReturn = [this.buildRateForItem(rate, item)]
