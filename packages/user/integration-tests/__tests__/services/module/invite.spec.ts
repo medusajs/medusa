@@ -191,7 +191,7 @@ describe("UserModuleService - Invite", () => {
       expect(eventBusSpy).toHaveBeenCalledWith([
         expect.objectContaining({
           body: expect.objectContaining({
-            data: "1",
+            data: { id: "1" },
           }),
           eventName: "invite.updated",
         }),
@@ -223,13 +223,13 @@ describe("UserModuleService - Invite", () => {
       expect(eventBusSpy).toHaveBeenCalledWith([
         expect.objectContaining({
           body: expect.objectContaining({
-            data: "1",
+            data: { id: "1" },
           }),
           eventName: "invite.created",
         }),
         expect.objectContaining({
           body: expect.objectContaining({
-            data: "2",
+            data: { id: "2" },
           }),
           eventName: "invite.created",
         }),

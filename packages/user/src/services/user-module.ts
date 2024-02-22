@@ -5,7 +5,6 @@ import {
   ModuleJoinerConfig,
   UserTypes,
   ModulesSdkTypes,
-  UserEvents,
   IEventBusModuleService,
 } from "@medusajs/types"
 import {
@@ -15,6 +14,8 @@ import {
   ModulesSdkUtils,
   InjectManager,
   buildEventMessages,
+  CommonEvents,
+  UserEvents,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
@@ -103,13 +104,13 @@ export default class UserModuleService<
 
     sharedContext.messageAggregator?.saveRawMessageData(
       users.map((user) => ({
-        eventName: UserEvents.CREATED,
+        eventName: UserEvents.created,
         metadata: {
           service: this.constructor.name,
-          action: "create",
+          action: CommonEvents.CREATED,
           object: "user",
         },
-        data: user.id,
+        data: { id: user.id },
       }))
     )
 
@@ -143,13 +144,13 @@ export default class UserModuleService<
 
     sharedContext.messageAggregator?.saveRawMessageData(
       updatedUsers.map((user) => ({
-        eventName: UserEvents.UPDATED,
+        eventName: UserEvents.updated,
         metadata: {
           service: this.constructor.name,
-          action: "update",
+          action: CommonEvents.UPDATED,
           object: "user",
         },
-        data: user.id,
+        data: { id: user.id },
       }))
     )
 
@@ -183,13 +184,13 @@ export default class UserModuleService<
 
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
-        eventName: UserEvents.INVITE_CREATED,
+        eventName: UserEvents.invite_created,
         metadata: {
           service: this.constructor.name,
-          action: "createInvites",
+          action: CommonEvents.CREATED,
           object: "invite",
         },
-        data: invite.id,
+        data: { id: invite.id },
       }))
     )
 
@@ -242,13 +243,13 @@ export default class UserModuleService<
 
     sharedContext.messageAggregator?.saveRawMessageData(
       serializedInvites.map((invite) => ({
-        eventName: UserEvents.INVITE_UPDATED,
+        eventName: UserEvents.invite_updated,
         metadata: {
           service: this.constructor.name,
-          action: "updateInvites",
+          action: CommonEvents.UPDATED,
           object: "invite",
         },
-        data: invite.id,
+        data: { id: invite.id },
       }))
     )
 
