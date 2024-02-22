@@ -1,14 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Customer } from "@medusajs/medusa"
-import {
-  Button,
-  Checkbox,
-  FocusModal,
-  Hint,
-  Table,
-  Tooltip,
-  clx,
-} from "@medusajs/ui"
+import { Button, Checkbox, Hint, Table, Tooltip, clx } from "@medusajs/ui"
 import {
   PaginationState,
   RowSelectionState,
@@ -25,21 +17,23 @@ import {
 import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
 import * as zod from "zod"
+
 import {
   NoRecords,
   NoResults,
 } from "../../../../../components/common/empty-table-content"
-import { Form } from "../../../../../components/common/form"
 import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 import { queryClient } from "../../../../../lib/medusa"
 
 type AddCustomersFormProps = {
   customerGroupId: string
-  subscribe: (state: boolean) => void
 }
 
 const AddCustomersSchema = zod.object({
@@ -50,10 +44,9 @@ const PAGE_SIZE = 10
 
 export const AddCustomersForm = ({
   customerGroupId,
-  subscribe,
 }: AddCustomersFormProps) => {
-  const navigate = useNavigate()
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof AddCustomersSchema>>({
     defaultValues: {
@@ -62,13 +55,7 @@ export const AddCustomersForm = ({
     resolver: zodResolver(AddCustomersSchema),
   })
 
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
+  const { setValue } = form
 
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -86,11 +73,15 @@ export const AddCustomersForm = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   useEffect(() => {
-    form.setValue(
+    setValue(
       "customer_ids",
-      Object.keys(rowSelection).filter((k) => rowSelection[k])
+      Object.keys(rowSelection).filter((k) => rowSelection[k]),
+      {
+        shouldDirty: true,
+        shouldTouch: true,
+      }
     )
-  }, [rowSelection])
+  }, [rowSelection, setValue])
 
   const params = useQueryParams(["q"])
   const { customers, count, isLoading, isError, error } = useAdminCustomers({
@@ -131,7 +122,7 @@ export const AddCustomersForm = ({
       {
         onSuccess: () => {
           queryClient.invalidateQueries(adminCustomerKeys.lists())
-          navigate(`/customer-groups/${customerGroupId}`)
+          handleSuccess(`/customer-groups/${customerGroupId}`)
         },
       }
     )
@@ -147,23 +138,23 @@ export const AddCustomersForm = ({
   }
 
   return (
-    <Form {...form}>
+    <RouteFocusModal.Form form={form}>
       <form
         className="flex h-full flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
-        <FocusModal.Header>
+        <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
             {form.formState.errors.customer_ids && (
               <Hint variant="error">
                 {form.formState.errors.customer_ids.message}
               </Hint>
             )}
-            <FocusModal.Close asChild>
+            <RouteFocusModal.Close asChild>
               <Button variant="secondary" size="small">
                 {t("actions.cancel")}
               </Button>
-            </FocusModal.Close>
+            </RouteFocusModal.Close>
             <Button
               type="submit"
               variant="primary"
@@ -173,8 +164,8 @@ export const AddCustomersForm = ({
               {t("general.add")}
             </Button>
           </div>
-        </FocusModal.Header>
-        <FocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
+        </RouteFocusModal.Header>
+        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
           {noRecords ? (
             <div className="flex w-full flex-1 items-center justify-center">
               <NoRecords />
@@ -259,9 +250,9 @@ export const AddCustomersForm = ({
               />
             </div>
           )}
-        </FocusModal.Body>
+        </RouteFocusModal.Body>
       </form>
-    </Form>
+    </RouteFocusModal.Form>
   )
 }
 

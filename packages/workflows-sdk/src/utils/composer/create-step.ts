@@ -2,9 +2,9 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { OrchestrationUtils, isString } from "@medusajs/utils"
+import { isString, OrchestrationUtils } from "@medusajs/utils"
 import { ulid } from "ulid"
-import { StepResponse, resolveValue } from "./helpers"
+import { resolveValue, StepResponse } from "./helpers"
 import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
@@ -199,6 +199,7 @@ function applyStep<
           ...localConfig,
         })
 
+        ret.__step__ = newStepName
         WorkflowManager.update(this.workflowId, this.flow, this.handlers)
 
         return proxify(ret)

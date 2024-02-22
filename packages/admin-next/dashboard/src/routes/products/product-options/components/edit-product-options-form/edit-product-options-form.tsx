@@ -1,15 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Product } from "@medusajs/medusa"
-import { Button, Drawer } from "@medusajs/ui"
+import { Button } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { Form } from "../../../../../components/common/form"
+import { RouteDrawer } from "../../../../../components/route-modal"
 
 type EditProductOptionsFormProps = {
   product: Product
-  handleSuccess: () => void
-  subscribe: (state: boolean) => void
 }
 
 const EditProductOptionsSchema = zod.object({})
@@ -22,22 +20,22 @@ export const EditProductOptionsForm = (props: EditProductOptionsFormProps) => {
   })
 
   return (
-    <Form {...form}>
+    <RouteDrawer.Form form={form}>
       <form className="flex flex-1 flex-col overflow-hidden">
-        <Drawer.Body className="flex flex-1 flex-col gap-y-8 overflow-auto"></Drawer.Body>
-        <Drawer.Footer>
+        <RouteDrawer.Body className="flex flex-1 flex-col gap-y-8 overflow-auto"></RouteDrawer.Body>
+        <RouteDrawer.Footer>
           <div className="flex items-center justify-end gap-x-2">
-            <Drawer.Close asChild>
+            <RouteDrawer.Close asChild>
               <Button variant="secondary" size="small">
                 {t("actions.cancel")}
               </Button>
-            </Drawer.Close>
+            </RouteDrawer.Close>
             <Button type="submit" size="small">
               {t("actions.save")}
             </Button>
           </div>
-        </Drawer.Footer>
+        </RouteDrawer.Footer>
       </form>
-    </Form>
+    </RouteDrawer.Form>
   )
 }

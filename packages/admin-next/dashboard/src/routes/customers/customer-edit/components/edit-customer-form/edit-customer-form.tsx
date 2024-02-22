@@ -1,17 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Customer } from "@medusajs/medusa"
-import { Button, Drawer, Input } from "@medusajs/ui"
+import { Button, Input } from "@medusajs/ui"
 import { useAdminUpdateCustomer } from "medusa-react"
-import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+
 import { Form } from "../../../../../components/common/form"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 
 type EditCustomerFormProps = {
   customer: Customer
-  subscribe: (state: boolean) => void
-  onSuccessfulSubmit: () => void
 }
 
 const EditCustomerSchema = zod.object({
@@ -21,12 +23,9 @@ const EditCustomerSchema = zod.object({
   phone: zod.string().optional(),
 })
 
-export const EditCustomerForm = ({
-  customer,
-  subscribe,
-  onSuccessfulSubmit,
-}: EditCustomerFormProps) => {
+export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof EditCustomerSchema>>({
     defaultValues: {
@@ -37,14 +36,6 @@ export const EditCustomerForm = ({
     },
     resolver: zodResolver(EditCustomerSchema),
   })
-
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
 
   const { mutateAsync, isLoading } = useAdminUpdateCustomer(customer.id)
 
@@ -58,16 +49,16 @@ export const EditCustomerForm = ({
       },
       {
         onSuccess: () => {
-          onSuccessfulSubmit()
+          handleSuccess()
         },
       }
     )
   })
 
   return (
-    <Form {...form}>
+    <RouteDrawer.Form form={form}>
       <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
-        <Drawer.Body>
+        <RouteDrawer.Body>
           <div className="flex flex-col gap-y-4">
             <Form.Field
               control={form.control}
@@ -130,14 +121,14 @@ export const EditCustomerForm = ({
               }}
             />
           </div>
-        </Drawer.Body>
-        <Drawer.Footer>
+        </RouteDrawer.Body>
+        <RouteDrawer.Footer>
           <div className="flex items-center justify-end gap-x-2">
-            <Drawer.Close asChild>
+            <RouteDrawer.Close asChild>
               <Button variant="secondary" size="small">
                 {t("actions.cancel")}
               </Button>
-            </Drawer.Close>
+            </RouteDrawer.Close>
             <Button
               isLoading={isLoading}
               type="submit"
@@ -147,8 +138,8 @@ export const EditCustomerForm = ({
               {t("actions.save")}
             </Button>
           </div>
-        </Drawer.Footer>
+        </RouteDrawer.Footer>
       </form>
-    </Form>
+    </RouteDrawer.Form>
   )
 }

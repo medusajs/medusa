@@ -4,19 +4,22 @@ import {
   Button,
   CurrencyInput,
   DatePicker,
-  Drawer,
   Select,
   Switch,
   Text,
 } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import { useAdminRegions, useAdminUpdateGiftCard } from "medusa-react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 import { currencies } from "../../../../../lib/currencies"
 import { isAxiosError } from "../../../../../lib/is-axios-error"
 import {
@@ -26,8 +29,6 @@ import {
 
 type EditGiftCardFormProps = {
   giftCard: GiftCard
-  onSuccessfulSubmit: () => void
-  subscribe: (state: boolean) => void
 }
 
 const EditGiftCardSchema = zod.object({
@@ -37,13 +38,12 @@ const EditGiftCardSchema = zod.object({
   ends_at: zod.date().nullable(),
 })
 
-export const EditGiftCardForm = ({
-  giftCard,
-  onSuccessfulSubmit,
-  subscribe,
-}: EditGiftCardFormProps) => {
+export const EditGiftCardForm = ({ giftCard }: EditGiftCardFormProps) => {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
+
   const [showDateFields, setShowDateFields] = useState(!!giftCard.ends_at)
+
   const form = useForm<zod.infer<typeof EditGiftCardSchema>>({
     defaultValues: {
       region_id: giftCard.region_id,
@@ -57,14 +57,7 @@ export const EditGiftCardForm = ({
     resolver: zodResolver(EditGiftCardSchema),
   })
 
-  const {
-    formState: { isDirty },
-    setValue,
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty, subscribe])
+  const { setValue } = form
 
   const { regions } = useAdminRegions({
     limit: 1000,
@@ -117,7 +110,7 @@ export const EditGiftCardForm = ({
       },
       {
         onSuccess: () => {
-          onSuccessfulSubmit()
+          handleSuccess()
         },
         onError: (error) => {
           if (isAxiosError(error)) {
@@ -132,19 +125,19 @@ export const EditGiftCardForm = ({
   })
 
   return (
-    <Form {...form}>
+    <RouteDrawer.Form form={form}>
       <form
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
-        <Drawer.Body className="flex flex-1 flex-col gap-y-8 overflow-auto">
+        <RouteDrawer.Body className="flex flex-1 flex-col gap-y-8 overflow-auto">
           <Form.Field
             control={form.control}
             name="balance"
             render={({ field: { onChange, ...field } }) => {
               return (
                 <Form.Item>
-                  <Form.Label>{t("fields.balance")}</Form.Label>
+                  <Form.Label>{t("giftCards.balance")}</Form.Label>
                   <Form.Control>
                     <CurrencyInput
                       code={giftCard.region.currency_code.toUpperCase()}
@@ -258,20 +251,20 @@ export const EditGiftCardForm = ({
               )
             }}
           />
-        </Drawer.Body>
-        <Drawer.Footer>
+        </RouteDrawer.Body>
+        <RouteDrawer.Footer>
           <div className="flex items-center gap-x-2">
-            <Drawer.Close asChild>
+            <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
                 {t("actions.cancel")}
               </Button>
-            </Drawer.Close>
+            </RouteDrawer.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
               {t("actions.save")}
             </Button>
           </div>
-        </Drawer.Footer>
+        </RouteDrawer.Footer>
       </form>
-    </Form>
+    </RouteDrawer.Form>
   )
 }
