@@ -462,7 +462,7 @@ describe("Payment Module Service", () => {
     })
 
     describe("authorize", () => {
-      it.only("should authorize a payment session", async () => {
+      it("should authorize a payment session", async () => {
         const collection = await service.createPaymentCollections({
           amount: 200,
           region_id: "test-region",
