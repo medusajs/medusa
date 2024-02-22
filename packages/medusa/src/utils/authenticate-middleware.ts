@@ -1,8 +1,8 @@
+import { AuthUserDTO, IUserModuleService } from "@medusajs/types"
 import { MedusaRequest, MedusaResponse } from "../types/routing"
 import { NextFunction, RequestHandler } from "express"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
-import { AuthUserDTO } from "@medusajs/types"
 import { stringEqualsOrRegexMatch } from "@medusajs/utils"
 
 const SESSION_AUTH = "session"
