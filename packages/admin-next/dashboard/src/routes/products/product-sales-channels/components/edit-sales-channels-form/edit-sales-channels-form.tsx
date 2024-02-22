@@ -1,9 +1,17 @@
 import { Product, SalesChannel } from "@medusajs/medusa"
-import { Button, Checkbox, FocusModal } from "@medusajs/ui"
+import { Button, Checkbox } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useAdminSalesChannels, useAdminUpdateProduct } from "medusa-react"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
+import * as zod from "zod"
+
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useSalesChannelTableColumns } from "../../../../../hooks/table/columns/use-sales-channel-table-columns"
 import { useSalesChannelTableFilters } from "../../../../../hooks/table/filters/use-sales-channel-table-filters"
@@ -12,18 +20,28 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 
 type EditSalesChannelsFormProps = {
   product: Product
-  subscribe: (state: boolean) => void
-  onSuccessfulSubmit: () => void
 }
+
+const EditSalesChannelsSchema = zod.object({
+  sales_channels: zod.array(zod.string()).optional(),
+})
 
 const PAGE_SIZE = 50
 
 export const EditSalesChannelsForm = ({
   product,
-  subscribe,
-  onSuccessfulSubmit,
 }: EditSalesChannelsFormProps) => {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
+
+  const form = useForm<zod.infer<typeof EditSalesChannelsSchema>>({
+    defaultValues: {
+      sales_channels: product.sales_channels?.map((sc) => sc.id) ?? [],
+    },
+    resolver: zodResolver(EditSalesChannelsSchema),
+  })
+
+  const { setValue } = form
 
   const initialState =
     product.sales_channels?.reduce((acc, curr) => {
@@ -34,13 +52,13 @@ export const EditSalesChannelsForm = ({
   const [rowSelection, setRowSelection] =
     useState<RowSelectionState>(initialState)
 
-  const isDirty = Object.entries(initialState).some(
-    ([key, value]) => value !== rowSelection[key]
-  )
-
   useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty, subscribe])
+    const ids = Object.keys(rowSelection)
+    setValue("sales_channels", ids, {
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+  }, [rowSelection, setValue])
 
   const { searchParams, raw } = useSalesChannelTableQuery({
     pageSize: PAGE_SIZE,
@@ -76,12 +94,10 @@ export const EditSalesChannelsForm = ({
     product.id
   )
 
-  const handleSubmit = async () => {
-    const selected = Object.keys(rowSelection).filter((key) => {
-      return rowSelection[key]
-    })
+  const handleSubmit = form.handleSubmit(async (data) => {
+    const arr = data.sales_channels ?? []
 
-    const sales_channels = selected.map((id) => {
+    const sales_channels = arr.map((id) => {
       return {
         id,
       }
@@ -93,46 +109,48 @@ export const EditSalesChannelsForm = ({
       },
       {
         onSuccess: () => {
-          onSuccessfulSubmit()
+          handleSuccess()
         },
       }
     )
-  }
+  })
 
   if (isError) {
     throw error
   }
 
   return (
-    <div className="flex h-full flex-col overflow-hidden">
-      <FocusModal.Header>
-        <div className="flex items-center justify-end gap-x-2">
-          <FocusModal.Close asChild>
-            <Button size="small" variant="secondary">
-              {t("actions.cancel")}
+    <RouteFocusModal.Form form={form}>
+      <div className="flex h-full flex-col overflow-hidden">
+        <RouteFocusModal.Header>
+          <div className="flex items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
+              <Button size="small" variant="secondary">
+                {t("actions.cancel")}
+              </Button>
+            </RouteFocusModal.Close>
+            <Button size="small" isLoading={isMutating} onClick={handleSubmit}>
+              {t("actions.save")}
             </Button>
-          </FocusModal.Close>
-          <Button size="small" isLoading={isMutating} onClick={handleSubmit}>
-            {t("actions.save")}
-          </Button>
-        </div>
-      </FocusModal.Header>
-      <FocusModal.Body>
-        <DataTable
-          table={table}
-          columns={columns}
-          pageSize={PAGE_SIZE}
-          isLoading={isLoading}
-          count={count}
-          filters={filters}
-          search
-          pagination
-          orderBy={["name", "created_at", "updated_at"]}
-          queryObject={raw}
-          layout="fill"
-        />
-      </FocusModal.Body>
-    </div>
+          </div>
+        </RouteFocusModal.Header>
+        <RouteFocusModal.Body>
+          <DataTable
+            table={table}
+            columns={columns}
+            pageSize={PAGE_SIZE}
+            isLoading={isLoading}
+            count={count}
+            filters={filters}
+            search
+            pagination
+            orderBy={["name", "created_at", "updated_at"]}
+            queryObject={raw}
+            layout="fill"
+          />
+        </RouteFocusModal.Body>
+      </div>
+    </RouteFocusModal.Form>
   )
 }
 

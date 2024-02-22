@@ -1,19 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Product } from "@medusajs/medusa"
-import { Button, Drawer, Input } from "@medusajs/ui"
+import { Button, Input } from "@medusajs/ui"
 import { useAdminUpdateProduct } from "medusa-react"
-import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { CountrySelect } from "../../../../../components/common/country-select"
 import { Form } from "../../../../../components/common/form"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 
 type ProductAttributesFormProps = {
   product: Product
-  subscribe: (state: boolean) => void
-  onSuccessfulSubmit: () => void
 }
 
 const dimension = zod
@@ -39,9 +40,10 @@ const ProductAttributesSchema = zod.object({
 
 export const ProductAttributesForm = ({
   product,
-  subscribe,
-  onSuccessfulSubmit,
 }: ProductAttributesFormProps) => {
+  const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
+
   const form = useForm<zod.infer<typeof ProductAttributesSchema>>({
     defaultValues: {
       height: product.height ? product.height : null,
@@ -55,15 +57,6 @@ export const ProductAttributesForm = ({
     resolver: zodResolver(ProductAttributesSchema),
   })
 
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty, subscribe])
-
-  const { t } = useTranslation()
   const { mutateAsync, isLoading } = useAdminUpdateProduct(product.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
@@ -79,16 +72,16 @@ export const ProductAttributesForm = ({
       },
       {
         onSuccess: () => {
-          onSuccessfulSubmit()
+          handleSuccess()
         },
       }
     )
   })
 
   return (
-    <Form {...form}>
+    <RouteDrawer.Form form={form}>
       <form onSubmit={handleSubmit} className="flex h-full flex-col">
-        <Drawer.Body>
+        <RouteDrawer.Body>
           <div className="flex h-full flex-col gap-y-8">
             <div className="flex flex-col gap-y-4">
               <Form.Field
@@ -254,20 +247,20 @@ export const ProductAttributesForm = ({
               />
             </div>
           </div>
-        </Drawer.Body>
-        <Drawer.Footer>
+        </RouteDrawer.Body>
+        <RouteDrawer.Footer>
           <div className="flex items-center justify-end gap-x-2">
-            <Drawer.Close asChild>
+            <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
                 {t("actions.cancel")}
               </Button>
-            </Drawer.Close>
+            </RouteDrawer.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
               {t("actions.save")}
             </Button>
           </div>
-        </Drawer.Footer>
+        </RouteDrawer.Footer>
       </form>
-    </Form>
+    </RouteDrawer.Form>
   )
 }
