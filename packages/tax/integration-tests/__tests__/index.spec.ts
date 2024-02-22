@@ -197,7 +197,7 @@ moduleIntegrationTestRunner({
         ])
       })
 
-      it("applies default province rules when no specific product or product type rule matches", async () => {
+      it.only("applies default province rules when no specific product or product type rule matches", async () => {
         await setupTaxStructure(service)
         const item = {
           id: "item_test",

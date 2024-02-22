@@ -212,7 +212,9 @@ export default class TaxModuleService<
     const rateQuery = this.getTaxRateQueryForItem(item, regionIds)
     const rates = await this.taxRateService_.list(
       rateQuery,
-      { relations: ["tax_region", "rules"] },
+      {
+        relations: ["tax_region", "rules"],
+      },
       sharedContext
     )
 
@@ -221,6 +223,7 @@ export default class TaxModuleService<
     }
 
     const prioritizedRates = this.prioritizeRates(rates, item)
+    console.log(prioritizedRates[0].tax_region)
     const rate = prioritizedRates[0]
 
     const ratesToReturn = [this.buildRateForItem(rate, item)]
