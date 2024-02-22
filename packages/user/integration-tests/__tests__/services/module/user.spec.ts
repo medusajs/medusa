@@ -3,6 +3,7 @@ import { MikroOrmWrapper } from "../../../utils"
 import { MockEventBusService } from "medusa-test-utils"
 import { Modules } from "@medusajs/modules-sdk"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { UserEvents } from "@medusajs/utils"
 import { createUsers } from "../../../__fixtures__/user"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
@@ -204,7 +205,7 @@ describe("UserModuleService - User", () => {
           body: expect.objectContaining({
             data: { id: "1" },
           }),
-          eventName: "user.updated",
+          eventName: UserEvents.updated,
         }),
       ])
     })
@@ -236,13 +237,13 @@ describe("UserModuleService - User", () => {
           body: expect.objectContaining({
             data: { id: "1" },
           }),
-          eventName: "user.created",
+          eventName: UserEvents.created,
         }),
         expect.objectContaining({
           body: expect.objectContaining({
             data: { id: "2" },
           }),
-          eventName: "user.created",
+          eventName: UserEvents.created,
         }),
       ])
     })
