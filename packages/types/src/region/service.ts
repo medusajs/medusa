@@ -10,14 +10,27 @@ import {
   RegionCurrencyDTO,
   RegionDTO,
 } from "./common"
-import { CreateRegionDTO, UpdateRegionDTO } from "./mutations"
+import {
+  CreateRegionDTO,
+  UpdatableRegionFields,
+  UpdateRegionDTO,
+} from "./mutations"
 
 export interface IRegionModuleService extends IModuleService {
   create(data: CreateRegionDTO[], sharedContext?: Context): Promise<RegionDTO[]>
   create(data: CreateRegionDTO, sharedContext?: Context): Promise<RegionDTO>
 
-  update(data: UpdateRegionDTO[], sharedContext?: Context): Promise<RegionDTO[]>
-  update(data: UpdateRegionDTO, sharedContext?: Context): Promise<RegionDTO>
+  update(data: UpdateRegionDTO[]): Promise<RegionDTO[]>
+  update(
+    selector: FilterableRegionProps,
+    data: UpdatableRegionFields,
+    sharedContext?: Context
+  ): Promise<RegionDTO[]>
+  update(
+    regionId: string,
+    data: UpdatableRegionFields,
+    sharedContext?: Context
+  ): Promise<RegionDTO>
 
   delete(ids: string[], sharedContext?: Context): Promise<void>
   delete(id: string, sharedContext?: Context): Promise<void>

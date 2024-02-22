@@ -96,7 +96,7 @@ export const CustomerGroupCustomerSection = ({
       <DataTable
         table={table}
         columns={columns}
-        rowCount={PAGE_SIZE}
+        pageSize={PAGE_SIZE}
         isLoading={isLoading}
         count={count}
         navigateTo={(row) => `/customers/${row.id}`}

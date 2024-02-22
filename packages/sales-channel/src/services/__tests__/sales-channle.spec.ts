@@ -34,6 +34,9 @@ describe("Sales channel service", function () {
           fields: ["id", "name"],
           limit: 15,
           offset: 0,
+          orderBy: {
+            id: "ASC",
+          },
           withDeleted: undefined,
           populate: [],
         },
