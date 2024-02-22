@@ -3,7 +3,6 @@ import { MedusaRequest, MedusaResponse } from "../types/routing"
 import { NextFunction, RequestHandler } from "express"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { stringEqualsOrRegexMatch } from "@medusajs/utils"
 
 const SESSION_AUTH = "session"
