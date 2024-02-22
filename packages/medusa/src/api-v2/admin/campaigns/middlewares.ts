@@ -1,22 +1,28 @@
-import { MedusaV2Flag } from "@medusajs/utils"
-import {
-  isFeatureFlagEnabled,
-  transformBody,
-  transformQuery,
-} from "../../../api/middlewares"
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import * as QueryConfig from "./query-config"
+
 import {
   AdminGetCampaignsCampaignParams,
   AdminGetCampaignsParams,
   AdminPostCampaignsCampaignReq,
   AdminPostCampaignsReq,
 } from "./validators"
+import {
+  isFeatureFlagEnabled,
+  transformBody,
+  transformQuery,
+} from "../../../api/middlewares"
+
+import { MedusaV2Flag } from "@medusajs/utils"
+import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/campaigns*",
-    middlewares: [isFeatureFlagEnabled(MedusaV2Flag.key)],
+    middlewares: [
+      isFeatureFlagEnabled(MedusaV2Flag.key),
+      authenticate("admin", ["bearer", "session"]),
+    ],
   },
   {
     method: ["GET"],
