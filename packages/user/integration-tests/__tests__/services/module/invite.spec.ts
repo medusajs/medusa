@@ -236,13 +236,13 @@ describe("UserModuleService - Invite", () => {
         }),
         expect.objectContaining({
           body: expect.objectContaining({
-            data: "1",
+            data: { id: "1" },
           }),
           eventName: "invite.token_generated",
         }),
         expect.objectContaining({
           body: expect.objectContaining({
-            data: "2",
+            data: { id: "2" },
           }),
           eventName: "invite.token_generated",
         }),
