@@ -1,7 +1,7 @@
 import { DAL } from "@medusajs/types"
 import { OptionalProps, PrimaryKey, Property } from "@mikro-orm/core"
 
-type OptionalAdjustmentLineProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
+type OptionalAdjustmentLineProps = DAL.SoftDeletableEntityDateColumns
 
 /**
  * As per the Mikro ORM docs, superclasses should use the abstract class definition
@@ -15,12 +15,6 @@ export default abstract class AdjustmentLine {
 
   @Property({ columnType: "text", nullable: true })
   description: string | null = null
-
-  @Property({
-    columnType: "text",
-    nullable: true,
-  })
-  promotion_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
   code: string | null = null

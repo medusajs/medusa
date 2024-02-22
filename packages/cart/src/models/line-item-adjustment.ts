@@ -1,9 +1,14 @@
-import { generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Check,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   Property,
@@ -15,6 +20,7 @@ import LineItem from "./line-item"
 @Check<LineItemAdjustment>({
   expression: (columns) => `${columns.amount} >= 0`,
 })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class LineItemAdjustment extends AdjustmentLine {
   @ManyToOne({
     entity: () => LineItem,
@@ -25,6 +31,21 @@ export default class LineItemAdjustment extends AdjustmentLine {
 
   @Property({ columnType: "text" })
   item_id: string
+
+  @Property({
+    columnType: "text",
+    nullable: true,
+    index: "IDX_line_item_adjustment_promotion_id"
+  })
+  promotion_id: string | null = null
+
+  @createPsqlIndexStatementHelper({
+    tableName: "cart_line_item_adjustment",
+    columns: "deleted_at",
+    where: "deleted_at IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

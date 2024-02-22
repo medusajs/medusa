@@ -1,6 +1,6 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class CartModuleSetup20240122122952 extends Migration {
+export class Migration20240222121713 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       `
@@ -21,6 +21,7 @@ export class CartModuleSetup20240122122952 extends Migration {
     );
     
     ALTER TABLE "cart" ADD COLUMN IF NOT EXISTS "currency_code" TEXT NOT NULL;
+    ALTER TABLE "cart" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
     ALTER TABLE "cart" ALTER COLUMN "region_id" DROP NOT NULL;
     ALTER TABLE "cart" ALTER COLUMN "email" DROP NOT NULL;
     
@@ -54,6 +55,7 @@ export class CartModuleSetup20240122122952 extends Migration {
       "metadata" JSONB NULL,
       "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "deleted_at" TIMESTAMPTZ NULL,
       CONSTRAINT "cart_address_pkey" PRIMARY KEY ("id")
     );
     
@@ -85,6 +87,7 @@ export class CartModuleSetup20240122122952 extends Migration {
       "raw_unit_price" JSONB NOT NULL,
       "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "deleted_at" TIMESTAMPTZ NULL,
       CONSTRAINT "cart_line_item_pkey" PRIMARY KEY ("id"),
       CONSTRAINT cart_line_item_unit_price_check CHECK (unit_price >= 0)
     );
@@ -106,6 +109,7 @@ export class CartModuleSetup20240122122952 extends Migration {
         "provider_id" TEXT NULL,
         "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
         "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        "deleted_at" TIMESTAMPTZ NULL,
         "item_id" TEXT NULL,
         CONSTRAINT "cart_line_item_adjustment_pkey" PRIMARY KEY ("id"),
         CONSTRAINT cart_line_item_adjustment_check CHECK (amount >= 0)
@@ -123,6 +127,7 @@ export class CartModuleSetup20240122122952 extends Migration {
       "provider_id" TEXT NULL,
       "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "deleted_at" TIMESTAMPTZ NULL,
       "item_id" TEXT NULL,
       CONSTRAINT "cart_line_item_tax_line_pkey" PRIMARY KEY ("id")
   );
@@ -143,6 +148,7 @@ export class CartModuleSetup20240122122952 extends Migration {
       "metadata" JSONB NULL,
       "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "deleted_at" TIMESTAMPTZ NULL,
       CONSTRAINT "cart_shipping_method_pkey" PRIMARY KEY ("id"),
       CONSTRAINT cart_shipping_method_check CHECK (amount >= 0)
   );
@@ -159,6 +165,7 @@ export class CartModuleSetup20240122122952 extends Migration {
       "provider_id" TEXT NULL,
       "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "deleted_at" TIMESTAMPTZ NULL,
       "shipping_method_id" TEXT NULL,
       CONSTRAINT "cart_shipping_method_adjustment_pkey" PRIMARY KEY ("id")
     );
@@ -175,6 +182,7 @@ export class CartModuleSetup20240122122952 extends Migration {
       "provider_id" TEXT NULL,
       "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      "deleted_at" TIMESTAMPTZ NULL,
       "shipping_method_id" TEXT NULL,
       CONSTRAINT "cart_shipping_method_tax_line_pkey" PRIMARY KEY ("id")
     );
@@ -188,6 +196,15 @@ export class CartModuleSetup20240122122952 extends Migration {
     ALTER TABLE "cart_shipping_method" ADD CONSTRAINT "cart_shipping_method_cart_id_foreign" FOREIGN KEY ("cart_id") REFERENCES "cart" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
     ALTER TABLE "cart_shipping_method_adjustment" ADD CONSTRAINT "cart_shipping_method_adjustment_shipping_method_id_foreign" FOREIGN KEY ("shipping_method_id") REFERENCES "cart_shipping_method" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
     ALTER TABLE "cart_shipping_method_tax_line" ADD CONSTRAINT "cart_shipping_method_tax_line_shipping_method_id_foreign" FOREIGN KEY ("shipping_method_id") REFERENCES "cart_shipping_method" ("id") ON UPDATE CASCADE ON DELETE CASCADE;          
+
+    CREATE INDEX IF NOT EXISTS "IDX_cart_deleted_at" ON "cart" (deleted_at) WHERE deleted_at IS NOT NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_cart_address_deleted_at" ON "cart_address" (deleted_at) WHERE deleted_at IS NOT NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_cart_line_item_adjustment_deleted_at" ON "cart_line_item_adjustment" (deleted_at) WHERE deleted_at IS NOT NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_cart_shipping_method_adjustment_deleted_at" ON "cart_shipping_method_adjustment" (deleted_at) WHERE deleted_at IS NOT NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_cart_line_item_tax_line_deleted_at" ON "cart_line_item_tax_line" (deleted_at) WHERE deleted_at IS NOT NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_cart_shipping_method_tax_line_deleted_at" ON "cart_shipping_method_tax_line" (deleted_at) WHERE deleted_at IS NOT NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_cart_shipping_method_deleted_at" ON "cart_shipping_method" (deleted_at) WHERE deleted_at IS NOT NULL;
+    CREATE INDEX IF NOT EXISTS "IDX_cart_line_item_deleted_at" ON "cart_line_item" (deleted_at) WHERE deleted_at IS NOT NULL;
       `
     )
   }

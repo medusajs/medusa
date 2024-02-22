@@ -1,10 +1,15 @@
 import { DAL } from "@medusajs/types"
-import { generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -19,9 +24,10 @@ import ShippingMethod from "./shipping-method"
 type OptionalCartProps =
   | "shipping_address"
   | "billing_address"
-  | DAL.EntityDateColumns
+  | DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "cart" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Cart {
   [OptionalProps]?: OptionalCartProps
 
@@ -107,6 +113,11 @@ export default class Cart {
   })
   updated_at: Date
 
+  @createPsqlIndexStatementHelper({
+    tableName: "cart",
+    columns: "deleted_at",
+    where: "deleted_at IS NOT NULL",
+  }).MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

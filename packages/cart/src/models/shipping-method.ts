@@ -1,14 +1,21 @@
-import { BigNumberRawValue } from "@medusajs/types"
-import { BigNumber, generateEntityId } from "@medusajs/utils"
+import { BigNumberRawValue, DAL } from "@medusajs/types"
+import {
+  BigNumber,
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Check,
   Collection,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   OneToMany,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -17,9 +24,17 @@ import Cart from "./cart"
 import ShippingMethodAdjustment from "./shipping-method-adjustment"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"
 
+type OptionalShippingMethodProps =
+  | "cart"
+  | "is_tax_inclusive"
+  | DAL.SoftDeletableEntityDateColumns
+
 @Entity({ tableName: "cart_shipping_method" })
 @Check<ShippingMethod>({ expression: (columns) => `${columns.amount} >= 0` })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingMethod {
+  [OptionalProps]?: OptionalShippingMethodProps
+
   @PrimaryKey({ columnType: "text" })
   id: string
 
@@ -93,6 +108,14 @@ export default class ShippingMethod {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @createPsqlIndexStatementHelper({
+    tableName: "cart_shipping_method",
+    columns: "deleted_at",
+    where: "deleted_at IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

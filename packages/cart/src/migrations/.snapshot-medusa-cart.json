@@ -144,11 +144,31 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "cart_address",
       "schema": "public",
       "indexes": [
+        {
+          "keyName": "IDX_address_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_address_deleted_at\" ON \"address\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
         {
           "keyName": "cart_address_pkey",
           "columnNames": [
@@ -283,10 +303,37 @@
       "indexes": [
         {
           "columnNames": [
+            "region_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_cart_region_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
             "customer_id"
           ],
           "composite": false,
           "keyName": "IDX_cart_customer_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "sales_channel_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_cart_sales_channel_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "currency_code"
+          ],
+          "composite": false,
+          "keyName": "IDX_cart_curency_code",
           "primary": false,
           "unique": false
         },
@@ -307,6 +354,16 @@
           "keyName": "IDX_cart_billing_address_id",
           "primary": false,
           "unique": false
+        },
+        {
+          "keyName": "IDX_cart_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_deleted_at\" ON \"cart\" (deleted_at) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "cart_pkey",
@@ -551,6 +608,15 @@
           "nullable": true,
           "mappedType": "decimal"
         },
+        "raw_compare_at_unit_price": {
+          "name": "raw_compare_at_unit_price",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
         "unit_price": {
           "name": "unit_price",
           "type": "numeric",
@@ -559,6 +625,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "decimal"
+        },
+        "raw_unit_price": {
+          "name": "raw_unit_price",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
         },
         "created_at": {
           "name": "created_at",
@@ -580,6 +655,16 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
           "mappedType": "datetime"
         }
       },
@@ -605,6 +690,25 @@
           "unique": false
         },
         {
+          "columnNames": [
+            "product_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_line_item_product_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "IDX_cart_line_item_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_deleted_at\" ON \"cart_line_item\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
           "keyName": "cart_line_item_pkey",
           "columnNames": [
             "id"
@@ -614,14 +718,7 @@
           "unique": true
         }
       ],
-      "checks": [
-        {
-          "name": "cart_line_item_unit_price_check",
-          "expression": "unit_price >= 0",
-          "definition": "check ((unit_price >= 0))",
-          "columnName": "unit_price"
-        }
-      ],
+      "checks": [],
       "foreignKeys": {
         "cart_line_item_cart_id_foreign": {
           "constraintName": "cart_line_item_cart_id_foreign",
@@ -724,6 +821,16 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "cart_line_item_adjustment",
@@ -737,6 +844,16 @@
           "keyName": "IDX_adjustment_item_id",
           "primary": false,
           "unique": false
+        },
+        {
+          "keyName": "IDX_cart_line_item_adjustment_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_adjustment_deleted_at\" ON \"cart_line_item_adjustment\" (deleted_at) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "cart_line_item_adjustment_pkey",
@@ -857,6 +974,16 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "cart_line_item_tax_line",
@@ -870,6 +997,16 @@
           "keyName": "IDX_tax_line_item_id",
           "primary": false,
           "unique": false
+        },
+        {
+          "keyName": "IDX_cart_line_item_tax_line_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_tax_line_deleted_at\" ON \"cart_line_item_tax_line\" (deleted_at) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "cart_line_item_tax_line_pkey",
@@ -945,6 +1082,15 @@
           "nullable": false,
           "mappedType": "decimal"
         },
+        "raw_amount": {
+          "name": "raw_amount",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
         "is_tax_inclusive": {
           "name": "is_tax_inclusive",
           "type": "boolean",
@@ -1003,6 +1149,16 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "cart_shipping_method",
@@ -1016,6 +1172,25 @@
           "keyName": "IDX_shipping_method_cart_id",
           "primary": false,
           "unique": false
+        },
+        {
+          "columnNames": [
+            "shipping_option_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_shipping_method_option_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "IDX_cart_shipping_method_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_deleted_at\" ON \"cart_shipping_method\" (deleted_at) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "cart_shipping_method_pkey",
@@ -1136,6 +1311,16 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "cart_shipping_method_adjustment",
@@ -1149,6 +1334,16 @@
           "keyName": "IDX_adjustment_shipping_method_id",
           "primary": false,
           "unique": false
+        },
+        {
+          "keyName": "IDX_cart_shipping_method_adjustment_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_adjustment_deleted_at\" ON \"cart_shipping_method_adjustment\" (deleted_at) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "cart_shipping_method_adjustment_pkey",
@@ -1263,6 +1458,16 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "cart_shipping_method_tax_line",
@@ -1276,6 +1481,16 @@
           "keyName": "IDX_tax_line_shipping_method_id",
           "primary": false,
           "unique": false
+        },
+        {
+          "keyName": "IDX_cart_shipping_method_tax_line_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_tax_line_deleted_at\" ON \"cart_shipping_method_tax_line\" (deleted_at) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "cart_shipping_method_tax_line_pkey",

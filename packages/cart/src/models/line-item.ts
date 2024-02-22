@@ -1,11 +1,17 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
-import { BigNumber, generateEntityId } from "@medusajs/utils"
+import {
+  BigNumber,
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   BeforeUpdate,
   Cascade,
   Collection,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -23,9 +29,10 @@ type OptionalLineItemProps =
   | "compare_at_unit_price"
   | "requires_shipping"
   | "cart"
-  | DAL.EntityDateColumns
+  | DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "cart_line_item" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class LineItem {
   [OptionalProps]?: OptionalLineItemProps
 
@@ -144,6 +151,14 @@ export default class LineItem {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @createPsqlIndexStatementHelper({
+    tableName: "cart_line_item",
+    columns: "deleted_at",
+    where: "deleted_at IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {
