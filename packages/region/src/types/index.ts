@@ -1,4 +1,5 @@
 import { Logger } from "@medusajs/types"
+import { Country } from "@models"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger

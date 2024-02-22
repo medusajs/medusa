@@ -63,6 +63,24 @@ export function internalModuleServiceFactory<
       return keys.map((k) => data[k]).join("_")
     }
 
+    /**
+     * Only apply top level default ordering as the relation
+     * default ordering is already applied through the foreign key
+     * @param config
+     */
+    static applyDefaultOrdering(config: FindConfig<any>) {
+      if (config.order) {
+        return
+      }
+
+      config.order = {}
+
+      const primaryKeys = AbstractService_.retrievePrimaryKeys(model)
+      primaryKeys.forEach((primaryKey) => {
+        config.order![primaryKey] = "ASC"
+      })
+    }
+
     @InjectManager(propertyRepositoryName)
     async retrieve(
       idOrObject: string | object,
@@ -129,6 +147,7 @@ export function internalModuleServiceFactory<
       config: FindConfig<any> = {},
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity[]> {
+      AbstractService_.applyDefaultOrdering(config)
       const queryOptions = buildQuery(filters, config)
 
       return await this[propertyRepositoryName].find(
@@ -143,6 +162,7 @@ export function internalModuleServiceFactory<
       config: FindConfig<any> = {},
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[TEntity[], number]> {
+      AbstractService_.applyDefaultOrdering(config)
       const queryOptions = buildQuery(filters, config)
 
       return await this[propertyRepositoryName].findAndCount(
@@ -312,7 +332,7 @@ export function internalModuleServiceFactory<
     ): Promise<void> {
       if (
         !isDefined(idOrSelector) ||
-        (Array.isArray(idOrSelector) && idOrSelector.length === 0)
+        (Array.isArray(idOrSelector) && !idOrSelector.length)
       ) {
         return
       }
@@ -402,6 +422,10 @@ export function internalModuleServiceFactory<
       idsOrFilter: string[] | InternalFilterQuery,
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[TEntity[], Record<string, unknown[]>]> {
+      if (Array.isArray(idsOrFilter) && !idsOrFilter.length) {
+        return [[], {}]
+      }
+
       return await this[propertyRepositoryName].softDelete(
         idsOrFilter,
         sharedContext

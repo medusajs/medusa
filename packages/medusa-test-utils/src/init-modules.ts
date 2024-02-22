@@ -1,13 +1,12 @@
-import { knex } from "knex"
 import {
   MedusaApp,
   MedusaModule,
   MedusaModuleConfig,
   ModuleJoinerConfig,
 } from "@medusajs/modules-sdk"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
 
-interface InitModulesOptions {
+export interface InitModulesOptions {
   injectedDependencies?: Record<string, unknown>
   databaseConfig: {
     clientUrl: string
@@ -15,6 +14,7 @@ interface InitModulesOptions {
   }
   modulesConfig: MedusaModuleConfig
   joinerConfig?: ModuleJoinerConfig[]
+  preventConnectionDestroyWarning?: boolean
 }
 
 export async function initModules({
@@ -22,19 +22,18 @@ export async function initModules({
   databaseConfig,
   modulesConfig,
   joinerConfig,
+  preventConnectionDestroyWarning = false,
 }: InitModulesOptions) {
   injectedDependencies ??= {}
 
   let sharedPgConnection =
     injectedDependencies?.[ContainerRegistrationKeys.PG_CONNECTION]
 
+  let shouldDestroyConnectionAutomatically = !sharedPgConnection
   if (!sharedPgConnection) {
-    sharedPgConnection = knex<any, any>({
-      client: "pg",
-      searchPath: databaseConfig.schema,
-      connection: {
-        connectionString: databaseConfig.clientUrl,
-      },
+    sharedPgConnection = ModulesSdkUtils.createPgConnection({
+      clientUrl: databaseConfig.clientUrl,
+      schema: databaseConfig.schema,
     })
 
     injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] =
@@ -48,7 +47,16 @@ export async function initModules({
   })
 
   async function shutdown() {
-    await (sharedPgConnection as any).context?.destroy()
+    if (shouldDestroyConnectionAutomatically) {
+      await (sharedPgConnection as any).context?.destroy()
+      await (sharedPgConnection as any).destroy()
+    } else {
+      if (!preventConnectionDestroyWarning) {
+        console.info(
+          `You are using a custom shared connection. The connection won't be destroyed automatically.`
+        )
+      }
+    }
     MedusaModule.clearInstances()
   }
 

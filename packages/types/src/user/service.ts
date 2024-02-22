@@ -1,14 +1,32 @@
-import { CreateUserDTO, UpdateUserDTO } from "./mutations"
-import { FilterableUserProps, UserDTO } from "./common"
+import {
+  CreateInviteDTO,
+  CreateUserDTO,
+  UpdateInviteDTO,
+  UpdateUserDTO,
+} from "./mutations"
+import { FilterableUserProps, InviteDTO, UserDTO } from "./common"
 
 import { Context } from "../shared-context"
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 
 /**
  * The main service interface for the user module.
  */
 export interface IUserModuleService extends IModuleService {
+  /**
+   * This method validates an invite token.
+   *
+   * @param {string} token - The token to validate.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<InviteDTO>} The associated invite's details.
+   */
+  validateInviteToken(
+    token: string,
+    sharedContext?: Context
+  ): Promise<InviteDTO>
+
   /**
    * This method retrieves a user by its ID.
    *
@@ -170,4 +188,68 @@ export interface IUserModuleService extends IModuleService {
    * {example-code}
    */
   delete(ids: string[], sharedContext?: Context): Promise<void>
+
+  softDelete<TReturnableLinkableKeys extends string = string>(
+    userIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  restore<TReturnableLinkableKeys extends string = string>(
+    userIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  retrieveInvite(
+    id: string,
+    config?: FindConfig<InviteDTO>,
+    sharedContext?: Context
+  ): Promise<InviteDTO>
+
+  listInvites(
+    filters?: FilterableUserProps,
+    config?: FindConfig<InviteDTO>,
+    sharedContext?: Context
+  ): Promise<InviteDTO[]>
+
+  listAndCountInvites(
+    filters?: FilterableUserProps,
+    config?: FindConfig<InviteDTO>,
+    sharedContext?: Context
+  ): Promise<[InviteDTO[], number]>
+
+  createInvites(
+    data: CreateInviteDTO[],
+    sharedContext?: Context
+  ): Promise<InviteDTO[]>
+
+  createInvites(
+    data: CreateInviteDTO,
+    sharedContext?: Context
+  ): Promise<InviteDTO>
+
+  updateInvites(
+    data: UpdateInviteDTO[],
+    sharedContext?: Context
+  ): Promise<InviteDTO[]>
+
+  updateInvites(
+    data: UpdateInviteDTO,
+    sharedContext?: Context
+  ): Promise<InviteDTO>
+
+  deleteInvites(ids: string[], sharedContext?: Context): Promise<void>
+
+  softDeleteInvites<TReturnableLinkableKeys extends string = string>(
+    inviteIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  restoreInvites<TReturnableLinkableKeys extends string = string>(
+    inviteIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
 }

@@ -10,7 +10,11 @@ import {
   RegionCurrencyDTO,
   RegionDTO,
 } from "./common"
-import { CreateRegionDTO, UpdateRegionDTO } from "./mutations"
+import {
+  CreateRegionDTO,
+  UpdatableRegionFields,
+  UpdateRegionDTO,
+} from "./mutations"
 
 /**
  * The main service interface for the region module.
@@ -44,25 +48,43 @@ export interface IRegionModuleService extends IModuleService {
    * This method updates existing regions.
    *
    * @param {UpdateRegionDTO[]} data - The attributes to update in each region.
+   * @returns {Promise<RegionDTO[]>} The updated regions.
+   *
+   * @example
+   * {example-code}
+   */
+  update(data: UpdateRegionDTO[]): Promise<RegionDTO[]>
+
+  /**
+   * This method updates existing regions.
+   *
+   * @param {FilterableRegionProps} selector - The filters to specify which regions should be updated.
+   * @param {UpdatableRegionFields} data - The details to update in the regions.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<RegionDTO[]>} The updated regions.
    *
    * @example
    * {example-code}
    */
-  update(data: UpdateRegionDTO[], sharedContext?: Context): Promise<RegionDTO[]>
+  update(
+    selector: FilterableRegionProps,
+    data: UpdatableRegionFields,
+    sharedContext?: Context
+  ): Promise<RegionDTO[]>
 
   /**
    * This method updates an existing region.
    *
-   * @param {UpdateRegionDTO} data - The attributes to update in the region.
+   * @param {string} regionId - The region's ID.
+   * @param {UpdatableRegionFields} data - The details to update in the regions.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<RegionDTO>} The updated region.
-   *
-   * @example
-   * {example-code}
    */
-  update(data: UpdateRegionDTO, sharedContext?: Context): Promise<RegionDTO>
+  update(
+    regionId: string,
+    data: UpdatableRegionFields,
+    sharedContext?: Context
+  ): Promise<RegionDTO>
 
   /**
    * This method deletes regions by their IDs.

@@ -326,6 +326,10 @@ export interface FilterableCustomerProps
   last_name?: string | string[] | OperatorMap<string> | null
 
   /**
+   * Filter by whether the customer has an account.
+   */
+  has_account?: boolean | OperatorMap<boolean>
+  /**
    * Filter by the `created_by` attribute.
    */
   created_by?: string | string[] | null

@@ -1,4 +1,4 @@
-import { BigNumberRawPriceInput, BigNumberRawValue } from "@medusajs/types"
+import { BigNumberInput, BigNumberRawValue } from "@medusajs/types"
 import { BigNumber as BigNumberJS } from "bignumber.js"
 import { isBigNumber, isString } from "../common"
 
@@ -8,11 +8,16 @@ export class BigNumber {
   private numeric_: number
   private raw_?: BigNumberRawValue
 
-  constructor(rawPrice: BigNumberRawPriceInput) {
-    this.setRawPriceOrThrow(rawPrice)
+  constructor(rawPrice: BigNumberInput, options?: { precision?: number }) {
+    this.setRawPriceOrThrow(rawPrice, options)
   }
 
-  setRawPriceOrThrow(rawPrice: BigNumberRawPriceInput) {
+  setRawPriceOrThrow(
+    rawPrice: BigNumberInput,
+    { precision }: { precision?: number } = {}
+  ) {
+    precision ??= BigNumber.DEFAULT_PRECISION
+
     if (BigNumberJS.isBigNumber(rawPrice)) {
       /**
        * Example:
@@ -21,7 +26,8 @@ export class BigNumber {
        */
       this.numeric_ = rawPrice.toNumber()
       this.raw_ = {
-        value: rawPrice.toPrecision(BigNumber.DEFAULT_PRECISION),
+        value: rawPrice.toPrecision(precision),
+        precision,
       }
     } else if (isString(rawPrice)) {
       /**
@@ -31,7 +37,8 @@ export class BigNumber {
 
       this.numeric_ = bigNum.toNumber()
       this.raw_ = this.raw_ = {
-        value: bigNum.toPrecision(BigNumber.DEFAULT_PRECISION),
+        value: bigNum.toPrecision(precision),
+        precision,
       }
     } else if (isBigNumber(rawPrice)) {
       /**
@@ -41,6 +48,7 @@ export class BigNumber {
 
       this.raw_ = {
         ...rawPrice,
+        precision,
       }
     } else if (typeof rawPrice === `number` && !Number.isNaN(rawPrice)) {
       /**
@@ -49,7 +57,8 @@ export class BigNumber {
       this.numeric_ = rawPrice as number
 
       this.raw_ = {
-        value: BigNumberJS(rawPrice as number).toString(),
+        value: BigNumberJS(rawPrice as number).toPrecision(precision),
+        precision,
       }
     } else {
       throw new Error(
@@ -67,7 +76,7 @@ export class BigNumber {
     }
   }
 
-  set numeric(value: BigNumberRawPriceInput) {
+  set numeric(value: BigNumberInput) {
     const newValue = new BigNumber(value)
     this.numeric_ = newValue.numeric_
     this.raw_ = newValue.raw_
@@ -77,7 +86,7 @@ export class BigNumber {
     return this.raw_
   }
 
-  set raw(rawValue: BigNumberRawPriceInput) {
+  set raw(rawValue: BigNumberInput) {
     const newValue = new BigNumber(rawValue)
     this.numeric_ = newValue.numeric_
     this.raw_ = newValue.raw_

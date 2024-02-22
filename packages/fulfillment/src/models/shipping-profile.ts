@@ -4,29 +4,33 @@ import {
   generateEntityId,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Collection,
   Entity,
   Filter,
-  Index,
   OneToMany,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 import ShippingOption from "./shipping-option"
 
 type ShippingProfileOptionalProps = DAL.SoftDeletableEntityDateColumns
 
-const deletedAtIndexName = "IDX_shipping_profile_deleted_at"
-const deletedAtIndexStatement = createPsqlIndexStatementHelper({
-  name: deletedAtIndexName,
+const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_profile",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
+})
+
+const ShippingProfileTypeIndex = createPsqlIndexStatementHelper({
+  tableName: "shipping_profile",
+  columns: "name",
+  unique: true,
+  where: "deleted_at IS NULL",
 })
 
 @Entity()
@@ -36,6 +40,13 @@ export default class ShippingProfile {
 
   @PrimaryKey({ columnType: "text" })
   id: string
+
+  @Property({ columnType: "text" })
+  @ShippingProfileTypeIndex.MikroORMIndex()
+  name: string
+
+  @Property({ columnType: "text" })
+  type: string
 
   @OneToMany(
     () => ShippingOption,
@@ -61,10 +72,7 @@ export default class ShippingProfile {
   })
   updated_at: Date
 
-  @Index({
-    name: deletedAtIndexName,
-    expression: deletedAtIndexStatement,
-  })
+  @DeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

@@ -8,31 +8,18 @@ export interface CreateRegionDTO {
    * The name of the region.
    */
   name: string
-
   /**
    * The currency code of the region.
    */
   currency_code: string
-
   /**
-   * The associated currency.
+   * The region's countries.
    */
-  currency?: RegionCurrencyDTO
-
+  countries?: string[]
   /**
-   * The tax code of the region.
+   * Holds custom data in key-value pairs.
    */
-  tax_code?: string
-
-  /**
-   * The tax rate of the region.
-   */
-  tax_rate?: number
-
-  /**
-   * The associated tax provider's ID.
-   */
-  tax_provider_id?: string
+  metadata?: Record<string, unknown>
 }
 
 /**
@@ -43,54 +30,42 @@ export interface UpdateRegionDTO {
    * The ID of the region.
    */
   id: string
-
-  /**
-   * The currency code of the region.
-   */
-  currency_code?: string
-
-  /**
-   * The associated currency.
-   */
-  currency?: RegionCurrencyDTO
-
   /**
    * The name of the region.
    */
   name?: string
-
   /**
-   * The tax code of the region.
+   * The currency code of the region.
    */
-  tax_code?: string
-
+  currency_code?: string
   /**
-   * The tax rate of the region.
+   * The region's countries.
    */
-  tax_rate?: number
-
+  countries?: string[]
   /**
-   * The associated tax provider's ID.
+   * Holds custom data in key-value pairs.
    */
-  tax_provider_id?: string
+  metadata?: Record<string, unknown>
 }
 
 /**
- * The details necessary to add a country to a region.
+ * The updatable fields of a region.
  */
-export interface AddCountryToRegionDTO {
+export interface UpdatableRegionFields {
   /**
-   * The region's ID.
+   * The name of the region.
    */
-  region_id: string
-
+  name?: string
   /**
-   * The country's ID.
+   * The currency code of the region.
    */
-  country_id: string
+  currency_code?: string
+  /**
+   * The region's countries.
+   */
+  countries?: string[]
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
 }
-
-/**
- * The details necessary to remove a country from a region.
- */
-export interface RemoveCountryFromRegionDTO extends AddCountryToRegionDTO {}
