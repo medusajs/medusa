@@ -8,9 +8,10 @@ interface StepInput {
   promoCodes: string[]
 }
 
-export const computeActionsStepId = "compute-actions"
-export const computeActionsStep = createStep(
-  computeActionsStepId,
+export const getActionsToComputeFromPromotionsStepId =
+  "get-actions-to-compute-from-promotions"
+export const getActionsToComputeFromPromotionsStep = createStep(
+  getActionsToComputeFromPromotionsStepId,
   async (data: StepInput, { container }) => {
     const promotionModuleService: IPromotionModuleService = container.resolve(
       ModuleRegistrationName.PROMOTION
