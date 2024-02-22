@@ -38,6 +38,4 @@ export default class EventBusService implements IEventBusModuleService {
   ): this {
     return this
   }
-
-  withTransaction() {}
 }
