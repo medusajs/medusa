@@ -1,26 +1,23 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, FocusModal, Heading, Input, Text } from "@medusajs/ui"
+import { Button, Heading, Input, Text } from "@medusajs/ui"
 import { useAdminCreatePublishableApiKey } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
 import { Form } from "../../../../../components/common/form"
-
-type CreatePublishableApiKeyFormProps = {
-  subscribe: (state: boolean) => void
-}
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 
 const CreatePublishableApiKeySchema = zod.object({
   title: zod.string().min(1),
 })
 
-export const CreatePublishableApiKeyForm = ({
-  subscribe,
-}: CreatePublishableApiKeyFormProps) => {
-  const { mutateAsync, isLoading } = useAdminCreatePublishableApiKey()
+export const CreatePublishableApiKeyForm = () => {
+  const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof CreatePublishableApiKeySchema>>({
     defaultValues: {
@@ -29,46 +26,35 @@ export const CreatePublishableApiKeyForm = ({
     resolver: zodResolver(CreatePublishableApiKeySchema),
   })
 
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
-
-  const { t } = useTranslation()
-  const navigate = useNavigate()
+  const { mutateAsync, isLoading } = useAdminCreatePublishableApiKey()
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(values, {
       onSuccess: ({ publishable_api_key }) => {
-        navigate(`/settings/api-key-management/${publishable_api_key.id}`, {
-          replace: true,
-        })
+        handleSuccess(`/settings/api-key-management/${publishable_api_key.id}`)
       },
     })
   })
 
   return (
-    <Form {...form}>
+    <RouteFocusModal.Form form={form}>
       <form
         className="flex h-full flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
-        <FocusModal.Header>
+        <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
-            <FocusModal.Close asChild>
+            <RouteFocusModal.Close asChild>
               <Button size="small" variant="secondary">
                 {t("actions.cancel")}
               </Button>
-            </FocusModal.Close>
+            </RouteFocusModal.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
               {t("actions.save")}
             </Button>
           </div>
-        </FocusModal.Header>
-        <FocusModal.Body className="flex flex-1 flex-col overflow-hidden">
+        </RouteFocusModal.Header>
+        <RouteFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
           <div className="flex flex-1 flex-col items-center overflow-y-auto">
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
               <div>
@@ -88,7 +74,7 @@ export const CreatePublishableApiKeyForm = ({
                       <Form.Item>
                         <Form.Label>{t("fields.title")}</Form.Label>
                         <Form.Control>
-                          <Input size="small" {...field} />
+                          <Input {...field} />
                         </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>
@@ -98,8 +84,8 @@ export const CreatePublishableApiKeyForm = ({
               </div>
             </div>
           </div>
-        </FocusModal.Body>
+        </RouteFocusModal.Body>
       </form>
-    </Form>
+    </RouteFocusModal.Form>
   )
 }

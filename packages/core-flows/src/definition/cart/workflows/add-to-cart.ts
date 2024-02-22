@@ -45,12 +45,8 @@ export const addToCartWorkflow = createWorkflow(
       context: pricingContext,
     })
 
-    const filter = transform({ variantIds }, (data) => ({
-      id: data.variantIds,
-    }))
-
     const variants = getVariantsStep({
-      filter,
+      filter: variantIds,
     })
 
     const lineItems = transform(
