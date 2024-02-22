@@ -1,14 +1,15 @@
-import {
-  updateCustomerAddressesWorkflow,
-  deleteCustomerAddressesWorkflow,
-} from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CustomerAddressDTO, ICustomerModuleService } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
+import {
+  deleteCustomerAddressesWorkflow,
+  updateCustomerAddressesWorkflow,
+} from "@medusajs/core-flows"
+
+import { MedusaError } from "@medusajs/utils"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const id = req.auth_user!.app_metadata.customer_id
+  const id = req.auth?.actor_id
 
   const customerModuleService = req.scope.resolve<ICustomerModuleService>(
     ModuleRegistrationName.CUSTOMER
@@ -26,7 +27,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  const id = req.auth_user!.app_metadata.customer_id
+  const id = req.auth!.actor_id!
   const service = req.scope.resolve<ICustomerModuleService>(
     ModuleRegistrationName.CUSTOMER
   )
@@ -50,7 +51,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 
 export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
-  const id = req.auth_user!.app_metadata.customer_id
+  const id = req.auth!.actor_id
 
   const service = req.scope.resolve<ICustomerModuleService>(
     ModuleRegistrationName.CUSTOMER

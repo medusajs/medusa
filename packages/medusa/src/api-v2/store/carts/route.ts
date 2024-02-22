@@ -1,9 +1,10 @@
-import { createCartWorkflow } from "@medusajs/core-flows"
-import { CreateCartWorkflowInputDTO } from "@medusajs/types"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
-import { defaultStoreCartFields } from "../carts/query-config"
+
+import { CreateCartWorkflowInputDTO } from "@medusajs/types"
 import { StorePostCartReq } from "./validators"
+import { createCartWorkflow } from "@medusajs/core-flows"
+import { defaultStoreCartFields } from "../carts/query-config"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const input = req.validatedBody as StorePostCartReq
@@ -12,8 +13,8 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   }
 
   // If the customer is logged in, we auto-assign them to the cart
-  if (req.auth_user?.app_metadata?.customer_id) {
-    workflowInput.customer_id = req.auth_user!.app_metadata?.customer_id
+  if (req.auth?.actor_id) {
+    workflowInput.customer_id = req.auth!.actor_id
   }
 
   const { result, errors } = await createCartWorkflow(req.scope).run({

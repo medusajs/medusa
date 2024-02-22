@@ -82,8 +82,9 @@ export const authenticate = (
       authUser &&
       (isRegistered || (!isRegistered && options.allowUnregistered))
     ) {
-      req.auth_user = {
-        id: authUser.id,
+      req.auth = {
+        actor_id: getActorId(authUser, authScope) as string,
+        auth_user_id: authUser.id,
         app_metadata: authUser.app_metadata,
         scope: authUser.scope,
       }
@@ -96,4 +97,13 @@ export const authenticate = (
 
     res.status(401).json({ message: "Unauthorized" })
   }
+}
+
+const getActorId = (authUser: AuthUserDTO, scope: string | RegExp) => {
+  if (stringEqualsOrRegexMatch(scope, "admin")) {
+    return authUser.app_metadata.user_id
+  } else if (stringEqualsOrRegexMatch(scope, "store")) {
+    return authUser.app_metadata.customer_id
+  }
+  return authUser.app_metadata.medusa_id
 }

@@ -30,7 +30,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const customersData = [
     {
       ...(req.validatedBody as CreateCustomerGroupDTO),
-      created_by: req.auth_user?.app_metadata?.user_id,
+      created_by: req.auth?.actor_id,
     },
   ]
 

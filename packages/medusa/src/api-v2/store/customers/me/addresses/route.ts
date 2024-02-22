@@ -1,13 +1,14 @@
-import { createCustomerAddressesWorkflow } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CreateCustomerAddressDTO,
   ICustomerModuleService,
 } from "@medusajs/types"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { createCustomerAddressesWorkflow } from "@medusajs/core-flows"
+
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const customerId = req.auth_user!.app_metadata.customer_id
+  const customerId = req.auth!.actor_id
 
   const customerModuleService = req.scope.resolve<ICustomerModuleService>(
     ModuleRegistrationName.CUSTOMER
@@ -29,7 +30,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  const customerId = req.auth_user!.app_metadata.customer_id
+  const customerId = req.auth!.actor_id!
 
   const createAddresses = createCustomerAddressesWorkflow(req.scope)
   const addresses = [
