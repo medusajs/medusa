@@ -8,11 +8,16 @@ export class BigNumber {
   private numeric_: number
   private raw_?: BigNumberRawValue
 
-  constructor(rawPrice: BigNumberInput) {
-    this.setRawPriceOrThrow(rawPrice)
+  constructor(rawPrice: BigNumberInput, options?: { precision?: number }) {
+    this.setRawPriceOrThrow(rawPrice, options)
   }
 
-  setRawPriceOrThrow(rawPrice: BigNumberInput) {
+  setRawPriceOrThrow(
+    rawPrice: BigNumberInput,
+    { precision }: { precision?: number } = {}
+  ) {
+    precision ??= BigNumber.DEFAULT_PRECISION
+
     if (BigNumberJS.isBigNumber(rawPrice)) {
       /**
        * Example:
@@ -21,7 +26,8 @@ export class BigNumber {
        */
       this.numeric_ = rawPrice.toNumber()
       this.raw_ = {
-        value: rawPrice.toPrecision(BigNumber.DEFAULT_PRECISION),
+        value: rawPrice.toPrecision(precision),
+        precision,
       }
     } else if (isString(rawPrice)) {
       /**
@@ -31,7 +37,7 @@ export class BigNumber {
 
       this.numeric_ = bigNum.toNumber()
       this.raw_ = this.raw_ = {
-        value: bigNum.toPrecision(BigNumber.DEFAULT_PRECISION),
+        value: bigNum.toPrecision(precision),
       }
     } else if (isBigNumber(rawPrice)) {
       /**
@@ -41,6 +47,7 @@ export class BigNumber {
 
       this.raw_ = {
         ...rawPrice,
+        precision,
       }
     } else if (typeof rawPrice === `number` && !Number.isNaN(rawPrice)) {
       /**
@@ -49,7 +56,8 @@ export class BigNumber {
       this.numeric_ = rawPrice as number
 
       this.raw_ = {
-        value: BigNumberJS(rawPrice as number).toString(),
+        value: BigNumberJS(rawPrice as number).toPrecision(precision),
+        precision,
       }
     } else {
       throw new Error(

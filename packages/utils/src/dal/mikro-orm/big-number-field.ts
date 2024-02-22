@@ -20,7 +20,10 @@ export function MikroOrmBigNumberProperty(
         if (value instanceof BigNumber) {
           bigNumber = value
         } else if (this[rawColumnName]) {
-          this[rawColumnName].value = value
+          const precision = this[rawColumnName].precision
+          this[rawColumnName].value = new BigNumber(value, {
+            precision,
+          }).raw!.value
           bigNumber = new BigNumber(this[rawColumnName])
         } else {
           bigNumber = new BigNumber(value)
