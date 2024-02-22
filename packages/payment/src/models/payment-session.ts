@@ -9,7 +9,13 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { generateEntityId, PaymentSessionStatus } from "@medusajs/utils"
+import {
+  BigNumber,
+  generateEntityId,
+  MikroOrmBigNumberProperty,
+  PaymentSessionStatus,
+} from "@medusajs/utils"
+import { BigNumberRawValue } from "@medusajs/types"
 
 import PaymentCollection from "./payment-collection"
 import Payment from "./payment"
@@ -24,11 +30,13 @@ export default class PaymentSession {
   @Property({ columnType: "text" })
   currency_code: string
 
+  @MikroOrmBigNumberProperty()
+  amount: BigNumber | number
+
   @Property({
-    columnType: "numeric",
-    serializer: Number,
+    columnType: "jsonb",
   })
-  amount: number
+  raw_amount: BigNumberRawValue
 
   @Property({ columnType: "text" })
   provider_id: string
