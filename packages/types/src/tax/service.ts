@@ -8,6 +8,11 @@ import {
   TaxRegionDTO,
   TaxRateRuleDTO,
   FilterableTaxRateRuleProps,
+  TaxableItemDTO,
+  TaxCalculationContext,
+  ItemTaxLineDTO,
+  ShippingTaxLineDTO,
+  TaxableShippingDTO,
 } from "./common"
 import {
   CreateTaxRateRuleDTO,
@@ -64,4 +69,10 @@ export interface ITaxModuleService extends IModuleService {
     config?: FindConfig<TaxRateRuleDTO>,
     sharedContext?: Context
   ): Promise<TaxRateRuleDTO[]>
+
+  getTaxLines(
+    item: (TaxableItemDTO | TaxableShippingDTO)[],
+    calculationContext: TaxCalculationContext,
+    sharedContext?: Context
+  ): Promise<(ItemTaxLineDTO | ShippingTaxLineDTO)[]>
 }
