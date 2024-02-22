@@ -115,7 +115,6 @@ export default class LineItem {
 
   @MikroOrmBigNumberProperty({
     columnType: "numeric",
-
     nullable: true,
   })
   compare_at_unit_price?: number | null = null
@@ -125,7 +124,6 @@ export default class LineItem {
 
   @MikroOrmBigNumberProperty({
     columnType: "numeric",
-
     nullable: true,
   })
   unit_price: number
