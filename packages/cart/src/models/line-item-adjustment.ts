@@ -5,6 +5,7 @@ import {
 } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Cascade,
   Check,
   Entity,
   Filter,
@@ -23,7 +24,7 @@ import LineItem from "./line-item"
 export default class LineItemAdjustment extends AdjustmentLine {
   @ManyToOne({
     entity: () => LineItem,
-    persist: false,
+    cascade: [Cascade.REMOVE, Cascade.PERSIST, "soft-remove"] as any,
   })
   item: LineItem
 

@@ -5,6 +5,7 @@ import {
 } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Cascade,
   Entity,
   Filter,
   ManyToOne,
@@ -19,7 +20,7 @@ import TaxLine from "./tax-line"
 export default class ShippingMethodTaxLine extends TaxLine {
   @ManyToOne({
     entity: () => ShippingMethod,
-    persist: false,
+    cascade: [Cascade.REMOVE, Cascade.PERSIST, "soft-remove"] as any,
   })
   shipping_method: ShippingMethod
 

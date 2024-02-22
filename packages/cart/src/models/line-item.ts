@@ -48,7 +48,10 @@ export default class LineItem {
   @Property({ columnType: "text" })
   cart_id: string
 
-  @ManyToOne({ entity: () => Cart })
+  @ManyToOne({
+    entity: () => Cart,
+    cascade: [Cascade.REMOVE, Cascade.PERSIST, "soft-remove"] as any,
+  })
   cart: Cart
 
   @Property({ columnType: "text" })
