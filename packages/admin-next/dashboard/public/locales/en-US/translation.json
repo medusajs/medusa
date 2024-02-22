@@ -61,6 +61,11 @@
     "defaultTitle": "An error occurred",
     "defaultMessage": "An error occurred while rendering this page."
   },
+  "addresses": {
+    "shippingAddress": "Shipping Address",
+    "billingAddress": "Billing Address",
+    "sameAsShipping": "Same as shipping address"
+  },
   "products": {
     "domain": "Products",
     "createProductTitle": "Create Product",
@@ -419,6 +424,6 @@
     "thumbnail": "Thumbnail",
     "sku": "SKU",
     "managedInventory": "Managed inventory",
-    "price": "Price"
+    "id": "ID"
   }
 }

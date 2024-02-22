@@ -1,10 +1,11 @@
 import { LineItem, Order } from "@medusajs/medusa"
+import { ReservationItemDTO } from "@medusajs/types"
 import { Container, Copy, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useAdminReservations } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
-import { getPresentationalAmount } from "../../../../../lib/money-amount-helpers"
+import { getFormattedAmount } from "../../../../../lib/money-amount-helpers"
 
 type OrderSummarySectionProps = {
   order: Order
@@ -33,9 +34,11 @@ const Header = () => {
 const Item = ({
   item,
   currencyCode,
+  reservation,
 }: {
   item: LineItem
   currencyCode: string
+  reservation?: ReservationItemDTO | null
 }) => {
   return (
     <div
@@ -65,19 +68,23 @@ const Item = ({
         </div>
       </div>
       <div className="flex items-center justify-end gap-x-4">
-        <Text size="small">{formatAmount(item.unit_price, currencyCode)}</Text>
+        <Text size="small">
+          {getFormattedAmount(item.unit_price, currencyCode)}
+        </Text>
         <div className="flex items-center gap-x-2">
           <div className="w-fit min-w-[27px]">
             <Text>
               <span className="tabular-nums">{item.quantity}</span>x
             </Text>
           </div>
-          <StatusBadge color="green">Allocated</StatusBadge>
+          <StatusBadge color={reservation ? "green" : "orange"}>
+            {reservation ? "Allocated" : "Not allocated"}
+          </StatusBadge>
         </div>
       </div>
       <div className="flex items-center justify-end">
         <Text size="small">
-          {formatAmount(item.subtotal || 0, currencyCode)}
+          {getFormattedAmount(item.subtotal || 0, currencyCode)}
         </Text>
       </div>
     </div>
@@ -85,7 +92,7 @@ const Item = ({
 }
 
 const ItemBreakdown = ({ order }: { order: Order }) => {
-  const { reservations, isLoading, isError, error } = useAdminReservations({
+  const { reservations, isError, error } = useAdminReservations({
     line_item_id: order.items.map((i) => i.id),
   })
 
@@ -94,10 +101,21 @@ const ItemBreakdown = ({ order }: { order: Order }) => {
   }
 
   return (
-    <div>
-      {order.items.map((item) => (
-        <Item key={item.id} item={item} currencyCode={order.currency_code} />
-      ))}
+    <div className="shadow-ele">
+      {order.items.map((item) => {
+        const reservation = reservations
+          ? reservations.find((r) => r.line_item_id === item.id)
+          : null
+
+        return (
+          <Item
+            key={item.id}
+            item={item}
+            currencyCode={order.currency_code}
+            reservation={reservation}
+          />
+        )
+      })}
     </div>
   )
 }
@@ -138,7 +156,7 @@ const CostBreakdown = ({ order }: { order: Order }) => {
       <Cost
         label="Subtotal"
         secondaryValue={t("general.items", { count: order.items.length })}
-        value={formatAmount(order.subtotal, order.currency_code)}
+        value={getFormattedAmount(order.subtotal, order.currency_code)}
       />
       <Cost
         label="Discount"
@@ -149,7 +167,10 @@ const CostBreakdown = ({ order }: { order: Order }) => {
         }
         value={
           order.discount_total > 0
-            ? `- ${formatAmount(order.discount_total, order.currency_code)}`
+            ? `- ${getFormattedAmount(
+                order.discount_total,
+                order.currency_code
+              )}`
             : "-"
         }
       />
@@ -158,14 +179,14 @@ const CostBreakdown = ({ order }: { order: Order }) => {
         secondaryValue={order.shipping_methods
           .map((sm) => sm.shipping_option.name)
           .join(", ")}
-        value={formatAmount(order.shipping_total, order.currency_code)}
+        value={getFormattedAmount(order.shipping_total, order.currency_code)}
       />
       <Cost
         label="Tax"
         secondaryValue={`${order.tax_rate || 0}%`}
         value={
           order.tax_total
-            ? formatAmount(order.tax_total, order.currency_code)
+            ? getFormattedAmount(order.tax_total, order.currency_code)
             : "-"
         }
       />
@@ -180,17 +201,8 @@ const Total = ({ order }: { order: Order }) => {
         Total
       </Text>
       <Text size="small" leading="compact" weight="plus">
-        {formatAmount(order.total, order.currency_code)}
+        {getFormattedAmount(order.total, order.currency_code)}
       </Text>
     </div>
   )
-}
-
-const formatAmount = (amount: number, currencyCode: string) => {
-  const formatter = new Intl.NumberFormat(undefined, {
-    style: "currency",
-    currency: currencyCode,
-  })
-
-  return formatter.format(getPresentationalAmount(amount, currencyCode))
 }

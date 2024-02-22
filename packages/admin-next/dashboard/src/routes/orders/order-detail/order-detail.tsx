@@ -1,7 +1,10 @@
 import { useAdminOrder } from "medusa-react"
 import { useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
+import { OrderCustomerSection } from "./components/order-customer-section"
+import { OrderFulfillmentSection } from "./components/order-fulfillment-section"
 import { OrderGeneralSection } from "./components/order-general-section"
+import { OrderPaymentSection } from "./components/order-payment-section"
 import { OrderSummarySection } from "./components/order-summary-section"
 
 export const OrderDetail = () => {
@@ -9,7 +12,7 @@ export const OrderDetail = () => {
 
   const { order, isLoading, isError, error } = useAdminOrder(id!, {
     expand:
-      "items,items.variant,items.variant.options,sales_channel,shipping_methods,shipping_methods.shipping_option,discounts",
+      "items,items.variant,items.variant.options,sales_channel,shipping_methods,shipping_methods.shipping_option,discounts,payments,customer,shipping_address,shipping_address.country,billing_address,billing_address.country,fulfillments,fulfillments.items",
   })
 
   if (isLoading || !order) {
@@ -21,10 +24,20 @@ export const OrderDetail = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
-      <OrderGeneralSection order={order} />
-      <OrderSummarySection order={order} />
-      <JsonViewSection data={order} />
+    <div className="grid grid-cols-1 gap-x-4 lg:grid-cols-[1fr,400px]">
+      <div className="flex flex-col gap-y-2">
+        <OrderGeneralSection order={order} />
+        <OrderSummarySection order={order} />
+        <OrderPaymentSection order={order} />
+        <OrderFulfillmentSection order={order} />
+        <div className="flex flex-col gap-y-2 lg:hidden">
+          <OrderCustomerSection order={order} />
+        </div>
+        <JsonViewSection data={order} />
+      </div>
+      <div className="hidden flex-col gap-y-2 lg:flex">
+        <OrderCustomerSection order={order} />
+      </div>
     </div>
   )
 }
