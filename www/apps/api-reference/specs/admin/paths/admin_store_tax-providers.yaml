@@ -13,7 +13,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_store_tax-providers/getundefined
+        $ref: ../code_samples/tsx/admin_store_tax-providers/get.tsx
     - lang: Shell
       label: cURL
       source:

@@ -5,6 +5,9 @@ info:
   license:
     name: MIT
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
+servers:
+  - url: http://localhost:9000
+  - url: https://api.medusa-commerce.com
 tags:
   - name: Auth
     description: >
@@ -149,9 +152,6 @@ tags:
     externalDocs:
       description: How to create a swap in a storefront
       url: https://docs.medusajs.com/modules/orders/storefront/create-swap
-servers:
-  - url: http://localhost:9000
-  - url: https://api.medusa-commerce.com
 paths:
   /store/auth:
     $ref: paths/store_auth.yaml

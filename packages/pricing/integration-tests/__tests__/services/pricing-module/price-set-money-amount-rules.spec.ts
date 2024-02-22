@@ -1,14 +1,15 @@
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
-import { initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
 import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MikroOrmWrapper } from "../../../utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { initModules } from "medusa-test-utils"
+import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
@@ -16,17 +17,25 @@ describe("PricingModule Service - PriceSetMoneyAmountRules", () => {
   let service: IPricingModuleService
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PRICING]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = await MikroOrmWrapper.forkManager()
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
-      },
-    })
-
     testManager = await MikroOrmWrapper.forkManager()
 
     await createCurrencies(testManager)
@@ -183,7 +192,7 @@ describe("PricingModule Service - PriceSetMoneyAmountRules", () => {
       }
 
       expect(error.message).toEqual(
-        '"priceSetMoneyAmountRulesId" must be defined'
+        "priceSetMoneyAmountRules - id must be defined"
       )
     })
 
@@ -264,16 +273,14 @@ describe("PricingModule Service - PriceSetMoneyAmountRules", () => {
         },
       ])
 
-      const priceSetMoneyAmountRules =
-        await service.listPriceSetMoneyAmountRules(
-          {},
-          {
-            relations: ["price_set_money_amount", "rule_type"],
-          }
-        )
-
-      const created =
-        priceSetMoneyAmountRules[priceSetMoneyAmountRules.length - 1]
+      const [created] = await service.listPriceSetMoneyAmountRules(
+        {
+          value: ["New priceSetMoneyAmountRule"],
+        },
+        {
+          relations: ["price_set_money_amount", "rule_type"],
+        }
+      )
 
       expect(created).toEqual(
         expect.objectContaining({

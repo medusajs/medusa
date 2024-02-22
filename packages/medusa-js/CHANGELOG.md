@@ -1,5 +1,23 @@
 # Change Log
 
+## 6.1.7
+
+### Patch Changes
+
+- [`20cefa033`](https://github.com/medusajs/medusa/commit/20cefa0335384e3c37f593c9698651895765234e) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa-js): add axios adapter to config
+
+## 6.1.6
+
+### Patch Changes
+
+- [#6155](https://github.com/medusajs/medusa/pull/6155) [`db4da5602`](https://github.com/medusajs/medusa/commit/db4da56023c1c0563a545bffb2bec9cf0e1c4c4a) Thanks [@lukebui](https://github.com/lukebui)! - fix(@medusajs/medusa-js): correct invite resend path
+
+- [#6190](https://github.com/medusajs/medusa/pull/6190) [`d68089b2a`](https://github.com/medusajs/medusa/commit/d68089b2aa2fb4ab52640424ed1a378cd649364f) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Implements `listAndCount` method for UserService, and updates list endpoint to accept the expected params.
+  fix(medusa-js): Update `admin.users.list` to accept query params.
+  fix(medusa-react): Update `useAdminUsers` hook to accept query params.
+
+- [`4c4c0f655`](https://github.com/medusajs/medusa/commit/4c4c0f655bad4feb4c34848d195cac4fe8a902d4) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa-js): add axios adapter to config #6214
+
 ## 6.1.5
 
 ### Patch Changes

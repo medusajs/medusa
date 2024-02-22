@@ -1,26 +1,23 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, FocusModal, Heading, Input, Text } from "@medusajs/ui"
+import { Button, Heading, Input, Text } from "@medusajs/ui"
 import { useAdminCreateCustomerGroup } from "medusa-react"
-import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
 import * as zod from "zod"
-import { Form } from "../../../../../components/common/form"
 
-type CreateCustomerGroupFormProps = {
-  subscribe: (state: boolean) => void
-}
+import { Form } from "../../../../../components/common/form"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 
 const CreateCustomerGroupSchema = zod.object({
   name: zod.string().min(1),
 })
 
-export const CreateCustomerGroupForm = ({
-  subscribe,
-}: CreateCustomerGroupFormProps) => {
+export const CreateCustomerGroupForm = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof CreateCustomerGroupSchema>>({
     defaultValues: {
@@ -28,14 +25,6 @@ export const CreateCustomerGroupForm = ({
     },
     resolver: zodResolver(CreateCustomerGroupSchema),
   })
-
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
 
   const { mutateAsync, isLoading } = useAdminCreateCustomerGroup()
 
@@ -46,34 +35,34 @@ export const CreateCustomerGroupForm = ({
       },
       {
         onSuccess: ({ customer_group }) => {
-          navigate(`/customer-groups/${customer_group.id}`)
+          handleSuccess(`/customer-groups/${customer_group.id}`)
         },
       }
     )
   })
 
   return (
-    <Form {...form}>
+    <RouteFocusModal.Form form={form}>
       <form onSubmit={handleSubmit}>
-        <FocusModal.Header>
-          <div className="flex items-center gap-x-2 justify-end">
-            <FocusModal.Close asChild>
+        <RouteFocusModal.Header>
+          <div className="flex items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
               <Button variant="secondary" size="small">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
-            </FocusModal.Close>
+            </RouteFocusModal.Close>
             <Button
               type="submit"
               variant="primary"
               size="small"
               isLoading={isLoading}
             >
-              {t("general.create")}
+              {t("actions.create")}
             </Button>
           </div>
-        </FocusModal.Header>
-        <FocusModal.Body className="flex flex-col items-center pt-[72px]">
-          <div className="w-full max-w-[720px] flex flex-col gap-y-8">
+        </RouteFocusModal.Header>
+        <RouteFocusModal.Body className="flex flex-col items-center pt-[72px]">
+          <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
               <Heading>{t("customerGroups.createCustomerGroup")}</Heading>
               <Text size="small" className="text-ui-fg-subtle">
@@ -98,8 +87,8 @@ export const CreateCustomerGroupForm = ({
               />
             </div>
           </div>
-        </FocusModal.Body>
+        </RouteFocusModal.Body>
       </form>
-    </Form>
+    </RouteFocusModal.Form>
   )
 }

@@ -1,9 +1,10 @@
 import { FlagRouter } from "@medusajs/utils"
 import { Router } from "express"
-import { ShippingOption } from "../../../.."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { ShippingOption } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { AdminGetShippingOptionsParams } from "./list-shipping-options"
 
 const route = Router()
 
@@ -11,10 +12,18 @@ export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/shipping-options", route)
 
   if (featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)) {
-    defaultFields.push("includes_tax")
+    shippingOptionsDefaultFields.push("includes_tax")
   }
 
-  route.get("/", middlewares.wrap(require("./list-shipping-options").default))
+  route.get(
+    "/",
+    transformQuery(AdminGetShippingOptionsParams, {
+      defaultFields: shippingOptionsDefaultFields,
+      defaultRelations: shippingOptionsDefaultRelations,
+      isList: true,
+    }),
+    middlewares.wrap(require("./list-shipping-options").default)
+  )
   route.post("/", middlewares.wrap(require("./create-shipping-option").default))
 
   route.get(
@@ -33,7 +42,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
   return app
 }
 
-export const defaultFields: (keyof ShippingOption)[] = [
+export const shippingOptionsDefaultFields: (keyof ShippingOption)[] = [
   "id",
   "name",
   "region_id",
@@ -50,7 +59,11 @@ export const defaultFields: (keyof ShippingOption)[] = [
   "metadata",
 ]
 
-export const defaultRelations = ["region", "profile", "requirements"]
+export const shippingOptionsDefaultRelations = [
+  "region",
+  "profile",
+  "requirements",
+]
 
 /**
  * @schema AdminShippingOptionsListRes

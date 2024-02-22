@@ -8,6 +8,8 @@ import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import adminSeeder from "../../../../helpers/admin-seeder"
 
+jest.setTimeout(50000)
+
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },

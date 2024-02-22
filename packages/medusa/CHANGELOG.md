@@ -1,5 +1,74 @@
 # Change Log
 
+## 1.20.2
+
+### Patch Changes
+
+- [#5923](https://github.com/medusajs/medusa/pull/5923) [`3db2f95e65`](https://github.com/medusajs/medusa/commit/3db2f95e65909f4fff432990b48be74509052e83) Thanks [@fPolic](https://github.com/fPolic)! - feat: Sales Channel module
+
+- [#6258](https://github.com/medusajs/medusa/pull/6258) [`90cff0777`](https://github.com/medusajs/medusa/commit/90cff0777fd351771f3713bf84f4c327c64d276c) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Adds support for ordering GET /admin/orders
+
+- [#6263](https://github.com/medusajs/medusa/pull/6263) [`45134e4d1`](https://github.com/medusajs/medusa/commit/45134e4d11cfcdc08dbd10aae687bfbe9e848ab9) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Workflows passing MedusaContext as argument
+
+- [#6333](https://github.com/medusajs/medusa/pull/6333) [`82c728bec`](https://github.com/medusajs/medusa/commit/82c728bec7232a245a67dca0b01b28572ebea75d) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Allow configuring of staged job polling batch size
+
+- [#6218](https://github.com/medusajs/medusa/pull/6218) [`884428a1b`](https://github.com/medusajs/medusa/commit/884428a1b573e499d7659aefed639bf797147428) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Feat: Event Aggregator
+
+- [#6197](https://github.com/medusajs/medusa/pull/6197) [`d1c18a309`](https://github.com/medusajs/medusa/commit/d1c18a3090d71c68a98343fdbb53516f416504c5) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(stock-location, medusa, types): add `q` and `order` query parameters to stock locations list endpoint
+
+- [#6259](https://github.com/medusajs/medusa/pull/6259) [`3ded2314a`](https://github.com/medusajs/medusa/commit/3ded2314a5b56f810c8a7d6727d7cdc9ffc900d1) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa): fix constructor container type for abstract services
+
+- [#6240](https://github.com/medusajs/medusa/pull/6240) [`360c71e39a`](https://github.com/medusajs/medusa/commit/360c71e39a31b96e82828563f46f8269b80595cc) Thanks [@srindom](https://github.com/srindom)! - fix(medusa): improve error message on incorrect service export
+
+- Updated dependencies [[`12054f5c0`](https://github.com/medusajs/medusa/commit/12054f5c01915899223ddc6da734151b31fbb23b), [`3db2f95e65`](https://github.com/medusajs/medusa/commit/3db2f95e65909f4fff432990b48be74509052e83), [`96ba49329`](https://github.com/medusajs/medusa/commit/96ba49329b6b05922c90f0c55f16455cb40aa5ca), [`45134e4d1`](https://github.com/medusajs/medusa/commit/45134e4d11cfcdc08dbd10aae687bfbe9e848ab9), [`884428a1b`](https://github.com/medusajs/medusa/commit/884428a1b573e499d7659aefed639bf797147428), [`882aa549b`](https://github.com/medusajs/medusa/commit/882aa549bdcc6f378934eab2a7c485df354f46aa)]:
+  - @medusajs/utils@1.11.5
+  - @medusajs/modules-sdk@1.12.8
+  - @medusajs/core-flows@0.0.6
+  - @medusajs/link-modules@0.2.8
+  - @medusajs/orchestration@0.5.4
+  - @medusajs/workflows-sdk@0.1.3
+
+## 1.20.1
+
+### Patch Changes
+
+- [#6201](https://github.com/medusajs/medusa/pull/6201) [`489b7effb`](https://github.com/medusajs/medusa/commit/489b7effb013b2ffb38693ace14fb8cce2dd7ab4) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Support q search in currencies
+
+- [#6152](https://github.com/medusajs/medusa/pull/6152) [`99045848f`](https://github.com/medusajs/medusa/commit/99045848fd3e863359c7878d9bc05271ed083a0e) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,types,core-flows,utils): added delete endpoints for campaigns and promotions
+
+- [#6125](https://github.com/medusajs/medusa/pull/6125) [`af7af7374`](https://github.com/medusajs/medusa/commit/af7af737455daa0f330840a9678e6339e519dfe6) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,utils): added campaign get endpoints
+
+- [#6155](https://github.com/medusajs/medusa/pull/6155) [`db4da5602`](https://github.com/medusajs/medusa/commit/db4da56023c1c0563a545bffb2bec9cf0e1c4c4a) Thanks [@lukebui](https://github.com/lukebui)! - fix(@medusajs/medusa-js): correct invite resend path
+
+- [#6208](https://github.com/medusajs/medusa/pull/6208) [`134af7766`](https://github.com/medusajs/medusa/commit/134af77667c278622e3731ba41602d297852fedb) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Enable pagination, search and ordering of shipping option list endpoint
+
+- [#6110](https://github.com/medusajs/medusa/pull/6110) [`a12c28b7d5`](https://github.com/medusajs/medusa/commit/a12c28b7d5faed733bebbb4963dff50b9c8a33bc) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,types): add promotion list and get endpoint
+
+- [#6190](https://github.com/medusajs/medusa/pull/6190) [`d68089b2a`](https://github.com/medusajs/medusa/commit/d68089b2aa2fb4ab52640424ed1a378cd649364f) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Implements `listAndCount` method for UserService, and updates list endpoint to accept the expected params.
+  fix(medusa-js): Update `admin.users.list` to accept query params.
+  fix(medusa-react): Update `useAdminUsers` hook to accept query params.
+
+- [#6204](https://github.com/medusajs/medusa/pull/6204) [`6404b9abd`](https://github.com/medusajs/medusa/commit/6404b9abd12000ca00873d9d7a7f8273b77e0db4) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Update list return type of `GET /admin/users`.
+
+- [#6130](https://github.com/medusajs/medusa/pull/6130) [`da5cc4cf7`](https://github.com/medusajs/medusa/commit/da5cc4cf7f7f0ef40d409704a95b025ce95477f4) Thanks [@riqwan](https://github.com/riqwan)! - feat(core-flows,medusa,utils): promotion and campaign create/update endpoint
+
+- [#6100](https://github.com/medusajs/medusa/pull/6100) [`4792c5522`](https://github.com/medusajs/medusa/commit/4792c552269c147d3c07da49a175e9038f9260a8) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(@medusajs/medusa): add missing constructor to some services
+  fix(@medusajs/file-local): Fix argument passed to the constructor
+  fix(medusa-file-minio): Fix argument passed to the constructor
+  fix(medusa-file-s3): Fix argument passed to the constructor
+
+- [#6202](https://github.com/medusajs/medusa/pull/6202) [`8ad7539eb`](https://github.com/medusajs/medusa/commit/8ad7539ebc3172fe2c724cf41ec1db5829819446) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Support q search and order in list regions
+
+- [#6159](https://github.com/medusajs/medusa/pull/6159) [`68d8daccd`](https://github.com/medusajs/medusa/commit/68d8daccd2a8508a13e211130e49017198b51fab) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,types): added buyget support for modules
+
+- Updated dependencies [[`68ddd866a5`](https://github.com/medusajs/medusa/commit/68ddd866a5ff9414e2db5b80d75acc5e81948540), [`72bc52231c`](https://github.com/medusajs/medusa/commit/72bc52231ca3a72fa6d197a248fe07a938ed0d85), [`99045848f`](https://github.com/medusajs/medusa/commit/99045848fd3e863359c7878d9bc05271ed083a0e), [`a9b4214503`](https://github.com/medusajs/medusa/commit/a9b42145032ee88aa922a11fe03e777b140c68f4), [`d85fee42e`](https://github.com/medusajs/medusa/commit/d85fee42ee7f661310584dfee5741d6c53b989bb), [`5e655dd59`](https://github.com/medusajs/medusa/commit/5e655dd59bda4ffface28db38021ba71cae6de10), [`b782d3bcb7`](https://github.com/medusajs/medusa/commit/b782d3bcb7e8088a962584b9a55200dd29c2161c), [`2b9f98895e`](https://github.com/medusajs/medusa/commit/2b9f98895eaca255e01278674b11cd7cb69b388f), [`302323916`](https://github.com/medusajs/medusa/commit/302323916b6d8eaf571cd59b5fc92a913af207de), [`da5cc4cf7`](https://github.com/medusajs/medusa/commit/da5cc4cf7f7f0ef40d409704a95b025ce95477f4), [`daecd82a7`](https://github.com/medusajs/medusa/commit/daecd82a7cdf7315599f464999690414c20d6748), [`738e9115e`](https://github.com/medusajs/medusa/commit/738e9115ec920d48bc52b8a690847e58c87ca28e), [`06b33a9b4`](https://github.com/medusajs/medusa/commit/06b33a9b4525b77b1b14b35b973209700945654e), [`b6ac768698`](https://github.com/medusajs/medusa/commit/b6ac768698a3b49d0162cb49e628386f3352d034), [`19bbae61f8`](https://github.com/medusajs/medusa/commit/19bbae61f8de1ac0ed574caff17b33e17705005a), [`130c641e5c`](https://github.com/medusajs/medusa/commit/130c641e5c91cf831de64fb87aebbfdc4d23530d), [`fade8ea7bf`](https://github.com/medusajs/medusa/commit/fade8ea7bf560343ecbde116d226ac44053cdb8e), [`8472460f53`](https://github.com/medusajs/medusa/commit/8472460f533322cc4535199aa768ac163021bc79)]:
+  - @medusajs/utils@1.11.4
+  - @medusajs/core-flows@0.0.5
+  - @medusajs/modules-sdk@1.12.7
+  - @medusajs/orchestration@0.5.3
+  - @medusajs/workflows-sdk@0.1.2
+  - @medusajs/link-modules@0.2.7
+
 ## 1.20.0
 
 ### Minor Changes

@@ -152,6 +152,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - (query) limit=50 {integer} Limit the number of orders returned.
  *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
  *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
+ *   - (query) order {string} Field to sort retrieved orders by.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetOrdersParams
@@ -277,4 +278,12 @@ export class AdminGetOrdersParams extends AdminListOrdersSelector {
   @IsString()
   @IsOptional()
   fields?: string
+
+  /**
+   * The field to sort retrieved orders by. By default, the sort order is ascending.
+   * To change the order to descending, prefix the field name with `-`.
+   */
+  @IsOptional()
+  @IsString()
+  order?: string
 }

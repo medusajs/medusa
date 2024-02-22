@@ -16,8 +16,11 @@ export interface ApplicationMethodDTO {
   allocation?: ApplicationMethodAllocationValues
   value?: string | null
   max_quantity?: number | null
+  buy_rules_min_quantity?: number | null
+  apply_to_quantity?: number | null
   promotion?: PromotionDTO | string
   target_rules?: PromotionRuleDTO[]
+  buy_rules?: PromotionRuleDTO[]
 }
 
 export interface CreateApplicationMethodDTO {
@@ -26,8 +29,11 @@ export interface CreateApplicationMethodDTO {
   allocation?: ApplicationMethodAllocationValues
   value?: string | null
   max_quantity?: number | null
+  buy_rules_min_quantity?: number | null
+  apply_to_quantity?: number | null
   promotion?: PromotionDTO | string
   target_rules?: CreatePromotionRuleDTO[]
+  buy_rules?: CreatePromotionRuleDTO[]
 }
 
 export interface UpdateApplicationMethodDTO {
@@ -37,6 +43,8 @@ export interface UpdateApplicationMethodDTO {
   allocation?: ApplicationMethodAllocationValues
   value?: string | null
   max_quantity?: number | null
+  buy_rules_min_quantity?: number | null
+  apply_to_quantity?: number | null
   promotion?: PromotionDTO | string
 }
 

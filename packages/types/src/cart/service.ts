@@ -10,10 +10,14 @@ import {
   FilterableCartProps,
   FilterableLineItemAdjustmentProps,
   FilterableLineItemProps,
+  FilterableLineItemTaxLineProps,
   FilterableShippingMethodAdjustmentProps,
   FilterableShippingMethodProps,
+  FilterableShippingMethodTaxLineProps,
   LineItemAdjustmentDTO,
+  LineItemTaxLineDTO,
   ShippingMethodAdjustmentDTO,
+  ShippingMethodTaxLineDTO,
 } from "./common"
 import {
   CreateAddressDTO,
@@ -21,14 +25,19 @@ import {
   CreateCartDTO,
   CreateLineItemDTO,
   CreateLineItemForCartDTO,
+  CreateLineItemTaxLineDTO,
   CreateShippingMethodAdjustmentDTO,
   CreateShippingMethodDTO,
   CreateShippingMethodForSingleCartDTO,
+  CreateShippingMethodTaxLineDTO,
   UpdateAddressDTO,
   UpdateCartDTO,
+  UpdateCartDataDTO,
   UpdateLineItemDTO,
+  UpdateLineItemTaxLineDTO,
   UpdateLineItemWithSelectorDTO,
   UpdateShippingMethodAdjustmentDTO,
+  UpdateShippingMethodTaxLineDTO,
   UpsertLineItemAdjustmentDTO,
 } from "./mutations"
 
@@ -54,8 +63,17 @@ export interface ICartModuleService extends IModuleService {
   create(data: CreateCartDTO[], sharedContext?: Context): Promise<CartDTO[]>
   create(data: CreateCartDTO, sharedContext?: Context): Promise<CartDTO>
 
-  update(data: UpdateCartDTO[], sharedContext?: Context): Promise<CartDTO[]>
-  update(data: UpdateCartDTO, sharedContext?: Context): Promise<CartDTO>
+  update(data: UpdateCartDTO[]): Promise<CartDTO[]>
+  update(
+    cartId: string,
+    data: UpdateCartDataDTO,
+    sharedContext?: Context
+  ): Promise<CartDTO>
+  update(
+    selector: Partial<CartDTO>,
+    data: UpdateCartDataDTO,
+    sharedContext?: Context
+  ): Promise<CartDTO[]>
 
   delete(cartIds: string[], sharedContext?: Context): Promise<void>
   delete(cartId: string, sharedContext?: Context): Promise<void>
@@ -232,6 +250,83 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<void>
   removeShippingMethodAdjustments(
     selector: Partial<ShippingMethodAdjustmentDTO>,
+    sharedContext?: Context
+  ): Promise<void>
+
+  listLineItemTaxLines(
+    filters: FilterableLineItemTaxLineProps,
+    config?: FindConfig<LineItemTaxLineDTO>,
+    sharedContext?: Context
+  ): Promise<LineItemTaxLineDTO[]>
+
+  addLineItemTaxLines(
+    taxLines: CreateLineItemTaxLineDTO[]
+  ): Promise<LineItemTaxLineDTO[]>
+  addLineItemTaxLines(
+    taxLine: CreateLineItemTaxLineDTO
+  ): Promise<LineItemTaxLineDTO>
+  addLineItemTaxLines(
+    cartId: string,
+    taxLines: CreateLineItemTaxLineDTO[] | CreateLineItemTaxLineDTO,
+    sharedContext?: Context
+  ): Promise<LineItemTaxLineDTO[]>
+
+  setLineItemTaxLines(
+    cartId: string,
+    taxLines: (CreateLineItemTaxLineDTO | UpdateLineItemTaxLineDTO)[],
+    sharedContext?: Context
+  ): Promise<LineItemTaxLineDTO[]>
+
+  removeLineItemTaxLines(
+    taxLineIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  removeLineItemTaxLines(
+    taxLineIds: string,
+    sharedContext?: Context
+  ): Promise<void>
+  removeLineItemTaxLines(
+    selector: FilterableLineItemTaxLineProps,
+    sharedContext?: Context
+  ): Promise<void>
+
+  listShippingMethodTaxLines(
+    filters: FilterableShippingMethodTaxLineProps,
+    config?: FindConfig<ShippingMethodTaxLineDTO>,
+    sharedContext?: Context
+  ): Promise<ShippingMethodTaxLineDTO[]>
+
+  addShippingMethodTaxLines(
+    taxLines: CreateShippingMethodTaxLineDTO[]
+  ): Promise<ShippingMethodTaxLineDTO[]>
+  addShippingMethodTaxLines(
+    taxLine: CreateShippingMethodTaxLineDTO
+  ): Promise<ShippingMethodTaxLineDTO>
+  addShippingMethodTaxLines(
+    cartId: string,
+    taxLines: CreateShippingMethodTaxLineDTO[] | CreateShippingMethodTaxLineDTO,
+    sharedContext?: Context
+  ): Promise<ShippingMethodTaxLineDTO[]>
+
+  setShippingMethodTaxLines(
+    cartId: string,
+    taxLines: (
+      | CreateShippingMethodTaxLineDTO
+      | UpdateShippingMethodTaxLineDTO
+    )[],
+    sharedContext?: Context
+  ): Promise<ShippingMethodTaxLineDTO[]>
+
+  removeShippingMethodTaxLines(
+    taxLineIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  removeShippingMethodTaxLines(
+    taxLineIds: string,
+    sharedContext?: Context
+  ): Promise<void>
+  removeShippingMethodTaxLines(
+    selector: FilterableShippingMethodTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
 }

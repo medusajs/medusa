@@ -8,12 +8,12 @@ import {
 import { CampaignDTO } from "./campaign"
 import { CreatePromotionRuleDTO, PromotionRuleDTO } from "./promotion-rule"
 
-export type PromotionType = "standard" | "buyget"
+export type PromotionTypeValues = "standard" | "buyget"
 
 export interface PromotionDTO {
   id: string
   code?: string
-  type?: PromotionType
+  type?: PromotionTypeValues
   is_automatic?: boolean
   application_method?: ApplicationMethodDTO
   rules?: PromotionRuleDTO[]
@@ -22,7 +22,7 @@ export interface PromotionDTO {
 
 export interface CreatePromotionDTO {
   code: string
-  type: PromotionType
+  type: PromotionTypeValues
   is_automatic?: boolean
   application_method?: CreateApplicationMethodDTO
   rules?: CreatePromotionRuleDTO[]
@@ -34,7 +34,7 @@ export interface UpdatePromotionDTO {
   id: string
   is_automatic?: boolean
   code?: string
-  type?: PromotionType
+  type?: PromotionTypeValues
   application_method?: UpdateApplicationMethodDTO
   campaign_id?: string
 }
@@ -44,6 +44,6 @@ export interface FilterablePromotionProps
   id?: string[]
   code?: string[]
   is_automatic?: boolean
-  type?: PromotionType[]
+  type?: PromotionTypeValues[]
   budget_id?: string[]
 }

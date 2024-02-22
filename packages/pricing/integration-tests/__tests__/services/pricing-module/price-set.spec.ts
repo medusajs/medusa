@@ -6,9 +6,12 @@ import {
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet } from "@models"
 
-import { initialize, PriceSetRuleType } from "../../../../src"
+import { PriceSetRuleType } from "../../../../src"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MikroOrmWrapper } from "../../../utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { initModules } from "medusa-test-utils"
+import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
@@ -31,17 +34,25 @@ describe("PricingModule Service - PriceSet", () => {
   let service: IPricingModuleService
   let repositoryManager: SqlEntityManager
   let data!: PriceSet[]
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PRICING]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = MikroOrmWrapper.forkManager()
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
-      },
-    })
-
     const testManager = MikroOrmWrapper.forkManager()
 
     await seedPriceData(testManager)
@@ -237,7 +248,7 @@ describe("PricingModule Service - PriceSet", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"priceSetId" must be defined')
+      expect(error.message).toEqual("priceSet - id must be defined")
     })
 
     it("should return priceSet based on config select param", async () => {

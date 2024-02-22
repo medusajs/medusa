@@ -168,7 +168,7 @@ describe("PriceSetMoneyAmountRules Service", () => {
       }
 
       expect(error.message).toEqual(
-        '"priceSetMoneyAmountRulesId" must be defined'
+        "priceSetMoneyAmountRules - id must be defined"
       )
     })
 

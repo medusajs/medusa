@@ -1,5 +1,4 @@
 export * as AddressHandlers from "./address"
-export * as CartHandlers from "./cart"
 export * as CommonHandlers from "./common"
 export * as CustomerHandlers from "./customer"
 export * as InventoryHandlers from "./inventory"

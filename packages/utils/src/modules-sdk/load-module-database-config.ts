@@ -93,7 +93,7 @@ export function loadDatabaseConfig(
     database.connection = options.database!.connection
   }
 
-  if (!database.clientUrl && !silent) {
+  if (!database.clientUrl && !silent && !database.connection) {
     throw new MedusaError(
       MedusaError.Types.INVALID_ARGUMENT,
       "No database clientUrl provided. Please provide the clientUrl through the [MODULE]_POSTGRES_URL, MEDUSA_POSTGRES_URL or POSTGRES_URL environment variable or the options object in the initialize function."

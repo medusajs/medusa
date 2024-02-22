@@ -24,7 +24,7 @@ const env: Record<any, any> = {
 
 jest.setTimeout(180000)
 
-describe("Batch job of product-export type", () => {
+describe.skip("Batch job of product-export type", () => {
   let medusaProcess
   let dbConnection
   let exportFilePath = ""

@@ -1,4 +1,4 @@
-import { MedusaModule } from "@medusajs/modules-sdk"
+import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 import {
   IProductModuleService,
   ProductTypes,
@@ -13,12 +13,13 @@ import {
   ProductVariant,
 } from "@models"
 
+import { initModules } from "medusa-test-utils"
 import { initialize } from "../../../../src"
 import { EventBusService } from "../../../__fixtures__/event-bus"
 import { createCollections, createTypes } from "../../../__fixtures__/product"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import { buildProductAndRelationsData } from "../../../__fixtures__/product/data/create-product"
-import { DB_URL, TestDatabase } from "../../../utils"
+import { DB_URL, TestDatabase, getInitModuleConfig } from "../../../utils"
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -57,7 +58,6 @@ describe("ProductModuleService products", function () {
     let productTypeOne: ProductType
     let productTypeTwo: ProductType
     let images = ["image-1"]
-    let eventBus
 
     const productCategoriesData = [
       {
@@ -87,6 +87,24 @@ describe("ProductModuleService products", function () {
         value: "tag 1",
       },
     ]
+
+    let shutdownFunc: () => Promise<void>
+
+    beforeAll(async () => {
+      MedusaModule.clearInstances()
+
+      const initModulesConfig = getInitModuleConfig()
+
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+      module = medusaApp.modules[Modules.PRODUCT]
+
+      shutdownFunc = shutdown
+    })
+
+    afterAll(async () => {
+      await shutdownFunc()
+    })
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
@@ -149,21 +167,6 @@ describe("ProductModuleService products", function () {
       })
 
       await testManager.persistAndFlush([productOne, productTwo])
-
-      MedusaModule.clearInstances()
-
-      eventBus = new EventBusService()
-      module = await initialize(
-        {
-          database: {
-            clientUrl: DB_URL,
-            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-          },
-        },
-        {
-          eventBusModuleService: eventBus,
-        }
-      )
     })
 
     afterEach(afterEach_)
@@ -581,7 +584,23 @@ describe("ProductModuleService products", function () {
         thumbnail: images[0],
       })
 
-      const products = await module.create([data])
+      const productsCreated = await module.create([data])
+
+      const products = await module.list(
+        { id: productsCreated[0].id },
+        {
+          relations: [
+            "images",
+            "categories",
+            "variants",
+            "variants.options",
+            "options",
+            "options.values",
+            "tags",
+            "type",
+          ],
+        }
+      )
 
       expect(products).toHaveLength(1)
       expect(products[0].images).toHaveLength(1)
@@ -793,7 +812,23 @@ describe("ProductModuleService products", function () {
 
       const products = await module.create([data])
 
+      let retrievedProducts = await module.list({ id: products[0].id })
+
+      expect(retrievedProducts).toHaveLength(1)
+      expect(retrievedProducts[0].deleted_at).toBeNull()
+
       await module.softDelete([products[0].id])
+
+      retrievedProducts = await module.list(
+        { id: products[0].id },
+        {
+          withDeleted: true,
+        }
+      )
+
+      expect(retrievedProducts).toHaveLength(1)
+      expect(retrievedProducts[0].deleted_at).not.toBeNull()
+
       await module.restore([products[0].id])
 
       const deletedProducts = await module.list(

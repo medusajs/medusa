@@ -130,7 +130,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_reservations/getundefined
+        $ref: ../code_samples/tsx/admin_reservations/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -180,7 +180,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_reservations/postundefined
+        $ref: ../code_samples/tsx/admin_reservations/post.tsx
     - lang: Shell
       label: cURL
       source:

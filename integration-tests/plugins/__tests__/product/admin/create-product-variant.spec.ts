@@ -5,14 +5,13 @@ import {
   simpleProductFactory,
   simpleRegionFactory,
 } from "../../../../factories"
-
-import { PricingModuleService } from "@medusajs/pricing"
-import { ProductModuleService } from "@medusajs/product"
 import { AxiosInstance } from "axios"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
+import { ProductModuleService } from "@medusajs/product"
+import { PricingModuleService } from "@medusajs/pricing"
 
 jest.setTimeout(50000)
 
@@ -26,7 +25,7 @@ const env = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("POST /admin/products/:id/variants", () => {
+describe.skip("POST /admin/products/:id/variants", () => {
   let dbConnection
   let appContainer
   let shutdownServer

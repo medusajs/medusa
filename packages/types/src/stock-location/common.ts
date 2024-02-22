@@ -153,10 +153,14 @@ export type StockLocationExpandedDTO = StockLocationDTO & {
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on the retrieved stock locations.
  */
 export type FilterableStockLocationProps = {
+  /**
+   * Search parameter for stock location names
+   */
+  q?: string
   /**
    * The IDs to filter stock locations by.
    */

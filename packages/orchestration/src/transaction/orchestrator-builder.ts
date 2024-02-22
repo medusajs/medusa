@@ -314,7 +314,7 @@ export class OrchestratorBuilder {
     action: string,
     step: InternalStep = this.steps
   ): InternalStep | undefined {
-    if (step.action === action) {
+    if (step.uuid === action || step.action === action) {
       return step
     }
 
@@ -357,7 +357,7 @@ export class OrchestratorBuilder {
       if (!nextStep) {
         continue
       }
-      if (nextStep.action === action) {
+      if (nextStep.uuid === action || nextStep.action === action) {
         return step
       }
       const foundStep = this.findParentStepByAction(

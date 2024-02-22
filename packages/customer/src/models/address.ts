@@ -2,32 +2,59 @@ import { DAL } from "@medusajs/types"
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Cascade,
   Entity,
+  Index,
+  ManyToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
-  ManyToOne,
 } from "@mikro-orm/core"
 import Customer from "./customer"
 
 type OptionalAddressProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
 
+export const UNIQUE_CUSTOMER_SHIPPING_ADDRESS =
+  "IDX_customer_address_unique_customer_shipping"
+export const UNIQUE_CUSTOMER_BILLING_ADDRESS =
+  "IDX_customer_address_unique_customer_billing"
+
 @Entity({ tableName: "customer_address" })
+@Index({
+  name: UNIQUE_CUSTOMER_SHIPPING_ADDRESS,
+  expression:
+    'create unique index "IDX_customer_address_unique_customer_shipping" on "customer_address" ("customer_id") where "is_default_shipping" = true',
+})
+@Index({
+  name: UNIQUE_CUSTOMER_BILLING_ADDRESS,
+  expression:
+    'create unique index "IDX_customer_address_unique_customer_billing" on "customer_address" ("customer_id") where "is_default_billing" = true',
+})
 export default class Address {
   [OptionalProps]: OptionalAddressProps
 
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Property({ columnType: "text", nullable: true })
+  address_name: string | null = null
+
+  @Property({ columnType: "boolean", default: false })
+  is_default_shipping: boolean = false
+
+  @Property({ columnType: "boolean", default: false })
+  is_default_billing: boolean = false
+
   @Property({ columnType: "text" })
   customer_id: string
 
   @ManyToOne(() => Customer, {
     fieldName: "customer_id",
-    nullable: true,
+    index: "IDX_customer_address_customer_id",
+    cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
-  customer?: Customer
+  customer: Customer
 
   @Property({ columnType: "text", nullable: true })
   company: string | null = null

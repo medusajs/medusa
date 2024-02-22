@@ -1,6 +1,7 @@
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Cascade,
   Entity,
   ManyToOne,
   OnInit,
@@ -11,12 +12,12 @@ import ShippingMethod from "./shipping-method"
 
 @Entity({ tableName: "cart_shipping_method_adjustment" })
 export default class ShippingMethodAdjustment extends AdjustmentLine {
-  @ManyToOne(() => ShippingMethod, {
-    onDelete: "cascade",
-    nullable: true,
+  @ManyToOne({
+    entity: () => ShippingMethod,
     index: "IDX_adjustment_shipping_method_id",
+    cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
-  shipping_method: ShippingMethod | null
+  shipping_method: ShippingMethod
 
   @Property({ columnType: "text" })
   shipping_method_id: string

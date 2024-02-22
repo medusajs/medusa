@@ -1,10 +1,135 @@
 get:
   operationId: GetUsers
   summary: List Users
-  description: Retrieve all admin users.
+  description: >-
+    Retrieves a list of users. The users can be filtered by fields such as `q`
+    or `email`. The users can also be sorted or paginated.
   x-authenticated: true
+  parameters:
+    - in: query
+      name: email
+      description: Filter by email.
+      schema:
+        type: string
+    - in: query
+      name: first_name
+      description: Filter by first name.
+      schema:
+        type: string
+    - in: query
+      name: last_name
+      description: Filter by last name.
+      schema:
+        type: string
+    - in: query
+      name: q
+      description: Term used to search users' first name, last name, and email.
+      schema:
+        type: string
+    - in: query
+      name: order
+      description: A user field to sort-order the retrieved users by.
+      schema:
+        type: string
+    - in: query
+      name: id
+      style: form
+      explode: false
+      description: Filter by user IDs.
+      schema:
+        oneOf:
+          - type: string
+            description: ID of the user.
+          - type: array
+            items:
+              type: string
+              description: ID of a user.
+    - in: query
+      name: created_at
+      description: Filter by a creation date range.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: updated_at
+      description: Filter by an update date range.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: deleted_at
+      description: Filter by a deletion date range.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: offset
+      description: The number of users to skip when retrieving the users.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: limit
+      description: Limit the number of users returned.
+      schema:
+        type: integer
+        default: 20
+    - in: query
+      name: fields
+      description: Comma-separated fields that should be included in the returned users.
+      schema:
+        type: string
   x-codegen:
     method: list
+    queryParams: AdminGetUsersParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -13,7 +138,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_users/getundefined
+        $ref: ../code_samples/tsx/admin_users/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -66,7 +191,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_users/postundefined
+        $ref: ../code_samples/tsx/admin_users/post.tsx
     - lang: Shell
       label: cURL
       source:

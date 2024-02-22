@@ -2,8 +2,12 @@ import type {
   AdminCollectionsRes,
   AdminCustomerGroupsRes,
   AdminCustomersRes,
+  AdminGiftCardsRes,
   AdminProductsRes,
+  AdminPublishableApiKeysRes,
   AdminRegionsRes,
+  AdminSalesChannelsRes,
+  AdminUserRes,
 } from "@medusajs/medusa"
 import {
   Outlet,
@@ -15,7 +19,6 @@ import {
 import { ProtectedRoute } from "../../components/authentication/require-auth"
 import { ErrorBoundary } from "../../components/error/error-boundary"
 import { MainLayout } from "../../components/layout/main-layout"
-import { PublicLayout } from "../../components/layout/public-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 
 import routes from "medusa-admin:routes/pages"
@@ -43,13 +46,27 @@ const settingsExtensions: RouteObject[] = settings.pages.map((ext) => {
 
 const router = createBrowserRouter([
   {
-    element: <PublicLayout />,
+    path: "/login",
+    lazy: () => import("../../routes/login"),
+  },
+  {
+    path: "/reset-password",
+    element: <Outlet />,
     children: [
       {
-        path: "/login",
-        lazy: () => import("../../routes/login"),
+        index: true,
+        lazy: () =>
+          import("../../routes/reset-password/reset-password-request"),
+      },
+      {
+        path: ":token",
+        lazy: () => import("../../routes/reset-password/reset-password-token"),
       },
     ],
+  },
+  {
+    path: "/invite",
+    lazy: () => import("../../routes/invite"),
   },
   {
     element: <ProtectedRoute />,
@@ -71,7 +88,7 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                lazy: () => import("../../routes/orders/list"),
+                lazy: () => import("../../routes/orders/order-list"),
               },
               {
                 path: ":id",
@@ -102,8 +119,14 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () => import("../../routes/products/product-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () => import("../../routes/products/product-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
@@ -111,6 +134,30 @@ const router = createBrowserRouter([
                 handle: {
                   crumb: (data: AdminProductsRes) => data.product.title,
                 },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/products/product-edit"),
+                  },
+                  {
+                    path: "sales-channels",
+                    lazy: () =>
+                      import("../../routes/products/product-sales-channels"),
+                  },
+                  {
+                    path: "attributes",
+                    lazy: () =>
+                      import("../../routes/products/product-attributes"),
+                  },
+                  {
+                    path: "options",
+                    lazy: () => import("../../routes/products/product-options"),
+                  },
+                  {
+                    path: "gallery",
+                    lazy: () => import("../../routes/products/product-gallery"),
+                  },
+                ],
               },
             ],
           },
@@ -257,12 +304,29 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/gift-cards/list"),
+                path: "",
+                lazy: () => import("../../routes/gift-cards/gift-card-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/gift-cards/gift-card-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/gift-cards/details"),
+                lazy: () => import("../../routes/gift-cards/gift-card-detail"),
+                handle: {
+                  crumb: (data: AdminGiftCardsRes) => data.gift_card.code,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../routes/gift-cards/gift-card-edit"),
+                  },
+                ],
               },
             ],
           },
@@ -437,6 +501,9 @@ const router = createBrowserRouter([
               {
                 path: ":id",
                 lazy: () => import("../../routes/users/user-detail"),
+                handle: {
+                  crumb: (data: AdminUserRes) => data.user.email,
+                },
                 children: [
                   {
                     path: "edit",
@@ -487,6 +554,10 @@ const router = createBrowserRouter([
                 path: ":id",
                 lazy: () =>
                   import("../../routes/sales-channels/sales-channel-detail"),
+                handle: {
+                  crumb: (data: AdminSalesChannelsRes) =>
+                    data.sales_channel.name,
+                },
                 children: [
                   {
                     path: "edit",
@@ -533,12 +604,23 @@ const router = createBrowserRouter([
                   import(
                     "../../routes/api-key-management/api-key-management-detail"
                   ),
+                handle: {
+                  crumb: (data: AdminPublishableApiKeysRes) =>
+                    data.publishable_api_key.title,
+                },
                 children: [
                   {
                     path: "edit",
                     lazy: () =>
                       import(
                         "../../routes/api-key-management/api-key-management-edit"
+                      ),
+                  },
+                  {
+                    path: "add-sales-channels",
+                    lazy: () =>
+                      import(
+                        "../../routes/api-key-management/api-key-management-add-sales-channels"
                       ),
                   },
                 ],

@@ -66,6 +66,64 @@ Furthermore, your Medusa backend should be configured to work with PostgreSQL an
 
 ## Deploy to Microtica
 
+### (Optional) Step 0: Configure the Admin
+
+If you're using the Medusa Admin plugin, you have two options to deploy it: either with the backend or separately.
+
+#### Deploying with the Backend
+
+To deploy the admin with the backend:
+
+1. Your chosen plan must offer at least 2GB of RAM.
+2. Enable the [autoRebuild option](../../admin/configuration.mdx#plugin-options) of the admin plugin:
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...
+  {
+    resolve: "@medusajs/admin",
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      autoRebuild: true,
+      // other options...
+    },
+  },
+]
+```
+
+Alternatively, you can use a GitHub action to build the admin as explained [here](../index.mdx#deploy-admin-through-github-action).
+
+#### Deploying Separately
+
+If you choose to deploy the admin separately, disable the admin plugin's [serve option](../../admin/configuration.mdx#plugin-options):
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...
+  {
+    resolve: "@medusajs/admin",
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      // only enable `serve` in development
+      // you may need to add the NODE_ENV variable
+      // manually
+      serve: process.env.NODE_ENV === "development",
+      // other options...
+    },
+  },
+]
+```
+
+This ensures that the admin isn't built or served in production. You can also change `@medusajs/admin` dependency to be a dev dependency in `package.json`.
+
+You can alternatively remove the admin plugin for the plugins array.
+
+:::tip
+
+Refer to the [admin deployment guides on how to deploy the admin separately](../admin/index.mdx).
+
+:::
+
 ### Step 1: Create/Import a Git repository
 
 Before you can deploy your Medusa backend you need to connect your preferred Git account. Microtica will create a repository on your Git account with a default repo name `medusa-server`. 
@@ -108,13 +166,7 @@ You can access `/health` to get health status of your deployed backend.
 
 ### Testing the Admin
 
-:::note
-
-Make sure to either set the `autoRebuild` option of the admin plugin to `true` or add its [build](../../admin/configuration.mdx#build-command-options) command as part of the start command of your backend.
-
-:::
-
-If you deployed the admin dashboard alongside the backend, you can test it by going to `<AccessUrl>/app`. If you changed the admin path, make sure to change `/app` to the path you've set.
+If you deployed the [admin dashboard with the backend](#deploying-with-the-backend), you can test it by going to `<AccessUrl>/app`. If you changed the admin path, make sure to change `/app` to the path you've set.
 
 ---
 

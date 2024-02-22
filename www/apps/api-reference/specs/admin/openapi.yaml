@@ -5,6 +5,9 @@ info:
   license:
     name: MIT
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
+servers:
+  - url: http://localhost:9000
+  - url: https://api.medusa-commerce.com
 tags:
   - name: Apps Oauth
     description: >
@@ -344,9 +347,6 @@ tags:
     externalDocs:
       description: How to manage users
       url: https://docs.medusajs.com/modules/users/admin/manage-users
-servers:
-  - url: http://localhost:9000
-  - url: https://api.medusa-commerce.com
 paths:
   /admin/apps:
     $ref: paths/admin_apps.yaml

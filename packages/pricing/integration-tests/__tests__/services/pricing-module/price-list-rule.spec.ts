@@ -1,11 +1,13 @@
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MikroOrmWrapper } from "../../../utils"
 
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { initialize } from "../../../../src"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { Modules } from "@medusajs/modules-sdk"
+import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -13,17 +15,25 @@ describe("PriceListRule Service", () => {
   let service: IPricingModuleService
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PRICING]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = await MikroOrmWrapper.forkManager()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
-      },
-    })
 
     testManager = await MikroOrmWrapper.forkManager()
     await createRuleTypes(testManager)
@@ -161,7 +171,7 @@ describe("PriceListRule Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"priceListRuleId" must be defined')
+      expect(error.message).toEqual("priceListRule - id must be defined")
     })
   })
 
@@ -273,7 +283,7 @@ describe("PriceListRule Service", () => {
       expect(priceList.price_list_rules).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            rule_type: "rule-type-3",
+            rule_type: { id: "rule-type-3" },
             price_list_rule_values: [
               expect.objectContaining({ value: "sc-1" }),
             ],
@@ -313,7 +323,7 @@ describe("PriceListRule Service", () => {
       expect(priceList.price_list_rules).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            rule_type: "rule-type-3",
+            rule_type: { id: "rule-type-3" },
             price_list_rule_values: expect.arrayContaining([
               expect.objectContaining({ value: "sc-1" }),
               expect.objectContaining({ value: "sc-2" }),
@@ -341,7 +351,7 @@ describe("PriceListRule Service", () => {
       )
 
       expect(priceList.price_list_rules).toEqual([
-        expect.objectContaining({ rule_type: "rule-type-2" }),
+        expect.objectContaining({ rule_type: { id: "rule-type-2" } }),
       ])
     })
   })

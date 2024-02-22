@@ -51,7 +51,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_publishable-api-keys/getundefined
+        $ref: ../code_samples/tsx/admin_publishable-api-keys/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -101,7 +101,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_publishable-api-keys/postundefined
+        $ref: ../code_samples/tsx/admin_publishable-api-keys/post.tsx
     - lang: Shell
       label: cURL
       source:

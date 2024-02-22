@@ -47,8 +47,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: >-
-          ../code_samples/tsx/admin_tax-rates_{id}_product-types_batch/postundefined
+        $ref: ../code_samples/tsx/admin_tax-rates_{id}_product-types_batch/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -131,7 +130,7 @@ delete:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_tax-rates_{id}_product-types_batch/deleteundefined
+          ../code_samples/tsx/admin_tax-rates_{id}_product-types_batch/delete.tsx
     - lang: Shell
       label: cURL
       source:

@@ -8,6 +8,8 @@ import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import adminSeeder from "../../../../helpers/admin-seeder"
 
+jest.setTimeout(50000)
+
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
@@ -128,6 +130,60 @@ describe("POST /admin/promotions/:id", () => {
         code: "TEST_TWO",
         application_method: expect.objectContaining({
           value: 200,
+        }),
+      })
+    )
+  })
+
+  it("should update a buyget promotion successfully", async () => {
+    const createdPromotion = await promotionModuleService.create({
+      code: "PROMOTION_TEST",
+      type: PromotionType.BUYGET,
+      application_method: {
+        type: "fixed",
+        target_type: "items",
+        allocation: "across",
+        value: "100",
+        apply_to_quantity: 1,
+        buy_rules_min_quantity: 1,
+        buy_rules: [
+          {
+            attribute: "product_collection.id",
+            operator: "eq",
+            values: ["pcol_towel"],
+          },
+        ],
+        target_rules: [
+          {
+            attribute: "product.id",
+            operator: "eq",
+            values: "prod_mat",
+          },
+        ],
+      },
+    })
+
+    const api = useApi() as any
+    const response = await api.post(
+      `/admin/promotions/${createdPromotion.id}`,
+      {
+        code: "TEST_TWO",
+        application_method: {
+          value: "200",
+          buy_rules_min_quantity: 6,
+        },
+      },
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.promotion).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        code: "TEST_TWO",
+        application_method: expect.objectContaining({
+          value: 200,
+          buy_rules_min_quantity: 6,
         }),
       })
     )

@@ -1,43 +1,94 @@
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { User } from "@medusajs/medusa"
-import { Button, Container, Heading, Text } from "@medusajs/ui"
+import { Container, Heading, Text, clx, usePrompt } from "@medusajs/ui"
+import { useAdminDeleteUser } from "medusa-react"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 
-type UserGeneralSection = {
+type UserGeneralSectionProps = {
   user: Omit<User, "password_hash">
 }
 
-export const UserGeneralSection = ({ user }: UserGeneralSection) => {
+export const UserGeneralSection = ({ user }: UserGeneralSectionProps) => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+  const prompt = usePrompt()
+
+  const { mutateAsync } = useAdminDeleteUser(user.id)
+
+  const name = [user.first_name, user.last_name].filter(Boolean).join(" ")
+
+  const handleDeleteUser = async () => {
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("users.deleteUserWarning", {
+        name: name ?? user.email,
+      }),
+      verificationText: name ?? user.email,
+      verificationInstruction: t("general.typeToConfirm"),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        navigate("..")
+      },
+    })
+  }
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <div>
-          <Heading>{t("profile.domain")}</Heading>
-          <Text className="text-ui-fg-subtle" size="small">
-            {t("profile.manageYourProfileDetails")}
-          </Text>
-        </div>
-        <Link to={`edit`}>
-          <Button size="small" variant="secondary">
-            {t("profile.editProfile")}
-          </Button>
-        </Link>
+        <Heading>{user.email}</Heading>
+        <ActionMenu
+          groups={[
+            {
+              actions: [
+                {
+                  label: t("actions.edit"),
+                  to: "edit",
+                  icon: <PencilSquare />,
+                },
+              ],
+            },
+            {
+              actions: [
+                {
+                  label: t("actions.delete"),
+                  onClick: handleDeleteUser,
+                  icon: <Trash />,
+                },
+              ],
+            },
+          ]}
+        />
       </div>
-      <div className="grid grid-cols-2 px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.name")}
         </Text>
-        <Text size="small" leading="compact">
-          {user.first_name} {user.last_name}
+        <Text
+          size="small"
+          leading="compact"
+          className={clx({
+            "text-ui-fg-subtle": !name,
+          })}
+        >
+          {name ?? "-"}
         </Text>
       </div>
-      <div className="grid grid-cols-2 px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          {t("fields.email")}
+          {t("fields.role")}
         </Text>
         <Text size="small" leading="compact">
-          {user.email}
+          {t(`users.roles.${user.role}`)}
         </Text>
       </div>
     </Container>

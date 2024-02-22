@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, FocusModal, Heading, Input, Text } from "@medusajs/ui"
+import { Button, Heading, Input, Text } from "@medusajs/ui"
 import { useAdminCreateStockLocation } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { CountrySelect } from "../../../../../components/common/country-select"
 import { Form } from "../../../../../components/common/form"
+import { RouteFocusModal } from "../../../../../components/route-modal"
 
 const CreateLocationSchema = zod.object({
   name: zod.string().min(1),
@@ -22,7 +23,7 @@ const CreateLocationSchema = zod.object({
 })
 
 export const CreateLocationForm = () => {
-  const { mutateAsync, isLoading } = useAdminCreateStockLocation()
+  const { t } = useTranslation()
 
   const form = useForm<zod.infer<typeof CreateLocationSchema>>({
     defaultValues: {
@@ -41,7 +42,7 @@ export const CreateLocationForm = () => {
     resolver: zodResolver(CreateLocationSchema),
   })
 
-  const { t } = useTranslation()
+  const { mutateAsync, isLoading } = useAdminCreateStockLocation()
 
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(
@@ -56,24 +57,24 @@ export const CreateLocationForm = () => {
   })
 
   return (
-    <Form {...form}>
+    <RouteFocusModal.Form form={form}>
       <form
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
-        <FocusModal.Header>
+        <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
-            <FocusModal.Close asChild>
+            <RouteFocusModal.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
-            </FocusModal.Close>
+            </RouteFocusModal.Close>
             <Button type="submit" size="small" isLoading={isLoading}>
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
-        </FocusModal.Header>
-        <FocusModal.Body className="flex flex-1 flex-col overflow-hidden">
+        </RouteFocusModal.Header>
+        <RouteFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
           <div className="flex flex-1 flex-col items-center overflow-y-auto">
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
               <div>
@@ -227,8 +228,8 @@ export const CreateLocationForm = () => {
               </div>
             </div>
           </div>
-        </FocusModal.Body>
+        </RouteFocusModal.Body>
       </form>
-    </Form>
+    </RouteFocusModal.Form>
   )
 }

@@ -51,7 +51,7 @@ post:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_discounts_{discount_id}_conditions_{condition_id}_batch/postundefined
+          ../code_samples/tsx/admin_discounts_{discount_id}_conditions_{condition_id}_batch/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -133,7 +133,7 @@ delete:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_discounts_{discount_id}_conditions_{condition_id}_batch/deleteundefined
+          ../code_samples/tsx/admin_discounts_{discount_id}_conditions_{condition_id}_batch/delete.tsx
     - lang: Shell
       label: cURL
       source:

@@ -22,7 +22,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_uploads/postundefined
+        $ref: ../code_samples/tsx/admin_uploads/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -72,7 +72,7 @@ delete:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_uploads/deleteundefined
+        $ref: ../code_samples/tsx/admin_uploads/delete.tsx
     - lang: Shell
       label: cURL
       source:

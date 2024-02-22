@@ -27,7 +27,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_store_currencies_{code}/postundefined
+        $ref: ../code_samples/tsx/admin_store_currencies_{code}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -85,7 +85,7 @@ delete:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_store_currencies_{code}/deleteundefined
+        $ref: ../code_samples/tsx/admin_store_currencies_{code}/delete.tsx
     - lang: Shell
       label: cURL
       source:

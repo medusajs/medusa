@@ -74,7 +74,7 @@ export default class InventoryService implements IInventoryService {
   async listInventoryItems(
     selector: FilterableInventoryItemProps,
     config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<[InventoryItemDTO[], number]> {
     return await this.inventoryItemService_.listAndCount(
       selector,
@@ -85,7 +85,7 @@ export default class InventoryService implements IInventoryService {
   async list(
     selector: FilterableInventoryItemProps,
     config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryItemDTO[]> {
     return await this.inventoryItemService_.list(selector, config, context)
   }
@@ -104,7 +104,7 @@ export default class InventoryService implements IInventoryService {
       skip: 0,
       take: 10,
     },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<[InventoryLevelDTO[], number]> {
     return await this.inventoryLevelService_.listAndCount(
       selector,
@@ -127,7 +127,7 @@ export default class InventoryService implements IInventoryService {
       skip: 0,
       take: 10,
     },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<[ReservationItemDTO[], number]> {
     return await this.reservationItemService_.listAndCount(
       selector,
@@ -146,7 +146,7 @@ export default class InventoryService implements IInventoryService {
   async retrieveInventoryItem(
     inventoryItemId: string,
     config?: FindConfig<InventoryItemDTO>,
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryItemDTO> {
     const inventoryItem = await this.inventoryItemService_.retrieve(
       inventoryItemId,
@@ -166,7 +166,7 @@ export default class InventoryService implements IInventoryService {
   async retrieveInventoryLevel(
     inventoryItemId: string,
     locationId: string,
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryLevelDTO> {
     const [inventoryLevel] = await this.inventoryLevelService_.list(
       { inventory_item_id: inventoryItemId, location_id: locationId },
@@ -191,7 +191,7 @@ export default class InventoryService implements IInventoryService {
    */
   async retrieveReservationItem(
     reservationId: string,
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<ReservationItemDTO> {
     return await this.reservationItemService_.retrieve(
       reservationId,
@@ -202,7 +202,7 @@ export default class InventoryService implements IInventoryService {
 
   private async ensureInventoryLevels(
     data: { location_id: string; inventory_item_id: string }[],
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryLevelDTO[]> {
     const inventoryLevels = await this.inventoryLevelService_.list(
       {
@@ -629,7 +629,7 @@ export default class InventoryService implements IInventoryService {
   async retrieveAvailableQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<number> {
     // Throws if item does not exist
     await this.inventoryItemService_.retrieve(
@@ -665,7 +665,7 @@ export default class InventoryService implements IInventoryService {
   async retrieveStockedQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<number> {
     // Throws if item does not exist
     await this.inventoryItemService_.retrieve(
@@ -701,7 +701,7 @@ export default class InventoryService implements IInventoryService {
   async retrieveReservedQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<number> {
     // Throws if item does not exist
     await this.inventoryItemService_.retrieve(

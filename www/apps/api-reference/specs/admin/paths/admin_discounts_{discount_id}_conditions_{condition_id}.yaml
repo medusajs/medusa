@@ -43,7 +43,7 @@ get:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_discounts_{discount_id}_conditions_{condition_id}/getundefined
+          ../code_samples/tsx/admin_discounts_{discount_id}_conditions_{condition_id}/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -128,7 +128,7 @@ post:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_discounts_{discount_id}_conditions_{condition_id}/postundefined
+          ../code_samples/tsx/admin_discounts_{discount_id}_conditions_{condition_id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -204,7 +204,7 @@ delete:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_discounts_{discount_id}_conditions_{condition_id}/deleteundefined
+          ../code_samples/tsx/admin_discounts_{discount_id}_conditions_{condition_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

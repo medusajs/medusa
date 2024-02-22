@@ -29,7 +29,7 @@ type LocationSalesChannelSectionProps = {
   location: StockLocationExpandedDTO
 }
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 10
 
 export const LocationSalesChannelSection = ({
   location,
@@ -163,8 +163,8 @@ const SalesChannelActions = ({
     const res = await prompt({
       title: t("general.areYouSure"),
       description: t("locations.removeSalesChannelsWarning", { count: 1 }),
-      confirmText: t("general.delete"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!res) {
@@ -184,12 +184,12 @@ const SalesChannelActions = ({
           actions: [
             {
               icon: <PencilSquare />,
-              label: t("general.edit"),
+              label: t("actions.edit"),
               to: `/settings/sales-channels/${salesChannel.id}/edit`,
             },
             {
               icon: <Trash />,
-              label: t("general.delete"),
+              label: t("actions.delete"),
               onClick: handleDelete,
             },
           ],

@@ -3,6 +3,7 @@ import {
   ModulesDefinition,
   registerMedusaModule,
 } from "@medusajs/modules-sdk"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue, createContainer } from "awilix"
 import express from "express"
 import jwt from "jsonwebtoken"
@@ -63,6 +64,7 @@ export const createServer = async (rootDir) => {
     return this
   }.bind(container)
 
+  container.register(ContainerRegistrationKeys.PG_CONNECTION, asValue({}))
   container.register("featureFlagRouter", asValue(featureFlagRouter))
   container.register("configModule", asValue(config))
   container.register({
@@ -106,7 +108,12 @@ export const createServer = async (rootDir) => {
   }).load()
 
   // the apiLoader needs to be called after plugins otherwise the core middleware bleads into the plugins
-  await apiLoader({ container, app: app, configModule: config })
+  await apiLoader({
+    container,
+    app: app,
+    configModule: config,
+    featureFlagRouter,
+  })
 
   const superRequest = supertest(app)
 

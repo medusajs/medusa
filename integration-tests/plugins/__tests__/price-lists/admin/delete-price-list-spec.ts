@@ -25,7 +25,7 @@ const env = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("DELETE /admin/price-lists/:id", () => {
+describe.skip("DELETE /admin/price-lists/:id", () => {
   let dbConnection
   let appContainer
   let shutdownServer

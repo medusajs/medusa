@@ -1,4 +1,5 @@
-import { generateEntityId } from "@medusajs/utils"
+import { BigNumberRawValue } from "@medusajs/types"
+import { BigNumber, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -11,6 +12,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { BeforeUpdate } from "typeorm"
 import Cart from "./cart"
 import ShippingMethodAdjustment from "./shipping-method-adjustment"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"
@@ -24,33 +26,40 @@ export default class ShippingMethod {
   @Property({ columnType: "text" })
   cart_id: string
 
-  @ManyToOne(() => Cart, {
-    onDelete: "cascade",
+  @ManyToOne({
+    entity: () => Cart,
     index: "IDX_shipping_method_cart_id",
-    nullable: true,
+    cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
-  cart?: Cart | null
+  cart: Cart
 
   @Property({ columnType: "text" })
   name: string
 
   @Property({ columnType: "jsonb", nullable: true })
-  description?: string | null
+  description: string | null = null
 
-  @Property({ columnType: "numeric", serializer: Number })
-  amount: number
+  @Property({ columnType: "numeric" })
+  amount: BigNumber | number
+
+  @Property({ columnType: "jsonb" })
+  raw_amount: BigNumberRawValue
 
   @Property({ columnType: "boolean" })
   is_tax_inclusive = false
 
-  @Property({ columnType: "text", nullable: true })
-  shipping_option_id?: string | null
+  @Property({
+    columnType: "text",
+    nullable: true,
+    index: "IDX_shipping_method_option_id",
+  })
+  shipping_option_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  data?: Record<string, unknown> | null
+  data: Record<string, unknown> | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  metadata?: Record<string, unknown> | null
+  metadata: Record<string, unknown> | null = null
 
   @OneToMany(
     () => ShippingMethodTaxLine,
@@ -70,20 +79,6 @@ export default class ShippingMethod {
   )
   adjustments = new Collection<ShippingMethodAdjustment>(this)
 
-  /** COMPUTED PROPERTIES - START */
-
-  // original_total: number
-  // original_subtotal: number
-  // original_tax_total: number
-
-  // total: number
-  // subtotal: number
-  // tax_total: number
-  // discount_total: number
-  // discount_tax_total: number
-
-  /** COMPUTED PROPERTIES - END */
-
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
@@ -102,10 +97,28 @@ export default class ShippingMethod {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "casm")
+
+    const val = new BigNumber(this.raw_amount ?? this.amount)
+
+    this.amount = val.numeric
+    this.raw_amount = val.raw!
+  }
+
+  @BeforeUpdate()
+  onUpdate() {
+    const val = new BigNumber(this.raw_amount ?? this.amount)
+
+    this.amount = val.numeric
+    this.raw_amount = val.raw as BigNumberRawValue
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "casm")
+
+    const val = new BigNumber(this.raw_amount ?? this.amount)
+
+    this.amount = val.numeric
+    this.raw_amount = val.raw!
   }
 }

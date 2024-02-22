@@ -1,13 +1,20 @@
 import { useAdminSalesChannel } from "medusa-react"
-import { Outlet, useParams } from "react-router-dom"
+import { Outlet, useLoaderData, useParams } from "react-router-dom"
 
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { SalesChannelGeneralSection } from "./components/sales-channel-general-section"
 import { SalesChannelProductSection } from "./components/sales-channel-product-section"
+import { salesChannelLoader } from "./loader"
 
 export const SalesChannelDetail = () => {
+  const initialData = useLoaderData() as Awaited<
+    ReturnType<typeof salesChannelLoader>
+  >
+
   const { id } = useParams()
-  const { sales_channel, isLoading } = useAdminSalesChannel(id!)
+  const { sales_channel, isLoading } = useAdminSalesChannel(id!, {
+    initialData,
+  })
 
   if (isLoading || !sales_channel) {
     return <div>Loading...</div>

@@ -31,7 +31,7 @@ post:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/store_payment-collections_{id}_sessions_batch/postundefined
+          ../code_samples/tsx/store_payment-collections_{id}_sessions_batch/post.tsx
     - lang: Shell
       label: cURL
       source:

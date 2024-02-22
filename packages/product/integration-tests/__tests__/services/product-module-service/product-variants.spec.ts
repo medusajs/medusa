@@ -1,30 +1,38 @@
-import { initialize } from "../../../../src"
-import { DB_URL, TestDatabase } from "../../../utils"
-import { IProductModuleService } from "@medusajs/types"
-import { Product, ProductVariant } from "@models"
+import { MedusaModule, Modules } from "@medusajs/modules-sdk"
+import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductTypes } from "@medusajs/types"
+import { Product, ProductVariant } from "@models"
+import { initModules } from "medusa-test-utils"
+import { getInitModuleConfig, TestDatabase } from "../../../utils"
 
 describe("ProductModuleService product variants", () => {
   let service: IProductModuleService
   let testManager: SqlEntityManager
-  let repositoryManager: SqlEntityManager
   let variantOne: ProductVariant
   let variantTwo: ProductVariant
   let productOne: Product
   let productTwo: Product
 
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    MedusaModule.clearInstances()
+
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PRODUCT]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
+
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
-    repositoryManager = await TestDatabase.forkManager()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-      },
-    })
-
     testManager = await TestDatabase.forkManager()
 
     productOne = testManager.create(Product, {
@@ -140,18 +148,15 @@ describe("ProductModuleService product variants", () => {
         expect.objectContaining({
           id: "test-1",
           title: "variant 1",
-        }),
+        })
       )
     })
 
     it("should return requested attributes when requested through config", async () => {
-      const result = await service.retrieveVariant(
-        variantOne.id,
-        {
-          select: ["id", "title", "product.title"] as any,
-          relations: ["product"],
-        }
-      )
+      const result = await service.retrieveVariant(variantOne.id, {
+        select: ["id", "title", "product.title"] as any,
+        relations: ["product"],
+      })
 
       expect(result).toEqual(
         expect.objectContaining({
@@ -162,7 +167,7 @@ describe("ProductModuleService product variants", () => {
             id: "product-1",
             title: "product 1",
           }),
-        }),
+        })
       )
     })
 
@@ -175,8 +180,9 @@ describe("ProductModuleService product variants", () => {
         error = e
       }
 
-      expect(error.message).toEqual("ProductVariant with id: does-not-exist was not found")
+      expect(error.message).toEqual(
+        "ProductVariant with id: does-not-exist was not found"
+      )
     })
   })
 })
-

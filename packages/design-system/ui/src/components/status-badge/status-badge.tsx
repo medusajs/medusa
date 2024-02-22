@@ -1,11 +1,28 @@
 import * as React from "react"
 
 import { clx } from "@/utils/clx"
+import { VariantProps, cva } from "cva"
+
+const statusBadgeVariants = cva({
+  base: "flex items-center justify-center w-5 h-[18px] [&_div]:w-2 [&_div]:h-2 [&_div]:rounded-sm",
+  variants: {
+    color: {
+      green: "[&_div]:bg-ui-tag-green-icon",
+      red: "[&_div]:bg-ui-tag-red-icon",
+      orange: "[&_div]:bg-ui-tag-orange-icon",
+      blue: "[&_div]:bg-ui-tag-blue-icon",
+      purple: "[&_div]:bg-ui-tag-purple-icon",
+      grey: "[&_div]:bg-ui-tag-neutral-icon",
+    },
+  },
+  defaultVariants: {
+    color: "grey",
+  },
+})
 
 interface StatusBadgeProps
-  extends Omit<React.ComponentPropsWithoutRef<"span">, "color"> {
-  color?: "green" | "red" | "blue" | "orange" | "grey" | "purple"
-}
+  extends Omit<React.ComponentPropsWithoutRef<"span">, "color">,
+    VariantProps<typeof statusBadgeVariants> {}
 
 /**
  * This component is based on the span element and supports all of its props
@@ -27,31 +44,14 @@ const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
       <span
         ref={ref}
         className={clx(
-          "bg-ui-bg-base border-ui-border-base txt-compact-small text-ui-fg-base inline-flex items-center justify-center rounded-full border py-[3px] pl-1 pr-2.5",
+          "txt-compact-xsmall-plus bg-ui-bg-subtle text-ui-fg-subtle border-ui-border-base box-border flex w-fit select-none items-center overflow-hidden rounded-md border pl-0 pr-1 leading-none",
           className
         )}
         {...props}
       >
-        <span
-          role="presentation"
-          className="mr-0.5 flex h-5 w-5 items-center justify-center"
-        >
-          <span
-            role="presentation"
-            className="bg-ui-bg-base shadow-borders-base flex h-2.5 w-2.5 items-center justify-center rounded-full"
-          >
-            <span
-              className={clx("h-1.5 w-1.5 rounded-full", {
-                "bg-ui-tag-neutral-icon": color === "grey",
-                "bg-ui-tag-green-icon": color === "green",
-                "bg-ui-tag-red-icon": color === "red",
-                "bg-ui-tag-orange-icon": color === "orange",
-                "bg-ui-tag-blue-icon": color === "blue",
-                "bg-ui-tag-purple-icon": color === "purple",
-              })}
-            />
-          </span>
-        </span>
+        <div role="presentation" className={statusBadgeVariants({ color })}>
+          <div />
+        </div>
         {children}
       </span>
     )

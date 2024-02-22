@@ -25,7 +25,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_price-lists_{id}_prices_batch/postundefined
+        $ref: ../code_samples/tsx/admin_price-lists_{id}_prices_batch/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -83,8 +83,7 @@ delete:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: >-
-          ../code_samples/tsx/admin_price-lists_{id}_prices_batch/deleteundefined
+        $ref: ../code_samples/tsx/admin_price-lists_{id}_prices_batch/delete.tsx
     - lang: Shell
       label: cURL
       source:

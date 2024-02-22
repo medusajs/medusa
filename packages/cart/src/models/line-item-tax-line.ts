@@ -1,15 +1,26 @@
 import { generateEntityId } from "@medusajs/utils"
-import { BeforeCreate, Entity, ManyToOne, OnInit } from "@mikro-orm/core"
+import {
+  BeforeCreate,
+  Cascade,
+  Entity,
+  ManyToOne,
+  OnInit,
+  Property,
+} from "@mikro-orm/core"
 import LineItem from "./line-item"
 import TaxLine from "./tax-line"
 
 @Entity({ tableName: "cart_line_item_tax_line" })
 export default class LineItemTaxLine extends TaxLine {
-  @ManyToOne(() => LineItem, {
-    joinColumn: "line_item",
-    fieldName: "line_item_id",
+  @ManyToOne({
+    entity: () => LineItem,
+    index: "IDX_tax_line_item_id",
+    cascade: [Cascade.REMOVE, Cascade.PERSIST]
   })
-  line_item: LineItem
+  item: LineItem
+
+  @Property({ columnType: "text" })
+  item_id: string
 
   @BeforeCreate()
   onCreate() {

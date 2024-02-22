@@ -13,7 +13,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_return-reasons/getundefined
+        $ref: ../code_samples/tsx/admin_return-reasons/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -63,7 +63,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_return-reasons/postundefined
+        $ref: ../code_samples/tsx/admin_return-reasons/post.tsx
     - lang: Shell
       label: cURL
       source:

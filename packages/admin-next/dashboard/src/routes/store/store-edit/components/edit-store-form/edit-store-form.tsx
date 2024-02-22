@@ -1,15 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Store } from "@medusajs/medusa"
-import { Button, Drawer, Input } from "@medusajs/ui"
+import { Button, Input } from "@medusajs/ui"
 import { useAdminUpdateStore } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 
 type EditStoreFormProps = {
   store: Store
-  onSuccess: () => void
 }
 
 const EditStoreSchema = zod.object({
@@ -22,8 +25,9 @@ const EditStoreSchema = zod.object({
   invite_link_template: zod.union([zod.literal(""), zod.string().trim().url()]),
 })
 
-export const EditStoreForm = ({ store, onSuccess }: EditStoreFormProps) => {
-  const { mutateAsync, isLoading } = useAdminUpdateStore()
+export const EditStoreForm = ({ store }: EditStoreFormProps) => {
+  const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof EditStoreSchema>>({
     defaultValues: {
@@ -35,7 +39,7 @@ export const EditStoreForm = ({ store, onSuccess }: EditStoreFormProps) => {
     resolver: zodResolver(EditStoreSchema),
   })
 
-  const { t } = useTranslation()
+  const { mutateAsync, isLoading } = useAdminUpdateStore()
 
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(
@@ -47,16 +51,16 @@ export const EditStoreForm = ({ store, onSuccess }: EditStoreFormProps) => {
       },
       {
         onSuccess: () => {
-          onSuccess()
+          handleSuccess()
         },
       }
     )
   })
 
   return (
-    <Form {...form}>
+    <RouteDrawer.Form form={form}>
       <form onSubmit={handleSubmit} className="flex h-full flex-col">
-        <Drawer.Body>
+        <RouteDrawer.Body>
           <div className="flex flex-col gap-y-8">
             <Form.Field
               control={form.control}
@@ -123,20 +127,20 @@ export const EditStoreForm = ({ store, onSuccess }: EditStoreFormProps) => {
               )}
             />
           </div>
-        </Drawer.Body>
-        <Drawer.Footer>
+        </RouteDrawer.Body>
+        <RouteDrawer.Footer>
           <div className="flex items-center justify-end gap-x-2">
-            <Drawer.Close asChild>
+            <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
-            </Drawer.Close>
+            </RouteDrawer.Close>
             <Button size="small" isLoading={isLoading} type="submit">
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
-        </Drawer.Footer>
+        </RouteDrawer.Footer>
       </form>
-    </Form>
+    </RouteDrawer.Form>
   )
 }

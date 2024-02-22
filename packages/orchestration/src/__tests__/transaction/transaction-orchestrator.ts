@@ -1,10 +1,14 @@
+import { TransactionStepState, TransactionStepStatus } from "@medusajs/utils"
+import { setTimeout } from "timers/promises"
 import {
   DistributedTransaction,
   TransactionHandlerType,
   TransactionOrchestrator,
   TransactionPayload,
   TransactionState,
+  TransactionStepTimeoutError,
   TransactionStepsDefinition,
+  TransactionTimeoutError,
 } from "../../transaction"
 
 describe("Transaction Orchestrator", () => {
@@ -985,5 +989,455 @@ describe("Transaction Orchestrator", () => {
     await strategy.resume(transaction)
 
     expect(transaction).toBe(transactionInHandler)
+  })
+
+  describe("Timeouts - Transaction and Step", () => {
+    it("should fail the current steps and revert the transaction if the Transaction Timeout is reached", async () => {
+      const mocks = {
+        f1: jest.fn(() => {
+          return "content f1"
+        }),
+        f2: jest.fn(async () => {
+          await setTimeout(200)
+          return "delayed content f2"
+        }),
+        f3: jest.fn(() => {
+          return "content f3"
+        }),
+        f4: jest.fn(() => {
+          return "content f4"
+        }),
+      }
+
+      async function handler(
+        actionId: string,
+        functionHandlerType: TransactionHandlerType,
+        payload: TransactionPayload
+      ) {
+        const command = {
+          action1: {
+            [TransactionHandlerType.INVOKE]: () => {
+              return mocks.f1()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f1()
+            },
+          },
+          action2: {
+            [TransactionHandlerType.INVOKE]: async () => {
+              return await mocks.f2()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f2()
+            },
+          },
+          action3: {
+            [TransactionHandlerType.INVOKE]: () => {
+              return mocks.f3()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f3()
+            },
+          },
+          action4: {
+            [TransactionHandlerType.INVOKE]: () => {
+              return mocks.f4()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f4()
+            },
+          },
+        }
+
+        return command[actionId][functionHandlerType]()
+      }
+
+      const flow: TransactionStepsDefinition = {
+        next: {
+          action: "action1",
+          next: [
+            {
+              action: "action2",
+            },
+            {
+              action: "action3",
+              next: {
+                action: "action4",
+              },
+            },
+          ],
+        },
+      }
+
+      const strategy = new TransactionOrchestrator("transaction-name", flow, {
+        timeout: 0.1, // 100ms
+      })
+
+      const transaction = await strategy.beginTransaction(
+        "transaction_id_123",
+        handler
+      )
+
+      await strategy.resume(transaction)
+
+      expect(transaction.transactionId).toBe("transaction_id_123")
+      expect(mocks.f1).toBeCalledTimes(2)
+      expect(mocks.f2).toBeCalledTimes(2)
+      expect(mocks.f3).toBeCalledTimes(2)
+      expect(mocks.f4).toBeCalledTimes(0)
+      expect(transaction.getContext().invoke.action1).toBe("content f1")
+      expect(transaction.getContext().invoke.action2).toBe("delayed content f2")
+      expect(transaction.getContext().invoke.action3).toBe("content f3")
+      expect(transaction.getContext().invoke.action4).toBe(undefined)
+
+      expect(transaction.getErrors()[0].error).toBeInstanceOf(
+        TransactionTimeoutError
+      )
+      expect(transaction.getErrors()[0].action).toBe("action2")
+
+      expect(transaction.getState()).toBe(TransactionState.REVERTED)
+    })
+
+    it("should continue the transaction and skip children steps when the Transaction Step Timeout is reached but the step is set to 'continueOnPermanentFailure'", async () => {
+      const mocks = {
+        f1: jest.fn(() => {
+          return "content f1"
+        }),
+        f2: jest.fn(async () => {
+          await setTimeout(200)
+          return "delayed content f2"
+        }),
+        f3: jest.fn(() => {
+          return "content f3"
+        }),
+        f4: jest.fn(() => {
+          return "content f4"
+        }),
+      }
+
+      async function handler(
+        actionId: string,
+        functionHandlerType: TransactionHandlerType,
+        payload: TransactionPayload
+      ) {
+        const command = {
+          action1: {
+            [TransactionHandlerType.INVOKE]: () => {
+              return mocks.f1()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f1()
+            },
+          },
+          action2: {
+            [TransactionHandlerType.INVOKE]: async () => {
+              return await mocks.f2()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f2()
+            },
+          },
+          action3: {
+            [TransactionHandlerType.INVOKE]: () => {
+              return mocks.f3()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f3()
+            },
+          },
+          action4: {
+            [TransactionHandlerType.INVOKE]: () => {
+              return mocks.f4()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f4()
+            },
+          },
+        }
+
+        return command[actionId][functionHandlerType]()
+      }
+
+      const flow: TransactionStepsDefinition = {
+        next: {
+          action: "action1",
+          next: [
+            {
+              timeout: 0.1, // 100ms
+              action: "action2",
+              continueOnPermanentFailure: true,
+              next: {
+                action: "action4",
+              },
+            },
+            {
+              action: "action3",
+            },
+          ],
+        },
+      }
+
+      const strategy = new TransactionOrchestrator("transaction-name", flow)
+
+      const transaction = await strategy.beginTransaction(
+        "transaction_id_123",
+        handler
+      )
+
+      await strategy.resume(transaction)
+
+      expect(transaction.transactionId).toBe("transaction_id_123")
+      expect(mocks.f1).toBeCalledTimes(1)
+      expect(mocks.f2).toBeCalledTimes(1)
+      expect(mocks.f3).toBeCalledTimes(1)
+      expect(mocks.f4).toBeCalledTimes(0)
+      expect(transaction.getContext().invoke.action1).toBe("content f1")
+      expect(transaction.getContext().invoke.action2).toBe("delayed content f2")
+      expect(transaction.getContext().invoke.action3).toBe("content f3")
+      expect(transaction.getContext().invoke.action4).toBe(undefined)
+      expect(
+        transaction.getFlow().steps["_root.action1.action2"].invoke.state
+      ).toBe(TransactionStepState.TIMEOUT)
+      expect(
+        transaction.getFlow().steps["_root.action1.action2"].invoke.status
+      ).toBe(TransactionStepStatus.PERMANENT_FAILURE)
+      expect(
+        transaction.getFlow().steps["_root.action1.action2"].compensate.state
+      ).toBe(TransactionStepState.DORMANT)
+      expect(
+        transaction.getFlow().steps["_root.action1.action2.action4"].invoke
+          .state
+      ).toBe(TransactionStepState.SKIPPED)
+      expect(
+        transaction.getFlow().steps["_root.action1.action2.action4"].invoke
+          .status
+      ).toBe(TransactionStepStatus.IDLE)
+
+      expect(transaction.getState()).toBe(TransactionState.DONE)
+    })
+
+    it("should fail the current steps and revert the transaction if the Step Timeout is reached", async () => {
+      const mocks = {
+        f1: jest.fn(() => {
+          return "content f1"
+        }),
+        f2: jest.fn(async () => {
+          await setTimeout(200)
+          return "delayed content f2"
+        }),
+        f3: jest.fn(() => {
+          return "content f3"
+        }),
+        f4: jest.fn(() => {
+          return "content f4"
+        }),
+      }
+
+      async function handler(
+        actionId: string,
+        functionHandlerType: TransactionHandlerType,
+        payload: TransactionPayload
+      ) {
+        const command = {
+          action1: {
+            [TransactionHandlerType.INVOKE]: () => {
+              return mocks.f1()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f1()
+            },
+          },
+          action2: {
+            [TransactionHandlerType.INVOKE]: async () => {
+              return await mocks.f2()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f2()
+            },
+          },
+          action3: {
+            [TransactionHandlerType.INVOKE]: () => {
+              return mocks.f3()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f3()
+            },
+          },
+          action4: {
+            [TransactionHandlerType.INVOKE]: () => {
+              return mocks.f4()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f4()
+            },
+          },
+        }
+
+        return command[actionId][functionHandlerType]()
+      }
+
+      const flow: TransactionStepsDefinition = {
+        next: {
+          action: "action1",
+          next: [
+            {
+              action: "action2",
+              timeout: 0.1, // 100ms
+            },
+            {
+              action: "action3",
+              next: {
+                action: "action4",
+              },
+            },
+          ],
+        },
+      }
+
+      const strategy = new TransactionOrchestrator("transaction-name", flow)
+
+      const transaction = await strategy.beginTransaction(
+        "transaction_id_123",
+        handler
+      )
+
+      await strategy.resume(transaction)
+
+      expect(transaction.transactionId).toBe("transaction_id_123")
+      expect(mocks.f1).toBeCalledTimes(2)
+      expect(mocks.f2).toBeCalledTimes(2)
+      expect(mocks.f3).toBeCalledTimes(2)
+      expect(mocks.f4).toBeCalledTimes(0)
+      expect(transaction.getContext().invoke.action1).toBe("content f1")
+      expect(transaction.getContext().invoke.action2).toBe("delayed content f2")
+      expect(transaction.getContext().invoke.action3).toBe("content f3")
+      expect(transaction.getContext().invoke.action4).toBe(undefined)
+
+      expect(transaction.getErrors()[0].error).toBeInstanceOf(
+        TransactionStepTimeoutError
+      )
+      expect(transaction.getErrors()[0].action).toBe("action2")
+
+      expect(transaction.getState()).toBe(TransactionState.REVERTED)
+    })
+
+    it("should fail the current steps and revert the transaction if the Transaction Timeout is reached event if the step is set as 'continueOnPermanentFailure'", async () => {
+      const mocks = {
+        f1: jest.fn(() => {
+          return "content f1"
+        }),
+        f2: jest.fn(async () => {
+          await setTimeout(200)
+          return "delayed content f2"
+        }),
+        f3: jest.fn(async () => {
+          await setTimeout(200)
+          return "content f3"
+        }),
+        f4: jest.fn(() => {
+          return "content f4"
+        }),
+      }
+
+      async function handler(
+        actionId: string,
+        functionHandlerType: TransactionHandlerType,
+        payload: TransactionPayload
+      ) {
+        const command = {
+          action1: {
+            [TransactionHandlerType.INVOKE]: () => {
+              return mocks.f1()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f1()
+            },
+          },
+          action2: {
+            [TransactionHandlerType.INVOKE]: async () => {
+              return await mocks.f2()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f2()
+            },
+          },
+          action3: {
+            [TransactionHandlerType.INVOKE]: async () => {
+              return await mocks.f3()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f3()
+            },
+          },
+          action4: {
+            [TransactionHandlerType.INVOKE]: () => {
+              return mocks.f4()
+            },
+            [TransactionHandlerType.COMPENSATE]: () => {
+              return mocks.f4()
+            },
+          },
+        }
+
+        return command[actionId][functionHandlerType]()
+      }
+
+      const flow: TransactionStepsDefinition = {
+        next: {
+          action: "action1",
+          next: [
+            {
+              action: "action2",
+              continueOnPermanentFailure: true,
+            },
+            {
+              action: "action3",
+              continueOnPermanentFailure: true,
+              next: {
+                action: "action4",
+              },
+            },
+          ],
+        },
+      }
+
+      const strategy = new TransactionOrchestrator("transaction-name", flow, {
+        timeout: 0.1, // 100ms
+      })
+
+      const transaction = await strategy.beginTransaction(
+        "transaction_id_123",
+        handler
+      )
+
+      await strategy.resume(transaction)
+
+      expect(transaction.transactionId).toBe("transaction_id_123")
+      expect(mocks.f1).toBeCalledTimes(2)
+      expect(mocks.f2).toBeCalledTimes(2)
+      expect(mocks.f3).toBeCalledTimes(2)
+      expect(mocks.f4).toBeCalledTimes(0)
+      expect(transaction.getContext().invoke.action1).toBe("content f1")
+      expect(transaction.getContext().invoke.action2).toBe("delayed content f2")
+      expect(transaction.getContext().invoke.action3).toBe("content f3")
+      expect(transaction.getContext().invoke.action4).toBe(undefined)
+
+      expect(transaction.getErrors()).toHaveLength(2)
+      expect(
+        TransactionTimeoutError.isTransactionTimeoutError(
+          transaction.getErrors()[0].error
+        )
+      ).toBe(true)
+      expect(transaction.getErrors()[0].action).toBe("action2")
+
+      expect(
+        TransactionTimeoutError.isTransactionTimeoutError(
+          transaction.getErrors()[1].error
+        )
+      ).toBe(true)
+      expect(transaction.getErrors()[1].action).toBe("action3")
+
+      expect(transaction.getState()).toBe(TransactionState.REVERTED)
+    })
   })
 })

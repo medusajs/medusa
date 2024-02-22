@@ -37,13 +37,8 @@ export type StepFunction<TInput, TOutput = unknown> = (keyof TInput extends []
     }) &
   WorkflowDataProperties<{
     [K in keyof TOutput]: TOutput[K]
-  }> & {
-    config(
-      config: Pick<TransactionStepsDefinition, "maxRetries">
-    ): WorkflowData<{
-      [K in keyof TOutput]: TOutput[K]
-    }>
-  } & WorkflowDataProperties<{
+  }> &
+  WorkflowDataProperties<{
     [K in keyof TOutput]: TOutput[K]
   }>
 
@@ -62,7 +57,22 @@ export type WorkflowData<T = unknown> = (T extends object
       [Key in keyof T]: WorkflowData<T[Key]>
     }
   : WorkflowDataProperties<T>) &
-  WorkflowDataProperties<T>
+  WorkflowDataProperties<T> & {
+    config(
+      config: { name?: string } & Omit<
+        TransactionStepsDefinition,
+        "next" | "uuid" | "action"
+      >
+    ): T extends object
+      ? WorkflowData<
+          T extends object
+            ? {
+                [K in keyof T]: T[K]
+              }
+            : T
+        >
+      : T
+  }
 
 export type CreateWorkflowComposerContext = {
   hooks_: string[]

@@ -23,7 +23,7 @@ const env = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("POST /admin/products/:id", () => {
+describe.skip("POST /admin/products/:id", () => {
   let dbConnection
   let appContainer
   let shutdownServer

@@ -35,7 +35,7 @@ export default class CampaignBudget {
   @OneToOne({
     entity: () => Campaign,
   })
-  campaign?: Campaign | null
+  campaign: Campaign | null = null
 
   @Property({
     columnType: "numeric",
@@ -43,7 +43,7 @@ export default class CampaignBudget {
     serializer: Number,
     default: null,
   })
-  limit?: number | null
+  limit: number | null = null
 
   @Property({
     columnType: "numeric",

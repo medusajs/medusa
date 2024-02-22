@@ -1,5 +1,38 @@
 # @medusajs/ui
 
+## 2.4.1
+
+### Patch Changes
+
+- [#6357](https://github.com/medusajs/medusa/pull/6357) [`85a44dfd0`](https://github.com/medusajs/medusa/commit/85a44dfd017ab53b539bcfca04a32f1a0786a23c) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(ui,ui-preset): Fixes an issue where the color styles of two code components was broken
+
+## 2.4.0
+
+### Minor Changes
+
+- [#6310](https://github.com/medusajs/medusa/pull/6310) [`73fd92a1a`](https://github.com/medusajs/medusa/commit/73fd92a1afdec88c0d5f4aeed16349f2bd62cfa2) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(ui): Add Alert component.
+
+### Patch Changes
+
+- [#6297](https://github.com/medusajs/medusa/pull/6297) [`8cbf6c60f`](https://github.com/medusajs/medusa/commit/8cbf6c60fec7fe8ddf59dcf420b9339f84b8636c) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(ui,ui-preset): Update to latest version of TailwindCSS. Increase spacing between columns in <Table /> component.
+
+## 2.3.0
+
+### Minor Changes
+
+- [#6061](https://github.com/medusajs/medusa/pull/6061) [`a2c149e7e5`](https://github.com/medusajs/medusa/commit/a2c149e7e588a9ebf080b4b43472bdb5126ed981) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(ui): Updates spacing and sizing of components. Introduces new `size` variants for some components, such as `Button`, `IconButton`, and `Avatar`. Change most `:focus` styles to `:focus-visible` styles, to prevenent focus styles from being visible when not needed, such as on button clicks.
+  feat(ui-preset): Publishes latest updates to our design system styles, as well as adding new colors. Noticable changes include changing `ui-code-text-*` styles to `ui-code-fg-*` for better consistency.
+  feat(icons): Updates the `LockClosedSolid` and `LockOpenSolid` icons, and introduces four new icons: `LockClosedSolidMini`, `TriangleLeftMini`, `TriangleRightMini`, and `TriangleMini`.
+
+### Patch Changes
+
+- [#6162](https://github.com/medusajs/medusa/pull/6162) [`c37c82c5b`](https://github.com/medusajs/medusa/commit/c37c82c5b5c046124b82750530d555b2996147cc) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feature(ui): Adds a `size` variant to `<Copy />` component, and prevent clicks from propigating to parent elements". Also adds additional sizes to the `<Avatar />` component.
+
+- [#6120](https://github.com/medusajs/medusa/pull/6120) [`e49b6944e3`](https://github.com/medusajs/medusa/commit/e49b6944e3380a4ee0de086e173901d643ec800c) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(ui): Fix broken responsive style of Drawer between `sm` and `md`.
+
+- Updated dependencies [[`a2c149e7e5`](https://github.com/medusajs/medusa/commit/a2c149e7e588a9ebf080b4b43472bdb5126ed981)]:
+  - @medusajs/icons@1.2.0
+
 ## 2.2.4
 
 ### Patch Changes

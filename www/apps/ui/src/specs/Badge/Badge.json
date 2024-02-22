@@ -22,8 +22,12 @@
       "description": "The badge's size.",
       "tsType": {
         "name": "union",
-        "raw": "\"base\" \\| \"large\" \\| \"small\"",
+        "raw": "\"small\" \\| \"base\" \\| \"large\"",
         "elements": [
+          {
+            "name": "literal",
+            "value": "\"small\""
+          },
           {
             "name": "literal",
             "value": "\"base\""
@@ -31,10 +35,6 @@
           {
             "name": "literal",
             "value": "\"large\""
-          },
-          {
-            "name": "literal",
-            "value": "\"small\""
           }
         ]
       },

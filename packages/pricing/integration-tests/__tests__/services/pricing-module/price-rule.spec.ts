@@ -1,7 +1,7 @@
 import { CreatePriceRuleDTO, IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { initialize, PriceSetMoneyAmount } from "../../../../src"
+import { PriceSetMoneyAmount } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
@@ -9,24 +9,35 @@ import { createPriceSets } from "../../../__fixtures__/price-set"
 import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
 import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MikroOrmWrapper } from "../../../utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { initModules } from "medusa-test-utils"
+import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
 describe("PricingModule Service - PriceRule", () => {
   let service: IPricingModuleService
   let testManager: SqlEntityManager
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PRICING]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     testManager = MikroOrmWrapper.forkManager()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
-      },
-    })
 
     await createCurrencies(testManager)
     await createMoneyAmounts(testManager)
@@ -213,7 +224,7 @@ describe("PricingModule Service - PriceRule", () => {
           error = e
         }
 
-        expect(error.message).toEqual('"priceRuleId" must be defined')
+        expect(error.message).toEqual("priceRule - id must be defined")
       })
 
       it("should return PriceRule based on config select param", async () => {
@@ -296,6 +307,7 @@ describe("PricingModule Service - PriceRule", () => {
             price_set: "price-set-1",
             money_amount: ma.id,
             title: "test",
+            rules_count: 0,
           }
         )
 

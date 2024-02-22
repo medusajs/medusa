@@ -14,6 +14,8 @@ export interface CreateApplicationMethodDTO {
   value?: string | null
   promotion: Promotion | string | PromotionDTO
   max_quantity?: number | null
+  buy_rules_min_quantity?: number | null
+  apply_to_quantity?: number | null
 }
 
 export interface UpdateApplicationMethodDTO {
@@ -24,4 +26,6 @@ export interface UpdateApplicationMethodDTO {
   value?: string | null
   promotion?: Promotion | string | PromotionDTO
   max_quantity?: number | null
+  buy_rules_min_quantity?: number | null
+  apply_to_quantity?: number | null
 }

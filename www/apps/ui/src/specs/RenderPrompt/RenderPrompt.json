@@ -17,12 +17,45 @@
       },
       "description": "The prompt's description."
     },
+    "variant": {
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"danger\" | \"confirmation\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"danger\""
+          },
+          {
+            "name": "literal",
+            "value": "\"confirmation\""
+          }
+        ]
+      },
+      "description": "The variant of the prompt.",
+      "defaultValue": {
+        "value": "\"danger\"",
+        "computed": false
+      }
+    },
     "verificationText": {
       "required": false,
       "tsType": {
         "name": "string"
       },
       "description": "The text the user has to input in order to confirm the action."
+    },
+    "verificationInstruction": {
+      "required": false,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The instruction for the verification text. Useful for passing a translated string to use instead of the default english one.\nShould be in the format: \"Please type {val} to confirm:\"",
+      "defaultValue": {
+        "value": "\"Please type {val} to confirm:\"",
+        "computed": false
+      }
     },
     "cancelText": {
       "required": false,

@@ -6,693 +6,6 @@
 	"flags": {},
 	"children": [
 		{
-			"id": 15,
-			"name": "AbstractPriceSelectionStrategy",
-			"variant": "declaration",
-			"kind": 128,
-			"flags": {
-				"isAbstract": true
-			},
-			"children": [
-				{
-					"id": 20,
-					"name": "constructor",
-					"variant": "declaration",
-					"kind": 512,
-					"flags": {
-						"isProtected": true
-					},
-					"signatures": [
-						{
-							"id": 21,
-							"name": "new AbstractPriceSelectionStrategy",
-							"variant": "signature",
-							"kind": 16384,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "You can use the "
-									},
-									{
-										"kind": "code",
-										"text": "`constructor`"
-									},
-									{
-										"kind": "text",
-										"text": " of your price-selection strategy to access the different services in Medusa through dependency injection."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\n// ...\nimport {\n  AbstractPriceSelectionStrategy,\n  CustomerService,\n} from \"@medusajs/medusa\"\ntype InjectedDependencies = {\n  customerService: CustomerService\n}\n\nclass MyStrategy extends\n  AbstractPriceSelectionStrategy {\n\n  protected customerService_: CustomerService\n\n  constructor(container: InjectedDependencies) {\n    super(container)\n    this.customerService_ = container.customerService\n  }\n\n  // ...\n}\n\nexport default  MyStrategy\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 22,
-									"name": "container",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "An instance of "
-											},
-											{
-												"kind": "code",
-												"text": "`MedusaContainer`"
-											},
-											{
-												"kind": "text",
-												"text": " that allows you to access other resources, such as services, in your Medusa backend."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
-											"qualifiedName": "MedusaContainer"
-										},
-										"name": "MedusaContainer",
-										"package": "@medusajs/types"
-									}
-								},
-								{
-									"id": 23,
-									"name": "config",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {
-										"isOptional": true
-									},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "If this price-selection strategy is created in a plugin, the plugin's options are passed in this parameter."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": 15,
-								"name": "AbstractPriceSelectionStrategy",
-								"package": "@medusajs/medusa"
-							},
-							"overwrites": {
-								"type": "reference",
-								"target": -1,
-								"name": "TransactionBaseService.constructor"
-							}
-						}
-					],
-					"overwrites": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.constructor"
-					}
-				},
-				{
-					"id": 42,
-					"name": "__configModule__",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isOptional": true,
-						"isReadonly": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Record"
-						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "string"
-							},
-							{
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						],
-						"name": "Record",
-						"package": "typescript"
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.__configModule__"
-					}
-				},
-				{
-					"id": 41,
-					"name": "__container__",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isReadonly": true
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "any"
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.__container__"
-					}
-				},
-				{
-					"id": 43,
-					"name": "__moduleDeclaration__",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isOptional": true,
-						"isReadonly": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Record"
-						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "string"
-							},
-							{
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						],
-						"name": "Record",
-						"package": "typescript"
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.__moduleDeclaration__"
-					}
-				},
-				{
-					"id": 25,
-					"name": "config",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isOptional": true,
-						"isReadonly": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "If this price-selection strategy is created in a plugin, the plugin's options are passed in this parameter."
-							}
-						]
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Record"
-						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "string"
-							},
-							{
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						],
-						"name": "Record",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 24,
-					"name": "container",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isReadonly": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "An instance of "
-							},
-							{
-								"kind": "code",
-								"text": "`MedusaContainer`"
-							},
-							{
-								"kind": "text",
-								"text": " that allows you to access other resources, such as services, in your Medusa backend."
-							}
-						]
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
-							"qualifiedName": "MedusaContainer"
-						},
-						"name": "MedusaContainer",
-						"package": "@medusajs/types"
-					}
-				},
-				{
-					"id": 37,
-					"name": "manager_",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
-							"qualifiedName": "EntityManager"
-						},
-						"name": "EntityManager",
-						"package": "typeorm"
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.manager_"
-					}
-				},
-				{
-					"id": 38,
-					"name": "transactionManager_",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "intrinsic",
-								"name": "undefined"
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
-									"qualifiedName": "EntityManager"
-								},
-								"name": "EntityManager",
-								"package": "typeorm"
-							}
-						]
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.transactionManager_"
-					}
-				},
-				{
-					"id": 26,
-					"name": "calculateVariantPrice",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {
-						"isPublic": true,
-						"isAbstract": true
-					},
-					"signatures": [
-						{
-							"id": 27,
-							"name": "calculateVariantPrice",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method retrieves one or more product variants' prices. It's used when retrieving product variants or their associated line items.\nIt's also used when retrieving other entities that product variants and line items belong to, such as products and carts respectively."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "A map, each key is an ID of a variant, and its value is an object holding the price selection result."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "text",
-												"text": "For example, here's a snippet of how the price selection strategy is implemented in the Medusa backend:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  AbstractPriceSelectionStrategy,\n  CustomerService,\n  PriceSelectionContext,\n  PriceSelectionResult,\n} from \"@medusajs/medusa\"\n\ntype InjectedDependencies = {\n  customerService: CustomerService\n}\n\nexport default class MyStrategy extends\n  AbstractPriceSelectionStrategy {\n\n  async calculateVariantPrice(\n    data: {\n      variantId: string\n      quantity?: number\n    }[],\n    context: PriceSelectionContext\n  ): Promise<Map<string, PriceSelectionResult>> {\n    const dataMap = new Map(data.map((d) => [d.variantId, d]))\n\n    const cacheKeysMap = new Map(\n      data.map(({ variantId, quantity }) => [\n        variantId,\n        this.getCacheKey(variantId, { ...context, quantity }),\n      ])\n    )\n\n    const nonCachedData: {\n      variantId: string\n      quantity?: number\n    }[] = []\n\n    const variantPricesMap = new Map<string, PriceSelectionResult>()\n\n    if (!context.ignore_cache) {\n      const cacheHits = await promiseAll(\n        [...cacheKeysMap].map(async ([, cacheKey]) => {\n          return await this.cacheService_.get<PriceSelectionResult>(cacheKey)\n        })\n      )\n\n      if (!cacheHits.length) {\n        nonCachedData.push(...dataMap.values())\n      }\n\n      for (const [index, cacheHit] of cacheHits.entries()) {\n        const variantId = data[index].variantId\n        if (cacheHit) {\n          variantPricesMap.set(variantId, cacheHit)\n          continue\n        }\n\n        nonCachedData.push(dataMap.get(variantId)!)\n      }\n    } else {\n      nonCachedData.push(...dataMap.values())\n    }\n\n    let results: Map<string, PriceSelectionResult> = new Map()\n\n    if (\n      this.featureFlagRouter_.isFeatureEnabled(\n        TaxInclusivePricingFeatureFlag.key\n      )\n    ) {\n      results = await this.calculateVariantPrice_new(nonCachedData, context)\n    } else {\n      results = await this.calculateVariantPrice_old(nonCachedData, context)\n    }\n\n    await promiseAll(\n      [...results].map(async ([variantId, prices]) => {\n        variantPricesMap.set(variantId, prices)\n        if (!context.ignore_cache) {\n          await this.cacheService_.set(cacheKeysMap.get(variantId)!, prices)\n        }\n      })\n    )\n\n    return variantPricesMap\n  }\n\n  // ...\n}\n```"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 28,
-									"name": "data",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The necessary data to perform the price selection for each variant ID."
-											}
-										]
-									},
-									"type": {
-										"type": "array",
-										"elementType": {
-											"type": "reflection",
-											"declaration": {
-												"id": 29,
-												"name": "__type",
-												"variant": "declaration",
-												"kind": 65536,
-												"flags": {},
-												"children": [
-													{
-														"id": 32,
-														"name": "quantity",
-														"variant": "declaration",
-														"kind": 1024,
-														"flags": {
-															"isOptional": true
-														},
-														"type": {
-															"type": "intrinsic",
-															"name": "number"
-														}
-													},
-													{
-														"id": 30,
-														"name": "variantId",
-														"variant": "declaration",
-														"kind": 1024,
-														"flags": {},
-														"type": {
-															"type": "intrinsic",
-															"name": "string"
-														}
-													}
-												],
-												"groups": [
-													{
-														"title": "Properties",
-														"children": [
-															32,
-															30
-														]
-													}
-												]
-											}
-										}
-									}
-								},
-								{
-									"id": 33,
-									"name": "context",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The context of the price selection."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": 68,
-										"name": "PriceSelectionContext",
-										"package": "@medusajs/medusa"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es2015.collection.d.ts",
-											"qualifiedName": "Map"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "reference",
-												"target": 83,
-												"name": "PriceSelectionResult",
-												"package": "@medusajs/medusa"
-											}
-										],
-										"name": "Map",
-										"package": "typescript"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": 3,
-								"name": "IPriceSelectionStrategy.calculateVariantPrice"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": 2,
-						"name": "IPriceSelectionStrategy.calculateVariantPrice"
-					}
-				},
-				{
-					"id": 34,
-					"name": "onVariantsPricesUpdate",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {
-						"isPublic": true
-					},
-					"signatures": [
-						{
-							"id": 35,
-							"name": "onVariantsPricesUpdate",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "This method is called when prices of product variants have changed.\nYou can use it to invalidate prices stored in the cache."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "Resolves after any necessary actions are performed."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "text",
-												"text": "For example, this is how this method is implemented in the Medusa backend's default\nprice selection strategy:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\nimport {\n  AbstractPriceSelectionStrategy,\n  CustomerService,\n} from \"@medusajs/medusa\"\nimport { promiseAll } from \"@medusajs/utils\"\n\ntype InjectedDependencies = {\n  customerService: CustomerService\n}\n\nexport default class MyStrategy extends\n  AbstractPriceSelectionStrategy {\n\n  public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {\n    await promiseAll(\n      variantIds.map(\n        async (id: string) => await this.cacheService_.invalidate(`ps:${id}:*`)\n      )\n    )\n  }\n\n  // ...\n}\n```"
-											},
-											{
-												"kind": "text",
-												"text": "\n\n:::note\n\nLearn more about the cache service in [this documentation](https://docs.medusajs.com/development/cache/overview).\n\n:::"
-											}
-										]
-									}
-								]
-							},
-							"parameters": [
-								{
-									"id": 36,
-									"name": "variantIds",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The IDs of the updated variants."
-											}
-										]
-									},
-									"type": {
-										"type": "array",
-										"elementType": {
-											"type": "intrinsic",
-											"name": "string"
-										}
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "void"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": 10,
-								"name": "IPriceSelectionStrategy.onVariantsPricesUpdate"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": 9,
-						"name": "IPriceSelectionStrategy.onVariantsPricesUpdate"
-					}
-				}
-			],
-			"groups": [
-				{
-					"title": "Constructors",
-					"children": [
-						20
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						42,
-						41,
-						43,
-						25,
-						24,
-						37,
-						38
-					]
-				},
-				{
-					"title": "Methods",
-					"children": [
-						26,
-						34
-					]
-				}
-			],
-			"extendedTypes": [
-				{
-					"type": "reference",
-					"target": {
-						"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-						"qualifiedName": "TransactionBaseService"
-					},
-					"name": "TransactionBaseService",
-					"package": "@medusajs/medusa"
-				}
-			],
-			"implementedTypes": [
-				{
-					"type": "reference",
-					"target": 1,
-					"name": "IPriceSelectionStrategy",
-					"package": "@medusajs/medusa"
-				}
-			]
-		},
-		{
 			"id": 1,
 			"name": "IPriceSelectionStrategy",
 			"variant": "declaration",
@@ -803,6 +116,25 @@
 												"flags": {},
 												"children": [
 													{
+														"id": 6,
+														"name": "variantId",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {},
+														"comment": {
+															"summary": [
+																{
+																	"kind": "text",
+																	"text": "The ID of the variant to retrieve its prices."
+																}
+															]
+														},
+														"type": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													},
+													{
 														"id": 7,
 														"name": "quantity",
 														"variant": "declaration",
@@ -822,33 +154,14 @@
 															"type": "intrinsic",
 															"name": "number"
 														}
-													},
-													{
-														"id": 6,
-														"name": "variantId",
-														"variant": "declaration",
-														"kind": 1024,
-														"flags": {},
-														"comment": {
-															"summary": [
-																{
-																	"kind": "text",
-																	"text": "The ID of the variant to retrieve its prices."
-																}
-															]
-														},
-														"type": {
-															"type": "intrinsic",
-															"name": "string"
-														}
 													}
 												],
 												"groups": [
 													{
 														"title": "Properties",
 														"children": [
-															7,
-															6
+															6,
+															7
 														]
 													}
 												]
@@ -1085,6 +398,713 @@
 			]
 		},
 		{
+			"id": 15,
+			"name": "AbstractPriceSelectionStrategy",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {
+				"isAbstract": true
+			},
+			"children": [
+				{
+					"id": 20,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {
+						"isProtected": true
+					},
+					"signatures": [
+						{
+							"id": 21,
+							"name": "new AbstractPriceSelectionStrategy",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "You can use the "
+									},
+									{
+										"kind": "code",
+										"text": "`constructor`"
+									},
+									{
+										"kind": "text",
+										"text": " of your price-selection strategy to access the different services in Medusa through dependency injection."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// ...\nimport {\n  AbstractPriceSelectionStrategy,\n  CustomerService,\n} from \"@medusajs/medusa\"\ntype InjectedDependencies = {\n  customerService: CustomerService\n}\n\nclass MyStrategy extends\n  AbstractPriceSelectionStrategy {\n\n  protected customerService_: CustomerService\n\n  constructor(container: InjectedDependencies) {\n    super(container)\n    this.customerService_ = container.customerService\n  }\n\n  // ...\n}\n\nexport default  MyStrategy\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 22,
+									"name": "container",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "An instance of "
+											},
+											{
+												"kind": "code",
+												"text": "`MedusaContainer`"
+											},
+											{
+												"kind": "text",
+												"text": " that allows you to access other resources, such as services, in your Medusa backend."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								},
+								{
+									"id": 23,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If this price-selection strategy is created in a plugin, the plugin's options are passed in this parameter."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": 15,
+								"name": "AbstractPriceSelectionStrategy",
+								"package": "@medusajs/medusa"
+							},
+							"overwrites": {
+								"type": "reference",
+								"target": -1,
+								"name": "TransactionBaseService.constructor"
+							}
+						}
+					],
+					"overwrites": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.constructor"
+					}
+				},
+				{
+					"id": 24,
+					"name": "container",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of "
+							},
+							{
+								"kind": "code",
+								"text": "`MedusaContainer`"
+							},
+							{
+								"kind": "text",
+								"text": " that allows you to access other resources, such as services, in your Medusa backend."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 25,
+					"name": "config",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "If this price-selection strategy is created in a plugin, the plugin's options are passed in this parameter."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 26,
+					"name": "calculateVariantPrice",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isPublic": true,
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 27,
+							"name": "calculateVariantPrice",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves one or more product variants' prices. It's used when retrieving product variants or their associated line items.\nIt's also used when retrieving other entities that product variants and line items belong to, such as products and carts respectively."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "A map, each key is an ID of a variant, and its value is an object holding the price selection result."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "For example, here's a snippet of how the price selection strategy is implemented in the Medusa backend:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  AbstractPriceSelectionStrategy,\n  CustomerService,\n  PriceSelectionContext,\n  PriceSelectionResult,\n} from \"@medusajs/medusa\"\n\ntype InjectedDependencies = {\n  customerService: CustomerService\n}\n\nexport default class MyStrategy extends\n  AbstractPriceSelectionStrategy {\n\n  async calculateVariantPrice(\n    data: {\n      variantId: string\n      quantity?: number\n    }[],\n    context: PriceSelectionContext\n  ): Promise<Map<string, PriceSelectionResult>> {\n    const dataMap = new Map(data.map((d) => [d.variantId, d]))\n\n    const cacheKeysMap = new Map(\n      data.map(({ variantId, quantity }) => [\n        variantId,\n        this.getCacheKey(variantId, { ...context, quantity }),\n      ])\n    )\n\n    const nonCachedData: {\n      variantId: string\n      quantity?: number\n    }[] = []\n\n    const variantPricesMap = new Map<string, PriceSelectionResult>()\n\n    if (!context.ignore_cache) {\n      const cacheHits = await promiseAll(\n        [...cacheKeysMap].map(async ([, cacheKey]) => {\n          return await this.cacheService_.get<PriceSelectionResult>(cacheKey)\n        })\n      )\n\n      if (!cacheHits.length) {\n        nonCachedData.push(...dataMap.values())\n      }\n\n      for (const [index, cacheHit] of cacheHits.entries()) {\n        const variantId = data[index].variantId\n        if (cacheHit) {\n          variantPricesMap.set(variantId, cacheHit)\n          continue\n        }\n\n        nonCachedData.push(dataMap.get(variantId)!)\n      }\n    } else {\n      nonCachedData.push(...dataMap.values())\n    }\n\n    let results: Map<string, PriceSelectionResult> = new Map()\n\n    if (\n      this.featureFlagRouter_.isFeatureEnabled(\n        TaxInclusivePricingFeatureFlag.key\n      )\n    ) {\n      results = await this.calculateVariantPrice_new(nonCachedData, context)\n    } else {\n      results = await this.calculateVariantPrice_old(nonCachedData, context)\n    }\n\n    await promiseAll(\n      [...results].map(async ([variantId, prices]) => {\n        variantPricesMap.set(variantId, prices)\n        if (!context.ignore_cache) {\n          await this.cacheService_.set(cacheKeysMap.get(variantId)!, prices)\n        }\n      })\n    )\n\n    return variantPricesMap\n  }\n\n  // ...\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 28,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The necessary data to perform the price selection for each variant ID."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reflection",
+											"declaration": {
+												"id": 29,
+												"name": "__type",
+												"variant": "declaration",
+												"kind": 65536,
+												"flags": {},
+												"children": [
+													{
+														"id": 30,
+														"name": "variantId",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {},
+														"type": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													},
+													{
+														"id": 32,
+														"name": "quantity",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {
+															"isOptional": true
+														},
+														"type": {
+															"type": "intrinsic",
+															"name": "number"
+														}
+													}
+												],
+												"groups": [
+													{
+														"title": "Properties",
+														"children": [
+															30,
+															32
+														]
+													}
+												]
+											}
+										}
+									}
+								},
+								{
+									"id": 33,
+									"name": "context",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The context of the price selection."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 68,
+										"name": "PriceSelectionContext",
+										"package": "@medusajs/medusa"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es2015.collection.d.ts",
+											"qualifiedName": "Map"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "reference",
+												"target": 83,
+												"name": "PriceSelectionResult",
+												"package": "@medusajs/medusa"
+											}
+										],
+										"name": "Map",
+										"package": "typescript"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": 3,
+								"name": "IPriceSelectionStrategy.calculateVariantPrice"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": 2,
+						"name": "IPriceSelectionStrategy.calculateVariantPrice"
+					}
+				},
+				{
+					"id": 34,
+					"name": "onVariantsPricesUpdate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isPublic": true
+					},
+					"signatures": [
+						{
+							"id": 35,
+							"name": "onVariantsPricesUpdate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is called when prices of product variants have changed.\nYou can use it to invalidate prices stored in the cache."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves after any necessary actions are performed."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "For example, this is how this method is implemented in the Medusa backend's default\nprice selection strategy:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport {\n  AbstractPriceSelectionStrategy,\n  CustomerService,\n} from \"@medusajs/medusa\"\nimport { promiseAll } from \"@medusajs/utils\"\n\ntype InjectedDependencies = {\n  customerService: CustomerService\n}\n\nexport default class MyStrategy extends\n  AbstractPriceSelectionStrategy {\n\n  public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {\n    await promiseAll(\n      variantIds.map(\n        async (id: string) => await this.cacheService_.invalidate(`ps:${id}:*`)\n      )\n    )\n  }\n\n  // ...\n}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\n:::note\n\nLearn more about the cache service in [this documentation](https://docs.medusajs.com/development/cache/overview).\n\n:::"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 36,
+									"name": "variantIds",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The IDs of the updated variants."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": 10,
+								"name": "IPriceSelectionStrategy.onVariantsPricesUpdate"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": 9,
+						"name": "IPriceSelectionStrategy.onVariantsPricesUpdate"
+					}
+				},
+				{
+					"id": 37,
+					"name": "manager_",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+							"qualifiedName": "EntityManager"
+						},
+						"name": "EntityManager",
+						"package": "typeorm"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.manager_"
+					}
+				},
+				{
+					"id": 38,
+					"name": "transactionManager_",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "undefined"
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+									"qualifiedName": "EntityManager"
+								},
+								"name": "EntityManager",
+								"package": "typeorm"
+							}
+						]
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.transactionManager_"
+					}
+				},
+				{
+					"id": 41,
+					"name": "__container__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "any"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__container__"
+					}
+				},
+				{
+					"id": 42,
+					"name": "__configModule__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__configModule__"
+					}
+				},
+				{
+					"id": 43,
+					"name": "__moduleDeclaration__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__moduleDeclaration__"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						20
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						24,
+						25,
+						37,
+						38,
+						41,
+						42,
+						43
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						26,
+						34
+					]
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+						"qualifiedName": "TransactionBaseService"
+					},
+					"name": "TransactionBaseService",
+					"package": "@medusajs/medusa"
+				}
+			],
+			"implementedTypes": [
+				{
+					"type": "reference",
+					"target": 1,
+					"name": "IPriceSelectionStrategy",
+					"package": "@medusajs/medusa"
+				}
+			]
+		},
+		{
 			"id": 68,
 			"name": "PriceSelectionContext",
 			"variant": "declaration",
@@ -1121,27 +1141,6 @@
 					}
 				},
 				{
-					"id": 73,
-					"name": "currency_code",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The currency code the customer is using."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
 					"id": 70,
 					"name": "customer_id",
 					"variant": "declaration",
@@ -1163,8 +1162,8 @@
 					}
 				},
 				{
-					"id": 76,
-					"name": "ignore_cache",
+					"id": 71,
+					"name": "region_id",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
@@ -1174,34 +1173,13 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Whether to calculate the prices even if the value of an earlier price calculation\nis available in the cache."
+								"text": "The region's ID."
 							}
 						]
 					},
 					"type": {
 						"type": "intrinsic",
-						"name": "boolean"
-					}
-				},
-				{
-					"id": 74,
-					"name": "include_discount_prices",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "Whether the price list's prices should be retrieved or not."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "boolean"
+						"name": "string"
 					}
 				},
 				{
@@ -1242,8 +1220,8 @@
 					}
 				},
 				{
-					"id": 71,
-					"name": "region_id",
+					"id": 73,
+					"name": "currency_code",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
@@ -1253,13 +1231,34 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The region's ID."
+								"text": "The currency code the customer is using."
 							}
 						]
 					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
+					}
+				},
+				{
+					"id": 74,
+					"name": "include_discount_prices",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Whether the price list's prices should be retrieved or not."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
 					}
 				},
 				{
@@ -1290,6 +1289,27 @@
 							"package": "@medusajs/medusa"
 						}
 					}
+				},
+				{
+					"id": 76,
+					"name": "ignore_cache",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Whether to calculate the prices even if the value of an earlier price calculation\nis available in the cache."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
 				}
 			],
 			"groups": [
@@ -1297,16 +1317,129 @@
 					"title": "Properties",
 					"children": [
 						69,
-						73,
 						70,
-						76,
-						74,
-						72,
 						71,
-						75
+						72,
+						73,
+						74,
+						75,
+						76
 					]
 				}
 			]
+		},
+		{
+			"id": 77,
+			"name": "PriceType",
+			"variant": "declaration",
+			"kind": 32,
+			"flags": {},
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 78,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 81,
+							"name": "DEFAULT",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
+									"qualifiedName": "DefaultPriceType.DEFAULT"
+								},
+								"name": "DEFAULT",
+								"package": "@medusajs/medusa",
+								"qualifiedName": "DefaultPriceType.DEFAULT"
+							},
+							"defaultValue": "\"default\""
+						},
+						{
+							"id": 79,
+							"name": "SALE",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/medusa/src/types/price-list.ts",
+									"qualifiedName": "PriceListType.SALE"
+								},
+								"name": "SALE",
+								"package": "@medusajs/medusa",
+								"qualifiedName": "PriceListType.SALE"
+							},
+							"defaultValue": "\"sale\""
+						},
+						{
+							"id": 80,
+							"name": "OVERRIDE",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/medusa/src/types/price-list.ts",
+									"qualifiedName": "PriceListType.OVERRIDE"
+								},
+								"name": "OVERRIDE",
+								"package": "@medusajs/medusa",
+								"qualifiedName": "PriceListType.OVERRIDE"
+							},
+							"defaultValue": "\"override\""
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								81,
+								79,
+								80
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 82,
+			"name": "PriceType",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"type": {
+				"type": "union",
+				"types": [
+					{
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
+							"qualifiedName": "DefaultPriceType"
+						},
+						"name": "DefaultPriceType",
+						"package": "@medusajs/medusa"
+					},
+					{
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/medusa/src/types/price-list.ts",
+							"qualifiedName": "PriceListType"
+						},
+						"name": "PriceListType",
+						"package": "@medusajs/medusa"
+					}
+				]
+			}
 		},
 		{
 			"id": 83,
@@ -1323,6 +1456,64 @@
 				]
 			},
 			"children": [
+				{
+					"id": 84,
+					"name": "originalPrice",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The original price of the variant which depends on the selected region or currency code in the context object.\nIf both region ID and currency code are available in the context object, the region has higher precedence."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 85,
+					"name": "originalPriceIncludesTax",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Whether the original price includes taxes or not. This is only available\nfor [Tax-Inclusive Pricing](https://docs.medusajs.com/modules/taxes/inclusive-pricing)."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						]
+					}
+				},
 				{
 					"id": 86,
 					"name": "calculatedPrice",
@@ -1413,64 +1604,6 @@
 					}
 				},
 				{
-					"id": 84,
-					"name": "originalPrice",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The original price of the variant which depends on the selected region or currency code in the context object.\nIf both region ID and currency code are available in the context object, the region has higher precedence."
-							}
-						]
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "number"
-							}
-						]
-					}
-				},
-				{
-					"id": 85,
-					"name": "originalPriceIncludesTax",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "Whether the original price includes taxes or not. This is only available\nfor [Tax-Inclusive Pricing](https://docs.medusajs.com/modules/taxes/inclusive-pricing)."
-							}
-						]
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "boolean"
-							}
-						]
-					}
-				},
-				{
 					"id": 89,
 					"name": "prices",
 					"variant": "declaration",
@@ -1510,128 +1643,15 @@
 				{
 					"title": "Properties",
 					"children": [
+						84,
+						85,
 						86,
 						87,
 						88,
-						84,
-						85,
 						89
 					]
 				}
 			]
-		},
-		{
-			"id": 82,
-			"name": "PriceType",
-			"variant": "declaration",
-			"kind": 2097152,
-			"flags": {},
-			"type": {
-				"type": "union",
-				"types": [
-					{
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-							"qualifiedName": "DefaultPriceType"
-						},
-						"name": "DefaultPriceType",
-						"package": "@medusajs/medusa"
-					},
-					{
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../packages/medusa/src/types/price-list.ts",
-							"qualifiedName": "PriceListType"
-						},
-						"name": "PriceListType",
-						"package": "@medusajs/medusa"
-					}
-				]
-			}
-		},
-		{
-			"id": 77,
-			"name": "PriceType",
-			"variant": "declaration",
-			"kind": 32,
-			"flags": {},
-			"type": {
-				"type": "reflection",
-				"declaration": {
-					"id": 78,
-					"name": "__type",
-					"variant": "declaration",
-					"kind": 65536,
-					"flags": {},
-					"children": [
-						{
-							"id": 81,
-							"name": "DEFAULT",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../packages/medusa/src/interfaces/price-selection-strategy.ts",
-									"qualifiedName": "DefaultPriceType.DEFAULT"
-								},
-								"name": "DEFAULT",
-								"package": "@medusajs/medusa",
-								"qualifiedName": "DefaultPriceType.DEFAULT"
-							},
-							"defaultValue": "\"default\""
-						},
-						{
-							"id": 80,
-							"name": "OVERRIDE",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../packages/medusa/src/types/price-list.ts",
-									"qualifiedName": "PriceListType.OVERRIDE"
-								},
-								"name": "OVERRIDE",
-								"package": "@medusajs/medusa",
-								"qualifiedName": "PriceListType.OVERRIDE"
-							},
-							"defaultValue": "\"override\""
-						},
-						{
-							"id": 79,
-							"name": "SALE",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../packages/medusa/src/types/price-list.ts",
-									"qualifiedName": "PriceListType.SALE"
-								},
-								"name": "SALE",
-								"package": "@medusajs/medusa",
-								"qualifiedName": "PriceListType.SALE"
-							},
-							"defaultValue": "\"sale\""
-						}
-					],
-					"groups": [
-						{
-							"title": "Properties",
-							"children": [
-								81,
-								80,
-								79
-							]
-						}
-					]
-				}
-			}
 		}
 	],
 	"groups": [

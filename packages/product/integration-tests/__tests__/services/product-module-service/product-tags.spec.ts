@@ -1,29 +1,38 @@
-import { initialize } from "../../../../src"
-import { DB_URL, TestDatabase } from "../../../utils"
-import { IProductModuleService } from "@medusajs/types"
-import { Product, ProductTag } from "@models"
+import { MedusaModule, Modules } from "@medusajs/modules-sdk"
+import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductTypes } from "@medusajs/types"
+import { Product, ProductTag } from "@models"
+import { initModules } from "medusa-test-utils"
+import { TestDatabase, getInitModuleConfig } from "../../../utils"
 
 describe("ProductModuleService product tags", () => {
   let service: IProductModuleService
   let testManager: SqlEntityManager
-  let repositoryManager: SqlEntityManager
   let tagOne: ProductTag
   let tagTwo: ProductTag
   let productOne: Product
   let productTwo: Product
 
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    MedusaModule.clearInstances()
+
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PRODUCT]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
+
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
-    repositoryManager = await TestDatabase.forkManager()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-      },
-    })
 
     testManager = await TestDatabase.forkManager()
     productOne = testManager.create(Product, {
@@ -103,7 +112,7 @@ describe("ProductModuleService product tags", () => {
         {
           select: ["value", "products.id"],
           relations: ["products"],
-          take: 1
+          take: 1,
         }
       )
 
@@ -111,9 +120,11 @@ describe("ProductModuleService product tags", () => {
         {
           id: tagOne.id,
           value: tagOne.value,
-          products: [{
-            id: productOne.id,
-          }],
+          products: [
+            {
+              id: productOne.id,
+            },
+          ],
         },
       ])
     })
@@ -149,11 +160,9 @@ describe("ProductModuleService product tags", () => {
           id: tagOne.id,
         }),
       ])
-
       ;[tags, count] = await service.listAndCountTags({}, { take: 1 })
 
       expect(count).toEqual(2)
-
       ;[tags, count] = await service.listAndCountTags({}, { take: 1, skip: 1 })
 
       expect(count).toEqual(2)
@@ -172,7 +181,7 @@ describe("ProductModuleService product tags", () => {
         {
           select: ["value", "products.id"],
           relations: ["products"],
-          take: 1
+          take: 1,
         }
       )
 
@@ -181,9 +190,11 @@ describe("ProductModuleService product tags", () => {
         {
           id: tagOne.id,
           value: tagOne.value,
-          products: [{
-            id: productOne.id,
-          }],
+          products: [
+            {
+              id: productOne.id,
+            },
+          ],
         },
       ])
     })
@@ -196,28 +207,27 @@ describe("ProductModuleService product tags", () => {
       expect(tag).toEqual(
         expect.objectContaining({
           id: tagOne.id,
-        }),
+        })
       )
     })
 
     it("should return requested attributes when requested through config", async () => {
-      const tag = await service.retrieveTag(
-        tagOne.id,
-        {
-          select: ["id", "value", "products.title"],
-          relations: ["products"],
-        }
-      )
+      const tag = await service.retrieveTag(tagOne.id, {
+        select: ["id", "value", "products.title"],
+        relations: ["products"],
+      })
 
       expect(tag).toEqual(
         expect.objectContaining({
           id: tagOne.id,
           value: tagOne.value,
-          products: [{
-            id: "product-1",
-            title: "product 1",
-          }],
-        }),
+          products: [
+            {
+              id: "product-1",
+              title: "product 1",
+            },
+          ],
+        })
       )
     })
 
@@ -230,7 +240,9 @@ describe("ProductModuleService product tags", () => {
         error = e
       }
 
-      expect(error.message).toEqual("ProductTag with id: does-not-exist was not found")
+      expect(error.message).toEqual(
+        "ProductTag with id: does-not-exist was not found"
+      )
     })
   })
 
@@ -238,12 +250,10 @@ describe("ProductModuleService product tags", () => {
     const tagId = "tag-1"
 
     it("should delete the product tag given an ID successfully", async () => {
-      await service.deleteTags(
-        [tagId],
-      )
+      await service.deleteTags([tagId])
 
       const tags = await service.listTags({
-        id: tagId
+        id: tagId,
       })
 
       expect(tags).toHaveLength(0)
@@ -254,12 +264,12 @@ describe("ProductModuleService product tags", () => {
     const tagId = "tag-1"
 
     it("should update the value of the tag successfully", async () => {
-      await service.updateTags(
-        [{
+      await service.updateTags([
+        {
           id: tagId,
-          value: "UK"
-        }]
-      )
+          value: "UK",
+        },
+      ])
 
       const productTag = await service.retrieveTag(tagId)
 
@@ -273,31 +283,32 @@ describe("ProductModuleService product tags", () => {
         await service.updateTags([
           {
             id: "does-not-exist",
-            value: "UK"
-          }
+            value: "UK",
+          },
         ])
       } catch (e) {
         error = e
       }
 
-      expect(error.message).toEqual('ProductTag with id "does-not-exist" not found')
+      expect(error.message).toEqual(
+        'ProductTag with id "does-not-exist" not found'
+      )
     })
   })
 
   describe("createTags", () => {
     it("should create a tag successfully", async () => {
-      const res = await service.createTags(
-        [{
-          value: "UK"
-        }]
-      )
+      const res = await service.createTags([
+        {
+          value: "UK",
+        },
+      ])
 
       const productTag = await service.listTags({
-        value: "UK"
+        value: "UK",
       })
 
       expect(productTag[0]?.value).toEqual("UK")
     })
   })
 })
-

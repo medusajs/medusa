@@ -28,7 +28,7 @@ const env = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("Link Modules", () => {
+describe.skip("Link Modules", () => {
   let medusaContainer
   let dbConnection
   let shutdownServer

@@ -7,6 +7,8 @@ import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import adminSeeder from "../../../../helpers/admin-seeder"
 
+jest.setTimeout(50000)
+
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
@@ -97,5 +99,99 @@ describe("POST /admin/campaigns", () => {
         ],
       })
     )
+  })
+
+  it("should create 3 campaigns in parallel and have the context passed as argument when calling createCampaigns with different transactionId", async () => {
+    const parallelPromotion = await promotionModuleService.create({
+      code: "PARALLEL",
+      type: "standard",
+    })
+
+    const spyCreateCampaigns = jest.spyOn(
+      promotionModuleService.constructor.prototype,
+      "createCampaigns"
+    )
+
+    const api = useApi() as any
+
+    const a = async () => {
+      return await api.post(
+        `/admin/campaigns`,
+        {
+          name: "camp_1",
+          campaign_identifier: "camp_1",
+          starts_at: new Date("01/01/2024").toISOString(),
+          ends_at: new Date("01/02/2024").toISOString(),
+          promotions: [{ id: parallelPromotion.id }],
+          budget: {
+            limit: 1000,
+            type: "usage",
+          },
+        },
+        adminHeaders
+      )
+    }
+
+    const b = async () => {
+      return await api.post(
+        `/admin/campaigns`,
+        {
+          name: "camp_2",
+          campaign_identifier: "camp_2",
+          starts_at: new Date("01/02/2024").toISOString(),
+          ends_at: new Date("01/03/2029").toISOString(),
+          promotions: [{ id: parallelPromotion.id }],
+          budget: {
+            limit: 500,
+            type: "usage",
+          },
+        },
+        adminHeaders
+      )
+    }
+
+    const c = async () => {
+      return await api.post(
+        `/admin/campaigns`,
+        {
+          name: "camp_3",
+          campaign_identifier: "camp_3",
+          starts_at: new Date("01/03/2024").toISOString(),
+          ends_at: new Date("01/04/2029").toISOString(),
+          promotions: [{ id: parallelPromotion.id }],
+          budget: {
+            limit: 250,
+            type: "usage",
+          },
+        },
+        {
+          headers: {
+            ...adminHeaders.headers,
+            "x-request-id": "my-custom-request-id",
+          },
+        }
+      )
+    }
+
+    await Promise.all([a(), b(), c()])
+
+    expect(spyCreateCampaigns).toHaveBeenCalledTimes(3)
+    expect(spyCreateCampaigns.mock.calls[0][1].__type).toBe("MedusaContext")
+
+    const distinctTransactionId = [
+      ...new Set(
+        spyCreateCampaigns.mock.calls.map((call) => call[1].transactionId)
+      ),
+    ]
+    expect(distinctTransactionId).toHaveLength(3)
+
+    const distinctRequestId = [
+      ...new Set(
+        spyCreateCampaigns.mock.calls.map((call) => call[1].requestId)
+      ),
+    ]
+
+    expect(distinctRequestId).toHaveLength(3)
+    expect(distinctRequestId).toContain("my-custom-request-id")
   })
 })

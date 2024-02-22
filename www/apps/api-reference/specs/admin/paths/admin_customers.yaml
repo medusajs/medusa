@@ -50,7 +50,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_customers/getundefined
+        $ref: ../code_samples/tsx/admin_customers/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -100,7 +100,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_customers/postundefined
+        $ref: ../code_samples/tsx/admin_customers/post.tsx
     - lang: Shell
       label: cURL
       source:

@@ -287,7 +287,7 @@ type CalendarProps = {
    */
   toDate?: Date
   /**
-   * Locale to use for formatting dates. To change the locale pass a `date-fns` locale object.
+   * The locale to use for formatting dates. To change the locale pass a date-fns locale object.
    */
   locale?: Locale
 }

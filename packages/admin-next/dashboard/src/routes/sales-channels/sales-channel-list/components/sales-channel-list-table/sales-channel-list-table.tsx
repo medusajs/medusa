@@ -84,16 +84,16 @@ export const SalesChannelListTable = () => {
   }
 
   return (
-    <Container className="p-0 divide-y">
+    <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("salesChannels.domain")}</Heading>
         <Link to="/settings/sales-channels/create">
           <Button size="small" variant="secondary">
-            {t("general.create")}
+            {t("actions.create")}
           </Button>
         </Link>
       </div>
-      <div className="px-6 py-4 flex items-center justify-between">
+      <div className="flex items-center justify-between px-6 py-4">
         <div></div>
         <div className="flex items-center gap-x-2">
           <Query />
@@ -179,8 +179,8 @@ const SalesChannelActions = ({
       }),
       verificationInstruction: t("general.typeToConfirm"),
       verificationText: salesChannel.name,
-      confirmText: t("general.delete"),
-      cancelText: t("general.cancel"),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
     })
 
     if (!confirm) {
@@ -197,7 +197,7 @@ const SalesChannelActions = ({
           actions: [
             {
               icon: <PencilSquare />,
-              label: t("general.edit"),
+              label: t("actions.edit"),
               to: `/settings/sales-channels/${salesChannel.id}/edit`,
             },
           ],
@@ -206,7 +206,7 @@ const SalesChannelActions = ({
           actions: [
             {
               icon: <Trash />,
-              label: t("general.delete"),
+              label: t("actions.delete"),
               onClick: handleDelete,
             },
           ],

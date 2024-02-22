@@ -1,12 +1,10 @@
-import { FocusModal } from "@medusajs/ui"
-import { useRouteModalState } from "../../../hooks/use-route-modal-state"
+import { RouteFocusModal } from "../../../components/route-modal"
+import { InviteUserForm } from "./components/invite-user-form/invite-user-form"
 
 export const UserInvite = () => {
-  const [open, onOpenChange] = useRouteModalState()
-
   return (
-    <FocusModal open={open} onOpenChange={onOpenChange}>
-      <FocusModal.Content></FocusModal.Content>
-    </FocusModal>
+    <RouteFocusModal>
+      <InviteUserForm />
+    </RouteFocusModal>
   )
 }

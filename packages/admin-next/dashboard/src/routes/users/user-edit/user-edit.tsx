@@ -1,12 +1,25 @@
-import { Drawer } from "@medusajs/ui"
-import { useRouteModalState } from "../../../hooks/use-route-modal-state"
+import { Heading } from "@medusajs/ui"
+import { useAdminUser } from "medusa-react"
+import { useTranslation } from "react-i18next"
+import { useParams } from "react-router-dom"
+import { RouteDrawer } from "../../../components/route-modal"
+import { EditUserForm } from "./components/edit-user-form"
 
 export const UserEdit = () => {
-  const [open, onOpenChange] = useRouteModalState()
+  const { t } = useTranslation()
+  const { id } = useParams()
+  const { user, isLoading, isError, error } = useAdminUser(id!)
+
+  if (isError) {
+    throw error
+  }
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content></Drawer.Content>
-    </Drawer>
+    <RouteDrawer>
+      <RouteDrawer.Header>
+        <Heading>{t("users.editUser")}</Heading>
+      </RouteDrawer.Header>
+      {!isLoading && user && <EditUserForm user={user} />}
+    </RouteDrawer>
   )
 }

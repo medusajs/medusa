@@ -1,10 +1,11 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { MapToConfig } from "@medusajs/utils"
-import { Customer } from "@models"
+import { Customer, CustomerGroup } from "@models"
 
 export const LinkableKeys = {
   customer_id: Customer.name,
+  customer_group_id: CustomerGroup.name,
 }
 
 const entityLinkableKeysMap: MapToConfig = {}

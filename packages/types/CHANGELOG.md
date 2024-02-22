@@ -1,5 +1,75 @@
 # @medusajs/types
 
+## 1.11.13
+
+### Patch Changes
+
+- [#6328](https://github.com/medusajs/medusa/pull/6328) [`3fd68d197`](https://github.com/medusajs/medusa/commit/3fd68d1979828e3cde6e028e9e6ab0d0fadcb77b) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(fulfillment): Initialize models work
+
+## 1.11.12
+
+### Patch Changes
+
+- [#6319](https://github.com/medusajs/medusa/pull/6319) [`12054f5c0`](https://github.com/medusajs/medusa/commit/12054f5c01915899223ddc6da734151b31fbb23b) Thanks [@adrien2p](https://github.com/adrien2p)! - Feat/shipping method init
+
+- [#5923](https://github.com/medusajs/medusa/pull/5923) [`3db2f95e65`](https://github.com/medusajs/medusa/commit/3db2f95e65909f4fff432990b48be74509052e83) Thanks [@fPolic](https://github.com/fPolic)! - feat: Sales Channel module
+
+- [#6312](https://github.com/medusajs/medusa/pull/6312) [`96ba49329`](https://github.com/medusajs/medusa/commit/96ba49329b6b05922c90f0c55f16455cb40aa5ca) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Load custom modules by path
+
+- [#6263](https://github.com/medusajs/medusa/pull/6263) [`45134e4d1`](https://github.com/medusajs/medusa/commit/45134e4d11cfcdc08dbd10aae687bfbe9e848ab9) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Workflows passing MedusaContext as argument
+
+- [#6333](https://github.com/medusajs/medusa/pull/6333) [`82c728bec`](https://github.com/medusajs/medusa/commit/82c728bec7232a245a67dca0b01b28572ebea75d) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Allow configuring of staged job polling batch size
+
+- [#6272](https://github.com/medusajs/medusa/pull/6272) [`e749dd653`](https://github.com/medusajs/medusa/commit/e749dd653c755bfc3632b134d32c15ceaee0a852) Thanks [@riqwan](https://github.com/riqwan)! - feat(types): added computed actions for automatic promotions
+
+- [#6218](https://github.com/medusajs/medusa/pull/6218) [`884428a1b`](https://github.com/medusajs/medusa/commit/884428a1b573e499d7659aefed639bf797147428) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Feat: Event Aggregator
+
+- [#6197](https://github.com/medusajs/medusa/pull/6197) [`d1c18a309`](https://github.com/medusajs/medusa/commit/d1c18a3090d71c68a98343fdbb53516f416504c5) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(stock-location, medusa, types): add `q` and `order` query parameters to stock locations list endpoint
+
+## 1.11.11
+
+### Patch Changes
+
+- [#6094](https://github.com/medusajs/medusa/pull/6094) [`68ddd866a5`](https://github.com/medusajs/medusa/commit/68ddd866a5ff9414e2db5b80d75acc5e81948540) Thanks [@riqwan](https://github.com/riqwan)! - feat(utils,types): add registerUsages for promotion's computed actions
+
+- [#6152](https://github.com/medusajs/medusa/pull/6152) [`99045848f`](https://github.com/medusajs/medusa/commit/99045848fd3e863359c7878d9bc05271ed083a0e) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,types,core-flows,utils): added delete endpoints for campaigns and promotions
+
+- [#6125](https://github.com/medusajs/medusa/pull/6125) [`af7af7374`](https://github.com/medusajs/medusa/commit/af7af737455daa0f330840a9678e6339e519dfe6) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,utils): added campaign get endpoints
+
+- [#6092](https://github.com/medusajs/medusa/pull/6092) [`fc6b1772a7`](https://github.com/medusajs/medusa/commit/fc6b1772a71582bb48602c5cac7b2297e9d267a9) Thanks [@fPolic](https://github.com/fPolic)! - feat: Payment Module service interface
+
+- [#5763](https://github.com/medusajs/medusa/pull/5763) [`d85fee42e`](https://github.com/medusajs/medusa/commit/d85fee42ee7f661310584dfee5741d6c53b989bb) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Medusa App loading modules reference
+
+- [#6127](https://github.com/medusajs/medusa/pull/6127) [`5e655dd59`](https://github.com/medusajs/medusa/commit/5e655dd59bda4ffface28db38021ba71cae6de10) Thanks [@adrien2p](https://github.com/adrien2p)! - chore: Hide repository creation if they are not custom + add upsert support by default
+
+- [#6114](https://github.com/medusajs/medusa/pull/6114) [`b132ff7669`](https://github.com/medusajs/medusa/commit/b132ff76693148b3a06373c168e8dd5e02970757) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Add line items in cart creation
+
+- [#6077](https://github.com/medusajs/medusa/pull/6077) [`e28fa7fbdf`](https://github.com/medusajs/medusa/commit/e28fa7fbdf45c5b1fa19848db731132a0bf1757d) Thanks [@riqwan](https://github.com/riqwan)! - feat(types): add campaign + promotion operations
+
+- [#6110](https://github.com/medusajs/medusa/pull/6110) [`a12c28b7d5`](https://github.com/medusajs/medusa/commit/a12c28b7d5faed733bebbb4963dff50b9c8a33bc) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,types): add promotion list and get endpoint
+
+- [#6050](https://github.com/medusajs/medusa/pull/6050) [`b782d3bcb7`](https://github.com/medusajs/medusa/commit/b782d3bcb7e8088a962584b9a55200dd29c2161c) Thanks [@riqwan](https://github.com/riqwan)! - feat(utils,types): added item/shipping adjustments for order/items/shipping_methods
+
+- [#6101](https://github.com/medusajs/medusa/pull/6101) [`7f7cb2a263`](https://github.com/medusajs/medusa/commit/7f7cb2a263c26baf540b05a40ab3732ffeb0c73c) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(cart): Shipping methods
+
+- [#6128](https://github.com/medusajs/medusa/pull/6128) [`302323916`](https://github.com/medusajs/medusa/commit/302323916b6d8eaf571cd59b5fc92a913af207de) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Modules: Workflows Engine in-memory and Redis
+
+- [#6055](https://github.com/medusajs/medusa/pull/6055) [`ce81cade88`](https://github.com/medusajs/medusa/commit/ce81cade887659cefe9638e3c1c2807378191c62) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(cart): Add CartService and AddressService
+
+- [#6119](https://github.com/medusajs/medusa/pull/6119) [`fd78f5e24`](https://github.com/medusajs/medusa/commit/fd78f5e24263f5e158c3b7d11fbf0a4436e9c17a) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(cart): Shipping method adjustments
+
+- [#6012](https://github.com/medusajs/medusa/pull/6012) [`192bc336cc`](https://github.com/medusajs/medusa/commit/192bc336cc2b6ec3820d94524c046dcd3c4ac7d9) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(cart): Partial module service implementation
+
+- [#6112](https://github.com/medusajs/medusa/pull/6112) [`06b33a9b4`](https://github.com/medusajs/medusa/commit/06b33a9b4525b77b1b14b35b973209700945654e) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(cart): Line item adjustments
+
+- [#6087](https://github.com/medusajs/medusa/pull/6087) [`130c641e5c`](https://github.com/medusajs/medusa/commit/130c641e5c91cf831de64fb87aebbfdc4d23530d) Thanks [@adrien2p](https://github.com/adrien2p)! - chore: Abstract module services
+
+- [#6063](https://github.com/medusajs/medusa/pull/6063) [`fade8ea7bf`](https://github.com/medusajs/medusa/commit/fade8ea7bf560343ecbde116d226ac44053cdb8e) Thanks [@riqwan](https://github.com/riqwan)! - feat(utils,types): campaigns and campaign budgets + services CRUD
+
+- [#6059](https://github.com/medusajs/medusa/pull/6059) [`8472460f53`](https://github.com/medusajs/medusa/commit/8472460f533322cc4535199aa768ac163021bc79) Thanks [@fPolic](https://github.com/fPolic)! - feat: add Payment module package
+
+- [#6159](https://github.com/medusajs/medusa/pull/6159) [`68d8daccd`](https://github.com/medusajs/medusa/commit/68d8daccd2a8508a13e211130e49017198b51fab) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,types): added buyget support for modules
+
 ## 1.11.10
 
 ### Patch Changes

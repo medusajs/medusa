@@ -6,602 +6,369 @@
 	"flags": {},
 	"children": [
 		{
-			"id": 23,
-			"name": "AbstractTaxService",
+			"id": 1,
+			"name": "ShippingTaxCalculationLine",
 			"variant": "declaration",
-			"kind": 128,
-			"flags": {
-				"isAbstract": true
+			"kind": 2097152,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "A shipping method and the tax rates configured to apply to the\nshipping method."
+					}
+				]
 			},
-			"children": [
-				{
-					"id": 29,
-					"name": "constructor",
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 2,
+					"name": "__type",
 					"variant": "declaration",
-					"kind": 512,
-					"flags": {
-						"isProtected": true
-					},
-					"signatures": [
+					"kind": 65536,
+					"flags": {},
+					"children": [
 						{
-							"id": 30,
-							"name": "new AbstractTaxService",
-							"variant": "signature",
-							"kind": 16384,
+							"id": 3,
+							"name": "shipping_method",
+							"variant": "declaration",
+							"kind": 1024,
 							"flags": {},
 							"comment": {
 								"summary": [
 									{
 										"kind": "text",
-										"text": "You can use the "
-									},
-									{
-										"kind": "code",
-										"text": "`constructor`"
-									},
-									{
-										"kind": "text",
-										"text": " of your tax provider to access the different services in Medusa through dependency injection.\n\nYou can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.\nAdditionally, if you’re creating your tax provider as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\n// ...\nimport { LineItemService } from \"@medusajs/medusa\"\n\ntype InjectedDependencies = {\n  lineItemService: LineItemService\n}\n\nclass MyTaxService extends AbstractTaxService {\n  protected readonly lineItemService_: LineItemService\n\n  constructor({ lineItemService }: InjectedDependencies) {\n    super(arguments[0])\n    this.lineItemService_ = lineItemService\n\n    // you can also initialize a client that\n    // communicates with a third-party service.\n    this.client = new Client(options)\n  }\n\n  // ...\n}\n\nexport default MyTaxService\n```"
-											}
-										]
+										"text": "The shipping method to calculate taxes for."
 									}
 								]
 							},
-							"parameters": [
-								{
-									"id": 31,
-									"name": "container",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "An instance of "
-											},
-											{
-												"kind": "code",
-												"text": "`MedusaContainer`"
-											},
-											{
-												"kind": "text",
-												"text": " that allows you to access other resources, such as services, in your Medusa backend."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../../packages/medusa-core-utils/dist/medusa-container.d.ts",
-											"qualifiedName": "MedusaContainer"
-										},
-										"name": "MedusaContainer",
-										"package": "medusa-core-utils"
-									}
-								},
-								{
-									"id": 32,
-									"name": "config",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {
-										"isOptional": true
-									},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "If this tax provider is created in a plugin, the plugin's options are passed in this parameter."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									}
-								}
-							],
 							"type": {
 								"type": "reference",
-								"target": 23,
-								"name": "AbstractTaxService",
+								"target": {
+									"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
+									"qualifiedName": "ShippingMethod"
+								},
+								"name": "ShippingMethod",
 								"package": "@medusajs/medusa"
-							},
-							"overwrites": {
-								"type": "reference",
-								"target": -1,
-								"name": "TransactionBaseService.constructor"
 							}
-						}
-					],
-					"overwrites": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.constructor"
-					}
-				},
-				{
-					"id": 47,
-					"name": "__configModule__",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isOptional": true,
-						"isReadonly": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Record"
 						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "string"
-							},
-							{
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						],
-						"name": "Record",
-						"package": "typescript"
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.__configModule__"
-					}
-				},
-				{
-					"id": 46,
-					"name": "__container__",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isReadonly": true
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "any"
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.__container__"
-					}
-				},
-				{
-					"id": 48,
-					"name": "__moduleDeclaration__",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isOptional": true,
-						"isReadonly": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Record"
-						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "string"
-							},
-							{
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						],
-						"name": "Record",
-						"package": "typescript"
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.__moduleDeclaration__"
-					}
-				},
-				{
-					"id": 34,
-					"name": "config",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isOptional": true,
-						"isReadonly": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "If this tax provider is created in a plugin, the plugin's options are passed in this parameter."
-							}
-						]
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Record"
-						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "string"
-							},
-							{
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						],
-						"name": "Record",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 33,
-					"name": "container",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isReadonly": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "An instance of "
-							},
-							{
-								"kind": "code",
-								"text": "`MedusaContainer`"
-							},
-							{
-								"kind": "text",
-								"text": " that allows you to access other resources, such as services, in your Medusa backend."
-							}
-						]
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../packages/medusa-core-utils/dist/medusa-container.d.ts",
-							"qualifiedName": "MedusaContainer"
-						},
-						"name": "MedusaContainer",
-						"package": "medusa-core-utils"
-					}
-				},
-				{
-					"id": 42,
-					"name": "manager_",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
-							"qualifiedName": "EntityManager"
-						},
-						"name": "EntityManager",
-						"package": "typeorm"
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.manager_"
-					}
-				},
-				{
-					"id": 43,
-					"name": "transactionManager_",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "intrinsic",
-								"name": "undefined"
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
-									"qualifiedName": "EntityManager"
-								},
-								"name": "EntityManager",
-								"package": "typeorm"
-							}
-						]
-					},
-					"inheritedFrom": {
-						"type": "reference",
-						"target": -1,
-						"name": "TransactionBaseService.transactionManager_"
-					}
-				},
-				{
-					"id": 25,
-					"name": "identifier",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isStatic": true
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 37,
-					"name": "getTaxLines",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {
-						"isPublic": true,
-						"isAbstract": true
-					},
-					"signatures": [
 						{
-							"id": 38,
-							"name": "getTaxLines",
-							"variant": "signature",
-							"kind": 4096,
+							"id": 4,
+							"name": "rates",
+							"variant": "declaration",
+							"kind": 1024,
 							"flags": {},
 							"comment": {
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used when retrieving the tax lines for line items and shipping methods.\nThis occurs during checkout or when calculating totals for orders, swaps, or returns."
-									}
-								],
-								"blockTags": [
-									{
-										"tag": "@returns",
-										"content": [
-											{
-												"kind": "text",
-												"text": "The list of calculated line item and shipping method tax lines.\nIf an item in the array has the "
-											},
-											{
-												"kind": "code",
-												"text": "`shipping_method_id`"
-											},
-											{
-												"kind": "text",
-												"text": " property, then it's a shipping method tax line. Otherwise, if it has\nthe "
-											},
-											{
-												"kind": "code",
-												"text": "`item_id`"
-											},
-											{
-												"kind": "text",
-												"text": " property, then it's a line item tax line."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "text",
-												"text": "An example of how this method is implemented in the "
-											},
-											{
-												"kind": "code",
-												"text": "`system`"
-											},
-											{
-												"kind": "text",
-												"text": " provider implemented in the Medusa backend:\n\n"
-											},
-											{
-												"kind": "code",
-												"text": "```ts\n// ...\n\nclass SystemTaxService extends AbstractTaxService {\n  // ...\n\n  async getTaxLines(\n    itemLines: ItemTaxCalculationLine[],\n    shippingLines: ShippingTaxCalculationLine[],\n    context: TaxCalculationContext\n  ): Promise<ProviderTaxLine[]> {\n    let taxLines: ProviderTaxLine[] = itemLines.flatMap((l) => {\n      return l.rates.map((r) => ({\n        rate: r.rate || 0,\n        name: r.name,\n        code: r.code,\n        item_id: l.item.id,\n      }))\n    })\n\n    taxLines = taxLines.concat(\n      shippingLines.flatMap((l) => {\n        return l.rates.map((r) => ({\n          rate: r.rate || 0,\n          name: r.name,\n          code: r.code,\n          shipping_method_id: l.shipping_method.id,\n        }))\n      })\n    )\n\n    return taxLines\n  }\n}\n```"
-											}
-										]
+										"text": "The rates applicable on the shipping method."
 									}
 								]
 							},
-							"parameters": [
-								{
-									"id": 39,
-									"name": "itemLines",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The line item lines to calculate taxes for."
-											}
-										]
-									},
-									"type": {
-										"type": "array",
-										"elementType": {
-											"type": "reference",
-											"target": 5,
-											"name": "ItemTaxCalculationLine",
-											"package": "@medusajs/medusa"
-										}
-									}
-								},
-								{
-									"id": 40,
-									"name": "shippingLines",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "The shipping method lines to calculate taxes for."
-											}
-										]
-									},
-									"type": {
-										"type": "array",
-										"elementType": {
-											"type": "reference",
-											"target": 1,
-											"name": "ShippingTaxCalculationLine",
-											"package": "@medusajs/medusa"
-										}
-									}
-								},
-								{
-									"id": 41,
-									"name": "context",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"comment": {
-										"summary": [
-											{
-												"kind": "text",
-												"text": "Context relevant and useful for the taxes calculation."
-											}
-										]
-									},
-									"type": {
-										"type": "reference",
-										"target": 9,
-										"name": "TaxCalculationContext",
-										"package": "@medusajs/medusa"
-									}
-								}
-							],
 							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "array",
-										"elementType": {
-											"type": "reference",
-											"target": {
-												"sourceFileName": "../../../packages/medusa/src/types/tax-service.ts",
-												"qualifiedName": "ProviderTaxLine"
-											},
-											"name": "ProviderTaxLine",
-											"package": "@medusajs/medusa"
-										}
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": 19,
-								"name": "ITaxService.getTaxLines"
+								"type": "array",
+								"elementType": {
+									"type": "reference",
+									"target": {
+										"sourceFileName": "../../../packages/medusa/src/types/tax-service.ts",
+										"qualifiedName": "TaxServiceRate"
+									},
+									"name": "TaxServiceRate",
+									"package": "@medusajs/medusa"
+								}
 							}
 						}
 					],
-					"implementationOf": {
-						"type": "reference",
-						"target": 18,
-						"name": "ITaxService.getTaxLines"
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								3,
+								4
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 5,
+			"name": "ItemTaxCalculationLine",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "A line item and the tax rates configured to apply to the\nproduct contained in the line item."
 					}
-				}
-			],
-			"groups": [
-				{
-					"title": "Constructors",
+				]
+			},
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 6,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
 					"children": [
-						29
+						{
+							"id": 7,
+							"name": "item",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The line item to calculate taxes for."
+									}
+								]
+							},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/medusa/src/models/line-item.ts",
+									"qualifiedName": "LineItem"
+								},
+								"name": "LineItem",
+								"package": "@medusajs/medusa"
+							}
+						},
+						{
+							"id": 8,
+							"name": "rates",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The rates applicable on the item."
+									}
+								]
+							},
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "reference",
+									"target": {
+										"sourceFileName": "../../../packages/medusa/src/types/tax-service.ts",
+										"qualifiedName": "TaxServiceRate"
+									},
+									"name": "TaxServiceRate",
+									"package": "@medusajs/medusa"
+								}
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								7,
+								8
+							]
+						}
 					]
-				},
-				{
-					"title": "Properties",
+				}
+			}
+		},
+		{
+			"id": 9,
+			"name": "TaxCalculationContext",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "Information relevant to a tax calculation, such as the shipping address where\nthe items are going."
+					}
+				]
+			},
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 10,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
 					"children": [
-						47,
-						46,
-						48,
-						34,
-						33,
-						42,
-						43,
-						25
+						{
+							"id": 11,
+							"name": "shipping_address",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The shipping address used in the cart."
+									}
+								]
+							},
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../packages/medusa/src/models/address.ts",
+											"qualifiedName": "Address"
+										},
+										"name": "Address",
+										"package": "@medusajs/medusa"
+									},
+									{
+										"type": "literal",
+										"value": null
+									}
+								]
+							}
+						},
+						{
+							"id": 12,
+							"name": "customer",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The customer that the cart belongs to."
+									}
+								]
+							},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/medusa/src/models/customer.ts",
+									"qualifiedName": "Customer"
+								},
+								"name": "Customer",
+								"package": "@medusajs/medusa"
+							}
+						},
+						{
+							"id": 13,
+							"name": "region",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The cart's region."
+									}
+								]
+							},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/medusa/src/models/region.ts",
+									"qualifiedName": "Region"
+								},
+								"name": "Region",
+								"package": "@medusajs/medusa"
+							}
+						},
+						{
+							"id": 14,
+							"name": "is_return",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Whether the cart is used in a return flow."
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 15,
+							"name": "shipping_methods",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The shipping methods used in the cart."
+									}
+								]
+							},
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "reference",
+									"target": {
+										"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
+										"qualifiedName": "ShippingMethod"
+									},
+									"name": "ShippingMethod",
+									"package": "@medusajs/medusa"
+								}
+							}
+						},
+						{
+							"id": 16,
+							"name": "allocation_map",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The gift cards and discounts applied on line items.\nEach object key or property is an ID of a line item"
+									}
+								]
+							},
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../packages/medusa/src/types/totals.ts",
+									"qualifiedName": "LineAllocationsMap"
+								},
+								"name": "LineAllocationsMap",
+								"package": "@medusajs/medusa"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								11,
+								12,
+								13,
+								14,
+								15,
+								16
+							]
+						}
 					]
-				},
-				{
-					"title": "Methods",
-					"children": [
-						37
-					]
 				}
-			],
-			"extendedTypes": [
-				{
-					"type": "reference",
-					"target": {
-						"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
-						"qualifiedName": "TransactionBaseService"
-					},
-					"name": "TransactionBaseService",
-					"package": "@medusajs/medusa"
-				}
-			],
-			"implementedTypes": [
-				{
-					"type": "reference",
-					"target": 17,
-					"name": "ITaxService",
-					"package": "@medusajs/medusa"
-				}
-			]
+			}
 		},
 		{
 			"id": 17,
@@ -898,369 +665,622 @@
 			]
 		},
 		{
-			"id": 5,
-			"name": "ItemTaxCalculationLine",
+			"id": 23,
+			"name": "AbstractTaxService",
 			"variant": "declaration",
-			"kind": 2097152,
-			"flags": {},
-			"comment": {
-				"summary": [
-					{
-						"kind": "text",
-						"text": "A line item and the tax rates configured to apply to the\nproduct contained in the line item."
-					}
-				]
+			"kind": 128,
+			"flags": {
+				"isAbstract": true
 			},
-			"type": {
-				"type": "reflection",
-				"declaration": {
-					"id": 6,
-					"name": "__type",
+			"children": [
+				{
+					"id": 25,
+					"name": "identifier",
 					"variant": "declaration",
-					"kind": 65536,
-					"flags": {},
-					"children": [
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isStatic": true
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 29,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {
+						"isProtected": true
+					},
+					"signatures": [
 						{
-							"id": 7,
-							"name": "item",
-							"variant": "declaration",
-							"kind": 1024,
+							"id": 30,
+							"name": "new AbstractTaxService",
+							"variant": "signature",
+							"kind": 16384,
 							"flags": {},
 							"comment": {
 								"summary": [
 									{
 										"kind": "text",
-										"text": "The line item to calculate taxes for."
-									}
-								]
-							},
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../packages/medusa/src/models/line-item.ts",
-									"qualifiedName": "LineItem"
-								},
-								"name": "LineItem",
-								"package": "@medusajs/medusa"
-							}
-						},
-						{
-							"id": 8,
-							"name": "rates",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "The rates applicable on the item."
-									}
-								]
-							},
-							"type": {
-								"type": "array",
-								"elementType": {
-									"type": "reference",
-									"target": {
-										"sourceFileName": "../../../packages/medusa/src/types/tax-service.ts",
-										"qualifiedName": "TaxServiceRate"
+										"text": "You can use the "
 									},
-									"name": "TaxServiceRate",
-									"package": "@medusajs/medusa"
-								}
-							}
-						}
-					],
-					"groups": [
-						{
-							"title": "Properties",
-							"children": [
-								7,
-								8
-							]
-						}
-					]
-				}
-			}
-		},
-		{
-			"id": 1,
-			"name": "ShippingTaxCalculationLine",
-			"variant": "declaration",
-			"kind": 2097152,
-			"flags": {},
-			"comment": {
-				"summary": [
-					{
-						"kind": "text",
-						"text": "A shipping method and the tax rates configured to apply to the\nshipping method."
-					}
-				]
-			},
-			"type": {
-				"type": "reflection",
-				"declaration": {
-					"id": 2,
-					"name": "__type",
-					"variant": "declaration",
-					"kind": 65536,
-					"flags": {},
-					"children": [
-						{
-							"id": 4,
-							"name": "rates",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"comment": {
-								"summary": [
 									{
-										"kind": "text",
-										"text": "The rates applicable on the shipping method."
-									}
-								]
-							},
-							"type": {
-								"type": "array",
-								"elementType": {
-									"type": "reference",
-									"target": {
-										"sourceFileName": "../../../packages/medusa/src/types/tax-service.ts",
-										"qualifiedName": "TaxServiceRate"
+										"kind": "code",
+										"text": "`constructor`"
 									},
-									"name": "TaxServiceRate",
-									"package": "@medusajs/medusa"
-								}
-							}
-						},
-						{
-							"id": 3,
-							"name": "shipping_method",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"comment": {
-								"summary": [
 									{
 										"kind": "text",
-										"text": "The shipping method to calculate taxes for."
+										"text": " of your tax provider to access the different services in Medusa through dependency injection.\n\nYou can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.\nAdditionally, if you’re creating your tax provider as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// ...\nimport { LineItemService } from \"@medusajs/medusa\"\n\ntype InjectedDependencies = {\n  lineItemService: LineItemService\n}\n\nclass MyTaxService extends AbstractTaxService {\n  protected readonly lineItemService_: LineItemService\n\n  constructor({ lineItemService }: InjectedDependencies) {\n    super(arguments[0])\n    this.lineItemService_ = lineItemService\n\n    // you can also initialize a client that\n    // communicates with a third-party service.\n    this.client = new Client(options)\n  }\n\n  // ...\n}\n\nexport default MyTaxService\n```"
+											}
+										]
 									}
 								]
 							},
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
-									"qualifiedName": "ShippingMethod"
-								},
-								"name": "ShippingMethod",
-								"package": "@medusajs/medusa"
-							}
-						}
-					],
-					"groups": [
-						{
-							"title": "Properties",
-							"children": [
-								4,
-								3
-							]
-						}
-					]
-				}
-			}
-		},
-		{
-			"id": 9,
-			"name": "TaxCalculationContext",
-			"variant": "declaration",
-			"kind": 2097152,
-			"flags": {},
-			"comment": {
-				"summary": [
-					{
-						"kind": "text",
-						"text": "Information relevant to a tax calculation, such as the shipping address where\nthe items are going."
-					}
-				]
-			},
-			"type": {
-				"type": "reflection",
-				"declaration": {
-					"id": 10,
-					"name": "__type",
-					"variant": "declaration",
-					"kind": 65536,
-					"flags": {},
-					"children": [
-						{
-							"id": 16,
-							"name": "allocation_map",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "The gift cards and discounts applied on line items.\nEach object key or property is an ID of a line item"
-									}
-								]
-							},
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../packages/medusa/src/types/totals.ts",
-									"qualifiedName": "LineAllocationsMap"
-								},
-								"name": "LineAllocationsMap",
-								"package": "@medusajs/medusa"
-							}
-						},
-						{
-							"id": 12,
-							"name": "customer",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "The cart's customer."
-									}
-								]
-							},
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../packages/medusa/src/models/customer.ts",
-									"qualifiedName": "Customer"
-								},
-								"name": "Customer",
-								"package": "@medusajs/medusa"
-							}
-						},
-						{
-							"id": 14,
-							"name": "is_return",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "Whether the cart is used in a return flow."
-									}
-								]
-							},
-							"type": {
-								"type": "intrinsic",
-								"name": "boolean"
-							}
-						},
-						{
-							"id": 13,
-							"name": "region",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "The cart's region."
-									}
-								]
-							},
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../packages/medusa/src/models/region.ts",
-									"qualifiedName": "Region"
-								},
-								"name": "Region",
-								"package": "@medusajs/medusa"
-							}
-						},
-						{
-							"id": 11,
-							"name": "shipping_address",
-							"variant": "declaration",
-							"kind": 1024,
-							"flags": {},
-							"comment": {
-								"summary": [
-									{
-										"kind": "text",
-										"text": "The shipping address in the cart."
-									}
-								]
-							},
-							"type": {
-								"type": "union",
-								"types": [
-									{
+							"parameters": [
+								{
+									"id": 31,
+									"name": "container",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "An instance of "
+											},
+											{
+												"kind": "code",
+												"text": "`MedusaContainer`"
+											},
+											{
+												"kind": "text",
+												"text": " that allows you to access other resources, such as services, in your Medusa backend."
+											}
+										]
+									},
+									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../packages/medusa/src/models/address.ts",
-											"qualifiedName": "Address"
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
 										},
-										"name": "Address",
-										"package": "@medusajs/medusa"
-									},
-									{
-										"type": "literal",
-										"value": null
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
 									}
-								]
+								},
+								{
+									"id": 32,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If this tax provider is created in a plugin, the plugin's options are passed in this parameter."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": 23,
+								"name": "AbstractTaxService",
+								"package": "@medusajs/medusa"
+							},
+							"overwrites": {
+								"type": "reference",
+								"target": -1,
+								"name": "TransactionBaseService.constructor"
 							}
+						}
+					],
+					"overwrites": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.constructor"
+					}
+				},
+				{
+					"id": 33,
+					"name": "container",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of "
+							},
+							{
+								"kind": "code",
+								"text": "`MedusaContainer`"
+							},
+							{
+								"kind": "text",
+								"text": " that allows you to access other resources, such as services, in your Medusa backend."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
 						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 34,
+					"name": "config",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "If this tax provider is created in a plugin, the plugin's options are passed in this parameter."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 37,
+					"name": "getTaxLines",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isPublic": true,
+						"isAbstract": true
+					},
+					"signatures": [
 						{
-							"id": 15,
-							"name": "shipping_methods",
-							"variant": "declaration",
-							"kind": 1024,
+							"id": 38,
+							"name": "getTaxLines",
+							"variant": "signature",
+							"kind": 4096,
 							"flags": {},
 							"comment": {
 								"summary": [
 									{
 										"kind": "text",
-										"text": "The shipping methods used in the cart."
+										"text": "This method is used when retrieving the tax lines for line items and shipping methods.\nThis occurs during checkout or when calculating totals for orders, swaps, or returns."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of calculated line item and shipping method tax lines.\nIf an item in the array has the "
+											},
+											{
+												"kind": "code",
+												"text": "`shipping_method_id`"
+											},
+											{
+												"kind": "text",
+												"text": " property, then it's a shipping method tax line. Otherwise, if it has\nthe "
+											},
+											{
+												"kind": "code",
+												"text": "`item_id`"
+											},
+											{
+												"kind": "text",
+												"text": " property, then it's a line item tax line."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "An example of how this method is implemented in the "
+											},
+											{
+												"kind": "code",
+												"text": "`system`"
+											},
+											{
+												"kind": "text",
+												"text": " provider implemented in the Medusa backend:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\n// ...\n\nclass SystemTaxService extends AbstractTaxService {\n  // ...\n\n  async getTaxLines(\n    itemLines: ItemTaxCalculationLine[],\n    shippingLines: ShippingTaxCalculationLine[],\n    context: TaxCalculationContext\n  ): Promise<ProviderTaxLine[]> {\n    let taxLines: ProviderTaxLine[] = itemLines.flatMap((l) => {\n      return l.rates.map((r) => ({\n        rate: r.rate || 0,\n        name: r.name,\n        code: r.code,\n        item_id: l.item.id,\n      }))\n    })\n\n    taxLines = taxLines.concat(\n      shippingLines.flatMap((l) => {\n        return l.rates.map((r) => ({\n          rate: r.rate || 0,\n          name: r.name,\n          code: r.code,\n          shipping_method_id: l.shipping_method.id,\n        }))\n      })\n    )\n\n    return taxLines\n  }\n}\n```"
+											}
+										]
 									}
 								]
 							},
-							"type": {
-								"type": "array",
-								"elementType": {
-									"type": "reference",
-									"target": {
-										"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
-										"qualifiedName": "ShippingMethod"
+							"parameters": [
+								{
+									"id": 39,
+									"name": "itemLines",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The line item lines to calculate taxes for."
+											}
+										]
 									},
-									"name": "ShippingMethod",
-									"package": "@medusajs/medusa"
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 5,
+											"name": "ItemTaxCalculationLine",
+											"package": "@medusajs/medusa"
+										}
+									}
+								},
+								{
+									"id": 40,
+									"name": "shippingLines",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The shipping method lines to calculate taxes for."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 1,
+											"name": "ShippingTaxCalculationLine",
+											"package": "@medusajs/medusa"
+										}
+									}
+								},
+								{
+									"id": 41,
+									"name": "context",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Context relevant and useful for the taxes calculation."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 9,
+										"name": "TaxCalculationContext",
+										"package": "@medusajs/medusa"
+									}
 								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": {
+												"sourceFileName": "../../../packages/medusa/src/types/tax-service.ts",
+												"qualifiedName": "ProviderTaxLine"
+											},
+											"name": "ProviderTaxLine",
+											"package": "@medusajs/medusa"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": 19,
+								"name": "ITaxService.getTaxLines"
 							}
 						}
 					],
-					"groups": [
-						{
-							"title": "Properties",
-							"children": [
-								16,
-								12,
-								14,
-								13,
-								11,
-								15
-							]
-						}
+					"implementationOf": {
+						"type": "reference",
+						"target": 18,
+						"name": "ITaxService.getTaxLines"
+					}
+				},
+				{
+					"id": 42,
+					"name": "manager_",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+							"qualifiedName": "EntityManager"
+						},
+						"name": "EntityManager",
+						"package": "typeorm"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.manager_"
+					}
+				},
+				{
+					"id": 43,
+					"name": "transactionManager_",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "undefined"
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+									"qualifiedName": "EntityManager"
+								},
+								"name": "EntityManager",
+								"package": "typeorm"
+							}
+						]
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.transactionManager_"
+					}
+				},
+				{
+					"id": 46,
+					"name": "__container__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "any"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__container__"
+					}
+				},
+				{
+					"id": 47,
+					"name": "__configModule__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__configModule__"
+					}
+				},
+				{
+					"id": 48,
+					"name": "__moduleDeclaration__",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isOptional": true,
+						"isReadonly": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					},
+					"inheritedFrom": {
+						"type": "reference",
+						"target": -1,
+						"name": "TransactionBaseService.__moduleDeclaration__"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						29
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						25,
+						33,
+						34,
+						42,
+						43,
+						46,
+						47,
+						48
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						37
 					]
 				}
-			}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../packages/medusa/src/interfaces/transaction-base-service.ts",
+						"qualifiedName": "TransactionBaseService"
+					},
+					"name": "TransactionBaseService",
+					"package": "@medusajs/medusa"
+				}
+			],
+			"implementedTypes": [
+				{
+					"type": "reference",
+					"target": 17,
+					"name": "ITaxService",
+					"package": "@medusajs/medusa"
+				}
+			]
 		}
 	],
 	"groups": [
@@ -1279,8 +1299,8 @@
 		{
 			"title": "Type Aliases",
 			"children": [
-				5,
 				1,
+				5,
 				9
 			]
 		}
