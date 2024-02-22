@@ -392,6 +392,7 @@
     "items": "Items",
     "salesChannel": "Sales Channel",
     "region": "Region",
+    "discount" : "Discount",
     "role": "Role",
     "sent": "Sent",
     "salesChannels": "Sales Channels",
