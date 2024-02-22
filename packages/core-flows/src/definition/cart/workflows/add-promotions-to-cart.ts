@@ -1,5 +1,9 @@
 import { CartDTO } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  createWorkflow,
+  transform,
+} from "@medusajs/workflows-sdk"
 import {
   createLineItemAdjustmentsStep,
   createShippingMethodAdjustmentsStep,
@@ -21,10 +25,9 @@ export const addPromotionsToCartWorkflow = createWorkflow(
   (input: WorkflowData<WorkflowInput>): WorkflowData<CartDTO> => {
     const cart = retrieveCartStep(input)
 
-    const actionsToCompute = getActionsToComputeFromPromotionsStep({
-      cart,
-      promoCodes: input.promoCodes,
-    })
+    const actionsToCompute = getActionsToComputeFromPromotionsStep(
+      transform({ cart, promoCodes: input.promoCodes }, (data) => data)
+    )
 
     const {
       lineItemAdjustmentsToCreate,
