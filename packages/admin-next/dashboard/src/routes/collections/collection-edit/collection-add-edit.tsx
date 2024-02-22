@@ -1,8 +1,8 @@
-import { Drawer, Heading } from "@medusajs/ui"
+import { Heading } from "@medusajs/ui"
 import { useAdminCollection } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
-import { useRouteModalState } from "../../../hooks/use-route-modal-state"
+import { RouteDrawer } from "../../../components/route-modal"
 import { EditCollectionForm } from "./components/edit-collection-form"
 
 export const CollectionEdit = () => {
@@ -10,30 +10,18 @@ export const CollectionEdit = () => {
   const { t } = useTranslation()
   const { collection, isLoading, isError, error } = useAdminCollection(id!)
 
-  const [open, onOpenChange, subscribe] = useRouteModalState()
-
-  const handleSuccessfulSubmit = () => {
-    onOpenChange(false, true)
-  }
-
   if (isError) {
     throw error
   }
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content>
-        <Drawer.Header>
-          <Heading>{t("collections.editCollection")}</Heading>
-        </Drawer.Header>
-        {!isLoading && collection && (
-          <EditCollectionForm
-            collection={collection}
-            onSuccessfulSubmit={handleSuccessfulSubmit}
-            subscribe={subscribe}
-          />
-        )}
-      </Drawer.Content>
-    </Drawer>
+    <RouteDrawer>
+      <RouteDrawer.Header>
+        <Heading>{t("collections.editCollection")}</Heading>
+      </RouteDrawer.Header>
+      {!isLoading && collection && (
+        <EditCollectionForm collection={collection} />
+      )}
+    </RouteDrawer>
   )
 }

@@ -6,7 +6,7 @@ import {
   CircleHalfSolid,
   CogSixTooth,
   MagnifyingGlass,
-  Sidebar,
+  SidebarRight,
   User as UserIcon,
 } from "@medusajs/icons"
 import { Avatar, DropdownMenu, IconButton, Kbd, Text, clx } from "@medusajs/ui"
@@ -330,14 +330,14 @@ const ToggleSidebar = () => {
         variant="transparent"
         onClick={() => toggle("desktop")}
       >
-        <Sidebar className="text-ui-fg-muted" />
+        <SidebarRight className="text-ui-fg-muted" />
       </IconButton>
       <IconButton
         className="hidden max-lg:flex"
         variant="transparent"
         onClick={() => toggle("mobile")}
       >
-        <Sidebar className="text-ui-fg-muted" />
+        <SidebarRight className="text-ui-fg-muted" />
       </IconButton>
     </div>
   )

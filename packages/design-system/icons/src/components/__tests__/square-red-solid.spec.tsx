@@ -1,11 +1,11 @@
   import * as React from "react"
   import { cleanup, render, screen } from "@testing-library/react"
 
-  import Sidebar from "../sidebar"
+  import SquareRedSolid from "../square-red-solid"
 
-  describe("Sidebar", () => {
+  describe("SquareRedSolid", () => {
     it("should render the icon without errors", async () => {
-      render(<Sidebar data-testid="icon" />)
+      render(<SquareRedSolid data-testid="icon" />)
 
 
       const svgElement = screen.getByTestId("icon")

@@ -5,7 +5,10 @@ import getMigrations, {
   runIsolatedModulesMigration,
 } from "./utils/get-migrations"
 
-import { createMedusaContainer } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  createMedusaContainer,
+} from "@medusajs/utils"
 import configModuleLoader from "../loaders/config"
 import databaseLoader from "../loaders/database"
 import featureFlagLoader from "../loaders/feature-flags"
@@ -42,6 +45,7 @@ const runLinkMigrations = async (directory) => {
 
   container.register({
     featureFlagRouter: asValue(featureFlagRouter),
+    [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
   })
 
   await pgConnectionLoader({ configModule, container })
