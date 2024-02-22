@@ -291,12 +291,9 @@ describe("Cart Module Service", () => {
         },
       ])
 
-      const updatedCart = await service.update(
-        createdCart.id,
-        {
-          email: "test@email.com",
-        }
-      )
+      const updatedCart = await service.update(createdCart.id, {
+        email: "test@email.com",
+      })
 
       const [cart] = await service.list({ id: [createdCart.id] })
 

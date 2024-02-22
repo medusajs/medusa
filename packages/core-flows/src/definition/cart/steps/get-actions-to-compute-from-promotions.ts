@@ -17,13 +17,24 @@ export const getActionsToComputeFromPromotionsStep = createStep(
       ModuleRegistrationName.PROMOTION
     )
 
-    const appliedCartPromoCodes = data.cart.items
+    const appliedItemPromoCodes = data.cart.items
       ?.map((item) => item.adjustments?.map((adjustment) => adjustment.code))
       .flat(1)
       .filter(isString) as string[]
 
+    const appliedShippingMethodPromoCodes = data.cart.shipping_methods
+      ?.map((shippingMethod) =>
+        shippingMethod.adjustments?.map((adjustment) => adjustment.code)
+      )
+      .flat(1)
+      .filter(isString) as string[]
+
     const actionsToCompute = await promotionModuleService.computeActions(
-      [...data.promoCodes, ...appliedCartPromoCodes],
+      [
+        ...data.promoCodes,
+        ...appliedItemPromoCodes,
+        ...appliedShippingMethodPromoCodes,
+      ],
       data.cart as any
     )
 

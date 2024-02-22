@@ -15,8 +15,12 @@ export const retrieveCartStep = createStep(
     )
 
     const cart = await cartModuleService.retrieve(data.cartId, {
-      // TODO: add all the needed relations
-      relations: ["items", "items.adjustments"],
+      relations: [
+        "items",
+        "items.adjustments",
+        "shipping_methods",
+        "shipping_methods.adjustments",
+      ],
     })
 
     // TODO: remove this when cart handles totals calculation
@@ -24,6 +28,13 @@ export const retrieveCartStep = createStep(
       item.subtotal = item.unit_price
 
       return item
+    })
+
+    cart.shipping_methods = cart.shipping_methods?.map((shipping_method) => {
+      // TODO: should we align all amounts/prices to be unit_price?
+      shipping_method.subtotal = shipping_method.amount
+
+      return shipping_method
     })
 
     return new StepResponse(cart)

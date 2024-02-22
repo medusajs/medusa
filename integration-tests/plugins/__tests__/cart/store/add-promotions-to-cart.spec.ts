@@ -46,7 +46,7 @@ describe("Store Carts API: Add promotions to cart", () => {
   })
 
   describe("POST /store/carts/:id/promotions", () => {
-    it("should add promotions to a cart", async () => {
+    it("should add line item adjustments to a cart based on promotions", async () => {
       const appliedPromotion = await promotionModuleService.create({
         code: "PROMOTION_APPLIED",
         type: PromotionType.STANDARD,
@@ -98,6 +98,7 @@ describe("Store Carts API: Add promotions to cart", () => {
             title: "Test item",
             product_id: "prod_mat",
           } as any,
+          // This adjustment will be removed and recreated
           {
             id: "item-2",
             unit_price: 1000,
@@ -110,14 +111,15 @@ describe("Store Carts API: Add promotions to cart", () => {
       })
 
       // Adjustment to keep
-      await cartModuleService.addLineItemAdjustments([
-        {
-          code: appliedPromotion.code,
-          amount: 300,
-          item_id: "item-2",
-          promotion_id: appliedPromotion.id,
-        },
-      ])
+      const [lineItemAdjustment] =
+        await cartModuleService.addLineItemAdjustments([
+          {
+            code: appliedPromotion.code,
+            amount: 300,
+            item_id: "item-2",
+            promotion_id: appliedPromotion.id,
+          },
+        ])
 
       const api = useApi() as any
 
@@ -141,7 +143,7 @@ describe("Store Carts API: Add promotions to cart", () => {
               ]),
             }),
             expect.objectContaining({
-              id: expect.any(String),
+              id: expect.not.stringContaining(lineItemAdjustment.id),
               adjustments: expect.arrayContaining([
                 expect.objectContaining({
                   promotion_id: appliedPromotion.id,
@@ -149,6 +151,158 @@ describe("Store Carts API: Add promotions to cart", () => {
                   amount: 300,
                 }),
               ]),
+            }),
+          ]),
+        })
+      )
+    })
+
+    it("should add shipping method adjustments to a cart based on promotions", async () => {
+      const [appliedPromotion] = await promotionModuleService.create([
+        {
+          code: "PROMOTION_APPLIED",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer_id",
+              operator: "in",
+              values: ["cus_test"],
+            },
+            {
+              attribute: "currency_code",
+              operator: "in",
+              values: ["eur"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "shipping_methods",
+            allocation: "each",
+            value: "100",
+            max_quantity: 1,
+            target_rules: [
+              {
+                attribute: "name",
+                operator: "in",
+                values: ["express"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const [newPromotion] = await promotionModuleService.create([
+        {
+          code: "PROMOTION_NEW",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer_id",
+              operator: "in",
+              values: ["cus_test"],
+            },
+            {
+              attribute: "currency_code",
+              operator: "in",
+              values: ["eur"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "shipping_methods",
+            allocation: "each",
+            value: "200",
+            max_quantity: 1,
+            target_rules: [
+              {
+                attribute: "name",
+                operator: "in",
+                values: ["express", "standard"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const cart = await cartModuleService.create({
+        currency_code: "eur",
+        customer_id: "cus_test",
+        items: [
+          {
+            unit_price: 2000,
+            raw_unit_price: {},
+            quantity: 1,
+            title: "Test item",
+            product_id: "prod_mat",
+          } as any,
+        ],
+      })
+
+      const [express, standard] = await cartModuleService.addShippingMethods(
+        cart.id,
+        [
+          {
+            amount: 500,
+            name: "express",
+          },
+          {
+            amount: 500,
+            name: "standard",
+          },
+        ]
+      )
+
+      const [adjustment] = await cartModuleService.addShippingMethodAdjustments(
+        cart.id,
+        [
+          {
+            shipping_method_id: express.id,
+            amount: 100,
+            code: appliedPromotion.code!,
+          },
+        ]
+      )
+
+      const api = useApi() as any
+
+      const created = await api.post(`/store/carts/${cart.id}/promotions`, {
+        promo_codes: [newPromotion.code],
+      })
+
+      expect(created.status).toEqual(200)
+      expect(created.data.cart).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+            }),
+          ]),
+          shipping_methods: expect.arrayContaining([
+            expect.objectContaining({
+              id: express.id,
+              adjustments: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  amount: 200,
+                  code: newPromotion.code,
+                }),
+                expect.objectContaining({
+                  id: expect.not.stringContaining(adjustment.id),
+                  amount: 100,
+                  code: appliedPromotion.code,
+                }),
+              ]),
+            }),
+            expect.objectContaining({
+              id: standard.id,
+              adjustments: [
+                expect.objectContaining({
+                  id: expect.any(String),
+                  amount: 200,
+                  code: newPromotion.code,
+                }),
+              ],
             }),
           ]),
         })
