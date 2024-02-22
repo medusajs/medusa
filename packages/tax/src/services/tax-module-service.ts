@@ -187,41 +187,86 @@ export default class TaxModuleService<
           },
         ],
       },
-      {},
+      { select: ["id"] },
       sharedContext
     )
 
     const toReturn = await promiseAll(
-      items.map(async (item) => {
-        const isShipping = "shipping_option_id" in item
-        const rateQuery = this.getTaxRateQueryForItem(
+      items.map((item) =>
+        this.getTaxRatesForItem(
           item,
-          regions.map((r) => r.id)
-        )
-        const rates = await this.taxRateService_.list(
-          rateQuery,
-          { relations: ["tax_region", "rules"] },
+          regions.map((r) => r.id),
           sharedContext
         )
-        const prioritizedRates = this.prioritizeRates(rates, item)
-
-        const rate = prioritizedRates[0]
-        const toReturn = {
-          rate_id: rate.id,
-          rate: rate.rate,
-          code: rate.code,
-          name: rate.name,
-        }
-
-        if (isShipping) {
-          return [{ shipping_line_id: item.id, ...toReturn }]
-        }
-
-        return [{ line_item_id: item.id, ...toReturn }]
-      })
+      )
     )
 
     return toReturn.flat()
+  }
+
+  private async getTaxRatesForItem(
+    item: TaxTypes.TaxableItemDTO | TaxTypes.TaxableShippingDTO,
+    regionIds: string[],
+    sharedContext: Context
+  ): Promise<(TaxTypes.ItemTaxLineDTO | TaxTypes.ShippingTaxLineDTO)[]> {
+    const rateQuery = this.getTaxRateQueryForItem(item, regionIds)
+    const rates = await this.taxRateService_.list(
+      rateQuery,
+      { relations: ["tax_region", "rules"] },
+      sharedContext
+    )
+
+    if (!rates.length) {
+      return []
+    }
+
+    const prioritizedRates = this.prioritizeRates(rates, item)
+    const rate = prioritizedRates[0]
+
+    const ratesToReturn = [this.buildRateForItem(rate, item)]
+
+    // If the rate can be combined we need to find the rate's
+    // parent region and add that rate too. If not we can return now.
+    if (!(rate.is_combinable && rate.tax_region.parent_id)) {
+      return ratesToReturn
+    }
+
+    // First parent region rate in prioritized rates
+    // will be the most granular rate.
+    const parentRate = prioritizedRates.find(
+      (r) => r.tax_region.id === rate.tax_region.parent_id
+    )
+
+    if (parentRate) {
+      ratesToReturn.push(this.buildRateForItem(parentRate, item))
+    }
+
+    return ratesToReturn
+  }
+
+  private buildRateForItem(
+    rate: TTaxRate,
+    item: TaxTypes.TaxableItemDTO | TaxTypes.TaxableShippingDTO
+  ): TaxTypes.ItemTaxLineDTO | TaxTypes.ShippingTaxLineDTO {
+    const isShipping = "shipping_option_id" in item
+    const toReturn = {
+      rate_id: rate.id,
+      rate: rate.rate,
+      code: rate.code,
+      name: rate.name,
+    }
+
+    if (isShipping) {
+      return {
+        ...toReturn,
+        shipping_line_id: item.id,
+      }
+    }
+
+    return {
+      ...toReturn,
+      line_item_id: item.id,
+    }
   }
 
   private getTaxRateQueryForItem(
