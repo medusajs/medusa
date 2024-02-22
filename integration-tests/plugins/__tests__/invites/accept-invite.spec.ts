@@ -45,47 +45,13 @@ describe("GET /admin/invites/:id", () => {
     await db.teardown()
   })
 
-  it("should fail to create an auth user with an invalid invite token", async () => {
-    const api = useApi()! as AxiosInstance
-
-    const authResponse = await api
-      .post(
-        `/auth/admin/emailpass`,
-        {
-          email: "potential_member@test.com",
-          password: "supersecret",
-        },
-        {
-          headers: {
-            authorization: `Bearer ${"non-existing-token"}`,
-          },
-        }
-      )
-      .catch((e) => e)
-
-    expect(authResponse.response.status).toEqual(401)
-    expect(authResponse.response.data.message).toEqual("Unauthorized")
-  })
-
   it("should fail to accept an invite with an invalid invite token", async () => {
-    const invite = await userModuleService.createInvites({
-      email: "potential_member@test.com",
-    })
-
     const api = useApi()! as AxiosInstance
 
-    const authResponse = await api.post(
-      `/auth/admin/emailpass`,
-      {
-        email: "potential_member@test.com",
-        password: "supersecret",
-      },
-      {
-        headers: {
-          authorization: `Bearer ${invite.token}`,
-        },
-      }
-    )
+    const authResponse = await api.post(`/auth/admin/emailpass`, {
+      email: "potential_member@test.com",
+      password: "supersecret",
+    })
 
     expect(authResponse.status).toEqual(200)
     const token = authResponse.data.token
@@ -115,18 +81,10 @@ describe("GET /admin/invites/:id", () => {
 
     const api = useApi()! as AxiosInstance
 
-    const authResponse = await api.post(
-      `/auth/admin/emailpass`,
-      {
-        email: "potential_member@test.com",
-        password: "supersecret",
-      },
-      {
-        headers: {
-          authorization: `Bearer ${invite.token}`,
-        },
-      }
-    )
+    const authResponse = await api.post(`/auth/admin/emailpass`, {
+      email: "potential_member@test.com",
+      password: "supersecret",
+    })
 
     expect(authResponse.status).toEqual(200)
     const token = authResponse.data.token
