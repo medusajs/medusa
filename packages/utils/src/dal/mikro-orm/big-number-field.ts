@@ -1,6 +1,5 @@
 import { BigNumber } from "../../totals/big-number"
 import { Property } from "@mikro-orm/core"
-import { isDefined } from "../../common"
 import { BigNumberInput } from "@medusajs/types"
 
 export function MikroOrmBigNumberProperty(
@@ -14,17 +13,19 @@ export function MikroOrmBigNumberProperty(
 
     Object.defineProperty(target, columnName, {
       get() {
-        if (!isDefined(this[rawColumnName]) && !isDefined(this[targetColumn])) {
-          return null
-        }
-
-        return this[targetColumn] instanceof BigNumber
-          ? this[targetColumn].numeric
-          : new BigNumber(this[rawColumnName] ?? this[targetColumn]).numeric
+        return this[targetColumn]
       },
       set(value: BigNumberInput) {
-        const bigNumber =
-          value instanceof BigNumber ? value : new BigNumber(value)
+        let bigNumber: BigNumber
+        if (value instanceof BigNumber) {
+          bigNumber = value
+        } else if (this[rawColumnName]) {
+          this[rawColumnName].value = value
+          bigNumber = new BigNumber(this[rawColumnName])
+        } else {
+          bigNumber = new BigNumber(value)
+        }
+
         this[targetColumn] = bigNumber.numeric
         this[rawColumnName] = bigNumber.raw
       },
@@ -34,7 +35,7 @@ export function MikroOrmBigNumberProperty(
       type: "number",
       columnType: "numeric",
       fieldName: columnName,
-      serializer: (value) => {
+      serializer: () => {
         return undefined
       },
       ...options,
