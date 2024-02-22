@@ -3,9 +3,9 @@ import {
   CreateLineItemForCartDTO,
 } from "@medusajs/types"
 import {
-  WorkflowData,
   createWorkflow,
   transform,
+  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import {
   addToCartStep,
@@ -35,8 +35,8 @@ export const addToCartWorkflow = createWorkflow(
     const pricingContext = transform({ cart: input.cart }, (data) => {
       return {
         currency_code: data.cart.currency_code,
-        region_id: data.cart.region_id,
-        customer_id: data.cart.customer_id,
+        region_id: data.cart.region_id!,
+        customer_id: data.cart.customer_id!,
       }
     })
 
@@ -46,7 +46,7 @@ export const addToCartWorkflow = createWorkflow(
     })
 
     const variants = getVariantsStep({
-      filter: variantIds,
+      filter: { id: variantIds },
     })
 
     const lineItems = transform(

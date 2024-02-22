@@ -1,11 +1,11 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPricingModuleService, PricingContext } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   variantIds: string[]
-  context?: PricingContext
+  context?: PricingContext["context"]
 }
 
 export const getVariantPriceSetsStepId = "get-variant-price-sets"
