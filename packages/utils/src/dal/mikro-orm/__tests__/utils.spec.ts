@@ -1,14 +1,16 @@
 import { mikroOrmUpdateDeletedAtRecursively } from "../utils"
-import {
-  Collection,
-  Entity,
-  ManyToOne,
-  MikroORM,
-  OneToMany,
-  PrimaryKey,
-  Property,
-} from "@mikro-orm/core"
+import { MikroORM } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import {
+  DeepRecursiveEntity1,
+  DeepRecursiveEntity2,
+  DeepRecursiveEntity3,
+  DeepRecursiveEntity4,
+  Entity1,
+  Entity2,
+  RecursiveEntity1,
+  RecursiveEntity2,
+} from "./__fixtures__/utils"
 
 jest.mock("@mikro-orm/core", () => ({
   ...jest.requireActual("@mikro-orm/core"),
@@ -21,97 +23,22 @@ jest.mock("@mikro-orm/core", () => ({
   })),
 }))
 
-@Entity()
-class RecursiveEntity1 {
-  constructor(props: { id: string; deleted_at: Date | null }) {
-    this.id = props.id
-    this.deleted_at = props.deleted_at
-  }
-
-  @PrimaryKey()
-  id: string
-
-  @Property()
-  deleted_at: Date | null
-
-  @OneToMany(() => RecursiveEntity2, (entity2) => entity2.entity1, {
-    cascade: ["soft-remove"] as any,
-  })
-  entity2 = new Collection<RecursiveEntity2>(this)
-}
-
-@Entity()
-class RecursiveEntity2 {
-  constructor(props: {
-    id: string
-    deleted_at: Date | null
-    entity1: RecursiveEntity1
-  }) {
-    this.id = props.id
-    this.deleted_at = props.deleted_at
-    this.entity1 = props.entity1
-  }
-
-  @PrimaryKey()
-  id: string
-
-  @Property()
-  deleted_at: Date | null
-
-  @ManyToOne(() => RecursiveEntity1, {
-    cascade: ["soft-remove"] as any,
-  })
-  entity1: RecursiveEntity1
-}
-
-@Entity()
-class Entity1 {
-  constructor(props: { id: string; deleted_at: Date | null }) {
-    this.id = props.id
-    this.deleted_at = props.deleted_at
-  }
-
-  @PrimaryKey()
-  id: string
-
-  @Property()
-  deleted_at: Date | null
-
-  @OneToMany(() => Entity2, (entity2) => entity2.entity1, {
-    cascade: ["soft-remove"] as any,
-  })
-  entity2 = new Collection<Entity2>(this)
-}
-
-@Entity()
-class Entity2 {
-  constructor(props: {
-    id: string
-    deleted_at: Date | null
-    entity1: RecursiveEntity1
-  }) {
-    this.id = props.id
-    this.deleted_at = props.deleted_at
-    this.entity1 = props.entity1
-  }
-
-  @PrimaryKey()
-  id: string
-
-  @Property()
-  deleted_at: Date | null
-
-  @ManyToOne(() => Entity1, {})
-  entity1: Entity1
-}
-
 describe("mikroOrmUpdateDeletedAtRecursively", () => {
   describe("using circular cascading", () => {
     let orm!: MikroORM
 
     beforeEach(async () => {
       orm = await MikroORM.init({
-        entities: [Entity1, Entity2, RecursiveEntity1, RecursiveEntity2],
+        entities: [
+          Entity1,
+          Entity2,
+          RecursiveEntity1,
+          RecursiveEntity2,
+          DeepRecursiveEntity1,
+          DeepRecursiveEntity2,
+          DeepRecursiveEntity3,
+          DeepRecursiveEntity4,
+        ],
         dbName: "test",
         type: "postgresql",
       })
@@ -152,6 +79,45 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
       ).rejects.toThrow(
         "Unable to soft delete the entity1. Circular dependency detected: RecursiveEntity2 -> entity1 -> RecursiveEntity1 -> entity2 -> RecursiveEntity2"
       )
+    })
+
+    it("should throw an error when a circular dependency is detected even at a deeper level", async () => {
+      const manager = orm.em.fork() as SqlEntityManager
+      const entity1 = new DeepRecursiveEntity1({ id: "1", deleted_at: null })
+      const entity3 = new DeepRecursiveEntity3({
+        id: "3",
+        deleted_at: null,
+        entity1: entity1,
+      })
+      const entity2 = new DeepRecursiveEntity2({
+        id: "2",
+        deleted_at: null,
+        entity1: entity1,
+        entity3: entity3,
+      })
+      const entity4 = new DeepRecursiveEntity4({
+        id: "4",
+        deleted_at: null,
+        entity1: entity1,
+      })
+
+      await expect(
+        mikroOrmUpdateDeletedAtRecursively(manager, [entity1], new Date())
+      ).rejects.toThrow(
+        "Unable to soft delete the entity2. Circular dependency detected: DeepRecursiveEntity1 -> entity2 -> DeepRecursiveEntity2 -> entity3 -> DeepRecursiveEntity3 -> entity1 -> DeepRecursiveEntity1"
+      )
+
+      await expect(
+        mikroOrmUpdateDeletedAtRecursively(manager, [entity2], new Date())
+      ).rejects.toThrow(
+        "Unable to soft delete the entity3. Circular dependency detected: DeepRecursiveEntity2 -> entity3 -> DeepRecursiveEntity3 -> entity1 -> DeepRecursiveEntity1 -> entity2 -> DeepRecursiveEntity2"
+      )
+
+      await mikroOrmUpdateDeletedAtRecursively(manager, [entity4], new Date())
+      expect(entity4.deleted_at).not.toBeNull()
+      expect(entity1.deleted_at).toBeNull()
+      expect(entity2.deleted_at).toBeNull()
+      expect(entity3.deleted_at).toBeNull()
     })
   })
 })
