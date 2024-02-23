@@ -63,6 +63,10 @@ export const supportedLanguages = [
     name: "Tamil",
   },
   {
+    locale: "tr",
+    name: "Türkçe",
+  },
+  {
     locale: "ru",
     name: "Русский",
   },
