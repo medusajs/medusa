@@ -473,6 +473,19 @@ export function abstractModuleServiceFactory<
         /* ignore */
       }
     }
+
+    protected async emitEvents_(groupedEvents) {
+      if (!this.eventBusModuleService_ || !groupedEvents) {
+        return
+      }
+
+      const promises: Promise<void>[] = []
+      for (const group of Object.keys(groupedEvents)) {
+        promises.push(this.eventBusModuleService_?.emit(groupedEvents[group]))
+      }
+
+      await Promise.all(promises)
+    }
   }
 
   const mainModelMethods = buildMethodNamesFromModel(mainModel, false)
