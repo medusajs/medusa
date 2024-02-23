@@ -32,9 +32,11 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
       relation.cascade.includes("soft-remove" as any)
     )
 
+    const relationVisited = new Map(visited.entries())
+
     for (const relation of relationsToCascade) {
-      if (visited.has(relation.type)) {
-        const dependencies = Array.from(visited)
+      if (relationVisited.has(relation.type)) {
+        const dependencies = Array.from(relationVisited)
         dependencies.push([relation.type, relation.name])
         const circularDependencyStr = dependencies
           .map(([, value]) => value)
@@ -92,10 +94,10 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
         manager,
         relationEntities,
         value,
-        visited
+        relationVisited
       )
 
-      visited.set(relation.type, relation.name.toLowerCase())
+      relationVisited.set(relation.type, relation.name.toLowerCase())
     }
 
     await manager.persist(entity)
