@@ -61,6 +61,7 @@ const SearchResults = ({ query = "" }: { query?: string }) => {
               text={name}
               tooltipText={name}
               tooltipClassName="!block"
+              handleTouch
             >
               <div
                 className={clsx(
