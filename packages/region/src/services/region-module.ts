@@ -23,11 +23,13 @@ import {
   MedusaError,
   ModulesSdkUtils,
   promiseAll,
+  DefaultsUtils,
+  removeUndefined,
+  getDuplicates,
 } from "@medusajs/utils"
 
 import { Country, Currency, Region } from "@models"
 
-import { DefaultsUtils } from "@medusajs/utils"
 import { CreateCountryDTO, CreateCurrencyDTO } from "@types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
@@ -304,7 +306,7 @@ export default class RegionModuleService<
     if (uniqueCountries.length !== countries.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Countries with codes: "${getDuplicateEntries(countries).join(
+        `Countries with codes: "${getDuplicates(countries).join(
           ", "
         )}" are already assigned to a region`
       )
@@ -412,26 +414,4 @@ export default class RegionModuleService<
       await this.currencyService_.create(currsToCreate, sharedContext)
     }
   }
-}
-
-// microORM complains if undefined fields are present in the passed data object
-const removeUndefined = <T extends Record<string, any>>(obj: T): T => {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([_, v]) => v !== undefined)
-  ) as T
-}
-
-const getDuplicateEntries = (collection: string[]): string[] => {
-  const uniqueElements = new Set()
-  const duplicates: string[] = []
-
-  collection.forEach((item) => {
-    if (uniqueElements.has(item)) {
-      duplicates.push(item)
-    } else {
-      uniqueElements.add(item)
-    }
-  })
-
-  return duplicates
 }
