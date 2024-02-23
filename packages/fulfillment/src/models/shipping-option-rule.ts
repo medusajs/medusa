@@ -17,6 +17,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 import ShippingOption from "./shipping-option"
+import { RuleOperator } from "@utils"
 
 type ShippingOptionRuleOptionalProps = DAL.SoftDeletableEntityDateColumns
 
@@ -32,8 +33,6 @@ const ShippingOptionIdIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NULL",
 })
 
-type ruleOperator = "in" | "eq" | "ne" | "gt" | "gte" | "lt" | "lte" | "nin"
-
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingOptionRule {
@@ -46,10 +45,10 @@ export default class ShippingOptionRule {
   attribute: string
 
   @Enum({
-    items: () => ["in", "eq", "ne", "gt", "gte", "lt", "lte", "nin"],
+    items: () => Object.values(RuleOperator),
     columnType: "text",
   })
-  operator: ruleOperator
+  operator: Lowercase<keyof typeof RuleOperator>
 
   @Property({ columnType: "jsonb", nullable: true })
   value: string | string[] | null = null

@@ -50,7 +50,6 @@ export default class ShippingOptionType {
 
   @OneToOne(() => ShippingOption, (so) => so.type, {
     type: "text",
-    cascade: [],
   })
   shipping_option: ShippingOption
 

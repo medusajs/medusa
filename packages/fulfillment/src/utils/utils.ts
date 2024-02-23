@@ -130,7 +130,7 @@ export function validateRule(rule: Record<string, unknown>): boolean {
     )
   }
 
-  if (rule.operator === "in" || rule.operator === "nin") {
+  if (rule.operator === RuleOperator.IN || rule.operator === RuleOperator.NIN) {
     if (!Array.isArray(rule.value)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,

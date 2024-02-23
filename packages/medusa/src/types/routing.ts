@@ -1,8 +1,30 @@
-import type { NextFunction, Request, Response } from "express"
+import type { Request } from "express"
 
 import type { Customer, User } from "../models"
-import type { MedusaContainer } from "./global"
+import { FindConfig, RequestQueryFields } from "./common"
 
+export interface MedusaRequest<Body = unknown> extends Request {
+  validatedBody: Body
+  validatedQuery: RequestQueryFields & Record<string, unknown>
+  listConfig: FindConfig<unknown>
+  retrieveConfig: FindConfig<unknown>
+  filterableFields: Record<string, unknown>
+  allowedProperties: string[]
+  includes?: Record<string, boolean>
+  errors: string[]
+}
+
+export interface AuthenticatedMedusaRequest<Body = never>
+  extends MedusaRequest<Body> {
+  user: (User | Customer) & { customer_id?: string; userId?: string }
+  auth: {
+    actor_id: string
+    auth_user_id: string
+    app_metadata: Record<string, any>
+    scope: string
+  }
+}
+/*
 export interface MedusaRequest extends Request {
   user?: (User | Customer) & { customer_id?: string; userId?: string }
   scope: MedusaContainer
@@ -19,4 +41,4 @@ export type MedusaRequestHandler = (
   req: MedusaRequest,
   res: MedusaResponse,
   next: MedusaNextFunction
-) => Promise<void> | void
+) => Promise<void> | void*/

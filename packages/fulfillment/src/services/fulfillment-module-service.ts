@@ -9,6 +9,7 @@ import {
   UpdateFulfillmentSetDTO,
 } from "@medusajs/types"
 import {
+  arrayDifference,
   getSetDifference,
   InjectManager,
   InjectTransactionManager,
@@ -452,6 +453,7 @@ export default class FulfillmentModuleService<
       },
       {
         relations: ["service_zones", "service_zones.geo_zones"],
+        take: fulfillmentSetIds.length,
       },
       sharedContext
     )
@@ -634,6 +636,7 @@ export default class FulfillmentModuleService<
       },
       {
         relations: ["geo_zones"],
+        take: serviceZoneIds.length,
       },
       sharedContext
     )
@@ -784,8 +787,12 @@ export default class FulfillmentModuleService<
       },
       {
         relations: ["rules"],
+        take: shippingOptionIds.length,
       },
       sharedContext
+    )
+    const existingShippingOptions = new Map(
+      shippingOptions.map((s) => [s.id, s])
     )
 
     FulfillmentModuleService.validateMissingShippingOptions_(
@@ -799,9 +806,9 @@ export default class FulfillmentModuleService<
         return
       }
 
-      const existingShippingOption = shippingOptions.find(
-        (s) => s.id === shippingOption.id
-      )!
+      const existingShippingOption = existingShippingOptions.get(
+        shippingOption.id
+      )! // Garuantueed to exist since the validation above have been performed
       const existingRules = existingShippingOption.rules
 
       FulfillmentModuleService.validateMissingShippingOptionRules(
@@ -812,17 +819,19 @@ export default class FulfillmentModuleService<
       const existingRulesMap = new Map(
         existingRules.map((rule) => [rule.id, rule])
       )
+
       const updatedRules = shippingOption.rules
-      const toDeleteRuleIds = getSetDifference(
-        new Set(existingRules.map((r) => r.id)),
-        new Set(
-          updatedRules
-            .map((r) => "id" in r && r.id)
-            .filter((id): id is string => !!id)
-        )
-      )
-      if (toDeleteRuleIds.size) {
-        ruleIdsToDelete.push(...Array.from(toDeleteRuleIds))
+      const updatedRuleIds = updatedRules
+        .map((r) => "id" in r && r.id)
+        .filter((id): id is string => !!id)
+
+      const toDeleteRuleIds = arrayDifference(
+        updatedRuleIds,
+        Array.from(existingRulesMap.keys())
+      ) as string[]
+
+      if (toDeleteRuleIds.length) {
+        ruleIdsToDelete.push(...toDeleteRuleIds)
       }
 
       const newRules = updatedRules
@@ -971,16 +980,12 @@ export default class FulfillmentModuleService<
     shippingOptions: ShippingOption[],
     shippingOptionsData: FulfillmentTypes.UpdateShippingOptionDTO[]
   ) {
-    const shippingOptionSet = new Set(shippingOptions.map((s) => s.id))
-    const expectedShippingOptionSet = new Set(
-      shippingOptionsData.map((s) => s.id)
-    )
-    const missingShippingOptionIds = getSetDifference(
-      expectedShippingOptionSet,
-      shippingOptionSet
+    const missingShippingOptionIds = arrayDifference(
+      shippingOptionsData.map((s) => s.id),
+      shippingOptions.map((s) => s.id)
     )
 
-    if (missingShippingOptionIds.size) {
+    if (missingShippingOptionIds.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `The following shipping options do not exist: ${Array.from(
