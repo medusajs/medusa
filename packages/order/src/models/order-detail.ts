@@ -1,9 +1,9 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
-  BigNumberField,
   createPsqlIndexStatementHelper,
   generateEntityId,
+  MikroOrmBigNumberProperty,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -57,50 +57,43 @@ export default class OrderDetail {
   })
   item: LineItem
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
+  @MikroOrmBigNumberProperty()
   quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_quantity: BigNumberRawValue
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
+  @MikroOrmBigNumberProperty()
   fulfilled_quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_fulfilled_quantity: BigNumberRawValue
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
+  @MikroOrmBigNumberProperty()
   shipped_quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_shipped_quantity: BigNumberRawValue
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
+  @MikroOrmBigNumberProperty()
   return_requested_quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_return_requested_quantity: BigNumberRawValue
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
+  @MikroOrmBigNumberProperty()
   return_received_quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_return_received_quantity: BigNumberRawValue
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
+  @MikroOrmBigNumberProperty()
   return_dismissed_quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_return_dismissed_quantity: BigNumberRawValue
 
-  @Property({ columnType: "numeric" })
-  @BigNumberField()
+  @MikroOrmBigNumberProperty()
   written_off_quantity: BigNumber | number
 
   @Property({ columnType: "jsonb" })

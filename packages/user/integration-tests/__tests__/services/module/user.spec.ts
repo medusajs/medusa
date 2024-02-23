@@ -1,7 +1,9 @@
 import { IUserModuleService } from "@medusajs/types/dist/user"
 import { MikroOrmWrapper } from "../../../utils"
+import { MockEventBusService } from "medusa-test-utils"
 import { Modules } from "@medusajs/modules-sdk"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { UserEvents } from "@medusajs/utils"
 import { createUsers } from "../../../__fixtures__/user"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
@@ -41,6 +43,7 @@ describe("UserModuleService - User", () => {
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
+    jest.clearAllMocks()
   })
 
   afterAll(async () => {
@@ -182,6 +185,30 @@ describe("UserModuleService - User", () => {
 
       expect(error.message).toEqual('User with id "does-not-exist" not found')
     })
+
+    it("should emit user created events", async () => {
+      const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+      await service.create(defaultUserData)
+
+      jest.clearAllMocks()
+
+      await service.update([
+        {
+          id: "1",
+          first_name: "John",
+        },
+      ])
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: { id: "1" },
+          }),
+          eventName: UserEvents.updated,
+        }),
+      ])
+    })
   })
 
   describe("create", () => {
@@ -198,6 +225,27 @@ describe("UserModuleService - User", () => {
           id: "1",
         })
       )
+    })
+
+    it("should emit user created events", async () => {
+      const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+      await service.create(defaultUserData)
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: { id: "1" },
+          }),
+          eventName: UserEvents.created,
+        }),
+        expect.objectContaining({
+          body: expect.objectContaining({
+            data: { id: "2" },
+          }),
+          eventName: UserEvents.created,
+        }),
+      ])
     })
   })
 })
