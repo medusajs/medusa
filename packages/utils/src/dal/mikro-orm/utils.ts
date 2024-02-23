@@ -44,7 +44,6 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
           `Unable to soft delete the ${relation.name}. Circular dependency detected: ${circularDependencyStr}`
         )
       }
-      visited.set(relation.type, relation.name.toLowerCase())
 
       let entityRelation = entity[relation.name]
 
@@ -95,6 +94,8 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
         value,
         visited
       )
+
+      visited.set(relation.type, relation.name.toLowerCase())
     }
 
     await manager.persist(entity)
