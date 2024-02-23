@@ -58,7 +58,7 @@ export function getComputedActionsForBuyGet(
   let remainingQtyToApply = applyToQuantity
 
   for (const method of validItemsForTargetRules) {
-    const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
+    const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
     const multiplier = Math.min(method.quantity, remainingQtyToApply)
     const amount = (method.subtotal / method.quantity) * multiplier
     const newRemainingQtyToApply = remainingQtyToApply - multiplier

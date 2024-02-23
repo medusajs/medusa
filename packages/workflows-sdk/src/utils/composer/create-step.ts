@@ -202,8 +202,6 @@ function applyStep<
         ret.__step__ = newStepName
         WorkflowManager.update(this.workflowId, this.flow, this.handlers)
 
-        ret.__step__ = newStepName
-
         return proxify(ret)
       },
     }

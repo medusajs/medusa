@@ -166,10 +166,10 @@ export default class PromotionModuleService<
       if (campaignBudget.type === CampaignBudgetType.SPEND) {
         const campaignBudgetData = promotionCodeCampaignBudgetMap.get(
           campaignBudget.id
-        ) || { id: campaignBudget.id, used: campaignBudget.used || 0 }
+        ) || { id: campaignBudget.id, used: campaignBudget.used ?? 0 }
 
         campaignBudgetData.used =
-          (campaignBudgetData.used || 0) + computedAction.amount
+          (campaignBudgetData.used ?? 0) + computedAction.amount
 
         if (
           campaignBudget.limit &&
@@ -194,7 +194,7 @@ export default class PromotionModuleService<
 
         const campaignBudgetData = {
           id: campaignBudget.id,
-          used: (campaignBudget.used || 0) + 1,
+          used: (campaignBudget.used ?? 0) + 1,
         }
 
         if (

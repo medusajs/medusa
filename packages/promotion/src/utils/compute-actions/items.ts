@@ -68,7 +68,7 @@ export function applyPromotionToItems(
         continue
       }
 
-      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
       const quantityMultiplier = Math.min(
         method.quantity,
         applicationMethod?.max_quantity!
@@ -116,7 +116,7 @@ export function applyPromotionToItems(
     )
   ) {
     const totalApplicableValue = items!.reduce((acc, method) => {
-      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
       const perItemCost = method.subtotal
         ? method.subtotal / method.quantity
         : 0
@@ -129,7 +129,7 @@ export function applyPromotionToItems(
         continue
       }
 
-      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
       const promotionValue = parseFloat(applicationMethod!.value!)
       const applicableTotal =
         (method.subtotal / method.quantity) * method.quantity -

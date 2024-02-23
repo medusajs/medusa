@@ -59,7 +59,7 @@ export function applyPromotionToShippingMethods(
         continue
       }
 
-      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
       let promotionValue = parseFloat(applicationMethod!.value!)
       const applicableTotal = method.subtotal - appliedPromoValue
 
@@ -97,9 +97,9 @@ export function applyPromotionToShippingMethods(
 
   if (allocation === ApplicationMethodAllocation.ACROSS) {
     const totalApplicableValue = shippingMethods!.reduce((acc, method) => {
-      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
 
-      return acc + (method.subtotal || 0) - appliedPromoValue
+      return acc + (method.subtotal ?? 0) - appliedPromoValue
     }, 0)
 
     if (totalApplicableValue <= 0) {
@@ -113,7 +113,7 @@ export function applyPromotionToShippingMethods(
 
       const promotionValue = parseFloat(applicationMethod!.value!)
       const applicableTotal = method.subtotal
-      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
 
       // TODO: should we worry about precision here?
       let applicablePromotionValue =
