@@ -1,27 +1,51 @@
 import { buildQuery } from "../../modules-sdk"
+import { FindOptions, wrap } from "@mikro-orm/core"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export const mikroOrmUpdateDeletedAtRecursively = async <
   T extends object = any
 >(
-  manager: any,
+  manager: SqlEntityManager,
   entities: (T & { id: string; deleted_at?: string | Date | null })[],
-  value: Date | null
+  value: Date | null,
+  visited: Map<string, string> = new Map()
 ) => {
   for (const entity of entities) {
     if (!("deleted_at" in entity)) continue
 
     entity.deleted_at = value
 
+    const entityName = entity.constructor.name
+    const entityMetadata = manager.getDriver().getMetadata().get(entityName)
+
+    visited.set(
+      entityMetadata.className,
+      entityMetadata.name ?? entityMetadata.className
+    )
+
     const relations = manager
       .getDriver()
       .getMetadata()
-      .get(entity.constructor.name).relations
+      .get(entityName).relations
 
     const relationsToCascade = relations.filter((relation) =>
       relation.cascade.includes("soft-remove" as any)
     )
 
     for (const relation of relationsToCascade) {
+      if (visited.has(relation.type)) {
+        const dependencies = Array.from(visited)
+        dependencies.push([relation.type, relation.name])
+        const circularDependencyStr = dependencies
+          .map(([, value]) => value)
+          .join(" -> ")
+
+        throw new Error(
+          `Unable to soft delete the ${relation.name}. Circular dependency detected: ${circularDependencyStr}`
+        )
+      }
+      visited.set(relation.type, relation.name.toLowerCase())
+
       let entityRelation = entity[relation.name]
 
       // Handle optional relationships
@@ -42,7 +66,7 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
         return await manager.findOne(
           entity.constructor.name,
           query.where,
-          query.options
+          query.options as FindOptions<any>
         )
       }
 
@@ -61,11 +85,18 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
         }
         relationEntities = entityRelation.getItems()
       } else {
-        const initializedEntityRelation = await entityRelation.__helper?.init()
+        const initializedEntityRelation = await wrap(entityRelation)
+          .init()
+          .catch(() => entityRelation)
         relationEntities = [initializedEntityRelation]
       }
 
-      await mikroOrmUpdateDeletedAtRecursively(manager, relationEntities, value)
+      await mikroOrmUpdateDeletedAtRecursively(
+        manager,
+        relationEntities,
+        value,
+        visited
+      )
     }
 
     await manager.persist(entity)
