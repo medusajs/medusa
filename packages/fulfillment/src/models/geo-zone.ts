@@ -74,7 +74,11 @@ export default class GeoZone {
   @Property({ columnType: "text", nullable: true })
   city: string | null = null
 
-  @Property({ columnType: "text" })
+  @ManyToOne(() => ServiceZone, {
+    type: "text",
+    mapToPk: true,
+    fieldName: "service_zone_id",
+  })
   @ServiceZoneIdIndex.MikroORMIndex()
   service_zone_id: string
 
