@@ -295,8 +295,7 @@ export default class PromotionModuleService<
           "campaign",
           "campaign.budget",
         ],
-      },
-      sharedContext
+      }
     )
 
     const appliedCodes = [...appliedShippingCodes, ...appliedItemCodes]
