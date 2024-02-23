@@ -4,35 +4,30 @@ import {
   generateEntityId,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
   Filter,
-  Index,
   OneToMany,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 import ServiceZone from "./service-zone"
 
 type FulfillmentSetOptionalProps = DAL.SoftDeletableEntityDateColumns
 
-const deletedAtIndexName = "IDX_fulfillment_set_deleted_at"
-const deletedAtIndexStatement = createPsqlIndexStatementHelper({
-  name: deletedAtIndexName,
+const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment_set",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
-const nameIndexName = "IDX_fulfillment_set_name_unique"
-const nameIndexStatement = createPsqlIndexStatementHelper({
-  name: nameIndexName,
+const NameIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment_set",
   columns: "name",
   unique: true,
@@ -48,10 +43,7 @@ export default class FulfillmentSet {
   id: string
 
   @Property({ columnType: "text" })
-  @Index({
-    name: nameIndexName,
-    expression: nameIndexStatement,
-  })
+  @NameIndex.MikroORMIndex()
   name: string
 
   @Property({ columnType: "text" })
@@ -82,10 +74,7 @@ export default class FulfillmentSet {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  @Index({
-    name: deletedAtIndexName,
-    expression: deletedAtIndexStatement,
-  })
+  @DeletedAtIndex.MikroORMIndex()
   deleted_at: Date | null = null
 
   @BeforeCreate()

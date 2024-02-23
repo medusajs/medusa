@@ -19,6 +19,7 @@ import {
   FeatureFlagDecorators,
 } from "../utils/feature-flag-decorators"
 
+import { MedusaV2Flag } from "@medusajs/utils"
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { manualAutoIncrement } from "../utils/manual-auto-increment"
@@ -41,7 +42,6 @@ import { Return } from "./return"
 import { SalesChannel } from "./sales-channel"
 import { ShippingMethod } from "./shipping-method"
 import { Swap } from "./swap"
-import { MedusaV2Flag } from "@medusajs/utils"
 
 /**
  * @enum

@@ -97,13 +97,6 @@ export interface AbstractModuleServiceBase<TContainer, TMainModelDTO> {
   ): Promise<Record<string, string[]> | void>
 }
 
-/**
- * Multiple issues on typescript around mapped types function are open, so
- * when overriding a method from the base class that is mapped dynamically from the
- * other models, we will have to ignore the error (2425)
- *
- * see: https://github.com/microsoft/TypeScript/issues/48125
- */
 export type AbstractModuleService<
   TContainer,
   TMainModelDTO,
@@ -480,6 +473,19 @@ export function abstractModuleServiceFactory<
       } catch {
         /* ignore */
       }
+    }
+
+    protected async emitEvents_(groupedEvents) {
+      if (!this.eventBusModuleService_ || !groupedEvents) {
+        return
+      }
+
+      const promises: Promise<void>[] = []
+      for (const group of Object.keys(groupedEvents)) {
+        promises.push(this.eventBusModuleService_?.emit(groupedEvents[group]))
+      }
+
+      await Promise.all(promises)
     }
   }
 

@@ -1,29 +1,28 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { PublishableApiKey } from "@medusajs/medusa"
-import { Button, Drawer, Input } from "@medusajs/ui"
+import { Button, Input } from "@medusajs/ui"
 import { useAdminUpdatePublishableApiKey } from "medusa-react"
-import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+
 import { Form } from "../../../../../components/common/form"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 
 type EditApiKeyFormProps = {
   apiKey: PublishableApiKey
-  onSuccessfulSubmit: () => void
-  subscribe: (state: boolean) => void
 }
 
 const EditApiKeySchema = zod.object({
   title: zod.string().min(1),
 })
 
-export const EditApiKeyForm = ({
-  apiKey,
-  onSuccessfulSubmit,
-  subscribe,
-}: EditApiKeyFormProps) => {
+export const EditApiKeyForm = ({ apiKey }: EditApiKeyFormProps) => {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof EditApiKeySchema>>({
     defaultValues: {
@@ -32,28 +31,23 @@ export const EditApiKeyForm = ({
     resolver: zodResolver(EditApiKeySchema),
   })
 
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
-
   const { mutateAsync, isLoading } = useAdminUpdatePublishableApiKey(apiKey.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
       onSuccess: () => {
-        onSuccessfulSubmit()
+        handleSuccess()
+      },
+      onError: (error) => {
+        console.log(error)
       },
     })
   })
 
   return (
-    <Form {...form}>
+    <RouteDrawer.Form form={form}>
       <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
-        <Drawer.Body>
+        <RouteDrawer.Body>
           <div className="flex flex-col gap-y-4">
             <Form.Field
               control={form.control}
@@ -71,20 +65,20 @@ export const EditApiKeyForm = ({
               }}
             />
           </div>
-        </Drawer.Body>
-        <Drawer.Footer>
+        </RouteDrawer.Body>
+        <RouteDrawer.Footer>
           <div className="flex items-center gap-x-2">
-            <Drawer.Close asChild>
+            <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
                 {t("actions.cancel")}
               </Button>
-            </Drawer.Close>
+            </RouteDrawer.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
               {t("actions.save")}
             </Button>
           </div>
-        </Drawer.Footer>
+        </RouteDrawer.Footer>
       </form>
-    </Form>
+    </RouteDrawer.Form>
   )
 }

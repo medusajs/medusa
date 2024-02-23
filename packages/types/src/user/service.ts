@@ -12,6 +12,11 @@ import { IModuleService } from "../modules-sdk"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
 
 export interface IUserModuleService extends IModuleService {
+  validateInviteToken(
+    token: string,
+    sharedContext?: Context
+  ): Promise<InviteDTO>
+
   retrieve(
     id: string,
     config?: FindConfig<UserDTO>,
