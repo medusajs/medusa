@@ -1,4 +1,5 @@
 import { EntityManager } from "typeorm"
+import { EventBusTypes } from "./bundles"
 import { Message } from "./event-bus"
 
 /**
@@ -27,6 +28,12 @@ export interface IMessageAggregator {
   save(msg: Message | Message[]): void
   getMessages(format?: MessageAggregatorFormat): Record<string, Message[]>
   clearMessages(): void
+  saveRawMessageData<T>(
+    messageData:
+      | EventBusTypes.MessageFormat<T>
+      | EventBusTypes.MessageFormat<T>[],
+    options?: Record<string, unknown>
+  ): void
 }
 
 /**
