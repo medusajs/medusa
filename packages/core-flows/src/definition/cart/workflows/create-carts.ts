@@ -1,9 +1,9 @@
 import { CartDTO, CreateCartWorkflowInputDTO } from "@medusajs/types"
 import {
+  WorkflowData,
   createWorkflow,
   parallelize,
   transform,
-  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import {
   createCartsStep,
@@ -51,7 +51,7 @@ export const createCartWorkflow = createWorkflow(
         return {
           currency_code: data.input.currency_code ?? data.region.currency_code,
           region_id: data.region.id,
-          customer_id: data.customerData.customer?.id!,
+          customer_id: data.customerData.customer?.id,
         }
       }
     )
@@ -84,7 +84,6 @@ export const createCartWorkflow = createWorkflow(
     )
 
     const variants = getVariantsStep({
-      // @ts-ignore
       filter: { id: variantIds },
       config: {
         select: [
@@ -127,7 +126,6 @@ export const createCartWorkflow = createWorkflow(
       }
     })
 
-    // @ts-ignore
     const carts = createCartsStep([cartToCreate])
 
     const cart = transform({ carts }, (data) => data.carts[0])
