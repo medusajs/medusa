@@ -1,17 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, FocusModal } from "@medusajs/ui"
+import { Button } from "@medusajs/ui"
 import { useAdminCreateProduct } from "medusa-react"
-import { useEffect } from "react"
 import { UseFormReturn, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { Form } from "../../../../../components/common/form"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 import { CreateProductDetails } from "./create-product-details"
-
-type CreateProductFormProps = {
-  subscribe: (state: boolean) => void
-}
 
 const CreateProductSchema = zod.object({
   title: zod.string(),
@@ -38,8 +36,10 @@ const CreateProductSchema = zod.object({
 type Schema = zod.infer<typeof CreateProductSchema>
 export type CreateProductFormReturn = UseFormReturn<Schema>
 
-export const CreateProductForm = ({ subscribe }: CreateProductFormProps) => {
+export const CreateProductForm = () => {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
+
   const form = useForm<Schema>({
     defaultValues: {
       title: "",
@@ -61,14 +61,6 @@ export const CreateProductForm = ({ subscribe }: CreateProductFormProps) => {
     resolver: zodResolver(CreateProductSchema),
   })
 
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [subscribe, isDirty])
-
   const { mutateAsync, isLoading } = useAdminCreateProduct()
 
   const handleSubmit = form.handleSubmit(async (values) => {
@@ -83,34 +75,36 @@ export const CreateProductForm = ({ subscribe }: CreateProductFormProps) => {
         weight: values.weight ? parseFloat(values.weight) : undefined,
       },
       {
-        onSuccess: () => {},
+        onSuccess: ({ product }) => {
+          handleSuccess(`../${product.id}`)
+        },
       }
     )
   })
 
   return (
-    <Form {...form}>
+    <RouteFocusModal.Form form={form}>
       <form onSubmit={handleSubmit} className="flex h-full flex-col">
-        <FocusModal.Header>
+        <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
-            <FocusModal.Close asChild>
+            <RouteFocusModal.Close asChild>
               <Button variant="secondary" size="small">
                 {t("actions.cancel")}
               </Button>
-            </FocusModal.Close>
+            </RouteFocusModal.Close>
             <Button type="submit" size="small" isLoading={isLoading}>
               {t("actions.save")}
             </Button>
           </div>
-        </FocusModal.Header>
-        <FocusModal.Body className="flex flex-1 flex-col overflow-hidden">
+        </RouteFocusModal.Header>
+        <RouteFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
           <div className="flex flex-1 flex-col items-center overflow-y-auto">
             <div className="flex h-full w-full">
               <CreateProductDetails form={form} />
             </div>
           </div>
-        </FocusModal.Body>
+        </RouteFocusModal.Body>
       </form>
-    </Form>
+    </RouteFocusModal.Form>
   )
 }

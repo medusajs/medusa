@@ -5,6 +5,7 @@ export interface CreateUserDTO {
   avatar_url?: string | null
   metadata?: Record<string, unknown> | null
 }
+
 export interface UpdateUserDTO extends Partial<Omit<CreateUserDTO, "email">> {
   id: string
 }
