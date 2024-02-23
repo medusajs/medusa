@@ -105,10 +105,12 @@ moduleIntegrationTestRunner({
 
         it("should allow for at most two tokens, where one is revoked", async function () {
           const firstApiKey = await service.create(createSecretKeyFixture)
-          await service.revoke({
-            id: firstApiKey.id,
-            revoked_by: "test",
-          })
+          await service.revoke(
+            { id: firstApiKey.id },
+            {
+              revoked_by: "test",
+            }
+          )
 
           await service.create(createSecretKeyFixture)
           const err = await service
@@ -123,8 +125,7 @@ moduleIntegrationTestRunner({
       describe("revoking API keys", () => {
         it("should have the revoked at and revoked by set when a key is revoked", async function () {
           const firstApiKey = await service.create(createSecretKeyFixture)
-          const revokedKey = await service.revoke({
-            id: firstApiKey.id,
+          const revokedKey = await service.revoke(firstApiKey.id, {
             revoked_by: "test",
           })
 
@@ -148,14 +149,12 @@ moduleIntegrationTestRunner({
 
         it("should not allow revoking an already revoked API key", async function () {
           const firstApiKey = await service.create(createSecretKeyFixture)
-          await service.revoke({
-            id: firstApiKey.id,
+          await service.revoke(firstApiKey.id, {
             revoked_by: "test",
           })
 
           const err = await service
-            .revoke({
-              id: firstApiKey.id,
+            .revoke(firstApiKey.id, {
               revoked_by: "test2",
             })
             .catch((e) => e)
@@ -170,8 +169,7 @@ moduleIntegrationTestRunner({
         it("should update the name successfully", async function () {
           const createdApiKey = await service.create(createSecretKeyFixture)
 
-          const updatedApiKey = await service.update({
-            id: createdApiKey.id,
+          const updatedApiKey = await service.update(createdApiKey.id, {
             title: "New Name",
           })
           expect(updatedApiKey.title).toEqual("New Name")
@@ -180,8 +178,7 @@ moduleIntegrationTestRunner({
         it("should not reflect any updates on other fields", async function () {
           const createdApiKey = await service.create(createSecretKeyFixture)
 
-          const updatedApiKey = await service.update({
-            id: createdApiKey.id,
+          const updatedApiKey = await service.update(createdApiKey.id, {
             title: createdApiKey.title,
             revoked_by: "test",
             revoked_at: new Date(),

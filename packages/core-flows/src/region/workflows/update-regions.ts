@@ -1,14 +1,14 @@
 import {
   FilterableRegionProps,
   RegionDTO,
-  UpdatableRegionFields,
+  UpdateRegionDTO,
 } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { updateRegionsStep } from "../steps"
 
 type UpdateRegionsStepInput = {
   selector: FilterableRegionProps
-  update: UpdatableRegionFields
+  update: UpdateRegionDTO
 }
 
 type WorkflowInput = UpdateRegionsStepInput
