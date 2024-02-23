@@ -187,7 +187,13 @@
     "domain": "Draft Orders"
   },
   "discounts": {
-    "domain": "Discounts"
+    "domain": "Discounts",
+    "discountStatus": {
+      "scheduled": "scheduled",
+      "expired": "expired",
+      "active": "active",
+      "disabled": "disabled"
+    }
   },
   "pricing": {
     "domain": "Pricing"
@@ -355,6 +361,8 @@
     "sales_channels": "Sales Channels",
     "status": "Status",
     "code": "Code",
+    "value": "Value",
+    "totalRedemptions": "Total Redemptions",
     "countries": "Countries",
     "paymentProviders": "Payment Providers",
     "fulfillmentProviders": "Fulfillment Providers",
@@ -392,7 +400,7 @@
     "items": "Items",
     "salesChannel": "Sales Channel",
     "region": "Region",
-    "discount" : "Discount",
+    "discount": "Discount",
     "role": "Role",
     "sent": "Sent",
     "salesChannels": "Sales Channels",

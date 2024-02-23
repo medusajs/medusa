@@ -35,6 +35,8 @@ export const DiscountListTable = () => {
     }
   )
 
+  console.log(discounts)
+
   const filters = useDiscountTableFilters()
   const columns = useColumns()
 

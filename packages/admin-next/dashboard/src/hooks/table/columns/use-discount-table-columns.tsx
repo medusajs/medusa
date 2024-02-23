@@ -11,6 +11,18 @@ import {
   DescriptionHeader,
   DescriptionCell,
 } from "../../../components/table/table-cells/discount/description-cell"
+import {
+  ValueCell,
+  ValueHeader,
+} from "../../../components/table/table-cells/discount/value-cell"
+import {
+  RedemptionCell,
+  RedemptionHeader,
+} from "../../../components/table/table-cells/discount/redemption-cell"
+import {
+  StatusHeader,
+  StatusCell,
+} from "../../../components/table/table-cells/discount/status-cell"
 
 const columnHelper = createColumnHelper<Discount>()
 
@@ -26,20 +38,27 @@ export const useDiscountTableColumns = () => {
         header: () => <DescriptionHeader />,
         cell: ({ row }) => <DescriptionCell discount={row.original} />,
       }),
-      // columnHelper.accessor("sales_channels", {
-      //   header: () => <SalesChannelHeader />,
-      //   cell: ({ row }) => (
-      //     <SalesChannelsCell salesChannels={row.original.sales_channels} />
-      //   ),
-      // }),
-      // columnHelper.accessor("variants", {
-      //   header: () => <VariantHeader />,
-      //   cell: ({ row }) => <VariantCell variants={row.original.variants} />,
-      // }),
-      // columnHelper.accessor("status", {
-      //   header: () => <ProductStatusHeader />,
-      //   cell: ({ row }) => <ProductStatusCell status={row.original.status} />,
-      // }),
+
+      columnHelper.accessor("rule.value", {
+        header: () => <ValueHeader />,
+        cell: ({ row }) => (
+          <ValueCell
+            rule={row.original.rule}
+            currencyCode={row.original.regions[0].currency_code}
+          />
+        ),
+      }),
+      columnHelper.display({
+        id: "status",
+        header: () => <StatusHeader />,
+        cell: ({ row }) => <StatusCell discount={row.original} />,
+      }),
+      columnHelper.accessor("usage_count", {
+        header: () => <RedemptionHeader />,
+        cell: ({ row }) => (
+          <RedemptionCell redemptions={row.original.usage_count} />
+        ),
+      }),
     ],
     []
   ) as ColumnDef<Discount>[]
