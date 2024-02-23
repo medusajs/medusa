@@ -35,8 +35,6 @@ export const DiscountListTable = () => {
     }
   )
 
-  console.log(discounts)
-
   const filters = useDiscountTableFilters()
   const columns = useColumns()
 
@@ -72,7 +70,7 @@ export const DiscountListTable = () => {
         isLoading={isLoading}
         queryObject={raw}
         navigateTo={(row) => `${row.original.id}`}
-        orderBy={["created_at", "code"]}
+        // orderBy={["created_at", "code"]}
       />
       <Outlet />
     </Container>
