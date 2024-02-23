@@ -22,16 +22,13 @@ export interface CreateRegionDTO {
   metadata?: Record<string, unknown>
 }
 
-/**
- * The attributes to update in the region.
- */
-export interface UpdateRegionDTO {
+export interface UpsertRegionDTO {
   /**
-   * The ID of the region.
+   * The id of the region in the case of an update
    */
-  id: string
+  id?: string
   /**
-   * The name of the region.
+   * The target name of the region
    */
   name?: string
   /**
@@ -48,12 +45,9 @@ export interface UpdateRegionDTO {
   metadata?: Record<string, unknown>
 }
 
-/**
- * The updatable fields of a region.
- */
-export interface UpdatableRegionFields {
+export interface UpdateRegionDTO {
   /**
-   * The name of the region.
+   * The target name of the region
    */
   name?: string
   /**
