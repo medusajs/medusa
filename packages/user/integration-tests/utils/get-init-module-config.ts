@@ -1,6 +1,7 @@
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 
 import { DB_URL } from "./database"
+import { MockEventBusService } from "medusa-test-utils"
 
 export function getInitModuleConfig() {
   const moduleOptions = {
@@ -13,7 +14,9 @@ export function getInitModuleConfig() {
     jwt_secret: "test",
   }
 
-  const injectedDependencies = {}
+  const injectedDependencies = {
+    eventBusModuleService: new MockEventBusService(),
+  }
 
   const modulesConfig_ = {
     [Modules.USER]: {
