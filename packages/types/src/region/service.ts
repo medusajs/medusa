@@ -10,11 +10,7 @@ import {
   RegionCurrencyDTO,
   RegionDTO,
 } from "./common"
-import {
-  CreateRegionDTO,
-  UpdatableRegionFields,
-  UpdateRegionDTO,
-} from "./mutations"
+import { CreateRegionDTO, UpsertRegionDTO, UpdateRegionDTO } from "./mutations"
 
 /**
  * The main service interface for the region module.
@@ -45,21 +41,46 @@ export interface IRegionModuleService extends IModuleService {
   create(data: CreateRegionDTO, sharedContext?: Context): Promise<RegionDTO>
 
   /**
-   * This method updates existing regions.
+   * This method updates existing regions, or creates new ones if they don't exist.
    *
-   * @param {UpdateRegionDTO[]} data - The attributes to update in each region.
-   * @returns {Promise<RegionDTO[]>} The updated regions.
+   * @param {UpsertRegionDTO[]} data - The attributes to update or create in each region.
+   * @returns {Promise<RegionDTO[]>} The updated and created regions.
    *
    * @example
    * {example-code}
    */
-  update(data: UpdateRegionDTO[]): Promise<RegionDTO[]>
+  upsert(data: UpsertRegionDTO[], sharedContext?: Context): Promise<RegionDTO[]>
+
+  /**
+   * This method updates an existing region, or creates a new one if it doesn't exist.
+   *
+   * @param {UpsertRegionDTO} data - The attributes to update or create for the region.
+   * @returns {Promise<RegionDTO>} The updated or created region.
+   *
+   * @example
+   * {example-code}
+   */
+  upsert(data: UpsertRegionDTO, sharedContext?: Context): Promise<RegionDTO>
+
+  /**
+   * This method updates an existing region.
+   *
+   * @param {string} id - The region's ID.
+   * @param {UpdatableRegionFields} data - The details to update in the region.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<RegionDTO>} The updated region.
+   */
+  update(
+    id: string,
+    data: UpdateRegionDTO,
+    sharedContext?: Context
+  ): Promise<RegionDTO>
 
   /**
    * This method updates existing regions.
    *
    * @param {FilterableRegionProps} selector - The filters to specify which regions should be updated.
-   * @param {UpdatableRegionFields} data - The details to update in the regions.
+   * @param {UpdateRegionDTO} data - The details to update in the regions.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<RegionDTO[]>} The updated regions.
    *
@@ -68,23 +89,9 @@ export interface IRegionModuleService extends IModuleService {
    */
   update(
     selector: FilterableRegionProps,
-    data: UpdatableRegionFields,
+    data: UpdateRegionDTO,
     sharedContext?: Context
   ): Promise<RegionDTO[]>
-
-  /**
-   * This method updates an existing region.
-   *
-   * @param {string} regionId - The region's ID.
-   * @param {UpdatableRegionFields} data - The details to update in the regions.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RegionDTO>} The updated region.
-   */
-  update(
-    regionId: string,
-    data: UpdatableRegionFields,
-    sharedContext?: Context
-  ): Promise<RegionDTO>
 
   /**
    * This method deletes regions by their IDs.
