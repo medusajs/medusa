@@ -8,7 +8,7 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
   manager: SqlEntityManager,
   entities: (T & { id: string; deleted_at?: string | Date | null })[],
   value: Date | null,
-  visited: Map<string, string> = new Map()
+  visited: Set<string> = new Set()
 ) => {
   for (const entity of entities) {
     if (!("deleted_at" in entity)) continue
@@ -18,10 +18,7 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
     const entityName = entity.constructor.name
     const entityMetadata = manager.getDriver().getMetadata().get(entityName)
 
-    visited.set(
-      entityMetadata.className,
-      entityMetadata.name ?? entityMetadata.className
-    )
+    visited.add(entityMetadata.className)
 
     const relations = manager
       .getDriver()
@@ -32,20 +29,19 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
       relation.cascade.includes("soft-remove" as any)
     )
 
-    const relationVisited = new Map(visited.entries())
+    const relationVisited = new Set(Array.from(visited))
 
     for (const relation of relationsToCascade) {
       if (relationVisited.has(relation.name)) {
         const dependencies = Array.from(relationVisited)
-        dependencies.push([relation.name, entityName])
-        const circularDependencyStr = dependencies
-          .map(([, value]) => value)
-          .join(" -> ")
+        dependencies.push(entityName)
+        const circularDependencyStr = dependencies.join(" -> ")
 
         throw new Error(
           `Unable to soft delete the ${relation.name}. Circular dependency detected: ${circularDependencyStr}`
         )
       }
+      relationVisited.add(relation.name)
 
       let entityRelation = entity[relation.name]
 
@@ -89,8 +85,6 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
         const initializedEntityRelation = await wrap(entityRelation).init()
         relationEntities = [initializedEntityRelation]
       }
-
-      relationVisited.set(relation.name, relation.name)
 
       await mikroOrmUpdateDeletedAtRecursively(
         manager,
