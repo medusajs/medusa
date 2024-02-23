@@ -85,9 +85,7 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
         }
         relationEntities = entityRelation.getItems()
       } else {
-        const initializedEntityRelation = await wrap(entityRelation)
-          .init()
-          .catch(() => entityRelation)
+        const initializedEntityRelation = await wrap(entityRelation).init()
         relationEntities = [initializedEntityRelation]
       }
 

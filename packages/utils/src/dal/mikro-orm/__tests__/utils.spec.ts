@@ -10,6 +10,17 @@ import {
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
+jest.mock("@mikro-orm/core", () => ({
+  ...jest.requireActual("@mikro-orm/core"),
+  wrap: jest.fn().mockImplementation((entity) => ({
+    ...entity,
+    init: jest.fn().mockResolvedValue(entity),
+    __helper: {
+      isInitialized: jest.fn().mockReturnValue(true),
+    },
+  })),
+}))
+
 @Entity()
 class RecursiveEntity1 {
   constructor(props: { id: string; deleted_at: Date | null }) {
