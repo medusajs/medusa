@@ -1,4 +1,5 @@
 import { MiddlewaresConfig } from "../loaders/helpers/routing/types"
+import { adminApiKeyRoutesMiddlewares } from "./admin/api-keys/middlewares"
 import { adminCampaignRoutesMiddlewares } from "./admin/campaigns/middlewares"
 import { adminCustomerGroupRoutesMiddlewares } from "./admin/customer-groups/middlewares"
 import { adminCustomerRoutesMiddlewares } from "./admin/customers/middlewares"
@@ -28,6 +29,7 @@ export const config: MiddlewaresConfig = {
     ...adminRegionRoutesMiddlewares,
     ...adminUserRoutesMiddlewares,
     ...adminInviteRoutesMiddlewares,
+    ...adminApiKeyRoutesMiddlewares,
     ...hooksRoutesMiddlewares,
   ],
 }

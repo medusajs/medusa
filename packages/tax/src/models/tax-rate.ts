@@ -6,14 +6,17 @@ import {
 import {
   BeforeCreate,
   Cascade,
+  Collection,
   Entity,
   ManyToOne,
   OnInit,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import TaxRegion from "./tax-region"
+import TaxRateRule from "./tax-rate-rule"
 
 type OptionalTaxRateProps = DAL.EntityDateColumns
 
@@ -62,6 +65,9 @@ export default class TaxRate {
     cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
   tax_region: TaxRegion
+
+  @OneToMany(() => TaxRateRule, (rule) => rule.tax_rate)
+  rules = new Collection<TaxRateRule>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

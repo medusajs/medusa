@@ -61,7 +61,11 @@ export default class ServiceZone {
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @Property({ columnType: "text" })
+  @ManyToOne(() => FulfillmentSet, {
+    type: "text",
+    mapToPk: true,
+    fieldName: "fulfillment_set_id",
+  })
   @FulfillmentSetIdIndex.MikroORMIndex()
   fulfillment_set_id: string
 
