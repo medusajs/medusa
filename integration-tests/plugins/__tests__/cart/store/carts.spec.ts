@@ -94,23 +94,24 @@ describe("Store Carts API", () => {
         },
       ])
 
-      const priceSet = await pricingModule.create({
-        prices: [
-          {
-            amount: 3000,
-            currency_code: "usd",
-          },
-        ],
-      })
-
-      const priceSetTwo = await pricingModule.create({
-        prices: [
-          {
-            amount: 4000,
-            currency_code: "usd",
-          },
-        ],
-      })
+      const [priceSet, priceSetTwo] = await pricingModule.create([
+        {
+          prices: [
+            {
+              amount: 3000,
+              currency_code: "usd",
+            },
+          ],
+        },
+        {
+          prices: [
+            {
+              amount: 4000,
+              currency_code: "usd",
+            },
+          ],
+        },
+      ])
 
       await remoteLink.create([
         {

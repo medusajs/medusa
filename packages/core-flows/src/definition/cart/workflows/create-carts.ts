@@ -128,7 +128,7 @@ export const createCartWorkflow = createWorkflow(
 
     const carts = createCartsStep([cartToCreate])
 
-    const cart = transform({ carts }, (data) => data.carts[0])
+    const cart = transform({ carts }, (data) => data.carts?.[0])
 
     return cart
   }
