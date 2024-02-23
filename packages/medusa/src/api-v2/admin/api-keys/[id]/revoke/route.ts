@@ -16,6 +16,7 @@ export const POST = async (
     input: {
       selector: { id: req.params.id },
       revoke: {
+        ...(req.validatedBody as Omit<RevokeApiKeyDTO, "id" | "revoked_by">),
         revoked_by: req.auth.actor_id,
       } as RevokeApiKeyDTO,
     },

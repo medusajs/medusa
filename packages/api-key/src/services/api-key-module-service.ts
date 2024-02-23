@@ -23,6 +23,7 @@ import {
   ModulesSdkUtils,
   isObject,
   isString,
+  promiseAll,
 } from "@medusajs/utils"
 
 const scrypt = util.promisify(crypto.scrypt)
@@ -315,11 +316,18 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
 
     await this.validateRevokeApiKeys_(normalizedInput)
 
-    const updateRequest = normalizedInput.map((k) => ({
-      id: k.id,
-      revoked_at: new Date(),
-      revoked_by: k.revoked_by,
-    }))
+    const updateRequest = normalizedInput.map((k) => {
+      const revokedAt = new Date()
+      if (k.revoke_in && k.revoke_in > 0) {
+        revokedAt.setSeconds(revokedAt.getSeconds() + k.revoke_in)
+      }
+
+      return {
+        id: k.id,
+        revoked_at: revokedAt,
+        revoked_by: k.revoked_by,
+      }
+    })
 
     const revokedApiKeys = await this.apiKeyService_.update(
       updateRequest,
@@ -329,13 +337,52 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     return revokedApiKeys
   }
 
-  // TODO: Implement
   @InjectTransactionManager("baseRepository_")
-  authenticate(
-    id: string,
+  async authenticate(
+    token: string,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<boolean> {
-    return Promise.resolve(false)
+  ): Promise<ApiKeyTypes.ApiKeyDTO | false> {
+    // Since we only allow up to 2 active tokens, getitng the list and checking each token isn't an issue.
+    // We can always filter on the redacted key if we add support for an arbitrary number of tokens.
+    const secretKeys = await this.apiKeyService_.list(
+      {
+        type: ApiKeyType.SECRET,
+        // If the revoke date is set in the future, it means the key is still valid.
+        $or: [
+          { revoked_at: { $eq: null } },
+          { revoked_at: { $gt: new Date() } },
+        ],
+      },
+      {},
+      sharedContext
+    )
+
+    const matches = await promiseAll(
+      secretKeys.map(async (dbKey) => {
+        const hashedInput = await ApiKeyModuleService.calculateHash(
+          token,
+          dbKey.salt
+        )
+        if (hashedInput === dbKey.token) {
+          return dbKey
+        }
+
+        return undefined
+      })
+    )
+
+    const matchedKeys = matches.filter((match) => match)
+    if (!matchedKeys.length) {
+      return false
+    }
+
+    const serialized =
+      await this.baseRepository_.serialize<ApiKeyTypes.ApiKeyDTO>(
+        matchedKeys[0],
+        { populate: true }
+      )
+
+    return serialized
   }
 
   protected async validateCreateApiKeys_(
@@ -359,7 +406,10 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     const dbSecretKeys = await this.apiKeyService_.list(
       {
         type: ApiKeyType.SECRET,
-        revoked_at: null,
+        $or: [
+          { revoked_at: { $eq: null } },
+          { revoked_at: { $gt: new Date() } },
+        ],
       },
       {},
       sharedContext
@@ -461,7 +511,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
   protected static async generateSecretKey(): Promise<TokenDTO> {
     const token = "sk_" + crypto.randomBytes(32).toString("hex")
     const salt = crypto.randomBytes(16).toString("hex")
-    const hashed = ((await scrypt(token, salt, 64)) as Buffer).toString("hex")
+    const hashed = await this.calculateHash(token, salt)
 
     return {
       rawToken: token,
@@ -469,6 +519,13 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
       salt,
       redacted: redactKey(token),
     }
+  }
+
+  protected static async calculateHash(
+    token: string,
+    salt: string
+  ): Promise<string> {
+    return ((await scrypt(token, salt, 64)) as Buffer).toString("hex")
   }
 }
 

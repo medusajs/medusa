@@ -115,8 +115,11 @@ export interface IApiKeyModuleService extends IModuleService {
 
   /**
    * Check the validity of an api key
-   * @param id
+   * @param token
    * @param sharedContext
    */
-  authenticate(id: string, sharedContext?: Context): Promise<boolean>
+  authenticate(
+    token: string,
+    sharedContext?: Context
+  ): Promise<ApiKeyDTO | false>
 }

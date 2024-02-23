@@ -15,4 +15,5 @@ export interface UpdateApiKeyDTO {
 export interface RevokeApiKeyDTO {
   id: string
   revoked_by: string
+  revoke_in?: number // Seconds after which the token should be considered revoked
 }
