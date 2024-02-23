@@ -90,9 +90,7 @@ class Entity2 {
   @Property()
   deleted_at: Date | null
 
-  @ManyToOne(() => Entity1, {
-    cascade: ["soft-remove"] as any,
-  })
+  @ManyToOne(() => Entity1)
   entity1: Entity1
 }
 
