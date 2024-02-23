@@ -40,14 +40,14 @@ moduleIntegrationTestRunner({
             paymentCollection.id,
             {
               provider_id: "pp_system_default",
-          providerContext: {
-            amount: 200,
-            currency_code: "USD",
-            payment_session_data: {},
-            context: {},
-            customer: {},
-            billing_address: {},
-            email: "test@test.test.com",
+              providerContext: {
+                amount: 200,
+                currency_code: "USD",
+                payment_session_data: {},
+                context: {},
+                customer: {},
+                billing_address: {},
+                email: "test@test.test.com",
               },
             }
           )
@@ -334,7 +334,7 @@ moduleIntegrationTestRunner({
         describe("create", () => {
           it("should create a payment session successfully", async () => {
             await service.createPaymentSession("pay-col-id-1", {
-              provider_id: "system",
+              provider_id: "pp_system_default",
               providerContext: {
                 amount: 200,
                 currency_code: "usd",
@@ -487,7 +487,7 @@ moduleIntegrationTestRunner({
                     captures: [],
                     amount: 100,
                     currency_code: "usd",
-                    provider_id: "system",
+                    provider_id: "pp_system_default",
                   }),
                 },
               })
