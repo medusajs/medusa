@@ -19,10 +19,7 @@ import { authenticate } from "../../../utils/authenticate-middleware"
 export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/promotions*",
-    middlewares: [
-      isFeatureFlagEnabled(MedusaV2Flag.key),
-      authenticate("admin", ["bearer", "session"]),
-    ],
+    middlewares: [authenticate("admin", ["bearer", "session"])],
   },
   {
     method: ["GET"],

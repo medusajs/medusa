@@ -26,14 +26,11 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
   let users
   try {
-    const { result: userss } = await workflow.run({ input })
-    users = userss
+    const { result } = await workflow.run({ input })
+    users = result
   } catch (e) {
-    if (e.message.startsWith("jwt malformed")) {
-      res.status(401).json({ message: "Unauthorized" })
-      return
-    }
-    throw e
+    res.status(401).json({ message: "Unauthorized" })
+    return
   }
 
   // Set customer_id on session user if we are in session
