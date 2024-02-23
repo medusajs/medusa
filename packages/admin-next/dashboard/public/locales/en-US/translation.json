@@ -398,6 +398,7 @@
     "product": "Product",
     "createdAt": "Created at",
     "updatedAt": "Updated at",
+    "revokedAt": "Revoked at",
     "true": "True",
     "false": "False",
     "giftCard": "Gift Card",
