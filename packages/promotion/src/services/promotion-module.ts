@@ -240,7 +240,7 @@ export default class PromotionModuleService<
     const appliedShippingCodes: string[] = []
     const codeAdjustmentMap = new Map<
       string,
-      PromotionTypes.ComputeActionAdjustmentLine
+      PromotionTypes.ComputeActionAdjustmentLine[]
     >()
     const methodIdPromoValueMap = new Map<string, number>()
     const automaticPromotions = preventAutoPromotions
@@ -260,7 +260,11 @@ export default class PromotionModuleService<
     items.forEach((item) => {
       item.adjustments?.forEach((adjustment) => {
         if (isString(adjustment.code)) {
-          codeAdjustmentMap.set(adjustment.code, adjustment)
+          const adjustments = codeAdjustmentMap.get(adjustment.code) || []
+
+          adjustments.push(adjustment)
+
+          codeAdjustmentMap.set(adjustment.code, adjustments)
           appliedItemCodes.push(adjustment.code)
         }
       })
@@ -269,7 +273,11 @@ export default class PromotionModuleService<
     shippingMethods.forEach((shippingMethod) => {
       shippingMethod.adjustments?.forEach((adjustment) => {
         if (isString(adjustment.code)) {
-          codeAdjustmentMap.set(adjustment.code, adjustment)
+          const adjustments = codeAdjustmentMap.get(adjustment.code) || []
+
+          adjustments.push(adjustment)
+
+          codeAdjustmentMap.set(adjustment.code, adjustments)
           appliedShippingCodes.push(adjustment.code)
         }
       })
@@ -318,19 +326,27 @@ export default class PromotionModuleService<
       }
 
       if (appliedItemCodes.includes(appliedCode)) {
-        computedActions.push({
-          action: "removeItemAdjustment",
-          adjustment_id: codeAdjustmentMap.get(appliedCode)!.id,
-          code: appliedCode,
-        })
+        const adjustments = codeAdjustmentMap.get(appliedCode) || []
+
+        adjustments.forEach((adjustment) =>
+          computedActions.push({
+            action: "removeItemAdjustment",
+            adjustment_id: adjustment.id,
+            code: appliedCode,
+          })
+        )
       }
 
       if (appliedShippingCodes.includes(appliedCode)) {
-        computedActions.push({
-          action: "removeShippingMethodAdjustment",
-          adjustment_id: codeAdjustmentMap.get(appliedCode)!.id,
-          code: appliedCode,
-        })
+        const adjustments = codeAdjustmentMap.get(appliedCode) || []
+
+        adjustments.forEach((adjustment) =>
+          computedActions.push({
+            action: "removeShippingMethodAdjustment",
+            adjustment_id: adjustment.id,
+            code: appliedCode,
+          })
+        )
       }
     }
 

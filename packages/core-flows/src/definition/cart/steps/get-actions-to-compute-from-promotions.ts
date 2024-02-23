@@ -1,11 +1,12 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CartDTO, IPromotionModuleService } from "@medusajs/types"
-import { isString } from "@medusajs/utils"
+import { deduplicate, isString } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   cart: CartDTO
   promoCodes: string[]
+  removePromotions: boolean
 }
 
 export const getActionsToComputeFromPromotionsStepId =
@@ -17,25 +18,35 @@ export const getActionsToComputeFromPromotionsStep = createStep(
       ModuleRegistrationName.PROMOTION
     )
 
-    const appliedItemPromoCodes = data.cart.items
+    const { removePromotions = false, promoCodes = [], cart } = data
+
+    const appliedItemPromoCodes = cart.items
       ?.map((item) => item.adjustments?.map((adjustment) => adjustment.code))
       .flat(1)
       .filter(isString) as string[]
 
-    const appliedShippingMethodPromoCodes = data.cart.shipping_methods
+    const appliedShippingMethodPromoCodes = cart.shipping_methods
       ?.map((shippingMethod) =>
         shippingMethod.adjustments?.map((adjustment) => adjustment.code)
       )
       .flat(1)
       .filter(isString) as string[]
 
+    let promotionCodesToApply = deduplicate([
+      ...promoCodes,
+      ...appliedItemPromoCodes,
+      ...appliedShippingMethodPromoCodes,
+    ])
+
+    if (removePromotions) {
+      promotionCodesToApply = promotionCodesToApply.filter(
+        (code) => !promoCodes.includes(code)
+      )
+    }
+
     const actionsToCompute = await promotionModuleService.computeActions(
-      [
-        ...data.promoCodes,
-        ...appliedItemPromoCodes,
-        ...appliedShippingMethodPromoCodes,
-      ],
-      data.cart as any
+      promotionCodesToApply,
+      cart as any
     )
 
     return new StepResponse(actionsToCompute)

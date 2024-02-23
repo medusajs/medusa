@@ -17,16 +17,18 @@ import {
 type WorkflowInput = {
   promoCodes: string[]
   cartId: string
+  removePromotions?: boolean
 }
 
-export const addPromotionsToCartWorkflowId = "add-promotions-to-cart"
-export const addPromotionsToCartWorkflow = createWorkflow(
-  addPromotionsToCartWorkflowId,
+export const updateCartPromotionsWorkflowId = "update-cart-promotions"
+export const updateCartPromotionsWorkflow = createWorkflow(
+  updateCartPromotionsWorkflowId,
   (input: WorkflowData<WorkflowInput>): WorkflowData<CartDTO> => {
     const cart = retrieveCartStep(input)
     const actions = getActionsToComputeFromPromotionsStep({
       cart,
       promoCodes: input.promoCodes,
+      removePromotions: input.removePromotions || false,
     })
 
     const {

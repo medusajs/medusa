@@ -40,7 +40,7 @@ export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [transformBody(StorePostCartsCartReq)],
   },
   {
-    method: ["POST"],
+    method: ["POST", "DELETE"],
     matcher: "/store/carts/:id/promotions",
     middlewares: [transformBody(StorePostCartsCartPromotionsReq)],
   },
