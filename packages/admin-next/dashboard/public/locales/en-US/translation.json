@@ -188,6 +188,7 @@
   },
   "discounts": {
     "domain": "Discounts",
+    "deleteWarning": "You are about to delete the discount {{title}}. This action cannot be undone.",
     "discountStatus": {
       "scheduled": "scheduled",
       "expired": "expired",

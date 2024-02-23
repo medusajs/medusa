@@ -84,7 +84,7 @@ const DiscountActions = ({ discount }: { discount: Discount }) => {
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("products.deleteWarning", {
+      description: t("discounts.deleteWarning", {
         title: discount.code,
       }),
       confirmText: t("actions.delete"),
