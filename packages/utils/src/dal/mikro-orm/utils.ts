@@ -35,9 +35,9 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
     const relationVisited = new Map(visited.entries())
 
     for (const relation of relationsToCascade) {
-      if (relationVisited.has(relation.type)) {
+      if (relationVisited.has(relation.name)) {
         const dependencies = Array.from(relationVisited)
-        dependencies.push([relation.type, relation.name])
+        dependencies.push([relation.name, entityName])
         const circularDependencyStr = dependencies
           .map(([, value]) => value)
           .join(" -> ")
@@ -90,14 +90,14 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
         relationEntities = [initializedEntityRelation]
       }
 
+      relationVisited.set(relation.name, relation.name)
+
       await mikroOrmUpdateDeletedAtRecursively(
         manager,
         relationEntities,
         value,
         relationVisited
       )
-
-      relationVisited.set(relation.type, relation.name.toLowerCase())
     }
 
     await manager.persist(entity)

@@ -150,7 +150,7 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
       await expect(
         mikroOrmUpdateDeletedAtRecursively(manager, [entity2], new Date())
       ).rejects.toThrow(
-        "Unable to soft delete the entity2. Circular dependency detected: RecursiveEntity2 -> RecursiveEntity1 -> entity2"
+        "Unable to soft delete the entity1. Circular dependency detected: RecursiveEntity2 -> entity1 -> RecursiveEntity1 -> entity2 -> RecursiveEntity2"
       )
     })
   })
