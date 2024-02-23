@@ -31,7 +31,8 @@ export const removeShippingMethodAdjustmentsStep = createStep(
       return
     }
 
-    // TODO: uncomment this when line items are soft deletable
-    // await cartModuleService.restoreShippingMethodAdjustments(createdCampaignIds)
+    await cartModuleService.restoreShippingMethodAdjustments(
+      shippingMethodAdjustmentIdsToRemove
+    )
   }
 )

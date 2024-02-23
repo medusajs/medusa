@@ -30,7 +30,8 @@ export const removeLineItemAdjustmentsStep = createStep(
       return
     }
 
-    // TODO: uncomment this when line items are soft deletable
-    // await cartModuleService.restoreLineItemAdjustments(createdCampaignIds)
+    await cartModuleService.restoreLineItemAdjustments(
+      lineItemAdjustmentIdsToRemove
+    )
   }
 )

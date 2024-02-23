@@ -12,21 +12,21 @@ import { ComputedActions } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
-  actionsToCompute: ComputeActions[]
+  actions: ComputeActions[]
 }
 
-export const prepareAdjustmentsFromPromotionsStepId =
-  "prepare-adjustments-from-promotions"
-export const prepareAdjustmentsFromPromotionsStep = createStep(
-  prepareAdjustmentsFromPromotionsStepId,
+export const prepareAdjustmentsFromPromotionActionsStepId =
+  "prepare-adjustments-from-promotion-actions"
+export const prepareAdjustmentsFromPromotionActionsStep = createStep(
+  prepareAdjustmentsFromPromotionActionsStepId,
   async (data: StepInput, { container }) => {
     const promotionModuleService: IPromotionModuleService = container.resolve(
       ModuleRegistrationName.PROMOTION
     )
 
-    const { actionsToCompute = [] } = data
+    const { actions = [] } = data
     const promotions = await promotionModuleService.list(
-      { code: actionsToCompute.map((a) => a.code) },
+      { code: actions.map((a) => a.code) },
       { select: ["id", "code"] }
     )
 
@@ -34,7 +34,7 @@ export const prepareAdjustmentsFromPromotionsStep = createStep(
       promotions.map((promotion) => [promotion.code!, promotion])
     )
 
-    const lineItemAdjustmentsToCreate = actionsToCompute
+    const lineItemAdjustmentsToCreate = actions
       .filter((a) => a.action === ComputedActions.ADD_ITEM_ADJUSTMENT)
       .map((action) => ({
         code: action.code,
@@ -43,11 +43,11 @@ export const prepareAdjustmentsFromPromotionsStep = createStep(
         promotion_id: promotionsMap.get(action.code)?.id,
       }))
 
-    const lineItemAdjustmentIdsToRemove = actionsToCompute
+    const lineItemAdjustmentIdsToRemove = actions
       .filter((a) => a.action === ComputedActions.REMOVE_ITEM_ADJUSTMENT)
       .map((a) => (a as RemoveItemAdjustmentAction).adjustment_id)
 
-    const shippingMethodAdjustmentsToCreate = actionsToCompute
+    const shippingMethodAdjustmentsToCreate = actions
       .filter(
         (a) => a.action === ComputedActions.ADD_SHIPPING_METHOD_ADJUSTMENT
       )
@@ -59,7 +59,7 @@ export const prepareAdjustmentsFromPromotionsStep = createStep(
         promotion_id: promotionsMap.get(action.code)?.id,
       }))
 
-    const shippingMethodAdjustmentIdsToRemove = actionsToCompute
+    const shippingMethodAdjustmentIdsToRemove = actions
       .filter(
         (a) => a.action === ComputedActions.REMOVE_SHIPPING_METHOD_ADJUSTMENT
       )

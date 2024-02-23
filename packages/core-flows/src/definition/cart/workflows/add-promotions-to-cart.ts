@@ -2,13 +2,13 @@ import { CartDTO } from "@medusajs/types"
 import {
   WorkflowData,
   createWorkflow,
-  transform,
+  parallelize,
 } from "@medusajs/workflows-sdk"
 import {
   createLineItemAdjustmentsStep,
   createShippingMethodAdjustmentsStep,
   getActionsToComputeFromPromotionsStep,
-  prepareAdjustmentsFromPromotionsStep,
+  prepareAdjustmentsFromPromotionActionsStep,
   removeLineItemAdjustmentsStep,
   removeShippingMethodAdjustmentsStep,
   retrieveCartStep,
@@ -24,26 +24,32 @@ export const addPromotionsToCartWorkflow = createWorkflow(
   addPromotionsToCartWorkflowId,
   (input: WorkflowData<WorkflowInput>): WorkflowData<CartDTO> => {
     const cart = retrieveCartStep(input)
-
-    const actionsToCompute = getActionsToComputeFromPromotionsStep(
-      transform({ cart, promoCodes: input.promoCodes }, (data) => data)
-    )
+    const actions = getActionsToComputeFromPromotionsStep({
+      cart,
+      promoCodes: input.promoCodes,
+    })
 
     const {
       lineItemAdjustmentsToCreate,
       lineItemAdjustmentIdsToRemove,
       shippingMethodAdjustmentsToCreate,
       shippingMethodAdjustmentIdsToRemove,
-    } = prepareAdjustmentsFromPromotionsStep({ actionsToCompute })
+    } = prepareAdjustmentsFromPromotionActionsStep({ actions })
 
-    removeLineItemAdjustmentsStep({ lineItemAdjustmentIdsToRemove })
-    removeShippingMethodAdjustmentsStep({ shippingMethodAdjustmentIdsToRemove })
+    parallelize(
+      removeLineItemAdjustmentsStep({ lineItemAdjustmentIdsToRemove }),
+      removeShippingMethodAdjustmentsStep({
+        shippingMethodAdjustmentIdsToRemove,
+      })
+    )
 
-    createLineItemAdjustmentsStep({ lineItemAdjustmentsToCreate })
-    createShippingMethodAdjustmentsStep({ shippingMethodAdjustmentsToCreate })
+    parallelize(
+      createLineItemAdjustmentsStep({ lineItemAdjustmentsToCreate }),
+      createShippingMethodAdjustmentsStep({ shippingMethodAdjustmentsToCreate })
+    )
 
     return retrieveCartStep(input).config({
-      name: "final-cart-step",
+      name: "retrieve-cart-result-step",
     })
   }
 )

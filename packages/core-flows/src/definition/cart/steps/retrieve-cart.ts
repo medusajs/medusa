@@ -30,8 +30,9 @@ export const retrieveCartStep = createStep(
       return item
     })
 
+    // TODO: remove this when cart handles totals calculation
     cart.shipping_methods = cart.shipping_methods?.map((shipping_method) => {
-      // TODO: should we align all amounts/prices to be unit_price?
+      // TODO: should we align all amounts/prices fields to be unit_price?
       shipping_method.subtotal = shipping_method.amount
 
       return shipping_method
