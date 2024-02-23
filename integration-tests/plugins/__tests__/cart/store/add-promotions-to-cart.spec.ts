@@ -112,7 +112,7 @@ describe("Store Carts API: Add promotions to cart", () => {
       const [lineItemAdjustment] =
         await cartModuleService.addLineItemAdjustments([
           {
-            code: appliedPromotion.code,
+            code: appliedPromotion.code!,
             amount: 300,
             item_id: "item-2",
             promotion_id: appliedPromotion.id,
