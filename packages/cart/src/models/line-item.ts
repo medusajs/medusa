@@ -1,7 +1,8 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
-import { BigNumber, BigNumberField, generateEntityId } from "@medusajs/utils"
+import { BigNumber, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  BeforeUpdate,
   Cascade,
   Collection,
   Entity,
@@ -108,18 +109,16 @@ export default class LineItem {
   is_tax_inclusive = false
 
   @Property({ columnType: "numeric", nullable: true })
-  @BigNumberField({ nullable: true })
   compare_at_unit_price?: BigNumber | number | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
   raw_compare_at_unit_price: BigNumberRawValue | null = null
 
-  @Property({ columnType: "numeric", nullable: true })
-  @BigNumberField({ nullable: true })
+  @Property({ columnType: "numeric" })
   unit_price: BigNumber | number
 
-  @Property({ columnType: "jsonb", nullable: true })
-  raw_unit_price: BigNumberRawValue | null = null
+  @Property({ columnType: "jsonb" })
+  raw_unit_price: BigNumberRawValue
 
   @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
     cascade: [Cascade.REMOVE],
@@ -149,10 +148,28 @@ export default class LineItem {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "cali")
+
+    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
+
+    this.unit_price = val.numeric
+    this.raw_unit_price = val.raw!
+  }
+
+  @BeforeUpdate()
+  onUpdate() {
+    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
+
+    this.unit_price = val.numeric
+    this.raw_unit_price = val.raw as BigNumberRawValue
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "cali")
+
+    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
+
+    this.unit_price = val.numeric
+    this.raw_unit_price = val.raw!
   }
 }

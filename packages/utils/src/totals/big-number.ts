@@ -17,7 +17,7 @@ export class BigNumber {
     { precision }: { precision?: number } = {}
   ) {
     precision ??= BigNumber.DEFAULT_PRECISION
-
+    console.log("rawPrice --- ", rawPrice)
     if (BigNumberJS.isBigNumber(rawPrice)) {
       /**
        * Example:

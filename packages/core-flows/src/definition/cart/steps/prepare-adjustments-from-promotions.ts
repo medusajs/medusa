@@ -15,10 +15,10 @@ interface StepInput {
   actionsToCompute: ComputeActions[]
 }
 
-export const prepareAdjustmentsForPromotionsStepId =
-  "prepare-adjustments-for-promotions"
-export const prepareAdjustmentsForPromotionsStep = createStep(
-  prepareAdjustmentsForPromotionsStepId,
+export const prepareAdjustmentsFromPromotionsStepId =
+  "prepare-adjustments-from-promotions"
+export const prepareAdjustmentsFromPromotionsStep = createStep(
+  prepareAdjustmentsFromPromotionsStepId,
   async (data: StepInput, { container }) => {
     const promotionModuleService: IPromotionModuleService = container.resolve(
       ModuleRegistrationName.PROMOTION

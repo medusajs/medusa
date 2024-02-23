@@ -93,7 +93,6 @@ describe("Store Carts API: Add promotions to cart", () => {
           {
             id: "item-1",
             unit_price: 2000,
-            raw_unit_price: {},
             quantity: 1,
             title: "Test item",
             product_id: "prod_mat",
@@ -102,7 +101,6 @@ describe("Store Carts API: Add promotions to cart", () => {
           {
             id: "item-2",
             unit_price: 1000,
-            raw_unit_price: {},
             quantity: 1,
             title: "Test item",
             product_id: "prod_tshirt",
@@ -230,7 +228,6 @@ describe("Store Carts API: Add promotions to cart", () => {
         items: [
           {
             unit_price: 2000,
-            raw_unit_price: {},
             quantity: 1,
             title: "Test item",
             product_id: "prod_mat",
