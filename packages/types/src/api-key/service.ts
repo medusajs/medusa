@@ -15,11 +15,31 @@ export interface IApiKeyModuleService extends IModuleService {
 
   /**
    * Update an api key
+   * @param selector
    * @param data
    * @param sharedContext
    */
-  update(data: UpdateApiKeyDTO[], sharedContext?: Context): Promise<ApiKeyDTO[]>
-  update(data: UpdateApiKeyDTO, sharedContext?: Context): Promise<ApiKeyDTO>
+  update(
+    selector: FilterableApiKeyProps,
+    data: Omit<UpdateApiKeyDTO, "id">,
+    sharedContext?: Context
+  ): Promise<ApiKeyDTO[]>
+  /**
+   * Update an api key
+   * @param id
+   * @param data
+   * @param sharedContext
+   */
+  update(
+    id: string,
+    data: Omit<UpdateApiKeyDTO, "id">,
+    sharedContext?: Context
+  ): Promise<ApiKeyDTO>
+  /**
+   * Update an api key
+   * @param data
+   */
+  update(data: UpdateApiKeyDTO[]): Promise<ApiKeyDTO[]>
 
   /**
    * Delete an api key
@@ -67,11 +87,31 @@ export interface IApiKeyModuleService extends IModuleService {
 
   /**
    * Revokes an api key
+   * @param selector
    * @param data
    * @param sharedContext
    */
-  revoke(data: RevokeApiKeyDTO[], sharedContext?: Context): Promise<ApiKeyDTO[]>
-  revoke(data: RevokeApiKeyDTO, sharedContext?: Context): Promise<ApiKeyDTO>
+  revoke(
+    selector: FilterableApiKeyProps,
+    data: Omit<RevokeApiKeyDTO, "id">,
+    sharedContext?: Context
+  ): Promise<ApiKeyDTO[]>
+  /**
+   * Revokes an api key
+   * @param id
+   * @param data
+   * @param sharedContext
+   */
+  revoke(
+    id: string,
+    data: Omit<RevokeApiKeyDTO, "id">,
+    sharedContext?: Context
+  ): Promise<ApiKeyDTO>
+  /**
+   * Revokes an api key
+   * @param data
+   */
+  revoke(data: RevokeApiKeyDTO[]): Promise<ApiKeyDTO[]>
 
   /**
    * Check the validity of an api key

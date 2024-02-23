@@ -60,7 +60,7 @@ export function internalModuleServiceFactory<
     }
 
     static buildUniqueCompositeKeyValue(keys: string[], data: object) {
-      return keys.map((k) => data[k]).join("_")
+      return keys.map((k) => data[k]).join(":")
     }
 
     /**
@@ -287,7 +287,7 @@ export function internalModuleServiceFactory<
 
           ;[...keySelectorDataMap.keys()].filter((key) => {
             if (!compositeKeysValuesForFoundEntities.has(key)) {
-              const value = key.replace(/_/gi, " - ")
+              const value = key.replace(/:/gi, " - ")
               missingEntityValues.push(value)
             }
           })
