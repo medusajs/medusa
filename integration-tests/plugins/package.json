@@ -9,6 +9,7 @@
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
+    "@medusajs/api-key": "workspace:^",
     "@medusajs/auth": "workspace:*",
     "@medusajs/cache-inmemory": "workspace:*",
     "@medusajs/customer": "workspace:^",
