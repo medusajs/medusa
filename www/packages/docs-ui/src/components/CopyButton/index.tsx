@@ -34,7 +34,7 @@ export const CopyButton = ({
   return (
     <Tooltip
       text={isCopied ? `Copied!` : tooltipText}
-      tooltipClassName={tooltipClassName}
+      tooltipClassName={clsx(tooltipClassName, handleTouch && "!block")}
       className={className}
     >
       <span

@@ -57,12 +57,7 @@ const SearchResults = ({ query = "" }: { query?: string }) => {
             key={name}
             className="flex h-full w-full items-center justify-center"
           >
-            <CopyButton
-              text={name}
-              tooltipText={name}
-              tooltipClassName="!block"
-              handleTouch
-            >
+            <CopyButton text={name} tooltipText={name} handleTouch>
               <div
                 className={clsx(
                   "border-medusa-border-base",
