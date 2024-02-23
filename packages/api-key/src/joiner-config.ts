@@ -1,8 +1,7 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { MapToConfig } from "@medusajs/utils"
-
-// TODO manage the config
+import ApiKey from "./models/api-key"
 
 export const LinkableKeys: Record<string, string> = {}
 
@@ -21,5 +20,10 @@ export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.API_KEY,
   primaryKeys: ["id"],
   linkableKeys: LinkableKeys,
-  alias: [],
+  alias: [
+    {
+      name: ["api-key", "api-keys"],
+      args: { entity: ApiKey.name },
+    },
+  ],
 } as ModuleJoinerConfig
