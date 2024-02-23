@@ -1,3 +1,5 @@
+import { MessageAggregator } from "../../event-bus"
+
 export function InjectIntoContext(
   properties: Record<string, unknown | Function>
 ): MethodDecorator {
