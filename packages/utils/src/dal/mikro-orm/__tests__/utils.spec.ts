@@ -10,7 +10,7 @@ import {
   Entity2,
   RecursiveEntity1,
   RecursiveEntity2,
-} from "./__fixtures__/utils"
+} from "../__fixtures__/utils"
 
 jest.mock("@mikro-orm/core", () => ({
   ...jest.requireActual("@mikro-orm/core"),
