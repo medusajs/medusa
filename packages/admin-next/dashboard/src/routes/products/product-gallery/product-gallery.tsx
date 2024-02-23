@@ -11,14 +11,16 @@ import { Button, IconButton, Kbd, Tooltip } from "@medusajs/ui"
 import * as Dialog from "@radix-ui/react-dialog"
 import { Variants, motion } from "framer-motion"
 import { useAdminProduct } from "medusa-react"
-import { useCallback, useEffect, useMemo } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 
-import { useRouteModalState } from "../../../hooks/use-route-modal-state"
-
 export const ProductGallery = () => {
-  const [open, onOpenChange] = useRouteModalState()
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    setOpen(true)
+  }, [])
 
   const { id } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -78,7 +80,7 @@ export const ProductGallery = () => {
   }
 
   return (
-    <Dialog.Root modal open={open} onOpenChange={onOpenChange}>
+    <Dialog.Root modal open={open} onOpenChange={setOpen}>
       <Dialog.Portal>
         <Dialog.Content className="bg-ui-bg-subtle dark fixed inset-0 grid-rows-[32px_1fr_6px] pb-16 pt-4 outline-none">
           <div className="flex items-center justify-between px-4">

@@ -1,17 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { ProductCollection } from "@medusajs/medusa"
-import { Button, Drawer, Input, Text } from "@medusajs/ui"
+import { Button, Input, Text } from "@medusajs/ui"
 import { useAdminUpdateCollection } from "medusa-react"
-import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+
 import { Form } from "../../../../../components/common/form"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 
 type EditCollectionFormProps = {
   collection: ProductCollection
-  subscribe: (state: boolean) => void
-  onSuccessfulSubmit: () => void
 }
 
 const EditCollectionSchema = zod.object({
@@ -19,12 +21,9 @@ const EditCollectionSchema = zod.object({
   handle: zod.string().min(1),
 })
 
-export const EditCollectionForm = ({
-  collection,
-  onSuccessfulSubmit,
-  subscribe,
-}: EditCollectionFormProps) => {
+export const EditCollectionForm = ({ collection }: EditCollectionFormProps) => {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof EditCollectionSchema>>({
     defaultValues: {
@@ -34,28 +33,20 @@ export const EditCollectionForm = ({
     resolver: zodResolver(EditCollectionSchema),
   })
 
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
-
   const { mutateAsync, isLoading } = useAdminUpdateCollection(collection.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
       onSuccess: () => {
-        onSuccessfulSubmit()
+        handleSuccess()
       },
     })
   })
 
   return (
-    <Form {...form}>
+    <RouteDrawer.Form form={form}>
       <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
-        <Drawer.Body>
+        <RouteDrawer.Body>
           <div className="flex flex-col gap-y-4">
             <Form.Field
               control={form.control}
@@ -102,20 +93,20 @@ export const EditCollectionForm = ({
               }}
             />
           </div>
-        </Drawer.Body>
-        <Drawer.Footer>
+        </RouteDrawer.Body>
+        <RouteDrawer.Footer>
           <div className="flex items-center gap-x-2">
-            <Drawer.Close asChild>
+            <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
                 {t("actions.cancel")}
               </Button>
-            </Drawer.Close>
+            </RouteDrawer.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
               {t("actions.save")}
             </Button>
           </div>
-        </Drawer.Footer>
+        </RouteDrawer.Footer>
       </form>
-    </Form>
+    </RouteDrawer.Form>
   )
 }
