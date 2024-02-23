@@ -2,7 +2,7 @@ import {
   deleteRegionsWorkflow,
   updateRegionsWorkflow,
 } from "@medusajs/core-flows"
-import { UpdatableRegionFields } from "@medusajs/types"
+import { UpdateRegionDTO } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 import { defaultAdminRegionFields } from "../query-config"
@@ -27,7 +27,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const { result, errors } = await updateRegionsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
-      update: req.validatedBody as UpdatableRegionFields,
+      update: req.validatedBody as UpdateRegionDTO,
     },
     throwOnError: false,
   })
