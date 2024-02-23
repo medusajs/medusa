@@ -9,6 +9,7 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   FindConfig,
+  FilterableApiKeyProps,
 } from "@medusajs/types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { ApiKey } from "@models"
@@ -20,6 +21,8 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  isObject,
+  isString,
 } from "@medusajs/utils"
 
 const scrypt = util.promisify(crypto.scrypt)
@@ -129,22 +132,31 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     return [createdApiKeys, generatedTokens]
   }
 
-  update(
-    data: ApiKeyTypes.UpdateApiKeyDTO[],
+  async update(
+    selector: FilterableApiKeyProps,
+    data: Omit<ApiKeyTypes.UpdateApiKeyDTO, "id">,
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO[]>
-  update(
-    data: ApiKeyTypes.UpdateApiKeyDTO,
+  async update(
+    id: string,
+    data: Omit<ApiKeyTypes.UpdateApiKeyDTO, "id">,
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO>
-
+  async update(
+    data: ApiKeyTypes.UpdateApiKeyDTO[]
+  ): Promise<ApiKeyTypes.ApiKeyDTO[]>
   @InjectManager("baseRepository_")
   async update(
-    data: ApiKeyTypes.UpdateApiKeyDTO[] | ApiKeyTypes.UpdateApiKeyDTO,
+    idOrSelectorOrData:
+      | string
+      | FilterableApiKeyProps
+      | ApiKeyTypes.UpdateApiKeyDTO[],
+    data?: Omit<ApiKeyTypes.UpdateApiKeyDTO, "id">,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ApiKeyTypes.ApiKeyDTO[] | ApiKeyTypes.ApiKeyDTO> {
     const updatedApiKeys = await this.update_(
-      Array.isArray(data) ? data : [data],
+      idOrSelectorOrData,
+      data,
       sharedContext
     )
 
@@ -154,15 +166,28 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
       populate: true,
     })
 
-    return Array.isArray(data) ? serializedResponse : serializedResponse[0]
+    return isString(idOrSelectorOrData)
+      ? serializedResponse[0]
+      : serializedResponse
   }
 
   @InjectTransactionManager("baseRepository_")
   protected async update_(
-    data: ApiKeyTypes.UpdateApiKeyDTO[],
+    idOrSelectorOrData:
+      | string
+      | FilterableApiKeyProps
+      | ApiKeyTypes.UpdateApiKeyDTO[],
+    data?: Omit<ApiKeyTypes.UpdateApiKeyDTO, "id">,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    const updateRequest = data.map((k) => ({
+    const normalizedInput =
+      await this.normalizeUpdateInput_<ApiKeyTypes.UpdateApiKeyDTO>(
+        idOrSelectorOrData,
+        data,
+        sharedContext
+      )
+
+    const updateRequest = normalizedInput.map((k) => ({
       id: k.id,
       title: k.title,
     }))
@@ -234,21 +259,30 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
   }
 
   async revoke(
-    data: ApiKeyTypes.RevokeApiKeyDTO[],
+    selector: FilterableApiKeyProps,
+    data: Omit<ApiKeyTypes.RevokeApiKeyDTO, "id">,
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO[]>
   async revoke(
-    data: ApiKeyTypes.RevokeApiKeyDTO,
+    id: string,
+    data: Omit<ApiKeyTypes.RevokeApiKeyDTO, "id">,
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO>
-
+  async revoke(
+    data: ApiKeyTypes.RevokeApiKeyDTO[]
+  ): Promise<ApiKeyTypes.ApiKeyDTO[]>
   @InjectManager("baseRepository_")
   async revoke(
-    data: ApiKeyTypes.RevokeApiKeyDTO[] | ApiKeyTypes.RevokeApiKeyDTO,
+    idOrSelectorOrData:
+      | string
+      | FilterableApiKeyProps
+      | ApiKeyTypes.RevokeApiKeyDTO[],
+    data?: Omit<ApiKeyTypes.RevokeApiKeyDTO, "id">,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ApiKeyTypes.ApiKeyDTO[] | ApiKeyTypes.ApiKeyDTO> {
     const revokedApiKeys = await this.revoke_(
-      Array.isArray(data) ? data : [data],
+      idOrSelectorOrData,
+      data,
       sharedContext
     )
 
@@ -258,17 +292,30 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
       populate: true,
     })
 
-    return Array.isArray(data) ? serializedResponse : serializedResponse[0]
+    return isString(idOrSelectorOrData)
+      ? serializedResponse[0]
+      : serializedResponse
   }
 
   @InjectTransactionManager("baseRepository_")
   async revoke_(
-    data: ApiKeyTypes.RevokeApiKeyDTO[],
+    idOrSelectorOrData:
+      | string
+      | FilterableApiKeyProps
+      | ApiKeyTypes.RevokeApiKeyDTO[],
+    data?: Omit<ApiKeyTypes.RevokeApiKeyDTO, "id">,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    await this.validateRevokeApiKeys_(data)
+    const normalizedInput =
+      await this.normalizeUpdateInput_<ApiKeyTypes.RevokeApiKeyDTO>(
+        idOrSelectorOrData,
+        data,
+        sharedContext
+      )
 
-    const updateRequest = data.map((k) => ({
+    await this.validateRevokeApiKeys_(normalizedInput)
+
+    const updateRequest = normalizedInput.map((k) => ({
       id: k.id,
       revoked_at: new Date(),
       revoked_by: k.revoked_by,
@@ -324,6 +371,39 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
         `You can only have one active secret key a time. Revoke or delete your existing key before creating a new one.`
       )
     }
+  }
+
+  protected async normalizeUpdateInput_<T>(
+    idOrSelectorOrData: string | FilterableApiKeyProps | T[],
+    data?: Omit<T, "id">,
+    sharedContext: Context = {}
+  ): Promise<T[]> {
+    let normalizedInput: T[] = []
+    if (isString(idOrSelectorOrData)) {
+      normalizedInput = [{ id: idOrSelectorOrData, ...data } as T]
+    }
+
+    if (Array.isArray(idOrSelectorOrData)) {
+      normalizedInput = idOrSelectorOrData
+    }
+
+    if (isObject(idOrSelectorOrData)) {
+      const apiKeys = await this.apiKeyService_.list(
+        idOrSelectorOrData,
+        {},
+        sharedContext
+      )
+
+      normalizedInput = apiKeys.map(
+        (apiKey) =>
+          ({
+            id: apiKey.id,
+            ...data,
+          } as T)
+      )
+    }
+
+    return normalizedInput
   }
 
   protected async validateRevokeApiKeys_(
