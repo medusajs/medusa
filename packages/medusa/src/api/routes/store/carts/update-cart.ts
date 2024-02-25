@@ -11,7 +11,7 @@ import {
   ProductVariantInventoryService,
 } from "../../../../services"
 
-import { MedusaV2Flag } from "@medusajs/utils"
+import { MedusaV2Flag, isNotNull } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
@@ -147,7 +147,7 @@ export default async (req, res) => {
   })
 
   await productVariantInventoryService.setVariantAvailability(
-    data.items.map((i) => i.variant),
+    data.items.map((i) => i.variant).filter(isNotNull),
     data.sales_channel_id!
   )
 

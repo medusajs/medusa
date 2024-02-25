@@ -129,7 +129,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => ProductVariant)
   @JoinColumn({ name: "variant_id" })
-  variant: ProductVariant
+  variant: ProductVariant | null
 
   @FeatureFlagColumn(MedusaV2Flag.key, { nullable: true, type: "text" })
   product_id: string | null

@@ -6,6 +6,7 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { isNotNull } from "@medusajs/utils"
 
 /**
  * @oas [delete] /store/carts/{id}/line-items/{line_id}
@@ -111,7 +112,7 @@ export default async (req, res) => {
   })
 
   await productVariantInventoryService.setVariantAvailability(
-    data.items.map((i) => i.variant),
+    data.items.map((i) => i.variant).filter(isNotNull),
     data.sales_channel_id!
   )
 

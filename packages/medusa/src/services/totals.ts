@@ -670,11 +670,18 @@ class TotalsService extends TransactionBaseService {
     discount: Discount,
     cart: Cart | Order
   ): LineDiscount[] {
-    const discounts: LineDiscount[] = cart.items.map((item) => ({
-      lineItem: item,
-      variant: item.variant.id,
-      amount: this.getLineItemDiscountAdjustment(item, discount),
-    }))
+    // Any custom line item will be discarded.
+    const discounts: LineDiscount[] = cart.items
+      .map((item) =>
+        item.variant
+          ? {
+              lineItem: item,
+              variant: item.variant.id,
+              amount: this.getLineItemDiscountAdjustment(item, discount),
+            }
+          : undefined
+      )
+      .filter(isDefined)
 
     return discounts
   }

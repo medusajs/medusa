@@ -199,17 +199,19 @@ const ReserveItemsModal: React.FC<ReserveItemsModalProps> = ({
                   </p>
                   {items?.map((item, i) => {
                     return (
-                      <ReservationLineItem
-                        form={nestedForm(form, `items.${i}` as "items.0")}
-                        item={item}
-                        key={i}
-                        locationId={selectedLocation?.value}
-                        reservedQuantity={sum(
-                          reservationItemsMap[item.id]?.map(
-                            (reservation) => reservation.quantity
-                          ) || []
-                        )}
-                      />
+                      item.variant && (
+                        <ReservationLineItem
+                          form={nestedForm(form, `items.${i}` as "items.0")}
+                          item={item}
+                          key={i}
+                          locationId={selectedLocation?.value}
+                          reservedQuantity={sum(
+                            reservationItemsMap[item.id]?.map(
+                              (reservation) => reservation.quantity
+                            ) || []
+                          )}
+                        />
+                      )
                     )
                   })}
                 </div>
@@ -269,7 +271,7 @@ export const ReservationLineItem: React.FC<{
     }
   }, [variant, locationId, isLoading])
 
-  if (!variant.inventory?.length) {
+  if (!variant?.inventory?.length) {
     return null
   }
 
@@ -295,7 +297,7 @@ export const ReservationLineItem: React.FC<{
             <p className="inter-base-semibold text-grey-90 truncate">
               {item.title}
             </p>
-            {`(${item.variant.sku})`}
+            {item.variant.sku && `(${item.variant.sku})`}
           </p>
           <p className="inter-base-regular ">
             {item.variant.options?.map((option) => option.value) ||

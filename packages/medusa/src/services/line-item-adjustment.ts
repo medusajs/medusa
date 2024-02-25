@@ -264,9 +264,12 @@ class LineItemAdjustmentService extends TransactionBaseService {
     cart: Cart,
     lineItem: LineItem
   ): Promise<LineItemAdjustment[]> {
-    const adjustments = await this.generateAdjustments(cart, lineItem, {
-      variant: lineItem.variant,
-    })
+    // Should we generate adjustments for a custom line item?
+    const adjustments = lineItem.variant
+      ? await this.generateAdjustments(cart, lineItem, {
+          variant: lineItem.variant,
+        })
+      : []
 
     const createdAdjustments: LineItemAdjustment[] = []
     for (const adjustment of adjustments) {

@@ -6,6 +6,7 @@ import {
 import { EntityManager } from "typeorm"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { isNotNull } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/carts/{id}
@@ -125,7 +126,7 @@ export default async (req, res) => {
 
   if (shouldSetAvailability) {
     await productVariantInventoryService.setVariantAvailability(
-      data.items.map((i) => i.variant),
+      data.items.map((i) => i.variant).filter(isNotNull),
       data.sales_channel_id!
     )
   }

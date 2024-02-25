@@ -79,7 +79,8 @@ const FulfillmentLine = ({
 
   const { variant, isLoading, refetch } = useAdminVariantsInventory(
     item.variant_id as string,
-    { enabled: isLocationFulfillmentEnabled }
+    // This is supposed to prevent querying with null but strangely does not work.
+    { enabled: isLocationFulfillmentEnabled && !!item.variant_id }
   )
 
   const hasInventoryItem = !!variant?.inventory.length
@@ -93,8 +94,8 @@ const FulfillmentLine = ({
   const { availableQuantity, inStockQuantity } = useMemo(() => {
     if (!isLocationFulfillmentEnabled) {
       return {
-        availableQuantity: item.variant.inventory_quantity,
-        inStockQuantity: item.variant.inventory_quantity,
+        availableQuantity: item.variant?.inventory_quantity,
+        inStockQuantity: item.variant?.inventory_quantity,
       }
     }
 
@@ -166,7 +167,7 @@ const FulfillmentLine = ({
   return (
     <div
       className={clsx(
-        "rounded-rounded hover:bg-grey-5 mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]",
+        "rounded-rounded hover:bg-grey-5 mx-[-5px] mb-1 flex h-[64px] justify-between px-[5px] py-2",
         {
           "pointer-events-none opacity-50":
             (!availableQuantity && hasInventoryItem) ||

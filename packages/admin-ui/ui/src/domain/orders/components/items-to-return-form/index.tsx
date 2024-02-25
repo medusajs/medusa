@@ -21,8 +21,8 @@ export type ReturnReasonDetails = {
 export type ReturnItem = {
   item_id: string
   thumbnail?: string | null
-  product_title: string
-  variant_title: string
+  product_title?: string
+  variant_title?: string
   sku?: string | null
   quantity: number
   original_quantity: number

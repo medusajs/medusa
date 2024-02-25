@@ -212,7 +212,7 @@ export default async (req, res) => {
   })
 
   await productVariantInventoryService.setVariantAvailability(
-    cart.items.map((i) => i.variant),
+    cart.items.map((i) => i.variant!), // The API requires variant for all items
     cart.sales_channel_id!
   )
 

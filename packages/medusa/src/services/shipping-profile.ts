@@ -524,7 +524,7 @@ class ShippingProfileService extends TransactionBaseService {
 
     if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       const productShippinProfileMap = await this.getMapProfileIdsByProductIds(
-        cart.items.map((item) => item.variant?.product_id)
+        cart.items.map((item) => item.variant?.product_id).filter(isDefined)
       )
       profileIds = new Set([...productShippinProfileMap.values()])
     } else {

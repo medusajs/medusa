@@ -8,6 +8,7 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { isNotNull } from "@medusajs/utils"
 
 /**
  * @oas [post] /store/carts/{id}/line-items/{line_id}
@@ -124,7 +125,7 @@ export default async (req, res) => {
       }
 
       const lineItemUpdate = {
-        variant_id: existing.variant.id,
+        variant_id: existing.variant?.id,
         region_id: cart.region_id,
         quantity: validated.quantity,
         metadata: validated.metadata || {},
@@ -152,7 +153,7 @@ export default async (req, res) => {
   })
 
   await productVariantInventoryService.setVariantAvailability(
-    data.items.map((i) => i.variant),
+    data.items.map((i) => i.variant).filter(isNotNull),
     data.sales_channel_id!
   )
 

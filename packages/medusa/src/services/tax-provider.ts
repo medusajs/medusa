@@ -24,7 +24,7 @@ import { TaxProviderRepository } from "../repositories/tax-provider"
 import { isCart } from "../types/cart"
 import { TaxLinesMaps, TaxServiceRate } from "../types/tax-service"
 import TaxRateService from "./tax-rate"
-import { promiseAll } from "@medusajs/utils"
+import { isDefined, promiseAll } from "@medusajs/utils"
 
 type RegionDetails = {
   id: string
@@ -250,7 +250,7 @@ class TaxProviderService extends TransactionBaseService {
   ): Promise<(ShippingMethodTaxLine | LineItemTaxLine)[]> {
     const productIds = [
       ...new Set(
-        lineItems.map((item) => item?.variant?.product_id).filter((p) => p)
+        lineItems.map((item) => item.variant?.product_id).filter(isDefined)
       ),
     ]
 

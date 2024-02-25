@@ -1373,7 +1373,9 @@ class CartService extends TransactionBaseService {
   ): Promise<void> {
     await this.getValidatedSalesChannel(newSalesChannelId)
 
-    const productIds = cart.items.map((item) => item.variant.product_id)
+    const productIds = cart.items
+      .map((item) => item.variant?.product_id)
+      .filter(isDefined)
     const productsToKeep = await this.productService_
       .withTransaction(this.activeManager_)
       .filterProductsBySalesChannel(productIds, newSalesChannelId, {
@@ -1383,8 +1385,9 @@ class CartService extends TransactionBaseService {
     const productIdsToKeep = new Set<string>(
       productsToKeep.map((product) => product.id)
     )
+    // Custom line items will never be removed on sales channel change.
     const itemsToRemove = cart.items.filter((item) => {
-      return !productIdsToKeep.has(item.variant.product_id)
+      return item.variant && !productIdsToKeep.has(item.variant.product_id)
     })
 
     if (!itemsToRemove.length) {
@@ -2301,24 +2304,34 @@ class CartService extends TransactionBaseService {
           if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
             productShippingProfileMap =
               await this.shippingProfileService_.getMapProfileIdsByProductIds(
-                cart.items.map((item) => item.variant.product_id)
+                cart.items
+                  .map((item) => item.variant?.product_id)
+                  .filter(isDefined)
               )
           } else {
             productShippingProfileMap = new Map<string, string>(
-              cart.items.map((item) => [
-                item.variant?.product?.id,
-                item.variant?.product?.profile_id,
-              ])
+              cart.items
+                .map((item): [string, string] | undefined =>
+                  item.variant
+                    ? [
+                        item.variant.product?.id,
+                        item.variant.product?.profile_id,
+                      ]
+                    : undefined
+                )
+                .filter(isDefined)
             )
           }
 
           await promiseAll(
             cart.items.map(async (item) => {
               return lineItemServiceTx.update(item.id, {
-                has_shipping: this.validateLineItemShipping_(
-                  methods,
-                  productShippingProfileMap.get(item.variant?.product_id)!
-                ),
+                has_shipping: item.variant
+                  ? this.validateLineItemShipping_(
+                      methods,
+                      productShippingProfileMap.get(item.variant?.product_id)!
+                    )
+                  : true, // Not sure about what to set for custom line items?
               })
             })
           )
