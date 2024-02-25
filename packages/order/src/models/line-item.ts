@@ -1,25 +1,23 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
+  MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
-  MikroOrmBigNumberProperty,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
-  ManyToOne,
-  OneToMany,
   OnInit,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import LineItemAdjustment from "./line-item-adjustment"
 import LineItemTaxLine from "./line-item-tax-line"
-import OrderDetail from "./order-detail"
 
 type OptionalLineItemProps =
   | "is_discoutable"
@@ -44,13 +42,6 @@ export default class LineItem {
 
   @PrimaryKey({ columnType: "text" })
   id: string
-
-  @ManyToOne({
-    entity: () => OrderDetail,
-    onDelete: "cascade",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
-  })
-  totals: OrderDetail
 
   @Property({ columnType: "text" })
   title: string

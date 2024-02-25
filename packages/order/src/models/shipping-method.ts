@@ -8,7 +8,6 @@ import {
 import {
   BeforeCreate,
   Cascade,
-  Check,
   Collection,
   Entity,
   ManyToOne,
@@ -32,7 +31,6 @@ const OrderIdIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "order_shipping_method" })
-@Check<ShippingMethod>({ expression: (columns) => `${columns.amount} >= 0` })
 export default class ShippingMethod {
   @PrimaryKey({ columnType: "text" })
   id: string

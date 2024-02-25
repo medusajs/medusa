@@ -5,7 +5,6 @@ import {
 import {
   BeforeCreate,
   Cascade,
-  Check,
   Entity,
   ManyToOne,
   OnInit,
@@ -20,13 +19,11 @@ const ItemIdIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "order_line_item_adjustment" })
-@Check<LineItemAdjustment>({
-  expression: (columns) => `${columns.amount} >= 0`,
-})
 export default class LineItemAdjustment extends AdjustmentLine {
   @ManyToOne({
     entity: () => LineItem,
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    joinColumn: "item_id",
+    cascade: [Cascade.REMOVE],
   })
   item: LineItem
 

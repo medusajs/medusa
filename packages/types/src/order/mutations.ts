@@ -38,9 +38,9 @@ export interface CreateOrderDTO {
   shipping_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO
   billing_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO
   no_notification?: boolean
-  metadata?: Record<string, unknown>
-
   items?: CreateOrderLineItemDTO[]
+  shipping_methods?: CreateOrderShippingMethodDTO[]
+  metadata?: Record<string, unknown>
 }
 
 export interface UpdateOrderDTO {
@@ -50,11 +50,6 @@ export interface UpdateOrderDTO {
   sales_channel_id?: string
   status?: string
   email?: string
-  currency_code?: string
-  shipping_address_id?: string
-  billing_address_id?: string
-  billing_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO
-  shipping_address?: CreateOrderAddressDTO | UpdateOrderAddressDTO
   no_notification?: boolean
   metadata?: Record<string, unknown>
 }
@@ -63,7 +58,7 @@ export interface UpdateOrderDTO {
 
 /** ADJUSTMENT START */
 export interface CreateOrderAdjustmentDTO {
-  code: string
+  code?: string
   amount: BigNumberInput
   description?: string
   promotion_id?: string
@@ -197,15 +192,8 @@ export interface UpdateOrderLineItemDTO
 
 export interface CreateOrderShippingMethodDTO {
   name: string
+  shipping_method_id: string
   order_id: string
-  amount: BigNumberInput
-  data?: Record<string, unknown>
-  tax_lines?: CreateOrderTaxLineDTO[]
-  adjustments?: CreateOrderAdjustmentDTO[]
-}
-
-export interface CreateOrderShippingMethodForSingleOrderDTO {
-  name: string
   amount: BigNumberInput
   data?: Record<string, unknown>
   tax_lines?: CreateOrderTaxLineDTO[]
@@ -215,6 +203,7 @@ export interface CreateOrderShippingMethodForSingleOrderDTO {
 export interface UpdateOrderShippingMethodDTO {
   id: string
   name?: string
+  shipping_method_id: string
   amount?: BigNumberInput
   data?: Record<string, unknown>
   tax_lines?: UpdateOrderTaxLineDTO[] | CreateOrderTaxLineDTO[]

@@ -21,9 +21,9 @@ import {
 } from "@mikro-orm/core/typings"
 import { isString } from "../../common"
 import {
-  buildQuery,
   InjectTransactionManager,
   MedusaContext,
+  buildQuery,
 } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
@@ -302,9 +302,11 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       const findOptions_ = { ...options }
       findOptions_.options ??= {}
 
-      Object.assign(findOptions_.options, {
-        strategy: LoadStrategy.SELECT_IN,
-      })
+      if (!("strategy" in findOptions_.options)) {
+        Object.assign(findOptions_.options, {
+          strategy: LoadStrategy.JOINED,
+        })
+      }
 
       return await manager.find(
         entity as EntityName<T>,

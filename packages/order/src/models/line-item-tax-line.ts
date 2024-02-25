@@ -22,7 +22,8 @@ const ItemIdIndex = createPsqlIndexStatementHelper({
 export default class LineItemTaxLine extends TaxLine {
   @ManyToOne({
     entity: () => LineItem,
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    joinColumn: "item_id",
+    cascade: [Cascade.REMOVE],
   })
   item: LineItem
 

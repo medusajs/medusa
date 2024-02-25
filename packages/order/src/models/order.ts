@@ -166,6 +166,7 @@ export default class Order {
   items = new Collection<OrderDetail>(this)
 
   @OneToMany(() => ShippingMethod, (shippingMethod) => shippingMethod.order, {
+    joinColumn: "order_id",
     cascade: [Cascade.REMOVE],
   })
   shipping_methods = new Collection<ShippingMethod>(this)

@@ -73,6 +73,11 @@ export interface FindConfig<Entity> {
    * `SoftDeletableEntity` class.
    */
   withDeleted?: boolean
+
+  /**
+   * Enable ORM specific defined filters
+   */
+  filters?: Record<string, any>
 }
 
 export type ExtendedFindConfig<TEntity> = (

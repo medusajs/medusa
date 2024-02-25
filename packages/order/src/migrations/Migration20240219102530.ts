@@ -224,10 +224,16 @@ export class Migration20240219102530 extends Migration {
           CONSTRAINT "order_detail_pkey" PRIMARY KEY ("id")
       );
 
-      CREATE UNIQUE INDEX IF NOT EXISTS "IDX_order_detail_order_id_item_id_version" ON "order_detail" (
-          order_id,
-          item_id,
+      CREATE INDEX IF NOT EXISTS "IDX_order_detail_order_id" ON "order_detail" (
+          order_id
+      );
+
+      CREATE INDEX IF NOT EXISTS "IDX_order_detail_version" ON "order_detail" (
           version
+      );
+
+      CREATE INDEX IF NOT EXISTS "IDX_order_detail_item_id" ON "order_detail" (
+          item_id
       );
 
       CREATE TABLE IF NOT EXISTS "order_line_item" (
@@ -295,8 +301,7 @@ export class Migration20240219102530 extends Migration {
           "created_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           "updated_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           "item_id" TEXT NULL,
-          CONSTRAINT "order_line_item_adjustment_pkey" PRIMARY KEY ("id"),
-          CONSTRAINT order_line_item_adjustment_check CHECK (amount >= 0)
+          CONSTRAINT "order_line_item_adjustment_pkey" PRIMARY KEY ("id")
       );
 
       CREATE INDEX IF NOT EXISTS "IDX_order_line_item_adjustment_item_id" ON "order_line_item_adjustment" (item_id);
@@ -314,8 +319,7 @@ export class Migration20240219102530 extends Migration {
           "metadata" JSONB NULL,
           "created_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           "updated_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
-          CONSTRAINT "order_shipping_method_pkey" PRIMARY KEY ("id"),
-          CONSTRAINT order_shipping_method_check CHECK (amount >= 0)
+          CONSTRAINT "order_shipping_method_pkey" PRIMARY KEY ("id")
       );
 
       CREATE INDEX IF NOT EXISTS "IDX_order_shipping_method_order_id" ON "order_shipping_method" (

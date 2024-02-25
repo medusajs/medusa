@@ -28,7 +28,6 @@ import {
   CreateOrderLineItemTaxLineDTO,
   CreateOrderShippingMethodAdjustmentDTO,
   CreateOrderShippingMethodDTO,
-  CreateOrderShippingMethodForSingleOrderDTO,
   CreateOrderShippingMethodTaxLineDTO,
   UpdateOrderAddressDTO,
   UpdateOrderDTO,
@@ -154,7 +153,7 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderShippingMethodDTO[]>
   addShippingMethods(
     orderId: string,
-    methods: CreateOrderShippingMethodForSingleOrderDTO[],
+    methods: CreateOrderShippingMethodDTO[],
     sharedContext?: Context
   ): Promise<OrderShippingMethodDTO[]>
 

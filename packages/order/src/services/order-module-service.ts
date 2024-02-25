@@ -32,8 +32,11 @@ import {
   Transaction,
 } from "@models"
 import {
+  CreateOrderDetailsDTO,
+  CreateOrderLineItemAdjustmentDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemTaxLineDTO,
+  CreateOrderShippingMethodAdjustmentDTO,
   CreateOrderShippingMethodDTO,
   CreateOrderShippingMethodTaxLineDTO,
   UpdateOrderLineItemDTO,
@@ -180,9 +183,20 @@ export default class OrderModuleService<
     const orders = await this.create_(input, sharedContext)
 
     const result = await this.list(
-      { id: orders.map((p) => p!.id) },
       {
-        relations: ["shipping_address", "billing_address"],
+        id: orders.map((p) => p!.id),
+      },
+      {
+        relations: [
+          "shipping_address",
+          "billing_address",
+          "items.item",
+          "items.item.tax_lines",
+          "items.item.adjustments",
+          "shipping_methods",
+          "shipping_methods.tax_lines",
+          "shipping_methods.adjustments",
+        ],
       },
       sharedContext
     )
@@ -198,9 +212,12 @@ export default class OrderModuleService<
     @MedusaContext() sharedContext: Context = {}
   ) {
     const lineItemsToCreate: CreateOrderLineItemDTO[] = []
+    const shippingMethodsToCreate: CreateOrderShippingMethodDTO[] = []
+    const orderDetailToCreate: CreateOrderDetailsDTO[] = []
+
     const createdOrders: Order[] = []
-    for (const { items, ...order } of data) {
-      const [created] = await this.orderService_.create([order], sharedContext)
+    for (const { items, shipping_methods, ...order } of data) {
+      const created = await this.orderService_.create(order, sharedContext)
 
       createdOrders.push(created)
 
@@ -214,10 +231,109 @@ export default class OrderModuleService<
 
         lineItemsToCreate.push(...orderItems)
       }
+
+      if (shipping_methods?.length) {
+        const methods = shipping_methods.map((method) => {
+          return {
+            ...method,
+            order_id: created.id,
+          }
+        })
+
+        shippingMethodsToCreate.push(...methods)
+      }
     }
 
     if (lineItemsToCreate.length) {
-      await this.addLineItemsBulk_(lineItemsToCreate, sharedContext)
+      const lineItems = await this.addLineItemsBulk_(
+        lineItemsToCreate,
+        sharedContext
+      )
+
+      const taxLineToCreate: CreateOrderLineItemTaxLineDTO[] = []
+      const adjustmentToCreate: CreateOrderLineItemAdjustmentDTO[] = []
+
+      for (let i = 0; i < lineItems.length; i++) {
+        const item = lineItems[i]
+        const toCreate = lineItemsToCreate[i]
+
+        if (item.tax_lines?.length) {
+          for (const taxLine of item.tax_lines) {
+            taxLineToCreate.push({
+              ...taxLine,
+              item_id: item.id,
+              item: undefined,
+            } as CreateOrderLineItemTaxLineDTO)
+          }
+        }
+
+        if (item.adjustments?.length) {
+          for (const adj of item.adjustments) {
+            adjustmentToCreate.push({
+              ...adj,
+              item_id: item.id,
+              item: undefined,
+            } as CreateOrderLineItemAdjustmentDTO)
+          }
+        }
+
+        orderDetailToCreate.push({
+          order_id: toCreate.order_id,
+          version: 1,
+          item_id: item.id,
+          quantity: toCreate.quantity,
+        })
+      }
+
+      await this.lineItemTaxLineService_.create(taxLineToCreate, sharedContext)
+      await this.lineItemAdjustmentService_.create(
+        adjustmentToCreate,
+        sharedContext
+      )
+      await this.orderDetailService_.create(orderDetailToCreate, sharedContext)
+    }
+
+    if (shippingMethodsToCreate.length) {
+      const shippingMethods = await this.addShippingMethodsBulk_(
+        shippingMethodsToCreate,
+        sharedContext
+      )
+
+      const taxLineToCreate: CreateOrderShippingMethodTaxLineDTO[] = []
+      const adjustmentToCreate: CreateOrderShippingMethodAdjustmentDTO[] = []
+
+      for (let i = 0; i < shippingMethods.length; i++) {
+        const method = shippingMethods[i]
+
+        if (method.tax_lines?.length) {
+          for (const taxLine of method.tax_lines) {
+            taxLineToCreate.push({
+              ...taxLine,
+              shipping_method_id: method.id,
+              shipping_method: undefined,
+            } as CreateOrderShippingMethodTaxLineDTO)
+          }
+        }
+
+        if (method.adjustments?.length) {
+          for (const adj of method.adjustments) {
+            adjustmentToCreate.push({
+              ...adj,
+              shipping_method_id: method.id,
+              shipping_method: undefined,
+            } as CreateOrderShippingMethodAdjustmentDTO)
+          }
+        }
+      }
+
+      await this.shippingMethodTaxLineService_.create(
+        taxLineToCreate,
+        sharedContext
+      )
+      await this.shippingMethodAdjustmentService_.create(
+        adjustmentToCreate,
+        sharedContext
+      )
     }
 
     return createdOrders
@@ -545,7 +661,7 @@ export default class OrderModuleService<
   ): Promise<OrderTypes.OrderShippingMethodDTO[]>
   async addShippingMethods(
     orderId: string,
-    methods: OrderTypes.CreateOrderShippingMethodForSingleOrderDTO[],
+    methods: OrderTypes.CreateOrderShippingMethodDTO[],
     sharedContext?: Context
   ): Promise<OrderTypes.OrderShippingMethodDTO[]>
 
@@ -555,9 +671,7 @@ export default class OrderModuleService<
       | string
       | OrderTypes.CreateOrderShippingMethodDTO[]
       | OrderTypes.CreateOrderShippingMethodDTO,
-    data?:
-      | OrderTypes.CreateOrderShippingMethodDTO[]
-      | OrderTypes.CreateOrderShippingMethodForSingleOrderDTO[],
+    data?: OrderTypes.CreateOrderShippingMethodDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     OrderTypes.OrderShippingMethodDTO[] | OrderTypes.OrderShippingMethodDTO
@@ -566,7 +680,7 @@ export default class OrderModuleService<
     if (isString(orderIdOrData)) {
       methods = await this.addShippingMethods_(
         orderIdOrData,
-        data as OrderTypes.CreateOrderShippingMethodForSingleOrderDTO[],
+        data!,
         sharedContext
       )
     } else {
@@ -587,7 +701,7 @@ export default class OrderModuleService<
   @InjectTransactionManager("baseRepository_")
   protected async addShippingMethods_(
     orderId: string,
-    data: OrderTypes.CreateOrderShippingMethodForSingleOrderDTO[],
+    data: OrderTypes.CreateOrderShippingMethodDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ShippingMethod[]> {
     const order = await this.retrieve(
