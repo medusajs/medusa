@@ -4,11 +4,11 @@ import { StorePostCartsCartPromotionsReq } from "../../validators"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const workflow = updateCartPromotionsWorkflow(req.scope)
-  const requestParams = req.validatedBody as StorePostCartsCartPromotionsReq
+  const payload = req.validatedBody as StorePostCartsCartPromotionsReq
 
   const { result, errors } = await workflow.run({
     input: {
-      promoCodes: requestParams.promo_codes,
+      promoCodes: payload.promo_codes,
       cartId: req.params.id,
     },
     throwOnError: false,
@@ -23,11 +23,11 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
 export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
   const workflow = updateCartPromotionsWorkflow(req.scope)
-  const requestParams = req.validatedBody as StorePostCartsCartPromotionsReq
+  const payload = req.validatedBody as StorePostCartsCartPromotionsReq
 
   const { result, errors } = await workflow.run({
     input: {
-      promoCodes: requestParams.promo_codes,
+      promoCodes: payload.promo_codes,
       cartId: req.params.id,
       removePromotions: true,
     },
