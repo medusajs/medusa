@@ -9,6 +9,9 @@ import { FindConfig } from "../common/common"
 import { IModuleService } from "../modules-sdk"
 import { SharedContext } from "../shared-context"
 
+/**
+ * The main service interface for the stock location's module.
+ */
 export interface IStockLocationService extends IModuleService {
   /**
    * This method is used to retrieve a paginated list of stock locations based on optional filters and configuration.
