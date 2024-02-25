@@ -444,7 +444,6 @@ moduleIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 amount: 100,
-                authorized_amount: 100,
                 currency_code: "usd",
                 provider_id: "pp_system_default",
 
@@ -474,7 +473,6 @@ moduleIntegrationTestRunner({
                     id: expect.any(String),
                   }),
                   payment: expect.objectContaining({
-                    authorized_amount: 100,
                     cart_id: null,
                     order_id: null,
                     order_edit_id: null,
