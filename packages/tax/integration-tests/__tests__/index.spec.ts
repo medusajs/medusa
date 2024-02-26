@@ -603,7 +603,7 @@ moduleIntegrationTestRunner({
         expect(taxRegions).toEqual([])
       })
 
-      it.only("it should soft delete all child regions when parent region is deleted", async () => {
+      it("it should soft delete all child regions when parent region is deleted", async () => {
         const region = await service.createTaxRegions({
           country_code: "CA",
         })
