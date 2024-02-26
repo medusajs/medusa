@@ -1,12 +1,10 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { AuthUserService } from "@services"
-
+import ContainerLoader from "../../../../src/loaders/container"
 import { MikroOrmWrapper } from "../../../utils"
-import { createAuthProviders } from "../../../__fixtures__/auth-provider"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { asValue } from "awilix"
 import { createAuthUsers } from "../../../__fixtures__/auth-user"
 import { createMedusaContainer } from "@medusajs/utils"
-import { asValue } from "awilix"
-import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -27,7 +25,6 @@ describe("AuthUser Service", () => {
 
     service = container.resolve("authUserService")
 
-    await createAuthProviders(testManager)
     await createAuthUsers(testManager)
   })
 
@@ -42,13 +39,13 @@ describe("AuthUser Service", () => {
 
       expect(serialized).toEqual([
         expect.objectContaining({
-          provider: "manual",
-        }),
-        expect.objectContaining({
-          provider: "manual",
-        }),
-        expect.objectContaining({
           provider: "store",
+        }),
+        expect.objectContaining({
+          provider: "manual",
+        }),
+        expect.objectContaining({
+          provider: "manual",
         }),
       ])
     })
@@ -67,7 +64,7 @@ describe("AuthUser Service", () => {
 
     it("should list authUsers by provider_id", async () => {
       const authUsers = await service.list({
-        provider_id: "manual",
+        provider: "manual",
       })
 
       const serialized = JSON.parse(JSON.stringify(authUsers))
@@ -91,20 +88,20 @@ describe("AuthUser Service", () => {
       expect(count).toEqual(3)
       expect(serialized).toEqual([
         expect.objectContaining({
-          provider: "manual",
-        }),
-        expect.objectContaining({
-          provider: "manual",
-        }),
-        expect.objectContaining({
           provider: "store",
+        }),
+        expect.objectContaining({
+          provider: "manual",
+        }),
+        expect.objectContaining({
+          provider: "manual",
         }),
       ])
     })
 
     it("should listAndCount authUsers by provider_id", async () => {
       const [authUsers, count] = await service.listAndCount({
-        provider_id: "manual",
+        provider: "manual",
       })
 
       expect(count).toEqual(2)
@@ -167,7 +164,7 @@ describe("AuthUser Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"authUserId" must be defined')
+      expect(error.message).toEqual("authUser - id must be defined")
     })
   })
 
@@ -228,8 +225,9 @@ describe("AuthUser Service", () => {
       await service.create([
         {
           id: "test",
-          provider_id: "manual",
-          entity_id: "test"
+          provider: "manual",
+          entity_id: "test",
+          scope: "store",
         },
       ])
 

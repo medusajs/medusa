@@ -3,7 +3,6 @@ import { SalesChannel } from "@medusajs/medusa"
 import {
   Button,
   Checkbox,
-  FocusModal,
   Hint,
   StatusBadge,
   Table,
@@ -26,17 +25,18 @@ import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { Form } from "../../../../components/common/form"
 import { OrderBy } from "../../../../components/filtering/order-by"
 import { Query } from "../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../components/localization/localized-table-pagination"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../components/route-modal"
 import { useQueryParams } from "../../../../hooks/use-query-params"
 
 type AddSalesChannelsToApiKeyFormProps = {
   apiKey: string
   preSelected: string[]
-  subscribe: (state: boolean) => void
-  onSuccessfulSubmit: () => void
 }
 
 const AddSalesChannelsToApiKeySchema = zod.object({
@@ -48,10 +48,9 @@ const PAGE_SIZE = 50
 export const AddSalesChannelsToApiKeyForm = ({
   apiKey,
   preSelected,
-  subscribe,
-  onSuccessfulSubmit,
 }: AddSalesChannelsToApiKeyFormProps) => {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof AddSalesChannelsToApiKeySchema>>({
     defaultValues: {
@@ -60,13 +59,7 @@ export const AddSalesChannelsToApiKeyForm = ({
     resolver: zodResolver(AddSalesChannelsToApiKeySchema),
   })
 
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
+  const { setValue } = form
 
   const { mutateAsync, isLoading: isMutating } =
     useAdminAddPublishableKeySalesChannelsBatch(apiKey)
@@ -87,11 +80,15 @@ export const AddSalesChannelsToApiKeyForm = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   useEffect(() => {
-    form.setValue(
+    setValue(
       "sales_channel_ids",
-      Object.keys(rowSelection).filter((k) => rowSelection[k])
+      Object.keys(rowSelection).filter((k) => rowSelection[k]),
+      {
+        shouldDirty: true,
+        shouldTouch: true,
+      }
     )
-  }, [rowSelection])
+  }, [rowSelection, setValue])
 
   const params = useQueryParams(["q", "order"])
   const { sales_channels, count } = useAdminSalesChannels(
@@ -135,37 +132,37 @@ export const AddSalesChannelsToApiKeyForm = ({
       },
       {
         onSuccess: () => {
-          onSuccessfulSubmit()
+          handleSuccess()
         },
       }
     )
   })
 
   return (
-    <Form {...form}>
+    <RouteFocusModal.Form form={form}>
       <form
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
-        <FocusModal.Header>
+        <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
             {form.formState.errors.sales_channel_ids && (
               <Hint variant="error">
                 {form.formState.errors.sales_channel_ids.message}
               </Hint>
             )}
-            <FocusModal.Close asChild>
+            <RouteFocusModal.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
-            </FocusModal.Close>
+            </RouteFocusModal.Close>
             <Button size="small" type="submit" isLoading={isMutating}>
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
-        </FocusModal.Header>
-        <FocusModal.Body className="flex h-full w-full flex-col items-center overflow-y-auto divide-y">
-          <div className="flex items-center justify-between w-full px-6 py-4">
+        </RouteFocusModal.Header>
+        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
+          <div className="flex w-full items-center justify-between px-6 py-4">
             <div></div>
             <div className="flex items-center gap-x-2">
               <Query />
@@ -236,9 +233,9 @@ export const AddSalesChannelsToApiKeyForm = ({
               pageSize={PAGE_SIZE}
             />
           </div>
-        </FocusModal.Body>
+        </RouteFocusModal.Body>
       </form>
-    </Form>
+    </RouteFocusModal.Form>
   )
 }
 

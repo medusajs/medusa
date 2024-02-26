@@ -5,38 +5,49 @@ import {
   ManyToOne,
   OneToOne,
   OnInit,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { generateEntityId, PaymentSessionStatus } from "@medusajs/utils"
+import {
+  BigNumber,
+  generateEntityId,
+  MikroOrmBigNumberProperty,
+  PaymentSessionStatus,
+} from "@medusajs/utils"
+import { BigNumberRawValue } from "@medusajs/types"
 
 import PaymentCollection from "./payment-collection"
 import Payment from "./payment"
 
 @Entity({ tableName: "payment_session" })
 export default class PaymentSession {
+  [OptionalProps]?: "status" | "data"
+
   @PrimaryKey({ columnType: "text" })
   id: string
 
   @Property({ columnType: "text" })
   currency_code: string
 
+  @MikroOrmBigNumberProperty()
+  amount: BigNumber | number
+
   @Property({
-    columnType: "numeric",
-    serializer: Number,
+    columnType: "jsonb",
   })
-  amount: number
+  raw_amount: BigNumberRawValue
 
   @Property({ columnType: "text" })
   provider_id: string
 
-  @Property({ columnType: "jsonb", nullable: true })
-  data: Record<string, unknown> | null = null
+  @Property({ columnType: "jsonb" })
+  data: Record<string, unknown> = {}
 
   @Enum({
     items: () => PaymentSessionStatus,
   })
-  status: PaymentSessionStatus
+  status: PaymentSessionStatus = PaymentSessionStatus.PENDING
 
   @Property({
     columnType: "timestamptz",
@@ -47,15 +58,17 @@ export default class PaymentSession {
   @ManyToOne({
     index: "IDX_payment_session_payment_collection_id",
     fieldName: "payment_collection_id",
+    onDelete: "cascade",
   })
   payment_collection!: PaymentCollection
 
   @OneToOne({
     entity: () => Payment,
-    mappedBy: (payment) => payment.session,
+    mappedBy: (payment) => payment.payment_session,
     cascade: ["soft-remove"] as any,
+    nullable: true,
   })
-  payment!: Payment
+  payment?: Payment | null
 
   @BeforeCreate()
   onCreate() {

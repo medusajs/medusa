@@ -7,6 +7,7 @@ import {
   Index,
   ManyToMany,
   ManyToOne,
+  OnInit,
   OneToMany,
   OptionalProps,
   PrimaryKey,
@@ -14,8 +15,8 @@ import {
   Unique,
 } from "@mikro-orm/core"
 
-import Product from "./product"
 import { DAL } from "@medusajs/types"
+import Product from "./product"
 
 type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
@@ -84,6 +85,11 @@ class ProductCategory {
 
   @ManyToMany(() => Product, (product) => product.categories)
   products = new Collection<Product>(this)
+
+  @OnInit()
+  async onInit() {
+    this.id = generateEntityId(this.id, "pcat")
+  }
 
   @BeforeCreate()
   async onCreate(args: EventArgs<ProductCategory>) {

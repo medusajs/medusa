@@ -192,7 +192,7 @@ describe("PricingModule Service - PriceSetMoneyAmountRules", () => {
       }
 
       expect(error.message).toEqual(
-        '"priceSetMoneyAmountRulesId" must be defined'
+        "priceSetMoneyAmountRules - id must be defined"
       )
     })
 
@@ -273,16 +273,14 @@ describe("PricingModule Service - PriceSetMoneyAmountRules", () => {
         },
       ])
 
-      const priceSetMoneyAmountRules =
-        await service.listPriceSetMoneyAmountRules(
-          {},
-          {
-            relations: ["price_set_money_amount", "rule_type"],
-          }
-        )
-
-      const created =
-        priceSetMoneyAmountRules[priceSetMoneyAmountRules.length - 1]
+      const [created] = await service.listPriceSetMoneyAmountRules(
+        {
+          value: ["New priceSetMoneyAmountRule"],
+        },
+        {
+          relations: ["price_set_money_amount", "rule_type"],
+        }
+      )
 
       expect(created).toEqual(
         expect.objectContaining({

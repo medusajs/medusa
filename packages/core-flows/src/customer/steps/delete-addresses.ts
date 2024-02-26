@@ -14,7 +14,7 @@ export const deleteCustomerAddressesStep = createStep(
     const existing = await service.listAddresses({
       id: ids,
     })
-    await service.deleteAddress(ids)
+    await service.deleteAddresses(ids)
 
     return new StepResponse(void 0, existing)
   },

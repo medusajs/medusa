@@ -3848,6 +3848,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.23.7":
+  version: 7.23.9
+  resolution: "@babel/runtime@npm:7.23.9"
+  dependencies:
+    regenerator-runtime: ^0.14.0
+  checksum: e71205fdd7082b2656512cc98e647d9ea7e222e4fe5c36e9e5adc026446fcc3ba7b3cdff8b0b694a0b78bb85db83e7b1e3d4c56ef90726682b74f13249cf952d
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.12.13, @babel/template@npm:^7.12.7, @babel/template@npm:^7.16.7, @babel/template@npm:^7.22.5, @babel/template@npm:^7.3.3":
   version: 7.22.5
   resolution: "@babel/template@npm:7.22.5"
@@ -7726,7 +7735,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-bundler@workspace:packages/admin-next/admin-bundler"
   dependencies:
-    "@medusajs/ui-preset": ^1.1.0
+    "@medusajs/ui-preset": ^1.1.2
     "@medusajs/vite-plugin-extension": "*"
     "@vitejs/plugin-react": ^4.2.1
     autoprefixer: ^10.4.16
@@ -7752,7 +7761,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin-ui@^2.1.11, @medusajs/admin-ui@workspace:packages/admin-ui":
+"@medusajs/admin-ui@^2.1.12, @medusajs/admin-ui@workspace:packages/admin-ui":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-ui@workspace:packages/admin-ui"
   dependencies:
@@ -7762,10 +7771,10 @@ __metadata:
     "@hookform/error-message": ^2.0.1
     "@hookform/resolvers": ^3.3.1
     "@medusajs/icons": ^1.1.0
-    "@medusajs/medusa": ^1.19.1
-    "@medusajs/types": ^1.11.10
-    "@medusajs/ui": ^2.2.4
-    "@medusajs/ui-preset": ^1.0.2
+    "@medusajs/medusa": ^1.20.2
+    "@medusajs/types": ^1.11.12
+    "@medusajs/ui": ^2.4.0
+    "@medusajs/ui-preset": ^1.1.1
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
     "@radix-ui/react-accordion": ^1.0.1
     "@radix-ui/react-avatar": ^1.0.1
@@ -7862,8 +7871,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/admin@workspace:packages/admin"
   dependencies:
-    "@medusajs/admin-ui": ^2.1.11
-    "@medusajs/medusa": ^1.19.1
+    "@medusajs/admin-ui": ^2.1.12
+    "@medusajs/medusa": ^1.20.2
     "@rollup/plugin-alias": 5.0.0
     "@rollup/plugin-commonjs": 24.1.0
     "@rollup/plugin-json": 6.0.0
@@ -7889,6 +7898,33 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/api-key@workspace:^, @medusajs/api-key@workspace:packages/api-key":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/api-key@workspace:packages/api-key"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.12.4
+    "@medusajs/types": ^1.11.8
+    "@medusajs/utils": ^1.11.1
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    dotenv: ^16.1.4
+    jest: ^29.6.3
+    knex: 2.4.2
+    medusa-test-utils: ^1.1.40
+    rimraf: ^3.0.2
+    ts-jest: ^29.1.1
+    ts-node: ^10.9.1
+    tsc-alias: ^1.8.6
+    typescript: ^5.1.6
+  bin:
+    medusa-api-key-seed: dist/scripts/bin/run-seed.js
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/auth@workspace:*, @medusajs/auth@workspace:packages/auth":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/auth"
@@ -7902,7 +7938,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: 16.3.1
     jest: ^29.6.3
     jsonwebtoken: ^9.0.2
     knex: 2.4.2
@@ -7953,9 +7989,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/cart@workspace:packages/cart"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.7
+    "@medusajs/modules-sdk": ^1.12.8
     "@medusajs/types": "workspace:^"
-    "@medusajs/utils": ^1.11.4
+    "@medusajs/utils": ^1.11.6
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -7990,15 +8026,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/core-flows@^0.0.5, @medusajs/core-flows@workspace:packages/core-flows":
+"@medusajs/core-flows@^0.0.6, @medusajs/core-flows@workspace:packages/core-flows":
   version: 0.0.0-use.local
   resolution: "@medusajs/core-flows@workspace:packages/core-flows"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.7
-    "@medusajs/orchestration": ^0.5.3
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
-    "@medusajs/workflows-sdk": ^0.1.2
+    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/orchestration": ^0.5.4
+    "@medusajs/types": ^1.11.12
+    "@medusajs/utils": ^1.11.5
+    "@medusajs/workflows-sdk": ^0.1.3
     awilix: ^8.0.1
     cross-env: ^5.2.1
     jest: ^29.6.3
@@ -8013,16 +8049,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/customer@workspace:packages/customer"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.7
+    "@medusajs/modules-sdk": ^1.12.8
     "@medusajs/types": "workspace:^"
-    "@medusajs/utils": ^1.11.4
+    "@medusajs/utils": ^1.11.6
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.1.4
+    dotenv: 16.3.1
     jest: ^29.6.3
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
@@ -8050,27 +8086,33 @@ __metadata:
     "@medusajs/ui-preset": "workspace:^"
     "@medusajs/vite-plugin-extension": "workspace:^"
     "@radix-ui/react-collapsible": 1.0.3
+    "@radix-ui/react-hover-card": ^1.0.7
     "@tanstack/react-query": 4.22.0
     "@tanstack/react-table": 8.10.7
+    "@tanstack/react-virtual": ^3.0.4
+    "@types/node": ^20.11.15
     "@types/react": 18.2.43
     "@types/react-dom": 18.2.17
     "@uiw/react-json-view": 2.0.0-alpha.10
     "@vitejs/plugin-react": 4.2.1
-    autoprefixer: 10.4.16
+    autoprefixer: ^10.4.17
     cmdk: ^0.2.0
     date-fns: ^3.2.0
+    framer-motion: ^11.0.3
     i18next: 23.7.11
     i18next-browser-languagedetector: 7.2.0
     i18next-http-backend: 2.4.2
     medusa-react: "workspace:^"
-    postcss: 8.4.32
+    postcss: ^8.4.33
     prettier: ^3.1.1
     react: 18.2.0
     react-dom: 18.2.0
     react-hook-form: 7.49.1
     react-i18next: 13.5.0
+    react-jwt: ^1.2.0
+    react-resizable-panels: ^2.0.9
     react-router-dom: 6.20.1
-    tailwindcss: 3.3.6
+    tailwindcss: ^3.4.1
     typescript: 5.2.2
     vite: 5.0.10
     zod: 3.22.4
@@ -8081,9 +8123,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-local@workspace:packages/event-bus-local"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.2
-    "@medusajs/types": ^1.11.5
-    "@medusajs/utils": ^1.9.2
+    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/types": ^1.11.12
+    "@medusajs/utils": ^1.11.5
     cross-env: ^5.2.1
     jest: ^29.6.3
     rimraf: ^5.0.1
@@ -8097,9 +8139,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-redis@workspace:packages/event-bus-redis"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.2
-    "@medusajs/types": ^1.11.5
-    "@medusajs/utils": ^1.9.2
+    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/types": ^1.11.12
+    "@medusajs/utils": ^1.11.5
     awilix: ^8.0.0
     bullmq: ^3.5.6
     cross-env: ^5.2.1
@@ -8124,6 +8166,33 @@ __metadata:
     typescript: ^4.9.5
   peerDependencies:
     medusa-interfaces: ^1.3.7
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/fulfillment@workspace:packages/fulfillment":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/fulfillment@workspace:packages/fulfillment"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.12.4
+    "@medusajs/types": ^1.11.8
+    "@medusajs/utils": ^1.11.1
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    dotenv: ^16.1.4
+    jest: ^29.6.3
+    knex: 2.4.2
+    medusa-test-utils: ^1.1.40
+    rimraf: ^3.0.2
+    ts-jest: ^29.1.1
+    ts-node: ^10.9.1
+    tsc-alias: ^1.8.6
+    typescript: ^5.1.6
+  bin:
+    medusa-fulfillment-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -8165,9 +8234,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory@workspace:packages/inventory"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.7
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
+    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/types": ^1.11.12
+    "@medusajs/utils": ^1.11.5
     awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^29.6.3
@@ -8178,13 +8247,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/link-modules@^0.2.7, @medusajs/link-modules@workspace:packages/link-modules":
+"@medusajs/link-modules@^0.2.8, @medusajs/link-modules@workspace:packages/link-modules":
   version: 0.0.0-use.local
   resolution: "@medusajs/link-modules@workspace:packages/link-modules"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.7
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
+    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/types": ^1.11.12
+    "@medusajs/utils": ^1.11.5
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
@@ -8292,18 +8361,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@^1.12.1, @medusajs/medusa@^1.12.2, @medusajs/medusa@^1.15.0, @medusajs/medusa@^1.17.1, @medusajs/medusa@^1.17.4, @medusajs/medusa@^1.19.1, @medusajs/medusa@^1.20.1, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:^, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@^1.12.1, @medusajs/medusa@^1.12.2, @medusajs/medusa@^1.15.0, @medusajs/medusa@^1.17.1, @medusajs/medusa@^1.17.4, @medusajs/medusa@^1.19.1, @medusajs/medusa@^1.20.1, @medusajs/medusa@^1.20.2, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:^, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
-    "@medusajs/core-flows": ^0.0.5
-    "@medusajs/link-modules": ^0.2.7
+    "@medusajs/core-flows": ^0.0.6
+    "@medusajs/link-modules": ^0.2.8
     "@medusajs/medusa-cli": ^1.3.22
-    "@medusajs/modules-sdk": ^1.12.7
-    "@medusajs/orchestration": ^0.5.3
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
-    "@medusajs/workflows-sdk": ^0.1.2
+    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/orchestration": ^0.5.4
+    "@medusajs/types": ^1.11.12
+    "@medusajs/utils": ^1.11.5
+    "@medusajs/workflows-sdk": ^0.1.3
     "@types/express": ^4.17.17
     "@types/ioredis": ^4.28.10
     "@types/jsonwebtoken": ^8.5.9
@@ -8370,15 +8439,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@^1.12.2, @medusajs/modules-sdk@^1.12.3, @medusajs/modules-sdk@^1.12.4, @medusajs/modules-sdk@^1.12.5, @medusajs/modules-sdk@^1.12.6, @medusajs/modules-sdk@^1.12.7, @medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/modules-sdk":
+"@medusajs/modules-sdk@^1.12.3, @medusajs/modules-sdk@^1.12.4, @medusajs/modules-sdk@^1.12.5, @medusajs/modules-sdk@^1.12.6, @medusajs/modules-sdk@^1.12.7, @medusajs/modules-sdk@^1.12.8, @medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
     "@graphql-tools/merge": ^9.0.0
     "@graphql-tools/schema": ^10.0.0
-    "@medusajs/orchestration": ^0.5.3
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
+    "@medusajs/orchestration": ^0.5.4
+    "@medusajs/types": ^1.11.12
+    "@medusajs/utils": ^1.11.5
     awilix: ^8.0.0
     cross-env: ^5.2.1
     graphql: ^16.6.0
@@ -8438,12 +8507,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/orchestration@^0.5.3, @medusajs/orchestration@workspace:packages/orchestration":
+"@medusajs/orchestration@^0.5.4, @medusajs/orchestration@workspace:packages/orchestration":
   version: 0.0.0-use.local
   resolution: "@medusajs/orchestration@workspace:packages/orchestration"
   dependencies:
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
+    "@medusajs/types": ^1.11.12
+    "@medusajs/utils": ^1.11.5
     awilix: ^8.0.0
     cross-env: ^5.2.1
     graphql: ^16.6.0
@@ -8451,6 +8520,33 @@ __metadata:
     rimraf: ^5.0.1
     ts-jest: ^29.1.1
     typescript: ^5.1.6
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/order@workspace:packages/order":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/order@workspace:packages/order"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.12.4
+    "@medusajs/types": ^1.11.8
+    "@medusajs/utils": ^1.11.1
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    dotenv: ^16.1.4
+    jest: ^29.6.3
+    knex: 2.4.2
+    medusa-test-utils: ^1.1.40
+    rimraf: ^3.0.2
+    ts-jest: ^29.1.1
+    ts-node: ^10.9.1
+    tsc-alias: ^1.8.6
+    typescript: ^5.1.6
+  bin:
+    medusa-order-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -8485,9 +8581,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/pricing@workspace:packages/pricing"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.7
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
+    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/types": ^1.11.12
+    "@medusajs/utils": ^1.11.5
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8512,9 +8608,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/product"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.7
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
+    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/types": ^1.11.12
+    "@medusajs/utils": ^1.11.5
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -8565,6 +8661,33 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/region@workspace:^, @medusajs/region@workspace:packages/region":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/region@workspace:packages/region"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.12.4
+    "@medusajs/types": ^1.11.8
+    "@medusajs/utils": ^1.11.1
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    dotenv: ^16.1.4
+    jest: ^29.6.3
+    knex: 2.4.2
+    medusa-test-utils: "workspace:^"
+    rimraf: ^3.0.2
+    ts-jest: ^29.1.1
+    ts-node: ^10.9.1
+    tsc-alias: ^1.8.6
+    typescript: ^5.1.6
+  bin:
+    medusa-region-seed: dist/scripts/bin/run-seed.js
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/sales-channel@workspace:packages/sales-channel":
   version: 0.0.0-use.local
   resolution: "@medusajs/sales-channel@workspace:packages/sales-channel"
@@ -8596,9 +8719,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/stock-location@workspace:packages/stock-location"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.7
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
+    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/types": ^1.11.12
+    "@medusajs/utils": ^1.11.5
     awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^29.6.3
@@ -8606,6 +8729,60 @@ __metadata:
     ts-jest: ^29.1.1
     typeorm: ^0.3.16
     typescript: ^5.1.6
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/store@workspace:packages/store":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/store@workspace:packages/store"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.12.4
+    "@medusajs/types": ^1.11.8
+    "@medusajs/utils": ^1.11.1
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    dotenv: ^16.1.4
+    jest: ^29.6.3
+    knex: 2.4.2
+    medusa-test-utils: "workspace:^"
+    rimraf: ^3.0.2
+    ts-jest: ^29.1.1
+    ts-node: ^10.9.1
+    tsc-alias: ^1.8.6
+    typescript: ^5.1.6
+  bin:
+    medusa-store-seed: dist/scripts/bin/run-seed.js
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/tax@workspace:packages/tax":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/tax@workspace:packages/tax"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.12.4
+    "@medusajs/types": ^1.11.8
+    "@medusajs/utils": ^1.11.1
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    dotenv: ^16.1.4
+    jest: ^29.6.3
+    knex: 2.4.2
+    medusa-test-utils: ^1.1.40
+    rimraf: ^3.0.2
+    ts-jest: ^29.1.1
+    ts-node: ^10.9.1
+    tsc-alias: ^1.8.6
+    typescript: ^5.1.6
+  bin:
+    medusa-tax-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -8635,11 +8812,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^1.10.0, @medusajs/types@^1.11.10, @medusajs/types@^1.11.11, @medusajs/types@^1.11.5, @medusajs/types@^1.11.6, @medusajs/types@^1.11.8, @medusajs/types@^1.11.9, @medusajs/types@^1.8.10, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^1.10.0, @medusajs/types@^1.11.11, @medusajs/types@^1.11.12, @medusajs/types@^1.11.13, @medusajs/types@^1.11.6, @medusajs/types@^1.11.8, @medusajs/types@^1.11.9, @medusajs/types@^1.8.10, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
     awilix: ^8.0.0
+    bignumber.js: ^9.1.2
     cross-env: ^5.2.1
     ioredis: ^5.2.5
     rimraf: ^5.0.1
@@ -8649,13 +8827,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/ui-preset@^1.0.2, @medusajs/ui-preset@^1.1.0, @medusajs/ui-preset@workspace:^, @medusajs/ui-preset@workspace:packages/design-system/ui-preset":
+"@medusajs/ui-preset@^1.1.1, @medusajs/ui-preset@^1.1.2, @medusajs/ui-preset@workspace:^, @medusajs/ui-preset@workspace:packages/design-system/ui-preset":
   version: 0.0.0-use.local
   resolution: "@medusajs/ui-preset@workspace:packages/design-system/ui-preset"
   dependencies:
     "@medusajs/toolbox": ^0.0.1
     "@tailwindcss/forms": ^0.5.3
-    tailwindcss: ^3.3.2
+    tailwindcss: ^3.4.1
     tailwindcss-animate: ^1.0.6
     tsup: ^7.1.0
     typescript: ^5.1.6
@@ -8664,12 +8842,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/ui@^2.2.4, @medusajs/ui@workspace:^, @medusajs/ui@workspace:packages/design-system/ui":
+"@medusajs/ui@^2.4.0, @medusajs/ui@workspace:^, @medusajs/ui@workspace:packages/design-system/ui":
   version: 0.0.0-use.local
   resolution: "@medusajs/ui@workspace:packages/design-system/ui"
   dependencies:
     "@medusajs/icons": ^1.2.0
-    "@medusajs/ui-preset": ^1.1.0
+    "@medusajs/ui-preset": ^1.1.2
     "@radix-ui/react-accordion": ^1.1.2
     "@radix-ui/react-alert-dialog": ^1.0.4
     "@radix-ui/react-avatar": ^1.0.3
@@ -8706,7 +8884,7 @@ __metadata:
     "@types/react-dom": ^18.2.0
     "@vitejs/plugin-react": ^4.0.1
     "@vitest/coverage-v8": ^0.32.2
-    autoprefixer: ^10.4.14
+    autoprefixer: ^10.4.17
     chromatic: ^6.20.0
     clsx: ^1.2.1
     copy-to-clipboard: ^3.3.3
@@ -8715,7 +8893,7 @@ __metadata:
     eslint: ^7.32.0
     eslint-plugin-storybook: ^0.6.12
     jsdom: ^22.1.0
-    postcss: ^8.4.24
+    postcss: ^8.4.33
     prism-react-renderer: ^2.0.6
     prop-types: ^15.8.1
     react: ^18.2.0
@@ -8725,8 +8903,8 @@ __metadata:
     resize-observer-polyfill: ^1.5.1
     rimraf: ^5.0.1
     storybook: ^7.0.23
-    tailwind-merge: ^1.13.2
-    tailwindcss: ^3.3.2
+    tailwind-merge: ^2.2.1
+    tailwindcss: ^3.4.1
     tsc-alias: ^1.8.7
     typescript: ^5.1.6
     vite: ^4.3.9
@@ -8738,16 +8916,45 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@^1.1.41, @medusajs/utils@^1.10.5, @medusajs/utils@^1.11.1, @medusajs/utils@^1.11.2, @medusajs/utils@^1.11.3, @medusajs/utils@^1.11.4, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
+"@medusajs/user@workspace:^, @medusajs/user@workspace:packages/user":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/user@workspace:packages/user"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.12.7
+    "@medusajs/types": ^1.11.11
+    "@medusajs/utils": ^1.11.4
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    dotenv: 16.3.1
+    jest: ^29.6.3
+    jsonwebtoken: ^9.0.2
+    knex: 2.4.2
+    medusa-test-utils: ^1.1.40
+    rimraf: ^3.0.2
+    ts-jest: ^29.1.1
+    ts-node: ^10.9.1
+    tsc-alias: ^1.8.6
+    typescript: ^5.1.6
+  bin:
+    medusa-user-seed: dist/scripts/bin/run-seed.js
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/utils@^1.1.41, @medusajs/utils@^1.10.5, @medusajs/utils@^1.11.1, @medusajs/utils@^1.11.2, @medusajs/utils@^1.11.3, @medusajs/utils@^1.11.4, @medusajs/utils@^1.11.5, @medusajs/utils@^1.11.6, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
-    "@medusajs/types": ^1.11.11
+    "@medusajs/types": ^1.11.13
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     "@types/express": ^4.17.17
     awilix: ^8.0.1
+    bignumber.js: ^9.1.2
     cross-env: ^5.2.1
     express: ^4.18.2
     jest: ^29.6.3
@@ -8780,7 +8987,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflow-engine-inmemory@workspace:packages/workflow-engine-inmemory":
+"@medusajs/workflow-engine-inmemory@workspace:*, @medusajs/workflow-engine-inmemory@workspace:packages/workflow-engine-inmemory":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-inmemory@workspace:packages/workflow-engine-inmemory"
   dependencies:
@@ -8834,14 +9041,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows-sdk@^0.1.2, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
+"@medusajs/workflows-sdk@^0.1.2, @medusajs/workflows-sdk@^0.1.3, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows-sdk@workspace:packages/workflows-sdk"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.7
-    "@medusajs/orchestration": ^0.5.3
-    "@medusajs/types": ^1.11.11
-    "@medusajs/utils": ^1.11.4
+    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/orchestration": ^0.5.4
+    "@medusajs/types": ^1.11.12
+    "@medusajs/utils": ^1.11.5
     awilix: ^8.0.1
     cross-env: ^5.2.1
     jest: ^29.6.3
@@ -10421,6 +10628,34 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 2fce0bafcab4e16cf4ed7560bda40654223f3d0add6b231e1c607433030c14e6249818b444b7b58ee7a6ff6bbf8e192c9c81d22c3a5c88c2daade9d1f881b5be
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-hover-card@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "@radix-ui/react-hover-card@npm:1.0.7"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@radix-ui/primitive": 1.0.1
+    "@radix-ui/react-compose-refs": 1.0.1
+    "@radix-ui/react-context": 1.0.1
+    "@radix-ui/react-dismissable-layer": 1.0.5
+    "@radix-ui/react-popper": 1.1.3
+    "@radix-ui/react-portal": 1.0.4
+    "@radix-ui/react-presence": 1.0.1
+    "@radix-ui/react-primitive": 1.0.3
+    "@radix-ui/react-use-controllable-state": 1.0.1
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: f29f3da5bd9a967b5a35e91ac2d1b223191c7a074550d9d9cc10a0c0baf62ba0705b32912a7d2ef1ea5c27dd5e130a9fda9cbe6c2a7f3c2037ed5dfed89aa8cc
   languageName: node
   linkType: hard
 
@@ -16585,6 +16820,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/react-virtual@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "@tanstack/react-virtual@npm:3.0.4"
+  dependencies:
+    "@tanstack/virtual-core": 3.0.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 6222dc1254843fa52bdb93deca74282e2b8aabd17337d7b35596441bb70d1d7e333b1679acfb50240847799d63ee24eb184958ad8c7f1ca84c4ff0c13aefa7ec
+  languageName: node
+  linkType: hard
+
 "@tanstack/table-core@npm:8.10.7":
   version: 8.10.7
   resolution: "@tanstack/table-core@npm:8.10.7"
@@ -17665,6 +17912,15 @@ __metadata:
   dependencies:
     undici-types: ~5.26.4
   checksum: 6692ccfa8552ef60c4069fda3c8de726c23e8d403cdf788e3c7efa769987e80fbda5f02723dd857f9de7df24a5fa40b3ed4580ec3c5cbac04eba44cf7b2ab1dc
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.11.15":
+  version: 20.11.15
+  resolution: "@types/node@npm:20.11.15"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: 7dfab4208fedc02e9584c619551906f46ade7955bb929b1e32e354a50522eb532d6bfb2844fdaad2c8dca03be84a590674460c64cb101e1a33bb318e1ec448d4
   languageName: node
   linkType: hard
 
@@ -20305,7 +20561,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:10.4.16, autoprefixer@npm:^10.4.16":
+"autoprefixer@npm:^10.1.0, autoprefixer@npm:^10.4.0, autoprefixer@npm:^10.4.13, autoprefixer@npm:^10.4.14":
+  version: 10.4.14
+  resolution: "autoprefixer@npm:10.4.14"
+  dependencies:
+    browserslist: ^4.21.5
+    caniuse-lite: ^1.0.30001464
+    fraction.js: ^4.2.0
+    normalize-range: ^0.1.2
+    picocolors: ^1.0.0
+    postcss-value-parser: ^4.2.0
+  peerDependencies:
+    postcss: ^8.1.0
+  bin:
+    autoprefixer: bin/autoprefixer
+  checksum: 66ce961b86acd2a46e05ac1eece8657b3d9edfd2ee3abddd6cfcb32755e6865409f57acf11fe05990d6f166afda85a603678435916267a09652265cfff7b5706
+  languageName: node
+  linkType: hard
+
+"autoprefixer@npm:^10.4.16":
   version: 10.4.16
   resolution: "autoprefixer@npm:10.4.16"
   dependencies:
@@ -20323,13 +20597,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:^10.1.0, autoprefixer@npm:^10.4.0, autoprefixer@npm:^10.4.13, autoprefixer@npm:^10.4.14":
-  version: 10.4.14
-  resolution: "autoprefixer@npm:10.4.14"
+"autoprefixer@npm:^10.4.17":
+  version: 10.4.17
+  resolution: "autoprefixer@npm:10.4.17"
   dependencies:
-    browserslist: ^4.21.5
-    caniuse-lite: ^1.0.30001464
-    fraction.js: ^4.2.0
+    browserslist: ^4.22.2
+    caniuse-lite: ^1.0.30001578
+    fraction.js: ^4.3.7
     normalize-range: ^0.1.2
     picocolors: ^1.0.0
     postcss-value-parser: ^4.2.0
@@ -20337,7 +20611,7 @@ __metadata:
     postcss: ^8.1.0
   bin:
     autoprefixer: bin/autoprefixer
-  checksum: 66ce961b86acd2a46e05ac1eece8657b3d9edfd2ee3abddd6cfcb32755e6865409f57acf11fe05990d6f166afda85a603678435916267a09652265cfff7b5706
+  checksum: 1d21cc8edb7bf993682094ceed03a32c18f5293f071182a64c2c6defb44bbe91d576ad775d2347469a81997b80cea0bbc4ad3eeb5b12710f9feacf2e6c04bb51
   languageName: node
   linkType: hard
 
@@ -21267,6 +21541,13 @@ __metadata:
   version: 5.2.2
   resolution: "big.js@npm:5.2.2"
   checksum: 230520f1ff920b2d2ce3e372d77a33faa4fa60d802fe01ca4ffbc321ee06023fe9a741ac02793ee778040a16b7e497f7d60c504d1c402b8fdab6f03bb785a25f
+  languageName: node
+  linkType: hard
+
+"bignumber.js@npm:^9.1.2":
+  version: 9.1.2
+  resolution: "bignumber.js@npm:9.1.2"
+  checksum: e17786545433f3110b868725c449fa9625366a6e675cd70eb39b60938d6adbd0158cb4b3ad4f306ce817165d37e63f4aa3098ba4110db1d9a3b9f66abfbaf10d
   languageName: node
   linkType: hard
 
@@ -22250,6 +22531,13 @@ __metadata:
   version: 1.0.30001572
   resolution: "caniuse-lite@npm:1.0.30001572"
   checksum: 7d02570fa576b158d96739f2c65ea3ad22e90a8b028a343902de1f13b7db8512144870f1d29ec5e9ae7189d96158d9643871b6e902e6680a06b27a9afe556da2
+  languageName: node
+  linkType: hard
+
+"caniuse-lite@npm:^1.0.30001578":
+  version: 1.0.30001583
+  resolution: "caniuse-lite@npm:1.0.30001583"
+  checksum: 9ce61437e7a0c8e69bdb3480962dca7d7a9e9fa8d7c56ae411454d8b101d7c83d71f6c7fa74450c131f6c14e35e347042b3e1787b15edbfaba0e05fd75ab2625
   languageName: node
   linkType: hard
 
@@ -28491,7 +28779,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fraction.js@npm:^4.3.6":
+"fraction.js@npm:^4.3.6, fraction.js@npm:^4.3.7":
   version: 4.3.7
   resolution: "fraction.js@npm:4.3.7"
   checksum: df291391beea9ab4c263487ffd9d17fed162dbb736982dee1379b2a8cc94e4e24e46ed508c6d278aded9080ba51872f1bc5f3a5fd8d7c74e5f105b508ac28711
@@ -28504,6 +28792,27 @@ __metadata:
   dependencies:
     map-cache: ^0.2.2
   checksum: 5891d1c1d1d5e1a7fb3ccf28515c06731476fa88f7a50f4ede8a0d8d239a338448e7f7cc8b73db48da19c229fa30066104fe6489862065a4f1ed591c42fbeabf
+  languageName: node
+  linkType: hard
+
+"framer-motion@npm:^11.0.3":
+  version: 11.0.3
+  resolution: "framer-motion@npm:11.0.3"
+  dependencies:
+    "@emotion/is-prop-valid": ^0.8.2
+    tslib: ^2.4.0
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  dependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: a9a70196ea5d264f749a7dea1ccb7c33decf969680a907c595eb48d84510b60fb51e3e0d16d5bcac0997eea041f796f2cba4a5505e0a00f373ffbadfb5f36564
   languageName: node
   linkType: hard
 
@@ -31360,6 +31669,7 @@ __metadata:
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/medusa": "workspace:*"
+    "@medusajs/workflow-engine-inmemory": "workspace:*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
@@ -31377,6 +31687,7 @@ __metadata:
     "@babel/cli": ^7.12.10
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
+    "@medusajs/api-key": "workspace:^"
     "@medusajs/auth": "workspace:*"
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/customer": "workspace:^"
@@ -31387,8 +31698,11 @@ __metadata:
     "@medusajs/pricing": "workspace:^"
     "@medusajs/product": "workspace:^"
     "@medusajs/promotion": "workspace:^"
+    "@medusajs/region": "workspace:^"
     "@medusajs/types": "workspace:^"
+    "@medusajs/user": "workspace:^"
     "@medusajs/utils": "workspace:^"
+    "@medusajs/workflow-engine-inmemory": "workspace:*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
@@ -37833,7 +38147,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-test-utils@^1.1.40, medusa-test-utils@^1.1.41, medusa-test-utils@workspace:packages/medusa-test-utils":
+"medusa-test-utils@^1.1.40, medusa-test-utils@^1.1.41, medusa-test-utils@workspace:^, medusa-test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
   resolution: "medusa-test-utils@workspace:packages/medusa-test-utils"
   dependencies:
@@ -42064,7 +42378,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.4.31, postcss@npm:^8.2.14, postcss@npm:^8.4.23, postcss@npm:^8.4.24, postcss@npm:^8.4.27":
+"postcss@npm:8.4.31, postcss@npm:^8.2.14, postcss@npm:^8.4.23, postcss@npm:^8.4.27":
   version: 8.4.31
   resolution: "postcss@npm:8.4.31"
   dependencies:
@@ -42072,17 +42386,6 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: 748b82e6e5fc34034dcf2ae88ea3d11fd09f69b6c50ecdd3b4a875cfc7cdca435c958b211e2cb52355422ab6fccb7d8f2f2923161d7a1b281029e4a913d59acf
-  languageName: node
-  linkType: hard
-
-"postcss@npm:8.4.32, postcss@npm:^8.4.32":
-  version: 8.4.32
-  resolution: "postcss@npm:8.4.32"
-  dependencies:
-    nanoid: ^3.3.7
-    picocolors: ^1.0.0
-    source-map-js: ^1.0.2
-  checksum: 39308a9195fa34d4dbdd7b58a896cff0c7809f84f7a4ac1b95b68ca86c9138a395addff33075668ed3983d41b90aac05754c445237a9365eb1c3a5602ebd03ad
   languageName: node
   linkType: hard
 
@@ -42104,6 +42407,28 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: 37704ee03a2cbdebf2c99a76d399d6e0250742b5f6c699a12d475c84cedfcbeb26e180d9c780e0219dd2ad70cac963ceaf1d6763a1aec3e63d0c19fceb0eab23
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.32":
+  version: 8.4.32
+  resolution: "postcss@npm:8.4.32"
+  dependencies:
+    nanoid: ^3.3.7
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 39308a9195fa34d4dbdd7b58a896cff0c7809f84f7a4ac1b95b68ca86c9138a395addff33075668ed3983d41b90aac05754c445237a9365eb1c3a5602ebd03ad
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.33":
+  version: 8.4.33
+  resolution: "postcss@npm:8.4.33"
+  dependencies:
+    nanoid: ^3.3.7
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 16eda83458fcd8a91bece287b5920c7f57164c3ea293e6c80d0ea71ce7843007bcd8592260a5160b9a7f02693e6ac93e2495b02d8c7596d3f3f72c1447e3ba79
   languageName: node
   linkType: hard
 
@@ -43538,7 +43863,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-jwt@npm:^1.1.4":
+"react-jwt@npm:^1.1.4, react-jwt@npm:^1.2.0":
   version: 1.2.0
   resolution: "react-jwt@npm:1.2.0"
   dependencies:
@@ -43662,6 +43987,16 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 4952657e6a7b9d661d4ad4dfcef81b9c7fa493e35164abff99c35c0b27b3d172ef7ad70c09416dc44dd14ff2e6b38a5ec7da27e27e90a15cbad36b8fd2fd8054
+  languageName: node
+  linkType: hard
+
+"react-resizable-panels@npm:^2.0.9":
+  version: 2.0.9
+  resolution: "react-resizable-panels@npm:2.0.9"
+  peerDependencies:
+    react: ^16.14.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.14.0 || ^17.0.0 || ^18.0.0
+  checksum: 0302ab32d3aa7d2887a2ad58882e447a8e22cef3c5c728cde7436442fcd7475969a86bb45d1a6e285b1b4e2a9ac49d13a0e2df4b29bc63542dc99044309e211c
   languageName: node
   linkType: hard
 
@@ -47834,10 +48169,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:^1.13.2":
-  version: 1.13.2
-  resolution: "tailwind-merge@npm:1.13.2"
-  checksum: 0b4bac1c45769c099336ec767fad6e3ed559e9037d3e70bfafd820b2f8139dbaf6dec03e24b1a60ad38dceaa0272573175472ae7498fd745e97792195ea184f6
+"tailwind-merge@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "tailwind-merge@npm:2.2.1"
+  dependencies:
+    "@babel/runtime": ^7.23.7
+  checksum: 14ab965ec897e9377484b7593f7a700dde09b8035b762ad42652622a3ed1f202b203f48c0f235c0b1b38e9390470d94458f6f9010d33a5a18d71b15f38b986a6
   languageName: node
   linkType: hard
 
@@ -47893,72 +48230,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.3.6":
-  version: 3.3.6
-  resolution: "tailwindcss@npm:3.3.6"
-  dependencies:
-    "@alloc/quick-lru": ^5.2.0
-    arg: ^5.0.2
-    chokidar: ^3.5.3
-    didyoumean: ^1.2.2
-    dlv: ^1.1.3
-    fast-glob: ^3.3.0
-    glob-parent: ^6.0.2
-    is-glob: ^4.0.3
-    jiti: ^1.19.1
-    lilconfig: ^2.1.0
-    micromatch: ^4.0.5
-    normalize-path: ^3.0.0
-    object-hash: ^3.0.0
-    picocolors: ^1.0.0
-    postcss: ^8.4.23
-    postcss-import: ^15.1.0
-    postcss-js: ^4.0.1
-    postcss-load-config: ^4.0.1
-    postcss-nested: ^6.0.1
-    postcss-selector-parser: ^6.0.11
-    resolve: ^1.22.2
-    sucrase: ^3.32.0
-  bin:
-    tailwind: lib/cli.js
-    tailwindcss: lib/cli.js
-  checksum: 69caade773249cb963c33e81f85b7fc423dcb74b416727483f434f4e12874187f633970c9de864fa96736289abaf71189314a53589ada0be6c09ccb0e8b78391
-  languageName: node
-  linkType: hard
-
-"tailwindcss@npm:^3.3.2":
-  version: 3.3.4
-  resolution: "tailwindcss@npm:3.3.4"
-  dependencies:
-    "@alloc/quick-lru": ^5.2.0
-    arg: ^5.0.2
-    chokidar: ^3.5.3
-    didyoumean: ^1.2.2
-    dlv: ^1.1.3
-    fast-glob: ^3.3.0
-    glob-parent: ^6.0.2
-    is-glob: ^4.0.3
-    jiti: ^1.19.1
-    lilconfig: ^2.1.0
-    micromatch: ^4.0.5
-    normalize-path: ^3.0.0
-    object-hash: ^3.0.0
-    picocolors: ^1.0.0
-    postcss: ^8.4.23
-    postcss-import: ^15.1.0
-    postcss-js: ^4.0.1
-    postcss-load-config: ^4.0.1
-    postcss-nested: ^6.0.1
-    postcss-selector-parser: ^6.0.11
-    resolve: ^1.22.2
-    sucrase: ^3.32.0
-  bin:
-    tailwind: lib/cli.js
-    tailwindcss: lib/cli.js
-  checksum: a1a0c8c1793b1b1b67503484fe924dc84f79e74c1ddc576095d616eaecc18bbd8fcdbf7c62e07a181673466f4913ebc20d92b93b87da730148b05f7c95e6c83e
-  languageName: node
-  linkType: hard
-
 "tailwindcss@npm:^3.3.6":
   version: 3.4.0
   resolution: "tailwindcss@npm:3.4.0"
@@ -47989,6 +48260,39 @@ __metadata:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
   checksum: 0a1cef7468e6d17c2857d0b3c4017af2cb37ed8ba27dfb14780c517b8a74f6786970227c400ac1325fc8bcfc09099d8e990fa7c60924bf945f3d0a912d63f546
+  languageName: node
+  linkType: hard
+
+"tailwindcss@npm:^3.4.1":
+  version: 3.4.1
+  resolution: "tailwindcss@npm:3.4.1"
+  dependencies:
+    "@alloc/quick-lru": ^5.2.0
+    arg: ^5.0.2
+    chokidar: ^3.5.3
+    didyoumean: ^1.2.2
+    dlv: ^1.1.3
+    fast-glob: ^3.3.0
+    glob-parent: ^6.0.2
+    is-glob: ^4.0.3
+    jiti: ^1.19.1
+    lilconfig: ^2.1.0
+    micromatch: ^4.0.5
+    normalize-path: ^3.0.0
+    object-hash: ^3.0.0
+    picocolors: ^1.0.0
+    postcss: ^8.4.23
+    postcss-import: ^15.1.0
+    postcss-js: ^4.0.1
+    postcss-load-config: ^4.0.1
+    postcss-nested: ^6.0.1
+    postcss-selector-parser: ^6.0.11
+    resolve: ^1.22.2
+    sucrase: ^3.32.0
+  bin:
+    tailwind: lib/cli.js
+    tailwindcss: lib/cli.js
+  checksum: eec3d758f1cd4f51ab3b4c201927c3ecd18e55f8ac94256af60276aaf8d1df78f9dddb5e9fb1e057dfa7cea3c1356add4994cc3d42da9739df874e67047e656f
   languageName: node
   linkType: hard
 

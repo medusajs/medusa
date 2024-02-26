@@ -1,9 +1,9 @@
-import { getInitModuleConfig, TestDatabase } from "../../../utils"
-import { IProductModuleService } from "@medusajs/types"
-import { ProductType } from "@models"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { MedusaModule, Modules } from "@medusajs/modules-sdk"
-import { initModules } from "medusa-test-utils/dist"
+import { IProductModuleService } from "@medusajs/types"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { ProductType } from "@models"
+import { initModules } from "medusa-test-utils"
+import { getInitModuleConfig, TestDatabase } from "../../../utils"
 
 describe("ProductModuleService product types", () => {
   let service: IProductModuleService

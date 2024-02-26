@@ -1,25 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import {
-  Button,
-  FocusModal,
-  Heading,
-  Input,
-  Switch,
-  Text,
-  Textarea,
-} from "@medusajs/ui"
+import { Button, Heading, Input, Switch, Text, Textarea } from "@medusajs/ui"
 import { useAdminCreateSalesChannel } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
 import * as zod from "zod"
 
-import { useEffect } from "react"
 import { Form } from "../../../../../components/common/form"
-
-type CreateSalesChannelFormProps = {
-  subscribe: (state: boolean) => void
-}
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 
 const CreateSalesChannelSchema = zod.object({
   name: zod.string().min(1),
@@ -27,9 +17,10 @@ const CreateSalesChannelSchema = zod.object({
   enabled: zod.boolean(),
 })
 
-export const CreateSalesChannelForm = ({
-  subscribe,
-}: CreateSalesChannelFormProps) => {
+export const CreateSalesChannelForm = () => {
+  const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
+
   const form = useForm<zod.infer<typeof CreateSalesChannelSchema>>({
     defaultValues: {
       name: "",
@@ -40,17 +31,6 @@ export const CreateSalesChannelForm = ({
   })
   const { mutateAsync, isLoading } = useAdminCreateSalesChannel()
 
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
-
-  const { t } = useTranslation()
-  const navigate = useNavigate()
-
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
       {
@@ -60,31 +40,31 @@ export const CreateSalesChannelForm = ({
       },
       {
         onSuccess: ({ sales_channel }) => {
-          navigate(`../${sales_channel.id}`)
+          handleSuccess(`../${sales_channel.id}`)
         },
       }
     )
   })
 
   return (
-    <Form {...form}>
+    <RouteFocusModal.Form form={form}>
       <form
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
-        <FocusModal.Header>
+        <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
-            <FocusModal.Close asChild>
+            <RouteFocusModal.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
-            </FocusModal.Close>
+            </RouteFocusModal.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
-        </FocusModal.Header>
-        <FocusModal.Body className="flex flex-1 flex-col overflow-hidden">
+        </RouteFocusModal.Header>
+        <RouteFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
           <div className="flex flex-1 flex-col items-center overflow-y-auto">
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
               <div>
@@ -153,8 +133,8 @@ export const CreateSalesChannelForm = ({
               />
             </div>
           </div>
-        </FocusModal.Body>
+        </RouteFocusModal.Body>
       </form>
-    </Form>
+    </RouteFocusModal.Form>
   )
 }

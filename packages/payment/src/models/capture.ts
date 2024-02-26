@@ -1,3 +1,4 @@
+import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -7,8 +8,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-
-import { generateEntityId } from "@medusajs/utils"
 import Payment from "./payment"
 
 type OptionalCaptureProps = "created_at"
@@ -31,7 +30,7 @@ export default class Capture {
     index: "IDX_capture_payment_id",
     fieldName: "payment_id",
   })
-  payment: Payment
+  payment!: Payment
 
   @Property({
     onCreate: () => new Date(),

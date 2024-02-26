@@ -1,5 +1,5 @@
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
-import { createContainerLike, createMedusaContainer } from "@medusajs/utils"
+import { createMedusaContainer } from "@medusajs/utils"
 import { asValue } from "awilix"
 
 import {
@@ -25,7 +25,7 @@ export class GlobalWorkflow extends WorkflowManager {
 
     if (!Array.isArray(modulesLoaded) && modulesLoaded) {
       if (!("cradle" in modulesLoaded)) {
-        container = createContainerLike(modulesLoaded)
+        container = createMedusaContainer(modulesLoaded)
       } else {
         container = modulesLoaded
       }

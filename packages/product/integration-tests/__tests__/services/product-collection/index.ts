@@ -240,7 +240,7 @@ describe("Product collection Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"productCollectionId" must be defined')
+      expect(error.message).toEqual("productCollection - id must be defined")
     })
 
     it("should return collection based on config select param", async () => {

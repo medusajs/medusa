@@ -1,12 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { StockLocationExpandedDTO } from "@medusajs/types"
-import { Button, Drawer, Input } from "@medusajs/ui"
+import { Button, Input } from "@medusajs/ui"
 import { useAdminUpdateStockLocation } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+
 import { CountrySelect } from "../../../../../components/common/country-select"
 import { Form } from "../../../../../components/common/form"
+import { RouteDrawer } from "../../../../../components/route-modal"
 
 type EditLocationFormProps = {
   location: StockLocationExpandedDTO
@@ -56,12 +58,12 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
   })
 
   return (
-    <Form {...form}>
+    <RouteDrawer.Form form={form}>
       <form
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
-        <Drawer.Body className="flex flex-col gap-y-8 overflow-y-auto">
+        <RouteDrawer.Body className="flex flex-col gap-y-8 overflow-y-auto">
           <div>
             <Form.Field
               control={form.control}
@@ -201,18 +203,20 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
               }}
             />
           </div>
-        </Drawer.Body>
-        <Drawer.Footer>
+        </RouteDrawer.Body>
+        <RouteDrawer.Footer>
           <div className="flex items-center justify-end gap-x-2">
-            <Drawer.Close asChild>
+            <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
-            </Drawer.Close>
-            <Button size="small">{t("general.save")}</Button>
+            </RouteDrawer.Close>
+            <Button size="small" type="submit" isLoading={isLoading}>
+              {t("actions.save")}
+            </Button>
           </div>
-        </Drawer.Footer>
+        </RouteDrawer.Footer>
       </form>
-    </Form>
+    </RouteDrawer.Form>
   )
 }

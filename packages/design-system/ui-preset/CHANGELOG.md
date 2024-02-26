@@ -1,5 +1,17 @@
 # @medusajs/ui-preset
 
+## 1.1.2
+
+### Patch Changes
+
+- [#6357](https://github.com/medusajs/medusa/pull/6357) [`85a44dfd0`](https://github.com/medusajs/medusa/commit/85a44dfd017ab53b539bcfca04a32f1a0786a23c) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(ui,ui-preset): Fixes an issue where the color styles of two code components was broken
+
+## 1.1.1
+
+### Patch Changes
+
+- [#6297](https://github.com/medusajs/medusa/pull/6297) [`8cbf6c60f`](https://github.com/medusajs/medusa/commit/8cbf6c60fec7fe8ddf59dcf420b9339f84b8636c) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(ui,ui-preset): Update to latest version of TailwindCSS. Increase spacing between columns in <Table /> component.
+
 ## 1.1.0
 
 ### Minor Changes

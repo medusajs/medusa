@@ -99,6 +99,11 @@ export interface MedusaProviderProps {
    * @defaultValue `{}`
    */
   customHeaders?: Record<string, any>
+  /**
+   * An instance of the Medusa JS Client. If you don't provide an instance, one will be created using the `baseUrl`, `apiKey`, 
+   * `publishableApiKey`, `maxRetries`, and `customHeaders` props.
+   */
+  medusaClient?: Medusa
 }
 
 /**
@@ -144,14 +149,14 @@ export const MedusaProvider = ({
   customHeaders,
   maxRetries = 3,
   children,
-}: MedusaProviderProps) => {
-  const medusaClient = new Medusa({
+  medusaClient = new Medusa({
     baseUrl,
     maxRetries,
     apiKey,
     publishableApiKey,
     customHeaders,
-  })
+  }),
+}: MedusaProviderProps) => {
   return (
     <QueryClientProvider {...queryClientProviderProps}>
       <MedusaContext.Provider

@@ -214,8 +214,8 @@ describe("MoneyAmount Service", () => {
       expect(count).toEqual(3)
       expect(serialized).toEqual([
         {
-          id: "money-amount-USD",
-          amount: 500,
+          id: "money-amount-CAD",
+          amount: 600,
         },
       ])
     })
@@ -258,7 +258,7 @@ describe("MoneyAmount Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"moneyAmountId" must be defined')
+      expect(error.message).toEqual("moneyAmount - id must be defined")
     })
 
     it("should return moneyAmount based on config select param", async () => {

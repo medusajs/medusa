@@ -1,5 +1,29 @@
 # @medusajs/utils
 
+## 1.11.6
+
+### Patch Changes
+
+- [#6328](https://github.com/medusajs/medusa/pull/6328) [`3fd68d197`](https://github.com/medusajs/medusa/commit/3fd68d1979828e3cde6e028e9e6ab0d0fadcb77b) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(fulfillment): Initialize models work
+
+- Updated dependencies [[`3fd68d197`](https://github.com/medusajs/medusa/commit/3fd68d1979828e3cde6e028e9e6ab0d0fadcb77b)]:
+  - @medusajs/types@1.11.13
+
+## 1.11.5
+
+### Patch Changes
+
+- [#6319](https://github.com/medusajs/medusa/pull/6319) [`12054f5c0`](https://github.com/medusajs/medusa/commit/12054f5c01915899223ddc6da734151b31fbb23b) Thanks [@adrien2p](https://github.com/adrien2p)! - Feat/shipping method init
+
+- [#6263](https://github.com/medusajs/medusa/pull/6263) [`45134e4d1`](https://github.com/medusajs/medusa/commit/45134e4d11cfcdc08dbd10aae687bfbe9e848ab9) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Workflows passing MedusaContext as argument
+
+- [#6218](https://github.com/medusajs/medusa/pull/6218) [`884428a1b`](https://github.com/medusajs/medusa/commit/884428a1b573e499d7659aefed639bf797147428) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Feat: Event Aggregator
+
+- [#6314](https://github.com/medusajs/medusa/pull/6314) [`882aa549b`](https://github.com/medusajs/medusa/commit/882aa549bdcc6f378934eab2a7c485df354f46aa) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(utils): return array or single entity based on input for modules created by internal module service factory
+
+- Updated dependencies [[`12054f5c0`](https://github.com/medusajs/medusa/commit/12054f5c01915899223ddc6da734151b31fbb23b), [`3db2f95e65`](https://github.com/medusajs/medusa/commit/3db2f95e65909f4fff432990b48be74509052e83), [`96ba49329`](https://github.com/medusajs/medusa/commit/96ba49329b6b05922c90f0c55f16455cb40aa5ca), [`45134e4d1`](https://github.com/medusajs/medusa/commit/45134e4d11cfcdc08dbd10aae687bfbe9e848ab9), [`82c728bec`](https://github.com/medusajs/medusa/commit/82c728bec7232a245a67dca0b01b28572ebea75d), [`e749dd653`](https://github.com/medusajs/medusa/commit/e749dd653c755bfc3632b134d32c15ceaee0a852), [`884428a1b`](https://github.com/medusajs/medusa/commit/884428a1b573e499d7659aefed639bf797147428), [`d1c18a309`](https://github.com/medusajs/medusa/commit/d1c18a3090d71c68a98343fdbb53516f416504c5)]:
+  - @medusajs/types@1.11.12
+
 ## 1.11.4
 
 ### Patch Changes

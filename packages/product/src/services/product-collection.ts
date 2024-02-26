@@ -7,14 +7,7 @@ import {
 } from "@medusajs/utils"
 
 import { ProductCollection } from "@models"
-import {
-  IProductCollectionRepository,
-  ProductCollectionServiceTypes,
-} from "@types"
-import {
-  CreateProductCollection,
-  UpdateProductCollection,
-} from "../types/services/product-collection"
+import { ProductCollectionServiceTypes } from "@types"
 
 type InjectedDependencies = {
   productCollectionRepository: DAL.RepositoryService
@@ -22,15 +15,11 @@ type InjectedDependencies = {
 
 export default class ProductCollectionService<
   TEntity extends ProductCollection = ProductCollection
-> extends ModulesSdkUtils.abstractServiceFactory<
-  InjectedDependencies,
-  {
-    create: CreateProductCollection
-    update: UpdateProductCollection
-  }
->(ProductCollection)<TEntity> {
+> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+  ProductCollection
+)<TEntity> {
   // eslint-disable-next-line max-len
-  protected readonly productCollectionRepository_: IProductCollectionRepository<TEntity>
+  protected readonly productCollectionRepository_: DAL.RepositoryService<TEntity>
 
   constructor(container: InjectedDependencies) {
     super(container)
@@ -38,9 +27,9 @@ export default class ProductCollectionService<
   }
 
   @InjectManager("productCollectionRepository_")
-  async list<TEntityMethod = ProductTypes.ProductCollectionDTO>(
+  async list(
     filters: ProductTypes.FilterableProductCollectionProps = {},
-    config: FindConfig<TEntityMethod> = {},
+    config: FindConfig<TEntity> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return await this.productCollectionRepository_.find(
@@ -50,9 +39,9 @@ export default class ProductCollectionService<
   }
 
   @InjectManager("productCollectionRepository_")
-  async listAndCount<TEntityMethod = ProductTypes.ProductCollectionDTO>(
+  async listAndCount(
     filters: ProductTypes.FilterableProductCollectionProps = {},
-    config: FindConfig<TEntityMethod> = {},
+    config: FindConfig<TEntity> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     return await this.productCollectionRepository_.findAndCount(
@@ -61,11 +50,9 @@ export default class ProductCollectionService<
     )
   }
 
-  protected buildListQueryOptions<
-    TEntityMethod = ProductTypes.ProductCollectionDTO
-  >(
+  protected buildListQueryOptions(
     filters: ProductTypes.FilterableProductCollectionProps = {},
-    config: FindConfig<TEntityMethod> = {}
+    config: FindConfig<TEntity> = {}
   ): DAL.FindOptions<TEntity> {
     const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
 
@@ -80,12 +67,24 @@ export default class ProductCollectionService<
     return queryOptions
   }
 
+  create(
+    data: ProductCollectionServiceTypes.CreateProductCollection,
+    context?: Context
+  ): Promise<TEntity>
+  create(
+    data: ProductCollectionServiceTypes.CreateProductCollection[],
+    context?: Context
+  ): Promise<TEntity[]>
+
   @InjectTransactionManager("productCollectionRepository_")
   async create(
-    data: ProductCollectionServiceTypes.CreateProductCollection[],
+    data:
+      | ProductCollectionServiceTypes.CreateProductCollection
+      | ProductCollectionServiceTypes.CreateProductCollection[],
     context: Context = {}
-  ): Promise<TEntity[]> {
-    const productCollections = data.map((collectionData) => {
+  ): Promise<TEntity | TEntity[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+    const productCollections = data_.map((collectionData) => {
       if (collectionData.product_ids) {
         collectionData.products = collectionData.product_ids
 
@@ -98,12 +97,27 @@ export default class ProductCollectionService<
     return super.create(productCollections, context)
   }
 
-  @InjectTransactionManager("productCollectionRepository_")
-  async update(
+  // @ts-ignore
+  update(
+    data: ProductCollectionServiceTypes.UpdateProductCollection,
+    context?: Context
+  ): Promise<TEntity>
+  // @ts-ignore
+  update(
     data: ProductCollectionServiceTypes.UpdateProductCollection[],
+    context?: Context
+  ): Promise<TEntity[]>
+
+  @InjectTransactionManager("productCollectionRepository_")
+  // @ts-ignore Do not implement all the expected overloads, see if we must do it
+  async update(
+    data:
+      | ProductCollectionServiceTypes.UpdateProductCollection
+      | ProductCollectionServiceTypes.UpdateProductCollection[],
     context: Context = {}
-  ): Promise<TEntity[]> {
-    const productCollections = data.map((collectionData) => {
+  ): Promise<TEntity | TEntity[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+    const productCollections = data_.map((collectionData) => {
       if (collectionData.product_ids) {
         collectionData.products = collectionData.product_ids
 
