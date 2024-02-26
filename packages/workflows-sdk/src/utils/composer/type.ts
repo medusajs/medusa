@@ -10,6 +10,15 @@ import { Context, MedusaContainer } from "@medusajs/types"
 export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
   (this: CreateWorkflowComposerContext) => WorkflowData<TOutput>
 
+type StepFunctionReturnConfig<TOutput> = {
+  config(
+    config: { name?: string } & Omit<
+      TransactionStepsDefinition,
+      "next" | "uuid" | "action"
+    >
+  ): WorkflowData<TOutput>
+}
+
 /**
  * A step function to be used in a workflow.
  *
@@ -19,16 +28,17 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
 export type StepFunction<TInput, TOutput = unknown> = (keyof TInput extends []
   ? // Function that doesn't expect any input
     {
-      (): WorkflowData<TOutput>
+      (): WorkflowData<TOutput> & StepFunctionReturnConfig<TOutput>
     }
   : // function that expects an input object
     {
-      (input: WorkflowData<TInput> | TInput): WorkflowData<TOutput>
+      (input: WorkflowData<TInput> | TInput): WorkflowData<TOutput> &
+        StepFunctionReturnConfig<TOutput>
     }) &
   WorkflowDataProperties<TOutput>
 
 export type WorkflowDataProperties<T = unknown> = {
-  __type: Symbol
+  __type: string
   __step__: string
 }
 
@@ -37,9 +47,11 @@ export type WorkflowDataProperties<T = unknown> = {
  *
  * @typeParam T - The type of a step's input or result.
  */
-export type WorkflowData<T = unknown> = (T extends object
+export type WorkflowData<T = unknown> = (T extends Array<infer Item>
+  ? Array<Item | WorkflowData<Item>>
+  : T extends object
   ? {
-      [Key in keyof T]: WorkflowData<T[Key]>
+      [Key in keyof T]: T[Key] | WorkflowData<T[Key]>
     }
   : T & WorkflowDataProperties<T>) &
   T &
