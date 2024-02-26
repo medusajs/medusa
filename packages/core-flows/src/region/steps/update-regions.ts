@@ -2,14 +2,14 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FilterableRegionProps,
   IRegionModuleService,
-  UpdatableRegionFields,
+  UpdateRegionDTO,
 } from "@medusajs/types"
 import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type UpdateRegionsStepInput = {
   selector: FilterableRegionProps
-  update: UpdatableRegionFields
+  update: UpdateRegionDTO
 }
 
 export const updateRegionsStepId = "update-region"
@@ -42,7 +42,7 @@ export const updateRegionsStep = createStep(
       ModuleRegistrationName.REGION
     )
 
-    await service.update(
+    await service.upsert(
       prevData.map((r) => ({
         id: r.id,
         name: r.name,

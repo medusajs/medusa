@@ -34,6 +34,9 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 
+/**
+ * The main service interface for the product module.
+ */
 export interface IProductModuleService extends IModuleService {
   /**
    * This method is used to retrieve a product by its ID

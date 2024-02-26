@@ -7986,7 +7986,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/api-key@workspace:packages/api-key":
+"@medusajs/api-key@workspace:^, @medusajs/api-key@workspace:packages/api-key":
   version: 0.0.0-use.local
   resolution: "@medusajs/api-key@workspace:packages/api-key"
   dependencies:
@@ -31993,6 +31993,7 @@ __metadata:
     "@babel/cli": ^7.12.10
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
+    "@medusajs/api-key": "workspace:^"
     "@medusajs/auth": "workspace:*"
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/customer": "workspace:^"

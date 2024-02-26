@@ -23,7 +23,8 @@
       "@models": ["./src/models"],
       "@services": ["./src/services"],
       "@repositories": ["./src/repositories"],
-      "@types": ["./src/types"]
+      "@types": ["./src/types"],
+      "@utils": ["./src/utils"]
     }
   },
   "include": ["src"],

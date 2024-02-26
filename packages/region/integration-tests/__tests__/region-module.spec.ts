@@ -167,6 +167,68 @@ describe("Region Module Service", () => {
     )
   })
 
+  it("should upsert the region successfully", async () => {
+    const createdRegion = await service.upsert({
+      name: "North America",
+      currency_code: "USD",
+      countries: ["us", "ca"],
+    })
+
+    await service.upsert({
+      id: createdRegion.id,
+      name: "Americas",
+      currency_code: "MXN",
+      countries: ["us", "mx"],
+    })
+
+    const latestRegion = await service.retrieve(createdRegion.id, {
+      relations: ["currency", "countries"],
+    })
+
+    expect(latestRegion).toMatchObject({
+      id: createdRegion.id,
+      name: "Americas",
+      currency_code: "mxn",
+    })
+    expect(latestRegion.countries.map((c) => c.iso_2)).toEqual(["mx", "us"])
+  })
+
+  it("should allow mixing create and update operations in upsert", async () => {
+    const createdRegion = await service.upsert({
+      name: "North America",
+      currency_code: "USD",
+      countries: ["us", "ca"],
+    })
+
+    const upserted = await service.upsert([
+      {
+        id: createdRegion.id,
+        name: "Americas",
+        currency_code: "USD",
+        countries: ["us", "ca"],
+      },
+      {
+        name: "Central America",
+        currency_code: "MXN",
+        countries: ["mx"],
+      },
+    ])
+
+    expect(upserted).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: createdRegion.id,
+          name: "Americas",
+          currency_code: "usd",
+        }),
+        expect.objectContaining({
+          name: "Central America",
+          currency_code: "mxn",
+        }),
+      ])
+    )
+  })
+
   it("should update the region successfully", async () => {
     const createdRegion = await service.create({
       name: "North America",
