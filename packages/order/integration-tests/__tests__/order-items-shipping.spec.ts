@@ -17,7 +17,7 @@ moduleIntegrationTestRunner({
                 email: "test@email.com",
               } as any,
             ])
-            .catch((e) => (console.log(e), e))
+            .catch((e) => e)
 
           expect(error.message).toContain(
             "Value for Order.currency_code is required, 'undefined' found"
