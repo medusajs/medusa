@@ -223,24 +223,18 @@ export default class TaxModuleService<
     calculationContext: TaxTypes.TaxCalculationContext,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<(TaxTypes.ItemTaxLineDTO | TaxTypes.ShippingTaxLineDTO)[]> {
+    const normalizedContext =
+      this.normalizeTaxCalculationContext(calculationContext)
     const regions = await this.taxRegionService_.list(
       {
         $or: [
           {
-            country_code: this.normalizeRegionCodes(
-              calculationContext.address.country_code
-            ),
+            country_code: normalizedContext.address.country_code,
             province_code: null,
           },
           {
-            country_code: this.normalizeRegionCodes(
-              calculationContext.address.country_code
-            ),
-            province_code: calculationContext.address.province_code
-              ? this.normalizeRegionCodes(
-                  calculationContext.address.province_code
-                )
-              : null,
+            country_code: normalizedContext.address.country_code,
+            province_code: normalizedContext.address.province_code,
           },
         ],
       },
@@ -267,36 +261,54 @@ export default class TaxModuleService<
     return toReturn.flat()
   }
 
+  private normalizeTaxCalculationContext(
+    context: TaxTypes.TaxCalculationContext
+  ): TaxTypes.TaxCalculationContext {
+    return {
+      ...context,
+      address: {
+        ...context.address,
+        country_code: this.normalizeRegionCodes(context.address.country_code),
+        province_code: context.address.province_code
+          ? this.normalizeRegionCodes(context.address.province_code)
+          : null,
+      },
+    }
+  }
+
   private prepareTaxRegionInputForCreate(
     data: TaxTypes.CreateTaxRegionDTO | TaxTypes.CreateTaxRegionDTO[]
   ) {
-    const input = Array.isArray(data) ? data : [data]
-    return input.reduce(
-      (acc, region) => {
-        const { default_tax_rate, ...rest } = region
-        if (!default_tax_rate) {
-          acc[0].push(null)
-        } else {
-          acc[0].push({
-            ...default_tax_rate,
-            is_default: true,
-            created_by: region.created_by,
-          })
-        }
-        acc[1].push({
-          ...rest,
-          province_code: rest.province_code
-            ? this.normalizeRegionCodes(rest.province_code)
-            : null,
-          country_code: this.normalizeRegionCodes(rest.country_code),
+    const regionsWithDefaultRate = Array.isArray(data) ? data : [data]
+
+    const defaultRates: (Omit<
+      TaxTypes.CreateTaxRateDTO,
+      "tax_region_id"
+    > | null)[] = []
+    const regionData: TaxTypes.CreateTaxRegionDTO[] = []
+
+    for (const region of regionsWithDefaultRate) {
+      const { default_tax_rate, ...rest } = region
+      if (!default_tax_rate) {
+        defaultRates.push(null)
+      } else {
+        defaultRates.push({
+          ...default_tax_rate,
+          is_default: true,
+          created_by: region.created_by,
         })
-        return acc
-      },
-      [[], []] as [
-        (Omit<TaxTypes.CreateTaxRateDTO, "tax_region_id"> | null)[],
-        TaxTypes.CreateTaxRegionDTO[]
-      ]
-    )
+      }
+
+      regionData.push({
+        ...rest,
+        province_code: rest.province_code
+          ? this.normalizeRegionCodes(rest.province_code)
+          : null,
+        country_code: this.normalizeRegionCodes(rest.country_code),
+      })
+    }
+
+    return [defaultRates, regionData]
   }
 
   private async verifyProvinceToCountryMatch(
