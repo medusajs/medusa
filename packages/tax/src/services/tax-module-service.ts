@@ -11,7 +11,9 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
   ModulesSdkUtils,
+  isDefined,
   promiseAll,
 } from "@medusajs/utils"
 import { TaxRate, TaxRegion, TaxRateRule } from "@models"
@@ -86,11 +88,7 @@ export default class TaxModuleService<
   ): Promise<TaxTypes.TaxRateDTO[] | TaxTypes.TaxRateDTO> {
     const input = Array.isArray(data) ? data : [data]
     const rates = await this.create_(input, sharedContext)
-    const result = await this.baseRepository_.serialize<TaxTypes.TaxRateDTO>(
-      rates,
-      { populate: true }
-    )
-    return Array.isArray(data) ? result : result[0]
+    return Array.isArray(data) ? rates : rates[0]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -98,28 +96,80 @@ export default class TaxModuleService<
     data: TaxTypes.CreateTaxRateDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    return await this.taxRateService_.create(data, sharedContext)
-  }
-
-  @InjectManager("baseRepository_")
-  async createTaxRegions(
-    data: TaxTypes.CreateTaxRegionDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TaxTypes.TaxRegionDTO[]> {
-    // TODO: check that country_code === parent.country_code
-    const [defaultRates, regionData] = data.reduce(
+    const [rules, rateData] = data.reduce(
       (acc, region) => {
-        const { default_tax_rate, ...rest } = region
-        acc[0].push({
-          ...default_tax_rate,
-          is_default: true,
-          created_by: region.created_by,
-        })
+        const { rules, ...rest } = region
+        acc[0].push(rules)
         acc[1].push(rest)
         return acc
       },
       [[], []] as [
-        Omit<TaxTypes.CreateTaxRateDTO, "tax_region_id">[],
+        (Omit<TaxTypes.CreateTaxRateRuleDTO, "tax_rate_id">[] | undefined)[],
+        Partial<TaxTypes.CreateTaxRegionDTO>[]
+      ]
+    )
+
+    const rates = await this.taxRateService_.create(rateData, sharedContext)
+    const rulesToCreate = rates
+      .reduce((acc, rate, i) => {
+        const rateRules = rules[i]
+        if (isDefined(rateRules)) {
+          acc.push(
+            rateRules.map((r) => {
+              return {
+                ...r,
+                tax_rate_id: rate.id,
+              }
+            })
+          )
+        }
+        return acc
+      }, [] as TaxTypes.CreateTaxRateRuleDTO[][])
+      .flat()
+
+    if (rulesToCreate.length > 0) {
+      await this.taxRateRuleService_.create(rulesToCreate, sharedContext)
+    }
+
+    return await this.baseRepository_.serialize<TaxTypes.TaxRateDTO>(rates, {
+      populate: true,
+    })
+  }
+
+  createTaxRegions(
+    data: TaxTypes.CreateTaxRegionDTO,
+    sharedContext?: Context
+  ): Promise<TaxRegionDTO>
+
+  createTaxRegions(
+    data: TaxTypes.CreateTaxRegionDTO[],
+    sharedContext?: Context
+  ): Promise<TaxRegionDTO[]>
+
+  @InjectManager("baseRepository_")
+  async createTaxRegions(
+    data: TaxTypes.CreateTaxRegionDTO | TaxTypes.CreateTaxRegionDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const input = Array.isArray(data) ? data : [data]
+    await this.verifyProvinceToCountryMatch(input, sharedContext)
+    const [defaultRates, regionData] = input.reduce(
+      (acc, region) => {
+        const { default_tax_rate, ...rest } = region
+        if (!default_tax_rate) {
+          acc[0].push(null)
+        } else {
+          acc[0].push({
+            ...default_tax_rate,
+            is_default: true,
+            created_by: region.created_by,
+          })
+        }
+        acc[1].push(rest)
+        return acc
+      },
+      [[], []] as [
+        (Omit<TaxTypes.CreateTaxRateDTO, "tax_region_id"> | null)[],
         Partial<TaxTypes.CreateTaxRegionDTO>[]
       ]
     )
@@ -129,35 +179,53 @@ export default class TaxModuleService<
       sharedContext
     )
 
-    const rates = regions.map((region: TaxRegionDTO, i: number) => {
-      return {
-        ...defaultRates[i],
-        tax_region_id: region.id,
-      }
+    const rates = regions
+      .map((region, i) => {
+        if (!defaultRates[i]) {
+          return false
+        }
+        return {
+          ...defaultRates[i],
+          tax_region_id: region.id,
+        }
+      })
+      .filter(Boolean) as TaxTypes.CreateTaxRateDTO[]
+
+    if (rates.length !== 0) {
+      await this.create(rates, sharedContext)
+    }
+
+    const result = await this.baseRepository_.serialize<
+      TaxTypes.TaxRegionDTO[]
+    >(regions, {
+      populate: true,
     })
 
-    await this.create(rates, sharedContext)
-
-    return await this.baseRepository_.serialize<TaxTypes.TaxRegionDTO[]>(
-      regions,
-      {
-        populate: true,
-      }
-    )
+    return Array.isArray(data) ? result : result[0]
   }
+
+  createTaxRateRules(
+    data: TaxTypes.CreateTaxRateRuleDTO,
+    sharedContext?: Context
+  ): Promise<TaxTypes.TaxRateRuleDTO>
+  createTaxRateRules(
+    data: TaxTypes.CreateTaxRateRuleDTO[],
+    sharedContext?: Context
+  ): Promise<TaxTypes.TaxRateRuleDTO[]>
 
   @InjectManager("baseRepository_")
   async createTaxRateRules(
-    data: TaxTypes.CreateTaxRateRuleDTO[],
+    data: TaxTypes.CreateTaxRateRuleDTO | TaxTypes.CreateTaxRateRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TaxTypes.TaxRateRuleDTO[]> {
-    const rules = await this.taxRateRuleService_.create(data, sharedContext)
+  ) {
+    const input = Array.isArray(data) ? data : [data]
+    const rules = await this.taxRateRuleService_.create(input, sharedContext)
     const result = await this.baseRepository_.serialize<
       TaxTypes.TaxRateRuleDTO[]
     >(rules, {
       populate: true,
     })
-    return result
+    return Array.isArray(data) ? result : result[0]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -208,6 +276,41 @@ export default class TaxModuleService<
     )
 
     return toReturn.flat()
+  }
+
+  private async verifyProvinceToCountryMatch(
+    regionsToVerify: TaxTypes.CreateTaxRegionDTO[],
+    sharedContext: Context = {}
+  ) {
+    const parentIds = regionsToVerify.map((i) => i.parent_id).filter(isDefined)
+    if (parentIds.length > 0) {
+      const parentRegions = await this.taxRegionService_.list(
+        { id: { $in: parentIds } },
+        { select: ["id", "country_code"] },
+        sharedContext
+      )
+
+      for (const region of regionsToVerify) {
+        if (isDefined(region.parent_id)) {
+          const parentRegion = parentRegions.find(
+            (r) => r.id === region.parent_id
+          )
+          if (!isDefined(parentRegion)) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Province region must belong to a parent region. You are trying to create a province region with (country: ${region.country_code}, province: ${region.province_code}) but parent does not exist`
+            )
+          }
+
+          if (parentRegion.country_code !== region.country_code) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Province region must belong to a parent region with the same country code. You are trying to create a province region with (country: ${region.country_code}, province: ${region.province_code}) but parent expects (country: ${parentRegion.country_code})`
+            )
+          }
+        }
+      }
+    }
   }
 
   private async getTaxRatesForItem(
