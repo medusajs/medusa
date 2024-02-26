@@ -19,35 +19,35 @@ describe("isContextValidForRules", () => {
     value: "wrongValue",
   }
 
-  it("returns true when all rules are valid and atLeastOneValidRule is false", () => {
+  it("returns true when all rules are valid", () => {
     const rules = [validRule, validRule]
     expect(isContextValid(context, rules)).toBe(true)
   })
 
-  it("returns true when all rules are valid and atLeastOneValidRule is true", () => {
+  it("returns true when some rules are valid", () => {
     const rules = [validRule, validRule]
-    const options = { atLeastOneValidRule: true }
+    const options = { someAreValid: true }
     expect(isContextValid(context, rules, options)).toBe(true)
   })
 
-  it("returns true when some rules are valid and atLeastOneValidRule is true", () => {
+  it("returns true when some rules are valid and someAreValid is true", () => {
     const rules = [validRule, invalidRule]
-    const options = { atLeastOneValidRule: true }
+    const options = { someAreValid: true }
     expect(isContextValid(context, rules, options)).toBe(true)
   })
 
-  it("returns false when some rules are valid and atLeastOneValidRule is false", () => {
+  it("returns false when some rules are valid", () => {
     const rules = [validRule, invalidRule]
     expect(isContextValid(context, rules)).toBe(false)
   })
 
-  it("returns false when no rules are valid and atLeastOneValidRule is true", () => {
+  it("returns false when no rules are valid and someAreValid is true", () => {
     const rules = [invalidRule, invalidRule]
-    const options = { atLeastOneValidRule: true }
+    const options = { someAreValid: true }
     expect(isContextValid(context, rules, options)).toBe(false)
   })
 
-  it("returns false when no rules are valid and atLeastOneValidRule is false", () => {
+  it("returns false when no rules are valid", () => {
     const rules = [invalidRule, invalidRule]
     expect(isContextValid(context, rules)).toBe(false)
   })
