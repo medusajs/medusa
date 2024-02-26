@@ -37,6 +37,8 @@ export interface FilterableShippingOptionProps
   extends BaseFilterable<FilterableShippingOptionProps> {
   id?: string | string[] | OperatorMap<string | string[]>
   name?: string | string[] | OperatorMap<string | string[]>
+  fulfillment_set_id?: string | string[] | OperatorMap<string | string[]>
+  fulfillment_set_type?: string | string[] | OperatorMap<string | string[]>
   price_type?:
     | ShippingOptionPriceType
     | ShippingOptionPriceType[]
@@ -44,4 +46,5 @@ export interface FilterableShippingOptionProps
   service_zone?: FilterableServiceZoneProps
   shipping_option_type?: FilterableShippingOptionTypeProps
   rules?: FilterableShippingOptionRuleProps
+  context?: Record<string, unknown>
 }
