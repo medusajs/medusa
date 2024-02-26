@@ -206,7 +206,7 @@ export interface CartShippingMethodDTO {
   /**
    * The price of the shipping method
    */
-  unit_price: number
+  amount: number
 
   /**
    * Whether the shipping method price is tax inclusive or not

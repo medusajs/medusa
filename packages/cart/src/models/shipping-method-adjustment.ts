@@ -20,7 +20,7 @@ import ShippingMethod from "./shipping-method"
 export default class ShippingMethodAdjustment extends AdjustmentLine {
   @ManyToOne({
     entity: () => ShippingMethod,
-    cascade: [Cascade.REMOVE, Cascade.PERSIST, "soft-remove"] as any,
+    cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
   shipping_method: ShippingMethod
 

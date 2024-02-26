@@ -4,10 +4,12 @@ import {
   ComputedActions,
   MedusaError,
   PromotionType,
+  isPresent,
 } from "@medusajs/utils"
 import { areRulesValidForContext } from "../validations"
 import { computeActionForBudgetExceeded } from "./usage"
 
+// TODO: calculations should eventually move to a totals util outside of the module
 export function getComputedActionsForBuyGet(
   promotion: PromotionTypes.PromotionDTO,
   itemsContext: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.ITEMS],
@@ -45,6 +47,7 @@ export function getComputedActionsForBuyGet(
 
   const validItemsForTargetRules = itemsContext
     .filter((item) => areRulesValidForContext(targetRules, item))
+    .filter((item) => isPresent(item.subtotal) && isPresent(item.quantity))
     .sort((a, b) => {
       const aPrice = a.subtotal / a.quantity
       const bPrice = b.subtotal / b.quantity
@@ -55,7 +58,7 @@ export function getComputedActionsForBuyGet(
   let remainingQtyToApply = applyToQuantity
 
   for (const method of validItemsForTargetRules) {
-    const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
+    const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
     const multiplier = Math.min(method.quantity, remainingQtyToApply)
     const amount = (method.subtotal / method.quantity) * multiplier
     const newRemainingQtyToApply = remainingQtyToApply - multiplier
