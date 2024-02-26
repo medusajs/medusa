@@ -12,6 +12,7 @@ import { authRoutesMiddlewares } from "./auth/middlewares"
 import { storeCartRoutesMiddlewares } from "./store/carts/middlewares"
 import { storeCustomerRoutesMiddlewares } from "./store/customers/middlewares"
 import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
+import { hooksRoutesMiddlewares } from "./hooks/middlewares"
 
 export const config: MiddlewaresConfig = {
   routes: [
@@ -29,5 +30,6 @@ export const config: MiddlewaresConfig = {
     ...adminUserRoutesMiddlewares,
     ...adminInviteRoutesMiddlewares,
     ...adminApiKeyRoutesMiddlewares,
+    ...hooksRoutesMiddlewares,
   ],
 }
