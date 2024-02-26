@@ -41,4 +41,8 @@ export interface AdminGetDiscountsParams {
    * Comma-separated relations that should be expanded in each returned discount.
    */
   expand?: string
+  /**
+   * A discount field to sort-order the retrieved products by.
+   */
+  order?: string
 }

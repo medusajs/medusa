@@ -16,13 +16,15 @@ export const useDiscountTableQuery = ({
     prefix
   )
 
-  const { offset, q, is_dynamic, is_disabled } = queryObject
+  const { offset, order, q, is_dynamic, is_disabled } = queryObject
 
+  console.log(order)
   const searchParams: AdminGetDiscountsParams = {
     limit: pageSize,
     is_disabled: is_disabled ? is_disabled === "true" : undefined,
     is_dynamic: is_dynamic ? is_dynamic === "true" : undefined,
     offset: offset ? Number(offset) : 0,
+    order,
     q,
   }
 

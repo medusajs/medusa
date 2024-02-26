@@ -39,6 +39,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *   - (query) limit=20 {number} The number of discounts to return
  *   - (query) offset=0 {number} The number of discounts to skip when retrieving the discounts.
  *   - (query) expand {string} Comma-separated relations that should be expanded in each returned discount.
+ *   - (query) order {string} A discount field to sort-order the retrieved products by.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetDiscountsParams
@@ -167,4 +168,11 @@ export class AdminGetDiscountsParams extends extendedFindParamsMixin({
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value))
   is_disabled?: boolean
+
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
+  @IsString()
+  @IsOptional()
+  order?: string
 }

@@ -70,6 +70,7 @@ export const DiscountListTable = () => {
         isLoading={isLoading}
         queryObject={raw}
         navigateTo={(row) => `${row.original.id}`}
+        orderBy={["code", "created_at", "updated_at"]}
       />
       <Outlet />
     </Container>
