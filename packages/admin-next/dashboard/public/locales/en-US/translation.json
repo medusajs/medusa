@@ -247,12 +247,16 @@
     "domain": "Regions",
     "createRegion": "Create Region",
     "createRegionHint": "Manage tax rates and providers for a set of countries.",
+    "addCountries": "Add countries",
     "editRegion": "Edit Region",
     "deleteRegionWarning": "You are about to delete the region {{name}}. This action cannot be undone.",
+    "removeCountriesWarning_one": "You are about to remove {{count}} country from the region. This action cannot be undone.",
+    "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
+    "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
     "taxInclusiveHint": "When enabled all prices in the region will be tax inclusive.",
-    "providersHint": "The providers that are available in the region.",
+    "providersHint": " Add which fulfillment and payment providers should be available in this region.",
     "shippingOptions": "Shipping Options",
-    "returnShippingOptions": "Return Shipping Options",
+    "deleteShippingOptionWarning": "You are about to delete the shipping option {{name}}. This action cannot be undone.",
     "return": "Return",
     "outbound": "Outbound",
     "priceType": "Price Type",
@@ -418,6 +422,8 @@
     "material": "Material",
     "thumbnail": "Thumbnail",
     "sku": "SKU",
-    "managedInventory": "Managed inventory"
+    "managedInventory": "Managed inventory",
+    "minSubtotal": "Min. Subtotal",
+    "maxSubtotal": "Max. Subtotal"
   }
 }

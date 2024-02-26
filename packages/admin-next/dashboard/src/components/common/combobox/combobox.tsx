@@ -149,7 +149,7 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
                 )}
                 <PrimitiveCombobox
                   ref={comboboxRef}
-                  className="txt-compact-small text-ui-fg-base placeholder:text-ui-fg-subtle size-full bg-transparent outline-none"
+                  className="txt-compact-small text-ui-fg-base placeholder:text-ui-fg-subtle size-full cursor-pointer bg-transparent outline-none focus:cursor-text"
                   placeholder={
                     hidePlaceholder
                       ? undefined
@@ -167,59 +167,63 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
               </button>
             </div>
           </Popover.Anchor>
-          <Popover.Content
-            asChild
-            sideOffset={8}
-            onOpenAutoFocus={(event) => event.preventDefault()}
-            onInteractOutside={(event) => {
-              const target = event.target as Element | null
-              const isCombobox = target === comboboxRef.current
-              const inListbox = target && listboxRef.current?.contains(target)
+          <Popover.Portal>
+            <Popover.Content
+              asChild
+              align="center"
+              side="bottom"
+              sideOffset={8}
+              onOpenAutoFocus={(event) => event.preventDefault()}
+              onInteractOutside={(event) => {
+                const target = event.target as Element | null
+                const isCombobox = target === comboboxRef.current
+                const inListbox = target && listboxRef.current?.contains(target)
 
-              if (isCombobox || inListbox) {
-                event.preventDefault()
-              }
-            }}
-          >
-            <PrimitiveComboboxList
-              ref={listboxRef}
-              role="listbox"
-              className={clx(
-                "shadow-elevation-flyout bg-ui-bg-base w-[var(--radix-popper-anchor-width)] rounded-[8px] p-1",
-                "max-h-[200px] overflow-y-auto",
-                "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
-                "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
-                "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
-              )}
+                if (isCombobox || inListbox) {
+                  event.preventDefault()
+                }
+              }}
             >
-              {matches.map(({ value, label }) => (
-                <PrimitiveComboboxItem
-                  key={value}
-                  value={value}
-                  focusOnHover
-                  className="transition-fg bg-ui-bg-base data-[active-item=true]:bg-ui-bg-base-hover group flex items-center gap-x-2 rounded-[4px] px-2 py-1.5"
-                >
-                  <PrimitiveComboboxItemCheck className="flex !size-5 items-center justify-center">
-                    <EllipseMiniSolid />
-                  </PrimitiveComboboxItemCheck>
-                  <PrimitiveComboboxItemValue className="txt-compact-small group-aria-selected:txt-compact-small-plus">
-                    {label}
-                  </PrimitiveComboboxItemValue>
-                </PrimitiveComboboxItem>
-              ))}
-              {!matches.length && (
-                <div className="flex items-center gap-x-2 rounded-[4px] px-2 py-1.5">
-                  <Text
-                    size="small"
-                    leading="compact"
-                    className="text-ui-fg-subtle"
+              <PrimitiveComboboxList
+                ref={listboxRef}
+                role="listbox"
+                className={clx(
+                  "shadow-elevation-flyout bg-ui-bg-base w-[var(--radix-popper-anchor-width)] rounded-[8px] p-1",
+                  "max-h-[200px] overflow-y-auto",
+                  "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
+                  "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+                  "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+                )}
+              >
+                {matches.map(({ value, label }) => (
+                  <PrimitiveComboboxItem
+                    key={value}
+                    value={value}
+                    focusOnHover
+                    className="transition-fg bg-ui-bg-base data-[active-item=true]:bg-ui-bg-base-hover group flex items-center gap-x-2 rounded-[4px] px-2 py-1.5"
                   >
-                    {t("general.noResultsTitle")}
-                  </Text>
-                </div>
-              )}
-            </PrimitiveComboboxList>
-          </Popover.Content>
+                    <PrimitiveComboboxItemCheck className="flex !size-5 items-center justify-center">
+                      <EllipseMiniSolid />
+                    </PrimitiveComboboxItemCheck>
+                    <PrimitiveComboboxItemValue className="txt-compact-small group-aria-selected:txt-compact-small-plus">
+                      {label}
+                    </PrimitiveComboboxItemValue>
+                  </PrimitiveComboboxItem>
+                ))}
+                {!matches.length && (
+                  <div className="flex items-center gap-x-2 rounded-[4px] px-2 py-1.5">
+                    <Text
+                      size="small"
+                      leading="compact"
+                      className="text-ui-fg-subtle"
+                    >
+                      {t("general.noResultsTitle")}
+                    </Text>
+                  </div>
+                )}
+              </PrimitiveComboboxList>
+            </Popover.Content>
+          </Popover.Portal>
         </PrimitiveComboboxProvider>
       </Popover.Root>
     )

@@ -1,6 +1,7 @@
 import { FulfillmentProvider } from "@medusajs/medusa"
 import { Tooltip } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+import { formatProvider } from "../../../../../lib/format-provider"
 import { PlaceholderCell } from "../../common/placeholder-cell"
 
 type FulfillmentProvidersCellProps = {
@@ -18,7 +19,7 @@ export const FulfillmentProvidersCell = ({
 
   const displayValue = fulfillmentProviders
     .slice(0, 2)
-    .map((p) => p.id)
+    .map((p) => formatProvider(p.id))
     .join(", ")
 
   const additionalProviders = fulfillmentProviders.slice(2).map((c) => c.id)
