@@ -124,6 +124,18 @@ export default class FulfillmentModuleService<
     let { fulfillment_set_id, fulfillment_set_type, context, ...where } =
       filters
 
+    const normalizedConfig = { ...config }
+    normalizedConfig.relations = [
+      "rules",
+      "type",
+      "shipping_profile",
+      "service_provider",
+      ...(normalizedConfig.relations ?? []),
+    ]
+    // The assumption is that there won't be an infinite amount of shipping options. So if a context filtering needs to be applied we can retrieve them all.
+    normalizedConfig.take =
+      normalizedConfig.take ?? (context ? null : undefined)
+
     let normalizedFilters = { ...where } as FilterQuery
 
     const fulfillmentSetConstraints = {}
@@ -143,20 +155,11 @@ export default class FulfillmentModuleService<
           fulfillment_set: fulfillmentSetConstraints,
         },
       }
+
+      normalizedConfig.relations.push("service_zone.fulfillment_set")
     }
 
-    const normalizedConfig = { ...config }
-    normalizedConfig.relations = [
-      "rules",
-      "type",
-      "shipping_profile",
-      "service_provider",
-      "service_zone.fulfillment_set",
-      ...(normalizedConfig.relations ?? []),
-    ]
-    // The assumption is that there won't be an infinite amount of shipping options. So if a context filtering needs to be applied we can retrieve them all.
-    normalizedConfig.take =
-      normalizedConfig.take ?? (context ? null : undefined)
+    normalizedConfig.relations = Array.from(new Set(normalizedConfig.relations))
 
     return {
       filters: normalizedFilters,
