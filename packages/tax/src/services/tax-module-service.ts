@@ -151,7 +151,8 @@ export default class TaxModuleService<
     data: TaxTypes.CreateTaxRegionDTO | TaxTypes.CreateTaxRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const [defaultRates, regionData] = this.prepareTaxRegionInputForCreate(data)
+    const { defaultRates, regionData } =
+      this.prepareTaxRegionInputForCreate(data)
 
     await this.verifyProvinceToCountryMatch(regionData, sharedContext)
 
@@ -308,7 +309,7 @@ export default class TaxModuleService<
       })
     }
 
-    return [defaultRates, regionData]
+    return { defaultRates, regionData }
   }
 
   private async verifyProvinceToCountryMatch(
