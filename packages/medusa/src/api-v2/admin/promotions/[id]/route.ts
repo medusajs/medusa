@@ -10,6 +10,8 @@ import {
 import { AdminPostPromotionsPromotionReq } from "../validators"
 import { IPromotionModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { UpdateApplicationMethodDTO } from "@medusajs/types"
+import { UpdatePromotionDTO } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -37,7 +39,7 @@ export const POST = async (
       id: req.params.id,
       ...req.validatedBody,
     },
-  ]
+  ] as UpdatePromotionDTO[]
 
   const { result, errors } = await updatePromotions.run({
     input: { promotionsData },

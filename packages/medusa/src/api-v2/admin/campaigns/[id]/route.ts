@@ -11,6 +11,7 @@ import {
 import { AdminPostCampaignsReq } from "../validators"
 import { IPromotionModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { UpdateCampaignDTO } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -41,7 +42,7 @@ export const POST = async (
       id: req.params.id,
       ...req.validatedBody,
     },
-  ]
+  ] as UpdateCampaignDTO[]
 
   const { result, errors } = await updateCampaigns.run({
     input: { campaignsData },

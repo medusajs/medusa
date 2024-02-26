@@ -1,8 +1,13 @@
 import { AuthUserDTO, IUserModuleService } from "@medusajs/types"
-import { MedusaRequest, MedusaResponse } from "../types/routing"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaRequest,
+  MedusaResponse,
+} from "../types/routing"
 import { NextFunction, RequestHandler } from "express"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
+import { StringChain } from "lodash"
 import { stringEqualsOrRegexMatch } from "@medusajs/utils"
 
 const SESSION_AUTH = "session"
@@ -82,8 +87,8 @@ export const authenticate = (
       authUser &&
       (isRegistered || (!isRegistered && options.allowUnregistered))
     ) {
-      req.auth = {
-        actor_id: getActorId(authUser, authScope) as string,
+      ;(req as AuthenticatedMedusaRequest).auth = {
+        actor_id: getActorId(authUser, authScope) as string, // TODO: fix types for auth_users not in the medusa system
         auth_user_id: authUser.id,
         app_metadata: authUser.app_metadata,
         scope: authUser.scope,
@@ -99,11 +104,17 @@ export const authenticate = (
   }
 }
 
-const getActorId = (authUser: AuthUserDTO, scope: string | RegExp) => {
+const getActorId = (
+  authUser: AuthUserDTO,
+  scope: string | RegExp
+): string | undefined => {
   if (stringEqualsOrRegexMatch(scope, "admin")) {
-    return authUser.app_metadata.user_id
-  } else if (stringEqualsOrRegexMatch(scope, "store")) {
-    return authUser.app_metadata.customer_id
+    return authUser.app_metadata.user_id as string
   }
-  return authUser.app_metadata.medusa_id
+
+  if (stringEqualsOrRegexMatch(scope, "store")) {
+    return authUser.app_metadata.customer_id as string
+  }
+
+  return undefined
 }
