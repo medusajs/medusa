@@ -138,9 +138,9 @@ export default class FulfillmentModuleService<
 
     let normalizedFilters = { ...where } as FilterQuery
 
-    const fulfillmentSetConstraints = {}
-
     if (fulfillment_set_id || fulfillment_set_type) {
+      const fulfillmentSetConstraints = {}
+
       if (fulfillment_set_id) {
         fulfillmentSetConstraints["id"] = fulfillment_set_id
       }
