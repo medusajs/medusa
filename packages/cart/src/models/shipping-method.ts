@@ -2,6 +2,7 @@ import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
   DALUtils,
+  MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
@@ -19,7 +20,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { BeforeUpdate } from "typeorm"
 import Cart from "./cart"
 import ShippingMethodAdjustment from "./shipping-method-adjustment"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"
@@ -49,7 +49,7 @@ export default class ShippingMethod {
 
   @ManyToOne({
     entity: () => Cart,
-    cascade: [Cascade.REMOVE, Cascade.PERSIST, "soft-remove"] as any,
+    cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
   cart: Cart
 
@@ -59,7 +59,7 @@ export default class ShippingMethod {
   @Property({ columnType: "jsonb", nullable: true })
   description: string | null = null
 
-  @Property({ columnType: "numeric" })
+  @MikroOrmBigNumberProperty()
   amount: BigNumber | number
 
   @Property({ columnType: "jsonb" })
@@ -127,28 +127,10 @@ export default class ShippingMethod {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "casm")
-
-    const val = new BigNumber(this.raw_amount ?? this.amount)
-
-    this.amount = val.numeric
-    this.raw_amount = val.raw!
-  }
-
-  @BeforeUpdate()
-  onUpdate() {
-    const val = new BigNumber(this.raw_amount ?? this.amount)
-
-    this.amount = val.numeric
-    this.raw_amount = val.raw as BigNumberRawValue
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "casm")
-
-    const val = new BigNumber(this.raw_amount ?? this.amount)
-
-    this.amount = val.numeric
-    this.raw_amount = val.raw!
   }
 }
