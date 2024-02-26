@@ -189,6 +189,7 @@ export interface UpdateLineItemDTO
   title?: string
   quantity?: number
   unit_price?: number
+  metadata?: Record<string, unknown> | null
 
   tax_lines?: UpdateTaxLineDTO[] | CreateTaxLineDTO[]
   adjustments?: UpdateAdjustmentDTO[] | CreateAdjustmentDTO[]

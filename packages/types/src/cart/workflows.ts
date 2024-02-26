@@ -1,4 +1,5 @@
-import { CartDTO } from "./common"
+import { CartDTO, CartLineItemDTO } from "./common"
+import { UpdateLineItemDTO } from "./mutations"
 
 export interface CreateCartCreateLineItemDTO {
   quantity: number
@@ -30,6 +31,12 @@ export interface CreateCartCreateLineItemDTO {
   unit_price?: number | string
 
   metadata?: Record<string, unknown>
+}
+
+export interface UpdateLineItemInCartWorkflowInputDTO {
+  cart: CartDTO
+  item: CartLineItemDTO
+  update: Partial<UpdateLineItemDTO>
 }
 
 export interface CreateCartAddressDTO {
