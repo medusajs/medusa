@@ -18,7 +18,6 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
     findOptions_.options ??= {}
     findOptions_.where ??= {}
 
-    let strategy = LoadStrategy.JOINED
     if (!("strategy" in findOptions_.options)) {
       if (
         findOptions_.options.limit != null ||
@@ -27,12 +26,10 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
         Object.assign(findOptions_.options, {
           strategy: LoadStrategy.SELECT_IN,
         })
-        strategy = LoadStrategy.SELECT_IN
       } else {
         Object.assign(findOptions_.options, {
-          strategy: LoadStrategy.SELECT_IN,
+          strategy: LoadStrategy.JOINED,
         })
-        strategy = LoadStrategy.SELECT_IN
       }
     }
 
@@ -43,6 +40,7 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
     // If no version is specified, we default to the latest version
     if (expandDetails) {
       let defaultVersion = knex.raw(`"o0"."version"`)
+      const strategy = findOptions_.options.strategy ?? LoadStrategy.JOINED
       if (strategy === LoadStrategy.SELECT_IN) {
         const sql = manager
           .qb(Order, "_sub0")
@@ -76,7 +74,6 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
     findOptions_.options ??= {}
     findOptions_.where ??= {}
 
-    let strategy = LoadStrategy.SELECT_IN
     if (!("strategy" in findOptions_.options)) {
       Object.assign(findOptions_.options, {
         strategy: LoadStrategy.SELECT_IN,
@@ -90,6 +87,7 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
     // If no version is specified, we default to the latest version
     if (expandDetails) {
       let defaultVersion = knex.raw(`"o0"."version"`)
+      const strategy = findOptions_.options.strategy ?? LoadStrategy.JOINED
       if (strategy === LoadStrategy.SELECT_IN) {
         const sql = manager
           .qb(Order, "_sub0")
