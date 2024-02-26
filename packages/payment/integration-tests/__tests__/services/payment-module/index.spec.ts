@@ -141,8 +141,9 @@ moduleIntegrationTestRunner({
               ])
               .catch((e) => e)
 
+            // TODO: Change error thrown by Mikro for BigNumber fields
             expect(error.message).toContain(
-              "Value for PaymentCollection.amount is required, 'undefined' found"
+              "Value for PaymentCollection.amount_ is required, 'undefined' found"
             )
 
             error = await service
