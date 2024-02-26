@@ -1,13 +1,20 @@
 import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
+import {
   deleteApiKeysWorkflow,
   updateApiKeysWorkflow,
 } from "@medusajs/core-flows"
-import { UpdateApiKeyDTO } from "@medusajs/types"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
-import { defaultAdminApiKeyFields } from "../query-config"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+import { UpdateApiKeyDTO } from "@medusajs/types"
+import { defaultAdminApiKeyFields } from "../query-config"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const remoteQuery = req.scope.resolve("remoteQuery")
 
   const variables = { id: req.params.id }
@@ -23,11 +30,14 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   res.status(200).json({ apiKey })
 }
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<Omit<UpdateApiKeyDTO, "id">>,
+  res: MedusaResponse
+) => {
   const { result, errors } = await updateApiKeysWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
-      update: req.validatedBody as Omit<UpdateApiKeyDTO, "id">,
+      update: req.validatedBody,
     },
     throwOnError: false,
   })
@@ -39,7 +49,10 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   res.status(200).json({ apiKey: result[0] })
 }
 
-export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const id = req.params.id
 
   const { errors } = await deleteApiKeysWorkflow(req.scope).run({

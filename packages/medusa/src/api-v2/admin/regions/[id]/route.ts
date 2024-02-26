@@ -7,7 +7,7 @@ import {
   updateRegionsWorkflow,
 } from "@medusajs/core-flows"
 
-import { UpdatableRegionFields } from "@medusajs/types"
+import { UpdateRegionDTO } from "@medusajs/types"
 import { defaultAdminRegionFields } from "../query-config"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
@@ -31,7 +31,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<UpdatableRegionFields>,
+  req: AuthenticatedMedusaRequest<UpdateRegionDTO>,
   res: MedusaResponse
 ) => {
   const { result, errors } = await updateRegionsWorkflow(req.scope).run({
