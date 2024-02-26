@@ -249,6 +249,202 @@ moduleIntegrationTestRunner({
             )
           })
         })
+
+        describe("shipping options", () => {
+          it("should list shipping options with a filter", async function () {
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+              service_zones: [
+                {
+                  name: "test",
+                },
+              ],
+            })
+
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+
+            // TODO: change that for a real provider instead of fake data manual inserted data
+            const [{ id: providerId }] =
+              await MikroOrmWrapper.forkManager().execute(
+                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
+              )
+
+            const commonShippingOptionData = {
+              service_zone_id: fulfillmentSet.service_zones[0].id,
+              shipping_profile_id: shippingProfile.id,
+              service_provider_id: providerId,
+              type: {
+                code: "test-type",
+                description: "test-description",
+                label: "test-label",
+              },
+              data: {
+                amount: 1000,
+              },
+            }
+
+            const shippingOption1 = await service.createShippingOptions({
+              name: "test-option",
+              price_type: "flat",
+              ...commonShippingOptionData,
+              rules: [
+                {
+                  attribute: "test-attribute",
+                  operator: "in",
+                  value: ["test-value"],
+                },
+              ],
+            })
+
+            const shippingOption2 = await service.createShippingOptions({
+              name: "test-option-2",
+              ...commonShippingOptionData,
+              rules: [
+                {
+                  attribute: "test-attribute2",
+                  operator: "eq",
+                  value: "test",
+                },
+              ],
+            })
+
+            const listedOptions = await service.listShippingOptions({
+              name: shippingOption1.name,
+            })
+
+            expect(listedOptions).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({ id: shippingOption1.id }),
+              ])
+            )
+          })
+
+          it("should list shipping options with a context", async function () {
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+              service_zones: [
+                {
+                  name: "test",
+                },
+              ],
+            })
+
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+
+            // TODO: change that for a real provider instead of fake data manual inserted data
+            const [{ id: providerId }] =
+              await MikroOrmWrapper.forkManager().execute(
+                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
+              )
+
+            const commonShippingOptionData = {
+              service_zone_id: fulfillmentSet.service_zones[0].id,
+              shipping_profile_id: shippingProfile.id,
+              service_provider_id: providerId,
+              type: {
+                code: "test-type",
+                description: "test-description",
+                label: "test-label",
+              },
+              data: {
+                amount: 1000,
+              },
+            }
+
+            const shippingOption1 = await service.createShippingOptions({
+              name: "test-option",
+              price_type: "flat",
+              ...commonShippingOptionData,
+              rules: [
+                {
+                  attribute: "test-attribute",
+                  operator: "in",
+                  value: ["test"],
+                },
+              ],
+            })
+
+            const shippingOption2 = await service.createShippingOptions({
+              name: "test-option-2",
+              price_type: "calculated",
+              ...commonShippingOptionData,
+              rules: [
+                {
+                  attribute: "test-attribute2",
+                  operator: "eq",
+                  value: "test",
+                },
+              ],
+            })
+
+            const shippingOption3 = await service.createShippingOptions({
+              name: "test-option-3",
+              price_type: "calculated",
+              ...commonShippingOptionData,
+              rules: [
+                {
+                  attribute: "test-attribute",
+                  operator: "eq",
+                  value: "test",
+                },
+                {
+                  attribute: "test-attribute2.options",
+                  operator: "in",
+                  value: ["test", "test2"],
+                },
+              ],
+            })
+
+            let listedOptions = await service.listShippingOptions({
+              context: {
+                "test-attribute": "test",
+                "test-attribute2": {
+                  options: "test2",
+                },
+              },
+            })
+
+            expect(listedOptions).toHaveLength(2)
+            expect(listedOptions).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({ id: shippingOption1.id }),
+                expect.objectContaining({ id: shippingOption3.id }),
+              ])
+            )
+
+            listedOptions = await service.listShippingOptions({
+              fulfillment_set_id: { $ne: fulfillmentSet.id },
+              context: {
+                "test-attribute": "test",
+                "test-attribute2": {
+                  options: "test2",
+                },
+              },
+            })
+
+            expect(listedOptions).toHaveLength(0)
+
+            listedOptions = await service.listShippingOptions({
+              fulfillment_set_type: "non-existing-type",
+              context: {
+                "test-attribute": "test",
+                "test-attribute2": {
+                  options: "test2",
+                },
+              },
+            })
+
+            expect(listedOptions).toHaveLength(0)
+          })
+        })
       })
 
       describe("mutations", () => {
