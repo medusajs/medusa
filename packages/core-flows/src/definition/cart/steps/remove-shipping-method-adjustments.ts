@@ -16,7 +16,7 @@ export const removeShippingMethodAdjustmentsStep = createStep(
       ModuleRegistrationName.CART
     )
 
-    await cartModuleService.removeShippingMethodAdjustments(
+    await cartModuleService.softDeleteShippingMethodAdjustments(
       shippingMethodAdjustmentIdsToRemove
     )
 

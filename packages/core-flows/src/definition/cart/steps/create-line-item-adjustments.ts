@@ -34,7 +34,7 @@ export const createLineItemAdjustmentsStep = createStep(
       return
     }
 
-    await cartModuleService.removeLineItemAdjustments(
+    await cartModuleService.softDeleteLineItemAdjustments(
       createdLineItemAdjustments.map((c) => c.id)
     )
   }

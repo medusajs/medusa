@@ -1,9 +1,10 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ICartModuleService } from "@medusajs/types"
+import { CartDTO, FindConfig, ICartModuleService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   cartId: string
+  config: FindConfig<CartDTO>
 }
 
 export const retrieveCartStepId = "retrieve-cart"
@@ -14,14 +15,7 @@ export const retrieveCartStep = createStep(
       ModuleRegistrationName.CART
     )
 
-    const cart = await cartModuleService.retrieve(data.cartId, {
-      relations: [
-        "items",
-        "items.adjustments",
-        "shipping_methods",
-        "shipping_methods.adjustments",
-      ],
-    })
+    const cart = await cartModuleService.retrieve(data.cartId, data.config)
 
     // TODO: remove this when cart handles totals calculation
     cart.items = cart.items?.map((item) => {

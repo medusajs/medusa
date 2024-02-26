@@ -15,7 +15,7 @@ export const removeLineItemAdjustmentsStep = createStep(
       ModuleRegistrationName.CART
     )
 
-    await cartModuleService.removeLineItemAdjustments(
+    await cartModuleService.softDeleteLineItemAdjustments(
       lineItemAdjustmentIdsToRemove
     )
 

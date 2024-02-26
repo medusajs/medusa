@@ -35,7 +35,7 @@ export const createShippingMethodAdjustmentsStep = createStep(
       return
     }
 
-    await cartModuleService.removeShippingMethodAdjustments(
+    await cartModuleService.softDeleteShippingMethodAdjustments(
       createdShippingMethodAdjustments.map((c) => c.id)
     )
   }

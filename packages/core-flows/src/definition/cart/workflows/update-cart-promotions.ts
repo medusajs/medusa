@@ -24,7 +24,19 @@ export const updateCartPromotionsWorkflowId = "update-cart-promotions"
 export const updateCartPromotionsWorkflow = createWorkflow(
   updateCartPromotionsWorkflowId,
   (input: WorkflowData<WorkflowInput>): WorkflowData<CartDTO> => {
-    const cart = retrieveCartStep(input)
+    const retrieveCartInput = {
+      cartId: input.cartId,
+      config: {
+        relations: [
+          "items",
+          "items.adjustments",
+          "shipping_methods",
+          "shipping_methods.adjustments",
+        ],
+      },
+    }
+
+    const cart = retrieveCartStep(retrieveCartInput)
     const actions = getActionsToComputeFromPromotionsStep({
       cart,
       promoCodes: input.promoCodes,
@@ -50,7 +62,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       createShippingMethodAdjustmentsStep({ shippingMethodAdjustmentsToCreate })
     )
 
-    return retrieveCartStep(input).config({
+    return retrieveCartStep(retrieveCartInput).config({
       name: "retrieve-cart-result-step",
     })
   }
