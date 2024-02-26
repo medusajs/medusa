@@ -1,3 +1,10 @@
+import { BigNumberRawValue } from "@medusajs/types"
+import {
+  BigNumber,
+  generateEntityId,
+  MikroOrmBigNumberProperty,
+  PaymentSessionStatus,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -9,16 +16,9 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import {
-  BigNumber,
-  generateEntityId,
-  MikroOrmBigNumberProperty,
-  PaymentSessionStatus,
-} from "@medusajs/utils"
-import { BigNumberRawValue } from "@medusajs/types"
 
-import PaymentCollection from "./payment-collection"
 import Payment from "./payment"
+import PaymentCollection from "./payment-collection"
 
 @Entity({ tableName: "payment_session" })
 export default class PaymentSession {
@@ -56,6 +56,7 @@ export default class PaymentSession {
   authorized_at: Date | null = null
 
   @ManyToOne({
+    entity: () => PaymentCollection,
     index: "IDX_payment_session_payment_collection_id",
     fieldName: "payment_collection_id",
     onDelete: "cascade",
