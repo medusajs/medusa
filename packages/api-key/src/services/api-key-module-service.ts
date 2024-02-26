@@ -13,7 +13,12 @@ import {
 } from "@medusajs/types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { ApiKey } from "@models"
-import { CreateApiKeyDTO, TokenDTO } from "@types"
+import {
+  CreateApiKeyDTO,
+  RevokeApiKeyInput,
+  TokenDTO,
+  UpdateApiKeyInput,
+} from "@types"
 import {
   ApiKeyType,
   InjectManager,
@@ -133,33 +138,96 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     return [createdApiKeys, generatedTokens]
   }
 
-  async update(
-    selector: FilterableApiKeyProps,
-    data: Omit<ApiKeyTypes.UpdateApiKeyDTO, "id">,
+  async upsert(
+    data: ApiKeyTypes.UpsertApiKeyDTO[],
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO[]>
+  async upsert(
+    data: ApiKeyTypes.UpsertApiKeyDTO,
+    sharedContext?: Context
+  ): Promise<ApiKeyTypes.ApiKeyDTO>
+
+  @InjectManager("baseRepository_")
+  async upsert(
+    data: ApiKeyTypes.UpsertApiKeyDTO | ApiKeyTypes.UpsertApiKeyDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ApiKeyTypes.ApiKeyDTO | ApiKeyTypes.ApiKeyDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter(
+      (apiKey): apiKey is UpdateApiKeyInput => !!apiKey.id
+    )
+    const forCreate = input.filter(
+      (apiKey): apiKey is ApiKeyTypes.CreateApiKeyDTO => !apiKey.id
+    )
+
+    const operations: Promise<ApiKeyTypes.ApiKeyDTO[]>[] = []
+
+    if (forCreate.length) {
+      const op = async () => {
+        const [createdApiKeys, generatedTokens] = await this.create_(
+          forCreate,
+          sharedContext
+        )
+        const serializedResponse = await this.baseRepository_.serialize<
+          ApiKeyTypes.ApiKeyDTO[]
+        >(createdApiKeys, {
+          populate: true,
+        })
+
+        return serializedResponse.map(
+          (key) =>
+            ({
+              ...key,
+              token:
+                generatedTokens.find((t) => t.hashedToken === key.token)
+                  ?.rawToken ?? key.token,
+              salt: undefined,
+            } as ApiKeyTypes.ApiKeyDTO)
+        )
+      }
+
+      operations.push(op())
+    }
+
+    if (forUpdate.length) {
+      const op = async () => {
+        const updateResp = await this.update_(forUpdate, sharedContext)
+        return await this.baseRepository_.serialize<ApiKeyTypes.ApiKeyDTO[]>(
+          updateResp
+        )
+      }
+
+      operations.push(op())
+    }
+
+    const result = (await promiseAll(operations)).flat()
+    return Array.isArray(data) ? result : result[0]
+  }
+
   async update(
     id: string,
-    data: Omit<ApiKeyTypes.UpdateApiKeyDTO, "id">,
+    data: ApiKeyTypes.UpdateApiKeyDTO,
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO>
   async update(
-    data: ApiKeyTypes.UpdateApiKeyDTO[]
+    selector: FilterableApiKeyProps,
+    data: ApiKeyTypes.UpdateApiKeyDTO,
+    sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO[]>
+
   @InjectManager("baseRepository_")
   async update(
-    idOrSelectorOrData:
-      | string
-      | FilterableApiKeyProps
-      | ApiKeyTypes.UpdateApiKeyDTO[],
-    data?: Omit<ApiKeyTypes.UpdateApiKeyDTO, "id">,
+    idOrSelector: string | FilterableApiKeyProps,
+    data: ApiKeyTypes.UpdateApiKeyDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ApiKeyTypes.ApiKeyDTO[] | ApiKeyTypes.ApiKeyDTO> {
-    const updatedApiKeys = await this.update_(
-      idOrSelectorOrData,
+    let normalizedInput = await this.normalizeUpdateInput_<UpdateApiKeyInput>(
+      idOrSelector,
       data,
       sharedContext
     )
+
+    const updatedApiKeys = await this.update_(normalizedInput, sharedContext)
 
     const serializedResponse = await this.baseRepository_.serialize<
       ApiKeyTypes.ApiKeyDTO[]
@@ -167,27 +235,14 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
       populate: true,
     })
 
-    return isString(idOrSelectorOrData)
-      ? serializedResponse[0]
-      : serializedResponse
+    return isString(idOrSelector) ? serializedResponse[0] : serializedResponse
   }
 
   @InjectTransactionManager("baseRepository_")
   protected async update_(
-    idOrSelectorOrData:
-      | string
-      | FilterableApiKeyProps
-      | ApiKeyTypes.UpdateApiKeyDTO[],
-    data?: Omit<ApiKeyTypes.UpdateApiKeyDTO, "id">,
+    normalizedInput: UpdateApiKeyInput[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    const normalizedInput =
-      await this.normalizeUpdateInput_<ApiKeyTypes.UpdateApiKeyDTO>(
-        idOrSelectorOrData,
-        data,
-        sharedContext
-      )
-
     const updateRequest = normalizedInput.map((k) => ({
       id: k.id,
       title: k.title,
@@ -260,32 +315,27 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
   }
 
   async revoke(
-    selector: FilterableApiKeyProps,
-    data: Omit<ApiKeyTypes.RevokeApiKeyDTO, "id">,
-    sharedContext?: Context
-  ): Promise<ApiKeyTypes.ApiKeyDTO[]>
-  async revoke(
     id: string,
-    data: Omit<ApiKeyTypes.RevokeApiKeyDTO, "id">,
+    data: ApiKeyTypes.RevokeApiKeyDTO,
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO>
   async revoke(
-    data: ApiKeyTypes.RevokeApiKeyDTO[]
+    selector: FilterableApiKeyProps,
+    data: ApiKeyTypes.RevokeApiKeyDTO,
+    sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO[]>
   @InjectManager("baseRepository_")
   async revoke(
-    idOrSelectorOrData:
-      | string
-      | FilterableApiKeyProps
-      | ApiKeyTypes.RevokeApiKeyDTO[],
-    data?: Omit<ApiKeyTypes.RevokeApiKeyDTO, "id">,
+    idOrSelector: string | FilterableApiKeyProps,
+    data: ApiKeyTypes.RevokeApiKeyDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ApiKeyTypes.ApiKeyDTO[] | ApiKeyTypes.ApiKeyDTO> {
-    const revokedApiKeys = await this.revoke_(
-      idOrSelectorOrData,
+    const normalizedInput = await this.normalizeUpdateInput_<RevokeApiKeyInput>(
+      idOrSelector,
       data,
       sharedContext
     )
+    const revokedApiKeys = await this.revoke_(normalizedInput, sharedContext)
 
     const serializedResponse = await this.baseRepository_.serialize<
       ApiKeyTypes.ApiKeyDTO[]
@@ -293,27 +343,14 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
       populate: true,
     })
 
-    return isString(idOrSelectorOrData)
-      ? serializedResponse[0]
-      : serializedResponse
+    return isString(idOrSelector) ? serializedResponse[0] : serializedResponse
   }
 
   @InjectTransactionManager("baseRepository_")
   async revoke_(
-    idOrSelectorOrData:
-      | string
-      | FilterableApiKeyProps
-      | ApiKeyTypes.RevokeApiKeyDTO[],
-    data?: Omit<ApiKeyTypes.RevokeApiKeyDTO, "id">,
+    normalizedInput: RevokeApiKeyInput[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    const normalizedInput =
-      await this.normalizeUpdateInput_<ApiKeyTypes.RevokeApiKeyDTO>(
-        idOrSelectorOrData,
-        data,
-        sharedContext
-      )
-
     await this.validateRevokeApiKeys_(normalizedInput)
 
     const updateRequest = normalizedInput.map((k) => {
@@ -337,11 +374,29 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     return revokedApiKeys
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async authenticate(
     token: string,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ApiKeyTypes.ApiKeyDTO | false> {
+    const result = await this.authenticate_(token, sharedContext)
+    if (!result) {
+      return false
+    }
+
+    const serialized =
+      await this.baseRepository_.serialize<ApiKeyTypes.ApiKeyDTO>(result, {
+        populate: true,
+      })
+
+    return serialized
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async authenticate_(
+    token: string,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ApiKey | false> {
     // Since we only allow up to 2 active tokens, getitng the list and checking each token isn't an issue.
     // We can always filter on the redacted key if we add support for an arbitrary number of tokens.
     const secretKeys = await this.apiKeyService_.list(
@@ -353,7 +408,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
           { revoked_at: { $gt: new Date() } },
         ],
       },
-      {},
+      { take: null },
       sharedContext
     )
 
@@ -371,18 +426,11 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
       })
     )
 
-    const matchedKeys = matches.filter((match) => match)
+    const matchedKeys = matches.filter((match) => !!match)
     if (!matchedKeys.length) {
       return false
     }
-
-    const serialized =
-      await this.baseRepository_.serialize<ApiKeyTypes.ApiKeyDTO>(
-        matchedKeys[0],
-        { populate: true }
-      )
-
-    return serialized
+    return matchedKeys[0]!
   }
 
   protected async validateCreateApiKeys_(
@@ -411,7 +459,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
           { revoked_at: { $gt: new Date() } },
         ],
       },
-      {},
+      { take: null },
       sharedContext
     )
 
@@ -424,22 +472,18 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
   }
 
   protected async normalizeUpdateInput_<T>(
-    idOrSelectorOrData: string | FilterableApiKeyProps | T[],
-    data?: Omit<T, "id">,
+    idOrSelector: string | FilterableApiKeyProps,
+    data: Omit<T, "id">,
     sharedContext: Context = {}
   ): Promise<T[]> {
     let normalizedInput: T[] = []
-    if (isString(idOrSelectorOrData)) {
-      normalizedInput = [{ id: idOrSelectorOrData, ...data } as T]
+    if (isString(idOrSelector)) {
+      normalizedInput = [{ id: idOrSelector, ...data } as T]
     }
 
-    if (Array.isArray(idOrSelectorOrData)) {
-      normalizedInput = idOrSelectorOrData
-    }
-
-    if (isObject(idOrSelectorOrData)) {
+    if (isObject(idOrSelector)) {
       const apiKeys = await this.apiKeyService_.list(
-        idOrSelectorOrData,
+        idOrSelector,
         {},
         sharedContext
       )
@@ -457,7 +501,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
   }
 
   protected async validateRevokeApiKeys_(
-    data: ApiKeyTypes.RevokeApiKeyDTO[],
+    data: RevokeApiKeyInput[],
     sharedContext: Context = {}
   ): Promise<void> {
     if (!data.length) {

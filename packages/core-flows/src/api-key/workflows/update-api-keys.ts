@@ -8,7 +8,7 @@ import { updateApiKeysStep } from "../steps"
 
 type UpdateApiKeysStepInput = {
   selector: FilterableApiKeyProps
-  update: Omit<UpdateApiKeyDTO, "id">
+  update: UpdateApiKeyDTO
 }
 
 type WorkflowInput = UpdateApiKeysStepInput

@@ -9,7 +9,7 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type UpdateApiKeysStepInput = {
   selector: FilterableApiKeyProps
-  update: Omit<UpdateApiKeyDTO, "id">
+  update: UpdateApiKeyDTO
 }
 
 export const updateApiKeysStepId = "update-api-keys"
@@ -41,7 +41,7 @@ export const updateApiKeysStep = createStep(
       ModuleRegistrationName.API_KEY
     )
 
-    await service.update(
+    await service.upsert(
       prevData.map((r) => ({
         id: r.id,
         title: r.title,
