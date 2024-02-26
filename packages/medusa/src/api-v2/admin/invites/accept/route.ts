@@ -1,4 +1,7 @@
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
 
 import { AdminPostInvitesInviteAcceptReq } from "../validators"
 import { IUserModuleService } from "@medusajs/types"
@@ -6,12 +9,15 @@ import { InviteWorkflow } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { acceptInviteWorkflow } from "@medusajs/core-flows"
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  if (req.auth?.actor_id) {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminPostInvitesInviteAcceptReq>,
+  res: MedusaResponse
+) => {
+  if (req.auth.actor_id) {
     const moduleService: IUserModuleService = req.scope.resolve(
       ModuleRegistrationName.USER
     )
-    const user = moduleService.retrieve(req.auth?.actor_id)
+    const user = moduleService.retrieve(req.auth.actor_id)
     res.status(200).json({ user })
     return
   }
@@ -21,7 +27,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const input = {
     invite_token: req.filterableFields.token as string,
     auth_user_id: req.auth?.auth_user_id,
-    user: req.validatedBody as AdminPostInvitesInviteAcceptReq,
+    user: req.validatedBody,
   } as InviteWorkflow.AcceptInviteWorkflowInputDTO
 
   let users

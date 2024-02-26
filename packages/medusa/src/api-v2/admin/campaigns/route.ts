@@ -1,9 +1,17 @@
-import { createCampaignsWorkflow } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaRequest,
+  MedusaResponse,
+} from "../../../types/routing"
 import { CreateCampaignDTO, IPromotionModuleService } from "@medusajs/types"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { createCampaignsWorkflow } from "@medusajs/core-flows"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const promotionModuleService: IPromotionModuleService = req.scope.resolve(
     ModuleRegistrationName.PROMOTION
   )
@@ -23,9 +31,12 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   })
 }
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<CreateCampaignDTO>,
+  res: MedusaResponse
+) => {
   const createCampaigns = createCampaignsWorkflow(req.scope)
-  const campaignsData = [req.validatedBody as CreateCampaignDTO]
+  const campaignsData = [req.validatedBody]
 
   const { result, errors } = await createCampaigns.run({
     input: { campaignsData },

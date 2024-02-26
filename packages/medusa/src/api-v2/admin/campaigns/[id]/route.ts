@@ -1,12 +1,21 @@
 import {
+  AuthenticatedMedusaRequest,
+  MedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
+import {
   deleteCampaignsWorkflow,
   updateCampaignsWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPromotionModuleService } from "@medusajs/types"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+import { AdminPostCampaignsReq } from "../validators"
+import { IPromotionModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const promotionModuleService: IPromotionModuleService = req.scope.resolve(
     ModuleRegistrationName.PROMOTION
   )
@@ -22,12 +31,15 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   res.status(200).json({ campaign })
 }
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminPostCampaignsReq>,
+  res: MedusaResponse
+) => {
   const updateCampaigns = updateCampaignsWorkflow(req.scope)
   const campaignsData = [
     {
       id: req.params.id,
-      ...(req.validatedBody || {}),
+      ...req.validatedBody,
     },
   ]
 
@@ -43,7 +55,10 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   res.status(200).json({ campaign: result[0] })
 }
 
-export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const id = req.params.id
   const manager = req.scope.resolve("manager")
   const deleteCampaigns = deleteCampaignsWorkflow(req.scope)

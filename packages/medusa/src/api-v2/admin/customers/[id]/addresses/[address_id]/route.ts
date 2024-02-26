@@ -1,12 +1,19 @@
 import {
-  updateCustomerAddressesWorkflow,
-  deleteCustomerAddressesWorkflow,
-} from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../../../types/routing"
 import { CustomerAddressDTO, ICustomerModuleService } from "@medusajs/types"
-import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
+import {
+  deleteCustomerAddressesWorkflow,
+  updateCustomerAddressesWorkflow,
+} from "@medusajs/core-flows"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const customerModuleService = req.scope.resolve<ICustomerModuleService>(
     ModuleRegistrationName.CUSTOMER
   )
@@ -22,12 +29,15 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   res.status(200).json({ address })
 }
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<Partial<CustomerAddressDTO>>,
+  res: MedusaResponse
+) => {
   const updateAddresses = updateCustomerAddressesWorkflow(req.scope)
   const { result, errors } = await updateAddresses.run({
     input: {
       selector: { id: req.params.address_id, customer_id: req.params.id },
-      update: req.validatedBody as Partial<CustomerAddressDTO>,
+      update: req.validatedBody,
     },
     throwOnError: false,
   })
@@ -39,7 +49,10 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   res.status(200).json({ address: result[0] })
 }
 
-export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const id = req.params.address_id
   const deleteAddress = deleteCustomerAddressesWorkflow(req.scope)
 

@@ -1,10 +1,17 @@
-import { createRegionsWorkflow } from "@medusajs/core-flows"
-import { CreateRegionDTO } from "@medusajs/types"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
-import { defaultAdminRegionFields } from "./query-config"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../types/routing"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+import { CreateRegionDTO } from "@medusajs/types"
+import { createRegionsWorkflow } from "@medusajs/core-flows"
+import { defaultAdminRegionFields } from "./query-config"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const remoteQuery = req.scope.resolve("remoteQuery")
 
   const queryObject = remoteQueryObjectFromString({
@@ -28,10 +35,13 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   })
 }
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<CreateRegionDTO>,
+  res: MedusaResponse
+) => {
   const input = [
     {
-      ...(req.validatedBody as CreateRegionDTO),
+      ...req.validatedBody,
     },
   ]
 

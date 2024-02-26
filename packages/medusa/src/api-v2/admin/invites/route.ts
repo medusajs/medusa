@@ -1,13 +1,20 @@
 import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../types/routing"
+import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+
+import { CreateInviteDTO } from "@medusajs/types"
 import { createInvitesWorkflow } from "@medusajs/core-flows"
-import { CreateInviteDTO, CreateUserDTO } from "@medusajs/types"
 
 // List invites
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const query = remoteQueryObjectFromString({
@@ -34,12 +41,15 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 
 // Create invite
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<CreateInviteDTO>,
+  res: MedusaResponse
+) => {
   const workflow = createInvitesWorkflow(req.scope)
 
   const input = {
     input: {
-      invites: [req.validatedBody as CreateInviteDTO],
+      invites: [req.validatedBody],
     },
   }
 
