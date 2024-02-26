@@ -107,5 +107,10 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/api-key",
     },
+    [Modules.PAYMENT]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/payment",
+    },
   },
 }
