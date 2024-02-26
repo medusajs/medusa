@@ -20,7 +20,7 @@ export const POST = async (
   }
 
   // If the customer is logged in, we auto-assign them to the cart
-  if (req.auth.actor_id) {
+  if (req.auth?.actor_id) {
     workflowInput.customer_id = req.auth.actor_id
   }
 
