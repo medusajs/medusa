@@ -44,7 +44,7 @@ export const useDiscountTableColumns = () => {
         cell: ({ row }) => (
           <ValueCell
             rule={row.original.rule}
-            currencyCode={row.original.regions[0].currency_code}
+            currencyCode={row.original.regions[0]?.currency_code}
           />
         ),
       }),
