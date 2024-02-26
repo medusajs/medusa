@@ -1,12 +1,13 @@
 import type { NextFunction, Request, Response } from "express"
 
 import type { Customer, User } from "../models"
-import type { MedusaContainer } from "./global"
+import { MedusaContainer } from "@medusajs/types"
 
 export interface MedusaRequest extends Request {
   user?: (User | Customer) & { customer_id?: string; userId?: string }
   scope: MedusaContainer
   session?: any
+  rawBody?: any
   requestId?: string
   auth_user?: { id: string; app_metadata: Record<string, any>; scope: string }
 }

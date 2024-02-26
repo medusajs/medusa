@@ -3,6 +3,7 @@ export interface CreateTaxRateDTO {
   rate?: number | null
   code?: string | null
   name: string
+  rules?: Omit<CreateTaxRateRuleDTO, "tax_rate_id">[]
   is_default?: boolean
   created_by?: string
   metadata?: Record<string, unknown>

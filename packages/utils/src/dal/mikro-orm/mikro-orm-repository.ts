@@ -30,6 +30,7 @@ import {
   transactionWrapper,
 } from "../utils"
 import { mikroOrmSerializer, mikroOrmUpdateDeletedAtRecursively } from "./utils"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class MikroOrmBase<T = any> {
   readonly manager_: any
@@ -137,7 +138,7 @@ export class MikroOrmBaseRepository<T extends object = object>
     const entities = await this.find({ where: filter as any }, sharedContext)
     const date = new Date()
 
-    const manager = this.getActiveManager(sharedContext)
+    const manager = this.getActiveManager<SqlEntityManager>(sharedContext)
     await mikroOrmUpdateDeletedAtRecursively<T>(
       manager,
       entities as any[],
@@ -173,7 +174,7 @@ export class MikroOrmBaseRepository<T extends object = object>
 
     const entities = await this.find(query, sharedContext)
 
-    const manager = this.getActiveManager(sharedContext)
+    const manager = this.getActiveManager<SqlEntityManager>(sharedContext)
     await mikroOrmUpdateDeletedAtRecursively(manager, entities as any[], null)
 
     const softDeletedEntitiesMap = getSoftDeletedCascadedEntitiesIdsMappedBy({

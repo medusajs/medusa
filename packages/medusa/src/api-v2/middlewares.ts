@@ -1,4 +1,5 @@
 import { MiddlewaresConfig } from "../loaders/helpers/routing/types"
+import { adminApiKeyRoutesMiddlewares } from "./admin/api-keys/middlewares"
 import { adminCampaignRoutesMiddlewares } from "./admin/campaigns/middlewares"
 import { adminCustomerGroupRoutesMiddlewares } from "./admin/customer-groups/middlewares"
 import { adminCustomerRoutesMiddlewares } from "./admin/customers/middlewares"
@@ -11,6 +12,7 @@ import { authRoutesMiddlewares } from "./auth/middlewares"
 import { storeCartRoutesMiddlewares } from "./store/carts/middlewares"
 import { storeCustomerRoutesMiddlewares } from "./store/customers/middlewares"
 import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
+import { hooksRoutesMiddlewares } from "./hooks/middlewares"
 
 export const config: MiddlewaresConfig = {
   routes: [
@@ -27,5 +29,7 @@ export const config: MiddlewaresConfig = {
     ...adminRegionRoutesMiddlewares,
     ...adminUserRoutesMiddlewares,
     ...adminInviteRoutesMiddlewares,
+    ...adminApiKeyRoutesMiddlewares,
+    ...hooksRoutesMiddlewares,
   ],
 }
