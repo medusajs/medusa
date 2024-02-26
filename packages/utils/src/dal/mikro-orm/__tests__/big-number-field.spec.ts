@@ -26,7 +26,7 @@ describe("@MikroOrmBigNumberProperty", () => {
     expect(testAmount.amount).toEqual(100)
     expect((testAmount as any).amount_).toEqual(100)
     expect(testAmount.raw_amount).toEqual({
-      value: "100.00000000000000000",
+      value: "100",
       precision: 20,
     })
 
@@ -34,7 +34,7 @@ describe("@MikroOrmBigNumberProperty", () => {
       ;(testAmount as any).amount = null
     } catch (e) {
       expect(e.message).toEqual(
-        "Invalid BigNumber value. Should be one of: string, number, BigNumber (bignumber.js), BigNumberRawValue"
+        "Invalid BigNumber value: null. Should be one of: string, number, BigNumber (bignumber.js), BigNumberRawValue"
       )
     }
 
@@ -47,7 +47,7 @@ describe("@MikroOrmBigNumberProperty", () => {
     expect(testAmount.amount).toEqual(200)
     expect((testAmount as any).amount_).toEqual(200)
     expect(testAmount.raw_amount).toEqual({
-      value: "200.00000000000000000",
+      value: "200",
       precision: 20,
     })
 
@@ -57,6 +57,6 @@ describe("@MikroOrmBigNumberProperty", () => {
 
     expect(testAmount.amount).toEqual(300)
     expect((testAmount as any).amount_).toEqual(300)
-    expect(testAmount.raw_amount).toEqual({ value: "300.00", precision: 5 })
+    expect(testAmount.raw_amount).toEqual({ value: "300", precision: 5 })
   })
 })
