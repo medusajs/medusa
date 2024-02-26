@@ -152,7 +152,6 @@ export default class TaxModuleService<
     @MedusaContext() sharedContext: Context = {}
   ) {
     const input = Array.isArray(data) ? data : [data]
-    await this.verifyProvinceToCountryMatch(input, sharedContext)
     const [defaultRates, regionData] = input.reduce(
       (acc, region) => {
         const { default_tax_rate, ...rest } = region
@@ -165,14 +164,22 @@ export default class TaxModuleService<
             created_by: region.created_by,
           })
         }
-        acc[1].push(rest)
+        acc[1].push({
+          ...rest,
+          province_code: rest.province_code
+            ? this.normalizeRegionCodes(rest.province_code)
+            : null,
+          country_code: this.normalizeRegionCodes(rest.country_code),
+        })
         return acc
       },
       [[], []] as [
         (Omit<TaxTypes.CreateTaxRateDTO, "tax_region_id"> | null)[],
-        Partial<TaxTypes.CreateTaxRegionDTO>[]
+        TaxTypes.CreateTaxRegionDTO[]
       ]
     )
+
+    await this.verifyProvinceToCountryMatch(regionData, sharedContext)
 
     const regions = await this.taxRegionService_.create(
       regionData,
@@ -246,12 +253,20 @@ export default class TaxModuleService<
       {
         $or: [
           {
-            country_code: calculationContext.address.country_code,
+            country_code: this.normalizeRegionCodes(
+              calculationContext.address.country_code
+            ),
             province_code: null,
           },
           {
-            country_code: calculationContext.address.country_code,
-            province_code: calculationContext.address.province_code,
+            country_code: this.normalizeRegionCodes(
+              calculationContext.address.country_code
+            ),
+            province_code: calculationContext.address.province_code
+              ? this.normalizeRegionCodes(
+                  calculationContext.address.province_code
+                )
+              : null,
           },
         ],
       },
@@ -478,5 +493,9 @@ export default class TaxModuleService<
     return decoratedRates.sort(
       (a, b) => (a as any).priority_score - (b as any).priority_score
     )
+  }
+
+  private normalizeRegionCodes(code: string) {
+    return code.toLowerCase()
   }
 }
