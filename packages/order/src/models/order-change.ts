@@ -32,7 +32,13 @@ const OrderChangeStatusIndex = createPsqlIndexStatementHelper({
   columns: "status",
 })
 
+const VersionIndex = createPsqlIndexStatementHelper({
+  tableName: "order_change",
+  columns: ["order_id", "version"],
+})
+
 @Entity({ tableName: "order_change" })
+@VersionIndex.MikroORMIndex()
 export default class OrderChange {
   [OptionalProps]?: OptionalLineItemProps
 
@@ -49,6 +55,10 @@ export default class OrderChange {
     cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
   order: Order
+
+  @Property({ columnType: "integer" })
+  @VersionIndex.MikroORMIndex()
+  version: number
 
   @OneToMany(() => OrderChangeAction, (action) => action.order_change_id, {
     cascade: [Cascade.REMOVE],

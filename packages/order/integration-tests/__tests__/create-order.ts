@@ -5,7 +5,6 @@ import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 jest.setTimeout(100000)
 
 moduleIntegrationTestRunner({
-  debug: true,
   moduleName: Modules.ORDER,
   testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
     describe("Order Module Service", () => {
@@ -141,68 +140,70 @@ moduleIntegrationTestRunner({
           ],
         })
 
-        expect(getOrder).toEqual({
-          id: expect.stringContaining("order_"),
-          version: 1,
-          shipping_address: {
-            id: expect.stringContaining("ordaddr_"),
-          },
-          billing_address: {
-            id: expect.stringContaining("ordaddr_"),
-          },
-          items: [
-            expect.objectContaining({
-              id: expect.stringContaining("orddetail_"),
-              version: 1,
-              item: expect.objectContaining({
-                id: expect.stringContaining("ordli_"),
+        expect(getOrder).toEqual(
+          expect.objectContaining({
+            id: expect.stringContaining("order_"),
+            version: 1,
+            shipping_address: {
+              id: expect.stringContaining("ordaddr_"),
+            },
+            billing_address: {
+              id: expect.stringContaining("ordaddr_"),
+            },
+            items: [
+              expect.objectContaining({
+                id: expect.stringContaining("orddetail_"),
+                version: 1,
+                item: expect.objectContaining({
+                  id: expect.stringContaining("ordli_"),
+                  tax_lines: [
+                    expect.objectContaining({
+                      id: expect.stringContaining("ordlitxl_"),
+                    }),
+                  ],
+                  adjustments: [
+                    expect.objectContaining({
+                      id: expect.stringContaining("ordliadj_"),
+                    }),
+                  ],
+                }),
+              }),
+              expect.objectContaining({
+                id: expect.stringContaining("orddetail_"),
+                version: 1,
+                item: expect.objectContaining({
+                  id: expect.stringContaining("ordli_"),
+                  tax_lines: [],
+                  adjustments: [],
+                }),
+              }),
+              expect.objectContaining({
+                id: expect.stringContaining("orddetail_"),
+                version: 1,
+                item: expect.objectContaining({
+                  id: expect.stringContaining("ordli_"),
+                  tax_lines: [],
+                  adjustments: [],
+                }),
+              }),
+            ],
+            shipping_methods: [
+              expect.objectContaining({
+                id: expect.stringContaining("ordsm_"),
                 tax_lines: [
                   expect.objectContaining({
-                    id: expect.stringContaining("ordlitxl_"),
+                    id: expect.stringContaining("ordsmtxl_"),
                   }),
                 ],
                 adjustments: [
                   expect.objectContaining({
-                    id: expect.stringContaining("ordliadj_"),
+                    id: expect.stringContaining("ordsmadj_"),
                   }),
                 ],
               }),
-            }),
-            expect.objectContaining({
-              id: expect.stringContaining("orddetail_"),
-              version: 1,
-              item: expect.objectContaining({
-                id: expect.stringContaining("ordli_"),
-                tax_lines: [],
-                adjustments: [],
-              }),
-            }),
-            expect.objectContaining({
-              id: expect.stringContaining("orddetail_"),
-              version: 1,
-              item: expect.objectContaining({
-                id: expect.stringContaining("ordli_"),
-                tax_lines: [],
-                adjustments: [],
-              }),
-            }),
-          ],
-          shipping_methods: [
-            expect.objectContaining({
-              id: expect.stringContaining("ordsm_"),
-              tax_lines: [
-                expect.objectContaining({
-                  id: expect.stringContaining("ordsmtxl_"),
-                }),
-              ],
-              adjustments: [
-                expect.objectContaining({
-                  id: expect.stringContaining("ordsmadj_"),
-                }),
-              ],
-            }),
-          ],
-        })
+            ],
+          })
+        )
       })
     })
   },

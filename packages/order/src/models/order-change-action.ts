@@ -22,12 +22,13 @@ const OrderChangeIdIndex = createPsqlIndexStatementHelper({
   columns: "order_change_id",
 })
 
-const ReferenceIdIndex = createPsqlIndexStatementHelper({
+const ReferenceIndex = createPsqlIndexStatementHelper({
   tableName: "order_change_action",
-  columns: "reference_id",
+  columns: ["reference", "reference_id"],
 })
 
 @Entity({ tableName: "order_change_action" })
+@ReferenceIndex.MikroORMIndex()
 export default class OrderChangeAction {
   [OptionalProps]?: OptionalLineItemProps
 
@@ -49,7 +50,6 @@ export default class OrderChangeAction {
   reference: string
 
   @Property({ columnType: "text" })
-  @ReferenceIdIndex.MikroORMIndex()
   reference_id: string
 
   @Property({ columnType: "jsonb" })

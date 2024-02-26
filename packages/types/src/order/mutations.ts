@@ -1,5 +1,5 @@
 import { BigNumberInput } from "../totals"
-import { OrderLineItemDTO } from "./common"
+import { OrderDetailDTO, OrderLineItemDTO } from "./common"
 
 /** ADDRESS START */
 export interface UpsertOrderAddressDTO {
@@ -305,3 +305,27 @@ export interface UpdateOrderTransactionDTO {
   reference_id?: string
   metadata?: Record<string, unknown>
 }
+
+/** ORDER TRANSACTION END */
+
+/** ORDER DETAIL START */
+export interface UpdateOrderDetailDTO {
+  id: string
+  order_id?: string
+  version?: number
+  item_id?: string
+  quantity?: BigNumberInput
+  fulfilled_quantity?: BigNumberInput
+  return_requested_quantity?: BigNumberInput
+  return_received_quantity?: BigNumberInput
+  return_dismissed_quantity?: BigNumberInput
+  written_off_quantity?: BigNumberInput
+  metadata?: Record<string, unknown>
+}
+
+export interface UpdateOrderDetailWithSelectorDTO {
+  selector: Partial<OrderDetailDTO>
+  data: Partial<UpdateOrderDetailDTO>
+}
+
+/** ORDER DETAIL END */

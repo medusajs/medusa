@@ -14,7 +14,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { ItemSummary } from "../types/common"
 import LineItem from "./line-item"
 import Order from "./order"
 
@@ -25,7 +24,7 @@ const OrderIdIndex = createPsqlIndexStatementHelper({
   columns: ["order_id"],
 })
 
-const VersionIndex = createPsqlIndexStatementHelper({
+const OrderVersionIndex = createPsqlIndexStatementHelper({
   tableName: "order_detail",
   columns: ["version"],
 })
@@ -47,7 +46,7 @@ export default class OrderDetail {
   order_id: string
 
   @Property({ columnType: "integer" })
-  @VersionIndex.MikroORMIndex()
+  @OrderVersionIndex.MikroORMIndex()
   version: number
 
   @ManyToOne({
@@ -108,8 +107,8 @@ export default class OrderDetail {
   @Property({ columnType: "jsonb" })
   raw_written_off_quantity: BigNumberRawValue
 
-  @Property({ columnType: "jsonb" })
-  summary: ItemSummary = {} as ItemSummary
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
 
   @Property({
     onCreate: () => new Date(),

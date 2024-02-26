@@ -1,5 +1,5 @@
 import { Context, DAL } from "@medusajs/types"
-import { DALUtils, isDefined } from "@medusajs/utils"
+import { DALUtils } from "@medusajs/utils"
 import { LoadStrategy } from "@mikro-orm/core"
 import { EntityManager } from "@mikro-orm/postgresql"
 import { Order } from "@models"
@@ -18,10 +18,22 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
     findOptions_.options ??= {}
     findOptions_.where ??= {}
 
+    let strategy = LoadStrategy.JOINED
     if (!("strategy" in findOptions_.options)) {
-      Object.assign(findOptions_.options, {
-        strategy: LoadStrategy.JOINED,
-      })
+      if (
+        findOptions_.options.limit != null ||
+        findOptions_.options.limit != null
+      ) {
+        Object.assign(findOptions_.options, {
+          strategy: LoadStrategy.SELECT_IN,
+        })
+        strategy = LoadStrategy.SELECT_IN
+      } else {
+        Object.assign(findOptions_.options, {
+          strategy: LoadStrategy.SELECT_IN,
+        })
+        strategy = LoadStrategy.SELECT_IN
+      }
     }
 
     const expandDetails = findOptions_.options.populate?.filter((p) =>
@@ -29,9 +41,25 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
     )?.length
 
     // If no version is specified, we default to the latest version
-    if (expandDetails && !isDefined(findOptions_.where.items?.version)) {
-      findOptions_.where.items ??= {}
-      findOptions_.where.items.version = knex.raw(`"o0"."version"`)
+    if (expandDetails) {
+      let defaultVersion = knex.raw(`"o0"."version"`)
+      if (strategy === LoadStrategy.SELECT_IN) {
+        const sql = manager
+          .qb(Order, "_sub0")
+          .select("version")
+          .where({ id: knex.raw(`"o0"."order_id"`) })
+          .getKnexQuery()
+          .toString()
+
+        defaultVersion = knex.raw(`(${sql})`)
+      }
+
+      const version = findOptions_.where?.version ?? defaultVersion
+      delete findOptions_.where?.version
+
+      findOptions_.options.populateWhere ??= {}
+      findOptions_.options.populateWhere.items ??= {}
+      findOptions_.options.populateWhere.items.version = version
     }
 
     return await manager.find(Order, findOptions_.where, findOptions_.options)
@@ -48,9 +76,10 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
     findOptions_.options ??= {}
     findOptions_.where ??= {}
 
+    let strategy = LoadStrategy.SELECT_IN
     if (!("strategy" in findOptions_.options)) {
       Object.assign(findOptions_.options, {
-        strategy: LoadStrategy.JOINED,
+        strategy: LoadStrategy.SELECT_IN,
       })
     }
 
@@ -59,9 +88,25 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
     )?.length
 
     // If no version is specified, we default to the latest version
-    if (expandDetails && !isDefined(findOptions_.where.items?.version)) {
-      findOptions_.where.items ??= {}
-      findOptions_.where.items.version = knex.raw(`"o0"."version"`)
+    if (expandDetails) {
+      let defaultVersion = knex.raw(`"o0"."version"`)
+      if (strategy === LoadStrategy.SELECT_IN) {
+        const sql = manager
+          .qb(Order, "_sub0")
+          .select("version")
+          .where({ id: knex.raw(`"o0"."order_id"`) })
+          .getKnexQuery()
+          .toString()
+
+        defaultVersion = knex.raw(`(${sql})`)
+      }
+
+      const version = findOptions_.where?.version ?? defaultVersion
+      delete findOptions_.where?.version
+
+      findOptions_.options.populateWhere ??= {}
+      findOptions_.options.populateWhere.items ??= {}
+      findOptions_.options.populateWhere.items.version = version
     }
 
     return await manager.findAndCount(

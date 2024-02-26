@@ -12,6 +12,7 @@ import {
   FilterableOrderShippingMethodTaxLineProps,
   OrderAddressDTO,
   OrderDTO,
+  OrderDetailDTO,
   OrderLineItemAdjustmentDTO,
   OrderLineItemDTO,
   OrderLineItemTaxLineDTO,
@@ -31,6 +32,8 @@ import {
   CreateOrderShippingMethodTaxLineDTO,
   UpdateOrderAddressDTO,
   UpdateOrderDTO,
+  UpdateOrderDetailDTO,
+  UpdateOrderDetailWithSelectorDTO,
   UpdateOrderLineItemDTO,
   UpdateOrderLineItemTaxLineDTO,
   UpdateOrderLineItemWithSelectorDTO,
@@ -61,8 +64,17 @@ export interface IOrderModuleService extends IModuleService {
   create(data: CreateOrderDTO[], sharedContext?: Context): Promise<OrderDTO[]>
   create(data: CreateOrderDTO, sharedContext?: Context): Promise<OrderDTO>
 
-  update(data: UpdateOrderDTO[], sharedContext?: Context): Promise<OrderDTO[]>
-  update(data: UpdateOrderDTO, sharedContext?: Context): Promise<OrderDTO>
+  update(data: UpdateOrderDTO[]): Promise<OrderDTO[]>
+  update(
+    orderId: string,
+    data: UpdateOrderDTO,
+    sharedContext?: Context
+  ): Promise<OrderDTO>
+  update(
+    selector: Partial<OrderDTO>,
+    data: UpdateOrderDTO,
+    sharedContext?: Context
+  ): Promise<OrderDTO[]>
 
   delete(orderIds: string[], sharedContext?: Context): Promise<void>
   delete(orderId: string, sharedContext?: Context): Promise<void>
@@ -138,6 +150,26 @@ export interface IOrderModuleService extends IModuleService {
     selector: Partial<OrderLineItemDTO>,
     sharedContext?: Context
   ): Promise<void>
+
+  updateOrderDetail(
+    selector: Partial<OrderDetailDTO>,
+    data: UpdateOrderDetailDTO,
+    sharedContext?: Context
+  ): Promise<OrderDetailDTO[]>
+  updateOrderDetail(
+    orderDetailId: string,
+    data: Partial<UpdateOrderDetailDTO>,
+    sharedContext?: Context
+  ): Promise<OrderDetailDTO>
+
+  updateOrderDetail(
+    orderDetailIdOrDataOrSelector:
+      | string
+      | UpdateOrderDetailWithSelectorDTO[]
+      | Partial<OrderDetailDTO>,
+    data?: UpdateOrderDetailDTO | Partial<UpdateOrderDetailDTO>,
+    sharedContext?: Context
+  ): Promise<OrderDetailDTO[] | OrderDetailDTO>
 
   listShippingMethods(
     filters: FilterableOrderShippingMethodProps,

@@ -30,7 +30,13 @@ const OrderIdIndex = createPsqlIndexStatementHelper({
   columns: "order_id",
 })
 
+const OrderVersionIndex = createPsqlIndexStatementHelper({
+  tableName: "order_shipping_method",
+  columns: ["order_id", "version"],
+})
+
 @Entity({ tableName: "order_shipping_method" })
+@OrderVersionIndex.MikroORMIndex()
 export default class ShippingMethod {
   @PrimaryKey({ columnType: "text" })
   id: string
@@ -42,9 +48,15 @@ export default class ShippingMethod {
   @ManyToOne({
     entity: () => Order,
     fieldName: "order_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    cascade: [Cascade.REMOVE],
   })
   order: Order
+
+  @Property({
+    columnType: "integer",
+    defaultRaw: "1",
+  })
+  version: number = 1
 
   @Property({ columnType: "text" })
   name: string

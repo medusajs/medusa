@@ -145,6 +145,7 @@ export class Migration20240219102530 extends Migration {
       CREATE TABLE IF NOT EXISTS "order_change" (
           "id" TEXT NOT NULL,
           "order_id" TEXT NOT NULL,
+          "version" INTEGER NOT NULL,
           "description" TEXT NULL,
           "status" text check (
               "status" IN (
@@ -176,6 +177,11 @@ export class Migration20240219102530 extends Migration {
           order_id
       );
 
+      CREATE INDEX IF NOT EXISTS "IDX_order_change_order_id_version" ON "order_change" (
+          order_id,
+          version
+      );
+
       CREATE INDEX IF NOT EXISTS "IDX_order_change_status" ON "order_change" (status);
 
       CREATE TABLE IF NOT EXISTS "order_change_action" (
@@ -195,7 +201,8 @@ export class Migration20240219102530 extends Migration {
           order_change_id
       );
 
-      CREATE INDEX IF NOT EXISTS "IDX_order_change_action_reference_id" ON "order_change_action" (
+      CREATE INDEX IF NOT EXISTS "IDX_order_change_action_reference_reference_id" ON "order_change_action" (
+          reference,
           reference_id
       );
 
@@ -218,7 +225,7 @@ export class Migration20240219102530 extends Migration {
           "raw_return_dismissed_quantity" JSONB NOT NULL,
           "written_off_quantity" NUMERIC NOT NULL,
           "raw_written_off_quantity" JSONB NOT NULL,
-          "summary" JSONB NOT NULL,
+          "metadata" JSONB NULL,
           "created_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           "updated_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           CONSTRAINT "order_detail_pkey" PRIMARY KEY ("id")
@@ -228,7 +235,8 @@ export class Migration20240219102530 extends Migration {
           order_id
       );
 
-      CREATE INDEX IF NOT EXISTS "IDX_order_detail_version" ON "order_detail" (
+      CREATE INDEX IF NOT EXISTS "IDX_order_detail_order_id_version" ON "order_detail" (
+          order_id,
           version
       );
 
@@ -309,6 +317,7 @@ export class Migration20240219102530 extends Migration {
       CREATE TABLE IF NOT EXISTS "order_shipping_method" (
           "id" TEXT NOT NULL,
           "order_id" TEXT NOT NULL,
+          "version" INTEGER NOT NULL DEFAULT 1,
           "name" TEXT NOT NULL,
           "description" JSONB NULL,
           "amount" NUMERIC NOT NULL,
@@ -324,6 +333,11 @@ export class Migration20240219102530 extends Migration {
 
       CREATE INDEX IF NOT EXISTS "IDX_order_shipping_method_order_id" ON "order_shipping_method" (
           order_id
+      );
+
+      CREATE INDEX IF NOT EXISTS "IDX_order_shipping_method_order_id_version" ON "order_shipping_method" (
+          order_id,
+          version
       );
 
       CREATE INDEX IF NOT EXISTS "IDX_order_shipping_method_shipping_option_id" ON "order_shipping_method" (
