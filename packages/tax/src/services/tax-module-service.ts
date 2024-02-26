@@ -151,33 +151,7 @@ export default class TaxModuleService<
     data: TaxTypes.CreateTaxRegionDTO | TaxTypes.CreateTaxRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const input = Array.isArray(data) ? data : [data]
-    const [defaultRates, regionData] = input.reduce(
-      (acc, region) => {
-        const { default_tax_rate, ...rest } = region
-        if (!default_tax_rate) {
-          acc[0].push(null)
-        } else {
-          acc[0].push({
-            ...default_tax_rate,
-            is_default: true,
-            created_by: region.created_by,
-          })
-        }
-        acc[1].push({
-          ...rest,
-          province_code: rest.province_code
-            ? this.normalizeRegionCodes(rest.province_code)
-            : null,
-          country_code: this.normalizeRegionCodes(rest.country_code),
-        })
-        return acc
-      },
-      [[], []] as [
-        (Omit<TaxTypes.CreateTaxRateDTO, "tax_region_id"> | null)[],
-        TaxTypes.CreateTaxRegionDTO[]
-      ]
-    )
+    const [defaultRates, regionData] = this.prepareTaxRegionInputForCreate(data)
 
     await this.verifyProvinceToCountryMatch(regionData, sharedContext)
 
@@ -291,6 +265,38 @@ export default class TaxModuleService<
     )
 
     return toReturn.flat()
+  }
+
+  private prepareTaxRegionInputForCreate(
+    data: TaxTypes.CreateTaxRegionDTO | TaxTypes.CreateTaxRegionDTO[]
+  ) {
+    const input = Array.isArray(data) ? data : [data]
+    return input.reduce(
+      (acc, region) => {
+        const { default_tax_rate, ...rest } = region
+        if (!default_tax_rate) {
+          acc[0].push(null)
+        } else {
+          acc[0].push({
+            ...default_tax_rate,
+            is_default: true,
+            created_by: region.created_by,
+          })
+        }
+        acc[1].push({
+          ...rest,
+          province_code: rest.province_code
+            ? this.normalizeRegionCodes(rest.province_code)
+            : null,
+          country_code: this.normalizeRegionCodes(rest.country_code),
+        })
+        return acc
+      },
+      [[], []] as [
+        (Omit<TaxTypes.CreateTaxRateDTO, "tax_region_id"> | null)[],
+        TaxTypes.CreateTaxRegionDTO[]
+      ]
+    )
   }
 
   private async verifyProvinceToCountryMatch(
