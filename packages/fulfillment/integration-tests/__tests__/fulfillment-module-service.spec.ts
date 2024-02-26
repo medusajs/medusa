@@ -287,30 +287,32 @@ moduleIntegrationTestRunner({
               },
             }
 
-            const shippingOption1 = await service.createShippingOptions({
-              name: "test-option",
-              price_type: "flat",
-              ...commonShippingOptionData,
-              rules: [
-                {
-                  attribute: "test-attribute",
-                  operator: "in",
-                  value: ["test-value"],
-                },
-              ],
-            })
-
-            const shippingOption2 = await service.createShippingOptions({
-              name: "test-option-2",
-              ...commonShippingOptionData,
-              rules: [
-                {
-                  attribute: "test-attribute2",
-                  operator: "eq",
-                  value: "test",
-                },
-              ],
-            })
+            const [shippingOption1] = await service.createShippingOptions([
+              {
+                name: "test-option",
+                price_type: "flat",
+                ...commonShippingOptionData,
+                rules: [
+                  {
+                    attribute: "test-attribute",
+                    operator: "in",
+                    value: ["test-value"],
+                  },
+                ],
+              },
+              {
+                name: "test-option-2",
+                price_type: "flat",
+                ...commonShippingOptionData,
+                rules: [
+                  {
+                    attribute: "test-attribute2",
+                    operator: "eq",
+                    value: "test",
+                  },
+                ],
+              },
+            ])
 
             const listedOptions = await service.listShippingOptions({
               name: shippingOption1.name,
@@ -359,7 +361,7 @@ moduleIntegrationTestRunner({
               },
             }
 
-            const shippingOption1 = await service.createShippingOptions({
+            const [shippingOption1, ,shippingOption3] = await service.createShippingOptions([{
               name: "test-option",
               price_type: "flat",
               ...commonShippingOptionData,
@@ -370,9 +372,7 @@ moduleIntegrationTestRunner({
                   value: ["test"],
                 },
               ],
-            })
-
-            const shippingOption2 = await service.createShippingOptions({
+            }, {
               name: "test-option-2",
               price_type: "calculated",
               ...commonShippingOptionData,
@@ -383,9 +383,7 @@ moduleIntegrationTestRunner({
                   value: "test",
                 },
               ],
-            })
-
-            const shippingOption3 = await service.createShippingOptions({
+            }, {
               name: "test-option-3",
               price_type: "calculated",
               ...commonShippingOptionData,
@@ -401,7 +399,7 @@ moduleIntegrationTestRunner({
                   value: ["test", "test2"],
                 },
               ],
-            })
+            }])
 
             let listedOptions = await service.listShippingOptions({
               context: {
