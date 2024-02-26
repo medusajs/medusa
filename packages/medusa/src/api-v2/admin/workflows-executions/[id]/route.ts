@@ -1,6 +1,7 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+
+import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const workflowEngineService: IWorkflowEngineService = req.scope.resolve(
