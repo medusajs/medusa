@@ -17,5 +17,15 @@ export const addToCartStep = createStep(
     const items = await cartService.addLineItems(data.items)
 
     return new StepResponse(items)
+  },
+  async (createdLineItems, { container }) => {
+    const cartService: ICartModuleService = container.resolve(
+      ModuleRegistrationName.CART
+    )
+    if (!createdLineItems?.length) {
+      return
+    }
+
+    await cartService.removeLineItems(createdLineItems.map((c) => c.id))
   }
 )

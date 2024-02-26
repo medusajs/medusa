@@ -382,7 +382,7 @@ describe("Carts workflows", () => {
       ])
     })
 
-    it("should throw if variant doesnt exist sets for variant exist", async () => {
+    it("should throw if variant does not exist", async () => {
       const cart = await cartModuleService.create({
         currency_code: "usd",
       })
