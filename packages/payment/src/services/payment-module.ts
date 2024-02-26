@@ -11,7 +11,6 @@ import {
   IPaymentModuleService,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-  PaymentActions,
   PaymentCollectionDTO,
   PaymentDTO,
   PaymentSessionDTO,
@@ -23,6 +22,7 @@ import {
   UpdatePaymentSessionDTO,
 } from "@medusajs/types"
 import {
+  PaymentActions,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,

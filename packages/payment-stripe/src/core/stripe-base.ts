@@ -9,11 +9,10 @@ import {
   PaymentProviderError,
   PaymentProviderSessionResponse,
   ProviderWebhookPayload,
-  WebhookActionData,
-  PaymentActions,
   WebhookActionResult,
 } from "@medusajs/types"
 import {
+  PaymentActions,
   AbstractPaymentProvider,
   isPaymentProviderError,
   MedusaError,
