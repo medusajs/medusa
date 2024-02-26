@@ -189,6 +189,42 @@ class DeepRecursiveEntity4 {
   entity1: DeepRecursiveEntity1
 }
 
+// Internal circular dependency
+
+@Entity()
+class InternalCircularDependencyEntity1 {
+  constructor(props: {
+    id: string
+    deleted_at: Date | null
+    parent?: InternalCircularDependencyEntity1
+  }) {
+    this.id = props.id
+    this.deleted_at = props.deleted_at
+
+    if (props.parent) {
+      this.parent = props.parent
+    }
+  }
+
+  @PrimaryKey()
+  id: string
+
+  @Property()
+  deleted_at: Date | null
+
+  @OneToMany(
+    () => InternalCircularDependencyEntity1,
+    (entity) => entity.parent,
+    {
+      cascade: ["soft-remove"] as any,
+    }
+  )
+  children = new Collection<InternalCircularDependencyEntity1>(this)
+
+  @ManyToOne(() => InternalCircularDependencyEntity1)
+  parent: InternalCircularDependencyEntity1
+}
+
 export {
   RecursiveEntity1,
   RecursiveEntity2,
@@ -198,4 +234,5 @@ export {
   DeepRecursiveEntity2,
   DeepRecursiveEntity3,
   DeepRecursiveEntity4,
+  InternalCircularDependencyEntity1,
 }

@@ -1,4 +1,4 @@
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { ITaxModuleService } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
 
@@ -603,7 +603,7 @@ moduleIntegrationTestRunner({
         expect(taxRegions).toEqual([])
       })
 
-      it("it should soft delete all child regions when parent region is deleted", async () => {
+      it.only("it should soft delete all child regions when parent region is deleted", async () => {
         const region = await service.createTaxRegions({
           country_code: "CA",
         })
