@@ -465,7 +465,7 @@ moduleIntegrationTestRunner({
                   currency_code: "usd",
                   amount: 100,
                   raw_amount: { value: "100", precision: 20 },
-                  provider_id: "system",
+                  provider_id: "pp_system_default",
                   data: {},
                   status: "authorized",
                   authorized_at: expect.any(Date),
