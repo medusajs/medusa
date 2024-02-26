@@ -24,7 +24,7 @@ export function computeActionForBudgetExceeded(
     return
   }
 
-  const campaignBudgetUsed = campaignBudget.used || 0
+  const campaignBudgetUsed = campaignBudget.used ?? 0
   const totalUsed =
     campaignBudget.type === CampaignBudgetType.SPEND
       ? campaignBudgetUsed + amount

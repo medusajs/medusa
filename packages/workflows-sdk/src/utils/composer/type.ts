@@ -55,7 +55,14 @@ export type WorkflowData<T = unknown> = (T extends Array<infer Item>
     }
   : T & WorkflowDataProperties<T>) &
   T &
-  WorkflowDataProperties<T>
+  WorkflowDataProperties<T> & {
+    config(
+      config: { name?: string } & Omit<
+        TransactionStepsDefinition,
+        "next" | "uuid" | "action"
+      >
+    ): WorkflowData<T>
+  }
 
 export type CreateWorkflowComposerContext = {
   hooks_: string[]
