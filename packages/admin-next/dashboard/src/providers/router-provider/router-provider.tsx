@@ -3,6 +3,7 @@ import type {
   AdminCustomerGroupsRes,
   AdminCustomersRes,
   AdminGiftCardsRes,
+  AdminOrdersRes,
   AdminProductsRes,
   AdminPublishableApiKeysRes,
   AdminRegionsRes,
@@ -87,12 +88,16 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () => import("../../routes/orders/order-list"),
               },
               {
                 path: ":id",
                 lazy: () => import("../../routes/orders/order-detail"),
+                handle: {
+                  crumb: (data: AdminOrdersRes) =>
+                    `Order #${data.order.display_id}`,
+                },
               },
             ],
           },

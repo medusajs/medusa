@@ -1,19 +1,28 @@
 import { useAdminOrder } from "medusa-react"
-import { useParams } from "react-router-dom"
+import { useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { OrderCustomerSection } from "./components/order-customer-section"
 import { OrderFulfillmentSection } from "./components/order-fulfillment-section"
 import { OrderGeneralSection } from "./components/order-general-section"
 import { OrderPaymentSection } from "./components/order-payment-section"
 import { OrderSummarySection } from "./components/order-summary-section"
+import { orderExpand } from "./constants"
+import { orderLoader } from "./loader"
 
 export const OrderDetail = () => {
+  const initialData = useLoaderData() as Awaited<ReturnType<typeof orderLoader>>
+
   const { id } = useParams()
 
-  const { order, isLoading, isError, error } = useAdminOrder(id!, {
-    expand:
-      "items,items.variant,items.variant.options,sales_channel,shipping_methods,shipping_methods.shipping_option,discounts,payments,customer,shipping_address,shipping_address.country,billing_address,billing_address.country,fulfillments,fulfillments.items",
-  })
+  const { order, isLoading, isError, error } = useAdminOrder(
+    id!,
+    {
+      expand: orderExpand,
+    },
+    {
+      initialData,
+    }
+  )
 
   if (isLoading || !order) {
     return <div>Loading...</div>
