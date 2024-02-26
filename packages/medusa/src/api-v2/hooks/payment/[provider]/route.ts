@@ -13,7 +13,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
     const event = {
       provider,
-      payload: { data: req.body, headers: req.headers },
+      payload: { data: req.body, rawData: req.rawBody, headers: req.headers },
     }
 
     const eventBus = req.scope.resolve("eventBusService")

@@ -358,7 +358,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     const signature = data.headers["stripe-signature"] as string
 
     return this.stripe_.webhooks.constructEvent(
-      data.data as string | Buffer,
+      data.rawData as string | Buffer,
       signature,
       this.config.webhookSecret
     )

@@ -36,9 +36,11 @@ class PaymentWebhookSubscriber {
    * TODO: consider moving this to a workflow
    */
   processEvent = async (data: ProviderWebhookPayload): Promise<void> => {
-    if ((data.payload.data as unknown as SerializedBuffer).type === "Buffer") {
-      data.payload.data = Buffer.from(
-        (data.payload.data as unknown as SerializedBuffer).data
+    if (
+      (data.payload.rawData as unknown as SerializedBuffer).type === "Buffer"
+    ) {
+      data.payload.rawData = Buffer.from(
+        (data.payload.rawData as unknown as SerializedBuffer).data
       )
     }
     await this.paymentModuleService_.processEvent(data)
