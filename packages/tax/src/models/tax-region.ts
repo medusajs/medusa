@@ -19,6 +19,7 @@ import {
   Cascade,
 } from "@mikro-orm/core"
 import TaxRate from "./tax-rate"
+import TaxProvider from "./tax-provider"
 
 type OptionalTaxRegionProps = DAL.SoftDeletableEntityDateColumns
 
@@ -32,7 +33,13 @@ const countryCodeProvinceIndexStatement = createPsqlIndexStatementHelper({
   unique: true,
 })
 
+const taxRegionProviderTopLevelCheckName = "CK_tax_region_provider_top_level"
 const taxRegionCountryTopLevelCheckName = "CK_tax_region_country_top_level"
+
+@Check({
+  name: taxRegionProviderTopLevelCheckName,
+  expression: `parent_id IS NULL OR provider_id IS NULL`,
+})
 @Check({
   name: taxRegionCountryTopLevelCheckName,
   expression: `parent_id IS NULL OR province_code IS NOT NULL`,
@@ -45,6 +52,13 @@ export default class TaxRegion {
 
   @PrimaryKey({ columnType: "text" })
   id!: string
+
+  @ManyToOne(() => TaxProvider, {
+    fieldName: "provider_id",
+    mapToPk: true,
+    nullable: true,
+  })
+  provider_id: string | null = null
 
   @Property({ columnType: "text" })
   country_code: string

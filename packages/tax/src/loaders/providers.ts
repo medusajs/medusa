@@ -9,9 +9,7 @@ const registrationFn = async (klass, container, pluginOptions) => {
   container.register({
     [`tp_${klass.identifier}`]: asFunction(
       (cradle) => new klass(cradle, pluginOptions),
-      {
-        lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-      }
+      { lifetime: klass.LIFE_TIME || Lifetime.SINGLETON }
     ),
   })
 
