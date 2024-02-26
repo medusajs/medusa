@@ -1,9 +1,9 @@
 import { CartDTO, CreateCartWorkflowInputDTO } from "@medusajs/types"
 import {
-  WorkflowData,
   createWorkflow,
   parallelize,
   transform,
+  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import {
   createCartsStep,
@@ -53,6 +53,7 @@ export const createCartWorkflow = createWorkflow(
 
     // TODO: Add line items
 
+    // @ts-ignore
     const cart = createCartsStep([cartInput])
 
     return cart[0]

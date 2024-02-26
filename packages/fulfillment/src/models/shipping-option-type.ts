@@ -48,12 +48,8 @@ export default class ShippingOptionType {
   @Property({ columnType: "text" })
   code: string
 
-  @Property({ columnType: "text" })
-  @ShippingOptionIdIndex.MikroORMIndex()
-  shipping_option_id: string
-
   @OneToOne(() => ShippingOption, (so) => so.type, {
-    persist: false,
+    type: "text",
   })
   shipping_option: ShippingOption
 
@@ -79,12 +75,10 @@ export default class ShippingOptionType {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "sotype")
-    this.shipping_option_id ??= this.shipping_option?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "sotype")
-    this.shipping_option_id ??= this.shipping_option?.id
   }
 }

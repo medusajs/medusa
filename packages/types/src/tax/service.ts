@@ -1,4 +1,5 @@
 import { FindConfig } from "../common"
+import { SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
@@ -8,6 +9,11 @@ import {
   TaxRegionDTO,
   TaxRateRuleDTO,
   FilterableTaxRateRuleProps,
+  TaxableItemDTO,
+  TaxCalculationContext,
+  ItemTaxLineDTO,
+  ShippingTaxLineDTO,
+  TaxableShippingDTO,
 } from "./common"
 import {
   CreateTaxRateRuleDTO,
@@ -44,9 +50,19 @@ export interface ITaxModuleService extends IModuleService {
   delete(taxRateId: string, sharedContext?: Context): Promise<void>
 
   createTaxRegions(
+    data: CreateTaxRegionDTO,
+    sharedContext?: Context
+  ): Promise<TaxRegionDTO>
+  createTaxRegions(
     data: CreateTaxRegionDTO[],
     sharedContext?: Context
   ): Promise<TaxRegionDTO[]>
+
+  deleteTaxRegions(
+    taxRegionIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  deleteTaxRegions(taxRegionId: string, sharedContext?: Context): Promise<void>
 
   listTaxRegions(
     filters?: FilterableTaxRegionProps,
@@ -55,13 +71,50 @@ export interface ITaxModuleService extends IModuleService {
   ): Promise<TaxRegionDTO[]>
 
   createTaxRateRules(
+    data: CreateTaxRateRuleDTO,
+    sharedContext?: Context
+  ): Promise<TaxRateRuleDTO>
+  createTaxRateRules(
     data: CreateTaxRateRuleDTO[],
     sharedContext?: Context
   ): Promise<TaxRateRuleDTO[]>
+
+  deleteTaxRateRules(
+    taxRateRulePair: { tax_rate_id: string; reference_id: string },
+    sharedContext?: Context
+  ): Promise<void>
+  deleteTaxRateRules(
+    taxRateRulePair: { tax_rate_id: string; reference_id: string }[],
+    sharedContext?: Context
+  ): Promise<void>
 
   listTaxRateRules(
     filters?: FilterableTaxRateRuleProps,
     config?: FindConfig<TaxRateRuleDTO>,
     sharedContext?: Context
   ): Promise<TaxRateRuleDTO[]>
+
+  getTaxLines(
+    item: (TaxableItemDTO | TaxableShippingDTO)[],
+    calculationContext: TaxCalculationContext,
+    sharedContext?: Context
+  ): Promise<(ItemTaxLineDTO | ShippingTaxLineDTO)[]>
+
+  softDelete<TReturnableLinkableKeys extends string = string>(
+    taxRateIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  softDeleteTaxRegions<TReturnableLinkableKeys extends string = string>(
+    taxRegionIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  softDeleteTaxRateRules<TReturnableLinkableKeys extends string = string>(
+    taxRateRulePairs: { tax_rate_id: string; reference_id: string }[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }
