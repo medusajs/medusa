@@ -166,6 +166,7 @@ export class Migration20240222170223 extends Migration {
       "promotion_id" TEXT NULL,
       "code" TEXT NULL,
       "amount" NUMERIC NOT NULL,
+      "raw_amount" JSONB NOT NULL,
       "provider_id" TEXT NULL,
       "metadata" JSONB NULL,
       "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
