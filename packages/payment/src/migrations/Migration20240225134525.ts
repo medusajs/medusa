@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS "payment_collection" (
     "id"                TEXT NOT NULL,
     "currency_code"     TEXT NOT NULL,
     "amount"            NUMERIC NOT NULL,
+    "raw_amount"        JSONB NOT NULL,
     "region_id"         TEXT NOT NULL,
     "created_at"        TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     "updated_at"        TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -28,6 +29,7 @@ CREATE INDEX IF NOT EXISTS "IDX_payment_collection_region_id" ON "payment_collec
 CREATE INDEX IF NOT EXISTS "IDX_payment_collection_deleted_at" ON "payment_collection" ("deleted_at");
 
 ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "completed_at" TIMESTAMPTZ NULL;
+ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
 
 CREATE TABLE IF NOT EXISTS "payment_method_token" (
     "id"                 TEXT NOT NULL,
@@ -38,13 +40,13 @@ CREATE TABLE IF NOT EXISTS "payment_method_token" (
     "description_detail" TEXT NULL,
     "metadata"           JSONB NULL,
     CONSTRAINT "payment_method_token_pkey" PRIMARY KEY ("id")
-);
+    );
 
-CREATE TABLE IF NOT EXISTS "payment_provider" (
-    "id"          TEXT NOT NULL,
-    "is_enabled"  BOOLEAN NOT NULL DEFAULT TRUE,
-    CONSTRAINT "payment_provider_pkey" PRIMARY KEY ("id")
-);
+    CREATE TABLE IF NOT EXISTS "payment_provider" (
+        "id"          TEXT NOT NULL,
+        "is_enabled"  BOOLEAN NOT NULL DEFAULT TRUE,
+        CONSTRAINT "payment_provider_pkey" PRIMARY KEY ("id")
+        );
 
 ALTER TABLE IF EXISTS "payment_provider" ADD COLUMN IF NOT EXISTS "is_enabled" BOOLEAN NOT NULL DEFAULT TRUE;
 
@@ -52,30 +54,31 @@ CREATE TABLE IF NOT EXISTS "payment_collection_payment_providers" (
     "payment_collection_id" TEXT NOT NULL,
     "payment_provider_id"   TEXT NOT NULL,
     CONSTRAINT "payment_collection_payment_providers_pkey" PRIMARY KEY ("payment_collection_id", "payment_provider_id")
-);
-
-CREATE TABLE IF NOT EXISTS "payment_session" (
-    "id"                   TEXT NOT NULL,
-    "currency_code"        TEXT NOT NULL,
-    "amount"               NUMERIC NOT NULL,
-    "raw_amount"           JSONB NOT NULL,
-    "provider_id"          TEXT NOT NULL,
-    "data"                 JSONB NOT NULL,
-    "status"               TEXT CHECK ("status" IN ('authorized', 'pending', 'requires_more', 'error', 'canceled')) NOT NULL DEFAULT 'pending',
-    "authorized_at"        TIMESTAMPTZ NULL,
-    "payment_collection_id" TEXT NOT NULL,
-    CONSTRAINT "payment_session_pkey" PRIMARY KEY ("id")
-);
-
+    );
+    
+    CREATE TABLE IF NOT EXISTS "payment_session" (
+        "id"                   TEXT NOT NULL,
+        "currency_code"        TEXT NOT NULL,
+        "amount"               NUMERIC NOT NULL,
+        "raw_amount"           JSONB NOT NULL,
+        "provider_id"          TEXT NOT NULL,
+        "data"                 JSONB NOT NULL,
+        "status"               TEXT CHECK ("status" IN ('authorized', 'pending', 'requires_more', 'error', 'canceled')) NOT NULL DEFAULT 'pending',
+        "authorized_at"        TIMESTAMPTZ NULL,
+        "payment_collection_id" TEXT NOT NULL,
+        CONSTRAINT "payment_session_pkey" PRIMARY KEY ("id")
+        );
+        
 ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "payment_collection_id" TEXT NOT NULL;
 ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "payment_authorized_at" TIMESTAMPTZ NULL;
+ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
 
 CREATE INDEX IF NOT EXISTS "IDX_payment_session_payment_collection_id" ON "payment_session" ("payment_collection_id");
 
 CREATE TABLE IF NOT EXISTS "payment" (
     "id"                   TEXT NOT NULL,
     "amount"               NUMERIC NOT NULL,
-    "authorized_amount"    NUMERIC NULL,
+    "raw_amount"           JSONB NOT NULL,
     "currency_code"        TEXT NOT NULL,
     "provider_id"          TEXT NOT NULL,
     "cart_id"              TEXT NULL,
@@ -91,11 +94,12 @@ CREATE TABLE IF NOT EXISTS "payment" (
     "payment_collection_id" TEXT NOT NULL,
     "session_id"           TEXT NOT NULL,
     CONSTRAINT "payment_pkey" PRIMARY KEY ("id")
-);
-
+    );
+    
 ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
 ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "payment_collection_id" TEXT NOT NULL;
 ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "provider_id" TEXT NOT NULL;
+ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
 
 CREATE INDEX IF NOT EXISTS "IDX_payment_deleted_at" ON "payment" ("deleted_at");
 CREATE INDEX IF NOT EXISTS "IDX_payment_payment_collection_id" ON "payment" ("payment_collection_id");
@@ -104,22 +108,28 @@ CREATE INDEX IF NOT EXISTS "IDX_payment_provider_id" ON "payment" ("provider_id"
 CREATE TABLE IF NOT EXISTS "capture" (
     "id"          TEXT NOT NULL,
     "amount"      NUMERIC NOT NULL,
+    "raw_amount"  JSONB NOT NULL,
     "payment_id"  TEXT NOT NULL,
     "created_at"  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     "created_by"  TEXT NULL,
     CONSTRAINT "capture_pkey" PRIMARY KEY ("id")
 );
 
+ALTER TABLE IF EXISTS "capture" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
+
 CREATE INDEX IF NOT EXISTS "IDX_capture_payment_id" ON "capture" ("payment_id");
 
 CREATE TABLE IF NOT EXISTS "refund" (
     "id"          TEXT NOT NULL,
     "amount"      NUMERIC NOT NULL,
+    "raw_amount"      JSONB NOT NULL,
     "payment_id"  TEXT NOT NULL,
     "created_at"  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     "created_by"  TEXT NULL,
     CONSTRAINT "refund_pkey" PRIMARY KEY ("id")
 );
+
+ALTER TABLE IF EXISTS "refund" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
 
 CREATE INDEX IF NOT EXISTS "IDX_refund_payment_id" ON "refund" ("payment_id");
 

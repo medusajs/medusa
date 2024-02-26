@@ -1,3 +1,4 @@
+import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Cascade,
@@ -12,17 +13,17 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 
 import {
+  BigNumber,
   DALUtils,
   generateEntityId,
-  optionalNumericSerializer,
-  PaymentCollectionStatus,
+  MikroOrmBigNumberProperty,
+  PaymentCollectionStatus
 } from "@medusajs/utils"
+import Payment from "./payment"
 import PaymentProvider from "./payment-provider"
 import PaymentSession from "./payment-session"
-import Payment from "./payment"
 
 type OptionalPaymentCollectionProps = "status" | DAL.EntityDateColumns
 
@@ -37,11 +38,11 @@ export default class PaymentCollection {
   @Property({ columnType: "text" })
   currency_code: string
 
-  @Property({
-    columnType: "numeric",
-    serializer: Number,
-  })
-  amount: number
+  @MikroOrmBigNumberProperty()
+  amount: BigNumber | number
+
+  @Property({ columnType: "jsonb" })
+  raw_amount: BigNumberRawValue
 
   // TODO: make this computed properties
 

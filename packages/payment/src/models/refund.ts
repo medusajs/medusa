@@ -7,7 +7,8 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-import { generateEntityId } from "@medusajs/utils"
+import { BigNumberRawValue } from "@medusajs/types"
+import { MikroOrmBigNumberProperty, generateEntityId } from "@medusajs/utils"
 import Payment from "./payment"
 
 @Entity({ tableName: "refund" })
@@ -15,11 +16,11 @@ export default class Refund {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({
-    columnType: "numeric",
-    serializer: Number,
-  })
+  @MikroOrmBigNumberProperty()
   amount: number
+
+  @Property({ columnType: "jsonb" })
+  raw_amount: BigNumberRawValue
 
   @ManyToOne(() => Payment, {
     onDelete: "cascade",
