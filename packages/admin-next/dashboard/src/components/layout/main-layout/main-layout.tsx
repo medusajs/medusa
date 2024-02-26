@@ -10,6 +10,7 @@ import {
 } from "@medusajs/icons"
 import { Avatar, Text } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
+import { useAdminStore } from "medusa-react"
 import { useTranslation } from "react-i18next"
 
 import { Skeleton } from "../../common/skeleton"
@@ -44,9 +45,7 @@ const MainSidebar = () => {
 }
 
 const Header = () => {
-  // TODO: renable this when store module is done with endpoints
-  // const { store, isError, error } = useAdminStore()
-  const { store, isError, error } = {}
+  const { store, isError, error } = useAdminStore()
 
   const name = store?.name
   const fallback = store?.name?.slice(0, 1).toUpperCase()
@@ -128,14 +127,8 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
     },
     {
       icon: <ReceiptPercent />,
-      label: t("promotions.domain"),
-      to: "/promotions",
-      items: [
-        {
-          label: t("campaigns.domain"),
-          to: "/campaigns",
-        },
-      ],
+      label: t("discounts.domain"),
+      to: "/discounts",
     },
     {
       icon: <CurrencyDollar />,

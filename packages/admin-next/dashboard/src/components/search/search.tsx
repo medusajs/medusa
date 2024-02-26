@@ -61,9 +61,6 @@ const useLinks = (): CommandGroupProps[] => {
             label: t("products.domain"),
           },
           {
-            label: t("campaigns.domain"),
-          },
-          {
             label: t("categories.domain"),
           },
           {
@@ -85,7 +82,7 @@ const useLinks = (): CommandGroupProps[] => {
             label: t("customerGroups.domain"),
           },
           {
-            label: t("promotions.domain"),
+            label: t("discounts.domain"),
           },
           {
             label: t("pricing.domain"),

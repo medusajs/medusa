@@ -108,9 +108,6 @@
     "removeProductsWarning_one": "You are about to remove {{count}} product from the collection. This action cannot be undone.",
     "removeProductsWarning_other": "You are about to remove {{count}} products from the collection. This action cannot be undone."
   },
-  "campaigns": {
-    "domain": "Campaigns"
-  },
   "categories": {
     "domain": "Categories"
   },
@@ -189,8 +186,8 @@
   "draftOrders": {
     "domain": "Draft Orders"
   },
-  "promotions": {
-    "domain": "Promotions"
+  "discounts": {
+    "domain": "Discounts"
   },
   "pricing": {
     "domain": "Pricing"

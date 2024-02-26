@@ -1,12 +1,11 @@
-import * as z from "zod"
-
+import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Input, Text } from "@medusajs/ui"
+import { useAdminLogin } from "medusa-react"
+import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import { Link, useLocation, useNavigate } from "react-router-dom"
+import * as z from "zod"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useAdminV2Login } from "medusa-react"
-import { useForm } from "react-hook-form"
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
 import { isAxiosError } from "../../lib/is-axios-error"
@@ -31,7 +30,7 @@ export const Login = () => {
     },
   })
 
-  const { mutateAsync, isLoading } = useAdminV2Login({
+  const { mutateAsync, isLoading } = useAdminLogin({
     retry: false,
   })
 

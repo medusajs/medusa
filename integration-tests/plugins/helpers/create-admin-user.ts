@@ -1,13 +1,12 @@
 import { IAuthModuleService } from "@medusajs/types"
-import { MedusaContainer } from "medusa-core-utils"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import adminSeeder from "../../helpers/admin-seeder"
-import { getContainer } from "../../environment-helpers/use-container"
 import jwt from "jsonwebtoken"
+import { getContainer } from "../../environment-helpers/use-container"
 
 export const createAdminUser = async (dbConnection, adminHeaders) => {
   await adminSeeder(dbConnection)
-  const appContainer = getContainer()! as MedusaContainer
+  const appContainer = getContainer()!
 
   const authModule: IAuthModuleService = appContainer.resolve(
     ModuleRegistrationName.AUTH

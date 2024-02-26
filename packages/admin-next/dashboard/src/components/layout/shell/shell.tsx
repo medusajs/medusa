@@ -1,5 +1,3 @@
-import * as Dialog from "@radix-ui/react-dialog"
-
 import {
   ArrowRightOnRectangle,
   BellAlert,
@@ -12,7 +10,9 @@ import {
   User as UserIcon,
 } from "@medusajs/icons"
 import { Avatar, DropdownMenu, IconButton, Kbd, Text, clx } from "@medusajs/ui"
-import { useAdminDeleteSession } from "medusa-react"
+import * as Dialog from "@radix-ui/react-dialog"
+import { useAdminDeleteSession, useAdminGetSession } from "medusa-react"
+import { PropsWithChildren } from "react"
 import {
   Link,
   Outlet,
@@ -22,12 +22,12 @@ import {
   useNavigate,
 } from "react-router-dom"
 
-import { PropsWithChildren } from "react"
+import { Skeleton } from "../../common/skeleton"
+
 import { queryClient } from "../../../lib/medusa"
 import { useSearch } from "../../../providers/search-provider"
 import { useSidebar } from "../../../providers/sidebar-provider"
 import { useTheme } from "../../../providers/theme-provider"
-import { Skeleton } from "../../common/skeleton"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   return (
@@ -116,11 +116,7 @@ const Breadcrumbs = () => {
 }
 
 const UserBadge = () => {
-  // const { user, isLoading, isError, error } = useAdminV2GetSession()
-  const user = { first_name: "John", last_name: "Doe", email: "tet" }
-  const isLoading = false
-  const isError = false
-  const error = new Error("test")
+  const { user, isLoading, isError, error } = useAdminGetSession()
 
   const name = [user?.first_name, user?.last_name].filter(Boolean).join(" ")
   const displayName = name || user?.email

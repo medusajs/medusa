@@ -7,7 +7,6 @@ import { EditProfileForm } from "./components/edit-profile-form/edit-profile-for
 export const ProfileEdit = () => {
   const { user, isLoading, isError, error } = useAdminGetSession()
 
-
   const { t } = useTranslation()
 
   if (isError) {

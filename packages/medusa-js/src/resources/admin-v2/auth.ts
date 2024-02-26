@@ -7,6 +7,8 @@ class AdminV2AuthResource extends BaseResource {
     payload: AdminPostAuthReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminAuthRes> {
+    // TODO: The authentication should be linked to a valid admin user, we need an endpoint that
+    // does that and checks if the user has the scopes for admin auth.
     const path = `/auth/admin/emailpass`
 
     return this.client.request("POST", path, payload, {}, customHeaders)

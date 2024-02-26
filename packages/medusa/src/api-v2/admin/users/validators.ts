@@ -1,12 +1,11 @@
+import { Type } from "class-transformer"
+import { IsEmail, IsOptional, IsString, ValidateNested } from "class-validator"
 import {
   DateComparisonOperator,
   FindParams,
   extendedFindParamsMixin,
 } from "../../../types/common"
-import { IsEmail, IsOptional, IsString, ValidateNested } from "class-validator"
-
 import { IsType } from "../../../utils"
-import { Type } from "class-transformer"
 
 export class AdminGetUsersUserParams extends FindParams {}
 

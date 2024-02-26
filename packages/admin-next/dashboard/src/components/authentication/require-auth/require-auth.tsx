@@ -1,12 +1,12 @@
 import { Spinner } from "@medusajs/icons"
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 
-import { useAdminV2GetSession } from "medusa-react"
+import { useAdminGetSession } from "medusa-react"
 import { SearchProvider } from "../../../providers/search-provider"
 import { SidebarProvider } from "../../../providers/sidebar-provider"
 
 export const ProtectedRoute = () => {
-  const { user, isLoading } = useAdminV2GetSession()
+  const { user, isLoading } = useAdminGetSession()
   const location = useLocation()
 
   if (isLoading) {

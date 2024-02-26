@@ -1,13 +1,13 @@
 import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
-import * as QueryConfig from "./query-config"
 import {
-  StoreGetCustomersMeAddressesParams,
-  StoreGetCustomersMeParams,
-  StorePostCustomersMeAddressesAddressReq,
-  StorePostCustomersMeAddressesReq,
   StorePostCustomersReq,
+  StoreGetCustomersMeParams,
+  StorePostCustomersMeAddressesReq,
+  StorePostCustomersMeAddressesAddressReq,
+  StoreGetCustomersMeAddressesParams,
 } from "./validators"
+import * as QueryConfig from "./query-config"
 
 import { authenticate } from "../../../utils/authenticate-middleware"
 
@@ -15,9 +15,7 @@ export const storeCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "ALL",
     matcher: "/store/customers*",
-    middlewares: [
-      authenticate("store", ["session", "bearer"], { allowUnregistered: true }),
-    ],
+    middlewares: [authenticate("store", ["session", "bearer"])],
   },
   {
     method: ["POST"],
