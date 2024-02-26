@@ -1,17 +1,17 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Currency, MoneyAmount } from "@models"
+import { initModules } from "medusa-test-utils"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
-import { MikroOrmWrapper } from "../../../utils"
-import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
-import { createPriceSets } from "../../../__fixtures__/price-set"
-import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
+import { createPriceSets } from "../../../__fixtures__/price-set"
+import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
 import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
+import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { MikroOrmWrapper } from "../../../utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
-import { Modules } from "@medusajs/modules-sdk"
-import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -102,7 +102,6 @@ describe("PricingModule Service - MoneyAmount", () => {
           id: "money-amount-USD",
           amount: null,
           min_quantity: "1",
-          currency_code: "USD",
           currency: {
             code: "USD",
           },

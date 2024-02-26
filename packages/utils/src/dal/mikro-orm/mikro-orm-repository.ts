@@ -19,6 +19,7 @@ import {
   EntityName,
   FilterQuery as MikroFilterQuery,
 } from "@mikro-orm/core/typings"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { isString } from "../../common"
 import {
   InjectTransactionManager,
@@ -30,7 +31,6 @@ import {
   transactionWrapper,
 } from "../utils"
 import { mikroOrmSerializer, mikroOrmUpdateDeletedAtRecursively } from "./utils"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class MikroOrmBase<T = any> {
   readonly manager_: any
@@ -304,10 +304,7 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       findOptions_.options ??= {}
 
       if (!("strategy" in findOptions_.options)) {
-        if (
-          findOptions_.options.limit != null ||
-          findOptions_.options.limit != null
-        ) {
+        if (findOptions_.options.limit != null || findOptions_.options.offset) {
           Object.assign(findOptions_.options, {
             strategy: LoadStrategy.SELECT_IN,
           })

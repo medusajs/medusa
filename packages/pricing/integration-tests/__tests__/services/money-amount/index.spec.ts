@@ -3,12 +3,12 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Currency, MoneyAmount } from "@models"
 import { MoneyAmountService } from "@services"
 
-import { createCurrencies } from "../../../__fixtures__/currency"
-import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
-import { MikroOrmWrapper } from "../../../utils"
 import { createMedusaContainer } from "@medusajs/utils"
 import { asValue } from "awilix"
 import ContainerLoader from "../../../../src/loaders/container"
+import { createCurrencies } from "../../../__fixtures__/currency"
+import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
+import { MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 
@@ -91,7 +91,6 @@ describe("MoneyAmount Service", () => {
           id: "money-amount-USD",
           amount: 500,
           min_quantity: "1",
-          currency_code: "USD",
           currency: {
             code: "USD",
           },

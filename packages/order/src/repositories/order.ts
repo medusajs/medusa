@@ -19,10 +19,7 @@ export class OrderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Orde
     findOptions_.where ??= {}
 
     if (!("strategy" in findOptions_.options)) {
-      if (
-        findOptions_.options.limit != null ||
-        findOptions_.options.limit != null
-      ) {
+      if (findOptions_.options.limit != null || findOptions_.options.offset) {
         Object.assign(findOptions_.options, {
           strategy: LoadStrategy.SELECT_IN,
         })
