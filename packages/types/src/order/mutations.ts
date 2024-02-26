@@ -1,3 +1,4 @@
+import { BigNumberInput } from "../totals"
 import { OrderLineItemDTO } from "./common"
 
 /** ADDRESS START */
@@ -63,7 +64,7 @@ export interface UpdateOrderDTO {
 /** ADJUSTMENT START */
 export interface CreateOrderAdjustmentDTO {
   code: string
-  amount: number
+  amount: BigNumberInput
   description?: string
   promotion_id?: string
   provider_id?: string
@@ -72,7 +73,7 @@ export interface CreateOrderAdjustmentDTO {
 export interface UpdateOrderAdjustmentDTO {
   id: string
   code?: string
-  amount: number
+  amount: BigNumberInput
   description?: string
   promotion_id?: string
   provider_id?: string
@@ -92,7 +93,7 @@ export interface UpsertOrderLineItemAdjustmentDTO {
   id?: string
   item_id: string
   code?: string
-  amount?: number
+  amount?: BigNumberInput
   description?: string
   promotion_id?: string
   provider_id?: string
@@ -106,7 +107,7 @@ export interface CreateOrderTaxLineDTO {
   description?: string
   tax_rate_id?: string
   code: string
-  rate: number
+  rate: BigNumberInput
   provider_id?: string
 }
 
@@ -115,7 +116,7 @@ export interface UpdateOrderTaxLineDTO {
   description?: string
   tax_rate_id?: string
   code?: string
-  rate?: number
+  rate?: BigNumberInput
   provider_id?: string
 }
 
@@ -139,7 +140,7 @@ export interface CreateOrderLineItemDTO {
 
   order_id?: string
 
-  quantity: number
+  quantity: BigNumberInput
 
   product_id?: string
   product_title?: string
@@ -159,8 +160,8 @@ export interface CreateOrderLineItemDTO {
   is_discountable?: boolean
   is_tax_inclusive?: boolean
 
-  compare_at_unit_price?: number
-  unit_price: number | string
+  compare_at_unit_price?: BigNumberInput
+  unit_price: BigNumberInput
 
   tax_lines?: CreateOrderTaxLineDTO[]
   adjustments?: CreateOrderAdjustmentDTO[]
@@ -183,8 +184,8 @@ export interface UpdateOrderLineItemDTO
   id: string
 
   title?: string
-  quantity?: number
-  unit_price?: number
+  quantity?: BigNumberInput
+  unit_price?: BigNumberInput
 
   tax_lines?: UpdateOrderTaxLineDTO[] | CreateOrderTaxLineDTO[]
   adjustments?: UpdateOrderAdjustmentDTO[] | CreateOrderAdjustmentDTO[]
@@ -197,7 +198,7 @@ export interface UpdateOrderLineItemDTO
 export interface CreateOrderShippingMethodDTO {
   name: string
   order_id: string
-  amount: number
+  amount: BigNumberInput
   data?: Record<string, unknown>
   tax_lines?: CreateOrderTaxLineDTO[]
   adjustments?: CreateOrderAdjustmentDTO[]
@@ -205,7 +206,7 @@ export interface CreateOrderShippingMethodDTO {
 
 export interface CreateOrderShippingMethodForSingleOrderDTO {
   name: string
-  amount: number
+  amount: BigNumberInput
   data?: Record<string, unknown>
   tax_lines?: CreateOrderTaxLineDTO[]
   adjustments?: CreateOrderAdjustmentDTO[]
@@ -214,7 +215,7 @@ export interface CreateOrderShippingMethodForSingleOrderDTO {
 export interface UpdateOrderShippingMethodDTO {
   id: string
   name?: string
-  amount?: number
+  amount?: BigNumberInput
   data?: Record<string, unknown>
   tax_lines?: UpdateOrderTaxLineDTO[] | CreateOrderTaxLineDTO[]
   adjustments?: CreateOrderAdjustmentDTO[] | UpdateOrderAdjustmentDTO[]
@@ -223,7 +224,7 @@ export interface UpdateOrderShippingMethodDTO {
 export interface CreateOrderShippingMethodAdjustmentDTO {
   shipping_method_id: string
   code: string
-  amount: number
+  amount: BigNumberInput
   description?: string
   promotion_id?: string
   provider_id?: string
@@ -232,10 +233,86 @@ export interface CreateOrderShippingMethodAdjustmentDTO {
 export interface UpdateOrderShippingMethodAdjustmentDTO {
   id: string
   code?: string
-  amount?: number
+  amount?: BigNumberInput
   description?: string
   promotion_id?: string
   provider_id?: string
 }
 
 /** SHIPPING METHODS END */
+
+/** ORDER CHANGE START */
+
+export interface CreateOrderChangeDTO {
+  order_id: string
+  status: string
+  description?: string
+  internal_note?: string
+  requested_by?: string
+  requested_at?: Date
+  confirmed_by?: string
+  confirmed_at?: Date
+  declined_by?: string
+  declined_reason?: string
+  declined_at?: Date
+  canceled_by?: string
+  metadata?: Record<string, unknown>
+}
+
+export interface UpdateOrderChangeDTO {
+  id: string
+  status?: string
+  description?: string
+  internal_note?: string
+  requested_by?: string
+  requested_at?: Date
+  confirmed_by?: string
+  confirmed_at?: Date
+  declined_by?: string
+  declined_reason?: string
+  declined_at?: Date
+  canceled_by?: string
+  metadata?: Record<string, unknown>
+}
+
+/** ORDER CHANGE END */
+
+/** ORDER CHANGE ACTION START */
+
+export interface CreateOrderChangeActionDTO {
+  order_change_id: string
+  reference: string
+  reference_id: string
+  action: Record<string, unknown>
+  internal_note?: string
+  metadata?: Record<string, unknown>
+}
+
+export interface UpdateOrderChangeActionDTO {
+  id: string
+  reference?: string
+  reference_id?: string
+  action?: Record<string, unknown>
+  internal_note?: string
+  metadata?: Record<string, unknown>
+}
+
+/** ORDER TRANSACTION START */
+
+export interface CreateOrderTransactionDTO {
+  order_id: string
+  amount: BigNumberInput
+  currency_code: string
+  reference?: string
+  reference_id?: string
+  metadata?: Record<string, unknown>
+}
+
+export interface UpdateOrderTransactionDTO {
+  id: string
+  amount?: BigNumberInput
+  currency_code?: string
+  reference?: string
+  reference_id?: string
+  metadata?: Record<string, unknown>
+}

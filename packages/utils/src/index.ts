@@ -19,5 +19,7 @@ export * from "./search"
 export * from "./shipping"
 export * from "./totals"
 export * from "./totals/big-number"
+export * from "./user"
+export * from "./api-key"
 
 export const MedusaModuleType = Symbol.for("MedusaModule")

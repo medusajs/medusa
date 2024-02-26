@@ -1,14 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Product, ProductCollection } from "@medusajs/medusa"
-import {
-  Button,
-  Checkbox,
-  FocusModal,
-  Hint,
-  Table,
-  Tooltip,
-  clx,
-} from "@medusajs/ui"
+import { Button, Checkbox, Hint, Table, Tooltip, clx } from "@medusajs/ui"
 import {
   PaginationState,
   RowSelectionState,
@@ -30,7 +22,6 @@ import {
   NoRecords,
   NoResults,
 } from "../../../../../components/common/empty-table-content"
-import { Form } from "../../../../../components/common/form"
 import {
   ProductAvailabilityCell,
   ProductCollectionCell,
@@ -41,14 +32,16 @@ import {
 import { OrderBy } from "../../../../../components/filtering/order-by"
 import { Query } from "../../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 import { useHandleTableScroll } from "../../../../../hooks/use-handle-table-scroll"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 import { queryClient } from "../../../../../lib/medusa"
 
 type AddProductsToCollectionFormProps = {
   collection: ProductCollection
-  subscribe: (state: boolean) => void
-  onSuccessfulSubmit: () => void
 }
 
 const AddProductsToSalesChannelSchema = zod.object({
@@ -59,10 +52,9 @@ const PAGE_SIZE = 50
 
 export const AddProductsToCollectionForm = ({
   collection,
-  subscribe,
-  onSuccessfulSubmit,
 }: AddProductsToCollectionFormProps) => {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof AddProductsToSalesChannelSchema>>({
     defaultValues: {
@@ -71,13 +63,7 @@ export const AddProductsToCollectionForm = ({
     resolver: zodResolver(AddProductsToSalesChannelSchema),
   })
 
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
+  const { setValue } = form
 
   const { mutateAsync, isLoading: isMutating } =
     useAdminAddProductsToCollection(collection.id)
@@ -98,11 +84,15 @@ export const AddProductsToCollectionForm = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   useEffect(() => {
-    form.setValue(
+    setValue(
       "product_ids",
-      Object.keys(rowSelection).filter((k) => rowSelection[k])
+      Object.keys(rowSelection).filter((k) => rowSelection[k]),
+      {
+        shouldDirty: true,
+        shouldTouch: true,
+      }
     )
-  }, [rowSelection])
+  }, [rowSelection, setValue])
 
   const params = useQueryParams(["q", "order"])
 
@@ -151,7 +141,7 @@ export const AddProductsToCollectionForm = ({
            * determine if they are added to the collection or not.
            */
           queryClient.invalidateQueries(adminProductKeys.lists())
-          onSuccessfulSubmit()
+          handleSuccess()
         },
       }
     )
@@ -169,29 +159,29 @@ export const AddProductsToCollectionForm = ({
   }
 
   return (
-    <Form {...form}>
+    <RouteFocusModal.Form form={form}>
       <form
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
-        <FocusModal.Header>
+        <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
             {form.formState.errors.product_ids && (
               <Hint variant="error">
                 {form.formState.errors.product_ids.message}
               </Hint>
             )}
-            <FocusModal.Close asChild>
+            <RouteFocusModal.Close asChild>
               <Button size="small" variant="secondary">
                 {t("actions.cancel")}
               </Button>
-            </FocusModal.Close>
+            </RouteFocusModal.Close>
             <Button size="small" type="submit" isLoading={isMutating}>
               {t("actions.save")}
             </Button>
           </div>
-        </FocusModal.Header>
-        <FocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
+        </RouteFocusModal.Header>
+        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
           {!noRecords && (
             <div className="flex w-full items-center justify-between px-6 py-4">
               <div></div>
@@ -291,9 +281,9 @@ export const AddProductsToCollectionForm = ({
               {/* TODO: fix this, and add NoRecords as well */}
             </div>
           )}
-        </FocusModal.Body>
+        </RouteFocusModal.Body>
       </form>
-    </Form>
+    </RouteFocusModal.Form>
   )
 }
 

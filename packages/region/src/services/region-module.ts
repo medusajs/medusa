@@ -10,25 +10,26 @@ import {
   RegionCountryDTO,
   RegionCurrencyDTO,
   RegionDTO,
-  UpdatableRegionFields,
   UpdateRegionDTO,
+  UpsertRegionDTO,
 } from "@medusajs/types"
 import {
   arrayDifference,
   InjectManager,
   InjectTransactionManager,
-  isObject,
   isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   promiseAll,
+  DefaultsUtils,
+  removeUndefined,
+  getDuplicates,
 } from "@medusajs/utils"
 
 import { Country, Currency, Region } from "@models"
 
-import { DefaultsUtils } from "@medusajs/utils"
-import { CreateCountryDTO, CreateCurrencyDTO } from "@types"
+import { CreateCountryDTO, CreateCurrencyDTO, UpdateRegionInput } from "@types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 const COUNTRIES_LIMIT = 1000
@@ -141,54 +142,64 @@ export default class RegionModuleService<
     return await this.regionService_.create(normalizedDbRegions, sharedContext)
   }
 
-  async update(
-    selector: FilterableRegionProps,
-    data: UpdatableRegionFields,
+  async upsert(
+    data: UpsertRegionDTO[],
     sharedContext?: Context
   ): Promise<RegionDTO[]>
-  async update(
-    regionId: string,
-    data: UpdatableRegionFields,
+  async upsert(
+    data: UpsertRegionDTO,
     sharedContext?: Context
   ): Promise<RegionDTO>
-  async update(data: UpdateRegionDTO[]): Promise<RegionDTO[]>
-  @InjectManager("baseRepository_")
-  async update(
-    idOrSelectorOrData: string | FilterableRegionProps | UpdateRegionDTO[],
-    data?: UpdatableRegionFields,
+  @InjectTransactionManager("baseRepository_")
+  async upsert(
+    data: UpsertRegionDTO | UpsertRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<RegionDTO | RegionDTO[]> {
-    const updateResult = await this.update_(
-      idOrSelectorOrData,
-      data,
-      sharedContext
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter(
+      (region): region is UpdateRegionInput => !!region.id
+    )
+    const forCreate = input.filter(
+      (region): region is CreateRegionDTO => !region.id
     )
 
-    const regions = await this.baseRepository_.serialize<
-      RegionDTO[] | RegionDTO
-    >(updateResult)
+    const operations: Promise<Region[]>[] = []
 
-    return isString(idOrSelectorOrData) ? regions[0] : regions
+    if (forCreate.length) {
+      operations.push(this.create_(forCreate, sharedContext))
+    }
+    if (forUpdate.length) {
+      operations.push(this.update_(forUpdate, sharedContext))
+    }
+
+    const result = (await promiseAll(operations)).flat()
+    return await this.baseRepository_.serialize<RegionDTO[] | RegionDTO>(
+      Array.isArray(data) ? result : result[0]
+    )
   }
 
-  @InjectTransactionManager("baseRepository_")
-  protected async update_(
-    idOrSelectorOrData: string | FilterableRegionProps | UpdateRegionDTO[],
-    data?: UpdatableRegionFields,
+  async update(
+    id: string,
+    data: UpdateRegionDTO,
+    sharedContext?: Context
+  ): Promise<RegionDTO>
+  async update(
+    selector: FilterableRegionProps,
+    data: UpdateRegionDTO,
+    sharedContext?: Context
+  ): Promise<RegionDTO[]>
+  @InjectManager("baseRepository_")
+  async update(
+    idOrSelector: string | FilterableRegionProps,
+    data: UpdateRegionDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<Region[]> {
-    let normalizedInput: UpdateRegionDTO[] = []
-    if (isString(idOrSelectorOrData)) {
-      normalizedInput = [{ id: idOrSelectorOrData, ...data }]
-    }
-
-    if (Array.isArray(idOrSelectorOrData)) {
-      normalizedInput = idOrSelectorOrData
-    }
-
-    if (isObject(idOrSelectorOrData)) {
+  ): Promise<RegionDTO | RegionDTO[]> {
+    let normalizedInput: UpdateRegionInput[] = []
+    if (isString(idOrSelector)) {
+      normalizedInput = [{ id: idOrSelector, ...data }]
+    } else {
       const regions = await this.regionService_.list(
-        idOrSelectorOrData,
+        idOrSelector,
         {},
         sharedContext
       )
@@ -198,7 +209,22 @@ export default class RegionModuleService<
         ...data,
       }))
     }
-    normalizedInput = RegionModuleService.normalizeInput(normalizedInput)
+
+    const updateResult = await this.update_(normalizedInput, sharedContext)
+
+    const regions = await this.baseRepository_.serialize<
+      RegionDTO[] | RegionDTO
+    >(updateResult)
+
+    return isString(idOrSelector) ? regions[0] : regions
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async update_(
+    data: UpdateRegionInput[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<Region[]> {
+    const normalizedInput = RegionModuleService.normalizeInput(data)
 
     // If countries are being updated for a region, first make previously set countries' region to null to get to a clean slate.
     // Somewhat less efficient, but region operations will be very rare, so it is better to go with a simple solution
@@ -243,9 +269,7 @@ export default class RegionModuleService<
     return await this.regionService_.update(normalizedDbRegions, sharedContext)
   }
 
-  private static normalizeInput<T extends UpdatableRegionFields>(
-    regions: T[]
-  ): T[] {
+  private static normalizeInput<T extends UpdateRegionDTO>(regions: T[]): T[] {
     return regions.map((region) =>
       removeUndefined({
         ...region,
@@ -304,7 +328,7 @@ export default class RegionModuleService<
     if (uniqueCountries.length !== countries.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Countries with codes: "${getDuplicateEntries(countries).join(
+        `Countries with codes: "${getDuplicates(countries).join(
           ", "
         )}" are already assigned to a region`
       )
@@ -412,26 +436,4 @@ export default class RegionModuleService<
       await this.currencyService_.create(currsToCreate, sharedContext)
     }
   }
-}
-
-// microORM complains if undefined fields are present in the passed data object
-const removeUndefined = <T extends Record<string, any>>(obj: T): T => {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([_, v]) => v !== undefined)
-  ) as T
-}
-
-const getDuplicateEntries = (collection: string[]): string[] => {
-  const uniqueElements = new Set()
-  const duplicates: string[] = []
-
-  collection.forEach((item) => {
-    if (uniqueElements.has(item)) {
-      duplicates.push(item)
-    } else {
-      uniqueElements.add(item)
-    }
-  })
-
-  return duplicates
 }

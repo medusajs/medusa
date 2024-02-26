@@ -8,6 +8,7 @@ export * from "./order"
 export * from "./shipping-method"
 export * from "./shipping-method-adjustment"
 export * from "./shipping-method-tax-line"
+export * from "./transaction"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger

@@ -2,10 +2,10 @@ import { useApi } from "../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../environment-helpers/use-db"
 
 import {
-  StepResponse,
-  WorkflowData,
   createStep,
   createWorkflow,
+  StepResponse,
+  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { AxiosInstance } from "axios"
 import path from "path"
@@ -200,9 +200,9 @@ export const workflowEngineTestSuite = (env, extraParams = {}) => {
               data: expect.objectContaining({
                 invoke: {
                   "my-step": {
-                    __type: "WorkflowWorkflowData",
+                    __type: "Symbol(WorkflowWorkflowData)",
                     output: {
-                      __type: "WorkflowStepResponse",
+                      __type: "Symbol(WorkflowStepResponse)",
                       output: {
                         result: "abc",
                       },
@@ -248,7 +248,7 @@ export const workflowEngineTestSuite = (env, extraParams = {}) => {
               data: expect.objectContaining({
                 invoke: expect.objectContaining({
                   "my-step-async": {
-                    __type: "WorkflowStepResponse",
+                    __type: "Symbol(WorkflowStepResponse)",
                     output: {
                       all: "good",
                     },

@@ -14,7 +14,7 @@ import {
 
 type OptionalAddressProps = DAL.EntityDateColumns
 
-const customerIdIndex = createPsqlIndexStatementHelper({
+const CustomerIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_address",
   columns: "customer_id",
 })
@@ -27,7 +27,7 @@ export default class Address {
   id!: string
 
   @Property({ columnType: "text", nullable: true })
-  @customerIdIndex.MikroORMIndex()
+  @CustomerIdIndex.MikroORMIndex()
   customer_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })

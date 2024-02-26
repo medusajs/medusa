@@ -12,11 +12,11 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
+  MapToConfig,
   isString,
   kebabCase,
   lowerCaseFirst,
   mapObjectTo,
-  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
@@ -311,9 +311,8 @@ export function abstractModuleServiceFactory<
           config: FindConfig<any> = {},
           sharedContext: Context = {}
         ): Promise<T[]> {
-          const entities = await this.__container__[
-            serviceRegistrationName
-          ].list(filters, config, sharedContext)
+          const service = this.__container__[serviceRegistrationName]
+          const entities = await service.list(filters, config, sharedContext)
 
           return await this.baseRepository_.serialize<T[]>(entities, {
             populate: true,
@@ -473,6 +472,19 @@ export function abstractModuleServiceFactory<
       } catch {
         /* ignore */
       }
+    }
+
+    protected async emitEvents_(groupedEvents) {
+      if (!this.eventBusModuleService_ || !groupedEvents) {
+        return
+      }
+
+      const promises: Promise<void>[] = []
+      for (const group of Object.keys(groupedEvents)) {
+        promises.push(this.eventBusModuleService_?.emit(groupedEvents[group]))
+      }
+
+      await Promise.all(promises)
     }
   }
 
