@@ -13,7 +13,6 @@ import {
   MedusaContext,
   ModulesSdkUtils,
   InjectManager,
-  buildEventMessages,
   CommonEvents,
   UserEvents,
 } from "@medusajs/utils"
@@ -84,21 +83,13 @@ export default class UserModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
-  async resendInvites_(
-    inviteIds: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    return await this.inviteService_.resendInvites(inviteIds, sharedContext)
-  }
-
   @InjectManager("baseRepository_")
   @EmitEvents()
-  async resendInvites(
+  async refreshInviteTokens(
     inviteIds: string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.InviteDTO[]> {
-    const invites = await this.resendInvites_(inviteIds, sharedContext)
+    const invites = await this.refreshInviteTokens_(inviteIds, sharedContext)
 
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
@@ -117,6 +108,17 @@ export default class UserModuleService<
       {
         populate: true,
       }
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async refreshInviteTokens_(
+    inviteIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    return await this.inviteService_.refreshInviteTokens(
+      inviteIds,
+      sharedContext
     )
   }
 

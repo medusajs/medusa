@@ -88,7 +88,7 @@ export default class InviteService<
   }
 
   @InjectTransactionManager("inviteRepository_")
-  async resendInvites(
+  async refreshInviteTokens(
     inviteIds: string[],
     context: Context = {}
   ): Promise<TEntity[]> {

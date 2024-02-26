@@ -27,7 +27,7 @@ export interface IUserModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<InviteDTO>
 
-  resendInvites(
+  refreshInviteTokens(
     inviteIds: string[],
     sharedContext?: Context
   ): Promise<InviteDTO[]>

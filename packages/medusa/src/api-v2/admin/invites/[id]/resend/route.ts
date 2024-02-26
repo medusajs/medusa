@@ -1,9 +1,9 @@
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 
-import { resendInvitesWorkflow } from "@medusajs/core-flows"
+import { refreshInviteTokensWorkflow } from "@medusajs/core-flows"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  const workflow = resendInvitesWorkflow(req.scope)
+  const workflow = refreshInviteTokensWorkflow(req.scope)
 
   const input = {
     invite_ids: [req.params.id],
