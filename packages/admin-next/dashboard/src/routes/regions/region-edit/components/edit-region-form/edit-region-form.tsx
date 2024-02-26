@@ -1,10 +1,14 @@
 import { Region } from "@medusajs/medusa"
-import { Button, Drawer, Input, Switch } from "@medusajs/ui"
+import { Button, Input, Switch } from "@medusajs/ui"
 import { useAdminUpdateRegion } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+
+import { Combobox } from "../../../../../components/common/combobox"
 import { Form } from "../../../../../components/common/form"
+import { RouteDrawer } from "../../../../../components/route-modal"
+import { countries } from "../../../../../lib/countries"
 
 type EditRegionFormProps = {
   region: Region
@@ -29,6 +33,7 @@ export const EditRegionForm = ({ region }: EditRegionFormProps) => {
     },
   })
 
+  console.log(countries.length)
   const { t } = useTranslation()
 
   const handleSubmit = form.handleSubmit(async (values) => {
@@ -40,9 +45,9 @@ export const EditRegionForm = ({ region }: EditRegionFormProps) => {
   })
 
   return (
-    <Form {...form}>
+    <RouteDrawer.Form form={form}>
       <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
-        <Drawer.Body>
+        <RouteDrawer.Body>
           <div className="flex flex-col gap-y-4">
             <Form.Field
               control={form.control}
@@ -85,21 +90,42 @@ export const EditRegionForm = ({ region }: EditRegionFormProps) => {
                 )
               }}
             />
+            <Form.Field
+              control={form.control}
+              name="countries"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.countries")}</Form.Label>
+                    <Form.Control>
+                      <Combobox
+                        options={countries.map((c) => ({
+                          label: c.display_name,
+                          value: c.iso_2,
+                        }))}
+                        {...field}
+                      />
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
           </div>
-        </Drawer.Body>
-        <Drawer.Footer>
+        </RouteDrawer.Body>
+        <RouteDrawer.Footer>
           <div className="flex items-center gap-x-2">
-            <Drawer.Close asChild>
+            <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
                 {t("actions.cancel")}
               </Button>
-            </Drawer.Close>
+            </RouteDrawer.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
               {t("actions.save")}
             </Button>
           </div>
-        </Drawer.Footer>
+        </RouteDrawer.Footer>
       </form>
-    </Form>
+    </RouteDrawer.Form>
   )
 }

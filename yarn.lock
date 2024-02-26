@@ -233,6 +233,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ariakit/core@npm:0.4.1":
+  version: 0.4.1
+  resolution: "@ariakit/core@npm:0.4.1"
+  checksum: 2402e054f888d67b44bed81e80757a915ea0f943c3ac76e65f3a1f96973eaa291a344fb6edeeee09f007ede372ef745e43a058e1404ee745d2caf55b7290a8b8
+  languageName: node
+  linkType: hard
+
+"@ariakit/react-core@npm:0.4.1":
+  version: 0.4.1
+  resolution: "@ariakit/react-core@npm:0.4.1"
+  dependencies:
+    "@ariakit/core": 0.4.1
+    "@floating-ui/dom": ^1.0.0
+    use-sync-external-store: ^1.2.0
+  peerDependencies:
+    react: ^17.0.0 || ^18.0.0
+    react-dom: ^17.0.0 || ^18.0.0
+  checksum: a6388f8c46dd49f0a117639950261fdf7d38c0b395b5e2d87edd1cf9aa479ea0cab338b716a915b7d13142e88ad0430b85a95c9558dbc892c9a7b51bbc702092
+  languageName: node
+  linkType: hard
+
+"@ariakit/react@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "@ariakit/react@npm:0.4.1"
+  dependencies:
+    "@ariakit/react-core": 0.4.1
+  peerDependencies:
+    react: ^17.0.0 || ^18.0.0
+    react-dom: ^17.0.0 || ^18.0.0
+  checksum: 31a2a8f63a8e3ab5037445669da4005ab61d5f7957c39780b32ef3ac77db478ac39b940a16a252c24f2babf95c44d363fc904667b7ddf86bb30332845080cddc
+  languageName: node
+  linkType: hard
+
 "@atomico/rollup-plugin-sizes@npm:^1.1.4":
   version: 1.1.4
   resolution: "@atomico/rollup-plugin-sizes@npm:1.1.4"
@@ -3848,7 +3881,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.23.7":
+"@babel/runtime@npm:^7.23.7, @babel/runtime@npm:^7.23.8":
   version: 7.23.9
   resolution: "@babel/runtime@npm:7.23.9"
   dependencies:
@@ -5670,10 +5703,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@floating-ui/core@npm:^1.0.0":
+  version: 1.6.0
+  resolution: "@floating-ui/core@npm:1.6.0"
+  dependencies:
+    "@floating-ui/utils": ^0.2.1
+  checksum: 667a68036f7dd5ed19442c7792a6002ca02d1799221c4396691bbe0b6008b48f6ccad581225e81fa266bb91232f6c66838a5f825f554217e1ec886178b93381b
+  languageName: node
+  linkType: hard
+
 "@floating-ui/core@npm:^1.3.1":
   version: 1.3.1
   resolution: "@floating-ui/core@npm:1.3.1"
   checksum: 894bc3637c03beda184a4460cb53155fd30c2a0956569e1c714b7df9e3439517b1c34ad9a8114ea15a6c08d1e3f1d40741d259f0f1087fc3ea96fae7dfeb697e
+  languageName: node
+  linkType: hard
+
+"@floating-ui/dom@npm:^1.0.0":
+  version: 1.6.3
+  resolution: "@floating-ui/dom@npm:1.6.3"
+  dependencies:
+    "@floating-ui/core": ^1.0.0
+    "@floating-ui/utils": ^0.2.0
+  checksum: d6cac10877918ce5a8d1a24b21738d2eb130a0191043d7c0dd43bccac507844d3b4dc5d4107d3891d82f6007945ca8fb4207a1252506e91c37e211f0f73cf77e
   languageName: node
   linkType: hard
 
@@ -5695,6 +5747,13 @@ __metadata:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: 856c0c9de0a9117bcc69b1363fd9fa188133b9714394609db937903ab4330e9851becfd2a83453f40834de1a18377caf329b6b71afc1c69d7c5687f87da80ed4
+  languageName: node
+  linkType: hard
+
+"@floating-ui/utils@npm:^0.2.0, @floating-ui/utils@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "@floating-ui/utils@npm:0.2.1"
+  checksum: ee77756712cf5b000c6bacf11992ffb364f3ea2d0d51cc45197a7e646a17aeb86ea4b192c0b42f3fbb29487aee918a565e84f710b8c3645827767f406a6b4cc9
   languageName: node
   linkType: hard
 
@@ -8076,6 +8135,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/dashboard@workspace:packages/admin-next/dashboard"
   dependencies:
+    "@ariakit/react": ^0.4.1
     "@headlessui/react": ^1.7.18
     "@headlessui/tailwindcss": ^0.2.0
     "@hookform/resolvers": 3.3.2
@@ -8102,6 +8162,7 @@ __metadata:
     i18next: 23.7.11
     i18next-browser-languagedetector: 7.2.0
     i18next-http-backend: 2.4.2
+    match-sorter: ^6.3.4
     medusa-react: "workspace:^"
     postcss: ^8.4.33
     prettier: ^3.1.1
@@ -37201,6 +37262,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"match-sorter@npm:^6.3.4":
+  version: 6.3.4
+  resolution: "match-sorter@npm:6.3.4"
+  dependencies:
+    "@babel/runtime": ^7.23.8
+    remove-accents: 0.5.0
+  checksum: 35d2a6b6df003c677d9ec87ecd4683657638f5bce856f43f9cf90b03e357ed2f09813ebbac759defa7e7438706936dd34dc2bfe1a18771f7d2541f14d639b4ad
+  languageName: node
+  linkType: hard
+
 "matcher-collection@npm:^2.0.0":
   version: 2.0.1
   resolution: "matcher-collection@npm:2.0.1"
@@ -44707,6 +44778,13 @@ __metadata:
   dependencies:
     mdast-squeeze-paragraphs: ^4.0.0
   checksum: 61b39acfde3bebb1e9364a6991957f83ab0d878c0fd1de0e86e9bf9e060574cefb7a76057d64e7422e2a2bcf6e3c54635a4ae43f00b3dda38812ae4b6f4342f4
+  languageName: node
+  linkType: hard
+
+"remove-accents@npm:0.5.0":
+  version: 0.5.0
+  resolution: "remove-accents@npm:0.5.0"
+  checksum: a75321aa1b53d9abe82637115a492770bfe42bb38ed258be748bf6795871202bc8b4badff22013494a7029f5a241057ad8d3f72adf67884dbe15a9e37e87adc4
   languageName: node
   linkType: hard
 
