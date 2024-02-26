@@ -2,7 +2,6 @@ import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
 
 /* ********** PAYMENT COLLECTION ********** */
-
 /**
  * @enum
  *
@@ -13,18 +12,22 @@ export enum PaymentCollectionStatus {
    * The payment collection isn't paid.
    */
   NOT_PAID = "not_paid",
+
   /**
    * The payment collection is awaiting payment.
    */
   AWAITING = "awaiting",
+
   /**
    * The payment collection is authorized.
    */
   AUTHORIZED = "authorized",
+
   /**
    * Some of the payments in the payment collection are authorized.
    */
   PARTIALLY_AUTHORIZED = "partially_authorized",
+
   /**
    * The payment collection is canceled.
    */
@@ -59,6 +62,9 @@ export enum PaymentSessionStatus {
   CANCELED = "canceled",
 }
 
+/**
+ * The payment collection details.
+ */
 export interface PaymentCollectionDTO {
   /**
    * The ID of the Payment Collection
@@ -69,6 +75,7 @@ export interface PaymentCollectionDTO {
    * The currency of the payments/sessions associated with payment collection
    */
   currency_code: string
+
   /**
    * The id of the region
    */
@@ -136,18 +143,33 @@ export interface PaymentCollectionDTO {
   payments?: PaymentDTO[]
 }
 
+/**
+ * The filters to apply on the retrieved payment collection.
+ */
 export interface FilterablePaymentCollectionProps
   extends BaseFilterable<PaymentCollectionDTO> {
+  /**
+   * The IDs to filter the payment collection by.
+   */
   id?: string | string[]
 
+  /**
+   * Filter by associated region's ID.
+   */
   region_id?: string | string[] | OperatorMap<string>
 
+  /**
+   * Filter payment collections by created date.
+   */
   created_at?: OperatorMap<string>
+
+  /**
+   * Filter payment collections by updated date.
+   */
   updated_at?: OperatorMap<string>
 }
 
 /* ********** PAYMENT ********** */
-
 export interface PaymentDTO {
   /**
    * The ID of the Payment
@@ -159,6 +181,9 @@ export interface PaymentDTO {
    */
   amount: number
 
+  /**
+   * The authorized amount of the payment.
+   */
   authorized_amount?: number
 
   /**
@@ -171,9 +196,24 @@ export interface PaymentDTO {
    */
   provider_id: string
 
+  /**
+   * The associated cart's ID.
+   */
   cart_id?: string
+
+  /**
+   * The associated order's ID.
+   */
   order_id?: string
+
+  /**
+   * The associated order edit's ID.
+   */
   order_edit_id?: string
+
+  /**
+   * The associated customer's ID.
+   */
   customer_id?: string
 
   /**
@@ -240,6 +280,9 @@ export interface PaymentDTO {
   payment_session?: PaymentSessionDTO
 }
 
+/**
+ * The capture details.
+ */
 export interface CaptureDTO {
   /**
    * The ID of the Capture
@@ -251,13 +294,25 @@ export interface CaptureDTO {
    */
   amount: number
 
+  /**
+   * The creation date of the capture.
+   */
   created_at: Date
 
+  /**
+   * Who the capture was created by.
+   */
   created_by?: string
 
+  /**
+   * The associated payment.
+   */
   payment: PaymentDTO
 }
 
+/**
+ * The refund details.
+ */
 export interface RefundDTO {
   /**
    * The ID of the Refund
@@ -269,15 +324,23 @@ export interface RefundDTO {
    */
   amount: number
 
+  /**
+   * The creation date of the refund.
+   */
   created_at: Date
 
+  /**
+   * Who created the refund.
+   */
   created_by?: string
 
+  /**
+   * The associated payment.
+   */
   payment: PaymentDTO
 }
 
 /* ********** PAYMENT ********** */
-
 export interface PaymentSessionDTO {
   /**
    * The ID of the Payment Session
@@ -327,7 +390,17 @@ export interface PaymentSessionDTO {
   payment?: PaymentDTO
 }
 
+/**
+ * The payment provider details.
+ */
 export interface PaymentProviderDTO {
+  /**
+   * The ID of the payment provider.
+   */
   id: string
+
+  /**
+   * Whether the payment provider is enabled.
+   */
   is_enabled: string
 }

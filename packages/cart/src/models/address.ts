@@ -1,17 +1,23 @@
 import { DAL } from "@medusajs/types"
-import { generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
+  Filter,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
-type OptionalAddressProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
+type OptionalAddressProps = DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "cart_address" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Address {
   [OptionalProps]: OptionalAddressProps
 
@@ -68,6 +74,14 @@ export default class Address {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @createPsqlIndexStatementHelper({
+    tableName: "cart_address",
+    columns: "deleted_at",
+    where: "deleted_at IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

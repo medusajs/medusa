@@ -102,5 +102,10 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/region",
     },
+    [Modules.API_KEY]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/api-key",
+    },
   },
 }
