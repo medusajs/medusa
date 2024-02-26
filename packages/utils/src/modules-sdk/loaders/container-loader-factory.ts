@@ -6,10 +6,10 @@ import {
   ModuleServiceInitializeOptions,
   RepositoryService,
 } from "@medusajs/types"
-import { lowerCaseFirst } from "../../common"
 import { asClass } from "awilix"
-import { internalModuleServiceFactory } from "../internal-module-service-factory"
+import { lowerCaseFirst } from "../../common"
 import { mikroOrmBaseRepositoryFactory } from "../../dal"
+import { internalModuleServiceFactory } from "../internal-module-service-factory"
 
 type RepositoryLoaderOptions = {
   moduleModels: Record<string, any>
@@ -96,7 +96,10 @@ export function loadModuleServices({
     const finalService = moduleServicesMap.get(mappedServiceName)
 
     if (!finalService) {
-      moduleServicesMap.set(mappedServiceName, internalModuleServiceFactory(Model))
+      moduleServicesMap.set(
+        mappedServiceName,
+        internalModuleServiceFactory(Model)
+      )
     }
   })
 

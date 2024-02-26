@@ -2,12 +2,12 @@ import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
   DALUtils,
+  MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
-  BeforeUpdate,
   Cascade,
   Collection,
   Entity,
@@ -123,13 +123,13 @@ export default class LineItem {
   @Property({ columnType: "boolean" })
   is_tax_inclusive = false
 
-  @Property({ columnType: "numeric", nullable: true })
+  @MikroOrmBigNumberProperty({ nullable: true })
   compare_at_unit_price?: BigNumber | number | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
   raw_compare_at_unit_price: BigNumberRawValue | null = null
 
-  @Property({ columnType: "numeric" })
+  @MikroOrmBigNumberProperty()
   unit_price: BigNumber | number
 
   @Property({ columnType: "jsonb" })
@@ -171,28 +171,10 @@ export default class LineItem {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "cali")
-
-    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
-
-    this.unit_price = val.numeric
-    this.raw_unit_price = val.raw!
-  }
-
-  @BeforeUpdate()
-  onUpdate() {
-    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
-
-    this.unit_price = val.numeric
-    this.raw_unit_price = val.raw as BigNumberRawValue
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "cali")
-
-    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
-
-    this.unit_price = val.numeric
-    this.raw_unit_price = val.raw!
   }
 }
