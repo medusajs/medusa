@@ -1,4 +1,4 @@
-import { isContextValidForRules, RuleOperator } from "../utils"
+import { isContextValid, RuleOperator } from "../utils"
 
 describe("isContextValidForRules", () => {
   const context = {
@@ -19,37 +19,37 @@ describe("isContextValidForRules", () => {
     value: "wrongValue",
   }
 
-  it("returns true when all rules are valid and atLeastOneValidRule is false", () => {
+  it("returns true when all rules are valid", () => {
     const rules = [validRule, validRule]
-    expect(isContextValidForRules(context, rules)).toBe(true)
+    expect(isContextValid(context, rules)).toBe(true)
   })
 
-  it("returns true when all rules are valid and atLeastOneValidRule is true", () => {
+  it("returns true when some rules are valid", () => {
     const rules = [validRule, validRule]
-    const options = { atLeastOneValidRule: true }
-    expect(isContextValidForRules(context, rules, options)).toBe(true)
+    const options = { someAreValid: true }
+    expect(isContextValid(context, rules, options)).toBe(true)
   })
 
-  it("returns true when some rules are valid and atLeastOneValidRule is true", () => {
+  it("returns true when some rules are valid and someAreValid is true", () => {
     const rules = [validRule, invalidRule]
-    const options = { atLeastOneValidRule: true }
-    expect(isContextValidForRules(context, rules, options)).toBe(true)
+    const options = { someAreValid: true }
+    expect(isContextValid(context, rules, options)).toBe(true)
   })
 
-  it("returns false when some rules are valid and atLeastOneValidRule is false", () => {
+  it("returns false when some rules are valid", () => {
     const rules = [validRule, invalidRule]
-    expect(isContextValidForRules(context, rules)).toBe(false)
+    expect(isContextValid(context, rules)).toBe(false)
   })
 
-  it("returns false when no rules are valid and atLeastOneValidRule is true", () => {
+  it("returns false when no rules are valid and someAreValid is true", () => {
     const rules = [invalidRule, invalidRule]
-    const options = { atLeastOneValidRule: true }
-    expect(isContextValidForRules(context, rules, options)).toBe(false)
+    const options = { someAreValid: true }
+    expect(isContextValid(context, rules, options)).toBe(false)
   })
 
-  it("returns false when no rules are valid and atLeastOneValidRule is false", () => {
+  it("returns false when no rules are valid", () => {
     const rules = [invalidRule, invalidRule]
-    expect(isContextValidForRules(context, rules)).toBe(false)
+    expect(isContextValid(context, rules)).toBe(false)
   })
 
   it("returns true when the 'gt' operator is valid", () => {
@@ -61,7 +61,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(true)
+    expect(isContextValid(context, rules)).toBe(true)
   })
 
   it("returns false when the 'gt' operator is invalid", () => {
@@ -73,7 +73,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "0" }
-    expect(isContextValidForRules(context, rules)).toBe(false)
+    expect(isContextValid(context, rules)).toBe(false)
   })
 
   it("returns true when the 'gte' operator is valid", () => {
@@ -85,7 +85,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(true)
+    expect(isContextValid(context, rules)).toBe(true)
   })
 
   it("returns false when the 'gte' operator is invalid", () => {
@@ -97,7 +97,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(false)
+    expect(isContextValid(context, rules)).toBe(false)
   })
 
   it("returns true when the 'lt' operator is valid", () => {
@@ -109,7 +109,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(true)
+    expect(isContextValid(context, rules)).toBe(true)
   })
 
   it("returns false when the 'lt' operator is invalid", () => {
@@ -121,7 +121,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(false)
+    expect(isContextValid(context, rules)).toBe(false)
   })
 
   it("returns true when the 'lte' operator is valid", () => {
@@ -133,7 +133,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(true)
+    expect(isContextValid(context, rules)).toBe(true)
   })
 
   // ... existing tests ...
@@ -147,7 +147,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(false)
+    expect(isContextValid(context, rules)).toBe(false)
   })
 
   it("returns true when the 'in' operator is valid", () => {
@@ -159,7 +159,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(true)
+    expect(isContextValid(context, rules)).toBe(true)
   })
 
   it("returns false when the 'in' operator is invalid", () => {
@@ -171,7 +171,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(false)
+    expect(isContextValid(context, rules)).toBe(false)
   })
 
   it("returns true when the 'nin' operator is valid", () => {
@@ -183,7 +183,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(true)
+    expect(isContextValid(context, rules)).toBe(true)
   })
 
   it("returns false when the 'nin' operator is invalid", () => {
@@ -195,7 +195,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(false)
+    expect(isContextValid(context, rules)).toBe(false)
   })
 
   it("returns true when the 'ne' operator is valid", () => {
@@ -207,7 +207,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(true)
+    expect(isContextValid(context, rules)).toBe(true)
   })
 
   it("returns false when the 'ne' operator is invalid", () => {
@@ -219,7 +219,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(false)
+    expect(isContextValid(context, rules)).toBe(false)
   })
 
   it("returns true when the 'eq' operator is valid", () => {
@@ -231,7 +231,7 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(true)
+    expect(isContextValid(context, rules)).toBe(true)
   })
 
   it("returns false when the 'eq' operator is invalid", () => {
@@ -243,6 +243,6 @@ describe("isContextValidForRules", () => {
       },
     ]
     const context = { attribute1: "2" }
-    expect(isContextValidForRules(context, rules)).toBe(false)
+    expect(isContextValid(context, rules)).toBe(false)
   })
 })
