@@ -24,7 +24,7 @@ import LineItem from "./line-item"
 export default class LineItemAdjustment extends AdjustmentLine {
   @ManyToOne({
     entity: () => LineItem,
-    cascade: [Cascade.REMOVE, Cascade.PERSIST] as any,
+    cascade: [Cascade.REMOVE, Cascade.PERSIST],
   })
   item: LineItem
 

@@ -1,6 +1,6 @@
 import { BigNumberInput } from "@medusajs/types"
 import { Property } from "@mikro-orm/core"
-import { isPresent } from "../../common"
+import { isPresent, trimZeros } from "../../common"
 import { BigNumber } from "../../totals/big-number"
 
 export function MikroOrmBigNumberProperty(
@@ -17,25 +17,37 @@ export function MikroOrmBigNumberProperty(
         return this[targetColumn]
       },
       set(value: BigNumberInput) {
-        let bigNumber: BigNumber | null = null
+        if (options?.nullable && !isPresent(value)) {
+          this[targetColumn] = null
+          this[rawColumnName] = null
+
+          return
+        }
+
+        let bigNumber: BigNumber
 
         if (value instanceof BigNumber) {
           bigNumber = value
         } else if (this[rawColumnName]) {
           const precision = this[rawColumnName].precision
-          this[rawColumnName].value = new BigNumber(value, {
-            precision,
-          }).raw!.value
+
+          this[rawColumnName].value = trimZeros(
+            new BigNumber(value, {
+              precision,
+            }).raw!.value as string
+          )
 
           bigNumber = new BigNumber(this[rawColumnName])
-        } else if (options.nullable && !isPresent(value)) {
-          bigNumber = null
         } else {
           bigNumber = new BigNumber(value)
         }
 
-        this[targetColumn] = bigNumber?.numeric || null
-        this[rawColumnName] = bigNumber?.raw || null
+        this[targetColumn] = bigNumber.numeric
+
+        const raw = bigNumber.raw!
+        raw.value = trimZeros(raw.value as string)
+
+        this[rawColumnName] = raw
       },
     })
 
