@@ -117,7 +117,7 @@ export default class FulfillmentModuleService<
     return joinerConfig
   }
 
-  protected static normalizeFiltersAndConfigForShippingOptionsFiltering(
+  protected static normalizeShippingOptionsListParams(
     filters: FilterableShippingOptionProps = {},
     config: FindConfig<ShippingOptionDTO> = {}
   ) {
@@ -179,7 +179,7 @@ export default class FulfillmentModuleService<
       filters: normalizedFilters,
       config: normalizedConfig,
       context,
-    } = FulfillmentModuleService.normalizeFiltersAndConfigForShippingOptionsFiltering(
+    } = FulfillmentModuleService.normalizeShippingOptionsListParams(
       filters,
       config
     )
