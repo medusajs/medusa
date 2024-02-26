@@ -5,8 +5,13 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 function detectCircularDependency(
   manager: SqlEntityManager,
   entityMetadata: EntityMetadata,
-  visited: Set<string> = new Set()
+  visited: Set<string> = new Set(),
+  shouldStop: boolean = false
 ) {
+  if (shouldStop) {
+    return
+  }
+
   visited.add(entityMetadata.className)
 
   const relations = entityMetadata.relations
@@ -17,7 +22,9 @@ function detectCircularDependency(
   for (const relation of relationsToCascade) {
     const branchVisited = new Set(Array.from(visited))
 
-    if (branchVisited.has(relation.name)) {
+    const isSelfCircularDependency = entityMetadata.class === relation.entity()
+
+    if (!isSelfCircularDependency && branchVisited.has(relation.name)) {
       const dependencies = Array.from(visited)
       dependencies.push(entityMetadata.className)
       const circularDependencyStr = dependencies.join(" -> ")
@@ -33,7 +40,12 @@ function detectCircularDependency(
       .getMetadata()
       .get(relation.type)
 
-    detectCircularDependency(manager, relationEntityMetadata, branchVisited)
+    detectCircularDependency(
+      manager,
+      relationEntityMetadata,
+      branchVisited,
+      isSelfCircularDependency
+    )
   }
 }
 
@@ -82,6 +94,9 @@ async function performCascadingSoftDeletion<T>(
     if (!entityRelation) {
       // Fixes the case of many to many through pivot table
       entityRelation = await retrieveEntity()
+      if (!entityRelation) {
+        continue
+      }
     }
 
     const isCollection = "toArray" in entityRelation
@@ -94,8 +109,15 @@ async function performCascadingSoftDeletion<T>(
       }
       relationEntities = entityRelation.getItems()
     } else {
-      const initializedEntityRelation = await wrap(entityRelation).init()
+      const wrappedEntity = wrap(entityRelation)
+      const initializedEntityRelation = wrappedEntity.isInitialized()
+        ? entityRelation
+        : await wrap(entityRelation).init()
       relationEntities = [initializedEntityRelation]
+    }
+
+    if (!relationEntities.length) {
+      continue
     }
 
     await mikroOrmUpdateDeletedAtRecursively(manager, relationEntities, value)

@@ -1,4 +1,4 @@
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { ITaxModuleService } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
 

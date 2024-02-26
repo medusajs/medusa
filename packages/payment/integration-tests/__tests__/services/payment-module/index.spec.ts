@@ -1,15 +1,15 @@
-import { IPaymentModuleService } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
+import { IPaymentModuleService } from "@medusajs/types"
 
+import {
+  moduleIntegrationTestRunner,
+  SuiteOptions,
+} from "medusa-test-utils/dist"
 import {
   createPaymentCollections,
   createPayments,
   createPaymentSessions,
 } from "../../../__fixtures__"
-import {
-  moduleIntegrationTestRunner,
-  SuiteOptions,
-} from "medusa-test-utils/dist"
 
 jest.setTimeout(30000)
 
@@ -464,8 +464,8 @@ moduleIntegrationTestRunner({
                   id: expect.any(String),
                   currency_code: "usd",
                   amount: 100,
-                  raw_amount: { value: "100.00000000000000000", precision: 20 },
-                  provider_id: "pp_system_default",
+                  raw_amount: { value: "100", precision: 20 },
+                  provider_id: "system",
                   data: {},
                   status: "authorized",
                   authorized_at: expect.any(Date),

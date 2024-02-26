@@ -8,6 +8,7 @@ import {
   DeepRecursiveEntity4,
   Entity1,
   Entity2,
+  InternalCircularDependencyEntity1,
   RecursiveEntity1,
   RecursiveEntity2,
 } from "../__fixtures__/utils"
@@ -38,6 +39,7 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
           DeepRecursiveEntity2,
           DeepRecursiveEntity3,
           DeepRecursiveEntity4,
+          InternalCircularDependencyEntity1,
         ],
         dbName: "test",
         type: "postgresql",
@@ -63,6 +65,26 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
 
       expect(entity1.deleted_at).toEqual(deletedAt)
       expect(entity2.deleted_at).toEqual(deletedAt)
+    })
+
+    it("should successfully mark the entities deleted_at recursively with internal parent/child relation", async () => {
+      const manager = orm.em.fork() as SqlEntityManager
+      const entity1 = new InternalCircularDependencyEntity1({
+        id: "1",
+        deleted_at: null,
+      })
+
+      const childEntity1 = new InternalCircularDependencyEntity1({
+        id: "2",
+        deleted_at: null,
+        parent: entity1,
+      })
+
+      const deletedAt = new Date()
+      await mikroOrmUpdateDeletedAtRecursively(manager, [entity1], deletedAt)
+
+      expect(entity1.deleted_at).toEqual(deletedAt)
+      expect(childEntity1.deleted_at).toEqual(deletedAt)
     })
 
     it("should throw an error when a circular dependency is detected", async () => {

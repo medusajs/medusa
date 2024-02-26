@@ -42,6 +42,7 @@ export type WorkflowData<T = unknown> = (T extends object
       [Key in keyof T]: WorkflowData<T[Key]>
     }
   : T & WorkflowDataProperties<T>) &
+  T &
   WorkflowDataProperties<T> & {
     config(
       config: { name?: string } & Omit<
