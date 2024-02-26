@@ -1,61 +1,44 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import {
-  CartDTO,
-  FilterableCartProps,
-  ICartModuleService,
-  UpdateCartDataDTO,
-} from "@medusajs/types"
+import { CartWorkflow, ICartModuleService } from "@medusajs/types"
 import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-
-type UpdateCartsStepInput = {
-  selector: FilterableCartProps
-  update: UpdateCartDataDTO
-}
 
 export const updateCartsStepId = "update-carts"
 export const updateCartsStep = createStep(
   updateCartsStepId,
-  async (data: UpdateCartsStepInput, { container }) => {
-    const service = container.resolve<ICartModuleService>(
+  async (data: CartWorkflow.UpdateCartWorkflowInputDTO, { container }) => {
+    const { id, ...updateData } = data
+    const cartModule = container.resolve<ICartModuleService>(
       ModuleRegistrationName.CART
     )
 
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray([
-      data.update,
-    ])
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray([data])
 
-    const prevCarts = await service.list(data.selector, {
+    const cartBeforeUpdate = await cartModule.retrieve(id, {
       select: selects,
       relations,
     })
 
-    const updatedCarts = await service.update(
-      data.selector as Partial<CartDTO>,
-      data.update
-    )
+    const updatedCart = await cartModule.update(id, updateData)
 
-    return new StepResponse(updatedCarts, prevCarts)
+    return new StepResponse(updatedCart, cartBeforeUpdate)
   },
-  async (previousCarts, { container }) => {
-    if (!previousCarts?.length) {
+  async (cartBeforeUpdate, { container }) => {
+    if (!cartBeforeUpdate) {
       return
     }
 
-    const service = container.resolve<ICartModuleService>(
+    const cartModule = container.resolve<ICartModuleService>(
       ModuleRegistrationName.CART
     )
 
-    const toRestore = previousCarts.map((c) => ({
-      id: c.id,
-      region_id: c.region_id,
-      customer_id: c.customer_id,
-      sales_channel_id: c.sales_channel_id,
-      email: c.email,
-      currency_code: c.currency_code,
-      metadata: c.metadata,
-    }))
-
-    await service.update(toRestore)
+    await cartModule.update(cartBeforeUpdate.id, {
+      region_id: cartBeforeUpdate.region_id,
+      customer_id: cartBeforeUpdate.customer_id,
+      sales_channel_id: cartBeforeUpdate.sales_channel_id,
+      email: cartBeforeUpdate.email,
+      currency_code: cartBeforeUpdate.currency_code,
+      metadata: cartBeforeUpdate.metadata,
+    })
   }
 )
