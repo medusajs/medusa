@@ -44,22 +44,6 @@ export default class PaymentCollection {
   @Property({ columnType: "jsonb" })
   raw_amount: BigNumberRawValue
 
-  // TODO: make this computed properties
-
-  // @Property({
-  //   columnType: "numeric",
-  //   nullable: true,
-  //   serializer: optionalNumericSerializer,
-  // })
-  // authorized_amount: number | null = null
-  //
-  // @Property({
-  //   columnType: "numeric",
-  //   nullable: true,
-  //   serializer: optionalNumericSerializer,
-  // })
-  // refunded_amount: number | null = null
-
   @Property({ columnType: "text", index: "IDX_payment_collection_region_id" })
   region_id: string
 
