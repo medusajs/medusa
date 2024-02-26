@@ -13,6 +13,21 @@ export default class Store {
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @Property({ columnType: "text" })
+  name: string
+
+  @Property({ columnType: "text", nullable: true })
+  default_sales_channel_id: string | null = null
+
+  @Property({ columnType: "text", nullable: true })
+  default_region_id: string | null = null
+
+  @Property({ columnType: "text", nullable: true })
+  default_location_id: string | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
+
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
