@@ -1,7 +1,7 @@
 import type { Customer, User } from "../models"
 import type { NextFunction, Request, Response } from "express"
 
-import type { MedusaContainer } from "./global"
+import { MedusaContainer } from "@medusajs/types"
 import { RequestQueryFields } from "@medusajs/types"
 
 export interface MedusaRequest<Body = unknown> extends Request {

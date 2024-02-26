@@ -9,15 +9,13 @@ moduleIntegrationTestRunner({
   testSuite: ({ service }: SuiteOptions<ITaxModuleService>) => {
     describe("TaxModuleService", function () {
       it("should create a tax region", async () => {
-        const [region] = await service.createTaxRegions([
-          {
-            country_code: "US",
-            default_tax_rate: {
-              name: "Test Rate",
-              rate: 0.2,
-            },
+        const region = await service.createTaxRegions({
+          country_code: "US",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
           },
-        ])
+        })
 
         const [provinceRegion] = await service.createTaxRegions([
           {
@@ -298,11 +296,106 @@ moduleIntegrationTestRunner({
           }),
         ])
       })
+
+      it("should delete tax rate", async () => {
+        const region = await service.createTaxRegions({
+          country_code: "US",
+        })
+
+        const taxRate = await service.create({
+          tax_region_id: region.id,
+          value: 10,
+          code: "test",
+          name: "test",
+        })
+
+        await service.delete(taxRate.id)
+
+        const rates = await service.list({ tax_region_id: region.id })
+
+        expect(rates).toEqual([])
+      })
+
+      it("should delete a tax region and its rates", async () => {
+        const region = await service.createTaxRegions({
+          country_code: "US",
+          default_tax_rate: {
+            value: 2,
+            code: "test",
+            name: "default test",
+          },
+        })
+
+        await service.create({
+          tax_region_id: region.id,
+          value: 10,
+          code: "test",
+          name: "test",
+        })
+
+        await service.deleteTaxRegions(region.id)
+
+        const taxRegions = await service.listTaxRegions()
+        const rates = await service.list()
+
+        expect(taxRegions).toEqual([])
+        expect(rates).toEqual([])
+      })
+
+      it("should delete a tax rate and its rules", async () => {
+        const region = await service.createTaxRegions({
+          country_code: "US",
+        })
+
+        const rate = await service.create({
+          tax_region_id: region.id,
+          value: 10,
+          code: "test",
+          name: "test",
+          rules: [
+            { reference: "product", reference_id: "product_id_1" },
+            { reference: "product_type", reference_id: "product_type_id" },
+          ],
+        })
+
+        await service.delete(rate.id)
+
+        const taxRegions = await service.listTaxRegions()
+        const rates = await service.list()
+        const rules = await service.listTaxRateRules()
+
+        expect(taxRegions).toEqual([expect.objectContaining({ id: region.id })])
+        expect(rates).toEqual([])
+        expect(rules).toEqual([])
+      })
+
+      it("should fail to create province region belonging to a parent with non-matching country", async () => {
+        const caRegion = await service.createTaxRegions({
+          country_code: "CA",
+        })
+        await expect(
+          service.createTaxRegions({
+            country_code: "US", // This should be CA
+            parent_id: caRegion.id,
+            province_code: "QC",
+          })
+        ).rejects.toThrowError()
+      })
+
+      it("should fail to create region with non-existing parent", async () => {
+        await expect(
+          service.createTaxRegions({
+            parent_id: "something random",
+            country_code: "CA",
+            province_code: "QC",
+          })
+        ).rejects.toThrowError()
+      })
     })
   },
 })
 
-const setupTaxStructure = async (service) => {
+const setupTaxStructure = async (service: ITaxModuleService) => {
   // Setup for this specific test
   //
   // Using the following structure to setup tests.

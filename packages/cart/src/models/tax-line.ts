@@ -1,21 +1,20 @@
-import { PrimaryKey, Property } from "@mikro-orm/core"
+import { DAL } from "@medusajs/types"
+import { OptionalProps, PrimaryKey, Property } from "@mikro-orm/core"
+
+type OptionalTaxLineProps = DAL.SoftDeletableEntityDateColumns
 
 /**
  * As per the Mikro ORM docs, superclasses should use the abstract class definition
  * Source: https://mikro-orm.io/docs/inheritance-mapping
  */
 export default abstract class TaxLine {
+  [OptionalProps]?: OptionalTaxLineProps
+
   @PrimaryKey({ columnType: "text" })
   id: string
 
   @Property({ columnType: "text", nullable: true })
   description?: string | null
-
-  @Property({
-    columnType: "text",
-    nullable: true,
-  })
-  tax_rate_id?: string | null
 
   @Property({ columnType: "text" })
   code: string

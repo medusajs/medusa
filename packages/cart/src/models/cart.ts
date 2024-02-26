@@ -1,10 +1,15 @@
 import { DAL } from "@medusajs/types"
-import { generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -19,29 +24,40 @@ import ShippingMethod from "./shipping-method"
 type OptionalCartProps =
   | "shipping_address"
   | "billing_address"
-  | DAL.EntityDateColumns
+  | DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "cart" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Cart {
   [OptionalProps]?: OptionalCartProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({
-    columnType: "text",
-    nullable: true,
-    index: "IDX_cart_region_id",
-  })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_cart_region_id",
+    tableName: "cart",
+    columns: "region_id",
+    where: "deleted_at IS NULL AND region_id IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text", nullable: true })
   region_id: string | null = null
 
-  @Property({
-    columnType: "text",
-    nullable: true,
-    index: "IDX_cart_customer_id",
-  })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_cart_customer_id",
+    tableName: "cart",
+    columns: "customer_id",
+    where: "deleted_at IS NULL AND customer_id IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text", nullable: true })
   customer_id: string | null = null
 
+  @createPsqlIndexStatementHelper({
+    name: "IDX_cart_sales_channel_id",
+    tableName: "cart",
+    columns: "sales_channel_id",
+    where: "deleted_at IS NULL AND sales_channel_id IS NOT NULL",
+  }).MikroORMIndex()
   @Property({
     columnType: "text",
     nullable: true,
@@ -55,6 +71,12 @@ export default class Cart {
   @Property({ columnType: "text", index: "IDX_cart_curency_code" })
   currency_code: string
 
+  @createPsqlIndexStatementHelper({
+    name: "IDX_cart_shipping_address_id",
+    tableName: "cart",
+    columns: "shipping_address_id",
+    where: "deleted_at IS NULL AND shipping_address_id IS NOT NULL",
+  }).MikroORMIndex()
   @Property({ columnType: "text", nullable: true })
   shipping_address_id?: string | null
 
@@ -62,11 +84,16 @@ export default class Cart {
     entity: () => Address,
     fieldName: "shipping_address_id",
     nullable: true,
-    index: "IDX_cart_shipping_address_id",
     cascade: [Cascade.PERSIST],
   })
   shipping_address?: Address | null
 
+  @createPsqlIndexStatementHelper({
+    name: "IDX_cart_billing_address_id",
+    tableName: "cart",
+    columns: "billing_address_id",
+    where: "deleted_at IS NULL AND billing_address_id IS NOT NULL",
+  }).MikroORMIndex()
   @Property({ columnType: "text", nullable: true })
   billing_address_id?: string | null
 
@@ -83,12 +110,12 @@ export default class Cart {
   metadata: Record<string, unknown> | null = null
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.cart, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
   items = new Collection<LineItem>(this)
 
   @OneToMany(() => ShippingMethod, (shippingMethod) => shippingMethod.cart, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
   shipping_methods = new Collection<ShippingMethod>(this)
 
@@ -107,6 +134,11 @@ export default class Cart {
   })
   updated_at: Date
 
+  @createPsqlIndexStatementHelper({
+    tableName: "cart",
+    columns: "deleted_at",
+    where: "deleted_at IS NOT NULL",
+  }).MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

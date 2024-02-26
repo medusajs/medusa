@@ -8,6 +8,7 @@ import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Entity,
+  Enum,
   Filter,
   ManyToOne,
   OnInit,
@@ -16,6 +17,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 import ShippingOption from "./shipping-option"
+import { RuleOperator } from "@utils"
 
 type ShippingOptionRuleOptionalProps = DAL.SoftDeletableEntityDateColumns
 
@@ -42,17 +44,26 @@ export default class ShippingOptionRule {
   @Property({ columnType: "text" })
   attribute: string
 
-  @Property({ columnType: "text" })
-  operator: string
+  @Enum({
+    items: () => Object.values(RuleOperator),
+    columnType: "text",
+  })
+  operator: Lowercase<keyof typeof RuleOperator>
 
   @Property({ columnType: "jsonb", nullable: true })
-  value: { value: string | string[] } | null = null
+  value: string | string[] | null = null
 
-  @Property({ columnType: "text" })
+  @ManyToOne(() => ShippingOption, {
+    type: "text",
+    mapToPk: true,
+    fieldName: "shipping_option_id",
+  })
   @ShippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string
 
-  @ManyToOne(() => ShippingOption, { persist: false })
+  @ManyToOne(() => ShippingOption, {
+    persist: false,
+  })
   shipping_option: ShippingOption
 
   @Property({
