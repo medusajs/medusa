@@ -43,6 +43,38 @@ export class Migration20240225134525 extends Migration {
           CONSTRAINT "capture_pkey" PRIMARY KEY ("id")
         );
 
+        CREATE TABLE IF NOT EXISTS "payment_method_token" (
+          "id"                 TEXT NOT NULL,
+          "provider_id"        TEXT NOT NULL,
+          "data"               JSONB NULL,
+          "name"               TEXT NOT NULL,
+          "type_detail"        TEXT NULL,
+          "description_detail" TEXT NULL,
+          "metadata"           JSONB NULL,
+          "created_at"         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          "updated_at"         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          "deleted_at"         TIMESTAMPTZ NULL,
+          CONSTRAINT "payment_method_token_pkey" PRIMARY KEY ("id")
+        );
+
+        CREATE TABLE IF NOT EXISTS "payment_collection_payment_providers" (
+          "payment_collection_id" TEXT NOT NULL,
+          "payment_provider_id"   TEXT NOT NULL,
+          CONSTRAINT "payment_collection_payment_providers_pkey" PRIMARY KEY ("payment_collection_id", "payment_provider_id")
+        );
+
+        ALTER TABLE IF EXISTS "payment_collection_payment_providers" 
+          ADD CONSTRAINT "payment_collection_payment_providers_payment_coll_aa276_foreign" FOREIGN KEY ("payment_collection_id") REFERENCES "payment_collection" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
+        
+        ALTER TABLE IF EXISTS "payment_collection_payment_providers" 
+          ADD CONSTRAINT "payment_collection_payment_providers_payment_provider_id_foreign" FOREIGN KEY ("payment_provider_id") REFERENCES "payment_provider" ("id") ON UPDATE CASCADE ON DELETE CASCADE;      
+        
+        ALTER TABLE IF EXISTS "capture"
+          ADD CONSTRAINT "capture_payment_id_foreign" FOREIGN KEY ("payment_id") REFERENCES "payment" ("id") ON UPDATE CASCADE ON DELETE CASCADE;  
+        
+        ALTER TABLE IF EXISTS "refund" 
+          ADD CONSTRAINT "refund_payment_id_foreign" FOREIGN KEY ("payment_id") REFERENCES "payment" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
+
         CREATE INDEX IF NOT EXISTS "IDX_payment_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
 
         CREATE INDEX IF NOT EXISTS "IDX_payment_payment_collection_id" ON "payment" ("payment_collection_id") WHERE "deleted_at" IS NULL;
