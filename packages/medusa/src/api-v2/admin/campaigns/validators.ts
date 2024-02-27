@@ -1,5 +1,4 @@
-import { CampaignBudgetType } from "@medusajs/utils"
-import { Type } from "class-transformer"
+import { FindParams, extendedFindParamsMixin } from "../../../types/common"
 import {
   IsArray,
   IsDateString,
@@ -10,7 +9,10 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
+import { Transform, Type } from "class-transformer"
+
+import { CampaignBudgetType } from "@medusajs/utils"
+import { transformOptionalDate } from "../../../utils/validators/date-transform"
 
 export class AdminGetCampaignsCampaignParams extends FindParams {}
 

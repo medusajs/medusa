@@ -1,8 +1,8 @@
 import { IAuthModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import adminSeeder from "../../helpers/admin-seeder"
-import jwt from "jsonwebtoken"
 import { getContainer } from "../../environment-helpers/use-container"
+import jwt from "jsonwebtoken"
 
 export const createAdminUser = async (dbConnection, adminHeaders) => {
   await adminSeeder(dbConnection)
