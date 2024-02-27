@@ -1,6 +1,6 @@
 import { BigNumberInput } from "@medusajs/types"
 import { Property } from "@mikro-orm/core"
-import { isPresent, trimZeros } from "../../common"
+import { isPresent, isString, trimZeros } from "../../common"
 import { BigNumber } from "../../totals/big-number"
 
 export function MikroOrmBigNumberProperty(
@@ -14,6 +14,13 @@ export function MikroOrmBigNumberProperty(
 
     Object.defineProperty(target, columnName, {
       get() {
+        // It will be a string when mikro orm load it from the database, in that
+        // case it won't go through the setter of columnName but if rawColumnName has a value
+        // then we can use it to get the numeric value back
+        if (isString(this[targetColumn]) && this[rawColumnName]) {
+          return new BigNumber(this[rawColumnName]).numeric
+        }
+
         return this[targetColumn]
       },
       set(value: BigNumberInput) {
