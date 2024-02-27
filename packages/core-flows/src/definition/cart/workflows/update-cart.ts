@@ -1,4 +1,4 @@
-import { CartDTO, CartWorkflow } from "@medusajs/types"
+import { CartDTO, UpdateCartWorkflowInputDTO } from "@medusajs/types"
 import { PromotionActions, isPresent } from "@medusajs/utils"
 import {
   WorkflowData,
@@ -20,12 +20,10 @@ import {
   updateCartsStep,
 } from "../steps"
 
-export const updateCartsWorkflowId = "update-carts"
-export const updateCartsWorkflow = createWorkflow(
-  updateCartsWorkflowId,
-  (
-    input: WorkflowData<CartWorkflow.UpdateCartWorkflowInputDTO>
-  ): WorkflowData<CartDTO> => {
+export const updateCartWorkflowId = "update-cart"
+export const updateCartWorkflow = createWorkflow(
+  updateCartWorkflowId,
+  (input: WorkflowData<UpdateCartWorkflowInputDTO>): WorkflowData<CartDTO> => {
     const retrieveCartInput = {
       id: input.id,
       config: {
@@ -79,7 +77,7 @@ export const updateCartsWorkflow = createWorkflow(
       }
     )
 
-    updateCartsStep(cartInput)
+    updateCartsStep([cartInput])
 
     const cart = retrieveCartStep(retrieveCartInput)
     const actions = getActionsToComputeFromPromotionsStep({

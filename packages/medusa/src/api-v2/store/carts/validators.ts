@@ -92,7 +92,7 @@ export class StorePostCartsCartReq {
   @IsOptional()
   @IsArray()
   @Type(() => String)
-  promo_codes: string[]
+  promo_codes?: string[]
 
   // @IsOptional()
   // @IsArray()

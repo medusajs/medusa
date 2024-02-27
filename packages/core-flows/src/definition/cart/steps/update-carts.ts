@@ -1,30 +1,32 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { CartWorkflow, ICartModuleService } from "@medusajs/types"
+import {
+  ICartModuleService,
+  UpdateCartDTO,
+  UpdateCartWorkflowInputDTO,
+} from "@medusajs/types"
 import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateCartsStepId = "update-carts"
 export const updateCartsStep = createStep(
   updateCartsStepId,
-  async (data: CartWorkflow.UpdateCartWorkflowInputDTO, { container }) => {
-    const { id, ...updateData } = data
+  async (data: UpdateCartWorkflowInputDTO[], { container }) => {
     const cartModule = container.resolve<ICartModuleService>(
       ModuleRegistrationName.CART
     )
 
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray([data])
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray(data)
+    const cartsBeforeUpdate = await cartModule.list(
+      { id: data.map((d) => d.id) },
+      { select: selects, relations }
+    )
 
-    const cartBeforeUpdate = await cartModule.retrieve(id, {
-      select: selects,
-      relations,
-    })
+    const updatedCart = await cartModule.update(data)
 
-    const updatedCart = await cartModule.update(id, updateData)
-
-    return new StepResponse(updatedCart, cartBeforeUpdate)
+    return new StepResponse(updatedCart, cartsBeforeUpdate)
   },
-  async (cartBeforeUpdate, { container }) => {
-    if (!cartBeforeUpdate) {
+  async (cartsBeforeUpdate, { container }) => {
+    if (!cartsBeforeUpdate) {
       return
     }
 
@@ -32,13 +34,20 @@ export const updateCartsStep = createStep(
       ModuleRegistrationName.CART
     )
 
-    await cartModule.update(cartBeforeUpdate.id, {
-      region_id: cartBeforeUpdate.region_id,
-      customer_id: cartBeforeUpdate.customer_id,
-      sales_channel_id: cartBeforeUpdate.sales_channel_id,
-      email: cartBeforeUpdate.email,
-      currency_code: cartBeforeUpdate.currency_code,
-      metadata: cartBeforeUpdate.metadata,
-    })
+    const dataToUpdate: UpdateCartDTO[] = []
+
+    for (const cart of cartsBeforeUpdate) {
+      dataToUpdate.push({
+        id: cart.id,
+        region_id: cart.region_id,
+        customer_id: cart.customer_id,
+        sales_channel_id: cart.sales_channel_id,
+        email: cart.email,
+        currency_code: cart.currency_code,
+        metadata: cart.metadata,
+      })
+    }
+
+    await cartModule.update(dataToUpdate)
   }
 )
