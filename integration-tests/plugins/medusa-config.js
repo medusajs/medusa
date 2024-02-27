@@ -43,6 +43,17 @@ module.exports = {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/auth",
+      options: {
+        providers: [
+          {
+            name: "emailpass",
+            scopes: {
+              admin: {},
+              store: {},
+            },
+          },
+        ],
+      },
     },
     [Modules.USER]: {
       scope: "internal",

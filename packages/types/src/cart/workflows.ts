@@ -1,6 +1,35 @@
-export interface CreateCartLineItemDTO {
-  variant_id: string
+import { CartDTO } from "./common"
+
+export interface CreateCartCreateLineItemDTO {
   quantity: number
+  variant_id: string
+  title?: string
+
+  subtitle?: string
+  thumbnail?: string
+
+  product_id?: string
+  product_title?: string
+  product_description?: string
+  product_subtitle?: string
+  product_type?: string
+  product_collection?: string
+  product_handle?: string
+
+  variant_sku?: string
+  variant_barcode?: string
+  variant_title?: string
+  variant_option_values?: Record<string, unknown>
+
+  requires_shipping?: boolean
+  is_discountable?: boolean
+  is_tax_inclusive?: boolean
+  is_giftcard?: boolean
+
+  compare_at_unit_price?: number
+  unit_price?: number | string
+
+  metadata?: Record<string, unknown>
 }
 
 export interface CreateCartAddressDTO {
@@ -29,5 +58,10 @@ export interface CreateCartWorkflowInputDTO {
   billing_address?: CreateCartAddressDTO | string
   metadata?: Record<string, unknown>
 
-  items?: CreateCartLineItemDTO[]
+  items?: CreateCartCreateLineItemDTO[]
+}
+
+export interface AddToCartWorkflowInputDTO {
+  items: CreateCartCreateLineItemDTO[]
+  cart: CartDTO
 }

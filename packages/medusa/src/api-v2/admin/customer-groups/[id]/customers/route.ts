@@ -1,8 +1,15 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ICustomerModuleService } from "@medusajs/types"
-import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../../types/routing"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+import { ICustomerModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const { id } = req.params
 
   const service = req.scope.resolve<ICustomerModuleService>(
