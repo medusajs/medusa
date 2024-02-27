@@ -46,7 +46,7 @@ export default class ProductVariantService<
     if (isString(productOrId)) {
       product = await this.productService_.retrieve(
         productOrId,
-        { relations: ["variants", "variants.options"] },
+        { relations: ["variants"] },
         sharedContext
       )
     }
@@ -63,9 +63,7 @@ export default class ProductVariantService<
       })
     })
 
-    return await this.productVariantRepository_.create(data_, {
-      transactionManager: sharedContext.transactionManager,
-    })
+    return await super.create(data_, sharedContext)
   }
 
   @InjectTransactionManager("productVariantRepository_")
