@@ -463,7 +463,7 @@ moduleIntegrationTestRunner({
                 payment_session: expect.objectContaining({
                   id: expect.any(String),
                   currency_code: "usd",
-                  amount: "100",
+                  amount: 100,
                   raw_amount: { value: "100", precision: 20 },
                   provider_id: "pp_system_default",
                   data: {},
