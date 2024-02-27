@@ -21,6 +21,7 @@
     "@medusajs/product": "workspace:^",
     "@medusajs/promotion": "workspace:^",
     "@medusajs/region": "workspace:^",
+    "@medusajs/tax": "workspace:^",
     "@medusajs/user": "workspace:^",
     "@medusajs/utils": "workspace:^",
     "@medusajs/workflow-engine-inmemory": "workspace:*",

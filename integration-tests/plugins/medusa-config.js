@@ -118,5 +118,10 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/api-key",
     },
+    [Modules.TAX]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/tax",
+    },
   },
 }
