@@ -1,7 +1,7 @@
 import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
 import { kebabCase } from "@medusajs/utils"
-import { knex } from "knex"
+import { knex } from "@mikro-orm/knex"
 import { initModules } from "medusa-test-utils"
 import * as CustomRepositories from "../__fixtures__/module"
 import {

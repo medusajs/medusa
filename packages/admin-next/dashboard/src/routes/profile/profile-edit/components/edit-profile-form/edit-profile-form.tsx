@@ -1,19 +1,22 @@
-import { User } from "@medusajs/medusa"
-import * as zod from "zod"
-
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Drawer, Input, Select, Switch } from "@medusajs/ui"
+import { User } from "@medusajs/medusa"
+import { Button, Input, Select, Switch } from "@medusajs/ui"
 import { adminAuthKeys, useAdminUpdateUser } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
+import * as zod from "zod"
+
 import { Form } from "../../../../../components/common/form"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 import { languages } from "../../../../../i18n/config"
 import { queryClient } from "../../../../../lib/medusa"
 
 type EditProfileProps = {
   user: Omit<User, "password_hash">
   usageInsights: boolean
-  onSuccess: () => void
 }
 
 const EditProfileSchema = zod.object({
@@ -23,13 +26,9 @@ const EditProfileSchema = zod.object({
   usage_insights: zod.boolean(),
 })
 
-export const EditProfileForm = ({
-  user,
-  usageInsights,
-  onSuccess,
-}: EditProfileProps) => {
+export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
   const { t, i18n } = useTranslation()
-  const { mutateAsync, isLoading } = useAdminUpdateUser(user.id)
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof EditProfileSchema>>({
     defaultValues: {
@@ -49,6 +48,8 @@ export const EditProfileForm = ({
     a.display_name.localeCompare(b.display_name)
   )
 
+  const { mutateAsync, isLoading } = useAdminUpdateUser(user.id)
+
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
       {
@@ -56,12 +57,7 @@ export const EditProfileForm = ({
         last_name: values.last_name,
       },
       {
-        onSuccess: ({ user }) => {
-          form.reset({
-            first_name: user.first_name,
-            last_name: user.last_name,
-          })
-
+        onSuccess: () => {
           // Invalidate the current user session.
           queryClient.invalidateQueries(adminAuthKeys.details())
         },
@@ -73,13 +69,13 @@ export const EditProfileForm = ({
 
     changeLanguage(values.language)
 
-    onSuccess()
+    handleSuccess()
   })
 
   return (
-    <Form {...form}>
+    <RouteDrawer.Form form={form}>
       <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
-        <Drawer.Body>
+        <RouteDrawer.Body>
           <div className="flex flex-col gap-y-8">
             <div className="grid grid-cols-2 gap-4">
               <Form.Field
@@ -122,9 +118,6 @@ export const EditProfileForm = ({
                     <Form.Control>
                       <Select
                         {...field}
-                        // open={selectOpen}
-                        // onOpenChange={setSelectOpen}
-                        value={field.value}
                         onValueChange={field.onChange}
                         size="small"
                       >
@@ -175,6 +168,7 @@ export const EditProfileForm = ({
                         i18nKey="profile.userInsightsHint"
                         components={[
                           <a
+                            key="hint-link"
                             className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg underline"
                             href="https://docs.medusajs.com/usage#admin-analytics"
                             target="_blank"
@@ -189,20 +183,20 @@ export const EditProfileForm = ({
               )}
             />
           </div>
-        </Drawer.Body>
-        <Drawer.Footer>
+        </RouteDrawer.Body>
+        <RouteDrawer.Footer>
           <div className="flex items-center gap-x-2">
-            <Drawer.Close asChild>
+            <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
-            </Drawer.Close>
+            </RouteDrawer.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
-        </Drawer.Footer>
+        </RouteDrawer.Footer>
       </form>
-    </Form>
+    </RouteDrawer.Form>
   )
 }

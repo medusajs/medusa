@@ -1,17 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { User } from "@medusajs/medusa"
-import { Button, Drawer, Input } from "@medusajs/ui"
+import { Button, Input } from "@medusajs/ui"
 import { useAdminUpdateUser } from "medusa-react"
-import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+
 import { Form } from "../../../../../components/common/form"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 
 type EditUserFormProps = {
   user: Omit<User, "password_hash">
-  subscribe: (state: boolean) => void
-  onSuccessfulSubmit: () => void
 }
 
 const EditUserFormSchema = zod.object({
@@ -19,11 +21,10 @@ const EditUserFormSchema = zod.object({
   last_name: zod.string().optional(),
 })
 
-export const EditUserForm = ({
-  user,
-  subscribe,
-  onSuccessfulSubmit,
-}: EditUserFormProps) => {
+export const EditUserForm = ({ user }: EditUserFormProps) => {
+  const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
+
   const form = useForm<zod.infer<typeof EditUserFormSchema>>({
     defaultValues: {
       first_name: user.first_name || "",
@@ -32,33 +33,23 @@ export const EditUserForm = ({
     resolver: zodResolver(EditUserFormSchema),
   })
 
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
-
-  const { t } = useTranslation()
-
   const { mutateAsync, isLoading } = useAdminUpdateUser(user.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(values, {
       onSuccess: () => {
-        onSuccessfulSubmit()
+        handleSuccess()
       },
     })
   })
 
   return (
-    <Form {...form}>
+    <RouteDrawer.Form form={form}>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col overflow-hidden flex-1"
+        className="flex flex-1 flex-col overflow-hidden"
       >
-        <Drawer.Body className="flex flex-col gap-y-8 overflow-y-auto flex-1 max-w-full">
+        <RouteDrawer.Body className="flex max-w-full flex-1 flex-col gap-y-8 overflow-y-auto">
           <Form.Field
             control={form.control}
             name="first_name"
@@ -89,20 +80,20 @@ export const EditUserForm = ({
               )
             }}
           />
-        </Drawer.Body>
-        <Drawer.Footer>
+        </RouteDrawer.Body>
+        <RouteDrawer.Footer>
           <div className="flex items-center justify-end gap-x-2">
-            <Drawer.Close asChild>
+            <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
-            </Drawer.Close>
+            </RouteDrawer.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
-        </Drawer.Footer>
+        </RouteDrawer.Footer>
       </form>
-    </Form>
+    </RouteDrawer.Form>
   )
 }

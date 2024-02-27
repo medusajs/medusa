@@ -17,6 +17,9 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { SharedContext } from "../shared-context"
 
+/**
+ * The main service interface for the inventory module.
+ */
 export interface IInventoryService extends IModuleService {
   /**
    * This method is used to retrieve a paginated list of inventory items along with the total count of available inventory items satisfying the provided filters.

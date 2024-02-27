@@ -9,14 +9,20 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { generateEntityId, PaymentSessionStatus } from "@medusajs/utils"
+import {
+  BigNumber,
+  generateEntityId,
+  MikroOrmBigNumberProperty,
+  PaymentSessionStatus,
+} from "@medusajs/utils"
+import { BigNumberRawValue } from "@medusajs/types"
 
 import PaymentCollection from "./payment-collection"
 import Payment from "./payment"
 
 @Entity({ tableName: "payment_session" })
 export default class PaymentSession {
-  [OptionalProps]?: "status"
+  [OptionalProps]?: "status" | "data"
 
   @PrimaryKey({ columnType: "text" })
   id: string
@@ -24,17 +30,19 @@ export default class PaymentSession {
   @Property({ columnType: "text" })
   currency_code: string
 
+  @MikroOrmBigNumberProperty()
+  amount: BigNumber | number
+
   @Property({
-    columnType: "numeric",
-    serializer: Number,
+    columnType: "jsonb",
   })
-  amount: number
+  raw_amount: BigNumberRawValue
 
   @Property({ columnType: "text" })
   provider_id: string
 
-  @Property({ columnType: "jsonb", nullable: true })
-  data: Record<string, unknown> | null = null
+  @Property({ columnType: "jsonb" })
+  data: Record<string, unknown> = {}
 
   @Enum({
     items: () => PaymentSessionStatus,

@@ -1,5 +1,6 @@
 export * from "./common"
 export * from "./internal-module-service"
+export * from "./module-provider"
 
 export * from "./medusa-app"
 

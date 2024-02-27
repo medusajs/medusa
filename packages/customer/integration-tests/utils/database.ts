@@ -5,14 +5,14 @@ import * as Models from "@models"
 const pathToMigrations = "../../src/migrations"
 const mikroOrmEntities = Models as unknown as any[]
 
-export const MikroOrmWrapper = TestDatabaseUtils.getMikroOrmWrapper(
+export const MikroOrmWrapper = TestDatabaseUtils.getMikroOrmWrapper({
   mikroOrmEntities,
-  pathToMigrations
-)
+  pathToMigrations,
+})
 
-export const MikroOrmConfig = TestDatabaseUtils.getMikroOrmConfig(
+export const MikroOrmConfig = TestDatabaseUtils.getMikroOrmConfig({
   mikroOrmEntities,
-  pathToMigrations
-)
+  pathToMigrations,
+})
 
 export const DB_URL = TestDatabaseUtils.getDatabaseURL()

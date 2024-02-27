@@ -31,7 +31,18 @@ export type IdempotencyKeyParts = {
   action: "invoke" | "compensate"
 }
 
-export interface IWorkflowsModuleService extends IModuleService {
+export interface IWorkflowEngineService extends IModuleService {
+  retrieveWorkflowExecution(
+    idOrObject:
+      | string
+      | {
+          workflow_id: string
+          transaction_id: string
+        },
+    config?: FindConfig<WorkflowExecutionDTO>,
+    sharedContext?: Context
+  ): Promise<WorkflowExecutionDTO>
+
   listWorkflowExecution(
     filters?: FilterableWorkflowExecutionProps,
     config?: FindConfig<WorkflowExecutionDTO>,
@@ -88,7 +99,7 @@ export interface IWorkflowsModuleService extends IModuleService {
       stepResponse,
       options,
     }: {
-      idempotencyKey: string | object
+      idempotencyKey: string | IdempotencyKeyParts
       stepResponse: unknown
       options?: Record<string, any>
     },

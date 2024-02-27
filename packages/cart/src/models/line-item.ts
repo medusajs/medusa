@@ -1,11 +1,17 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
-import { BigNumber, generateEntityId } from "@medusajs/utils"
+import {
+  BigNumber,
+  DALUtils,
+  MikroOrmBigNumberProperty,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
-  BeforeUpdate,
   Cascade,
   Collection,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -23,23 +29,28 @@ type OptionalLineItemProps =
   | "compare_at_unit_price"
   | "requires_shipping"
   | "cart"
-  | DAL.EntityDateColumns
+  | DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "cart_line_item" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class LineItem {
   [OptionalProps]?: OptionalLineItemProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @createPsqlIndexStatementHelper({
+    name: "IDX_line_item_cart_id",
+    tableName: "cart_line_item",
+    columns: "cart_id",
+    where: "deleted_at IS NULL",
+  }).MikroORMIndex()
   @Property({ columnType: "text" })
   cart_id: string
 
   @ManyToOne({
     entity: () => Cart,
-    onDelete: "cascade",
-    index: "IDX_line_item_cart_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    cascade: [Cascade.REMOVE, Cascade.PERSIST, "soft-remove"] as any,
   })
   cart: Cart
 
@@ -55,18 +66,22 @@ export default class LineItem {
   @Property({ columnType: "integer" })
   quantity: number
 
-  @Property({
-    columnType: "text",
-    nullable: true,
-    index: "IDX_line_item_variant_id",
-  })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_line_item_variant_id",
+    tableName: "cart_line_item",
+    columns: "variant_id",
+    where: "deleted_at IS NULL AND variant_id IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text", nullable: true })
   variant_id: string | null = null
 
-  @Property({
-    columnType: "text",
-    nullable: true,
-    index: "IDX_line_item_product_id",
-  })
+  @createPsqlIndexStatementHelper({
+    name: "IDX_line_item_product_id",
+    tableName: "cart_line_item",
+    columns: "product_id",
+    where: "deleted_at IS NULL AND product_id IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "text", nullable: true })
   product_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
@@ -108,25 +123,25 @@ export default class LineItem {
   @Property({ columnType: "boolean" })
   is_tax_inclusive = false
 
-  @Property({ columnType: "numeric", nullable: true })
+  @MikroOrmBigNumberProperty({ nullable: true })
   compare_at_unit_price?: BigNumber | number | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
   raw_compare_at_unit_price: BigNumberRawValue | null = null
 
-  @Property({ columnType: "numeric" })
+  @MikroOrmBigNumberProperty()
   unit_price: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_unit_price: BigNumberRawValue
 
   @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
   tax_lines = new Collection<LineItemTaxLine>(this)
 
   @OneToMany(() => LineItemAdjustment, (adjustment) => adjustment.item, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
   adjustments = new Collection<LineItemAdjustment>(this)
 
@@ -145,31 +160,21 @@ export default class LineItem {
   })
   updated_at: Date
 
+  @createPsqlIndexStatementHelper({
+    tableName: "cart_line_item",
+    columns: "deleted_at",
+    where: "deleted_at IS NOT NULL",
+  }).MikroORMIndex()
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date | null = null
+
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "cali")
-
-    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
-
-    this.unit_price = val.numeric
-    this.raw_unit_price = val.raw!
-  }
-
-  @BeforeUpdate()
-  onUpdate() {
-    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
-
-    this.unit_price = val.numeric
-    this.raw_unit_price = val.raw as BigNumberRawValue
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "cali")
-
-    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
-
-    this.unit_price = val.numeric
-    this.raw_unit_price = val.raw!
   }
 }

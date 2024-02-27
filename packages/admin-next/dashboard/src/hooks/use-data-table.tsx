@@ -3,6 +3,7 @@ import {
   OnChangeFn,
   PaginationState,
   Row,
+  RowSelectionState,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
@@ -10,27 +11,34 @@ import {
 import { useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
-type UseDataTableProps<TData, TValue> = {
+type UseDataTableProps<TData> = {
   data?: TData[]
-  columns: ColumnDef<TData, TValue>[]
+  columns: ColumnDef<TData, any>[]
   count?: number
   pageSize?: number
   enableRowSelection?: boolean | ((row: Row<TData>) => boolean)
+  rowSelection?: {
+    state: RowSelectionState
+    updater: OnChangeFn<RowSelectionState>
+  }
   enablePagination?: boolean
   getRowId?: (original: TData, index: number) => string
+  meta?: Record<string, unknown>
   prefix?: string
 }
 
-export const useDataTable = <TData, TValue>({
+export const useDataTable = <TData,>({
   data = [],
   columns,
   count = 0,
-  pageSize: _pageSize = 50,
+  pageSize: _pageSize = 20,
   enablePagination = true,
   enableRowSelection = false,
+  rowSelection: _rowSelection,
   getRowId,
+  meta,
   prefix,
-}: UseDataTableProps<TData, TValue>) => {
+}: UseDataTableProps<TData>) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const offsetKey = `${prefix ? `${prefix}_` : ""}offset`
   const offset = searchParams.get(offsetKey)
@@ -46,7 +54,9 @@ export const useDataTable = <TData, TValue>({
     }),
     [pageIndex, pageSize]
   )
-  const [rowSelection, setRowSelection] = useState({})
+  const [localRowSelection, setLocalRowSelection] = useState({})
+  const rowSelection = _rowSelection?.state ?? localRowSelection
+  const setRowSelection = _rowSelection?.updater ?? setLocalRowSelection
 
   useEffect(() => {
     if (!enablePagination) {
@@ -91,7 +101,7 @@ export const useDataTable = <TData, TValue>({
     data,
     columns,
     state: {
-      rowSelection,
+      rowSelection: rowSelection, // We always pass a selection state to the table even if it's not enabled
       pagination: enablePagination ? pagination : undefined,
     },
     pageCount: Math.ceil((count ?? 0) / pageSize),
@@ -106,6 +116,7 @@ export const useDataTable = <TData, TValue>({
       ? getPaginationRowModel()
       : undefined,
     manualPagination: enablePagination ? true : undefined,
+    meta,
   })
 
   return { table }

@@ -1,12 +1,22 @@
-import { transformQuery } from "../../../api/middlewares"
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import * as QueryConfig from "./query-config"
+
 import {
   AdminGetRegionsParams,
   AdminGetRegionsRegionParams,
+  AdminPostRegionsRegionReq,
+  AdminPostRegionsReq,
 } from "./validators"
+import { transformBody, transformQuery } from "../../../api/middlewares"
+
+import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
+  {
+    method: ["ALL"],
+    matcher: "/admin/regions*",
+    middlewares: [authenticate("admin", ["bearer", "session"])],
+  },
   {
     method: ["GET"],
     matcher: "/admin/regions",
@@ -26,5 +36,15 @@ export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/regions",
+    middlewares: [transformBody(AdminPostRegionsReq)],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/regions/:id",
+    middlewares: [transformBody(AdminPostRegionsRegionReq)],
   },
 ]

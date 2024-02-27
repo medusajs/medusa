@@ -47,16 +47,16 @@ describe("PricingModule Service - Currency", () => {
 
       expect(currenciesResult).toEqual([
         expect.objectContaining({
-          code: "USD",
-          name: "US Dollar",
-        }),
-        expect.objectContaining({
           code: "CAD",
           name: "Canadian Dollar",
         }),
         expect.objectContaining({
           code: "EUR",
           name: "Euro",
+        }),
+        expect.objectContaining({
+          code: "USD",
+          name: "US Dollar",
         }),
       ])
     })
@@ -80,16 +80,16 @@ describe("PricingModule Service - Currency", () => {
       expect(count).toEqual(3)
       expect(currenciesResult).toEqual([
         expect.objectContaining({
-          code: "USD",
-          name: "US Dollar",
-        }),
-        expect.objectContaining({
           code: "CAD",
           name: "Canadian Dollar",
         }),
         expect.objectContaining({
           code: "EUR",
           name: "Euro",
+        }),
+        expect.objectContaining({
+          code: "USD",
+          name: "US Dollar",
         }),
       ])
     })
@@ -117,8 +117,10 @@ describe("PricingModule Service - Currency", () => {
       expect(count).toEqual(3)
       expect(currenciesResult).toEqual([
         expect.objectContaining({
-          code: "CAD",
-          name: "Canadian Dollar",
+          code: "EUR",
+          name: "Euro",
+          symbol: "€",
+          symbol_native: "€",
         }),
       ])
     })
@@ -137,7 +139,7 @@ describe("PricingModule Service - Currency", () => {
       expect(count).toEqual(3)
       expect(serialized).toEqual([
         {
-          code: "USD",
+          code: "CAD",
         },
       ])
     })

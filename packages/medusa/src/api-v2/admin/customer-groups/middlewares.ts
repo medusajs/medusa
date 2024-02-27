@@ -1,16 +1,19 @@
-import { transformBody, transformQuery } from "../../../api/middlewares"
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import * as QueryConfig from "./query-config"
-import { listTransformQueryConfig as customersListTransformQueryConfig } from "../customers/query-config"
+
 import {
-  AdminGetCustomerGroupsParams,
-  AdminGetCustomerGroupsGroupParams,
-  AdminPostCustomerGroupsReq,
-  AdminPostCustomerGroupsGroupReq,
-  AdminGetCustomerGroupsGroupCustomersParams,
-  AdminPostCustomerGroupsGroupCustomersBatchReq,
   AdminDeleteCustomerGroupsGroupCustomersBatchReq,
+  AdminGetCustomerGroupsGroupCustomersParams,
+  AdminGetCustomerGroupsGroupParams,
+  AdminGetCustomerGroupsParams,
+  AdminPostCustomerGroupsGroupCustomersBatchReq,
+  AdminPostCustomerGroupsGroupReq,
+  AdminPostCustomerGroupsReq,
 } from "./validators"
+import { transformBody, transformQuery } from "../../../api/middlewares"
+
+import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { authenticate } from "../../../utils/authenticate-middleware"
+import { listTransformQueryConfig as customersListTransformQueryConfig } from "../customers/query-config"
 
 export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -22,6 +25,11 @@ export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listTransformQueryConfig
       ),
     ],
+  },
+  {
+    method: ["ALL"],
+    matcher: "/admin/customer-groups*",
+    middlewares: [authenticate("admin", ["bearer", "session"])],
   },
   {
     method: ["GET"],

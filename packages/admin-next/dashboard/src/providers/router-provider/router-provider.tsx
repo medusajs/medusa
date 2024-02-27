@@ -2,6 +2,7 @@ import type {
   AdminCollectionsRes,
   AdminCustomerGroupsRes,
   AdminCustomersRes,
+  AdminGiftCardsRes,
   AdminProductsRes,
   AdminPublishableApiKeysRes,
   AdminRegionsRes,
@@ -118,8 +119,14 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
+                path: "",
                 lazy: () => import("../../routes/products/product-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () => import("../../routes/products/product-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
@@ -127,6 +134,30 @@ const router = createBrowserRouter([
                 handle: {
                   crumb: (data: AdminProductsRes) => data.product.title,
                 },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/products/product-edit"),
+                  },
+                  {
+                    path: "sales-channels",
+                    lazy: () =>
+                      import("../../routes/products/product-sales-channels"),
+                  },
+                  {
+                    path: "attributes",
+                    lazy: () =>
+                      import("../../routes/products/product-attributes"),
+                  },
+                  {
+                    path: "options",
+                    lazy: () => import("../../routes/products/product-options"),
+                  },
+                  {
+                    path: "gallery",
+                    lazy: () => import("../../routes/products/product-gallery"),
+                  },
+                ],
               },
             ],
           },
@@ -273,12 +304,29 @@ const router = createBrowserRouter([
             },
             children: [
               {
-                index: true,
-                lazy: () => import("../../routes/gift-cards/list"),
+                path: "",
+                lazy: () => import("../../routes/gift-cards/gift-card-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/gift-cards/gift-card-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/gift-cards/details"),
+                lazy: () => import("../../routes/gift-cards/gift-card-detail"),
+                handle: {
+                  crumb: (data: AdminGiftCardsRes) => data.gift_card.code,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../routes/gift-cards/gift-card-edit"),
+                  },
+                ],
               },
             ],
           },

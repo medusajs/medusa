@@ -1,14 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Product, SalesChannel } from "@medusajs/medusa"
-import {
-  Button,
-  Checkbox,
-  FocusModal,
-  Hint,
-  Table,
-  Tooltip,
-  clx,
-} from "@medusajs/ui"
+import { Button, Checkbox, Hint, Table, Tooltip, clx } from "@medusajs/ui"
 import {
   PaginationState,
   RowSelectionState,
@@ -26,7 +18,6 @@ import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { Form } from "../../../../components/common/form"
 import {
   ProductAvailabilityCell,
   ProductCollectionCell,
@@ -37,13 +28,15 @@ import {
 import { OrderBy } from "../../../../components/filtering/order-by"
 import { Query } from "../../../../components/filtering/query"
 import { LocalizedTablePagination } from "../../../../components/localization/localized-table-pagination"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../components/route-modal"
 import { useQueryParams } from "../../../../hooks/use-query-params"
 import { queryClient } from "../../../../lib/medusa"
 
 type AddProductsToSalesChannelFormProps = {
   salesChannel: SalesChannel
-  subscribe: (state: boolean) => void
-  onSuccess: () => void
 }
 
 const AddProductsToSalesChannelSchema = zod.object({
@@ -54,10 +47,9 @@ const PAGE_SIZE = 50
 
 export const AddProductsToSalesChannelForm = ({
   salesChannel,
-  subscribe,
-  onSuccess,
 }: AddProductsToSalesChannelFormProps) => {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof AddProductsToSalesChannelSchema>>({
     defaultValues: {
@@ -66,13 +58,7 @@ export const AddProductsToSalesChannelForm = ({
     resolver: zodResolver(AddProductsToSalesChannelSchema),
   })
 
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
+  const { setValue } = form
 
   const { mutateAsync, isLoading: isMutating } =
     useAdminAddProductsToSalesChannel(salesChannel.id)
@@ -93,15 +79,19 @@ export const AddProductsToSalesChannelForm = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   useEffect(() => {
-    form.setValue(
+    setValue(
       "product_ids",
-      Object.keys(rowSelection).filter((k) => rowSelection[k])
+      Object.keys(rowSelection).filter((k) => rowSelection[k]),
+      {
+        shouldDirty: true,
+        shouldTouch: true,
+      }
     )
-  }, [rowSelection])
+  }, [rowSelection, setValue])
 
   const params = useQueryParams(["q", "order"])
 
-  const { products, count, isLoading } = useAdminProducts(
+  const { products, count } = useAdminProducts(
     {
       expand: "variants,sales_channels",
       ...params,
@@ -148,37 +138,37 @@ export const AddProductsToSalesChannelForm = ({
            * determine if they are added to the sales channel or not.
            */
           queryClient.invalidateQueries(adminProductKeys.lists())
-          onSuccess()
+          handleSuccess()
         },
       }
     )
   })
 
   return (
-    <Form {...form}>
+    <RouteFocusModal.Form form={form}>
       <form
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
-        <FocusModal.Header>
+        <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
             {form.formState.errors.product_ids && (
               <Hint variant="error">
                 {form.formState.errors.product_ids.message}
               </Hint>
             )}
-            <FocusModal.Close asChild>
+            <RouteFocusModal.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
-            </FocusModal.Close>
+            </RouteFocusModal.Close>
             <Button size="small" type="submit" isLoading={isMutating}>
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
-        </FocusModal.Header>
-        <FocusModal.Body className="flex h-full w-full flex-col items-center overflow-y-auto divide-y">
-          <div className="flex items-center justify-between w-full px-6 py-4">
+        </RouteFocusModal.Header>
+        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
+          <div className="flex w-full items-center justify-between px-6 py-4">
             <div></div>
             <div className="flex items-center gap-x-2">
               <Query />
@@ -251,9 +241,9 @@ export const AddProductsToSalesChannelForm = ({
               pageSize={PAGE_SIZE}
             />
           </div>
-        </FocusModal.Body>
+        </RouteFocusModal.Body>
       </form>
-    </Form>
+    </RouteFocusModal.Form>
   )
 }
 

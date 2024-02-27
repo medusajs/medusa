@@ -1,17 +1,28 @@
-import { createCartsWorkflow } from "@medusajs/core-flows"
-import { CreateCartDTO } from "@medusajs/types"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaRequest,
+  MedusaResponse,
+} from "../../../types/routing"
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  const createCartWorkflow = createCartsWorkflow(req.scope)
-  const cartData = [
-    {
-      ...(req.validatedBody as CreateCartDTO),
-    },
-  ]
+import { CreateCartWorkflowInputDTO } from "@medusajs/types"
+import { StorePostCartReq } from "./validators"
+import { createCartWorkflow } from "@medusajs/core-flows"
+import { defaultStoreCartFields } from "../carts/query-config"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
 
-  const { result, errors } = await createCartWorkflow.run({
-    input: { cartData },
+export const POST = async (
+  req: AuthenticatedMedusaRequest<CreateCartWorkflowInputDTO>,
+  res: MedusaResponse
+) => {
+  const workflowInput = req.validatedBody
+
+  // If the customer is logged in, we auto-assign them to the cart
+  if (req.auth?.actor_id) {
+    workflowInput.customer_id = req.auth.actor_id
+  }
+
+  const { result, errors } = await createCartWorkflow(req.scope).run({
+    input: workflowInput,
     throwOnError: false,
   })
 
@@ -19,5 +30,16 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     throw errors[0].error
   }
 
-  res.status(200).json({ cart: result[0] })
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const variables = { id: result.id }
+
+  const query = remoteQueryObjectFromString({
+    entryPoint: "cart",
+    fields: defaultStoreCartFields,
+  })
+
+  const [cart] = await remoteQuery(query, { cart: variables })
+
+  res.status(200).json({ cart })
 }

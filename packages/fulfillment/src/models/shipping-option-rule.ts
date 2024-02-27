@@ -4,31 +4,33 @@ import {
   generateEntityId,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Entity,
+  Enum,
   Filter,
-  Index,
   ManyToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 import ShippingOption from "./shipping-option"
+import { RuleOperator } from "@utils"
 
 type ShippingOptionRuleOptionalProps = DAL.SoftDeletableEntityDateColumns
 
-// TODO: need some test to see if we continue with this kind of structure or we change it
-// More adjustments can appear as I move forward
-
-const deletedAtIndexName = "IDX_shipping_option_rule_deleted_at"
-const deletedAtIndexStatement = createPsqlIndexStatementHelper({
-  name: deletedAtIndexName,
+const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option_rule",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
+})
+
+const ShippingOptionIdIndex = createPsqlIndexStatementHelper({
+  tableName: "shipping_option_rule",
+  columns: "shipping_option_id",
+  where: "deleted_at IS NULL",
 })
 
 @Entity()
@@ -42,16 +44,26 @@ export default class ShippingOptionRule {
   @Property({ columnType: "text" })
   attribute: string
 
-  @Property({ columnType: "text" })
-  operator: string
+  @Enum({
+    items: () => Object.values(RuleOperator),
+    columnType: "text",
+  })
+  operator: Lowercase<keyof typeof RuleOperator>
 
   @Property({ columnType: "jsonb", nullable: true })
-  value: { value: string | string[] } | null = null
+  value: string | string[] | null = null
 
-  @Property({ columnType: "text" })
+  @ManyToOne(() => ShippingOption, {
+    type: "text",
+    mapToPk: true,
+    fieldName: "shipping_option_id",
+  })
+  @ShippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string
 
-  @ManyToOne(() => ShippingOption)
+  @ManyToOne(() => ShippingOption, {
+    persist: false,
+  })
   shipping_option: ShippingOption
 
   @Property({
@@ -69,20 +81,19 @@ export default class ShippingOptionRule {
   })
   updated_at: Date
 
-  @Index({
-    name: deletedAtIndexName,
-    expression: deletedAtIndexStatement,
-  })
+  @DeletedAtIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "sorul")
+    this.shipping_option_id ??= this.shipping_option?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "sorul")
+    this.shipping_option_id ??= this.shipping_option?.id
   }
 }

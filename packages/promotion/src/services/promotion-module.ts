@@ -166,10 +166,10 @@ export default class PromotionModuleService<
       if (campaignBudget.type === CampaignBudgetType.SPEND) {
         const campaignBudgetData = promotionCodeCampaignBudgetMap.get(
           campaignBudget.id
-        ) || { id: campaignBudget.id, used: campaignBudget.used || 0 }
+        ) || { id: campaignBudget.id, used: campaignBudget.used ?? 0 }
 
         campaignBudgetData.used =
-          (campaignBudgetData.used || 0) + computedAction.amount
+          (campaignBudgetData.used ?? 0) + computedAction.amount
 
         if (
           campaignBudget.limit &&
@@ -194,7 +194,7 @@ export default class PromotionModuleService<
 
         const campaignBudgetData = {
           id: campaignBudget.id,
-          used: (campaignBudget.used || 0) + 1,
+          used: (campaignBudget.used ?? 0) + 1,
         }
 
         if (
@@ -225,10 +225,12 @@ export default class PromotionModuleService<
     }
   }
 
+  @InjectManager("baseRepository_")
   async computeActions(
     promotionCodes: string[],
     applicationContext: PromotionTypes.ComputeActionContext,
-    options: PromotionTypes.ComputeActionOptions = {}
+    options: PromotionTypes.ComputeActionOptions = {},
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<PromotionTypes.ComputeActions[]> {
     const { prevent_auto_promotions: preventAutoPromotions } = options
     const computedActions: PromotionTypes.ComputeActions[] = []
@@ -238,12 +240,16 @@ export default class PromotionModuleService<
     const appliedShippingCodes: string[] = []
     const codeAdjustmentMap = new Map<
       string,
-      PromotionTypes.ComputeActionAdjustmentLine
+      PromotionTypes.ComputeActionAdjustmentLine[]
     >()
     const methodIdPromoValueMap = new Map<string, number>()
     const automaticPromotions = preventAutoPromotions
       ? []
-      : await this.list({ is_automatic: true }, { select: ["code"] })
+      : await this.list(
+          { is_automatic: true },
+          { select: ["code"] },
+          sharedContext
+        )
 
     const automaticPromotionCodes = automaticPromotions.map((p) => p.code!)
     const promotionCodesToApply = [
@@ -254,7 +260,11 @@ export default class PromotionModuleService<
     items.forEach((item) => {
       item.adjustments?.forEach((adjustment) => {
         if (isString(adjustment.code)) {
-          codeAdjustmentMap.set(adjustment.code, adjustment)
+          const adjustments = codeAdjustmentMap.get(adjustment.code) || []
+
+          adjustments.push(adjustment)
+
+          codeAdjustmentMap.set(adjustment.code, adjustments)
           appliedItemCodes.push(adjustment.code)
         }
       })
@@ -263,7 +273,11 @@ export default class PromotionModuleService<
     shippingMethods.forEach((shippingMethod) => {
       shippingMethod.adjustments?.forEach((adjustment) => {
         if (isString(adjustment.code)) {
-          codeAdjustmentMap.set(adjustment.code, adjustment)
+          const adjustments = codeAdjustmentMap.get(adjustment.code) || []
+
+          adjustments.push(adjustment)
+
+          codeAdjustmentMap.set(adjustment.code, adjustments)
           appliedShippingCodes.push(adjustment.code)
         }
       })
@@ -292,6 +306,7 @@ export default class PromotionModuleService<
       }
     )
 
+    const appliedCodes = [...appliedShippingCodes, ...appliedItemCodes]
     const sortedPermissionsToApply = promotions
       .filter((p) => promotionCodesToApply.includes(p.code!))
       .sort(ComputeActionUtils.sortByBuyGetType)
@@ -300,7 +315,7 @@ export default class PromotionModuleService<
       promotions.map((promotion) => [promotion.code!, promotion])
     )
 
-    for (const appliedCode of [...appliedShippingCodes, ...appliedItemCodes]) {
+    for (const appliedCode of appliedCodes) {
       const promotion = existingPromotionsMap.get(appliedCode)
 
       if (!promotion) {
@@ -310,24 +325,28 @@ export default class PromotionModuleService<
         )
       }
 
-      if (promotionCodes.includes(appliedCode)) {
-        continue
-      }
-
       if (appliedItemCodes.includes(appliedCode)) {
-        computedActions.push({
-          action: "removeItemAdjustment",
-          adjustment_id: codeAdjustmentMap.get(appliedCode)!.id,
-          code: appliedCode,
-        })
+        const adjustments = codeAdjustmentMap.get(appliedCode) || []
+
+        adjustments.forEach((adjustment) =>
+          computedActions.push({
+            action: "removeItemAdjustment",
+            adjustment_id: adjustment.id,
+            code: appliedCode,
+          })
+        )
       }
 
       if (appliedShippingCodes.includes(appliedCode)) {
-        computedActions.push({
-          action: "removeShippingMethodAdjustment",
-          adjustment_id: codeAdjustmentMap.get(appliedCode)!.id,
-          code: appliedCode,
-        })
+        const adjustments = codeAdjustmentMap.get(appliedCode) || []
+
+        adjustments.forEach((adjustment) =>
+          computedActions.push({
+            action: "removeShippingMethodAdjustment",
+            adjustment_id: adjustment.id,
+            code: appliedCode,
+          })
+        )
       }
     }
 

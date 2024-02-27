@@ -1,30 +1,13 @@
-import { Drawer, Heading } from "@medusajs/ui"
+import { Heading } from "@medusajs/ui"
 import { useAdminStore } from "medusa-react"
-import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { json, useNavigate } from "react-router-dom"
+import { json } from "react-router-dom"
+import { RouteDrawer } from "../../../components/route-modal"
 import { EditStoreForm } from "./components/edit-store-form/edit-store-form"
 
 export const StoreEdit = () => {
-  const [open, setOpen] = useState(false)
-  const { store, isLoading, isError, error } = useAdminStore()
-
-  const navigate = useNavigate()
   const { t } = useTranslation()
-
-  useEffect(() => {
-    setOpen(true)
-  }, [])
-
-  const onOpenChange = (open: boolean) => {
-    if (!open) {
-      setTimeout(() => {
-        navigate(`/settings/store`, { replace: true })
-      }, 200)
-    }
-
-    setOpen(open)
-  }
+  const { store, isLoading, isError, error } = useAdminStore()
 
   if (isError) {
     throw error
@@ -35,15 +18,11 @@ export const StoreEdit = () => {
   }
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
-      <Drawer.Content>
-        <Drawer.Header>
-          <Heading className="capitalize">{t("store.editStore")}</Heading>
-        </Drawer.Header>
-        {store && (
-          <EditStoreForm store={store} onSuccess={() => onOpenChange(false)} />
-        )}
-      </Drawer.Content>
-    </Drawer>
+    <RouteDrawer>
+      <RouteDrawer.Header>
+        <Heading className="capitalize">{t("store.editStore")}</Heading>
+      </RouteDrawer.Header>
+      {store && <EditStoreForm store={store} />}
+    </RouteDrawer>
   )
 }

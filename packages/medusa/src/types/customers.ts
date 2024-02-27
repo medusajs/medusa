@@ -1,7 +1,12 @@
-import { Transform } from "class-transformer"
-import { IsBoolean, IsOptional, IsString } from "class-validator"
+import { Transform, Type } from "class-transformer"
+import {
+  IsBoolean,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { optionalBooleanMapper } from "../utils/validators/is-boolean"
-import { AddressPayload } from "./common"
+import { AddressPayload, DateComparisonOperator } from "./common"
 
 /**
  * Filters used to filter retrieved customers.
@@ -28,6 +33,29 @@ export class AdminListCustomerSelector {
   @IsOptional()
   @IsString({ each: true })
   groups?: string[]
+
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
+  @IsOptional()
+  @IsString()
+  order?: string
+
+  /**
+   * Date filters to apply on the customers' `created_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  /**
+   * Date filters to apply on the customers' `updated_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
 }
 
 export type CreateCustomerInput = {

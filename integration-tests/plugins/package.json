@@ -9,6 +9,7 @@
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
+    "@medusajs/api-key": "workspace:^",
     "@medusajs/auth": "workspace:*",
     "@medusajs/cache-inmemory": "workspace:*",
     "@medusajs/customer": "workspace:^",
@@ -20,7 +21,9 @@
     "@medusajs/product": "workspace:^",
     "@medusajs/promotion": "workspace:^",
     "@medusajs/region": "workspace:^",
+    "@medusajs/user": "workspace:^",
     "@medusajs/utils": "workspace:^",
+    "@medusajs/workflow-engine-inmemory": "workspace:*",
     "faker": "^5.5.3",
     "medusa-fulfillment-webshipper": "workspace:*",
     "medusa-interfaces": "workspace:*",
