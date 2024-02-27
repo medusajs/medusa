@@ -81,13 +81,18 @@ export class StorePostCartsCartReq {
   @IsType([AddressPayload, String])
   shipping_address?: AddressPayload | string
 
-  @IsEmail()
   @IsOptional()
+  @IsString()
   sales_channel_id?: string
 
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
+
+  @IsOptional()
+  @IsArray()
+  @Type(() => String)
+  promo_codes?: string[]
 
   // @IsOptional()
   // @IsArray()

@@ -13,7 +13,6 @@ import {
   MedusaContext,
   ModulesSdkUtils,
   InjectManager,
-  buildEventMessages,
   CommonEvents,
   UserEvents,
 } from "@medusajs/utils"
@@ -74,7 +73,53 @@ export default class UserModuleService<
     token: string,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<UserTypes.InviteDTO> {
-    return await this.inviteService_.validateInviteToken(token, sharedContext)
+    const invite = await this.inviteService_.validateInviteToken(
+      token,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<UserTypes.InviteDTO>(invite, {
+      populate: true,
+    })
+  }
+
+  @InjectManager("baseRepository_")
+  @EmitEvents()
+  async refreshInviteTokens(
+    inviteIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<UserTypes.InviteDTO[]> {
+    const invites = await this.refreshInviteTokens_(inviteIds, sharedContext)
+
+    sharedContext.messageAggregator?.saveRawMessageData(
+      invites.map((invite) => ({
+        eventName: UserEvents.invite_token_generated,
+        metadata: {
+          service: this.constructor.name,
+          action: "token_generated",
+          object: "invite",
+        },
+        data: { id: invite.id },
+      }))
+    )
+
+    return await this.baseRepository_.serialize<UserTypes.InviteDTO[]>(
+      invites,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async refreshInviteTokens_(
+    inviteIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    return await this.inviteService_.refreshInviteTokens(
+      inviteIds,
+      sharedContext
+    )
   }
 
   create(
@@ -194,6 +239,18 @@ export default class UserModuleService<
       }))
     )
 
+    sharedContext.messageAggregator?.saveRawMessageData(
+      invites.map((invite) => ({
+        eventName: UserEvents.invite_token_generated,
+        metadata: {
+          service: this.constructor.name,
+          action: "token_generated",
+          object: "invite",
+        },
+        data: { id: invite.id },
+      }))
+    )
+
     return Array.isArray(data) ? serializedInvites : serializedInvites[0]
   }
 
@@ -210,7 +267,7 @@ export default class UserModuleService<
       }
     })
 
-    return await this.inviteService_.create(toCreate)
+    return await this.inviteService_.create(toCreate, sharedContext)
   }
 
   updateInvites(

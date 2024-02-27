@@ -1,17 +1,18 @@
-import { useApi } from "../../../environment-helpers/use-api"
-import { initDb, useDb } from "../../../environment-helpers/use-db"
-
 import {
   createStep,
   createWorkflow,
   StepResponse,
   WorkflowData,
 } from "@medusajs/workflows-sdk"
+import { initDb, useDb } from "../../../environment-helpers/use-db"
+
 import { AxiosInstance } from "axios"
+import adminSeeder from "../../../helpers/admin-seeder"
+import { createAdminUser } from "../../helpers/create-admin-user"
+import { getContainer } from "../../../environment-helpers/use-container"
 import path from "path"
 import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
-import { getContainer } from "../../../environment-helpers/use-container"
-import adminSeeder from "../../../helpers/admin-seeder"
+import { useApi } from "../../../environment-helpers/use-api"
 
 export const workflowEngineTestSuite = (env, extraParams = {}) => {
   const adminHeaders = {
@@ -31,7 +32,7 @@ export const workflowEngineTestSuite = (env, extraParams = {}) => {
       shutdownServer = await startBootstrapApp({ cwd, env })
       medusaContainer = getContainer()
 
-      await adminSeeder(dbConnection)
+      await createAdminUser(dbConnection, adminHeaders)
     })
 
     afterAll(async () => {
