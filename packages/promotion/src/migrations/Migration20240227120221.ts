@@ -1,11 +1,10 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20240227114726 extends Migration {
+export class Migration20240227120221 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table if not exists "promotion_campaign" ("id" text not null, "name" text not null, "description" text null, "currency" text null, "campaign_identifier" text not null, "starts_at" timestamptz null, "ends_at" timestamptz null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_campaign_pkey" primary key ("id"));'
     )
-
     this.addSql(
       'alter table if exists "promotion_campaign" add constraint "IDX_campaign_identifier_unique" unique ("campaign_identifier");'
     )
@@ -34,19 +33,19 @@ export class Migration20240227114726 extends Migration {
     )
 
     this.addSql(
-      'create table if not exists "promo_application_method" ("id" text not null, "value" numeric null, "raw_value" jsonb null, "max_quantity" numeric null, "apply_to_quantity" numeric null, "buy_rules_min_quantity" numeric null, "type" text check ("type" in (\'fixed\', \'percentage\')) not null, "target_type" text check ("target_type" in (\'order\', \'shipping_methods\', \'items\')) not null, "allocation" text check ("allocation" in (\'each\', \'across\')) null, "promotion_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promo_application_method_pkey" primary key ("id"));'
+      'create table if not exists "promotion_application_method" ("id" text not null, "value" numeric null, "raw_value" jsonb null, "max_quantity" numeric null, "apply_to_quantity" numeric null, "buy_rules_min_quantity" numeric null, "type" text check ("type" in (\'fixed\', \'percentage\')) not null, "target_type" text check ("target_type" in (\'order\', \'shipping_methods\', \'items\')) not null, "allocation" text check ("allocation" in (\'each\', \'across\')) null, "promotion_id" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_application_method_pkey" primary key ("id"));'
     )
     this.addSql(
-      'create index if not exists "IDX_application_method_type" on "promo_application_method" ("type");'
+      'create index if not exists "IDX_application_method_type" on "promotion_application_method" ("type");'
     )
     this.addSql(
-      'create index if not exists "IDX_application_method_target_type" on "promo_application_method" ("target_type");'
+      'create index if not exists "IDX_application_method_target_type" on "promotion_application_method" ("target_type");'
     )
     this.addSql(
-      'create index if not exists "IDX_application_method_allocation" on "promo_application_method" ("allocation");'
+      'create index if not exists "IDX_application_method_allocation" on "promotion_application_method" ("allocation");'
     )
     this.addSql(
-      'alter table if exists "promo_application_method" add constraint "promo_application_method_promotion_id_unique" unique ("promotion_id");'
+      'alter table if exists "promotion_application_method" add constraint "promotion_application_method_promotion_id_unique" unique ("promotion_id");'
     )
 
     this.addSql(
@@ -87,7 +86,7 @@ export class Migration20240227114726 extends Migration {
     )
 
     this.addSql(
-      'alter table if exists "promo_application_method" add constraint "promo_application_method_promotion_id_foreign" foreign key ("promotion_id") references "promotion" ("id") on update cascade on delete cascade;'
+      'alter table if exists "promotion_application_method" add constraint "promotion_application_method_promotion_id_foreign" foreign key ("promotion_id") references "promotion" ("id") on update cascade on delete cascade;'
     )
 
     this.addSql(
@@ -98,14 +97,14 @@ export class Migration20240227114726 extends Migration {
     )
 
     this.addSql(
-      'alter table if exists "application_method_target_rules" add constraint "application_method_target_rules_application_method_id_foreign" foreign key ("application_method_id") references "promo_application_method" ("id") on update cascade on delete cascade;'
+      'alter table if exists "application_method_target_rules" add constraint "application_method_target_rules_application_method_id_foreign" foreign key ("application_method_id") references "promotion_application_method" ("id") on update cascade on delete cascade;'
     )
     this.addSql(
       'alter table if exists "application_method_target_rules" add constraint "application_method_target_rules_promotion_rule_id_foreign" foreign key ("promotion_rule_id") references "promotion_rule" ("id") on update cascade on delete cascade;'
     )
 
     this.addSql(
-      'alter table if exists "application_method_buy_rules" add constraint "application_method_buy_rules_application_method_id_foreign" foreign key ("application_method_id") references "promo_application_method" ("id") on update cascade on delete cascade;'
+      'alter table if exists "application_method_buy_rules" add constraint "application_method_buy_rules_application_method_id_foreign" foreign key ("application_method_id") references "promotion_application_method" ("id") on update cascade on delete cascade;'
     )
     this.addSql(
       'alter table if exists "application_method_buy_rules" add constraint "application_method_buy_rules_promotion_rule_id_foreign" foreign key ("promotion_rule_id") references "promotion_rule" ("id") on update cascade on delete cascade;'

@@ -513,7 +513,7 @@
           "mappedType": "datetime"
         }
       },
-      "name": "promo_application_method",
+      "name": "promotion_application_method",
       "schema": "public",
       "indexes": [
         {
@@ -540,12 +540,12 @@
         {
           "columnNames": ["promotion_id"],
           "composite": false,
-          "keyName": "promo_application_method_promotion_id_unique",
+          "keyName": "promotion_application_method_promotion_id_unique",
           "primary": false,
           "unique": true
         },
         {
-          "keyName": "promo_application_method_pkey",
+          "keyName": "promotion_application_method_pkey",
           "columnNames": ["id"],
           "composite": false,
           "primary": true,
@@ -554,10 +554,10 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "promo_application_method_promotion_id_foreign": {
-          "constraintName": "promo_application_method_promotion_id_foreign",
+        "promotion_application_method_promotion_id_foreign": {
+          "constraintName": "promotion_application_method_promotion_id_foreign",
           "columnNames": ["promotion_id"],
-          "localTableName": "public.promo_application_method",
+          "localTableName": "public.promotion_application_method",
           "referencedColumnNames": ["id"],
           "referencedTableName": "public.promotion",
           "deleteRule": "cascade",
@@ -758,7 +758,7 @@
           "columnNames": ["application_method_id"],
           "localTableName": "public.application_method_target_rules",
           "referencedColumnNames": ["id"],
-          "referencedTableName": "public.promo_application_method",
+          "referencedTableName": "public.promotion_application_method",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
@@ -812,7 +812,7 @@
           "columnNames": ["application_method_id"],
           "localTableName": "public.application_method_buy_rules",
           "referencedColumnNames": ["id"],
-          "referencedTableName": "public.promo_application_method",
+          "referencedTableName": "public.promotion_application_method",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
