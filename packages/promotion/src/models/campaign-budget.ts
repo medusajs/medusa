@@ -1,5 +1,15 @@
-import { CampaignBudgetTypeValues, DAL } from "@medusajs/types"
-import { DALUtils, PromotionUtils, generateEntityId } from "@medusajs/utils"
+import {
+  BigNumberRawValue,
+  CampaignBudgetTypeValues,
+  DAL,
+} from "@medusajs/types"
+import {
+  BigNumber,
+  DALUtils,
+  MikroOrmBigNumberProperty,
+  PromotionUtils,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -37,20 +47,17 @@ export default class CampaignBudget {
   })
   campaign: Campaign | null = null
 
-  @Property({
-    columnType: "numeric",
-    nullable: true,
-    serializer: Number,
-    default: null,
-  })
-  limit: number | null = null
+  @MikroOrmBigNumberProperty({ nullable: true })
+  limit: BigNumber | number | null = null
 
-  @Property({
-    columnType: "numeric",
-    serializer: Number,
-    default: 0,
-  })
-  used: number
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_limit: BigNumberRawValue | null = null
+
+  @MikroOrmBigNumberProperty({ nullable: true })
+  used: BigNumber | number | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_used: BigNumberRawValue | null = null
 
   @Property({
     onCreate: () => new Date(),

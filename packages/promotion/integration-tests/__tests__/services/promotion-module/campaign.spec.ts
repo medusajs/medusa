@@ -1,11 +1,11 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { initModules } from "medusa-test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { createPromotions } from "../../../__fixtures__/promotion"
 import { MikroOrmWrapper } from "../../../utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
-import { initModules } from "medusa-test-utils"
-import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
@@ -92,11 +92,11 @@ describe("Promotion Module Service: Campaigns", () => {
         {
           id: "campaign-id-1",
           name: "campaign 1",
-          budget: {
+          budget: expect.objectContaining({
             id: expect.any(String),
             campaign: expect.any(Object),
             limit: 1000,
-          },
+          }),
         },
       ])
     })
