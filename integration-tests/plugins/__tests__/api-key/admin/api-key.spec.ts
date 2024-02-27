@@ -1,12 +1,14 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+
+import { ApiKeyType } from "@medusajs/utils"
 import { IApiKeyModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import adminSeeder from "../../../../helpers/admin-seeder"
+import { createAdminUser } from "../../../helpers/create-admin-user"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
-import { getContainer } from "../../../../environment-helpers/use-container"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import adminSeeder from "../../../../helpers/admin-seeder"
-import { ApiKeyType } from "@medusajs/utils"
 
 jest.setTimeout(50000)
 
@@ -36,7 +38,7 @@ describe("API Keys - Admin", () => {
   })
 
   beforeEach(async () => {
-    await adminSeeder(dbConnection)
+    await createAdminUser(dbConnection, adminHeaders)
   })
 
   afterEach(async () => {
@@ -60,7 +62,7 @@ describe("API Keys - Admin", () => {
       expect.objectContaining({
         id: created.data.apiKey.id,
         title: "Test Secret Key",
-        created_by: "test",
+        created_by: "admin_user",
       })
     )
     // On create we get the token in raw form so we can store it.
@@ -92,7 +94,7 @@ describe("API Keys - Admin", () => {
     expect(revoked.data.apiKey).toEqual(
       expect.objectContaining({
         id: created.data.apiKey.id,
-        revoked_by: "test",
+        revoked_by: "admin_user",
       })
     )
     expect(revoked.data.apiKey.revoked_at).toBeTruthy()

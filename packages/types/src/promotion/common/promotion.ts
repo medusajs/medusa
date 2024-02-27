@@ -1,12 +1,13 @@
-import { BaseFilterable } from "../../dal"
-import { CreateCampaignDTO } from "../mutations"
 import {
   ApplicationMethodDTO,
   CreateApplicationMethodDTO,
   UpdateApplicationMethodDTO,
 } from "./application-method"
-import { CampaignDTO } from "./campaign"
 import { CreatePromotionRuleDTO, PromotionRuleDTO } from "./promotion-rule"
+
+import { BaseFilterable } from "../../dal"
+import { CampaignDTO } from "./campaign"
+import { CreateCampaignDTO } from "../mutations"
 
 export type PromotionTypeValues = "standard" | "buyget"
 

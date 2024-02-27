@@ -1,17 +1,24 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { TransactionHandlerType, isDefined } from "@medusajs/utils"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../../../types/routing"
 import { IWorkflowEngineService, StepResponse } from "@medusajs/workflows-sdk"
-import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
-import { AdminPostWorkflowsAsyncResponseReq } from "../../../validators"
+import { TransactionHandlerType, isDefined } from "@medusajs/utils"
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+import { AdminPostWorkflowsAsyncResponseReq } from "../../../validators"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminPostWorkflowsAsyncResponseReq>,
+  res: MedusaResponse
+) => {
   const workflowEngineService: IWorkflowEngineService = req.scope.resolve(
     ModuleRegistrationName.WORKFLOW_ENGINE
   )
 
   const { workflow_id } = req.params
 
-  const body = req.validatedBody as AdminPostWorkflowsAsyncResponseReq
+  const body = req.validatedBody
 
   const { transaction_id, step_id } = body
 

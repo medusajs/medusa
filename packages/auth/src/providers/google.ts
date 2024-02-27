@@ -1,12 +1,12 @@
-import { AbstractAuthModuleProvider, MedusaError } from "@medusajs/utils"
 import {
   AuthenticationInput,
   AuthenticationResponse,
   ModulesSdkTypes,
 } from "@medusajs/types"
+import { AbstractAuthModuleProvider, MedusaError } from "@medusajs/utils"
+import { AuthUserService } from "@services"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
-import { AuthUserService } from "@services"
 import { AuthorizationCode } from "simple-oauth2"
 import url from "url"
 

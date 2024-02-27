@@ -69,7 +69,7 @@ export default class TaxRate {
     type: "text",
     fieldName: "tax_region_id",
     mapToPk: true,
-    cascade: [Cascade.REMOVE],
+    onDelete: "cascade",
   })
   @taxRegionIdIndexStatement.MikroORMIndex()
   tax_region_id: string

@@ -1,11 +1,12 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+
 import { IPromotionModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { createAdminUser } from "../../../helpers/create-admin-user"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
-import { getContainer } from "../../../../environment-helpers/use-container"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import adminSeeder from "../../../../helpers/admin-seeder"
 
 jest.setTimeout(50000)
 
@@ -37,7 +38,7 @@ describe("POST /admin/campaigns", () => {
   })
 
   beforeEach(async () => {
-    await adminSeeder(dbConnection)
+    await createAdminUser(dbConnection, adminHeaders)
   })
 
   afterEach(async () => {
