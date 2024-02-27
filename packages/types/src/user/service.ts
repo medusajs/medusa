@@ -5,11 +5,11 @@ import {
   UpdateUserDTO,
 } from "./mutations"
 import { FilterableUserProps, InviteDTO, UserDTO } from "./common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 
 import { Context } from "../shared-context"
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
-import { RestoreReturn, SoftDeleteReturn } from "../dal"
 
 /**
  * The main service interface for the user module.
@@ -26,6 +26,11 @@ export interface IUserModuleService extends IModuleService {
     token: string,
     sharedContext?: Context
   ): Promise<InviteDTO>
+
+  refreshInviteTokens(
+    inviteIds: string[],
+    sharedContext?: Context
+  ): Promise<InviteDTO[]>
 
   /**
    * This method retrieves a user by its ID.
