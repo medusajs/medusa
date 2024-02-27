@@ -24,16 +24,36 @@ moduleIntegrationTestRunner({
           rate: 8.23,
         })
 
-        await service.update(rate.id, {
+        const updatedRate = await service.update(rate.id, {
           name: "Updated Rate",
           code: "TEST",
           rate: 8.25,
         })
 
-        await service.update(
+        expect(updatedRate).toEqual(
+          expect.objectContaining({
+            tax_region_id: region.id,
+            rate: 8.25,
+            name: "Updated Rate",
+            code: "TEST",
+            is_default: false,
+          })
+        )
+
+        const updatedDefaultRate = await service.update(
           { tax_region_id: region.id, is_default: true },
           { rate: 2 }
         )
+
+        expect(updatedDefaultRate).toEqual([
+          expect.objectContaining({
+            tax_region_id: region.id,
+            rate: 2,
+            name: "Test Rate",
+            code: null,
+            is_default: true,
+          }),
+        ])
 
         const rates = await service.list()
         expect(rates).toEqual(
