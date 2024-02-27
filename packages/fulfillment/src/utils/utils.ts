@@ -10,8 +10,8 @@ import { isString, MedusaError, pickValueFromObject } from "@medusajs/utils"
 
 export type Rule = {
   attribute: string
-  operator: RuleOperator
-  value: string | string[]
+  operator: Lowercase<keyof typeof RuleOperator>
+  value: string | string[] | null
 }
 
 export enum RuleOperator {
@@ -71,18 +71,18 @@ const operatorsPredicate = {
  * @param rules
  * @param options
  */
-export function isContextValidForRules(
+export function isContextValid(
   context: Record<string, any>,
   rules: Rule[],
   options: {
-    atLeastOneValidRule: boolean
+    someAreValid: boolean
   } = {
-    atLeastOneValidRule: false,
+    someAreValid: false,
   }
 ) {
-  const { atLeastOneValidRule } = options
+  const { someAreValid } = options
 
-  const loopComparator = atLeastOneValidRule ? rules.some : rules.every
+  const loopComparator = someAreValid ? rules.some : rules.every
   const predicate = (rule) => {
     const { attribute, operator, value } = rule
     const contextValue = pickValueFromObject(attribute, context)
@@ -135,6 +135,13 @@ export function validateRule(rule: Record<string, unknown>): boolean {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Rule value must be an array for in/nin operators"
+      )
+    }
+  } else {
+    if (!isString(rule.value)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Rule value must be a string for the selected operator ${rule.operator}`
       )
     }
   }

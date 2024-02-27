@@ -1,12 +1,18 @@
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../../../types/routing"
+
+import { AdminPostCustomerGroupsGroupCustomersBatchReq } from "../../../validators"
 import { deleteCustomerGroupCustomersWorkflow } from "@medusajs/core-flows"
 
-import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
-import { AdminPostCustomerGroupsGroupCustomersBatchReq } from "../../../validators"
-
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  // eslint-disable-next-line max-len
+  req: AuthenticatedMedusaRequest<AdminPostCustomerGroupsGroupCustomersBatchReq>,
+  res: MedusaResponse
+) => {
   const { id } = req.params
-  const { customer_ids } =
-    req.validatedBody as AdminPostCustomerGroupsGroupCustomersBatchReq
+  const { customer_ids } = req.validatedBody
 
   const deleteCustomers = deleteCustomerGroupCustomersWorkflow(req.scope)
 

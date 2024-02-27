@@ -1,17 +1,25 @@
-import { transformBody, transformQuery } from "../../../api/middlewares"
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import * as QueryConfig from "./query-config"
+
 import {
-  AdminGetCustomersParams,
-  AdminGetCustomersCustomerParams,
-  AdminPostCustomersReq,
-  AdminPostCustomersCustomerReq,
-  AdminPostCustomersCustomerAddressesReq,
   AdminGetCustomersCustomerAddressesParams,
+  AdminGetCustomersCustomerParams,
+  AdminGetCustomersParams,
   AdminPostCustomersCustomerAddressesAddressReq,
+  AdminPostCustomersCustomerAddressesReq,
+  AdminPostCustomersCustomerReq,
+  AdminPostCustomersReq,
 } from "./validators"
+import { transformBody, transformQuery } from "../../../api/middlewares"
+
+import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
+  {
+    method: ["ALL"],
+    matcher: "/admin/customers*",
+    middlewares: [authenticate("admin", ["bearer", "session"])],
+  },
   {
     method: ["GET"],
     matcher: "/admin/customers",

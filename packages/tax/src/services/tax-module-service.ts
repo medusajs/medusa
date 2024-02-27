@@ -2,6 +2,7 @@ import {
   Context,
   DAL,
   ITaxModuleService,
+  ITaxProvider,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
@@ -25,9 +26,15 @@ type InjectedDependencies = {
   taxRateService: ModulesSdkTypes.InternalModuleService<any>
   taxRegionService: ModulesSdkTypes.InternalModuleService<any>
   taxRateRuleService: ModulesSdkTypes.InternalModuleService<any>
+  [key: `tp_${string}`]: ITaxProvider
 }
 
 const generateForModels = [TaxRegion, TaxRateRule]
+
+type ItemWithRates = {
+  rates: TaxRate[]
+  item: TaxTypes.TaxableItemDTO | TaxTypes.TaxableShippingDTO
+}
 
 export default class TaxModuleService<
     TTaxRate extends TaxRate = TaxRate,
@@ -44,6 +51,7 @@ export default class TaxModuleService<
   >(TaxRate, generateForModels, entityNameToLinkableKeysMap)
   implements ITaxModuleService
 {
+  protected readonly container_: InjectedDependencies
   protected baseRepository_: DAL.RepositoryService
   protected taxRateService_: ModulesSdkTypes.InternalModuleService<TTaxRate>
   protected taxRegionService_: ModulesSdkTypes.InternalModuleService<TTaxRegion>
@@ -61,6 +69,7 @@ export default class TaxModuleService<
     // @ts-ignore
     super(...arguments)
 
+    this.container_ = arguments[0]
     this.baseRepository_ = baseRepository
     this.taxRateService_ = taxRateService
     this.taxRegionService_ = taxRegionService
@@ -243,11 +252,19 @@ export default class TaxModuleService<
       sharedContext
     )
 
+    const parentRegion = regions.find((r) => r.province_code === null)
+    if (!parentRegion) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "No parent region found for country"
+      )
+    }
+
     const toReturn = await promiseAll(
       items.map(async (item) => {
         const regionIds = regions.map((r) => r.id)
         const rateQuery = this.getTaxRateQueryForItem(item, regionIds)
-        const rates = await this.taxRateService_.list(
+        const candidateRates = await this.taxRateService_.list(
           rateQuery,
           {
             relations: ["tax_region", "rules"],
@@ -255,11 +272,71 @@ export default class TaxModuleService<
           sharedContext
         )
 
-        return await this.getTaxRatesForItem(item, rates)
+        const applicableRates = await this.getTaxRatesForItem(
+          item,
+          candidateRates
+        )
+
+        return {
+          rates: applicableRates,
+          item,
+        }
       })
     )
 
-    return toReturn.flat()
+    const taxLines = await this.getTaxLinesFromProvider(
+      parentRegion.provider_id,
+      toReturn,
+      calculationContext
+    )
+
+    return taxLines
+  }
+
+  private async getTaxLinesFromProvider(
+    rawProviderId: string | null,
+    items: ItemWithRates[],
+    calculationContext: TaxTypes.TaxCalculationContext
+  ) {
+    const providerId = rawProviderId || "system"
+    let provider: ITaxProvider
+    try {
+      provider = this.container_[`tp_${providerId}`] as ITaxProvider
+    } catch (err) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Failed to resolve Tax Provider with id: ${providerId}. Make sure it's installed and configured in the Tax Module's options.`
+      )
+    }
+
+    const [itemLines, shippingLines] = items.reduce(
+      (acc, line) => {
+        if ("shipping_option_id" in line.item) {
+          acc[1].push({
+            shipping_line: line.item,
+            rates: line.rates,
+          })
+        } else {
+          acc[0].push({
+            line_item: line.item,
+            rates: line.rates,
+          })
+        }
+        return acc
+      },
+      [[], []] as [
+        TaxTypes.ItemTaxCalculationLine[],
+        TaxTypes.ShippingTaxCalculationLine[]
+      ]
+    )
+
+    const itemTaxLines = await provider.getTaxLines(
+      itemLines,
+      shippingLines,
+      calculationContext
+    )
+
+    return itemTaxLines
   }
 
   private normalizeTaxCalculationContext(
@@ -350,7 +427,7 @@ export default class TaxModuleService<
   private async getTaxRatesForItem(
     item: TaxTypes.TaxableItemDTO | TaxTypes.TaxableShippingDTO,
     rates: TTaxRate[]
-  ): Promise<(TaxTypes.ItemTaxLineDTO | TaxTypes.ShippingTaxLineDTO)[]> {
+  ): Promise<TTaxRate[]> {
     if (!rates.length) {
       return []
     }
@@ -358,7 +435,7 @@ export default class TaxModuleService<
     const prioritizedRates = this.prioritizeRates(rates, item)
     const rate = prioritizedRates[0]
 
-    const ratesToReturn = [this.buildRateForItem(rate, item)]
+    const ratesToReturn = [rate]
 
     // If the rate can be combined we need to find the rate's
     // parent region and add that rate too. If not we can return now.
@@ -373,35 +450,10 @@ export default class TaxModuleService<
     )
 
     if (parentRate) {
-      ratesToReturn.push(this.buildRateForItem(parentRate, item))
+      ratesToReturn.push(parentRate)
     }
 
     return ratesToReturn
-  }
-
-  private buildRateForItem(
-    rate: TTaxRate,
-    item: TaxTypes.TaxableItemDTO | TaxTypes.TaxableShippingDTO
-  ): TaxTypes.ItemTaxLineDTO | TaxTypes.ShippingTaxLineDTO {
-    const isShipping = "shipping_option_id" in item
-    const toReturn = {
-      rate_id: rate.id,
-      rate: rate.rate,
-      code: rate.code,
-      name: rate.name,
-    }
-
-    if (isShipping) {
-      return {
-        ...toReturn,
-        shipping_line_id: item.id,
-      }
-    }
-
-    return {
-      ...toReturn,
-      line_item_id: item.id,
-    }
   }
 
   private getTaxRateQueryForItem(

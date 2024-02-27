@@ -1,8 +1,13 @@
-import { MedusaRequest, MedusaResponse } from "../types/routing"
+import { AuthUserDTO, IUserModuleService } from "@medusajs/types"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaRequest,
+  MedusaResponse,
+} from "../types/routing"
 import { NextFunction, RequestHandler } from "express"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
-import { AuthUserDTO } from "@medusajs/types"
+import { StringChain } from "lodash"
 import { stringEqualsOrRegexMatch } from "@medusajs/utils"
 
 const SESSION_AUTH = "session"
@@ -18,7 +23,7 @@ type AuthType = "session" | "bearer"
 export const authenticate = (
   authScope: string | RegExp,
   authType: AuthType | AuthType[],
-  options: { allowUnauthenticated?: boolean } = {}
+  options: { allowUnauthenticated?: boolean; allowUnregistered?: boolean } = {}
 ): RequestHandler => {
   return async (
     req: MedusaRequest,
@@ -67,9 +72,24 @@ export const authenticate = (
       }
     }
 
-    if (authUser) {
-      req.auth_user = {
-        id: authUser.id,
+    const isMedusaScope =
+      stringEqualsOrRegexMatch(authScope, "admin") ||
+      stringEqualsOrRegexMatch(authScope, "store")
+
+    const isRegistered =
+      !isMedusaScope ||
+      (authUser?.app_metadata?.user_id &&
+        stringEqualsOrRegexMatch(authScope, "admin")) ||
+      (authUser?.app_metadata?.customer_id &&
+        stringEqualsOrRegexMatch(authScope, "store"))
+
+    if (
+      authUser &&
+      (isRegistered || (!isRegistered && options.allowUnregistered))
+    ) {
+      ;(req as AuthenticatedMedusaRequest).auth = {
+        actor_id: getActorId(authUser, authScope) as string, // TODO: fix types for auth_users not in the medusa system
+        auth_user_id: authUser.id,
         app_metadata: authUser.app_metadata,
         scope: authUser.scope,
       }
@@ -82,4 +102,19 @@ export const authenticate = (
 
     res.status(401).json({ message: "Unauthorized" })
   }
+}
+
+const getActorId = (
+  authUser: AuthUserDTO,
+  scope: string | RegExp
+): string | undefined => {
+  if (stringEqualsOrRegexMatch(scope, "admin")) {
+    return authUser.app_metadata.user_id as string
+  }
+
+  if (stringEqualsOrRegexMatch(scope, "store")) {
+    return authUser.app_metadata.customer_id as string
+  }
+
+  return undefined
 }
