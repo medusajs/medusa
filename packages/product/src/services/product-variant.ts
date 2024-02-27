@@ -1,9 +1,9 @@
 import { Context, DAL, ProductTypes } from "@medusajs/types"
 import {
   InjectTransactionManager,
-  isString,
   MedusaContext,
   ModulesSdkUtils,
+  isString,
 } from "@medusajs/utils"
 import { Product, ProductVariant } from "@models"
 
@@ -46,7 +46,7 @@ export default class ProductVariantService<
     if (isString(productOrId)) {
       product = await this.productService_.retrieve(
         productOrId,
-        { relations: ["variants"] },
+        { relations: ["variants", "variants.options"] },
         sharedContext
       )
     }
