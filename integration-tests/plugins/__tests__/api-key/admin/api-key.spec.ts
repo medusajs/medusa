@@ -131,7 +131,11 @@ describe("API Keys - Admin", () => {
         currency_code: "usd",
         countries: ["us", "ca"],
       },
-      { headers: { Authorization: `Bearer ${created.data.apiKey.token}` } }
+      {
+        auth: {
+          username: created.data.apiKey.token,
+        },
+      }
     )
 
     expect(createdRegion.status).toEqual(200)
@@ -149,7 +153,7 @@ describe("API Keys - Admin", () => {
       adminHeaders
     )
 
-    const revoked = await api.post(
+    await api.post(
       `/admin/api-keys/${created.data.apiKey.id}/revoke`,
       {},
       adminHeaders
@@ -163,7 +167,11 @@ describe("API Keys - Admin", () => {
           currency_code: "usd",
           countries: ["us", "ca"],
         },
-        { headers: { Authorization: `Bearer ${created.data.apiKey.token}` } }
+        {
+          auth: {
+            username: created.data.apiKey.token,
+          },
+        }
       )
       .catch((e) => e.message)
 
@@ -175,10 +183,10 @@ describe("API Keys - Admin", () => {
         countries: ["us", "ca"],
       },
       {
-        headers: {
-          Authorization: `Bearer ${created.data.apiKey.token}`,
-          ...adminHeaders.headers,
+        auth: {
+          username: created.data.apiKey.token,
         },
+        ...adminHeaders,
       }
     )
 

@@ -103,12 +103,23 @@ const getApiKeyInfo = async (req: MedusaRequest): Promise<ApiKeyDTO | null> => {
   }
 
   const [tokenType, token] = authHeader.split(" ")
-  if (tokenType.toLowerCase() !== "bearer" || !token) {
+  if (tokenType.toLowerCase() !== "basic" || !token) {
     return null
   }
 
-  // Secret tokens start with 'sk_', and if it doesn't it could be a user JWT or a malformed token
+  // The token could have been base64 encoded, we want to decode it first.
+  let normalizedToken = token
   if (!token.startsWith("sk_")) {
+    normalizedToken = Buffer.from(token, "base64").toString("utf-8")
+  }
+
+  // Basic auth is defined as a username:password set, and since the token is set to the username we need to trim the colon
+  if (normalizedToken.endsWith(":")) {
+    normalizedToken = normalizedToken.slice(0, -1)
+  }
+
+  // Secret tokens start with 'sk_', and if it doesn't it could be a user JWT or a malformed token
+  if (!normalizedToken.startsWith("sk_")) {
     return null
   }
 
@@ -116,7 +127,7 @@ const getApiKeyInfo = async (req: MedusaRequest): Promise<ApiKeyDTO | null> => {
     ModuleRegistrationName.API_KEY
   ) as IApiKeyModuleService
   try {
-    const apiKey = await apiKeyModule.authenticate(token)
+    const apiKey = await apiKeyModule.authenticate(normalizedToken)
     if (!apiKey) {
       return null
     }
