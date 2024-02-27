@@ -8,6 +8,73 @@ moduleIntegrationTestRunner({
   moduleName: Modules.TAX,
   testSuite: ({ service }: SuiteOptions<ITaxModuleService>) => {
     describe("TaxModuleService", function () {
+      it("should create tax rates and update them", async () => {
+        const region = await service.createTaxRegions({
+          country_code: "US",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        })
+
+        const rate = await service.create({
+          tax_region_id: region.id,
+          name: "Shipping Rate",
+          code: "test",
+          rate: 8.23,
+        })
+
+        const updatedRate = await service.update(rate.id, {
+          name: "Updated Rate",
+          code: "TEST",
+          rate: 8.25,
+        })
+
+        expect(updatedRate).toEqual(
+          expect.objectContaining({
+            tax_region_id: region.id,
+            rate: 8.25,
+            name: "Updated Rate",
+            code: "TEST",
+            is_default: false,
+          })
+        )
+
+        const updatedDefaultRate = await service.update(
+          { tax_region_id: region.id, is_default: true },
+          { rate: 2 }
+        )
+
+        expect(updatedDefaultRate).toEqual([
+          expect.objectContaining({
+            tax_region_id: region.id,
+            rate: 2,
+            name: "Test Rate",
+            code: null,
+            is_default: true,
+          }),
+        ])
+
+        const rates = await service.list()
+        expect(rates).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              tax_region_id: region.id,
+              rate: 2,
+              name: "Test Rate",
+              is_default: true,
+            }),
+            expect.objectContaining({
+              tax_region_id: region.id,
+              rate: 8.25,
+              name: "Updated Rate",
+              code: "TEST",
+              is_default: false,
+            }),
+          ])
+        )
+      })
+
       it("should create a tax region", async () => {
         const region = await service.createTaxRegions({
           country_code: "US",

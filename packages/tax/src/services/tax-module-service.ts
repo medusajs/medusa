@@ -15,6 +15,7 @@ import {
   MedusaError,
   ModulesSdkUtils,
   isDefined,
+  isString,
   promiseAll,
 } from "@medusajs/utils"
 import { TaxRate, TaxRegion, TaxRateRule } from "@models"
@@ -143,6 +144,49 @@ export default class TaxModuleService<
     return await this.baseRepository_.serialize<TaxTypes.TaxRateDTO>(rates, {
       populate: true,
     })
+  }
+
+  async update(
+    id: string,
+    data: TaxTypes.UpdateTaxRateDTO,
+    sharedContext?: Context
+  ): Promise<TaxTypes.TaxRateDTO>
+  async update(
+    ids: string[],
+    data: TaxTypes.UpdateTaxRateDTO,
+    sharedContext?: Context
+  ): Promise<TaxTypes.TaxRateDTO[]>
+  async update(
+    selector: TaxTypes.FilterableTaxRateProps,
+    data: TaxTypes.UpdateTaxRateDTO,
+    sharedContext?: Context
+  ): Promise<TaxTypes.TaxRateDTO[]>
+
+  @InjectManager("baseRepository_")
+  async update(
+    selector: string | string[] | TaxTypes.FilterableTaxRateProps,
+    data: TaxTypes.UpdateTaxRateDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TaxTypes.TaxRateDTO | TaxTypes.TaxRateDTO[]> {
+    const rates = await this.update_(selector, data, sharedContext)
+    const serialized = await this.baseRepository_.serialize<
+      TaxTypes.TaxRateDTO[]
+    >(rates, { populate: true })
+    return isString(selector) ? serialized[0] : serialized
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async update_(
+    idOrSelector: string | string[] | TaxTypes.FilterableTaxRateProps,
+    data: TaxTypes.UpdateTaxRateDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const selector =
+      Array.isArray(idOrSelector) || isString(idOrSelector)
+        ? { id: idOrSelector }
+        : idOrSelector
+
+    return await this.taxRateService_.update({ selector, data }, sharedContext)
   }
 
   createTaxRegions(
