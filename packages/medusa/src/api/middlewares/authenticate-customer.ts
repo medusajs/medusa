@@ -1,4 +1,6 @@
+import { ContainerRegistrationKeys, MedusaV2Flag } from "@medusajs/utils"
 import { NextFunction, Request, RequestHandler, Response } from "express"
+
 import passport from "passport"
 
 // Optional customer authentication
@@ -6,6 +8,13 @@ import passport from "passport"
 // If you want to require authentication, use `requireCustomerAuthentication` in `packages/medusa/src/api/middlewares/require-customer-authentication.ts`
 export default (): RequestHandler => {
   return (req: Request, res: Response, next: NextFunction): void => {
+    const featureFlagRouter = req.scope.resolve(
+      ContainerRegistrationKeys.FEATURE_FLAG_ROUTER
+    )
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+      return next()
+    }
+
     passport.authenticate(
       ["store-session", "store-bearer"],
       { session: false },

@@ -1,7 +1,7 @@
+import { IAuthModuleService, IUserModuleService } from "@medusajs/types"
 import { initDb, useDb } from "../../../environment-helpers/use-db"
 
 import { AxiosInstance } from "axios"
-import { IUserModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createAdminUser } from "../../helpers/create-admin-user"
 import { getContainer } from "../../../environment-helpers/use-container"
@@ -16,7 +16,7 @@ const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("GET /admin/users/:id", () => {
+describe("POST /admin/invites/:id/resend", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -45,18 +45,23 @@ describe("GET /admin/users/:id", () => {
     await db.teardown()
   })
 
-  it("should retrieve a single user", async () => {
-    const user = await userModuleService.create({
-      email: "member@test.com",
+  it("should resend a single invite", async () => {
+    const invite = await userModuleService.createInvites({
+      email: "potential_member@test.com",
     })
 
     const api = useApi()! as AxiosInstance
 
-    const response = await api.get(`/admin/users/${user.id}`, adminHeaders)
+    const response = await api.post(
+      `/admin/invites/${invite.id}/resend`,
+      {},
+      adminHeaders
+    )
 
     expect(response.status).toEqual(200)
-    expect(response.data.user).toEqual(
-      expect.objectContaining({ email: "member@test.com" })
+    expect(response.data.invite.token).not.toEqual(invite.token)
+    expect(response.data.invite).toEqual(
+      expect.objectContaining({ email: "potential_member@test.com" })
     )
   })
 })

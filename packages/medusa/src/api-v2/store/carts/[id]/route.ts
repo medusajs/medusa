@@ -1,9 +1,9 @@
-import { updateCartsWorkflow } from "@medusajs/core-flows"
-import { UpdateCartDataDTO } from "@medusajs/types"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { UpdateCartDataDTO } from "@medusajs/types"
 import { defaultStoreCartFields } from "../query-config"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { updateCartsWorkflow } from "@medusajs/core-flows"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const remoteQuery = req.scope.resolve("remoteQuery")
@@ -20,12 +20,15 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   res.json({ cart })
 }
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: MedusaRequest<UpdateCartDataDTO>,
+  res: MedusaResponse
+) => {
   const updateCartWorkflow = updateCartsWorkflow(req.scope)
 
   const workflowInput = {
     selector: { id: req.params.id },
-    update: req.validatedBody as UpdateCartDataDTO,
+    update: req.validatedBody,
   }
 
   const { result, errors } = await updateCartWorkflow.run({
