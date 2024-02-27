@@ -450,7 +450,7 @@ export default class CartModuleService<
         : [itemIdsOrSelector]
     }
 
-    await this.lineItemService_.delete(toDelete, sharedContext)
+    await this.lineItemService_.softDelete(toDelete, sharedContext)
   }
 
   async createAddresses(
@@ -636,7 +636,7 @@ export default class CartModuleService<
         ? methodIdsOrSelector
         : [methodIdsOrSelector]
     }
-    await this.shippingMethodService_.delete(toDelete, sharedContext)
+    await this.shippingMethodService_.softDelete(toDelete, sharedContext)
   }
 
   async addLineItemAdjustments(
@@ -736,7 +736,7 @@ export default class CartModuleService<
     })
 
     if (toDelete.length) {
-      await this.lineItemAdjustmentService_.delete(
+      await this.lineItemAdjustmentService_.softDelete(
         toDelete.map((adj) => adj!.id),
         sharedContext
       )
@@ -791,7 +791,7 @@ export default class CartModuleService<
         : [adjustmentIdsOrSelector]
     }
 
-    await this.lineItemAdjustmentService_.delete(ids, sharedContext)
+    await this.lineItemAdjustmentService_.softDelete(ids, sharedContext)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -833,7 +833,7 @@ export default class CartModuleService<
     )
 
     if (toDelete.length) {
-      await this.shippingMethodAdjustmentService_.delete(
+      await this.shippingMethodAdjustmentService_.softDelete(
         toDelete.map((adj) => adj!.id),
         sharedContext
       )
@@ -960,7 +960,7 @@ export default class CartModuleService<
         : [adjustmentIdsOrSelector]
     }
 
-    await this.shippingMethodAdjustmentService_.delete(ids, sharedContext)
+    await this.shippingMethodAdjustmentService_.softDelete(ids, sharedContext)
   }
 
   addLineItemTaxLines(
@@ -1058,7 +1058,7 @@ export default class CartModuleService<
     })
 
     if (toDelete.length) {
-      await this.lineItemTaxLineService_.delete(
+      await this.lineItemTaxLineService_.softDelete(
         toDelete.map((taxLine) => taxLine!.id),
         sharedContext
       )
@@ -1114,7 +1114,7 @@ export default class CartModuleService<
         : [taxLineIdsOrSelector]
     }
 
-    await this.lineItemTaxLineService_.delete(ids, sharedContext)
+    await this.lineItemTaxLineService_.softDelete(ids, sharedContext)
   }
 
   addShippingMethodTaxLines(
@@ -1216,7 +1216,7 @@ export default class CartModuleService<
     })
 
     if (toDelete.length) {
-      await this.shippingMethodTaxLineService_.delete(
+      await this.shippingMethodTaxLineService_.softDelete(
         toDelete.map((taxLine) => taxLine!.id),
         sharedContext
       )
@@ -1271,6 +1271,6 @@ export default class CartModuleService<
         : [taxLineIdsOrSelector]
     }
 
-    await this.shippingMethodTaxLineService_.delete(ids, sharedContext)
+    await this.shippingMethodTaxLineService_.softDelete(ids, sharedContext)
   }
 }

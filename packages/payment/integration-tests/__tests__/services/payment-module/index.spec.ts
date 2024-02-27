@@ -141,6 +141,7 @@ moduleIntegrationTestRunner({
               ])
               .catch((e) => e)
 
+            // TODO: Change error thrown by Mikro for BigNumber fields
             expect(error.message).toContain(
               "Value for PaymentCollection.amount is required, 'undefined' found"
             )
@@ -462,6 +463,8 @@ moduleIntegrationTestRunner({
                 }),
                 payment_session: {
                   id: expect.any(String),
+                  updated_at: expect.any(Date),
+                  created_at: expect.any(Date),
                   currency_code: "usd",
                   amount: 100,
                   raw_amount: { value: "100", precision: 20 },
