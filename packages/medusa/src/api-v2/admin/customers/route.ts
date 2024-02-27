@@ -1,9 +1,16 @@
-import { createCustomersWorkflow } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../types/routing"
 import { CreateCustomerDTO, ICustomerModuleService } from "@medusajs/types"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { createCustomersWorkflow } from "@medusajs/core-flows"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const customerModuleService = req.scope.resolve<ICustomerModuleService>(
     ModuleRegistrationName.CUSTOMER
   )
@@ -41,12 +48,16 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   })
 }
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<CreateCustomerDTO>,
+  res: MedusaResponse
+) => {
   const createCustomers = createCustomersWorkflow(req.scope)
+
   const customersData = [
     {
-      ...(req.validatedBody as CreateCustomerDTO),
-      created_by: req.user!.id,
+      ...req.validatedBody,
+      created_by: req.auth?.actor_id,
     },
   ]
 

@@ -112,7 +112,7 @@ export interface ITaxModuleService extends IModuleService {
   ): Promise<TaxRateRuleDTO[]>
 
   getTaxLines(
-    item: (TaxableItemDTO | TaxableShippingDTO)[],
+    items: (TaxableItemDTO | TaxableShippingDTO)[],
     calculationContext: TaxCalculationContext,
     sharedContext?: Context
   ): Promise<(ItemTaxLineDTO | ShippingTaxLineDTO)[]>

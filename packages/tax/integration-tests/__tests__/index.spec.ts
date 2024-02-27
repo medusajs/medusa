@@ -101,14 +101,14 @@ moduleIntegrationTestRunner({
           expect.arrayContaining([
             expect.objectContaining({
               id: region.id,
-              country_code: "US",
+              country_code: "us",
               province_code: null,
               parent_id: null,
             }),
             expect.objectContaining({
               id: provinceRegion.id,
-              country_code: "US",
-              province_code: "CA",
+              country_code: "us",
+              province_code: "ca",
               parent_id: region.id,
             }),
           ])
@@ -464,6 +464,7 @@ moduleIntegrationTestRunner({
         expect(taxRegions).toEqual([
           expect.objectContaining({
             id: region.id,
+            country_code: "us",
             deleted_at: expect.any(Date),
           }),
         ])

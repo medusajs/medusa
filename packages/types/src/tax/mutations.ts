@@ -24,7 +24,7 @@ export interface CreateTaxRegionDTO {
   parent_id?: string | null
   metadata?: Record<string, unknown>
   created_by?: string
-  default_tax_rate: {
+  default_tax_rate?: {
     rate?: number | null
     code?: string | null
     name: string

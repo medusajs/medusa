@@ -1,4 +1,33 @@
 import { PaymentSessionStatus } from "./common"
+import { CustomerDTO } from "../customer"
+import { AddressDTO } from "../address"
+import { ProviderWebhookPayload } from "./mutations"
+
+export type PaymentAddressDTO = Partial<AddressDTO>
+
+export type PaymentCustomerDTO = Partial<CustomerDTO>
+
+/**
+ * Normalized events from payment provider to internal payment module events.
+ */
+export enum PaymentActions {
+  /**
+   * Payment session has been authorized and there are available funds for capture.
+   */
+  AUTHORIZED = "authorized",
+  /**
+   * Payment was successful and the mount is captured.
+   */
+  SUCCESSFUL = "captured",
+  /**
+   * Payment failed.
+   */
+  FAILED = "failed",
+  /**
+   * Received an event that is not processable.
+   */
+  NOT_SUPPORTED = "not_supported",
+}
 
 /**
  * @interface
@@ -9,7 +38,7 @@ export type PaymentProviderContext = {
   /**
    * The payment's billing address.
    */
-  billing_address?: Record<string, unknown> | null // TODO: revisit types
+  billing_address?: PaymentAddressDTO
   /**
    * The customer's email.
    */
@@ -23,17 +52,17 @@ export type PaymentProviderContext = {
    */
   amount: number
   /**
-   * The ID of the resource the payment is associated with. For example, the cart's ID.
+   * The ID of the resource the payment is associated with i.e. the ID of the PaymentSession in Medusa
    */
   resource_id: string
   /**
    * The customer associated with this payment.
    */
-  customer?: Record<string, unknown> // TODO: type
+  customer?: PaymentCustomerDTO
   /**
    * The context.
    */
-  context: Record<string, unknown>
+  context: { payment_description?: string } & Record<string, unknown>
   /**
    * If the payment session hasn't been created or initiated yet, it'll be an empty object.
    * If the payment session exists, it'll be the value of the payment session's `data` field.
@@ -87,6 +116,20 @@ export interface PaymentProviderError {
    */
   detail?: any
 }
+
+export type WebhookActionData = {
+  resource_id: string
+  amount: number
+}
+
+export type WebhookActionResult =
+  | {
+      action: PaymentActions.NOT_SUPPORTED
+    }
+  | {
+      action: PaymentActions
+      data: WebhookActionData
+    }
 
 export interface IPaymentProvider {
   /**
@@ -209,4 +252,15 @@ export interface IPaymentProvider {
   getPaymentStatus(
     paymentSessionData: Record<string, unknown>
   ): Promise<PaymentSessionStatus>
+
+  /**
+   * The method is called when å webhook call for this particular provider is received.
+   *
+   * The method is responsible for normalizing the received event and provide
+   *
+   * @param data - object containing provider id and data from the provider
+   */
+  getWebhookActionAndData(
+    data: ProviderWebhookPayload["payload"]
+  ): Promise<WebhookActionResult>
 }
