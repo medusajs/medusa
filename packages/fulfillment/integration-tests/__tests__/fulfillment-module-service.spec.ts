@@ -1,4 +1,4 @@
-import { Modules } from "@medusajs/modules-sdk"
+import {Modules} from "@medusajs/modules-sdk"
 import {
   CreateFulfillmentSetDTO,
   CreateGeoZoneDTO,
@@ -12,10 +12,20 @@ import {
   UpdateGeoZoneDTO,
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
-import { GeoZoneType } from "@medusajs/utils"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import {GeoZoneType} from "@medusajs/utils"
+import {moduleIntegrationTestRunner, SuiteOptions} from "medusa-test-utils"
+import {generateCreateShippingOptionsData} from "../__fixtures__"
 
 jest.setTimeout(100000)
+
+// TODO: Temporary until the providers are sorted out
+const createProvider = async (MikroOrmWrapper, providerId: string) => {
+  const [{ id }] = await MikroOrmWrapper.forkManager().execute(
+    `insert into service_provider (id) values ('${providerId}') returning id`
+  )
+
+  return id
+}
 
 moduleIntegrationTestRunner({
   moduleName: Modules.FULFILLMENT,
@@ -247,6 +257,177 @@ moduleIntegrationTestRunner({
                 expect.objectContaining({ id: createdZone1.id }),
               ])
             )
+          })
+        })
+
+        describe("shipping options", () => {
+          it("should list shipping options with a filter", async function () {
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+              service_zones: [
+                {
+                  name: "test",
+                },
+              ],
+            })
+
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+
+            const providerId = await createProvider(
+              MikroOrmWrapper,
+              "sp_jdafwfleiwuonl"
+            )
+
+            const [shippingOption1] = await service.createShippingOptions([
+              generateCreateShippingOptionsData({
+                service_zone_id: fulfillmentSet.service_zones[0].id,
+                shipping_profile_id: shippingProfile.id,
+                service_provider_id: providerId,
+                rules: [
+                  {
+                    attribute: "test-attribute",
+                    operator: "in",
+                    value: ["test"],
+                  },
+                ],
+              }),
+              generateCreateShippingOptionsData({
+                service_zone_id: fulfillmentSet.service_zones[0].id,
+                shipping_profile_id: shippingProfile.id,
+                service_provider_id: providerId,
+                rules: [
+                  {
+                    attribute: "test-attribute",
+                    operator: "eq",
+                    value: "test",
+                  },
+                  {
+                    attribute: "test-attribute2.options",
+                    operator: "in",
+                    value: ["test", "test2"],
+                  },
+                ],
+              }),
+            ])
+
+            const listedOptions = await service.listShippingOptions({
+              name: shippingOption1.name,
+            })
+
+            expect(listedOptions).toHaveLength(1)
+            expect(listedOptions[0].id).toEqual(shippingOption1.id)
+          })
+
+          it("should list shipping options with a context", async function () {
+            const fulfillmentSet = await service.create({
+              name: "test",
+              type: "test-type",
+              service_zones: [
+                {
+                  name: "test",
+                },
+              ],
+            })
+
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+
+            const providerId = await createProvider(
+              MikroOrmWrapper,
+              "sp_jdafwfleiwuonl"
+            )
+
+            const [shippingOption1, , shippingOption3] =
+              await service.createShippingOptions([
+                generateCreateShippingOptionsData({
+                  service_zone_id: fulfillmentSet.service_zones[0].id,
+                  shipping_profile_id: shippingProfile.id,
+                  service_provider_id: providerId,
+                  rules: [
+                    {
+                      attribute: "test-attribute",
+                      operator: "in",
+                      value: ["test"],
+                    },
+                  ],
+                }),
+                generateCreateShippingOptionsData({
+                  service_zone_id: fulfillmentSet.service_zones[0].id,
+                  shipping_profile_id: shippingProfile.id,
+                  service_provider_id: providerId,
+                  rules: [
+                    {
+                      attribute: "test-attribute",
+                      operator: "in",
+                      value: ["test-test"],
+                    },
+                  ],
+                }),
+                generateCreateShippingOptionsData({
+                  service_zone_id: fulfillmentSet.service_zones[0].id,
+                  shipping_profile_id: shippingProfile.id,
+                  service_provider_id: providerId,
+                  rules: [
+                    {
+                      attribute: "test-attribute",
+                      operator: "eq",
+                      value: "test",
+                    },
+                    {
+                      attribute: "test-attribute2.options",
+                      operator: "in",
+                      value: ["test", "test2"],
+                    },
+                  ],
+                }),
+              ])
+
+            let listedOptions = await service.listShippingOptions({
+              context: {
+                "test-attribute": "test",
+                "test-attribute2": {
+                  options: "test2",
+                },
+              },
+            })
+
+            expect(listedOptions).toHaveLength(2)
+            expect(listedOptions).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({ id: shippingOption1.id }),
+                expect.objectContaining({ id: shippingOption3.id }),
+              ])
+            )
+
+            listedOptions = await service.listShippingOptions({
+              fulfillment_set_id: { $ne: fulfillmentSet.id },
+              context: {
+                "test-attribute": "test",
+                "test-attribute2": {
+                  options: "test2",
+                },
+              },
+            })
+
+            expect(listedOptions).toHaveLength(0)
+
+            listedOptions = await service.listShippingOptions({
+              fulfillment_set_type: "non-existing-type",
+              context: {
+                "test-attribute": "test",
+                "test-attribute2": {
+                  options: "test2",
+                },
+              },
+            })
+
+            expect(listedOptions).toHaveLength(0)
           })
         })
       })
@@ -788,34 +969,16 @@ moduleIntegrationTestRunner({
               fulfillment_set_id: fulfillmentSet.id,
             })
 
-            // TODO: change that for a real provider instead of fake data manual inserted data
-            const [{ id: providerId }] =
-              await MikroOrmWrapper.forkManager().execute(
-                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
-              )
+            const providerId = await createProvider(
+              MikroOrmWrapper,
+              "sp_jdafwfleiwuonl"
+            )
 
-            const createData: CreateShippingOptionDTO = {
-              name: "test-option",
-              price_type: "flat",
+            const createData: CreateShippingOptionDTO = generateCreateShippingOptionsData({
               service_zone_id: serviceZone.id,
               shipping_profile_id: shippingProfile.id,
               service_provider_id: providerId,
-              type: {
-                code: "test-type",
-                description: "test-description",
-                label: "test-label",
-              },
-              data: {
-                amount: 1000,
-              },
-              rules: [
-                {
-                  attribute: "test-attribute",
-                  operator: "in",
-                  value: ["test-value"],
-                },
-              ],
-            }
+            })
 
             const createdShippingOption = await service.createShippingOptions(
               createData
@@ -863,57 +1026,22 @@ moduleIntegrationTestRunner({
               fulfillment_set_id: fulfillmentSet.id,
             })
 
-            // TODO: change that for a real provider instead of fake data manual inserted data
-            const [{ id: providerId }] =
-              await MikroOrmWrapper.forkManager().execute(
-                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
-              )
+            const providerId = await createProvider(
+              MikroOrmWrapper,
+              "sp_jdafwfleiwuonl"
+            )
 
             const createData: CreateShippingOptionDTO[] = [
-              {
-                name: "test-option",
-                price_type: "flat",
+              generateCreateShippingOptionsData({
                 service_zone_id: serviceZone.id,
                 shipping_profile_id: shippingProfile.id,
                 service_provider_id: providerId,
-                type: {
-                  code: "test-type",
-                  description: "test-description",
-                  label: "test-label",
-                },
-                data: {
-                  amount: 1000,
-                },
-                rules: [
-                  {
-                    attribute: "test-attribute",
-                    operator: "eq",
-                    value: "test-value",
-                  },
-                ],
-              },
-              {
-                name: "test-option-2",
-                price_type: "calculated",
+              }),
+              generateCreateShippingOptionsData({
                 service_zone_id: serviceZone.id,
                 shipping_profile_id: shippingProfile.id,
                 service_provider_id: providerId,
-                type: {
-                  code: "test-type",
-                  description: "test-description",
-                  label: "test-label",
-                },
-                data: {
-                  amount: 1000,
-                },
-                rules: [
-                  {
-                    attribute: "test-attribute",
-                    operator: "eq",
-                    value: "test-value",
-                  },
-                ],
-              },
+              })
             ]
 
             const createdShippingOptions = await service.createShippingOptions(
@@ -968,34 +1096,23 @@ moduleIntegrationTestRunner({
               fulfillment_set_id: fulfillmentSet.id,
             })
 
-            // TODO: change that for a real provider instead of fake data manual inserted data
-            const [{ id: providerId }] =
-              await MikroOrmWrapper.forkManager().execute(
-                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
-              )
+            const providerId = await createProvider(
+              MikroOrmWrapper,
+              "sp_jdafwfleiwuonl"
+            )
 
-            const createData: CreateShippingOptionDTO = {
-              name: "test-option",
-              price_type: "flat",
+            const createData: CreateShippingOptionDTO = generateCreateShippingOptionsData({
               service_zone_id: serviceZone.id,
               shipping_profile_id: shippingProfile.id,
               service_provider_id: providerId,
-              type: {
-                code: "test-type",
-                description: "test-description",
-                label: "test-label",
-              },
-              data: {
-                amount: 1000,
-              },
               rules: [
                 {
                   attribute: "test-attribute",
-                  operator: "invalid",
+                  operator: "invalid" as any,
                   value: "test-value",
                 },
               ],
-            }
+            })
 
             const err = await service
               .createShippingOptions(createData)
@@ -1029,28 +1146,13 @@ moduleIntegrationTestRunner({
                 "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
               )
 
-            const shippingOption = await service.createShippingOptions({
-              name: "test-option",
-              price_type: "flat",
-              service_zone_id: serviceZone.id,
-              shipping_profile_id: shippingProfile.id,
-              service_provider_id: providerId,
-              type: {
-                code: "test-type",
-                description: "test-description",
-                label: "test-label",
-              },
-              data: {
-                amount: 1000,
-              },
-              rules: [
-                {
-                  attribute: "test-attribute",
-                  operator: "eq",
-                  value: "test-value",
-                },
-              ],
-            })
+            const shippingOption = await service.createShippingOptions(
+              generateCreateShippingOptionsData({
+                service_zone_id: serviceZone.id,
+                shipping_profile_id: shippingProfile.id,
+                service_provider_id: providerId,
+              })
+            )
 
             const ruleData = {
               attribute: "test-attribute",
@@ -1835,33 +1937,16 @@ moduleIntegrationTestRunner({
               type: "default",
             })
 
-            const [serviceProvider] =
-              await MikroOrmWrapper.forkManager().execute(
-                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
-              )
+            const providerId = await createProvider(
+              MikroOrmWrapper,
+              "sp_jdafwfleiwuonl"
+            )
 
-            const shippingOptionData = {
-              name: "test",
-              price_type: "flat",
+            const shippingOptionData = generateCreateShippingOptionsData({
               service_zone_id: serviceZone.id,
               shipping_profile_id: shippingProfile.id,
-              service_provider_id: serviceProvider.id,
-              type: {
-                code: "test",
-                description: "test",
-                label: "test",
-              },
-              data: {
-                amount: 1000,
-              },
-              rules: [
-                {
-                  attribute: "test",
-                  operator: "eq",
-                  value: "test",
-                },
-              ],
-            }
+              service_provider_id: providerId,
+            })
 
             const shippingOption = await service.createShippingOptions(
               shippingOptionData
@@ -1873,7 +1958,7 @@ moduleIntegrationTestRunner({
               price_type: "calculated",
               service_zone_id: serviceZone.id,
               shipping_profile_id: shippingProfile.id,
-              service_provider_id: serviceProvider.id,
+              service_provider_id: providerId,
               type: {
                 code: "updated-test",
                 description: "updated-test",
@@ -1955,33 +2040,16 @@ moduleIntegrationTestRunner({
               type: "default",
             })
 
-            const [serviceProvider] =
-              await MikroOrmWrapper.forkManager().execute(
-                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
-              )
+            const providerId = await createProvider(
+              MikroOrmWrapper,
+              "sp_jdafwfleiwuonl"
+            )
 
-            const shippingOptionData = {
-              name: "test",
-              price_type: "flat",
+            const shippingOptionData = generateCreateShippingOptionsData({
               service_zone_id: serviceZone.id,
               shipping_profile_id: shippingProfile.id,
-              service_provider_id: serviceProvider.id,
-              type: {
-                code: "test",
-                description: "test",
-                label: "test",
-              },
-              data: {
-                amount: 1000,
-              },
-              rules: [
-                {
-                  attribute: "test",
-                  operator: "eq",
-                  value: "test",
-                },
-              ],
-            }
+              service_provider_id: providerId,
+            })
 
             const shippingOption = await service.createShippingOptions(
               shippingOptionData
@@ -1993,7 +2061,7 @@ moduleIntegrationTestRunner({
               price_type: "calculated",
               service_zone_id: serviceZone.id,
               shipping_profile_id: shippingProfile.id,
-              service_provider_id: serviceProvider.id,
+              service_provider_id: providerId,
               data: {
                 amount: 2000,
               },
@@ -2068,56 +2136,22 @@ moduleIntegrationTestRunner({
               type: "default",
             })
 
-            const [serviceProvider] =
-              await MikroOrmWrapper.forkManager().execute(
-                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
-              )
+            const providerId = await createProvider(
+              MikroOrmWrapper,
+              "sp_jdafwfleiwuonl"
+            )
 
             const shippingOptionData = [
-              {
-                name: "test",
-                price_type: "flat",
+              generateCreateShippingOptionsData({
                 service_zone_id: serviceZone.id,
                 shipping_profile_id: shippingProfile.id,
-                service_provider_id: serviceProvider.id,
-                type: {
-                  code: "test",
-                  description: "test",
-                  label: "test",
-                },
-                data: {
-                  amount: 1000,
-                },
-                rules: [
-                  {
-                    attribute: "test",
-                    operator: "eq",
-                    value: "test",
-                  },
-                ],
-              },
-              {
-                name: "test2",
-                price_type: "calculated",
+                service_provider_id: providerId,
+              }),
+              generateCreateShippingOptionsData({
                 service_zone_id: serviceZone.id,
                 shipping_profile_id: shippingProfile.id,
-                service_provider_id: serviceProvider.id,
-                type: {
-                  code: "test",
-                  description: "test",
-                  label: "test",
-                },
-                data: {
-                  amount: 1000,
-                },
-                rules: [
-                  {
-                    attribute: "test",
-                    operator: "eq",
-                    value: "test",
-                  },
-                ],
-              },
+                service_provider_id: providerId,
+              })
             ]
 
             const shippingOptions = await service.createShippingOptions(
@@ -2131,7 +2165,7 @@ moduleIntegrationTestRunner({
                 price_type: "calculated",
                 service_zone_id: serviceZone.id,
                 shipping_profile_id: shippingProfile.id,
-                service_provider_id: serviceProvider.id,
+                service_provider_id: providerId,
                 type: {
                   code: "updated-test",
                   description: "updated-test",
@@ -2154,7 +2188,7 @@ moduleIntegrationTestRunner({
                 price_type: "calculated",
                 service_zone_id: serviceZone.id,
                 shipping_profile_id: shippingProfile.id,
-                service_provider_id: serviceProvider.id,
+                service_provider_id: providerId,
                 type: {
                   code: "updated-test",
                   description: "updated-test",
@@ -2307,33 +2341,16 @@ moduleIntegrationTestRunner({
               type: "default",
             })
 
-            const [serviceProvider] =
-              await MikroOrmWrapper.forkManager().execute(
-                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
-              )
+            const providerId = await createProvider(
+              MikroOrmWrapper,
+              "sp_jdafwfleiwuonl"
+            )
 
-            const shippingOptionData = {
-              name: "test",
-              price_type: "flat",
+            const shippingOptionData = generateCreateShippingOptionsData({
               service_zone_id: serviceZone.id,
               shipping_profile_id: shippingProfile.id,
-              service_provider_id: serviceProvider.id,
-              type: {
-                code: "test",
-                description: "test",
-                label: "test",
-              },
-              data: {
-                amount: 1000,
-              },
-              rules: [
-                {
-                  attribute: "test",
-                  operator: "eq",
-                  value: "test",
-                },
-              ],
-            }
+              service_provider_id: providerId,
+            })
 
             const shippingOption = await service.createShippingOptions(
               shippingOptionData
@@ -2374,33 +2391,16 @@ moduleIntegrationTestRunner({
               type: "default",
             })
 
-            const [serviceProvider] =
-              await MikroOrmWrapper.forkManager().execute(
-                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
-              )
+            const providerId = await createProvider(
+              MikroOrmWrapper,
+              "sp_jdafwfleiwuonl"
+            )
 
-            const shippingOptionData = {
-              name: "test",
-              price_type: "flat",
+            const shippingOptionData = generateCreateShippingOptionsData({
               service_zone_id: serviceZone.id,
               shipping_profile_id: shippingProfile.id,
-              service_provider_id: serviceProvider.id,
-              type: {
-                code: "test",
-                description: "test",
-                label: "test",
-              },
-              data: {
-                amount: 1000,
-              },
-              rules: [
-                {
-                  attribute: "test",
-                  operator: "eq",
-                  value: "test",
-                },
-              ],
-            }
+              service_provider_id: providerId,
+            })
 
             const shippingOption = await service.createShippingOptions(
               shippingOptionData
@@ -2444,33 +2444,18 @@ moduleIntegrationTestRunner({
               name: "test",
               fulfillment_set_id: fulfillmentSet.id,
             })
-            const [serviceProvider] =
-              await MikroOrmWrapper.forkManager().execute(
-                "insert into service_provider (id) values ('sp_jdafwfleiwuonl') returning id"
-              )
+            const providerId = await createProvider(
+              MikroOrmWrapper,
+              "sp_jdafwfleiwuonl"
+            )
 
-            const shippingOption = await service.createShippingOptions({
-              name: "test",
-              price_type: "flat",
-              service_zone_id: serviceZone.id,
-              shipping_profile_id: shippingProfile.id,
-              service_provider_id: serviceProvider.id,
-              type: {
-                code: "test",
-                description: "test",
-                label: "test",
-              },
-              data: {
-                amount: 1000,
-              },
-              rules: [
-                {
-                  attribute: "test",
-                  operator: "eq",
-                  value: "test",
-                },
-              ],
-            })
+            const shippingOption = await service.createShippingOptions(
+              generateCreateShippingOptionsData({
+                service_zone_id: serviceZone.id,
+                shipping_profile_id: shippingProfile.id,
+                service_provider_id: providerId,
+              })
+            )
 
             const updateData = {
               id: shippingOption.rules[0].id,

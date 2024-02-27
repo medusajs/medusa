@@ -22,8 +22,8 @@ import {
 } from "./common"
 import {
   CreateAddressDTO,
-  CreateAdjustmentDTO,
   CreateCartDTO,
+  CreateLineItemAdjustmentDTO,
   CreateLineItemDTO,
   CreateLineItemForCartDTO,
   CreateLineItemTaxLineDTO,
@@ -185,14 +185,14 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<LineItemAdjustmentDTO[]>
 
   addLineItemAdjustments(
-    data: CreateAdjustmentDTO[]
+    data: CreateLineItemAdjustmentDTO[]
   ): Promise<LineItemAdjustmentDTO[]>
   addLineItemAdjustments(
-    data: CreateAdjustmentDTO
+    data: CreateLineItemAdjustmentDTO
   ): Promise<LineItemAdjustmentDTO[]>
   addLineItemAdjustments(
     cartId: string,
-    data: CreateAdjustmentDTO[]
+    data: CreateLineItemAdjustmentDTO[]
   ): Promise<LineItemAdjustmentDTO[]>
 
   setLineItemAdjustments(

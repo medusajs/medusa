@@ -11,13 +11,10 @@ import { defaultStoreCartFields } from "../carts/query-config"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<CreateCartWorkflowInputDTO>,
   res: MedusaResponse
 ) => {
-  const input = req.validatedBody as StorePostCartReq
-  const workflowInput: CreateCartWorkflowInputDTO = {
-    ...input,
-  }
+  const workflowInput = req.validatedBody
 
   // If the customer is logged in, we auto-assign them to the cart
   if (req.auth?.actor_id) {

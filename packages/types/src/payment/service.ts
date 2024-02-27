@@ -1,22 +1,23 @@
+import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
-  CreateCaptureDTO,
-  CreatePaymentCollectionDTO,
-  CreatePaymentDTO,
-  CreatePaymentSessionDTO,
-  CreateRefundDTO,
-  UpdatePaymentCollectionDTO,
-  UpdatePaymentDTO,
-  UpdatePaymentSessionDTO,
-} from "./mutations"
-import {
   FilterablePaymentCollectionProps,
+  FilterablePaymentProps,
   PaymentCollectionDTO,
   PaymentDTO,
   PaymentSessionDTO,
 } from "./common"
-import { FindConfig } from "../common"
+import {
+  CreateCaptureDTO,
+  CreatePaymentCollectionDTO,
+  CreatePaymentSessionDTO,
+  CreateRefundDTO,
+  ProviderWebhookPayload,
+  UpdatePaymentCollectionDTO,
+  UpdatePaymentDTO,
+  UpdatePaymentSessionDTO,
+} from "./mutations"
 
 /**
  * The main service interface for the payment module.
@@ -312,6 +313,24 @@ export interface IPaymentModuleService extends IModuleService {
   /* ********** PAYMENT ********** */
 
   /**
+   * This method retrieves a paginated list of payments based on optional filters and configuration.
+   *
+   * @param {FilterablePaymentProps} filters - The filters to apply on the retrieved payment.
+   * @param {FindConfig<PaymentDTO>} config - The configurations determining how the payment is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a payment.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PaymentDTO[]>} A list of payment.
+   *
+   * @example
+   * {example-code}
+   */
+  listPayments(
+    filters?: FilterablePaymentProps,
+    config?: FindConfig<PaymentDTO>,
+    sharedContext?: Context
+  ): Promise<PaymentDTO[]>
+
+  /**
    * This method updates an existing payment.
    *
    * @param {UpdatePaymentDTO} data - The attributes to update in the payment.
@@ -375,4 +394,21 @@ export interface IPaymentModuleService extends IModuleService {
    * {example-code}
    */
   createProvidersOnLoad(): Promise<void>
+
+  /* ********** HOOKS ********** */
+
+  processEvent(data: ProviderWebhookPayload): Promise<void>
+}
+
+export interface PaymentModuleOptions {
+  /**
+   * The delay in milliseconds before processing the webhook event.
+   * @defaultValue 5000
+   */
+  webhook_delay?: number
+  /**
+   * The number of times to retry the webhook event processing in case of an error.
+   * @defaultValue 3
+   */
+  webhook_retries?: number
 }

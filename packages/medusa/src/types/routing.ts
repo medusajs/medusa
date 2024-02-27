@@ -12,6 +12,7 @@ export interface MedusaRequest<Body = unknown> extends Request {
   errors: string[]
   scope: MedusaContainer
   session?: any
+  rawBody?: any
   requestId?: string
 }
 
