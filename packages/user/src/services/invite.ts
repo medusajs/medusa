@@ -137,7 +137,16 @@ export default class InviteService<
   ): Promise<TEntity> {
     const decoded = this.validateToken(token)
 
-    return await super.retrieve(decoded.payload.id, {}, context)
+    const invite = await super.retrieve(decoded.payload.id, {}, context)
+
+    if (invite.expires_at < new Date()) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The invite has expired"
+      )
+    }
+
+    return invite
   }
 
   private generateToken(data: any): string {

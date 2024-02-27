@@ -27,6 +27,7 @@ export enum Modules {
   REGION = "region",
   ORDER = "order",
   API_KEY = "apiKey",
+  STORE = "store",
 }
 
 export enum ModuleRegistrationName {
@@ -49,6 +50,7 @@ export enum ModuleRegistrationName {
   REGION = "regionModuleService",
   ORDER = "orderModuleService",
   API_KEY = "apiKeyModuleService",
+  STORE = "storeModuleService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
@@ -72,6 +74,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.REGION]: "@medusajs/region",
   [Modules.ORDER]: "@medusajs/order",
   [Modules.API_KEY]: "@medusajs/api-key",
+  [Modules.STORE]: "@medusajs/store",
 }
 
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
@@ -316,6 +319,19 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       registrationName: ModuleRegistrationName.API_KEY,
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.API_KEY),
+      isRequired: false,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.STORE]: {
+      key: Modules.STORE,
+      registrationName: ModuleRegistrationName.STORE,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.STORE),
       isRequired: false,
       isQueryable: true,
       dependencies: ["logger"],

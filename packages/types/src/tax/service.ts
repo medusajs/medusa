@@ -95,8 +95,26 @@ export interface ITaxModuleService extends IModuleService {
   ): Promise<TaxRateRuleDTO[]>
 
   getTaxLines(
-    item: (TaxableItemDTO | TaxableShippingDTO)[],
+    items: (TaxableItemDTO | TaxableShippingDTO)[],
     calculationContext: TaxCalculationContext,
     sharedContext?: Context
   ): Promise<(ItemTaxLineDTO | ShippingTaxLineDTO)[]>
+
+  softDelete<TReturnableLinkableKeys extends string = string>(
+    taxRateIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  softDeleteTaxRegions<TReturnableLinkableKeys extends string = string>(
+    taxRegionIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  softDeleteTaxRateRules<TReturnableLinkableKeys extends string = string>(
+    taxRateRulePairs: { tax_rate_id: string; reference_id: string }[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }
