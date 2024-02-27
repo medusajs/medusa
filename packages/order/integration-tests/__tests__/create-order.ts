@@ -1,6 +1,6 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
@@ -8,10 +8,10 @@ moduleIntegrationTestRunner({
   moduleName: Modules.ORDER,
   testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
     describe("Order Module Service", () => {
-      it.only("should create an order, shipping method and items. Including taxes and adjustments associated with them", async function () {
+      it("should create an order, shipping method and items. Including taxes and adjustments associated with them", async function () {
         const order = await service.create({
           email: "foo@bar.com",
-          /*items: [
+          items: [
             {
               title: "Item 1",
               subtitle: "Subtitle 1",
@@ -66,7 +66,7 @@ moduleIntegrationTestRunner({
               quantity: 1,
               unit_price: 30,
             },
-          ],*/
+          ],
           sales_channel_id: "test",
           shipping_address: {
             first_name: "Test",
@@ -111,14 +111,6 @@ moduleIntegrationTestRunner({
           currency_code: "usd",
           customer_id: "joe",
         } as CreateOrderDTO)
-
-        console.log(
-          JSON.stringify(
-            order.shipping_methods.map((s) => s.adjustments),
-            null,
-            2
-          )
-        )
 
         const getOrder = await service.retrieve(order.id, {
           select: [

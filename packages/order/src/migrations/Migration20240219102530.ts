@@ -292,7 +292,7 @@ export class Migration20240219102530 extends Migration {
           "provider_id" TEXT NULL,
           "created_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           "updated_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
-          "item_id" TEXT NULL,
+          "item_id" TEXT NOT NULL,
           CONSTRAINT "order_line_item_tax_line_pkey" PRIMARY KEY ("id")
       );
 
@@ -308,7 +308,7 @@ export class Migration20240219102530 extends Migration {
           "provider_id" TEXT NULL,
           "created_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           "updated_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
-          "item_id" TEXT NULL,
+          "item_id" TEXT NOT NULL,
           CONSTRAINT "order_line_item_adjustment_pkey" PRIMARY KEY ("id")
       );
 
@@ -354,7 +354,7 @@ export class Migration20240219102530 extends Migration {
           "provider_id" TEXT NULL,
           "created_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           "updated_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
-          "shipping_method_id" TEXT NULL,
+          "shipping_method_id" TEXT NOT NULL,
           CONSTRAINT "order_shipping_method_adjustment_pkey" PRIMARY KEY ("id")
       );
 
@@ -372,7 +372,7 @@ export class Migration20240219102530 extends Migration {
           "provider_id" TEXT NULL,
           "created_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
           "updated_at" TIMESTAMPTZ NOT NULL DEFAULT Now(),
-          "shipping_method_id" TEXT NULL,
+          "shipping_method_id" TEXT NOT NULL,
           CONSTRAINT "order_shipping_method_tax_line_pkey" PRIMARY KEY ("id")
       );
 

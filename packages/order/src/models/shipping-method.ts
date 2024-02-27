@@ -129,11 +129,11 @@ export default class ShippingMethod {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordsm")
-    this.order_id ??= this.order.id
+    this.order_id ??= this.order?.id
   }
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordsm")
-    this.order_id ??= this.order.id
+    this.order_id ??= this.order?.id
   }
 }

@@ -1,9 +1,9 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
+  MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
-  MikroOrmBigNumberProperty,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -54,8 +54,7 @@ export default class OrderDetail {
   @OrderVersionIndex.MikroORMIndex()
   version: number
 
-  @ManyToOne({
-    entity: () => Order,
+  @ManyToOne(() => Order, {
     persist: false,
   })
   order: Order
@@ -69,8 +68,7 @@ export default class OrderDetail {
   @ItemIdIndex.MikroORMIndex()
   item_id: string
 
-  @ManyToOne({
-    entity: () => LineItem,
+  @ManyToOne(() => LineItem, {
     persist: false,
   })
   item: LineItem
@@ -138,14 +136,14 @@ export default class OrderDetail {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "orddetail")
-    this.order_id ??= this.order.id
+    this.order_id ??= this.order?.id
     this.item_id ??= this.item?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "orddetail")
-    this.order_id ??= this.order.id
+    this.order_id ??= this.order?.id
     this.item_id ??= this.item?.id
   }
 }

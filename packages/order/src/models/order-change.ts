@@ -45,14 +45,18 @@ export default class OrderChange {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
+  @ManyToOne({
+    entity: () => Order,
+    columnType: "text",
+    fieldName: "order_id",
+    cascade: [Cascade.REMOVE],
+    mapToPk: true,
+  })
   @OrderIdIndex.MikroORMIndex()
   order_id: string
 
-  @ManyToOne({
-    entity: () => Order,
-    fieldName: "order_id",
-    cascade: [Cascade.REMOVE],
+  @ManyToOne(() => Order, {
+    persist: false,
   })
   order: Order
 
@@ -141,10 +145,12 @@ export default class OrderChange {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordch")
+    this.order_id ??= this.order?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordch")
+    this.order_id ??= this.order?.id
   }
 }

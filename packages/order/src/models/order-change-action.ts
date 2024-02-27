@@ -35,14 +35,18 @@ export default class OrderChangeAction {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
+  @ManyToOne({
+    entity: () => OrderChange,
+    columnType: "text",
+    fieldName: "order_change_id",
+    cascade: [Cascade.REMOVE],
+    mapToPk: true,
+  })
   @OrderChangeIdIndex.MikroORMIndex()
   order_change_id: string
 
-  @ManyToOne({
-    entity: () => OrderChange,
-    fieldName: "order_change_id",
-    cascade: [Cascade.REMOVE],
+  @ManyToOne(() => OrderChange, {
+    persist: false,
   })
   order_change: OrderChange
 
@@ -82,10 +86,12 @@ export default class OrderChangeAction {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordchact")
+    this.order_change_id ??= this.order_change?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordchact")
+    this.order_change_id ??= this.order_change?.id
   }
 }

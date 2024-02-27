@@ -34,7 +34,6 @@ import {
 } from "@models"
 import {
   CreateOrderDetailDTO,
-  CreateOrderLineItemAdjustmentDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemTaxLineDTO,
   CreateOrderShippingMethodDTO,
@@ -213,16 +212,31 @@ export default class OrderModuleService<
     data: OrderTypes.CreateOrderDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    /*const data_ = data.map((order) => {
-      order.items = order.items!.map((item) => {
-        return {
-          ...item,
-          version: 1,
-        }
-      })
-      return order
-    })*/
-    return await this.orderService_.create(data, sharedContext)
+    const lineItemsToCreate: CreateOrderLineItemDTO[] = []
+
+    const createdOrders: Order[] = []
+    for (const { items, ...order } of data) {
+      const created = await this.orderService_.create(order, sharedContext)
+
+      createdOrders.push(created)
+
+      if (items?.length) {
+        const orderItems = items.map((item) => {
+          return {
+            ...item,
+            order_id: created.id,
+          }
+        })
+
+        lineItemsToCreate.push(...orderItems)
+      }
+    }
+
+    if (lineItemsToCreate.length) {
+      await this.addLineItemsBulk_(lineItemsToCreate, sharedContext)
+    }
+
+    return createdOrders
   }
 
   async update(
@@ -374,32 +388,9 @@ export default class OrderModuleService<
 
     const lineItems = await this.lineItemService_.create(data, sharedContext)
 
-    const taxLineToCreate: CreateOrderLineItemTaxLineDTO[] = []
-    const adjustmentToCreate: CreateOrderLineItemAdjustmentDTO[] = []
-
     for (let i = 0; i < lineItems.length; i++) {
       const item = lineItems[i]
       const toCreate = data[i]
-
-      if (item.tax_lines?.length) {
-        for (const taxLine of item.tax_lines) {
-          taxLineToCreate.push({
-            ...taxLine,
-            item_id: item.id,
-            item: undefined,
-          } as CreateOrderLineItemTaxLineDTO)
-        }
-      }
-
-      if (item.adjustments?.length) {
-        for (const adj of item.adjustments) {
-          adjustmentToCreate.push({
-            ...adj,
-            item_id: item.id,
-            item: undefined,
-          } as CreateOrderLineItemAdjustmentDTO)
-        }
-      }
 
       orderDetailToCreate.push({
         order_id: toCreate.order_id,
@@ -409,12 +400,6 @@ export default class OrderModuleService<
       })
     }
 
-    await this.lineItemTaxLineService_.create(taxLineToCreate, sharedContext)
-
-    await this.lineItemAdjustmentService_.create(
-      adjustmentToCreate,
-      sharedContext
-    )
     await this.orderDetailService_.create(orderDetailToCreate, sharedContext)
 
     return lineItems

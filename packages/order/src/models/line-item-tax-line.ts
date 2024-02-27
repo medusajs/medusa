@@ -8,7 +8,6 @@ import {
   Entity,
   ManyToOne,
   OnInit,
-  Property,
 } from "@mikro-orm/core"
 import LineItem from "./line-item"
 import TaxLine from "./tax-line"
@@ -20,24 +19,31 @@ const ItemIdIndex = createPsqlIndexStatementHelper({
 
 @Entity({ tableName: "order_line_item_tax_line" })
 export default class LineItemTaxLine extends TaxLine {
-  @ManyToOne({
-    entity: () => LineItem,
-    joinColumn: "item_id",
-    cascade: [Cascade.REMOVE],
+  @ManyToOne(() => LineItem, {
+    fieldName: "item_id",
+    persist: false,
   })
   item: LineItem
 
-  @Property({ columnType: "text" })
+  @ManyToOne({
+    entity: () => LineItem,
+    columnType: "text",
+    fieldName: "item_id",
+    cascade: [Cascade.PERSIST, Cascade.REMOVE],
+    mapToPk: true,
+  })
   @ItemIdIndex.MikroORMIndex()
   item_id: string
 
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordlitxl")
+    this.item_id ??= this.item?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordlitxl")
+    this.item_id ??= this.item?.id
   }
 }

@@ -19,10 +19,7 @@ const ShippingMethodIdIdIndex = createPsqlIndexStatementHelper({
 
 @Entity({ tableName: "order_shipping_method_tax_line" })
 export default class ShippingMethodTaxLine extends TaxLine {
-  @ManyToOne({
-    entity: () => ShippingMethod,
-    fieldName: "shipping_method_id",
-    cascade: [Cascade.REMOVE],
+  @ManyToOne(() => ShippingMethod, {
     persist: false,
   })
   shipping_method: ShippingMethod
@@ -40,10 +37,12 @@ export default class ShippingMethodTaxLine extends TaxLine {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordsmtxl")
+    this.shipping_method_id ??= this.shipping_method?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordsmtxl")
+    this.shipping_method_id ??= this.shipping_method?.id
   }
 }
