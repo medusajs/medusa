@@ -30,7 +30,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.mdx) installed and have [created an instance of the client](../../../js-client/overview.mdx#configuration).
 
 ### Medusa React
 
@@ -48,81 +48,75 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 ## Create Customer Groups
 
-You can create a customer group by sending a request to the Create Customer Group endpoint:
+You can create a customer group by sending a request to the Create Customer Group API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.customerGroups.create({
-  name: "VIP",
-})
-.then(({ customer_group }) => {
-  console.log(customer_group.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCreateCustomerGroup } from "medusa-react"
-
-const CreateCustomerGroup = () => {
-  const createCustomerGroup = useAdminCreateCustomerGroup()
-  // ...
-
-  const handleCreate = () => {
-    createCustomerGroup.mutate({
-      name,
+    ```ts
+    medusa.admin.customerGroups.create({
+      name: "VIP",
     })
-  }
+    .then(({ customer_group }) => {
+      console.log(customer_group.id)
+    })
+    ```
 
-  // ...
-  
-  return (
-    <form>
-      {/* Render form */}
-    </form>
-  )
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default CreateCustomerGroup
-```
+    ```tsx
+    import { useAdminCreateCustomerGroup } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const CreateCustomerGroup = () => {
+      const createCustomerGroup = useAdminCreateCustomerGroup()
+      // ...
 
-```ts
-fetch(`<BACKEND_URL>/admin/customer-groups`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    name: "VIP",
-  }),
-})
-.then((response) => response.json())
-.then(({ customer_group }) => {
-  console.log(customer_group.id)
-})
-```
+      const handleCreate = (name: string) => {
+        createCustomerGroup.mutate({
+          name,
+        })
+      }
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      // ...
+    }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/customer-groups' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "name": "VIP"
-}'
-```
+    export default CreateCustomerGroup
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/customer-groups`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: "VIP",
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ customer_group }) => {
+      console.log(customer_group.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/customer-groups' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "VIP"
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This request requires the `name` parameter and optionally accepts the `metadata` object parameter to be passed in the body. It returns the created customer group.
@@ -131,77 +125,76 @@ This request requires the `name` parameter and optionally accepts the `metadata`
 
 ## List Customer Groups
 
-You can get a list of all customer groups by sending a request to the List Customer Groups endpoint:
+You can get a list of all customer groups by sending a request to the List Customer Groups API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.customerGroups.list()
-.then(({ customer_groups, limit, offset, count }) => {
-  console.log(customer_groups.length)
-})
-```
+    ```ts
+    medusa.admin.customerGroups.list()
+    .then(({ customer_groups, limit, offset, count }) => {
+      console.log(customer_groups.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { CustomerGroup } from "@medusajs/medusa"
-import { useAdminCustomerGroups } from "medusa-react"
+    ```tsx
+    import { useAdminCustomerGroups } from "medusa-react"
 
-const CustomerGroups = () => {
-  const { 
-    customer_groups,
-    isLoading,
-  } = useAdminCustomerGroups()
+    const CustomerGroups = () => {
+      const { 
+        customer_groups,
+        isLoading,
+      } = useAdminCustomerGroups()
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {customer_groups && !customer_groups.length && (
-        <span>No Customer Groups</span>
-      )}
-      {customer_groups && customer_groups.length > 0 && (
-        <ul>
-          {customer_groups.map(
-            (customerGroup: CustomerGroup) => (
-              <li key={customerGroup.id}>
-                {customerGroup.name}
-              </li>
-            )
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {customer_groups && !customer_groups.length && (
+            <span>No Customer Groups</span>
           )}
-        </ul>
-      )}
-    </div>
-  )
-}
+          {customer_groups && customer_groups.length > 0 && (
+            <ul>
+              {customer_groups.map(
+                (customerGroup) => (
+                  <li key={customerGroup.id}>
+                    {customerGroup.name}
+                  </li>
+                )
+              )}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-export default CustomerGroups
-```
+    export default CustomerGroups
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/customer-groups`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ customer_groups, limit, offset, count }) => {
-  console.log(customer_groups.length)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/customer-groups`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ customer_groups, limit, offset, count }) => {
+      console.log(customer_groups.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/customer-groups' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/customer-groups' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request returns an array of customer groups, as well as pagination fields.
@@ -212,65 +205,65 @@ You can also pass filters and other selection query parameters to the request. C
 
 ## Retrieve a Customer Group
 
-You can retrieve a single customer group by sending a request to the Get a Customer Group endpoint:
+You can retrieve a single customer group by sending a request to the Get a Customer Group API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.customerGroups.retrieve(customerGroupId)
-.then(({ customer_group }) => {
-  console.log(customer_group.id)
-})
-```
+    ```ts
+    medusa.admin.customerGroups.retrieve(customerGroupId)
+    .then(({ customer_group }) => {
+      console.log(customer_group.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminCustomerGroup } from "medusa-react"
+    ```tsx
+    import { useAdminCustomerGroup } from "medusa-react"
 
-const CustomerGroup = () => {
-  const { customer_group, isLoading } = useAdminCustomerGroup(
-    customerGroupId
-  )
+    const CustomerGroup = () => {
+      const { customer_group, isLoading } = useAdminCustomerGroup(
+        customerGroupId
+      )
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {customer_group && <span>{customer_group.name}</span>}
-    </div>
-  )
-}
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {customer_group && <span>{customer_group.name}</span>}
+        </div>
+      )
+    }
 
-export default CustomerGroup
-```
+    export default CustomerGroup
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(
-  `<BACKEND_URL>/admin/customer-groups/${customerGroupId}`,
-  {
-    credentials: "include",
-  }
-)
-.then((response) => response.json())
-.then(({ customer_group }) => {
-  console.log(customer_group.id)
-})
-```
+    ```ts
+    fetch(
+      `<BACKEND_URL>/admin/customer-groups/${customerGroupId}`,
+      {
+        credentials: "include",
+      }
+    )
+    .then((response) => response.json())
+    .then(({ customer_group }) => {
+      console.log(customer_group.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request accepts the ID of the customer group to retrieve as a path parameter. It returns the customer group of that ID.
@@ -279,92 +272,90 @@ This request accepts the ID of the customer group to retrieve as a path paramete
 
 ## Update a Customer Group
 
-You can update a customer group’s data by sending a request to the Update Customer Group endpoint:
+You can update a customer group’s data by sending a request to the Update Customer Group API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.customerGroups.update(customerGroupId, {
-  metadata: {
-		is_seller: true,
-	},
-})
-.then(({ customer_group }) => {
-  console.log(customer_group.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminUpdateCustomerGroup } from "medusa-react"
-
-const UpdateCustomerGroup = () => {
-  const updateCustomerGroup = useAdminUpdateCustomerGroup(
-    customerGroupId
-  )
-  // ..
-
-  const handleUpdate = () => {
-    updateCustomerGroup.mutate({
-      name,
-    })
-  }
-
-  // ...
-  
-  return (
-    <form>
-      {/* Render form */}
-    </form>
-  )
-}
-
-export default UpdateCustomerGroup
-```
-
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
-
-```ts
-fetch(
-  `<BACKEND_URL>/admin/customer-groups/${customerGroupId}`,
-  {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+    ```ts
+    medusa.admin.customerGroups.update(customerGroupId, {
       metadata: {
         is_seller: true,
       },
-    }),
-  }
-)
-.then((response) => response.json())
-.then(({ customer_group }) => {
-  console.log(customer_group.id)
-})
-```
+    })
+    .then(({ customer_group }) => {
+      console.log(customer_group.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "metadata": {
-			"is_seller": true
-		}
-}'
-```
+    ```tsx
+    import { useAdminUpdateCustomerGroup } from "medusa-react"
 
-</TabItem>
+    type Props = {
+      customerGroupId: string
+    }
+
+    const CustomerGroup = ({ customerGroupId }: Props) => {
+      const updateCustomerGroup = useAdminUpdateCustomerGroup(
+        customerGroupId
+      )
+      // ..
+
+      const handleUpdate = (name: string) => {
+        updateCustomerGroup.mutate({
+          name,
+        })
+      }
+
+      // ...
+    }
+
+    export default CustomerGroup
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(
+      `<BACKEND_URL>/admin/customer-groups/${customerGroupId}`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          metadata: {
+            is_seller: true,
+          },
+        }),
+      }
+    )
+    .then((response) => response.json())
+    .then(({ customer_group }) => {
+      console.log(customer_group.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "metadata": {
+          "is_seller": true
+        }
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This request accepts the ID of the customer group as a path parameter, and optionally accepts the `name` or `metadata` fields as body parameters. It returns the updated customer group.
@@ -373,66 +364,70 @@ This request accepts the ID of the customer group as a path parameter, and optio
 
 ## Delete Customer Group
 
-You can delete a customer group by sending a request to the Delete a Customer Group endpoint:
+You can delete a customer group by sending a request to the Delete a Customer Group API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.customerGroups.delete(customerGroupId)
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+    ```ts
+    medusa.admin.customerGroups.delete(customerGroupId)
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminDeleteCustomerGroup } from "medusa-react"
+    ```tsx
+    import { useAdminDeleteCustomerGroup } from "medusa-react"
 
-const CustomerGroup = () => {
-  const deleteCustomerGroup = useAdminDeleteCustomerGroup(
-    customerGroupId
-  )
-  // ...
+    type Props = {
+      customerGroupId: string
+    }
 
-  const handleDeleteCustomerGroup = () => {
-    deleteCustomerGroup.mutate()
-  }
+    const CustomerGroup = ({ customerGroupId }: Props) => {
+      const deleteCustomerGroup = useAdminDeleteCustomerGroup(
+        customerGroupId
+      )
+      // ...
 
-  // ...
-}
+      const handleDeleteCustomerGroup = () => {
+        deleteCustomerGroup.mutate()
+      }
 
-export default CustomerGroup
-```
+      // ...
+    }
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    export default CustomerGroup
+    ```
 
-```ts
-fetch(
-  `<BACKEND_URL>/admin/customer-groups/${customerGroupId}`, 
-  {
-	  method: "DELETE",
-    credentials: "include",
-  }
-)
-.then((response) => response.json())
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    ```ts
+    fetch(
+      `<BACKEND_URL>/admin/customer-groups/${customerGroupId}`, 
+      {
+        method: "DELETE",
+        credentials: "include",
+      }
+    )
+    .then((response) => response.json())
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-</TabItem>
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This request accepts the ID of the customer group to delete as a path parameter. It returns the ID of the deleted entity.
@@ -443,177 +438,180 @@ This request accepts the ID of the customer group to delete as a path parameter.
 
 ### Add Customer to Group
 
-You can add a customer to a group by sending a request to the Customer Group’s Add Customer endpoint:
+You can add a customer to a group by sending a request to the Customer Group’s Add Customer API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.customerGroups.addCustomers(customerGroupId, {
-  customer_ids: [
-    {
-      id: customerId,
-    },
-  ],
-})
-.then(({ customer_group }) => {
-  console.log(customer_group.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { 
-  useAdminAddCustomersToCustomerGroup,
-} from "medusa-react"
-
-const CustomerGroup = () => {
-  const addCustomers = useAdminAddCustomersToCustomerGroup(
-    customerGroupId
-  )
-  // ...
-
-  const handleAddCustomers= (customerId: string) => {
-    addCustomers.mutate({
+    ```ts
+    medusa.admin.customerGroups.addCustomers(customerGroupId, {
       customer_ids: [
         {
           id: customerId,
         },
       ],
     })
-  }
+    .then(({ customer_group }) => {
+      console.log(customer_group.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default CustomerGroup
-```
+    ```tsx
+    import { 
+      useAdminAddCustomersToCustomerGroup,
+    } from "medusa-react"
+    
+    const CustomerGroup = (customerGroupId: string) => {
+      const addCustomers = useAdminAddCustomersToCustomerGroup(
+        customerGroupId
+      )
+      // ...
+    
+      const handleAddCustomers= (customerId: string) => {
+        addCustomers.mutate({
+          customer_ids: [
+            {
+              id: customerId,
+            },
+          ],
+        })
+      }
+    
+      // ...
+    }
+    
+    export default CustomerGroup
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(
-  `<BACKEND_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
-  {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      customer_ids: [
-        {
-          id: customerId,
+    ```ts
+    fetch(
+      `<BACKEND_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
         },
-      ],
-    }),
-  }
-)
-.then((response) => response.json())
-.then(({ customer_group }) => {
-  console.log(customer_group.id)
-})
-```
+        body: JSON.stringify({
+          customer_ids: [
+            {
+              id: customerId,
+            },
+          ],
+        }),
+      }
+    )
+    .then((response) => response.json())
+    .then(({ customer_group }) => {
+      console.log(customer_group.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "customer_ids": [
-        {
-            "id": "<CUSTOMER_ID>"
-        }
-    ]
-}'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "customer_ids": [
+            {
+                "id": "<CUSTOMER_ID>"
+            }
+        ]
+    }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request accepts the ID of the customer group as a path parameter. In its body, it accepts a `customer_ids` array of objects. Each object in the array must have the `id` property with its value being the ID of the customer you want to add.
 
 ### List Customers
 
-You can retrieve a list of all customers in a customer group using the List Customers endpoint:
+You can retrieve a list of all customers in a customer group using the List Customers API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.customerGroups.listCustomers(customerGroupId)
-.then(({ customers, count, offset, limit }) => {
-  console.log(customers.length)
-})
-```
+    ```ts
+    medusa.admin.customerGroups.listCustomers(customerGroupId)
+    .then(({ customers, count, offset, limit }) => {
+      console.log(customers.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { Customer } from "@medusajs/medusa"
-import { useAdminCustomerGroupCustomers } from "medusa-react"
+    ```tsx
+    import { useAdminCustomerGroupCustomers } from "medusa-react"
 
-const CustomerGroup = () => {
-  const { 
-    customers, 
-    isLoading,
-  } = useAdminCustomerGroupCustomers(
-    customerGroupId
-  )
+    type Props = {
+      customerGroupId: string
+    }
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {customers && !customers.length && (
-        <span>No customers</span>
-      )}
-      {customers && customers.length > 0 && (
-        <ul>
-          {customers.map((customer: Customer) => (
-            <li key={customer.id}>{customer.first_name}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+    const CustomerGroup = ({ customerGroupId }: Props) => {
+      const { 
+        customers, 
+        isLoading,
+      } = useAdminCustomerGroupCustomers(
+        customerGroupId
+      )
 
-export default CustomerGroup
-```
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {customers && !customers.length && (
+            <span>No customers</span>
+          )}
+          {customers && customers.length > 0 && (
+            <ul>
+              {customers.map((customer) => (
+                <li key={customer.id}>{customer.first_name}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    export default CustomerGroup
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/customer-groups/${customerGroupId}/customers`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ customers, count, offset, limit }) => {
-  console.log(customers.length)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/customer-groups/${customerGroupId}/customers`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ customers, count, offset, limit }) => {
+      console.log(customers.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request accepts the ID of the customer group as a path parameter. It returns an array of customers along with pagination fields.
@@ -626,105 +624,108 @@ Removing customers from a group does not remove them entirely. They’ll still b
 
 :::
 
-You can remove customers from a customer group by sending a request to the Remove Customers endpoint:
+You can remove customers from a customer group by sending a request to the Remove Customers API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.customerGroups.removeCustomers(
-  customer_group_id,
-  {
-    customer_ids: [
+    ```ts
+    medusa.admin.customerGroups.removeCustomers(
+      customer_group_id,
       {
-        id: customer_id,
-      },
-    ],
-  }
-)
-.then(({ customer_group }) => {
-  console.log(customer_group.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { Customer } from "@medusajs/medusa"
-import { 
-  useAdminRemoveCustomersFromCustomerGroup,
-} from "medusa-react"
-
-const CustomerGroup = () => {
-  const removeCustomers = 
-    useAdminRemoveCustomersFromCustomerGroup(
-      customerGroupId
+        customer_ids: [
+          {
+            id: customer_id,
+          },
+        ],
+      }
     )
-  // ...
-
-  const handleRemoveCustomer = (customer_id: string) => {
-    removeCustomers.mutate({
-      customer_ids: [
-        {
-          id: customer_id,
-        },
-      ],
+    .then(({ customer_group }) => {
+      console.log(customer_group.id)
     })
-  }
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default CustomerGroup
-```
+    ```tsx
+    import { 
+      useAdminRemoveCustomersFromCustomerGroup,
+    } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    type Props = {
+      customerGroupId: string
+    }
+
+    const CustomerGroup = ({ customerGroupId }: Props) => {
+      const removeCustomers = 
+        useAdminRemoveCustomersFromCustomerGroup(
+          customerGroupId
+        )
+      // ...
+
+      const handleRemoveCustomer = (customerId: string) => {
+        removeCustomers.mutate({
+          customer_ids: [
+            {
+              id: customerId,
+            },
+          ],
+        })
+      }
+
+      // ...
+    }
+
+    export default CustomerGroup
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(
-  `<BACKEND_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
-  {
-    method: "DELETE",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      customer_ids: [
-        {
-          id: customerId,
+    ```ts
+    fetch(
+      `<BACKEND_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
+      {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
         },
-      ],
-    }),
-  }
-)
-.then((response) => response.json())
-.then(({ customer_group }) => {
-  console.log(customer_group.id)
-})
-```
+        body: JSON.stringify({
+          customer_ids: [
+            {
+              id: customerId,
+            },
+          ],
+        }),
+      }
+    )
+    .then((response) => response.json())
+    .then(({ customer_group }) => {
+      console.log(customer_group.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "customer_ids": [
-        {
-            "id": "<CUSTOMER_ID>"
-        }
-    ]
-}'
-```
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "customer_ids": [
+            {
+                "id": "<CUSTOMER_ID>"
+            }
+        ]
+    }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request accepts as a path parameter the ID of the customer group to remove customers from. In its body, it accepts a `customer_ids` array of objects. Each object in the array must have the `id` property with the value being the ID of the customer to remove from the group.

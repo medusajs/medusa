@@ -45,6 +45,7 @@ export default (app) => {
 /**
  * @schema AdminBatchJobRes
  * type: object
+ * description: "The batch job's details."
  * required:
  *   - batch_job
  * properties:

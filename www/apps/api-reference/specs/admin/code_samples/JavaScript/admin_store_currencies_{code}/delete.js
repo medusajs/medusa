@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.store.deleteCurrency("eur")
 .then(({ store }) => {
   console.log(store.currencies);
-});
+})

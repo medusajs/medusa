@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the store.
+ */
 export interface AdminPostStoreReq {
   /**
    * The name of the Store

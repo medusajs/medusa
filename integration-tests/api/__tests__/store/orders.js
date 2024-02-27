@@ -215,7 +215,7 @@ describe("/store/carts", () => {
         "/store/orders?display_id=111&email=test@email.com&fields=status,email"
       )
 
-      expect(Object.keys(response.data.order)).toHaveLength(20)
+      expect(Object.keys(response.data.order)).toHaveLength(22)
       expect(Object.keys(response.data.order)).toEqual(
         expect.arrayContaining([
           // fields
@@ -252,7 +252,7 @@ describe("/store/carts", () => {
 
       const response = await api.get("/store/orders/order_test?fields=status")
 
-      expect(Object.keys(response.data.order)).toHaveLength(19)
+      expect(Object.keys(response.data.order)).toHaveLength(21)
       expect(Object.keys(response.data.order)).toEqual(
         expect.arrayContaining([
           // fields
@@ -308,6 +308,8 @@ describe("/store/carts", () => {
         "refundable_amount",
         "gift_card_total",
         "gift_card_tax_total",
+        "item_tax_total",
+        "shipping_tax_total",
       ])
     })
 
@@ -454,7 +456,7 @@ describe("/store/carts", () => {
       await db.teardown()
     })
 
-    it("should fails on cart already completed", async () => {
+    it("should return an order on cart already completed", async () => {
       const api = useApi()
       const manager = dbConnection.manager
 
@@ -499,17 +501,16 @@ describe("/store/carts", () => {
         })
       )
 
-      const responseFail = await api
-        .post(`/store/carts/${cartId}/complete`)
-        .catch((err) => {
-          return err.response
-        })
+      const successRes = await api.post(`/store/carts/${cartId}/complete`)
 
-      expect(responseFail.status).toEqual(409)
-      expect(responseFail.data.code).toEqual("cart_incompatible_state")
-      expect(responseFail.data.message).toEqual(
-        "Cart has already been completed"
+      expect(successRes.status).toEqual(200)
+      expect(successRes.data.data).toEqual(
+        expect.objectContaining({
+          cart_id: cartId,
+          id: expect.any(String),
+        })
       )
+      expect(successRes.data.type).toEqual("order")
     })
   })
 

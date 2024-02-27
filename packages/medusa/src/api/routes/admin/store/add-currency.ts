@@ -5,7 +5,8 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/store/currencies/{code}
  * operationId: "PostStoreCurrenciesCode"
  * summary: "Add a Currency Code"
- * description: "Add a Currency Code to the available currencies in a store. This does not create new currencies, as currencies are defined within the Medusa backend. To create a currency, you can create a migration that inserts the currency into the database."
+ * description: "Add a Currency Code to the available currencies in a store. This does not create new currencies, as currencies are defined within the Medusa backend.
+ * To create a currency, you can create a migration that inserts the currency into the database."
  * x-authenticated: true
  * parameters:
  *   - in: path
@@ -29,7 +30,29 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.store.addCurrency("eur")
  *       .then(({ store }) => {
  *         console.log(store.currencies);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminAddStoreCurrency } from "medusa-react"
+ *
+ *       const Store = () => {
+ *         const addCurrency = useAdminAddStoreCurrency()
+ *         // ...
+ *
+ *         const handleAdd = (code: string) => {
+ *           addCurrency.mutate(code, {
+ *             onSuccess: ({ store }) => {
+ *               console.log(store.currencies)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Store
  *   - lang: Shell
  *     label: cURL
  *     source: |

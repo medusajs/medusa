@@ -1,0 +1,62 @@
+{
+  "description": "The root component of the command bar. This component manages the state of the command bar.",
+  "methods": [],
+  "displayName": "CommandBar",
+  "props": {
+    "open": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether to open (show) the command bar.",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      }
+    },
+    "onOpenChange": {
+      "required": false,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "(open: boolean) => void",
+        "signature": {
+          "arguments": [
+            {
+              "type": {
+                "name": "boolean"
+              },
+              "name": "open"
+            }
+          ],
+          "return": {
+            "name": "void"
+          }
+        }
+      },
+      "description": "Specify a function to handle the change of `open`'s value."
+    },
+    "defaultOpen": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether the command bar is open by default.",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      }
+    },
+    "disableAutoFocus": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether to disable focusing automatically on the command bar when it's opened.",
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      }
+    }
+  }
+}

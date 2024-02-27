@@ -28,13 +28,19 @@ async function validateProductVariantSalesChannelAssociation(
     const { sales_channel_ids: salesChannelIds } =
       await publishableKeyService.getResourceScopes(pubKey)
 
-    if (
-      salesChannelIds.length &&
-      !(await productVariantService.isVariantInSalesChannels(
-        req.params.id,
-        salesChannelIds
-      ))
-    ) {
+    let isVariantInSalesChannel = false
+
+    try {
+      isVariantInSalesChannel =
+        await productVariantService.isVariantInSalesChannels(
+          req.params.id,
+          salesChannelIds
+        )
+    } catch (error) {
+      next(error)
+    }
+
+    if (salesChannelIds.length && !isVariantInSalesChannel) {
       req.errors = req.errors ?? []
       req.errors.push(
         `Variant with id: ${req.params.id} is not associated with sales channels defined by the Publishable API Key passed in the header of the request.`

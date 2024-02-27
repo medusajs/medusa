@@ -23,7 +23,8 @@
   "devDependencies": {
     "@types/node": "^16.11.10",
     "copyfiles": "^2.4.1",
-    "typescript": "^4.6"
+    "types": "*",
+    "typescript": "5.2"
   },
   "keywords": [
     "typedocplugin",
@@ -33,6 +34,6 @@
   ],
   "dependencies": {
     "handlebars": "^4.7.8",
-    "yaml": "^2.3.2"
+    "utils": "*"
   }
 }

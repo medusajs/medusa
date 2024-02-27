@@ -7,4 +7,4 @@ medusa.admin.users.resetPassword({
 })
 .then(({ user }) => {
   console.log(user.id);
-});
+})

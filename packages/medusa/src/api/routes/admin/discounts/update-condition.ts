@@ -39,7 +39,44 @@ import { FindParams } from "../../../../types/common"
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDiscountUpdateCondition } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *         conditionId: string
+ *       }
+ *
+ *       const DiscountCondition = ({
+ *         discountId,
+ *         conditionId
+ *       }: Props) => {
+ *         const update = useAdminDiscountUpdateCondition(
+ *           discountId,
+ *           conditionId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           products: string[]
+ *         ) => {
+ *           update.mutate({
+ *             products
+ *           }, {
+ *             onSuccess: ({ discount }) => {
+ *               console.log(discount.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DiscountCondition
  *   - lang: Shell
  *     label: cURL
  *     source: |

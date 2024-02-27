@@ -1,12 +1,15 @@
 {
   "name": "medusa-test-utils",
-  "version": "1.1.40",
+  "version": "1.1.41",
   "description": "Test utils for Medusa",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-test-utils"
+  },
+  "engines": {
+    "node": ">=16"
   },
   "scripts": {
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
@@ -27,9 +30,11 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@mikro-orm/migrations": "5.7.12",
-    "@mikro-orm/postgresql": "5.7.12",
-    "medusa-core-utils": "^1.2.0",
+    "@medusajs/modules-sdk": "^1.12.6",
+    "@medusajs/utils": "^1.1.41",
+    "@mikro-orm/migrations": "5.9.7",
+    "@mikro-orm/postgresql": "5.9.7",
+    "medusa-core-utils": "^1.2.1",
     "pg-god": "^1.0.12",
     "randomatic": "^3.1.1"
   },

@@ -21,6 +21,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/store_order-edits_{id}_decline/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/store_order-edits_{id}_decline/post.tsx
     - lang: Shell
       label: cURL
       source:

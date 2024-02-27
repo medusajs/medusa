@@ -21,3 +21,4 @@ www/**/.yarn/*
 .turbo
 build/**
 **/dist
+**/stats

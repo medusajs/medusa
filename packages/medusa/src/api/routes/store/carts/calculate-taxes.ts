@@ -3,6 +3,7 @@ import { CartService, IdempotencyKeyService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { IdempotencyKey } from "../../../../models/idempotency-key"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { Logger } from "@medusajs/types"
 
 /**
  * @oas [post] /store/carts/{id}/taxes
@@ -49,6 +50,7 @@ export default async (req, res) => {
     "idempotencyKeyService"
   )
   const manager: EntityManager = req.scope.resolve("manager")
+  const logger: Logger = req.scope.resolve("logger")
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -61,7 +63,7 @@ export default async (req, res) => {
         .initializeRequest(headerKey, req.method, req.params, req.path)
     })
   } catch (error) {
-    console.log(error)
+    logger.log(error)
     res.status(409).send("Failed to create idempotency key")
     return
   }

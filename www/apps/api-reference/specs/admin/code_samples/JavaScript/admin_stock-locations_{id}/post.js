@@ -6,4 +6,4 @@ medusa.admin.stockLocations.update(stockLocationId, {
 })
 .then(({ stock_location }) => {
   console.log(stock_location.id);
-});
+})

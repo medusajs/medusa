@@ -1,4 +1,5 @@
 type: object
+description: The price list's details.
 x-expanded-relations:
   field: price_list
   relations:

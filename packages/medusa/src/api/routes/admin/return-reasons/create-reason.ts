@@ -34,7 +34,35 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateReturnReason } from "medusa-react"
+ *
+ *       const CreateReturnReason = () => {
+ *         const createReturnReason = useAdminCreateReturnReason()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           label: string,
+ *           value: string
+ *         ) => {
+ *           createReturnReason.mutate({
+ *             label,
+ *             value,
+ *           }, {
+ *             onSuccess: ({ return_reason }) => {
+ *               console.log(return_reason.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateReturnReason
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -95,6 +123,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostReturnReasonsReq
  * type: object
+ * description: "The details of the return reason to create."
  * required:
  *  - label
  *  - value

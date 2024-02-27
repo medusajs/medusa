@@ -6,4 +6,4 @@ medusa.admin.returnReasons.update(returnReasonId, {
 })
 .then(({ return_reason }) => {
   console.log(return_reason.id);
-});
+})

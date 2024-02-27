@@ -3,7 +3,7 @@ get:
   summary: List Regions
   description: >-
     Retrieve a list of regions. The regions can be filtered by fields such as
-    `created_at`. The regions can also be paginated. This endpoint is useful to
+    `created_at`. The regions can also be paginated. This API Route is useful to
     show the customer all available regions to choose from.
   externalDocs:
     description: How to use regions in a storefront
@@ -74,6 +74,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/store_regions/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/store_regions/get.tsx
     - lang: Shell
       label: cURL
       source:

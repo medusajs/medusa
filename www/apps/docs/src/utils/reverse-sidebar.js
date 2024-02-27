@@ -24,4 +24,4 @@ function reverseSidebarItems(sidebarItems, categoryItem) {
   return result
 }
 
-module.exports = reverseSidebarItems
+export default reverseSidebarItems

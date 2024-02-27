@@ -1,4 +1,5 @@
 type: object
+description: The details of deleting a price list.
 required:
   - ids
   - object
@@ -6,9 +7,10 @@ required:
 properties:
   ids:
     type: array
+    description: The IDs of the deleted prices.
     items:
       type: string
-      description: The IDs of the deleted prices.
+      description: The ID of a deleted price.
   object:
     type: string
     description: >-

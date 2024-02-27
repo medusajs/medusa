@@ -1,7 +1,7 @@
 post:
   operationId: PostOrdersSwapFulfillmentsCancel
   summary: Cancel Swap's Fulfilmment
-  description: Cancel a swap's fulfillment and change its status.
+  description: Cancel a swap's fulfillment and change its fulfillment status to `canceled`.
   x-authenticated: true
   parameters:
     - in: path
@@ -41,6 +41,11 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_orders_{id}_swaps_{swap_id}_fulfillments_{fulfillment_id}_cancel/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_orders_{id}_swaps_{swap_id}_fulfillments_{fulfillment_id}_cancel/post.tsx
     - lang: Shell
       label: cURL
       source:

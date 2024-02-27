@@ -55,13 +55,7 @@ export default async ({
   directoryPath,
   withNextjsStarter = false,
 }: CreateOptions) => {
-  track("CREATE_CLI")
-  if (repoUrl) {
-    track("STARTER_SELECTED", { starter: repoUrl })
-  }
-  if (seed) {
-    track("SEED_SELECTED", { seed })
-  }
+  track("CREATE_CLI_CMA")
 
   const spinner: Ora = ora()
   const processManager = new ProcessManager()
@@ -110,6 +104,16 @@ export default async ({
       })
     : { client: null, dbConnectionString: "" }
   isDbInitialized = true
+
+  track("CMA_OPTIONS", {
+    repoUrl,
+    seed,
+    boilerplate,
+    skipDb,
+    browser,
+    migrations,
+    installNextjs,
+  })
 
   logMessage({
     message: `${emojify(

@@ -48,11 +48,11 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
   }
 
   if ("skip" in config) {
-    ;(query as FindManyOptions<TEntity>).skip = config.skip
+    ;(query as FindManyOptions<TEntity>).skip = config.skip ?? undefined
   }
 
   if ("take" in config) {
-    ;(query as FindManyOptions<TEntity>).take = config.take
+    ;(query as FindManyOptions<TEntity>).take = config.take ?? undefined
   }
 
   if (config.relations) {
@@ -99,8 +99,20 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
  */
 function buildWhere<TWhereKeys extends object, TEntity>(
   constraints: TWhereKeys
-): FindOptionsWhere<TEntity> {
-  const where: FindOptionsWhere<TEntity> = {}
+): FindOptionsWhere<TEntity> | FindOptionsWhere<TEntity>[] {
+  let where: FindOptionsWhere<TEntity> | FindOptionsWhere<TEntity>[] = {}
+
+  if (Array.isArray(constraints)) {
+    where = []
+    constraints.forEach((constraint) => {
+      ;(where as FindOptionsWhere<TEntity>[]).push(
+        buildWhere(constraint) as FindOptionsWhere<TEntity>
+      )
+    })
+
+    return where
+  }
+
   for (const [key, value] of Object.entries(constraints)) {
     if (value === undefined) {
       continue

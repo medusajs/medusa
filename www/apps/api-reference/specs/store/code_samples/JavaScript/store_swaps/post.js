@@ -17,4 +17,4 @@ medusa.swaps.create({
 })
 .then(({ swap }) => {
   console.log(swap.id);
-});
+})

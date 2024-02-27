@@ -1,4 +1,5 @@
 type: object
+description: The details of the claim to be created.
 required:
   - type
   - claim_items
@@ -111,6 +112,9 @@ properties:
   no_notification:
     description: If set to true no notification will be send related to this Claim.
     type: boolean
+  return_location_id:
+    description: The ID of the location used for the associated return.
+    type: string
   metadata:
     description: An optional set of key-value pairs to hold additional information.
     type: object

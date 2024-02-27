@@ -24,6 +24,7 @@ import { TaxProviderRepository } from "../repositories/tax-provider"
 import { isCart } from "../types/cart"
 import { TaxLinesMaps, TaxServiceRate } from "../types/tax-service"
 import TaxRateService from "./tax-rate"
+import { promiseAll } from "@medusajs/utils"
 
 type RegionDetails = {
   id: string
@@ -101,7 +102,7 @@ class TaxProviderService extends TransactionBaseService {
         this.smTaxLineRepo_
       )
 
-      await Promise.all([
+      await promiseAll([
         taxLineRepo.deleteForCart(cartId),
         shippingTaxRepo.deleteForCart(cartId),
       ])
@@ -153,7 +154,7 @@ class TaxProviderService extends TransactionBaseService {
       )
 
       return (
-        await Promise.all([
+        await promiseAll([
           itemTaxLineRepo.upsertLines(lineItems),
           shippingTaxLineRepo.upsertLines(shipping),
         ])
@@ -281,7 +282,7 @@ class TaxProviderService extends TransactionBaseService {
       }
     })
 
-    const shippingCalculationLines = await Promise.all(
+    const shippingCalculationLines = await promiseAll(
       calculationContext.shipping_methods.map(async (sm) => {
         return {
           shipping_method: sm,
@@ -437,7 +438,7 @@ class TaxProviderService extends TransactionBaseService {
     )
 
     const productRatesMapResult = new Map<string, TaxServiceRate[]>()
-    await Promise.all(
+    await promiseAll(
       [...cacheKeysMap].map(async ([id, cacheKey]) => {
         const cacheHit = await this.cacheService_.get<TaxServiceRate[]>(
           cacheKey
@@ -457,7 +458,7 @@ class TaxProviderService extends TransactionBaseService {
       return productRatesMapResult
     }
 
-    await Promise.all(
+    await promiseAll(
       nonCachedProductIds.map(async (id) => {
         const rates = await this.taxRateService_
           .withTransaction(this.activeManager_)

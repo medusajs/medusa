@@ -2,6 +2,7 @@ import { FindOptionsWhere, ILike, Raw } from "typeorm"
 import { GiftCard } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
+import { promiseAll } from "@medusajs/utils"
 
 export const GiftCardRepository = dataSource.getRepository(GiftCard).extend({
   async listGiftCardsAndCount(
@@ -34,7 +35,7 @@ export const GiftCardRepository = dataSource.getRepository(GiftCard).extend({
       ]
     }
 
-    return await Promise.all([this.find(query_), this.count(query_)])
+    return await promiseAll([this.find(query_), this.count(query_)])
   },
 })
 export default GiftCardRepository

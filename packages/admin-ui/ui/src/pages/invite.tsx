@@ -119,8 +119,10 @@ const InvitePage = () => {
         !data.analytics.opt_out &&
         token?.user_email
 
-      if (isFeatureEnabled("analytics")) {
+      try {
         await createAnalyticsConfig(data.analytics)
+      } catch (e) {
+        // gracefully handle error if analytics are disabled
       }
 
       if (shouldTrackEmail) {

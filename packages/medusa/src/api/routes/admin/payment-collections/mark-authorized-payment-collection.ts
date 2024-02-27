@@ -19,9 +19,37 @@ import { PaymentCollectionService } from "../../../../services"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.paymentCollections.markAsAuthorized(paymentCollectionId)
- *         .then(({ payment_collection }) => {
- *           console.log(payment_collection.id)
- *         })
+ *       .then(({ payment_collection }) => {
+ *         console.log(payment_collection.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminMarkPaymentCollectionAsAuthorized } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentCollectionId: string
+ *       }
+ *
+ *       const PaymentCollection = ({ paymentCollectionId }: Props) => {
+ *         const markAsAuthorized = useAdminMarkPaymentCollectionAsAuthorized(
+ *           paymentCollectionId
+ *         )
+ *         // ...
+ *
+ *         const handleAuthorization = () => {
+ *           markAsAuthorized.mutate(void 0, {
+ *             onSuccess: ({ payment_collection }) => {
+ *               console.log(payment_collection.status)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PaymentCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |

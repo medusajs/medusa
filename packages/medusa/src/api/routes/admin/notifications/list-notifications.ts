@@ -40,7 +40,34 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.notifications.list()
  *       .then(({ notifications }) => {
  *         console.log(notifications.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminNotifications } from "medusa-react"
+ *
+ *       const Notifications = () => {
+ *         const { notifications, isLoading } = useAdminNotifications()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {notifications && !notifications.length && (
+ *               <span>No Notifications</span>
+ *             )}
+ *             {notifications && notifications.length > 0 && (
+ *               <ul>
+ *                 {notifications.map((notification) => (
+ *                   <li key={notification.id}>{notification.to}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Notifications
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -150,41 +177,73 @@ export default async (req, res) => {
   res.json({ notifications: data, count, limit, offset })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved notifications.
+ */
 export class AdminGetNotificationsParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   limit?: number = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsOptional()
   @IsString()
   fields?: string
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsOptional()
   @IsString()
   expand?: string
 
+  /**
+   * Event name to filter notifications by.
+   */
   @IsOptional()
   @IsString()
   event_name?: string
 
+  /**
+   * Resource type to filter notifications by.
+   */
   @IsOptional()
   @IsString()
   resource_type?: string
 
+  /**
+   * Resource ID to filter notifications by.
+   */
   @IsOptional()
   @IsString()
   resource_id?: string
 
+  /**
+   * Filter notifications by their `to` field.
+   */
   @IsOptional()
   @IsString()
   to?: string
 
+  /**
+   * Whether to include resends in the results.
+   */
   @IsOptional()
   @IsBooleanString()
   include_resends?: string

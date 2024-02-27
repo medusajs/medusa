@@ -122,6 +122,7 @@ export type AdminCollectionsDeleteRes = DeleteResponse
 /**
  * @schema AdminDeleteProductsFromCollectionRes
  * type: object
+ * description: "Deletion operation details"
  * required:
  *   - id
  *   - object
@@ -150,6 +151,7 @@ export type AdminDeleteProductsFromCollectionRes = {
 /**
  * @schema AdminCollectionsRes
  * type: object
+ * description: The collection's details.
  * x-expanded-relations:
  *   field: collection
  *   relations:
@@ -158,7 +160,7 @@ export type AdminDeleteProductsFromCollectionRes = {
  *   - collection
  * properties:
  *   collection:
- *     type: "Product Collection details."
+ *     description: "Product Collection details."
  *     $ref: "#/components/schemas/ProductCollection"
  */
 export type AdminCollectionsRes = {

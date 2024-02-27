@@ -1,4 +1,5 @@
 type: object
+description: The list of tax rates with pagination fields.
 required:
   - tax_rates
   - count

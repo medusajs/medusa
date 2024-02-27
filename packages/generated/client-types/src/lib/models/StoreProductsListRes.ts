@@ -7,6 +7,9 @@ import type { PricedProduct } from "./PricedProduct"
 import type { ProductOption } from "./ProductOption"
 import type { ProductVariant } from "./ProductVariant"
 
+/**
+ * The list of products with pagination fields.
+ */
 export interface StoreProductsListRes {
   /**
    * An array of products details.

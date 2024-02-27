@@ -7,10 +7,9 @@ import {
 } from "../../../../services"
 import { IsOptional, IsString } from "class-validator"
 
-import { FindParams } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { defaultStoreVariantRelations } from "."
 import { validator } from "../../../../utils/validator"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/variants/{id}
@@ -44,6 +43,16 @@ import { validator } from "../../../../utils/validator"
  *   method: retrieve
  *   queryParams: StoreGetVariantsVariantParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.product.variants.retrieve(productVariantId)
+ *       .then(({ variant }) => {
+ *         console.log(variant.id);
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -81,10 +90,11 @@ export default async (req, res) => {
     req.scope.resolve("productVariantInventoryService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
 
   const customer_id = req.user?.customer_id
 
-  const rawVariant = await variantService.retrieve(id, req.retrieveConfig)
+  const variant = await variantService.retrieve(id, req.retrieveConfig)
 
   let sales_channel_id = validated.sales_channel_id
   if (req.publishableApiKeyScopes?.sales_channel_ids.length === 1) {
@@ -104,18 +114,26 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const variantRes = await pricingService.setVariantPrices([rawVariant], {
-    cart_id: validated.cart_id,
-    customer_id: customer_id,
-    region_id: regionId,
-    currency_code: currencyCode,
-    include_discount_prices: true,
-  })
+  const decoratePromises: Promise<any>[] = []
 
-  const [variant] = await productVariantInventoryService.setVariantAvailability(
-    variantRes,
-    sales_channel_id
+  decoratePromises.push(
+    (await pricingService.setVariantPrices([variant], {
+      cart_id: validated.cart_id,
+      customer_id: customer_id,
+      region_id: regionId,
+      currency_code: currencyCode,
+      include_discount_prices: true,
+    })) as any
   )
+
+  decoratePromises.push(
+    (await productVariantInventoryService.setVariantAvailability(
+      [variant],
+      sales_channel_id
+    )) as any
+  )
+
+  await promiseAll(decoratePromises)
 
   res.json({ variant })
 }

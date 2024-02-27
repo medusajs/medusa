@@ -43,12 +43,16 @@ export type ModulesResponse = sdkModulesResponse
  *       - modules
  *     properties:
  *       payment_providers:
+ *         description: "The store's payment providers."
  *         $ref: "#/components/schemas/PaymentProvider"
  *       fulfillment_providers:
+ *         description: "The store's fulfillment providers."
  *         $ref: "#/components/schemas/FulfillmentProvider"
  *       feature_flags:
+ *         description: "The feature flags enabled in the store's backend."
  *         $ref: "#/components/schemas/FeatureFlagsResponse"
  *       modules:
+ *         description: "The modules installed in the store's backend."
  *         $ref: "#/components/schemas/ModulesResponse"
  *
  */

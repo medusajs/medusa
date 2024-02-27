@@ -10,4 +10,4 @@ medusa.admin.publishableApiKeys.addSalesChannelsBatch(publishableApiKeyId, {
 })
 .then(({ publishable_api_key }) => {
   console.log(publishable_api_key.id);
-});
+})

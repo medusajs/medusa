@@ -5,4 +5,4 @@ medusa.products.search({
 })
 .then(({ hits }) => {
   console.log(hits.length);
-});
+})

@@ -6,4 +6,4 @@ medusa.carts.lineItems.create(cart_id, {
 })
 .then(({ cart }) => {
   console.log(cart.id);
-});
+})

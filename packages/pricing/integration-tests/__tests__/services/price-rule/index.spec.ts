@@ -2,7 +2,6 @@ import { PriceSetMoneyAmount } from "@models"
 
 import { CreatePriceRuleDTO } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { PriceRuleRepository } from "@repositories"
 import { PriceRuleService } from "@services"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
@@ -12,6 +11,9 @@ import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-mone
 import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { MikroOrmWrapper } from "../../../utils"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -25,13 +27,13 @@ describe("PriceRule Service", () => {
     repositoryManager = await MikroOrmWrapper.forkManager()
     testManager = await MikroOrmWrapper.forkManager()
 
-    const priceRuleRepository = new PriceRuleRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new PriceRuleService({
-      priceRuleRepository: priceRuleRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("priceRuleService")
+
     await createCurrencies(testManager)
     await createMoneyAmounts(testManager)
     await createPriceSets(testManager)
@@ -217,7 +219,7 @@ describe("PriceRule Service", () => {
           error = e
         }
 
-        expect(error.message).toEqual('"priceRuleId" must be defined')
+        expect(error.message).toEqual("priceRule - id must be defined")
       })
 
       it("should return priceRule based on config select param", async () => {
@@ -283,7 +285,7 @@ describe("PriceRule Service", () => {
           error = e
         }
 
-        expect(error.message).toEqual('PriceRule with id "undefined" not found')
+        expect(error.message).toEqual('PriceRule with id "" not found')
       })
 
       it("should create a priceRule successfully", async () => {

@@ -4,8 +4,8 @@ import {
   IdempotencyKeyService,
   PostgresError,
 } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
-import { MedusaError } from "medusa-core-utils"
 import { EOL } from "os"
 import Stripe from "stripe"
 
@@ -51,19 +51,15 @@ export async function handlePaymentHook({
   container,
   paymentIntent,
 }: {
-  event: { type: string; id: string }
+  event: Partial<Stripe.Event>
   container: AwilixContainer
-  paymentIntent: {
-    id: string
-    metadata: { cart_id?: string; resource_id?: string }
-    last_payment_error?: { message: string }
-  }
+  paymentIntent: Partial<Stripe.PaymentIntent>
 }): Promise<{ statusCode: number }> {
   const logger = container.resolve("logger")
 
   const cartId =
-    paymentIntent.metadata.cart_id ?? paymentIntent.metadata.resource_id // Backward compatibility
-  const resourceId = paymentIntent.metadata.resource_id
+    paymentIntent.metadata?.cart_id ?? paymentIntent.metadata?.resource_id // Backward compatibility
+  const resourceId = paymentIntent.metadata?.resource_id
 
   switch (event.type) {
     case "payment_intent.succeeded":
@@ -181,7 +177,7 @@ async function capturePaymenCollectiontIfNecessary({
       await manager.transaction(async (manager) => {
         await paymentCollectionService
           .withTransaction(manager)
-          .capture(payment.id)
+          .capture(payment.id) // TODO: revisit - this method doesn't exists ATM
       })
     }
   }

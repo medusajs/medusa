@@ -1,4 +1,5 @@
 type: object
+description: The list of variants with pagination fields.
 x-expanded-relations:
   field: variants
   relations:

@@ -1,4 +1,5 @@
 type: object
+description: The list of gift cards with pagination fields.
 x-expanded-relations:
   field: gift_cards
   relations:
@@ -15,6 +16,7 @@ required:
 properties:
   gift_cards:
     type: array
+    description: The list of gift cards.
     items:
       $ref: ./GiftCard.yaml
   count:

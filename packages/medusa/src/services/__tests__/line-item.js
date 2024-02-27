@@ -267,21 +267,23 @@ const unknownVariantId = "unknown-variant"
       })
       describe("delete", () => {
         const lineItemRepository = MockRepository({
-          findOne: () =>
-            Promise.resolve({
-              id: IdMap.getId("test-line-item"),
-              variant_id: IdMap.getId("test-variant"),
-              variant: {
-                id: IdMap.getId("test-variant"),
-                title: "Test variant",
+          find: () =>
+            Promise.resolve([
+              {
+                id: IdMap.getId("test-line-item"),
+                variant_id: IdMap.getId("test-variant"),
+                variant: {
+                  id: IdMap.getId("test-variant"),
+                  title: "Test variant",
+                },
+                cart_id: IdMap.getId("test-cart"),
+                title: "Test product",
+                description: "Test variant",
+                thumbnail: "",
+                unit_price: 50,
+                quantity: 1,
               },
-              cart_id: IdMap.getId("test-cart"),
-              title: "Test product",
-              description: "Test variant",
-              thumbnail: "",
-              unit_price: 50,
-              quantity: 1,
-            }),
+            ]),
         })
 
         const lineItemService = new LineItemService({
@@ -297,20 +299,22 @@ const unknownVariantId = "unknown-variant"
           await lineItemService.delete(IdMap.getId("test-line-item"))
 
           expect(lineItemRepository.remove).toHaveBeenCalledTimes(1)
-          expect(lineItemRepository.remove).toHaveBeenCalledWith({
-            id: IdMap.getId("test-line-item"),
-            variant_id: IdMap.getId("test-variant"),
-            variant: {
-              id: IdMap.getId("test-variant"),
-              title: "Test variant",
+          expect(lineItemRepository.remove).toHaveBeenCalledWith([
+            {
+              id: IdMap.getId("test-line-item"),
+              variant_id: IdMap.getId("test-variant"),
+              variant: {
+                id: IdMap.getId("test-variant"),
+                title: "Test variant",
+              },
+              cart_id: IdMap.getId("test-cart"),
+              title: "Test product",
+              description: "Test variant",
+              thumbnail: "",
+              unit_price: 50,
+              quantity: 1,
             },
-            cart_id: IdMap.getId("test-cart"),
-            title: "Test product",
-            description: "Test variant",
-            thumbnail: "",
-            unit_price: 50,
-            quantity: 1,
-          })
+          ])
         })
       })
     })

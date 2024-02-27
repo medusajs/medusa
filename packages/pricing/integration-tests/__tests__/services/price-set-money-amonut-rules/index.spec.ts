@@ -1,10 +1,11 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
-import { PriceSetMoneyAmountRulesRepository } from "@repositories"
 import { PriceSetMoneyAmountRulesService } from "@services"
 
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 import { MikroOrmWrapper } from "../../../utils"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -17,14 +18,12 @@ describe("PriceSetMoneyAmountRules Service", () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = await MikroOrmWrapper.forkManager()
 
-    const priceSetMoneyAmountRulesRepository =
-      new PriceSetMoneyAmountRulesRepository({
-        manager: repositoryManager,
-      })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new PriceSetMoneyAmountRulesService({
-      priceSetMoneyAmountRulesRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("priceSetMoneyAmountRulesService")
 
     testManager = await MikroOrmWrapper.forkManager()
 
@@ -169,7 +168,7 @@ describe("PriceSetMoneyAmountRules Service", () => {
       }
 
       expect(error.message).toEqual(
-        '"priceSetMoneyAmountRulesId" must be defined'
+        "priceSetMoneyAmountRules - id must be defined"
       )
     })
 

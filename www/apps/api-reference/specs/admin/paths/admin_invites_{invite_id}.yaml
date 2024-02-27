@@ -17,6 +17,10 @@ delete:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_invites_{invite_id}/delete.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_invites_{invite_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

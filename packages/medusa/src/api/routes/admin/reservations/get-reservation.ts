@@ -5,7 +5,7 @@ import { MedusaError } from "@medusajs/utils"
  * @oas [get] /admin/reservations/{id}
  * operationId: "GetReservationsReservation"
  * summary: "Get a Reservation"
- * description: "Retrieve a reservation's details.'"
+ * description: "Retrieve a reservation's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the reservation.
@@ -19,7 +19,31 @@ import { MedusaError } from "@medusajs/utils"
  *       medusa.admin.reservations.retrieve(reservationId)
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminReservation } from "medusa-react"
+ *
+ *       type Props = {
+ *         reservationId: string
+ *       }
+ *
+ *       const Reservation = ({ reservationId }: Props) => {
+ *         const { reservation, isLoading } = useAdminReservation(
+ *           reservationId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {reservation && <span>{reservation.inventory_item_id}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Reservation
  *   - lang: Shell
  *     label: cURL
  *     source: |

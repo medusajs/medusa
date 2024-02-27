@@ -55,7 +55,7 @@ By default, taxes are calculated automatically by Medusa. They’re calculated i
 
 If you use a third-party tax provider and you want to avoid sending too many requests to the tax provider, you can disable this behavior.
 
-:::caution
+:::warning
 
 If you switch off automatic taxes calculation, the taxes must be calculated manually on checkout. If you’re unsure how that works, please contact your technical team.
 

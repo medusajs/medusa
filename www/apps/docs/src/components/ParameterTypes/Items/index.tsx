@@ -1,39 +1,141 @@
-import { DetailsSummary, InlineCode, MarkdownContent } from "docs-ui"
-import React from "react"
+import {
+  CopyButton,
+  DetailsSummary,
+  ExpandableNotice,
+  FeatureFlagNotice,
+  InlineCode,
+  MarkdownContent,
+} from "docs-ui"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import Details from "../../../theme/Details"
 import clsx from "clsx"
 import { Parameter } from ".."
+import {
+  ArrowDownLeftMini,
+  ArrowsPointingOutMini,
+  Link,
+  TriangleRightMini,
+} from "@medusajs/icons"
+import IconFlagMini from "../../../theme/Icon/FlagMini"
+import decodeStr from "../../../utils/decode-str"
+import { useLocation } from "@docusaurus/router"
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
+import isInView from "../../../utils/is-in-view"
 
-type ParameterTypesItemsProps = {
-  parameters: Parameter[]
+type CommonProps = {
   level?: number
+  expandUrl?: string
+  sectionTitle?: string
 }
 
-const ParameterTypesItems = ({
-  parameters,
+type ParameterTypesItemProps = {
+  parameter: Parameter
+  elementKey: number
+} & CommonProps &
+  React.AllHTMLAttributes<HTMLDivElement>
+
+const ParameterTypesItem = ({
+  parameter,
   level = 1,
-}: ParameterTypesItemsProps) => {
+  expandUrl,
+  elementKey,
+  sectionTitle,
+}: ParameterTypesItemProps) => {
+  const location = useLocation()
+
+  const {
+    siteConfig: { url },
+  } = useDocusaurusContext()
+
+  const groupName = useMemo(() => {
+    switch (level) {
+      case 1:
+        return "group/parameterOne"
+      case 2:
+        return "group/parameterTwo"
+      case 3:
+        return "group/parameterThree"
+      case 4:
+        return "group/parameterFour"
+    }
+  }, [level])
+  const borderForGroupName = useMemo(() => {
+    switch (level) {
+      case 1:
+        return "group-open/parameterOne:border-solid group-open/parameterOne:border-0 group-open/parameterOne:border-b"
+      case 2:
+        return "group-open/parameterTwo:border-solid group-open/parameterTwo:border-0 group-open/parameterTwo:border-b"
+      case 3:
+        return "group-open/parameterThree:border-solid group-open/parameterThree:border-0 group-open/parameterThree:border-b"
+      case 4:
+        return "group-open/parameterFour:border-solid group-open/parameterFour:border-0 group-open/parameterFour:border-b"
+    }
+  }, [level])
+  const rotateForGroupName = useMemo(() => {
+    switch (level) {
+      case 1:
+        return "group-open/parameterOne:rotate-90"
+      case 2:
+        return "group-open/parameterTwo:rotate-90"
+      case 3:
+        return "group-open/parameterThree:rotate-90"
+      case 4:
+        return "group-open/parameterFour:rotate-90"
+    }
+  }, [level])
   function getItemClassNames(details = true) {
     return clsx(
-      level < 3 && [
-        "odd:[&:not(:first-child):not(:last-child)]:!border-y last:not(:first-child):!border-t",
-        "first:!border-t-0 first:not(:last-child):!border-b last:!border-b-0 even:!border-y-0",
-      ],
-      details && level == 1 && `group/parameter`,
-      !details &&
-        level == 1 &&
-        `group-open/parameter:border-solid group-open/parameter:border-0 group-open/parameter:border-b`,
-      level >= 3 && "!border-0"
+      "odd:[&:not(:first-child):not(:last-child)]:!border-y last:not(:first-child):!border-t",
+      "first:!border-t-0 first:not(:last-child):!border-b last:!border-b-0 even:!border-y-0",
+      details && groupName,
+      !details && borderForGroupName
     )
   }
-  function getSummary(parameter: Parameter, key: number, nested = true) {
+  const formatId = (str: string) => {
+    return str.replaceAll(" ", "_")
+  }
+  const parameterId = useMemo(() => {
+    return sectionTitle
+      ? `#${formatId(sectionTitle)}-${formatId(
+          parameter.name
+        )}-${level}-${elementKey}`
+      : ""
+  }, [sectionTitle, parameter, elementKey])
+  const parameterPath = useMemo(
+    () => `${location.pathname}${parameterId}`,
+    [location, parameterId]
+  )
+  const parameterUrl = useMemo(
+    () => `${url}${parameterPath}`,
+    [url, parameterPath]
+  )
+
+  const ref = useRef<HTMLDivElement>()
+  const [isSelected, setIsSelected] = useState(false)
+
+  useEffect(() => {
+    if (!parameterId.length) {
+      return
+    }
+
+    const shouldScroll = location.hash === parameterId
+    if (shouldScroll && !isSelected && ref.current && !isInView(ref.current)) {
+      ref.current.scrollIntoView({
+        block: "center",
+      })
+    }
+
+    setIsSelected(shouldScroll)
+  }, [parameterId])
+
+  function getSummary(parameter: Parameter, nested = true) {
     return (
       <DetailsSummary
         subtitle={
           parameter.description || parameter.defaultValue ? (
             <>
               <MarkdownContent
-                allowedElements={["a", "strong", "code"]}
+                allowedElements={["a", "strong", "code", "ul", "ol", "li"]}
                 unwrapDisallowed={true}
                 className="text-medium"
               >
@@ -47,17 +149,17 @@ const ParameterTypesItems = ({
             </>
           ) : undefined
         }
-        expandable={parameter.children.length > 0}
+        expandable={parameter.children?.length > 0}
+        hideExpandableIcon={true}
         className={clsx(
           getItemClassNames(false),
-          level < 3 && "!p-1",
+          "py-1 pr-1",
+          level === 1 && "pl-1",
+          level === 2 && "pl-3",
+          level === 3 && "pl-[120px]",
+          level === 4 && "pl-[160px]",
           !nested && "cursor-default",
-          level >= 3 && [
-            "pl-1 mt-1",
-            "mx-1 relative before:content-[''] before:h-full before:w-0.25",
-            "before:absolute before:top-0 before:left-0",
-            "before:bg-medusa-fg-muted before:rounded-full",
-          ]
+          isSelected && "animate-flash animate-bg-surface"
         )}
         onClick={(e) => {
           const targetElm = e.target as HTMLElement
@@ -67,59 +169,121 @@ const ParameterTypesItems = ({
             return
           }
         }}
+        summaryRef={!nested ? ref : undefined}
+        id={!nested && parameterId ? parameterId : ""}
       >
-        <div className="flex gap-0.75">
-          <InlineCode>{parameter.name}</InlineCode>
-          <span className="font-monospace text-compact-small-plus text-medusa-fg-subtle">
-            <MarkdownContent allowedElements={["a"]} unwrapDisallowed={true}>
-              {parameter.type}
-            </MarkdownContent>
-          </span>
-          {parameter.optional === false && (
-            <span
+        <div className="flex gap-0.5">
+          {nested && (
+            <TriangleRightMini
               className={clsx(
-                "text-compact-x-small-plus uppercase",
-                "text-medusa-fg-error"
+                "text-medusa-fg-subtle transition-transform",
+                rotateForGroupName
               )}
-            >
-              Required
-            </span>
+            />
           )}
+          {!nested && level > 1 && (
+            <ArrowDownLeftMini
+              className={clsx("text-medusa-fg-subtle flip-y")}
+            />
+          )}
+          {level === 1 && parameterId.length > 0 && (
+            <CopyButton
+              text={parameterUrl}
+              onCopy={(e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+                e.preventDefault()
+                e.stopPropagation()
+              }}
+            >
+              <Link
+                className={clsx(
+                  "text-medusa-fg-interactive hover:text-medusa-fg-interactive-hover"
+                )}
+              />
+            </CopyButton>
+          )}
+          <div className="flex gap-0.75 flex-wrap">
+            <InlineCode>{decodeStr(parameter.name)}</InlineCode>
+            <span className="font-monospace text-compact-small-plus text-medusa-fg-subtle">
+              <MarkdownContent allowedElements={["a"]} unwrapDisallowed={true}>
+                {parameter.type}
+              </MarkdownContent>
+            </span>
+            {parameter.optional === false && (
+              <span
+                className={clsx(
+                  "text-compact-x-small-plus uppercase",
+                  "text-medusa-fg-error"
+                )}
+              >
+                Required
+              </span>
+            )}
+            {parameter.featureFlag && (
+              <FeatureFlagNotice
+                featureFlag={parameter.featureFlag}
+                type="parameter"
+                badgeClassName="!p-0 leading-none"
+                badgeContent={
+                  <IconFlagMini className="!text-medusa-tag-green-text" />
+                }
+              />
+            )}
+            {parameter.expandable && (
+              <ExpandableNotice
+                type="method"
+                link={expandUrl || "#"}
+                badgeClassName="!p-0 leading-none"
+                badgeContent={<ArrowsPointingOutMini />}
+              />
+            )}
+          </div>
         </div>
       </DetailsSummary>
     )
   }
 
   return (
-    <div
-      className={clsx(
-        level > 1 && "bg-docs-bg-surface rounded",
-        level >= 3 && "mb-1"
+    <>
+      {parameter.children?.length > 0 && (
+        <Details
+          summary={getSummary(parameter)}
+          className={clsx(getItemClassNames())}
+          heightAnimation={true}
+          ref={ref}
+          id={parameterId ? parameterId : ""}
+        >
+          {parameter.children && (
+            <ParameterTypesItems
+              parameters={parameter.children}
+              level={level + 1}
+              expandUrl={expandUrl}
+            />
+          )}
+        </Details>
       )}
-    >
-      {parameters.map((parameter, key) => {
-        return (
-          <>
-            {parameter.children.length > 0 && (
-              <Details
-                summary={getSummary(parameter, key)}
-                key={key}
-                className={clsx(getItemClassNames())}
-                heightAnimation={true}
-              >
-                {parameter.children && (
-                  <ParameterTypesItems
-                    parameters={parameter.children}
-                    level={level + 1}
-                  />
-                )}
-              </Details>
-            )}
-            {parameter.children.length === 0 &&
-              getSummary(parameter, key, false)}
-          </>
-        )
-      })}
+      {(parameter.children?.length || 0) === 0 && getSummary(parameter, false)}
+    </>
+  )
+}
+
+type ParameterTypesItemsProps = {
+  parameters: Parameter[]
+} & CommonProps
+
+const ParameterTypesItems = ({
+  parameters,
+  ...rest
+}: ParameterTypesItemsProps) => {
+  return (
+    <div>
+      {parameters.map((parameter, key) => (
+        <ParameterTypesItem
+          parameter={parameter}
+          key={key}
+          elementKey={key}
+          {...rest}
+        />
+      ))}
     </div>
   )
 }

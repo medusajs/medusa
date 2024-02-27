@@ -1,9 +1,8 @@
 ---
-description: 'Learn how to create a service in Medusa. This guide also includes how to use services in other services, subscribers, and endpoints.'
 addHowToData: true
 ---
 
-import Troubleshooting from '@site/src/components/Troubleshooting'
+import DetailsList from '@site/src/components/DetailsList'
 import ServiceLifetimeSection from '../../troubleshooting/awilix-resolution-error/_service-lifetime.md'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -18,7 +17,7 @@ To create a service, create a TypeScript or JavaScript file in `src/services` to
 
 For example, if you want to create a service `PostService`, eventually registered as `postService`, create the file `post.ts` in `src/services` with the following content:
 
-```ts title=/src/services/post.ts
+```ts title="src/services/post.ts"
 import { TransactionBaseService } from "@medusajs/medusa"
 
 class PostService extends TransactionBaseService {
@@ -54,7 +53,7 @@ As the service extends the `TransactionBaseService` class, all resources registe
 
 So, if you want your service to use another service, add it as part of your constructor’s dependencies and set it to a field inside your service’s class:
 
-```ts title=/src/services/post.ts
+```ts title="src/services/post.ts"
 import { ProductService } from "@medusajs/medusa"
 import { PostRepository } from "../repositories/post"
 
@@ -71,7 +70,7 @@ class PostService extends TransactionBaseService {
 
 Then, you can use that service anywhere in your custom service. For example:
 
-```ts title=/src/services/post.ts
+```ts title="src/services/post.ts"
 class PostService extends TransactionBaseService {
   // ...
   async getProductCount() {
@@ -92,7 +91,7 @@ However, to actually get an instance of the repository within the service's meth
 
 For example:
 
-```ts title=/src/services/post.ts
+```ts title="src/services/post.ts"
 import { PostRepository } from "../repositories/post"
 
 class PostService extends TransactionBaseService {
@@ -132,7 +131,7 @@ The data returned by the function passed as a parameter to the `atomicPhase_` me
 
 For example, the `PostService`'s `create` method with the `atomicPhase_` method:
 
-```ts title=/src/services/post.ts
+```ts title="src/services/post.ts"
 class PostService extends TransactionBaseService {
   protected postRepository_: typeof PostRepository
   // ...
@@ -170,7 +169,7 @@ There are three lifetime types:
 
 You can set the lifetime of your service by setting the `LIFE_TIME` static property:
 
-```ts title=/src/services/post.ts
+```ts title="src/services/post.ts"
 import { TransactionBaseService } from "@medusajs/medusa"
 import { Lifetime } from "awilix"
 
@@ -189,7 +188,7 @@ Within your service, you may need to access the Medusa configuration exported fr
 
 For example:
 
-```ts title=/src/services/post.ts
+```ts title="src/services/post.ts"
 import {
   ConfigModule,
   TransactionBaseService,
@@ -218,7 +217,7 @@ export default PostService
 
 ## Pagination, Filtering, and Relations
 
-Often, your service will provide methods that retrieve a list of items, which can be used by endpoints. In these methods, it can be helpful to provide filtering and pagination utilities that can be used by endpoints or any other resources utilizing this service.
+Often, your service will provide methods that retrieve a list of items, which can be used by API Routes. In these methods, it can be helpful to provide filtering and pagination utilities that can be used by API Routes or any other resources utilizing this service.
 
 The `@medusajs/medusa` package provides the following generic types that you can use to create the signature of your method that accepts filtering and pagination parameters:
 
@@ -229,7 +228,7 @@ The `@medusajs/medusa` package also provides a `buildQuery` method that allows y
 
 So, for example, to create a method that retrieves a list of posts and the total number of posts available:
 
-```ts title=src/services/post.ts
+```ts title="src/services/post.ts"
 import { 
   FindConfig, 
   Selector, 
@@ -261,7 +260,7 @@ In addition, you can expand relations when retrieving a single item with the hel
 
 For example, to create a method that retrieves a single post:
 
-```ts title=src/services/post.ts
+```ts title="src/services/post.ts"
 import { 
   FindConfig, 
   TransactionBaseService, 
@@ -298,7 +297,7 @@ class PostService extends TransactionBaseService {
 }
 ```
 
-Then, any other resources such as endpoints or services that use this method can pass what relations to expand in the next parameter:
+Then, any other resources such as API Route or services that use this method can pass what relations to expand in the next parameter:
 
 ```ts
 await postService.retrieve(id, {
@@ -314,13 +313,13 @@ When you need to throw errors in your service methods, it's recommended to use `
 
 :::note
 
-This assumes you're handling errors in your custom endpoints as explained [here](../endpoints/create.mdx#handle-errors).
+This assumes you're handling errors in your custom API Route as explained [here](../api-routes/create.mdx#handle-errors).
 
 :::
 
 For example:
 
-```ts title=src/services/post.ts
+```ts title="src/services/post.ts"
 import { MedusaError } from "@medusajs/utils"
 
 class PostService extends TransactionBaseService {
@@ -378,9 +377,9 @@ class MyService extends TransactionBaseService {
 }
 ```
 
-### In an Endpoint
+### In an API Route
 
-To use your custom service in an endpoint, you can use `req.scope.resolve` passing it the service’s registration name:
+To use your custom service in an API Route, you can use `MedusaRequest` object's `scope.resolve` method passing it the service’s registration name:
 
 ```ts
 const postService = req.scope.resolve("postService")
@@ -392,22 +391,36 @@ res.json({
 
 ### In a Subscriber
 
-To use your custom service in a subscriber, you can have easy access to it in the subscriber’s dependencies injected to the constructor of your subscriber:
+To resolve your custom service in subscriber handler functions, use the `container` property of the handler function's parameter. The `container` has a method `resolve` which accepts the registration name of the service as a parameter.
+
+For example:
 
 ```ts
-class MySubscriber {
-  constructor({ postService, eventBusService }) {
-    this.postService = postService
-  }
+import { 
+  type SubscriberConfig, 
+  type SubscriberArgs,
+} from "@medusajs/medusa"
+
+import { PostService } from "../services/post.ts"
+
+export default async function postHandler({ 
+  data, eventName, container, pluginOptions, 
+}: SubscriberArgs<Record<string, string>>) {
+  const postService: PostService = container.resolve(
+    "postService"
+  )
+
   // ...
 }
+
+// ...
 ```
 
 ---
 
 ## Troubleshooting
 
-<Troubleshooting 
+<DetailsList 
   sections={[
     {
       title: 'AwilixResolutionError: Could Not Resolve X',
@@ -425,249 +438,249 @@ In this section, you'll find a full example of the `PostService` and `AuthorServ
 You can refer to the [Entities](../entities/create.mdx#adding-relations) documentation to learn how to create the custom entities used in this example.
 
 <Tabs groupId="files" isCodeTabs={true}>
-<TabItem value="post" label="src/services/post.ts" default>
+  <TabItem value="post" label="src/services/post.ts" default>
 
-```ts
-import { 
-  FindConfig,
-  Selector,
-  TransactionBaseService,
-  buildQuery,
-} from "@medusajs/medusa"
-import { PostRepository } from "../repositories/post"
-import { Post } from "../models/post"
-import { MedusaError } from "@medusajs/utils"
+    ```ts
+    import { 
+      FindConfig,
+      Selector,
+      TransactionBaseService,
+      buildQuery,
+    } from "@medusajs/medusa"
+    import { PostRepository } from "../repositories/post"
+    import { Post } from "../models/post"
+    import { MedusaError } from "@medusajs/utils"
 
-class PostService extends TransactionBaseService {
-  protected postRepository_: typeof PostRepository
+    class PostService extends TransactionBaseService {
+      protected postRepository_: typeof PostRepository
 
-  constructor(container) {
-    super(container)
-    this.postRepository_ = container.postRepository
-  }
+      constructor(container) {
+        super(container)
+        this.postRepository_ = container.postRepository
+      }
 
-  async listAndCount(
-    selector?: Selector<Post>,
-    config: FindConfig<Post> = {
-      skip: 0,
-      take: 20,
-      relations: [],
-  }): Promise<[Post[], number]> {
-    const postRepo = this.activeManager_.withRepository(
-      this.postRepository_
-    )
+      async listAndCount(
+        selector?: Selector<Post>,
+        config: FindConfig<Post> = {
+          skip: 0,
+          take: 20,
+          relations: [],
+      }): Promise<[Post[], number]> {
+        const postRepo = this.activeManager_.withRepository(
+          this.postRepository_
+        )
 
-    const query = buildQuery(selector, config)
+        const query = buildQuery(selector, config)
 
-    return postRepo.findAndCount(query)
-  }
-  
-  async list(
-    selector?: Selector<Post>,
-    config: FindConfig<Post> = {
-      skip: 0,
-      take: 20,
-      relations: [],
-  }): Promise<Post[]> {
-    const [posts] = await this.listAndCount(selector, config)
+        return postRepo.findAndCount(query)
+      }
+      
+      async list(
+        selector?: Selector<Post>,
+        config: FindConfig<Post> = {
+          skip: 0,
+          take: 20,
+          relations: [],
+      }): Promise<Post[]> {
+        const [posts] = await this.listAndCount(selector, config)
 
-    return posts
-  }
+        return posts
+      }
 
-  async retrieve(
-    id: string,
-    config?: FindConfig<Post>
-  ): Promise<Post> {
-    const postRepo = this.activeManager_.withRepository(
-      this.postRepository_
-    )
+      async retrieve(
+        id: string,
+        config?: FindConfig<Post>
+      ): Promise<Post> {
+        const postRepo = this.activeManager_.withRepository(
+          this.postRepository_
+        )
 
-    const query = buildQuery({
-      id,
-    }, config)
+        const query = buildQuery({
+          id,
+        }, config)
 
-    const post = await postRepo.findOne(query)
+        const post = await postRepo.findOne(query)
 
-    if (!post) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        "Post was not found"
-      )
+        if (!post) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            "Post was not found"
+          )
+        }
+
+        return post
+      }
+
+      async create(
+        data: Pick<Post, "title" | "author_id">
+      ): Promise<Post> {
+        return this.atomicPhase_(async (manager) => {
+          const postRepo = manager.withRepository(
+            this.postRepository_
+          )
+          const post = postRepo.create()
+          post.title = data.title
+          post.author_id = data.author_id
+          const result = await postRepo.save(post)
+
+          return result
+        })
+      }
+
+      async update(
+        id: string,
+        data: Omit<Partial<Post>, "id">
+      ): Promise<Post> {
+        return await this.atomicPhase_(async (manager) => {
+          const postRepo = manager.withRepository(
+            this.postRepository_
+          )
+          const post = await this.retrieve(id)
+
+          Object.assign(post, data)
+
+          return await postRepo.save(post)
+        })
+      }
+
+      async delete(id: string): Promise<void> {
+        return await this.atomicPhase_(async (manager) => {
+          const postRepo = manager.withRepository(
+            this.postRepository_
+          )
+          const post = await this.retrieve(id)
+          
+          await postRepo.remove([post])
+        })
+      }
     }
 
-    return post
-  }
+    export default PostService
+    ```
 
-  async create(
-    data: Pick<Post, "title" | "author_id">
-  ): Promise<Post> {
-    return this.atomicPhase_(async (manager) => {
-      const postRepo = manager.withRepository(
-        this.postRepository_
-      )
-      const post = postRepo.create()
-      post.title = data.title
-      post.author_id = data.author_id
-      const result = await postRepo.save(post)
+  </TabItem>
+  <TabItem value="author" label="src/services/author.ts">
 
-      return result
-    })
-  }
+    ```ts
+    import { 
+      FindConfig,
+      Selector,
+      TransactionBaseService,
+      buildQuery,
+    } from "@medusajs/medusa"
+    import { EntityManager } from "typeorm"
+    import AuthorRepository from "../repositories/author"
+    import { Author } from "../models/author"
+    import { MedusaError } from "@medusajs/utils"
 
-  async update(
-    id: string,
-    data: Omit<Partial<Post>, "id">
-  ): Promise<Post> {
-    return await this.atomicPhase_(async (manager) => {
-      const postRepo = manager.withRepository(
-        this.postRepository_
-      )
-      const post = await this.retrieve(id)
+    class AuthorService extends TransactionBaseService {
+      protected manager_: EntityManager
+      protected transactionManager_: EntityManager
+      protected authorRepository_: typeof AuthorRepository
 
-      Object.assign(post, data)
+      constructor(container) {
+        super(container)
+        this.authorRepository_ = container.authorRepository
+      }
 
-      return await postRepo.save(post)
-    })
-  }
+      async listAndCount(
+        selector?: Selector<Author>,
+        config: FindConfig<Author> = {
+          skip: 0,
+          take: 20,
+          relations: [],
+      }): Promise<[Author[], number]> {
+        const authorRepo = this.activeManager_.withRepository(
+          this.authorRepository_
+        )
 
-  async delete(id: string): Promise<void> {
-    return await this.atomicPhase_(async (manager) => {
-      const postRepo = manager.withRepository(
-        this.postRepository_
-      )
-      const post = await this.retrieve(id)
+        const query = buildQuery(selector, config)
+
+        return authorRepo.findAndCount(query)
+      }
       
-      await postRepo.remove([post])
-    })
-  }
-}
+      async list(
+        selector?: Selector<Author>,
+        config: FindConfig<Author> = {
+          skip: 0,
+          take: 20,
+          relations: [],
+      }): Promise<Author[]> {
+        const [authors] = await this.listAndCount(selector, config)
 
-export default PostService
-```
+        return authors
+      }
 
-</TabItem>
-<TabItem value="author" label="src/services/author.ts">
+      async retrieve(
+        id: string,
+        config?: FindConfig<Author>
+      ): Promise<Author> {
+        const authorRepo = this.activeManager_.withRepository(
+          this.authorRepository_
+        )
 
-```ts
-import { 
-  FindConfig,
-  Selector,
-  TransactionBaseService,
-  buildQuery,
-} from "@medusajs/medusa"
-import { EntityManager } from "typeorm"
-import AuthorRepository from "../repositories/author"
-import { Author } from "../models/author"
-import { MedusaError } from "@medusajs/utils"
+        const query = buildQuery({
+          id,
+        }, config)
 
-class AuthorService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager
-  protected authorRepository_: typeof AuthorRepository
+        const author = await authorRepo.findOne(query)
 
-  constructor(container) {
-    super(container)
-    this.authorRepository_ = container.authorRepository
-  }
+        if (!author) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            "Author was not found"
+          )
+        }
 
-  async listAndCount(
-    selector?: Selector<Author>,
-    config: FindConfig<Author> = {
-      skip: 0,
-      take: 20,
-      relations: [],
-  }): Promise<[Author[], number]> {
-    const authorRepo = this.activeManager_.withRepository(
-      this.authorRepository_
-    )
+        return 
+      }
 
-    const query = buildQuery(selector, config)
+      async create(
+        data: Pick<Author, "name" | "image">
+      ): Promise<Author> {
+        return this.atomicPhase_(async (manager) => {
+          const authorRepo = manager.withRepository(
+            this.authorRepository_
+          )
+          const post = authorRepo.create(data)
+          const result = await authorRepo.save(post)
 
-    return authorRepo.findAndCount(query)
-  }
-  
-  async list(
-    selector?: Selector<Author>,
-    config: FindConfig<Author> = {
-      skip: 0,
-      take: 20,
-      relations: [],
-  }): Promise<Author[]> {
-    const [authors] = await this.listAndCount(selector, config)
+          return result
+        })
+      }
 
-    return authors
-  }
+      async update(
+        id: string,
+        data: Omit<Partial<Author>, "id">
+      ): Promise<Author> {
+        return await this.atomicPhase_(async (manager) => {
+          const authorRepo = manager.withRepository(
+            this.authorRepository_
+          )
+          const post = await this.retrieve(id)
+          
+          Object.assign(post, data)
 
-  async retrieve(
-    id: string,
-    config?: FindConfig<Author>
-  ): Promise<Author> {
-    const authorRepo = this.activeManager_.withRepository(
-      this.authorRepository_
-    )
+          return await authorRepo.save(post)
+        })
+      }
 
-    const query = buildQuery({
-      id,
-    }, config)
-
-    const author = await authorRepo.findOne(query)
-
-    if (!author) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        "Author was not found"
-      )
+      async delete(id: string): Promise<void> {
+        return await this.atomicPhase_(async (manager) => {
+          const authorRepo = manager.withRepository(
+            this.authorRepository_
+          )
+          const post = await this.retrieve(id)
+          
+          await authorRepo.remove([post])
+        })
+      }
     }
 
-    return 
-  }
+    export default AuthorService
+    ```
 
-  async create(
-    data: Pick<Author, "name" | "image">
-  ): Promise<Author> {
-    return this.atomicPhase_(async (manager) => {
-      const authorRepo = manager.withRepository(
-        this.authorRepository_
-      )
-      const post = authorRepo.create(data)
-      const result = await authorRepo.save(post)
-
-      return result
-    })
-  }
-
-  async update(
-    id: string,
-    data: Omit<Partial<Author>, "id">
-  ): Promise<Author> {
-    return await this.atomicPhase_(async (manager) => {
-      const authorRepo = manager.withRepository(
-        this.authorRepository_
-      )
-      const post = await this.retrieve(id)
-      
-      Object.assign(post, data)
-
-      return await authorRepo.save(post)
-    })
-  }
-
-  async delete(id: string): Promise<void> {
-    return await this.atomicPhase_(async (manager) => {
-      const authorRepo = manager.withRepository(
-        this.authorRepository_
-      )
-      const post = await this.retrieve(id)
-      
-      await authorRepo.remove([post])
-    })
-  }
-}
-
-export default AuthorService
-```
-
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ---

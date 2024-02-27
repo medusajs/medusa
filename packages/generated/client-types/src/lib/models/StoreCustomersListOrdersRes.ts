@@ -15,6 +15,9 @@ import type { Region } from "./Region"
 import type { ShippingMethod } from "./ShippingMethod"
 import type { Swap } from "./Swap"
 
+/**
+ * The list of the customer's orders with pagination fields.
+ */
 export interface StoreCustomersListOrdersRes {
   /**
    * An array of orders details.

@@ -1,4 +1,5 @@
 type: object
+description: The details of the region to create.
 required:
   - name
   - currency_code

@@ -15,6 +15,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_uploads_download-url/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_uploads_download-url/post.tsx
     - lang: Shell
       label: cURL
       source:

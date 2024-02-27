@@ -56,6 +56,7 @@ export type AdminInviteDeleteRes = DeleteResponse
 
 /**
  * @schema AdminListInvitesRes
+ * description: "The list of invites."
  * type: object
  * required:
  *   - invites

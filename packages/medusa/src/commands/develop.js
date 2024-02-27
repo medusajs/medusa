@@ -43,9 +43,7 @@ export default async function ({ port, directory }) {
     process.exit(0)
   })
 
-  const babelPath = path.join(directory, "node_modules", ".bin", "babel")
-
-  execSync(`"${babelPath}" src -d dist --ignore "src/admin/**"`, {
+  execSync(`npx --no-install babel src -d dist --ignore "src/admin/**"`, {
     cwd: directory,
     stdio: ["ignore", process.stdout, process.stderr],
   })
@@ -58,12 +56,9 @@ export default async function ({ port, directory }) {
     COMMAND_INITIATED_BY: "develop",
   }
 
-  const cliPath = path.join(
-    directory,
-    "node_modules",
-    "@medusajs",
-    "medusa",
-    "dist",
+  const cliPath = path.resolve(
+    require.resolve("@medusajs/medusa"),
+    "../",
     "bin",
     "medusa.js"
   )
@@ -78,7 +73,7 @@ export default async function ({ port, directory }) {
     process.exit(1)
   })
 
-  const { cli, binExists } = resolveAdminCLI(directory)
+  const { cli, binExists } = resolveAdminCLI()
 
   if (binExists) {
     const backendUrl = `http://localhost:${port}`
@@ -110,7 +105,7 @@ export default async function ({ port, directory }) {
       child.kill("SIGINT")
 
       execSync(
-        `${babelPath} src -d dist --extensions ".ts,.js" --ignore "src/admin/**"`,
+        `npx --no-install babel src -d dist --extensions ".ts,.js" --ignore "src/admin/**"`,
         {
           cwd: directory,
           stdio: ["pipe", process.stdout, process.stderr],

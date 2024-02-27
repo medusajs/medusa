@@ -12,7 +12,7 @@ import {
  * @oas [post] /admin/order-edits/{id}
  * operationId: "PostOrderEditsOrderEdit"
  * summary: "Update an Order Edit"
- * description: "Updates an Order Edit's details."
+ * description: "Update an Order Edit's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
@@ -33,9 +33,40 @@ import {
  *       medusa.admin.orderEdits.update(orderEditId, {
  *         internal_note: "internal reason XY"
  *       })
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
- *         })
+ *       .then(({ order_edit }) => {
+ *         console.log(order_edit.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateOrderEdit } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *       }
+ *
+ *       const OrderEdit = ({ orderEditId }: Props) => {
+ *         const updateOrderEdit = useAdminUpdateOrderEdit(
+ *           orderEditId,
+ *         )
+ *
+ *         const handleUpdate = (
+ *           internalNote: string
+ *         ) => {
+ *           updateOrderEdit.mutate({
+ *             internal_note: internalNote
+ *           }, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(order_edit.internal_note)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEdit
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -102,6 +133,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostOrderEditsOrderEditReq
  * type: object
+ * description: "The details to update of the order edit."
  * properties:
  *   internal_note:
  *     description: An optional note to create or update in the order edit.

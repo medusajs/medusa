@@ -6,4 +6,4 @@ medusa.admin.notes.update(noteId, {
 })
 .then(({ note }) => {
   console.log(note.id);
-});
+})

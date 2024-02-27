@@ -69,6 +69,7 @@ export type AdminNotificationsListRes = PaginatedResponse & {
 /**
  * @schema AdminNotificationsRes
  * type: object
+ * description: "The notification's details."
  * x-expanded-relations:
  *   field: notification
  *   relations:

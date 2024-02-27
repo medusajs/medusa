@@ -1,10 +1,10 @@
-import React, { forwardRef, useEffect, useRef, useState } from "react"
 import { ProductVariant } from "@medusajs/client-types"
-import AmountField from "react-currency-input-field"
 import clsx from "clsx"
+import React, { forwardRef, useEffect, useRef, useState } from "react"
+import AmountField from "react-currency-input-field"
 
-import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 import { useAdminRegions } from "medusa-react"
+import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 
 /**
  * Return currency metadata or metadata of region's currency
@@ -197,7 +197,7 @@ function CurrencyCell(props: CurrencyCellProps) {
     <td
       onMouseOver={() => onColumnOver(currencyCode || region)}
       onMouseDown={onCellMouseDown}
-      className={clsx("relative cursor-pointer border pr-2 pl-4", {
+      className={clsx("relative h-10 cursor-pointer border pl-4 pr-2", {
         "bg-blue-100": isSelected && !isAnchor,
       })}
       style={{

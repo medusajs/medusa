@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the payment collection.
+ */
 export interface AdminPostPriceListsPriceListPriceListReq {
   /**
    * The name of the Price List

@@ -16,11 +16,31 @@ import { resolveDbType } from "../utils/db-aware-column"
 
 import { LineItem, Order, OrderItemChange, PaymentCollection } from "."
 
+/**
+ * @enum
+ * 
+ * The order edit's status.
+ */
 export enum OrderEditStatus {
+  /**
+   * The order edit is confirmed.
+   */
   CONFIRMED = "confirmed",
+  /**
+   * The order edit is declined.
+   */
   DECLINED = "declined",
+  /**
+   * The order edit is requested.
+   */
   REQUESTED = "requested",
+  /**
+   * The order edit is created.
+   */
   CREATED = "created",
+  /**
+   * The order edit is canceled.
+   */
   CANCELED = "canceled",
 }
 
@@ -96,11 +116,17 @@ export class OrderEdit extends BaseEntity {
 
   status: OrderEditStatus
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "oe")
   }
 
+  /**
+   * @apiIgnore
+   */
   @AfterLoad()
   loadStatus(): void {
     if (this.requested_at) {

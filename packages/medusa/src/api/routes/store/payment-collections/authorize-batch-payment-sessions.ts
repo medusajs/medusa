@@ -26,7 +26,39 @@ import { PaymentCollectionService } from "../../../../services"
  *       medusa.paymentCollections.authorize(paymentId)
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAuthorizePaymentSessionsBatch } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentCollectionId: string
+ *       }
+ *
+ *       const PaymentCollection = ({
+ *         paymentCollectionId
+ *       }: Props) => {
+ *         const authorizePaymentSessions = useAuthorizePaymentSessionsBatch(
+ *           paymentCollectionId
+ *         )
+ *         // ...
+ *
+ *         const handleAuthorizePayments = (paymentSessionIds: string[]) => {
+ *           authorizePaymentSessions.mutate({
+ *             session_ids: paymentSessionIds
+ *           }, {
+ *             onSuccess: ({ payment_collection }) => {
+ *               console.log(payment_collection.payment_sessions)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PaymentCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -78,6 +110,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostPaymentCollectionsBatchSessionsAuthorizeReq
  * type: object
+ * description: "The details of the payment sessions to authorize."
  * required:
  *   - session_ids
  * properties:

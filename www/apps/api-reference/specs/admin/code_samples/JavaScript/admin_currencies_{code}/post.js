@@ -6,4 +6,4 @@ medusa.admin.currencies.update(code, {
 })
 .then(({ currency }) => {
   console.log(currency.code);
-});
+})

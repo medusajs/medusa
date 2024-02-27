@@ -1,4 +1,5 @@
 type: object
+description: The details to update of the reservation.
 properties:
   location_id:
     description: The ID of the location associated with the reservation.
@@ -6,6 +7,9 @@ properties:
   quantity:
     description: The quantity to reserve.
     type: number
+  description:
+    description: The reservation's description.
+    type: string
   metadata:
     description: An optional set of key-value pairs with additional information.
     type: object

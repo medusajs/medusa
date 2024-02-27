@@ -42,6 +42,11 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_orders_{id}_swaps_{swap_id}_process-payment/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_orders_{id}_swaps_{swap_id}_process-payment/post.tsx
     - lang: Shell
       label: cURL
       source:

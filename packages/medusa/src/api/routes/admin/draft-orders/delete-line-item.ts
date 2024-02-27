@@ -14,7 +14,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [delete] /admin/draft-orders/{id}/line-items/{line_id}
  * operationId: DeleteDraftOrdersDraftOrderLineItemsItem
  * summary: Delete a Line Item
- * description: "Deletes a Line Item from a Draft Order."
+ * description: "Delete a Line Item from a Draft Order."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Draft Order.
@@ -31,7 +31,35 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.draftOrders.removeLineItem(draftOrderId, itemId)
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDraftOrderRemoveLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         draftOrderId: string
+ *       }
+ *
+ *       const DraftOrder = ({ draftOrderId }: Props) => {
+ *         const deleteLineItem = useAdminDraftOrderRemoveLineItem(
+ *           draftOrderId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = (itemId: string) => {
+ *           deleteLineItem.mutate(itemId, {
+ *             onSuccess: ({ draft_order }) => {
+ *               console.log(draft_order.cart)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DraftOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |

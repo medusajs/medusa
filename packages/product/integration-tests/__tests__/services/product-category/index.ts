@@ -1,12 +1,17 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 import { ProductCategory } from "@models"
-import { ProductCategoryRepository } from "@repositories"
 import { ProductCategoryService } from "@services"
 
 import { createProductCategories } from "../../../__fixtures__/product-category"
-import { productCategoriesData, productCategoriesRankData } from "../../../__fixtures__/product-category/data"
+import {
+  productCategoriesData,
+  productCategoriesRankData,
+} from "../../../__fixtures__/product-category/data"
 import { TestDatabase } from "../../../utils"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -20,13 +25,12 @@ describe("Product category Service", () => {
     await TestDatabase.setupDatabase()
     repositoryManager = await TestDatabase.forkManager()
 
-    const productCategoryRepository = new ProductCategoryRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new ProductCategoryService<ProductCategory>({
-      productCategoryRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("productCategoryService")
   })
 
   afterEach(async () => {
@@ -244,13 +248,11 @@ describe("Product category Service", () => {
     })
 
     it("should return category for the given id", async () => {
-      const productCategoryResults = await service.retrieve(
-        categoryOneId,
-      )
+      const productCategoryResults = await service.retrieve(categoryOneId)
 
       expect(productCategoryResults).toEqual(
         expect.objectContaining({
-          id:  categoryOneId
+          id: categoryOneId,
         })
       )
     })
@@ -264,7 +266,9 @@ describe("Product category Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('ProductCategory with id: does-not-exist was not found')
+      expect(error.message).toEqual(
+        "ProductCategory with id: does-not-exist was not found"
+      )
     })
 
     it("should throw an error when an id is not provided", async () => {
@@ -280,44 +284,38 @@ describe("Product category Service", () => {
     })
 
     it("should return category based on config select param", async () => {
-      const productCategoryResults = await service.retrieve(
-        categoryOneId,
-        {
-          select: ["id", "parent_category_id"],
-        }
-      )
+      const productCategoryResults = await service.retrieve(categoryOneId, {
+        select: ["id", "parent_category_id"],
+      })
 
       expect(productCategoryResults).toEqual(
         expect.objectContaining({
-          id:  categoryOneId,
+          id: categoryOneId,
           parent_category_id: "category-0",
         })
       )
     })
 
     it("should return category based on config relation param", async () => {
-      const productCategoryResults = await service.retrieve(
-        categoryOneId,
-        {
-          select: ["id", "parent_category_id"],
-          relations: ["parent_category"]
-        }
-      )
+      const productCategoryResults = await service.retrieve(categoryOneId, {
+        select: ["id", "parent_category_id"],
+        relations: ["parent_category"],
+      })
 
       expect(productCategoryResults).toEqual(
         expect.objectContaining({
-          id:  categoryOneId,
+          id: categoryOneId,
           category_children: [
             expect.objectContaining({
-              id: 'category-1-a',
+              id: "category-1-a",
             }),
             expect.objectContaining({
-              id: 'category-1-b',
-            })
+              id: "category-1-b",
+            }),
           ],
           parent_category: expect.objectContaining({
-            id: "category-0"
-          })
+            id: "category-0",
+          }),
         })
       )
     })
@@ -352,7 +350,7 @@ describe("Product category Service", () => {
         {},
         {
           take: 1,
-          skip: 1
+          skip: 1,
         }
       )
 
@@ -377,7 +375,7 @@ describe("Product category Service", () => {
       expect(productCategoryResults[0]).toEqual([
         expect.objectContaining({
           id: "category-0",
-          parent_category: null
+          parent_category: null,
         }),
         expect.objectContaining({
           id: "category-1",
@@ -568,11 +566,14 @@ describe("Product category Service", () => {
         parent_category_id: null,
       })
 
-      const [productCategory] = await service.list({
-        name: "New Category"
-      }, {
-        select: ["name", "rank"]
-      })
+      const [productCategory] = await service.list(
+        {
+          name: "New Category",
+        },
+        {
+          select: ["name", "rank"],
+        }
+      )
 
       expect(productCategory).toEqual(
         expect.objectContaining({
@@ -586,7 +587,7 @@ describe("Product category Service", () => {
       await service.create({
         name: "New Category",
         parent_category_id: null,
-        rank: 0
+        rank: 0,
       })
 
       await service.create({
@@ -594,11 +595,14 @@ describe("Product category Service", () => {
         parent_category_id: null,
       })
 
-      const [productCategoryNew] = await service.list({
-        name: "New Category 2"
-      }, {
-        select: ["name", "rank"]
-      })
+      const [productCategoryNew] = await service.list(
+        {
+          name: "New Category 2",
+        },
+        {
+          select: ["name", "rank"],
+        }
+      )
 
       expect(productCategoryNew).toEqual(
         expect.objectContaining({
@@ -612,11 +616,14 @@ describe("Product category Service", () => {
         parent_category_id: productCategoryNew.id,
       })
 
-      const [productCategoryWithParent] = await service.list({
-        name: "New Category 2.1"
-      }, {
-        select: ["name", "rank", "parent_category_id"]
-      })
+      const [productCategoryWithParent] = await service.list(
+        {
+          name: "New Category 2.1",
+        },
+        {
+          select: ["name", "rank", "parent_category_id"],
+        }
+      )
 
       expect(productCategoryWithParent).toEqual(
         expect.objectContaining({
@@ -655,11 +662,11 @@ describe("Product category Service", () => {
 
     it("should update the name of the category successfully", async () => {
       await service.update(productCategoryZero.id, {
-        name: "New Category"
+        name: "New Category",
       })
 
       const productCategory = await service.retrieve(productCategoryZero.id, {
-        select: ["name"]
+        select: ["name"],
       })
 
       expect(productCategory.name).toEqual("New Category")
@@ -670,13 +677,15 @@ describe("Product category Service", () => {
 
       try {
         await service.update("does-not-exist", {
-          name: "New Category"
+          name: "New Category",
         })
       } catch (e) {
         error = e
       }
 
-      expect(error.message).toEqual(`ProductCategory not found ({ id: 'does-not-exist' })`)
+      expect(error.message).toEqual(
+        `ProductCategory not found ({ id: 'does-not-exist' })`
+      )
     })
 
     it("should reorder rank successfully in the same parent", async () => {
@@ -684,11 +693,14 @@ describe("Product category Service", () => {
         rank: 0,
       })
 
-      const productCategories = await service.list({
-        parent_category_id: null
-      }, {
-        select: ["name", "rank"]
-      })
+      const productCategories = await service.list(
+        {
+          parent_category_id: null,
+        },
+        {
+          select: ["name", "rank"],
+        }
+      )
 
       expect(productCategories).toEqual(
         expect.arrayContaining([
@@ -703,7 +715,7 @@ describe("Product category Service", () => {
           expect.objectContaining({
             id: productCategoryOne.id,
             rank: "2",
-          })
+          }),
         ])
       )
     })
@@ -711,14 +723,17 @@ describe("Product category Service", () => {
     it("should reorder rank successfully when changing parent", async () => {
       await service.update(productCategoryTwo.id, {
         rank: 0,
-        parent_category_id: productCategoryZero.id
+        parent_category_id: productCategoryZero.id,
       })
 
-      const productCategories = await service.list({
-        parent_category_id: productCategoryZero.id
-      }, {
-        select: ["name", "rank"]
-      })
+      const productCategories = await service.list(
+        {
+          parent_category_id: productCategoryZero.id,
+        },
+        {
+          select: ["name", "rank"],
+        }
+      )
 
       expect(productCategories).toEqual(
         expect.arrayContaining([
@@ -737,7 +752,7 @@ describe("Product category Service", () => {
           expect.objectContaining({
             id: productCategoryZeroTwo.id,
             rank: "3",
-          })
+          }),
         ])
       )
     })
@@ -745,14 +760,17 @@ describe("Product category Service", () => {
     it("should reorder rank successfully when changing parent and in first position", async () => {
       await service.update(productCategoryTwo.id, {
         rank: 0,
-        parent_category_id: productCategoryZero.id
+        parent_category_id: productCategoryZero.id,
       })
 
-      const productCategories = await service.list({
-        parent_category_id: productCategoryZero.id
-      }, {
-        select: ["name", "rank"]
-      })
+      const productCategories = await service.list(
+        {
+          parent_category_id: productCategoryZero.id,
+        },
+        {
+          select: ["name", "rank"],
+        }
+      )
 
       expect(productCategories).toEqual(
         expect.arrayContaining([
@@ -771,7 +789,7 @@ describe("Product category Service", () => {
           expect.objectContaining({
             id: productCategoryZeroTwo.id,
             rank: "3",
-          })
+          }),
         ])
       )
     })
@@ -805,7 +823,9 @@ describe("Product category Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual(`ProductCategory not found ({ id: 'does-not-exist' })`)
+      expect(error.message).toEqual(
+        `ProductCategory not found ({ id: 'does-not-exist' })`
+      )
     })
 
     it("should throw an error when it has children", async () => {
@@ -817,17 +837,22 @@ describe("Product category Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual(`Deleting ProductCategory (category-0-0) with category children is not allowed`)
+      expect(error.message).toEqual(
+        `Deleting ProductCategory (category-0-0) with category children is not allowed`
+      )
     })
 
     it("should reorder siblings rank successfully on deleting", async () => {
       await service.delete(productCategoryOne.id)
 
-      const productCategories = await service.list({
-        parent_category_id: null
-      }, {
-        select: ["id", "rank"]
-      })
+      const productCategories = await service.list(
+        {
+          parent_category_id: null,
+        },
+        {
+          select: ["id", "rank"],
+        }
+      )
 
       expect(productCategories).toEqual(
         expect.arrayContaining([
@@ -838,7 +863,7 @@ describe("Product category Service", () => {
           expect.objectContaining({
             id: productCategoryTwo.id,
             rank: "1",
-          })
+          }),
         ])
       )
     })

@@ -23,6 +23,9 @@ export class ShippingMethodTaxLine extends TaxLine {
   @JoinColumn({ name: "shipping_method_id" })
   shipping_method: ShippingMethod
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "smtl")

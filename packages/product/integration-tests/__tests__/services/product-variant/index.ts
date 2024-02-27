@@ -1,6 +1,5 @@
 import { TestDatabase } from "../../../utils"
-import { ProductService, ProductVariantService } from "@services"
-import { ProductRepository, ProductVariantRepository } from "@repositories"
+import { ProductVariantService } from "@services"
 import { Product, ProductTag, ProductVariant } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Collection } from "@mikro-orm/core"
@@ -13,6 +12,9 @@ import {
 } from "../../../__fixtures__/product"
 import { productsData, variantsData } from "../../../__fixtures__/product/data"
 import { buildProductVariantOnlyData } from "../../../__fixtures__/variant/data/create-variant"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 describe("ProductVariant Service", () => {
   let service: ProductVariantService
@@ -27,20 +29,12 @@ describe("ProductVariant Service", () => {
     await TestDatabase.setupDatabase()
     repositoryManager = await TestDatabase.forkManager()
 
-    const productVariantRepository = new ProductVariantRepository({
-      manager: repositoryManager,
-    })
-    const productRepository = new ProductRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    const productService = new ProductService({
-      productRepository,
-    })
-    service = new ProductVariantService({
-      productService,
-      productVariantRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("productVariantService")
   })
 
   afterEach(async () => {
@@ -326,7 +320,7 @@ describe("ProductVariant Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"productVariantId" must be defined')
+      expect(error.message).toEqual("productVariant - id must be defined")
     })
   })
 })

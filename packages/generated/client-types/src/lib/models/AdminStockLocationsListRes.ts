@@ -5,7 +5,13 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { StockLocationExpandedDTO } from "./StockLocationExpandedDTO"
 
+/**
+ * The list of stock locations with pagination fields.
+ */
 export interface AdminStockLocationsListRes {
+  /**
+   * The list of stock locations.
+   */
   stock_locations: Array<StockLocationExpandedDTO>
   /**
    * The total number of items available

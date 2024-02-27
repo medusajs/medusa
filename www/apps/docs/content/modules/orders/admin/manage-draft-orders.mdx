@@ -34,7 +34,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.mdx) installed and have [created an instance of the client](../../../js-client/overview.mdx#configuration).
 
 ### Medusa React
 
@@ -52,72 +52,72 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 ## List Draft Orders
 
-You can list draft orders by sending a request to the [List Draft Orders endpoint](https://docs.medusajs.com/api/admin#draft-orders_getdraftorders):
+You can list draft orders by sending a request to the [List Draft Orders API Route](https://docs.medusajs.com/api/admin#draft-orders_getdraftorders):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.draftOrders.list()
-.then(({ draft_orders, limit, offset, count }) => {
-  console.log(draft_orders.length)
-})
-```
+    ```ts
+    medusa.admin.draftOrders.list()
+    .then(({ draft_orders, limit, offset, count }) => {
+      console.log(draft_orders.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminDraftOrders } from "medusa-react"
+    ```tsx
+    import { useAdminDraftOrders } from "medusa-react"
 
-const DraftOrders = () => {
-  const { draft_orders, isLoading } = useAdminDraftOrders()
+    const DraftOrders = () => {
+      const { draft_orders, isLoading } = useAdminDraftOrders()
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {draft_orders && !draft_orders.length && (
-        <span>No Draft Orders</span>
-      )}
-      {draft_orders && draft_orders.length > 0 && (
-        <ul>
-          {draft_orders.map((order) => (
-            <li key={order.id}>{order.display_id}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {draft_orders && !draft_orders.length && (
+            <span>No Draft Orders</span>
+          )}
+          {draft_orders && draft_orders.length > 0 && (
+            <ul>
+              {draft_orders.map((order) => (
+                <li key={order.id}>{order.display_id}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-export default DraftOrders
-```
+    export default DraftOrders
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/draft-orders`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ draft_orders, limit, offset, count }) => {
-  console.log(draft_orders.length)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/draft-orders`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ draft_orders, limit, offset, count }) => {
+      console.log(draft_orders.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/draft-orders' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/draft-orders' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint does not require any path or query parameters. You can pass search or pagination query parameters as explained in the [API reference](https://docs.medusajs.com/api/admin#draft-orders_getdraftorders).
+This API Route doesn't require any path or query parameters. You can pass search or pagination query parameters as explained in the [API reference](https://docs.medusajs.com/api/admin#draft-orders_getdraftorders).
 
 The request returns an array of draft order objects along with [pagination parameters](https://docs.medusajs.com/api/admin#pagination).
 
@@ -125,53 +125,13 @@ The request returns an array of draft order objects along with [pagination param
 
 ## Create a Draft Order
 
-You can create a draft order by sending a request to the [Create Draft Order endpoint](https://docs.medusajs.com/api/admin#draft-orders_postdraftorders):
+You can create a draft order by sending a request to the [Create Draft Order API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftorders):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.draftOrders.create({
-  email,
-  region_id,
-  items: [
-    {
-      // defined product
-      quantity: 1,
-      variant_id,
-    },
-    {
-      // custom product
-      quantity: 1,
-      unit_price: 1000,
-      title: "Custom Product",
-    },
-  ],
-  shipping_methods: [
-    {
-      option_id,
-      // for custom shipping price
-      price,
-    },
-  ],
-})
-.then(({ draft_order }) => {
-  console.log(draft_order.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCreateDraftOrder } from "medusa-react"
-
-const CreateDraftOrder = () => {
-  const createDraftOrder = useAdminCreateDraftOrder()
-  // ...
-
-  const handleCreate = () => {
-    createDraftOrder.mutate({
+    ```ts
+    medusa.admin.draftOrders.create({
       email,
       region_id,
       items: [
@@ -195,89 +155,123 @@ const CreateDraftOrder = () => {
         },
       ],
     })
-  }
+    .then(({ draft_order }) => {
+      console.log(draft_order.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default CreateDraftOrder
-```
+    ```tsx
+    import { useAdminCreateDraftOrder } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
-
-```ts
-fetch(`<BACKEND_URL>/admin/draft-orders`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    email,
-    region_id,
-    items: [
-      {
-        // defined product
-        quantity: 1,
-        variant_id,
-      },
-      {
-        // custom product
-        quantity: 1,
-        unit_price: 1000,
-        title: "Custom Product",
-      },
-    ],
-    shipping_methods: [
-      {
-        option_id,
-        // for custom shipping price
-        price,
-      },
-    ],
-  }),
-})
-.then((response) => response.json())
-.then(({ draft_order }) => {
-  console.log(draft_order.id)
-})
-```
-
-</TabItem>
-<TabItem value="curl" label="cURL">
-
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/draft-orders' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-  "email": "<EMAIL>",
-  "region_id": "<REGION_ID>",
-  "items": [
-    {
-      "quantity": 1,
-      "variant_id": "<VARIANT_ID>"
-    },
-    {
-      "quantity": 1,
-      "unit_price": 1000,
-      "title": "Custom Product"
+    type DraftOrderData = {
+      email: string
+      region_id: string
+      items: {
+        quantity: number,
+        variant_id: string
+      }[]
+      shipping_methods: {
+        option_id: string
+        price: number
+      }[]
     }
-  ],
-  "shipping_methods": [
-    {
-      "option_id": "<OPTION_ID>",
-      "price": 1000
-    }
-  ]
-}'
-```
 
-</TabItem>
+    const CreateDraftOrder = () => {
+      const createDraftOrder = useAdminCreateDraftOrder()
+      // ...
+
+      const handleCreate = (data: DraftOrderData) => {
+        createDraftOrder.mutate(data, {
+          onSuccess: ({ draft_order }) => {
+            console.log(draft_order.id)
+          }
+        })
+      }
+
+      // ...
+    }
+
+    export default CreateDraftOrder
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/draft-orders`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        region_id,
+        items: [
+          {
+            // defined product
+            quantity: 1,
+            variant_id,
+          },
+          {
+            // custom product
+            quantity: 1,
+            unit_price: 1000,
+            title: "Custom Product",
+          },
+        ],
+        shipping_methods: [
+          {
+            option_id,
+            // for custom shipping price
+            price,
+          },
+        ],
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ draft_order }) => {
+      console.log(draft_order.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/draft-orders' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "email": "<EMAIL>",
+      "region_id": "<REGION_ID>",
+      "items": [
+        {
+          "quantity": 1,
+          "variant_id": "<VARIANT_ID>"
+        },
+        {
+          "quantity": 1,
+          "unit_price": 1000,
+          "title": "Custom Product"
+        }
+      ],
+      "shipping_methods": [
+        {
+          "option_id": "<OPTION_ID>",
+          "price": 1000
+        }
+      ]
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the following request body parameters:
+This API Route requires the following request body parameters:
 
 - `email`: a string indicating the email of the customer to associate this draft order with.
 - `region_id`: a string indicating the ID of the region this draft order belongs to.
@@ -298,67 +292,71 @@ The request returns the created draft order as an object.
 
 ## Retrieve Draft Order
 
-You can retrieve a draft order by sending a request to the [Get Draft Order endpoint](https://docs.medusajs.com/api/admin#draft-orders_getdraftordersdraftorder):
+You can retrieve a draft order by sending a request to the [Get Draft Order API Route](https://docs.medusajs.com/api/admin#draft-orders_getdraftordersdraftorder):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.draftOrders.retrieve(draftOrderId)
-.then(({ draft_order }) => {
-  console.log(draft_order.id)
-})
-```
+    ```ts
+    medusa.admin.draftOrders.retrieve(draftOrderId)
+    .then(({ draft_order }) => {
+      console.log(draft_order.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminDraftOrder } from "medusa-react"
+    ```tsx
+    import { useAdminDraftOrder } from "medusa-react"
 
-const DraftOrder = () => {
-  const { 
-    draft_order, 
-    isLoading, 
-  } = useAdminDraftOrder(draftOrderId)
- 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {draft_order && <span>{draft_order.display_id}</span>}
-      
-    </div>
-  )
-}
+    type Props = {
+      draftOrderId: string
+    }
 
-export default DraftOrder
-```
+    const DraftOrder = ({ draftOrderId }: Props) => {
+      const { 
+        draft_order, 
+        isLoading, 
+      } = useAdminDraftOrder(draftOrderId)
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {draft_order && <span>{draft_order.display_id}</span>}
+          
+        </div>
+      )
+    }
 
-```ts
-fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ draft_order }) => {
-  console.log(draft_order.id)
-})
-```
+    export default DraftOrder
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ draft_order }) => {
+      console.log(draft_order.id)
+    })
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the draft order’s ID as a path parameter.
+This API Route requires the draft order’s ID as a path parameter.
 
 The request returns the draft order as an object.
 
@@ -366,80 +364,88 @@ The request returns the draft order as an object.
 
 ## Update Draft Order
 
-You can update a draft order by sending a request to the [Update Draft Order endpoint](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorder):
+You can update a draft order by sending a request to the [Update Draft Order API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorder):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.draftOrders.update(draftOrderId, {
-  email: "user@example.com",
-})
-.then(({ draft_order }) => {
-  console.log(draft_order.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminUpdateDraftOrder } from "medusa-react"
-
-const UpdateDraftOrder = () => {
-  const updateDraftOrder = useAdminUpdateDraftOrder(
-    draftOrderId
-  )
-  // ...
-
-  const handleUpdate = () => {
-    updateDraftOrder.mutate({
+    ```ts
+    medusa.admin.draftOrders.update(draftOrderId, {
       email: "user@example.com",
     })
-  }
+    .then(({ draft_order }) => {
+      console.log(draft_order.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default UpdateDraftOrder
-```
+    ```tsx
+    import { useAdminUpdateDraftOrder } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    type Props = {
+      draftOrderId: string
+    }
 
-```ts
-fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    email: "user@example.com",
-  }),
-})
-.then((response) => response.json())
-.then(({ draft_order }) => {
-  console.log(draft_order.id)
-})
-```
+    const DraftOrder = ({ draftOrderId }: Props) => {
+      const updateDraftOrder = useAdminUpdateDraftOrder(
+        draftOrderId
+      )
+      // ...
+    
+      const handleUpdate = (email: string) => {
+        updateDraftOrder.mutate({
+          email,
+        }, {
+          onSuccess: ({ draft_order }) => {
+            console.log(draft_order.id)
+          }
+        })
+      }
+    
+      // ...
+    }
+    
+    export default DraftOrder
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "email": "user@example.com"
-}'
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: "user@example.com",
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ draft_order }) => {
+      console.log(draft_order.id)
+    })
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "email": "user@example.com"
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the draft order’s ID as a path parameter.
+This API Route requires the draft order’s ID as a path parameter.
 
 In the request body, you can pass any of the draft order’s fields to update. In the example above, you update the `email` field. Check out the [API reference](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorder) to learn about other accepted request body parameters.
 
@@ -451,82 +457,90 @@ The request returns the updated draft order as an object.
 
 ### Add Line Items
 
-You can add line items to a draft order by sending a request to the [Create Line Items endpoint](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderlineitems):
+You can add line items to a draft order by sending a request to the [Create Line Items API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderlineitems):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.draftOrders.addLineItem(draftOrderId, {
-  quantity: 1,
-})
-.then(({ draft_order }) => {
-  console.log(draft_order.cart.items)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminDraftOrderAddLineItem } from "medusa-react"
-
-const AddLineItem = () => {
-  const addLineItem = useAdminDraftOrderAddLineItem(
-    draftOrderId
-  )
-  // ...
-
-  const handleAdd = () => {
-    addLineItem.mutate({
+    ```ts
+    medusa.admin.draftOrders.addLineItem(draftOrderId, {
       quantity: 1,
     })
-  }
+    .then(({ draft_order }) => {
+      console.log(draft_order.cart.items)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default AddLineItem
-```
+    ```tsx
+    import { useAdminDraftOrderAddLineItem } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    type Props = {
+      draftOrderId: string
+    }
+
+    const DraftOrder = ({ draftOrderId }: Props) => {
+      const addLineItem = useAdminDraftOrderAddLineItem(
+        draftOrderId
+      )
+      // ...
+
+      const handleAdd = (quantity: number) => {
+        addLineItem.mutate({
+          quantity,
+        }, {
+          onSuccess: ({ draft_order }) => {
+            console.log(draft_order.cart)
+          }
+        })
+      }
+
+      // ...
+    }
+
+    export default DraftOrder
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items`, {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      quantity: 1,
-    }),
-  })
-  .then((response) => response.json())
-  .then(({ draft_order }) => {
-    console.log(draft_order.cart.items)
-  })
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items`, {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          quantity: 1,
+        }),
+      })
+      .then((response) => response.json())
+      .then(({ draft_order }) => {
+        console.log(draft_order.cart.items)
+      })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/line-items' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "quantity": 1
-}'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/line-items' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "quantity": 1
+    }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint requires the ID of the draft order as a path parameter.
+This API Route requires the ID of the draft order as a path parameter.
 
 In the request body, it’s required to pass the `quantity` parameter, which is a number indicating the quantity of the item in the draft order. You can also pass other optional parameters based on the type of line item you’re adding.
 
@@ -541,83 +555,90 @@ The request returns the updated draft order as an object. You can access the dra
 
 ### Update Line Item
 
-You can update a line item by sending a request to the [Update Line Item endpoint](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderlineitemsitem):
+You can update a line item by sending a request to the [Update Line Item API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderlineitemsitem):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.draftOrders.updateLineItem(draftOrderId, itemId, {
-  quantity: 1,
-})
-.then(({ draft_order }) => {
-  console.log(draft_order.cart.items)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminDraftOrderUpdateLineItem } from "medusa-react"
-
-const UpdateLineItem = () => {
-  const updateLineItem = useAdminDraftOrderUpdateLineItem(
-    draftOrderId
-  )
-  // ...
-
-  const handleUpdate = () => {
-    updateLineItem.mutate({
-      item_id,
+    ```ts
+    medusa.admin.draftOrders.updateLineItem(draftOrderId, itemId, {
       quantity: 1,
     })
-  }
+    .then(({ draft_order }) => {
+      console.log(draft_order.cart.items)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default UpdateLineItem
-```
+    ```tsx
+    import { useAdminDraftOrderUpdateLineItem } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    type Props = {
+      draftOrderId: string
+    }
+
+    const DraftOrder = ({ draftOrderId }: Props) => {
+      const updateLineItem = useAdminDraftOrderUpdateLineItem(
+        draftOrderId
+      )
+      // ...
+
+      const handleUpdate = (
+        itemId: string,
+        quantity: number
+      ) => {
+        updateLineItem.mutate({
+          item_id: itemId,
+          quantity,
+        })
+      }
+
+      // ...
+    }
+
+    export default DraftOrder
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items/${itemId}`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    quantity: 1,
-  }),
-})
-.then((response) => response.json())
-.then(({ draft_order }) => {
-  console.log(draft_order.cart.items)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items/${itemId}`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        quantity: 1,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ draft_order }) => {
+      console.log(draft_order.cart.items)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/line-items/<ITEM_ID>' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "quantity": 1
-}'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/line-items/<ITEM_ID>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "quantity": 1
+    }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint requires the draft order and line item’s IDs as path parameters.
+This API Route requires the draft order and line item’s IDs as path parameters.
 
 In the request body, you can pass any of the line item’s fields as parameters to update them. In the example above, you pass the `quantity` parameter to update the quantity of the item. Check out the [API reference](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderlineitemsitem) for a full list of request body parameters.
 
@@ -625,68 +646,72 @@ The request returns the updated draft order as an object. You can access the dra
 
 ### Delete Line Item
 
-You can delete a line item by sending a request to the [Delete Line Item endpoint](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersdraftorderlineitemsitem):
+You can delete a line item by sending a request to the [Delete Line Item API Route](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersdraftorderlineitemsitem):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.draftOrders.removeLineItem(draftOrderId, itemId)
-.then(({ draft_order }) => {
-  console.log(draft_order.cart.items)
-})
-```
+    ```ts
+    medusa.admin.draftOrders.removeLineItem(draftOrderId, itemId)
+    .then(({ draft_order }) => {
+      console.log(draft_order.cart.items)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminDraftOrderRemoveLineItem } from "medusa-react"
+    ```tsx
+    import { useAdminDraftOrderRemoveLineItem } from "medusa-react"
 
-const DeleteLineItem = () => {
-  const deleteLineItem = useAdminDraftOrderRemoveLineItem(
-    draftOrderId
-  )
-  // ...
+    type Props = {
+      draftOrderId: string
+    }
 
-  const handleDelete = () => {
-    deleteLineItem.mutate(itemId)
-  }
+    const DraftOrder = ({ draftOrderId }: Props) => {
+      const deleteLineItem = useAdminDraftOrderRemoveLineItem(
+        draftOrderId
+      )
+      // ...
 
-  // ...
-}
+      const handleDelete = (itemId: string) => {
+        deleteLineItem.mutate(itemId)
+      }
 
-export default DeleteLineItem
-```
+      // ...
+    }
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    export default DraftOrder
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items/${itemId}`, {
-  credentials: "include",
-  method: "DELETE",
-})
-.then((response) => response.json())
-.then(({ draft_order }) => {
-  console.log(draft_order.cart.items)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items/${itemId}`, {
+      credentials: "include",
+      method: "DELETE",
+    })
+    .then((response) => response.json())
+    .then(({ draft_order }) => {
+      console.log(draft_order.cart.items)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/line-items/<ITEM_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/line-items/<ITEM_ID>' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint requires the draft order and line item’s IDs as path parameters.
+This API Route requires the draft order and line item’s IDs as path parameters.
 
 The request returns the updated draft order as an object. You can access the draft order’s items by accessing the `carts` property in the draft item, then the `items` property. The `items` property is an array of line item objects.
 
@@ -696,66 +721,74 @@ The request returns the updated draft order as an object. You can access the dra
 
 Registering the draft order’s payment leads to authorizing and capturing the payment using the `system` payment method. This would complete the draft order and create an order from it.
 
-You can register the draft order payment by sending a request to the [Register Draft Order Payment endpoint](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderregisterpayment):
+You can register the draft order payment by sending a request to the [Register Draft Order Payment API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderregisterpayment):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.draftOrders.markPaid(draftOrderId)
-.then(({ order }) => {
-  console.log(order.id)
-})
-```
+    ```ts
+    medusa.admin.draftOrders.markPaid(draftOrderId)
+    .then(({ order }) => {
+      console.log(order.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminDraftOrderRegisterPayment } from "medusa-react"
+    ```tsx
+    import { useAdminDraftOrderRegisterPayment } from "medusa-react"
 
-const RegisterPayment = () => {
-  const registerPayment = useAdminDraftOrderRegisterPayment(
-    draftOrderId
-  )
-  // ...
+    type Props = {
+      draftOrderId: string
+    }
 
-  const handlePayment = () => {
-    registerPayment.mutate()
-  }
+    const DraftOrder = ({ draftOrderId }: Props) => {
+      const registerPayment = useAdminDraftOrderRegisterPayment(
+        draftOrderId
+      )
+      // ...
 
-  // ...
-}
+      const handlePayment = () => {
+        registerPayment.mutate(void 0, {
+          onSuccess: ({ order }) => {
+            console.log(order.id)
+          }
+        })
+      }
 
-export default RegisterPayment
-```
+      // ...
+    }
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    export default DraftOrder
+    ```
 
-```ts
-fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/pay`, {
-  credentials: "include",
-  method: "POST",
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.id)
-})
-```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    ```ts
+    fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/pay`, {
+      credentials: "include",
+      method: "POST",
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.id)
+    })
+    ```
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/pay' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-</TabItem>
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/pay' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the draft order’s ID as a path parameter.
+This API Route requires the draft order’s ID as a path parameter.
 
 The request returns the order created from the draft order as an object.
 
@@ -763,66 +796,74 @@ The request returns the order created from the draft order as an object.
 
 ## Delete a Draft Order
 
-You can delete a draft order by sending a request to the [Delete Draft Order endpoint](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersdraftorder):
+You can delete a draft order by sending a request to the [Delete Draft Order API Route](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersdraftorder):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.draftOrders.delete(draftOrderId)
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+    ```ts
+    medusa.admin.draftOrders.delete(draftOrderId)
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminDeleteDraftOrder } from "medusa-react"
+    ```tsx
+    import { useAdminDeleteDraftOrder } from "medusa-react"
 
-const DeleteDraftOrder = () => {
-  const deleteDraftOrder = useAdminDeleteDraftOrder(
-    draftOrderId
-  )
-  // ...
+    type Props = {
+      draftOrderId: string
+    }
 
-  const handleDelete = () => {
-    deleteDraftOrder.mutate()
-  }
+    const DraftOrder = ({ draftOrderId }: Props) => {
+      const deleteDraftOrder = useAdminDeleteDraftOrder(
+        draftOrderId
+      )
+      // ...
 
-  // ...
-}
+      const handleDelete = () => {
+        deleteDraftOrder.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
+      }
 
-export default DeleteDraftOrder
-```
+      // ...
+    }
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    export default DraftOrder
+    ```
 
-```ts
-fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}`, {
-  credentials: "include",
-  method: "DELETE",
-})
-.then((response) => response.json())
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    ```ts
+    fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}`, {
+      credentials: "include",
+      method: "DELETE",
+    })
+    .then((response) => response.json())
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-</TabItem>
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the draft order’s ID as a path parameter.
+This API Route requires the draft order’s ID as a path parameter.
 
 The request returns the following fields:
 

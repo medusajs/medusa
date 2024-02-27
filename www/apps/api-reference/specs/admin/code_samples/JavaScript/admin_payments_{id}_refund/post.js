@@ -8,4 +8,4 @@ medusa.admin.payments.refundPayment(paymentId, {
 })
 .then(({ payment }) => {
   console.log(payment.id);
-});
+})

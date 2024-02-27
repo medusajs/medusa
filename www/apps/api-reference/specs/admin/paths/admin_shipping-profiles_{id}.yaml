@@ -17,6 +17,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_shipping-profiles_{id}/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_shipping-profiles_{id}/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -69,6 +73,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_shipping-profiles_{id}/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_shipping-profiles_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -117,6 +125,10 @@ delete:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_shipping-profiles_{id}/delete.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_shipping-profiles_{id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

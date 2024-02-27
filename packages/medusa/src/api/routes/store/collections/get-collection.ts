@@ -18,7 +18,29 @@ import ProductCollectionService from "../../../../services/product-collection"
  *       medusa.collections.retrieve(collectionId)
  *       .then(({ collection }) => {
  *         console.log(collection.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         collectionId: string
+ *       }
+ *
+ *       const ProductCollection = ({ collectionId }: Props) => {
+ *         const { collection, isLoading } = useCollection(collectionId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {collection && <span>{collection.title}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ProductCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |

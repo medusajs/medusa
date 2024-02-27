@@ -1,4 +1,5 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import { FlagRouter } from "@medusajs/utils"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
 import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
@@ -151,6 +152,7 @@ describe("OrderService", () => {
       eventBusService,
       cartService,
       productVariantInventoryService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -364,6 +366,7 @@ describe("OrderService", () => {
         subtotal: 100,
         total: 100,
         discount_total: 0,
+        gift_card_total: 100,
       }
 
       orderService.cartService_.retrieveWithTotals = () => {
@@ -1353,6 +1356,7 @@ describe("OrderService", () => {
             gift_card_total: 0,
             id: IdMap.getId("order"),
             items: [],
+            item_tax_total: 0,
             paid_total: 0,
             raw_discount_total: 0,
             refundable_amount: 0,
@@ -1365,6 +1369,7 @@ describe("OrderService", () => {
               },
             ],
             shipping_total: 0,
+            shipping_tax_total: 0,
             subtotal: 0,
             tax_total: 0,
             total: 0,
@@ -1393,6 +1398,7 @@ describe("OrderService", () => {
             gift_card_total: 0,
             id: IdMap.getId("order"),
             items: [],
+            item_tax_total: 0,
             paid_total: 0,
             raw_discount_total: 0,
             refundable_amount: 0,
@@ -1405,6 +1411,7 @@ describe("OrderService", () => {
               },
             ],
             shipping_total: 0,
+            shipping_tax_total: 0,
             subtotal: 0,
             tax_total: 0,
             total: 0,

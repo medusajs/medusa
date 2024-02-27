@@ -24,4 +24,4 @@ class CustomService extends TransactionBaseService {
 export default CustomService
 ```
 
-You can learn more about this in the [Middlewares documentation](../../development/endpoints/add-middleware.mdx).
+You can learn more about this in the [Middlewares documentation](../../development/api-routes/add-middleware.mdx).

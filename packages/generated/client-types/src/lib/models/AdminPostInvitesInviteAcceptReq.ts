@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the invite to be accepted.
+ */
 export interface AdminPostInvitesInviteAcceptReq {
   /**
    * The token of the invite to accept. This is a unique token generated when the invite was created or resent.

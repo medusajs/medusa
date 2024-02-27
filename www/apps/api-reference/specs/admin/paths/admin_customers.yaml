@@ -47,6 +47,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_customers/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_customers/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -79,7 +83,7 @@ get:
 post:
   operationId: PostCustomers
   summary: Create a Customer
-  description: Allow admins to create a customer.
+  description: Create a customer as an admin.
   x-authenticated: true
   requestBody:
     content:
@@ -93,6 +97,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_customers/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_customers/post.tsx
     - lang: Shell
       label: cURL
       source:

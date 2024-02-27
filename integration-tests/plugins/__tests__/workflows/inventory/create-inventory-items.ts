@@ -1,30 +1,33 @@
-import path from "path"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import {
-  createInventoryItems,
   CreateInventoryItemActions,
-  pipe,
-} from "@medusajs/workflows"
-import { IInventoryService, WorkflowTypes } from "@medusajs/types"
+  createInventoryItems,
+} from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
+
+import { pipe } from "@medusajs/workflows-sdk"
+import path from "path"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { getContainer } from "../../../../environment-helpers/use-container"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+
+jest.setTimeout(30000)
 
 describe("CreateInventoryItem workflow", function () {
-  let medusaProcess
   let medusaContainer
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    await initDb({ cwd } as any)
-    const { container } = await bootstrapApp({ cwd })
-    medusaContainer = container
+    await initDb({ cwd })
+    shutdownServer = await startBootstrapApp({ cwd, skipExpressListen: true })
+    medusaContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-
-    medusaProcess.kill()
+    await shutdownServer()
   })
 
   it("should compensate all the invoke if something fails", async () => {

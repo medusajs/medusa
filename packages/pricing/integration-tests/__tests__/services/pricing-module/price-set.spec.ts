@@ -6,9 +6,12 @@ import {
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet } from "@models"
 
-import { PriceSetRuleType, initialize } from "../../../../src"
+import { PriceSetRuleType } from "../../../../src"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MikroOrmWrapper } from "../../../utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { initModules } from "medusa-test-utils"
+import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
@@ -31,17 +34,25 @@ describe("PricingModule Service - PriceSet", () => {
   let service: IPricingModuleService
   let repositoryManager: SqlEntityManager
   let data!: PriceSet[]
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PRICING]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = MikroOrmWrapper.forkManager()
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
-      },
-    })
-
     const testManager = MikroOrmWrapper.forkManager()
 
     await seedPriceData(testManager)
@@ -106,7 +117,9 @@ describe("PricingModule Service - PriceSet", () => {
       expect(serialized).toEqual([
         {
           id: "price-set-1",
-          money_amounts: [{ id: "money-amount-USD", amount: "500" }],
+          money_amounts: [
+            expect.objectContaining({ id: "money-amount-USD", amount: 500 }),
+          ],
         },
       ])
     })
@@ -160,7 +173,7 @@ describe("PricingModule Service - PriceSet", () => {
       expect(serialized).toEqual([
         {
           id: "price-set-1",
-          money_amounts: [{ id: "money-amount-USD" }],
+          money_amounts: [expect.objectContaining({ id: "money-amount-USD" })],
         },
       ])
     })
@@ -235,7 +248,7 @@ describe("PricingModule Service - PriceSet", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"priceSetId" must be defined')
+      expect(error.message).toEqual("priceSet - id must be defined")
     })
 
     it("should return priceSet based on config select param", async () => {
@@ -375,7 +388,7 @@ describe("PricingModule Service - PriceSet", () => {
           ],
           money_amounts: [
             expect.objectContaining({
-              amount: "100",
+              amount: 100,
               currency_code: "USD",
             }),
           ],
@@ -398,7 +411,6 @@ describe("PricingModule Service - PriceSet", () => {
             {
               amount: 150,
               currency_code: "USD",
-              rules: {},
             },
           ],
         },
@@ -413,11 +425,11 @@ describe("PricingModule Service - PriceSet", () => {
           ],
           money_amounts: expect.arrayContaining([
             expect.objectContaining({
-              amount: "100",
+              amount: 100,
               currency_code: "USD",
             }),
             expect.objectContaining({
-              amount: "150",
+              amount: 150,
               currency_code: "USD",
             }),
           ]),
@@ -450,7 +462,7 @@ describe("PricingModule Service - PriceSet", () => {
           ],
           money_amounts: [
             expect.objectContaining({
-              amount: "100",
+              amount: 100,
               currency_code: "USD",
             }),
           ],
@@ -544,7 +556,7 @@ describe("PricingModule Service - PriceSet", () => {
             ],
             money_amounts: [
               expect.objectContaining({
-                amount: "500",
+                amount: 500,
                 currency_code: "EUR",
               }),
             ],
@@ -608,7 +620,7 @@ describe("PricingModule Service - PriceSet", () => {
           id: "price-set-1",
           money_amounts: expect.arrayContaining([
             expect.objectContaining({
-              amount: "100",
+              amount: 100,
               currency_code: "USD",
             }),
           ]),
@@ -650,7 +662,7 @@ describe("PricingModule Service - PriceSet", () => {
           id: "price-set-1",
           money_amounts: expect.arrayContaining([
             expect.objectContaining({
-              amount: "100",
+              amount: 100,
               currency_code: "USD",
             }),
           ]),
@@ -659,7 +671,7 @@ describe("PricingModule Service - PriceSet", () => {
           id: "price-set-2",
           money_amounts: expect.arrayContaining([
             expect.objectContaining({
-              amount: "150",
+              amount: 150,
               currency_code: "EUR",
             }),
           ]),

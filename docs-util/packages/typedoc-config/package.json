@@ -5,5 +5,15 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.0.0"
+  "peerDependencies": {
+    "typedoc": "0.25.x"
+  },
+  "main": "_base.js",
+  "version": "0.0.0",
+  "dependencies": {
+    "glob": "^10.3.10"
+  },
+  "devDependencies": {
+    "types": "*"
+  }
 }

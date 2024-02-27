@@ -1,9 +1,8 @@
-import { MedusaModule } from "@medusajs/modules-sdk"
+import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
 import { kebabCase } from "@medusajs/utils"
-import { knex } from "knex"
-import { initialize } from "../../src"
-import { EventBusService } from "../__fixtures__/event-bus"
+import { knex } from "@mikro-orm/knex"
+import { initModules } from "medusa-test-utils"
 import * as CustomRepositories from "../__fixtures__/module"
 import {
   buildProductAndRelationsData,
@@ -11,6 +10,7 @@ import {
 } from "../__fixtures__/product"
 import { productsData } from "../__fixtures__/product/data"
 import { DB_URL, TestDatabase } from "../utils"
+import { getInitModuleConfig } from "../utils/get-init-module-config"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -30,26 +30,28 @@ const afterEach_ = async () => {
 }
 
 describe("Product module", function () {
-  const eventBus = new EventBusService()
-
   describe("Using built-in data access layer", function () {
     let module: IProductModuleService
+    let shutdownFunc: () => Promise<void>
+
+    beforeAll(async () => {
+      MedusaModule.clearInstances()
+      const initModulesConfig = getInitModuleConfig()
+
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+      module = medusaApp.modules[Modules.PRODUCT]
+
+      shutdownFunc = shutdown
+    })
+
+    afterAll(async () => {
+      await shutdownFunc()
+    })
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
       await createProductAndTags(testManager, productsData)
-
-      module = await initialize(
-        {
-          database: {
-            clientUrl: DB_URL,
-            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-          },
-        },
-        {
-          eventBusModuleService: eventBus,
-        }
-      )
     })
 
     afterEach(afterEach_)
@@ -72,24 +74,28 @@ describe("Product module", function () {
 
   describe("Using custom data access layer", function () {
     let module
+    let shutdownFunc: () => Promise<void>
+
+    beforeAll(async () => {
+      MedusaModule.clearInstances()
+      const initModulesConfig = getInitModuleConfig({
+        repositories: CustomRepositories,
+      })
+
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+      module = medusaApp.modules[Modules.PRODUCT]
+
+      shutdownFunc = shutdown
+    })
+
+    afterAll(async () => {
+      await shutdownFunc()
+    })
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
-
       await createProductAndTags(testManager, productsData)
-
-      module = await initialize(
-        {
-          database: {
-            clientUrl: DB_URL,
-            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-          },
-          repositories: CustomRepositories,
-        },
-        {
-          eventBusModuleService: eventBus,
-        }
-      )
     })
 
     afterEach(afterEach_)
@@ -114,22 +120,27 @@ describe("Product module", function () {
 
   describe("Using custom data access layer and manager", function () {
     let module
+    let shutdownFunc: () => Promise<void>
+
+    afterEach(async () => {
+      await shutdownFunc()
+    })
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
       await createProductAndTags(testManager, productsData)
 
       MedusaModule.clearInstances()
+      const initModulesConfig = getInitModuleConfig({
+        manager: testManager,
+        repositories: CustomRepositories,
+      })
 
-      module = await initialize(
-        {
-          manager: testManager,
-          repositories: CustomRepositories,
-        },
-        {
-          eventBusModuleService: eventBus,
-        }
-      )
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+      module = medusaApp.modules[Modules.PRODUCT]
+
+      shutdownFunc = shutdown
     })
 
     afterEach(afterEach_)
@@ -154,23 +165,28 @@ describe("Product module", function () {
 
   describe("Using an existing connection", function () {
     let module: IProductModuleService
+    let shutdownFunc: () => Promise<void>
+
+    afterEach(async () => {
+      await shutdownFunc()
+    })
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
       await createProductAndTags(testManager, productsData)
 
       MedusaModule.clearInstances()
-
-      module = await initialize(
-        {
-          database: {
-            connection: sharedPgConnection,
-          },
+      const initModulesConfig = getInitModuleConfig({
+        database: {
+          connection: sharedPgConnection,
         },
-        {
-          eventBusModuleService: eventBus,
-        }
-      )
+      })
+
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+      module = medusaApp.modules[Modules.PRODUCT]
+
+      shutdownFunc = shutdown
     })
 
     afterEach(afterEach_)
@@ -181,31 +197,37 @@ describe("Product module", function () {
 
     it("should have a connection that is the shared connection", async () => {
       expect(
-        (module as any).baseRepository_.manager_.getConnection().client
-      ).toEqual(sharedPgConnection)
+        JSON.stringify(
+          (module as any).baseRepository_.manager_.getConnection().client
+        )
+      ).toEqual(JSON.stringify(sharedPgConnection))
     })
   })
 
   describe("create", function () {
     let module: IProductModuleService
     let images = ["image-1"]
+    let shutdownFunc: () => Promise<void>
+
+    afterEach(async () => {
+      await shutdownFunc()
+    })
 
     beforeEach(async () => {
       await beforeEach_()
 
       MedusaModule.clearInstances()
-
-      module = await initialize(
-        {
-          database: {
-            clientUrl: DB_URL,
-            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-          },
+      const initModulesConfig = getInitModuleConfig({
+        database: {
+          connection: sharedPgConnection,
         },
-        {
-          eventBusModuleService: eventBus,
-        }
-      )
+      })
+
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+      module = medusaApp.modules[Modules.PRODUCT]
+
+      shutdownFunc = shutdown
     })
 
     afterEach(afterEach_)
@@ -216,7 +238,23 @@ describe("Product module", function () {
         thumbnail: images[0],
       })
 
-      const products = await module.create([data])
+      const productsCreated = await module.create([data])
+
+      const products = await module.list(
+        { id: productsCreated[0].id },
+        {
+          relations: [
+            "images",
+            "categories",
+            "variants",
+            "variants.options",
+            "options",
+            "options.values",
+            "tags",
+            "type",
+          ],
+        }
+      )
 
       expect(products).toHaveLength(1)
 
@@ -290,23 +328,24 @@ describe("Product module", function () {
   describe("softDelete", function () {
     let module: IProductModuleService
     let images = ["image-1"]
+    let shutdownFunc: () => Promise<void>
+
+    afterEach(async () => {
+      await shutdownFunc()
+    })
 
     beforeEach(async () => {
       await beforeEach_()
 
       MedusaModule.clearInstances()
 
-      module = await initialize(
-        {
-          database: {
-            clientUrl: DB_URL,
-            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-          },
-        },
-        {
-          eventBusModuleService: eventBus,
-        }
-      )
+      const initModulesConfig = getInitModuleConfig()
+
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+      module = medusaApp.modules[Modules.PRODUCT]
+
+      shutdownFunc = shutdown
     })
 
     afterEach(afterEach_)
@@ -365,23 +404,24 @@ describe("Product module", function () {
   describe("restore", function () {
     let module: IProductModuleService
     let images = ["image-1"]
+    let shutdownFunc: () => Promise<void>
+
+    afterEach(async () => {
+      await shutdownFunc()
+    })
 
     beforeEach(async () => {
       await beforeEach_()
 
       MedusaModule.clearInstances()
 
-      module = await initialize(
-        {
-          database: {
-            clientUrl: DB_URL,
-            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-          },
-        },
-        {
-          eventBusModuleService: eventBus,
-        }
-      )
+      const initModulesConfig = getInitModuleConfig()
+
+      const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+      module = medusaApp.modules[Modules.PRODUCT]
+
+      shutdownFunc = shutdown
     })
 
     afterEach(afterEach_)

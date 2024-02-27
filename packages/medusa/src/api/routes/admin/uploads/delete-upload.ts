@@ -1,5 +1,6 @@
 import { IsString } from "class-validator"
-
+import { Request, Response } from "express"
+import { IFileService } from "../../../../interfaces"
 /**
  * @oas [delete] /admin/uploads
  * operationId: "DeleteUploads"
@@ -23,7 +24,31 @@ import { IsString } from "class-validator"
  *       })
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteFile } from "medusa-react"
+ *
+ *       const Image = () => {
+ *         const deleteFile = useAdminDeleteFile()
+ *         // ...
+ *
+ *         const handleDeleteFile = (fileKey: string) => {
+ *           deleteFile.mutate({
+ *             file_key: fileKey
+ *           }, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Image
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -59,12 +84,14 @@ import { IsString } from "class-validator"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const validated = req.validatedBody as AdminDeleteUploadsReq
 
-  const fileService = req.scope.resolve("fileService")
+  const fileService: IFileService = req.scope.resolve("fileService")
 
-  await fileService.delete(validated)
+  await fileService.delete({
+    fileKey: validated.file_key,
+  })
 
   res
     .status(200)
@@ -74,6 +101,7 @@ export default async (req, res) => {
 /**
  * @schema AdminDeleteUploadsReq
  * type: object
+ * description: "The details of the file to delete."
  * required:
  *   - file_key
  * properties:

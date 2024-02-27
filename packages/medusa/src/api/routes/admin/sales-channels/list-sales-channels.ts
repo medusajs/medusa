@@ -102,8 +102,35 @@ import { Type } from "class-transformer"
  *       // must be previously logged in or use api token
  *       medusa.admin.salesChannels.list()
  *       .then(({ sales_channels, limit, offset, count }) => {
- *         console.log(sales_channels.length);
- *       });
+ *         console.log(sales_channels.length)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminSalesChannels } from "medusa-react"
+ *
+ *       const SalesChannels = () => {
+ *         const { sales_channels, isLoading } = useAdminSalesChannels()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {sales_channels && !sales_channels.length && (
+ *               <span>No Sales Channels</span>
+ *             )}
+ *             {sales_channels && sales_channels.length > 0 && (
+ *               <ul>
+ *                 {sales_channels.map((salesChannel) => (
+ *                   <li key={salesChannel.id}>{salesChannel.name}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default SalesChannels
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -156,38 +183,65 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved sales channels.
+ */
 export class AdminGetSalesChannelsParams extends extendedFindParamsMixin() {
+  /**
+   * ID to filter sales channels by.
+   */
   @IsString()
   @IsOptional()
   id?: string
 
+  /**
+   * Search term to search sales channels' names and descriptions.
+   */
   @IsOptional()
   @IsString()
   q?: string
 
+  /**
+   * Name to filter sales channels by.
+   */
   @IsOptional()
   @IsString()
   name?: string
 
+  /**
+   * Description to filter sales channels by.
+   */
   @IsOptional()
   @IsString()
   description?: string
 
+  /**
+   * Date filters to apply on sales channels' `created_at` field.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on sales channels' `updated_at` field.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on sales channels' `deleted_at` field.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => DateComparisonOperator)
   deleted_at?: DateComparisonOperator
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string

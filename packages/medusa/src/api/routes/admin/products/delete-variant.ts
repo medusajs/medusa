@@ -28,7 +28,39 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.products.deleteVariant(productId, variantId)
  *       .then(({ variant_id, object, deleted, product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteVariant } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *         variantId: string
+ *       }
+ *
+ *       const ProductVariant = ({
+ *         productId,
+ *         variantId
+ *       }: Props) => {
+ *         const deleteVariant = useAdminDeleteVariant(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteVariant.mutate(variantId, {
+ *             onSuccess: ({ variant_id, object, deleted, product }) => {
+ *               console.log(product.variants)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ProductVariant
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -81,7 +113,7 @@ export default async (req, res) => {
     relations: defaultAdminProductRelations,
   })
 
-  const [product] = await pricingService.setProductPrices([data])
+  const [product] = await pricingService.setAdminProductPricing([data])
 
   res.json({
     variant_id,

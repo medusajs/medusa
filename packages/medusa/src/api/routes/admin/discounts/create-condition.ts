@@ -36,11 +36,45 @@ import { FindParams } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.discounts.createCondition(discountId, {
- *         operator: DiscountConditionOperator.IN
+ *         operator: DiscountConditionOperator.IN,
+ *         products: [productId]
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { DiscountConditionOperator } from "@medusajs/medusa"
+ *       import { useAdminDiscountCreateCondition } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *       }
+ *
+ *       const Discount = ({ discountId }: Props) => {
+ *         const createCondition = useAdminDiscountCreateCondition(discountId)
+ *         // ...
+ *
+ *         const handleCreateCondition = (
+ *           operator: DiscountConditionOperator,
+ *           products: string[]
+ *         ) => {
+ *           createCondition.mutate({
+ *             operator,
+ *             products
+ *           }, {
+ *             onSuccess: ({ discount }) => {
+ *               console.log(discount.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -107,8 +141,9 @@ export default async (req: Request, res: Response) => {
  *   - operator
  * properties:
  *   operator:
- *      description: "Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
- *       discountable resources are everything but the specified resources."
+ *      description: >-
+ *        Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
+ *        discountable resources are everything but the specified resources.
  *      type: string
  *      enum: [in, not_in]
  *   products:

@@ -5,7 +5,7 @@ get:
     Retrieves a list of products. The products can be filtered by fields such as
     `id` or `q`. The products can also be sorted or paginated.
 
-    This endpoint can also be used to retrieve a product by its handle.
+    This API Route can also be used to retrieve a product by its handle.
 
 
     For accurate and correct pricing of the products based on the customer's
@@ -237,6 +237,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/store_products/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/store_products/get.tsx
     - lang: Shell
       label: cURL
       source:

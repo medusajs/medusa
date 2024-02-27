@@ -175,7 +175,7 @@ const NewVariant = ({
         ref={preview}
         data-handler-id={handlerId}
         className={clsx(
-          "rounded-rounded py-xsmall pl-xsmall pr-base focus-within:bg-grey-5 hover:bg-grey-5 grid h-16 translate-y-0 translate-x-0 grid-cols-[32px_1fr_90px_100px_48px] transition-all",
+          "rounded-rounded py-xsmall pl-xsmall pr-base focus-within:bg-grey-5 hover:bg-grey-5 grid h-16 translate-x-0 translate-y-0 grid-cols-[32px_1fr_90px_100px_48px] transition-all",
           {
             "opacity-50": isDragging,
           }
@@ -294,7 +294,6 @@ const VariantValidity = ({
   productDimensions,
 }: Pick<Props, "source" | "productCustoms" | "productDimensions">) => {
   const {
-    prices,
     options,
     dimensions,
     customs,
@@ -335,8 +334,6 @@ const VariantValidity = ({
     )
   }
 
-  const validPrices = prices?.prices.some((p) => p.amount !== null)
-
   const validDimensions =
     Object.values(productDimensions).every((value) => !!value) ||
     Object.values(dimensions).every((value) => !!value)
@@ -346,13 +343,7 @@ const VariantValidity = ({
 
   const barcodeValidity = !!barcode || !!upc || !!ean
 
-  if (
-    !sku ||
-    !validCustoms ||
-    !validDimensions ||
-    !barcodeValidity ||
-    !validPrices
-  ) {
+  if (!sku || !validCustoms || !validDimensions || !barcodeValidity) {
     return (
       <IconTooltip
         type="warning"
@@ -364,7 +355,6 @@ const VariantValidity = ({
               fields:
             </p>
             <ul className="list-inside list-disc">
-              {!validPrices && <li>Pricing</li>}
               {!validDimensions && <li>Dimensions</li>}
               {!validCustoms && <li>Customs</li>}
               {!inventory_quantity && <li>Inventory quantity</li>}

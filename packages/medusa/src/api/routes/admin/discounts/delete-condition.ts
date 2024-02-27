@@ -8,7 +8,7 @@ import { FindParams } from "../../../../types/common"
  * @oas [delete] /admin/discounts/{discount_id}/conditions/{condition_id}
  * operationId: "DeleteDiscountsDiscountConditionsCondition"
  * summary: "Delete a Condition"
- * description: "Deletes a Discount Condition. This does not delete resources associated to the discount condition."
+ * description: "Delete a Discount Condition. This does not delete resources associated to the discount condition."
  * x-authenticated: true
  * parameters:
  *   - (path) discount_id=* {string} The ID of the Discount
@@ -28,7 +28,39 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.discounts.deleteCondition(discountId, conditionId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminDiscountRemoveCondition
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *       }
+ *
+ *       const Discount = ({ discountId }: Props) => {
+ *         const deleteCondition = useAdminDiscountRemoveCondition(
+ *           discountId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = (
+ *           conditionId: string
+ *         ) => {
+ *           deleteCondition.mutate(conditionId, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(deleted)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |

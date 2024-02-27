@@ -9,11 +9,11 @@ import {
   Text,
   usePrompt,
 } from "@medusajs/ui"
+import { useAdminCreatePriceListPrices } from "medusa-react"
 import * as React from "react"
 import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { useAdminCreatePriceListPrices } from "medusa-react"
 import { useTranslation } from "react-i18next"
+import * as z from "zod"
 
 import { Form } from "../../../../components/helpers/form"
 import useNotification from "../../../../hooks/use-notification"
@@ -571,7 +571,7 @@ const AddProductsModal = ({
                 </span>
               </ProgressTabs.Trigger>
               <ProgressTabs.Trigger
-                disabled={selectedIds.length === 0}
+                disabled={status[Tab.PRODUCTS] !== "completed"}
                 value={Tab.PRICES}
                 className="w-full max-w-[200px]"
                 status={status[Tab.PRICES]}
@@ -621,52 +621,68 @@ const AddProductsModal = ({
                   productIds={productIds}
                 />
               </ProgressTabs.Content>
-              {isLoading ? (
-                <div className="flex h-full w-full items-center justify-center">
-                  <Spinner className="text-ui-fg-subtle animate-spin" />
-                </div>
-              ) : isError || isNotFound ? (
-                <div className="flex h-full w-full items-center justify-center">
-                  <div className="text-ui-fg-subtle flex items-center gap-x-2">
-                    <ExclamationCircle />
-                    <Text>
-                      {t(
-                        "price-list-add-products-modal-error",
-                        "An error occurred while preparing the form. Reload the page and try again. If the issue persists, try again later."
-                      )}
-                    </Text>
+              <ProgressTabs.Content
+                value={Tab.PRICES}
+                className="h-full w-full"
+              >
+                {isLoading ? (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <Spinner className="text-ui-fg-subtle animate-spin" />
                   </div>
-                </div>
-              ) : (
-                <React.Fragment>
-                  <ProgressTabs.Content
-                    value={Tab.PRICES}
-                    className="h-full w-full"
-                  >
-                    <PriceListPricesForm
-                      setProduct={onSetProduct}
-                      form={nestedForm(form, "prices")}
-                      productIds={selectedIds}
+                ) : isError || isNotFound ? (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <div className="text-ui-fg-subtle flex items-center gap-x-2">
+                      <ExclamationCircle />
+                      <Text>
+                        {t(
+                          "price-list-add-products-modal-error",
+                          "An error occurred while preparing the form. Reload the page and try again. If the issue persists, try again later."
+                        )}
+                      </Text>
+                    </div>
+                  </div>
+                ) : (
+                  <PriceListPricesForm
+                    setProduct={onSetProduct}
+                    form={nestedForm(form, "prices")}
+                    productIds={selectedIds}
+                  />
+                )}
+              </ProgressTabs.Content>
+              {product && (
+                <ProgressTabs.Content
+                  value={Tab.EDIT}
+                  className="h-full w-full"
+                >
+                  {isLoading ? (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <Spinner className="text-ui-fg-subtle animate-spin" />
+                    </div>
+                  ) : isError || isNotFound ? (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <div className="text-ui-fg-subtle flex items-center gap-x-2">
+                        <ExclamationCircle />
+                        <Text>
+                          {t(
+                            "price-list-add-products-modal-error",
+                            "An error occurred while preparing the form. Reload the page and try again. If the issue persists, try again later."
+                          )}
+                        </Text>
+                      </div>
+                    </div>
+                  ) : (
+                    <PriceListProductPricesForm
+                      product={product}
+                      currencies={currencies}
+                      regions={regions}
+                      control={editControl}
+                      priceListTaxInclusive={priceList.includes_tax}
+                      taxInclEnabled={isTaxInclPricesEnabled}
+                      setValue={setEditValue}
+                      getValues={getEditValues}
                     />
-                  </ProgressTabs.Content>
-                  {product && (
-                    <ProgressTabs.Content
-                      value={Tab.EDIT}
-                      className="h-full w-full"
-                    >
-                      <PriceListProductPricesForm
-                        product={product}
-                        currencies={currencies}
-                        regions={regions}
-                        control={editControl}
-                        priceListTaxInclusive={priceList.includes_tax}
-                        taxInclEnabled={isTaxInclPricesEnabled}
-                        setValue={setEditValue}
-                        getValues={getEditValues}
-                      />
-                    </ProgressTabs.Content>
                   )}
-                </React.Fragment>
+                </ProgressTabs.Content>
               )}
             </Form>
           </FocusModal.Body>

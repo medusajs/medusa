@@ -6,4 +6,4 @@ medusa.customers.addresses.updateAddress(addressId, {
 })
 .then(({ customer }) => {
   console.log(customer.id);
-});
+})

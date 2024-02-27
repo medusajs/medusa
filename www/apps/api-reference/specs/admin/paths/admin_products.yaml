@@ -247,6 +247,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_products/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_products/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -281,7 +285,7 @@ post:
   summary: Create a Product
   x-authenticated: true
   description: >-
-    Create a new Product. This endpoint can also be used to create a gift card
+    Create a new Product. This API Route can also be used to create a gift card
     if the `is_giftcard` field is set to `true`.
   requestBody:
     content:
@@ -295,6 +299,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_products/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_products/post.tsx
     - lang: Shell
       label: cURL
       source:

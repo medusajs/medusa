@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
  * @oas [delete] /admin/draft-orders/{id}
  * operationId: DeleteDraftOrdersDraftOrder
  * summary: Delete a Draft Order
- * description: "Delete a Draft Order"
+ * description: "Delete a Draft Order."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Draft Order.
@@ -21,7 +21,35 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.draftOrders.delete(draftOrderId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteDraftOrder } from "medusa-react"
+ *
+ *       type Props = {
+ *         draftOrderId: string
+ *       }
+ *
+ *       const DraftOrder = ({ draftOrderId }: Props) => {
+ *         const deleteDraftOrder = useAdminDeleteDraftOrder(
+ *           draftOrderId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteDraftOrder.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DraftOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |

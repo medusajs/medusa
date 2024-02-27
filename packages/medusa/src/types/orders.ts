@@ -22,33 +22,111 @@ export type TotalsContext = {
   includes?: { returnable_items?: boolean }
 }
 
+/**
+ * @enum
+ *
+ * The status of an order.
+ */
 enum OrderStatus {
+  /**
+   * Order is pending.
+   */
   pending = "pending",
+  /**
+   * Order is completed. An order is completed when it's paid and fulfilled.
+   */
   completed = "completed",
+  /**
+   * Order is archived.
+   */
   archived = "archived",
+  /**
+   * Order is canceled.
+   */
   canceled = "canceled",
+  /**
+   * Order requires an action. This status is applied when the order's payment or fulfillment requires an additional action.
+   */
   requires_action = "requires_action",
 }
 
+/**
+ * @enum
+ *
+ * The fulfillment status of an order.
+ */
 enum FulfillmentStatus {
+  /**
+   * The order isn't fulfilled.
+   */
   not_fulfilled = "not_fulfilled",
+  /**
+   * All of the order's items are fulfilled.
+   */
   fulfilled = "fulfilled",
+  /**
+   * Some, but not all, of the order's items are fulfilled.
+   */
   partially_fulfilled = "partially_fulfilled",
+  /**
+   * All of the order's items are shipped.
+   */
   shipped = "shipped",
+  /**
+   * Some, but not all, of the order's items are shipped.
+   */
   partially_shipped = "partially_shipped",
+  /**
+   * The order's fulfillments are canceled.
+   */
   canceled = "canceled",
+  /**
+   * All of the order's items are returned.
+   */
   returned = "returned",
+  /**
+   * Some, but not all, of the order's items are returned.
+   */
   partially_returned = "partially_returned",
+  /**
+   * The order's fulfillment requires an action.
+   */
   requires_action = "requires_action",
 }
 
+/**
+ * @enum
+ *
+ * The payment status of the order.
+ */
 enum PaymentStatus {
+  /**
+   * The order's payment is captured.
+   */
   captured = "captured",
+  /**
+   * The order's payment is awaiting.
+   */
   awaiting = "awaiting",
+  /**
+   * The order's payment isn't paid.
+   */
   not_paid = "not_paid",
+  /**
+   * The order's payment is fully refunded.
+   */
   refunded = "refunded",
+  /**
+   * The order's payment is partially refunded.
+   */
   partially_refunded = "partially_refunded",
+  /**
+   * The order's payment is canceled.
+   */
   canceled = "canceled",
+  /**
+   * The order's payment requires an action.
+   */
   requires_action = "requires_action",
 }
 
@@ -179,72 +257,123 @@ export const defaultAdminOrdersFields = [
   "no_notification",
 ] as (keyof Order)[]
 
+/**
+ * Filters to apply on the retrieved orders.
+ */
 export class AdminListOrdersSelector {
+  /**
+   * Search term to search orders' shipping address, first name, email, and display ID.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * ID to filter orders by.
+   */
   @IsString()
   @IsOptional()
   id?: string
 
+  /**
+   * Statuses to filter orders by.
+   */
   @IsArray()
   @IsEnum(OrderStatus, { each: true })
   @IsOptional()
   status?: string[]
 
+  /**
+   * Fulfillment statuses to filter orders by.
+   */
   @IsArray()
   @IsEnum(FulfillmentStatus, { each: true })
   @IsOptional()
   fulfillment_status?: string[]
 
+  /**
+   * Payment statuses to filter orders by.
+   */
   @IsArray()
   @IsEnum(PaymentStatus, { each: true })
   @IsOptional()
   payment_status?: string[]
 
+  /**
+   * Display ID to filter orders by.
+   */
   @IsString()
   @IsOptional()
   display_id?: string
 
+  /**
+   * Cart ID to filter orders by.
+   */
   @IsString()
   @IsOptional()
   cart_id?: string
 
+  /**
+   * Customer ID to filter orders by.
+   */
   @IsString()
   @IsOptional()
   customer_id?: string
 
+  /**
+   * Email to filter orders by.
+   */
   @IsString()
   @IsOptional()
   email?: string
 
+  /**
+   * Regions to filter orders by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   region_id?: string | string[]
 
+  /**
+   * Currency code to filter orders by.
+   */
   @IsString()
   @IsOptional()
   currency_code?: string
 
+  /**
+   * Tax rate to filter orders by.
+   */
   @IsString()
   @IsOptional()
   tax_rate?: string
 
+  /**
+   * Sales channel IDs to filter orders by.
+   */
   @IsArray()
   @IsOptional()
   sales_channel_id?: string[]
 
+  /**
+   * Date filters to apply on the orders' `canceled_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   canceled_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the orders' `created_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the orders' `updated_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)

@@ -2,8 +2,9 @@ import * as Handlebars from "handlebars"
 import { Comment, DeclarationReflection, SignatureReflection } from "typedoc"
 import { MarkdownTheme } from "../../theme"
 import reflectionFormatter from "../../utils/reflection-formatter"
-import { returnReflectionComponentFormatter } from "../../utils/return-reflection-formatter"
+import { getReflectionTypeParameters } from "../../utils/reflection-type-parameters"
 import { Parameter } from "../../types"
+import { formatParameterComponent } from "../../utils/format-parameter-component"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -12,7 +13,7 @@ export default function (theme: MarkdownTheme) {
       if (reflection.variant === "signature" && "type" in reflection) {
         return getReturnFromType(theme, reflection)
       } else if (reflection.comment) {
-        return getReturnFromComment(theme, reflection.comment)
+        return getReturnFromComment(theme, reflection.comment, reflection.name)
       } else {
         return ""
       }
@@ -24,24 +25,32 @@ function getReturnFromType(
   theme: MarkdownTheme,
   reflection: SignatureReflection
 ) {
-  const { parameterStyle, parameterComponent } =
-    theme.getFormattingOptionsForLocation()
+  const {
+    parameterStyle,
+    parameterComponent,
+    maxLevel,
+    parameterComponentExtraProps,
+  } = theme.getFormattingOptionsForLocation()
 
   if (!reflection.type) {
     return ""
   }
 
-  const componentItems = returnReflectionComponentFormatter(
-    reflection.type,
-    reflection.project || theme.project,
-    reflection.comment,
-    1
-  )
+  const componentItems = getReflectionTypeParameters({
+    reflectionType: reflection.type,
+    project: reflection.project || theme.project,
+    comment: reflection.comment,
+    level: 1,
+    maxLevel,
+  })
 
   if (parameterStyle === "component") {
-    return `<${parameterComponent} parameters={${JSON.stringify(
-      componentItems
-    )}} />`
+    return formatParameterComponent({
+      parameterComponent,
+      componentItems,
+      extraProps: parameterComponentExtraProps,
+      sectionTitle: reflection.name,
+    })
   } else {
     return formatReturnAsList(componentItems)
   }
@@ -69,10 +78,18 @@ function formatReturnAsList(componentItems: Parameter[], level = 1): string {
     .join("\n")
 }
 
-function getReturnFromComment(theme: MarkdownTheme, comment: Comment) {
+function getReturnFromComment(
+  theme: MarkdownTheme,
+  comment: Comment,
+  reflectionName: string
+) {
   const md: string[] = []
-  const { parameterStyle, parameterComponent } =
-    theme.getFormattingOptionsForLocation()
+  const {
+    parameterStyle,
+    parameterComponent,
+    maxLevel,
+    parameterComponentExtraProps,
+  } = theme.getFormattingOptionsForLocation()
 
   if (comment.blockTags?.length) {
     const tags = comment.blockTags
@@ -85,13 +102,24 @@ function getReturnFromComment(theme: MarkdownTheme, comment: Comment) {
             commentPart.target instanceof DeclarationReflection
           ) {
             const content = commentPart.target.children?.map((childItem) =>
-              reflectionFormatter(childItem, parameterStyle, 1)
+              reflectionFormatter({
+                reflection: childItem,
+                type: parameterStyle,
+                level: 1,
+                maxLevel,
+              })
             )
             result +=
               parameterStyle === "component"
-                ? `\n\n<${parameterComponent} parameters={${JSON.stringify(
-                    content
-                  )}} title={"${commentPart.target.name}"} />\n\n`
+                ? `\n\n${formatParameterComponent({
+                    parameterComponent,
+                    componentItems: content as Parameter[],
+                    extraProps: {
+                      ...parameterComponentExtraProps,
+                      title: commentPart.target.name,
+                    },
+                    sectionTitle: reflectionName,
+                  })}\n\n`
                 : `\n\n<details>\n<summary>\n${
                     commentPart.target.name
                   }\n</summary>\n\n${content?.join("\n")}\n\n</details>`

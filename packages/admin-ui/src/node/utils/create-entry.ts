@@ -13,6 +13,10 @@ import {
 const FILE_EXT_REGEX = /\.[^/.]+$/
 
 async function copyLocalExtensions(src: string, dest: string) {
+  if (process.env.PLUGIN_ADMIN_UI_SKIP_CACHE) {
+    return true
+  }
+
   try {
     await fse.copy(src, dest, {
       filter: copyFilter,

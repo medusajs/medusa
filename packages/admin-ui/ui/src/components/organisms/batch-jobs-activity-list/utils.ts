@@ -1,13 +1,8 @@
 import { BatchJob } from "@medusajs/medusa/dist"
 
-export enum BatchJobOperation {
-  Import = "Import",
-  Export = "Export",
-}
-
 export function batchJobDescriptionBuilder(
   batchJob: BatchJob,
-  operation: BatchJobOperation,
+  operation: string,
   elapsedTime?: number
 ): string {
   let description = ""

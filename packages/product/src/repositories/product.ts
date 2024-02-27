@@ -7,45 +7,37 @@ import {
 } from "@models"
 
 import {
-  FilterQuery as MikroFilterQuery,
-  FindOptions as MikroOptions,
-  LoadStrategy,
-} from "@mikro-orm/core"
-
-import {
   Context,
   DAL,
   ProductTypes,
   WithRequiredProperty,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
+import {
+  DALUtils,
+  isDefined,
+  MedusaError,
+  ProductUtils,
+  promiseAll,
+} from "@medusajs/utils"
 
 import { ProductServiceTypes } from "../types/services"
 
 // eslint-disable-next-line max-len
-export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<Product> {
-  protected readonly manager_: SqlEntityManager
-
-  constructor({ manager }: { manager: SqlEntityManager }) {
+export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Product>(
+  Product
+) {
+  constructor(...args: any[]) {
     // @ts-ignore
-    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
-    this.manager_ = manager
   }
 
   async find(
     findOptions: DAL.FindOptions<Product & { q?: string }> = { where: {} },
     context: Context = {}
   ): Promise<Product[]> {
-    const manager = this.getActiveManager<SqlEntityManager>(context)
-
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
-
-    Object.assign(findOptions_.options, {
-      strategy: LoadStrategy.SELECT_IN,
-    })
 
     await this.mutateNotInCategoriesConstraints(findOptions_)
 
@@ -54,25 +46,15 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
       this.getFreeTextSearchConstraints
     )
 
-    return await manager.find(
-      Product,
-      findOptions_.where as MikroFilterQuery<Product>,
-      findOptions_.options as MikroOptions<Product>
-    )
+    return await super.find(findOptions_, context)
   }
 
   async findAndCount(
     findOptions: DAL.FindOptions<Product & { q?: string }> = { where: {} },
     context: Context = {}
   ): Promise<[Product[], number]> {
-    const manager = this.getActiveManager<SqlEntityManager>(context)
-
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
-
-    Object.assign(findOptions_.options, {
-      strategy: LoadStrategy.SELECT_IN,
-    })
 
     await this.mutateNotInCategoriesConstraints(findOptions_)
 
@@ -81,12 +63,9 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
       this.getFreeTextSearchConstraints
     )
 
-    return await manager.findAndCount(
-      Product,
-      findOptions_.where as MikroFilterQuery<Product>,
-      findOptions_.options as MikroOptions<Product>
-    )
+    return await super.findAndCount(findOptions_, context)
   }
+
   /**
    * In order to be able to have a strict not in categories, and prevent a product
    * to be return in the case it also belongs to other categories, we need to
@@ -127,28 +106,22 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
     }
   }
 
-  async delete(ids: string[], context: Context = {}): Promise<void> {
-    const manager = this.getActiveManager<SqlEntityManager>(context)
-    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
-  }
-
   async create(
     data: WithRequiredProperty<ProductTypes.CreateProductOnlyDTO, "status">[],
     context: Context = {}
   ): Promise<Product[]> {
-    const manager = this.getActiveManager<SqlEntityManager>(context)
-
-    const products = data.map((product) => {
-      return (manager as SqlEntityManager).create(Product, product)
+    data.forEach((productData) => {
+      productData.status ??= ProductUtils.ProductStatus.DRAFT
     })
 
-    manager.persist(products)
-
-    return products
+    return await super.create(data, context)
   }
 
   async update(
-    data: WithRequiredProperty<ProductServiceTypes.UpdateProductDTO, "id">[],
+    data: {
+      entity: Product
+      update: WithRequiredProperty<ProductServiceTypes.UpdateProductDTO, "id">
+    }[],
     context: Context = {}
   ): Promise<Product[]> {
     let categoryIds: string[] = []
@@ -158,7 +131,7 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
     // TODO: use the getter method (getActiveManager)
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    data.forEach((productData) => {
+    data.forEach(({ update: productData }) => {
       categoryIds = categoryIds.concat(
         productData?.categories?.map((c) => c.id) || []
       )
@@ -173,16 +146,6 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
         typeIds.push(productData.type_id)
       }
     })
-
-    const productsToUpdate = await manager.find(
-      Product,
-      {
-        id: data.map((updateData) => updateData.id),
-      },
-      {
-        populate: ["tags", "categories"],
-      }
-    )
 
     const collectionsToAssign = collectionIds.length
       ? await manager.find(ProductCollection, {
@@ -225,11 +188,11 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
     )
 
     const productsToUpdateMap = new Map<string, Product>(
-      productsToUpdate.map((product) => [product.id, product])
+      data.map(({ entity }) => [entity.id, entity])
     )
 
-    const products = await Promise.all(
-      data.map(async (updateData) => {
+    const products = await promiseAll(
+      data.map(async ({ update: updateData }) => {
         const product = productsToUpdateMap.get(updateData.id)
 
         if (!product) {

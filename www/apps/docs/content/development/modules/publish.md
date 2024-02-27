@@ -35,7 +35,7 @@ Once you’re done, you should have a `package.json` created in the directory.
 
 In your `package.json` file, add or update the following fields:
 
-```json title=package.json
+```json title="package.json"
 {
   // other fields
   "main": "dist/index.js",
@@ -73,7 +73,7 @@ This adds the necessary dependencies for development and publishing, including t
 
 If you don't already have a `tsconfig.json` file, create one in the root of your NPM project with the following content:
 
-```json title=tsconfig.json
+```json title="tsconfig.json"
 {
   "compilerOptions": {
     "lib": [
@@ -162,7 +162,7 @@ Where `module-name` is the name of your module.
 
 In `medusa-config.js` on your Medusa backend, add your module to the exported configurations:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   // ...
   modules: { 

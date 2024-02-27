@@ -1,0 +1,6 @@
+{
+  "description": "This component is based on the `code` element and supports all of its props",
+  "methods": [],
+  "displayName": "Code",
+  "props": {}
+}

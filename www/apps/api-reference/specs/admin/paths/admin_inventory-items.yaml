@@ -120,6 +120,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_inventory-items/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_inventory-items/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -183,6 +187,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_inventory-items/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_inventory-items/post.tsx
     - lang: Shell
       label: cURL
       source:

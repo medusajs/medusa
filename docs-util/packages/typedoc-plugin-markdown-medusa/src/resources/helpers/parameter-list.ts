@@ -21,7 +21,10 @@ export default function () {
 
 function list(parameters: ReflectionParameterType[]) {
   const items = parameters.map((parameter) => {
-    return reflectionFormatter(parameter, "list")
+    return reflectionFormatter({
+      reflection: parameter,
+      type: "list",
+    })
   })
 
   return items.join("\n")

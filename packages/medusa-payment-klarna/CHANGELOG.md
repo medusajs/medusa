@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.4.0
+
+### Minor Changes
+
+- [#4483](https://github.com/medusajs/medusa/pull/4483) [`5d0e9ac00`](https://github.com/medusajs/medusa/commit/5d0e9ac007ecd1a60a4d5b8736024d2627da0b6d) Thanks [@edinskeja](https://github.com/edinskeja)! - Add language support
+
 ## 1.3.10
 
 ### Patch Changes

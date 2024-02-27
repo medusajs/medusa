@@ -2,7 +2,9 @@
 
 {{#if name}}
 
-{{titleLevel 3}} {{#ifNamedAnchors}}<a id="{{anchor}}" name="{{this.anchor}}"></a> {{/ifNamedAnchors}}{{ escape name }}
+{{titleLevel}} {{#ifNamedAnchors}}<a id="{{anchor}}" name="{{this.anchor}}"></a> {{/ifNamedAnchors}}{{ escape name }}
+
+{{incrementCurrentTitleLevel}}
 
 {{/if}}
 
@@ -14,7 +16,7 @@
 
 {{#each signatures}}
 
-{{> member.signature showSources=true }}
+{{> member.signature-wrapper showSources=true parent=.. }}
 
 {{/each}}
 
@@ -54,8 +56,22 @@
 
 {{/if}}
 
+{{#unless hasOwnDocument}}
+
+{{#if name}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/if}}
+
+{{/unless}}
+
+{{#ifShowSeparatorForTitleLevel}}
 {{#unless @last}}
 {{#unless hasOwnDocument}}
+{{#unless removeSeparator}}
 ___
 {{/unless}}
 {{/unless}}
+{{/unless}}
+{{/ifShowSeparatorForTitleLevel}}

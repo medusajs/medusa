@@ -1,3 +1,5 @@
+import { promiseAll } from "@medusajs/utils"
+
 class OrderSubscriber {
   constructor({
     manager,
@@ -34,7 +36,7 @@ class OrderSubscriber {
       relations: ["discounts", "discounts.rule"],
     })
 
-    await Promise.all(
+    await promiseAll(
       order.discounts.map(async (d) => {
         const usageCount = d?.usage_count || 0
         return this.discountService_.update(d.id, {

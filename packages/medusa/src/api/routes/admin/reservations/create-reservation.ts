@@ -30,7 +30,37 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       })
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateReservation } from "medusa-react"
+ *
+ *       const CreateReservation = () => {
+ *         const createReservation = useAdminCreateReservation()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           locationId: string,
+ *           inventoryItemId: string,
+ *           quantity: number
+ *         ) => {
+ *           createReservation.mutate({
+ *             location_id: locationId,
+ *             inventory_item_id: inventoryItemId,
+ *             quantity,
+ *           }, {
+ *             onSuccess: ({ reservation }) => {
+ *               console.log(reservation.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateReservation
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -99,6 +129,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostReservationsReq
  * type: object
+ * description: "The details of the reservation to create."
  * required:
  *   - location_id
  *   - inventory_item_id
@@ -116,6 +147,9 @@ export default async (req, res) => {
  *   quantity:
  *     description: "The quantity to reserve."
  *     type: number
+ *   description:
+ *     description: "The reservation's description."
+ *     type: string
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.
  *     type: object

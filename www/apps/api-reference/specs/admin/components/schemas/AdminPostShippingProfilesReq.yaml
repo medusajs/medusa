@@ -1,4 +1,5 @@
 type: object
+description: The details of the shipping profile to create.
 required:
   - name
   - type
@@ -13,3 +14,10 @@ properties:
       - default
       - gift_card
       - custom
+  metadata:
+    description: An optional set of key-value pairs with additional information.
+    type: object
+    externalDocs:
+      description: Learn about the metadata attribute, and how to delete and update it.
+      url: >-
+        https://docs.medusajs.com/development/entities/overview#metadata-attribute

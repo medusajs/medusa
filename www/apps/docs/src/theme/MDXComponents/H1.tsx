@@ -6,7 +6,7 @@ import { DocContextValue } from "@medusajs/docs"
 import { Badge, BadgeVariant } from "docs-ui"
 import clsx from "clsx"
 
-const H1 = ({ className, ...props }: Props) => {
+const H1 = ({ className, ...props }: Omit<Props, "key">) => {
   const {
     frontMatter: { badge },
   } = useDoc() as DocContextValue

@@ -13,4 +13,4 @@ medusa.admin.shippingOptions.update(optionId, {
 })
 .then(({ shipping_option }) => {
   console.log(shipping_option.id);
-});
+})

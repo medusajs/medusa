@@ -1,4 +1,5 @@
 type: object
+description: The collection's details.
 x-expanded-relations:
   field: collection
   relations:
@@ -7,5 +8,5 @@ required:
   - collection
 properties:
   collection:
-    type: Product Collection details.
+    description: Product Collection details.
     $ref: ./ProductCollection.yaml

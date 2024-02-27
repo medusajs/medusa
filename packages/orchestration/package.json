@@ -1,12 +1,15 @@
 {
   "name": "@medusajs/orchestration",
-  "version": "0.4.1",
+  "version": "0.5.4",
   "description": "Medusa utilities to orchestrate modules",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/orchestration"
+  },
+  "engines": {
+    "node": ">=16"
   },
   "publishConfig": {
     "access": "public"
@@ -24,8 +27,8 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/types": "^1.11.2",
-    "@medusajs/utils": "^1.10.2",
+    "@medusajs/types": "^1.11.12",
+    "@medusajs/utils": "^1.11.5",
     "awilix": "^8.0.0",
     "graphql": "^16.6.0"
   },

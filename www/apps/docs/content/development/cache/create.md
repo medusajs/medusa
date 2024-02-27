@@ -34,7 +34,7 @@ Create the file `src/services/memcached-cache.ts` which will hold your cache ser
 
 Add the following content to the file:
 
-```ts title=src/services/memcached-cache.ts
+```ts title="src/services/memcached-cache.ts"
 import { ICacheService } from "@medusajs/types"
 
 class MemcachedCacheService implements ICacheService {
@@ -70,7 +70,7 @@ The `constructor` method of a service allows you to prepare any third-party clie
 
 Here’s an example of how you can use the `constructor` to create a memcached instance and save the module’s options:
 
-```ts title=src/services/memcached-cache.ts
+```ts title="src/services/memcached-cache.ts"
 import { ICacheService } from "@medusajs/types"
 import Memcached from "memcached"
 
@@ -117,7 +117,7 @@ The `get` method allows you to retrieve the value of a cached item based on its 
 
 Here’s an example implementation of this method for a Memcached service:
 
-```ts title=src/services/memcached-cache.ts
+```ts title="src/services/memcached-cache.ts"
 class MemcachedCacheService implements ICacheService {
   // ...
   async get<T>(cacheKey: string): Promise<T | null> {
@@ -148,7 +148,7 @@ The `set` method is used to set an item in the cache. It accepts three parameter
 
 Here’s an example of an implementation of this method for a Memcached service:
 
-```ts title=src/services/memcached-cache.ts
+```ts title="src/services/memcached-cache.ts"
 class MemcachedCacheService implements ICacheService {
   // ...
   async set(
@@ -178,7 +178,7 @@ The method accepts a string as a first parameter, which is the key of the item t
 
 Here’s an example of an implementation of this method for a Memcached service:
 
-```ts title=src/services/memcached-cache.ts
+```ts title="src/services/memcached-cache.ts"
 class MemcachedCacheService implements ICacheService {
   // ...
   async invalidate(key: string): Promise<void> {
@@ -203,7 +203,7 @@ After implementing the cache service, you must export it so that the Medusa back
 
 Create the file `src/index.ts` with the following content:
 
-```ts title=src/index.ts
+```ts title="src/index.ts"
 import { ModuleExports } from "@medusajs/modules-sdk"
 
 import { 
@@ -231,7 +231,7 @@ You can test your module in the Medusa backend by referencing it in the configur
 
 To do that, add the module to the exported configuration in `medusa-config.js` as follows:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   // ...
   modules: { 

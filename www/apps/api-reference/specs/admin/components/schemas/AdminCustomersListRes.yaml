@@ -1,3 +1,4 @@
+description: The list of customers with pagination fields.
 type: object
 required:
   - customers

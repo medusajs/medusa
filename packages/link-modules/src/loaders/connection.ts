@@ -23,6 +23,7 @@ export function connectionLoader(entity: EntitySchema) {
     const pathToMigrations = __dirname + "/../migrations"
 
     await ModulesSdkUtils.mikroOrmConnectionLoader({
+      moduleName: "link_module",
       entities: [entity],
       container,
       options,

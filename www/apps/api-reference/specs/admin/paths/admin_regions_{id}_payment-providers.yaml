@@ -23,6 +23,10 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_regions_{id}_payment-providers/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_regions_{id}_payment-providers/post.tsx
     - lang: Shell
       label: cURL
       source:

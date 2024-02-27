@@ -1,5 +1,11 @@
 import { MedusaContainer } from "@medusajs/modules-sdk"
-import { EmitData, EventBusTypes, Logger, Subscriber } from "@medusajs/types"
+import {
+  EmitData,
+  EventBusTypes,
+  Logger,
+  Message,
+  Subscriber,
+} from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
 import { EventEmitter } from "events"
 import { ulid } from "ulid"
@@ -13,7 +19,7 @@ eventEmitter.setMaxListeners(Infinity)
 
 // eslint-disable-next-line max-len
 export default class LocalEventBusService extends AbstractEventBusModuleService {
-  protected readonly logger_: Logger
+  protected readonly logger_?: Logger
   protected readonly eventEmitter_: EventEmitter
 
   constructor({ logger }: MedusaContainer & InjectedDependencies) {
@@ -37,14 +43,16 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
    */
   async emit<T>(data: EmitData<T>[]): Promise<void>
 
-  async emit<T, TInput extends string | EmitData<T>[] = string>(
+  async emit<T>(data: Message<T>[]): Promise<void>
+
+  async emit<T, TInput extends string | EmitData<T>[] | Message<T>[] = string>(
     eventOrData: TInput,
     data?: T,
     options: Record<string, unknown> = {}
   ): Promise<void> {
     const isBulkEmit = Array.isArray(eventOrData)
 
-    const events: EmitData[] = isBulkEmit
+    const events: EmitData[] | Message<T>[] = isBulkEmit
       ? eventOrData
       : [{ eventName: eventOrData, data }]
 
@@ -53,7 +61,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         event.eventName
       )
 
-      this.logger_.info(
+      this.logger_?.info(
         `Processing ${event.eventName} which has ${eventListenersCount} subscribers`
       )
 
@@ -61,7 +69,8 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         continue
       }
 
-      this.eventEmitter_.emit(event.eventName, event.data)
+      const data = (event as EmitData).data ?? (event as Message<T>).body
+      this.eventEmitter_.emit(event.eventName, data)
     }
   }
 
@@ -73,7 +82,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         // @ts-ignore
         await subscriber(...args)
       } catch (e) {
-        this.logger_.error(
+        this.logger_?.error(
           `An error occurred while processing ${event.toString()}: ${e}`
         )
       }

@@ -1,13 +1,13 @@
 import React, { useMemo } from "react"
-import type { Props } from "@theme/MDXComponents/A"
 import { getGlossaryByPath } from "../../utils/glossary"
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
 import { MedusaDocusaurusContext } from "@medusajs/docs"
 import Link from "@docusaurus/Link"
+import type { Props } from "@docusaurus/Link"
 import clsx from "clsx"
 import { Tooltip } from "docs-ui"
 
-const MDXA = (props: Props) => {
+const MDXA = (props: Omit<Props, "key">) => {
   const { href, children } = props
   const {
     siteConfig: { url },

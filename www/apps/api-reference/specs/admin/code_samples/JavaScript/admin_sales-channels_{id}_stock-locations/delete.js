@@ -6,4 +6,4 @@ medusa.admin.salesChannels.removeLocation(salesChannelId, {
 })
 .then(({ sales_channel }) => {
   console.log(sales_channel.id);
-});
+})

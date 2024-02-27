@@ -29,7 +29,36 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ shipping_profile }) => {
  *         console.log(shipping_profile.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { ShippingProfileType } from "@medusajs/medusa"
+ *       import { useAdminCreateShippingProfile } from "medusa-react"
+ *
+ *       const CreateShippingProfile = () => {
+ *         const createShippingProfile = useAdminCreateShippingProfile()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           name: string,
+ *           type: ShippingProfileType
+ *         ) => {
+ *           createShippingProfile.mutate({
+ *             name,
+ *             type
+ *           }, {
+ *             onSuccess: ({ shipping_profile }) => {
+ *               console.log(shipping_profile.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateShippingProfile
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -84,6 +113,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostShippingProfilesReq
  * type: object
+ * description: "The details of the shipping profile to create."
  * required:
  *   - name
  *   - type
@@ -95,6 +125,12 @@ export default async (req, res) => {
  *     description: The type of the Shipping Profile
  *     type: string
  *     enum: [default, gift_card, custom]
+ *   metadata:
+ *     description: An optional set of key-value pairs with additional information.
+ *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostShippingProfilesReq {
   @IsString()

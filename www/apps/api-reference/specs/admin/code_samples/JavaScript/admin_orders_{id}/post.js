@@ -6,4 +6,4 @@ medusa.admin.orders.update(orderId, {
 })
 .then(({ order }) => {
   console.log(order.id);
-});
+})

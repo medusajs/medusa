@@ -425,7 +425,9 @@ Object {
   ],
   "locale": null,
   "order": Object {
+    "afterLoad": [Function],
     "beforeInsert": [Function],
+    "beforeUpdate": [Function],
     "billing_address_id": null,
     "canceled_at": null,
     "cart_id": null,
@@ -753,7 +755,9 @@ Object {
 
 exports[`medusa-plugin-sendgrid order canceled data 1`] = `
 Object {
+  "afterLoad": [Function],
   "beforeInsert": [Function],
+  "beforeUpdate": [Function],
   "billing_address": null,
   "billing_address_id": null,
   "canceled_at": Any<Date>,
@@ -982,7 +986,9 @@ Object {
 
 exports[`medusa-plugin-sendgrid order placed data 1`] = `
 Object {
+  "afterLoad": [Function],
   "beforeInsert": [Function],
+  "beforeUpdate": [Function],
   "billing_address": null,
   "billing_address_id": null,
   "canceled_at": null,
@@ -1236,7 +1242,9 @@ Object {
   },
   "locale": null,
   "order": Object {
+    "afterLoad": [Function],
     "beforeInsert": [Function],
+    "beforeUpdate": [Function],
     "billing_address": null,
     "billing_address_id": null,
     "canceled_at": null,
@@ -1612,7 +1620,9 @@ Object {
   ],
   "locale": null,
   "order": Object {
+    "afterLoad": [Function],
     "beforeInsert": [Function],
+    "beforeUpdate": [Function],
     "billing_address_id": null,
     "canceled_at": null,
     "cart_id": null,
@@ -2078,7 +2088,9 @@ Object {
   ],
   "locale": null,
   "order": Object {
+    "afterLoad": [Function],
     "beforeInsert": [Function],
+    "beforeUpdate": [Function],
     "billing_address_id": null,
     "canceled_at": null,
     "cart_id": null,

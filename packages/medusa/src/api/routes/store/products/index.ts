@@ -198,6 +198,18 @@ export const defaultStoreProductRemoteQueryObject = {
   profile: {
     fields: ["id", "created_at", "updated_at", "deleted_at", "name", "type"],
   },
+  sales_channels: {
+    fields: [
+      "id",
+      "name",
+      "description",
+      "is_disabled",
+      "created_at",
+      "updated_at",
+      "deleted_at",
+      "metadata",
+    ],
+  },
 }
 
 export * from "./list-products"
@@ -233,6 +245,7 @@ export type StoreProductsRes = {
 
 /**
  * @schema StorePostSearchRes
+ * description: "The list of search results."
  * allOf:
  *   - type: object
  *     required:
@@ -250,6 +263,7 @@ export type StorePostSearchRes = {
 /**
  * @schema StoreProductsListRes
  * type: object
+ * description: "The list of products with pagination fields."
  * x-expanded-relations:
  *   field: products
  *   relations:

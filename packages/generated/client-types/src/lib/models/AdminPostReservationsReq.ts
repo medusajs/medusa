@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the reservation to create.
+ */
 export interface AdminPostReservationsReq {
   /**
    * The ID of the line item of the reservation.
@@ -20,6 +23,10 @@ export interface AdminPostReservationsReq {
    * The quantity to reserve.
    */
   quantity: number
+  /**
+   * The reservation's description.
+   */
+  description?: string
   /**
    * An optional set of key-value pairs with additional information.
    */

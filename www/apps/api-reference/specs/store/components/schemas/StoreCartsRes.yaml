@@ -1,4 +1,5 @@
 type: object
+description: The cart's details.
 x-expanded-relations:
   field: cart
   relations:

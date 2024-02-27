@@ -29,13 +29,14 @@ import {
 } from "./index"
 import { EntityManager, In } from "typeorm"
 import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { buildQuery, setMetadata, validateId } from "../utils"
 
 import { CreateShipmentConfig } from "../types/fulfillment"
 import { OrdersReturnItem } from "../types/orders"
 import { SwapRepository } from "../repositories/swap"
 import { TransactionBaseService } from "../interfaces"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedProps = {
   manager: EntityManager
@@ -358,7 +359,7 @@ class SwapService extends TransactionBaseService {
       let newItems: LineItem[] = []
 
       if (additionalItems) {
-        newItems = await Promise.all(
+        newItems = await promiseAll(
           additionalItems.map(async ({ variant_id, quantity }) => {
             if (variant_id === null) {
               throw new MedusaError(
@@ -652,7 +653,7 @@ class SwapService extends TransactionBaseService {
       const lineItemAdjustmentServiceTx =
         this.lineItemAdjustmentService_.withTransaction(manager)
 
-      await Promise.all(
+      await promiseAll(
         swap.additional_items.map(
           async (item) =>
             await lineItemServiceTx.update(item.id, {
@@ -673,7 +674,7 @@ class SwapService extends TransactionBaseService {
           ],
         })
 
-      await Promise.all(
+      await promiseAll(
         cart.items.map(async (item) => {
           // we generate adjustments in case the cart has any discounts that should be applied to the additional items
           await lineItemAdjustmentServiceTx.createAdjustmentForLineItem(
@@ -790,7 +791,7 @@ class SwapService extends TransactionBaseService {
             order_id: swap.order_id,
           })
 
-        await Promise.all(
+        await promiseAll(
           items.map(async (item) => {
             if (item.variant_id) {
               await this.productVariantInventoryService_.reserveQuantity(

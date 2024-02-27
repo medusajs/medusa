@@ -6,4 +6,4 @@ medusa.admin.products.update(productId, {
 })
 .then(({ product }) => {
   console.log(product.id);
-});
+})

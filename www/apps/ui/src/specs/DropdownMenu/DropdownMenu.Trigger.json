@@ -1,0 +1,6 @@
+{
+  "description": "This component is based on the [Radix UI Dropdown Menu Trigger](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#trigger) primitive.",
+  "methods": [],
+  "displayName": "DropdownMenu.Trigger",
+  "props": {}
+}

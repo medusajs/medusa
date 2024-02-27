@@ -1,10 +1,9 @@
 import { IsEmail, IsNotEmpty } from "class-validator"
-import jwt from "jsonwebtoken"
 import { EntityManager } from "typeorm"
+import { defaultRelations } from "."
 import AuthService from "../../../../services/auth"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
-import { defaultRelations } from "."
 
 /**
  * @oas [post] /store/auth
@@ -31,7 +30,7 @@ import { defaultRelations } from "."
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

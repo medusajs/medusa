@@ -1,7 +1,7 @@
 get:
   operationId: GetReservationsReservation
   summary: Get a Reservation
-  description: Retrieve a reservation's details.'
+  description: Retrieve a reservation's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -15,6 +15,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_reservations_{id}/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_reservations_{id}/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -47,7 +51,7 @@ get:
 post:
   operationId: PostReservationsReservation
   summary: Update a Reservation
-  description: Update a Reservation's details.'
+  description: Update a Reservation's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -66,6 +70,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_reservations_{id}/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_reservations_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -116,6 +124,10 @@ delete:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_reservations_{id}/delete.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_reservations_{id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

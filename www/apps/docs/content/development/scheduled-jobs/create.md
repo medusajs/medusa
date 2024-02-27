@@ -7,6 +7,12 @@ addHowToData: true
 
 In this document, you’ll learn how to create a scheduled job in Medusa.
 
+:::tip
+
+v1.18 of `@medusajs/medusa` introduced a new approach to create a scheduled job. If you're looking for the old guide, you can find it [here](./create-deprecated.md). However, it's highly recommended you follow this new approach, as the old one is deprecated.
+
+:::
+
 ## Overview
 
 Medusa allows you to create scheduled jobs that run at specific times during your backend's lifetime. For example, you can synchronize your inventory with an Enterprise Resource Planning (ERP) system once a day.
@@ -17,72 +23,59 @@ This guide explains how to create a scheduled job on your Medusa backend. The sc
 
 ## Prerequisites
 
-### Medusa Components
-
-It is assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../backend/install.mdx) to get started. The Medusa backend must also have an event bus module installed, which is available when using the default Medusa backend starter.
+To use scheduled jobs, you must configure Redis in your Medusa backend. Learn more in the [Configurations documentation](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx#redis_url).
 
 ---
 
-## 1. Create a File
+## Create Scheduled Job
 
-Each scheduled job should reside in a [loader](../loaders/overview.mdx), which is a TypeScript or JavaScript file located under the `src/loaders` directory.
+Scheduled jobs are TypeScript or JavaScript guides placed under the `src/jobs` directory. It can be created under subdirectories of `src/jobs` as well.
 
-Start by creating the `src/loaders` directory. Then, inside that directory, create the JavaScript or TypeScript file that you’ll add the scheduled job in. You can use any name for the file.
+The scheduled job file exports a default handler function, and the scheduled job's configurations.
 
-For the example in this tutorial, you can create the file `src/loaders/publish.ts`.
+For example:
 
----
+```ts title="src/jobs/publish.ts"
+import { 
+  type ProductService, 
+  type ScheduledJobConfig, 
+  type ScheduledJobArgs,
+  ProductStatus,
+}  from "@medusajs/medusa"
 
-## 2. Create Scheduled Job
-
-To create a scheduled job, add the following code in the file you created, which is `src/loaders/publish.ts` in this example:
-
-```ts title=src/loaders/publish.ts
-import { AwilixContainer } from "awilix"
-
-const publishJob = async (
-  container: AwilixContainer,
-  options: Record<string, any>
-) => {
-  const jobSchedulerService = 
-    container.resolve("jobSchedulerService")
-  jobSchedulerService.create(
-    "publish-products", 
-    {}, 
-    "0 0 * * *", 
-    async () => {
-      // job to execute
-      const productService = container.resolve("productService")
-      const draftProducts = await productService.list({
-        status: "draft",
-      })
-
-      for (const product of draftProducts) {
-        await productService.update(product.id, {
-          status: "published",
-        })
-      }
-    }
+export default async function handler({ 
+  container, 
+  data, 
+  pluginOptions,
+}: ScheduledJobArgs) {
+  const productService: ProductService = container.resolve(
+    "productService"
   )
+  const draftProducts = await productService.list({
+    status: ProductStatus.DRAFT,
+  })
+
+  for (const product of draftProducts) {
+    await productService.update(product.id, {
+      status: ProductStatus.PUBLISHED,
+    })
+  }
 }
 
-export default publishJob
+export const config: ScheduledJobConfig = {
+  name: "publish-once-a-day",
+  schedule: "0 0 * * *",
+  data: {},
+}
 ```
 
-:::info
+### Scheduled Job Configuration
 
-The service taking care of background jobs was renamed in v1.7.1. If you are running a previous version, use `eventBusService` instead of `jobSchedulerService`.
+The exported configuration object of type `ScheduledJobConfig` must include the following properties:
 
-:::
-
-This file should export a function that accepts a `container` and `options` parameters. `container` is the dependency container that you can use to resolve services, such as the JobSchedulerService. `options` are the plugin’s options if this scheduled job is created in a plugin.
-
-You then resolve the `JobSchedulerService` and use the `jobSchedulerService.create` method to create the scheduled job. This method accepts four parameters:
-
-- The first parameter is a unique name to give to the scheduled job. In the example above, you use the name `publish-products`.
-- The second parameter is an object which can be used to [pass data to the job](#pass-data-to-the-scheduled-job).
-- The third parameter is the scheduled job expression pattern. In this example, it will execute the scheduled job once a day at 12 AM.
-- The fourth parameter is the function to execute. This is where you add the code to execute once the scheduled job runs. In this example, you retrieve the draft products using the [ProductService](../../references/services/classes/ProductService.md) and update the status of each of these products to `published`.
+- `name`: a string indicating a unique name to give to the scheduled job. If another scheduled job has the same name, your custom scheduled job will replace it.
+- `schedule`: a string indicating a [cron schedule](https://crontab.guru/#0_0_*_*_*) that determines when the job should run. In this example, it will execute the scheduled job once a day at 12 AM.
+- `data`: Optional data you want to pass to the job.
 
 :::tip
 
@@ -90,46 +83,19 @@ You can see examples of scheduled job expression patterns on [crontab guru](http
 
 :::
 
-### Scheduled Job Name
+### Scheduled Job Handler Function
 
-As mentioned earlier, the first parameter of the `create` method is the name of the scheduled job. By default, if another scheduled job has the same name, your custom scheduled job will replace it.
+The default-export of the scheduled job file is a handler function that is executed when the events specified in the exported configuration is triggered.
 
-If you want to ensure both scheduled jobs are registered and used, you can pass as a fifth parameter an options object with a `keepExisting` property set to `true`. For example:
+The function accepts a parameter of type `ScheduledJobArgs`, which has the following properties:
 
-```ts
-jobSchedulerService.create(
-  "publish-products", 
-  {},
-  "0 0 * * *", 
-  async () => {
-    // ...
-  },
-  {
-    keepExisting: true,
-  }
-)
-```
-
-### Pass Data to the Scheduled Job
-
-To pass data to your scheduled job, you can add them to the object passed as a second parameter under the `data` property. This is helpful if you use one function to handle multiple scheduled jobs.
-
-For example:
-
-```ts
-jobSchedulerService.create("publish-products", {
-    data: {
-      productId,
-    },
-  }, "0 0 * * *", async (job) => {
-    console.log(job.data) // {productId: 'prod_124...'}
-    // ...
-})
-```
+- `container`: The [dependency container](../fundamentals/dependency-injection.md) that allows you to resolve Medusa resources, such as services.
+- `data`: The data passed in the [configuration object](#scheduled-job-configuration).
+- `pluginOptions`: When the scheduled job is created within a plugin, this object holds the plugin's options defined in the [Medusa configurations](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx).
 
 ---
 
-## 3. Run Medusa Backend
+## Test it Out
 
 :::info
 
@@ -149,27 +115,27 @@ Then, run the following command to start your Medusa backend:
 npx medusa develop
 ```
 
-If the scheduled job was registered successfully, you should see a message similar to this logged on your Medusa backend:
+If the scheduled job is registered successfully, you should see a message similar to this logged on your Medusa backend:
 
 ```bash
-Registering publish-products
+Registering publish-once-a-day
 ```
 
-Where `publish-products` is the unique name you provided to the scheduled job.
+Where `publish-once-a-day` is the unique name you provided to the scheduled job.
 
-Once it is time to run your scheduled job based on the scheduled job expression pattern, the scheduled job will run and you can see it logged on your Medusa backend.
+Once it's time to run your scheduled job based on the `schedule` configuration, the scheduled job will run and you can see it logged on your Medusa backend.
 
 For example, the above scheduled job will run at 12 AM and, when it runs, you can see the following logged on your Medusa backend:
 
 ```bash noReport
-info:    Processing scheduled job: publish-products
+info:    Processing scheduled job: publish-once-a-day
 ```
 
 If you log anything in the scheduled job, for example using `console.log`, or if any errors are thrown, it’ll also be logged on your Medusa backend.
 
 :::tip
 
-To test the previous example out instantly, you can change the scheduled job expression pattern passed as the third parameter to `jobSchedulerService.create` to `* * * * *`. This will run the scheduled job every minute.
+To test the previous example out instantly, you can change the value of `schedule` in the exported configuration object to `* * * * *`. This will run the scheduled job every minute.
 
 :::
 

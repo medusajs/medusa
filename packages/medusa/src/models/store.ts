@@ -69,6 +69,9 @@ export class Store extends BaseEntity {
   ])
   default_sales_channel: SalesChannel
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "store")
@@ -100,8 +103,9 @@ export class Store extends BaseEntity {
  *     description: The name of the Store - this may be displayed to the Customer.
  *     type: string
  *     example: Medusa Store
+ *     default: Medusa Store
  *   default_currency_code:
- *     description: The 3 character currency code that is the default of the store.
+ *     description: The three character currency code that is the default of the store.
  *     type: string
  *     example: usd
  *     externalDocs:
@@ -110,6 +114,7 @@ export class Store extends BaseEntity {
  *   default_currency:
  *     description: The details of the store's default currency.
  *     x-expandable: "default_currency"
+ *     default: "usd"
  *     nullable: true
  *     $ref: "#/components/schemas/Currency"
  *   currencies:

@@ -1,6 +1,9 @@
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
-import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
@@ -31,7 +34,36 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useSetPaymentSession } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const setPaymentSession = useSetPaymentSession(cartId)
+ *
+ *         const handleSetPaymentSession = (
+ *           providerId: string
+ *         ) => {
+ *           setPaymentSession.mutate({
+ *             provider_id: providerId,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.payment_session)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -67,6 +99,9 @@ export default async (req, res) => {
 
   const cartService: CartService = req.scope.resolve("cartService")
 
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
     return await cartService
@@ -79,12 +114,18 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
+
   res.status(200).json({ cart: cleanResponseData(data, []) })
 }
 
 /**
  * @schema StorePostCartsCartPaymentSessionReq
  * type: object
+ * description: "The details of the payment session to set."
  * required:
  *   - provider_id
  * properties:

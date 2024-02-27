@@ -1,3 +1,4 @@
+import { PriceListStatus, PriceListType } from "@medusajs/utils"
 import {
   BeforeInsert,
   Column,
@@ -7,14 +8,13 @@ import {
   OneToMany,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-import { PriceListStatus, PriceListType } from "../types/price-list"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { CustomerGroup } from "./customer-group"
 import { MoneyAmount } from "./money-amount"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 @Entity()
 export class PriceList extends SoftDeletableEntity {
@@ -63,6 +63,9 @@ export class PriceList extends SoftDeletableEntity {
   @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
   includes_tax: boolean
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): undefined | void {
     this.id = generateEntityId(this.id, "pl")

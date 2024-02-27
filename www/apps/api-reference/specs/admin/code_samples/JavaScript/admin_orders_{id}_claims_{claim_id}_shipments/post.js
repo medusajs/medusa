@@ -6,4 +6,4 @@ medusa.admin.orders.createClaimShipment(orderId, claimId, {
 })
 .then(({ order }) => {
   console.log(order.id);
-});
+})

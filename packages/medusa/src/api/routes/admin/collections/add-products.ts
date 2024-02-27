@@ -36,6 +36,34 @@ import { defaultAdminCollectionsRelations } from "./index"
  *       .then(({ collection }) => {
  *         console.log(collection.products)
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminAddProductsToCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         collectionId: string
+ *       }
+ *
+ *       const Collection = ({ collectionId }: Props) => {
+ *         const addProducts = useAdminAddProductsToCollection(collectionId)
+ *         // ...
+ *
+ *         const handleAddProducts = (productIds: string[]) => {
+ *           addProducts.mutate({
+ *             product_ids: productIds
+ *           }, {
+ *             onSuccess: ({ collection }) => {
+ *               console.log(collection.products)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Collection
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -100,6 +128,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostProductsToCollectionReq
  * type: object
+ * description: "The details of the products to add to the collection."
  * required:
  *   - product_ids
  * properties:

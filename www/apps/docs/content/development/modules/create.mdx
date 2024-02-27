@@ -149,7 +149,7 @@ Where:
 
 Here's an example implementation of `index.ts` from Medusa's Redis Cache module:
 
-```ts title=index.ts
+```ts title="index.ts"
 import { ModuleExports } from "@medusajs/modules-sdk"
 
 import Loader from "./loaders"
@@ -172,7 +172,7 @@ export default moduleDefinition
 
 To use your module in the Medusa backend, add your module to `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   // ...
   modules: { 
@@ -200,7 +200,7 @@ The way you add your module depends on its type and what options it requires, if
 
 When the module is installed as an NPM package, the value of the `resolve` property should be the name of that package. For example:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   // ...
   modules: { 
@@ -238,7 +238,7 @@ You can reference your module in two ways:
 
 1\. Referencing the directory: In this case, it's assumed that the `index.ts` file that contains the module definition is in the root of the directory you referenced. Using the above example, the file path would be in this case:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   // ...
   modules: { 
@@ -253,7 +253,7 @@ module.exports = {
 
 2\. Referencing `index` file: In this case, it's assumed that the `index.ts` or `index.js` file you're referencing includes the module definition. Using the above example, the file path would be in this case:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   // ...
   modules: { 
@@ -272,7 +272,7 @@ By default, the module shares the same dependency container used across the Medu
 
 The module's scope can be changed using the `resources` property available as part of the module's configurations:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   // ...
   modules: { 

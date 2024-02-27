@@ -6,6 +6,7 @@ import {
   PaymentProcessorSessionResponse,
   PaymentSessionStatus,
 } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
 import { EOL } from "os"
 import Stripe from "stripe"
 import {
@@ -14,7 +15,6 @@ import {
   PaymentIntentOptions,
   StripeOptions,
 } from "../types"
-import { MedusaError } from "@medusajs/utils"
 
 abstract class StripeBase extends AbstractPaymentProcessor {
   static identifier = ""
@@ -39,6 +39,10 @@ abstract class StripeBase extends AbstractPaymentProcessor {
   }
 
   abstract get paymentIntentOptions(): PaymentIntentOptions
+
+  get options(): StripeOptions {
+    return this.options_
+  }
 
   getStripe() {
     return this.stripe_
@@ -322,16 +326,16 @@ abstract class StripeBase extends AbstractPaymentProcessor {
 
   protected buildError(
     message: string,
-    e: Stripe.StripeRawError | PaymentProcessorError | Error
+    error: Stripe.StripeRawError | PaymentProcessorError | Error
   ): PaymentProcessorError {
     return {
       error: message,
-      code: "code" in e ? e.code : "",
-      detail: isPaymentProcessorError(e)
-        ? `${e.error}${EOL}${e.detail ?? ""}`
-        : "detail" in e
-        ? e.detail
-        : e.message ?? "",
+      code: "code" in error ? error.code : "unknown",
+      detail: isPaymentProcessorError(error)
+        ? `${error.error}${EOL}${error.detail ?? ""}`
+        : "detail" in error
+        ? error.detail
+        : error.message ?? "",
     }
   }
 }

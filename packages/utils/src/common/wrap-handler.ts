@@ -3,20 +3,21 @@ import { NextFunction, Request, RequestHandler, Response } from "express"
 type handler = (req: Request, res: Response) => Promise<void>
 
 export const wrapHandler = (fn: handler): RequestHandler => {
-return (
-    req: Request & { errors?: Error[] },
-    res: Response,
-    next: NextFunction
-  ) => {
-    if (req?.errors?.length) {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const req_ = req as Request & { errors?: Error[] }
+    if (req_?.errors?.length) {
       return res.status(400).json({
-        errors: req.errors,
+        errors: req_.errors,
         message:
           "Provided request body contains errors. Please check the data and retry the request",
       })
     }
 
-    return fn(req, res).catch(next)
+    try {
+      return await fn(req, res)
+    } catch (err) {
+      next(err)
+    }
   }
 }
 

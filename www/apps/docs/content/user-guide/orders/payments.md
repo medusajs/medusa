@@ -34,7 +34,7 @@ To capture an order’s payment:
 
 ## Refund Payment
 
-:::caution
+:::warning
 
 Refunding payments can’t be undone. Payment can only be refunded after it has been captured.
 

@@ -52,7 +52,7 @@ Where `<YOUR_REDIS_URL>` is a connection URL to your Redis instance.
 
 In `medusa-config.js`, add the following to the exported object:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   // ...
   modules: {
@@ -68,11 +68,13 @@ module.exports = {
 }
 ```
 
-This registers the Redis cache module as the main cache service to use. In the options, you pass `redisUrl` with the value being the environment variable you set. You also pass the option `ttl`. This means time-to-live, and it indicates the number of seconds an item can live in the cache before it’s removed.
+This registers the Redis cache module as the main cache service to use. In the options, you pass `redisUrl` with the value being the environment variable you set. 
+
+You also pass the option `ttl`. This means time-to-live, and it indicates the number of seconds an item can live in the cache before it’s removed. If it's set to `0`, the module will skip adding the items to the cache.
 
 Other available options include:
 
-- `redisOptions`: an object containing options for the Redis instance. You can learn about available options in [io-redis’s documentation](https://luin.github.io/ioredis/index.html#RedisOptions). By default, it’s an empty object.
+- `redisOptions`: an object containing options for the Redis instance. You can learn about available options in [io-redis’s documentation](https://redis.github.io/ioredis/classes/Redis.html#options). By default, it’s an empty object.
 - `namespace`: a string used to prefix event keys. By default, it's `medusa`.
 
 ---

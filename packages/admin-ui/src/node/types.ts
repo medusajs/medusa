@@ -1,5 +1,14 @@
 import type { Configuration } from "webpack"
 
+type WebSocketURL = {
+  hostname?: string | undefined
+  password?: string | undefined
+  pathname?: string | undefined
+  port?: string | number | undefined
+  protocol?: string | undefined
+  username?: string | undefined
+}
+
 export type DevelopOptions = {
   /**
    * Determines whether the development server should open the admin dashboard
@@ -23,6 +32,15 @@ export type DevelopOptions = {
    * @default "normal"
    */
   stats?: "normal" | "debug"
+  /**
+   * The development server allowed hosts.
+   * @default "auto"
+   */
+  allowedHosts?: "auto" | "all" | string[]
+  /**
+   * Specifying URL to web socket server
+   */
+  webSocketURL?: string | WebSocketURL |undefined
 }
 
 export type AdminOptions = {

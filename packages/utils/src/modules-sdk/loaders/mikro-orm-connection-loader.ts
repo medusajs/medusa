@@ -11,13 +11,25 @@ import { ContainerRegistrationKeys, MedusaError } from "../../common"
 import { mikroOrmCreateConnection } from "../../dal"
 import { loadDatabaseConfig } from "../load-module-database-config"
 
+/**
+ * Load a MikroORM connection into the container
+ *
+ * @param moduleName
+ * @param container
+ * @param options
+ * @param moduleDeclaration
+ * @param entities
+ * @param pathToMigrations
+ */
 export async function mikroOrmConnectionLoader({
+  moduleName,
   container,
   options,
   moduleDeclaration,
   entities,
   pathToMigrations,
 }: {
+  moduleName: string
   entities: any[]
   container: MedusaContainer
   options?:
@@ -43,7 +55,18 @@ export async function mikroOrmConnectionLoader({
     moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
     moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
   ) {
-    return await loadShared({ container, entities, pathToMigrations })
+    const shouldSwallowError = true
+    const dbConfig = loadDatabaseConfig(
+      moduleName,
+      (options ?? {}) as ModulesSdkTypes.ModuleServiceInitializeOptions,
+      shouldSwallowError
+    )
+    return await loadShared({
+      database: dbConfig,
+      container,
+      entities,
+      pathToMigrations,
+    })
   }
 
   /**
@@ -55,7 +78,7 @@ export async function mikroOrmConnectionLoader({
   )?.database?.connection
   dbConfig = {
     ...loadDatabaseConfig(
-      "product",
+      moduleName,
       (options ?? {}) as ModulesSdkTypes.ModuleServiceInitializeOptions,
       shouldSwallowError
     ),
@@ -95,7 +118,7 @@ async function loadDefault({
   return orm.em.fork()
 }
 
-async function loadShared({ container, entities, pathToMigrations }) {
+async function loadShared({ database, container, entities, pathToMigrations }) {
   const sharedConnection = container.resolve(
     ContainerRegistrationKeys.PG_CONNECTION,
     {
@@ -111,6 +134,7 @@ async function loadShared({ container, entities, pathToMigrations }) {
   const manager = await loadDefault({
     entities,
     database: {
+      ...database,
       connection: sharedConnection,
     },
     pathToMigrations,

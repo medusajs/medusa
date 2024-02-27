@@ -9,6 +9,7 @@ import { useThemeConfig } from "@docusaurus/theme-common"
 import { ThemeConfig } from "@medusajs/docs"
 import SearchProvider from "../Search"
 import LearningPathProvider from "../LearningPath"
+import SkipToContent from "@theme/SkipToContent"
 
 type DocsProvidersProps = {
   children?: React.ReactNode
@@ -25,7 +26,10 @@ const DocsProviders = ({ children }: DocsProvidersProps) => {
         <ModalProvider>
           <SearchProvider>
             <LearningPathProvider>
-              <NotificationProvider>{children}</NotificationProvider>
+              <NotificationProvider>
+                <SkipToContent />
+                {children}
+              </NotificationProvider>
             </LearningPathProvider>
           </SearchProvider>
         </ModalProvider>

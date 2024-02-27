@@ -33,7 +33,7 @@ class S3Service extends AbstractFileService implements IFileService {
   protected client_: S3Client
 
   constructor({ logger }, options) {
-    super({}, options)
+    super(arguments[0], options)
 
     this.prefix_ = options.prefix ? `${options.prefix}/` : ''
     this.bucket_ = options.bucket

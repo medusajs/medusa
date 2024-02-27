@@ -94,6 +94,7 @@ export const defaultAdminDraftOrdersFields: (keyof DraftOrder)[] = [
 /**
  * @schema AdminPostDraftOrdersDraftOrderRegisterPaymentRes
  * type: object
+ * description: "The order's details."
  * required:
  *   - order
  * properties:
@@ -107,6 +108,7 @@ export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
 /**
  * @schema AdminDraftOrdersRes
  * type: object
+ * description: "The list of draft orders."
  * x-expanded-relations:
  *   field: draft_order
  *   relations:
@@ -201,6 +203,7 @@ export type AdminDraftOrdersDeleteRes = DeleteResponse
 
 /**
  * @schema AdminDraftOrdersListRes
+ * description: "The list of draft orders with pagination fields."
  * type: object
  * x-expanded-relations:
  *   field: draft_orders

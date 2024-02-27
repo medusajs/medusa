@@ -24,7 +24,31 @@ import { IsString } from "class-validator"
  *       })
  *       .then(({ download_url }) => {
  *         console.log(download_url);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreatePresignedDownloadUrl } from "medusa-react"
+ *
+ *       const Image = () => {
+ *         const createPresignedUrl = useAdminCreatePresignedDownloadUrl()
+ *         // ...
+ *
+ *         const handlePresignedUrl = (fileKey: string) => {
+ *           createPresignedUrl.mutate({
+ *             file_key: fileKey
+ *           }, {
+ *             onSuccess: ({ download_url }) => {
+ *               console.log(download_url)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Image
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -73,6 +97,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostUploadsDownloadUrlReq
  * type: object
+ * description: "The details of the file to retrieve its download URL."
  * required:
  *   - file_key
  * properties:

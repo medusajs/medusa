@@ -1,17 +1,17 @@
-import { IsInt, IsOptional, ValidateNested } from "class-validator"
+import { IsOptional, ValidateNested } from "class-validator"
 
-import { DateComparisonOperator } from "../../../../types/common"
-import RegionService from "../../../../services/region"
 import { Type } from "class-transformer"
-import { defaultRelations } from "."
-import { omit } from "lodash"
-import { validator } from "../../../../utils/validator"
+import RegionService from "../../../../services/region"
+import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 
 /**
  * @oas [get] /store/regions
  * operationId: GetRegions
  * summary: List Regions
- * description: "Retrieve a list of regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated. This endpoint is useful to
+ * description: "Retrieve a list of regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated. This API Route is useful to
  *  show the customer all available regions to choose from."
  * externalDocs:
  *   description: "How to use regions in a storefront"
@@ -73,9 +73,35 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.regions.list()
- *       .then(({ regions }) => {
+ *       .then(({ regions, count, limit, offset }) => {
  *         console.log(regions.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useRegions } from "medusa-react"
+ *
+ *       const Regions = () => {
+ *         const { regions, isLoading } = useRegions()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {regions?.length && (
+ *               <ul>
+ *                 {regions.map((region) => (
+ *                   <li key={region.id}>
+ *                     {region.name}
+ *                   </li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Regions
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -101,38 +127,21 @@ import { validator } from "../../../../utils/validator"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(StoreGetRegionsParams, req.query)
-  const { limit, offset } = validated
-
   const regionService: RegionService = req.scope.resolve("regionService")
-
-  const filterableFields = omit(validated, ["limit", "offset"])
-
-  const listConfig = {
-    relations: defaultRelations,
-    skip: offset,
-    take: limit,
-  }
+  const { limit, offset } = req.validatedQuery
 
   const [regions, count] = await regionService.listAndCount(
-    filterableFields,
-    listConfig
+    req.filterableFields,
+    req.listConfig
   )
 
   res.json({ regions, count, limit, offset })
 }
 
-export class StoreGetRegionsParams {
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  limit?: number = 100
-
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  offset?: number = 0
-
+export class StoreGetRegionsParams extends extendedFindParamsMixin({
+  limit: 100,
+  offset: 0,
+}) {
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)

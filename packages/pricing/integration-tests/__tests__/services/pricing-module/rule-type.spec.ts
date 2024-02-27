@@ -1,24 +1,33 @@
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
-import { initialize } from "../../../../src"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MikroOrmWrapper } from "../../../utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { initModules } from "medusa-test-utils"
+import { Modules } from "@medusajs/modules-sdk"
 
 describe("PricingModuleService ruleType", () => {
   let service: IPricingModuleService
   let testManager: SqlEntityManager
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PRICING]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     MikroOrmWrapper.forkManager()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
-      },
-    })
 
     testManager = MikroOrmWrapper.forkManager()
 
@@ -161,7 +170,7 @@ describe("PricingModuleService ruleType", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"ruleTypeId" must be defined')
+      expect(error.message).toEqual("ruleType - id must be defined")
     })
 
     it("should return ruleType based on config select param", async () => {

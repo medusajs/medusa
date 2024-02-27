@@ -33,7 +33,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.mdx) installed and have [created an instance of the client](../../../js-client/overview.mdx#configuration).
 
 ### Medusa React
 
@@ -51,144 +51,144 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 ## List Tax Rates
 
-You can list the tax rates by sending a request to the [List Tax Rates endpoint](https://docs.medusajs.com/api/admin#tax-rates_gettaxrates):
+You can list the tax rates by sending a request to the [List Tax Rates API Route](https://docs.medusajs.com/api/admin#tax-rates_gettaxrates):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.taxRates.list()
-.then(({ tax_rates, limit, offset, count }) => {
-  console.log(tax_rates.length)
-})
-```
+    ```ts
+    medusa.admin.taxRates.list()
+    .then(({ tax_rates, limit, offset, count }) => {
+      console.log(tax_rates.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminTaxRates } from "medusa-react"
+    ```tsx
+    import { useAdminTaxRates } from "medusa-react"
 
-const TaxRates = () => {
-  const { tax_rates, isLoading } = useAdminTaxRates()
+    const TaxRates = () => {
+      const { tax_rates, isLoading } = useAdminTaxRates()
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {tax_rates && !tax_rates.length && (
-        <span>No Tax Rates</span>
-      )}
-      {tax_rates && tax_rates.length > 0 && (
-        <ul>
-          {tax_rates.map((tax_rate) => (
-            <li key={tax_rate.id}>{tax_rate.code}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {tax_rates && !tax_rates.length && (
+            <span>No Tax Rates</span>
+          )}
+          {tax_rates && tax_rates.length > 0 && (
+            <ul>
+              {tax_rates.map((tax_rate) => (
+                <li key={tax_rate.id}>{tax_rate.code}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-export default TaxRates
-```
+    export default TaxRates
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/tax-rates`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ tax_rates, limit, offset, count }) => {
-  console.log(tax_rates.length)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/tax-rates`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ tax_rates, limit, offset, count }) => {
+      console.log(tax_rates.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/tax-rates' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/tax-rates' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-You can pass to this endpoint filter and search parameters as explained in the [API reference](https://docs.medusajs.com/api/admin#tax-rates_gettaxrates).
+You can pass to this API Route filter and search parameters as explained in the [API reference](https://docs.medusajs.com/api/admin#tax-rates_gettaxrates).
 
-The endpoint returns an array of tax rate objects along with [pagination parameters](https://docs.medusajs.com/api/admin#pagination).
+The API Route returns an array of tax rate objects along with [pagination parameters](https://docs.medusajs.com/api/admin#pagination).
 
 ### Listing Tax Rates for a Region
 
 You can retrieve the tax rate of a region by passing the `region_id` query parameter:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.taxRates.list({
-  region_id: "reg_123",
-})
-.then(({ tax_rates, limit, offset, count }) => {
-  console.log(tax_rates.length)
-})
-```
+    ```ts
+    medusa.admin.taxRates.list({
+      region_id: "reg_123",
+    })
+    .then(({ tax_rates, limit, offset, count }) => {
+      console.log(tax_rates.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminTaxRates } from "medusa-react"
+    ```tsx
+    import { useAdminTaxRates } from "medusa-react"
 
-const TaxRates = () => {
-  const { tax_rates, isLoading } = useAdminTaxRates({
-    region_id: "reg_123",
-  })
+    const TaxRates = () => {
+      const { tax_rates, isLoading } = useAdminTaxRates({
+        region_id: "reg_123",
+      })
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {tax_rates && !tax_rates.length && (
-        <span>No Tax Rates</span>
-      )}
-      {tax_rates && tax_rates.length > 0 && (
-        <ul>
-          {tax_rates.map((tax_rate) => (
-            <li key={tax_rate.id}>{tax_rate.code}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {tax_rates && !tax_rates.length && (
+            <span>No Tax Rates</span>
+          )}
+          {tax_rates && tax_rates.length > 0 && (
+            <ul>
+              {tax_rates.map((tax_rate) => (
+                <li key={tax_rate.id}>{tax_rate.code}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-export default TaxRates
-```
+    export default TaxRates
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/tax-rates?region_id=reg_123`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ tax_rates, limit, offset, count }) => {
-  console.log(tax_rates.length)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/tax-rates?region_id=reg_123`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ tax_rates, limit, offset, count }) => {
+      console.log(tax_rates.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/tax-rates?region_id=reg_123' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/tax-rates?region_id=reg_123' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 In the example above, you pass the region’s ID as the value of the `region_id` query parameter.
@@ -196,162 +196,174 @@ In the example above, you pass the region’s ID as the value of the `region_id`
 This query parameter also accepts an array of strings, allowing you to filter the tax rates by more than one region:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.taxRates.list({
-  region_id: ["reg_123", "reg_456"],
-})
-.then(({ tax_rates, limit, offset, count }) => {
-  console.log(tax_rates.length)
-})
-```
+    ```ts
+    medusa.admin.taxRates.list({
+      region_id: ["reg_123", "reg_456"],
+    })
+    .then(({ tax_rates, limit, offset, count }) => {
+      console.log(tax_rates.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminTaxRates } from "medusa-react"
+    ```tsx
+    import { useAdminTaxRates } from "medusa-react"
 
-const TaxRates = () => {
-  const { tax_rates, isLoading } = useAdminTaxRates({
-    region_id: ["reg_123", "reg_456"],
-  })
+    const TaxRates = () => {
+      const { tax_rates, isLoading } = useAdminTaxRates({
+        region_id: ["reg_123", "reg_456"],
+      })
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {tax_rates && !tax_rates.length && (
-        <span>No Tax Rates</span>
-      )}
-      {tax_rates && tax_rates.length > 0 && (
-        <ul>
-          {tax_rates.map((tax_rate) => (
-            <li key={tax_rate.id}>{tax_rate.code}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {tax_rates && !tax_rates.length && (
+            <span>No Tax Rates</span>
+          )}
+          {tax_rates && tax_rates.length > 0 && (
+            <ul>
+              {tax_rates.map((tax_rate) => (
+                <li key={tax_rate.id}>{tax_rate.code}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-export default TaxRates
-```
+    export default TaxRates
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/tax-rates?region_id[]=reg_123&region_id[]=reg_456`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ tax_rates, limit, offset, count }) => {
-  console.log(tax_rates.length)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/tax-rates?region_id[]=reg_123&region_id[]=reg_456`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ tax_rates, limit, offset, count }) => {
+      console.log(tax_rates.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/tax-rates?region_id[]=reg_123&region_id[]=reg_456' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/tax-rates?region_id[]=reg_123&region_id[]=reg_456' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ---
 
 ## Create Tax Rate
 
-You can create a tax rate by sending a request to the [Create Tax Rate endpoint](https://docs.medusajs.com/api/admin#tax-rates_posttaxrates):
+You can create a tax rate by sending a request to the [Create Tax Rate API Route](https://docs.medusajs.com/api/admin#tax-rates_posttaxrates):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.taxRates.create({
-  code: "TEST",
-  name: "New Tax Rate",
-  region_id,
-  rate: 10,
-})
-.then(({ tax_rate }) => {
-  console.log(tax_rate.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCreateTaxRate } from "medusa-react"
-
-const CreateTaxRate = () => {
-  const createTaxRate = useAdminCreateTaxRate()
-  // ...
-
-  const handleCreate = () => {
-    createTaxRate.mutate({
+    ```ts
+    medusa.admin.taxRates.create({
       code: "TEST",
       name: "New Tax Rate",
       region_id,
       rate: 10,
     })
-  }
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default CreateTaxRate
-```
+    ```tsx
+    import { useAdminCreateTaxRate } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    type Props = {
+      regionId: string
+    }
 
-```ts
-fetch(`<BACKEND_URL>/admin/tax-rates`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    code: "TEST",
-    name: "New Tax Rate",
-    region_id,
-    rate: 10,
-  }),
-})
-.then((response) => response.json())
-.then(({ tax_rate }) => {
-  console.log(tax_rate.id)
-})
-```
+    const CreateTaxRate = ({ regionId }: Props) => {
+      const createTaxRate = useAdminCreateTaxRate()
+      // ...
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      const handleCreate = (
+        code: string,
+        name: string,
+        rate: number
+      ) => {
+        createTaxRate.mutate({
+          code,
+          name,
+          region_id: regionId,
+          rate,
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.id)
+          }
+        })
+      }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/tax-rates' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "code": "TEST",
-    "name": "New Tax Rate",
-    "region_id": "<REGION_ID>",
-    "rate": 10
-}'
-```
+      // ...
+    }
 
-</TabItem>
+    export default CreateTaxRate
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/tax-rates`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code: "TEST",
+        name: "New Tax Rate",
+        region_id,
+        rate: 10,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/tax-rates' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "code": "TEST",
+        "name": "New Tax Rate",
+        "region_id": "<REGION_ID>",
+        "rate": 10
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the following body parameters:
+This API Route requires the following body parameters:
 
 - `code`: a string indicating the tax code
 - `name`: a string indicating the name of the tax rate
@@ -361,7 +373,7 @@ You can optionally pass other parameters, such as `rate`, which is a number that
 
 :::tip
 
-You can specify here the products, product types, or shipping options that this tax rate is created for as explained in the API reference. In this guide, you’ll be using other endpoints to add or delete these conditions on a tax rate.
+You can specify here the products, product types, or shipping options that this tax rate is created for as explained in the API reference. In this guide, you’ll be using other API Routes to add or delete these conditions on a tax rate.
 
 :::
 
@@ -371,78 +383,88 @@ The request returns the created tax rate as an object.
 
 ## Update Tax Rate
 
-You can update a tax rate by sending a request to the [Update Tax Rate endpoint](https://docs.medusajs.com/api/admin#tax-rates_posttaxratestaxrate):
+You can update a tax rate by sending a request to the [Update Tax Rate API Route](https://docs.medusajs.com/api/admin#tax-rates_posttaxratestaxrate):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.taxRates.update(taxRateId, {
-  name: "New Tax Rate",
-})
-.then(({ tax_rate }) => {
-  console.log(tax_rate.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminUpdateTaxRate } from "medusa-react"
-
-const UpdateTaxRate = () => {
-  const updateTaxRate = useAdminUpdateTaxRate(taxRateId)
-  // ...
-
-  const handleUpdate = () => {
-    updateTaxRate.mutate({
+    ```ts
+    medusa.admin.taxRates.update(taxRateId, {
       name: "New Tax Rate",
     })
-  }
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default UpdateTaxRate
-```
+    ```tsx
+    import { useAdminUpdateTaxRate } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    type Props = {
+      taxRateId: string
+    }
 
-```ts
-fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    name: "New Tax Rate",
-  }),
-})
-.then((response) => response.json())
-.then(({ tax_rate }) => {
-  console.log(tax_rate.id)
-})
-```
+    const TaxRate = ({ taxRateId }: Props) => {
+      const updateTaxRate = useAdminUpdateTaxRate(taxRateId)
+      // ...
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      const handleUpdate = (
+        name: string
+      ) => {
+        updateTaxRate.mutate({
+          name
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.name)
+          }
+        })
+      }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "name": "New Tax Rate"
-}'
-```
+      // ...
+    }
 
-</TabItem>
+    export default TaxRate
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: "New Tax Rate",
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "New Tax Rate"
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the tax rate ID to be passed as a path parameter.
+This API Route requires the tax rate ID to be passed as a path parameter.
 
 In the request body, you can pass any of the tax rate’s fields as a parameter. In the example above, you pass the `name` parameter to update the name of the tax rate. Refer to the [API reference](https://docs.medusajs.com/api/admin#tax-rates_posttaxratestaxrate) for other parameters you can pass in the request body.
 
@@ -456,88 +478,94 @@ This section explains how you can add and remove products from a tax rate.
 
 ### Add Product to Tax Rate
 
-You can add a product to a tax rate by sending a request to the [Add Products endpoint](https://docs.medusajs.com/api/admin#tax-rates_posttaxratestaxrateproducts):
+You can add a product to a tax rate by sending a request to the [Add Products API Route](https://docs.medusajs.com/api/admin#tax-rates_posttaxratestaxrateproducts):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.taxRates.addProducts(taxRateId, {
-  products: [
-    productId1,
-  ],
-})
-.then(({ tax_rate }) => {
-  console.log(tax_rate.products)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCreateProductTaxRates } from "medusa-react"
-
-const AddProduct = () => {
-  const addProduct = useAdminCreateProductTaxRates(taxRateId)
-  // ...
-
-  const handleAdd = () => {
-    addProduct.mutate({
+    ```ts
+    medusa.admin.taxRates.addProducts(taxRateId, {
       products: [
         productId1,
       ],
     })
-  }
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.products)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default AddProduct
-```
+    ```tsx
+    import { useAdminCreateProductTaxRates } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    type Props = {
+      taxRateId: string
+    }
+
+    const TaxRate = ({ taxRateId }: Props) => {
+      const addProduct = useAdminCreateProductTaxRates(taxRateId)
+      // ...
+
+      const handleAddProduct = (productIds: string[]) => {
+        addProduct.mutate({
+          products: productIds,
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.products)
+          }
+        })
+      }
+
+      // ...
+    }
+
+    export default TaxRate
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/products/batch`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    products: [
-      productId1,
-    ],
-  }),
-})
-.then((response) => response.json())
-.then(({ tax_rate }) => {
-  console.log(tax_rate.products)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/products/batch`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        products: [
+          productId1,
+        ],
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.products)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/products/batch' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-   "products": [
-     "<PRODUCT_ID>"
-   ]
-}'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/products/batch' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "products": [
+        "<PRODUCT_ID>"
+      ]
+    }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint requires the tax rate’s ID as a path parameter.
+This API Route requires the tax rate’s ID as a path parameter.
 
 In the request body, the `products` parameter is required. It’s an array of strings, each string being the ID of a product to add to the tax rate.
 
@@ -545,88 +573,92 @@ The request returns the updated tax rate as an object. You can access the tax ra
 
 ### Remove Product from Tax Rate
 
-You can remove a product from a tax rate by sending a request to the [Delete Products endpoint](https://docs.medusajs.com/api/admin#tax-rates_deletetaxratestaxrateproducts):
+You can remove a product from a tax rate by sending a request to the [Delete Products API Route](https://docs.medusajs.com/api/admin#tax-rates_deletetaxratestaxrateproducts):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.taxRates.removeProducts(taxRateId, {
-  products: [
-    productId1,
-  ],
-})
-.then(({ tax_rate }) => {
-  console.log(tax_rate.products)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminDeleteProductTaxRates } from "medusa-react"
-
-const RemoveProduct = () => {
-  const removeProduct = useAdminDeleteProductTaxRates(taxRateId)
-  // ...
-
-  const handleRemove = () => {
-    removeProduct.mutate({
+    ```ts
+    medusa.admin.taxRates.removeProducts(taxRateId, {
       products: [
         productId1,
       ],
     })
-  }
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.products)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default RemoveProduct
-```
+    ```tsx
+    import { useAdminDeleteProductTaxRates } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const TaxRate = (
+      taxRateId: string
+    ) => {
+      const removeProduct = useAdminDeleteProductTaxRates(taxRateId)
+      // ...
+
+      const handleRemoveProduct = (productIds: string[]) => {
+        removeProduct.mutate({
+          products: productIds,
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.products)
+          }
+        })
+      }
+
+      // ...
+    }
+
+    export default TaxRate
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/products/batch`, {
-  credentials: "include",
-  method: "DELETE",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    products: [
-      productId1,
-    ],
-  }),
-})
-.then((response) => response.json())
-.then(({ tax_rate }) => {
-  console.log(tax_rate.products)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/products/batch`, {
+      credentials: "include",
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        products: [
+          productId1,
+        ],
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.products)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/products/batch' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-   "products": [
-     "<PRODUCT_ID>"
-   ]
-}'
-```
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/products/batch' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "products": [
+        "<PRODUCT_ID>"
+      ]
+    }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint requires the tax rate’s ID as a path parameter.
+This API Route requires the tax rate’s ID as a path parameter.
 
 In the request body, the `products` parameter is required. It’s an array of strings, each string being the ID of a product to remove from the tax rate.
 
@@ -640,92 +672,98 @@ This section explains how you can add and remove product types from a tax rate.
 
 ### Add Product Type to Tax Rate
 
-You can add a product type to a tax rate by sending a request to the [Add Product Types endpoint](https://docs.medusajs.com/api/admin#tax-rates_posttaxratestaxrateproducttypes):
+You can add a product type to a tax rate by sending a request to the [Add Product Types API Route](https://docs.medusajs.com/api/admin#tax-rates_posttaxratestaxrateproducttypes):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.taxRates.addProductTypes(taxRateId, {
-  product_types: [
-    productTypeId,
-  ],
-})
-.then(({ tax_rate }) => {
-  console.log(tax_rate.product_types)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { 
-  useAdminCreateProductTypeTaxRates,
-} from "medusa-react"
-
-const AddProductTypes = () => {
-  const addProductTypes = useAdminCreateProductTypeTaxRates(
-    taxRateId
-  )
-  // ...
-
-  const handleAdd = () => {
-    addProductTypes.mutate({
+    ```ts
+    medusa.admin.taxRates.addProductTypes(taxRateId, {
       product_types: [
         productTypeId,
       ],
     })
-  }
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.product_types)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default AddProductTypes
-```
+    ```tsx
+    import { 
+      useAdminCreateProductTypeTaxRates,
+    } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    type Props = {
+      taxRateId: string
+    }
+
+    const TaxRate = ({ taxRateId }: Props) => {
+      const addProductTypes = useAdminCreateProductTypeTaxRates(
+        taxRateId
+      )
+      // ...
+
+      const handleAddProductTypes = (productTypeIds: string[]) => {
+        addProductTypes.mutate({
+          product_types: productTypeIds,
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.product_types)
+          }
+        })
+      }
+
+      // ...
+    }
+
+    export default TaxRate
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/product-types/batch`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    product_types: [
-      productTypeId,
-    ],
-  }),
-})
-.then((response) => response.json())
-.then(({ tax_rate }) => {
-  console.log(tax_rate.product_types)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/product-types/batch`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        product_types: [
+          productTypeId,
+        ],
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.product_types)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/product-types/batch' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-   "product_types": [
-     "<PRODUCT_TYPE_ID>"
-   ]
-}'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/product-types/batch' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "product_types": [
+        "<PRODUCT_TYPE_ID>"
+      ]
+    }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint requires the tax rate’s ID as a path parameter.
+This API Route requires the tax rate’s ID as a path parameter.
 
 In the request body, the `product_types` parameter is required. It’s an array of strings, each string being the ID of a product type to add to the tax rate.
 
@@ -733,92 +771,100 @@ The request returns the updated tax rate as an object. You can access the tax ra
 
 ### Remove Product Type from Tax Rate
 
-You can remove a product type from a tax rate by sending a request to the [Delete Product Types endpoint](https://docs.medusajs.com/api/admin#tax-rates_deletetaxratestaxrateproducttypes):
+You can remove a product type from a tax rate by sending a request to the [Delete Product Types API Route](https://docs.medusajs.com/api/admin#tax-rates_deletetaxratestaxrateproducttypes):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.taxRates.removeProductTypes(taxRateId, {
-  product_types: [
-    productTypeId,
-  ],
-})
-.then(({ tax_rate }) => {
-  console.log(tax_rate.product_types)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { 
-  useAdminDeleteProductTypeTaxRates,
-} from "medusa-react"
-
-const RemoveProductTypes = () => {
-  const removeProductTypes = useAdminDeleteProductTypeTaxRates(
-    taxRateId
-  )
-  // ...
-
-  const handleRemove = () => {
-    removeProductTypes.mutate({
+    ```ts
+    medusa.admin.taxRates.removeProductTypes(taxRateId, {
       product_types: [
         productTypeId,
       ],
     })
-  }
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.product_types)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default RemoveProductTypes
-```
+    ```tsx
+    import { 
+      useAdminDeleteProductTypeTaxRates,
+    } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    type Props = {
+      taxRateId: string
+    }
+
+    const TaxRate = ({ taxRateId }: Props) => {
+      const removeProductTypes = useAdminDeleteProductTypeTaxRates(
+        taxRateId
+      )
+      // ...
+
+      const handleRemoveProductTypes = (
+        productTypeIds: string[]
+      ) => {
+        removeProductTypes.mutate({
+          product_types: productTypeIds,
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.product_types)
+          }
+        })
+      }
+
+      // ...
+    }
+
+    export default TaxRate
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/product-types/batch`, {
-  credentials: "include",
-  method: "DELETE",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    product_types: [
-      productTypeId,
-    ],
-  }),
-})
-.then((response) => response.json())
-.then(({ tax_rate }) => {
-  console.log(tax_rate.id)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/product-types/batch`, {
+      credentials: "include",
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        product_types: [
+          productTypeId,
+        ],
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/product-types/batch' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-   "product_types": [
-     "<PRODUCT_TYPE_ID>"
-   ]
-}'
-```
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/product-types/batch' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "product_types": [
+        "<PRODUCT_TYPE_ID>"
+      ]
+    }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint requires the tax rate’s ID as a path parameter.
+This API Route requires the tax rate’s ID as a path parameter.
 
 In the request body, the `product_types` parameter is required. It’s an array of strings, each string being the ID of a product type to remove from the tax rate.
 
@@ -832,90 +878,98 @@ This section explains how you can add and remove shipping options from a tax rat
 
 ### Add Shipping Option to Tax Rate
 
-You can add a shipping option to a tax rate by sending a request to the [Add Shipping Option endpoint](https://docs.medusajs.com/api/admin#tax-rates_posttaxratestaxrateshippingoptions):
+You can add a shipping option to a tax rate by sending a request to the [Add Shipping Option API Route](https://docs.medusajs.com/api/admin#tax-rates_posttaxratestaxrateshippingoptions):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.taxRates.addShippingOptions(taxRateId, {
-  shipping_options: [
-    shippingOptionId,
-  ],
-})
-.then(({ tax_rate }) => {
-  console.log(tax_rate.shipping_options)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCreateShippingTaxRates } from "medusa-react"
-
-const AddShippingOptions = () => {
-  const addShippingOption = useAdminCreateShippingTaxRates(
-    taxRateId
-  )
-  // ...
-
-  const handleAdd = () => {
-    addShippingOption.mutate({
+    ```ts
+    medusa.admin.taxRates.addShippingOptions(taxRateId, {
       shipping_options: [
         shippingOptionId,
       ],
     })
-  }
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.shipping_options)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default AddShippingOptions
-```
+    ```tsx
+    import { useAdminCreateShippingTaxRates } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    type Props = {
+      taxRateId: string
+    }
+
+    const TaxRate = ({ taxRateId }: Props) => {
+      const addShippingOption = useAdminCreateShippingTaxRates(
+        taxRateId
+      )
+      // ...
+
+      const handleAddShippingOptions = (
+        shippingOptionIds: string[]
+      ) => {
+        addShippingOption.mutate({
+          shipping_options: shippingOptionIds,
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.shipping_options)
+          }
+        })
+      }
+
+      // ...
+    }
+
+    export default TaxRate
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/shipping-options/batch`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    shipping_options: [
-      shippingOptionId,
-    ],
-  }),
-})
-.then((response) => response.json())
-.then(({ tax_rate }) => {
-  console.log(tax_rate.shipping_options)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/shipping-options/batch`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        shipping_options: [
+          shippingOptionId,
+        ],
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.shipping_options)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/shipping-options/batch' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-   "shipping_options": [
-     "<SHIPPING_OPTION_ID>"
-   ]
-}'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/shipping-options/batch' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "shipping_options": [
+        "<SHIPPING_OPTION_ID>"
+      ]
+    }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint requires the tax rate’s ID as a path parameter.
+This API Route requires the tax rate’s ID as a path parameter.
 
 In the request body, the `shipping_options` parameter is required. It’s an array of strings, each string being the ID of a shipping option to add to the tax rate.
 
@@ -923,90 +977,96 @@ The request returns the updated tax rate as an object. You can access the tax ra
 
 ### Remove Shipping Options from Tax Rate
 
-You can remove a shipping option from a tax rate by sending a request to the [Delete Shipping Options endpoint](https://docs.medusajs.com/api/admin#tax-rates_deletetaxratestaxrateshippingoptions):
+You can remove a shipping option from a tax rate by sending a request to the [Delete Shipping Options API Route](https://docs.medusajs.com/api/admin#tax-rates_deletetaxratestaxrateshippingoptions):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.taxRates.removeShippingOptions(taxRateId, {
-  shipping_options: [
-    shippingOptionId,
-  ],
-})
-.then(({ tax_rate }) => {
-  console.log(tax_rate.shipping_options)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminDeleteShippingTaxRates } from "medusa-react"
-
-const RemoveShippingOptions = () => {
-  const removeShippingOptions = useAdminDeleteShippingTaxRates(
-    taxRateId
-  )
-  // ...
-
-  const handleRemove = () => {
-    removeShippingOptions.mutate({
+    ```ts
+    medusa.admin.taxRates.removeShippingOptions(taxRateId, {
       shipping_options: [
         shippingOptionId,
       ],
     })
-  }
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.shipping_options)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default RemoveShippingOptions
-```
+    ```tsx
+    import { useAdminDeleteShippingTaxRates } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const TaxRate = (
+      taxRateId: string
+    ) => {
+      const removeShippingOptions = useAdminDeleteShippingTaxRates(
+        taxRateId
+      )
+      // ...
+
+      const handleRemoveShippingOptions = (
+        shippingOptionIds: string[]
+      ) => {
+        removeShippingOptions.mutate({
+          shipping_options: shippingOptionIds,
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.shipping_options)
+          }
+        })
+      }
+
+      // ...
+    }
+
+    export default TaxRate
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/shipping-options/batch`, {
-  credentials: "include",
-  method: "DELETE",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    shipping_options: [
-      shippingOptionId,
-    ],
-  }),
-})
-.then((response) => response.json())
-.then(({ tax_rate }) => {
-  console.log(tax_rate.shipping_options)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/shipping-options/batch`, {
+      credentials: "include",
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        shipping_options: [
+          shippingOptionId,
+        ],
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ tax_rate }) => {
+      console.log(tax_rate.shipping_options)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/shipping-options/batch' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-   "shipping_options": [
-     "<SHIPPING_OPTION_ID>"
-   ]
-}'
-```
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/shipping-options/batch' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "shipping_options": [
+        "<SHIPPING_OPTION_ID>"
+      ]
+    }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint requires the tax rate’s ID as a path parameter.
+This API Route requires the tax rate’s ID as a path parameter.
 
 In the request body, the `shipping_options` parameter is required. It’s an array of strings, each string being the ID of a shipping option to remove from the tax rate.
 
@@ -1016,64 +1076,72 @@ The request returns the updated tax rate as an object. You can access the tax ra
 
 ## Delete Tax Rate
 
-You can delete a tax rate by sending a request to the [Delete Tax Rate endpoint](https://docs.medusajs.com/api/admin#tax-rates_deletetaxratestaxrate):
+You can delete a tax rate by sending a request to the [Delete Tax Rate API Route](https://docs.medusajs.com/api/admin#tax-rates_deletetaxratestaxrate):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.taxRates.delete(taxRateId)
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+    ```ts
+    medusa.admin.taxRates.delete(taxRateId)
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminDeleteTaxRate } from "medusa-react"
+    ```tsx
+    import { useAdminDeleteTaxRate } from "medusa-react"
 
-const DeleteTaxRate = () => {
-  const deleteTaxRate = useAdminDeleteTaxRate(taxRateId)
-  // ...
+    type Props = {
+      taxRateId: string
+    }
 
-  const handleDelete = () => {
-    deleteTaxRate.mutate()
-  }
+    const TaxRate = ({ taxRateId }: Props) => {
+      const deleteTaxRate = useAdminDeleteTaxRate(taxRateId)
+      // ...
 
-  // ...
-}
+      const handleDelete = () => {
+        deleteTaxRate.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
+      }
 
-export default DeleteTaxRate
-```
+      // ...
+    }
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    export default TaxRate
+    ```
 
-```ts
-fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}`, {
-  credentials: "include",
-  method: "DELETE",
-})
-.then((response) => response.json())
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    ```ts
+    fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}`, {
+      credentials: "include",
+      method: "DELETE",
+    })
+    .then((response) => response.json())
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-</TabItem>
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the tax rate’s ID as a path parameter.
+This API Route requires the tax rate’s ID as a path parameter.
 
 The request returns the following fields:
 

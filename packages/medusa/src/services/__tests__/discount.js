@@ -7,6 +7,13 @@ import { In } from "typeorm"
 
 const featureFlagRouter = new FlagRouter({})
 
+const eventBusService = {
+  emit: jest.fn(),
+  withTransaction: function () {
+    return this
+  },
+}
+
 describe("DiscountService", () => {
   describe("create", () => {
     const discountRepository = MockRepository({})
@@ -29,6 +36,7 @@ describe("DiscountService", () => {
       discountRuleRepository,
       regionService,
       featureFlagRouter,
+      eventBusService
     })
 
     beforeEach(() => {
@@ -67,7 +75,7 @@ describe("DiscountService", () => {
         .catch((e) => e)
 
       expect(err.type).toEqual("invalid_data")
-      expect(err.message).toEqual("Discount must have atleast 1 region")
+      expect(err.message).toEqual("Discount must have at least 1 region")
       expect(discountRepository.create).toHaveBeenCalledTimes(0)
     })
 
@@ -99,6 +107,8 @@ describe("DiscountService", () => {
       })
 
       expect(discountRepository.save).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(DiscountService.Events.CREATED, {id: undefined})
     })
 
     it("successfully creates discount with start and end dates", async () => {

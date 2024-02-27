@@ -10,7 +10,8 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "rootDir": ".",
-    "allowJs": true
+    "allowJs": true,
+    "typeRoots": ["node_modules/@types", "./packages/types"]
   },
   "include": ["**/*.ts", "**/*.js"],
   "exclude": ["**/node_modules/**", "dist"]

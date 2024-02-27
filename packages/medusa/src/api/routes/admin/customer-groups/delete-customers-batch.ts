@@ -38,7 +38,40 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminRemoveCustomersFromCustomerGroup,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         customerGroupId: string
+ *       }
+ *
+ *       const CustomerGroup = ({ customerGroupId }: Props) => {
+ *         const removeCustomers =
+ *           useAdminRemoveCustomersFromCustomerGroup(
+ *             customerGroupId
+ *           )
+ *         // ...
+ *
+ *         const handleRemoveCustomer = (customerId: string) => {
+ *           removeCustomers.mutate({
+ *             customer_ids: [
+ *               {
+ *                 id: customerId,
+ *               },
+ *             ],
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CustomerGroup
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -108,6 +141,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminDeleteCustomerGroupsGroupCustomerBatchReq
  * type: object
+ * description: "The customers to remove from the customer group."
  * required:
  *   - customer_ids
  * properties:

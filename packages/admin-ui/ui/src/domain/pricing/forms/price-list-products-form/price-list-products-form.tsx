@@ -280,7 +280,7 @@ const PriceListProductsForm = ({
 
   const { products, count, isLoading, isError } = useAdminProducts(
     {
-      limit: PAGE_SIZE,
+      limit: 20,
       offset,
       expand: "variants,sales_channels,collection",
       q: debouncedQuery,
@@ -376,24 +376,23 @@ const PriceListProductsForm = ({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="border-ui-border-base flex items-center justify-between border-b px-8 pt-6 pb-4">
+      <div className="border-ui-border-base flex items-center justify-between border-b px-8 pb-4 pt-6">
         <div className="flex items-center gap-x-3">
           <Heading>
             {t("price-list-products-form-heading", "Choose products")}
           </Heading>
-          {isDirty && (
-            <Form.Field
-              control={control}
-              name={path("ids")}
-              render={() => {
-                return (
-                  <Form.Item>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-          )}
+
+          <Form.Field
+            control={control}
+            name={path("ids")}
+            render={() => {
+              return (
+                <Form.Item>
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
         </div>
         <div className={clx("flex items-center gap-x-2")}>
           <ProductFilterMenu

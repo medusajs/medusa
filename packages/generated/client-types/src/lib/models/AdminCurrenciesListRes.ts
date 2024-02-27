@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { Currency } from "./Currency"
 
+/**
+ * List of currencies with pagination fields.
+ */
 export interface AdminCurrenciesListRes {
   /**
    * An array of currency details.

@@ -6,4 +6,4 @@ medusa.admin.taxRates.update(taxRateId, {
 })
 .then(({ tax_rate }) => {
   console.log(tax_rate.id);
-});
+})

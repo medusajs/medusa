@@ -21,6 +21,9 @@ export class ProductCollection extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private createHandleIfNotProvided(): void {
     if (this.id) return

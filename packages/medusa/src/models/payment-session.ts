@@ -13,11 +13,31 @@ import { generateEntityId } from "../utils"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Cart } from "./cart"
 
+/**
+ * @enum
+ * 
+ * The status of a payment session.
+ */
 export enum PaymentSessionStatus {
+  /**
+   * The payment is authorized.
+   */
   AUTHORIZED = "authorized",
+  /**
+   * The payment is pending.
+   */
   PENDING = "pending",
+  /**
+   * The payment requires an action.
+   */
   REQUIRES_MORE = "requires_more",
+  /**
+   * An error occurred while processing the payment.
+   */
   ERROR = "error",
+  /**
+   * The payment is canceled.
+   */
   CANCELED = "canceled",
 }
 
@@ -61,6 +81,9 @@ export class PaymentSession extends BaseEntity {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   payment_authorized_at: Date
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "ps")

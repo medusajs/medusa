@@ -121,6 +121,7 @@ export type AdminTaxRatesDeleteRes = DeleteResponse
 /**
  * @schema AdminTaxRatesListRes
  * type: object
+ * description: "The list of tax rates with pagination fields."
  * required:
  *   - tax_rates
  *   - count
@@ -149,6 +150,7 @@ export type AdminTaxRatesListRes = PaginatedResponse & {
 /**
  * @schema AdminTaxRatesRes
  * type: object
+ * description: "The tax rate's details."
  * required:
  *   - tax_rate
  * properties:

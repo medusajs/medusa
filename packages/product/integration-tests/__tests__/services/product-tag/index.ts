@@ -1,12 +1,14 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 import { Product } from "@models"
-import { ProductTagRepository } from "@repositories"
 import { ProductTagService } from "@services"
 
 import { ProductTypes } from "@medusajs/types"
 import { createProductAndTags } from "../../../__fixtures__/product"
 import { TestDatabase } from "../../../utils"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -53,13 +55,12 @@ describe("ProductTag Service", () => {
     await TestDatabase.setupDatabase()
     repositoryManager = await TestDatabase.forkManager()
 
-    const productTagRepository = new ProductTagRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new ProductTagService({
-      productTagRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("productTagService")
 
     testManager = await TestDatabase.forkManager()
 
@@ -143,7 +144,9 @@ describe("ProductTag Service", () => {
     })
 
     it("should return product tags and count when filtered", async () => {
-      const [tagsResults, count] = await service.listAndCount({ id: data[0].tags![0].id })
+      const [tagsResults, count] = await service.listAndCount({
+        id: data[0].tags![0].id,
+      })
 
       expect(count).toEqual(1)
       expect(tagsResults).toEqual([
@@ -154,7 +157,10 @@ describe("ProductTag Service", () => {
     })
 
     it("should return product tags and count when using skip and take", async () => {
-      const [tagsResults, count] = await service.listAndCount({}, { skip: 1, take: 2 })
+      const [tagsResults, count] = await service.listAndCount(
+        {},
+        { skip: 1, take: 2 }
+      )
 
       expect(count).toEqual(4)
       expect(tagsResults).toEqual([
@@ -168,11 +174,14 @@ describe("ProductTag Service", () => {
     })
 
     it("should return requested fields and relations", async () => {
-      const [tagsResults, count] = await service.listAndCount({}, {
-        take: 1,
-        select: ["value", "products.id"],
-        relations: ["products"]
-      })
+      const [tagsResults, count] = await service.listAndCount(
+        {},
+        {
+          take: 1,
+          select: ["value", "products.id"],
+          relations: ["products"],
+        }
+      )
 
       const serialized = JSON.parse(JSON.stringify(tagsResults))
 
@@ -180,9 +189,11 @@ describe("ProductTag Service", () => {
       expect(serialized).toEqual([
         expect.objectContaining({
           id: "tag-1",
-          products: [{
-            id: "test-1"
-          }]
+          products: [
+            {
+              id: "test-1",
+            },
+          ],
         }),
       ])
     })
@@ -194,13 +205,11 @@ describe("ProductTag Service", () => {
     const productId = "test-1"
 
     it("should return tag for the given id", async () => {
-      const tag = await service.retrieve(
-        tagId,
-      )
+      const tag = await service.retrieve(tagId)
 
       expect(tag).toEqual(
         expect.objectContaining({
-          id: tagId
+          id: tagId,
         })
       )
     })
@@ -214,7 +223,9 @@ describe("ProductTag Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('ProductTag with id: does-not-exist was not found')
+      expect(error.message).toEqual(
+        "ProductTag with id: does-not-exist was not found"
+      )
     })
 
     it("should throw an error when an id is not provided", async () => {
@@ -226,47 +237,39 @@ describe("ProductTag Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"productTagId" must be defined')
+      expect(error.message).toEqual("productTag - id must be defined")
     })
 
     it("should return tag based on config select param", async () => {
-      const tag = await service.retrieve(
-        tagId,
-        {
-          select: ["id", "value"],
-        }
-      )
+      const tag = await service.retrieve(tagId, {
+        select: ["id", "value"],
+      })
 
       const serialized = JSON.parse(JSON.stringify(tag))
 
-      expect(serialized).toEqual(
-        {
-          id: tagId,
-          value: tagValue,
-        }
-      )
+      expect(serialized).toEqual({
+        id: tagId,
+        value: tagValue,
+      })
     })
 
     it("should return tag based on config relation param", async () => {
-      const tag = await service.retrieve(
-        tagId,
-        {
-          select: ["id", "value", "products.id"],
-          relations: ["products"]
-        }
-      )
+      const tag = await service.retrieve(tagId, {
+        select: ["id", "value", "products.id"],
+        relations: ["products"],
+      })
 
       const serialized = JSON.parse(JSON.stringify(tag))
 
-      expect(serialized).toEqual(
-        {
-          id: tagId,
-          value: tagValue,
-          products: [{
-            id: productId
-          }]
-        }
-      )
+      expect(serialized).toEqual({
+        id: tagId,
+        value: tagValue,
+        products: [
+          {
+            id: productId,
+          },
+        ],
+      })
     })
   })
 
@@ -274,12 +277,10 @@ describe("ProductTag Service", () => {
     const tagId = "tag-1"
 
     it("should delete the product tag given an ID successfully", async () => {
-      await service.delete(
-        [tagId],
-      )
+      await service.delete([tagId])
 
       const tags = await service.list({
-        id: tagId
+        id: tagId,
       })
 
       expect(tags).toHaveLength(0)
@@ -290,12 +291,12 @@ describe("ProductTag Service", () => {
     const tagId = "tag-1"
 
     it("should update the value of the tag successfully", async () => {
-      await service.update(
-        [{
+      await service.update([
+        {
           id: tagId,
-          value: "UK"
-        }]
-      )
+          value: "UK",
+        },
+      ])
 
       const productTag = await service.retrieve(tagId)
 
@@ -307,29 +308,31 @@ describe("ProductTag Service", () => {
 
       try {
         await service.update([
-        {
-          id: "does-not-exist",
-          value: "UK"
-        }
-      ])
+          {
+            id: "does-not-exist",
+            value: "UK",
+          },
+        ])
       } catch (e) {
         error = e
       }
 
-      expect(error.message).toEqual('ProductTag with id "does-not-exist" not found')
+      expect(error.message).toEqual(
+        'ProductTag with id "does-not-exist" not found'
+      )
     })
   })
 
   describe("create", () => {
     it("should create a tag successfully", async () => {
-      await service.create(
-        [{
-          value: "UK"
-        }]
-      )
+      await service.create([
+        {
+          value: "UK",
+        },
+      ])
 
       const [productTag] = await service.list({
-        value: "UK"
+        value: "UK",
       })
 
       expect(productTag.value).toEqual("UK")

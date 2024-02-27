@@ -48,6 +48,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_publishable-api-keys/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_publishable-api-keys/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -80,7 +84,7 @@ get:
 post:
   operationId: PostPublishableApiKeys
   summary: Create Publishable API Key
-  description: Creates a Publishable API Key.
+  description: Create a Publishable API Key.
   requestBody:
     content:
       application/json:
@@ -94,6 +98,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_publishable-api-keys/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_publishable-api-keys/post.tsx
     - lang: Shell
       label: cURL
       source:

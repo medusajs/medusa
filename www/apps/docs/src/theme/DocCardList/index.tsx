@@ -7,6 +7,10 @@ import {
 import DocCard from "@theme/DocCard"
 import type { Props } from "@theme/DocCardList"
 
+type ModifiedProps = {
+  colSize?: string
+} & Props
+
 function DocCardListForCurrentSidebarCategory({
   className,
   ...rest
@@ -14,10 +18,6 @@ function DocCardListForCurrentSidebarCategory({
   const category = useCurrentSidebarCategory()
   return <DocCardList className={className} {...rest} items={category.items} />
 }
-
-type ModifiedProps = {
-  colSize?: string
-} & Props
 
 export default function DocCardList(props: ModifiedProps): JSX.Element {
   const { items, className } = props
@@ -27,7 +27,6 @@ export default function DocCardList(props: ModifiedProps): JSX.Element {
   const filteredItems = filterDocCardListItems(items).filter(
     (item) => !item.customProps?.exclude_from_doclist
   )
-
   return (
     <section
       className={clsx("cards-grid", `grid-${props.colSize || "4"}`, className)}

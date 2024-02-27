@@ -133,6 +133,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_customer-groups/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_customer-groups/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -165,7 +169,7 @@ get:
 post:
   operationId: PostCustomerGroups
   summary: Create a Customer Group
-  description: Creates a Customer Group.
+  description: Create a Customer Group.
   x-authenticated: true
   requestBody:
     content:
@@ -179,6 +183,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_customer-groups/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_customer-groups/post.tsx
     - lang: Shell
       label: cURL
       source:

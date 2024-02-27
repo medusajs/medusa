@@ -15,7 +15,7 @@ export interface VariantInventory {
    */
   inventory: ResponseInventoryItem
   /**
-   * An array of details about the variant's inventory availability in sales channels.
+   * Details about the variant's inventory availability in sales channels.
    */
   sales_channel_availability: Array<{
     /**

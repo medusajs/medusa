@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * Deletion operation details
+ */
 export interface AdminDeleteProductsFromCollectionRes {
   /**
    * The ID of the collection

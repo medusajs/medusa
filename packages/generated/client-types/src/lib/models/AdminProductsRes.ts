@@ -6,6 +6,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { PricedProduct } from "./PricedProduct"
 import type { ProductVariant } from "./ProductVariant"
 
+/**
+ * The product's details.
+ */
 export interface AdminProductsRes {
   /**
    * Product details.

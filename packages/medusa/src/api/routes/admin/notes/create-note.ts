@@ -31,7 +31,33 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ note }) => {
  *         console.log(note.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateNote } from "medusa-react"
+ *
+ *       const CreateNote = () => {
+ *         const createNote = useAdminCreateNote()
+ *         // ...
+ *
+ *         const handleCreate = () => {
+ *           createNote.mutate({
+ *             resource_id: "order_123",
+ *             resource_type: "order",
+ *             value: "We delivered this order"
+ *           }, {
+ *             onSuccess: ({ note }) => {
+ *               console.log(note.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateNote
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -93,6 +119,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostNotesReq
  * type: object
+ * description: "The details of the note to be created."
  * required:
  *   - resource_id
  *   - resource_type

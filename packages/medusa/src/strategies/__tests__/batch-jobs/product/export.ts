@@ -1,7 +1,10 @@
 import { FlagRouter } from "@medusajs/utils"
 import { Request } from "express"
 import { IdMap, MockManager } from "medusa-test-utils"
-import { AdminPostBatchesReq, defaultAdminProductRelations, } from "../../../../api"
+import {
+  AdminPostBatchesReq,
+  defaultAdminProductRelations,
+} from "../../../../api"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { User } from "../../../../models"
 import { BatchJobStatus } from "../../../../types/batch-job"
@@ -117,6 +120,7 @@ describe("Product export strategy", () => {
     batchJobService: batchJobServiceMock as any,
     productService: productServiceMock as any,
     featureFlagRouter: new FlagRouter({}),
+    remoteQuery: (() => {}) as any,
   })
 
   it("should generate the appropriate template", async () => {
@@ -264,6 +268,7 @@ describe("Product export strategy", () => {
       productService: productServiceWithNoDataMock as any,
       manager: MockManager,
       featureFlagRouter: new FlagRouter({}),
+      remoteQuery: (() => {}) as any,
     })
 
     await productExportStrategy.prepareBatchJobForProcessing(
@@ -283,6 +288,7 @@ describe("Product export strategy", () => {
       productService: productServiceMock as any,
       manager: MockManager,
       featureFlagRouter: new FlagRouter({}),
+      remoteQuery: (() => {}) as any,
     })
 
     await productExportStrategy.prepareBatchJobForProcessing(
@@ -381,6 +387,7 @@ describe("Product export strategy with sales Channels", () => {
     fileService: fileServiceMock as any,
     batchJobService: batchJobServiceMock as any,
     productService: productServiceMock as any,
+    remoteQuery: (() => {}) as any,
     featureFlagRouter: new FlagRouter({
       [SalesChannelFeatureFlag.key]: true,
     }),

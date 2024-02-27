@@ -35,7 +35,39 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateReturnReason } from "medusa-react"
+ *
+ *       type Props = {
+ *         returnReasonId: string
+ *       }
+ *
+ *       const ReturnReason = ({ returnReasonId }: Props) => {
+ *         const updateReturnReason = useAdminUpdateReturnReason(
+ *           returnReasonId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           label: string
+ *         ) => {
+ *           updateReturnReason.mutate({
+ *             label,
+ *           }, {
+ *             onSuccess: ({ return_reason }) => {
+ *               console.log(return_reason.label)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ReturnReason
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -98,6 +130,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostReturnReasonsReasonReq
  * type: object
+ * description: "The details to update of the return reason."
  * properties:
  *   label:
  *     description: "The label to display to the Customer."

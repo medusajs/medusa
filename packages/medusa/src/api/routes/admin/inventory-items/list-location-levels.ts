@@ -9,7 +9,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  * @oas [get] /admin/inventory-items/{id}/location-levels
  * operationId: "GetInventoryItemsInventoryItemLocationLevels"
  * summary: "List Inventory Level"
- * description: "Retrieve a list of inventory levels of an inventory item. The inventory levels can be filtered by fields such as `location_id`. The inventory levels can also be paginated."
+ * description: "Retrieve a list of inventory levels of an inventory item. The inventory levels can be filtered by fields such as `location_id`."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item the locations are associated with.
@@ -37,7 +37,40 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       medusa.admin.inventoryItems.listLocationLevels(inventoryItemId)
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.location_levels);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminInventoryItemLocationLevels,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         inventoryItemId: string
+ *       }
+ *
+ *       const InventoryItem = ({ inventoryItemId }: Props) => {
+ *         const {
+ *           inventory_item,
+ *           isLoading,
+ *         } = useAdminInventoryItemLocationLevels(inventoryItemId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {inventory_item && (
+ *               <ul>
+ *                 {inventory_item.location_levels.map((level) => (
+ *                   <span key={level.id}>{level.stocked_quantity}</span>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default InventoryItem
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -94,6 +127,9 @@ export default async (req: Request, res: Response) => {
 
 // eslint-disable-next-line max-len
 export class AdminGetInventoryItemsItemLocationLevelsParams extends FindParams {
+  /**
+   * Location IDs to filter location levels.
+   */
   @IsOptional()
   @IsString({ each: true })
   location_id?: string[]

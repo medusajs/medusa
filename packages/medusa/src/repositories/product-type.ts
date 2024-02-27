@@ -2,6 +2,7 @@ import { ProductType } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
+import { promiseAll } from "@medusajs/utils"
 
 type UpsertTypeInput = Partial<ProductType> & {
   value: string
@@ -55,7 +56,7 @@ export const ProductTypeRepository = dataSource
           { dcId: conditionId }
         )
 
-      return await Promise.all([qb.getMany(), qb.getCount()])
+      return await promiseAll([qb.getMany(), qb.getCount()])
     },
   })
 export default ProductTypeRepository

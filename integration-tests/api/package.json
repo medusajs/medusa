@@ -5,13 +5,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:integration": "jest --silent=false --maxWorkers=50% --bail --detectOpenHandles --forceExit",
+    "test:integration": "jest --silent=false --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
     "@medusajs/cache-inmemory": "workspace:*",
     "@medusajs/event-bus-local": "workspace:*",
     "@medusajs/medusa": "workspace:*",
+    "@medusajs/workflow-engine-inmemory": "workspace:*",
     "faker": "^5.5.3",
     "medusa-interfaces": "workspace:*",
     "pg": "^8.11.0",

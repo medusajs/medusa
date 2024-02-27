@@ -28,7 +28,32 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.swaps.list()
  *       .then(({ swaps }) => {
  *         console.log(swaps.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminSwaps } from "medusa-react"
+ *
+ *       const Swaps = () => {
+ *         const { swaps, isLoading } = useAdminSwaps()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {swaps && !swaps.length && <span>No Swaps</span>}
+ *             {swaps && swaps.length > 0 && (
+ *               <ul>
+ *                 {swaps.map((swap) => (
+ *                   <li key={swap.id}>{swap.payment_status}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Swaps
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -80,12 +105,21 @@ export default async (req, res) => {
   res.json({ swaps, count, offset, limit })
 }
 
+/**
+ * {@inheritDoc FindPaginationParams}
+ */
 export class AdminGetSwapsParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   */
   @IsInt()
   @IsOptional()
   @Type(() => Number)
   limit?: number = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   */
   @IsInt()
   @IsOptional()
   @Type(() => Number)

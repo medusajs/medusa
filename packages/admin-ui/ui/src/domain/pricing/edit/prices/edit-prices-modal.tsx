@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslation } from "react-i18next"
+import { Form } from "../../../../components/helpers/form"
 import useNotification from "../../../../hooks/use-notification"
 import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import { getErrorMessage } from "../../../../utils/error-messages"
@@ -49,6 +50,8 @@ const EditPricesModal = ({
 }: EditPricesModalProps) => {
   const [tab, setTab] = React.useState<Tab>(Tab.PRICES)
   const [product, setProduct] = React.useState<Product | null>(null)
+
+  const originalPrices = React.useRef<PriceListPricesSchema | null>(null)
 
   const { t } = useTranslation()
 
@@ -106,6 +109,15 @@ const EditPricesModal = ({
   const { mutateAsync: deleteAsync, isLoading: isDeleting } =
     useAdminDeletePriceListPrices(priceList.id)
 
+  const onCloseModal = React.useCallback(() => {
+    onOpenChange(false)
+    setTab(Tab.PRICES)
+
+    originalPrices.current = null
+    resetProduct()
+    resetPrices()
+  }, [onOpenChange, resetPrices, resetProduct])
+
   const onModalStateChange = React.useCallback(
     async (open: boolean) => {
       if (open) {
@@ -124,9 +136,10 @@ const EditPricesModal = ({
         }
       }
 
-      onOpenChange(false)
+      onCloseModal()
     },
     [
+      onCloseModal,
       prompt,
       onOpenChange,
       isPricesDirty,
@@ -196,6 +209,7 @@ const EditPricesModal = ({
       productData.products[product.id!] = productPrices
     }
 
+    originalPrices.current = productData
     resetPrices(productData)
   }, [
     isLoading,
@@ -325,6 +339,25 @@ const EditPricesModal = ({
               continue
             }
 
+            const originalPrice =
+              originalPrices.current?.products[productId]?.variants[variantId]
+                .currency?.[currencyCode]
+
+            if (originalPrice && originalPrice.id && originalPrice.amount) {
+              const originalDbSafeAmount = getDbSafeAmount(
+                currencyCode,
+                parseFloat(originalPrice.amount)
+              )
+
+              /**
+               * If the price is the same as the original price,
+               * we don't want to update it.
+               */
+              if (originalDbSafeAmount === dbSafeAmount) {
+                continue
+              }
+            }
+
             const payload: PricePayload = {
               id: id ? id : undefined,
               amount: dbSafeAmount,
@@ -352,13 +385,36 @@ const EditPricesModal = ({
               continue
             }
 
+            const currencyCode = regions.find(
+              (r) => r.id === regionId
+            )!.currency_code
+
             const dbSafeAmount = getDbSafeAmount(
-              regions.find((r) => r.id === regionId)!.currency_code,
+              currencyCode,
               parseFloat(amount)
             )
 
             if (!dbSafeAmount) {
               continue
+            }
+
+            const originalPrice =
+              originalPrices.current?.products[productId]?.variants[variantId]
+                .region?.[regionId]
+
+            if (originalPrice && originalPrice.id && originalPrice.amount) {
+              const originalDbSafeAmount = getDbSafeAmount(
+                currencyCode,
+                parseFloat(originalPrice.amount)
+              )
+
+              /**
+               * If the price is the same as the original price,
+               * we don't want to update it.
+               */
+              if (originalDbSafeAmount === dbSafeAmount) {
+                continue
+              }
             }
 
             const payload: PricePayload = {
@@ -454,7 +510,7 @@ const EditPricesModal = ({
       )
     }
 
-    onOpenChange(false)
+    onCloseModal()
   })
 
   /**
@@ -561,54 +617,56 @@ const EditPricesModal = ({
             </div>
           </FocusModal.Header>
           <FocusModal.Body className="h-full w-full overflow-y-auto">
-            {isLoading ? (
-              <div className="flex h-full w-full items-center justify-center">
-                <Spinner className="text-ui-fg-subtle animate-spin" />
-              </div>
-            ) : isError || isNotFound ? (
-              <div className="flex h-full w-full items-center justify-center">
-                <div className="text-ui-fg-subtle flex items-center gap-x-2">
-                  <ExclamationCircle />
-                  <Text>
-                    {t(
-                      "price-list-edit-prices-modal-error-loading",
-                      "An error occurred while preparing the form. Reload the page and try again. If the issue persists, try again later."
-                    )}
-                  </Text>
+            <Form {...pricesForm}>
+              {isLoading ? (
+                <div className="flex h-full w-full items-center justify-center">
+                  <Spinner className="text-ui-fg-subtle animate-spin" />
                 </div>
-              </div>
-            ) : (
-              <React.Fragment>
-                <ProgressTabs.Content
-                  value={Tab.PRICES}
-                  className="h-full w-full"
-                >
-                  <PriceListPricesForm
-                    setProduct={onSetProduct}
-                    form={nestedForm(pricesForm)}
-                    priceListId={priceList.id}
-                    productIds={productIds}
-                  />
-                </ProgressTabs.Content>
-                {product && (
+              ) : isError || isNotFound ? (
+                <div className="flex h-full w-full items-center justify-center">
+                  <div className="text-ui-fg-subtle flex items-center gap-x-2">
+                    <ExclamationCircle />
+                    <Text>
+                      {t(
+                        "price-list-edit-prices-modal-error-loading",
+                        "An error occurred while preparing the form. Reload the page and try again. If the issue persists, try again later."
+                      )}
+                    </Text>
+                  </div>
+                </div>
+              ) : (
+                <React.Fragment>
                   <ProgressTabs.Content
-                    value={Tab.EDIT}
+                    value={Tab.PRICES}
                     className="h-full w-full"
                   >
-                    <PriceListProductPricesForm
-                      product={product}
-                      currencies={currencies}
-                      regions={regions}
-                      control={productControl}
-                      taxInclEnabled={isTaxInclPricesEnabled}
-                      priceListTaxInclusive={priceList.includes_tax}
-                      getValues={getProductValues}
-                      setValue={setProductValue}
+                    <PriceListPricesForm
+                      setProduct={onSetProduct}
+                      form={nestedForm(pricesForm)}
+                      priceListId={priceList.id}
+                      productIds={productIds}
                     />
                   </ProgressTabs.Content>
-                )}
-              </React.Fragment>
-            )}
+                  {product && (
+                    <ProgressTabs.Content
+                      value={Tab.EDIT}
+                      className="h-full w-full"
+                    >
+                      <PriceListProductPricesForm
+                        product={product}
+                        currencies={currencies}
+                        regions={regions}
+                        control={productControl}
+                        taxInclEnabled={isTaxInclPricesEnabled}
+                        priceListTaxInclusive={priceList.includes_tax}
+                        getValues={getProductValues}
+                        setValue={setProductValue}
+                      />
+                    </ProgressTabs.Content>
+                  )}
+                </React.Fragment>
+              )}
+            </Form>
           </FocusModal.Body>
         </FocusModal.Content>
       </ProgressTabs>

@@ -37,7 +37,7 @@ npm install @medusajs/file-local
 
 Then, configure your `medusa-config.js` to include the plugin with the required options:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -49,7 +49,7 @@ const plugins = [
 ]
 ```
 
-:::caution
+:::warning
 
 If you have multiple storage plugins configured, the last plugin declared in the `medusa-config.js` file will be used.
 
@@ -80,17 +80,21 @@ If this configuration is not added, you’ll receive the error ["next/image Un-c
 
 In `next.config.js` add the following option in the exported object:
 
-```jsx title=next.config.js
+```js title="next.config.js"
 const { withStoreConfig } = require("./store-config")
 
 // ...
 
 module.exports = withStoreConfig({
   // ...
-  images: {
-    domains: [
+ images: {
+    remotePatterns: [
       // ...
-      "<BACKEND_URL>",
+      {
+        protocol: "http", // or https
+        hostname:"<BACKEND_URL>",
+      },
+      // ...
     ],
   },
 })

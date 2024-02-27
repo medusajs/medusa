@@ -69,16 +69,22 @@ class NoteService extends TransactionBaseService {
   /** Fetches all notes related to the given selector
    * @param selector - the query object for find
    * @param config - the configuration used to find the objects. contains relations, skip, and take.
-   * @param config.relations - Which relations to include in the resulting list of Notes.
-   * @param config.take - How many Notes to take in the resulting list of Notes.
-   * @param config.skip - How many Notes to skip in the resulting list of Notes.
    * @return notes related to the given search.
    */
   async list(
     selector: Selector<Note>,
     config: FindConfig<Note> = {
+      /**
+       * How many Notes to skip in the resulting list of Notes.
+       */
       skip: 0,
+      /**
+       * How many Notes to take in the resulting list of Notes.
+       */
       take: 50,
+      /**
+       * Which relations to include in the resulting list of Notes.
+       */
       relations: [],
     }
   ): Promise<Note[]> {
@@ -90,16 +96,22 @@ class NoteService extends TransactionBaseService {
   /** Fetches all notes related to the given selector
    * @param selector - the query object for find
    * @param config - the configuration used to find the objects. contains relations, skip, and take.
-   * @param config.relations - Which relations to include in the resulting list of Notes.
-   * @param config.take - How many Notes to take in the resulting list of Notes.
-   * @param config.skip - How many Notes to skip in the resulting list of Notes.
    * @return notes related to the given search.
    */
   async listAndCount(
     selector: Selector<Note>,
     config: FindConfig<Note> = {
+      /**
+       * How many Notes to skip in the resulting list of Notes.
+       */
       skip: 0,
+      /**
+       * How many Notes to take in the resulting list of Notes.
+       */
       take: 50,
+      /**
+       * Which relations to include in the resulting list of Notes.
+       */
       relations: [],
     }
   ): Promise<[Note[], number]> {
@@ -156,7 +168,7 @@ class NoteService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const noteRepo = manager.withRepository(this.noteRepository_)
 
-      const note = await this.retrieve(noteId, { relations: ["author"] })
+      const note = await this.retrieve(noteId)
 
       note.value = value
 

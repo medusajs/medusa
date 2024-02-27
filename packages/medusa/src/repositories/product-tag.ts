@@ -3,6 +3,7 @@ import { ProductTag } from "../models/product-tag"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
+import { promiseAll } from "@medusajs/utils"
 
 type UpsertTagsInput = (Partial<ProductTag> & {
   value: string
@@ -101,7 +102,7 @@ export const ProductTagRepository = dataSource
           { dcId: conditionId }
         )
 
-      return await Promise.all([qb.getMany(), qb.getCount()])
+      return await promiseAll([qb.getMany(), qb.getCount()])
     },
   })
 

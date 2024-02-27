@@ -23,7 +23,7 @@ export interface Region {
    */
   name: string
   /**
-   * The 3 character currency code used in the region.
+   * The three character currency code used in the region.
    */
   currency_code: string
   /**

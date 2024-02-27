@@ -1,5 +1,7 @@
 import {
+  AfterLoad,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   Generated,
@@ -12,8 +14,12 @@ import {
   OneToOne,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-import { FeatureFlagColumn, FeatureFlagDecorators, } from "../utils/feature-flag-decorators"
+import {
+  FeatureFlagColumn,
+  FeatureFlagDecorators,
+} from "../utils/feature-flag-decorators"
 
+import { MedusaV2Flag } from "@medusajs/utils"
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { manualAutoIncrement } from "../utils/manual-auto-increment"
@@ -37,38 +43,121 @@ import { SalesChannel } from "./sales-channel"
 import { ShippingMethod } from "./shipping-method"
 import { Swap } from "./swap"
 
+/**
+ * @enum
+ *
+ * The order's status.
+ */
 export enum OrderStatus {
+  /**
+   * The order is pending.
+   */
   PENDING = "pending",
+  /**
+   * The order is completed, meaning that
+   * the items have been fulfilled and the payment
+   * has been captured.
+   */
   COMPLETED = "completed",
+  /**
+   * The order is archived.
+   */
   ARCHIVED = "archived",
+  /**
+   * The order is canceled.
+   */
   CANCELED = "canceled",
+  /**
+   * The order requires action.
+   */
   REQUIRES_ACTION = "requires_action",
 }
 
+/**
+ * @enum
+ *
+ * The order's fulfillment status.
+ */
 export enum FulfillmentStatus {
+  /**
+   * The order's items are not fulfilled.
+   */
   NOT_FULFILLED = "not_fulfilled",
+  /**
+   * Some of the order's items, but not all, are fulfilled.
+   */
   PARTIALLY_FULFILLED = "partially_fulfilled",
+  /**
+   * The order's items are fulfilled.
+   */
   FULFILLED = "fulfilled",
+  /**
+   * Some of the order's items, but not all, are shipped.
+   */
   PARTIALLY_SHIPPED = "partially_shipped",
+  /**
+   * The order's items are shipped.
+   */
   SHIPPED = "shipped",
+  /**
+   * Some of the order's items, but not all, are returned.
+   */
   PARTIALLY_RETURNED = "partially_returned",
+  /**
+   * The order's items are returned.
+   */
   RETURNED = "returned",
+  /**
+   * The order's fulfillments are canceled.
+   */
   CANCELED = "canceled",
+  /**
+   * The order's fulfillment requires action.
+   */
   REQUIRES_ACTION = "requires_action",
 }
 
+/**
+ * @enum
+ *
+ * The order's payment status.
+ */
 export enum PaymentStatus {
+  /**
+   * The order's payment is not paid.
+   */
   NOT_PAID = "not_paid",
+  /**
+   * The order's payment is awaiting capturing.
+   */
   AWAITING = "awaiting",
+  /**
+   * The order's payment is captured.
+   */
   CAPTURED = "captured",
+  /**
+   * Some of the order's payment amount is refunded.
+   */
   PARTIALLY_REFUNDED = "partially_refunded",
+  /**
+   * The order's payment amount is refunded.
+   */
   REFUNDED = "refunded",
+  /**
+   * The order's payment is canceled.
+   */
   CANCELED = "canceled",
+  /**
+   * The order's payment requires action.
+   */
   REQUIRES_ACTION = "requires_action",
 }
 
 @Entity()
 export class Order extends BaseEntity {
+  /**
+   * @apiIgnore
+   */
   readonly object = "order"
 
   @DbAwareColumn({ type: "enum", enum: OrderStatus, default: "pending" })
@@ -238,10 +327,31 @@ export class Order extends BaseEntity {
   ])
   sales_channel: SalesChannel
 
+  @FeatureFlagDecorators(
+    [MedusaV2Flag.key, "sales_channels"],
+    [
+      ManyToMany(() => SalesChannel, { cascade: ["remove", "soft-remove"] }),
+      JoinTable({
+        name: "order_sales_channel",
+        joinColumn: {
+          name: "cart_id",
+          referencedColumnName: "id",
+        },
+        inverseJoinColumn: {
+          name: "sales_channel_id",
+          referencedColumnName: "id",
+        },
+      }),
+    ]
+  )
+  sales_channels?: SalesChannel[]
+
   // Total fields
   shipping_total: number
+  shipping_tax_total: number | null
   discount_total: number
   raw_discount_total: number
+  item_tax_total: number | null
   tax_total: number | null
   refunded_total: number
   total: number
@@ -253,9 +363,18 @@ export class Order extends BaseEntity {
 
   returnable_items?: LineItem[]
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private async beforeInsert(): Promise<void> {
     this.id = generateEntityId(this.id, "order")
+
+    if (this.sales_channel_id || this.sales_channel) {
+      this.sales_channels = [
+        { id: this.sales_channel_id || this.sales_channel?.id },
+      ] as SalesChannel[]
+    }
 
     if (process.env.NODE_ENV === "development" && !this.display_id) {
       const disId = await manualAutoIncrement("order")
@@ -263,6 +382,30 @@ export class Order extends BaseEntity {
       if (disId) {
         this.display_id = disId
       }
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @BeforeUpdate()
+  private beforeUpdate(): void {
+    if (this.sales_channel_id || this.sales_channel) {
+      this.sales_channels = [
+        { id: this.sales_channel_id || this.sales_channel?.id },
+      ] as SalesChannel[]
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @AfterLoad()
+  private afterLoad(): void {
+    if (this.sales_channels) {
+      this.sales_channel = this.sales_channels?.[0]
+      this.sales_channel_id = this.sales_channel?.id
+      delete this.sales_channels
     }
   }
 }
@@ -527,6 +670,11 @@ export class Order extends BaseEntity {
  *     type: integer
  *     description: The total of shipping
  *     example: 1000
+ *     nullable: true
+ *   shipping_tax_total:
+ *     type: integer
+ *     description: The tax total applied on shipping
+ *     example: 1000
  *   raw_discount_total:
  *     description: The total of discount
  *     type: integer
@@ -539,6 +687,11 @@ export class Order extends BaseEntity {
  *     description: The total of tax
  *     type: integer
  *     example: 0
+ *   item_tax_total:
+ *     description: The tax total applied on items
+ *     type: integer
+ *     example: 0
+ *     nullable: true
  *   refunded_total:
  *     description: The total amount refunded if the order is returned.
  *     type: integer
@@ -589,4 +742,12 @@ export class Order extends BaseEntity {
  *     externalDocs:
  *       description: "Learn about the metadata attribute, and how to delete and update it."
  *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
+ *   sales_channels:
+ *     description: The associated sales channels.
+ *     type: array
+ *     nullable: true
+ *     x-expandable: "sales_channels"
+ *     x-featureFlag: "medusa_v2"
+ *     items:
+ *       $ref: "#/components/schemas/SalesChannel"
  */

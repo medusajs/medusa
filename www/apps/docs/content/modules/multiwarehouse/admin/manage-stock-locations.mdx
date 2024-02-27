@@ -41,7 +41,7 @@ This guide assumes you have a stock location module installed. You can use Medus
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.mdx) installed and have [created an instance of the client](../../../js-client/overview.mdx#configuration).
 
 ### Medusa React
 
@@ -59,76 +59,77 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 ## List Stock Locations
 
-You can list stock locations by using the [List Stock Locations endpoint](https://docs.medusajs.com/api/admin#stock-locations_getstocklocations):
+You can list stock locations by using the [List Stock Locations API Route](https://docs.medusajs.com/api/admin#stock-locations_getstocklocations):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.stockLocations.list()
-.then(({ stock_locations, limit, offset, count }) => {
-  console.log(stock_locations.length)
-})
-```
+    ```ts
+    medusa.admin.stockLocations.list()
+    .then(({ stock_locations, limit, offset, count }) => {
+      console.log(stock_locations.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminStockLocations } from "medusa-react"
+    ```tsx
+    import { useAdminStockLocations } from "medusa-react"
 
-function StockLocations() {
-  const { 
-    stock_locations,
-    isLoading } = useAdminStockLocations()
+    function StockLocations() {
+      const { 
+        stock_locations,
+        isLoading
+      } = useAdminStockLocations()
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {stock_locations && !stock_locations.length && (
-        <span>No Locations</span>
-      )}
-      {stock_locations && stock_locations.length > 0 && (
-        <ul>
-          {stock_locations.map(
-            (location) => (
-              <li key={location.id}>{location.name}</li>
-            )
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {stock_locations && !stock_locations.length && (
+            <span>No Locations</span>
           )}
-        </ul>
-      )}
-    </div>
-  )
-}
+          {stock_locations && stock_locations.length > 0 && (
+            <ul>
+              {stock_locations.map(
+                (location) => (
+                  <li key={location.id}>{location.name}</li>
+                )
+              )}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-export default StockLocations
-```
+    export default StockLocations
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/stock-locations`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ stock_locations, limit, offset, count }) => {
-  console.log(stock_locations.length)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/stock-locations`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ stock_locations, limit, offset, count }) => {
+      console.log(stock_locations.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/stock-locations' \
-     -H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/stock-locations' \
+        -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint does not require any path or query parameters. You can, however, pass it query parameters to search or filter the list of stock locations. For example, you can pass the `q` query parameter to search through the locations by name. You can learn about available query parameters in the [API reference](https://docs.medusajs.com/api/admin#stock-locations_getstocklocations).
+This API Route doesn't require any path or query parameters. You can, however, pass it query parameters to search or filter the list of stock locations. For example, you can pass the `q` query parameter to search through the locations by name. You can learn about available query parameters in the [API reference](https://docs.medusajs.com/api/admin#stock-locations_getstocklocations).
 
 The request returns an array of stock location objects along with [pagination parameters](https://docs.medusajs.com/api/admin#pagination).
 
@@ -136,78 +137,82 @@ The request returns an array of stock location objects along with [pagination pa
 
 ## Create a Stock Location
 
-You can create a stock location using the [Create a Stock Location endpoint](https://docs.medusajs.com/api/admin#stock-locations_poststocklocations):
+You can create a stock location using the [Create a Stock Location API Route](https://docs.medusajs.com/api/admin#stock-locations_poststocklocations):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.stockLocations.create({
-  name: "Main Warehouse",
-})
-.then(({ stock_location }) => {
-  console.log(stock_location.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCreateStockLocation } from "medusa-react"
-
-const CreateStockLocation = () => {
-  const createStockLocation = useAdminCreateStockLocation()
-  // ...
-
-  const handleCreate = () => {
-    createStockLocation.mutate({
+    ```ts
+    medusa.admin.stockLocations.create({
       name: "Main Warehouse",
     })
-  }
+    .then(({ stock_location }) => {
+      console.log(stock_location.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default CreateStockLocation
-```
+    ```tsx
+    import { useAdminCreateStockLocation } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const CreateStockLocation = () => {
+      const createStockLocation = useAdminCreateStockLocation()
+      // ...
 
-```ts
-fetch(`<BACKEND_URL>/admin/stock-locations`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    name: "Main Warehouse",
-  }),
-})
-.then((response) => response.json())
-.then(({ stock_location }) => {
-  console.log(stock_location.id)
-})
-```
+      const handleCreate = (name: string) => {
+        createStockLocation.mutate({
+          name,
+        }, {
+          onSuccess: ({ stock_location }) => {
+            console.log(stock_location.id)
+          }
+        })
+      }
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      // ...
+    }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/stock-locations' \
-     -H 'Authorization: Bearer <API_TOKEN>' \
-		 -H 'Content-Type: application/json' \
-		 --data-raw '{
-				"name": "Main Warehouse"
-		 }'
-```
+    export default CreateStockLocation
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/stock-locations`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: "Main Warehouse",
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ stock_location }) => {
+      console.log(stock_location.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/stock-locations' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
+        -H 'Content-Type: application/json' \
+        --data-raw '{
+            "name": "Main Warehouse"
+        }'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires in its body parameters the `name` field, which is the name of the stock location. You can also pass in the request body parameters other fields related to the address or metadata. You can learn more in the [API reference](https://docs.medusajs.com/api/admin#stock-locations_poststocklocations).
+This API Route requires in its body parameters the `name` field, which is the name of the stock location. You can also pass in the request body parameters other fields related to the address or metadata. You can learn more in the [API reference](https://docs.medusajs.com/api/admin#stock-locations_poststocklocations).
 
 This request returns the created stock location as an object.
 
@@ -215,69 +220,74 @@ This request returns the created stock location as an object.
 
 ## Retrieve a Stock Location
 
-You can retrieve a stock location by sending a request to the [Get Stock Location endpoint](https://docs.medusajs.com/api/admin#stock-locations_getstocklocationsstocklocation):
+You can retrieve a stock location by sending a request to the [Get Stock Location API Route](https://docs.medusajs.com/api/admin#stock-locations_getstocklocationsstocklocation):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.stockLocations.retrieve(stockLocationId)
-.then(({ stock_location }) => {
-  console.log(stock_location.id)
-})
-```
+    ```ts
+    medusa.admin.stockLocations.retrieve(stockLocationId)
+    .then(({ stock_location }) => {
+      console.log(stock_location.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminStockLocation } from "medusa-react"
+    ```tsx
+    import { useAdminStockLocation } from "medusa-react"
 
-function StockLocation() {
-  const { 
-    stock_location,
-    isLoading } = useAdminStockLocation(stockLocationId)
+    type Props = {
+      stockLocationId: string
+    }
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {stock_location && (
-        <span>{stock_location.name}</span>
-      )}
-    </div>
-  )
-}
+    const StockLocation = ({ stockLocationId }: Props) => {
+      const { 
+        stock_location,
+        isLoading
+      } = useAdminStockLocation(stockLocationId)
 
-export default StockLocation
-```
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {stock_location && (
+            <span>{stock_location.name}</span>
+          )}
+        </div>
+      )
+    }
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    export default StockLocation
+    ```
 
-```ts
-fetch(`<BACKEND_URL>/admin/stock-locations/${stockLocationId}`,
-  {
-    credentials: "include",
-  }
-)
-.then((response) => response.json())
-.then(({ stock_location }) => {
-  console.log(stock_location.id)
-})
-```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    ```ts
+    fetch(`<BACKEND_URL>/admin/stock-locations/${stockLocationId}`,
+      {
+        credentials: "include",
+      }
+    )
+    .then((response) => response.json())
+    .then(({ stock_location }) => {
+      console.log(stock_location.id)
+    })
+    ```
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/stock-locations/<LOC_ID>' \
-     -H 'Authorization: Bearer <API_TOKEN>'
-```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-</TabItem>
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/stock-locations/<LOC_ID>' \
+        -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the stock location ID to be passed as a path parameter. It also accepts query parameters related to expanding and selecting fields. You can learn more in the [API reference](https://docs.medusajs.com/api/admin#stock-locations_getstocklocationsstocklocation).
+This API Route requires the stock location ID to be passed as a path parameter. It also accepts query parameters related to expanding and selecting fields. You can learn more in the [API reference](https://docs.medusajs.com/api/admin#stock-locations_getstocklocationsstocklocation).
 
 It returns the stock location as an object.
 
@@ -285,79 +295,91 @@ It returns the stock location as an object.
 
 ## Associate a Stock Location with a Sales Channel
 
-You can associate a stock location with a sales channel by sending a request to the [Associate Stock Channel endpoint](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannelssaleschannelstocklocation):
+You can associate a stock location with a sales channel by sending a request to the [Associate Stock Channel API Route](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannelssaleschannelstocklocation):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.salesChannels.addLocation(salesChannelId, {
-  location_id,
-})
-.then(({ sales_channel }) => {
-  console.log(sales_channel.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminAddLocationToSalesChannel } from "medusa-react"
-
-function StockLocation() {
-  const addLocation = useAdminAddLocationToSalesChannel()
-  // ...
-
-  const handleAdd = () => {
-    addLocation.mutate({
-      sales_channel_id,
+    ```ts
+    medusa.admin.salesChannels.addLocation(salesChannelId, {
       location_id,
     })
-  }
-}
+    .then(({ sales_channel }) => {
+      console.log(sales_channel.id)
+    })
+    ```
 
-export default StockLocation
-```
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    ```tsx
+    import { 
+      useAdminAddLocationToSalesChannel
+    } from "medusa-react"
+
+    type Props = {
+      salesChannelId: string
+    }
+
+    const SalesChannel = ({ salesChannelId }: Props) => {
+      const addLocation = useAdminAddLocationToSalesChannel()
+      // ...
+
+      const handleAddLocation = (locationId: string) => {
+        addLocation.mutate({
+          sales_channel_id: salesChannelId,
+          location_id: locationId
+        }, {
+          onSuccess: ({ sales_channel }) => {
+            console.log(sales_channel.locations)
+          }
+        })
+      }
+
+      // ...
+    }
+
+    export default SalesChannel
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/sales-channels/${salesChannelId}/stock-locations`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    location_id,
-  }),
-})
-.then((response) => response.json())
-.then(({ sales_channel }) => {
-  console.log(sales_channel.id)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/sales-channels/${salesChannelId}/stock-locations`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        location_id,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ sales_channel }) => {
+      console.log(sales_channel.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/sales-channels/<CHANNEL_ID>/stock-locations' \
-     -H 'Authorization: Bearer <API_TOKEN>' \
-		 -H 'Content-Type: application/json' \
-		 --data-raw '{
-				"location_id": "<LOC_ID>"
-		 }'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/sales-channels/<CHANNEL_ID>/stock-locations' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
+        -H 'Content-Type: application/json' \
+        --data-raw '{
+            "location_id": "<LOC_ID>"
+        }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint requires the ID of the sales channel as a path parameter. In its body parameters, it requires the ID of the stock location you’re associating the sales channel with.
+This API Route requires the ID of the sales channel as a path parameter. In its body parameters, it requires the ID of the stock location you’re associating the sales channel with.
 
 This request returns the sales channel object.
 
@@ -371,82 +393,91 @@ You can associate a location with more than one sales channel, and you can assoc
 
 ## Remove Association Between Stock Location and Sales Channel
 
-You can remove the association between a stock location and a sales channel by sending a request to the [Remove Stock Location Association endpoint](https://docs.medusajs.com/api/admin#sales-channels_deletesaleschannelssaleschannelstocklocation):
+You can remove the association between a stock location and a sales channel by sending a request to the [Remove Stock Location Association API Route](https://docs.medusajs.com/api/admin#sales-channels_deletesaleschannelssaleschannelstocklocation):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.salesChannels.removeLocation(salesChannelId, {
-  location_id,
-})
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { 
-  useAdminRemoveLocationFromSalesChannel,
-} from "medusa-react"
-
-function StockLocation() {
-  const removeLocation = 
-    useAdminRemoveLocationFromSalesChannel()
-  // ...
-
-  const handleRemove = () => {
-    removeLocation.mutate({
-      sales_channel_id,
+    ```ts
+    medusa.admin.salesChannels.removeLocation(salesChannelId, {
       location_id,
     })
-  }
-}
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-export default StockLocation
-```
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    ```tsx
+    import { 
+      useAdminRemoveLocationFromSalesChannel
+    } from "medusa-react"
+    
+    type Props = {
+      salesChannelId: string
+    }
+    
+    const SalesChannel = ({ salesChannelId }: Props) => {
+      const removeLocation = useAdminRemoveLocationFromSalesChannel()
+      // ...
+    
+      const handleRemoveLocation = (locationId: string) => {
+        removeLocation.mutate({
+          sales_channel_id: salesChannelId,
+          location_id: locationId
+        }, {
+          onSuccess: ({ sales_channel }) => {
+            console.log(sales_channel.locations)
+          }
+        })
+      }
+    
+      // ...
+    }
+    
+    export default SalesChannel
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/sales-channels/${salesChannelId}/stock-locations`, {
-  credentials: "include",
-  method: "DELETE",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    location_id,
-  }),
-})
-.then((response) => response.json())
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/sales-channels/${salesChannelId}/stock-locations`, {
+      credentials: "include",
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        location_id,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/sales-channels/<CHANNEL_ID>/stock-locations' \
-     -H 'Authorization: Bearer <API_TOKEN>' \
-		 -H 'Content-Type: application/json' \
-		 --data-raw '{
-				"location_id": "<LOC_ID>"
-		 }'
-```
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/sales-channels/<CHANNEL_ID>/stock-locations' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
+        -H 'Content-Type: application/json' \
+        --data-raw '{
+            "location_id": "<LOC_ID>"
+        }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint requires the ID of the sales channel as a path parameter. In its body parameters, it requires the ID of the stock location you’re removing the association of the sales channel with.
+This API Route requires the ID of the sales channel as a path parameter. In its body parameters, it requires the ID of the stock location you’re removing the association of the sales channel with.
 
 The request returns the following fields:
 
@@ -464,80 +495,90 @@ This request does not delete the stock location. It only removes the association
 
 ## Update a Stock Location
 
-You can update a stock location by sending a request to the [Update Stock Location endpoint](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsstocklocation):
+You can update a stock location by sending a request to the [Update Stock Location API Route](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsstocklocation):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.stockLocations.update(stockLocationId, {
-  name: "Warehouse",
-})
-.then(({ stock_location }) => {
-  console.log(stock_location.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminUpdateStockLocation } from "medusa-react"
-
-function StockLocation() {
-  const updateLocation = useAdminUpdateStockLocation(
-    stockLocationId
-  )
-  // ...
-
-  const handleRemove = () => {
-    updateLocation.mutate({
+    ```ts
+    medusa.admin.stockLocations.update(stockLocationId, {
       name: "Warehouse",
     })
-  }
-}
+    .then(({ stock_location }) => {
+      console.log(stock_location.id)
+    })
+    ```
 
-export default StockLocation
-```
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    ```tsx
+    import { useAdminUpdateStockLocation } from "medusa-react"
 
-```ts
-fetch(`<BACKEND_URL>/admin/stock-locations/${stockLocationId}`,
-  {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: "Warehouse",
-    }),
-  }
-)
-.then((response) => response.json())
-.then(({ stock_location }) => {
-  console.log(stock_location.id)
-})
-```
+    type Props = {
+      stockLocationId: string
+    }
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    const StockLocation = ({ stockLocationId }: Props) => {
+      const updateLocation = useAdminUpdateStockLocation(
+        stockLocationId
+      )
+      // ...
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/stock-locations/<LOC_ID>' \
-     -H 'Authorization: Bearer <API_TOKEN>' \
-		 -H 'Content-Type: application/json' \
-		 --data-raw '{
-				"name": "Main Warehouse"
-		 }'
-```
+      const handleUpdate = (
+        name: string
+      ) => {
+        updateLocation.mutate({
+          name
+        }, {
+          onSuccess: ({ stock_location }) => {
+            console.log(stock_location.name)
+          }
+        })
+      }
+    }
 
-</TabItem>
+    export default StockLocation
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/stock-locations/${stockLocationId}`,
+      {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: "Warehouse",
+        }),
+      }
+    )
+    .then((response) => response.json())
+    .then(({ stock_location }) => {
+      console.log(stock_location.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/stock-locations/<LOC_ID>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
+        -H 'Content-Type: application/json' \
+        --data-raw '{
+            "name": "Main Warehouse"
+        }'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the ID of a stock location as a path parameter. In its body parameters, you can pass any of the location’s attributes to update, such as the name or address. You can learn more in the [API reference](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsstocklocation).
+This API Route requires the ID of a stock location as a path parameter. In its body parameters, you can pass any of the location’s attributes to update, such as the name or address. You can learn more in the [API reference](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsstocklocation).
 
 This request returns the updated stock location as an object.
 
@@ -545,66 +586,74 @@ This request returns the updated stock location as an object.
 
 ## Delete a Stock Location
 
-You can delete a stock location by sending a request to the [Delete Stock Location endpoint](https://docs.medusajs.com/api/admin#stock-locations_deletestocklocationsstocklocation):
+You can delete a stock location by sending a request to the [Delete Stock Location API Route](https://docs.medusajs.com/api/admin#stock-locations_deletestocklocationsstocklocation):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.stockLocations.delete(stockLocationId)
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+    ```ts
+    medusa.admin.stockLocations.delete(stockLocationId)
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminDeleteStockLocation } from "medusa-react"
+    ```tsx
+    import { useAdminDeleteStockLocation } from "medusa-react"
 
-function StockLocation() {
-  const deleteLocation = useAdminDeleteStockLocation(
-    stockLocationId
-  )
-  // ...
+    type Props = {
+      stockLocationId: string
+    }
 
-  const handleDelete = () => {
-    deleteLocation.mutate()
-  }
-}
+    const StockLocation = ({ stockLocationId }: Props) => {
+      const deleteLocation = useAdminDeleteStockLocation(
+        stockLocationId
+      )
+      // ...
 
-export default StockLocation
-```
+      const handleDelete = () => {
+        deleteLocation.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
+      }
+    }
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    export default StockLocation
+    ```
 
-```ts
-fetch(`<BACKEND_URL>/admin/stock-locations/${stockLocationId}`,
-  {
-    credentials: "include",
-    method: "DELETE",
-  }
-)
-.then((response) => response.json())
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    ```ts
+    fetch(`<BACKEND_URL>/admin/stock-locations/${stockLocationId}`,
+      {
+        credentials: "include",
+        method: "DELETE",
+      }
+    )
+    .then((response) => response.json())
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/stock-locations/<LOC_ID>' \
-     -H 'Authorization: Bearer <API_TOKEN>'
-```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-</TabItem>
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/stock-locations/<LOC_ID>' \
+        -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the ID of the stock location as a path parameter.
+This API Route requires the ID of the stock location as a path parameter.
 
 It returns the following fields in the response:
 

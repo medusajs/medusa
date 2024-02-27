@@ -1,9 +1,9 @@
 import { IsNumber, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
 
-import { DateComparisonOperator } from "../../../../types/common"
-import ProductCollectionService from "../../../../services/product-collection"
 import { Type } from "class-transformer"
+import ProductCollectionService from "../../../../services/product-collection"
+import { DateComparisonOperator } from "../../../../types/common"
 
 /**
  * @oas [get] /admin/collections
@@ -17,6 +17,7 @@ import { Type } from "class-transformer"
  *   - (query) title {string} Filter collections by their title.
  *   - (query) handle {string} Filter collections by their handle.
  *   - (query) q {string} a term to search collections by their title or handle.
+ *   - (query) order {string} A field to sort-order the retrieved collections by.
  *   - (query) discount_condition_id {string} Filter collections by a discount condition ID associated with them.
  *   - in: query
  *     name: created_at
@@ -97,7 +98,34 @@ import { Type } from "class-transformer"
  *       medusa.admin.collections.list()
  *       .then(({ collections, limit, offset, count }) => {
  *         console.log(collections.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCollections } from "medusa-react"
+ *
+ *       const Collections = () => {
+ *         const { collections, isLoading } = useAdminCollections()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {collections && !collections.length && <span>
+ *               No Product Collections
+ *             </span>}
+ *             {collections && collections.length > 0 && (
+ *               <ul>
+ *                 {collections.map((collection) => (
+ *                   <li key={collection.id}>{collection.title}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Collections
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -150,47 +178,87 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to configure the pagination of the retrieved product collections.
+ */
 export class AdminGetCollectionsPaginationParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 10
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset = 0
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product collections.
+ */
 // eslint-disable-next-line max-len
 export class AdminGetCollectionsParams extends AdminGetCollectionsPaginationParams {
+  /**
+   * Title to filter product collections by.
+   */
   @IsOptional()
   @IsString()
   title?: string
 
+  /**
+   * Handle to filter product collections by.
+   */
   @IsOptional()
   @IsString()
   handle?: string
 
+  /**
+   * Date filters to apply on the product collections' `created_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the product collections' `updated_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the product collections' `deleted_at` date.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => DateComparisonOperator)
   deleted_at?: DateComparisonOperator
 
+  /**
+   * Term to search product collections by their title and handle.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
+  @IsString()
+  @IsOptional()
+  order?: string
+
+  /**
+   * Filter product collections by their associated discount condition's ID.
+   */
   @IsString()
   @IsOptional()
   discount_condition_id?: string

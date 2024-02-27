@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the tax rate to create.
+ */
 export interface AdminPostTaxRatesReq {
   /**
    * The code of the tax rate.

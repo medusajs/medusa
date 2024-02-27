@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { SalesChannel } from "./SalesChannel"
 
+/**
+ * The list of sales channels with pagination fields.
+ */
 export interface AdminSalesChannelsListRes {
   /**
    * An array of sales channels details.

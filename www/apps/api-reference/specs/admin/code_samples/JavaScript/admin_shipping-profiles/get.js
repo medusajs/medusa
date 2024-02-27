@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.shippingProfiles.list()
 .then(({ shipping_profiles }) => {
   console.log(shipping_profiles.length);
-});
+})

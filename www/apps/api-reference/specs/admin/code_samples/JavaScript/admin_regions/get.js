@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.regions.list()
 .then(({ regions, limit, offset, count }) => {
   console.log(regions.length);
-});
+})

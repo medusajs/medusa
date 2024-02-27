@@ -1,0 +1,6 @@
+{
+  "description": "This component is based on the table element and its various children:\n\n- `Table`: `table`\n- `Table.Header`: `thead`\n- `Table.Row`: `tr`\n- `Table.HeaderCell`: `th`\n- `Table.Body`: `tbody`\n- `Table.Cell`: `td`\n\nEach component supports the props or attributes of its equivalent HTML element.",
+  "methods": [],
+  "displayName": "Table",
+  "props": {}
+}

@@ -21,9 +21,33 @@ import { ProductVariantInventoryService } from "../../../../services"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.inventoryItems.delete(inventoryItemId)
- *         .then(({ id, object, deleted }) => {
- *           console.log(id)
- *         })
+ *       .then(({ id, object, deleted }) => {
+ *         console.log(id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteInventoryItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         inventoryItemId: string
+ *       }
+ *
+ *       const InventoryItem = ({ inventoryItemId }: Props) => {
+ *         const deleteInventoryItem = useAdminDeleteInventoryItem(
+ *           inventoryItemId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteInventoryItem.mutate()
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default InventoryItem
  *   - lang: Shell
  *     label: cURL
  *     source: |

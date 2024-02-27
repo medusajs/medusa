@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the prices to add.
+ */
 export interface AdminPostPriceListPricesPricesReq {
   /**
    * The prices to update or add.

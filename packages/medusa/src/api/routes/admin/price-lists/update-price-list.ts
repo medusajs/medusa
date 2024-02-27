@@ -1,3 +1,5 @@
+import { MedusaContainer, PricingTypes, WorkflowTypes } from "@medusajs/types"
+import { MedusaV2Flag, PriceListStatus, PriceListType } from "@medusajs/utils"
 import {
   IsArray,
   IsBoolean,
@@ -7,19 +9,18 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
-import {
-  AdminPriceListPricesUpdateReq,
-  PriceListStatus,
-  PriceListType,
-} from "../../../../types/price-list"
 
-import { Type } from "class-transformer"
+import { updatePriceLists } from "@medusajs/core-flows"
+import { Transform, Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import { PriceList } from "../../../.."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import PriceListService from "../../../../services/price-list"
+import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
+import { getPriceListPricingModule } from "./modules-queries"
+import { transformOptionalDate } from "../../../../utils/validators/date-transform"
 
 /**
  * @oas [post] /admin/price-lists/{id}
@@ -48,7 +49,39 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdatePriceList } from "medusa-react"
+ *
+ *       type Props = {
+ *         priceListId: string
+ *       }
+ *
+ *       const PriceList = ({
+ *         priceListId
+ *       }: Props) => {
+ *         const updatePriceList = useAdminUpdatePriceList(priceListId)
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           endsAt: Date
+ *         ) => {
+ *           updatePriceList.mutate({
+ *             ends_at: endsAt,
+ *           }, {
+ *             onSuccess: ({ price_list }) => {
+ *               console.log(price_list.ends_at)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -86,26 +119,59 @@ import { validator } from "../../../../utils/validator"
  */
 export default async (req, res) => {
   const { id } = req.params
+  let priceList
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const manager: EntityManager = req.scope.resolve("manager")
+  const priceListService: PriceListService =
+    req.scope.resolve("priceListService")
 
   const validated = await validator(
     AdminPostPriceListsPriceListPriceListReq,
     req.body
   )
 
-  const priceListService: PriceListService =
-    req.scope.resolve("priceListService")
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    const updateVariantsWorkflow = updatePriceLists(req.scope)
+    const customerGroups = validated.customer_groups
+    delete validated.customer_groups
 
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await priceListService
-      .withTransaction(transactionManager)
-      .update(id, validated)
-  })
+    const updatePriceListInput = {
+      id,
+      ...validated,
+    } as PricingTypes.UpdatePriceListDTO
 
-  const priceList = await priceListService.retrieve(id, {
-    select: defaultAdminPriceListFields as (keyof PriceList)[],
-    relations: defaultAdminPriceListRelations,
-  })
+    if (Array.isArray(customerGroups)) {
+      updatePriceListInput.rules = {
+        customer_group_id: customerGroups.map((group) => group.id),
+      }
+    }
+
+    const input = {
+      price_lists: [updatePriceListInput],
+    } as WorkflowTypes.PriceListWorkflow.UpdatePriceListWorkflowInputDTO
+
+    await updateVariantsWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+
+    priceList = await getPriceListPricingModule(id, {
+      container: req.scope as MedusaContainer,
+    })
+  } else {
+    await manager.transaction(async (transactionManager) => {
+      return await priceListService
+        .withTransaction(transactionManager)
+        .update(id, validated)
+    })
+
+    priceList = await priceListService.retrieve(id, {
+      select: defaultAdminPriceListFields as (keyof PriceList)[],
+      relations: defaultAdminPriceListRelations,
+    })
+  }
 
   res.json({ price_list: priceList })
 }
@@ -118,6 +184,7 @@ class CustomerGroup {
 /**
  * @schema AdminPostPriceListsPriceListPriceListReq
  * type: object
+ * description: "The details to update of the payment collection."
  * properties:
  *   name:
  *     description: "The name of the Price List"
@@ -140,7 +207,8 @@ class CustomerGroup {
  *      - sale
  *      - override
  *   status:
- *     description: "The status of the Price List. If the status is set to `draft`, the prices created in the price list will not be available of the customer."
+ *     description: >-
+ *       The status of the Price List. If the status is set to `draft`, the prices created in the price list will not be available of the customer.
  *     type: string
  *     enum:
  *      - active
@@ -204,9 +272,11 @@ export class AdminPostPriceListsPriceListPriceListReq {
   description?: string
 
   @IsOptional()
+  @Transform(transformOptionalDate)
   starts_at?: Date | null
 
   @IsOptional()
+  @Transform(transformOptionalDate)
   ends_at?: Date | null
 
   @IsOptional()

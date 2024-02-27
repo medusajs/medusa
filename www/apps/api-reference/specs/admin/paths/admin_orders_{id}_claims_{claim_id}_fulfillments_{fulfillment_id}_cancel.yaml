@@ -1,7 +1,9 @@
 post:
   operationId: PostOrdersClaimFulfillmentsCancel
   summary: Cancel Claim's Fulfillment
-  description: Cancel a claim's fulfillment and change its status.
+  description: >-
+    Cancel a claim's fulfillment and change its fulfillment status to
+    `canceled`.
   x-authenticated: true
   parameters:
     - in: path
@@ -41,6 +43,11 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_orders_{id}_claims_{claim_id}_fulfillments_{fulfillment_id}_cancel/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_orders_{id}_claims_{claim_id}_fulfillments_{fulfillment_id}_cancel/post.tsx
     - lang: Shell
       label: cURL
       source:

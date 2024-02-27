@@ -28,9 +28,41 @@ import { PaymentCollectionService } from "../../../../services"
  *       medusa.admin.paymentCollections.update(paymentCollectionId, {
  *         description
  *       })
- *         .then(({ payment_collection }) => {
- *           console.log(payment_collection.id)
- *         })
+ *       .then(({ payment_collection }) => {
+ *         console.log(payment_collection.id)
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdatePaymentCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentCollectionId: string
+ *       }
+ *
+ *       const PaymentCollection = ({ paymentCollectionId }: Props) => {
+ *         const updateCollection = useAdminUpdatePaymentCollection(
+ *           paymentCollectionId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           description: string
+ *         ) => {
+ *           updateCollection.mutate({
+ *             description
+ *           }, {
+ *             onSuccess: ({ payment_collection }) => {
+ *               console.log(payment_collection.description)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PaymentCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -89,6 +121,7 @@ export default async (req, res) => {
 /**
  * @schema AdminUpdatePaymentCollectionsReq
  * type: object
+ * description: "The details to update of the payment collection."
  * properties:
  *   description:
  *     description: A description to create or update the payment collection.

@@ -27,164 +27,85 @@ The [Local Event Bus module](../../../development/events/modules/local.md) works
 
 As mentioned in the overview, this guide illustrates how to send the email using SendGrid. If you intend to follow along, you must have the [SendGrid plugin](../../../plugins/notifications/sendgrid.mdx) installed and configured.
 
-You can also find other available Notification provider plugins in the [Plugins directory](https://medusajs.com/plugins/), or [create your own](../../../development/notification/create-notification-provider.md).
+You can also find other available Notification provider plugins in the [Plugins directory](https://medusajs.com/plugins/), or [create your own](../../../references/notification/classes/notification.AbstractNotificationService.mdx).
 
 ---
 
-## Step 1: Create the Subscriber
+## Method 1: Using a Subscriber
 
-To subscribe to and handle an event, you must create a subscriber.
+To subscribe to an event, you must create a [subscriber](../../../development/events/subscribers.mdx).
 
-:::tip
+Create the file `src/subscribers/invite-created.ts` with the following content:
 
-You can learn more about subscribers in the [Subscribers documentation](../../../development/events/subscribers.mdx).
+```ts title="src/subscribers/invite-created.ts"
+import { 
+  type SubscriberConfig, 
+  type SubscriberArgs,
+} from "@medusajs/medusa"
 
-:::
-
-Create the file `src/subscribers/invite.ts` with the following content:
-
-```ts title=src/subscribers/invite.ts
-type InjectedDependencies = {
-  // TODO add necessary dependencies
+export default async function handleInviteCreated({ 
+  data, eventName, container, pluginOptions, 
+}: SubscriberArgs<Record<string, string>>) {
+  // TODO: handle event
 }
 
-class InviteSubscriber {
-  constructor(container: InjectedDependencies) {
-    // TODO subscribe to event
-  }
+export const config: SubscriberConfig = {
+  event: "invite.created",
+  context: {
+    subscriberId: "invite-created-handler",
+  },
 }
-
-export default InviteSubscriber
 ```
 
-You’ll be adding in the next step the necessary dependencies to the subscriber.
+In this file, you export a configuration object indicating that the subscriber is listening to the `invite.created` event.
 
-:::tip
+You also export a handler function `handleInviteCreated`. In the parameter it receives, the `data` object is the payload emitted when the event was triggered, which is an object of the following format:
 
-You can learn more about dependency injection in [this documentation](../../../development/fundamentals/dependency-injection.md).
-
-:::
-
----
-
-## Step 2: Subscribe to the Event
-
-In this step, you’ll subscribe to the `invite.created` event to send the user the invitation email.
-
-There are two ways to do this:
-
-### Method 1: Using the NotificationService
-
-If the notification provider you’re using already implements the logic to handle this event, you can subscribe to the event using the `NotificationService`:
-
-```ts title=src/subscribers/invite.ts
-import { NotificationService } from "@medusajs/medusa"
-
-type InjectedDependencies = {
-  notificationService: NotificationService
+```ts
+{
+  // string - ID of invite
+  id
+  // string - token generated to validate the invited user
+  token,
+  // string - email of invited user
+  user_email
 }
-
-class InviteSubscriber {
-  constructor({ notificationService }: InjectedDependencies) {
-    notificationService.subscribe(
-      "invite.created", 
-      "<NOTIFICATION_PROVIDER_IDENTIFIER>"
-    )
-  }
-}
-
-export default InviteSubscriber
 ```
 
-Where `<NOTIFICATION_PROVIDER_IDENTIFIER>` is the identifier for your notification provider.
-
-:::tip
-
-You can learn more about handling events with the Notification Service using [this documentation](../../../development/notification/create-notification-provider.md).
-
-:::
-
-### Method 2: Using the EventBusService
-
-If the notification provider you’re using isn’t configured to handle this event, or you want to implement some other custom logic, you can subscribe to the event using the `EventBusService`:
-
-```ts title=src/subscribers/invite.ts
-import { EventBusService } from "@medusajs/medusa"
-
-type InjectedDependencies = {
-  eventBusService: EventBusService
-}
-
-class InviteSubscriber {
-  constructor({ eventBusService }: InjectedDependencies) {
-    eventBusService.subscribe(
-      "invite.created", 
-      this.handleInvite
-    )
-  }
-
-  handleInvite = async (data: Record<string, any>) => {
-    // TODO: handle event
-  }
-}
-
-export default InviteSubscriber
-```
-
-When using this method, you’ll have to handle the logic of sending the invitation email inside the handler function, which in this case is `handleInvite`.
-
----
-
-## Step 3: Handle the Event
-
-The `handleInvite` method receives a `data` object as a parameter which is a payload emitted when the event was triggered. This object has the following properties:
-
-- `id`: a string indicating the ID of the invite.
-- `token`: a string indicating the token of the invite. This token is useful to pass along to a frontend link that can be used to accept the invite.
-- `user_email`: a string indicating the email of the invited user.
-
-In this method, you should typically send an email to the invited user. You can place any content in the email, but typically you would include a link to your frontend that allows the invited user to enter their details and accept the invite.
+In this method, you should typically send an email to the user. You can place any content in the email, but should mainly include the invite token.
 
 ### Example: Using SendGrid
 
 For example, you can implement this subscriber to send emails using SendGrid:
 
-```ts title=src/subscribers/invite.ts
-import { EventBusService } from "@medusajs/medusa"
+```ts title="src/subscribers/invite.ts"
+import { 
+  type SubscriberConfig, 
+  type SubscriberArgs,
+} from "@medusajs/medusa"
 
-type InjectedDependencies = {
-  eventBusService: EventBusService
-  sendgridService: any
+export default async function handleInviteCreated({ 
+  data, eventName, container, pluginOptions, 
+}: SubscriberArgs<Record<string, string>>) {
+  const sendGridService = container.resolve("sendgridService")
+
+  sendGridService.sendEmail({
+    templateId: "send-invite",
+    from: "hello@medusajs.com",
+    to: data.user_email,
+    dynamic_template_data: {
+      // any data necessary for your template...
+      token: data.token,
+    },
+  })
 }
 
-class InviteSubscriber {
-  protected sendGridService: any
-
-  constructor({ 
-    eventBusService,
-    sendgridService, 
-  }: InjectedDependencies) {
-    this.sendGridService = sendgridService
-    eventBusService.subscribe(
-      "invite.created", 
-      this.handleInvite
-    )
-  }
-
-  handleInvite = async (data: Record<string, any>) => {
-    this.sendGridService.sendEmail({
-      templateId: "send-invite",
-      from: "hello@medusajs.com",
-      to: data.user_email,
-      dynamic_template_data: {
-        // any data necessary for your template...
-        token: data.token,
-      },
-    })
-  }
+export const config: SubscriberConfig = {
+  event: "invite.created",
+  context: {
+    subscriberId: "invite-created-handler",
+  },
 }
-
-export default InviteSubscriber
 ```
 
 Notice that you should replace the values in the object passed to the `sendEmail` method:
@@ -193,3 +114,39 @@ Notice that you should replace the values in the object passed to the `sendEmai
 - `from`: Should be the from email.
 - `to`: Should be the invited user’s email.
 - `data`: Should be an object holding any data that should be passed to your SendGrid email template. In the example above, you pass the token, which you can use in the SendGrid template to format the frontend link (for example, `<FRONTEND_LINK>/invite?token={{token}}`, where `<FRONTEND_LINK>` is your frontend’s hostname.)
+
+---
+
+## Method 2: Using the NotificationService
+
+If the notification provider you’re using already implements the logic to handle this event, you can create a [Loader](../../../development/loaders/overview.mdx) to subscribe the Notification provider to the `invite.created` event.
+
+For example:
+
+```ts title="src/loaders/customer-confirmation.ts"
+import { 
+  MedusaContainer, 
+  NotificationService,
+} from "@medusajs/medusa"
+
+export default async (
+  container: MedusaContainer
+): Promise<void> => {
+  const notificationService = container.resolve<
+    NotificationService
+  >("notificationService")
+
+  notificationService.subscribe(
+    "invite.created", 
+    "<NOTIFICATION_PROVIDER_IDENTIFIER>"
+  )
+}
+```
+
+Where `<NOTIFICATION_PROVIDER_IDENTIFIER>` is the identifier for your notification provider. For example, `sendgrid`.
+
+:::note
+
+You can learn more about handling events with the Notification Service using [this documentation](../../../references/notification/classes/notification.AbstractNotificationService.mdx).
+
+:::

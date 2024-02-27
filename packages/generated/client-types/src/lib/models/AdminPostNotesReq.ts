@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the note to be created.
+ */
 export interface AdminPostNotesReq {
   /**
    * The ID of the resource which the Note relates to. For example, an order ID.

@@ -1,3 +1,12 @@
+import { MedusaContainer, PricingTypes, WorkflowTypes } from "@medusajs/types"
+import {
+  FlagRouter,
+  MedusaV2Flag,
+  PriceListStatus,
+  PriceListType,
+} from "@medusajs/utils"
+import { createPriceLists } from "@medusajs/core-flows"
+import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -6,24 +15,19 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { Request } from "express"
+import { EntityManager } from "typeorm"
+import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { PriceList } from "../../../../models"
+import PriceListService from "../../../../services/price-list"
 import {
   AdminPriceListPricesCreateReq,
   CreatePriceListInput,
-  PriceListStatus,
-  PriceListType,
 } from "../../../../types/price-list"
-
-import { Type } from "class-transformer"
-import { Request } from "express"
-import { EntityManager } from "typeorm"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
-import PriceListService from "../../../../services/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import {
-  defaultAdminPriceListFields,
-  defaultAdminPriceListRelations,
-} from "./index"
-import { PriceList } from "../../../../models"
+import { getPriceListPricingModule } from "./modules-queries"
+import { transformOptionalDate } from "../../../../utils/validators/date-transform"
 
 /**
  * @oas [post] /admin/price-lists
@@ -60,7 +64,48 @@ import { PriceList } from "../../../../models"
  *       })
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         PriceListStatus,
+ *         PriceListType,
+ *       } from "@medusajs/medusa"
+ *       import { useAdminCreatePriceList } from "medusa-react"
+ *
+ *       type CreateData = {
+ *         name: string
+ *         description: string
+ *         type: PriceListType
+ *         status: PriceListStatus
+ *         prices: {
+ *           amount: number
+ *           variant_id: string
+ *           currency_code: string
+ *           max_quantity: number
+ *         }[]
+ *       }
+ *
+ *       const CreatePriceList = () => {
+ *         const createPriceList = useAdminCreatePriceList()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           data: CreateData
+ *         ) => {
+ *           createPriceList.mutate(data, {
+ *             onSuccess: ({ price_list }) => {
+ *               console.log(price_list.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreatePriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -110,16 +155,57 @@ export default async (req: Request, res) => {
     req.scope.resolve("priceListService")
 
   const manager: EntityManager = req.scope.resolve("manager")
-  let priceList = await manager.transaction(async (transactionManager) => {
-    return await priceListService
-      .withTransaction(transactionManager)
-      .create(req.validatedBody as CreatePriceListInput)
-  })
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+  let priceList
 
-  priceList = await priceListService.retrieve(priceList.id, {
-    select: defaultAdminPriceListFields as (keyof PriceList)[],
-    relations: defaultAdminPriceListRelations,
-  })
+  const isMedusaV2FlagEnabled = featureFlagRouter.isFeatureEnabled(
+    MedusaV2Flag.key
+  )
+
+  if (isMedusaV2FlagEnabled) {
+    const createPriceListWorkflow = createPriceLists(req.scope)
+    const validatedInput = req.validatedBody as CreatePriceListInput
+    const rules: PricingTypes.CreatePriceListRules = {}
+    const customerGroups = validatedInput?.customer_groups || []
+    delete validatedInput.customer_groups
+
+    if (customerGroups.length) {
+      rules["customer_group_id"] = customerGroups.map((cg) => cg.id)
+    }
+
+    const input = {
+      price_lists: [
+        {
+          ...validatedInput,
+          rules,
+        },
+      ],
+    } as WorkflowTypes.PriceListWorkflow.CreatePriceListWorkflowInputDTO
+
+    const { result } = await createPriceListWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+
+    priceList = result[0]!.priceList
+
+    priceList = await getPriceListPricingModule(priceList.id, {
+      container: req.scope as MedusaContainer,
+    })
+  } else {
+    priceList = await manager.transaction(async (transactionManager) => {
+      return await priceListService
+        .withTransaction(transactionManager)
+        .create(req.validatedBody as CreatePriceListInput)
+    })
+
+    priceList = await priceListService.retrieve(priceList.id, {
+      select: defaultAdminPriceListFields as (keyof PriceList)[],
+      relations: defaultAdminPriceListRelations,
+    })
+  }
 
   res.json({ price_list: priceList })
 }
@@ -132,6 +218,7 @@ class CustomerGroup {
 /**
  * @schema AdminPostPriceListsPriceListReq
  * type: object
+ * description: "The details of the price list to create."
  * required:
  *   - name
  *   - description
@@ -159,7 +246,8 @@ class CustomerGroup {
  *      - sale
  *      - override
  *   status:
- *     description: "The status of the Price List. If the status is set to `draft`, the prices created in the price list will not be available of the customer."
+ *     description: >-
+ *       The status of the Price List. If the status is set to `draft`, the prices created in the price list will not be available of the customer.
  *     type: string
  *     enum:
  *       - active
@@ -218,9 +306,11 @@ export class AdminPostPriceListsPriceListReq {
   description: string
 
   @IsOptional()
+  @Transform(transformOptionalDate)
   starts_at?: Date
 
   @IsOptional()
+  @Transform(transformOptionalDate)
   ends_at?: Date
 
   @IsOptional()

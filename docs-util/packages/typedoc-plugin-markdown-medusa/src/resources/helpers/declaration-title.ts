@@ -7,12 +7,8 @@ import {
   ReflectionType,
 } from "typedoc"
 import { MarkdownTheme } from "../../theme"
-import {
-  escapeChars,
-  memberSymbol,
-  stripComments,
-  stripLineBreaks,
-} from "../../utils"
+import { memberSymbol, stripComments } from "../../utils"
+import { escapeChars, stripLineBreaks, getType as getTypeUtils } from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -29,10 +25,12 @@ export default function (theme: MarkdownTheme) {
         }
         return (
           (reflection.parent?.kindOf(ReflectionKind.Enum) ? " = " : ": ") +
-          Handlebars.helpers.type.call(
-            reflectionType ? reflectionType : reflection,
-            "object"
-          )
+          getTypeUtils({
+            reflectionType: reflectionType || reflection.type,
+            collapse: "object",
+            escape: true,
+            getRelativeUrlMethod: Handlebars.helpers.relativeURL,
+          })
         )
       }
 
@@ -43,11 +41,7 @@ export default function (theme: MarkdownTheme) {
         `${this.flags.isRest ? "... " : ""} **${escapeChars(this.name)}**`
       )
       if (this instanceof DeclarationReflection && this.typeParameters) {
-        md.push(
-          `<${this.typeParameters
-            .map((typeParameter) => `\`${typeParameter.name}\``)
-            .join(", ")}\\>`
-        )
+        md.push(`\`<${this.typeParameters.join(", ")}>\``)
       }
 
       md.push(getType(this))
@@ -57,8 +51,11 @@ export default function (theme: MarkdownTheme) {
         this.defaultValue &&
         this.defaultValue !== "..."
       ) {
-        md.push(` = \`${stripLineBreaks(stripComments(this.defaultValue))}\``)
+        md.push(
+          ` = \`${stripLineBreaks(stripComments(`${this.defaultValue}`))}\``
+        )
       }
+
       return md.join("")
     }
   )

@@ -7,7 +7,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The ID of the Payment Collections.
+      description: The ID of the Payment Collection.
       schema:
         type: string
     - in: path
@@ -24,6 +24,11 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/store_payment-collections_{id}_sessions_{session_id}_authorize/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/store_payment-collections_{id}_sessions_{session_id}_authorize/post.tsx
     - lang: Shell
       label: cURL
       source:

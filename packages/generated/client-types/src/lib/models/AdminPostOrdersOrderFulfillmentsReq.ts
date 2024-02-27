@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the fulfillment to be created.
+ */
 export interface AdminPostOrdersOrderFulfillmentsReq {
   /**
    * The Line Items to include in the Fulfillment.
@@ -17,6 +20,10 @@ export interface AdminPostOrdersOrderFulfillmentsReq {
      */
     quantity: number
   }>
+  /**
+   * The ID of the location where the items will be fulfilled from.
+   */
+  location_id?: string
   /**
    * If set to `true`, no notification will be sent to the customer related to this fulfillment.
    */

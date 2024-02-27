@@ -64,11 +64,16 @@ export default async function getPathsOfTag(
   })
 
   // resolve references in paths
-  paths = (await OpenAPIParser.dereference(
-    `${basePath}/`,
-    paths,
-    {}
-  )) as unknown as Document
+  paths = (await OpenAPIParser.dereference(`${basePath}/`, paths, {
+    parse: {
+      text: {
+        // This ensures that all files are parsed as expected
+        // resolving the error with incorrect new lines for
+        // example files having `undefined` extension.
+        canParse: /.*/,
+      },
+    },
+  })) as unknown as Document
 
   return paths
 }

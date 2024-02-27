@@ -1,8 +1,8 @@
 import { MedusaModule, Modules } from "@medusajs/modules-sdk"
+import { MedusaV2Flag } from "@medusajs/utils"
 import { DeleteResult, EntityTarget, In, Not } from "typeorm"
 import { dataSource } from "../loaders/database"
 import { featureFlagRouter } from "../loaders/feature-flags"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import {
   Discount,
   DiscountCondition,
@@ -229,7 +229,7 @@ export const DiscountConditionRepository = dataSource
 
       if (
         type !== DiscountConditionType.CUSTOMER_GROUPS &&
-        featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)
+        featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
       ) {
         const module = MedusaModule.getModuleInstance(Modules.PRODUCT)[
           Modules.PRODUCT

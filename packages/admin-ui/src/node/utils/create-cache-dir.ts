@@ -5,6 +5,10 @@ import { createEntry } from "./create-entry"
 import { logger } from "./logger"
 
 async function copyAdmin(dest: string) {
+  if (process.env.PLUGIN_ADMIN_UI_SKIP_CACHE) {
+    return true
+  }
+
   const adminDir = path.resolve(__dirname, "..", "ui")
   const destDir = path.resolve(dest, "admin")
 

@@ -4,7 +4,7 @@
  * summary: "User Logout"
  * x-authenticated: true
  * description: "Delete the current session for the logged in user. This will only work if you're using Cookie session for authentication. If the API token is still passed in the header,
- * the user is still authorized to perform admin functionalities in other endpoints."
+ * the user is still authorized to perform admin functionalities in other API Routes."
  * x-codegen:
  *   method: deleteSession
  * x-codeSamples:
@@ -15,6 +15,28 @@
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in
  *       medusa.admin.auth.deleteSession()
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteSession } from "medusa-react"
+ *
+ *       const Logout = () => {
+ *         const adminLogout = useAdminDeleteSession()
+ *         // ...
+ *
+ *         const handleLogout = () => {
+ *           adminLogout.mutate(undefined, {
+ *             onSuccess: () => {
+ *               // user logged out.
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Logout
  *   - lang: Shell
  *     label: cURL
  *     source: |

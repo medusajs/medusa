@@ -58,6 +58,9 @@ export class Notification extends BaseEntity {
   @JoinColumn({ name: "provider_id" })
   provider: NotificationProvider
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "noti")

@@ -10,7 +10,7 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  * @oas [post] /admin/reservations/{id}
  * operationId: "PostReservationsReservation"
  * summary: "Update a Reservation"
- * description: "Update a Reservation's details.'"
+ * description: "Update a Reservation's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Reservation.
@@ -31,7 +31,35 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       })
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateReservation } from "medusa-react"
+ *
+ *       type Props = {
+ *         reservationId: string
+ *       }
+ *
+ *       const Reservation = ({ reservationId }: Props) => {
+ *         const updateReservation = useAdminUpdateReservation(
+ *           reservationId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           quantity: number
+ *         ) => {
+ *           updateReservation.mutate({
+ *             quantity,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Reservation
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -102,6 +130,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostReservationsReservationReq
  * type: object
+ * description: "The details to update of the reservation."
  * properties:
  *   location_id:
  *     description: "The ID of the location associated with the reservation."
@@ -109,6 +138,9 @@ export default async (req, res) => {
  *   quantity:
  *     description: "The quantity to reserve."
  *     type: number
+ *   description:
+ *     description: "The reservation's description."
+ *     type: string
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.
  *     type: object

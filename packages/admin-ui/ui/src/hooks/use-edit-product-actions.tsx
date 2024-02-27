@@ -5,19 +5,22 @@ import {
   Product,
 } from "@medusajs/medusa"
 import {
+  adminInventoryItemsKeys,
   useAdminCreateVariant,
   useAdminDeleteProduct,
   useAdminDeleteVariant,
   useAdminProduct,
   useAdminUpdateProduct,
   useAdminUpdateVariant,
+  useMedusa,
 } from "medusa-react"
 
 import { getErrorMessage } from "../utils/error-messages"
-import { removeFalsy } from "../utils/remove-nullish"
+import { useFeatureFlag } from "../providers/feature-flag-provider"
 import useImperativeDialog from "./use-imperative-dialog"
 import { useNavigate } from "react-router-dom"
 import useNotification from "./use-notification"
+import { useQueryClient } from "@tanstack/react-query"
 
 const useEditProductActions = (productId: string) => {
   const dialog = useImperativeDialog()
@@ -29,13 +32,33 @@ const useEditProductActions = (productId: string) => {
   const updateVariant = useAdminUpdateVariant(productId)
   const deleteVariant = useAdminDeleteVariant(productId)
   const addVariant = useAdminCreateVariant(productId)
+  const queryClient = useQueryClient()
+  const { isFeatureEnabled } = useFeatureFlag()
+  const { client } = useMedusa()
 
   const onDelete = async () => {
     const shouldDelete = await dialog({
       heading: "Delete Product",
       text: "Are you sure you want to delete this product",
     })
+
     if (shouldDelete) {
+      if (isFeatureEnabled("inventoryService") && getProduct.product) {
+        const { variants } = await client.admin.variants.list({
+          id: getProduct.product.variants.map((v) => v.id),
+          expand: "inventory_items",
+        })
+
+        variants
+          .filter(({ inventory_items }) => !!inventory_items?.length)
+          .map(({ inventory_items }) =>
+            client.admin.inventoryItems.delete(
+              inventory_items![0].inventory_item_id
+            )
+          )
+        queryClient.invalidateQueries(adminInventoryItemsKeys.lists())
+      }
+
       deleteProduct.mutate(undefined, {
         onSuccess: () => {
           notification("Success", "Product deleted successfully", "success")

@@ -4,6 +4,6 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.orderEdits.update(orderEditId, {
   internal_note: "internal reason XY"
 })
-  .then(({ order_edit }) => {
-    console.log(order_edit.id)
-  })
+.then(({ order_edit }) => {
+  console.log(order_edit.id)
+})

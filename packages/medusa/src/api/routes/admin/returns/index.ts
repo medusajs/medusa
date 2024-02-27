@@ -39,6 +39,7 @@ export const defaultReturnCancelFields = [...defaultAdminOrdersFields]
 /**
  * @schema AdminReturnsCancelRes
  * type: object
+ * description: "The associated order's details."
  * x-expanded-relations:
  *   field: order
  *   relations:
@@ -101,6 +102,7 @@ export type AdminReturnsCancelRes = {
 /**
  * @schema AdminReturnsListRes
  * type: object
+ * description: "The list of returns with pagination fields."
  * x-expanded-relation:
  *   field: returns
  *   relations:
@@ -134,6 +136,7 @@ export type AdminReturnsListRes = PaginatedResponse & {
 /**
  * @schema AdminReturnsRes
  * type: object
+ * description: "The return's details."
  * x-expanded-relation:
  *   field: return
  *   relations:

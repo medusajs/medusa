@@ -4,7 +4,7 @@ description: 'Learn about the available events and their data payloads in Medusa
 
 # Events Reference
 
-This document details all events in Medusa, when they are triggered, and what data your handler method will receive when the event is triggered.
+This document details all events in Medusa, when they are triggered, and what data your handler function will receive when the event is triggered.
 
 ## Prerequisites
 
@@ -112,7 +112,7 @@ Object of the following format:
 </td>
 <td>
 
-Triggered after the `preProcessBatchJob` of a batch job stategy is done executing.
+Triggered after the `preProcessBatchJob` of a batch job strategy is done executing.
 
 </td>
 <td>
@@ -700,6 +700,53 @@ Object of the following format:
 </td>
 </tr>
 
+</tbody>
+</table>
+
+---
+
+## Discount Events
+
+This section holds all events related to discounts.
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`discount.created`
+
+</td>
+<td>
+
+Triggered when a discount is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // string ID of discount
+}
+```
+
+</td>
+</tr>
 </tbody>
 </table>
 
@@ -1948,7 +1995,7 @@ Triggered when a payment is created.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/entities.Payment.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1966,7 +2013,7 @@ Triggered when a payment is updated.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/entities.Payment.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1984,7 +2031,7 @@ Triggered when a payment is captured.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/entities.Payment.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2002,7 +2049,7 @@ Triggered when the capturing of a payment fails.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/entities.Payment.mdx) for an idea of what fields to expect.
 
 In addition, an error object is passed within the same object as the Payment Processor:
 
@@ -2012,7 +2059,7 @@ In addition, an error object is passed within the same object as the Payment Pro
   //... other payment fields
   error: {
     name, //string
-    nessage, //string
+    message, //string
     stack, //(optional) string
   }
 }
@@ -2034,7 +2081,7 @@ Triggered when a refund of a payment is created.
 </td>
 <td>
 
-The entire refund passed as an object. You can refer to the [Refund entity](../../references/entities/classes/Refund.md) for an idea of what fields to expect.
+The entire refund passed as an object. You can refer to the [Refund entity](../../references/entities/classes/entities.Refund.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2052,7 +2099,7 @@ Triggered when a payment's refund fails.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/entities.Payment.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2095,7 +2142,7 @@ Triggered when a payment collection is created.
 </td>
 <td>
 
-The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/entities.PaymentCollection.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2113,7 +2160,7 @@ Triggered when a payment collection is update.
 </td>
 <td>
 
-The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/entities.PaymentCollection.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2131,7 +2178,7 @@ Triggered when a payment collection is deleted.
 </td>
 <td>
 
-The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/entities.PaymentCollection.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2149,7 +2196,7 @@ Triggered when a payment collection is either marked authorized or its payment s
 </td>
 <td>
 
-The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/entities.PaymentCollection.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2216,9 +2263,9 @@ Triggered when a product and data associated with it (options, variant orders, e
 </td>
 <td>
 
-The entire product passed as an object. You can refer to the [Product entity](../../references/entities/classes/Product.md) for an idea of what fields to expect.
+The entire product passed as an object. You can refer to the [Product entity](../../references/entities/classes/entities.Product.mdx) for an idea of what fields to expect.
 
-In one case, when the `/admin/products/{id}` endpoint is used to update the product, the payload is an object of the following format:
+In one case, when the `/admin/products/{id}` API Route is used to update the product, the payload is an object of the following format:
 
 ```js noReport noCopy
 {

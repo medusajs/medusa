@@ -2234,24 +2234,27 @@ describe("/store/carts", () => {
       expect(createdOrder.status).toEqual(200)
     })
 
-    it("returns early, if cart is already completed", async () => {
-      const manager = dbConnection.manager
+    it("should return early, if cart is already completed", async () => {
       const api = useApi()
-      await manager.query(
-        `UPDATE "cart"
-         SET completed_at=current_timestamp
-         WHERE id = 'test-cart-2'`
+
+      const completedCart = await api.post(
+        `/store/carts/test-cart-2/complete-cart`
       )
-      try {
-        await api.post(`/store/carts/test-cart-2/complete-cart`)
-      } catch (error) {
-        expect(error.response.data).toMatchSnapshot({
-          type: "not_allowed",
-          message: "Cart has already been completed",
-          code: "cart_incompatible_state",
+
+      expect(completedCart.status).toEqual(200)
+
+      const alreadyCompletedCart = await api.post(
+        `/store/carts/test-cart-2/complete-cart`
+      )
+
+      expect(alreadyCompletedCart.data.data).toEqual(
+        expect.objectContaining({
+          cart_id: "test-cart-2",
+          id: expect.any(String),
         })
-        expect(error.response.status).toEqual(409)
-      }
+      )
+      expect(alreadyCompletedCart.data.type).toEqual("order")
+      expect(alreadyCompletedCart.status).toEqual(200)
     })
 
     it("fails to complete cart with items inventory not/partially covered", async () => {
@@ -2352,6 +2355,32 @@ describe("/store/carts", () => {
       const res = await api.get(`/store/carts/swap-cart`)
       expect(res.data.cart.payment_authorized_at).not.toBe(null)
       expect(res.data.cart.completed_at).not.toBe(null)
+    })
+
+    it("should return the swap when cart is already completed", async () => {
+      const manager = dbConnection.manager
+      await manager.query(
+        "UPDATE swap SET cart_id='swap-cart' where id='test-swap'"
+      )
+
+      await manager.query("DELETE FROM payment where swap_id='test-swap'")
+
+      const api = useApi()
+
+      await api.post(`/store/carts/swap-cart/complete-cart`)
+
+      const alreadyCompletedCart = await api.post(
+        `/store/carts/swap-cart/complete-cart`
+      )
+
+      expect(alreadyCompletedCart.data.data).toEqual(
+        expect.objectContaining({
+          cart_id: "swap-cart",
+          id: expect.any(String),
+        })
+      )
+      expect(alreadyCompletedCart.data.type).toEqual("swap")
+      expect(alreadyCompletedCart.status).toEqual(200)
     })
 
     it("completes cart with a non-customer and for a customer with the same email created later the order doesn't show up", async () => {

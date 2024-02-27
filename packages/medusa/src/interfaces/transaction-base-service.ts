@@ -14,7 +14,7 @@ export abstract class TransactionBaseService {
     protected readonly __configModule__?: Record<string, unknown>,
     protected readonly __moduleDeclaration__?: Record<string, unknown>
   ) {
-    this.manager_ = __container__.manager
+    this.manager_ = __container__?.manager
   }
 
   withTransaction(transactionManager?: EntityManager): this {

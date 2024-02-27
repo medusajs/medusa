@@ -29,7 +29,7 @@ Create the file `services/event-bus-custom.ts` which will hold your event bus se
 
 Add the following content to the file:
 
-```ts title=services/event-bus-custom.ts
+```ts title="services/event-bus-custom.ts"
 import { EmitData, EventBusTypes } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
 
@@ -62,9 +62,9 @@ In the class you must implement the `emit` method. You can optionally implement 
 
 ### Note About the eventToSubscribersMap Property
 
-The `AbstractEventBusModuleService` implements two methods for handling subscription: `subscribe` and `unsubscribe`. In these methods, the subscribed handler methods are managed within a class property `eventToSubscribersMap`, which is a JavaScript Map. They map keys are the event names, whereas the value of each key is an array of subscribed handler methods.
+The `AbstractEventBusModuleService` implements two methods for handling subscription: `subscribe` and `unsubscribe`. In these methods, the subscribed handler functions are managed within a class property `eventToSubscribersMap`, which is a JavaScript Map. The map's keys are the event names, whereas the value of each key is an array of subscribed handler functions.
 
-In your custom implementation, you can use this property to manage the subscribed handler methods. For example, you can get the subscribers of a method using the `get` method of the map:
+In your custom implementation, you can use this property to manage the subscribed handler functions. For example, you can get the subscribers of a method using the `get` method of the map:
 
 ```ts
 const eventSubscribers = 
@@ -81,7 +81,7 @@ Here’s an example of how you can use the `constructor` to store the options of
 
 <!-- eslint-disable prefer-rest-params -->
 
-```ts title=services/event-bus-custom.ts
+```ts title="services/event-bus-custom.ts"
 class CustomEventBus extends AbstractEventBusModuleService {
   protected readonly moduleOptions: Record<string, any>
 
@@ -107,9 +107,9 @@ The `emit` method has two different signatures:
 1. The first signature accepts three parameters. The first parameter is `eventName` being a required string indicating the name of the event to trigger. The second parameter is `data` being the optional data to send to subscribers of that event. The third optional parameter `options` which can be used to pass options specific to the event bus.
 2. The second signature accepts one parameter, which is an array of objects having three properties: `eventName`, `data`, and `options`. These are the same as the parameters that can be passed in the first signature. This signature allows emitting more than one event.
 
-The `options` parameter depends on the event bus integrating. For example, the Redis event bus accept the following options:
+The `options` parameter depends on the event bus integration. For example, the Redis event bus accepts the following options:
 
-```ts title=services/event-bus-custom.ts
+```ts title="services/event-bus-custom.ts"
 type JobData<T> = {
   eventName: string
   data: T
@@ -119,7 +119,7 @@ type JobData<T> = {
 
 You can implement your method in a way that supports both signatures by checking the type of the first input. For example:
 
-```ts title=services/event-bus-custom.ts
+```ts title="services/event-bus-custom.ts"
 class CustomEventBus extends AbstractEventBusModuleService {
   // ...
   async emit<T>(
@@ -144,17 +144,17 @@ class CustomEventBus extends AbstractEventBusModuleService {
 
 As mentioned earlier, this method is already implemented in the `AbstractEventBusModuleService` class. This section explains how you can implement your custom subscribe logic if necessary.
 
-The `subscribe` method attaches a handler method to the specified event, which is run when the event is triggered. It is typically used inside a subscriber class.
+The `subscribe` method attaches a handler function to the specified event, which is run when the event is triggered. It is typically used inside a subscriber class.
 
 The  `subscribe` method accepts three parameters:
 
-1. The first parameter `eventName` is a required string. It indicates which event the handler method is subscribing to.
+1. The first parameter `eventName` is a required string. It indicates which event the handler function is subscribing to.
 2. The second parameter `subscriber` is a required function that performs an action when the event is triggered.
-3. The third parameter `context` is an optional object that has the property `subscriberId`. Subscriber IDs are useful to differentiate between handler methods when retrying a failed method. It’s also useful for unsubscribing an event handler. Note that if you must implement the mechanism around assigning IDs to subscribers when you override the `subscribe` method.
+3. The third parameter `context` is an optional object that has the property `subscriberId`. Subscriber IDs are useful to differentiate between handler functions when retrying a failed method. It’s also useful for unsubscribing an event handler. Note that if you must implement the mechanism around assigning IDs to subscribers when you override the `subscribe` method.
 
 The implementation of this method depends on the service you’re using for the event bus:
 
-```ts title=services/event-bus-custom.ts
+```ts title="services/event-bus-custom.ts"
 class CustomEventBus extends AbstractEventBusModuleService {
   // ...
   subscribe(
@@ -170,17 +170,17 @@ class CustomEventBus extends AbstractEventBusModuleService {
 
 As mentioned earlier, this method is already implemented in the `AbstractEventBusModuleService` class. This section explains how you can implement your custom unsubscribe logic if necessary.
 
-The `unsubscribe` method is used to unsubscribe a handler method from an event.
+The `unsubscribe` method is used to unsubscribe a handler function from an event.
 
 The `unsubscribe` method accepts three parameters:
 
-1. The first parameter `eventName` is a required string. It indicates which event the handler method is unsubscribing from.
+1. The first parameter `eventName` is a required string. It indicates which event the handler function is unsubscribing from.
 2. The second parameter `subscriber` is a required function that was initially subscribed to the event.
 3. The third parameter `context` is an optional object that has the property `subscriberId`. It can be used to specify the ID of the subscriber to unsubscribe.
 
 The implementation of this method depends on the service you’re using for the event bus:
 
-```ts title=services/event-bus-custom.ts
+```ts title="services/event-bus-custom.ts"
 class CustomEventBus extends AbstractEventBusModuleService {
   // ...
   unsubscribe(
@@ -200,7 +200,7 @@ After implementing the event bus service, you must export it so that the Medusa 
 
 Create the file `index.ts` with the following content:
 
-```ts title=services/event-bus-custom.ts
+```ts title="services/event-bus-custom.ts"
 import { ModuleExports } from "@medusajs/modules-sdk"
 
 import { CustomEventBus } from "./services"
@@ -226,12 +226,12 @@ You can test your module in the Medusa backend by referencing it in the configur
 
 To do that, add the module to the exported configuration in `medusa-config.js` as follows:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   // ...
   modules: { 
     // ...
-    cacheService: {
+    eventBus: {
         resolve: "path/to/custom-module", 
         options: { 
           // any necessary options

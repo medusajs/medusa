@@ -1,29 +1,38 @@
-import { initialize } from "../../../../src"
-import { DB_URL, TestDatabase } from "../../../utils"
-import { IProductModuleService } from "@medusajs/types"
-import { Product, ProductOption } from "@models"
+import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductTypes } from "@medusajs/types"
+import { Product, ProductOption } from "@models"
+import { getInitModuleConfig, TestDatabase } from "../../../utils"
+import { MedusaModule, Modules } from "@medusajs/modules-sdk"
+import { initModules } from "medusa-test-utils"
 
 describe("ProductModuleService product options", () => {
   let service: IProductModuleService
   let testManager: SqlEntityManager
-  let repositoryManager: SqlEntityManager
   let optionOne: ProductOption
   let optionTwo: ProductOption
   let productOne: Product
   let productTwo: Product
 
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    MedusaModule.clearInstances()
+
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PRODUCT]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
+
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
-    repositoryManager = await TestDatabase.forkManager()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-      },
-    })
 
     testManager = await TestDatabase.forkManager()
     productOne = testManager.create(Product, {
@@ -103,7 +112,7 @@ describe("ProductModuleService product options", () => {
         {
           select: ["title", "product.id"],
           relations: ["product"],
-          take: 1
+          take: 1,
         }
       )
 
@@ -150,12 +159,13 @@ describe("ProductModuleService product options", () => {
           id: optionOne.id,
         }),
       ])
-
       ;[options, count] = await service.listAndCountOptions({}, { take: 1 })
 
       expect(count).toEqual(2)
-
-      ;[options, count] = await service.listAndCountOptions({}, { take: 1, skip: 1 })
+      ;[options, count] = await service.listAndCountOptions(
+        {},
+        { take: 1, skip: 1 }
+      )
 
       expect(count).toEqual(2)
       expect(options).toEqual([
@@ -173,19 +183,21 @@ describe("ProductModuleService product options", () => {
         {
           select: ["title", "product.id"],
           relations: ["product"],
-          take: 1
+          take: 1,
         }
       )
 
       expect(count).toEqual(1)
-      expect(options).toEqual([{
-        id: optionOne.id,
-        title: optionOne.title,
-        product_id: productOne.id,
-        product: {
-          id: productOne.id,
+      expect(options).toEqual([
+        {
+          id: optionOne.id,
+          title: optionOne.title,
+          product_id: productOne.id,
+          product: {
+            id: productOne.id,
+          },
         },
-      }])
+      ])
     })
   })
 
@@ -196,18 +208,15 @@ describe("ProductModuleService product options", () => {
       expect(option).toEqual(
         expect.objectContaining({
           id: optionOne.id,
-        }),
+        })
       )
     })
 
     it("should return requested attributes when requested through config", async () => {
-      const option = await service.retrieveOption(
-        optionOne.id,
-        {
-          select: ["id", "product.title"],
-          relations: ["product"],
-        }
-      )
+      const option = await service.retrieveOption(optionOne.id, {
+        select: ["id", "product.title"],
+        relations: ["product"],
+      })
 
       expect(option).toEqual(
         expect.objectContaining({
@@ -216,7 +225,7 @@ describe("ProductModuleService product options", () => {
             id: "product-1",
             title: "product 1",
           },
-        }),
+        })
       )
     })
 
@@ -229,7 +238,9 @@ describe("ProductModuleService product options", () => {
         error = e
       }
 
-      expect(error.message).toEqual("ProductOption with id: does-not-exist was not found")
+      expect(error.message).toEqual(
+        "ProductOption with id: does-not-exist was not found"
+      )
     })
   })
 
@@ -237,12 +248,10 @@ describe("ProductModuleService product options", () => {
     const optionId = "option-1"
 
     it("should delete the product option given an ID successfully", async () => {
-      await service.deleteOptions(
-        [optionId],
-      )
+      await service.deleteOptions([optionId])
 
       const options = await service.listOptions({
-        id: optionId
+        id: optionId,
       })
 
       expect(options).toHaveLength(0)
@@ -253,12 +262,12 @@ describe("ProductModuleService product options", () => {
     const optionId = "option-1"
 
     it("should update the title of the option successfully", async () => {
-      await service.updateOptions(
-        [{
+      await service.updateOptions([
+        {
           id: optionId,
-          title: "new test"
-        }]
-      )
+          title: "new test",
+        },
+      ])
 
       const productOption = await service.retrieveOption(optionId)
 
@@ -272,29 +281,45 @@ describe("ProductModuleService product options", () => {
         await service.updateOptions([
           {
             id: "does-not-exist",
-          }
+          },
         ])
       } catch (e) {
         error = e
       }
 
-      expect(error.message).toEqual('ProductOption with id "does-not-exist" not found')
+      expect(error.message).toEqual(
+        'ProductOption with id "does-not-exist" not found'
+      )
     })
   })
 
   describe("createOptions", () => {
     it("should create a option successfully", async () => {
-      const res = await service.createOptions([{
-        title: "test",
-        product_id: productOne.id
-      }])
+      const res = await service.createOptions([
+        {
+          title: "test",
+          product_id: productOne.id,
+        },
+      ])
 
-      const productOption = await service.listOptions({
-        title: "test"
-      })
+      const [productOption] = await service.listOptions(
+        {
+          title: "test",
+        },
+        {
+          select: ["id", "title", "product.id"],
+          relations: ["product"],
+        }
+      )
 
-      expect(productOption[0]?.title).toEqual("test")
+      expect(productOption).toEqual(
+        expect.objectContaining({
+          title: "test",
+          product: expect.objectContaining({
+            id: productOne.id,
+          }),
+        })
+      )
     })
   })
 })
-

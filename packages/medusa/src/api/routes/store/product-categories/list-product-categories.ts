@@ -12,7 +12,7 @@ import { defaultStoreCategoryScope } from "."
  * operationId: "GetProductCategories"
  * summary: "List Product Categories"
  * description: "Retrieve a list of product categories. The product categories can be filtered by fields such as `handle` or `q`. The product categories can also be paginated.
- *  This endpoint can also be used to retrieve a product category by its handle."
+ *  This API Route can also be used to retrieve a product category by its handle."
  * x-featureFlag: "product_categories"
  * externalDocs:
  *   description: "How to retrieve a product category by its handle"
@@ -38,7 +38,39 @@ import { defaultStoreCategoryScope } from "."
  *       medusa.productCategories.list()
  *       .then(({ product_categories, limit, offset, count }) => {
  *         console.log(product_categories.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useProductCategories } from "medusa-react"
+ *
+ *       function Categories() {
+ *         const {
+ *           product_categories,
+ *           isLoading,
+ *         } = useProductCategories()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {product_categories && !product_categories.length && (
+ *               <span>No Categories</span>
+ *             )}
+ *             {product_categories && product_categories.length > 0 && (
+ *               <ul>
+ *                 {product_categories.map(
+ *                   (category) => (
+ *                     <li key={category.id}>{category.name}</li>
+ *                   )
+ *                 )}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Categories
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -96,18 +128,32 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product categories.
+ *
+ * @property {number} limit - Limit the number of product categories returned in the list. Default is `100`.
+ */
 export class StoreGetProductCategoriesParams extends extendedFindParamsMixin({
   limit: 100,
   offset: 0,
 }) {
+  /**
+   * Search term to search product categories' names and handles.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Handle to filter product categories by.
+   */
   @IsString()
   @IsOptional()
   handle?: string
 
+  /**
+   * Filter product categories by the ID of their associated parent category.
+   */
   @IsString()
   @IsOptional()
   @Transform(({ value }) => {
@@ -115,6 +161,9 @@ export class StoreGetProductCategoriesParams extends extendedFindParamsMixin({
   })
   parent_category_id?: string | null
 
+  /**
+   * Whether to include child categories in the retrieved categories.
+   */
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value))

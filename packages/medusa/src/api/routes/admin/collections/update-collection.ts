@@ -31,7 +31,35 @@ import { defaultAdminCollectionsRelations } from "."
  *       })
  *       .then(({ collection }) => {
  *         console.log(collection.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         collectionId: string
+ *       }
+ *
+ *       const Collection = ({ collectionId }: Props) => {
+ *         const updateCollection = useAdminUpdateCollection(collectionId)
+ *         // ...
+ *
+ *         const handleUpdate = (title: string) => {
+ *           updateCollection.mutate({
+ *             title
+ *           }, {
+ *             onSuccess: ({ collection }) => {
+ *               console.log(collection.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Collection
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -94,6 +122,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostCollectionsCollectionReq
  * type: object
+ * description: The product collection's details to update.
  * properties:
  *   title:
  *     type: string

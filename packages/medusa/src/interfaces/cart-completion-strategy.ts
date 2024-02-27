@@ -30,16 +30,15 @@ export abstract class AbstractCartCompletionStrategy
   extends TransactionBaseService
   implements ICartCompletionStrategy
 {
+  static _isCartCompletionStrategy = true
+
+  static isCartCompletionStrategy(object): object is ICartCompletionStrategy {
+    return object?.constructor?._isCartCompletionStrategy
+  }
+
   abstract complete(
     cartId: string,
     idempotencyKey: IdempotencyKey,
     context: RequestContext
   ): Promise<CartCompletionResponse>
-}
-
-export function isCartCompletionStrategy(obj: unknown): boolean {
-  return (
-    typeof (obj as AbstractCartCompletionStrategy).complete === "function" ||
-    obj instanceof AbstractCartCompletionStrategy
-  )
 }

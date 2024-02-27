@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.inventoryItems.retrieve(inventoryItemId)
 .then(({ inventory_item }) => {
   console.log(inventory_item.id);
-});
+})

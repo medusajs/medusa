@@ -1,7 +1,9 @@
 import * as Handlebars from "handlebars"
 import { PageEvent, ParameterReflection, ReflectionKind } from "typedoc"
 import { MarkdownTheme } from "../../theme"
-import { escapeChars, getDisplayName } from "../../utils"
+import { getDisplayName } from "../../utils"
+import { escapeChars } from "utils"
+import { replaceTemplateVariables } from "../../utils/reflection-template-strings"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -10,7 +12,17 @@ export default function (theme: MarkdownTheme) {
     function (this: PageEvent<any>, shouldEscape = true) {
       const { reflectionTitle } = theme.getFormattingOptionsForLocation()
 
-      const title: string[] = [""]
+      if (reflectionTitle?.fullReplacement?.length) {
+        return theme.reflection
+          ? replaceTemplateVariables(
+              theme.reflection,
+              reflectionTitle.fullReplacement
+            )
+          : reflectionTitle.fullReplacement
+      }
+
+      const title: string[] = [reflectionTitle?.prefix || ""]
+
       if (
         reflectionTitle?.kind &&
         this.model?.kind &&
@@ -28,7 +40,7 @@ export default function (theme: MarkdownTheme) {
           const typeParameters = this.model.typeParameters
             .map((typeParameter: ParameterReflection) => typeParameter.name)
             .join(", ")
-          title.push(`<${typeParameters}${shouldEscape ? "\\>" : ">"}`)
+          title.push(`\`<${typeParameters}>\``)
         }
       }
       if (reflectionTitle?.suffix) {

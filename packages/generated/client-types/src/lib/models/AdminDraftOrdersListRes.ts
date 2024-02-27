@@ -7,6 +7,9 @@ import type { Cart } from "./Cart"
 import type { DraftOrder } from "./DraftOrder"
 import type { LineItem } from "./LineItem"
 
+/**
+ * The list of draft orders with pagination fields.
+ */
 export interface AdminDraftOrdersListRes {
   /**
    * An array of draft order's details.

@@ -23,12 +23,12 @@ import CustomerService from "../../../../services/customer"
  *       medusa.customers.addresses.deleteAddress(addressId)
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/store/customers/me/addresses/{address_id}' \
- *       -H 'Cookie: connect.sid={sid}'
+ *       -H 'Authorization: Bearer {access_token}'
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []

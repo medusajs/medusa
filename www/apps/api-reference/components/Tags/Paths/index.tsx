@@ -1,11 +1,15 @@
 "use client"
 
 import getSectionId from "@/utils/get-section-id"
-import fetcher from "@/utils/swr-fetcher"
 import type { OpenAPIV3 } from "openapi-types"
 import useSWR from "swr"
 import type { Operation, PathsObject } from "@/types/openapi"
-import { SidebarItemSections, useSidebar, type SidebarItemType } from "docs-ui"
+import {
+  SidebarItemSections,
+  useSidebar,
+  type SidebarItemType,
+  swrFetcher,
+} from "docs-ui"
 import { Fragment, useEffect, useMemo } from "react"
 import dynamic from "next/dynamic"
 import type { TagOperationProps } from "../Operation"
@@ -33,7 +37,7 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
   const { loading } = useLoading()
   // if paths are already loaded since through
   // the expanded field, they're loaded directly
-  // otherwise, they're loaded using the API endpoint
+  // otherwise, they're loaded using the API route
   let paths: PathsObject =
     baseSpecs?.expandedTags &&
     Object.hasOwn(baseSpecs.expandedTags, tagSlugName)
@@ -45,7 +49,7 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
     !Object.keys(paths).length
       ? getLinkWithBasePath(`/tag?tagName=${tagSlugName}&area=${area}`)
       : null,
-    fetcher,
+    swrFetcher,
     {
       errorRetryInterval: 2000,
     }

@@ -4,7 +4,7 @@ import getSectionId from "@/utils/get-section-id"
 import type { OpenAPIV3 } from "openapi-types"
 import { useInView } from "react-intersection-observer"
 import { useEffect, useMemo, useState } from "react"
-import { useSidebar } from "docs-ui"
+import { isElmWindow, useScrollController, useSidebar } from "docs-ui"
 import dynamic from "next/dynamic"
 import type { SectionProps } from "../../Section"
 import type { MDXContentClientProps } from "../../MDXContent/Client"
@@ -40,10 +40,14 @@ const TagSection = ({ tag }: TagSectionProps) => {
   const slugTagName = useMemo(() => getSectionId([tag.name]), [tag])
   const { area } = useArea()
   const pathname = usePathname()
+  const { scrollableElement } = useScrollController()
+  const root = useMemo(() => {
+    return isElmWindow(scrollableElement) ? document.body : scrollableElement
+  }, [scrollableElement])
   const { ref } = useInView({
     threshold: 0.5,
     rootMargin: `112px 0px 112px 0px`,
-    root: document.getElementById("main") || document.body,
+    root,
     onChange: (inView) => {
       if (inView && !loadPaths) {
         setLoadPaths(true)

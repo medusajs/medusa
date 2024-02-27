@@ -1,4 +1,9 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestHeaders } from "axios"
+import axios, {
+  AxiosAdapter,
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestHeaders,
+} from "axios"
 import * as rax from "retry-axios"
 import { v4 as uuidv4 } from "uuid"
 
@@ -18,10 +23,22 @@ export interface Config {
   apiKey?: string
   publishableApiKey?: string
   customHeaders?: Record<string, any>
+  axiosAdapter?: AxiosAdapter
 }
 
+/**
+ * @interface
+ *
+ * Options to pass to requests sent to custom API Routes
+ */
 export interface RequestOptions {
+  /**
+   * The number of milliseconds before the request times out.
+   */
   timeout?: number
+  /**
+   * The number of times to retry a request before failing.
+   */
   numberOfRetries?: number
 }
 
@@ -169,6 +186,7 @@ class Client {
   createClient(config: Config): AxiosInstance {
     const client = axios.create({
       baseURL: config.baseUrl,
+      adapter: config.axiosAdapter,
     })
 
     rax.attach(client)
@@ -210,8 +228,8 @@ class Client {
     options: RequestOptions = {},
     customHeaders: Record<string, any> = {}
   ): Promise<any> {
-   
-   customHeaders = { ...this.config.customHeaders, ...customHeaders }
+
+    customHeaders = { ...this.config.customHeaders, ...customHeaders }
 
     const reqOpts = {
       method,

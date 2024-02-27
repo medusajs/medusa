@@ -1,5 +1,55 @@
 # Change Log
 
+## 6.1.7
+
+### Patch Changes
+
+- [`20cefa033`](https://github.com/medusajs/medusa/commit/20cefa0335384e3c37f593c9698651895765234e) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa-js): add axios adapter to config
+
+## 6.1.6
+
+### Patch Changes
+
+- [#6155](https://github.com/medusajs/medusa/pull/6155) [`db4da5602`](https://github.com/medusajs/medusa/commit/db4da56023c1c0563a545bffb2bec9cf0e1c4c4a) Thanks [@lukebui](https://github.com/lukebui)! - fix(@medusajs/medusa-js): correct invite resend path
+
+- [#6190](https://github.com/medusajs/medusa/pull/6190) [`d68089b2a`](https://github.com/medusajs/medusa/commit/d68089b2aa2fb4ab52640424ed1a378cd649364f) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Implements `listAndCount` method for UserService, and updates list endpoint to accept the expected params.
+  fix(medusa-js): Update `admin.users.list` to accept query params.
+  fix(medusa-react): Update `useAdminUsers` hook to accept query params.
+
+- [`4c4c0f655`](https://github.com/medusajs/medusa/commit/4c4c0f655bad4feb4c34848d195cac4fe8a902d4) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa-js): add axios adapter to config #6214
+
+## 6.1.5
+
+### Patch Changes
+
+- [#5941](https://github.com/medusajs/medusa/pull/5941) [`bfd10dada`](https://github.com/medusajs/medusa/commit/bfd10dadaf6286aa26dac96d7c0cc5bc24e43c9b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-js): remove unnecessary `query` field in `AdminInventoryItemsResource.deleteLocationLevel` method
+
+- [#5926](https://github.com/medusajs/medusa/pull/5926) [`f25ca30b3`](https://github.com/medusajs/medusa/commit/f25ca30b3aec558094b1dffe70583fcbba64b29a) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa, medusa-js): publishable api key bugs
+
+## 6.1.4
+
+### Patch Changes
+
+- [#5582](https://github.com/medusajs/medusa/pull/5582) [`91615f9c4`](https://github.com/medusajs/medusa/commit/91615f9c459a2d8cb842561c5edb335680d30298) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(@medusajs/client-types): Fix types and TSDocs
+  fix(medusa-react): Fix response type of Publishable API Key's list sales channels.
+  fix(@medusajs/medusa-js): Fix incorrect parameter and response types.
+  fix(@medusajs/medusa): Fix incorrect types and add TSDocs
+  fix(@medusajs/types): Fix incorrect types and add TSDocs
+
+## 6.1.3
+
+### Patch Changes
+
+- [`045d1b6a0`](https://github.com/medusajs/medusa/commit/045d1b6a0c2b0d03e5fa1db886d1f81c843059ce) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Bump @medusajs/medusa dep
+
+## 6.1.2
+
+### Patch Changes
+
+- [#5400](https://github.com/medusajs/medusa/pull/5400) [`5a5c96e21`](https://github.com/medusajs/medusa/commit/5a5c96e2118e50a558d9d6dc340e505454d4c593) Thanks [@dwene](https://github.com/dwene)! - add types to exports to help projects using moduleResolution bundler
+
+- [#5406](https://github.com/medusajs/medusa/pull/5406) [`98e275551`](https://github.com/medusajs/medusa/commit/98e275551415583602763cf457c3f95400209d0a) Thanks [@dPreininger](https://github.com/dPreininger)! - Fix(medusa-js): Fix JwtTokenManager.register for store domain
+
 ## 6.1.1
 
 ### Patch Changes

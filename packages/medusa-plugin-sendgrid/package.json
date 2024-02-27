@@ -1,12 +1,15 @@
 {
   "name": "medusa-plugin-sendgrid",
-  "version": "1.3.11",
+  "version": "1.3.12",
   "description": "SendGrid transactional emails",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-plugin-sendgrid"
+  },
+  "engines": {
+    "node": ">=16"
   },
   "author": "Oliver Juhl",
   "license": "MIT",

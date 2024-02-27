@@ -10,6 +10,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=16"
+  },
   "keywords": [
     "gatsby",
     "gatsby-plugin",

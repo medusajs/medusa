@@ -1,4 +1,5 @@
 type: object
+description: The list of shipping profiles.
 required:
   - shipping_profiles
 properties:

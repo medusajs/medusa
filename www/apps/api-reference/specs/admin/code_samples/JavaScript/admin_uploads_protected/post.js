@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.uploads.createProtected(file)
 .then(({ uploads }) => {
   console.log(uploads.length);
-});
+})

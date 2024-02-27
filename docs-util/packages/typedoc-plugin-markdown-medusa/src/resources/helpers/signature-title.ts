@@ -6,6 +6,8 @@ import {
 } from "typedoc"
 import { memberSymbol } from "../../utils"
 import { MarkdownTheme } from "../../theme"
+import { getHTMLChar } from "utils"
+import getCorrectDeclarationReflection from "../../utils/get-correct-declaration-reflection"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -13,42 +15,42 @@ export default function (theme: MarkdownTheme) {
     function (this: SignatureReflection, accessor?: string, standalone = true) {
       const { sections, expandMembers = false } =
         theme.getFormattingOptionsForLocation()
-      if (sections && sections.member_signature_title === false) {
+      this.parent =
+        getCorrectDeclarationReflection(this.parent, theme) || this.parent
+      const parentHasMoreThanOneSignature =
+        Handlebars.helpers.hasMoreThanOneSignature(this.parent)
+      if (
+        sections &&
+        sections.member_signature_title === false &&
+        !parentHasMoreThanOneSignature
+      ) {
         // only show title if there are more than one signatures
-        if (!this.parent.signatures || this.parent.signatures?.length <= 1) {
-          return ""
-        }
+        return ""
       }
+
       const md: string[] = []
+
+      if (!expandMembers) {
+        md.push("`")
+      }
 
       if (standalone && !theme.hideMembersSymbol) {
         md.push(`${memberSymbol(this)} `)
       }
 
       if (this.parent && this.parent.flags?.length > 0) {
-        md.push(
-          this.parent.flags
-            .map(
-              (flag) =>
-                `${!expandMembers ? "`" : ""}${flag}${
-                  !expandMembers ? "`" : ""
-                }`
-            )
-            .join(" ") + " "
-        )
+        md.push(this.parent.flags.join(" ") + " ")
       }
 
       if (accessor) {
         md.push(
-          `${!expandMembers ? "`" : ""}${accessor}${
-            !expandMembers ? "`" : ""
-          } ${expandMembers ? `${Handlebars.helpers.titleLevel(4)} ` : "**"}${
-            this.name
-          }${!expandMembers ? "**" : ""}`
+          `${accessor}${
+            expandMembers ? `${Handlebars.helpers.titleLevel()} ` : "**"
+          }${this.name}${!expandMembers ? "**" : ""}`
         )
       } else if (this.name !== "__call" && this.name !== "__type") {
         md.push(
-          `${expandMembers ? `${Handlebars.helpers.titleLevel(4)} ` : "**"}${
+          `${expandMembers ? `${Handlebars.helpers.titleLevel()} ` : "**"}${
             this.name
           }${!expandMembers ? "**" : ""}`
         )
@@ -56,22 +58,21 @@ export default function (theme: MarkdownTheme) {
 
       if (this.typeParameters) {
         md.push(
-          `<${this.typeParameters
-            .map(
-              (typeParameter) =>
-                `${!expandMembers ? "`" : ""}${typeParameter.name}${
-                  !expandMembers ? "`" : ""
-                }`
-            )
-            .join(", ")}\\>`
+          `${expandMembers ? getHTMLChar("<") : "<"}${this.typeParameters.join(
+            ", "
+          )}${expandMembers ? getHTMLChar(">") : ">"}`
         )
       }
-      md.push(`(${getParameters(this.parameters, !expandMembers)})`)
+      md.push(`(${getParameters(this.parameters, false)})`)
 
       if (this.type && !this.parent?.kindOf(ReflectionKind.Constructor)) {
         md.push(
           `: ${Handlebars.helpers.type.call(this.type, "none", !expandMembers)}`
         )
+      }
+
+      if (!expandMembers) {
+        md.push("`")
       }
       return md.join("") + (standalone ? "\n" : "")
     }

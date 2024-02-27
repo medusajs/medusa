@@ -1,4 +1,7 @@
-import { defaultFields, defaultRelations } from "."
+import {
+  shippingOptionsDefaultFields,
+  shippingOptionsDefaultRelations,
+} from "."
 
 /**
  * @oas [get] /admin/shipping-options/{id}
@@ -20,7 +23,34 @@ import { defaultFields, defaultRelations } from "."
  *       medusa.admin.shippingOptions.retrieve(optionId)
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminShippingOption } from "medusa-react"
+ *
+ *       type Props = {
+ *         shippingOptionId: string
+ *       }
+ *
+ *       const ShippingOption = ({ shippingOptionId }: Props) => {
+ *         const {
+ *           shipping_option,
+ *           isLoading
+ *         } = useAdminShippingOption(
+ *           shippingOptionId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {shipping_option && <span>{shipping_option.name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ShippingOption
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -57,8 +87,8 @@ export default async (req, res) => {
   const optionService = req.scope.resolve("shippingOptionService")
 
   const data = await optionService.retrieve(option_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: shippingOptionsDefaultFields,
+    relations: shippingOptionsDefaultRelations,
   })
 
   res.status(200).json({ shipping_option: data })

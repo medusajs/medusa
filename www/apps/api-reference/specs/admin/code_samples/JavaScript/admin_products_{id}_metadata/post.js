@@ -7,4 +7,4 @@ medusa.admin.products.setMetadata(productId, {
 })
 .then(({ product }) => {
   console.log(product.id);
-});
+})

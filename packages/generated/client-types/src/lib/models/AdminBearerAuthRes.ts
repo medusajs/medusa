@@ -3,9 +3,12 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The access token of the user, if they're authenticated successfully.
+ */
 export interface AdminBearerAuthRes {
   /**
-   * Access token for subsequent authorization.
+   * Access token that can be used to send authenticated requests.
    */
-  accessToken?: string
+  access_token?: string
 }

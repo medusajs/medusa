@@ -4,8 +4,8 @@ import {
   MODULE_SCOPE,
   ModuleDefinition,
 } from "@medusajs/types"
-import MODULE_DEFINITIONS from "../../definitions"
-import { registerModules } from "../register-modules"
+import { ModulesDefinition } from "../../definitions"
+import { registerMedusaModule } from "../register-modules"
 
 const RESOLVED_PACKAGE = "@medusajs/test-service-resolved"
 jest.mock("resolve-cwd", () => jest.fn(() => RESOLVED_PACKAGE))
@@ -18,7 +18,6 @@ describe("module definitions loader", () => {
     label: "TestService",
     isLegacy: true,
     isRequired: false,
-    canOverride: true,
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -30,13 +29,18 @@ describe("module definitions loader", () => {
     jest.clearAllMocks()
 
     // Clear module definitions
-    MODULE_DEFINITIONS.splice(0, MODULE_DEFINITIONS.length)
+    const allProperties = Object.getOwnPropertyNames(ModulesDefinition)
+    allProperties.forEach((property) => {
+      delete ModulesDefinition[property]
+    })
   })
 
   it("Resolves module with default definition given empty config", () => {
-    MODULE_DEFINITIONS.push({ ...defaultDefinition })
+    Object.assign(ModulesDefinition, {
+      [defaultDefinition.key]: defaultDefinition,
+    })
 
-    const res = registerModules({})
+    const res = registerMedusaModule(defaultDefinition.key)
 
     expect(res[defaultDefinition.key]).toEqual(
       expect.objectContaining({
@@ -53,9 +57,11 @@ describe("module definitions loader", () => {
 
   describe("boolean config", () => {
     it("Resolves module with no resolution path when given false", () => {
-      MODULE_DEFINITIONS.push({ ...defaultDefinition })
+      Object.assign(ModulesDefinition, {
+        [defaultDefinition.key]: defaultDefinition,
+      })
 
-      const res = registerModules({ [defaultDefinition.key]: false })
+      const res = registerMedusaModule(defaultDefinition.key, false)
 
       expect(res[defaultDefinition.key]).toEqual(
         expect.objectContaining({
@@ -68,10 +74,12 @@ describe("module definitions loader", () => {
 
     it("Fails to resolve module with no resolution path when given false for a required module", () => {
       expect.assertions(1)
-      MODULE_DEFINITIONS.push({ ...defaultDefinition, isRequired: true })
+      Object.assign(ModulesDefinition, {
+        [defaultDefinition.key]: { ...defaultDefinition, isRequired: true },
+      })
 
       try {
-        registerModules({ [defaultDefinition.key]: false })
+        registerMedusaModule(defaultDefinition.key, false)
       } catch (err) {
         expect(err.message).toEqual(
           `Module: ${defaultDefinition.label} is required`
@@ -87,9 +95,11 @@ describe("module definitions loader", () => {
       isRequired: true,
     }
 
-    MODULE_DEFINITIONS.push(definition)
+    Object.assign(ModulesDefinition, {
+      [defaultDefinition.key]: definition,
+    })
 
-    const res = registerModules({})
+    const res = registerMedusaModule(defaultDefinition.key)
 
     expect(res[defaultDefinition.key]).toEqual(
       expect.objectContaining({
@@ -106,11 +116,14 @@ describe("module definitions loader", () => {
 
   describe("string config", () => {
     it("Resolves module with default definition given empty config", () => {
-      MODULE_DEFINITIONS.push({ ...defaultDefinition })
-
-      const res = registerModules({
-        [defaultDefinition.key]: defaultDefinition.defaultPackage,
+      Object.assign(ModulesDefinition, {
+        [defaultDefinition.key]: defaultDefinition,
       })
+
+      const res = registerMedusaModule(
+        defaultDefinition.key,
+        defaultDefinition.defaultPackage
+      )
 
       expect(res[defaultDefinition.key]).toEqual(
         expect.objectContaining({
@@ -128,15 +141,15 @@ describe("module definitions loader", () => {
 
   describe("object config", () => {
     it("Resolves resolution path and provides empty options when none are provided", () => {
-      MODULE_DEFINITIONS.push({ ...defaultDefinition })
-
-      const res = registerModules({
-        [defaultDefinition.key]: {
-          scope: MODULE_SCOPE.INTERNAL,
-          resolve: defaultDefinition.defaultPackage,
-          resources: MODULE_RESOURCE_TYPE.ISOLATED,
-        } as InternalModuleDeclaration,
+      Object.assign(ModulesDefinition, {
+        [defaultDefinition.key]: defaultDefinition,
       })
+
+      const res = registerMedusaModule(defaultDefinition.key, {
+        scope: MODULE_SCOPE.INTERNAL,
+        resolve: defaultDefinition.defaultPackage,
+        resources: MODULE_RESOURCE_TYPE.ISOLATED,
+      } as InternalModuleDeclaration)
 
       expect(res[defaultDefinition.key]).toEqual(
         expect.objectContaining({
@@ -153,12 +166,12 @@ describe("module definitions loader", () => {
     })
 
     it("Resolves default resolution path and provides options when only options are provided", () => {
-      MODULE_DEFINITIONS.push({ ...defaultDefinition })
+      Object.assign(ModulesDefinition, {
+        [defaultDefinition.key]: defaultDefinition,
+      })
 
-      const res = registerModules({
-        [defaultDefinition.key]: {
-          options: { test: 123 },
-        },
+      const res = registerMedusaModule(defaultDefinition.key, {
+        options: { test: 123 },
       } as any)
 
       expect(res[defaultDefinition.key]).toEqual(
@@ -176,15 +189,15 @@ describe("module definitions loader", () => {
     })
 
     it("Resolves resolution path and provides options when only options are provided", () => {
-      MODULE_DEFINITIONS.push({ ...defaultDefinition })
+      Object.assign(ModulesDefinition, {
+        [defaultDefinition.key]: defaultDefinition,
+      })
 
-      const res = registerModules({
-        [defaultDefinition.key]: {
-          resolve: defaultDefinition.defaultPackage,
-          options: { test: 123 },
-          scope: "internal",
-          resources: "isolated",
-        },
+      const res = registerMedusaModule(defaultDefinition.key, {
+        resolve: defaultDefinition.defaultPackage,
+        options: { test: 123 },
+        scope: "internal",
+        resources: "isolated",
       } as any)
 
       expect(res[defaultDefinition.key]).toEqual(

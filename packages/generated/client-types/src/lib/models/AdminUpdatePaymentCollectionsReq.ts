@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the payment collection.
+ */
 export interface AdminUpdatePaymentCollectionsReq {
   /**
    * A description to create or update the payment collection.

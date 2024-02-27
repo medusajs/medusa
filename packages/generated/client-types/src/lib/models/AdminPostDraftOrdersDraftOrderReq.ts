@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { AddressPayload } from "./AddressPayload"
 
+/**
+ * The details of the draft order to update.
+ */
 export interface AdminPostDraftOrdersDraftOrderReq {
   /**
    * The ID of the Region to create the Draft Order in.

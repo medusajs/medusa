@@ -1,8 +1,7 @@
-import { EntityManager } from "typeorm"
-
+import { MedusaContainer } from "@medusajs/types"
+import { FlagRouter, MedusaV2Flag, createContainerLike } from "@medusajs/utils"
 import { humanizeAmount } from "medusa-core-utils"
-
-import { FlagRouter } from "@medusajs/utils"
+import { EntityManager } from "typeorm"
 import { defaultAdminProductRelations } from "../../../api"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
 import ProductCategoryFeatureFlag from "../../../loaders/feature-flags/product-categories"
@@ -11,19 +10,19 @@ import { Product, ProductVariant } from "../../../models"
 import { BatchJobService, ProductService } from "../../../services"
 import { BatchJobStatus, CreateBatchJobInput } from "../../../types/batch-job"
 import { FindProductConfig } from "../../../types/product"
-import { csvCellContentFormatter } from "../../../utils"
+import { csvCellContentFormatter, listProducts } from "../../../utils"
 import { prepareListQuery } from "../../../utils/get-query-config"
 import {
-    DynamicProductExportDescriptor,
-    ProductExportBatchJob,
-    ProductExportBatchJobContext,
-    ProductExportInjectedDependencies,
-    ProductExportPriceData,
+  DynamicProductExportDescriptor,
+  ProductExportBatchJob,
+  ProductExportBatchJobContext,
+  ProductExportInjectedDependencies,
+  ProductExportPriceData,
 } from "./types"
 import {
-    productCategoriesColumnsDefinition,
-    productColumnsDefinition,
-    productSalesChannelColumnsDefinition,
+  productCategoriesColumnsDefinition,
+  productColumnsDefinition,
+  productSalesChannelColumnsDefinition,
 } from "./types/columns-definition"
 
 export default class ProductExportStrategy extends AbstractBatchJobStrategy {
@@ -37,6 +36,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
   protected readonly productService_: ProductService
   protected readonly fileService_: IFileService
   protected readonly featureFlagRouter_: FlagRouter
+  protected readonly remoteQuery_: any
 
   protected readonly defaultRelations_ = [
     ...defaultAdminProductRelations,
@@ -68,6 +68,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     productService,
     fileService,
     featureFlagRouter,
+    remoteQuery,
   }: ProductExportInjectedDependencies) {
     super({
       manager,
@@ -75,8 +76,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       productService,
       fileService,
       featureFlagRouter,
+      remoteQuery,
     })
 
+    this.remoteQuery_ = remoteQuery
     this.manager_ = manager
     this.batchJobService_ = batchJobService
     this.productService_ = productService
@@ -135,6 +138,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
   }
 
   async preProcessBatchJob(batchJobId: string): Promise<void> {
+    const isMedusaV2Enabled = this.featureFlagRouter_.isFeatureEnabled(
+      MedusaV2Flag.key
+    )
+
     return await this.atomicPhase_(async (transactionManager) => {
       const batchJob = (await this.batchJobService_
         .withTransaction(transactionManager)
@@ -144,12 +151,29 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       const limit = batchJob.context?.list_config?.take ?? this.DEFAULT_LIMIT
 
       const { list_config = {}, filterable_fields = {} } = batchJob.context
-      const [productList, count] = await this.productService_
-        .withTransaction(transactionManager)
-        .listAndCount(filterable_fields, {
-          ...(list_config ?? {}),
-          take: Math.min(batchJob.context.batch_size ?? Infinity, limit),
-        } as FindProductConfig)
+      let productList: Product[] = []
+      let count = 0
+      const container = createContainerLike(
+        this.__container__
+      ) as MedusaContainer
+
+      if (isMedusaV2Enabled) {
+        ;[productList, count] = await listProducts(
+          container,
+          filterable_fields,
+          {
+            ...list_config,
+            take: null,
+          }
+        )
+      } else {
+        ;[productList, count] = await this.productService_
+          .withTransaction(transactionManager)
+          .listAndCount(filterable_fields, {
+            ...(list_config ?? {}),
+            take: Math.min(batchJob.context.batch_size ?? Infinity, limit),
+          } as FindProductConfig)
+      }
 
       const productCount = batchJob.context?.batch_size ?? count
       let products: Product[] = productList
@@ -162,13 +186,25 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
 
       while (offset < productCount) {
         if (!products?.length) {
-          products = await this.productService_
-            .withTransaction(transactionManager)
-            .list(filterable_fields, {
-              ...list_config,
-              skip: offset,
-              take: Math.min(productCount - offset, limit),
-            } as FindProductConfig)
+          if (isMedusaV2Enabled) {
+            ;[productList, count] = await listProducts(
+              container,
+              filterable_fields,
+              {
+                ...list_config,
+                skip: offset,
+                take: Math.min(productCount - offset, limit),
+              }
+            )
+          } else {
+            products = await this.productService_
+              .withTransaction(transactionManager)
+              .list(filterable_fields, {
+                ...list_config,
+                skip: offset,
+                take: Math.min(productCount - offset, limit),
+              } as FindProductConfig)
+          }
         }
 
         const shapeData = this.getProductRelationsDynamicColumnsShape(products)
@@ -497,11 +533,17 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
 
       const columnNameNameValue = columnNameValueBuilder(i)
 
+      // option values are not guaranteed to keep the same order as options on product. Pick them in the same order as product options
       this.columnsDefinition[columnNameNameValue] = {
         name: columnNameNameValue,
         exportDescriptor: {
-          accessor: (variant: ProductVariant) =>
-            variant?.options[i]?.value ?? "",
+          accessor: (
+            variant: ProductVariant,
+            context?: { product?: Product }
+          ) =>
+            variant?.options.find(
+              (ov) => ov.option_id === context!.product!.options[i]?.id
+            )?.value ?? "",
           entityName: "variant",
         },
       }
@@ -597,7 +639,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
         }
         if (columnSchema.entityName === "variant") {
           const formattedContent = csvCellContentFormatter(
-            columnSchema.accessor(variant)
+            columnSchema.accessor(variant, { product: product })
           )
           variantLineData.push(formattedContent)
         }
@@ -663,7 +705,8 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       if (
         this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
       ) {
-        const salesChannelCount = product?.sales_channels?.length ?? 0
+        const salesChannelCount =
+          (product as Product)?.sales_channels?.length ?? 0
         salesChannelsColumnCount = Math.max(
           salesChannelsColumnCount,
           salesChannelCount

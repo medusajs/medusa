@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.shippingOptions.retrieve(optionId)
 .then(({ shipping_option }) => {
   console.log(shipping_option.id);
-});
+})

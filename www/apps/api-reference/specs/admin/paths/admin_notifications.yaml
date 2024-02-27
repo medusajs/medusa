@@ -75,6 +75,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_notifications/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_notifications/get.tsx
     - lang: Shell
       label: cURL
       source:

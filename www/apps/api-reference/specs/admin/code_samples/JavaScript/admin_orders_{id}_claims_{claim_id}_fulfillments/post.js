@@ -5,4 +5,4 @@ medusa.admin.orders.fulfillClaim(orderId, claimId, {
 })
 .then(({ order }) => {
   console.log(order.id);
-});
+})

@@ -89,6 +89,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_tax-rates/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_tax-rates/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -157,6 +161,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_tax-rates/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_tax-rates/post.tsx
     - lang: Shell
       label: cURL
       source:

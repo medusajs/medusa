@@ -1,0 +1,22 @@
+{
+  "description": "This component is based on the [Radix UI Tooltip](https://www.radix-ui.com/primitives/docs/components/tooltip) primitive.",
+  "methods": [],
+  "displayName": "Tooltip",
+  "props": {
+    "maxWidth": {
+      "required": false,
+      "tsType": {
+        "name": "number"
+      },
+      "description": "The maximum width of the tooltip.",
+      "defaultValue": {
+        "value": "220",
+        "computed": false
+      }
+    }
+  },
+  "composes": [
+    "Omit",
+    "Pick"
+  ]
+}

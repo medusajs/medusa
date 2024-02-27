@@ -33,7 +33,42 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminRegionAddFulfillmentProvider
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const addFulfillmentProvider =
+ *           useAdminRegionAddFulfillmentProvider(regionId)
+ *         // ...
+ *
+ *         const handleAddFulfillmentProvider = (
+ *           providerId: string
+ *         ) => {
+ *           addFulfillmentProvider.mutate({
+ *             provider_id: providerId
+ *           }, {
+ *             onSuccess: ({ region }) => {
+ *               console.log(region.fulfillment_providers)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -94,6 +129,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostRegionsRegionFulfillmentProvidersReq
  * type: object
+ * description: "The details of the fulfillment provider to add to the region."
  * required:
  *   - provider_id
  * properties:

@@ -14,6 +14,7 @@ import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { Order } from "../../../../models"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [post] /admin/draft-orders/{id}/pay
@@ -36,7 +37,35 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.draftOrders.markPaid(draftOrderId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDraftOrderRegisterPayment } from "medusa-react"
+ *
+ *       type Props = {
+ *         draftOrderId: string
+ *       }
+ *
+ *       const DraftOrder = ({ draftOrderId }: Props) => {
+ *         const registerPayment = useAdminDraftOrderRegisterPayment(
+ *           draftOrderId
+ *         )
+ *         // ...
+ *
+ *         const handlePayment = () => {
+ *           registerPayment.mutate(void 0, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DraftOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -130,7 +159,7 @@ export const reserveQuantityForDraftOrder = async (
   }
 ) => {
   const { productVariantInventoryService, locationId } = context
-  await Promise.all(
+  await promiseAll(
     order.items.map(async (item) => {
       if (item.variant_id) {
         const inventoryConfirmed =

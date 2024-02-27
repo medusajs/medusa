@@ -4,15 +4,14 @@ import type FooterType from "@theme/DocItem/Footer"
 import type { WrapperProps } from "@docusaurus/types"
 import { useDoc } from "@docusaurus/theme-common/internal"
 import { useThemeConfig } from "@docusaurus/theme-common"
-import { ThemeConfig } from "@medusajs/docs"
-import Feedback from "@site/src/components/Feedback"
+import type { ThemeConfig } from "@medusajs/docs"
+import Feedback from "../../../components/Feedback"
 
 type Props = WrapperProps<typeof FooterType>
 
 export default function FooterWrapper(props: Props): JSX.Element {
   const { metadata } = useDoc()
   const { footerFeedback = { event: "" } } = useThemeConfig() as ThemeConfig
-
   return (
     <>
       {!metadata.frontMatter?.hide_footer && (

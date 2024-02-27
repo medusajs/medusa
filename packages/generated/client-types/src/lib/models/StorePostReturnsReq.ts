@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the return to create.
+ */
 export interface StorePostReturnsReq {
   /**
    * The ID of the Order to create the return for.
@@ -21,7 +24,7 @@ export interface StorePostReturnsReq {
      */
     quantity: number
     /**
-     * The ID of the return reason. Return reasons can be retrieved from the List Return Reasons endpoint.
+     * The ID of the return reason. Return reasons can be retrieved from the List Return Reasons API Route.
      */
     reason_id?: string
     /**

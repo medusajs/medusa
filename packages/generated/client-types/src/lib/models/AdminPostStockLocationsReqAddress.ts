@@ -21,7 +21,7 @@ export interface AdminPostStockLocationsReqAddress {
    */
   city?: string
   /**
-   * The 2 character ISO code for the country.
+   * The two character ISO code for the country.
    */
   country_code: string
   /**

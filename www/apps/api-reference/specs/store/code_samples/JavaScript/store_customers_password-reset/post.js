@@ -7,4 +7,4 @@ medusa.customers.resetPassword({
 })
 .then(({ customer }) => {
   console.log(customer.id);
-});
+})

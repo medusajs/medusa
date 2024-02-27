@@ -1,8 +1,12 @@
+import { Workflows, updateProducts } from "@medusajs/core-flows"
+import { DistributedTransaction } from "@medusajs/orchestration"
 import {
-  CreateProductVariantInput,
-  ProductVariantPricesUpdateReq,
-  UpdateProductVariantInput,
-} from "../../../../types/product-variant"
+  FlagRouter,
+  MedusaError,
+  MedusaV2Flag,
+  promiseAll,
+} from "@medusajs/utils"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -16,6 +20,14 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
+import { EntityManager } from "typeorm"
+
+import {
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+  defaultAdminProductRemoteQueryObject,
+} from "."
+import { ProductStatus, ProductVariant } from "../../../../models"
 import {
   PricingService,
   ProductService,
@@ -28,22 +40,23 @@ import {
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
-import { ProductStatus, ProductVariant } from "../../../../models"
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesUpdateReq,
+  UpdateProductVariantInput,
+} from "../../../../types/product-variant"
+import { retrieveProduct } from "../../../../utils"
 import {
   createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
-import { DistributedTransaction } from "@medusajs/orchestration"
-import { EntityManager } from "typeorm"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { IInventoryService } from "@medusajs/types"
-import { Logger } from "../../../../types/global"
-import { MedusaError } from "@medusajs/utils"
-import { ProductVariantRepository } from "../../../../repositories/product-variant"
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { Type } from "class-transformer"
+import { ProductVariantRepository } from "../../../../repositories/product-variant"
+import { Logger } from "../../../../types/global"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -73,7 +86,39 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateProduct } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *       }
+ *
+ *       const Product = ({ productId }: Props) => {
+ *         const updateProduct = useAdminUpdateProduct(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           title: string
+ *         ) => {
+ *           updateProduct.mutate({
+ *             title,
+ *           }, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Product
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -129,130 +174,170 @@ export default async (req, res) => {
     req.scope.resolve("inventoryService")
 
   const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    const productServiceTx = productService.withTransaction(transactionManager)
+  const productModuleService = req.scope.resolve("productModuleService")
 
-    const { variants } = validated
-    delete validated.variants
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
 
-    const product = await productServiceTx.update(id, validated)
+  if (isMedusaV2Enabled && !productModuleService) {
+    logger.warn(
+      `Cannot run ${Workflows.UpdateProducts} workflow without '@medusajs/product' installed`
+    )
+  }
 
-    if (!variants) {
-      return
+  if (isMedusaV2Enabled) {
+    const updateProductWorkflow = updateProducts(req.scope)
+
+    const input = {
+      products: [
+        { id, ...validated },
+      ] as WorkflowTypes.ProductWorkflow.UpdateProductInputDTO[],
     }
 
-    const variantRepo = manager.withRepository(productVariantRepo)
-    const productVariants = await productVariantService
-      .withTransaction(transactionManager)
-      .list(
-        { product_id: id },
-        {
-          select: variantRepo.metadata.columns.map(
-            (c) => c.propertyName
-          ) as (keyof ProductVariant)[],
+    const { result } = await updateProductWorkflow.run({
+      input,
+      context: {
+        manager: manager,
+      },
+    })
+  } else {
+    await manager.transaction(async (transactionManager) => {
+      const productServiceTx =
+        productService.withTransaction(transactionManager)
+
+      const { variants } = validated
+      delete validated.variants
+
+      const product = await productServiceTx.update(id, validated)
+
+      if (!variants) {
+        return
+      }
+
+      const variantRepo = manager.withRepository(productVariantRepo)
+      const productVariants = await productVariantService
+        .withTransaction(transactionManager)
+        .list(
+          { product_id: id },
+          {
+            select: variantRepo.metadata.columns.map(
+              (c) => c.propertyName
+            ) as (keyof ProductVariant)[],
+          }
+        )
+
+      const productVariantMap = new Map(productVariants.map((v) => [v.id, v]))
+      const variantWithIdSet = new Set()
+
+      const variantIdsNotBelongingToProduct: string[] = []
+      const variantsToUpdate: {
+        variant: ProductVariant
+        updateData: UpdateProductVariantInput
+      }[] = []
+      const variantsToCreate: ProductVariantReq[] = []
+
+      // Preparing the data step
+      for (const [variantRank, variant] of variants.entries()) {
+        if (!variant.id) {
+          Object.assign(variant, {
+            variant_rank: variantRank,
+            options: variant.options || [],
+            prices: variant.prices || [],
+          })
+          variantsToCreate.push(variant)
+
+          continue
         }
-      )
 
-    const productVariantMap = new Map(productVariants.map((v) => [v.id, v]))
-    const variantWithIdSet = new Set()
+        // Will be used to find the variants that should be removed during the next steps
+        variantWithIdSet.add(variant.id)
 
-    const variantIdsNotBelongingToProduct: string[] = []
-    const variantsToUpdate: {
-      variant: ProductVariant
-      updateData: UpdateProductVariantInput
-    }[] = []
-    const variantsToCreate: ProductVariantReq[] = []
+        if (!productVariantMap.has(variant.id)) {
+          variantIdsNotBelongingToProduct.push(variant.id)
+          continue
+        }
 
-    // Preparing the data step
-    for (const [variantRank, variant] of variants.entries()) {
-      if (!variant.id) {
+        const productVariant = productVariantMap.get(variant.id)!
         Object.assign(variant, {
           variant_rank: variantRank,
-          options: variant.options || [],
-          prices: variant.prices || [],
+          product_id: productVariant.product_id,
         })
-        variantsToCreate.push(variant)
-        continue
+        variantsToUpdate.push({ variant: productVariant, updateData: variant })
       }
 
-      // Will be used to find the variants that should be removed during the next steps
-      variantWithIdSet.add(variant.id)
-
-      if (!productVariantMap.has(variant.id)) {
-        variantIdsNotBelongingToProduct.push(variant.id)
-        continue
+      if (variantIdsNotBelongingToProduct.length) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Variants with id: ${variantIdsNotBelongingToProduct.join(
+            ", "
+          )} are not associated with this product`
+        )
       }
 
-      const productVariant = productVariantMap.get(variant.id)!
-      Object.assign(variant, {
-        variant_rank: variantRank,
-        product_id: productVariant.product_id,
-      })
-      variantsToUpdate.push({ variant: productVariant, updateData: variant })
-    }
+      const allVariantTransactions: DistributedTransaction[] = []
+      const transactionDependencies = {
+        manager: transactionManager,
+        inventoryService,
+        productVariantInventoryService,
+        productVariantService,
+      }
 
-    if (variantIdsNotBelongingToProduct.length) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Variants with id: ${variantIdsNotBelongingToProduct.join(
-          ", "
-        )} are not associated with this product`
+      const productVariantServiceTx =
+        productVariantService.withTransaction(transactionManager)
+
+      // Delete the variant that does not exist anymore from the provided variants
+      const variantIdsToDelete = [...productVariantMap.keys()].filter(
+        (variantId) => !variantWithIdSet.has(variantId)
       )
-    }
 
-    const allVariantTransactions: DistributedTransaction[] = []
-    const transactionDependencies = {
-      manager: transactionManager,
-      inventoryService,
-      productVariantInventoryService,
-      productVariantService,
-    }
-
-    const productVariantServiceTx =
-      productVariantService.withTransaction(transactionManager)
-
-    // Delete the variant that does not exist anymore from the provided variants
-    const variantIdsToDelete = [...productVariantMap.keys()].filter(
-      (variantId) => !variantWithIdSet.has(variantId)
-    )
-
-    if (variantIdsToDelete) {
-      await productVariantServiceTx.delete(variantIdsToDelete)
-    }
-
-    if (variantsToUpdate.length) {
-      await productVariantServiceTx.update(variantsToUpdate)
-    }
-
-    if (variantsToCreate.length) {
-      try {
-        const varTransaction = await createVariantsTransaction(
-          transactionDependencies,
-          product.id,
-          variantsToCreate as CreateProductVariantInput[]
-        )
-        allVariantTransactions.push(varTransaction)
-      } catch (e) {
-        await Promise.all(
-          allVariantTransactions.map(async (transaction) => {
-            await revertVariantTransaction(
-              transactionDependencies,
-              transaction
-            ).catch(() => logger.warn("Transaction couldn't be reverted."))
-          })
-        )
-
-        throw e
+      if (variantIdsToDelete) {
+        await productVariantServiceTx.delete(variantIdsToDelete)
       }
-    }
-  })
 
-  const rawProduct = await productService.retrieve(id, {
-    select: defaultAdminProductFields,
-    relations: defaultAdminProductRelations,
-  })
+      if (variantsToUpdate.length) {
+        await productVariantServiceTx.update(variantsToUpdate)
+      }
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+      if (variantsToCreate.length) {
+        try {
+          const varTransaction = await createVariantsTransaction(
+            transactionDependencies,
+            product.id,
+            variantsToCreate as CreateProductVariantInput[]
+          )
+          allVariantTransactions.push(varTransaction)
+        } catch (e) {
+          await promiseAll(
+            allVariantTransactions.map(async (transaction) => {
+              await revertVariantTransaction(
+                transactionDependencies,
+                transaction
+              ).catch(() => logger.warn("Transaction couldn't be reverted."))
+            })
+          )
+
+          throw e
+        }
+      }
+    })
+  }
+
+  let rawProduct
+
+  if (isMedusaV2Enabled) {
+    rawProduct = await retrieveProduct(
+      req.scope,
+      id,
+      defaultAdminProductRemoteQueryObject
+    )
+  } else {
+    rawProduct = await productService.retrieve(id, {
+      select: defaultAdminProductFields,
+      relations: defaultAdminProductRelations,
+    })
+  }
+
+  const [product] = await pricingService.setAdminProductPricing([rawProduct])
 
   res.json({ product })
 }
@@ -354,6 +439,7 @@ class ProductVariantReq {
 /**
  * @schema AdminPostProductsProductReq
  * type: object
+ * description: "The details to update of the product."
  * properties:
  *   title:
  *     description: "The title of the Product"
@@ -368,12 +454,12 @@ class ProductVariantReq {
  *     description: A flag to indicate if discounts can be applied to the Line Items generated from this Product
  *     type: boolean
  *   images:
- *     description: An array of images of the Product. Each value in the array is a URL to the image. You can use the upload endpoints to upload the image and obtain a URL.
+ *     description: An array of images of the Product. Each value in the array is a URL to the image. You can use the upload API Routes to upload the image and obtain a URL.
  *     type: array
  *     items:
  *       type: string
  *   thumbnail:
- *     description: The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload endpoints to upload the thumbnail and obtain a URL.
+ *     description: The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload API Routes to upload the thumbnail and obtain a URL.
  *     type: string
  *   handle:
  *     description: A unique handle to identify the Product by. If not provided, the kebab-case version of the product title will be used. This can be used as a slug in URLs.
@@ -555,6 +641,9 @@ class ProductVariantReq {
  *   width:
  *     description: The width of the Product.
  *     type: number
+ *   hs_code:
+ *     description: The Harmonized System code of the product variant.
+ *     type: string
  *   origin_country:
  *     description: The country of origin of the Product.
  *     type: string

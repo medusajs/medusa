@@ -1,4 +1,5 @@
 type: object
+description: The resources to remove.
 required:
   - resources
 properties:

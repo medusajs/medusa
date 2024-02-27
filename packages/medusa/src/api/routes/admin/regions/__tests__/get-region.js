@@ -19,8 +19,9 @@ const defaultFields = [
 
 const defaultRelations = [
   "countries",
-  "payment_providers",
+  "currency",
   "fulfillment_providers",
+  "payment_providers",
 ]
 
 describe("GET /admin/regions/:region_id", () => {

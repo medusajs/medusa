@@ -6,6 +6,7 @@ import {
   Entity,
   ManyToMany,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
 } from "@mikro-orm/core"
@@ -18,7 +19,7 @@ import RuleType from "./rule-type"
 
 @Entity()
 export default class PriceSet {
-  [OptionalProps]?: "price_set_money_amounts" | "rule_types"
+  [OptionalProps]?: "price_set_money_amounts" | "rule_types" | "money_amounts"
 
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -48,6 +49,11 @@ export default class PriceSet {
 
   @BeforeCreate()
   onCreate() {
+    this.id = generateEntityId(this.id, "pset")
+  }
+
+  @OnInit()
+  onInit() {
     this.id = generateEntityId(this.id, "pset")
   }
 }

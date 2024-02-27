@@ -484,6 +484,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
 /**
  * @schema AdminOrdersRes
  * type: object
+ * description: "The order's details."
  * x-expanded-relations:
  *   field: order
  *   relations:
@@ -602,6 +603,7 @@ export type AdminOrdersRes = {
 /**
  * @schema AdminOrdersListRes
  * type: object
+ * description: "The list of orders with pagination fields."
  * x-expanded-relations:
  *   field: orders
  *   relations:
@@ -779,4 +781,3 @@ export * from "./refund-payment"
 export * from "./request-return"
 export * from "./update-claim"
 export * from "./update-order"
-

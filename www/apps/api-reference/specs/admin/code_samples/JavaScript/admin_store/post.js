@@ -6,4 +6,4 @@ medusa.admin.store.update({
 })
 .then(({ store }) => {
   console.log(store.id);
-});
+})

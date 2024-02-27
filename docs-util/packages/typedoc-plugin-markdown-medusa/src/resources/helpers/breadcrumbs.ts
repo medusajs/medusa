@@ -1,7 +1,8 @@
 import * as Handlebars from "handlebars"
 import { PageEvent } from "typedoc"
 import { MarkdownTheme } from "../../theme"
-import { escapeChars, getDisplayName } from "../../utils"
+import { getDisplayName } from "../../utils"
+import { escapeChars } from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper("breadcrumbs", function (this: PageEvent) {

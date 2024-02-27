@@ -10,6 +10,8 @@ export type DetailsSummaryProps = {
   open?: boolean
   className?: string
   titleClassName?: string
+  hideExpandableIcon?: boolean
+  summaryRef?: React.LegacyRef<HTMLDivElement>
 } & Omit<React.HTMLAttributes<HTMLElement>, "title">
 
 export const DetailsSummary = ({
@@ -21,6 +23,8 @@ export const DetailsSummary = ({
   open = false,
   className,
   titleClassName,
+  hideExpandableIcon = false,
+  summaryRef,
   ...rest
 }: DetailsSummaryProps) => {
   return (
@@ -34,6 +38,7 @@ export const DetailsSummary = ({
         "no-marker",
         className
       )}
+      ref={summaryRef}
       {...rest}
     >
       <span className="gap-docs_0.25 flex flex-col">
@@ -54,7 +59,7 @@ export const DetailsSummary = ({
       {(badge || expandable) && (
         <span className="flex gap-docs_0.5">
           {badge}
-          {expandable && (
+          {expandable && !hideExpandableIcon && (
             <PlusMini
               className={clsx("transition-transform", open && "rotate-45")}
             />

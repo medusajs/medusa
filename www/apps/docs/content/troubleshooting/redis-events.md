@@ -16,7 +16,7 @@ You can learn how to [install Redis in the Set Up your Development Environment d
 
 After installing it, make sure to configure your Medusa backend to use Redis:
 
-```jsx title=medusa-config.js
+```jsx title="medusa-config.js"
 module.exports = {
   projectConfig: {
     // ...
@@ -36,4 +36,4 @@ REDIS_URL=<YOUR_REDIS_URL>
 ## See Also
 
 - [Set up your development environment](../development/backend/prepare-environment.mdx)
-- [Configure the Medusa backend](../development/backend/configurations.md)
+- [Configure the Medusa backend](../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx)

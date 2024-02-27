@@ -1,5 +1,5 @@
 import RegionService from "../../../../services/region"
-import { defaultRelations } from "."
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [get] /store/regions/{id}
@@ -19,7 +19,31 @@ import { defaultRelations } from "."
  *       medusa.regions.retrieve(regionId)
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useRegion } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({ regionId }: Props) => {
+ *         const { region, isLoading } = useRegion(
+ *           regionId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {region && <span>{region.name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -46,12 +70,11 @@ import { defaultRelations } from "."
  */
 export default async (req, res) => {
   const { region_id } = req.params
-
   const regionService: RegionService = req.scope.resolve("regionService")
 
-  const region = await regionService.retrieve(region_id, {
-    relations: defaultRelations,
-  })
+  const region = await regionService.retrieve(region_id, req.retrieveConfig)
 
   res.json({ region })
 }
+
+export class StoreGetRegionsRegionParams extends FindParams {}

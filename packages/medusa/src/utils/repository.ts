@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import { flatten, groupBy, map, merge } from "lodash"
 import {
   EntityMetadata,
@@ -43,7 +44,7 @@ export async function queryEntityWithIds<T extends ObjectLiteral>({
   ) => false | undefined)[]
 }): Promise<T[]> {
   const alias = repository.metadata.name.toLowerCase()
-  return await Promise.all(
+  return await promiseAll(
     Object.entries(groupedRelations).map(
       async ([toplevel, topLevelRelations]) => {
         let querybuilder = repository.createQueryBuilder(alias)
@@ -149,11 +150,7 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
 }): Promise<[T[], number]> {
   const alias = repository.metadata.name.toLowerCase()
 
-  const qb = repository
-    .createQueryBuilder(alias)
-    .select([`${alias}.id`])
-    .skip(optionsWithoutRelations.skip)
-    .take(optionsWithoutRelations.take)
+  const qb = repository.createQueryBuilder(alias).select([`${alias}.id`])
 
   if (optionsWithoutRelations.where) {
     qb.where(optionsWithoutRelations.where)
@@ -188,14 +185,82 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
     qb.withDeleted()
   }
 
+  /*
+   * Deduplicate tuples for join + ordering (e.g. variants.prices.amount) since typeorm doesnt
+   * know how to manage it by itself
+   */
+  const expressionMapAllOrderBys = qb.expressionMap.allOrderBys
+  if (
+    expressionMapAllOrderBys &&
+    Object.keys(expressionMapAllOrderBys).length
+  ) {
+    const orderBysString = Object.keys(expressionMapAllOrderBys)
+      .map((column) => {
+        return `${column} ${expressionMapAllOrderBys[column]}`
+      })
+      .join(", ")
+
+    qb.addSelect(
+      `row_number() OVER (PARTITION BY ${alias}.id ORDER BY ${orderBysString}) AS rownum`
+    )
+  } else {
+    qb.addSelect(`1 AS rownum`)
+  }
+
+  /*
+   * In typeorm SelectQueryBuilder, the orderBy is removed from the original query when there is pagination
+   * and join involved together.
+   *
+   * This workaround allows us to include the order as part of the original query (including joins) before
+   * selecting the distinct ids of the main alias entity. The distinct ids deduplication
+   * is managed by the rownum column added to the select below.
+   *
+   * see: node_modules/typeorm/query-builder/SelectQueryBuilder.js(1973)
+   */
+  const outerQb = new SelectQueryBuilder(qb.connection, (qb as any).queryRunner)
+    .select(`${qb.escape(`${alias}_id`)}`)
+    .from(`(${qb.getQuery()})`, alias)
+    .where(`${alias}.rownum = 1`)
+    .setParameters(qb.getParameters())
+    .setNativeParameters(qb.expressionMap.nativeParameters)
+    .offset(optionsWithoutRelations.skip)
+    .limit(optionsWithoutRelations.take)
+
+  const mapToEntities = (array: any) => {
+    return array.map((rawProduct) => ({
+      id: rawProduct[`${alias}_id`],
+    })) as unknown as T[]
+  }
+
   let entities: T[]
   let count = 0
   if (shouldCount) {
-    const result = await Promise.all([qb.getMany(), qb.getCount()])
-    entities = result[0]
-    count = result[1]
+    const outerQbCount = new SelectQueryBuilder(
+      qb.connection,
+      (qb as any).queryRunner
+    )
+      .select(`COUNT(1)`, `count`)
+      .from(`(${qb.getQuery()})`, alias)
+      .where(`${alias}.rownum = 1`)
+      .setParameters(qb.getParameters())
+      .setNativeParameters(qb.expressionMap.nativeParameters)
+      .orderBy()
+      .groupBy()
+      .offset(undefined)
+      .limit(undefined)
+      .skip(undefined)
+      .take(undefined)
+
+    const result = await promiseAll([
+      outerQb.getRawMany(),
+      outerQbCount.getRawOne(),
+    ])
+
+    entities = mapToEntities(result[0])
+    count = Number(result[1].count)
   } else {
-    entities = await qb.getMany()
+    const result = await outerQb.getRawMany()
+    entities = mapToEntities(result)
   }
 
   return [entities, count]

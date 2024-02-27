@@ -1,19 +1,20 @@
-import { MoneyAmount, PriceList, Region } from "@medusajs/medusa"
+import {
+  MoneyAmount,
+  PriceList,
+  ProductVariantMoneyAmount,
+  Region,
+} from "@medusajs/medusa"
 import path from "path"
-
-import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import setupServer from "../../../../environment-helpers/setup-server"
-import { setPort, useApi } from "../../../../environment-helpers/use-api"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
-import { ProductVariantMoneyAmount } from "@medusajs/medusa"
 
 jest.setTimeout(30000)
 
 describe("/store/carts", () => {
-  let medusaProcess
   let dbConnection
-  let express
+  let shutdownServer
 
   const doAfterEach = async () => {
     const db = useDb()
@@ -22,19 +23,14 @@ describe("/store/carts", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
-    const { app, port } = await bootstrapApp({ cwd })
-    setPort(port)
-    express = app.listen(port, () => {
-      process.send?.(port)
-    })
+    dbConnection = await initDb({ cwd } as any)
+    shutdownServer = await startBootstrapApp({ cwd })
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    medusaProcess.kill()
+    await shutdownServer()
   })
 
   describe("POST /store/carts", () => {
@@ -134,7 +130,7 @@ describe("/store/carts", () => {
       await dbConnection.manager.save(ma_sale_1)
 
       await dbConnection.manager.insert(ProductVariantMoneyAmount, {
-        id: 'pvma-test', 
+        id: "pvma-test",
         variant_id: prodSale.variants[0].id,
         money_amount_id: ma_sale_1.id,
       })

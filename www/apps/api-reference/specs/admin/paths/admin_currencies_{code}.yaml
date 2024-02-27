@@ -22,6 +22,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_currencies_{code}/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_currencies_{code}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -39,3 +43,15 @@ post:
         application/json:
           schema:
             $ref: ../components/schemas/AdminCurrenciesRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

@@ -1,4 +1,5 @@
 type: object
+description: The details of deleting order edit item changes.
 required:
   - id
   - object

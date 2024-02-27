@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the product to create.
+ */
 export interface AdminPostProductsReq {
   /**
    * The title of the Product
@@ -25,11 +28,11 @@ export interface AdminPostProductsReq {
    */
   discountable?: boolean
   /**
-   * An array of images of the Product. Each value in the array is a URL to the image. You can use the upload endpoints to upload the image and obtain a URL.
+   * An array of images of the Product. Each value in the array is a URL to the image. You can use the upload API Routes to upload the image and obtain a URL.
    */
   images?: Array<string>
   /**
-   * The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload endpoints to upload the thumbnail and obtain a URL.
+   * The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload API Routes to upload the thumbnail and obtain a URL.
    */
   thumbnail?: string
   /**

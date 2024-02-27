@@ -6,6 +6,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { Return } from "./Return"
 import type { ReturnItem } from "./ReturnItem"
 
+/**
+ * The return's details.
+ */
 export interface StoreReturnsRes {
   /**
    * Return details.

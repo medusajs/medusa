@@ -37,7 +37,46 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       })
  *       .then(({ publishable_api_key }) => {
  *         console.log(publishable_api_key.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminRemovePublishableKeySalesChannelsBatch,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         publishableApiKeyId: string
+ *       }
+ *
+ *       const PublishableApiKey = ({
+ *         publishableApiKeyId
+ *       }: Props) => {
+ *         const deleteSalesChannels =
+ *           useAdminRemovePublishableKeySalesChannelsBatch(
+ *             publishableApiKeyId
+ *           )
+ *         // ...
+ *
+ *         const handleDelete = (salesChannelId: string) => {
+ *           deleteSalesChannels.mutate({
+ *             sales_channel_ids: [
+ *               {
+ *                 id: salesChannelId,
+ *               },
+ *             ],
+ *           }, {
+ *             onSuccess: ({ publishable_api_key }) => {
+ *               console.log(publishable_api_key.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PublishableApiKey
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -107,6 +146,7 @@ export default async (req: Request, res: Response): Promise<void> => {
 /**
  * @schema AdminDeletePublishableApiKeySalesChannelsBatchReq
  * type: object
+ * description: "The details of the sales channels to remove from the publishable API key."
  * required:
  *   - sales_channel_ids
  * properties:

@@ -59,6 +59,7 @@ export default (app) => {
 /**
  * @schema AdminReservationsRes
  * type: object
+ * description: "The reservation's details."
  * required:
  *   - reservation
  * properties:
@@ -92,6 +93,7 @@ export type ExtendedReservationItem = ReservationItemDTO & {
 /**
  * @schema AdminReservationsListRes
  * type: object
+ * description: "The list of reservations with pagination fields."
  * required:
  *   - reservations
  *   - count

@@ -1,11 +1,17 @@
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Currency, MoneyAmount } from "@models"
-
-import { initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MikroOrmWrapper } from "../../../utils"
+import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
+import { createPriceSets } from "../../../__fixtures__/price-set"
+import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { createPriceRules } from "../../../__fixtures__/price-rule"
+import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { Modules } from "@medusajs/modules-sdk"
+import { initModules } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -15,21 +21,27 @@ describe("PricingModule Service - MoneyAmount", () => {
   let repositoryManager: SqlEntityManager
   let data!: MoneyAmount[]
   let currencyData!: Currency[]
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PRICING]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = MikroOrmWrapper.forkManager()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
-      },
-    })
-
     testManager = MikroOrmWrapper.forkManager()
 
-    testManager = await MikroOrmWrapper.forkManager()
     currencyData = await createCurrencies(testManager)
     data = await createMoneyAmounts(testManager)
   })
@@ -42,20 +54,22 @@ describe("PricingModule Service - MoneyAmount", () => {
     it("list moneyAmounts", async () => {
       const moneyAmountsResult = await service.listMoneyAmounts()
 
-      expect(moneyAmountsResult).toEqual([
-        expect.objectContaining({
-          id: "money-amount-USD",
-          amount: "500",
-        }),
-        expect.objectContaining({
-          id: "money-amount-EUR",
-          amount: "400",
-        }),
-        expect.objectContaining({
-          id: "money-amount-CAD",
-          amount: "600",
-        }),
-      ])
+      expect(moneyAmountsResult).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "money-amount-USD",
+            amount: 500,
+          }),
+          expect.objectContaining({
+            id: "money-amount-EUR",
+            amount: 400,
+          }),
+          expect.objectContaining({
+            id: "money-amount-CAD",
+            amount: 600,
+          }),
+        ])
+      )
     })
 
     it("should list moneyAmounts by id", async () => {
@@ -86,6 +100,7 @@ describe("PricingModule Service - MoneyAmount", () => {
       expect(serialized).toEqual([
         {
           id: "money-amount-USD",
+          amount: null,
           min_quantity: "1",
           currency_code: "USD",
           currency: {
@@ -102,17 +117,19 @@ describe("PricingModule Service - MoneyAmount", () => {
         await service.listAndCountMoneyAmounts()
 
       expect(count).toEqual(3)
-      expect(moneyAmountsResult).toEqual([
-        expect.objectContaining({
-          id: "money-amount-USD",
-        }),
-        expect.objectContaining({
-          id: "money-amount-EUR",
-        }),
-        expect.objectContaining({
-          id: "money-amount-CAD",
-        }),
-      ])
+      expect(moneyAmountsResult).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "money-amount-USD",
+          }),
+          expect.objectContaining({
+            id: "money-amount-EUR",
+          }),
+          expect.objectContaining({
+            id: "money-amount-CAD",
+          }),
+        ])
+      )
     })
 
     it("should return moneyAmounts and count when filtered", async () => {
@@ -136,7 +153,7 @@ describe("PricingModule Service - MoneyAmount", () => {
             id: ["money-amount-USD"],
           },
           {
-            select: ["id", "min_quantity", "currency.code"],
+            select: ["id", "min_quantity", "currency.code", "amount"],
             relations: ["currency"],
           }
         )
@@ -147,6 +164,7 @@ describe("PricingModule Service - MoneyAmount", () => {
       expect(serialized).toEqual([
         {
           id: "money-amount-USD",
+          amount: 500,
           min_quantity: "1",
           currency_code: "USD",
           currency: {
@@ -183,7 +201,8 @@ describe("PricingModule Service - MoneyAmount", () => {
       expect(count).toEqual(3)
       expect(serialized).toEqual([
         {
-          id: "money-amount-USD",
+          id: "money-amount-CAD",
+          amount: null,
         },
       ])
     })
@@ -191,7 +210,7 @@ describe("PricingModule Service - MoneyAmount", () => {
 
   describe("retrieveMoneyAmount", () => {
     const id = "money-amount-USD"
-    const amount = "500"
+    const amount = 500
 
     it("should return moneyAmount for the given id", async () => {
       const moneyAmount = await service.retrieveMoneyAmount(id)
@@ -226,7 +245,7 @@ describe("PricingModule Service - MoneyAmount", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"moneyAmountId" must be defined')
+      expect(error.message).toEqual("moneyAmount - id must be defined")
     })
 
     it("should return moneyAmount based on config select param", async () => {
@@ -257,6 +276,94 @@ describe("PricingModule Service - MoneyAmount", () => {
     })
   })
 
+  describe("softDeleteMoneyAmounts", () => {
+    const id = "money-amount-USD"
+
+    it("should softDelete priceSetMoneyAmount and PriceRule when soft-deleting money amount", async () => {
+      await createPriceSets(testManager)
+      await createRuleTypes(testManager)
+      await createPriceSetMoneyAmounts(testManager)
+      await createPriceRules(testManager)
+      await createPriceSetMoneyAmountRules(testManager)
+      await service.softDeleteMoneyAmounts([id])
+
+      const [moneyAmount] = await service.listMoneyAmounts(
+        {
+          id: [id],
+        },
+        {
+          relations: [
+            "price_set_money_amount",
+            "price_set_money_amount.price_rules",
+          ],
+          withDeleted: true,
+        }
+      )
+
+      expect(moneyAmount).toBeTruthy()
+
+      const deletedAt = moneyAmount.deleted_at
+
+      expect(moneyAmount).toEqual(
+        expect.objectContaining({
+          deleted_at: deletedAt,
+          price_set_money_amount: expect.objectContaining({
+            deleted_at: deletedAt,
+            price_rules: [
+              expect.objectContaining({
+                deleted_at: deletedAt,
+              }),
+            ],
+          }),
+        })
+      )
+    })
+  })
+
+  describe("restoreMoneyAmounts", () => {
+    const id = "money-amount-USD"
+
+    it("should restore softDeleted priceSetMoneyAmount and PriceRule when restoring soft-deleting money amount", async () => {
+      await createPriceSets(testManager)
+      await createRuleTypes(testManager)
+      await createPriceSetMoneyAmounts(testManager)
+      await createPriceRules(testManager)
+      await createPriceSetMoneyAmountRules(testManager)
+      await service.softDeleteMoneyAmounts([id])
+      await service.restoreMoneyAmounts([id])
+
+      const [moneyAmount] = await service.listMoneyAmounts(
+        {
+          id: [id],
+        },
+        {
+          relations: [
+            "price_set_money_amount",
+            "price_set_money_amount.price_rules",
+          ],
+        }
+      )
+
+      expect(moneyAmount).toBeTruthy()
+
+      const deletedAt = null
+
+      expect(moneyAmount).toEqual(
+        expect.objectContaining({
+          deleted_at: deletedAt,
+          price_set_money_amount: expect.objectContaining({
+            deleted_at: deletedAt,
+            price_rules: [
+              expect.objectContaining({
+                deleted_at: deletedAt,
+              }),
+            ],
+          }),
+        })
+      )
+    })
+  })
+
   describe("updateMoneyAmounts", () => {
     const id = "money-amount-USD"
 
@@ -268,9 +375,13 @@ describe("PricingModule Service - MoneyAmount", () => {
         },
       ])
 
-      const moneyAmount = await service.retrieveMoneyAmount(id)
+      const moneyAmount = JSON.parse(
+        JSON.stringify(
+          await service.retrieveMoneyAmount(id, { select: ["amount"] })
+        )
+      )
 
-      expect(moneyAmount.amount).toEqual("700")
+      expect(moneyAmount.amount).toEqual(700)
     })
 
     it("should update the currency of the moneyAmount successfully", async () => {
@@ -329,7 +440,7 @@ describe("PricingModule Service - MoneyAmount", () => {
         expect.objectContaining({
           id: "money-amount-TESM",
           currency_code: "USD",
-          amount: "333",
+          amount: 333,
           min_quantity: "1",
           max_quantity: "4",
         })

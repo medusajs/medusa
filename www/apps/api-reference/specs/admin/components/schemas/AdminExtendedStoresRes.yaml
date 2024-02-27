@@ -1,4 +1,5 @@
 type: object
+description: The store's details with additional details like payment and tax providers.
 x-expanded-relations:
   field: store
   relations:

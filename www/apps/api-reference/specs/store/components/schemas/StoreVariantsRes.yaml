@@ -1,4 +1,5 @@
 type: object
+description: The product variant's details.
 x-expanded-relations:
   field: variant
   relations:

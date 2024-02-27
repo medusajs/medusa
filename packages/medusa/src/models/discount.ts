@@ -77,6 +77,9 @@ export class Discount extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private upperCaseCodeAndTrim(): void {
     this.code = this.code.toUpperCase().trim()

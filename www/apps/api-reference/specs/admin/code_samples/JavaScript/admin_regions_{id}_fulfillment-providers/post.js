@@ -6,4 +6,4 @@ medusa.admin.regions.addFulfillmentProvider(regionId, {
 })
 .then(({ region }) => {
   console.log(region.id);
-});
+})

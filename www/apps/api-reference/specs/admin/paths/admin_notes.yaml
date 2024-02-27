@@ -31,6 +31,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_notes/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_notes/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -77,6 +81,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_notes/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_notes/post.tsx
     - lang: Shell
       label: cURL
       source:

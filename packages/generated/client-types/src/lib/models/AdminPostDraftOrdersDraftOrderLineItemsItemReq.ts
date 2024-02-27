@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the line item.
+ */
 export interface AdminPostDraftOrdersDraftOrderLineItemsItemReq {
   /**
    * The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.

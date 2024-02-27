@@ -2,8 +2,8 @@ post:
   summary: Complete a Cart
   operationId: PostCartsCartComplete
   description: >
-    Complete a cart and place an order or create a swap, based on what the cart
-    is created for. This includes attempting to authorize the cart's payment.
+    Complete a cart and place an order or create a swap, based on the cart's
+    type. This includes attempting to authorize the cart's payment.
 
     If authorizing the payment requires more action, the cart will not be
     completed and the order will not be placed or the swap will not be created.
@@ -34,6 +34,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/store_carts_{id}_complete/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/store_carts_{id}_complete/post.tsx
     - lang: Shell
       label: cURL
       source:

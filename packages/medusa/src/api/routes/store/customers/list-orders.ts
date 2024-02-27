@@ -153,12 +153,38 @@ import { DateComparisonOperator } from "../../../../types/common"
  *       medusa.customers.listOrders()
  *       .then(({ orders, limit, offset, count }) => {
  *         console.log(orders);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCustomerOrders } from "medusa-react"
+ *
+ *       const Orders = () => {
+ *         // refetch a function that can be used to
+ *         // re-retrieve orders after the customer logs in
+ *         const { orders, isLoading } = useCustomerOrders()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading orders...</span>}
+ *             {orders?.length && (
+ *               <ul>
+ *                 {orders.map((order) => (
+ *                   <li key={order.id}>{order.display_id}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Orders
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/store/customers/me/orders' \
- *       -H 'Cookie: connect.sid={sid}'
+ *       -H 'Authorization: Bearer {access_token}'
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []
@@ -204,82 +230,144 @@ export default async (req: Request, res: Response) => {
   res.json({ orders, count, offset: offset, limit: limit })
 }
 
+/**
+ * {@inheritDoc FindPaginationParams}
+ */
 export class StoreGetCustomersCustomerOrdersPaginationParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 10
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   limit = 10
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsOptional()
   @IsString()
   fields?: string
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsOptional()
   @IsString()
   expand?: string
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved orders.
+ */
 // eslint-disable-next-line max-len
 export class StoreGetCustomersCustomerOrdersParams extends StoreGetCustomersCustomerOrdersPaginationParams {
+  /**
+   * ID to filter orders by.
+   */
   @IsString()
   @IsOptional()
   id?: string
 
+  /**
+   * Search term to search orders' display ID, email, shipping address's first name, customer's first name, customer's last name, and customer's phone number.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Statuses to filter orders by.
+   */
   @IsOptional()
   @IsEnum(OrderStatus, { each: true })
   status?: OrderStatus[]
 
+  /**
+   * Fulfillment statuses to filter orders by.
+   */
   @IsOptional()
   @IsEnum(FulfillmentStatus, { each: true })
   fulfillment_status?: FulfillmentStatus[]
 
+  /**
+   * Payment statuses to filter orders by.
+   */
   @IsOptional()
   @IsEnum(PaymentStatus, { each: true })
   payment_status?: PaymentStatus[]
 
+  /**
+   * Display ID to filter orders by.
+   */
   @IsString()
   @IsOptional()
   display_id?: string
 
+  /**
+   * Cart ID to filter orders by.
+   */
   @IsString()
   @IsOptional()
   cart_id?: string
 
+  /**
+   * Email to filter orders by.
+   */
   @IsString()
   @IsOptional()
   email?: string
 
+  /**
+   * Region ID to filter orders by.
+   */
   @IsString()
   @IsOptional()
   region_id?: string
 
+  /**
+   * Currency code to filter orders by.
+   */
   @IsString()
   @IsOptional()
   currency_code?: string
 
+  /**
+   * Tax rate to filter orders by.
+   */
   @IsString()
   @IsOptional()
   tax_rate?: string
 
+  /**
+   * Date filters to apply on the orders' `created_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the orders' `updated_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the orders' `canceled_at` date.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => DateComparisonOperator)

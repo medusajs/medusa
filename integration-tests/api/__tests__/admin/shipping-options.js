@@ -48,7 +48,7 @@ describe("/admin/shipping-options", () => {
       await db.teardown()
     })
 
-    it("updates a shipping option with no existing requirements", async () => {
+    it("should update a shipping option with no existing requirements", async () => {
       const api = useApi()
 
       const payload = {
@@ -66,11 +66,11 @@ describe("/admin/shipping-options", () => {
         ],
       }
 
-      const res = await api.post(`/admin/shipping-options/test-out`, payload, {
-        headers: {
-          "x-medusa-access-token": "test_token",
-        },
-      })
+      const res = await api.post(
+        `/admin/shipping-options/test-out`,
+        payload,
+        adminReqConfig
+      )
 
       const requirements = res.data.shipping_option.requirements
 
@@ -92,7 +92,27 @@ describe("/admin/shipping-options", () => {
       )
     })
 
-    it("fails to add a a requirement with an id if it does not exists", async () => {
+    it("should update a shipping option with price_type", async () => {
+      const api = useApi()
+
+      const payload = {
+        price_type: "calculated",
+        requirements: [],
+      }
+
+      const res = await api
+        .post(`/admin/shipping-options/test-out`, payload, adminReqConfig)
+        .catch(console.log)
+
+      expect(res.status).toEqual(200)
+      expect(res.data.shipping_option).toEqual(
+        expect.objectContaining({
+          price_type: "calculated",
+        })
+      )
+    })
+
+    it("should fail to add a a requirement with an id if it does not exists", async () => {
       const api = useApi()
 
       const payload = {
@@ -113,11 +133,7 @@ describe("/admin/shipping-options", () => {
       }
 
       const res = await api
-        .post(`/admin/shipping-options/test-out`, payload, {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        })
+        .post(`/admin/shipping-options/test-out`, payload, adminReqConfig)
         .catch((err) => {
           return err.response
         })
@@ -128,7 +144,7 @@ describe("/admin/shipping-options", () => {
       )
     })
 
-    it("it successfully updates a set of existing requirements", async () => {
+    it("should successfully updates a set of existing requirements", async () => {
       const api = useApi()
 
       const payload = {
@@ -148,11 +164,11 @@ describe("/admin/shipping-options", () => {
       }
 
       const res = await api
-        .post(`/admin/shipping-options/test-option-req`, payload, {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        })
+        .post(
+          `/admin/shipping-options/test-option-req`,
+          payload,
+          adminReqConfig
+        )
         .catch((err) => {
           console.log(err.response.data.message)
         })
@@ -160,7 +176,7 @@ describe("/admin/shipping-options", () => {
       expect(res.status).toEqual(200)
     })
 
-    it("it successfully updates a set of existing requirements by updating one and deleting the other", async () => {
+    it("should successfully updates a set of existing requirements by updating one and deleting the other", async () => {
       const api = useApi()
 
       const payload = {
@@ -174,11 +190,11 @@ describe("/admin/shipping-options", () => {
       }
 
       const res = await api
-        .post(`/admin/shipping-options/test-option-req`, payload, {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        })
+        .post(
+          `/admin/shipping-options/test-option-req`,
+          payload,
+          adminReqConfig
+        )
         .catch((err) => {
           console.log(err.response.data.message)
         })
@@ -186,7 +202,7 @@ describe("/admin/shipping-options", () => {
       expect(res.status).toEqual(200)
     })
 
-    it("successfully updates a set of requirements because max. subtotal >= min. subtotal", async () => {
+    it("should successfully updates a set of requirements because max. subtotal >= min. subtotal", async () => {
       const api = useApi()
 
       const payload = {
@@ -205,11 +221,11 @@ describe("/admin/shipping-options", () => {
       }
 
       const res = await api
-        .post(`/admin/shipping-options/test-option-req`, payload, {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        })
+        .post(
+          `/admin/shipping-options/test-option-req`,
+          payload,
+          adminReqConfig
+        )
         .catch((err) => {
           console.log(err.response.data.message)
         })
@@ -219,7 +235,7 @@ describe("/admin/shipping-options", () => {
       expect(res.data.shipping_option.requirements[1].amount).toEqual(200)
     })
 
-    it("fails to updates a set of requirements because max. subtotal <= min. subtotal", async () => {
+    it("should fail to updates a set of requirements because max. subtotal <= min. subtotal", async () => {
       const api = useApi()
 
       const payload = {
@@ -238,11 +254,11 @@ describe("/admin/shipping-options", () => {
       }
 
       const res = await api
-        .post(`/admin/shipping-options/test-option-req`, payload, {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        })
+        .post(
+          `/admin/shipping-options/test-option-req`,
+          payload,
+          adminReqConfig
+        )
         .catch((err) => {
           return err.response
         })
@@ -267,11 +283,7 @@ describe("/admin/shipping-options", () => {
         {
           fulfillment_providers: ["test-ful"],
         },
-        {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        }
+        adminReqConfig
       )
 
       const manager = dbConnection.manager
@@ -297,7 +309,7 @@ describe("/admin/shipping-options", () => {
       await db.teardown()
     })
 
-    it("creates a shipping option with requirements", async () => {
+    it("should create a shipping option with requirements", async () => {
       const api = useApi()
       payload.requirements = [
         {
@@ -310,29 +322,29 @@ describe("/admin/shipping-options", () => {
         },
       ]
 
-      const res = await api.post(`/admin/shipping-options`, payload, {
-        headers: {
-          "x-medusa-access-token": "test_token",
-        },
-      })
+      const res = await api.post(
+        `/admin/shipping-options`,
+        payload,
+        adminReqConfig
+      )
 
       expect(res.status).toEqual(200)
       expect(res.data.shipping_option.requirements.length).toEqual(2)
     })
 
-    it("creates a shipping option with no requirements", async () => {
+    it("should create a shipping option with no requirements", async () => {
       const api = useApi()
-      const res = await api.post(`/admin/shipping-options`, payload, {
-        headers: {
-          "x-medusa-access-token": "test_token",
-        },
-      })
+      const res = await api.post(
+        `/admin/shipping-options`,
+        payload,
+        adminReqConfig
+      )
 
       expect(res.status).toEqual(200)
       expect(res.data.shipping_option.requirements.length).toEqual(0)
     })
 
-    it("fails on same requirement types", async () => {
+    it("should fail on same requirement types", async () => {
       const api = useApi()
       payload.requirements = [
         {
@@ -346,11 +358,7 @@ describe("/admin/shipping-options", () => {
       ]
 
       try {
-        await api.post(`/admin/shipping-options`, payload, {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        })
+        await api.post(`/admin/shipping-options`, payload, adminReqConfig)
       } catch (error) {
         expect(error.response.data.message).toEqual(
           "Only one requirement of each type is allowed"
@@ -358,7 +366,7 @@ describe("/admin/shipping-options", () => {
       }
     })
 
-    it("fails when min_subtotal > max_subtotal", async () => {
+    it("should fail when min_subtotal > max_subtotal", async () => {
       const api = useApi()
       payload.requirements = [
         {
@@ -372,11 +380,7 @@ describe("/admin/shipping-options", () => {
       ]
 
       try {
-        await api.post(`/admin/shipping-options`, payload, {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        })
+        await api.post(`/admin/shipping-options`, payload, adminReqConfig)
       } catch (error) {
         expect(error.response.data.message).toEqual(
           "Max. subtotal must be greater than Min. subtotal"
@@ -395,24 +399,19 @@ describe("/admin/shipping-options", () => {
       await db.teardown()
     })
 
-    it("lists shipping options", async () => {
+    it("should list shipping options", async () => {
       const api = useApi()
-      const res = await api.get(`/admin/shipping-options`, {
-        headers: {
-          "x-medusa-access-token": "test_token",
-        },
-      })
+      const res = await api.get(`/admin/shipping-options`, adminReqConfig)
 
       expect(res.status).toEqual(200)
     })
 
-    it("lists admin only shipping options", async () => {
+    it("should list admin only shipping options", async () => {
       const api = useApi()
-      const res = await api.get(`/admin/shipping-options?admin_only=true`, {
-        headers: {
-          "x-medusa-access-token": "test_token",
-        },
-      })
+      const res = await api.get(
+        `/admin/shipping-options?admin_only=true`,
+        adminReqConfig
+      )
 
       expect(res.status).toEqual(200)
       expect(res.data.shipping_options).toEqual(
@@ -425,13 +424,12 @@ describe("/admin/shipping-options", () => {
       )
     })
 
-    it("lists return shipping options", async () => {
+    it("should list return shipping options", async () => {
       const api = useApi()
-      const res = await api.get(`/admin/shipping-options?is_return=true`, {
-        headers: {
-          "x-medusa-access-token": "test_token",
-        },
-      })
+      const res = await api.get(
+        `/admin/shipping-options?is_return=true`,
+        adminReqConfig
+      )
 
       expect(res.status).toEqual(200)
       expect(res.data.shipping_options).toEqual(
@@ -444,15 +442,11 @@ describe("/admin/shipping-options", () => {
       )
     })
 
-    it("lists shipping options without return and admin options", async () => {
+    it("should list shipping options without return and admin options", async () => {
       const api = useApi()
       const res = await api.get(
         `/admin/shipping-options?is_return=false&admin_only=true`,
-        {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(res.status).toEqual(200)

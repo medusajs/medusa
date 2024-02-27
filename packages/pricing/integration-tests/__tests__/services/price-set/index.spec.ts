@@ -1,13 +1,15 @@
 import { CreatePriceSetDTO } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { MoneyAmount, PriceSet } from "@models"
-import { PriceSetRepository } from "@repositories"
 import { PriceSetService } from "@services"
 
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { MikroOrmWrapper } from "../../../utils"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -36,7 +38,6 @@ describe("PriceSet Service", () => {
           id: "money-amount-USD",
           currency_code: "EUR",
           amount: 100,
-          rules: {},
         },
       ],
     },
@@ -55,13 +56,12 @@ describe("PriceSet Service", () => {
     repositoryManager = await MikroOrmWrapper.forkManager()
     testManager = await MikroOrmWrapper.forkManager()
 
-    const priceSetRepository = new PriceSetRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new PriceSetService({
-      priceSetRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("priceSetService")
 
     await createCurrencies(testManager)
 
@@ -124,9 +124,9 @@ describe("PriceSet Service", () => {
         {
           id: "price-set-1",
           money_amounts: [
-            {
+            expect.objectContaining({
               id: "money-amount-USD",
-            },
+            }),
           ],
         },
       ])
@@ -151,9 +151,9 @@ describe("PriceSet Service", () => {
         {
           id: "price-set-1",
           money_amounts: [
-            {
+            expect.objectContaining({
               id: "money-amount-USD",
-            },
+            }),
           ],
         },
       ])
@@ -227,9 +227,9 @@ describe("PriceSet Service", () => {
         {
           id: "price-set-1",
           money_amounts: [
-            {
+            expect.objectContaining({
               id: "money-amount-USD",
-            },
+            }),
           ],
         },
       ])
@@ -305,7 +305,7 @@ describe("PriceSet Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"priceSetId" must be defined')
+      expect(error.message).toEqual("priceSet - id must be defined")
     })
 
     it("should return priceSet based on config select param", async () => {
@@ -371,7 +371,7 @@ describe("PriceSet Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('PriceSet with id "undefined" not found')
+      expect(error.message).toEqual('PriceSet with id "" not found')
     })
 
     it("should create a priceSet successfully", async () => {

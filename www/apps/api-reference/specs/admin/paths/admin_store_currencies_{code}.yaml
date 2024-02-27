@@ -24,6 +24,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_store_currencies_{code}/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_store_currencies_{code}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -78,6 +82,10 @@ delete:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_store_currencies_{code}/delete.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_store_currencies_{code}/delete.tsx
     - lang: Shell
       label: cURL
       source:

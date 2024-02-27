@@ -133,10 +133,11 @@ const CollectionsTable: React.FC = () => {
         <Table.Head>
           {headerGroups?.map((headerGroup) => (
             <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((col) => (
+              {headerGroup.headers.map((col, idx) => (
                 <Table.HeadCell
                   className="min-w-[100px]"
                   {...col.getHeaderProps()}
+                  key={idx}
                 >
                   {col.render("Header")}
                 </Table.HeadCell>
@@ -156,9 +157,9 @@ const CollectionsTable: React.FC = () => {
           </Table.Body>
         ) : (
           <Table.Body {...getTableBodyProps()}>
-            {rows.map((row) => {
+            {rows.map((row, idx) => {
               prepareRow(row)
-              return <CollectionRow row={row} />
+              return <CollectionRow row={row} key={idx} />
             })}
           </Table.Body>
         )}

@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.swaps.list()
 .then(({ swaps }) => {
   console.log(swaps.length);
-});
+})

@@ -23,6 +23,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_draft-orders_{id}_line-items/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_draft-orders_{id}_line-items/post.tsx
     - lang: Shell
       label: cURL
       source:

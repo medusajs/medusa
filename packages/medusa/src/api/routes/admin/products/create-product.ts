@@ -1,3 +1,5 @@
+import { Workflows, createProducts } from "@medusajs/core-flows"
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 import {
   IsArray,
   IsBoolean,
@@ -37,24 +39,21 @@ import {
 } from "./transaction/create-product-variant"
 
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { IInventoryService, WorkflowTypes } from "@medusajs/types"
-import { FlagRouter } from "@medusajs/utils"
-import { createProducts, Workflows } from "@medusajs/workflows"
+import { FlagRouter, MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { ProductStatus } from "../../../../models"
 import { Logger } from "../../../../types/global"
-import { validator } from "../../../../utils"
+import { retrieveProduct, validator } from "../../../../utils"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 
 /**
  * @oas [post] /admin/products
  * operationId: "PostProducts"
  * summary: "Create a Product"
  * x-authenticated: true
- * description: "Create a new Product. This endpoint can also be used to create a gift card if the `is_giftcard` field is set to `true`."
+ * description: "Create a new Product. This API Route can also be used to create a gift card if the `is_giftcard` field is set to `true`."
  * requestBody:
  *   content:
  *     application/json:
@@ -76,7 +75,58 @@ import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/i
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateProduct } from "medusa-react"
+ *
+ *       type CreateProductData = {
+ *         title: string
+ *         is_giftcard: boolean
+ *         discountable: boolean
+ *         options: {
+ *           title: string
+ *         }[]
+ *         variants: {
+ *           title: string
+ *           prices: {
+ *             amount: number
+ *             currency_code :string
+ *           }[]
+ *           options: {
+ *             value: string
+ *           }[]
+ *         }[],
+ *         collection_id: string
+ *         categories: {
+ *           id: string
+ *         }[]
+ *         type: {
+ *           value: string
+ *         }
+ *         tags: {
+ *           value: string
+ *         }[]
+ *       }
+ *
+ *       const CreateProduct = () => {
+ *         const createProduct = useAdminCreateProduct()
+ *         // ...
+ *
+ *         const handleCreate = (productData: CreateProductData) => {
+ *           createProduct.mutate(productData, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateProduct
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -137,12 +187,9 @@ export default async (req, res) => {
 
   const entityManager: EntityManager = req.scope.resolve("manager")
   const productModuleService = req.scope.resolve("productModuleService")
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
 
-  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.CreateProducts,
-  })
-
-  if (isWorkflowEnabled && !productModuleService) {
+  if (isMedusaV2Enabled && !productModuleService) {
     logger.warn(
       `Cannot run ${Workflows.CreateProducts} workflow without '@medusajs/product' installed`
     )
@@ -150,7 +197,7 @@ export default async (req, res) => {
 
   let product
 
-  if (isWorkflowEnabled && !!productModuleService) {
+  if (isMedusaV2Enabled && !!productModuleService) {
     const createProductWorkflow = createProducts(req.scope)
 
     const input = {
@@ -242,7 +289,7 @@ export default async (req, res) => {
           )
           allVariantTransactions.push(varTransaction)
         } catch (e) {
-          await Promise.all(
+          await promiseAll(
             allVariantTransactions.map(async (transaction) => {
               await revertVariantTransaction(
                 transactionDependencies,
@@ -260,8 +307,12 @@ export default async (req, res) => {
   }
 
   let rawProduct
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
-    rawProduct = await getProductWithIsolatedProductModule(req, product.id)
+  if (isMedusaV2Enabled) {
+    rawProduct = await retrieveProduct(
+      req.scope,
+      product.id,
+      defaultAdminProductRemoteQueryObject
+    )
   } else {
     rawProduct = await productService.retrieve(product.id, {
       select: defaultAdminProductFields,
@@ -269,29 +320,11 @@ export default async (req, res) => {
     })
   }
 
-  const [pricedProduct] = await pricingService.setProductPrices([rawProduct])
+  const [pricedProduct] = await pricingService.setAdminProductPricing([
+    rawProduct,
+  ])
 
   res.json({ product: pricedProduct })
-}
-
-async function getProductWithIsolatedProductModule(req, id) {
-  // TODO: Add support for fields/expands
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const variables = { id }
-
-  const query = {
-    product: {
-      __args: variables,
-      ...defaultAdminProductRemoteQueryObject,
-    },
-  }
-
-  const [product] = await remoteQuery(query)
-
-  product.profile_id = product.profile?.id
-
-  return product
 }
 
 class ProductVariantOptionReq {
@@ -387,6 +420,7 @@ class ProductVariantReq {
 /**
  * @schema AdminPostProductsReq
  * type: object
+ * description: "The details of the product to create."
  * required:
  *   - title
  * properties:
@@ -408,12 +442,12 @@ class ProductVariantReq {
  *     type: boolean
  *     default: true
  *   images:
- *     description: An array of images of the Product. Each value in the array is a URL to the image. You can use the upload endpoints to upload the image and obtain a URL.
+ *     description: An array of images of the Product. Each value in the array is a URL to the image. You can use the upload API Routes to upload the image and obtain a URL.
  *     type: array
  *     items:
  *       type: string
  *   thumbnail:
- *     description: The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload endpoints to upload the thumbnail and obtain a URL.
+ *     description: The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload API Routes to upload the thumbnail and obtain a URL.
  *     type: string
  *   handle:
  *     description: A unique handle to identify the Product by. If not provided, the kebab-case version of the product title will be used. This can be used as a slug in URLs.

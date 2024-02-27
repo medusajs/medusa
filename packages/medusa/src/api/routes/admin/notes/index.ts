@@ -25,6 +25,7 @@ export default (app) => {
 /**
  * @schema AdminNotesRes
  * type: object
+ * description: "The note's details."
  * required:
  *   - note
  * properties:
@@ -61,6 +62,7 @@ export type AdminNotesDeleteRes = DeleteResponse
 /**
  * @schema AdminNotesListRes
  * type: object
+ * description: "The list of notes with pagination fields."
  * required:
  *   - notes
  *   - count

@@ -5,7 +5,7 @@ import { ulid } from "ulid"
  * @param idProperty
  * @param prefix
  */
-export function generateEntityId(idProperty: string, prefix?: string): string {
+export function generateEntityId(idProperty?: string, prefix?: string): string {
   if (idProperty) {
     return idProperty
   }

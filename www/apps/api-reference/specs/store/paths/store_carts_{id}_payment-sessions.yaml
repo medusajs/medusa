@@ -3,7 +3,7 @@ post:
   summary: Create Payment Sessions
   description: >-
     Create Payment Sessions for each of the available Payment Providers in the
-    Cart's Region. If there only one payment session is created, it will be
+    Cart's Region. If there's only one payment session created, it will be
     selected by default. The creation of the payment session uses the payment
     provider and may require sending requests to third-party services.
   parameters:
@@ -20,6 +20,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/store_carts_{id}_payment-sessions/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/store_carts_{id}_payment-sessions/post.tsx
     - lang: Shell
       label: cURL
       source:

@@ -2,9 +2,9 @@ post:
   operationId: PostOrdersOrderShipment
   summary: Ship a Fulfillment
   description: >-
-    Mark a fulfillment as shipped. This changes the order's fulfillment status
-    to either `shipped` or `partially_shipped`, depending on whether all the
-    items were shipped.
+    Create a shipment and mark a fulfillment as shipped. This changes the
+    order's fulfillment status to either `partially_shipped` or `shipped`,
+    depending on whether all the items were shipped.
   x-authenticated: true
   externalDocs:
     description: Fulfillments of orders
@@ -39,6 +39,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_orders_{id}_shipment/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_orders_{id}_shipment/post.tsx
     - lang: Shell
       label: cURL
       source:

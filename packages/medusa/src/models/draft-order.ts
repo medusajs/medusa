@@ -18,8 +18,19 @@ import { manualAutoIncrement } from "../utils/manual-auto-increment"
 import { Cart } from "./cart"
 import { Order } from "./order"
 
+/**
+ * @enum
+ * 
+ * The draft order's status.
+ */
 export enum DraftOrderStatus {
+  /**
+   * The draft order is open.
+   */
   OPEN = "open",
+  /**
+   * The draft order is completed, and an order has been created from it.
+   */
   COMPLETED = "completed",
 }
 
@@ -64,6 +75,9 @@ export class DraftOrder extends BaseEntity {
   @Column({ nullable: true })
   idempotency_key: string
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private async beforeInsert(): Promise<void> {
     this.id = generateEntityId(this.id, "dorder")

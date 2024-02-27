@@ -34,6 +34,7 @@ export const defaultAdminProductTypeRelations = []
 /**
  * @schema AdminProductTypesListRes
  * type: object
+ * description: "The list of product types with pagination fields."
  * required:
  *   - product_types
  *   - count

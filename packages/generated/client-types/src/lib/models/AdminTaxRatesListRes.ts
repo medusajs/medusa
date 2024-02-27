@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { TaxRate } from "./TaxRate"
 
+/**
+ * The list of tax rates with pagination fields.
+ */
 export interface AdminTaxRatesListRes {
   /**
    * An array of tax rate details.

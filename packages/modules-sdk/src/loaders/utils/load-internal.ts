@@ -1,27 +1,27 @@
 import {
-  Constructor,
   InternalModuleDeclaration,
   Logger,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
   MedusaContainer,
+  MODULE_RESOURCE_TYPE,
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
+  MedusaModuleType,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
 
 export async function loadInternalModule(
   container: MedusaContainer,
   resolution: ModuleResolution,
-  logger: Logger
+  logger: Logger,
+  migrationOnly?: boolean
 ): Promise<{ error?: Error } | void> {
   const registrationName = resolution.definition.registrationName
 
-  const { scope, resources } =
+  const { resources } =
     resolution.moduleDeclaration as InternalModuleDeclaration
 
   let loadedModule: ModuleExports
@@ -30,12 +30,12 @@ export async function loadInternalModule(
     // the exports. This is useful when a package export an initialize function which will bootstrap itself and therefore
     // does not need to import the package that is currently being loaded as it would create a
     // circular reference.
-    const path = resolution.resolutionPath as string
+    const modulePath = resolution.resolutionPath as string
 
     if (resolution.moduleExports) {
       loadedModule = resolution.moduleExports
     } else {
-      loadedModule = await import(path)
+      loadedModule = await import(modulePath)
       loadedModule = (loadedModule as any).default
     }
   } catch (error) {
@@ -65,16 +65,15 @@ export async function loadInternalModule(
     }
   }
 
-  if (
-    scope === MODULE_SCOPE.INTERNAL &&
-    resources === MODULE_RESOURCE_TYPE.SHARED
-  ) {
-    const moduleModels = loadedModule?.models || null
-    if (moduleModels) {
-      moduleModels.map((val: Constructor<unknown>) => {
-        container.registerAdd("db_entities", asValue(val))
-      })
+  if (migrationOnly) {
+    // Partially loaded module, only register the service __joinerConfig function to be able to resolve it later
+    const moduleService = {
+      __joinerConfig: loadedModule.service.prototype.__joinerConfig,
     }
+    container.register({
+      [registrationName]: asValue(moduleService),
+    })
+    return
   }
 
   const localContainer = createMedusaContainer()
@@ -125,6 +124,7 @@ export async function loadInternalModule(
   const moduleService = loadedModule.service
   container.register({
     [registrationName]: asFunction((cradle) => {
+      ;(moduleService as any).__type = MedusaModuleType
       return new moduleService(
         localContainer.cradle,
         resolution.options,
@@ -135,11 +135,14 @@ export async function loadInternalModule(
 }
 
 export async function loadModuleMigrations(
-  resolution: ModuleResolution
+  resolution: ModuleResolution,
+  moduleExports?: ModuleExports
 ): Promise<[Function | undefined, Function | undefined]> {
   let loadedModule: ModuleExports
   try {
-    loadedModule = (await import(resolution.resolutionPath as string)).default
+    loadedModule =
+      moduleExports ?? (await import(resolution.resolutionPath as string))
+
     return [loadedModule.runMigrations, loadedModule.revertMigration]
   } catch {
     return [undefined, undefined]

@@ -18,6 +18,11 @@ delete:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_price-lists_{id}_products_prices_batch/delete.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_price-lists_{id}_products_prices_batch/delete.tsx
     - lang: Shell
       label: cURL
       source:

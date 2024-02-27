@@ -1,11 +1,14 @@
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { removePriceListVariantPrices } from "@medusajs/core-flows"
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
+import { WorkflowTypes } from "@medusajs/types"
 
 /**
  * @oas [delete] /admin/price-lists/{id}/variants/{variant_id}/prices
  * operationId: "DeletePriceListsPriceListVariantsVariantPrices"
  * summary: "Delete a Variant's Prices"
- * description: "Delete all the prices related to a specific variant in a price list"
+ * description: "Delete all the prices related to a specific variant in a price list."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Price List.
@@ -22,7 +25,42 @@ import PriceListService from "../../../../services/price-list"
  *       medusa.admin.priceLists.deleteVariantPrices(priceListId, variantId)
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminDeletePriceListVariantPrices
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         priceListId: string
+ *         variantId: string
+ *       }
+ *
+ *       const PriceListVariant = ({
+ *         priceListId,
+ *         variantId
+ *       }: Props) => {
+ *         const deleteVariantPrices = useAdminDeletePriceListVariantPrices(
+ *           priceListId,
+ *           variantId
+ *         )
+ *         // ...
+ *
+ *         const handleDeleteVariantPrices = () => {
+ *           deleteVariantPrices.mutate(void 0, {
+ *             onSuccess: ({ ids, deleted, object }) => {
+ *               console.log(ids)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PriceListVariant
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -59,15 +97,43 @@ export default async (req, res) => {
 
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
-
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const manager: EntityManager = req.scope.resolve("manager")
-  const [deletedPriceIds] = await manager.transaction(
-    async (transactionManager) => {
-      return await priceListService
-        .withTransaction(transactionManager)
-        .deleteVariantPrices(id, [variant_id])
-    }
+
+  const isMedusaV2FlagEnabled = featureFlagRouter.isFeatureEnabled(
+    MedusaV2Flag.key
   )
+
+  let deletedPriceIds: string[] = []
+
+  if (isMedusaV2FlagEnabled) {
+    const deletePriceListProductsWorkflow = removePriceListVariantPrices(
+      req.scope
+    )
+
+    const input = {
+      variant_ids: [variant_id],
+      price_list_id: id,
+    } as WorkflowTypes.PriceListWorkflow.RemovePriceListVariantsWorkflowInputDTO
+
+    const { result } = await deletePriceListProductsWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+    deletedPriceIds = result
+  } else {
+    const [deletedIds] = await manager.transaction(
+      async (transactionManager) => {
+        return await priceListService
+          .withTransaction(transactionManager)
+          .deleteVariantPrices(id, [variant_id])
+      }
+    )
+
+    deletedPriceIds = deletedIds
+  }
 
   return res.json({
     ids: deletedPriceIds,

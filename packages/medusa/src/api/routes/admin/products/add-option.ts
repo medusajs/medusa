@@ -1,9 +1,9 @@
 import { PricingService, ProductService } from "../../../../services"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
+import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /admin/products/{id}/options
@@ -32,7 +32,39 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateProductOption } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *       }
+ *
+ *       const CreateProductOption = ({ productId }: Props) => {
+ *         const createOption = useAdminCreateProductOption(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           title: string
+ *         ) => {
+ *           createOption.mutate({
+ *             title
+ *           }, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.options)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateProductOption
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -91,7 +123,7 @@ export default async (req, res) => {
     relations: defaultAdminProductRelations,
   })
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+  const [product] = await pricingService.setAdminProductPricing([rawProduct])
 
   res.json({ product })
 }
@@ -99,6 +131,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostProductsProductOptionsReq
  * type: object
+ * description: "The details of the product option to create."
  * required:
  *   - title
  * properties:

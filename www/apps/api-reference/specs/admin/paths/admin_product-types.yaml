@@ -106,6 +106,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_product-types/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_product-types/get.tsx
     - lang: Shell
       label: cURL
       source:

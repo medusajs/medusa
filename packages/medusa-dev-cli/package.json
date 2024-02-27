@@ -48,7 +48,7 @@
     "watch": "tsc --watch"
   },
   "engines": {
-    "node": ">=12.13.0"
+    "node": ">=16"
   },
   "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
 }

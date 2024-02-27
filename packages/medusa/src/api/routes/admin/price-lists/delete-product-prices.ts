@@ -1,3 +1,6 @@
+import { WorkflowTypes } from "@medusajs/types"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { removePriceListProductPrices } from "@medusajs/core-flows"
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 
@@ -22,7 +25,42 @@ import PriceListService from "../../../../services/price-list"
  *       medusa.admin.priceLists.deleteProductPrices(priceListId, productId)
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import {
+ *         useAdminDeletePriceListProductPrices
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         priceListId: string
+ *         productId: string
+ *       }
+ *
+ *       const PriceListProduct = ({
+ *         priceListId,
+ *         productId
+ *       }: Props) => {
+ *         const deleteProductPrices = useAdminDeletePriceListProductPrices(
+ *           priceListId,
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleDeleteProductPrices = () => {
+ *           deleteProductPrices.mutate(void 0, {
+ *             onSuccess: ({ ids, deleted, object }) => {
+ *               console.log(ids)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PriceListProduct
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -60,14 +98,43 @@ export default async (req, res) => {
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const manager: EntityManager = req.scope.resolve("manager")
-  const [deletedPriceIds] = await manager.transaction(
-    async (transactionManager) => {
-      return await priceListService
-        .withTransaction(transactionManager)
-        .deleteProductPrices(id, [product_id])
-    }
+
+  const isMedusaV2FlagEnabled = featureFlagRouter.isFeatureEnabled(
+    MedusaV2Flag.key
   )
+
+  let deletedPriceIds: string[] = []
+
+  if (isMedusaV2FlagEnabled) {
+    const deletePriceListProductsWorkflow = removePriceListProductPrices(
+      req.scope
+    )
+
+    const input = {
+      product_ids: [product_id],
+      price_list_id: id,
+    } as WorkflowTypes.PriceListWorkflow.RemovePriceListProductsWorkflowInputDTO
+
+    const { result } = await deletePriceListProductsWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+
+    deletedPriceIds = result
+  } else {
+    const [deletedIds] = await manager.transaction(
+      async (transactionManager) => {
+        return await priceListService
+          .withTransaction(transactionManager)
+          .deleteProductPrices(id, [product_id])
+      }
+    )
+    deletedPriceIds = deletedIds
+  }
 
   return res.json({
     ids: deletedPriceIds,

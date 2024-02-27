@@ -1,4 +1,5 @@
 type: object
+description: A currency's details.
 required:
   - currency
 properties:

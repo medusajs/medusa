@@ -5,11 +5,11 @@ import { useAdminProducts } from "medusa-react"
 import * as React from "react"
 
 import { useTranslation } from "react-i18next"
+import { Form } from "../../../../components/helpers/form"
 import { useDebounce } from "../../../../hooks/use-debounce"
 import { NestedForm } from "../../../../utils/nested-form"
 import { ProductFilter, ProductFilterMenu } from "../../components"
 import { PriceListPricesSchema } from "./types"
-import { Form } from "../../../../components/helpers/form"
 
 type PriceListPricesFormProps = {
   form: NestedForm<PriceListPricesSchema>
@@ -46,13 +46,13 @@ const PriceListPricesForm = ({
     {
       id: productIds,
       q: debouncedQuery,
-      limit: productIds?.length,
       price_list_id: priceListId ? [priceListId] : undefined,
       ...filters,
       expand: "variants.prices",
     },
     {
       keepPreviousData: true,
+      enabled: !!productIds?.length,
     }
   )
 
@@ -97,19 +97,17 @@ const PriceListPricesForm = ({
             <Heading>
               {t("price-list-prices-form-heading", "Edit prices")}
             </Heading>
-            {isDirty && (
-              <Form.Field
-                control={control}
-                name={path("products")}
-                render={() => {
-                  return (
-                    <Form.Item>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
-            )}
+            <Form.Field
+              control={control}
+              name={path("products")}
+              render={() => {
+                return (
+                  <Form.Item>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
           </div>
           <div className="flex items-center gap-x-2">
             <ProductFilterMenu
@@ -129,7 +127,7 @@ const PriceListPricesForm = ({
         <div className="border-ui-border-base border-b">
           <table className="w-full text-left">
             <thead>
-              <tr className="[&_th]:text-ui-fg-subtle [&_th]:txt-compact-small-plus border-ui-border-base [&_th]:w-1/3 [&_th]:border-r [&_th]:px-4 [&_th]:py-2.5 [&_th:last-of-type]:border-r-0">
+              <tr className="[&_th]:text-ui-fg-subtle [&_th]:txt-compact-small-plus border-ui-border-base [&_th:last-of-type]:border-r-0 [&_th]:w-1/3 [&_th]:border-r [&_th]:px-4 [&_th]:py-2.5">
                 <th>{t("price-list-prices-form-variant", "Variant")}</th>
                 <th>{t("price-list-prices-form-sku", "SKU")}</th>
                 <th className="text-right">

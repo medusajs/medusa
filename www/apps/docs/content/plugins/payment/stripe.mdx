@@ -3,7 +3,7 @@ description: 'Learn how to integrate Stripe with the Medusa backend. Learn how t
 addHowToData: true
 ---
 
-import Troubleshooting from '@site/src/components/Troubleshooting'
+import DetailsList from '@site/src/components/DetailsList'
 import MissingPaymentProvider from '../../troubleshooting/missing-payment-providers.md'
 
 # Stripe
@@ -54,7 +54,7 @@ Next, you need to add configurations for your stripe plugin.
 
 In `medusa-config.js` add the following at the end of the `plugins` array:
 
-```jsx title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -80,6 +80,8 @@ Other optional options include:
 - `payment_description`: a string that is used as the default description of a payment if none is provided.
 - `capture`: a boolean value that indicates whether payment should be captured manually or automatically. By default, it will be `false`, leading admins to capture the payment manually.
 - `automatic_payment_methods`: a boolean value that enables Stripe's automatic payment methods. This is useful if you're integrating services like Apple pay or Google pay.
+- `webhook_delay`: a number indicating the delay in milliseconds before processing the webhook event. By default, it's `5000` (five seconds).
+- `webhook_retries`: The number of times to retry the webhook event processing in case of an error. By default, it's `3`.
 
 ### Retrieve Stripe's Keys
 
@@ -145,7 +147,7 @@ Medusa has a Next.js Starter Template that you can easily use with your Medusa b
 
 In your `.env.local` file (or the file you’re using for your environment variables), add the following variable:
 
-```bash title=.env.local
+```bash title=".env.local"
 NEXT_PUBLIC_STRIPE_KEY=<YOUR_PUBLISHABLE_KEY>
 ```
 
@@ -284,7 +286,7 @@ client.carts.createPaymentSessions(cart.id)
     // check if stripe is selected
     const isStripeAvailable = cart.payment_sessions?.some(
       (session) => (
-        session.processor_id === "stripe"
+        session.provider_id === "stripe"
       )
     )
     if (!isStripeAvailable) {
@@ -293,7 +295,7 @@ client.carts.createPaymentSessions(cart.id)
 
     // select stripe payment session
     client.carts.setPaymentSession(cart.id, {
-      processor_id: "stripe",
+      provider_id: "stripe",
     }).then(({ cart }) => {
       setClientSecret(cart.payment_session.data.client_secret)
     })
@@ -384,7 +386,7 @@ This plugin handles the following Stripe webhook events:
 
 ## Troubleshooting
 
-<Troubleshooting
+<DetailsList
   sections={[
     {
       title: 'Stripe not showing in checkout',

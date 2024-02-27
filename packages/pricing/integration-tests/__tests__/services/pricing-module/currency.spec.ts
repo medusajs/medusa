@@ -1,10 +1,11 @@
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Currency } from "@models"
-
-import { initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MikroOrmWrapper } from "../../../utils"
+import { getInitModuleConfig } from "../../../utils/get-init-module-config"
+import { Modules } from "@medusajs/modules-sdk"
+import { initModules } from "medusa-test-utils"
 
 describe("PricingModule Service - Currency", () => {
   let service: IPricingModuleService
@@ -12,17 +13,25 @@ describe("PricingModule Service - Currency", () => {
   let repositoryManager: SqlEntityManager
   let data!: Currency[]
 
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PRICING]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
+
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = MikroOrmWrapper.forkManager()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
-      },
-    })
-
     testManager = MikroOrmWrapper.forkManager()
 
     data = await createCurrencies(testManager)
@@ -38,16 +47,16 @@ describe("PricingModule Service - Currency", () => {
 
       expect(currenciesResult).toEqual([
         expect.objectContaining({
-          code: "USD",
-          name: "US Dollar",
-        }),
-        expect.objectContaining({
           code: "CAD",
           name: "Canadian Dollar",
         }),
         expect.objectContaining({
           code: "EUR",
           name: "Euro",
+        }),
+        expect.objectContaining({
+          code: "USD",
+          name: "US Dollar",
         }),
       ])
     })
@@ -71,16 +80,16 @@ describe("PricingModule Service - Currency", () => {
       expect(count).toEqual(3)
       expect(currenciesResult).toEqual([
         expect.objectContaining({
-          code: "USD",
-          name: "US Dollar",
-        }),
-        expect.objectContaining({
           code: "CAD",
           name: "Canadian Dollar",
         }),
         expect.objectContaining({
           code: "EUR",
           name: "Euro",
+        }),
+        expect.objectContaining({
+          code: "USD",
+          name: "US Dollar",
         }),
       ])
     })
@@ -108,8 +117,10 @@ describe("PricingModule Service - Currency", () => {
       expect(count).toEqual(3)
       expect(currenciesResult).toEqual([
         expect.objectContaining({
-          code: "CAD",
-          name: "Canadian Dollar",
+          code: "EUR",
+          name: "Euro",
+          symbol: "€",
+          symbol_native: "€",
         }),
       ])
     })
@@ -128,7 +139,7 @@ describe("PricingModule Service - Currency", () => {
       expect(count).toEqual(3)
       expect(serialized).toEqual([
         {
-          code: "USD",
+          code: "CAD",
         },
       ])
     })
@@ -171,7 +182,7 @@ describe("PricingModule Service - Currency", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"currencyCode" must be defined')
+      expect(error.message).toEqual("currency - code must be defined")
     })
 
     it("should return currency based on config select param", async () => {

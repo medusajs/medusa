@@ -6,6 +6,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { GiftCard } from "./GiftCard"
 import type { Region } from "./Region"
 
+/**
+ * The gift card's details.
+ */
 export interface AdminGiftCardsRes {
   /**
    * A gift card's details.

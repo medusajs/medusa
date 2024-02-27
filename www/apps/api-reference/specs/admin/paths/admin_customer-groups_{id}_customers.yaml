@@ -44,6 +44,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_customer-groups_{id}_customers/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_customer-groups_{id}_customers/get.tsx
     - lang: Shell
       label: cURL
       source:

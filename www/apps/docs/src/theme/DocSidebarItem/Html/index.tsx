@@ -29,8 +29,9 @@ export default function DocSidebarItemHtml({
         customProps?.sidebar_is_group_divider && "sidebar-group-divider",
         customProps?.sidebar_is_divider_line && "sidebar-divider-line",
         customProps?.sidebar_is_back_link && "sidebar-back-link",
-        customProps?.sidebar_is_soon &&
-          "sidebar-soon-link sidebar-badge-wrapper",
+        (customProps?.sidebar_is_soon || customProps?.sidebar_badge) &&
+          "sidebar-badge-wrapper",
+        customProps?.sidebar_is_soon && "sidebar-soon-link",
         !customProps?.sidebar_is_title &&
           "[&_.sidebar-item-icon]:w-[20px] [&_.sidebar-item-icon]:h-[20px]",
         !customProps?.sidebar_is_title &&
@@ -54,6 +55,12 @@ export default function DocSidebarItemHtml({
         <Badge variant="purple" className={`sidebar-soon-badge`}>
           Soon
         </Badge>
+      )}
+      {customProps?.sidebar_badge && (
+        <Badge
+          {...customProps.sidebar_badge}
+          className={`sidebar-soon-badge`}
+        />
       )}
     </li>
   )

@@ -125,7 +125,34 @@ import { omit } from "lodash"
  *       medusa.admin.variants.list()
  *       .then(({ variants, limit, offset, count }) => {
  *         console.log(variants.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminVariants } from "medusa-react"
+ *
+ *       const Variants = () => {
+ *         const { variants, isLoading } = useAdminVariants()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {variants && !variants.length && (
+ *               <span>No Variants</span>
+ *             )}
+ *             {variants && variants.length > 0 && (
+ *               <ul>
+ *                 {variants.map((variant) => (
+ *                   <li key={variant.id}>{variant.title}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Variants
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -192,7 +219,7 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  let variants = await pricingService.setVariantPrices(rawVariants, {
+  let variants = await pricingService.setAdminVariantPricing(rawVariants, {
     cart_id: req.validatedQuery.cart_id,
     region_id: regionId,
     currency_code: currencyCode,
@@ -230,37 +257,66 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product variants.
+ */
 export class AdminGetVariantsParams extends AdminPriceSelectionParams {
+  /**
+   * Search term to search product variants' IDs.
+   */
   @IsOptional()
   @IsString()
   q?: string
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 20
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   limit?: number = 20
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsOptional()
   @IsString()
   expand?: string
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsString()
   @IsOptional()
   fields?: string
 
+  /**
+   * IDs to filter product variants by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   id?: string | string[]
 
+  /**
+   * Titles to filter product variants by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   title?: string | string[]
 
+  /**
+   * Number filters to apply on product variants' `inventory_quantity` field.
+   */
   @IsOptional()
   @IsType([Number, NumericalComparisonOperator])
   inventory_quantity?: number | NumericalComparisonOperator

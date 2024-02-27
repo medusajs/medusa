@@ -1,7 +1,10 @@
 post:
   operationId: PostOrdersOrderFulfillments
   summary: Create a Fulfillment
-  description: Create a Fulfillment of an Order using the fulfillment provider.
+  description: >-
+    Create a Fulfillment of an Order using the fulfillment provider, and change
+    the order's fulfillment status to either `partially_fulfilled` or
+    `fulfilled`, depending on whether all the items were fulfilled.
   x-authenticated: true
   externalDocs:
     description: Fulfillments of orders
@@ -36,6 +39,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_orders_{id}_fulfillment/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_orders_{id}_fulfillment/post.tsx
     - lang: Shell
       label: cURL
       source:

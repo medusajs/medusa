@@ -1,4 +1,5 @@
 type: object
+description: The list of regions with pagination fields.
 x-expanded-relations:
   field: regions
   relations:

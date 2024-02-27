@@ -6,4 +6,4 @@ medusa.admin.products.addOption(productId, {
 })
 .then(({ product }) => {
   console.log(product.id);
-});
+})

@@ -18,6 +18,9 @@ import type { ReturnItem } from "./ReturnItem"
 import type { ShippingMethod } from "./ShippingMethod"
 import type { Swap } from "./Swap"
 
+/**
+ * The list of orders with pagination fields.
+ */
 export interface AdminOrdersListRes {
   /**
    * An array of order details.

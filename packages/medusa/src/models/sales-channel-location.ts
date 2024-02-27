@@ -19,6 +19,9 @@ export class SalesChannelLocation extends SoftDeletableEntity {
   @JoinColumn({ name: "sales_channel_id" })
   sales_channel: SalesChannel
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "scloc")

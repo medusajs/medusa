@@ -1,4 +1,5 @@
 type: object
+description: The details of the country to add to the region.
 required:
   - country_code
 properties:

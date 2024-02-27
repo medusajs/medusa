@@ -1,4 +1,5 @@
 type: object
+description: The tax rate's details.
 required:
   - tax_rate
 properties:

@@ -1,5 +1,35 @@
 # @medusajs/oas-github-ci
 
+## 1.0.25
+
+### Patch Changes
+
+- Updated dependencies [[`e84847be3`](https://github.com/medusajs/medusa/commit/e84847be36c88c5bd8e49e1e8aca734ce941a7c2)]:
+  - @medusajs/medusa-oas-cli@0.3.0
+
+## 1.0.24
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.24
+
+## 1.0.23
+
+### Patch Changes
+
+- [#5453](https://github.com/medusajs/medusa/pull/5453) [`c1b97050a`](https://github.com/medusajs/medusa/commit/c1b97050ab801c6b5702311f777ebd7f98080a97) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(medusa-oas-cli): Added `--main-file-name` option to specify output file name
+  feat(oas-github-ci): Added `--with-full-file"` option to output both split and full files
+- Updated dependencies [[`c1b97050a`](https://github.com/medusajs/medusa/commit/c1b97050ab801c6b5702311f777ebd7f98080a97)]:
+  - @medusajs/medusa-oas-cli@0.2.23
+
+## 1.0.22
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.22
+
 ## 1.0.21
 
 ### Patch Changes

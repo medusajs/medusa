@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.2.1
+
+### Patch Changes
+
+- [#5983](https://github.com/medusajs/medusa/pull/5983) [`f86877586`](https://github.com/medusajs/medusa/commit/f86877586147ecedbf7f56a1c57f37ef0c33286c) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(create-medusa-app,medusa-core-utils): Use NodeJS.Timeout instead of NodeJS.Timer as the latter was deprecated in v14.
+  chore(icons): Update icons to latest version.
+
+- [#6001](https://github.com/medusajs/medusa/pull/6001) [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8) Thanks [@abusaidm](https://github.com/abusaidm)! - Add missing country in admin region and set Libya to formal name
+
 ## 1.2.0
 
 ### Minor Changes

@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { ProductType } from "./ProductType"
 
+/**
+ * The list of product types with pagination fields.
+ */
 export interface AdminProductTypesListRes {
   /**
    * An array of product types details.

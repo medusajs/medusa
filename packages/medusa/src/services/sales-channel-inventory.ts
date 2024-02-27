@@ -13,11 +13,13 @@ type InjectedDependencies = {
 class SalesChannelInventoryService extends TransactionBaseService {
   protected readonly salesChannelLocationService_: SalesChannelLocationService
   protected readonly eventBusService_: EventBusTypes.IEventBusService
-  protected readonly inventoryService_: IInventoryService
+
+  protected get inventoryService_(): IInventoryService {
+    return this.__container__.inventoryService
+  }
 
   constructor({
     salesChannelLocationService,
-    inventoryService,
     eventBusService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
@@ -25,7 +27,6 @@ class SalesChannelInventoryService extends TransactionBaseService {
 
     this.salesChannelLocationService_ = salesChannelLocationService
     this.eventBusService_ = eventBusService
-    this.inventoryService_ = inventoryService
   }
 
   /**

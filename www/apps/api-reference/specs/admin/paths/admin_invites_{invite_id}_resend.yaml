@@ -22,6 +22,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_invites_{invite_id}_resend/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_invites_{invite_id}_resend/post.tsx
     - lang: Shell
       label: cURL
       source:

@@ -1,17 +1,24 @@
 import {
   IsArray,
   IsBoolean,
+  IsEnum,
   IsNumber,
   IsObject,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultFields, defaultRelations } from "."
+import {
+  shippingOptionsDefaultFields,
+  shippingOptionsDefaultRelations,
+} from "."
+import { RequirementType, ShippingOptionPriceType } from "../../../../models"
 
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { ShippingOptionService } from "../../../../services"
+import { CreateShippingOptionInput } from "../../../../types/shipping-options"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
 
@@ -45,7 +52,46 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateShippingOption } from "medusa-react"
+ *
+ *       type CreateShippingOption = {
+ *         name: string
+ *         provider_id: string
+ *         data: Record<string, unknown>
+ *         price_type: string
+ *         amount: number
+ *       }
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({ regionId }: Props) => {
+ *         const createShippingOption = useAdminCreateShippingOption()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           data: CreateShippingOption
+ *         ) => {
+ *           createShippingOption.mutate({
+ *             ...data,
+ *             region_id: regionId
+ *           }, {
+ *             onSuccess: ({ shipping_option }) => {
+ *               console.log(shipping_option.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -88,7 +134,9 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostShippingOptionsReq, req.body)
 
-  const optionService = req.scope.resolve("shippingOptionService")
+  const optionService: ShippingOptionService = req.scope.resolve(
+    "shippingOptionService"
+  )
   const shippingProfileService = req.scope.resolve("shippingProfileService")
 
   // Add to default shipping profile
@@ -101,20 +149,23 @@ export default async (req, res) => {
   const result = await manager.transaction(async (transactionManager) => {
     return await optionService
       .withTransaction(transactionManager)
-      .create(validated)
+      .create(validated as CreateShippingOptionInput)
   })
 
   const data = await optionService.retrieve(result.id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: shippingOptionsDefaultFields,
+    relations: shippingOptionsDefaultRelations,
   })
 
   res.status(200).json({ shipping_option: data })
 }
 
 class OptionRequirement {
-  @IsString()
-  type: string
+  @IsEnum(RequirementType, {
+    message: `Invalid option type, must be one of "min_subtotal" or "max_subtotal"`,
+  })
+  type: RequirementType
+
   @IsNumber()
   amount: number
 }
@@ -122,6 +173,7 @@ class OptionRequirement {
 /**
  * @schema AdminPostShippingOptionsReq
  * type: object
+ * description: "The details of the shipping option to create."
  * required:
  *   - name
  *   - region_id
@@ -145,13 +197,15 @@ class OptionRequirement {
  *     description: "The data needed for the Fulfillment Provider to handle shipping with this Shipping Option."
  *     type: object
  *   price_type:
- *     description: "The type of the Shipping Option price. `flat_rate` indicates fixed pricing, whereas `calculated` indicates that the price will be calculated each time by the fulfillment provider."
+ *     description: >-
+ *       The type of the Shipping Option price. `flat_rate` indicates fixed pricing, whereas `calculated` indicates that the price will be calculated each time by the fulfillment provider.
  *     type: string
  *     enum:
  *       - flat_rate
  *       - calculated
  *   amount:
- *     description: "The amount to charge for the Shipping Option. If the `price_type` is set to `calculated`, this amount will not actually be used."
+ *     description: >-
+ *       The amount to charge for the Shipping Option. If the `price_type` is set to `calculated`, this amount will not actually be used.
  *     type: integer
  *   requirements:
  *     description: "The requirements that must be satisfied for the Shipping Option to be available."
@@ -176,7 +230,8 @@ class OptionRequirement {
  *     type: boolean
  *     default: false
  *   admin_only:
- *     description: If set to `true`, the shipping option can only be used when creating draft orders.
+ *     description: >-
+ *       If set to `true`, the shipping option can only be used when creating draft orders.
  *     type: boolean
  *     default: false
  *   metadata:
@@ -200,15 +255,17 @@ export class AdminPostShippingOptionsReq {
   @IsString()
   provider_id: string
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
   profile_id?: string
 
   @IsObject()
-  data: object
+  data: Record<string, unknown>
 
-  @IsString()
-  price_type: string
+  @IsEnum(ShippingOptionPriceType, {
+    message: `Invalid price type, must be one of "flat_rate" or "calculated"`,
+  })
+  price_type: ShippingOptionPriceType
 
   @IsOptional()
   @IsNumber()

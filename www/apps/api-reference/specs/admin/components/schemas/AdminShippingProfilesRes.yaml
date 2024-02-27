@@ -1,4 +1,5 @@
 type: object
+description: The shipping profile's details.
 x-expanded-relations:
   field: shipping_profile
   relations:

@@ -20,6 +20,10 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_publishable-api-keys_{id}_revoke/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_publishable-api-keys_{id}_revoke/post.tsx
     - lang: Shell
       label: cURL
       source:

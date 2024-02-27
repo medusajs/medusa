@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the refund to create.
+ */
 export interface AdminPostPaymentRefundsReq {
   /**
    * The amount to refund.

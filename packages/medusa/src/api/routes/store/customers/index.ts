@@ -114,6 +114,7 @@ export const allowedStoreCustomersFields = [
 /**
  * @schema StoreCustomersRes
  * type: object
+ * description: "The customer's details."
  * x-expanded-relations:
  *   field: customer
  *   relations:
@@ -147,6 +148,7 @@ export type StoreCustomersResetPasswordRes = {
 /**
  * @schema StoreCustomersListOrdersRes
  * type: object
+ * description: "The list of the customer's orders with pagination fields."
  * x-expanded-relations:
  *   field: orders
  *   relations:
@@ -257,12 +259,13 @@ export type StoreCustomersListOrdersRes = PaginatedResponse & {
 /**
  * @schema StoreCustomersListPaymentMethodsRes
  * type: object
+ * description: "The payment method's details."
  * required:
  *   - payment_methods
  * properties:
  *   payment_methods:
  *     type: array
- *     description: "An array of saved payment method details."
+ *     description: "The details of the saved payment methods."
  *     items:
  *       type: object
  *       required:

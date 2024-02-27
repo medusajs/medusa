@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { PublishableApiKey } from "./PublishableApiKey"
 
+/**
+ * The list of publishable API keys with pagination fields.
+ */
 export interface AdminPublishableApiKeysListRes {
   /**
    * An array of publishable API keys details.

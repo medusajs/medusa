@@ -3,4 +3,7 @@ export const ContainerRegistrationKeys = {
   MANAGER: "manager",
   CONFIG_MODULE: "configModule",
   LOGGER: "logger",
+  REMOTE_QUERY: "remoteQuery",
+  REMOTE_LINK: "remoteLink",
+  FEATURE_FLAG_ROUTER: "featureFlagRouter",
 }

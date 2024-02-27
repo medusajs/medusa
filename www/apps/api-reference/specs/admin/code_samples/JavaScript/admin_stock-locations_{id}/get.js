@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.stockLocations.retrieve(stockLocationId)
 .then(({ stock_location }) => {
   console.log(stock_location.id);
-});
+})

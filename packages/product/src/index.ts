@@ -1,10 +1,14 @@
-import { moduleDefinition } from "./module-definition"
+import {
+  moduleDefinition,
+  revertMigration,
+  runMigrations,
+} from "./module-definition"
 
 export default moduleDefinition
+export { revertMigration, runMigrations }
 
-export * from "./scripts"
 export * from "./initialize"
-export * from "./types"
-export * from "./loaders"
+// TODO: remove export from models and services
 export * from "./models"
 export * from "./services"
+export * from "./types"

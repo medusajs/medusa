@@ -22,6 +22,7 @@ export type RegionInfo = Pick<Region, "currency_code" | "tax_code" | "tax_rate">
 export type ProductVariant = ConvertDateToString<
   Omit<ProductVariantEntity, "beforeInsert">
 >
+
 export type ProductVariantInfo = Pick<ProductVariant, "prices">
 
 type ConvertDateToString<T extends {}> = {

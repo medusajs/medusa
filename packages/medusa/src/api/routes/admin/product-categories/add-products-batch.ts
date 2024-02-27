@@ -42,7 +42,45 @@ import { FindParams } from "../../../../types/common"
  *       })
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminAddProductsToCategory } from "medusa-react"
+ *
+ *       type ProductsData = {
+ *         id: string
+ *       }
+ *
+ *       type Props = {
+ *         productCategoryId: string
+ *       }
+ *
+ *       const Category = ({
+ *         productCategoryId
+ *       }: Props) => {
+ *         const addProducts = useAdminAddProductsToCategory(
+ *           productCategoryId
+ *         )
+ *         // ...
+ *
+ *         const handleAddProducts = (
+ *           productIds: ProductsData[]
+ *         ) => {
+ *           addProducts.mutate({
+ *             product_ids: productIds
+ *           }, {
+ *             onSuccess: ({ product_category }) => {
+ *               console.log(product_category.products)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Category
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -113,11 +151,12 @@ export default async (req: Request, res: Response): Promise<void> => {
 /**
  * @schema AdminPostProductCategoriesCategoryProductsBatchReq
  * type: object
+ * description: "The details of the products to add to the product category."
  * required:
  *   - product_ids
  * properties:
  *   product_ids:
- *     description: The IDs of the products to add to the Product Category
+ *     description: The IDs of the products to add to the product category
  *     type: array
  *     items:
  *       type: object

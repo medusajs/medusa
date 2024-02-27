@@ -16,7 +16,7 @@ import ifShowReturnsHelper from "./resources/helpers/if-show-returns"
 import ifShowTypeHierarchyHelper from "./resources/helpers/if-show-type-hierarchy"
 import indexSignatureTitleHelper from "./resources/helpers/index-signature-title"
 import parameterTableHelper from "./resources/helpers/parameter-table"
-import objectLiteralMemberHelper from "./resources/helpers/type-declaration-object-literal"
+import objectLiteralMemberHelper from "./resources/helpers/type-declaration-members"
 import referenceMember from "./resources/helpers/reference-member"
 import reflectionPathHelper from "./resources/helpers/reflection-path"
 import reflectionTitleHelper from "./resources/helpers/reflection-title"
@@ -43,9 +43,27 @@ import typeParameterComponentHelper from "./resources/helpers/type-parameter-com
 import showPropertiesAsComponentHelper from "./resources/helpers/show-properties-as-component"
 import commentTagHelper from "./resources/helpers/comment-tag"
 import exampleHelper from "./resources/helpers/example"
+import ifFeatureFlagHelper from "./resources/helpers/if-feature-flag"
+import featureFlagHelper from "./resources/helpers/feature-flag"
+import decrementCurrentTitleLevelHelper from "./resources/helpers/decrement-current-title-level"
+import incrementCurrentTitleLevelHelper from "./resources/helpers/increment-current-title-level"
+import hasMoreThanOneSignatureHelper from "./resources/helpers/has-more-than-one-signature"
+import ifCanShowConstructorsTitleHelper from "./resources/helpers/if-can-show-constructors-title"
+import ifReactQueryTypeHelper from "./resources/helpers/if-react-query-type"
+import ifHasHookParamsHelper from "./resources/helpers/if-has-hook-params"
+import reactQueryHookParamsHelper from "./resources/helpers/react-query-hook-params"
+import ifHasMutationParamsHelper from "./resources/helpers/if-has-mutation-params"
+import reactQueryMutationParamsHelper from "./resources/helpers/react-query-mutation-params"
+import ifHasMutationReturnHelper from "./resources/helpers/if-has-mutation-return"
+import reactQueryMutationReturnHelper from "./resources/helpers/react-query-mutation-return"
+import ifHasQueryReturnHelper from "./resources/helpers/if-has-query-return"
+import reactQueryQueryReturnHelper from "./resources/helpers/react-query-query-return"
+import endSectionsHelper from "./resources/helpers/end-sections"
+import getDeclarationChildrenHelper from "./resources/helpers/get-declaration-children"
+import ifShowSeparatorForTitleLevelHelper from "./resources/helpers/if-show-separator-for-title-level"
+import shouldExpandPropertiesHelper from "./resources/helpers/should-expand-properties"
+import shouldExpandDeclarationChildrenHelper from "./resources/helpers/should-expand-declaration-children"
 import { MarkdownTheme } from "./theme"
-
-// test
 
 const TEMPLATE_PATH = path.join(__dirname, "resources", "templates")
 
@@ -85,7 +103,7 @@ export function registerHelpers(theme: MarkdownTheme) {
   ifShowBreadcrumbsHelper(theme)
   ifShowNamedAnchorsHelper(theme)
   ifShowPageTitleHelper(theme)
-  ifShowReturnsHelper()
+  ifShowReturnsHelper(theme)
   ifShowTypeHierarchyHelper()
   indexSignatureTitleHelper()
   parameterTableHelper()
@@ -116,4 +134,24 @@ export function registerHelpers(theme: MarkdownTheme) {
   showPropertiesAsComponentHelper(theme)
   commentTagHelper(theme)
   exampleHelper()
+  ifFeatureFlagHelper()
+  featureFlagHelper()
+  decrementCurrentTitleLevelHelper(theme)
+  incrementCurrentTitleLevelHelper(theme)
+  hasMoreThanOneSignatureHelper(theme)
+  ifCanShowConstructorsTitleHelper()
+  ifReactQueryTypeHelper()
+  ifHasHookParamsHelper()
+  reactQueryHookParamsHelper()
+  ifHasMutationParamsHelper(theme)
+  reactQueryMutationParamsHelper(theme)
+  ifHasMutationReturnHelper(theme)
+  reactQueryMutationReturnHelper(theme)
+  ifHasQueryReturnHelper(theme)
+  reactQueryQueryReturnHelper(theme)
+  endSectionsHelper(theme)
+  getDeclarationChildrenHelper(theme)
+  ifShowSeparatorForTitleLevelHelper(theme)
+  shouldExpandPropertiesHelper(theme)
+  shouldExpandDeclarationChildrenHelper(theme)
 }

@@ -15,7 +15,7 @@ If a feature flag is enabled/disabled by default, you don’t need to manually e
 
 ## Enable Feature Flags
 
-:::caution
+:::warning
 
 Features guarded by feature flags are experimental and beta features. Enable them with caution.
 
@@ -39,7 +39,7 @@ You can enable a feature by using the backend configurations in `medusa-config.j
 
 For example, to enable the Tax-Inclusive Pricing beta feature, add the following to the exported object in `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   featureFlags: {
     tax_inclusive_pricing: true,
@@ -74,7 +74,7 @@ You can learn more about migrations in this documentation.
 
 Disabling feature flags follows the same process as enabling the feature flags. All you have to do is change the value in the environment variables or the backend configurations to `false`.
 
-Once you disable a feature flag, all endpoints, entities, services, or other related classes and functionalities are disabled.
+Once you disable a feature flag, all API Routes, entities, services, or other related classes and functionalities are disabled.
 
 ### Revert Migrations
 

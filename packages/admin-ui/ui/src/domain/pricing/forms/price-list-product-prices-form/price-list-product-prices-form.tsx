@@ -1395,7 +1395,7 @@ const PriceListProductPricesForm = ({
               <Adjustments className="text-ui-fg-subtle" />
               {t(
                 "price-list-product-prices-form-column-visibility-button",
-                "View"
+                "Currencies"
               )}
             </Button>
           </DropdownMenu.Trigger>
@@ -1511,7 +1511,7 @@ const PriceListProductPricesForm = ({
           ref={tableRef}
         >
           <thead>
-            <tr className="[&_th]:txt-compact-small-plus text-ui-fg-subtle [&_th]:border-ui-border-base h-10 [&_th]:min-w-[220px] [&_th]:border-r [&_th]:border-b [&_th:last-of-type]:border-r-0">
+            <tr className="[&_th]:txt-compact-small-plus text-ui-fg-subtle [&_th]:border-ui-border-base h-10 [&_th:last-of-type]:border-r-0 [&_th]:min-w-[220px] [&_th]:border-b [&_th]:border-r">
               <th className="max-w-[220px] text-left">
                 <div className="px-4 py-2.5">
                   {t(
@@ -1586,7 +1586,7 @@ const PriceListProductPricesForm = ({
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-ui-bg-subtle h-10 [&_td:last-of-type]:border-r-0 [&_td]:border-r [&_td]:border-b">
+            <tr className="bg-ui-bg-subtle h-10 [&_td:last-of-type]:border-r-0 [&_td]:border-b [&_td]:border-r">
               <td className="w-[220px] max-w-[220px]">
                 <div className="grid w-[220px] grid-cols-[16px_1fr] gap-x-3 overflow-hidden px-4 py-2.5">
                   <div className="bg-ui-bg-component h-[22px] w-4 rounded-[4px]">
@@ -1828,8 +1828,9 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
          */
         const formattedValue = strippedValue
           ? formatValue({
-              value: strippedValue,
+              value: strippedValue.replace(/,/g, "."), // If the current locale uses commas as decimal separators, then we need to replace them with dots.
               decimalScale: decimalScale ?? 0,
+              decimalSeparator: ".",
               disableGroupSeparators: true,
             })
           : ""
@@ -1851,6 +1852,15 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
         onBlur()
       }
     }, [isAnchor, onBlur, setIsEditing])
+
+    const onFocusInput = React.useCallback(() => {
+      inputRef.current?.focus()
+
+      inputRef.current?.setSelectionRange(
+        inputRef.current.value.length,
+        inputRef.current.value.length
+      )
+    }, [])
 
     const onMouseDown = React.useCallback(
       (e: React.MouseEvent) => {
@@ -1875,12 +1885,16 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
           if (e.detail === 2) {
             setIsActive(true)
             setIsEditing(true)
+
+            onFocusInput()
+
+            return
           }
         }
 
         onCellMouseDown(e)
       },
-      [onCellMouseDown, setIsEditing, isAnchor, isActive]
+      [onCellMouseDown, setIsEditing, onFocusInput, isAnchor, isActive]
     )
 
     const onEnter = React.useCallback(
@@ -1897,9 +1911,9 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
         setIsActive(true)
         setIsEditing(true)
 
-        inputRef.current?.focus()
+        onFocusInput()
       },
-      [isAnchor, isActive, onNextRow, setIsEditing]
+      [isAnchor, isActive, onNextRow, setIsEditing, onFocusInput]
     )
 
     const onSpace = React.useCallback(
@@ -2006,8 +2020,12 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
 
         inputRef.current?.focus()
         setIsActive(false)
+
+        onBlur()
+
+        return
       },
-      [isActive]
+      [isActive, onBlur]
     )
 
     const onKeydown = React.useCallback(
@@ -2045,7 +2063,7 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
 
     const onActiveAwareBlur = React.useCallback(() => {
       if (isActive) {
-        return
+        setIsActive(false)
       }
 
       onBlur()
@@ -2121,7 +2139,7 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
         {borders.bottom && borders.right && (
           <div
             onMouseDown={onDragToFillStart}
-            className="bg-ui-bg-interactive absolute -right-1 -bottom-1 z-50 h-2 w-2 cursor-crosshair rounded-full"
+            className="bg-ui-bg-interactive absolute -bottom-1 -right-1 z-50 h-2 w-2 cursor-crosshair rounded-full"
           />
         )}
       </td>

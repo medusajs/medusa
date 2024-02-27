@@ -63,7 +63,42 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateDraftOrder } from "medusa-react"
+ *
+ *       type DraftOrderData = {
+ *         email: string
+ *         region_id: string
+ *         items: {
+ *           quantity: number,
+ *           variant_id: string
+ *         }[]
+ *         shipping_methods: {
+ *           option_id: string
+ *           price: number
+ *         }[]
+ *       }
+ *
+ *       const CreateDraftOrder = () => {
+ *         const createDraftOrder = useAdminCreateDraftOrder()
+ *         // ...
+ *
+ *         const handleCreate = (data: DraftOrderData) => {
+ *           createDraftOrder.mutate(data, {
+ *             onSuccess: ({ draft_order }) => {
+ *               console.log(draft_order.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateDraftOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -167,13 +202,15 @@ enum Status {
 /**
  * @schema AdminPostDraftOrdersReq
  * type: object
+ * description: "The details of the draft order to create."
  * required:
  *   - email
  *   - region_id
  *   - shipping_methods
  * properties:
  *   status:
- *     description: "The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid."
+ *     description: >-
+ *       The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid.
  *     type: string
  *     enum: [open, completed]
  *   email:

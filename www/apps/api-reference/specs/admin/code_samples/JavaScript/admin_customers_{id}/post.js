@@ -6,4 +6,4 @@ medusa.admin.customers.update(customerId, {
 })
 .then(({ customer }) => {
   console.log(customer.id);
-});
+})

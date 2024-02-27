@@ -24,6 +24,10 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_sales-channels_{id}_stock-locations/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_sales-channels_{id}_stock-locations/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -83,6 +87,11 @@ delete:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_sales-channels_{id}_stock-locations/delete.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_sales-channels_{id}_stock-locations/delete.tsx
     - lang: Shell
       label: cURL
       source:

@@ -1,12 +1,15 @@
 {
   "name": "@medusajs/cache-inmemory",
-  "version": "1.8.8",
+  "version": "1.8.10",
   "description": "In-memory Cache Module for Medusa",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/cache-inmemory"
+  },
+  "engines": {
+    "node": ">=16"
   },
   "publishConfig": {
     "access": "public"
@@ -17,7 +20,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "^1.8.8",
+    "@medusajs/types": "^1.11.6",
     "cross-env": "^5.2.1",
     "jest": "^29.6.3",
     "rimraf": "^5.0.1",
@@ -31,6 +34,6 @@
     "test": "jest --passWithNoTests"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.8.8"
+    "@medusajs/modules-sdk": "^1.12.3"
   }
 }

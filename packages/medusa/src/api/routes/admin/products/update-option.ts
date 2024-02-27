@@ -1,9 +1,9 @@
+import { PricingService, ProductService } from "../../../../services"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
-import { IsString } from "class-validator"
-import { PricingService, ProductService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { IsString } from "class-validator"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/products/{id}/options/{option_id}
@@ -33,7 +33,44 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateProductOption } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *         optionId: string
+ *       }
+ *
+ *       const ProductOption = ({
+ *         productId,
+ *         optionId
+ *       }: Props) => {
+ *         const updateOption = useAdminUpdateProductOption(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           title: string
+ *         ) => {
+ *           updateOption.mutate({
+ *             option_id: optionId,
+ *             title,
+ *           }, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.options)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ProductOption
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -92,7 +129,7 @@ export default async (req, res) => {
     relations: defaultAdminProductRelations,
   })
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+  const [product] = await pricingService.setAdminProductPricing([rawProduct])
 
   res.json({ product })
 }

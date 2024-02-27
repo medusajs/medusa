@@ -1,3 +1,4 @@
+import { IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -5,13 +6,11 @@ import {
   ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
-import { IsOptional, IsString } from "class-validator"
 
+import { MedusaError, MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils"
-import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { defaultStoreProductRemoteQueryObject } from "./index"
-import { MedusaError } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/products/{id}
@@ -55,7 +54,29 @@ import { MedusaError } from "@medusajs/utils"
  *       medusa.products.retrieve(productId)
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useProduct } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *       }
+ *
+ *       const Product = ({ productId }: Props) => {
+ *         const { product, isLoading } = useProduct(productId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {product && <span>{product.title}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Product
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -96,7 +117,7 @@ export default async (req, res) => {
   const featureFlagRouter = req.scope.resolve("featureFlagRouter")
 
   let rawProduct
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomain.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     rawProduct = await getProductWithIsolatedProductModule(req, id)
   } else {
     rawProduct = await productService.retrieve(id, req.retrieveConfig)
@@ -156,7 +177,7 @@ export default async (req, res) => {
 
   // We can run them concurrently as the new properties are assigned to the references
   // of the appropriate entity
-  await Promise.all(decoratePromises)
+  await promiseAll(decoratePromises)
 
   res.json({
     product: cleanResponseData(decoratedProduct, req.allowedProperties || []),

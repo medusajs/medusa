@@ -3,25 +3,12 @@ description: 'Learn step-by-step.'
 addHowToData: true
 ---
 
-import Troubleshooting from '@site/src/components/Troubleshooting'
+import DetailsList from '@site/src/components/DetailsList'
 import CorsErrorSection from '../../troubleshooting/cors-issues.md'
 
 # Deploy Next.js Starter Template on Vercel
 
 In this document, you’ll learn how to deploy the Next.js Starter Template on Vercel.
-
-Alternatively, you can directly deploy the Next.js Starter Template to Vercel with this button.
-
-<a 
-  href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmedusajs%2Fnextjs-starter-medusa.git&env=NEXT_PUBLIC_MEDUSA_BACKEND_URL&envDescription=URL%20of%20your%20Medusa%20Backend" class="img-url no-zoom-img">
-  <img src="https://vercel.com/button" alt="Deploy with Vercel" class="no-zoom-img"/>
-</a>
-
-:::note
-
-After the deployment with this button, make sure to [configure CORS in your backend](#step-3-configure-cors-on-the-medusa-backend).
-
-:::
 
 ## Prerequisites
 
@@ -30,6 +17,10 @@ After the deployment with this button, make sure to [configure CORS in your back
 It is assumed you already have installed the Next.js Starter Template locally. If not, please follow along with [this guide](../../starters/nextjs-medusa-starter.mdx) instead.
 
 It’s also assumed you already have the Medusa backend deployed, which the Next.js Starter Template interacts with. If not, you can check out one of the [deployment documentation related to the Medusa backend](../server/index.mdx).
+
+### Storefront Preparations
+
+If you're not using the [Serverless Modules](../../starters/nextjs-medusa-starter.mdx#using-serverless-modules) in your storefront, either delete the `src/app/api` directory or exclude it in `.gitignore`. Otherwise, the deployment will fail.
 
 ### Required Accounts
 
@@ -102,7 +93,12 @@ This section explains how to deploy the storefront using the Vercel website:
 3. Choose Project from the dropdown.
 4. In the new page that opens, find the Git repository that holds your Next.js Starter Template and click on the Import button. If you haven’t connected your Vercel account to any Git provider, you must do that first.
 5. In the Configure Project form:
-    1. Open the Environment Variables collapsible, and add an environment variable with the name `NEXT_PUBLIC_MEDUSA_BACKEND_URL` and the value being the URL to your deployed Medusa Backend.
+    1. Open the Environment Variables collapsible, and add the following environment variables:
+      - `NEXT_PUBLIC_MEDUSA_BACKEND_URL`: the URL to your deployed Medusa Backend.
+      - `NEXT_PUBLIC_BASE_URL`: The URL of your storefront. If you don't have a domain ready yet, you can add it later. However, you may face some errors in your storefront.
+      - `REVALIDATE_SECRET`: A secret used for revalidating data. Learn more in the [Next.js documentation](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#on-demand-revalidation).
+      - If you're using Serverless modules, set the `POSTGRES_URL` environment variable to the connection URL of your PostgreSQL database, and set the `MEDUSA_FF_MEDUSA_V2=true` variable.
+      - You can set any other environment variables you're using at this step or later.
     2. You can optionally edit the Project Name.
 6. Once you’re done, click on the “Deploy” button.
 
@@ -122,9 +118,20 @@ In the directory holding your storefront, run the following command to deploy yo
 
 ```bash
 vercel --build-env NEXT_PUBLIC_MEDUSA_BACKEND_URL=<YOUR_BACKEND_URL>
+vercel --build-env NEXT_PUBLIC_BASE_URL=<YOUR_BASE_URL>
+vercel --build-env REVALIDATE_SECRET=<YOUR_REVALIDATION_SECRET>
 ```
 
-Where `<YOUR_BACKEND_URL>` is the URL of your deployed Medusa backend.
+Where:
+
+- `<YOUR_BACKEND_URL>`: the URL of your deployed Medusa backend.
+- `<YOUR_BASE_URL>`: The URL of your storefront. If you don't have a domain ready yet, you can add it later. However, you may face some errors in your storefront.
+- `<YOUR_REVALIDATION_SECRET>`: A secret used for revalidating data. Learn more in the [Next.js documentation](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#on-demand-revalidation).
+
+In addition:
+
+- If you're using Serverless modules, set the `POSTGRES_URL` environment variable to the connection URL of your PostgreSQL database, and set the `MEDUSA_FF_MEDUSA_V2=true` variable.
+- You can set any other environment variables you're using at this step or later.
 
 You’ll then be asked to log in if you haven’t already, and to choose the scope to deploy your project to. You can also decide to link the storefront to an existing project, or change the project’s name.
 
@@ -166,7 +173,7 @@ Then, restart your Medusa backend. Once the backend is running again, you can us
 
 ## Troubleshooting
 
-<Troubleshooting
+<DetailsList
   sections={[
     {
       title: 'CORS Error',

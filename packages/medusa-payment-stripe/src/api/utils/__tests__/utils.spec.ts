@@ -1,8 +1,7 @@
 import { PostgresError } from "@medusajs/medusa"
-import Stripe from "stripe"
 import { EOL } from "os"
+import Stripe from "stripe"
 
-import { buildError, handlePaymentHook, isPaymentCollection } from "../utils"
 import { container } from "../__fixtures__/container"
 import {
   existingCartId,
@@ -14,6 +13,7 @@ import {
   paymentId,
   paymentIntentId,
 } from "../__fixtures__/data"
+import { buildError, handlePaymentHook, isPaymentCollection } from "../utils"
 
 describe("Utils", () => {
   afterEach(() => {
@@ -334,7 +334,7 @@ describe("Utils", () => {
         const paymentIntent = {
           id: paymentIntentId,
           metadata: { cart_id: nonExistingCartId },
-          last_payment_error: { message: "error message" },
+          last_payment_error: { message: "error message" } as any,
         }
 
         await handlePaymentHook({ event, container, paymentIntent })

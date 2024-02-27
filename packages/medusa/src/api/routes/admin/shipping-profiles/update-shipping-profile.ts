@@ -41,7 +41,42 @@ import {
  *       })
  *       .then(({ shipping_profile }) => {
  *         console.log(shipping_profile.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { ShippingProfileType } from "@medusajs/medusa"
+ *       import { useAdminUpdateShippingProfile } from "medusa-react"
+ *
+ *       type Props = {
+ *         shippingProfileId: string
+ *       }
+ *
+ *       const ShippingProfile = ({ shippingProfileId }: Props) => {
+ *         const updateShippingProfile = useAdminUpdateShippingProfile(
+ *           shippingProfileId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           name: string,
+ *           type: ShippingProfileType
+ *         ) => {
+ *           updateShippingProfile.mutate({
+ *             name,
+ *             type
+ *           }, {
+ *             onSuccess: ({ shipping_profile }) => {
+ *               console.log(shipping_profile.name)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ShippingProfile
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -107,6 +142,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostShippingProfilesProfileReq
  * type: object
+ * description: "The detail to update of the shipping profile."
  * properties:
  *   name:
  *     description: The name of the Shipping Profile

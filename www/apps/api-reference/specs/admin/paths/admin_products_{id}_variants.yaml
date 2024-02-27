@@ -104,6 +104,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_products_{id}_variants/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_products_{id}_variants/post.tsx
     - lang: Shell
       label: cURL
       source:

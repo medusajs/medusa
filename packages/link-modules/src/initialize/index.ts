@@ -1,4 +1,8 @@
-import { InternalModuleDeclaration, MedusaModule } from "@medusajs/modules-sdk"
+import {
+  InternalModuleDeclaration,
+  MedusaModule,
+  ModuleRegistrationName,
+} from "@medusajs/modules-sdk"
 import {
   ExternalModuleDeclaration,
   ILinkModule,
@@ -15,11 +19,16 @@ import {
   ContainerRegistrationKeys,
   lowerCaseFirst,
   simpleHash,
+  toPascalCase,
 } from "@medusajs/utils"
 import * as linkDefinitions from "../definitions"
 import { getMigration } from "../migration"
 import { InitializeModuleInjectableDependencies } from "../types"
-import { composeLinkName, generateGraphQLSchema } from "../utils"
+import {
+  composeLinkName,
+  composeTableName,
+  generateGraphQLSchema,
+} from "../utils"
 import { getLinkModuleDefinition } from "./module-definition"
 
 export const initialize = async (
@@ -98,7 +107,28 @@ export const initialize = async (
       continue
     }
 
-    definition.schema = generateGraphQLSchema(definition, primary, foreign)
+    const logger =
+      injectedDependencies?.[ContainerRegistrationKeys.LOGGER] ?? console
+
+    definition.schema = generateGraphQLSchema(definition, primary, foreign, {
+      logger,
+    })
+
+    definition.alias ??= []
+    for (const alias of definition.alias) {
+      alias.args ??= {}
+
+      alias.args.entity = toPascalCase(
+        "Link_" +
+          (definition.databaseConfig?.tableName ??
+            composeTableName(
+              primary.serviceName,
+              primary.foreignKey,
+              foreign.serviceName,
+              foreign.foreignKey
+            ))
+      )
+    }
 
     const moduleDefinition = getLinkModuleDefinition(
       definition,
@@ -110,6 +140,7 @@ export const initialize = async (
       key: serviceKey,
       registrationName: serviceKey,
       label: serviceKey,
+      dependencies: [ModuleRegistrationName.EVENT_BUS],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: injectedDependencies?.[
@@ -120,12 +151,12 @@ export const initialize = async (
       },
     }
 
-    const loaded = await MedusaModule.bootstrapLink(
-      linkModuleDefinition,
-      options as InternalModuleDeclaration,
-      moduleDefinition,
-      injectedDependencies
-    )
+    const loaded = await MedusaModule.bootstrapLink({
+      definition: linkModuleDefinition,
+      declaration: options as InternalModuleDeclaration,
+      moduleExports: moduleDefinition,
+      injectedDependencies,
+    })
 
     allLinks[serviceKey as string] = Object.values(loaded)[0]
   }
@@ -178,10 +209,8 @@ export async function runMigrations(
     allLinks.add(serviceKey)
 
     if (
-      (!primary.isInternalService &&
-        !modulesLoadedKeys.includes(primary.serviceName)) ||
-      (!foreign.isInternalService &&
-        !modulesLoadedKeys.includes(foreign.serviceName))
+      !modulesLoadedKeys.includes(primary.serviceName) ||
+      !modulesLoadedKeys.includes(foreign.serviceName)
     ) {
       continue
     }

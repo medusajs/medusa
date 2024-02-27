@@ -1,7 +1,14 @@
-import { PricingService, ProductService } from "../../../../services"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import {
+  PricingService,
+  ProductService,
+  ProductVariantInventoryService,
+  SalesChannelService,
+} from "../../../../services"
+
+import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
+import { FindParams } from "../../../../types/common"
+import { retrieveProduct } from "../../../../utils"
 import { defaultAdminProductRemoteQueryObject } from "./index"
-import { MedusaError } from "@medusajs/utils"
 
 /**
  * @oas [get] /admin/products/{id}
@@ -23,7 +30,33 @@ import { MedusaError } from "@medusajs/utils"
  *       medusa.admin.products.retrieve(productId)
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminProduct } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *       }
+ *
+ *       const Product = ({ productId }: Props) => {
+ *         const {
+ *           product,
+ *           isLoading,
+ *         } = useAdminProduct(productId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {product && <span>{product.title}</span>}
+ *
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Product
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -61,13 +94,17 @@ export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const isMedusaV2FlagOn = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
+
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
   let rawProduct
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
-    rawProduct = await getProductWithIsolatedProductModule(
-      req,
+  if (isMedusaV2FlagOn) {
+    rawProduct = await retrieveProduct(
+      req.scope,
       id,
-      req.retrieveConfig
+      defaultAdminProductRemoteQueryObject
     )
   } else {
     rawProduct = await productService.retrieve(id, req.retrieveConfig)
@@ -80,36 +117,45 @@ export default async (req, res) => {
 
   const product = rawProduct
 
-  if (!shouldSetPricing) {
-    await pricingService.setProductPrices([product])
+  const decoratePromises: Promise<any>[] = []
+  if (shouldSetPricing) {
+    decoratePromises.push(pricingService.setAdminProductPricing([product]))
   }
+
+  const shouldSetAvailability =
+    req.retrieveConfig.relations?.includes("variants")
+
+  if (shouldSetAvailability) {
+    let salesChannels
+
+    if (isMedusaV2FlagOn) {
+      const remoteQuery = req.scope.resolve("remoteQuery")
+      const query = {
+        sales_channel: {
+          fields: ["id"],
+        },
+      }
+      salesChannels = await remoteQuery(query)
+    } else {
+      const salesChannelService: SalesChannelService = req.scope.resolve(
+        "salesChannelService"
+      )
+      ;[salesChannels] = await salesChannelService.listAndCount(
+        {},
+        { select: ["id"] }
+      )
+    }
+
+    decoratePromises.push(
+      productVariantInventoryService.setProductAvailability(
+        [product],
+        salesChannels.map((salesChannel) => salesChannel.id)
+      )
+    )
+  }
+  await promiseAll(decoratePromises)
 
   res.json({ product })
 }
 
-async function getProductWithIsolatedProductModule(req, id, retrieveConfig) {
-  // TODO: Add support for fields/expands
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const variables = { id }
-
-  const query = {
-    product: {
-      __args: variables,
-      ...defaultAdminProductRemoteQueryObject,
-    },
-  }
-
-  const [product] = await remoteQuery(query)
-
-  if (!product) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_FOUND,
-      `Product with id: ${id} not found`
-    )
-  }
-
-  product.profile_id = product.profile?.id
-
-  return product
-}
+export class AdminGetProductParams extends FindParams {}

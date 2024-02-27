@@ -1,14 +1,32 @@
-import { FlagRouter } from "@medusajs/utils"
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import { ProductVariantService, RegionService, TaxProviderService } from "."
-import { TransactionBaseService } from "../interfaces"
+import {
+  CalculatedPriceSet,
+  IPricingModuleService,
+  PriceSetMoneyAmountDTO,
+  RemoteQueryFunction,
+} from "@medusajs/types"
+import {
+  FlagRouter,
+  MedusaV2Flag,
+  promiseAll,
+  removeNullish,
+} from "@medusajs/utils"
+import {
+  CustomerService,
+  ProductVariantService,
+  RegionService,
+  TaxProviderService,
+} from "."
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
 } from "../interfaces/price-selection-strategy"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { Product, ProductVariant, Region, ShippingOption } from "../models"
+import {
+  MoneyAmount,
+  Product,
+  ProductVariant,
+  Region,
+  ShippingOption,
+} from "../models"
 import {
   PricedProduct,
   PricedShippingOption,
@@ -17,6 +35,11 @@ import {
   ProductVariantPricing,
   TaxedPricing,
 } from "../types/pricing"
+
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { TaxServiceRate } from "../types/tax-service"
 import { calculatePriceTaxAmount } from "../utils"
 
@@ -25,8 +48,11 @@ type InjectedDependencies = {
   productVariantService: ProductVariantService
   taxProviderService: TaxProviderService
   regionService: RegionService
+  customerService: CustomerService
   priceSelectionStrategy: IPriceSelectionStrategy
   featureFlagRouter: FlagRouter
+  remoteQuery: RemoteQueryFunction
+  pricingModuleService: IPricingModuleService
 }
 
 /**
@@ -35,9 +61,18 @@ type InjectedDependencies = {
 class PricingService extends TransactionBaseService {
   protected readonly regionService: RegionService
   protected readonly taxProviderService: TaxProviderService
+  protected readonly customerService_: CustomerService
   protected readonly priceSelectionStrategy: IPriceSelectionStrategy
   protected readonly productVariantService: ProductVariantService
   protected readonly featureFlagRouter: FlagRouter
+
+  protected get pricingModuleService(): IPricingModuleService {
+    return this.__container__.pricingModuleService
+  }
+
+  protected get remoteQuery(): RemoteQueryFunction {
+    return this.__container__.remoteQuery
+  }
 
   constructor({
     productVariantService,
@@ -45,6 +80,7 @@ class PricingService extends TransactionBaseService {
     regionService,
     priceSelectionStrategy,
     featureFlagRouter,
+    customerService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -53,6 +89,7 @@ class PricingService extends TransactionBaseService {
     this.taxProviderService = taxProviderService
     this.priceSelectionStrategy = priceSelectionStrategy
     this.productVariantService = productVariantService
+    this.customerService_ = customerService
     this.featureFlagRouter = featureFlagRouter
   }
 
@@ -160,6 +197,128 @@ class PricingService extends TransactionBaseService {
     return taxedPricing
   }
 
+  private async getProductVariantPricingModulePricing_(
+    variantPriceData: {
+      variantId: string
+      quantity?: number
+    }[],
+    context: PricingContext
+  ) {
+    const variables = {
+      variant_id: variantPriceData.map((pricedata) => pricedata.variantId),
+      take: null,
+    }
+
+    const query = {
+      product_variant_price_set: {
+        __args: variables,
+        fields: ["variant_id", "price_set_id"],
+      },
+    }
+
+    const variantPriceSets = await this.remoteQuery(query)
+
+    const variantIdToPriceSetIdMap: Map<string, string> = new Map(
+      variantPriceSets.map((variantPriceSet) => [
+        variantPriceSet.variant_id,
+        variantPriceSet.price_set_id,
+      ])
+    )
+
+    const priceSetIds: string[] = variantPriceSets.map(
+      (variantPriceSet) => variantPriceSet.price_set_id
+    )
+
+    const queryContext: PriceSelectionContext & {
+      customer_group_id?: string[]
+    } = removeNullish(context.price_selection)
+
+    if (queryContext.customer_id) {
+      const { groups } = await this.customerService_.retrieve(
+        queryContext.customer_id,
+        { relations: ["groups"] }
+      )
+
+      if (groups?.length) {
+        queryContext.customer_group_id = groups.map((group) => group.id)
+      }
+    }
+
+    let calculatedPrices: CalculatedPriceSet[] = []
+
+    if (queryContext.currency_code) {
+      calculatedPrices = (await this.pricingModuleService.calculatePrices(
+        { id: priceSetIds },
+        {
+          context: queryContext as any,
+        }
+      )) as unknown as CalculatedPriceSet[]
+    }
+
+    const calculatedPriceMap = new Map<string, CalculatedPriceSet>(
+      calculatedPrices.map((priceSet) => [priceSet.id, priceSet])
+    )
+
+    const pricingResultMap = new Map()
+
+    variantPriceData.forEach(({ variantId }) => {
+      const priceSetId = variantIdToPriceSetIdMap.get(variantId)
+
+      const pricingResult: ProductVariantPricing = {
+        prices: [] as MoneyAmount[],
+        original_price: null,
+        calculated_price: null,
+        calculated_price_type: null,
+        original_price_includes_tax: null,
+        calculated_price_includes_tax: null,
+        original_price_incl_tax: null,
+        calculated_price_incl_tax: null,
+        original_tax: null,
+        calculated_tax: null,
+        tax_rates: null,
+      }
+
+      if (priceSetId) {
+        const calculatedPrices: CalculatedPriceSet | undefined =
+          calculatedPriceMap.get(priceSetId)
+
+        if (calculatedPrices) {
+          pricingResult.prices.push({
+            id: calculatedPrices?.original_price?.money_amount_id,
+            currency_code: calculatedPrices.currency_code,
+            amount: calculatedPrices.original_amount,
+            min_quantity: calculatedPrices.original_price?.min_quantity,
+            max_quantity: calculatedPrices.original_price?.max_quantity,
+            price_list_id: calculatedPrices.original_price?.price_list_id,
+          } as MoneyAmount)
+
+          if (
+            calculatedPrices.calculated_price?.money_amount_id !==
+            calculatedPrices.original_price?.money_amount_id
+          ) {
+            pricingResult.prices.push({
+              id: calculatedPrices.calculated_price?.money_amount_id,
+              currency_code: calculatedPrices.currency_code,
+              amount: calculatedPrices.calculated_amount,
+              min_quantity: calculatedPrices.calculated_price?.min_quantity,
+              max_quantity: calculatedPrices.calculated_price?.max_quantity,
+              price_list_id: calculatedPrices.calculated_price?.price_list_id,
+            } as MoneyAmount)
+          }
+
+          pricingResult.original_price = calculatedPrices?.original_amount
+          pricingResult.calculated_price = calculatedPrices?.calculated_amount
+          pricingResult.calculated_price_type =
+            calculatedPrices?.calculated_price?.price_list_type
+        }
+      }
+
+      pricingResultMap.set(variantId, pricingResult)
+    })
+
+    return pricingResultMap
+  }
+
   private async getProductVariantPricing_(
     data: {
       variantId: string
@@ -167,11 +326,15 @@ class PricingService extends TransactionBaseService {
     }[],
     context: PricingContext
   ): Promise<Map<string, ProductVariantPricing>> {
+    if (this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+      return await this.getProductVariantPricingModulePricing_(data, context)
+    }
+
     const variantsPricing = await this.priceSelectionStrategy
       .withTransaction(this.activeManager_)
       .calculateVariantPrice(data, context.price_selection)
 
-    const pricingResultMap = new Map()
+    const pricingResultMap = new Map<string, ProductVariantPricing>()
 
     for (const [variantId, pricing] of variantsPricing.entries()) {
       const pricingResult: ProductVariantPricing = {
@@ -382,7 +545,7 @@ class PricingService extends TransactionBaseService {
       Record<string, ProductVariantPricing>
     >()
 
-    await Promise.all(
+    await promiseAll(
       data.map(async ({ productId, variants }) => {
         const pricingData = variants.map((variant) => {
           return { variantId: variant.id }
@@ -509,7 +672,167 @@ class PricingService extends TransactionBaseService {
       product.variants.map((productVariant): PricedVariant => {
         const variantPricing = productsVariantsPricingMap.get(product.id)!
         const pricing = variantPricing[productVariant.id]
+
         Object.assign(productVariant, pricing)
+        return productVariant as unknown as PricedVariant
+      })
+
+      return product
+    })
+  }
+
+  private async getPricingModuleVariantMoneyAmounts(
+    variantIds: string[]
+  ): Promise<Map<string, MoneyAmount[]>> {
+    const variables = {
+      variant_id: variantIds,
+      take: null,
+    }
+
+    const query = {
+      product_variant_price_set: {
+        __args: variables,
+        fields: ["variant_id", "price_set_id"],
+      },
+    }
+
+    const variantPriceSets = await this.remoteQuery(query)
+
+    const priceSetIdToVariantIdMap: Map<string, string> = new Map(
+      variantPriceSets.map((variantPriceSet) => [
+        variantPriceSet.price_set_id,
+        variantPriceSet.variant_id,
+      ])
+    )
+
+    const priceSetIds: string[] = variantPriceSets.map(
+      (variantPriceSet) => variantPriceSet.price_set_id
+    )
+
+    const priceSetMoneyAmounts: PriceSetMoneyAmountDTO[] =
+      await this.pricingModuleService.listPriceSetMoneyAmounts(
+        {
+          price_set_id: priceSetIds,
+        },
+        {
+          take: null,
+          relations: [
+            "money_amount",
+            "price_list",
+            "price_set",
+            "price_rules",
+            "price_rules.rule_type",
+          ],
+        }
+      )
+
+    const variantIdMoneyAmountMap = priceSetMoneyAmounts.reduce(
+      (map, priceSetMoneyAmount) => {
+        const variantId = priceSetIdToVariantIdMap.get(
+          priceSetMoneyAmount.price_set!.id
+        )
+        if (!variantId) {
+          return map
+        }
+
+        const regionId = priceSetMoneyAmount.price_rules!.find(
+          (pr) => pr.rule_type.rule_attribute === "region_id"
+        )?.value
+
+        delete priceSetMoneyAmount.money_amount?.price_set_money_amount
+        const moneyAmount = {
+          ...priceSetMoneyAmount.money_amount,
+          region_id: null as null | string,
+          price_list_id: priceSetMoneyAmount.price_list?.id ?? null,
+          price_list: priceSetMoneyAmount.price_list ?? null,
+        }
+
+        if (regionId) {
+          moneyAmount.region_id = regionId
+        }
+
+        if (map.has(variantId)) {
+          map.get(variantId).push(moneyAmount)
+        } else {
+          map.set(variantId, [moneyAmount])
+        }
+        return map
+      },
+      new Map()
+    )
+
+    return variantIdMoneyAmountMap
+  }
+
+  async setAdminVariantPricing(
+    variants: ProductVariant[],
+    context: PriceSelectionContext = {}
+  ): Promise<PricedVariant[]> {
+    if (!this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+      return await this.setVariantPrices(variants, context)
+    }
+
+    const variantIds = variants.map((variant) => variant.id)
+
+    const variantIdMoneyAmountMap =
+      await this.getPricingModuleVariantMoneyAmounts(variantIds)
+
+    return variants.map((variant) => {
+      const pricing: ProductVariantPricing = {
+        prices: variantIdMoneyAmountMap.get(variant.id) ?? [],
+        original_price: null,
+        calculated_price: null,
+        calculated_price_type: null,
+        original_price_includes_tax: null,
+        calculated_price_includes_tax: null,
+        original_price_incl_tax: null,
+        calculated_price_incl_tax: null,
+        original_tax: null,
+        calculated_tax: null,
+        tax_rates: null,
+      }
+
+      Object.assign(variant, pricing)
+      return variant as unknown as PricedVariant
+    })
+  }
+
+  async setAdminProductPricing(
+    products: Product[]
+  ): Promise<(Product | PricedProduct)[]> {
+    if (!this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+      return await this.setProductPrices(products)
+    }
+
+    const variantIds = products
+      .map((product) => product.variants.map((variant) => variant.id).flat())
+      .flat()
+
+    const variantIdMoneyAmountMap =
+      await this.getPricingModuleVariantMoneyAmounts(variantIds)
+
+    return products.map((product) => {
+      if (!product?.variants?.length) {
+        return product
+      }
+
+      product.variants.map((productVariant): PricedVariant => {
+        const pricing: ProductVariantPricing = {
+          prices: variantIdMoneyAmountMap.get(productVariant.id) ?? [],
+          original_price: null,
+          calculated_price: null,
+          calculated_price_type: null,
+          original_price_includes_tax: null,
+          calculated_price_includes_tax: null,
+          original_price_incl_tax: null,
+          calculated_price_incl_tax: null,
+          original_tax: null,
+          calculated_tax: null,
+          tax_rates: null,
+        }
+
+        Object.assign(productVariant, pricing)
+
         return productVariant as unknown as PricedVariant
       })
 
@@ -595,7 +918,7 @@ class PricingService extends TransactionBaseService {
       regions.add(shippingOption.region_id)
     }
 
-    const contexts = await Promise.all(
+    const contexts = await promiseAll(
       [...regions].map(async (regionId) => {
         return {
           context: await this.collectPricingContext({
@@ -626,7 +949,7 @@ class PricingService extends TransactionBaseService {
       )
     })
 
-    return await Promise.all(shippingOptionPricingPromises)
+    return await promiseAll(shippingOptionPricingPromises)
   }
 }
 

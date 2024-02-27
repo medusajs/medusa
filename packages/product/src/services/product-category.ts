@@ -9,9 +9,7 @@ import {
   MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
-
-import { shouldForceTransaction } from "../utils"
-import { ProductCategoryServiceTypes } from "../types"
+import { ProductCategoryServiceTypes } from "@types"
 
 type InjectedDependencies = {
   productCategoryRepository: DAL.TreeRepositoryService
@@ -114,10 +112,7 @@ export default class ProductCategoryService<
     )) as [TEntity[], number]
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "productCategoryRepository_"
-  )
+  @InjectTransactionManager("productCategoryRepository_")
   async create(
     data: ProductCategoryServiceTypes.CreateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -127,10 +122,7 @@ export default class ProductCategoryService<
     ).create(data, sharedContext)) as TEntity
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "productCategoryRepository_"
-  )
+  @InjectTransactionManager("productCategoryRepository_")
   async update(
     id: string,
     data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
@@ -141,10 +133,7 @@ export default class ProductCategoryService<
     ).update(id, data, sharedContext)) as TEntity
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "productCategoryRepository_"
-  )
+  @InjectTransactionManager("productCategoryRepository_")
   async delete(
     id: string,
     @MedusaContext() sharedContext: Context = {}

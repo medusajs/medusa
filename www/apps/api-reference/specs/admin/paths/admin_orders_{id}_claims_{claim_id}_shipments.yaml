@@ -2,9 +2,9 @@ post:
   operationId: PostOrdersOrderClaimsClaimShipments
   summary: Ship a Claim's Fulfillment
   description: >-
-    Mark a claim's fulfillment as shipped. This changes the claim's fulfillment
-    status to either `shipped` or `partially_shipped`, depending on whether all
-    the items were shipped.
+    Create a shipment for the claim and mark its fulfillment as shipped. This
+    changes the claim's fulfillment status to either `partially_shipped` or
+    `shipped`, depending on whether all the items were shipped.
   x-authenticated: true
   externalDocs:
     description: Fulfill a claim
@@ -47,6 +47,11 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_orders_{id}_claims_{claim_id}_shipments/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_orders_{id}_claims_{claim_id}_shipments/post.tsx
     - lang: Shell
       label: cURL
       source:

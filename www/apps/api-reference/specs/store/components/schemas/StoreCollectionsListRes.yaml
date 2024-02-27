@@ -1,4 +1,5 @@
 type: object
+description: The list of product collections with pagination fields.
 required:
   - collections
   - count

@@ -1,4 +1,5 @@
 type: object
+description: The details of the orders to claim.
 required:
   - order_ids
 properties:

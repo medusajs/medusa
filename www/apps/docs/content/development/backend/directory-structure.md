@@ -40,7 +40,7 @@ Defines an entry file, which is useful when starting the Medusa backend with a p
 
 Defines the Medusa backend’s configurations, including the database configurations, plugins used, modules used, and more.
 
-**Read more:** [Medusa backend configurations](./configurations.md).
+**Read more:** [Medusa backend configurations](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx).
 
 ### package.json
 
@@ -136,9 +136,9 @@ This directory holds all Medusa admin customizations. The main subdirectories of
 
 ### api
 
-This directory holds all custom endpoints. You can create as many subdirectories and files that hold endpoint definitions, but only endpoints exported by the `index.ts` file are registered in the Medusa backend.
+This directory holds all custom API Routes, which are defined in `route.ts` or `route.js` files. These files can be created in sub-directories of the `api` directory based on the API Route's path.
 
-**Read more:** [Endpoints](../endpoints/overview.mdx)
+**Read more:** [API Routes](../api-routes/overview.mdx)
 
 ### loaders
 

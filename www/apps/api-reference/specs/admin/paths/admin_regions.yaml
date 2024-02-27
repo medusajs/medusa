@@ -3,9 +3,19 @@ get:
   summary: List Regions
   description: >-
     Retrieve a list of Regions. The regions can be filtered by fields such as
-    `created_at`. The regions can also be paginated
+    `created_at`. The regions can also be paginated.
   x-authenticated: true
   parameters:
+    - in: query
+      name: q
+      description: Term used to search regions' name.
+      schema:
+        type: string
+    - in: query
+      name: order
+      description: A field to sort-order the retrieved regions by.
+      schema:
+        type: string
     - in: query
       name: limit
       schema:
@@ -97,6 +107,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_regions/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_regions/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -143,6 +157,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_regions/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_regions/post.tsx
     - lang: Shell
       label: cURL
       source:

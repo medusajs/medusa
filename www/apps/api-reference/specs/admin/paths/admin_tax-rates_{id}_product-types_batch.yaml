@@ -1,7 +1,7 @@
 post:
   operationId: PostTaxRatesTaxRateProductTypes
   summary: Add to Product Types
-  description: Associates a Tax Rate with a list of Product Types
+  description: Add Product Types to a Tax Rate.
   parameters:
     - in: path
       name: id
@@ -44,6 +44,10 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_tax-rates_{id}_product-types_batch/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_tax-rates_{id}_product-types_batch/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -122,6 +126,11 @@ delete:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_tax-rates_{id}_product-types_batch/delete.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_tax-rates_{id}_product-types_batch/delete.tsx
     - lang: Shell
       label: cURL
       source:

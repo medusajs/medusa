@@ -1,3 +1,4 @@
+import { DAL } from "@medusajs/types"
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -7,6 +8,7 @@ import {
   Filter,
   Index,
   ManyToOne,
+  OnInit,
   OneToMany,
   OptionalProps,
   PrimaryKey,
@@ -14,7 +16,6 @@ import {
 } from "@mikro-orm/core"
 import { Product } from "./index"
 import ProductOptionValue from "./product-option-value"
-import { DAL } from "@medusajs/types"
 
 type OptionalRelations =
   | "values"
@@ -39,8 +40,9 @@ class ProductOption {
   @ManyToOne(() => Product, {
     index: "IDX_product_option_product_id",
     fieldName: "product_id",
+    nullable: true,
   })
-  product: Product
+  product!: Product
 
   @OneToMany(() => ProductOptionValue, (value) => value.option, {
     cascade: [Cascade.REMOVE, "soft-remove" as any],
@@ -68,6 +70,11 @@ class ProductOption {
   @Index({ name: "IDX_product_option_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at?: Date
+
+  @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "opt")
+  }
 
   @BeforeCreate()
   beforeCreate() {

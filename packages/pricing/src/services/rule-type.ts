@@ -1,97 +1,69 @@
-import { Context, DAL, FindConfig, PricingTypes } from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
 import {
-  InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  retrieveEntity,
+  validateRuleAttributes,
 } from "@medusajs/utils"
 import { RuleType } from "@models"
-
-import { doNotForceTransaction, shouldForceTransaction } from "@medusajs/utils"
+import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   ruleTypeRepository: DAL.RepositoryService
 }
 
-export default class RuleTypeService<TEntity extends RuleType = RuleType> {
-  protected readonly ruleTypeRepository_: DAL.RepositoryService
+export default class RuleTypeService<
+  TEntity extends RuleType = RuleType
+> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+  RuleType
+)<TEntity> {
+  protected readonly ruleTypeRepository_: DAL.RepositoryService<TEntity>
 
   constructor({ ruleTypeRepository }: InjectedDependencies) {
+    // @ts-ignore
+    super(...arguments)
     this.ruleTypeRepository_ = ruleTypeRepository
   }
 
-  @InjectManager("ruleTypeRepository_")
-  async retrieve(
-    ruleTypeId: string,
-    config: FindConfig<PricingTypes.RuleTypeDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity> {
-    return (await retrieveEntity<RuleType, PricingTypes.RuleTypeDTO>({
-      id: ruleTypeId,
-      identifierColumn: "id",
-      entityName: RuleType.name,
-      repository: this.ruleTypeRepository_,
-      config,
-      sharedContext,
-    })) as TEntity
-  }
+  create(
+    data: ServiceTypes.CreateRuleTypeDTO,
+    sharedContext: Context
+  ): Promise<TEntity>
+  create(
+    data: ServiceTypes.CreateRuleTypeDTO[],
+    sharedContext: Context
+  ): Promise<TEntity[]>
 
-  @InjectManager("ruleTypeRepository_")
-  async list(
-    filters: PricingTypes.FilterableRuleTypeProps = {},
-    config: FindConfig<PricingTypes.RuleTypeDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<RuleType>(filters, config)
-
-    return (await this.ruleTypeRepository_.find(
-      queryOptions,
-      sharedContext
-    )) as TEntity[]
-  }
-
-  @InjectManager("ruleTypeRepository_")
-  async listAndCount(
-    filters: PricingTypes.FilterableRuleTypeProps = {},
-    config: FindConfig<PricingTypes.RuleTypeDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TEntity[], number]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<RuleType>(filters, config)
-
-    return (await this.ruleTypeRepository_.findAndCount(
-      queryOptions,
-      sharedContext
-    )) as [TEntity[], number]
-  }
-
-  @InjectTransactionManager(shouldForceTransaction, "ruleTypeRepository_")
+  @InjectTransactionManager("ruleTypeRepository_")
   async create(
-    data: PricingTypes.CreateRuleTypeDTO[],
+    data: ServiceTypes.CreateRuleTypeDTO | ServiceTypes.CreateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return (await this.ruleTypeRepository_.create(
-      data,
-      sharedContext
-    )) as TEntity[]
+  ): Promise<TEntity | TEntity[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+    validateRuleAttributes(data_.map((d) => d.rule_attribute))
+    return await super.create(data, sharedContext)
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "ruleTypeRepository_")
+  // @ts-ignore
+  update(
+    data: ServiceTypes.UpdateRuleTypeDTO[],
+    sharedContext: Context
+  ): Promise<TEntity[]>
+  // @ts-ignore
+  update(
+    data: ServiceTypes.UpdateRuleTypeDTO,
+    sharedContext: Context
+  ): Promise<TEntity>
+
+  @InjectTransactionManager("ruleTypeRepository_")
+  // TODO: add support for selector? and then rm ts ignore
+  // @ts-ignore
   async update(
-    data: PricingTypes.UpdateRuleTypeDTO[],
+    data: ServiceTypes.UpdateRuleTypeDTO | ServiceTypes.UpdateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return (await this.ruleTypeRepository_.update(
-      data,
-      sharedContext
-    )) as TEntity[]
-  }
-
-  @InjectTransactionManager(doNotForceTransaction, "ruleTypeRepository_")
-  async delete(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.ruleTypeRepository_.delete(ids, sharedContext)
+  ): Promise<TEntity | TEntity[]> {
+    const data_ = Array.isArray(data) ? data : [data]
+    validateRuleAttributes(data_.map((d) => d.rule_attribute))
+    return await super.update(data, sharedContext)
   }
 }

@@ -75,6 +75,7 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
 /**
  * @schema AdminVariantsListRes
  * type: object
+ * description: "The list of variants with pagination fields."
  * x-expanded-relations:
  *   field: variants
  *   relations:
@@ -111,6 +112,7 @@ export type AdminVariantsListRes = PaginatedResponse & {
 /**
  * @schema AdminVariantsRes
  * type: object
+ * description: "The product variant's details."
  * x-expanded-relations:
  *   field: variant
  *   relations:

@@ -6,9 +6,9 @@ import formatReportLink from "@/utils/format-report-link"
 
 This API reference includes Medusa's Admin APIs, which are REST APIs exposed by the Medusa backend. They are typically used to perform admin functionalities or create an admin dashboard to access and manipulate your commerce store's data.
 
-All endpoints are prefixed with `/admin`. So, during development, the endpoints will be available under the path `http://localhost:9000/admin`. For production, replace `http://localhost:9000` with your Medusa backend URL.
+All API Routes are prefixed with `/admin`. So, during development, the API Routes will be available under the path `http://localhost:9000/admin`. For production, replace `http://localhost:9000` with your Medusa backend URL.
 
-There are different ways you can send requests to these endpoints, including:
+There are different ways you can send requests to these API Routes, including:
 
 - Using Medusa's [JavaScript Client](https://docs.medusajs.com/js-client/overview)
 - Using the [Medusa React](https://docs.medusajs.com/medusa-react/overview) library
@@ -40,7 +40,7 @@ Use a user's API Token to send authenticated requests.
 
 #### How to Add API Token to a User
 
-You can use the Update User endpoint to add or update the user's API token:
+You can use the Update User API Route to add or update the user's API token:
 
 <CodeTabs 
   tabs={[
@@ -158,7 +158,7 @@ Use a JWT token to send authenticated requests. Authentication state is managed 
 
 #### How to Obtain the JWT Token
 
-JWT tokens are obtained by sending a request to the [User Login (JWT) endpoint](#auth_posttoken) passing it the user's email and password in the request body. For example:
+JWT tokens are obtained by sending a request to the [User Login (JWT) API Route](#auth_posttoken) passing it the user's email and password in the request body. For example:
 
 ```bash
 curl -X POST 'https://medusa-url.com/admin/auth/token' \
@@ -331,8 +331,8 @@ const App = () => {
 
 ## Expanding Fields
 
-In many endpoints you'll find an `expand` query parameter that can be passed
-to the endpoint. You can use the `expand` query parameter to unpack an
+In many API Routes you'll find an `expand` query parameter that can be passed
+to the API Route. You can use the `expand` query parameter to unpack an
 entity's relations and return them in the response.
 
 
@@ -353,7 +353,7 @@ by passing to the `expand` query parameter the value `collection`:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?expand=collection" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -416,7 +416,7 @@ pass to the `expand` query parameter the value `variants,collection`:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?expand=variants,collection" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -478,7 +478,7 @@ For example:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?expand" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -544,8 +544,8 @@ relations like `collection`.
 ## Selecting Fields
 
 
-In many endpoints you'll find a `fields` query parameter that can be passed
-to the endpoint. You can use the `fields` query parameter to specify which
+In many API Routes you'll find a `fields` query parameter that can be passed
+to the API Route. You can use the `fields` query parameter to specify which
 fields in the entity should be returned in the response.
 
 
@@ -572,7 +572,7 @@ parameter:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?fields=title" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -632,7 +632,7 @@ value to the `expand` query parameter. For example:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?fields=title&expand" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -696,7 +696,7 @@ For example, to select the `title` and `handle` of products:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?fields=title,handle" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -755,7 +755,7 @@ entity. For example:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?fields" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -811,7 +811,7 @@ relations aren't retrieved as well. For example:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?fields&expand" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -876,7 +876,7 @@ export default Products`,
 
 
 This section covers how to pass some common data types as query parameters.
-This is useful if you're sending requests to the API endpoints and not using
+This is useful if you're sending requests to the API routes and not using
 the JS Client. For example, when using cURL or Postman.
 
 
@@ -891,7 +891,7 @@ For example:
 
 ```bash
 curl "http://localhost:9000/admin/products?title=Shirt" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 
@@ -905,7 +905,7 @@ For example, if the string has spaces, you can encode the space with `+` or
 
 ```bash
 curl "http://localhost:9000/admin/products?title=Blue%20Shirt" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 
@@ -924,7 +924,7 @@ For example:
 
 ```bash
 curl "http://localhost:9000/admin/products?offset=1" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 
@@ -939,7 +939,7 @@ For example:
 
 ```bash
 curl "http://localhost:9000/admin/products?is_giftcard=true" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 
@@ -955,7 +955,7 @@ For example:
 
 ```bash
 curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 
@@ -968,7 +968,7 @@ For example:
 
 ```bash
 curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17T07:22:30Z" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 
@@ -985,7 +985,7 @@ For example:
 
 ```bash
 curl -g "http://localhost:9000/admin/products?sales_channel_id[]=sc_01GPGVB42PZ7N3YQEP2WDM7PC7&sales_channel_id[]=sc_234PGVB42PZ7N3YQEP2WDM7PC7" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 
@@ -1006,7 +1006,7 @@ For example:
 
 ```bash
 curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17&created_at[gt]=2022-09-17" \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
 ```
 
 <Feedback
@@ -1028,7 +1028,7 @@ curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17&created_
 ### Query Parameters
 
 
-In listing endpoints, such as list customers or list products, you can control the pagination using the query parameters `limit` and `offset`.
+In listing API Routes, such as list customers or list products, you can control the pagination using the query parameters `limit` and `offset`.
 
 
 `limit` is used to specify the maximum number of items that can be return in the response. `offset` is used to specify how many items to skip before returning the resulting entities.
@@ -1037,7 +1037,7 @@ In listing endpoints, such as list customers or list products, you can control t
 You can use the `offset` query parameter to change between pages. For example, if the limit is 50, at page 1 the offset should be 0; at page 2 the offset should be 50, and so on.
 
 
-For example, to limit the number of products returned in the List Products endpoint:
+For example, to limit the number of products returned in the List Products API Route:
 
 <CodeTabs 
   tabs={[
@@ -1046,7 +1046,7 @@ For example, to limit the number of products returned in the List Products endpo
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?limit=5" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -1095,18 +1095,13 @@ export default Products`,
 ### Response Fields
 
 
-In the response of listing endpoints, aside from the entities retrieved,
-there are three pagination-related fields returned: `count`, `limit`, and
-`offset`.
+In the response of listing API Routes, aside from the entities retrieved,
+there are three pagination-related fields returned:
 
 
-Similar to the query parameters, `limit` is the maximum number of items that
-can be returned in the response, and `field` is the number of items that
-were skipped before the entities in the result.
-
-
-`count` is the total number of available items of this entity. It can be
-used to determine how many pages are there.
+- `limit`: the maximum number of items that can be returned in the response.
+- `offset`: the number of items that were skipped before the entities in the result.
+- `count`: the total number of available items of this entity. It can be used to determine how many pages are there.
 
 
 For example, if the `count` is 100 and the `limit` is 50, you can divide the
@@ -1116,7 +1111,7 @@ For example, if the `count` is 100 and the `limit` is 50, you can divide the
 ### Sort Order
 
 
-The `order` field available on endpoints supporting pagination allows you to
+The `order` field available on API Routes supporting pagination allows you to
 sort the retrieved items by an attribute of that item. For example, you can
 sort products by their `created_at` attribute by setting `order` to
 `created_at`:
@@ -1128,7 +1123,7 @@ sort products by their `created_at` attribute by setting `order` to
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?order=created_at" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },
@@ -1184,7 +1179,7 @@ descending, pass a dash (`-`) before the attribute name. For example:
       value: 'curl',
       code: {
         source: `curl "http://localhost:9000/admin/products?order=-created_at" \
--H 'Authorization: Bearer {api_token}'`,
+-H 'x-medusa-access-token: {api_token}'`,
         lang: `bash`,
       }
     },

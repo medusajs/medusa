@@ -35,7 +35,7 @@ import { EntityManager } from "typeorm"
  *       })
  *       .catch(() => {
  *         // an error occurred
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

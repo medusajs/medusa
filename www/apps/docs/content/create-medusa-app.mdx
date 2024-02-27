@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 import Feedback from '@site/src/components/Feedback';
 import DocCardList from '@theme/DocCardList';
 import Icons from '@theme/Icon';
-import Troubleshooting from '@site/src/components/Troubleshooting'
+import DetailsList from '@site/src/components/DetailsList'
 import TypeErrorSection from "./troubleshooting/create-medusa-app-errors/_typeerror.md"
 import OtherErrorsSection from "./troubleshooting/create-medusa-app-errors/_other-errors.mdx"
 import EagainError from "./troubleshooting/create-medusa-app-errors/_eagain-error.md"
@@ -16,18 +16,11 @@ import ConnectionErrorSection from './troubleshooting/database-errors/_connectio
 import FreshInstallationSection from './troubleshooting/awilix-resolution-error/_fresh-installation.md'
 import EaddrinuseSection from './troubleshooting/eaddrinuse.md'
 import InvalidTokenError from './troubleshooting/create-medusa-app-errors/_no-browser-token-error.md'
+import PostgresDockerError from './troubleshooting/database-errors/_docker.md'
+import DbUrlError from './troubleshooting/create-medusa-app-errors/_db-url-error.md'
+import ForwardingError from './troubleshooting/create-medusa-app-errors/_forwarding.md'
 
 # Install Medusa with create-medusa-app
-
-In this document, you’ll learn how to use create-medusa-app to set up a Medusa backend and an admin dashboard.
-
-:::tip
-
-`create-medusa-app` allows you to install and setup a Medusa backend project with minimal configurations. If you're more familiar with Medusa or you need to have more control over the configurations of the Medusa backend, such as database connection details, you can either use the [command's options](#command-options) to customize the setup, or use the [backend quickstart instead](./development/backend/install.mdx).
-
-:::
-
-## Overview
 
 Medusa is a toolkit for developers to create digital commerce applications. In its simplest form, Medusa is a Node.js backend with the core API, plugins, and modules installed through npm.
 
@@ -52,9 +45,9 @@ In your terminal, run the following command:
 <Tabs groupId="npxyarn" isCodeTabs={true}>
   <TabItem value="npx" label="NPX" default>
 
-  ```bash
-  npx create-medusa-app@latest
-  ```
+    ```bash
+    npx create-medusa-app@latest
+    ```
 
   </TabItem>
   {/* <TabItem value="yarn" label="Yarn">
@@ -66,56 +59,60 @@ In your terminal, run the following command:
   </TabItem> */}
   <TabItem value="pnpm" label="pnpm">
 
-  ```bash
-  pnpm dlx create-medusa-app@latest
-  ```
+    ```bash
+    pnpm dlx create-medusa-app@latest
+    ```
 
   </TabItem>
 </Tabs>
 
-### Command Options
+<Details>
+  <Summary>Command Options</Summary>
+  
+  The `create-medusa-app` command can accept the following options:
 
-The `create-medusa-app` command can accept the following options:
+  - `--repo-url <url>`: The repository URL to create the project from. By default it will be `https://github.com/medusajs/medusa-starter-default`.
+  - `--seed`: A flag indicating whether the database should be seeded with demo data. By default, seeding is disabled.
+  - `--no-boilerplate`: A flag that removes all files added for an enhanced onboarding experience (files under `src/admin`, `src/api`, etc...). This is helpful if you want to create a clean project, and is only recommended if you're familiar with Medusa.
+  - `--no-browser`: Disables opening the browser at the end of the project creation and only shows success message.
+  - `--skip-db`: Skips creating the database, running migrations, and seeding, and subsequently skips opening the browser. Useful if you want to set the database URL at a later point in the configurations.
+  - `--db-url <url>`: Skips database creation and sets the database URL to the provided URL. Throws an error if connection to the database fails. Will still run migrations and open the admin after project creation. Useful if you already have a database created, locally or remotely.
+  - `--no-migrations`: Skips running migrations, creating admin user, and seeding. If used, it's expected that you pass the `--db-url` option with a URL of a database that has all necessary migrations. Otherwise, unexpected errors will occur. Helpful only if combined with `--db-url`.
+  - `--directory-path <path>`: Allows specifying the parent directory path to create the directory of the new project in.
+  - `--with-nextjs-starter`: Installs the Next.js starter storefront under the `<PROJECT_NAME>-storefront` directory, where `<PROJECT_NAME>` is the name of the project you enter in the first question. If the `<PROJECT_NAME>-storefront` directory already exists, random characters are added at the end of `<PROJECT_NAME>-storefront`.
+</Details>
 
-- `--repo-url <url>`: The repository URL to create the project from. By default it will be `https://github.com/medusajs/medusa-starter-default`.
-- `--seed`: A flag indicating whether the database should be seeded with demo data. By default, seeding is disabled.
-- `--no-boilerplate`: A flag that removes all files added for an enhanced onboarding experience (files under `src/admin`, `src/api`, etc...). This is helpful if you want to create a clean project, and is only recommended if you're familiar with Medusa.
-- `--no-browser`: Disables opening the browser at the end of the project creation and only shows success message.
-- `--skip-db`: Skips creating the database, running migrations, and seeding, and subsequently skips opening the browser. Useful if you want to set the database URL at a later point in the configurations.
-- `--db-url <url>`: Skips database creation and sets the database URL to the provided URL. Throws an error if connection to the database fails. Will still run migrations and open the admin after project creation. Useful if you already have a database created, locally or remotely.
-- `--no-migrations`: Skips running migrations, creating admin user, and seeding. If used, it's expected that you pass the `--db-url` option with a URL of a database that has all necessary migrations. Otherwise, unexpected errors will occur. Helpful only if combined with `--db-url`.
-- `--directory-path <path>`: Allows specifying the parent directory path to create the directory of the new project in.
-- `--with-nextjs-starter`: Installs the Next.js starter storefront under the `<PROJECT_NAME>-storefront` directory, where `<PROJECT_NAME>` is the name of the project you enter in the first question. If the `<PROJECT_NAME>-storefront` directory already exists, random characters are added at the end of `<PROJECT_NAME>-storefront`.
+<Details className="border-t-0">
+  <Summary>Example: Connect to a Vercel PostgreSQL Database</Summary>
 
-### Example: Connect to a Vercel PostgreSQL Database
+  If you want to use a PostgreSQL database hosted on Vercel, you must use the `--db-url` option and add to the end of your connection URL `?sslmode=require`. For example:
 
-If you want to use a PostgreSQL database hosted on Vercel, you must use the `--db-url` option and add to the end of your connection URL `?sslmode=require`. For example:
+  ```bash
+  npx create-medusa-app@latest --db-url "postgres://default:<password><host-region>.postgres.vercel-storage.com:5432/verceldb?sslmode=require"
+  ```
 
-```bash
-npx create-medusa-app@latest --db-url "postgres://default:<password><host-region>.postgres.vercel-storage.com:5432/verceldb?sslmode=require"
-```
+  :::note
 
-:::note
+  If the database already has the necessary migrations and you don't need the command to run migrations, you can pass the `--no-migrations` option.
 
-If the database already has the necessary migrations and you don't need the command to run migrations, you can pass the `--no-migrations` option.
+  :::
+</Details>
 
-:::
+<Details className="border-t-0">
+  <Summary>Example: Connect to a Supabase Database</Summary>
 
-### Example: Connect to a Supabase Database
+  If you want to connect to a Supabase database, you must use the `--db-url` option with its value being the connection URL to your Supabase database. For example:
 
-If you want to connect to a Supabase database, you must use the `--db-url` option with its value beign the connection URL to your Supabase database. For example:
+  ```bash
+  npx create-medusa-app@latest --db-url postgresql://postgres:<password>@<host>.supabase.co:5432/postgres
+  ```
 
-```bash
-npx create-medusa-app@latest --db-url postgresql://postgres:<password>@<host>.supabase.co:5432/postgres
-```
+  :::note
 
-:::note
+  If the database already has the necessary migrations and you don't need the command to run migrations, you can pass the `--no-migrations` option.
 
-If the database already has the necessary migrations and you don't need the command to run migrations, you can pass the `--no-migrations` option.
-
-:::
-
----
+  :::
+</Details>
 
 ## Step 2: Specify Project Name
 
@@ -220,11 +217,23 @@ Based on what you're building, you can find a development path for you in the Re
 
 ## Troubleshooting
 
-<Troubleshooting
+<DetailsList
   sections={[
+    {
+      title: "Errors when using VSCode or GitHub Codespaces",
+      content: <ForwardingError />
+    },
+    {
+      title: 'Can\'t connect to database with --db-url option',
+      content: <DbUrlError />
+    },
     {
       title: 'Error: EADDRINUSE',
       content: <EaddrinuseSection />
+    },
+    {
+      title: "Can't Connect to PostgreSQL Docker Container",
+      content: <PostgresDockerError />
     },
     {
       title: "EAGAIN error",

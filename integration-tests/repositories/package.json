@@ -8,6 +8,8 @@
     "test:integration": "jest --silent=false --runInBand --bail --detectOpenHandles --forceExit"
   },
   "dependencies": {
+    "@medusajs/cache-inmemory": "workspace:*",
+    "@medusajs/event-bus-local": "workspace:*",
     "@medusajs/medusa": "workspace:*",
     "medusa-interfaces": "workspace:*",
     "pg": "^8.11.0",

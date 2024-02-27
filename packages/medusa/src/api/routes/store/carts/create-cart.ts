@@ -1,9 +1,3 @@
-import { MedusaContainer } from "@medusajs/modules-sdk"
-import {
-  createCart as createCartWorkflow,
-  Workflows,
-} from "@medusajs/workflows"
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsInt,
@@ -12,18 +6,21 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { isDefined, MedusaError } from "medusa-core-utils"
-import reqIp from "request-ip"
-import { EntityManager } from "typeorm"
-import { FlagRouter } from "@medusajs/utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { LineItem } from "../../../../models"
 import {
   CartService,
   LineItemService,
+  ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
+
+import { FlagRouter } from "@medusajs/utils"
+import { Type } from "class-transformer"
+import reqIp from "request-ip"
+import { EntityManager } from "typeorm"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { LineItem } from "../../../../models"
 import { CartCreateProps } from "../../../../types/cart"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
@@ -36,7 +33,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *   Create a Cart. Although optional, specifying the cart's region and sales channel can affect the cart's pricing and
  *   the products that can be added to the cart respectively. So, make sure to set those early on and change them if necessary, such as when the customer changes their region.
  *
- *   If a customer is logged in, the cart's customer ID and email will automatically be set.
+ *   If a customer is logged in, make sure to pass its ID or email within the cart's details so that the cart is attached to the customer.
  * requestBody:
  *   content:
  *     application/json:
@@ -53,7 +50,35 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *       medusa.carts.create()
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCreateCart } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Cart = ({ regionId }: Props) => {
+ *         const createCart = useCreateCart()
+ *
+ *         const handleCreate = () => {
+ *           createCart.mutate({
+ *             region_id: regionId
+ *             // creates an empty cart
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.items)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -82,6 +107,8 @@ export default async (req, res) => {
   const entityManager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const cartService: CartService = req.scope.resolve("cartService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
   const validated = req.validatedBody as StorePostCartReq
 
@@ -90,134 +117,104 @@ export default async (req, res) => {
     user_agent: req.get("user-agent"),
   }
 
-  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.CreateCart,
-  })
+  const lineItemService: LineItemService = req.scope.resolve("lineItemService")
+  const regionService: RegionService = req.scope.resolve("regionService")
 
-  let cart
-
-  if (isWorkflowEnabled) {
-    const cartWorkflow = createCartWorkflow(req.scope as MedusaContainer)
-    const input = {
-      ...validated,
-      publishableApiKeyScopes: req.publishableApiKeyScopes,
-      context: {
-        ...reqContext,
-        ...validated.context,
-      },
-    }
-    const { result, errors } = await cartWorkflow.run({
-      input,
-      context: {
-        manager: entityManager,
-      },
-      throwOnError: false,
-    })
-
-    if (Array.isArray(errors)) {
-      if (isDefined(errors[0])) {
-        throw errors[0].error
-      }
-    }
-
-    cart = result
+  let regionId!: string
+  if (isDefined(validated.region_id)) {
+    regionId = validated.region_id as string
   } else {
-    const lineItemService: LineItemService =
-      req.scope.resolve("lineItemService")
-    const regionService: RegionService = req.scope.resolve("regionService")
+    const regions = await regionService.list({})
 
-    let regionId!: string
-    if (isDefined(validated.region_id)) {
-      regionId = validated.region_id as string
-    } else {
-      const regions = await regionService.list({})
-
-      if (!regions?.length) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `A region is required to create a cart`
-        )
-      }
-
-      regionId = regions[0].id
+    if (!regions?.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `A region is required to create a cart`
+      )
     }
 
-    const toCreate: Partial<CartCreateProps> = {
-      region_id: regionId,
-      sales_channel_id: validated.sales_channel_id,
-      context: {
-        ...reqContext,
-        ...validated.context,
-      },
-    }
-
-    if (req.user && req.user.customer_id) {
-      const customerService = req.scope.resolve("customerService")
-      const customer = await customerService.retrieve(req.user.customer_id)
-      toCreate["customer_id"] = customer.id
-      toCreate["email"] = customer.email
-    }
-
-    if (validated.country_code) {
-      toCreate["shipping_address"] = {
-        country_code: validated.country_code.toLowerCase(),
-      }
-    }
-
-    if (
-      !toCreate.sales_channel_id &&
-      req.publishableApiKeyScopes?.sales_channel_ids.length
-    ) {
-      if (req.publishableApiKeyScopes.sales_channel_ids.length > 1) {
-        throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          "The PublishableApiKey provided in the request header has multiple associated sales channels."
-        )
-      }
-
-      toCreate.sales_channel_id =
-        req.publishableApiKeyScopes.sales_channel_ids[0]
-    }
-
-    cart = await entityManager.transaction(async (manager) => {
-      const cartServiceTx = cartService.withTransaction(manager)
-      const lineItemServiceTx = lineItemService.withTransaction(manager)
-
-      const createdCart = await cartServiceTx.create(toCreate)
-
-      if (validated.items?.length) {
-        const generateInputData = validated.items.map((item) => {
-          return {
-            variantId: item.variant_id,
-            quantity: item.quantity,
-          }
-        })
-        const generatedLineItems: LineItem[] = await lineItemServiceTx.generate(
-          generateInputData,
-          {
-            region_id: regionId,
-            customer_id: req.user?.customer_id,
-          }
-        )
-
-        await cartServiceTx.addOrUpdateLineItems(
-          createdCart.id,
-          generatedLineItems,
-          {
-            validateSalesChannels:
-              featureFlagRouter.isFeatureEnabled("sales_channels"),
-          }
-        )
-      }
-
-      return createdCart
-    })
+    regionId = regions[0].id
   }
 
-  cart = await cartService.retrieveWithTotals(cart!.id, {
+  const toCreate: Partial<CartCreateProps> = {
+    region_id: regionId,
+    sales_channel_id: validated.sales_channel_id,
+    context: {
+      ...reqContext,
+      ...validated.context,
+    },
+  }
+
+  if (req.user && req.user.customer_id) {
+    const customerService = req.scope.resolve("customerService")
+    const customer = await customerService.retrieve(req.user.customer_id)
+    toCreate["customer_id"] = customer.id
+    toCreate["email"] = customer.email
+  }
+
+  if (validated.country_code) {
+    toCreate["shipping_address"] = {
+      country_code: validated.country_code.toLowerCase(),
+    }
+  }
+
+  if (
+    !toCreate.sales_channel_id &&
+    req.publishableApiKeyScopes?.sales_channel_ids.length
+  ) {
+    if (req.publishableApiKeyScopes.sales_channel_ids.length > 1) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "The PublishableApiKey provided in the request header has multiple associated sales channels."
+      )
+    }
+
+    toCreate.sales_channel_id = req.publishableApiKeyScopes.sales_channel_ids[0]
+  }
+
+  let cart = await entityManager.transaction(async (manager) => {
+    const cartServiceTx = cartService.withTransaction(manager)
+    const lineItemServiceTx = lineItemService.withTransaction(manager)
+
+    const createdCart = await cartServiceTx.create(toCreate)
+
+    if (validated.items?.length) {
+      const generateInputData = validated.items.map((item) => {
+        return {
+          variantId: item.variant_id,
+          quantity: item.quantity,
+        }
+      })
+      const generatedLineItems: LineItem[] = await lineItemServiceTx.generate(
+        generateInputData,
+        {
+          region_id: regionId,
+          customer_id: req.user?.customer_id,
+        }
+      )
+
+      await cartServiceTx.addOrUpdateLineItems(
+        createdCart.id,
+        generatedLineItems,
+        {
+          validateSalesChannels:
+            featureFlagRouter.isFeatureEnabled("sales_channels"),
+        }
+      )
+    }
+
+    return createdCart
+  })
+
+  cart = await cartService.retrieveWithTotals(cart.id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
+
+  await productVariantInventoryService.setVariantAvailability(
+    cart.items.map((i) => i.variant),
+    cart.sales_channel_id!
+  )
 
   res.status(200).json({ cart: cleanResponseData(cart, []) })
 }
@@ -235,6 +232,7 @@ export class Item {
 /**
  * @schema StorePostCartReq
  * type: object
+ * description: "The details of the cart to be created."
  * properties:
  *   region_id:
  *     type: string
@@ -250,7 +248,7 @@ export class Item {
  *      the cart will not be associated with any sales channel."
  *   country_code:
  *     type: string
- *     description: "The 2 character ISO country code to create the Cart in. Setting this parameter will set the country code of the shipping address."
+ *     description: "The two character ISO country code to create the Cart in. Setting this parameter will set the country code of the shipping address."
  *     externalDocs:
  *      url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
  *      description: See a list of codes.
@@ -270,7 +268,8 @@ export class Item {
  *           description: The quantity to add into the cart.
  *           type: integer
  *   context:
- *     description: "An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`"
+ *     description: >-
+ *       An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`
  *     type: object
  *     example:
  *       ip: "::1"

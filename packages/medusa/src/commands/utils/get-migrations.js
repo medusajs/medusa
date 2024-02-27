@@ -1,4 +1,4 @@
-import { MedusaModule, registerModules } from "@medusajs/modules-sdk"
+import { MedusaModule, registerMedusaModule } from "@medusajs/modules-sdk"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
 import glob from "glob"
@@ -96,8 +96,13 @@ function resolvePlugin(pluginName) {
 
 export function getInternalModules(configModule) {
   const modules = []
+  const moduleResolutions = {}
 
-  const moduleResolutions = registerModules(configModule.modules)
+  Object.entries(configModule.modules ?? {}).forEach(([moduleKey, module]) => {
+    moduleResolutions[moduleKey] = registerMedusaModule(moduleKey, module)[
+      moduleKey
+    ]
+  })
 
   for (const moduleResolution of Object.values(moduleResolutions)) {
     if (
@@ -256,7 +261,12 @@ export const getModuleSharedResources = (configModule, featureFlagsRouter) => {
 }
 
 export const runIsolatedModulesMigration = async (configModule) => {
-  const moduleResolutions = registerModules(configModule.modules)
+  const moduleResolutions = {}
+  Object.entries(configModule.modules ?? {}).forEach(([moduleKey, module]) => {
+    moduleResolutions[moduleKey] = registerMedusaModule(moduleKey, module)[
+      moduleKey
+    ]
+  })
 
   for (const moduleResolution of Object.values(moduleResolutions)) {
     if (
@@ -276,7 +286,12 @@ export const runIsolatedModulesMigration = async (configModule) => {
 }
 
 export const revertIsolatedModulesMigration = async (configModule) => {
-  const moduleResolutions = registerModules(configModule.modules)
+  const moduleResolutions = {}
+  Object.entries(configModule.modules ?? {}).forEach(([moduleKey, module]) => {
+    moduleResolutions[moduleKey] = registerMedusaModule(moduleKey, module)[
+      moduleKey
+    ]
+  })
 
   for (const moduleResolution of Object.values(moduleResolutions)) {
     if (

@@ -24,7 +24,7 @@ import { validator } from "../../../../utils/validator"
  * summary: Create a Swap
  * description: |
  *   Create a Swap for an Order. This will also create a return and associate it with the swap. If a return shipping option is specified, the return will automatically be fulfilled.
- *   To complete the swap, you must use the Complete Cart endpoint passing it the ID of the swap's cart.
+ *   To complete the swap, you must use the Complete Cart API Route passing it the ID of the swap's cart.
  *
  *   An idempotency key will be generated if none is provided in the header `Idempotency-Key` and added to
  *   the response. If an error occurs during swap creation or the request is interrupted for any reason, the swap creation can be retried by passing the idempotency
@@ -62,7 +62,52 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ swap }) => {
  *         console.log(swap.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCreateSwap } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       type CreateData = {
+ *         return_items: {
+ *           item_id: string
+ *           quantity: number
+ *         }[]
+ *         additional_items: {
+ *           variant_id: string
+ *           quantity: number
+ *         }[]
+ *         return_shipping_option: string
+ *       }
+ *
+ *       const CreateSwap = ({
+ *         orderId
+ *       }: Props) => {
+ *         const createSwap = useCreateSwap()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           data: CreateData
+ *         ) => {
+ *           createSwap.mutate({
+ *             ...data,
+ *             order_id: orderId
+ *           }, {
+ *             onSuccess: ({ swap }) => {
+ *               console.log(swap.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateSwap
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -292,6 +337,7 @@ class AdditionalItem {
 /**
  * @schema StorePostSwapsReq
  * type: object
+ * description: "The details of the swap to create."
  * required:
  *   - order_id
  *   - return_items
@@ -316,7 +362,7 @@ class AdditionalItem {
  *           description: The quantity to return.
  *           type: integer
  *         reason_id:
- *           description: The ID of the reason of this return. Return reasons can be retrieved from the List Return Reasons endpoint.
+ *           description: The ID of the reason of this return. Return reasons can be retrieved from the List Return Reasons API Route.
  *           type: string
  *         note:
  *           description: The note to add to the item being swapped.

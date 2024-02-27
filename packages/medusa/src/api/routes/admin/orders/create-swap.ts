@@ -61,7 +61,40 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateSwap } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const CreateSwap = ({ orderId }: Props) => {
+ *         const createSwap = useAdminCreateSwap(orderId)
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           returnItems: {
+ *             item_id: string,
+ *             quantity: number
+ *           }[]
+ *         ) => {
+ *           createSwap.mutate({
+ *             return_items: returnItems
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.swaps)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateSwap
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -268,6 +301,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostOrdersOrderSwapsReq
  * type: object
+ * description: "The details of the swap to create."
  * required:
  *   - return_items
  * properties:
@@ -319,6 +353,9 @@ export default async (req, res) => {
  *         quantity:
  *           description: The quantity of the Product Variant.
  *           type: integer
+ *   sales_channel_id:
+ *     type: string
+ *     description: "The ID of the sales channel associated with the swap."
  *   custom_shipping_options:
  *     description: An array of custom shipping options to potentially create a Shipping Method from to send the additional items.
  *     type: array
@@ -335,10 +372,15 @@ export default async (req, res) => {
  *           description: The custom price of the Shipping Option.
  *           type: integer
  *   no_notification:
- *     description: If set to `true`, no notification will be sent to the customer related to this Swap.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this Swap.
  *     type: boolean
+ *   return_location_id:
+ *     type: string
+ *     description: "The ID of the location used for the associated return."
  *   allow_backorder:
- *     description: If set to `true`, swaps can be completed with items out of stock
+ *     description: >-
+ *       If set to `true`, swaps can be completed with items out of stock
  *     type: boolean
  *     default: true
  */
@@ -403,11 +445,20 @@ class ReturnItem {
   note?: string
 }
 
+/**
+ * The return's shipping method details.
+ */
 class ReturnShipping {
+  /**
+   * The ID of the shipping option used for the return.
+   */
   @IsString()
   @IsNotEmpty()
   option_id: string
 
+  /**
+   * The shipping method's price.
+   */
   @IsInt()
   @IsOptional()
   price?: number

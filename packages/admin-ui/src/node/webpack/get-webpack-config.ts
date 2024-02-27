@@ -54,12 +54,11 @@ export function getWebpackConfig({
           fancy: reporting === "fancy",
         }),
       ]
-    : [new MiniCssExtractPlugin()]
+    : [new MiniCssExtractPlugin(), new ReactRefreshPlugin()]
 
   return {
     mode: env,
-    bail: !!isProd,
-    devtool: isProd ? false : "eval-source-map",
+    devtool: isProd ? false : "inline-source-map",
     entry: [entry],
     output: {
       path: dest,
@@ -91,6 +90,8 @@ export function getWebpackConfig({
                 transform: {
                   react: {
                     runtime: "automatic",
+                    development: !isProd,
+                    refresh: !isProd,
                   },
                 },
               },
@@ -147,11 +148,6 @@ export function getWebpackConfig({
           type: "asset/resource",
         },
         {
-          test: /\.(js|mjs)(\.map)?$/,
-          enforce: "pre",
-          use: ["source-map-loader"],
-        },
-        {
           test: /\.m?jsx?$/,
           resolve: {
             fullySpecified: false,
@@ -188,9 +184,8 @@ export function getWebpackConfig({
         ],
       }),
 
-      !isProd && new ReactRefreshPlugin(),
-
       ...webpackPlugins,
     ].filter(Boolean),
+    stats: isProd ? "errors-only" : "errors-warnings",
   }
 }

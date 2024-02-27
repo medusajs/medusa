@@ -1,3 +1,7 @@
+import { WorkflowTypes } from "@medusajs/types"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { UpdateProductVariants } from "@medusajs/core-flows"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -7,15 +11,13 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { EntityManager } from "typeorm"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   PricingService,
   ProductService,
   ProductVariantService,
 } from "../../../../services"
-
-import { Type } from "class-transformer"
-import { EntityManager } from "typeorm"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
@@ -61,7 +63,42 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateVariant } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *         variantId: string
+ *       }
+ *
+ *       const ProductVariant = ({
+ *         productId,
+ *         variantId
+ *       }: Props) => {
+ *         const updateVariant = useAdminUpdateVariant(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (title: string) => {
+ *           updateVariant.mutate({
+ *             variant_id: variantId,
+ *             title,
+ *           }, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.variants)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ProductVariant
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -106,6 +143,13 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id, variant_id } = req.params
 
+  const manager: EntityManager = req.scope.resolve("manager")
+  const productService: ProductService = req.scope.resolve("productService")
+  const pricingService: PricingService = req.scope.resolve("pricingService")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+  const productVariantService: ProductVariantService = req.scope.resolve(
+    "productVariantService"
+  )
   const validated = await validator(
     AdminPostProductsProductVariantsVariantReq,
     req.body
@@ -113,21 +157,36 @@ export default async (req, res) => {
 
   const validatedQueryParams = await validator(PriceSelectionParams, req.query)
 
-  const productService: ProductService = req.scope.resolve("productService")
-  const pricingService: PricingService = req.scope.resolve("pricingService")
-  const productVariantService: ProductVariantService = req.scope.resolve(
-    "productVariantService"
-  )
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    const updateVariantsWorkflow = UpdateProductVariants.updateProductVariants(
+      req.scope
+    )
 
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    await productVariantService
-      .withTransaction(transactionManager)
-      .update(variant_id, {
-        product_id: id,
-        ...validated,
-      })
-  })
+    const input = {
+      productVariants: [
+        {
+          id: variant_id,
+          ...validated,
+        },
+      ] as WorkflowTypes.ProductWorkflow.UpdateProductVariantsInputDTO[],
+    }
+
+    await updateVariantsWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+  } else {
+    await manager.transaction(async (transactionManager) => {
+      await productVariantService
+        .withTransaction(transactionManager)
+        .update(variant_id, {
+          product_id: id,
+          ...validated,
+        })
+    })
+  }
 
   const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,

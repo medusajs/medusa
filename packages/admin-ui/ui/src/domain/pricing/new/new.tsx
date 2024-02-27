@@ -11,7 +11,6 @@ import * as React from "react"
 import { useForm, useWatch } from "react-hook-form"
 import * as z from "zod"
 
-import { ExclamationCircle, Spinner } from "@medusajs/icons"
 import { Product } from "@medusajs/medusa"
 import { useAdminCreatePriceList } from "medusa-react"
 import { Form } from "../../../components/helpers/form"
@@ -41,6 +40,7 @@ import {
   type PriceListProductPricesSchema,
 } from "../forms/price-list-product-prices-form"
 
+import { ExclamationCircle, Spinner } from "@medusajs/icons"
 import { useTranslation } from "react-i18next"
 import {
   PriceListProductsForm,
@@ -159,6 +159,9 @@ const PriceListNew = () => {
   const { isLoading, isError, isNotFound, regions, currencies } =
     usePricesFormData({
       productIds: selectedIds,
+      enable: {
+        products: false,
+      },
     })
 
   const onCloseModal = React.useCallback(() => {
@@ -628,7 +631,7 @@ const PriceListNew = () => {
               <ProgressTabs.Trigger
                 value={Tab.PRICES}
                 disabled={
-                  status[Tab.DETAILS] !== "completed" &&
+                  status[Tab.DETAILS] !== "completed" ||
                   status[Tab.PRODUCTS] !== "completed"
                 }
                 className="w-full min-w-0 max-w-[200px]"
@@ -690,52 +693,69 @@ const PriceListNew = () => {
                 >
                   <PriceListProductsForm form={nestedForm(form, "products")} />
                 </ProgressTabs.Content>
-                {isLoading ? (
-                  <div className="flex h-full w-full items-center justify-center">
-                    <Spinner className="text-ui-fg-subtle animate-spin" />
-                  </div>
-                ) : isError || isNotFound ? (
-                  <div className="flex h-full w-full items-center justify-center">
-                    <div className="text-ui-fg-subtle flex items-center gap-x-2">
-                      <ExclamationCircle />
-                      <Text>
-                        {t(
-                          "price-list-new-form-error-loading-products",
-                          "An error occurred while preparing the form. Reload the page and try again. If the issue persists, try again later."
-                        )}
-                      </Text>
+
+                <ProgressTabs.Content
+                  value={Tab.PRICES}
+                  className="h-full w-full"
+                >
+                  {isLoading ? (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <Spinner className="text-ui-fg-subtle animate-spin" />
                     </div>
-                  </div>
-                ) : (
-                  <React.Fragment>
-                    <ProgressTabs.Content
-                      value={Tab.PRICES}
-                      className="h-full w-full"
-                    >
-                      <PriceListPricesForm
-                        setProduct={onSetProduct}
-                        form={nestedForm(form, "prices")}
-                        productIds={selectedIds}
+                  ) : isError || isNotFound ? (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <div className="text-ui-fg-subtle flex items-center gap-x-2">
+                        <ExclamationCircle />
+                        <Text>
+                          {t(
+                            "price-list-new-form-error-loading-products",
+                            "An error occurred while preparing the form. Reload the page and try again. If the issue persists, try again later."
+                          )}
+                        </Text>
+                      </div>
+                    </div>
+                  ) : (
+                    <PriceListPricesForm
+                      setProduct={onSetProduct}
+                      form={nestedForm(form, "prices")}
+                      productIds={selectedIds}
+                    />
+                  )}
+                </ProgressTabs.Content>
+                {product && (
+                  <ProgressTabs.Content
+                    value={Tab.EDIT}
+                    className="h-full w-full"
+                  >
+                    {isLoading ? (
+                      <div className="flex h-full w-full items-center justify-center">
+                        <Spinner className="text-ui-fg-subtle animate-spin" />
+                      </div>
+                    ) : isError || isNotFound ? (
+                      <div className="flex h-full w-full items-center justify-center">
+                        <div className="text-ui-fg-subtle flex items-center gap-x-2">
+                          <ExclamationCircle />
+                          <Text>
+                            {t(
+                              "price-list-new-form-error-loading-products",
+                              "An error occurred while preparing the form. Reload the page and try again. If the issue persists, try again later."
+                            )}
+                          </Text>
+                        </div>
+                      </div>
+                    ) : (
+                      <PriceListProductPricesForm
+                        priceListTaxInclusive={taxToggleState}
+                        taxInclEnabled={isTaxInclPricesEnabled}
+                        product={product}
+                        currencies={currencies}
+                        regions={regions}
+                        control={editControl}
+                        getValues={getEditValues}
+                        setValue={setEditValue}
                       />
-                    </ProgressTabs.Content>
-                    {product && (
-                      <ProgressTabs.Content
-                        value={Tab.EDIT}
-                        className="h-full w-full"
-                      >
-                        <PriceListProductPricesForm
-                          priceListTaxInclusive={taxToggleState}
-                          taxInclEnabled={isTaxInclPricesEnabled}
-                          product={product}
-                          currencies={currencies}
-                          regions={regions}
-                          control={editControl}
-                          getValues={getEditValues}
-                          setValue={setEditValue}
-                        />
-                      </ProgressTabs.Content>
                     )}
-                  </React.Fragment>
+                  </ProgressTabs.Content>
                 )}
               </Form>
             </FocusModal.Body>

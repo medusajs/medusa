@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
-import { RegionServiceMock } from "../../../../../services/__mocks__/region"
 import { request } from "../../../../../helpers/test-request"
+import { RegionServiceMock } from "../../../../../services/__mocks__/region"
 
 const defaultFields = [
   "id",
@@ -19,8 +19,9 @@ const defaultFields = [
 
 const defaultRelations = [
   "countries",
-  "payment_providers",
+  "currency",
   "fulfillment_providers",
+  "payment_providers",
 ]
 
 describe("GET /admin/regions", () => {
@@ -54,6 +55,7 @@ describe("GET /admin/regions", () => {
           relations: defaultRelations,
           take: 50,
           skip: 0,
+          order: { created_at: "DESC" },
         }
       )
     })
@@ -89,6 +91,7 @@ describe("GET /admin/regions", () => {
           relations: defaultRelations,
           take: 20,
           skip: 10,
+          order: { created_at: "DESC" },
         }
       )
     })

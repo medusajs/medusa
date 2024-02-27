@@ -33,7 +33,32 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ user }) => {
  *         console.log(user.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminLogin } from "medusa-react"
+ *
+ *       const Login = () => {
+ *         const adminLogin = useAdminLogin()
+ *         // ...
+ *
+ *         const handleLogin = () => {
+ *           adminLogin.mutate({
+ *             email: "user@example.com",
+ *             password: "supersecret",
+ *           }, {
+ *             onSuccess: ({ user }) => {
+ *               console.log(user)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Login
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -91,6 +116,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostAuthReq
  * type: object
+ * description: The admin's credentials used to log in.
  * required:
  *   - email
  *   - password

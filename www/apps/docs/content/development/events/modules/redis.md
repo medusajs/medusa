@@ -55,7 +55,7 @@ Where `<YOUR_REDIS_URL>` is a connection URL to your Redis instance.
 
 In `medusa-config.js`, add the following to the exported object:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   // ...
   modules: {

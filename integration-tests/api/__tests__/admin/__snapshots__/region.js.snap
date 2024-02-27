@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/admin/regions Remove region from country on delete successfully creates a region with countries from a previously deleted region 1`] = `
+exports[`/admin/regions Remove region from country on delete should successfully creates a region with countries from a previously deleted region 1`] = `
 Object {
   "deleted": true,
   "id": "test-region",
@@ -8,7 +8,7 @@ Object {
 }
 `;
 
-exports[`/admin/regions Remove region from country on delete successfully creates a region with countries from a previously deleted region 2`] = `
+exports[`/admin/regions Remove region from country on delete should successfully creates a region with countries from a previously deleted region 2`] = `
 Object {
   "automatic_taxes": true,
   "countries": Array [
@@ -23,6 +23,12 @@ Object {
     },
   ],
   "created_at": Any<String>,
+  "currency": Object {
+    "code": "usd",
+    "name": "US Dollar",
+    "symbol": "$",
+    "symbol_native": "$",
+  },
   "currency_code": "usd",
   "deleted_at": null,
   "fulfillment_providers": Array [

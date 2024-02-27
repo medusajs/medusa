@@ -48,7 +48,7 @@ export default (app, container, config) => {
   orderEditRoutes(route)
   cartRoutes(route, container)
   shippingOptionRoutes(route)
-  regionRoutes(route)
+  regionRoutes(route, featureFlagRouter)
   swapRoutes(route)
   variantRoutes(route)
   returnRoutes(route)

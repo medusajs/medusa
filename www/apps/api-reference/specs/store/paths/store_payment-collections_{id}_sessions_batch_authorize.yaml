@@ -24,6 +24,11 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/store_payment-collections_{id}_sessions_batch_authorize/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/store_payment-collections_{id}_sessions_batch_authorize/post.tsx
     - lang: Shell
       label: cURL
       source:

@@ -2,6 +2,8 @@
 
 {{> title}}
 
+{{incrementCurrentTitleLevel}}
+
 {{#with model}}
 
 {{#if (sectionEnabled "reflection_comment")}}
@@ -18,7 +20,7 @@
 
 {{#if (sectionEnabled "reflection_example")}}
 
-{{{example model 2}}}
+{{{example model}}}
 
 {{/if}}
 
@@ -26,11 +28,11 @@
 
 {{#if model.typeParameters}}
 
-## Type parameters
+{{{titleLevel}}} Type parameters
 
 {{#with model.typeParameters}}
 
-{{{typeParameter}}}
+{{{typeParameter sectionTitle=../model.name}}}
 
 {{/with}}
 
@@ -42,7 +44,7 @@
 
 {{#ifShowTypeHierarchy}}
 
-## Hierarchy
+{{{titleLevel}}} Hierarchy
 
 {{#with model.typeHierarchy}}
 
@@ -58,7 +60,7 @@
 
 {{#if model.implementedTypes}}
 
-## Implements
+{{{titleLevel}}} Implements
 
 {{#each model.implementedTypes}}
 - {{{type}}}
@@ -72,7 +74,7 @@
 
 {{#if model.implementedBy}}
 
-## Implemented by
+{{{titleLevel}}} Implemented by
 
 {{#each model.implementedBy}}
 - {{{type}}}
@@ -86,17 +88,25 @@
 
 {{#if model.signatures}}
 
-## Callable
+{{{titleLevel}}} Callable
 
 {{#with model}}
 
+{{incrementCurrentTitleLevel}}
+
 {{#each signatures}}
 
-### {{name}}
+{{{titleLevel}}} {{name}}
 
-{{> member.signature showSources=true }}
+{{incrementCurrentTitleLevel}}
+
+{{> member.signature-wrapper showSources=true }}
+
+{{decrementCurrentTitleLevel}}
 
 {{/each}}
+
+{{decrementCurrentTitleLevel}}
 
 {{/with}}
 
@@ -108,15 +118,19 @@
 
 {{#if model.indexSignature}}
 
-## Indexable
+{{{titleLevel}}} Indexable
 
 {{#with model}}
 
 {{#with indexSignature}}
 
+{{incrementCurrentTitleLevel}}
+
 {{{indexSignatureTitle}}}
 
 {{> comment}}
+
+{{decrementCurrentTitleLevel}}
 
 {{/with}}
 
@@ -131,3 +145,5 @@
 {{> main}}
 
 {{/with}}
+
+{{{ endSections }}}

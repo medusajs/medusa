@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the product category.
+ */
 export interface AdminPostProductCategoriesCategoryReq {
   /**
    * The name to identify the Product Category by.
@@ -32,4 +35,8 @@ export interface AdminPostProductCategoriesCategoryReq {
    * The rank of the category in the tree node (starting from 0)
    */
   rank?: number
+  /**
+   * An optional set of key-value pairs to hold additional information.
+   */
+  metadata?: Record<string, any>
 }

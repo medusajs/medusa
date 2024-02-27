@@ -1,4 +1,5 @@
 type: object
+description: The details of the line item to create.
 required:
   - variant_id
   - quantity

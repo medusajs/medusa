@@ -8,9 +8,10 @@ import {
 } from "@medusajs/types"
 import {
   InjectEntityManager,
-  isDefined,
   MedusaContext,
   MedusaError,
+  isDefined,
+  promiseAll,
 } from "@medusajs/utils"
 import { EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryLevelService } from "."
@@ -54,7 +55,7 @@ export default class ReservationItemService {
   async list(
     selector: FilterableReservationItemProps = {},
     config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<ReservationItem[]> {
     const manager = context.transactionManager ?? this.manager_
     const itemRepository = manager.getRepository(ReservationItem)
@@ -74,7 +75,7 @@ export default class ReservationItemService {
   async listAndCount(
     selector: FilterableReservationItemProps = {},
     config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<[ReservationItem[], number]> {
     const manager = context.transactionManager ?? this.manager_
     const itemRepository = manager.getRepository(ReservationItem)
@@ -95,7 +96,7 @@ export default class ReservationItemService {
   async retrieve(
     reservationItemId: string,
     config: FindConfig<ReservationItem> = {},
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<ReservationItem> {
     if (!isDefined(reservationItemId)) {
       throw new MedusaError(
@@ -150,7 +151,7 @@ export default class ReservationItemService {
       }))
     )
 
-    const [newReservationItems] = await Promise.all([
+    const [newReservationItems] = await promiseAll([
       reservationItemRepository.save(reservationItems),
       ...data.map(
         async (data) =>
@@ -228,7 +229,7 @@ export default class ReservationItemService {
 
     ops.push(itemRepository.save(item))
 
-    await Promise.all(ops)
+    await promiseAll(ops)
 
     await this.eventBusService_?.emit?.(ReservationItemService.Events.UPDATED, {
       id: mergedItem.id,
@@ -273,7 +274,7 @@ export default class ReservationItemService {
       )
     }
 
-    await Promise.all(ops)
+    await promiseAll(ops)
 
     await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
       line_item_id: lineItemId,
@@ -330,7 +331,7 @@ export default class ReservationItemService {
 
     promises.push(itemRepository.softRemove(items))
 
-    await Promise.all(promises)
+    await promiseAll(promises)
 
     await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
       ids: reservationItemId,

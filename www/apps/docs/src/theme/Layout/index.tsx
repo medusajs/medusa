@@ -53,6 +53,7 @@ export default function Layout(props: Props): JSX.Element {
   return (
     <LayoutProvider>
       <PageMetadata title={title} description={description} />
+
       <SkipToContent />
 
       <Navbar />

@@ -46,7 +46,7 @@ Batch job strategies must extend the abstract class `AbstractBatchJobStrategy` a
 
 Add the following content to the file you created:
 
-```ts title=src/strategies/publish.ts
+```ts title="src/strategies/publish.ts"
 import { 
   AbstractBatchJobStrategy, 
   BatchJobService, 
@@ -284,63 +284,91 @@ npx medusa develop
 
 You must also use an authenticated user to send batch job requests. You can refer to the [authentication guide in the API reference](https://docs.medusajs.com/api/admin#authentication) for more details.
 
-If you follow along with the JS Client code snippets, make sure to [install and set it up first](../../js-client/overview.md).
+If you follow along with the JS Client code snippets, make sure to [install and set it up first](../../js-client/overview.mdx).
 
 ### Create Batch Job
 
-The first step is to create a batch job using the [Create Batch Job endpoint](https://docs.medusajs.com/api/admin#batch-jobs_postbatchjobs). In the body of the request, you must set the `type` to the value of `batchType` in the batch job strategy you created.
+The first step is to create a batch job using the [Create Batch Job API Route](https://docs.medusajs.com/api/admin#batch-jobs_postbatchjobs). In the body of the request, you must set the `type` to the value of `batchType` in the batch job strategy you created.
 
 For example, this creates a batch job of the type `publish-products`:
 
 <Tabs groupId="request-types" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
-medusa.admin.batchJobs.create({
-  type: "publish-products",
-  context: { },
-  dry_run: true,
-})
-.then(( batch_job ) => {
-  console.log(batch_job.status)
-})
-```
+    ```ts
+    medusa.admin.batchJobs.create({
+      type: "publish-products",
+      context: { },
+      dry_run: true,
+    })
+    .then(( batch_job ) => {
+      console.log(batch_job.status)
+    })
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```jsx
-fetch(`<BACKEND_URL>/admin/batch-jobs`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    type: "publish-products",
-    context: { },
-    dry_run: true,
-  }),
-})
-.then((response) => response.json())
-.then(({ batch_job }) => {
-  console.log(batch_job.status)
-})
-```
+    ```tsx
+    import { useAdminCreateBatchJob } from "medusa-react"
+    
+    const CreateBatchJob = () => {
+      const createBatchJob = useAdminCreateBatchJob()
+      // ...
+    
+      const handleCreateBatchJob = () => {
+        createBatchJob.mutate({
+          type: "publish-products",
+          context: {},
+          dry_run: true
+        }, {
+          onSuccess: ({ batch_job }) => {
+            console.log(batch_job)
+          }
+        })
+      }
+    
+      // ...
+    }
+    
+    export default CreateBatchJob
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/batch-jobs' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "type": "publish-products",
-    "context": { },
-    "dry_run": true
-}'
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/batch-jobs`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "publish-products",
+        context: { },
+        dry_run: true,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ batch_job }) => {
+      console.log(batch_job.status)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/batch-jobs' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "type": "publish-products",
+        "context": { },
+        "dry_run": true
+    }'
+    ```
 
 </TabItem>
 </Tabs>
@@ -354,38 +382,62 @@ Make sure to replace `<BACKEND_URL>` with the backend URL where applicable.
 You can retrieve the batch job afterward to get its status and view details about the process in the `result` property:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
-medusa.admin.batchJobs.retrieve(batchJobId)
-.then(( batch_job ) => {
-  console.log(batch_job.status, batch_job.result)
-})
-```
+    ```ts
+    medusa.admin.batchJobs.retrieve(batchJobId)
+    .then(( batch_job ) => {
+      console.log(batch_job.status, batch_job.result)
+    })
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```jsx
-fetch(`<BACKEND_URL>/admin/batch-jobs/${batchJobId}`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ batch_job }) => {
-  console.log(batch_job.status, batch_job.result)
-})
-```
+    ```tsx
+    import { useAdminBatchJob } from "medusa-react"
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    type Props = {
+      batchJobId: string
+    }
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-# <BATCH_JOB_ID> is the ID of the batch job
-```
+    const BatchJob = ({ batchJobId }: Props) => {
+      const { batch_job, isLoading } = useAdminBatchJob(batchJobId)
+    
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {batch_job && <span>{batch_job.created_by}</span>}
+        </div>
+      )
+    }
+    
+    export default BatchJob
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/batch-jobs/${batchJobId}`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ batch_job }) => {
+      console.log(batch_job.status, batch_job.result)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    # <BATCH_JOB_ID> is the ID of the batch job
+    ```
+
+  </TabItem>
 </Tabs>
 
 Based on the batch job strategy implemented in this documentation, the `result` property could be something like this:
@@ -409,39 +461,67 @@ Based on the batch job strategy implemented in this documentation, the `result` 
 To process the batch job, send a request to [confirm the batch job](https://docs.medusajs.com/api/admin#batch-jobs_postbatchjobsbatchjobconfirmprocessing):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
-medusa.admin.batchJobs.confirm(batchJobId)
-.then(( batch_job ) => {
-  console.log(batch_job.status)
-})
-```
+    ```ts
+    medusa.admin.batchJobs.confirm(batchJobId)
+    .then(( batch_job ) => {
+      console.log(batch_job.status)
+    })
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```jsx
-fetch(`<BACKEND_URL>/admin/batch-jobs/${batchJobId}/confirm`, {
-  method: "POST",
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ batch_job }) => {
-  console.log(batch_job.status)
-})
-```
+    ```tsx
+    import { useAdminConfirmBatchJob } from "medusa-react"
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    type Props = {
+      batchJobId: string
+    }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
--H 'Authorization: Bearer <API_TOKEN>'
-# <BATCH_JOB_ID> is the ID of the batch job
-```
+    const BatchJob = ({ batchJobId }: Props) => {
+      const confirmBatchJob = useAdminConfirmBatchJob(batchJobId)
+      // ...
+    
+      const handleConfirm = () => {
+        confirmBatchJob.mutate(undefined, {
+          onSuccess: ({ batch_job }) => {
+            console.log(batch_job)
+          }
+        })
+      }
+    
+      // ...
+    }
+    
+    export default BatchJob
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/batch-jobs/${batchJobId}/confirm`, {
+      method: "POST",
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ batch_job }) => {
+      console.log(batch_job.status)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    # <BATCH_JOB_ID> is the ID of the batch job
+    ```
+
+  </TabItem>
 </Tabs>
 
 The batch job will start processing afterward. Based on the batch job strategy implemented in this documentation, draft products will be published.

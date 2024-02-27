@@ -10,6 +10,8 @@ import { ProductVariant } from "../models"
 import dotenv from "dotenv"
 import express from "express"
 import loaders from "../loaders"
+import { promiseAll } from "@medusajs/utils"
+import Logger from "../loaders/logger"
 
 dotenv.config()
 
@@ -99,7 +101,7 @@ const processBatch = async (
 ) => {
   const manager = container.resolve("manager")
   return await manager.transaction(async (transactionManager) => {
-    await Promise.all(
+    await promiseAll(
       variants.map(async (variant) => {
         await migrateProductVariant(variant, locationId, {
           container,
@@ -132,7 +134,7 @@ const migrate = async function ({ directory }) {
   await processBatch(variants, defaultLocationId, container)
 
   let processedCount = variants.length
-  console.log(`Processed ${processedCount} of ${totalCount}`)
+  Logger.log(`Processed ${processedCount} of ${totalCount}`)
   while (processedCount < totalCount) {
     const nextBatch = await variantService.list(
       {},
@@ -146,10 +148,10 @@ const migrate = async function ({ directory }) {
     await processBatch(nextBatch, defaultLocationId, container)
 
     processedCount += nextBatch.length
-    console.log(`Processed ${processedCount} of ${totalCount}`)
+    Logger.log(`Processed ${processedCount} of ${totalCount}`)
   }
 
-  console.log("Done")
+  Logger.log("Done")
   process.exit(0)
 }
 

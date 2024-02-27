@@ -6,4 +6,4 @@ medusa.auth.authenticate({
 })
 .then(({ customer }) => {
   console.log(customer.id);
-});
+})

@@ -1,10 +1,18 @@
+{{#if (sectionEnabled "member_declaration_title")}}
+
 {{{declarationTitle}}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_declaration_comment")}}
 
 {{> comment}}
 
+{{/if}}
+
 {{#if (sectionEnabled "member_declaration_example")}}
 
-{{{example this 4}}}
+{{{example this}}}
 
 {{/if}}
 
@@ -12,11 +20,11 @@
 
 {{#if typeParameters}}
 
-{{titleLevel 4}} Type parameters
+{{{titleLevel}}} Type Parameters
 
 {{#with typeParameters}}
 
-{{{typeParameter}}}
+{{{typeParameter sectionTitle=../name}}}
 
 {{/with}}
 
@@ -32,7 +40,7 @@
 
 {{#with type.declaration.indexSignature}}
 
-{{titleLevel 4}} Index signature
+{{titleLevel}} Index signature
 
 {{{indexSignatureTitle}}}
 
@@ -50,17 +58,21 @@
 
 {{#if type.declaration.children}}
 
-{{titleLevel 4}} Call signature
+{{{titleLevel}}} Call signature
 
 {{else}}
 
-{{titleLevel 4}} Type declaration
+{{{titleLevel}}} Type declaration
 
 {{/if}}
 
 {{#each type.declaration.signatures}}
 
-{{> member.signature showSources=false }}
+{{incrementCurrentTitleLevel}}
+
+{{> member.signature-wrapper showSources=false parent=../type.declaration }}
+
+{{decrementCurrentTitleLevel}}
 
 {{/each}}
 
@@ -74,17 +86,41 @@
 
 {{#with type.declaration}}
 
-{{titleLevel 4}} Type declaration
+{{{titleLevel}}} Properties
 
 {{/with}}
 
 {{#with type.declaration.children}}
 
-{{{typeDeclarationMembers}}}
+{{{typeDeclarationMembers sectionTitle=../name}}}
 
 {{/with}}
 
 {{/if}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_declaration_children")}}
+
+{{#if (shouldExpandDeclarationChildren)}}
+
+{{#each (getDeclarationChildren)}}
+
+{{> member}}
+
+{{/each}}
+
+{{else}}
+
+{{#with (getDeclarationChildren)}}
+
+{{{titleLevel}}} Properties
+
+{{{typeDeclarationMembers sectionTitle=../name}}}
+
+{{/with}}
 
 {{/if}}
 

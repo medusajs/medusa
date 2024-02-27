@@ -14,7 +14,7 @@ In Medusa, there are different ways you can customize taxes, allowing you to imp
 
 - Create a tax provider that defines the tax lines applied to line items and shipping methods.
 - Customize the tax calculation strategy to change how taxes are calculated.
-- Override tax rates for specific products, product types, or shipping options in a region using endpoints or services.
+- Override tax rates for specific products, product types, or shipping options in a region using API Routes or services.
 
 ---
 

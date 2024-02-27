@@ -35,7 +35,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.mdx) installed and have [created an instance of the client](../../../js-client/overview.mdx#configuration).
 
 ### Medusa React
 
@@ -57,155 +57,162 @@ Return reasons allow you to specify why an item is returned. They are especially
 
 ### List Return Reasons
 
-You can list available return reasons using the [List Return Reasons endpoint](https://docs.medusajs.com/api/admin#return-reasons_getreturnreasons):
+You can list available return reasons using the [List Return Reasons API Route](https://docs.medusajs.com/api/admin#return-reasons_getreturnreasons):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.returnReasons.list()
-.then(({ return_reasons }) => {
-  console.log(return_reasons.length)
-})
-```
+    ```ts
+    medusa.admin.returnReasons.list()
+    .then(({ return_reasons }) => {
+      console.log(return_reasons.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminReturnReasons } from "medusa-react"
+    ```tsx
+    import { useAdminReturnReasons } from "medusa-react"
 
-const ReturnReasons = () => {
-  const { return_reasons, isLoading } = useAdminReturnReasons()
+    const ReturnReasons = () => {
+      const { return_reasons, isLoading } = useAdminReturnReasons()
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {return_reasons && !return_reasons.length && (
-        <span>No Return Reasons</span>
-      )}
-      {return_reasons && return_reasons.length > 0 && (
-        <ul>
-          {return_reasons.map((reason) => (
-            <li key={reason.id}>
-              {reason.label}: {reason.value}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {return_reasons && !return_reasons.length && (
+            <span>No Return Reasons</span>
+          )}
+          {return_reasons && return_reasons.length > 0 && (
+            <ul>
+              {return_reasons.map((reason) => (
+                <li key={reason.id}>
+                  {reason.label}: {reason.value}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-export default ReturnReasons
-```
+    export default ReturnReasons
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/return-reasons`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ return_reasons }) => {
-  console.log(return_reasons.length)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/return-reasons`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ return_reasons }) => {
+      console.log(return_reasons.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/return-reasons' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/return-reasons' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint does not require or accept any path or query parameters.
+This API Route doesn't require or accept any path or query parameters.
 
 The request returns an array of return reason objects.
 
 ### Create a Return Reason
 
-You can create a return reason using the [Create Return Reason endpoint](https://docs.medusajs.com/api/admin#return-reasons_postreturnreasons):
+You can create a return reason using the [Create Return Reason API Route](https://docs.medusajs.com/api/admin#return-reasons_postreturnreasons):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.returnReasons.create({
-  label: "Damaged",
-  value: "damaged",
-})
-.then(({ return_reason }) => {
-  console.log(return_reason.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCreateReturnReason } from "medusa-react"
-
-const CreateReturnReason = () => {
-  const createReturnReason = useAdminCreateReturnReason()
-  // ...
-
-  const handleCreate = () => {
-    createReturnReason.mutate({
+    ```ts
+    medusa.admin.returnReasons.create({
       label: "Damaged",
       value: "damaged",
     })
-  }
+    .then(({ return_reason }) => {
+      console.log(return_reason.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default CreateReturnReason
-```
+    ```tsx
+    import { useAdminCreateReturnReason } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const CreateReturnReason = () => {
+      const createReturnReason = useAdminCreateReturnReason()
+      // ...
 
-```ts
-fetch(`<BACKEND_URL>/admin/return-reasons`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    label: "Damaged",
-    value: "damaged",
-  }),
-})
-.then((response) => response.json())
-.then(({ return_reason }) => {
-  console.log(return_reason.id)
-})
-```
+      const handleCreate = (
+        label: string,
+        value: string
+      ) => {
+        createReturnReason.mutate({
+          label,
+          value,
+        }, {
+          onSuccess: ({ return_reason }) => {
+            console.log(return_reason.id)
+          }
+        })
+      }
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      // ...
+    }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/return-reasons' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-   "label": "Damaged",
-   "value": "damaged"
-}'
-```
+    export default CreateReturnReason
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/return-reasons`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        label: "Damaged",
+        value: "damaged",
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ return_reason }) => {
+      console.log(return_reason.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/return-reasons' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "label": "Damaged",
+      "value": "damaged"
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the following request body parameters:
+This API Route requires the following request body parameters:
 
 - `label`: a string that will be used as the label of the return reason. This is typically the label shown to the customer or the merchant.
 - `value`: a string that is unique among return reasons. It is typically used internally for identification
@@ -216,80 +223,90 @@ This request returns the created return reason as an object.
 
 ### Update a Return Reason
 
-You can update a return reason by sending a request to the [Update Return Reason endpoint](https://docs.medusajs.com/api/admin#return-reasons_postreturnreasonsreason):
+You can update a return reason by sending a request to the [Update Return Reason API Route](https://docs.medusajs.com/api/admin#return-reasons_postreturnreasonsreason):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.returnReasons.update(returnReasonId, {
-  label: "Damaged",
-})
-.then(({ return_reason }) => {
-  console.log(return_reason.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminUpdateReturnReason } from "medusa-react"
-
-const UpdateReturnReason = () => {
-  const updateReturnReason = useAdminUpdateReturnReason(
-    returnReasonId
-  )
-  // ...
-
-  const handleUpdate = () => {
-    updateReturnReason.mutate({
+    ```ts
+    medusa.admin.returnReasons.update(returnReasonId, {
       label: "Damaged",
     })
-  }
+    .then(({ return_reason }) => {
+      console.log(return_reason.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default UpdateReturnReason
-```
+    ```tsx
+    import { useAdminUpdateReturnReason } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    type Props = {
+      returnReasonId: string
+    }
 
-```ts
-fetch(`<BACKEND_URL>/admin/return-reasons/${returnReasonId}`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    label: "Damaged",
-  }),
-})
-.then((response) => response.json())
-.then(({ return_reason }) => {
-  console.log(return_reason.id)
-})
-```
+    const ReturnReason = ({ returnReasonId }: Props) => {
+      const updateReturnReason = useAdminUpdateReturnReason(
+        returnReasonId
+      )
+      // ...
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      const handleUpdate = (
+        label: string
+      ) => {
+        updateReturnReason.mutate({
+          label,
+        }, {
+          onSuccess: ({ return_reason }) => {
+            console.log(return_reason.label)
+          }
+        })
+      }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/return-reasons/<REASON_ID>' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-   "label": "Damaged"
-}'
-```
+      // ...
+    }
 
-</TabItem>
+    export default ReturnReason
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/return-reasons/${returnReasonId}`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        label: "Damaged",
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ return_reason }) => {
+      console.log(return_reason.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/return-reasons/<REASON_ID>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "label": "Damaged"
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the return reason ID to be passed as a path parameter.
+This API Route requires the return reason ID to be passed as a path parameter.
 
 In the request body, you can pass any of the return reason’s fields that you want to update as parameters. In the example above, the label is passed in the request body to be updated.
 
@@ -297,66 +314,74 @@ The request returns the updated return reason as an object.
 
 ### Delete a Return Reason
 
-You can delete a return reason by sending a request to the [Delete Return Reason endpoint](https://docs.medusajs.com/api/admin#return-reasons_deletereturnreason):
+You can delete a return reason by sending a request to the [Delete Return Reason API Route](https://docs.medusajs.com/api/admin#return-reasons_deletereturnreason):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.returnReasons.delete(returnReasonId)
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+    ```ts
+    medusa.admin.returnReasons.delete(returnReasonId)
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminDeleteReturnReason } from "medusa-react"
+    ```tsx
+    import { useAdminDeleteReturnReason } from "medusa-react"
 
-const DeleteReturnReason = () => {
-  const deleteReturnReason = useAdminDeleteReturnReason(
-    returnReasonId
-  )
-  // ...
+    type Props = {
+      returnReasonId: string
+    }
 
-  const handleDelete = () => {
-    deleteReturnReason.mutate()
-  }
+    const ReturnReason = ({ returnReasonId }: Props) => {
+      const deleteReturnReason = useAdminDeleteReturnReason(
+        returnReasonId
+      )
+      // ...
 
-  // ...
-}
+      const handleDelete = () => {
+        deleteReturnReason.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
+      }
 
-export default DeleteReturnReason
-```
+      // ...
+    }
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    export default ReturnReason
+    ```
 
-```ts
-fetch(`<BACKEND_URL>/admin/return-reasons/${returnReasonId}`, {
-  credentials: "include",
-  method: "DELETE",
-})
-.then((response) => response.json())
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    ```ts
+    fetch(`<BACKEND_URL>/admin/return-reasons/${returnReasonId}`, {
+      credentials: "include",
+      method: "DELETE",
+    })
+    .then((response) => response.json())
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/return-reasons/<REASON_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-</TabItem>
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/return-reasons/<REASON_ID>' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the return reason ID as a path parameter.
+This API Route requires the return reason ID as a path parameter.
 
 The request returns the following fields:
 
@@ -370,82 +395,82 @@ The request returns the following fields:
 
 :::note
 
-You can view all returns in your commerce system, regardless of which order they belong to, using the [List Returns endpoint](https://docs.medusajs.com/api/admin#return-reasons_getreturnreasons).
+You can view all returns in your commerce system, regardless of which order they belong to, using the [List Returns API Route](https://docs.medusajs.com/api/admin#return-reasons_getreturnreasons).
 
 :::
 
-When you retrieve an order using the [Get Order endpoint](https://docs.medusajs.com/api/admin#orders_getordersorder), you can access the returns within the order object:
+When you retrieve an order using the [Get Order API Route](https://docs.medusajs.com/api/admin#orders_getordersorder), you can access the returns within the order object:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.retrieve(orderId)
-.then(({ order }) => {
-  console.log(order.returns)
-})
-```
+    ```ts
+    medusa.admin.orders.retrieve(orderId)
+    .then(({ order }) => {
+      console.log(order.returns)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminOrder } from "medusa-react"
+    ```tsx
+    import { useAdminOrder } from "medusa-react"
 
-const Order = () => {
-  const { 
-    order, 
-    isLoading, 
-  } = useAdminOrder(orderId)
- 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {order && (
-        <>
-          <span>{order.display_id}</span>
-          {order.returns?.length > 0 && (
-            <ul>
-              {order.returns.map((orderReturn) => (
-                <li key={orderReturn.id}>{orderReturn.id}</li>
-              ))}
-            </ul>
+    const Order = () => {
+      const { 
+        order, 
+        isLoading, 
+      } = useAdminOrder(orderId)
+    
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {order && (
+            <>
+              <span>{order.display_id}</span>
+              {order.returns?.length > 0 && (
+                <ul>
+                  {order.returns.map((orderReturn) => (
+                    <li key={orderReturn.id}>{orderReturn.id}</li>
+                  ))}
+                </ul>
+              )}
+            </>
           )}
-        </>
-      )}
-      
-    </div>
-  )
-}
+          
+        </div>
+      )
+    }
 
-export default Order
-```
+    export default Order
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.returns)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.returns)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
-This endpoint requires the order ID as a path parameter.
+This API Route requires the order ID as a path parameter.
 
 The request returns the order as an object. In that object, you can access an array of return objects using the property `returns` of the order object.
 
@@ -453,7 +478,7 @@ The request returns the order as an object. In that object, you can access an ar
 
 ## View a Swap’s Return
 
-You can retrieve a swap either using the Get Order endpoint as explained [here](./manage-swaps.mdx#view-orders-swaps), or using the [List Swaps](https://docs.medusajs.com/api/admin#swaps_getswaps) or [Get Swap endpoint](https://docs.medusajs.com/api/admin#swaps_getswapsswap).
+You can retrieve a swap either using the Get Order API Route as explained [here](./manage-swaps.mdx#view-orders-swaps), or using the [List Swaps](https://docs.medusajs.com/api/admin#swaps_getswaps) or [Get Swap](https://docs.medusajs.com/api/admin#swaps_getswapsswap) API Routes.
 
 In a swap object, the swap’s return is available under the `return_order` property.
 
@@ -461,101 +486,114 @@ In a swap object, the swap’s return is available under the `return_order` prop
 
 ## View a Claim’s Return
 
-You can retrieve a claim using the Get Order endpoint as explained [here](./manage-claims#view-orders-claims). In a claim object, the claim’s return is available under the `return_order` property.
+You can retrieve a claim using the Get Order API Route as explained [here](./manage-claims#view-orders-claims). In a claim object, the claim’s return is available under the `return_order` property.
 
 ---
 
 ## Mark a Return as Received
 
-You can mark a return as received by sending a request to the [Receive a Return endpoint](https://docs.medusajs.com/api/admin#returns_postreturnsreturnreceive):
+You can mark a return as received by sending a request to the [Receive a Return API Route](https://docs.medusajs.com/api/admin#returns_postreturnsreturnreceive):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.returns.receive(return_id, {
-  items: [
-    {
-      item_id,
-      quantity: 1,
-    },
-  ],
-})
-.then((data) => {
-  console.log(data.return.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminReceiveReturn } from "medusa-react"
-
-const ReceiveReturn = () => {
-  const receiveReturn = useAdminReceiveReturn(
-    returnId
-  )
-  // ...
-
-  const handleReceive = () => {
-    receiveReturn.mutate({
-      email,
+    ```ts
+    medusa.admin.returns.receive(return_id, {
+      items: [
+        {
+          item_id,
+          quantity: 1,
+        },
+      ],
     })
-  }
+    .then((data) => {
+      console.log(data.return.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default ReceiveReturn
-```
+    ```tsx
+    import { useAdminReceiveReturn } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    type ReceiveReturnData = {
+      items: {
+        item_id: string
+        quantity: number
+      }[]
+    }
 
-```ts
-fetch(`<BACKEND_URL>/admin/returns/${returnId}/receive`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    items: [
-      {
-        item_id,
-        quantity: 1,
-      },
-    ],
-  }),
-})
-.then((response) => response.json())
-.then((data) => {
-  console.log(data.return.id)
-})
-```
+    type Props = {
+      returnId: string
+    }
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    const Return = ({ returnId }: Props) => {
+      const receiveReturn = useAdminReceiveReturn(
+        returnId
+      )
+      // ...
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/returns/<RETURN_ID>/receive' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "items": [
-      {
-        "item_id": "<ITEM_ID>",
-        "quantity": 1
+      const handleReceive = (data: ReceiveReturnData) => {
+        receiveReturn.mutate(data, {
+          onSuccess: ({ return: dataReturn }) => {
+            console.log(dataReturn.status)
+          }
+        })
       }
-    ]
-}'
-```
 
-</TabItem>
+      // ...
+    }
+
+    export default Return
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/returns/${returnId}/receive`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        items: [
+          {
+            item_id,
+            quantity: 1,
+          },
+        ],
+      }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data.return.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/returns/<RETURN_ID>/receive' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "items": [
+          {
+            "item_id": "<ITEM_ID>",
+            "quantity": 1
+          }
+        ]
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the ID of the return as a path parameter.
+This API Route requires the ID of the return as a path parameter.
 
 In the request body, the `items` parameter is required. It’s an array of objects having the following properties:
 
@@ -576,66 +614,74 @@ A received return can’t be canceled.
 
 :::
 
-You can cancel a return by sending a request to the [Cancel Return endpoint](https://docs.medusajs.com/api/admin#returns_postreturnsreturncancel):
+You can cancel a return by sending a request to the [Cancel Return API Route](https://docs.medusajs.com/api/admin#returns_postreturnsreturncancel):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.returns.cancel(returnId)
-.then(({ order }) => {
-  console.log(order.returns)
-})
-```
+    ```ts
+    medusa.admin.returns.cancel(returnId)
+    .then(({ order }) => {
+      console.log(order.returns)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminCancelReturn } from "medusa-react"
+    ```tsx
+    import { useAdminCancelReturn } from "medusa-react"
 
-const CancelReturn = () => {
-  const cancelReturn = useAdminCancelReturn(
-    returnId
-  )
-  // ...
+    type Props = {
+      returnId: string
+    }
 
-  const handleCancel = () => {
-    cancelReturn.mutate()
-  }
+    const Return = ({ returnId }: Props) => {
+      const cancelReturn = useAdminCancelReturn(
+        returnId
+      )
+      // ...
 
-  // ...
-}
+      const handleCancel = () => {
+        cancelReturn.mutate(void 0, {
+          onSuccess: ({ order }) => {
+            console.log(order.returns)
+          }
+        })
+      }
 
-export default CancelReturn
-```
+      // ...
+    }
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    export default Return
+    ```
 
-```ts
-fetch(`<BACKEND_URL>/admin/returns/${returnId}/cancel`, {
-  credentials: "include",
-  method: "POST",
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.returns)
-})
-```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    ```ts
+    fetch(`<BACKEND_URL>/admin/returns/${returnId}/cancel`, {
+      credentials: "include",
+      method: "POST",
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.returns)
+    })
+    ```
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/returns/<RETURN_ID>/cancel' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-</TabItem>
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/returns/<RETURN_ID>/cancel' \
+    -H 'x-medusa-access-token: <API_TOKEN>'
+    ```
+
+  </TabItem>
 </Tabs>
 
-This endpoint requires the return ID to be passed as a path parameter.
+This API Route requires the return ID to be passed as a path parameter.
 
 The request returns one of the following object types:
 

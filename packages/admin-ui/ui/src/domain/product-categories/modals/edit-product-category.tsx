@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 import { ProductCategory } from "@medusajs/medusa"
 import { useAdminUpdateProductCategory } from "medusa-react"
@@ -15,26 +15,33 @@ import useNotification from "../../../hooks/use-notification"
 import { Option } from "../../../types/shared"
 import { getErrorMessage } from "../../../utils/error-messages"
 import TreeCrumbs from "../components/tree-crumbs"
+import MetadataForm, {
+  getSubmittableMetadata,
+} from "../../../components/forms/general/metadata-form"
+import { Controller, useForm } from "react-hook-form"
+import { nestedForm } from "../../../utils/nested-form"
+import { CategoryFormData, CategoryStatus, CategoryVisibility } from "./add-product-category"
+import { getDefaultCategoryValues } from "../utils"
 
 const visibilityOptions: (t: TFunction) => Option[] = (t) => [
   {
     label: "Public",
-    value: "public",
+    value: CategoryVisibility.Public,
   },
-  { label: "Private", value: "private" },
+  { label: "Private", value: CategoryVisibility.Private },
 ]
 
 const statusOptions: (t: TFunction) => Option[] = (t) => [
-  { label: "Active", value: "active" },
-  { label: "Inactive", value: "inactive" },
+  { label: "Active", value: CategoryStatus.Active },
+  { label: "Inactive", value: CategoryStatus.Inactive },
 ]
 
 type EditProductCategoriesSideModalProps = {
   activeCategory: ProductCategory
   close: () => void
   isVisible: boolean
+  categories: ProductCategory[]
 }
-
 /**
  * Modal for editing product categories
  */
@@ -43,12 +50,6 @@ function EditProductCategoriesSideModal(
 ) {
   const { isVisible, close, activeCategory, categories } = props
 
-  const [name, setName] = useState("")
-  const [handle, setHandle] = useState("")
-  const [description, setDescription] = useState("")
-  const [isActive, setIsActive] = useState(true)
-  const [isPublic, setIsPublic] = useState(true)
-
   const { t } = useTranslation()
   const notification = useNotification()
 
@@ -56,24 +57,37 @@ function EditProductCategoriesSideModal(
     activeCategory?.id
   )
 
+  
+
+  const form = useForm<CategoryFormData>({
+    defaultValues: getDefaultCategoryValues(t, activeCategory),
+    mode: "onChange",
+  })
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    control,
+    formState: { errors, isDirty, isValid, isSubmitting },
+  } = form
+
   useEffect(() => {
     if (activeCategory) {
-      setName(activeCategory.name)
-      setHandle(activeCategory.handle)
-      setDescription(activeCategory.description)
-      setIsActive(activeCategory.is_active)
-      setIsPublic(!activeCategory.is_internal)
+      reset(getDefaultCategoryValues(t, activeCategory))
     }
-  }, [activeCategory])
+  }, [activeCategory, reset])
 
-  const onSave = async () => {
+  const onSave = async (data: CategoryFormData) => {
     try {
       await updateCategory({
-        name,
-        handle,
-        description,
-        is_active: isActive,
-        is_internal: !isPublic,
+        name: data.name,
+        handle: data.handle,
+        description: data.description,
+        is_active: data.is_active.value === CategoryStatus.Active,
+        is_internal: data.is_public.value === CategoryVisibility.Private,
+        metadata: getSubmittableMetadata(data.metadata),
       })
 
       notification(
@@ -102,21 +116,32 @@ function EditProductCategoriesSideModal(
 
   return (
     <SideModal close={onClose} isVisible={!!isVisible}>
-      <div className="flex h-full flex-col justify-between">
+      <div className="flex h-full flex-col justify-between overflow-auto">
         {/* === HEADER === */}
         <div className="flex items-center justify-between p-6">
-          <h3 className="inter-large-semibold flex items-center gap-2 text-xl text-gray-900">
-            {t("modals-edit-product-category", "Edit product category")}
-          </h3>
           <Button
+            size="small"
             variant="secondary"
             className="h-8 w-8 p-2"
             onClick={props.close}
           >
             <CrossIcon size={20} className="text-grey-50" />
           </Button>
+          <div className="gap-x-small flex">
+            <Button
+              size="small"
+              variant="primary"
+              disabled={!isDirty || !isValid || isSubmitting}
+              onClick={handleSubmit(onSave)}
+              className="rounded-rounded"
+            >
+              {t("modals-save-category", "Save category")}
+            </Button>
+          </div>
         </div>
-
+        <h3 className="inter-large-semibold flex items-center gap-2 text-xl text-gray-900 px-6">
+          {t("modals-edit-product-category", "Edit product category")}
+        </h3>
         {/* === DIVIDER === */}
         <div className="block h-[1px] bg-gray-200" />
 
@@ -129,68 +154,84 @@ function EditProductCategoriesSideModal(
         <div className="flex-grow px-6">
           <InputField
             required
-            label={t("modals-name", "Name")}
+            label={t("modals-name", "Name") as string}
             type="string"
-            name="name"
-            value={name}
             className="my-6"
-            placeholder={t(
-              "modals-give-this-category-a-name",
-              "Give this category a name"
-            )}
-            onChange={(ev) => setName(ev.target.value)}
+            placeholder={
+              t(
+                "modals-give-this-category-a-name",
+                "Give this category a name"
+              ) as string
+            }
+            {...register("name", { required: true })}
           />
 
           <InputField
-            required
-            label={t("modals-handle", "Handle")}
-            type="string"
-            name="handle"
-            value={handle}
+            label={t("modals-handle", "Handle") as string}
             className="my-6"
-            placeholder={t("modals-custom-handle", "Custom handle")}
-            onChange={(ev) => setHandle(ev.target.value)}
+            type="string"
+            placeholder={
+              t("modals-custom-handle", "Custom handle") as string
+            }
+            {...register("handle")}
           />
 
           <TextArea
             label={t("modals-description", "Description")}
-            name="description"
-            value={description}
             className="my-6"
-            placeholder={t(
-              "modals-give-this-category-a-description",
-              "Give this category a description"
-            )}
-            onChange={(ev) => setDescription(ev.target.value)}
+            placeholder={
+              t(
+                "modals-give-this-category-a-description",
+                "Give this category a description"
+              ) as string
+            }
+            {...register("description")}
           />
 
-          <NextSelect
-            label={t("modals-status", "Status")}
-            options={statusOptions(t)}
-            value={statusOptions(t)[isActive ? 0 : 1]}
-            onChange={(o) => setIsActive(o.value === "active")}
+          <Controller
+            name="is_active"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => {
+              return (
+                <NextSelect
+                  {...field}
+                  label={t("modals-status", "Status") as string}
+                  placeholder="Choose status"
+                  options={statusOptions(t)}
+                  value={
+                    statusOptions(t)[field.value?.value === CategoryStatus.Active ? 0 : 1]
+                  }
+                />
+              )
+            }}
           />
 
-          <NextSelect
-            className="my-6"
-            label={t("modals-visibility", "Visibility")}
-            options={visibilityOptions(t)}
-            value={visibilityOptions(t)[isPublic ? 0 : 1]}
-            onChange={(o) => setIsPublic(o.value === "public")}
+          <Controller
+            name="is_public"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => {
+              return (
+                <NextSelect
+                  {...field}
+                  className="my-6"
+                  label={t("modals-visibility", "Visibility") as string}
+                  placeholder="Choose visibility"
+                  options={visibilityOptions(t)}
+                  value={
+                    visibilityOptions(t)[field.value.value === CategoryVisibility.Public ? 0 : 1]
+                  }
+                />
+              )
+            }}
           />
-        </div>
-
-        {/* === DIVIDER === */}
-        <div className="block h-[1px] bg-gray-200" />
-
-        {/* === FOOTER === */}
-        <div className="flex justify-end gap-2 p-3">
-          <Button size="small" variant="ghost" onClick={onClose}>
-            {t("modals-cancel", "Cancel")}
-          </Button>
-          <Button size="small" variant="primary" onClick={onSave}>
-            {t("modals-save-and-close", "Save and close")}
-          </Button>
+          <div className="mt-small mb-xlarge">
+            <h2 className="inter-base-semibold mb-base">
+              {t("collection-modal-metadata", "Metadata")}
+            </h2>
+            <MetadataForm form={nestedForm(form, "metadata")} />
+          </div>
         </div>
       </div>
     </SideModal>

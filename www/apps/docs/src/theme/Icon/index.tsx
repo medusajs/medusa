@@ -52,7 +52,6 @@ import {
   FolderOpen,
   Gatsby,
   GiftSolid,
-  Github,
   GlobeEurope,
   GlobeEuropeSolid,
   InformationCircleSolid,
@@ -101,6 +100,9 @@ import {
 } from "@medusajs/icons"
 import IconPuzzleSolid from "./PuzzleSolid"
 import IconNextjs from "./Nextjs"
+import IconFlagMini from "./FlagMini"
+import IconBeaker from "./Beaker"
+import IconGitHub from "./GitHub"
 
 export default {
   "academic-cap-solid": AcademicCapSolid,
@@ -110,6 +112,7 @@ export default {
   "arrow-down-tray": ArrowDownTray,
   "back-arrow": ArrowUturnLeft,
   "bars-three": BarsThree,
+  beaker: IconBeaker,
   bell: BellAlert,
   "bell-alert-solid": BellAlertSolid,
   bolt: Bolt,
@@ -159,7 +162,8 @@ export default {
   "folder-open": FolderOpen,
   gatsby: Gatsby,
   "gift-solid": GiftSolid,
-  github: Github,
+  "flag-mini": IconFlagMini,
+  github: IconGitHub,
   "globe-europe": GlobeEurope,
   "globe-europe-solid": GlobeEuropeSolid,
   "information-circle-solid": InformationCircleSolid,

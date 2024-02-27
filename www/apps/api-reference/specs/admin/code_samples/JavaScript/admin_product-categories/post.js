@@ -6,4 +6,4 @@ medusa.admin.productCategories.create({
 })
 .then(({ product_category }) => {
   console.log(product_category.id);
-});
+})

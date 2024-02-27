@@ -19,7 +19,7 @@ import { ProductService } from "../../../../services"
  *       medusa.admin.products.listTypes()
  *       .then(({ types }) => {
  *         console.log(types.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

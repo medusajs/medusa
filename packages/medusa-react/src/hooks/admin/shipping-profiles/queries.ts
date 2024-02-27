@@ -16,6 +16,41 @@ export const adminShippingProfileKeys = queryKeysFactory(
 
 type ShippingProfileQueryKeys = typeof adminShippingProfileKeys
 
+/**
+ * This hook retrieves a list of shipping profiles.
+ * 
+ * @example
+ * import React from "react"
+ * import { useAdminShippingProfiles } from "medusa-react"
+ * 
+ * const ShippingProfiles = () => {
+ *   const { 
+ *     shipping_profiles, 
+ *     isLoading
+ *   } = useAdminShippingProfiles()
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {shipping_profiles && !shipping_profiles.length && (
+ *         <span>No Shipping Profiles</span>
+ *       )}
+ *       {shipping_profiles && shipping_profiles.length > 0 && (
+ *         <ul>
+ *           {shipping_profiles.map((profile) => (
+ *             <li key={profile.id}>{profile.name}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default ShippingProfiles
+ * 
+ * @customNamespace Hooks.Admin.Shipping Profiles
+ * @category Queries
+ */
 export const useAdminShippingProfiles = (
   options?: UseQueryOptionsWrapper<
     Response<AdminShippingProfilesListRes>,
@@ -32,7 +67,44 @@ export const useAdminShippingProfiles = (
   return { ...data, ...rest } as const
 }
 
+/**
+ * This hook retrieves a shipping profile's details.
+ * 
+ * @example
+ * import React from "react"
+ * import { useAdminShippingProfile } from "medusa-react"
+ * 
+ * type Props = {
+ *   shippingProfileId: string
+ * }
+ * 
+ * const ShippingProfile = ({ shippingProfileId }: Props) => {
+ *   const { 
+ *     shipping_profile, 
+ *     isLoading
+ *   } = useAdminShippingProfile(
+ *     shippingProfileId
+ *   )
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {shipping_profile && (
+ *         <span>{shipping_profile.name}</span>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default ShippingProfile
+ * 
+ * @customNamespace Hooks.Admin.Shipping Profiles
+ * @category Queries
+ */
 export const useAdminShippingProfile = (
+  /**
+   * The shipping option's ID.
+   */
   id: string,
   options?: UseQueryOptionsWrapper<
     Response<AdminShippingProfilesRes>,

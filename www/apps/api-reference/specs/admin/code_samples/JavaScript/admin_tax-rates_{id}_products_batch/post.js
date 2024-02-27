@@ -8,4 +8,4 @@ medusa.admin.taxRates.addProducts(taxRateId, {
 })
 .then(({ tax_rate }) => {
   console.log(tax_rate.id);
-});
+})

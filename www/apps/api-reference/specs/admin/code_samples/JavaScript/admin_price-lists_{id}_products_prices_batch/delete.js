@@ -9,4 +9,4 @@ medusa.admin.priceLists.deleteProductsPrices(priceListId, {
 })
 .then(({ ids, object, deleted }) => {
   console.log(ids.length);
-});
+})

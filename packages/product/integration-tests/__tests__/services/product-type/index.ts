@@ -1,12 +1,14 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
+import ContainerLoader from "../../../../src/loaders/container"
 import { ProductTypeService } from "@services"
-import { ProductTypeRepository } from "@repositories"
 import { Product } from "@models"
 
 import { TestDatabase } from "../../../utils"
 import { createProductAndTypes } from "../../../__fixtures__/product"
 import { ProductTypes } from "@medusajs/types"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
 
 jest.setTimeout(30000)
 
@@ -33,7 +35,7 @@ describe("ProductType Service", () => {
       type: {
         id: "type-2",
         value: "Type 2",
-      }
+      },
     },
   ]
 
@@ -41,13 +43,12 @@ describe("ProductType Service", () => {
     await TestDatabase.setupDatabase()
     repositoryManager = await TestDatabase.forkManager()
 
-    const productTypeRepository = new ProductTypeRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new ProductTypeService({
-      productTypeRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("productTypeService")
 
     testManager = await TestDatabase.forkManager()
 
@@ -115,7 +116,9 @@ describe("ProductType Service", () => {
     })
 
     it("should return product type and count when filtered", async () => {
-      const [typeResults, count] = await service.listAndCount({ id: data[0].type.id })
+      const [typeResults, count] = await service.listAndCount({
+        id: data[0].type.id,
+      })
 
       expect(count).toEqual(1)
       expect(typeResults).toEqual([
@@ -126,7 +129,10 @@ describe("ProductType Service", () => {
     })
 
     it("should return product type and count when using skip and take", async () => {
-      const [typeResults, count] = await service.listAndCount({}, { skip: 1, take: 1 })
+      const [typeResults, count] = await service.listAndCount(
+        {},
+        { skip: 1, take: 1 }
+      )
 
       expect(count).toEqual(2)
       expect(typeResults).toEqual([
@@ -137,10 +143,13 @@ describe("ProductType Service", () => {
     })
 
     it("should return requested fields", async () => {
-      const [typeResults, count] = await service.listAndCount({}, {
-        take: 1,
-        select: ["value"],
-      })
+      const [typeResults, count] = await service.listAndCount(
+        {},
+        {
+          take: 1,
+          select: ["value"],
+        }
+      )
 
       const serialized = JSON.parse(JSON.stringify(typeResults))
 
@@ -158,13 +167,11 @@ describe("ProductType Service", () => {
     const typeValue = "Type 1"
 
     it("should return type for the given id", async () => {
-      const type = await service.retrieve(
-        typeId,
-      )
+      const type = await service.retrieve(typeId)
 
       expect(type).toEqual(
         expect.objectContaining({
-          id: typeId
+          id: typeId,
         })
       )
     })
@@ -178,7 +185,9 @@ describe("ProductType Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('ProductType with id: does-not-exist was not found')
+      expect(error.message).toEqual(
+        "ProductType with id: does-not-exist was not found"
+      )
     })
 
     it("should throw an error when an id is not provided", async () => {
@@ -190,25 +199,20 @@ describe("ProductType Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"productTypeId" must be defined')
+      expect(error.message).toEqual("productType - id must be defined")
     })
 
     it("should return type based on config select param", async () => {
-      const type = await service.retrieve(
-        typeId,
-        {
-          select: ["id", "value"],
-        }
-      )
+      const type = await service.retrieve(typeId, {
+        select: ["id", "value"],
+      })
 
       const serialized = JSON.parse(JSON.stringify(type))
 
-      expect(serialized).toEqual(
-        {
-          id: typeId,
-          value: typeValue,
-        }
-      )
+      expect(serialized).toEqual({
+        id: typeId,
+        value: typeValue,
+      })
     })
   })
 
@@ -216,12 +220,10 @@ describe("ProductType Service", () => {
     const typeId = "type-1"
 
     it("should delete the product type given an ID successfully", async () => {
-      await service.delete(
-        [typeId],
-      )
+      await service.delete([typeId])
 
       const types = await service.list({
-        id: typeId
+        id: typeId,
       })
 
       expect(types).toHaveLength(0)
@@ -232,12 +234,12 @@ describe("ProductType Service", () => {
     const typeId = "type-1"
 
     it("should update the value of the type successfully", async () => {
-      await service.update(
-        [{
+      await service.update([
+        {
           id: typeId,
-          value: "UK"
-        }]
-      )
+          value: "UK",
+        },
+      ])
 
       const productType = await service.retrieve(typeId)
 
@@ -249,29 +251,31 @@ describe("ProductType Service", () => {
 
       try {
         await service.update([
-        {
-          id: "does-not-exist",
-          value: "UK"
-        }
-      ])
+          {
+            id: "does-not-exist",
+            value: "UK",
+          },
+        ])
       } catch (e) {
         error = e
       }
 
-      expect(error.message).toEqual('ProductType with id "does-not-exist" not found')
+      expect(error.message).toEqual(
+        'ProductType with id "does-not-exist" not found'
+      )
     })
   })
 
   describe("create", () => {
     it("should create a type successfully", async () => {
-      await service.create(
-        [{
-          value: "UK"
-        }]
-      )
+      await service.create([
+        {
+          value: "UK",
+        },
+      ])
 
       const [productType] = await service.list({
-        value: "UK"
+        value: "UK",
       })
 
       expect(productType.value).toEqual("UK")

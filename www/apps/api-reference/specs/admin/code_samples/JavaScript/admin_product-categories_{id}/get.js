@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.productCategories.retrieve(productCategoryId)
 .then(({ product_category }) => {
   console.log(product_category.id);
-});
+})

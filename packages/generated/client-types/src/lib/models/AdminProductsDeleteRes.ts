@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of deleting a product.
+ */
 export interface AdminProductsDeleteRes {
   /**
    * The ID of the deleted Product.

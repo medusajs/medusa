@@ -8,4 +8,4 @@ medusa.admin.notes.create({
 })
 .then(({ note }) => {
   console.log(note.id);
-});
+})

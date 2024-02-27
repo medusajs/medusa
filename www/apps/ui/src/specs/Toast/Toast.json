@@ -1,0 +1,69 @@
+{
+  "description": "This component is based on the [Radix UI Toast](https://www.radix-ui.com/primitives/docs/components/toast) primitives.",
+  "methods": [],
+  "displayName": "Toast",
+  "props": {
+    "variant": {
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"info\" | \"success\" | \"warning\" | \"error\" | \"loading\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"info\""
+          },
+          {
+            "name": "literal",
+            "value": "\"success\""
+          },
+          {
+            "name": "literal",
+            "value": "\"warning\""
+          },
+          {
+            "name": "literal",
+            "value": "\"error\""
+          },
+          {
+            "name": "literal",
+            "value": "\"loading\""
+          }
+        ]
+      },
+      "description": "The toast's style."
+    },
+    "title": {
+      "required": false,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The toast's title."
+    },
+    "description": {
+      "required": false,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The toast's content."
+    },
+    "action": {
+      "required": false,
+      "tsType": {
+        "name": "ActionProps"
+      },
+      "description": "The actions to show in the toast as buttons."
+    },
+    "disableDismiss": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether to hide the Close button.",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      }
+    }
+  }
+}

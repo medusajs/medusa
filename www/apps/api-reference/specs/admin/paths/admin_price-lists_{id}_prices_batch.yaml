@@ -1,7 +1,7 @@
 post:
   operationId: PostPriceListsPriceListPricesBatch
   summary: Add or Update Prices
-  description: Add or update a list of prices in a Price List
+  description: Add or update a list of prices in a Price List.
   x-authenticated: true
   parameters:
     - in: path
@@ -22,6 +22,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_price-lists_{id}_prices_batch/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_price-lists_{id}_prices_batch/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -76,6 +80,10 @@ delete:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_price-lists_{id}_prices_batch/delete.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_price-lists_{id}_prices_batch/delete.tsx
     - lang: Shell
       label: cURL
       source:

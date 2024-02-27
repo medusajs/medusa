@@ -14,6 +14,40 @@ const returnReasonsKey = queryKeysFactory(RETURNS_REASONS_QUERY_KEY)
 
 type ReturnReasonsQueryKey = typeof returnReasonsKey
 
+/**
+ * This hook retrieves a list of Return Reasons. This is useful when implementing a Create Return flow in the storefront.
+ * 
+ * @example
+ * import React from "react"
+ * import { useReturnReasons } from "medusa-react"
+ * 
+ * const ReturnReasons = () => {
+ *   const { 
+ *     return_reasons, 
+ *     isLoading
+ *   } = useReturnReasons()
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {return_reasons?.length && (
+ *         <ul>
+ *           {return_reasons.map((returnReason) => (
+ *             <li key={returnReason.id}>
+ *               {returnReason.label}
+ *             </li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default ReturnReasons
+ * 
+ * @customNamespace Hooks.Store.Return Reasons
+ * @category Queries
+ */
 export const useReturnReasons = (
   options?: UseQueryOptionsWrapper<
     Response<StoreReturnReasonsListRes>,
@@ -30,7 +64,42 @@ export const useReturnReasons = (
   return { ...data, ...rest } as const
 }
 
+/**
+ * This hook retrieves a Return Reason's details.
+ * 
+ * @example
+ * import React from "react"
+ * import { useReturnReason } from "medusa-react"
+ * 
+ * type Props = {
+ *   returnReasonId: string
+ * }
+ * 
+ * const ReturnReason = ({ returnReasonId }: Props) => {
+ *   const { 
+ *     return_reason, 
+ *     isLoading
+ *   } = useReturnReason(
+ *     returnReasonId
+ *   )
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {return_reason && <span>{return_reason.label}</span>}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default ReturnReason
+ * 
+ * @customNamespace Hooks.Store.Return Reasons
+ * @category Queries
+ */
 export const useReturnReason = (
+  /**
+   * The return reason's ID.
+   */
   id: string,
   options?: UseQueryOptionsWrapper<
     Response<StoreReturnReasonsRes>,

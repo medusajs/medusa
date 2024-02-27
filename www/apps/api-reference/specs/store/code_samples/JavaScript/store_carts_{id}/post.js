@@ -5,4 +5,4 @@ medusa.carts.update(cartId, {
 })
 .then(({ cart }) => {
   console.log(cart.id);
-});
+})

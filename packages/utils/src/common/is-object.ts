@@ -1,3 +1,3 @@
-export function isObject(obj: unknown): obj is object {
-  return typeof obj === "object" && !!obj
+export function isObject(obj: any): obj is object {
+  return obj != null && obj?.constructor?.name === "Object"
 }

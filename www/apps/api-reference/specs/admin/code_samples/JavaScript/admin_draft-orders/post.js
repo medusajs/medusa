@@ -17,4 +17,4 @@ medusa.admin.draftOrders.create({
 })
 .then(({ draft_order }) => {
   console.log(draft_order.id);
-});
+})

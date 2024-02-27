@@ -30,6 +30,10 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_products_{id}_variants_{variant_id}/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_products_{id}_variants_{variant_id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -86,6 +90,11 @@ delete:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_products_{id}_variants_{variant_id}/delete.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_products_{id}_variants_{variant_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

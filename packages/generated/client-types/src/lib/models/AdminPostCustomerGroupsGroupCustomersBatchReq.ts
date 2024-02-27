@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The customers to add to the customer group.
+ */
 export interface AdminPostCustomerGroupsGroupCustomersBatchReq {
   /**
    * The ids of the customers to add

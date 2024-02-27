@@ -18,6 +18,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/store_orders_cart_{cart_id}/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/store_orders_cart_{cart_id}/get.tsx
     - lang: Shell
       label: cURL
       source:

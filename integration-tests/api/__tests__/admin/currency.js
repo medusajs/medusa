@@ -53,6 +53,35 @@ describe("/admin/currencies", () => {
 
       expect(response.data).toMatchSnapshot()
     })
+
+    it("should retrieve the currencies filtered with q param", async () => {
+      const api = useApi()
+      const response = await api.get(
+        `/admin/currencies?q=us&order=code`,
+        adminReqConfig
+      )
+
+      const { currencies } = response.data
+
+      expect(currencies).toEqual([
+        expect.objectContaining({
+          code: "aud",
+          name: "Australian Dollar",
+        }),
+        expect.objectContaining({
+          code: "byn",
+          name: "Belarusian Ruble",
+        }),
+        expect.objectContaining({
+          code: "rub",
+          name: "Russian Ruble",
+        }),
+        expect.objectContaining({
+          code: "usd",
+          name: "US Dollar",
+        }),
+      ])
+    })
   })
 })
 describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/currencies", () => {

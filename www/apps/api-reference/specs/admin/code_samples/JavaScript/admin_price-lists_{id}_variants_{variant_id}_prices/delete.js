@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.priceLists.deleteVariantPrices(priceListId, variantId)
 .then(({ ids, object, deleted }) => {
   console.log(ids);
-});
+})

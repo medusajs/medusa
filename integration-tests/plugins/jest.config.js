@@ -9,6 +9,7 @@ module.exports = {
     `/www/`,
     `/dist/`,
     `/node_modules/`,
+    `<rootDir>/node_modules/`,
     `__tests__/fixtures`,
     `__testfixtures__`,
     `.cache`,

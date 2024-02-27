@@ -1,21 +1,26 @@
 import {
   IsArray,
   IsBoolean,
+  IsEnum,
   IsNumber,
   IsObject,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultFields, defaultRelations } from "."
+import {
+  shippingOptionsDefaultFields,
+  shippingOptionsDefaultRelations,
+} from "."
 
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { validator } from "../../../../utils/validator"
+import { ShippingOptionPriceType } from "../../../../models"
 import { ShippingOptionService } from "../../../../services"
 import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/shipping-options/{id}
@@ -51,7 +56,45 @@ import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
  *       })
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateShippingOption } from "medusa-react"
+ *
+ *       type Props = {
+ *         shippingOptionId: string
+ *       }
+ *
+ *       const ShippingOption = ({ shippingOptionId }: Props) => {
+ *         const updateShippingOption = useAdminUpdateShippingOption(
+ *           shippingOptionId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           name: string,
+ *           requirements: {
+ *             id: string,
+ *             type: string,
+ *             amount: number
+ *           }[]
+ *         ) => {
+ *           updateShippingOption.mutate({
+ *             name,
+ *             requirements
+ *           }, {
+ *             onSuccess: ({ shipping_option }) => {
+ *               console.log(shipping_option.requirements)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ShippingOption
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -112,8 +155,8 @@ export default async (req, res) => {
   })
 
   const data = await optionService.retrieve(option_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: shippingOptionsDefaultFields,
+    relations: shippingOptionsDefaultRelations,
   })
 
   res.status(200).json({ shipping_option: data })
@@ -123,8 +166,10 @@ class OptionRequirement {
   @IsString()
   @IsOptional()
   id: string
+
   @IsString()
   type: string
+
   @IsNumber()
   amount: number
 }
@@ -132,6 +177,7 @@ class OptionRequirement {
 /**
  * @schema AdminPostShippingOptionsOptionReq
  * type: object
+ * description: "The details to update of the shipping option."
  * required:
  *   - requirements
  * properties:
@@ -139,10 +185,12 @@ class OptionRequirement {
  *     description: "The name of the Shipping Option"
  *     type: string
  *   amount:
- *     description: "The amount to charge for the Shipping Option. If the `price_type` of the shipping option is `calculated`, this amount will not actually be used."
+ *     description: >-
+ *       The amount to charge for the Shipping Option. If the `price_type` of the shipping option is `calculated`, this amount will not actually be used.
  *     type: integer
  *   admin_only:
- *     description: If set to `true`, the shipping option can only be used when creating draft orders.
+ *     description: >-
+ *       If set to `true`, the shipping option can only be used when creating draft orders.
  *     type: boolean
  *   metadata:
  *     description: "An optional set of key-value pairs with additional information."
@@ -184,6 +232,12 @@ export class AdminPostShippingOptionsOptionReq {
   @IsNumber()
   @IsOptional()
   amount?: number
+
+  @IsEnum(ShippingOptionPriceType, {
+    message: `Invalid price type, must be one of "flat_rate" or "calculated"`,
+  })
+  @IsOptional()
+  price_type?: ShippingOptionPriceType
 
   @IsArray()
   @ValidateNested({ each: true })

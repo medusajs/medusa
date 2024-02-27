@@ -6,16 +6,19 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 
+import { MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { CartService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IsType } from "../../../../utils/validators/is-type"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 
 /**
  * @oas [post] /store/carts/{id}
@@ -42,7 +45,36 @@ import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/i
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useUpdateCart } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const updateCart = useUpdateCart(cartId)
+ *
+ *         const handleUpdate = (
+ *           email: string
+ *         ) => {
+ *           updateCart.mutate({
+ *             email
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.email)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -79,12 +111,15 @@ export default async (req, res) => {
   const featureFlagRouter = req.scope.resolve("featureFlagRouter")
   const manager: EntityManager = req.scope.resolve("manager")
 
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
   if (req.user?.customer_id) {
     validated.customer_id = req.user.customer_id
   }
 
   let cart
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     cart = await retrieveCartWithIsolatedProductModule(req, id)
   }
 
@@ -110,6 +145,11 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
+
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
 
   res.json({ cart: cleanResponseData(data, []) })
 }
@@ -177,6 +217,7 @@ class Discount {
 /**
  * @schema StorePostCartsCartReq
  * type: object
+ * description: "The details to update of the cart."
  * properties:
  *   region_id:
  *     type: string
@@ -236,7 +277,8 @@ class Discount {
  *     description: "The ID of the Customer to associate the Cart with."
  *     type: string
  *   context:
- *     description: "An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`"
+ *     description: >-
+ *       An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`
  *     type: object
  *     example:
  *       ip: "::1"

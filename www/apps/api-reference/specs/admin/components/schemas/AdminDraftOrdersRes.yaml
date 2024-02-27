@@ -1,4 +1,5 @@
 type: object
+description: The list of draft orders.
 x-expanded-relations:
   field: draft_order
   relations:

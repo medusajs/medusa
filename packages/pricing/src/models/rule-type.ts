@@ -4,6 +4,7 @@ import {
   Collection,
   Entity,
   ManyToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -28,11 +29,16 @@ class RuleType {
   @Property({ columnType: "integer", default: 0 })
   default_priority: number
 
-  @ManyToMany(() => PriceSet, priceSet => priceSet.rule_types)
-  price_sets = new Collection<PriceSet>(this);
+  @ManyToMany(() => PriceSet, (priceSet) => priceSet.rule_types)
+  price_sets = new Collection<PriceSet>(this)
 
   @BeforeCreate()
   onCreate() {
+    this.id = generateEntityId(this.id, "rul-typ")
+  }
+
+  @OnInit()
+  onInit() {
     this.id = generateEntityId(this.id, "rul-typ")
   }
 }

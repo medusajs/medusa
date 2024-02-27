@@ -29,7 +29,31 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ store }) => {
  *         console.log(store.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateStore } from "medusa-react"
+ *
+ *       function Store() {
+ *         const updateStore = useAdminUpdateStore()
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           name: string
+ *         ) => {
+ *           updateStore.mutate({
+ *             name
+ *           }, {
+ *             onSuccess: ({ store }) => {
+ *               console.log(store.name)
+ *             }
+ *           })
+ *         }
+ *       }
+ *
+ *       export default Store
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -83,12 +107,14 @@ export default async (req, res) => {
 /**
  * @schema AdminPostStoreReq
  * type: object
+ * description: "The details to update of the store."
  * properties:
  *   name:
  *     description: "The name of the Store"
  *     type: string
  *   swap_link_template:
- *     description: "A template for Swap links - use `{{cart_id}}` to insert the Swap Cart ID"
+ *     description: >-
+ *       A template for Swap links - use `{{cart_id}}` to insert the Swap Cart ID
  *     type: string
  *     example: "http://example.com/swaps/{{cart_id}}"
  *   payment_link_template:

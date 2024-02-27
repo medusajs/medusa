@@ -29,6 +29,7 @@ export default (app) => {
 /**
  * @schema AdminAuthRes
  * type: object
+ * description: "The user's details."
  * required:
  *   - user
  * properties:
@@ -43,9 +44,10 @@ export type AdminAuthRes = {
 /**
  * @schema AdminBearerAuthRes
  * type: object
+ * description: "The access token of the user, if they're authenticated successfully."
  * properties:
- *   accessToken:
- *     description: Access token for subsequent authorization.
+ *   access_token:
+ *     description: Access token that can be used to send authenticated requests.
  *     type: string
  */
 export type AdminBearerAuthRes = {

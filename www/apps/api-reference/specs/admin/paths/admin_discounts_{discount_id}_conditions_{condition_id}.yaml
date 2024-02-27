@@ -39,6 +39,11 @@ get:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_discounts_{discount_id}_conditions_{condition_id}/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_discounts_{discount_id}_conditions_{condition_id}/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -119,6 +124,11 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_discounts_{discount_id}_conditions_{condition_id}/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_discounts_{discount_id}_conditions_{condition_id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -153,7 +163,7 @@ delete:
   operationId: DeleteDiscountsDiscountConditionsCondition
   summary: Delete a Condition
   description: >-
-    Deletes a Discount Condition. This does not delete resources associated to
+    Delete a Discount Condition. This does not delete resources associated to
     the discount condition.
   x-authenticated: true
   parameters:
@@ -190,6 +200,11 @@ delete:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_discounts_{discount_id}_conditions_{condition_id}/delete.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_discounts_{discount_id}_conditions_{condition_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

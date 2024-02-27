@@ -484,6 +484,18 @@
     {
       "source": "/user-guide/price-lists/import",
       "destination": "/user-guide/price-lists"
+    },
+    {
+      "source": "/development/endpoints/:path",
+      "destination": "/development/api-routes/:path"
+    },
+    {
+      "source": "/modules/products/serverless-module",
+      "destination": "/experimental/product/overview"
+    },
+    {
+      "source": "/modules/price-lists/backend/override-price-selection-strategy",
+      "destination": "/modules/price-lists/price-selection-strategy"
     }
   ],
   "framework": "docusaurus-2",

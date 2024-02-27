@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.priceLists.retrieve(priceListId)
 .then(({ price_list }) => {
   console.log(price_list.id);
-});
+})

@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.inventoryItems.deleteLocationLevel(inventoryItemId, locationId)
 .then(({ inventory_item }) => {
   console.log(inventory_item.id);
-});
+})

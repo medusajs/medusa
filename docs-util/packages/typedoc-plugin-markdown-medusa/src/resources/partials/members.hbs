@@ -4,11 +4,19 @@
 
 {{#each categories}}
 
+{{#ifShowSeparatorForTitleLevel}}
+{{#unless @first}}
+___
+{{/unless}}
+{{/ifShowSeparatorForTitleLevel}}
+
 {{#unless allChildrenHaveOwnDocument}}
 
 {{#unless (getFormattingOption "expandMembers")}}
 
-## {{title}}
+{{{titleLevel}}} {{title}}
+
+{{incrementCurrentTitleLevel}}
 
 {{/unless}}
 
@@ -16,11 +24,17 @@
 
 {{#unless hasOwnDocument}}
 
-{{> member}}
+{{> member removeSeparator=true}}
 
 {{/unless}}
 
 {{/each}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/unless}}
 
 {{/unless}}
 
@@ -31,6 +45,12 @@
 {{#each groups}}
 
 {{#unless allChildrenHaveOwnDocument}}
+
+{{#ifShowSeparatorForTitleLevel}}
+{{#unless @first}}
+___
+{{/unless}}
+{{/ifShowSeparatorForTitleLevel}}
 
 {{> members.group}}
 

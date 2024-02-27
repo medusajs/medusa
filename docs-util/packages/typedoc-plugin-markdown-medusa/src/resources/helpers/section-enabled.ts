@@ -1,6 +1,6 @@
+import { SectionKey } from "types"
 import { MarkdownTheme } from "../../theme"
 import * as Handlebars from "handlebars"
-import { SectionKey } from "../../types"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(

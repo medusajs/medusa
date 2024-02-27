@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of deleting order edit item changes.
+ */
 export interface AdminOrderEditItemChangeDeleteRes {
   /**
    * The ID of the deleted Order Edit Item Change.

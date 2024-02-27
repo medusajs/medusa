@@ -50,7 +50,7 @@ When you run your Medusa backend, the Payment Processor will be registered on yo
 
 Once the Payment Processor is added to the backend, the store operator will be able to choose using the [admin dashboard](../../admin/quickstart.mdx) the payment processors available in a region. You can alternatively do that using the [admin APIs](https://docs.medusajs.com/api/admin). These payment processors are shown to the customer at checkout as payment methods to choose from and use.
 
-:::caution
+:::warning
 
 It’s important to enable a payment processor in a region, or else the payment processor cannot be used by customers on checkout.
 
@@ -58,7 +58,7 @@ It’s important to enable a payment processor in a region, or else the payment 
 
 ### PaymentProvider Entity Overview
 
-The [`PaymentProvider`](../../references/entities/classes/PaymentProvider.md) entity only has 2 attributes: `is_installed` which is a boolean value indicating whether the Payment Processor is installed; and `id` which is the unique identifier that you define in the Payment Processor service.
+The [`PaymentProvider`](../../references/entities/classes/entities.PaymentProvider.mdx) entity only has 2 attributes: `is_installed` which is a boolean value indicating whether the Payment Processor is installed; and `id` which is the unique identifier that you define in the Payment Processor service.
 
 ---
 
@@ -82,7 +82,7 @@ Among the Payment Sessions available only one will be selected based on the cust
 
 ### PaymentSession Entity Overview
 
-The [`PaymentSession`](../../references/entities/classes/PaymentSession.md) entity belongs to a `Cart`. This is the customer‘s cart that was used for checkout which lead to the creation of the Payment Session.
+The [`PaymentSession`](../../references/entities/classes/entities.PaymentSession.mdx) entity belongs to a `Cart`. This is the customer‘s cart that was used for checkout which lead to the creation of the Payment Session.
 
 The `PaymentSession` instance also belongs to a `PaymentProvider` instance. This is the Payment Processor that was used to create the Payment Session and that controls it for further actions like authorizing the payment.
 
@@ -116,7 +116,7 @@ When the store operator then chooses to capture the order from the Medusa Admin,
 
 ### Payment Entity Overview
 
-The [`Payment`](../../references/entities/classes/Payment.md) entity belongs to the `Cart` that it was originally created from when the customer’s payment was authorized. It also belongs to an `Order` once it’s placed. Additionally, it belongs to a `PaymentProvider` which is the payment processor that the customer chose on checkout.
+The [`Payment`](../../references/entities/classes/entities.Payment.mdx) entity belongs to the `Cart` that it was originally created from when the customer’s payment was authorized. It also belongs to an `Order` once it’s placed. Additionally, it belongs to a `PaymentProvider` which is the payment processor that the customer chose on checkout.
 
 In case a `Swap` is created for an order, `Payment` will be associated with that swap to handle payment operations related to it.
 
@@ -141,4 +141,4 @@ You can learn more about idempotency keys [here](../../development/idempotency-k
 ## See Also
 
 - [Available Payment Plugins](../../plugins/payment/index.mdx)
-- [Create a Payment Processor](./backend/add-payment-provider.md)
+- [Create a Payment Processor](../../references/payment/classes/payment.AbstractPaymentProcessor.mdx)

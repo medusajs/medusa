@@ -19,7 +19,7 @@ This guide will only explain what is required to create in your custom inventory
 
 :::note
 
-It should be noted that the Medusa backend expects the inventory module to have entities for an inventory item, an inventory level, and a reservation item, as it uses the IDs of those entities when orchestrating between different modules and the in the endpoints it exposes. You can learn more about this in the [Inventory Module Architecture documentation](../inventory-module.md).
+It should be noted that the Medusa backend expects the inventory module to have entities for an inventory item, an inventory level, and a reservation item, as it uses the IDs of those entities when orchestrating between different modules and the in the API Routes it exposes. You can learn more about this in the [Inventory Module Architecture documentation](../inventory-module.md).
 
 :::
 
@@ -47,7 +47,7 @@ Create a file in the `src/services` directory that will hold your custom invento
 
 In that file, add the following content:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 import { 
   CreateInventoryItemInput, 
   CreateInventoryLevelInput, 
@@ -302,7 +302,7 @@ type InventoryItemDTO = {
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -360,7 +360,7 @@ type ReservationItemDTO = {
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -417,7 +417,7 @@ type InventoryLevelDTO = {
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -452,7 +452,7 @@ This method is expected to return the inventory item as an object.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -491,7 +491,7 @@ This method is expected to return the inventory level as an object.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -530,7 +530,7 @@ This method is expected to return the inventory level as an object.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -572,7 +572,7 @@ This method is expected to return the newly created reservation item.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -605,7 +605,7 @@ This method is expected to return the newly created inventory item.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -643,7 +643,7 @@ This method is expected to return the newly created inventory level.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -677,7 +677,7 @@ This method is expected to return the updated reservation item.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -719,7 +719,7 @@ This method is expected to return the updated inventory item.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -766,7 +766,7 @@ This method is expected to return the updated inventory level.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -810,7 +810,7 @@ This method is not expected to return anything.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -843,7 +843,7 @@ This method is not expected to return anything.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -878,7 +878,7 @@ This method is not expected to return anything.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -913,7 +913,7 @@ This method is not expected to return anything.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -947,7 +947,7 @@ This method is not expected to return anything.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -984,7 +984,7 @@ This method is not expected to return anything.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -1021,7 +1021,7 @@ This method is expected to return the updated location level.
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -1074,7 +1074,7 @@ This method is expected to return a boolean value indicating whether the invento
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -1110,7 +1110,7 @@ This method is expected to return a number being the available quantity of the i
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -1143,7 +1143,7 @@ This method is expected to return a number being the stocked quantity of the ite
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()
@@ -1176,7 +1176,7 @@ This method is expected to return a number being the reserved quantity of the it
 
 For example:
 
-```ts title=src/services/inventory.ts
+```ts title="src/services/inventory.ts"
 class InventoryService implements IInventoryService {
   // ...
   @InjectEntityManager()

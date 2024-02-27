@@ -1,4 +1,9 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import { DAL } from "@medusajs/types"
+import {
+  DALUtils,
+  generateEntityId,
+  optionalNumericSerializer,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -7,6 +12,7 @@ import {
   Filter,
   Index,
   ManyToOne,
+  OnInit,
   OneToMany,
   OptionalProps,
   PrimaryKey,
@@ -15,7 +21,6 @@ import {
 } from "@mikro-orm/core"
 import { Product } from "@models"
 import ProductOptionValue from "./product-option-value"
-import { DAL } from "@medusajs/types"
 
 type OptionalFields =
   | "allow_backorder"
@@ -66,7 +71,11 @@ class ProductVariant {
   // Note: Upon serialization, this turns to a string. This is on purpose, because you would loose
   // precision if you cast numeric to JS number, as JS number is a float.
   // Ref: https://github.com/mikro-orm/mikro-orm/issues/2295
-  @Property({ columnType: "numeric", default: 100 })
+  @Property({
+    columnType: "numeric",
+    default: 100,
+    serializer: optionalNumericSerializer,
+  })
   inventory_quantity?: number = 100
 
   @Property({ columnType: "boolean", default: false })
@@ -102,7 +111,12 @@ class ProductVariant {
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
 
-  @Property({ columnType: "numeric", nullable: true, default: 0 })
+  @Property({
+    columnType: "numeric",
+    nullable: true,
+    default: 0,
+    serializer: optionalNumericSerializer,
+  })
   variant_rank?: number | null
 
   @Property({ columnType: "text", nullable: true })
@@ -138,6 +152,11 @@ class ProductVariant {
     cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove" as any],
   })
   options = new Collection<ProductOptionValue>(this)
+
+  @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "variant")
+  }
 
   @BeforeCreate()
   onCreate() {

@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the product variant to create.
+ */
 export interface AdminPostProductsProductVariantsReq {
   /**
    * The title of the product variant.

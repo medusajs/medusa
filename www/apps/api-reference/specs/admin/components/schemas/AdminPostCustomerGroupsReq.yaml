@@ -1,4 +1,5 @@
 type: object
+description: The details of the customer group to create.
 required:
   - name
 properties:

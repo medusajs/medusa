@@ -40,7 +40,7 @@ These changes may already be available in your Medusa project. They're included 
 
 First, update your `tsconfig.json` with the following configurations:
 
-```json title=tsconfig.json
+```json title="tsconfig.json"
 {
   "compilerOptions": {
     "target": "es2019",
@@ -81,7 +81,7 @@ The addition of `"jsx": "react-jsx"` specified how should TypeScript transform J
 
 Next, create the file `tsconfig.server.json` with the following content:
 
-```json title=tsconfig.server.json
+```json title="tsconfig.server.json"
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -96,7 +96,7 @@ This is the configuration that will be used to transpile your custom backend cod
 
 Finally, create the file `tsconfig.admin.json` with the following content:
 
-```json title=tsconfig.admin.json
+```json title="tsconfig.admin.json"
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -135,7 +135,7 @@ For an admin route to be valid, it must default export a React component. There 
 
 For example, you can create the file `src/admin/routes/custom/page.tsx` with the following content:
 
-```tsx title=src/admin/routes/custom/page.tsx
+```tsx title="src/admin/routes/custom/page.tsx"
 const CustomPage = () => {
   return (
     <div>
@@ -217,7 +217,7 @@ The object has one property `link`, which is an object having the following prop
 
 For example, you can change the content of the previous route you created to export a config object:
 
-```tsx title=src/admin/routes/custom/page.tsx
+```tsx title="src/admin/routes/custom/page.tsx"
 import { RouteConfig } from "@medusajs/admin"
 import { CustomIcon } from "../../icons/custom"
 
@@ -261,7 +261,7 @@ If you're installing it in a plugin with admin customizations, make sure to incl
 
 For example:
 
-```tsx title=src/admin/routes/custom/[id]/page.tsx
+```tsx title="src/admin/routes/custom/[id]/page.tsx"
 import { useParams } from "react-router-dom"
 
 const CustomPage = () => {
@@ -285,7 +285,7 @@ If you want to use routing functionalities such as linking to another page or na
 
 For example, to add a link to another page:
 
-```tsx title=src/admin/routes/custom/page.tsx
+```tsx title="src/admin/routes/custom/page.tsx"
 import { Link } from "react-router-dom"
 
 const CustomPage = () => {
@@ -314,7 +314,7 @@ For example, to customize your custom route:
 
 <!-- eslint-disable max-len -->
 
-```tsx title=src/admin/routes/custom/page.tsx
+```tsx title="src/admin/routes/custom/page.tsx"
 const CustomPage = () => {
   return (
     <div 
@@ -331,7 +331,7 @@ export default CustomPage
 
 ## Querying and Mutating Data
 
-You might need to interact with the Medusa backend from your admin route. To do so, you can utilize the [Medusa React package](../medusa-react/overview.mdx). It contains a collection of queries and mutation built on `@tanstack/react-query` that lets you interact with the Medusa backend.
+You might need to interact with the Medusa backend from your admin route. To do so, you can utilize the [Medusa React package](../medusa-react/overview.mdx). It contains a collection of queries and mutation built on `@tanstack/react-query@4.22` that lets you interact with the Medusa backend.
 
 :::note
 
@@ -341,7 +341,7 @@ Make sure to also install the Medusa React package first if you’re intending t
 
 For example, you can retrieve available products and display them in your route:
 
-```tsx title=src/admin/routes/custom/page.tsx
+```tsx title="src/admin/routes/custom/page.tsx"
 import { useAdminProducts } from "medusa-react"
 
 const CustomPage = () => {
@@ -356,9 +356,9 @@ const CustomPage = () => {
 export default CustomPage
 ```
 
-### Custom Endpoints
+### Custom API Routes
 
-You can also use `medusa-react` to interact with custom endpoints using [Custom Hooks utility functions](../medusa-react/overview.mdx#custom-hooks).
+You can also use `medusa-react` to interact with custom API Routes using [Custom Hooks utility functions](../medusa-react/overview.mdx#custom-hooks).
 
 ---
 

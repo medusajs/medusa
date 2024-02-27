@@ -1,8 +1,4 @@
 import {
-  DateComparisonOperator,
-  extendedFindParamsMixin,
-} from "../../../../types/common"
-import {
   IsArray,
   IsBoolean,
   IsEnum,
@@ -10,14 +6,20 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined } from "medusa-core-utils"
+import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 
-import { FilterableProductProps } from "../../../../types/product"
-import PriceListService from "../../../../services/price-list"
-import { ProductStatus } from "../../../../models"
-import { Request } from "express"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
+import { Request } from "express"
 import { pickBy } from "lodash"
+import { ProductStatus } from "../../../../models"
+import PriceListService from "../../../../services/price-list"
+import { FilterableProductProps } from "../../../../types/product"
+import { listProducts } from "../../../../utils"
 
 /**
  * @oas [get] /admin/price-lists/{id}/products
@@ -146,7 +148,42 @@ import { pickBy } from "lodash"
  *       medusa.admin.priceLists.listProducts(priceListId)
  *       .then(({ products, limit, offset, count }) => {
  *         console.log(products.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminPriceListProducts } from "medusa-react"
+ *
+ *       type Props = {
+ *         priceListId: string
+ *       }
+ *
+ *       const PriceListProducts = ({
+ *         priceListId
+ *       }: Props) => {
+ *         const { products, isLoading } = useAdminPriceListProducts(
+ *           priceListId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {products && !products.length && (
+ *               <span>No Price Lists</span>
+ *             )}
+ *             {products && products.length > 0 && (
+ *               <ul>
+ *                 {products.map((product) => (
+ *                   <li key={product.id}>{product.title}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default PriceListProducts
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -181,6 +218,9 @@ import { pickBy } from "lodash"
 export default async (req: Request, res) => {
   const { id } = req.params
   const { offset, limit } = req.validatedQuery
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+  let products
+  let count
 
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
@@ -190,11 +230,19 @@ export default async (req: Request, res) => {
     price_list_id: [id],
   }
 
-  const [products, count] = await priceListService.listProducts(
-    id,
-    pickBy(filterableFields, (val) => isDefined(val)),
-    req.listConfig
-  )
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    ;[products, count] = await listProducts(
+      req.scope,
+      filterableFields,
+      req.listConfig
+    )
+  } else {
+    ;[products, count] = await priceListService.listProducts(
+      id,
+      pickBy(filterableFields, (val) => isDefined(val)),
+      req.listConfig
+    )
+  }
 
   res.json({
     products,
@@ -204,65 +252,112 @@ export default async (req: Request, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved products associated with a price list.
+ *
+ * @property {number} limit - Limit the number of products returned in the list. Default is `50`.
+ */
 // eslint-disable-next-line max-len
 export class AdminGetPriceListsPriceListProductsParams extends extendedFindParamsMixin(
   { limit: 50 }
 ) {
+  /**
+   * ID to filter products by.
+   */
   @IsString()
   @IsOptional()
   id?: string
 
+  /**
+   * Search term to search products' title, description, product variant's title and sku, and product collection's title.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Statuses to filter products by.
+   */
   @IsOptional()
   @IsEnum(ProductStatus, { each: true })
   status?: ProductStatus[]
 
+  /**
+   * Filter products by their associated collection ID.
+   */
   @IsArray()
   @IsOptional()
   collection_id?: string[]
 
+  /**
+   * Tags to filter products by.
+   */
   @IsArray()
   @IsOptional()
   tags?: string[]
 
+  /**
+   * Title to filter products by.
+   */
   @IsString()
   @IsOptional()
   title?: string
 
+  /**
+   * Description to filter products by.
+   */
   @IsString()
   @IsOptional()
   description?: string
 
+  /**
+   * Handle to filter products by.
+   */
   @IsString()
   @IsOptional()
   handle?: string
 
+  /**
+   * Filter products by whether they're gift cards.
+   */
   @IsBoolean()
   @IsOptional()
   @Type(() => Boolean)
   is_giftcard?: string
 
+  /**
+   * Type to filter products by.
+   */
   @IsString()
   @IsOptional()
   type?: string
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string
 
+  /**
+   * Date filters to apply on the products' `created_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the products' `updated_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the products' `deleted_at` date.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => DateComparisonOperator)

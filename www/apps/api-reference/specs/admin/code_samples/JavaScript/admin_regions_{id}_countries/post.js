@@ -6,4 +6,4 @@ medusa.admin.regions.addCountry(regionId, {
 })
 .then(({ region }) => {
   console.log(region.id);
-});
+})

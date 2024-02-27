@@ -39,7 +39,31 @@ import { IStockLocationService } from "@medusajs/types"
  *       })
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateStockLocation } from "medusa-react"
+ *
+ *       const CreateStockLocation = () => {
+ *         const createStockLocation = useAdminCreateStockLocation()
+ *         // ...
+ *
+ *         const handleCreate = (name: string) => {
+ *           createStockLocation.mutate({
+ *             name,
+ *           }, {
+ *             onSuccess: ({ stock_location }) => {
+ *               console.log(stock_location.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateStockLocation
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -115,7 +139,7 @@ export default async (req: Request, res: Response) => {
  *     description: Stock location address' city
  *     example: Mexico city
  *   country_code:
- *     description: "The 2 character ISO code for the country."
+ *     description: "The two character ISO code for the country."
  *     type: string
  *     externalDocs:
  *       url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
@@ -168,6 +192,7 @@ class StockLocationAddress {
 /**
  * @schema AdminPostStockLocationsReq
  * type: object
+ * description: "The details of the stock location to create."
  * required:
  *   - name
  * properties:

@@ -1,4 +1,5 @@
 type: object
+description: The product collection's details to update.
 properties:
   title:
     type: string

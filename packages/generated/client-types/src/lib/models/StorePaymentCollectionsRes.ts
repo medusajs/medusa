@@ -6,6 +6,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { PaymentCollection } from "./PaymentCollection"
 import type { Region } from "./Region"
 
+/**
+ * The payment collection's details.
+ */
 export interface StorePaymentCollectionsRes {
   /**
    * Payment collection's details.

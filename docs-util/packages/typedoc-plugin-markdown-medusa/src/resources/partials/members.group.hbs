@@ -4,21 +4,89 @@
 
 {{#each categories}}
 
+{{#ifShowSeparatorForTitleLevel}}
 {{#unless @first}}
 ___
 {{/unless}}
+{{/ifShowSeparatorForTitleLevel}}
 
 {{#unless (getFormattingOption "expandMembers")}}
 
-## {{title}} {{../title}}
+{{#ifCanShowConstructorTitle}}
+
+{{titleLevel}} {{title}} {{../title}}
+
+{{incrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
 
 {{/unless}}
 
-{{#if (showPropertiesAsComponent title)}}
+{{#if (shouldExpandProperties title)}}
+
+{{#each children}}
+
+{{> member }}
+
+{{/each}}
+
+{{else if (showPropertiesAsComponent title)}}
 
 {{#with children}}
 
-{{{parameterComponent}}}
+{{{parameterComponent sectionTitle=../owningReflection.name}}}
+
+{{/with}}
+
+{{else}}
+
+{{#each children}}
+
+{{> member }}
+
+{{/each}}
+
+{{/if}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{#ifCanShowConstructorTitle}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
+
+{{/unless}}
+
+{{/each}}
+
+{{else}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{#ifCanShowConstructorTitle}}
+
+{{titleLevel}} {{title}}
+
+{{incrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
+
+{{/unless}}
+
+{{#if (shouldExpandProperties title)}}
+
+{{#each children}}
+
+{{> member }}
+
+{{/each}}
+
+{{else if (showPropertiesAsComponent title)}}
+
+{{#with children}}
+
+{{{parameterComponent sectionTitle=../owningReflection.name}}}
 
 {{/with}}
 
@@ -32,33 +100,15 @@ ___
 
 {{/if}}
 
-{{/each}}
-
-{{else}}
-
 {{#unless (getFormattingOption "expandMembers")}}
 
-## {{title}}
+{{#ifCanShowConstructorTitle}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
 
 {{/unless}}
-
-{{#if (showPropertiesAsComponent title)}}
-
-{{#with children}}
-
-{{{parameterComponent}}}
-
-{{/with}}
-
-{{else}}
-
-{{#each children}}
-
-{{> member}}
-
-{{/each}}
-
-{{/if}}
 
 {{/if}}
 

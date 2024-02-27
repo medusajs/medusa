@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { AddressPayload } from "./AddressPayload"
 
+/**
+ * The details of the claim to be created.
+ */
 export interface AdminPostOrdersOrderClaimsReq {
   /**
    * The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items.
@@ -98,6 +101,10 @@ export interface AdminPostOrdersOrderClaimsReq {
    * If set to true no notification will be send related to this Claim.
    */
   no_notification?: boolean
+  /**
+   * The ID of the location used for the associated return.
+   */
+  return_location_id?: string
   /**
    * An optional set of key-value pairs to hold additional information.
    */

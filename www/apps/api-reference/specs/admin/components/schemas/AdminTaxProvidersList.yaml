@@ -1,4 +1,5 @@
 type: object
+description: The list of tax providers in a store.
 required:
   - tax_providers
 properties:

@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The detail to update of the shipping profile.
+ */
 export interface AdminPostShippingProfilesProfileReq {
   /**
    * The name of the Shipping Profile

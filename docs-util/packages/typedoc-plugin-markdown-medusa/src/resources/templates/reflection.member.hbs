@@ -4,6 +4,12 @@
 
 {{#with model}}
 
-{{> member}}
+{{incrementCurrentTitleLevel}}
+
+{{> member showSources=false}}
+
+{{decrementCurrentTitleLevel}}
 
 {{/with}}
+
+{{{ endSections }}}

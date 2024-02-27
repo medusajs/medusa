@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the price list to create.
+ */
 export interface AdminPostPriceListsPriceListReq {
   /**
    * The name of the Price List.

@@ -21,6 +21,7 @@ export const defaultRelations = ["requirements"]
 /**
  * @schema StoreShippingOptionsListRes
  * type: object
+ * description: "The list of shipping options."
  * x-expanded-relations:
  *   field: shipping_options
  *   relations:

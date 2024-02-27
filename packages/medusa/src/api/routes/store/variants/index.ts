@@ -48,6 +48,7 @@ export const allowedStoreVariantRelations = [
 /**
  * @schema StoreVariantsRes
  * type: object
+ * description: "The product variant's details."
  * x-expanded-relations:
  *   field: variant
  *   relations:
@@ -70,6 +71,7 @@ export type StoreVariantsRes = {
 /**
  * @schema StoreVariantsListRes
  * type: object
+ * description: "The list of product variants."
  * x-expanded-relations:
  *   field: variants
  *   relations:
@@ -93,4 +95,3 @@ export type StoreVariantsListRes = {
 
 export * from "./get-variant"
 export * from "./list-variants"
-

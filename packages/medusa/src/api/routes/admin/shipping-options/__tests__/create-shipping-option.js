@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
-import { request } from "../../../../../helpers/test-request"
 import { ShippingOptionServiceMock } from "../../../../../services/__mocks__/shipping-option"
+import { request } from "../../../../../helpers/test-request"
 
 describe("POST /admin/shipping-options", () => {
   describe("successful creation", () => {

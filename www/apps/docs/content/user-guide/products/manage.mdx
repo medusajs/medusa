@@ -50,15 +50,18 @@ In this section, you can create different options and variants of a product. You
     2. To remove an option, click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999273/Medusa%20Docs/UI%20Icons/7hztVhj_mj6mxu.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999290/Medusa%20Docs/UI%20Icons/1yp4PNt_vzwnhf.png" alt="trash" /> icon next to it.
 2. Add a new variant by clicking the “Add a variant” button. In the new window that opens:
     1. Enter the required fields Custom title and choose a value for each option you created.
-    2. In the Pricing section, you can specify the price for each currency. To specify the price per region:
-        1. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999595/Medusa%20Docs/UI%20Icons/A91y4rk_doqj9s.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999615/Medusa%20Docs/UI%20Icons/knwwocb_ll4l6m.png" alt="right arrow" /> icon next to the currency. This expands a list of regions below the currency. These are regions that use this currency.
-        2. Enter the price for the region you want.
-    3. In the Stock & Inventory section, you can manage how Medusa handles the product’s inventory, the quantity in stock, and more.
+    2. In the Stock & Inventory section, you can manage how Medusa handles the product’s inventory, the quantity in stock, and more.
         1. If Manage Inventory is enabled, Medusa will change the available quantity of the variant when orders or returns are made.
         2. If Allow Backorders is enabled, customers can purchase this variant even if it’s out-of-stock.
-    4. In the Shipping section, you can specify information relevant to shipping such as Height, Weight, Country of origin, and more.
+    3. In the Shipping section, you can specify information relevant to shipping such as Height, Weight, Country of origin, and more.
 3. You can edit a variant by clicking the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon, then choosing Edit from the dropdown.
 4. You can delete a variant by clicking the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon, then choosing Delete from the dropdown.
+
+:::note
+
+You can add prices for the variants after the product has been created using [the bulk editor](#edit-product-prices).
+
+:::
 
 ### Attributes Section
 
@@ -178,10 +181,7 @@ To add a variant to a product:
 4. In the window that opens:
     1. Enter the required title field.
     2. Choose a value for each option in the product.
-    3. In the Pricing section, you can specify the price for each currency. To specify the price per region:
-        1. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999595/Medusa%20Docs/UI%20Icons/A91y4rk_doqj9s.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999615/Medusa%20Docs/UI%20Icons/knwwocb_ll4l6m.png" alt="right arrow" /> icon next to the currency. This expands a list of regions below the currency. These are regions that use this currency.
-        2. Enter the price for the region you want.
-    4. In the Stock & Inventory section, you can manage how Medusa handles the product’s inventory, the quantity in Stock, and more.
+    3. In the Stock & Inventory section, you can manage how Medusa handles the product’s inventory, the quantity in Stock, and more.
         1. If you disable the Manage Inventory field, Medusa will assume the product is always in stock.
         2. If you enable the Manage Inventory field:
             1. Under the Quantity section, click on the "Manage locations" button.
@@ -189,7 +189,7 @@ To add a variant to a product:
             3. Click on the "Save and go back" button.
             4. For each location you added, enter the quantity available in stock.
         3. If Allow Backorders is enabled, customers can purchase this variant even if it’s out-of-stock. You can only enable "Allow Backorders" if "Manage Inventory" is enabled.
-    5. In the Shipping section, you can specify information relevant to shipping such as Height, Weight, Country of origin, and more.
+    4. In the Shipping section, you can specify information relevant to shipping such as Height, Weight, Country of origin, and more.
 5. Once you’re done, click on the “Save and close” button.
 
 ### Edit Variants Position
@@ -237,7 +237,7 @@ Deleting a variant can’t be undone.
 To delete a variant:
 
 1. Go to the product’s details page.
-2. Find the variant you want to duplicate in the Variants section.
+2. Find the variant you want to delete in the Variants section.
 3. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon.
 4. Click on Delete Variant from the dropdown.
 
@@ -300,7 +300,7 @@ To manage the thumbnail of a product:
 
 ### Delete Thumbnail
 
-:::caution
+:::warning
 
 Deleting a thumbnail can’t be undone.
 

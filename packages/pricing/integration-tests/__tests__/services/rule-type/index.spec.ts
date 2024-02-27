@@ -1,10 +1,11 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
-import { RuleTypeRepository } from "@repositories"
 import { RuleTypeService } from "@services"
 
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { MikroOrmWrapper } from "../../../utils"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -17,13 +18,12 @@ describe("RuleType Service", () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = await MikroOrmWrapper.forkManager()
 
-    const ruleTypeRepository = new RuleTypeRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new RuleTypeService({
-      ruleTypeRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("ruleTypeService")
 
     testManager = await MikroOrmWrapper.forkManager()
 
@@ -164,7 +164,7 @@ describe("RuleType Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"ruleTypeId" must be defined')
+      expect(error.message).toEqual("ruleType - id must be defined")
     })
 
     it("should return ruleType based on config select param", async () => {

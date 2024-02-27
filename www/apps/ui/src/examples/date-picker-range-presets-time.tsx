@@ -4,6 +4,7 @@ export default function DatePickerRangePresetsTime() {
   return (
     <div className="w-[250px]">
       <DatePicker
+        placeholder="Pick a date"
         showTimePicker
         mode="range"
         presets={[

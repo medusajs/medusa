@@ -17,7 +17,9 @@ import React, {
   useMemo,
   useRef,
   type ReactNode,
+  useState,
 } from "react"
+import { getScrolledTop as getScrolledTopUtil } from "../../utils"
 
 type EventFunc = (...args: never[]) => unknown
 
@@ -54,7 +56,9 @@ type ScrollController = {
   /** Disable scroll events in `useScrollPosition`. */
   disableScrollEvents: () => void
   /** Retrieves the scrollable element. By default, it's window. */
-  getScrollableElement: () => Element | Window
+  scrollableElement: Element | Window | undefined
+  /** Retrieves the scroll top if the scrollable element */
+  getScrolledTop: () => number
 }
 
 function useScrollControllerContextValue(
@@ -62,9 +66,19 @@ function useScrollControllerContextValue(
 ): ScrollController {
   const scrollEventsEnabledRef = useRef(true)
 
-  const getScrollableElement = useCallback(() => {
-    return (document.querySelector(scrollableSelector) as Element) || window
-  }, [scrollableSelector])
+  const [scrollableElement, setScrollableElement] = useState<
+    Element | Window | undefined
+  >()
+
+  useEffect(() => {
+    setScrollableElement(
+      (document.querySelector(scrollableSelector) as Element) || window
+    )
+  }, [])
+
+  const getScrolledTop = () => {
+    return scrollableElement ? getScrolledTopUtil(scrollableElement) : 0
+  }
 
   return useMemo(
     () => ({
@@ -75,9 +89,10 @@ function useScrollControllerContextValue(
       disableScrollEvents: () => {
         scrollEventsEnabledRef.current = false
       },
-      getScrollableElement,
+      scrollableElement,
+      getScrolledTop,
     }),
-    [getScrollableElement]
+    [scrollableElement]
   )
 }
 
@@ -176,7 +191,7 @@ type UseScrollPositionSaver = {
 }
 
 function useScrollPositionSaver(): UseScrollPositionSaver {
-  const { getScrollableElement } = useScrollController()
+  const { scrollableElement } = useScrollController()
   const lastElementRef = useRef<{ elem: HTMLElement | null; top: number }>({
     elem: null,
     top: 0,
@@ -199,7 +214,7 @@ function useScrollPositionSaver(): UseScrollPositionSaver {
     const newTop = elem.getBoundingClientRect().top
     const heightDiff = newTop - top
     if (heightDiff) {
-      getScrollableElement().scrollBy({ left: 0, top: heightDiff })
+      scrollableElement?.scrollBy({ left: 0, top: heightDiff })
     }
     lastElementRef.current = { elem: null, top: 0 }
 

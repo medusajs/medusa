@@ -1,0 +1,63 @@
+{
+  "name": "@medusajs/dashboard",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "generate:static": "node ./scripts/generate-countries.js && prettier --write ./src/lib/countries.ts && node ./scripts/generate-currencies.js && prettier --write ./src/lib/currencies.ts",
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "main": "index.html",
+  "files": [
+    "index.html",
+    "public",
+    "src",
+    "package.json"
+  ],
+  "dependencies": {
+    "@headlessui/react": "^1.7.18",
+    "@headlessui/tailwindcss": "^0.2.0",
+    "@hookform/resolvers": "3.3.2",
+    "@medusajs/icons": "workspace:^",
+    "@medusajs/ui": "workspace:^",
+    "@radix-ui/react-collapsible": "1.0.3",
+    "@radix-ui/react-hover-card": "^1.0.7",
+    "@tanstack/react-query": "4.22.0",
+    "@tanstack/react-table": "8.10.7",
+    "@tanstack/react-virtual": "^3.0.4",
+    "@uiw/react-json-view": "2.0.0-alpha.10",
+    "cmdk": "^0.2.0",
+    "date-fns": "^3.2.0",
+    "framer-motion": "^11.0.3",
+    "i18next": "23.7.11",
+    "i18next-browser-languagedetector": "7.2.0",
+    "i18next-http-backend": "2.4.2",
+    "medusa-react": "workspace:^",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "7.49.1",
+    "react-i18next": "13.5.0",
+    "react-jwt": "^1.2.0",
+    "react-resizable-panels": "^2.0.9",
+    "react-router-dom": "6.20.1",
+    "zod": "3.22.4"
+  },
+  "devDependencies": {
+    "@medusajs/medusa": "workspace:^",
+    "@medusajs/types": "workspace:^",
+    "@medusajs/ui-preset": "workspace:^",
+    "@medusajs/vite-plugin-extension": "workspace:^",
+    "@types/node": "^20.11.15",
+    "@types/react": "18.2.43",
+    "@types/react-dom": "18.2.17",
+    "@vitejs/plugin-react": "4.2.1",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.33",
+    "prettier": "^3.1.1",
+    "tailwindcss": "^3.4.1",
+    "typescript": "5.2.2",
+    "vite": "5.0.10"
+  },
+  "packageManager": "yarn@3.2.1"
+}

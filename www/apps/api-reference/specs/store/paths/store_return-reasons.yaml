@@ -11,6 +11,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/store_return-reasons/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/store_return-reasons/get.tsx
     - lang: Shell
       label: cURL
       source:

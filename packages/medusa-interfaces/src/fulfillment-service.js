@@ -5,8 +5,15 @@ import BaseService from "./base-service"
  * provides the necessary methods for creating, authorizing and managing
  * fulfillment orders.
  * @interface
+ * @deprecated use AbstractFulfillmentService from @medusajs/medusa instead
  */
 class BaseFulfillmentService extends BaseService {
+  static _isFulfillmentService = true
+
+  static isFulfillmentService(obj) {
+    return obj?.constructor?._isFulfillmentService
+  }
+
   constructor() {
     super()
   }
@@ -102,7 +109,7 @@ class BaseFulfillmentService extends BaseService {
     return []
   }
 
-  retrieveDocuments(fulfillmentData, documentType) { 
+  retrieveDocuments(fulfillmentData, documentType) {
     throw Error("retrieveDocuments must be overridden by the child class")
   }
 }

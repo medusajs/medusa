@@ -6,4 +6,4 @@ medusa.admin.discounts.addConditionResourceBatch(discountId, conditionId, {
 })
 .then(({ discount }) => {
   console.log(discount.id);
-});
+})

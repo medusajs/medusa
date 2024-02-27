@@ -2,6 +2,7 @@ import { FindOperator, FindOptionsWhere, ILike, In } from "typeorm"
 import { Customer } from "../models"
 import { dataSource } from "../loaders/database"
 import { ExtendedFindConfig } from "../types/common"
+import { promiseAll } from "@medusajs/utils"
 
 export const CustomerRepository = dataSource.getRepository(Customer).extend({
   async listAndCount(
@@ -43,7 +44,7 @@ export const CustomerRepository = dataSource.getRepository(Customer).extend({
       ]
     }
 
-    return await Promise.all([this.find(query_), this.count(query_)])
+    return await promiseAll([this.find(query_), this.count(query_)])
   },
 })
 export default CustomerRepository

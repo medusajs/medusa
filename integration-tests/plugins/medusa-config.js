@@ -1,10 +1,13 @@
 const { Modules } = require("@medusajs/modules-sdk")
-const { Workflows } = require("@medusajs/workflows")
+const { Workflows } = require("@medusajs/core-flows")
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_NAME = process.env.DB_TEMP_NAME
 const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
+process.env.POSTGRES_URL = DB_URL
+
+const enableMedusaV2 = process.env.MEDUSA_FF_MEDUSA_V2 == "true"
 
 module.exports = {
   plugins: [
@@ -33,12 +36,33 @@ module.exports = {
     database_extra: { idle_in_transaction_session_timeout: 0 },
   },
   featureFlags: {
-    workflows: {
-      [Workflows.CreateProducts]: true,
-      [Workflows.CreateCart]: true,
-    },
+    medusa_v2: enableMedusaV2,
   },
   modules: {
+    [Modules.AUTH]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/auth",
+      options: {
+        providers: [
+          {
+            name: "emailpass",
+            scopes: {
+              admin: {},
+              store: {},
+            },
+          },
+        ],
+      },
+    },
+    [Modules.USER]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/user",
+      options: {
+        jwt_secret: "test",
+      },
+    },
     [Modules.STOCK_LOCATION]: {
       scope: "internal",
       resources: "shared",
@@ -51,12 +75,48 @@ module.exports = {
     },
     [Modules.CACHE]: {
       resolve: "@medusajs/cache-inmemory",
-      options: { ttl: 5 },
+      options: { ttl: 0 }, // Cache disabled
     },
     [Modules.PRODUCT]: {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/product",
+    },
+    [Modules.PRICING]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/pricing",
+    },
+    [Modules.PROMOTION]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/promotion",
+    },
+    [Modules.CUSTOMER]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/customer",
+    },
+    [Modules.SALES_CHANNEL]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/sales-channel",
+    },
+    [Modules.CART]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/cart",
+    },
+    [Modules.WORKFLOW_ENGINE]: true,
+    [Modules.REGION]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/region",
+    },
+    [Modules.API_KEY]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/api-key",
     },
   },
 }

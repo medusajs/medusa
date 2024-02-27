@@ -5,6 +5,7 @@ import { getLearningPath } from "../../utils/learning-paths"
 import { useLearningPath } from "../../providers/LearningPath"
 import { Button, useNotifications } from "docs-ui"
 import { CircleMiniSolid } from "@medusajs/icons"
+import Link from "@docusaurus/Link"
 
 type LearningPathProps = {
   pathName: string
@@ -67,7 +68,7 @@ const LearningPath: React.FC<LearningPathProps> = ({
       {path.steps.map((step, index) => (
         <div
           className={clsx(
-            "flex items-center p-1 gap-1",
+            "flex items-center p-1 gap-1 relative",
             index !== path.steps.length - 1 &&
               "border-0 border-b border-solid border-medusa-border-base"
           )}
@@ -81,6 +82,10 @@ const LearningPath: React.FC<LearningPathProps> = ({
           >
             {step.title}
           </span>
+          <Link
+            href={step.path}
+            className={clsx("absolute top-0 left-0 w-full h-full")}
+          />
         </div>
       ))}
     </div>

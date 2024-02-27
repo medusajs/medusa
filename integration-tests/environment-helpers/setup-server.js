@@ -1,8 +1,9 @@
 const path = require("path")
 const { spawn } = require("child_process")
-const { setPort } = require("./use-api")
+const { setPort, useExpressServer } = require("./use-api")
+const { setContainer } = require("./use-container")
 
-module.exports = ({ cwd, redisUrl, uploadDir, verbose, env }) => {
+module.exports = async ({ cwd, redisUrl, uploadDir, verbose, env }) => {
   const serverPath = path.join(__dirname, "test-server.js")
 
   // in order to prevent conflicts in redis, use a different db for each worker
@@ -13,7 +14,7 @@ module.exports = ({ cwd, redisUrl, uploadDir, verbose, env }) => {
 
   verbose = verbose ?? false
 
-  return new Promise((resolve, reject) => {
+  return await new Promise((resolve, reject) => {
     const medusaProcess = spawn("node", [path.resolve(serverPath)], {
       cwd,
       env: {
@@ -32,17 +33,29 @@ module.exports = ({ cwd, redisUrl, uploadDir, verbose, env }) => {
 
     medusaProcess.on("error", (err) => {
       console.log(err)
+      reject(err)
       process.exit()
     })
 
     medusaProcess.on("uncaughtException", (err) => {
       console.log(err)
+      reject(err)
       medusaProcess.kill()
     })
 
     medusaProcess.on("message", (port) => {
       setPort(port)
       resolve(medusaProcess)
+    })
+
+    medusaProcess.on("exit", () => {
+      const expressServer = useExpressServer()
+
+      setContainer(null)
+
+      if (expressServer) {
+        expressServer.close()
+      }
     })
   })
 }

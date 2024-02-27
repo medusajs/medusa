@@ -78,10 +78,10 @@ class SegmentService extends BaseService {
       order_id: order.id,
       email: order.email,
       region_id: order.region_id,
-      payment_provider: order.payments.map((p) => p.provider_id).join(","),
+      payment_provider: order.payments?.map((p) => p.provider_id).join(","),
       shipping_methods: order.shipping_methods,
-      shipping_country: order.shipping_address.country_code,
-      shipping_city: order.shipping_address.city,
+      shipping_country: order.shipping_address?.country_code,
+      shipping_city: order.shipping_address?.city,
       reporting_total: await this.getReportingValue(order.currency_code, total),
       reporting_subtotal: await this.getReportingValue(
         order.currency_code,

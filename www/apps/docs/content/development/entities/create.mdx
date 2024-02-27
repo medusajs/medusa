@@ -20,7 +20,7 @@ Entities can only be placed in the top level of the `src/models` directory. So, 
 
 :::
 
-```ts title=src/models/post.ts
+```ts title="src/models/post.ts"
 import { 
   BeforeInsert, 
   Column, 
@@ -70,71 +70,71 @@ Your entity may be related to another entity. You can showcase the relation with
 For example, you can create another entity `Author` and add a `ManyToOne` relation to it from the `Post`, and a `OneToMany` relation from the `Author` to the `Post`:
 
 <Tabs groupId="files" isCodeTabs={true}>
-<TabItem value="post" label="src/models/post.ts" default>
+  <TabItem value="post" label="src/models/post.ts" default>
 
-```ts
-import { 
-  BeforeInsert, 
-  Column, 
-  Entity,
-  JoinColumn,
-  ManyToOne, 
-} from "typeorm"
-import { BaseEntity } from "@medusajs/medusa"
-import { generateEntityId } from "@medusajs/medusa/dist/utils"
-import { Author } from "./author"
+    ```ts
+    import { 
+      BeforeInsert, 
+      Column, 
+      Entity,
+      JoinColumn,
+      ManyToOne, 
+    } from "typeorm"
+    import { BaseEntity } from "@medusajs/medusa"
+    import { generateEntityId } from "@medusajs/medusa/dist/utils"
+    import { Author } from "./author"
 
-@Entity()
-export class Post extends BaseEntity {
-  @Column({ type: "varchar" })
-  title: string | null
+    @Entity()
+    export class Post extends BaseEntity {
+      @Column({ type: "varchar" })
+      title: string | null
 
-  @Column({ type: "varchar" })
-  author_id: string
+      @Column({ type: "varchar" })
+      author_id: string
 
-  @ManyToOne(() => Author, (author) => author.posts)
-  @JoinColumn({ name: "author_id" })
-  author: Author
+      @ManyToOne(() => Author, (author) => author.posts)
+      @JoinColumn({ name: "author_id" })
+      author: Author
 
-  @BeforeInsert()
-  private beforeInsert(): void {
-    this.id = generateEntityId(this.id, "post")
-  }
-}
-```
+      @BeforeInsert()
+      private beforeInsert(): void {
+        this.id = generateEntityId(this.id, "post")
+      }
+    }
+    ```
 
-</TabItem>
-<TabItem value="author" label="src/models/author.ts">
+  </TabItem>
+  <TabItem value="author" label="src/models/author.ts">
 
-```ts
-import { BaseEntity, generateEntityId } from "@medusajs/medusa"
-import { 
-  BeforeInsert,
-  Column,
-  Entity,
-  OneToMany,
-} from "typeorm"
-import { Post } from "./post"
+    ```ts
+    import { BaseEntity, generateEntityId } from "@medusajs/medusa"
+    import { 
+      BeforeInsert,
+      Column,
+      Entity,
+      OneToMany,
+    } from "typeorm"
+    import { Post } from "./post"
 
-@Entity()
-export class Author extends BaseEntity {
-  @Column({ type: "varchar" })
-  name: string
+    @Entity()
+    export class Author extends BaseEntity {
+      @Column({ type: "varchar" })
+      name: string
 
-  @Column({ type: "varchar", nullable: true })
-  image?: string
+      @Column({ type: "varchar", nullable: true })
+      image?: string
 
-  @OneToMany(() => Post, (post) => post.author)
-  posts: Post[]
+      @OneToMany(() => Post, (post) => post.author)
+      posts: Post[]
 
-  @BeforeInsert()
-  private beforeInsert(): void {
-    this.id = generateEntityId(this.id, "auth")
-  }
-}
-```
+      @BeforeInsert()
+      private beforeInsert(): void {
+        this.id = generateEntityId(this.id, "auth")
+      }
+    }
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 Adding these relations allows you to later on expand these relations when retrieving records of this entity with repositories.

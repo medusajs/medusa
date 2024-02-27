@@ -1,5 +1,10 @@
-import { CartService } from "../../../../services"
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
+
 import { EntityManager } from "typeorm"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
@@ -20,7 +25,38 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.carts.retrieve(cartId)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useGetCart } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const { cart, isLoading } = useGetCart(cartId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {cart && cart.items.length === 0 && (
+ *               <span>Cart is empty</span>
+ *             )}
+ *             {cart && cart.items.length > 0 && (
+ *               <ul>
+ *                 {cart.items.map((item) => (
+ *                   <li key={item.id}>{item.title}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -50,6 +86,9 @@ export default async (req, res) => {
 
   const cartService: CartService = req.scope.resolve("cartService")
   const manager: EntityManager = req.scope.resolve("manager")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
   const cart = await cartService.retrieve(id, {
     select: ["id", "customer_id"],
@@ -69,7 +108,27 @@ export default async (req, res) => {
       })
     }
   }
+  const shouldSetAvailability = req.retrieveConfig.relations?.some((rel) =>
+    rel.includes("variant")
+  )
+
+  const select = [...req.retrieveConfig.select]
+  const salesChannelsEnabled = featureFlagRouter.isFeatureEnabled(
+    SalesChannelFeatureFlag.key
+  )
+
+  if (salesChannelsEnabled) {
+    select.push("sales_channel_id")
+  }
 
   const data = await cartService.retrieveWithTotals(id, req.retrieveConfig)
+
+  if (shouldSetAvailability) {
+    await productVariantInventoryService.setVariantAvailability(
+      data.items.map((i) => i.variant),
+      data.sales_channel_id!
+    )
+  }
+
   res.json({ cart: cleanResponseData(data, []) })
 }

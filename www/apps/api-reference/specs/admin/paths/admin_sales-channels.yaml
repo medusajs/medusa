@@ -132,6 +132,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_sales-channels/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_sales-channels/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -178,6 +182,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_sales-channels/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_sales-channels/post.tsx
     - lang: Shell
       label: cURL
       source:

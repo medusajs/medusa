@@ -7,4 +7,4 @@ medusa.admin.invites.resend(inviteId)
 })
 .catch(() => {
   // an error occurred
-});
+})

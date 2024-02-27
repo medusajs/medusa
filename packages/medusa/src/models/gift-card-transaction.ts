@@ -48,6 +48,9 @@ export class GiftCardTransaction {
   @Column({ type: "real", nullable: true })
   tax_rate: number | null
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "gct")

@@ -72,6 +72,7 @@ module.exports = {
     ],
     "space-infix-ops": "error",
     "eol-last": ["error", "always"],
+    "no-case-declarations": "off"
   },
   env: {
     es6: true,
@@ -79,7 +80,8 @@ module.exports = {
   },
   ignorePatterns: [
     ".eslintrc.js",
-    "dist"
+    "dist",
+    "oas-output"
   ],
   overrides: [
     {
@@ -92,11 +94,14 @@ module.exports = {
       parserOptions: {
         project: [
           "./tsconfig.json",
+          "./packages/react-docs-generator/tsconfig.json",
           "./packages/scripts/tsconfig.json",
           "./packages/typedoc-config/tsconfig.json",
-          "./packages/typedoc-frontmatter-plugin/tsconfig.json",
-          "./packages/typedoc-modules-plugin/tsconfig.json",
-          "./packages/typedoc-markdown-medusa-plugin/tsconfig.json"
+          "./packages/typedoc-plugin-custom/tsconfig.json",
+          "./packages/typedoc-markdown-medusa-plugin/tsconfig.json",
+          "./packages/types/tsconfig.json",
+          "./packages/utils/tsconfig.json",
+          "./packages/workflows-diagrams-generator/tsconfig.json"
         ]
       },
       rules: {

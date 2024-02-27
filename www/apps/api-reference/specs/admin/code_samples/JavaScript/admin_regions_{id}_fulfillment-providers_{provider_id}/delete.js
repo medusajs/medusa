@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.regions.deleteFulfillmentProvider(regionId, "manual")
 .then(({ region }) => {
   console.log(region.id);
-});
+})

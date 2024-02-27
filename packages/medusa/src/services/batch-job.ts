@@ -197,40 +197,6 @@ class BatchJobService extends TransactionBaseService {
     })
   }
 
-  protected async updateStatus(
-    batchJobOrId: BatchJob | string,
-    status: BatchJobStatus
-  ): Promise<BatchJob | never> {
-    let batchJob: BatchJob = batchJobOrId as BatchJob
-    if (typeof batchJobOrId === "string") {
-      batchJob = await this.retrieve(batchJobOrId)
-    }
-
-    const { entityColumnName, eventType } =
-      this.batchJobStatusMapToProps.get(status) || {}
-
-    if (!entityColumnName || !eventType) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Unable to update the batch job status from ${batchJob.status} to ${status}. The status doesn't exist`
-      )
-    }
-
-    batchJob[entityColumnName] = new Date()
-
-    const batchJobRepo = this.activeManager_.withRepository(
-      this.batchJobRepository_
-    )
-    batchJob = await batchJobRepo.save(batchJob)
-    batchJob.loadStatus()
-
-    await this.eventBus_.withTransaction(this.activeManager_).emit(eventType, {
-      id: batchJob.id,
-    })
-
-    return batchJob
-  }
-
   async confirm(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
     return await this.atomicPhase_(async () => {
       let batchJob: BatchJob = batchJobOrId as BatchJob
@@ -376,6 +342,40 @@ class BatchJobService extends TransactionBaseService {
         .withTransaction(transactionManager)
         .prepareBatchJobForProcessing(data, req)
     })
+  }
+
+  protected async updateStatus(
+    batchJobOrId: BatchJob | string,
+    status: BatchJobStatus
+  ): Promise<BatchJob | never> {
+    let batchJob: BatchJob = batchJobOrId as BatchJob
+    if (typeof batchJobOrId === "string") {
+      batchJob = await this.retrieve(batchJobOrId)
+    }
+
+    const { entityColumnName, eventType } =
+      this.batchJobStatusMapToProps.get(status) || {}
+
+    if (!entityColumnName || !eventType) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Unable to update the batch job status from ${batchJob.status} to ${status}. The status doesn't exist`
+      )
+    }
+
+    batchJob[entityColumnName] = new Date()
+
+    const batchJobRepo = this.activeManager_.withRepository(
+      this.batchJobRepository_
+    )
+    batchJob = await batchJobRepo.save(batchJob)
+    batchJob.loadStatus()
+
+    await this.eventBus_.withTransaction(this.activeManager_).emit(eventType, {
+      id: batchJob.id,
+    })
+
+    return batchJob
   }
 }
 

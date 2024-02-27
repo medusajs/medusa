@@ -36,7 +36,14 @@ When you build a commerce application with Medusa, you’ll typically interact w
 For example, imagine an Inventory module that contains lightweight logic to increment and decrement stock levels for a Stock-Keeping Unit (SKU). In a commerce application, you typically want to associate the stock levels with a specific product. Medusa offers both an Inventory module and a Product module, and the core package creates associations between these modules and executing the related business logic. So, the core package contains code similar to this:
 
 ```ts
-async function handler(req, res) {
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+export const POST = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
   // ...
 
   // associate a product with an inventory item
@@ -57,7 +64,7 @@ async function handler(req, res) {
 
 The goal of orchestrating the modules is to expose an API that client applications, like websites or apps, can consume. By default, Medusa’s core package exposes a REST API that offers commerce functionalities similar to what other platforms give you.
 
-The core package also holds the logic that allows developers to extend and add custom endpoints, among other available customizations.
+The core package also holds the logic that allows developers to extend and add custom API Routes, among other available customizations.
 
 ---
 
@@ -111,8 +118,8 @@ These concepts will guide you through your development and building customizatio
   },
   {
     type: 'link',
-    href: '/development/endpoints/overview',
-    label: 'Endpoints',
+    href: '/development/api-routes/overview',
+    label: 'API Routes',
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'REST APIs that frontends consume to communicate with the backend.'
@@ -194,9 +201,9 @@ By installing a Module in your project and expose its APIs based on the framewor
 
 Developers can use Medusa’s toolkit to create their ecommerce system. With the use of the [create-medusa-app](../create-medusa-app.mdx) command, developers can set up a Medusa Backend, Medusa admin, and a storefront.
 
-![Full-Fledged Ecommerce System](https://res.cloudinary.com/dza7lstvk/image/upload/v1678954316/Medusa%20Docs/Diagrams/fully-fledged-ecom_qqwraq.jpg)
+![Full-Fledged Ecommerce System](https://res.cloudinary.com/dza7lstvk/image/upload/v1697707368/Medusa%20Docs/Diagrams/Social_Media_Graphics_vosikk.jpg)
 
-Developers can still benefit from customization opportunities here that Medusa provides. This includes creating resources such as endpoints and services, creating plugins, integrating third-party services, create a custom storefront, and more.
+Developers can still benefit from customization opportunities here that Medusa provides. This includes creating resources such as API Routes and services, creating plugins, integrating third-party services, create a custom storefront, and more.
 
 ### Your Own Use Case
 

@@ -1,4 +1,5 @@
 type: object
+description: The details of the cart to be created.
 properties:
   region_id:
     type: string
@@ -25,7 +26,7 @@ properties:
   country_code:
     type: string
     description: >-
-      The 2 character ISO country code to create the Cart in. Setting this
+      The two character ISO country code to create the Cart in. Setting this
       parameter will set the country code of the shipping address.
     externalDocs:
       url: >-

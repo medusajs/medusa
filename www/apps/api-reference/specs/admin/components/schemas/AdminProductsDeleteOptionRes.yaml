@@ -1,4 +1,5 @@
 type: object
+description: The details of deleting a product's option.
 x-expanded-relations:
   field: product
   relations:

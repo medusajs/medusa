@@ -12,7 +12,8 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/users/reset-password
  * operationId: "PostUsersUserPassword"
  * summary: "Reset Password"
- * description: "Reset the password of an admin User using their reset password token. A user must request to reset their password first before attempting to reset their password with this request."
+ * description: "Reset the password of an admin User using their reset password token. A user must request to reset their password first before attempting to reset their
+ * password with this request."
  * externalDocs:
  *   description: How to reset a user's password
  *   url: https://docs.medusajs.com/modules/users/admin/manage-profile#reset-password
@@ -36,7 +37,35 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ user }) => {
  *         console.log(user.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminResetPassword } from "medusa-react"
+ *
+ *       const ResetPassword = () => {
+ *         const resetPassword = useAdminResetPassword()
+ *         // ...
+ *
+ *         const handleResetPassword = (
+ *           token: string,
+ *           password: string
+ *         ) => {
+ *           resetPassword.mutate({
+ *             token,
+ *             password,
+ *           }, {
+ *             onSuccess: ({ user }) => {
+ *               console.log(user.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ResetPassword
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -127,6 +156,7 @@ export type payload = {
 /**
  * @schema AdminResetPasswordRequest
  * type: object
+ * description: "The details of the password reset request."
  * required:
  *   - token
  *   - password

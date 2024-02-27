@@ -1,12 +1,17 @@
 import { isDefined } from "@medusajs/utils"
-import { TransactionFlow } from "./transaction-orchestrator"
-import { TransactionStepHandler } from "./transaction-step"
+import { EventEmitter } from "events"
+import { IDistributedTransactionStorage } from "./datastore/abstract-storage"
+import { BaseInMemoryDistributedTransactionStorage } from "./datastore/base-in-memory-storage"
+import {
+  TransactionFlow,
+  TransactionOrchestrator,
+} from "./transaction-orchestrator"
+import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 import { TransactionHandlerType, TransactionState } from "./types"
 
 /**
  * @typedef TransactionMetadata
  * @property model_id - The id of the model_id that created the transaction (modelId).
- * @property reply_to_topic - The topic to reply to for the transaction.
  * @property idempotency_key - The idempotency key of the transaction.
  * @property action - The action of the transaction.
  * @property action_type - The type of the transaction.
@@ -15,7 +20,6 @@ import { TransactionHandlerType, TransactionState } from "./types"
  */
 export type TransactionMetadata = {
   model_id: string
-  reply_to_topic: string
   idempotency_key: string
   action: string
   action_type: TransactionHandlerType
@@ -70,13 +74,19 @@ export class TransactionPayload {
  * DistributedTransaction represents a distributed transaction, which is a transaction that is composed of multiple steps that are executed in a specific order.
  */
 
-export class DistributedTransaction {
+export class DistributedTransaction extends EventEmitter {
   public modelId: string
   public transactionId: string
 
   private readonly errors: TransactionStepError[] = []
-
   private readonly context: TransactionContext = new TransactionContext()
+  private static keyValueStore: IDistributedTransactionStorage
+
+  public static setStorage(storage: IDistributedTransactionStorage) {
+    this.keyValueStore = storage
+  }
+
+  public static keyPrefix = "dtrans"
 
   constructor(
     private flow: TransactionFlow,
@@ -85,6 +95,8 @@ export class DistributedTransaction {
     errors?: TransactionStepError[],
     context?: TransactionContext
   ) {
+    super()
+
     this.transactionId = flow.transactionId
     this.modelId = flow.modelId
 
@@ -156,6 +168,7 @@ export class DistributedTransaction {
       this.getFlow().state === TransactionState.INVOKING
     )
   }
+
   public canRevert(): boolean {
     return (
       this.getFlow().state === TransactionState.DONE ||
@@ -163,36 +176,122 @@ export class DistributedTransaction {
     )
   }
 
-  public static keyValueStore: any = {} // TODO: Use Key/Value db
-  private static keyPrefix = "dtrans:"
-  public async saveCheckpoint(): Promise<TransactionCheckpoint> {
-    // TODO: Use Key/Value db to save transactions
-    const key = DistributedTransaction.keyPrefix + this.transactionId
+  public hasTimeout(): boolean {
+    return !!this.getTimeout()
+  }
+
+  public getTimeout(): number | undefined {
+    return this.getFlow().options?.timeout
+  }
+
+  public async saveCheckpoint(
+    ttl = 0
+  ): Promise<TransactionCheckpoint | undefined> {
+    const options = this.getFlow().options
+    if (!options?.store) {
+      return
+    }
+
     const data = new TransactionCheckpoint(
       this.getFlow(),
       this.getContext(),
       this.getErrors()
     )
-    DistributedTransaction.keyValueStore[key] = JSON.stringify(data)
+
+    const key = TransactionOrchestrator.getKeyName(
+      DistributedTransaction.keyPrefix,
+      this.modelId,
+      this.transactionId
+    )
+    await DistributedTransaction.keyValueStore.save(key, data, ttl)
 
     return data
   }
 
   public static async loadTransaction(
+    modelId: string,
     transactionId: string
   ): Promise<TransactionCheckpoint | null> {
-    // TODO: Use Key/Value db to load transactions
-    const key = DistributedTransaction.keyPrefix + transactionId
-    if (DistributedTransaction.keyValueStore[key]) {
-      return JSON.parse(DistributedTransaction.keyValueStore[key])
+    const key = TransactionOrchestrator.getKeyName(
+      DistributedTransaction.keyPrefix,
+      modelId,
+      transactionId
+    )
+
+    const loadedData = await DistributedTransaction.keyValueStore.get(key)
+    if (loadedData) {
+      return loadedData
     }
 
     return null
   }
 
-  public async deleteCheckpoint(): Promise<void> {
-    // TODO: Delete from Key/Value db
-    const key = DistributedTransaction.keyPrefix + this.transactionId
-    delete DistributedTransaction.keyValueStore[key]
+  public async scheduleRetry(
+    step: TransactionStep,
+    interval: number
+  ): Promise<void> {
+    await this.saveCheckpoint()
+    await DistributedTransaction.keyValueStore.scheduleRetry(
+      this,
+      step,
+      Date.now(),
+      interval
+    )
+  }
+
+  public async clearRetry(step: TransactionStep): Promise<void> {
+    await DistributedTransaction.keyValueStore.clearRetry(this, step)
+  }
+
+  public async scheduleTransactionTimeout(interval: number): Promise<void> {
+    // schedule transaction timeout only if there are async steps
+    if (!this.getFlow().hasAsyncSteps) {
+      return
+    }
+
+    await this.saveCheckpoint()
+    await DistributedTransaction.keyValueStore.scheduleTransactionTimeout(
+      this,
+      Date.now(),
+      interval
+    )
+  }
+
+  public async clearTransactionTimeout(): Promise<void> {
+    if (!this.getFlow().hasAsyncSteps) {
+      return
+    }
+
+    await DistributedTransaction.keyValueStore.clearTransactionTimeout(this)
+  }
+
+  public async scheduleStepTimeout(
+    step: TransactionStep,
+    interval: number
+  ): Promise<void> {
+    // schedule step timeout only if the step is async
+    if (!step.definition.async) {
+      return
+    }
+
+    await this.saveCheckpoint()
+    await DistributedTransaction.keyValueStore.scheduleStepTimeout(
+      this,
+      step,
+      Date.now(),
+      interval
+    )
+  }
+
+  public async clearStepTimeout(step: TransactionStep): Promise<void> {
+    if (!step.definition.async || step.isCompensating()) {
+      return
+    }
+
+    await DistributedTransaction.keyValueStore.clearStepTimeout(this, step)
   }
 }
+
+DistributedTransaction.setStorage(
+  new BaseInMemoryDistributedTransactionStorage()
+)

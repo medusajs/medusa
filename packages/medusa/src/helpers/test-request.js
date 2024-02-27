@@ -3,7 +3,6 @@ import {
   moduleLoader,
   ModulesDefinition,
   registerMedusaModule,
-  registerModules,
 } from "@medusajs/modules-sdk"
 import { asValue, createContainer } from "awilix"
 import express from "express"
@@ -19,7 +18,6 @@ import passportLoader from "../loaders/passport"
 import repositories from "../loaders/repositories"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
-import modules from "../modules-config"
 
 const adminSessionOpts = {
   cookieName: "session",
@@ -33,12 +31,13 @@ const clientSessionOpts = {
   secret: "test",
 }
 
-const moduleResolutions = registerModules({})
-// Load non legacy modules
-Object.keys(modules).map((moduleKey) => {
+const moduleResolutions = {}
+Object.entries(ModulesDefinition).forEach(([moduleKey, module]) => {
   moduleResolutions[moduleKey] = registerMedusaModule(
     moduleKey,
-    ModulesDefinition[moduleKey]
+    module.defaultModuleDeclaration,
+    undefined,
+    module
   )[moduleKey]
 })
 
@@ -84,7 +83,7 @@ container.register("modulesHelper", asValue(moduleHelper))
 container.register("configModule", asValue(config))
 container.register({
   logger: asValue({
-    error: () => { },
+    error: () => {},
   }),
   manager: asValue(MockManager),
 })
@@ -146,7 +145,10 @@ export async function request(method, url, opts = {}) {
   headers.Cookie = headers.Cookie || ""
   if (opts.adminSession) {
     const token = jwt.sign(
-      { user_id: opts.adminSession.userId || opts.adminSession.jwt?.userId, domain: "admin" },
+      {
+        user_id: opts.adminSession.userId || opts.adminSession.jwt?.userId,
+        domain: "admin",
+      },
       config.projectConfig.jwt_secret
     )
 
@@ -154,7 +156,11 @@ export async function request(method, url, opts = {}) {
   }
   if (opts.clientSession) {
     const token = jwt.sign(
-      { customer_id: opts.clientSession.customer_id || opts.clientSession.jwt?.customer_id, domain: "store" },
+      {
+        customer_id:
+          opts.clientSession.customer_id || opts.clientSession.jwt?.customer_id,
+        domain: "store",
+      },
       config.projectConfig.jwt_secret
     )
 

@@ -25,15 +25,15 @@ const Providers = ({ children }: ProvidersProps) => {
         <ModalProvider>
           <ColorModeProvider>
             <BaseSpecsProvider>
-              <SidebarProvider>
-                <NavbarProvider>
-                  <ScrollControllerProvider scrollableSelector="#main">
+              <ScrollControllerProvider scrollableSelector="#main">
+                <SidebarProvider>
+                  <NavbarProvider>
                     <SearchProvider>
                       <MobileProvider>{children}</MobileProvider>
                     </SearchProvider>
-                  </ScrollControllerProvider>
-                </NavbarProvider>
-              </SidebarProvider>
+                  </NavbarProvider>
+                </SidebarProvider>
+              </ScrollControllerProvider>
             </BaseSpecsProvider>
           </ColorModeProvider>
         </ModalProvider>

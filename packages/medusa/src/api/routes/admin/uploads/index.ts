@@ -43,6 +43,7 @@ export default (app) => {
 /**
  * @schema AdminUploadsRes
  * type: object
+ * description: "The list of uploaded files."
  * required:
  *   - uploads
  * properties:
@@ -92,6 +93,7 @@ export type AdminDeleteUploadsRes = DeleteResponse
 /**
  * @schema AdminUploadsDownloadUrlRes
  * type: object
+ * description: "The download URL details."
  * required:
  *   - download_url
  * properties:

@@ -14,12 +14,45 @@ import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
+/**
+ * This class is used to send requests to [Admin Region API Routes](https://docs.medusajs.com/api/admin#regions). All its method
+ * are available in the JS Client under the `medusa.admin.regions` property.
+ * 
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * Regions are different countries or geographical regions that the commerce store serves customers in.
+ * Admins can manage these regions, their providers, and more.
+ * 
+ * Related Guide: [How to manage regions](https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-regions).
+ */
 class AdminRegionsResource extends BaseResource {
   /**
-   * @description creates a region.
-   * @param payload
-   * @param customHeaders
-   * @returns created region.
+   * Create a region.
+   * @param {AdminPostRegionsReq} payload - The region to create.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.regions.create({
+   *   name: "Europe",
+   *   currency_code: "eur",
+   *   tax_rate: 0,
+   *   payment_providers: [
+   *     "manual"
+   *   ],
+   *   fulfillment_providers: [
+   *     "manual"
+   *   ],
+   *   countries: [
+   *     "DK"
+   *   ]
+   * })
+   * .then(({ region }) => {
+   *   console.log(region.id);
+   * })
    */
   create(
     payload: AdminPostRegionsReq,
@@ -30,11 +63,22 @@ class AdminRegionsResource extends BaseResource {
   }
 
   /**
-   * @description updates a region
-   * @param id id of the region to update.
-   * @param payload update to apply to region.
-   * @param customHeaders
-   * @returns the updated region.
+   * Update a region's details.
+   * @param {string} id - The region's ID.
+   * @param {AdminPostRegionsRegionReq} payload - The attributes to update in the region.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.regions.update(regionId, {
+   *   name: "Europe"
+   * })
+   * .then(({ region }) => {
+   *   console.log(region.id);
+   * })
    */
   update(
     id: string,
@@ -46,10 +90,19 @@ class AdminRegionsResource extends BaseResource {
   }
 
   /**
-   * @description deletes a region
-   * @param id id of region to delete.
-   * @param customHeaders
-   * @returns Deleted response
+   * Delete a region. Associated resources, such as providers or currencies are not deleted. Associated tax rates are deleted.
+   * @param {string} id - The region's ID.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminRegionsDeleteRes>} Resolves to the deletion operation's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.regions.delete(regionId)
+   * .then(({ id, object, deleted }) => {
+   *   console.log(id);
+   * })
    */
   delete(
     id: string,
@@ -60,10 +113,19 @@ class AdminRegionsResource extends BaseResource {
   }
 
   /**
-   * @description get a region
-   * @param id id of the region to retrieve.
-   * @param customHeaders
-   * @returns the region with the given id
+   * Retrieve a region's details.
+   * @param {string} id - The region's ID.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminRegionsRes>}  Resolves to the region's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.regions.retrieve(regionId)
+   * .then(({ region }) => {
+   *   console.log(region.id);
+   * })
    */
   retrieve(
     id: string,
@@ -74,10 +136,38 @@ class AdminRegionsResource extends BaseResource {
   }
 
   /**
-   * @description lists regions matching a query
-   * @param query query for searching regions
-   * @param customHeaders
-   * @returns a list of regions matching the query.
+   * Retrieve a list of Regions. The regions can be filtered by fields such as `created_at` passed in the `query` parameter. The regions can also be paginated.
+   * @param {AdminGetRegionsParams} query - Filters and pagination configurations to apply on the retrieved regions.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminRegionsListRes>} Resolves to the list of regions with pagination fields.
+   * 
+   * @example
+   * To list regions:
+   * 
+   * ```ts
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.regions.list()
+   * .then(({ regions, limit, offset, count }) => {
+   *   console.log(regions.length);
+   * })
+   * ```
+   * 
+   * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+   * 
+   * ```ts
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.regions.list({
+   *   limit,
+   *   offset
+   * })
+   * .then(({ regions, limit, offset, count }) => {
+   *   console.log(regions.length);
+   * })
+   * ```
    */
   list(
     query?: AdminGetRegionsParams,
@@ -94,11 +184,22 @@ class AdminRegionsResource extends BaseResource {
   }
 
   /**
-   * @description adds a country to the list of countries in a region
-   * @param id region id
-   * @param payload country data
-   * @param customHeaders
-   * @returns updated region
+   * Add a country to the list of countries in a region.
+   * @param {string} id - The region's ID.
+   * @param {AdminPostRegionsRegionCountriesReq} payload - The country to add.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.regions.addCountry(regionId, {
+   *   country_code: "dk"
+   * })
+   * .then(({ region }) => {
+   *   console.log(region.id);
+   * })
    */
   addCountry(
     id: string,
@@ -110,11 +211,20 @@ class AdminRegionsResource extends BaseResource {
   }
 
   /**
-   * @description remove a country from a region's list of coutnries
-   * @param id region id
-   * @param country_code the 2 character ISO code for the Country.
-   * @param customHeaders
-   * @returns updated region
+   * Delete a country from the list of countries in a region. The country will still be available in the system, and it can be used in other regions.
+   * @param {string} id - The region's ID.
+   * @param {string} country_code - The code of the country to delete from the region.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.regions.deleteCountry(regionId, "dk")
+   * .then(({ region }) => {
+   *   console.log(region.id);
+   * })
    */
   deleteCountry(
     id: string,
@@ -126,11 +236,22 @@ class AdminRegionsResource extends BaseResource {
   }
 
   /**
-   * @description adds a fulfillment provider to a region
-   * @param id region id
-   * @param payload fulfillment provider data
-   * @param customHeaders
-   * @returns updated region
+   * Add a fulfillment provider to the list of fulfullment providers in a region.
+   * @param {string} id - The region's ID.
+   * @param {AdminPostRegionsRegionFulfillmentProvidersReq} payload - The fulfillment provider to add.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.regions.addFulfillmentProvider(regionId, {
+   *   provider_id: "manual"
+   * })
+   * .then(({ region }) => {
+   *   console.log(region.id);
+   * })
    */
   addFulfillmentProvider(
     id: string,
@@ -142,11 +263,20 @@ class AdminRegionsResource extends BaseResource {
   }
 
   /**
-   * @description remove a fulfillment provider from a region
-   * @param id region id
-   * @param provider_id the if of the fulfillment provider
-   * @param customHeaders
-   * @returns updated region
+   * Delete a fulfillment provider from a region. The fulfillment provider will still be available for usage in other regions.
+   * @param {string} id - The region's ID.
+   * @param {string} provider_id - The ID of the fulfillment provider to delete from the region.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.regions.deleteFulfillmentProvider(regionId, "manual")
+   * .then(({ region }) => {
+   *   console.log(region.id);
+   * })
    */
   deleteFulfillmentProvider(
     id: string,
@@ -158,10 +288,19 @@ class AdminRegionsResource extends BaseResource {
   }
 
   /**
-   * @description retrieves the list of fulfillment options available in a region
-   * @param id region id
-   * @param customHeaders
-   * @returns list of fulfillment options
+   * Retrieve a list of fulfillment options available in a region.
+   * @param {string} id - The region's ID.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminGetRegionsRegionFulfillmentOptionsRes>} Resolves to the list of fulfillment options.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.regions.retrieveFulfillmentOptions(regionId)
+   * .then(({ fulfillment_options }) => {
+   *   console.log(fulfillment_options.length);
+   * })
    */
   retrieveFulfillmentOptions(
     id: string,
@@ -172,11 +311,22 @@ class AdminRegionsResource extends BaseResource {
   }
 
   /**
-   * @description adds a payment provider to a region
-   * @param id region id
-   * @param payload payment provider data
-   * @param customHeaders
-   * @returns updated region
+   * Add a payment provider to the list of payment providers in a region.
+   * @param {string} id - The region's ID.
+   * @param {AdminPostRegionsRegionPaymentProvidersReq} payload - The payment provider to add.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.regions.addPaymentProvider(regionId, {
+   *   provider_id: "manual"
+   * })
+   * .then(({ region }) => {
+   *   console.log(region.id);
+   * })
    */
   addPaymentProvider(
     id: string,
@@ -188,11 +338,20 @@ class AdminRegionsResource extends BaseResource {
   }
 
   /**
-   * @description removes a payment provider from a region
-   * @param id region id
-   * @param provider_id the id of the payment provider
-   * @param customHeaders
-   * @returns updated region
+   * Delete a payment provider from a region. The payment provider will still be available for usage in other regions.
+   * @param {string} id - The region's ID. 
+   * @param {string} provider_id - The ID of the payment provider to delete from the region.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.regions.deletePaymentProvider(regionId, "manual")
+   * .then(({ region }) => {
+   *   console.log(region.id);
+   * })
    */
   deletePaymentProvider(
     id: string,

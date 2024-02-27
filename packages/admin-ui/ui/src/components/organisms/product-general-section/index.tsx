@@ -157,7 +157,7 @@ const ProductDetails = ({ product }: Props) => {
       {isFeatureEnabled(FeatureFlag.PRODUCT_CATEGORIES) && (
         <Detail
           title={t("product-general-section-category", "Category")}
-          value={product.categories.map((c) => c.name)}
+          value={product.categories?.map((c) => c.name)}
         />
       )}
       <Detail

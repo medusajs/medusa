@@ -6,4 +6,4 @@ medusa.admin.orders.createShipment(order_id, {
 })
 .then(({ order }) => {
   console.log(order.id);
-});
+})

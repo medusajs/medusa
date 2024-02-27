@@ -1,49 +1,15 @@
-import { Lifetime, LifetimeType, aliasTo, asFunction } from "awilix"
-import { FulfillmentService } from "medusa-interfaces"
+import { aliasTo, asFunction, Lifetime, LifetimeType } from "awilix"
 import {
   AbstractFulfillmentService,
   AbstractPaymentProcessor,
-  AbstractPaymentService,
-  isPaymentProcessor,
-  isPaymentService,
 } from "../../interfaces"
 import { ClassConstructor, MedusaContainer } from "../../types/global"
+import { PaymentService } from "medusa-interfaces"
 
 type Context = {
   container: MedusaContainer
   pluginDetails: Record<string, unknown>
   registrationName: string
-}
-
-export function registerPaymentServiceFromClass(
-  klass: ClassConstructor<AbstractPaymentService> & {
-    LIFE_TIME?: LifetimeType
-  },
-  context: Context
-): void {
-  if (!isPaymentService(klass.prototype)) {
-    return
-  }
-
-  const { container, pluginDetails, registrationName } = context
-
-  container.registerAdd(
-    "paymentProviders",
-    asFunction((cradle) => new klass(cradle, pluginDetails.options), {
-      lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-    })
-  )
-
-  container.register({
-    [registrationName]: asFunction(
-      (cradle) => new klass(cradle, pluginDetails.options),
-      {
-        lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-      }
-    ),
-    [`pp_${(klass as unknown as typeof AbstractPaymentService).identifier}`]:
-      aliasTo(registrationName),
-  })
 }
 
 export function registerPaymentProcessorFromClass(
@@ -52,7 +18,10 @@ export function registerPaymentProcessorFromClass(
   },
   context: Context
 ): void {
-  if (!isPaymentProcessor(klass.prototype)) {
+  if (
+    !AbstractPaymentProcessor.isPaymentProcessor(klass.prototype) &&
+    !PaymentService.isPaymentService(klass.prototype)
+  ) {
     return
   }
 
@@ -83,7 +52,7 @@ export function registerAbstractFulfillmentServiceFromClass(
   },
   context: Context
 ): void {
-  if (!(klass.prototype instanceof AbstractFulfillmentService)) {
+  if (!AbstractFulfillmentService.isFulfillmentService(klass.prototype)) {
     return
   }
 
@@ -106,36 +75,5 @@ export function registerAbstractFulfillmentServiceFromClass(
     [`fp_${
       (klass as unknown as typeof AbstractFulfillmentService).identifier
     }`]: aliasTo(registrationName),
-  })
-}
-
-export function registerFulfillmentServiceFromClass(
-  klass: ClassConstructor<typeof FulfillmentService> & {
-    LIFE_TIME?: LifetimeType
-  },
-  context: Context
-): void {
-  if (!(klass.prototype instanceof FulfillmentService)) {
-    return
-  }
-
-  const { container, pluginDetails, registrationName } = context
-
-  container.registerAdd(
-    "fulfillmentProviders",
-    asFunction((cradle) => new klass(cradle, pluginDetails.options), {
-      lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-    })
-  )
-
-  container.register({
-    [registrationName]: asFunction(
-      (cradle) => new klass(cradle, pluginDetails.options),
-      {
-        lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-      }
-    ),
-    [`fp_${(klass as unknown as typeof FulfillmentService).identifier}`]:
-      aliasTo(registrationName),
   })
 }

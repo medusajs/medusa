@@ -1,3 +1,4 @@
+import { MedusaError, TransactionStepState } from "@medusajs/utils"
 import {
   DistributedTransaction,
   TransactionPayload,
@@ -30,24 +31,31 @@ export class TransactionStep {
    * @member attempts - The number of attempts made to execute the step
    * @member failures - The number of failures encountered while executing the step
    * @member lastAttempt - The timestamp of the last attempt made to execute the step
+   * @member hasScheduledRetry - A flag indicating if a retry has been scheduled
+   * @member retryRescheduledAt - The timestamp of the last retry scheduled
    * @member next - The ids of the next steps in the flow
    * @member saveResponse - A flag indicating if the response of a step should be shared in the transaction context and available to subsequent steps - default is true
    */
   private stepFailed = false
   id: string
+  uuid?: string
   depth: number
   definition: TransactionStepsDefinition
   invoke: {
-    state: TransactionState
+    state: TransactionStepState
     status: TransactionStepStatus
   }
   compensate: {
-    state: TransactionState
+    state: TransactionStepState
     status: TransactionStepStatus
   }
   attempts: number
   failures: number
   lastAttempt: number | null
+  retryRescheduledAt: number | null
+  hasScheduledRetry: boolean
+  timedOutAt: number | null
+  startedAt?: number
   next: string[]
   saveResponse: boolean
 
@@ -70,24 +78,29 @@ export class TransactionStep {
     return this.stepFailed
   }
 
-  public changeState(toState: TransactionState) {
+  public isInvoking() {
+    return !this.stepFailed
+  }
+
+  public changeState(toState: TransactionStepState) {
     const allowed = {
-      [TransactionState.DORMANT]: [TransactionState.NOT_STARTED],
-      [TransactionState.NOT_STARTED]: [
-        TransactionState.INVOKING,
-        TransactionState.COMPENSATING,
-        TransactionState.FAILED,
-        TransactionState.SKIPPED,
+      [TransactionStepState.DORMANT]: [TransactionStepState.NOT_STARTED],
+      [TransactionStepState.NOT_STARTED]: [
+        TransactionStepState.INVOKING,
+        TransactionStepState.COMPENSATING,
+        TransactionStepState.FAILED,
+        TransactionStepState.SKIPPED,
       ],
-      [TransactionState.INVOKING]: [
-        TransactionState.FAILED,
-        TransactionState.DONE,
+      [TransactionStepState.INVOKING]: [
+        TransactionStepState.FAILED,
+        TransactionStepState.DONE,
+        TransactionStepState.TIMEOUT,
       ],
-      [TransactionState.COMPENSATING]: [
-        TransactionState.REVERTED,
-        TransactionState.FAILED,
+      [TransactionStepState.COMPENSATING]: [
+        TransactionStepState.REVERTED,
+        TransactionStepState.FAILED,
       ],
-      [TransactionState.DONE]: [TransactionState.COMPENSATING],
+      [TransactionStepState.DONE]: [TransactionStepState.COMPENSATING],
     }
 
     const curState = this.getStates()
@@ -99,7 +112,8 @@ export class TransactionStep {
       return
     }
 
-    throw new Error(
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
       `Updating State from "${curState.state}" to "${toState}" is not allowed.`
     )
   }
@@ -128,16 +142,49 @@ export class TransactionStep {
       return
     }
 
-    throw new Error(
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
       `Updating Status from "${curState.status}" to "${toStatus}" is not allowed.`
     )
   }
 
+  hasRetryScheduled(): boolean {
+    return !!this.hasScheduledRetry
+  }
+
+  hasRetryInterval(): boolean {
+    return !!this.definition.retryInterval
+  }
+
+  hasTimeout(): boolean {
+    return !!this.getTimeout()
+  }
+
+  getTimeout(): number | undefined {
+    return this.definition.timeout
+  }
+
   canRetry(): boolean {
+    return (
+      !this.definition.retryInterval ||
+      !!(
+        this.lastAttempt &&
+        this.definition.retryInterval &&
+        Date.now() - this.lastAttempt > this.definition.retryInterval * 1e3
+      )
+    )
+  }
+
+  hasAwaitingRetry(): boolean {
+    return !!this.definition.retryIntervalAwaiting
+  }
+
+  canRetryAwaiting(): boolean {
     return !!(
+      this.hasAwaitingRetry() &&
       this.lastAttempt &&
-      this.definition.retryInterval &&
-      Date.now() - this.lastAttempt > this.definition.retryInterval * 1e3
+      Date.now() - this.lastAttempt >
+        this.definition.retryIntervalAwaiting! * 1e3
     )
   }
 
@@ -145,7 +192,7 @@ export class TransactionStep {
     const { status, state } = this.getStates()
     return (
       (!this.isCompensating() &&
-        state === TransactionState.NOT_STARTED &&
+        state === TransactionStepState.NOT_STARTED &&
         flowState === TransactionState.INVOKING) ||
       status === TransactionStepStatus.TEMPORARY_FAILURE
     )
@@ -154,8 +201,18 @@ export class TransactionStep {
   canCompensate(flowState: TransactionState): boolean {
     return (
       this.isCompensating() &&
-      this.getStates().state === TransactionState.NOT_STARTED &&
+      this.getStates().state === TransactionStepState.NOT_STARTED &&
       flowState === TransactionState.COMPENSATING
+    )
+  }
+
+  canCancel(): boolean {
+    return (
+      !this.isCompensating() &&
+      [
+        TransactionStepStatus.WAITING,
+        TransactionStepStatus.TEMPORARY_FAILURE,
+      ].includes(this.getStates().status)
     )
   }
 }

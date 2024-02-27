@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the location level to create.
+ */
 export interface AdminPostInventoryItemsItemLocationLevelsReq {
   /**
    * the ID of the stock location

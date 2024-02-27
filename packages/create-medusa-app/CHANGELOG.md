@@ -1,5 +1,30 @@
 # Change Log
 
+## 1.2.6
+
+### Patch Changes
+
+- [#5983](https://github.com/medusajs/medusa/pull/5983) [`f86877586`](https://github.com/medusajs/medusa/commit/f86877586147ecedbf7f56a1c57f37ef0c33286c) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(create-medusa-app,medusa-core-utils): Use NodeJS.Timeout instead of NodeJS.Timer as the latter was deprecated in v14.
+  chore(icons): Update icons to latest version.
+
+## 1.2.5
+
+### Patch Changes
+
+- [#5547](https://github.com/medusajs/medusa/pull/5547) [`09ab1d1be`](https://github.com/medusajs/medusa/commit/09ab1d1be6ec0c50e3fcc828c740265debd2222b) Thanks [@egormkn](https://github.com/egormkn)! - feat(create-medusa-app): print error message for failed database connection
+
+## 1.2.4
+
+### Patch Changes
+
+- [#5474](https://github.com/medusajs/medusa/pull/5474) [`03959c3e3`](https://github.com/medusajs/medusa/commit/03959c3e3a38c155607647e70668ee250b76fda9) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): improve spinner style
+
+## 1.2.3
+
+### Patch Changes
+
+- [#5404](https://github.com/medusajs/medusa/pull/5404) [`a1807aea8`](https://github.com/medusajs/medusa/commit/a1807aea83a5bf82c4221839a1fa57b41d2cc6ac) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): add tracking for selected options
+
 ## 1.2.2
 
 ### Patch Changes

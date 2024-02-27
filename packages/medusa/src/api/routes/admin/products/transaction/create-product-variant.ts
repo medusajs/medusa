@@ -14,7 +14,7 @@ import {
 
 import { CreateProductVariantInput } from "../../../../../types/product-variant"
 import { EntityManager } from "typeorm"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError, promiseAll } from "@medusajs/utils"
 import { ProductVariant } from "../../../../../models"
 import { ulid } from "ulid"
 
@@ -92,7 +92,7 @@ export const createVariantsTransaction = async (
   async function createInventoryItems(variants: ProductVariant[] = []) {
     const context = { transactionManager: manager }
 
-    return await Promise.all(
+    return await promiseAll(
       variants.map(async (variant) => {
         if (!variant.manage_inventory) {
           return
@@ -126,7 +126,7 @@ export const createVariantsTransaction = async (
   ) {
     const context = { transactionManager: manager }
 
-    return await Promise.all(
+    return await promiseAll(
       data.map(async ({ inventoryItem }) => {
         return await inventoryService!.deleteInventoryItem(
           inventoryItem.id,
@@ -142,7 +142,7 @@ export const createVariantsTransaction = async (
       inventoryItem: InventoryItemDTO
     }[]
   ) {
-    return await Promise.all(
+    return await promiseAll(
       data
         .filter((d) => d)
         .map(async ({ variant, inventoryItem }) => {

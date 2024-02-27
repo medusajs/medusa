@@ -1,4 +1,5 @@
 type: object
+description: The list of return reasons.
 x-expanded-relations:
   field: return_reasons
   relations:

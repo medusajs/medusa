@@ -4,6 +4,7 @@ import { LinearClient } from "@linear/sdk"
 import { Octokit } from "@octokit/core"
 import fs from "fs"
 import path from "path"
+import { fileURLToPath } from "url"
 
 const octokit = new Octokit({
   auth: process.env.GH_TOKEN,
@@ -12,6 +13,9 @@ const octokit = new Octokit({
 const linearClient = new LinearClient({
   apiKey: process.env.LINEAR_API_KEY,
 })
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const repoPath = path.join(
   __dirname,
@@ -69,14 +73,15 @@ async function scanDirectory(startPath: string) {
       commitResponse.data[0].commit.committer.date
     )
     const monthsSinceEdited = getMonthDifference(lastEditedDate, today)
+    const monthsThreshold = 2
 
-    if (monthsSinceEdited > 6) {
+    if (monthsSinceEdited > monthsThreshold) {
       //file was edited more than 6 months ago.
       //check if there's an issue created for this file since the commit date
       const existingIssue = await linearClient.issues({
         filter: {
           createdAt: {
-            gte: subtractMonths(monthsSinceEdited - 6, today),
+            gte: subtractMonths(monthsSinceEdited - monthsThreshold, today),
           },
           title: {
             containsIgnoreCase: `Freshness check for ${filePath}`,

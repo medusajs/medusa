@@ -34,10 +34,17 @@ export function load(app: Application) {
   })
 
   app.options.addDeclaration({
-    help: "[Markdown Plugin] Output all reflections into seperate output files.",
+    help: "[Markdown Plugin] Specify module names where all reflections are outputted into seperate files.",
     name: "allReflectionsHaveOwnDocument",
-    type: ParameterType.Boolean,
-    defaultValue: false,
+    type: ParameterType.Array,
+    defaultValue: [],
+  })
+
+  app.options.addDeclaration({
+    help: "[Markdown Plugin] Specify namespace names where all reflections are outputted into seperate files.",
+    name: "allReflectionsHaveOwnDocumentInNamespace",
+    type: ParameterType.Array,
+    defaultValue: [],
   })
 
   app.options.addDeclaration({
@@ -71,7 +78,7 @@ export function load(app: Application) {
     help: "[Markdown Plugin] Do not add special symbols for class members.",
     name: "hideMembersSymbol",
     type: ParameterType.Boolean,
-    defaultValue: false,
+    defaultValue: true,
   })
 
   app.options.addDeclaration({
@@ -108,6 +115,27 @@ export function load(app: Application) {
     name: "mdxOutput",
     type: ParameterType.Boolean,
     defaultValue: false,
+  })
+
+  app.options.addDeclaration({
+    help: "[Markdown Plugin] The maximum level to expand when retrieving reflection types.",
+    name: "maxLevel",
+    type: ParameterType.Number,
+    defaultValue: 3,
+  })
+
+  app.options.addDeclaration({
+    help: "[Markdown Plugin] Whether to output modules file for namespaces.",
+    name: "outputNamespace",
+    type: ParameterType.Boolean,
+    defaultValue: true,
+  })
+
+  app.options.addDeclaration({
+    help: "[Markdown Plugin] Whether to output module files.",
+    name: "outputModules",
+    type: ParameterType.Boolean,
+    defaultValue: true,
   })
 }
 export { MarkdownTheme }

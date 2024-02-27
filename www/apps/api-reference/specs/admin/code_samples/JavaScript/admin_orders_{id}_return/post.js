@@ -11,4 +11,4 @@ medusa.admin.orders.requestReturn(orderId, {
 })
 .then(({ order }) => {
   console.log(order.id);
-});
+})

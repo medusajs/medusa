@@ -10,9 +10,10 @@ import DocItemTOCMobile from "@theme/DocItem/TOC/Mobile"
 import DocItemTOCDesktop from "@theme/DocItem/TOC/Desktop"
 import DocItemContent from "@theme/DocItem/Content"
 import DocBreadcrumbs from "@theme/DocBreadcrumbs"
+import Unlisted from "@theme/Unlisted"
 import type { Props } from "@theme/DocItem/Layout"
-import Footer from "@theme/Footer"
 import { useSidebar } from "../../../providers/Sidebar"
+import Footer from "@theme/Footer"
 
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
@@ -40,6 +41,9 @@ function useDocTOC() {
 
 export default function DocItemLayout({ children }: Props): JSX.Element {
   const docTOC = useDocTOC()
+  const {
+    metadata: { unlisted },
+  } = useDoc()
   const sidebarContext = useSidebar()
   return (
     <div className="row m-0">
@@ -51,6 +55,7 @@ export default function DocItemLayout({ children }: Props): JSX.Element {
           !sidebarContext?.hiddenSidebarContainer && "!max-w-[720px]"
         )}
       >
+        {unlisted && <Unlisted />}
         <DocVersionBanner />
         <div>
           <article className={clsx("[&>*:first-child]:mt-0")}>

@@ -6,4 +6,4 @@ medusa.admin.discounts.update(discountId, {
 })
 .then(({ discount }) => {
   console.log(discount.id);
-});
+})

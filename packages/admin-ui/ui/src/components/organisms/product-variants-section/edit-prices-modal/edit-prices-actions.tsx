@@ -1,7 +1,7 @@
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 
-import { useAdminRegions, useAdminStore } from "medusa-react"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
+import { useAdminRegions, useAdminStore } from "medusa-react"
 
 import Button from "../../../fundamentals/button"
 import AdjustmentsIcon from "../../../fundamentals/icons/adjustments-icon"
@@ -38,12 +38,12 @@ function EditPricesActions(props: EditPricesActionsProps) {
   return (
     <div
       style={{ fontSize: 13 }}
-      className="flex items-center gap-2 border-t py-[12px] px-4"
+      className="border-ui-border-base flex items-center gap-2 border-b border-t px-4 py-[12px]"
     >
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
           <Button variant="secondary" size="small" className="text-gray-700">
-            View
+            Currencies
             <AdjustmentsIcon size={20} />
           </Button>
         </DropdownMenu.Trigger>

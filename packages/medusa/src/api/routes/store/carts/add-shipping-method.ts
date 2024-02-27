@@ -1,7 +1,10 @@
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { IsOptional, IsString } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
-import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
@@ -30,7 +33,36 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAddShippingMethodToCart } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const addShippingMethod = useAddShippingMethodToCart(cartId)
+ *
+ *         const handleAddShippingMethod = (
+ *           optionId: string
+ *         ) => {
+ *           addShippingMethod.mutate({
+ *             option_id: optionId,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.shipping_methods)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -66,6 +98,8 @@ export default async (req, res) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
   await manager.transaction(async (m) => {
     const txCartService = cartService.withTransaction(m)
@@ -91,12 +125,18 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
+
   res.status(200).json({ cart: cleanResponseData(data, []) })
 }
 
 /**
  * @schema StorePostCartsCartShippingMethodReq
  * type: object
+ * description: "The details of the shipping method to add to the cart."
  * required:
  *   - option_id
  * properties:

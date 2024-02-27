@@ -1,4 +1,5 @@
 type: object
+description: The customers to remove from the customer group.
 required:
   - customer_ids
 properties:

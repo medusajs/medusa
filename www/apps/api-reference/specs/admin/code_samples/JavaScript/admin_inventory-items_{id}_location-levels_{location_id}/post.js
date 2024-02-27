@@ -6,4 +6,4 @@ medusa.admin.inventoryItems.updateLocationLevel(inventoryItemId, locationId, {
 })
 .then(({ inventory_item }) => {
   console.log(inventory_item.id);
-});
+})

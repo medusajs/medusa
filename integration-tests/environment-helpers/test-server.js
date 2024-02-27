@@ -1,11 +1,3 @@
-const { bootstrapApp } = require("./bootstrap-app")
+const { startBootstrapApp } = require("./bootstrap-app")
 
-const setup = async () => {
-  const { app, port } = await bootstrapApp()
-
-  app.listen(port, (err) => {
-    process.send(port)
-  })
-}
-
-setup()
+startBootstrapApp()

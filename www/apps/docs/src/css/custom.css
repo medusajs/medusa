@@ -38,6 +38,10 @@
   .sidebar-group-headline:not(.theme-doc-sidebar-item-category-level-1) {
     @apply mb-[6px];
   }
+
+  .sidebar-group-headline > .menu__link {
+    @apply text-medusa-fg-base;
+  }
   
   .sidebar-group-headline > .menu__list-item-collapsible > .menu__link {
     @apply text-medusa-fg-base !p-0;

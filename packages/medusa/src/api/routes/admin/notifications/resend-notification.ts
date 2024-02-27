@@ -34,7 +34,35 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.notifications.resend(notificationId)
  *       .then(({ notification }) => {
  *         console.log(notification.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminResendNotification } from "medusa-react"
+ *
+ *       type Props = {
+ *         notificationId: string
+ *       }
+ *
+ *       const Notification = ({ notificationId }: Props) => {
+ *         const resendNotification = useAdminResendNotification(
+ *           notificationId
+ *         )
+ *         // ...
+ *
+ *         const handleResend = () => {
+ *           resendNotification.mutate({}, {
+ *             onSuccess: ({ notification }) => {
+ *               console.log(notification.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Notification
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -102,9 +130,11 @@ export default async (req, res) => {
 /**
  * @schema AdminPostNotificationsNotificationResendReq
  * type: object
+ * description: "The resend details."
  * properties:
  *   to:
- *     description: "A new address or user identifier that the Notification should be sent to. If not provided, the previous `to` field of the notification will be used."
+ *     description: >-
+ *       A new address or user identifier that the Notification should be sent to. If not provided, the previous `to` field of the notification will be used.
  *     type: string
  */
 export class AdminPostNotificationsNotificationResendReq {

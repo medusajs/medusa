@@ -14,6 +14,9 @@ import type { ReturnItem } from "./ReturnItem"
 import type { ShippingMethod } from "./ShippingMethod"
 import type { Swap } from "./Swap"
 
+/**
+ * The associated order's details.
+ */
 export interface AdminReturnsCancelRes {
   /**
    * Order details.

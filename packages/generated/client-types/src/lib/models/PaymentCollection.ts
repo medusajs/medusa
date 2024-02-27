@@ -50,7 +50,7 @@ export interface PaymentCollection {
    */
   region?: Region | null
   /**
-   * The 3 character ISO code for the currency this payment collection is associated with.
+   * The three character ISO code for the currency this payment collection is associated with.
    */
   currency_code: string
   /**

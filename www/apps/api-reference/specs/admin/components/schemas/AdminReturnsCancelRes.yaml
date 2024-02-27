@@ -1,4 +1,5 @@
 type: object
+description: The associated order's details.
 x-expanded-relations:
   field: order
   relations:

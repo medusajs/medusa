@@ -124,6 +124,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_stock-locations/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_stock-locations/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -185,6 +189,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_stock-locations/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_stock-locations/post.tsx
     - lang: Shell
       label: cURL
       source:

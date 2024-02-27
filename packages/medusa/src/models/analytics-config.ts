@@ -16,6 +16,9 @@ export class AnalyticsConfig extends SoftDeletableEntity {
   @Column({ default: false })
   anonymize: boolean
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "acfg")

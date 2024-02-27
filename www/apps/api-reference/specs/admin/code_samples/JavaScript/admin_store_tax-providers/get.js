@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.store.listTaxProviders()
 .then(({ tax_providers }) => {
   console.log(tax_providers.length);
-});
+})

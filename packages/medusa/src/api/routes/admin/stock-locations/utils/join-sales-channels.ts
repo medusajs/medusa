@@ -1,4 +1,5 @@
 import { StockLocationDTO, StockLocationExpandedDTO } from "@medusajs/types"
+import { promiseAll } from "@medusajs/utils"
 import {
   SalesChannelLocationService,
   SalesChannelService,
@@ -9,7 +10,7 @@ const joinSalesChannels = async (
   channelLocationService: SalesChannelLocationService,
   salesChannelService: SalesChannelService
 ): Promise<StockLocationExpandedDTO[]> => {
-  return await Promise.all(
+  return await promiseAll(
     locations.map(async (location: StockLocationExpandedDTO) => {
       const salesChannelIds = await channelLocationService.listSalesChannelIds(
         location.id

@@ -1,11 +1,15 @@
-import { CurrencyService } from "@services"
-import { asClass, asValue, createContainer } from "awilix"
+import { Currency } from "@models"
+import { asValue } from "awilix"
+
+;(Currency as any).meta = {
+  /**
+   * Need to mock the Currency model as well to expose the primary keys when it is different than `id`
+   */
+  primaryKeys: ["code"],
+}
 
 export const nonExistingCurrencyCode = "non-existing-code"
-export const mockContainer = createContainer()
-
-mockContainer.register({
-  transaction: asValue(async (task) => await task()),
+export const currencyRepositoryMock = {
   currencyRepository: asValue({
     find: jest.fn().mockImplementation(async ({ where: { code } }) => {
       if (code === nonExistingCurrencyCode) {
@@ -17,5 +21,4 @@ mockContainer.register({
     findAndCount: jest.fn().mockResolvedValue([[], 0]),
     getFreshManager: jest.fn().mockResolvedValue({}),
   }),
-  currencyService: asClass(CurrencyService),
-})
+}

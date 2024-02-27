@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser"
 import { Express } from "express"
 import session from "express-session"
 import morgan from "morgan"
-import redis from "redis"
+import Redis from "ioredis"
 import { ConfigModule } from "../types/global"
 
 type Options = {
@@ -40,7 +40,10 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
 
   if (configModule?.projectConfig?.redis_url) {
     const RedisStore = createStore(session)
-    const redisClient = redis.createClient(configModule.projectConfig.redis_url)
+    const redisClient = new Redis(
+      configModule.projectConfig.redis_url, 
+      configModule.projectConfig.redis_options ?? {}
+    )
     sessionOpts.store = new RedisStore({
       client: redisClient,
       prefix: `${configModule?.projectConfig?.redis_prefix ?? ""}sess:`,

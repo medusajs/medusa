@@ -27,7 +27,7 @@ export const NotificationItemLayoutDefault: React.FC<
   closeButtonText = "Close",
 }) => {
   return (
-    <>
+    <div className="bg-medusa-bg-base w-full h-full shadow-flyout dark:shadow-flyout-dark rounded-docs_DEFAULT">
       <div className={clsx("flex gap-docs_1 p-docs_1")}>
         {type !== "none" && (
           <div
@@ -79,6 +79,6 @@ export const NotificationItemLayoutDefault: React.FC<
           <Button onClick={handleClose}>{closeButtonText}</Button>
         </div>
       )}
-    </>
+    </div>
   )
 }

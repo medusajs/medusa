@@ -6,4 +6,4 @@ medusa.admin.priceLists.update(priceListId, {
 })
 .then(({ price_list }) => {
   console.log(price_list.id);
-});
+})

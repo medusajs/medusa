@@ -55,15 +55,11 @@ describe("/admin/regions", () => {
       await db.teardown()
     })
 
-    it("successfully creates a region with countries from a previously deleted region", async () => {
+    it("should successfully creates a region with countries from a previously deleted region", async () => {
       const api = useApi()
 
       const response = await api
-        .delete(`/admin/regions/test-region`, {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        })
+        .delete(`/admin/regions/test-region`, adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -85,11 +81,7 @@ describe("/admin/regions", () => {
           fulfillment_providers: ["test-ful"],
           countries: ["us"],
         },
-        {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(newReg.status).toEqual(200)
@@ -146,6 +138,20 @@ describe("/admin/regions", () => {
         tax_rate: 0,
         updated_at: new Date("10/10/2000"),
       })
+      await manager.insert(Region, {
+        id: "us-region",
+        name: "United States",
+        currency_code: "usd",
+        tax_rate: 0,
+        updated_at: new Date("10/10/2000"),
+      })
+      await manager.insert(Region, {
+        id: "uk-region",
+        name: "United Kingdom",
+        currency_code: "gbp",
+        tax_rate: 0,
+        updated_at: new Date("10/10/2000"),
+      })
     })
 
     afterEach(async () => {
@@ -153,20 +159,55 @@ describe("/admin/regions", () => {
       await db.teardown()
     })
 
-    it("only returns non-deleted regions", async () => {
+    it("should list the regions with expand currency relation", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/regions?limit=1&offset=1&expand=currency",
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.regions[0].currency).toEqual(
+        expect.objectContaining({
+          code: "usd",
+        })
+      )
+    })
+
+    it("should list the regions with q and order params", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/regions?q=united&order=currency_code",
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.regions).toEqual([
+        expect.objectContaining({
+          name: "United Kingdom",
+          currency_code: "gbp",
+        }),
+        expect.objectContaining({
+          name: "United States",
+          currency_code: "usd",
+        }),
+      ])
+    })
+
+    it("should only return non-deleted regions", async () => {
       const api = useApi()
 
       const response = await api
-        .get(`/admin/regions`, {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        })
+        .get(`/admin/regions`, adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
 
-      expect(response.data.regions).toHaveLength(3)
+      expect(response.data.regions).toHaveLength(5)
       expect(response.data.regions).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -183,29 +224,21 @@ describe("/admin/regions", () => {
       expect(response.status).toEqual(200)
     })
 
-    it("returns count of total regions", async () => {
+    it("should return count of total regions", async () => {
       const api = useApi()
 
-      const response = await api.get(`/admin/regions?limit=2`, {
-        headers: {
-          "x-medusa-access-token": "test_token",
-        },
-      })
+      const response = await api.get(`/admin/regions?limit=2`, adminReqConfig)
 
       expect(response.data.regions).toHaveLength(2)
-      expect(response.data.count).toEqual(3)
+      expect(response.data.count).toEqual(5)
       expect(response.status).toEqual(200)
     })
 
-    it("filters correctly on update", async () => {
+    it("should filter correctly on update", async () => {
       const api = useApi()
 
       const response = await api
-        .get(`/admin/regions?updated_at[gt]=10-10-2005`, {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        })
+        .get(`/admin/regions?updated_at[gt]=10-10-2005`, adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -222,6 +255,59 @@ describe("/admin/regions", () => {
         ])
       )
       expect(response.status).toEqual(200)
+    })
+  })
+
+  describe("GET /admin/regions/:id", () => {
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+      await adminSeeder(dbConnection)
+
+      await manager.insert(Region, {
+        id: "region-id",
+        name: "Test Region",
+        currency_code: "usd",
+        tax_rate: 0,
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should retrieve the region from ID", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/admin/regions/region-id?expand=currency`,
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.region).toEqual(
+        expect.objectContaining({
+          id: "region-id",
+          currency: expect.objectContaining({
+            code: "usd",
+          }),
+        })
+      )
+    })
+
+    it("should throw an error when region ID is invalid", async () => {
+      const api = useApi()
+
+      const error = await api
+        .get(`/admin/regions/invalid-region-id`, adminReqConfig)
+        .catch((e) => e)
+
+      expect(error.response.status).toEqual(404)
+
+      expect(error.response.data).toEqual({
+        type: "not_found",
+        message: "Region with invalid-region-id was not found",
+      })
     })
   })
 
@@ -246,7 +332,7 @@ describe("/admin/regions", () => {
       await db.teardown()
     })
 
-    it("successfully deletes a region with a fulfillment provider", async () => {
+    it("should successfully deletes a region with a fulfillment provider", async () => {
       const api = useApi()
 
       // add fulfillment provider to the region
@@ -255,19 +341,11 @@ describe("/admin/regions", () => {
         {
           fulfillment_providers: ["test-ful"],
         },
-        {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        }
+        adminReqConfig
       )
 
       const response = await api
-        .delete(`/admin/regions/test-region`, {
-          headers: {
-            "x-medusa-access-token": "test_token",
-          },
-        })
+        .delete(`/admin/regions/test-region`, adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -280,7 +358,7 @@ describe("/admin/regions", () => {
       expect(response.status).toEqual(200)
     })
 
-    it("fails to create when countries exists in different region", async () => {
+    it("should fails to create when countries exists in different region", async () => {
       const api = useApi()
 
       try {
@@ -294,11 +372,7 @@ describe("/admin/regions", () => {
             fulfillment_providers: ["test-ful"],
             countries: ["us"],
           },
-          {
-            headers: {
-              "x-medusa-access-token": "test_token",
-            },
-          }
+          adminReqConfig
         )
       } catch (error) {
         expect(error.response.status).toEqual(422)

@@ -8,14 +8,22 @@ import {
   containsLineNumbers,
   useCodeWordWrap,
 } from "@docusaurus/theme-common/internal"
-import Highlight, { defaultProps, type Language } from "prism-react-renderer"
+import { Highlight, type Language } from "prism-react-renderer"
 import Line from "@theme/CodeBlock/Line"
 import Container from "@theme/CodeBlock/Container"
 import type { Props } from "@theme/CodeBlock/Content/String"
+import { Tooltip, CopyButton } from "docs-ui"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { ThemeConfig } from "@medusajs/docs"
-import { CopyButton, Tooltip } from "docs-ui"
 import { ExclamationCircleSolid, SquareTwoStackSolid } from "@medusajs/icons"
+import Link from "@docusaurus/Link"
+
+// Prism languages are always lowercase
+// We want to fail-safe and allow both "php" and "PHP"
+// See https://github.com/facebook/docusaurus/issues/9012
+function normalizeLanguage(language: string | undefined): string | undefined {
+  return language?.toLowerCase()
+}
 
 export default function CodeBlockString({
   children,
@@ -31,8 +39,10 @@ export default function CodeBlockString({
     prism: { defaultLanguage, magicComments },
     reportCodeLinkPrefix = "",
   } = useThemeConfig() as ThemeConfig
-  const language =
+  const language = normalizeLanguage(
     languageProp ?? parseLanguage(blockClassName) ?? defaultLanguage
+  )
+
   const prismTheme = usePrismTheme()
   const wordWrap = useCodeWordWrap()
   const isBrowser = useIsBrowser()
@@ -62,7 +72,6 @@ export default function CodeBlockString({
       {title && <div>{title}</div>}
       <div className={clsx("relative rounded-[inherit]")}>
         <Highlight
-          {...defaultProps}
           theme={prismTheme}
           code={code}
           language={(language ?? "text") as Language}
@@ -106,7 +115,7 @@ export default function CodeBlockString({
               >
                 {!noReport && (
                   <Tooltip text="Report Incorrect Code">
-                    <a
+                    <Link
                       href={`${reportCodeLinkPrefix}&title=${encodeURIComponent(
                         `Docs(Code Issue): Code Issue in ${
                           isBrowser ? location.pathname : ""
@@ -121,7 +130,7 @@ export default function CodeBlockString({
                       rel="noreferrer"
                     >
                       <ExclamationCircleSolid className="text-medusa-code-icon" />
-                    </a>
+                    </Link>
                   </Tooltip>
                 )}
                 {!noCopy && (

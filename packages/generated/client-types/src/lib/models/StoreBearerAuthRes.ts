@@ -3,9 +3,12 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The access token details.
+ */
 export interface StoreBearerAuthRes {
   /**
-   * Access token for subsequent authorization.
+   * Access token that can be used to send authenticated requests.
    */
-  accessToken?: string
+  access_token?: string
 }

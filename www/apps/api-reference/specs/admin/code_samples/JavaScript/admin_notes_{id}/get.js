@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.notes.retrieve(noteId)
 .then(({ note }) => {
   console.log(note.id);
-});
+})

@@ -6,4 +6,4 @@ medusa.admin.users.update(userId, {
 })
 .then(({ user }) => {
   console.log(user.id);
-});
+})

@@ -23,6 +23,11 @@ get:
       schema:
         type: string
     - in: query
+      name: q
+      description: Term used to search currencies' name and code.
+      schema:
+        type: string
+    - in: query
       name: offset
       description: The number of currencies to skip when retrieving the currencies.
       schema:
@@ -42,6 +47,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_currencies/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_currencies/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -59,3 +68,15 @@ get:
         application/json:
           schema:
             $ref: ../components/schemas/AdminCurrenciesListRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

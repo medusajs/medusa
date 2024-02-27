@@ -1,11 +1,13 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 import { ProductCollection } from "@models"
-import { ProductCollectionRepository } from "@repositories"
 import { ProductCollectionService } from "@services"
 
 import { createCollections } from "../../../__fixtures__/product"
 import { TestDatabase } from "../../../utils"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../../../src/loaders/container"
 
 jest.setTimeout(30000)
 
@@ -19,13 +21,12 @@ describe("Product collection Service", () => {
     await TestDatabase.setupDatabase()
     repositoryManager = await TestDatabase.forkManager()
 
-    const productCollectionRepository = new ProductCollectionRepository({
-      manager: repositoryManager,
-    })
+    const container = createMedusaContainer()
+    container.register("manager", asValue(repositoryManager))
 
-    service = new ProductCollectionService({
-      productCollectionRepository,
-    })
+    await ContainerLoader({ container })
+
+    service = container.resolve("productCollectionService")
   })
 
   afterEach(async () => {
@@ -93,7 +94,9 @@ describe("Product collection Service", () => {
     })
 
     it("list product collections by title matching string", async () => {
-      const productCollectionResults = await service.list({ title: "col 3 extra" })
+      const productCollectionResults = await service.list({
+        title: "col 3 extra",
+      })
 
       expect(productCollectionResults).toEqual([
         expect.objectContaining({
@@ -155,7 +158,9 @@ describe("Product collection Service", () => {
     })
 
     it("should return count and collections based on filter data", async () => {
-      const [productCollectionResults, count] = await service.listAndCount({ id: data![0].id })
+      const [productCollectionResults, count] = await service.listAndCount({
+        id: data![0].id,
+      })
       const serialized = JSON.parse(JSON.stringify(productCollectionResults))
 
       expect(count).toEqual(1)
@@ -168,12 +173,15 @@ describe("Product collection Service", () => {
     })
 
     it("should return count and collections based on config data", async () => {
-      const [productCollectionResults, count] = await service.listAndCount({}, {
-        relations: ['products'],
-        select: ['title'],
-        take: 1,
-        skip: 1,
-      })
+      const [productCollectionResults, count] = await service.listAndCount(
+        {},
+        {
+          relations: ["products"],
+          select: ["title"],
+          take: 1,
+          skip: 1,
+        }
+      )
       const serialized = JSON.parse(JSON.stringify(productCollectionResults))
 
       expect(count).toEqual(4)
@@ -181,7 +189,7 @@ describe("Product collection Service", () => {
         {
           id: "test-2",
           title: "col 2",
-          products: []
+          products: [],
         },
       ])
     })
@@ -200,13 +208,11 @@ describe("Product collection Service", () => {
     })
 
     it("should return collection for the given id", async () => {
-      const productCollectionResults = await service.retrieve(
-        collectionData.id,
-      )
+      const productCollectionResults = await service.retrieve(collectionData.id)
 
       expect(productCollectionResults).toEqual(
         expect.objectContaining({
-          id:  collectionData.id
+          id: collectionData.id,
         })
       )
     })
@@ -220,7 +226,9 @@ describe("Product collection Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('ProductCollection with id: does-not-exist was not found')
+      expect(error.message).toEqual(
+        "ProductCollection with id: does-not-exist was not found"
+      )
     })
 
     it("should throw an error when an id is not provided", async () => {
@@ -232,7 +240,7 @@ describe("Product collection Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"productCollectionId" must be defined')
+      expect(error.message).toEqual("productCollection - id must be defined")
     })
 
     it("should return collection based on config select param", async () => {
@@ -245,12 +253,10 @@ describe("Product collection Service", () => {
 
       const serialized = JSON.parse(JSON.stringify(productCollectionResults))
 
-      expect(serialized).toEqual(
-        {
-          id: collectionData.id,
-          title: collectionData.title,
-        }
-      )
+      expect(serialized).toEqual({
+        id: collectionData.id,
+        title: collectionData.title,
+      })
     })
 
     it("should return collection based on config relation param", async () => {
@@ -258,19 +264,17 @@ describe("Product collection Service", () => {
         collectionData.id,
         {
           select: ["id", "title"],
-          relations: ["products"]
+          relations: ["products"],
         }
       )
 
       const serialized = JSON.parse(JSON.stringify(productCollectionResults))
 
-      expect(serialized).toEqual(
-        {
-          id: collectionData.id,
-          title: collectionData.title,
-          products: []
-        }
-      )
+      expect(serialized).toEqual({
+        id: collectionData.id,
+        title: collectionData.title,
+        products: [],
+      })
     })
   })
 
@@ -288,12 +292,10 @@ describe("Product collection Service", () => {
     })
 
     it("should delete the product collection given an ID successfully", async () => {
-      await service.delete(
-        [collectionId],
-      )
+      await service.delete([collectionId])
 
       const collections = await service.list({
-        id: collectionId
+        id: collectionId,
       })
 
       expect(collections).toHaveLength(0)
@@ -314,12 +316,12 @@ describe("Product collection Service", () => {
     })
 
     it("should update the value of the collection successfully", async () => {
-      await service.update(
-        [{
+      await service.update([
+        {
           id: collectionId,
-          title: "New Collection"
-        }]
-      )
+          title: "New Collection",
+        },
+      ])
 
       const productCollection = await service.retrieve(collectionId)
 
@@ -331,29 +333,31 @@ describe("Product collection Service", () => {
 
       try {
         await service.update([
-        {
-          id: "does-not-exist",
-          title: "New Collection"
-        }
-      ])
+          {
+            id: "does-not-exist",
+            title: "New Collection",
+          },
+        ])
       } catch (e) {
         error = e
       }
 
-      expect(error.message).toEqual('ProductCollection with id "does-not-exist" not found')
+      expect(error.message).toEqual(
+        'ProductCollection with id "does-not-exist" not found'
+      )
     })
   })
 
   describe("create", () => {
     it("should create a collection successfully", async () => {
-      await service.create(
-        [{
-          title: "New Collection"
-        }]
-      )
+      await service.create([
+        {
+          title: "New Collection",
+        },
+      ])
 
       const [productCollection] = await service.list({
-        title: "New Collection"
+        title: "New Collection",
       })
 
       expect(productCollection.title).toEqual("New Collection")

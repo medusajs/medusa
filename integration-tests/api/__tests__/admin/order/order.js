@@ -78,6 +78,23 @@ describe("/admin/orders", () => {
         })
       expect(response.status).toEqual(200)
     })
+
+    it("gets orders ordered by display_id", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/orders?order=display_id", adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+      expect(response.status).toEqual(200)
+
+      const sortedOrders = response.data.orders.sort((a, b) => {
+        return a.display_id - b.display_id
+      })
+
+      expect(response.data.orders).toEqual(sortedOrders)
+    })
   })
 
   describe("POST /admin/orders/:id", () => {
@@ -1616,7 +1633,9 @@ describe("/admin/orders", () => {
               first_name: "lebron",
             }),
             shipping_total: expect.any(Number),
+            shipping_tax_total: expect.any(Number),
             discount_total: expect.any(Number),
+            item_tax_total: expect.any(Number),
             tax_total: expect.any(Number),
             refunded_total: expect.any(Number),
             total: expect.any(Number),
@@ -2448,13 +2467,15 @@ describe("/admin/orders", () => {
         id: "test-order",
         region: expect.any(Object),
         shipping_total: 1000,
+        shipping_tax_total: 0,
         discount_total: 800,
+        item_tax_total: 0,
         tax_total: 0,
         refunded_total: 0,
         total: 8200,
         subtotal: 8000,
-        paid_total: 0,
-        refundable_amount: 0,
+        paid_total: 10000,
+        refundable_amount: 10000,
         gift_card_total: 0,
         gift_card_tax_total: 0,
       })
@@ -2491,7 +2512,9 @@ describe("/admin/orders", () => {
         sales_channel_id: null,
         returnable_items: expect.any(Array),
         shipping_total: 1000,
+        shipping_tax_total: 0,
         discount_total: 800,
+        item_tax_total: 0,
         tax_total: 0,
         refunded_total: 0,
         total: 8200,
@@ -2517,7 +2540,9 @@ describe("/admin/orders", () => {
         id: "test-order",
         returnable_items: expect.any(Array),
         shipping_total: 1000,
+        shipping_tax_total: 0,
         discount_total: 800,
+        item_tax_total: 0,
         tax_total: 0,
         refunded_total: 0,
         total: 8200,

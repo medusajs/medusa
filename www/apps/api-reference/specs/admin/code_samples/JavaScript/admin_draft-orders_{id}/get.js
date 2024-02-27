@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.draftOrders.retrieve(draftOrderId)
 .then(({ draft_order }) => {
   console.log(draft_order.id);
-});
+})

@@ -7,6 +7,9 @@ import type { LineItem } from "./LineItem"
 import type { OrderEdit } from "./OrderEdit"
 import type { OrderItemChange } from "./OrderItemChange"
 
+/**
+ * The order edit's details.
+ */
 export interface StoreOrderEditsRes {
   /**
    * Order edit details.

@@ -34,6 +34,7 @@ import ReturnService from "./return"
 import ShippingOptionService from "./shipping-option"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -377,7 +378,7 @@ export default class ClaimService extends TransactionBaseService {
         let newItems: LineItem[] = []
 
         if (isDefined(additional_items)) {
-          newItems = await Promise.all(
+          newItems = await promiseAll(
             additional_items.map(async (i) =>
               lineItemServiceTx.generate(
                 i.variant_id,
@@ -387,7 +388,7 @@ export default class ClaimService extends TransactionBaseService {
             )
           )
 
-          await Promise.all(
+          await promiseAll(
             newItems.map(async (newItem) => {
               if (newItem.variant_id) {
                 await this.productVariantInventoryService_.reserveQuantity(

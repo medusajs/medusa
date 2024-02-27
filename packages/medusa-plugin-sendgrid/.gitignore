@@ -13,3 +13,5 @@ node_modules
 /models
 /subscribers
 
+*.tgz
+

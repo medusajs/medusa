@@ -66,6 +66,9 @@ export class BatchJob extends SoftDeletableEntity {
 
   status: BatchJobStatus
 
+  /**
+   * @apiIgnore
+   */
   @AfterLoad()
   loadStatus(): void {
     /* Always keep the status order consistent. */
@@ -91,6 +94,9 @@ export class BatchJob extends SoftDeletableEntity {
     this.status = this.status ?? BatchJobStatus.CREATED
   }
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "batch")

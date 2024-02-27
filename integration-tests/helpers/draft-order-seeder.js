@@ -145,26 +145,22 @@ module.exports = async (dataSource, data = {}) => {
     name: "Test Region",
     currency_code: "usd",
     tax_rate: 0,
-    payment_providers: [
-      {
-        id: "test-pay",
-        is_installed: true,
-      },
-    ],
   })
+
+  await manager.query(
+    `insert into region_payment_providers values ('test-region', 'test-pay');`
+  )
 
   await manager.insert(Region, {
     id: "test-region-2",
     name: "Test Region 2",
     currency_code: "eur",
     tax_rate: 0,
-    payment_providers: [
-      {
-        id: "test-pay",
-        is_installed: true,
-      },
-    ],
   })
+
+  await manager.query(
+    `insert into region_payment_providers values ('test-region-2', 'test-pay');`
+  )
 
   await manager.insert(DiscountRule, {
     id: "discount_rule_id",

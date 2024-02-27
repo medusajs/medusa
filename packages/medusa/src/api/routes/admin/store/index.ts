@@ -35,6 +35,7 @@ export const defaultRelationsExtended = ["currencies", "default_currency"]
 /**
  * @schema AdminExtendedStoresRes
  * type: object
+ * description: "The store's details with additional details like payment and tax providers."
  * x-expanded-relations:
  *   field: store
  *   relations:
@@ -54,6 +55,7 @@ export type AdminExtendedStoresRes = {
 /**
  * @schema AdminStoresRes
  * type: object
+ * description: "The store's details."
  * required:
  *   - store
  * properties:
@@ -68,6 +70,7 @@ export type AdminStoresRes = {
 /**
  * @schema AdminTaxProvidersList
  * type: object
+ * description: "The list of tax providers in a store."
  * required:
  *   - tax_providers
  * properties:
@@ -84,6 +87,7 @@ export type AdminTaxProvidersList = {
 /**
  * @schema AdminPaymentProvidersList
  * type: object
+ * description: "The list of payment providers in a store."
  * required:
  *   - payment_providers
  * properties:

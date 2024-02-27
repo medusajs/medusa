@@ -7,6 +7,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-plugin-restock-notification"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "author": "Sebastian Rindom <seb@medusa-commerce.com>",
   "license": "MIT",
   "devDependencies": {

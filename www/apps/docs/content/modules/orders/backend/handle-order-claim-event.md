@@ -9,13 +9,11 @@ In this document, you’ll learn how to handle the order claim event and send a 
 
 ## Overview
 
-When a guest customer places an order, the order is not associated with a customer. It is associated with an email address.
+When a guest customer places an order, the order isn't associated with a customer. It's associated with an email address.
 
 After the customer registers, later on, they can claim that order by providing the order’s ID.
 
 When the customer requests to claim the order, the event `order-update-token.created` is triggered on the Medusa backend. This event should be used to send the customer a confirmation email.
-
-### What You’ll Learn
 
 In this document, you’ll learn how to handle the `order-update-token.created` event on the backend to send the customer a confirmation email.
 
@@ -29,173 +27,135 @@ It's assumed that you already have a Medusa backend installed and set up. If not
 
 ### Notification Provider
 
-To send an email or another type of notification method, you must have a notification provider installed or configured. You can either install an existing plugin or [create your own](../../../development/notification/create-notification-provider.md).
+To send an email or another type of notification method, you must have a notification provider installed or configured. You can either install an existing plugin or [create your own](../../../references/notification/classes/notification.AbstractNotificationService.mdx).
 
 This document has an example using the [SendGrid](../../../plugins/notifications/sendgrid.mdx) plugin.
 
 ---
 
-## Step 1: Create a Subscriber
+## Method 1: Using a Subscriber
 
-To subscribe to and handle an event, you must create a subscriber.
+To subscribe to an event, you must create a subscriber.
 
-:::tip
+:::note
 
-You can learn more about subscribers in the [Subscribers](../../../development/events/subscribers.mdx) documentation.
-
-:::
-
-Create the file `src/subscribers/claim-order.ts` with the following content:
-
-```ts title=src/subscribers/claim-order.ts
-type InjectedDependencies = {
-  // TODO add necessary dependencies
-}
-
-class ClaimOrderSubscriber {
-  constructor(container: InjectedDependencies) {
-    // TODO subscribe to event
-  }
-}
-
-export default ClaimOrderSubscriber
-```
-
-You’ll be adding in the next step the necessary dependencies to the subscriber.
-
-:::info
-
-You can learn more about [dependency injection](../../../development/fundamentals/dependency-injection.md) in this documentation.
+You can learn more about subscribers in the [Subscribers documentation](../../../development/events/subscribers.mdx).
 
 :::
 
----
+Create the file `src/subscribers/order-claim.ts` with the following content:
 
-## Step 2: Subscribe to the Event
+```ts title="src/subscribers/order-claim.ts"
+import { 
+  type SubscriberConfig, 
+  type SubscriberArgs,
+} from "@medusajs/medusa"
 
-In this step, you’ll subscribe to the `order-update-token.created` event to send the customer a notification about their order edit.
-
-There are two ways to do this:
-
-### Method 1: Using the NotificationService
-
-If the notification provider you’re using already implements the logic to handle this event, you can subscribe to the event using the `NotificationService`:
-
-```ts title=src/subscribers/claim-order.ts
-import { NotificationService } from "@medusajs/medusa"
-
-type InjectedDependencies = {
-  notificationService: NotificationService
+export default async function handleOrderClaim({ 
+  data, eventName, container, pluginOptions, 
+}: SubscriberArgs<Record<string, string>>) {
+  // TODO: handle event
 }
 
-class ClaimOrderSubscriber {
-  constructor({ notificationService }: InjectedDependencies) {
-    notificationService.subscribe(
-      "order-update-token.created", 
-      "<NOTIFICATION_PROVIDER_IDENTIFIER>"
-    )
-  }
+export const config: SubscriberConfig = {
+  event: "order-update-token.created",
+  context: {
+    subscriberId: "customer-created-handler",
+  },
 }
-
-export default ClaimOrderSubscriber
 ```
 
-Where `<NOTIFICATION_PROVIDER_IDENTIFIER>` is the identifier for your notification provider.
+In this file, you export a configuration object indicating that the subscriber is listening to the `order-update-token.created` event.
 
-:::info
+You also export a handler function `handleOrderClaim`. In the parameter it receives, the `data` object is the payload emitted when the event was triggered, which is an object of the following format:
 
-You can learn more about handling events with the Notification Service using [this documentation](../../../development/notification/create-notification-provider.md).
-
-:::
-
-### Method 2: Using the EventBusService
-
-If the notification provider you’re using isn’t configured to handle this event, or you want to implement some other custom logic, you can subscribe to the event using the `EventBusService`:
-
-```ts title=src/subscribers/claim-order.ts
-import { EventBusService } from "@medusajs/medusa"
-
-type InjectedDependencies = {
-  eventBusService: EventBusService
+```ts
+data = {
+  // string - email of order
+  old_email,
+  // string - ID of customer
+  new_customer_id,
+  // array of string - IDs of orders
+  orders,
+  // string - token used for verification
+  token,
 }
-
-class ClaimOrderSubscriber {
-  constructor({ eventBusService }: InjectedDependencies) {
-    eventBusService.subscribe(
-      "order-update-token.created", 
-      this.handleRequestClaimOrder
-    )
-  }
-
-  handleRequestClaimOrder = async (data) => {
-    // TODO: handle event
-  }
-}
-
-export default ClaimOrderSubscriber
 ```
 
-When using this method, you’ll have to handle the logic of sending the confirmation email to the customer inside the handler function, which in this case is `handleRequestClaimOrder`.
+In this method, you should typically send an email to the customer. You can place any content in the email, but should mainly include the link to confirm claiming the order.
 
-The `handleRequestClaimOrder` event receives a `data` object as a parameter. This object holds the following properties:
-
-1. `old_email`: The email associated with the orders.
-2. `new_customer_id`: The ID of the customer claiming the orders.
-3. `orders`: An array of the order IDs that the customer is requesting to claim.
-4. `token`: A verification token. This token is used to later verify the claim request and associate the order with the customer.
-
-In this method, you should typically send an email to the customer’s old email. In the email, you should link to a page in your storefront and pass the `token` as a parameter.
-
-The page would then send a request to the backend to verify that the `token` is valid and associate the order with the customer. You can read more about how to implement this in your storefront in [this documentation](../storefront/implement-claim-order.mdx).
-
----
-
-## Example: Using SendGrid
+### Example: Using SendGrid
 
 For example, you can implement this subscriber to send emails using SendGrid:
 
-<!-- eslint-disable max-len -->
+```ts title="src/subscribers/order-claim.ts"
+import { 
+  type SubscriberConfig, 
+  type SubscriberArgs,
+} from "@medusajs/medusa"
 
-```ts title=src/subscribers/claim-order.ts
-import { EventBusService } from "@medusajs/medusa"
+export default async function handleOrderClaim({ 
+  data, eventName, container, pluginOptions, 
+}: SubscriberArgs<Record<string, string>>) {
+  const sendGridService = container.resolve("sendgridService")
 
-type InjectedDependencies = {
-  eventBusService: EventBusService,
-  sendgridService: any
+  sendGridService.sendEmail({
+    templateId: "order-claim-confirmation",
+    from: "hello@medusajs.com",
+    to: data.old_email,
+    dynamic_template_data: {
+      link: 
+        `http://example.com/confirm-order-claim/${data.token}`,
+      // other data...
+    },
+  })
 }
 
-class ClaimOrderSubscriber {
-  protected sendGridService: any
-
-  constructor({
-    eventBusService,
-    sendgridService,
-  }: InjectedDependencies) {
-    this.sendGridService = sendgridService
-    eventBusService.subscribe(
-      "order-update-token.created",
-      this.handleRequestClaimOrder
-    )
-  }
-
-  
-  handleRequestClaimOrder = async (data) => {
-    this.sendGridService.sendEmail({
-      templateId: "order-claim-confirmation",
-      from: "hello@medusajs.com",
-      to: data.old_email,
-      dynamic_template_data: {
-        link: `http://example.com/confirm-order-claim/${data.token}`,
-        // other data...
-      },
-    })
-  }
+export const config: SubscriberConfig = {
+  event: "order-update-token.created",
+  context: {
+    subscriberId: "customer-created-handler",
+  },
 }
-
-export default ClaimOrderSubscriber
 ```
 
 Notice how the `token` is passed to the storefront link as a parameter.
+
+---
+
+## Method 2: Using the NotificationService
+
+If the notification provider you’re using already implements the logic to handle this event, you can create a [Loader](../../../development/loaders/overview.mdx) to subscribe the Notification provider to the `order-update-token.created` event.
+
+For example:
+
+```ts title="src/loaders/order-claim.ts"
+import { 
+  MedusaContainer, 
+  NotificationService,
+} from "@medusajs/medusa"
+
+export default async (
+  container: MedusaContainer
+): Promise<void> => {
+  const notificationService = container.resolve<
+    NotificationService
+  >("notificationService")
+
+  notificationService.subscribe(
+    "order-update-token.created", 
+    "<NOTIFICATION_PROVIDER_IDENTIFIER>"
+  )
+}
+```
+
+Where `<NOTIFICATION_PROVIDER_IDENTIFIER>` is the identifier for your notification provider. For example, `sendgrid`.
+
+:::note
+
+You can learn more about handling events with the Notification Service using [this documentation](../../../references/notification/classes/notification.AbstractNotificationService.mdx).
+
+:::
 
 ---
 

@@ -1,7 +1,7 @@
 post:
   operationId: PostRegionsRegionCountries
   summary: Add Country
-  description: Add a Country to the list of Countries in a Region
+  description: Add a Country to the list of Countries in a Region.
   x-authenticated: true
   parameters:
     - in: path
@@ -22,6 +22,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_regions_{id}_countries/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_regions_{id}_countries/post.tsx
     - lang: Shell
       label: cURL
       source:

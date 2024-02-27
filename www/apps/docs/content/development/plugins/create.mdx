@@ -66,7 +66,7 @@ npm install
 
 Then, make sure to remove the plugins and modules you removed from `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 // previously had plugins
 const plugins = []
 
@@ -86,7 +86,7 @@ These changes may already be available in your Medusa project. They're included 
 
 Start by updating your `tsconfig.json` with the following configurations:
 
-```json title=tsconfig.json
+```json title="tsconfig.json"
 {
   "compilerOptions": {
     "target": "es2019",
@@ -127,7 +127,7 @@ The addition of `"jsx": "react-jsx"` specified how should TypeScript transform J
 
 Next, create the file `tsconfig.server.json` with the following content:
 
-```json title=tsconfig.server.json
+```json title="tsconfig.server.json"
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -142,7 +142,7 @@ This is the configuration that will be used to transpile your custom backend cod
 
 Then, create the file `tsconfig.admin.json` with the following content:
 
-```json title=tsconfig.admin.json
+```json title="tsconfig.admin.json"
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -157,7 +157,7 @@ This is the configuration that will be used when transpiling your admin code.
 
 Finally, update the `build` scripts in your project and add a new `prepare` command:
 
-```json title=package.json
+```json title="package.json"
 "scripts": {
   // other scripts...
   "build": "cross-env npm run clean && npm run build:server && npm run build:admin",
@@ -176,7 +176,7 @@ Each of these scripts do the following:
 
 Furthermore, make sure to add `react` to `peerDependencies` along with `react-router-dom` if you're using it:
 
-```json title=package.json
+```json title="package.json"
 "peerDependencies": {
   // other dependencies...
   "react": "^18.2.0",
@@ -196,17 +196,11 @@ Make sure to delete these files if you're not using them in your plugin.
 
 ### Plugin Structure
 
-While developing your plugin, you can create your TypeScript or JavaScript files under the `src` directory. This includes creating services, endpoints, migrations, and other resources.
+While developing your plugin, you can create your TypeScript or JavaScript files under the `src` directory. This includes creating services, API Routes, migrations, and other resources.
 
 However, before you test the changes on a Medusa backend or publish your plugin, you must transpile your files and move them either to a `dist` directory or to the root of the plugin's directory.
 
-For example, if you have an endpoint in `src/api/index.js`, after running the `build` or `watch` commands [as defined earlier](#recommended-change-scripts), the file should be transpiled into `dist/api/index.js` in your plugin's root. You can alternative transpile them into the `api/index.js` in your plugin's root.
-
-:::note
-
-It was previously required to output your files into the root of the plugin's directory (for example, `api/index.js` instead of `dist/api/index.js`). As of v1.8, you can either have your files in the root of the directory or under the `dist` directory.
-
-:::
+For example, if you have an API Route in `src/api/store/custom/route.ts`, after running the `build` or `watch` commands [as defined earlier](#recommended-change-scripts), the file should be transpiled into `dist/api/store/custom/route.ts` in your plugin's root. You can alternative transpile them into the `api/store/custom/route.ts` in your plugin's root.
 
 ### Development Resources
 
@@ -233,11 +227,11 @@ This guide doesn't cover how to create different files and components. If you’
   },
   {
     type: 'link',
-    href: '/development/endpoints/create',
-    label: 'Create an Endpoint',
+    href: '/development/api-routes/create',
+    label: 'Create an API Route',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      description: 'Learn how to create an endpoint.'
+      description: 'Learn how to create an API Route.'
     }
   },
   {
@@ -336,7 +330,7 @@ Plugins often allow developers that will later use them to provide their own opt
 
 Developers that use your plugin will pass options to your plugin in the `plugins` array in `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -352,7 +346,7 @@ In your plugin's services, you can have access to the option in their constructo
 
 For example:
 
-```js title=src/service/my.ts
+```js title="src/service/my.ts"
   // In a service in your plugin
 class MyService extends TransactionBaseService {
   constructor(container, options) {
@@ -361,27 +355,6 @@ class MyService extends TransactionBaseService {
     this.name = options.name
   }
   // ...
-}
-```
-
-You can also access the options in your plugin's endpoints. The second parameter that the function declared in `src/api/index.ts` receives is an object including your plugin's configurations.
-
-For example:
-
-```js title=src/api/index.ts
-// in an endpoint in your plugin
-export default (rootDirectory, options) => {
-  // options contain the plugin options
-  const router = Router()
-
-  router.get("/hello-world", (req, res) => {
-    res.json({
-      message: 
-      `Welcome to ${options.name ? options.name : "Medusa"}!`,
-    })
-  })
-
-  return router
 }
 ```
 
@@ -397,7 +370,7 @@ All plugins accept an option named `enableUI`. This option is useful mainly if y
 
 A developer using your plugin can pass the `enableUI` option as part of the plugin's options:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -414,7 +387,7 @@ If you're passing your plugin options to third-party services, make sure to omit
 
 For example:
 
-```js title=src/service/test.ts
+```js title="src/service/test.ts"
   // In a service in your plugin
 class MyService extends TransactionBaseService {
   constructor(container, options) {
@@ -444,24 +417,21 @@ While you develop your plugin, you’ll need to test it on an actual Medusa back
 
 <Tabs groupId="plugin-preference">
   <TabItem value="without-admin" label="Without Admin Customizations" default>
+    In the root of your plugin directory, run the `build` command:
 
-  In the root of your plugin directory, run the `build` command:
-
-  ```bash
-  npm run build
-  ```
+    ```bash
+    npm run build
+    ```
 
   </TabItem>
   <TabItem value="with-admin" label="With Admin Customizations">
+    In the root of your plugin directory, run the `prepare` command:
 
-  In the root of your plugin directory, run the `prepare` command:
+    ```bash
+    npm run prepare
+    ```
 
-  ```bash
-  npm run prepare
-  ```
-
-  If the `prepare` script is not available in your project, you can find it in [this section](#changes-for-admin-plugins).
-
+    If the `prepare` script is not available in your project, you can find it in [this section](#changes-for-admin-plugins).
   </TabItem>
 </Tabs>
 
@@ -526,30 +496,30 @@ In the directory of the Medusa backend, start the backend with the `dev` command
 <Tabs groupId="npm2yarn" isCodeTabs={true}>
   <TabItem value="npm" label="npm" default>
 
-  ```bash
-  npm run dev -- -- --preserve-symlinks
-  ```
+    ```bash
+    npm run dev -- -- --preserve-symlinks
+    ```
 
   </TabItem>
   <TabItem value="yarn-1" label="Yarn v1">
 
-  ```bash
-  yarn dev -- -- --preserve-symlinks
-  ```
+    ```bash
+    yarn dev -- -- --preserve-symlinks
+    ```
 
   </TabItem>
   <TabItem value="yarn-berry" label="Yarn berry">
 
-  ```bash
-  yarn dev -- --preserve-symlinks
-  ```
+    ```bash
+    yarn dev -- --preserve-symlinks
+    ```
 
   </TabItem>
   <TabItem value="pnpm" label="pnpm">
 
-  ```bash
-  pnpm run dev -- -- --preserve-symlinks
-  ```
+    ```bash
+    pnpm run dev -- -- --preserve-symlinks
+    ```
 
   </TabItem>
 </Tabs>

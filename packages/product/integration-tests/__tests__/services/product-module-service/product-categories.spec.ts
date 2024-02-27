@@ -1,37 +1,42 @@
+import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService, ProductTypes } from "@medusajs/types"
-import { Product, ProductCategory } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
-import { initialize } from "../../../../src"
-import { DB_URL, TestDatabase } from "../../../utils"
+import { Product, ProductCategory } from "@models"
+import { initModules } from "medusa-test-utils"
+import { EventBusService } from "../../../__fixtures__/event-bus"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import { productCategoriesRankData } from "../../../__fixtures__/product-category/data"
-import { EventBusService } from "../../../__fixtures__/event-bus"
+import { TestDatabase, getInitModuleConfig } from "../../../utils"
 
 describe("ProductModuleService product categories", () => {
   let service: IProductModuleService
   let testManager: SqlEntityManager
-  let repositoryManager: SqlEntityManager
   let productOne: Product
   let productTwo: Product
   let productCategoryOne: ProductCategory
   let productCategoryTwo: ProductCategory
   let productCategories: ProductCategory[]
-  let eventBus
+
+  let shutdownFunc: () => Promise<void>
+
+  beforeAll(async () => {
+    MedusaModule.clearInstances()
+
+    const initModulesConfig = getInitModuleConfig()
+
+    const { medusaApp, shutdown } = await initModules(initModulesConfig)
+
+    service = medusaApp.modules[Modules.PRODUCT]
+
+    shutdownFunc = shutdown
+  })
+
+  afterAll(async () => {
+    await shutdownFunc()
+  })
 
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
-    repositoryManager = await TestDatabase.forkManager()
-    eventBus = new EventBusService()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-      },
-    }, {
-      eventBusModuleService: eventBus
-    })
 
     testManager = await TestDatabase.forkManager()
 
@@ -286,19 +291,17 @@ describe("ProductModuleService product categories", () => {
     })
 
     it("should emit events through event bus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
+
       const category = await service.createCategory({
         name: "New Category",
         parent_category_id: productCategoryOne.id,
       })
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith(
-        "product-category.created",
-        {
-          id: category.id
-        }
-      )
+      expect(eventBusSpy).toHaveBeenCalledWith("product-category.created", {
+        id: category.id,
+      })
     })
 
     it("should append rank from an existing category depending on parent", async () => {
@@ -379,18 +382,15 @@ describe("ProductModuleService product categories", () => {
     })
 
     it("should emit events through event bus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
       await service.updateCategory(productCategoryZero.id, {
         name: "New Category",
       })
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith(
-        "product-category.updated",
-        {
-          id: productCategoryZero.id
-        }
-      )
+      expect(eventBusSpy).toHaveBeenCalledWith("product-category.updated", {
+        id: productCategoryZero.id,
+      })
     })
 
     it("should update the name of the category successfully", async () => {
@@ -551,16 +551,13 @@ describe("ProductModuleService product categories", () => {
     })
 
     it("should emit events through event bus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
       await service.deleteCategory(productCategoryOne.id)
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith(
-        "product-category.deleted",
-        {
-          id: productCategoryOne.id
-        }
-      )
+      expect(eventBusSpy).toHaveBeenCalledWith("product-category.deleted", {
+        id: productCategoryOne.id,
+      })
     })
 
     it("should throw an error when an id does not exist", async () => {

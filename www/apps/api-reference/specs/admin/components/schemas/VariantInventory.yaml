@@ -12,9 +12,7 @@ properties:
     $ref: ./ResponseInventoryItem.yaml
   sales_channel_availability:
     type: array
-    description: >-
-      An array of details about the variant's inventory availability in sales
-      channels.
+    description: Details about the variant's inventory availability in sales channels.
     items:
       type: object
       required:

@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { ExtendedReservationItem } from "./ExtendedReservationItem"
 
+/**
+ * The list of reservations with pagination fields.
+ */
 export interface AdminReservationsListRes {
   /**
    * An array of reservations details.

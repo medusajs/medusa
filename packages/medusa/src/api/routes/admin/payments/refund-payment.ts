@@ -38,7 +38,44 @@ import { PaymentService } from "../../../../services"
  *       })
  *       .then(({ payment }) => {
  *         console.log(payment.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { RefundReason } from "@medusajs/medusa"
+ *       import { useAdminPaymentsRefundPayment } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentId: string
+ *       }
+ *
+ *       const Payment = ({ paymentId }: Props) => {
+ *         const refund = useAdminPaymentsRefundPayment(
+ *           paymentId
+ *         )
+ *         // ...
+ *
+ *         const handleRefund = (
+ *           amount: number,
+ *           reason: RefundReason,
+ *           note: string
+ *         ) => {
+ *           refund.mutate({
+ *             amount,
+ *             reason,
+ *             note
+ *           }, {
+ *             onSuccess: ({ refund }) => {
+ *               console.log(refund.amount)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Payment
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -96,6 +133,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostPaymentRefundsReq
  * type: object
+ * description: "The details of the refund to create."
  * required:
  *   - amount
  *   - reason

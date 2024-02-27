@@ -9,7 +9,7 @@ import {
 } from "@docusaurus/theme-common"
 import {
   isActiveSidebarItem,
-  findFirstCategoryLink,
+  findFirstSidebarItemLink,
   useDocSidebarItemsExpandedState,
   isSamePath,
 } from "@docusaurus/theme-common/internal"
@@ -59,7 +59,7 @@ function useCategoryHrefWithSSRFallback(
 ): string | undefined {
   const isBrowser = useIsBrowser()
   return useMemo(() => {
-    if (item.href) {
+    if (item.href && !item.linkUnlisted) {
       return item.href
     }
     // In these cases, it's not necessary to render a fallback
@@ -67,7 +67,7 @@ function useCategoryHrefWithSSRFallback(
     if (isBrowser || !item.collapsible) {
       return undefined
     }
-    return findFirstCategoryLink(item)
+    return findFirstSidebarItemLink(item)
   }, [item, isBrowser])
 }
 
@@ -75,6 +75,7 @@ function CollapseButton({
   categoryLabel,
   onClick,
 }: {
+  collapsed: boolean
   categoryLabel: string
   onClick: ComponentProps<"button">["onClick"]
 }) {
@@ -150,17 +151,15 @@ export default function DocSidebarItemCategory({
         ThemeClassNames.docs.docSidebarItemCategory,
         ThemeClassNames.docs.docSidebarItemCategoryLevel(level),
         "menu__list-item",
-        // {
-        //   "menu__list-item--collapsed": collapsed,
-        // },
         className,
         customProps?.sidebar_is_title && "sidebar-title",
         customProps?.sidebar_is_group_headline && "sidebar-group-headline",
         customProps?.sidebar_is_group_divider && "sidebar-group-divider",
         customProps?.sidebar_is_divider_line && "sidebar-divider-line",
         customProps?.sidebar_is_back_link && "sidebar-back-link",
-        customProps?.sidebar_is_soon &&
-          "sidebar-soon-link sidebar-badge-wrapper",
+        (customProps?.sidebar_is_soon || customProps?.sidebar_badge) &&
+          "sidebar-badge-wrapper",
+        customProps?.sidebar_is_soon && "sidebar-soon-link",
         !customProps?.sidebar_is_title &&
           "[&_.sidebar-item-icon]:w-[20px] [&_.sidebar-item-icon]:h-[20px]",
         !customProps?.sidebar_is_title &&
@@ -210,6 +209,7 @@ export default function DocSidebarItemCategory({
         </Link>
         {href && collapsible && (
           <CollapseButton
+            collapsed={collapsed}
             categoryLabel={label}
             onClick={(e) => {
               e.preventDefault()
@@ -221,6 +221,12 @@ export default function DocSidebarItemCategory({
           <Badge variant="purple" className={`sidebar-soon-badge`}>
             Soon
           </Badge>
+        )}
+        {customProps?.sidebar_badge && (
+          <Badge
+            {...customProps.sidebar_badge}
+            className={`sidebar-soon-badge`}
+          />
         )}
       </div>
 

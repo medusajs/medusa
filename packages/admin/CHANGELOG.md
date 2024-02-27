@@ -1,5 +1,87 @@
 # @medusajs/admin
 
+## 7.1.11
+
+### Patch Changes
+
+- [#6306](https://github.com/medusajs/medusa/pull/6306) [`58baead34`](https://github.com/medusajs/medusa/commit/58baead34e32abff3c587dbc1c6b11b527be8381) Thanks [@erikengervall](https://github.com/erikengervall)! - fix(admin-ui) Refactor `use-copy-promotion` to map product IDs
+
+- Updated dependencies [[`58baead34`](https://github.com/medusajs/medusa/commit/58baead34e32abff3c587dbc1c6b11b527be8381)]:
+  - @medusajs/admin-ui@2.1.12
+
+## 7.1.10
+
+### Patch Changes
+
+- [#6001](https://github.com/medusajs/medusa/pull/6001) [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8) Thanks [@abusaidm](https://github.com/abusaidm)! - Add missing country in admin region and set Libya to formal name
+
+- Updated dependencies [[`7ecea3448`](https://github.com/medusajs/medusa/commit/7ecea34487972bc05aae46918d5caebce607594b), [`f86877586`](https://github.com/medusajs/medusa/commit/f86877586147ecedbf7f56a1c57f37ef0c33286c), [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8)]:
+  - @medusajs/admin-ui@2.1.11
+  - medusa-core-utils@1.2.1
+
+## 7.1.9
+
+### Patch Changes
+
+- [#5769](https://github.com/medusajs/medusa/pull/5769) [`f20d484b2`](https://github.com/medusajs/medusa/commit/f20d484b2381d07aac3e86d02f424f16b532c302) Thanks [@iweurman](https://github.com/iweurman)! - feat(admin): Add Korean language support
+
+- [#5723](https://github.com/medusajs/medusa/pull/5723) [`fd317f1a6`](https://github.com/medusajs/medusa/commit/fd317f1a6ba0952999e2de5c4e649376e6afab21) Thanks [@driver005](https://github.com/driver005)! - feat(medusa): add monorepo support command develop
+
+- Updated dependencies [[`f20d484b2`](https://github.com/medusajs/medusa/commit/f20d484b2381d07aac3e86d02f424f16b532c302), [`6975eacb3`](https://github.com/medusajs/medusa/commit/6975eacb338874b976c14aae030c74362d57410c)]:
+  - @medusajs/admin-ui@2.1.10
+
+## 7.1.8
+
+### Patch Changes
+
+- [#5676](https://github.com/medusajs/medusa/pull/5676) [`02ea9ac3a`](https://github.com/medusajs/medusa/commit/02ea9ac3ac87f1091c6f21c689ccfc55080b17cc) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): delete edit variant prices in favor of bulk editor
+
+- Updated dependencies [[`07934cdaa`](https://github.com/medusajs/medusa/commit/07934cdaac2f3b49a935e9701ffa7d5cf1381847), [`d5526736e`](https://github.com/medusajs/medusa/commit/d5526736ecffab19dd4633ed64e08e097e433abe), [`f4c489fb8`](https://github.com/medusajs/medusa/commit/f4c489fb85aaee605b60c527817f62cfdb2f3140), [`02ea9ac3a`](https://github.com/medusajs/medusa/commit/02ea9ac3ac87f1091c6f21c689ccfc55080b17cc), [`5f6751a61`](https://github.com/medusajs/medusa/commit/5f6751a61f11b901e4916d16b62607cda6d42032), [`3bcf08c0c`](https://github.com/medusajs/medusa/commit/3bcf08c0cb3a00799d61c127a2f3c192790c982f)]:
+  - @medusajs/admin-ui@2.1.9
+
+## 7.1.7
+
+### Patch Changes
+
+- [`ca411e54e`](https://github.com/medusajs/medusa/commit/ca411e54eb600e1eef05dbbb378d8e06d9b33ad0) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset
+
+- [#5548](https://github.com/medusajs/medusa/pull/5548) [`b4e8adfcf`](https://github.com/medusajs/medusa/commit/b4e8adfcf9c71f97a2a0b4ad8f0632e213fe7123) Thanks [@rick-lam](https://github.com/rick-lam)! - fix(admin-ui): Admin UI: Invalid Request Header
+
+- Updated dependencies [[`d7e188722`](https://github.com/medusajs/medusa/commit/d7e1887221467929175e7c69b3064dc7e6c967d8), [`e3f1da92d`](https://github.com/medusajs/medusa/commit/e3f1da92db1a5bb07ae8d79a90f0d1d04f9bfee3), [`8e48be58e`](https://github.com/medusajs/medusa/commit/8e48be58efe9bfffd0f3f5af098ef2a4cefc4b2d), [`f7e982988`](https://github.com/medusajs/medusa/commit/f7e98298815b0ffb4ce1b6d2d2e1f26ca5e01049), [`b4e8adfcf`](https://github.com/medusajs/medusa/commit/b4e8adfcf9c71f97a2a0b4ad8f0632e213fe7123)]:
+  - @medusajs/admin-ui@2.1.7
+
+## 7.1.6
+
+### Patch Changes
+
+- [#5456](https://github.com/medusajs/medusa/pull/5456) [`ea2ee343f`](https://github.com/medusajs/medusa/commit/ea2ee343f0f2bee347d0e2a3ece2eb3252564c67) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): PriceList bulk editor fixes
+
+- [#5442](https://github.com/medusajs/medusa/pull/5442) [`ca05436fc`](https://github.com/medusajs/medusa/commit/ca05436fc1d03c2f6512b2b9399eadafb3d5d721) Thanks [@huuduc2312](https://github.com/huuduc2312)! - feat(admin-ui): add Vietnamese translation
+
+- [#5356](https://github.com/medusajs/medusa/pull/5356) [`397da6c2b`](https://github.com/medusajs/medusa/commit/397da6c2ba39532ebf09b91d61ca2b7f1c4b8126) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): TIP in shipping option creation
+
+- [#5480](https://github.com/medusajs/medusa/pull/5480) [`a780b92b8`](https://github.com/medusajs/medusa/commit/a780b92b8d590baa0e86682d1154f9e5b0869ea1) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): admin get product should return prices when expected
+
+- [#5315](https://github.com/medusajs/medusa/pull/5315) [`4ce8279d2`](https://github.com/medusajs/medusa/commit/4ce8279d2527fa691c3ca043b914ebb85cb4ac55) Thanks [@ram-you](https://github.com/ram-you)! - Enhanced 'activity-drawer' visibility with z-index adjustment
+
+- Updated dependencies [[`ea2ee343f`](https://github.com/medusajs/medusa/commit/ea2ee343f0f2bee347d0e2a3ece2eb3252564c67), [`f08a295ad`](https://github.com/medusajs/medusa/commit/f08a295ad4e2886b9df5c4c4471c0f4e004fc1d9), [`2057d3b24`](https://github.com/medusajs/medusa/commit/2057d3b24733680571ff977130b3e23bcc12d733), [`ca05436fc`](https://github.com/medusajs/medusa/commit/ca05436fc1d03c2f6512b2b9399eadafb3d5d721), [`ebba93e03`](https://github.com/medusajs/medusa/commit/ebba93e03d223fb3a79276090f7cfad612d70243), [`397da6c2b`](https://github.com/medusajs/medusa/commit/397da6c2ba39532ebf09b91d61ca2b7f1c4b8126), [`a780b92b8`](https://github.com/medusajs/medusa/commit/a780b92b8d590baa0e86682d1154f9e5b0869ea1), [`b69f18257`](https://github.com/medusajs/medusa/commit/b69f1825711a9d62da4e2ab4f1900eff473ec8e2), [`4ce8279d2`](https://github.com/medusajs/medusa/commit/4ce8279d2527fa691c3ca043b914ebb85cb4ac55)]:
+  - @medusajs/admin-ui@2.1.6
+
+## 7.1.5
+
+### Patch Changes
+
+- [#5339](https://github.com/medusajs/medusa/pull/5339) [`e04927a3c`](https://github.com/medusajs/medusa/commit/e04927a3cb0b8159b1f10a377beee705da6eef31) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): minor bugs throughout Price List domain plus improved form validation
+
+- [#5377](https://github.com/medusajs/medusa/pull/5377) [`d30f4477d`](https://github.com/medusajs/medusa/commit/d30f4477d908e2665ab951d93d559e5db8c4211e) Thanks [@anamarijapapic](https://github.com/anamarijapapic)! - feat(admin-ui): Add Croatian translation
+
+- [#5395](https://github.com/medusajs/medusa/pull/5395) [`3aba6269e`](https://github.com/medusajs/medusa/commit/3aba6269ed5efb6353d193e71d241ae55a40e721) Thanks [@samiralibabic](https://github.com/samiralibabic)! - feat(admin-ui): add Bosnian translation
+
+- [#5394](https://github.com/medusajs/medusa/pull/5394) [`a0963f0ed`](https://github.com/medusajs/medusa/commit/a0963f0edf909f6cfea17bd7a0c7899707808057) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Remove t() on product.status update
+
+- Updated dependencies [[`e04927a3c`](https://github.com/medusajs/medusa/commit/e04927a3cb0b8159b1f10a377beee705da6eef31), [`d30f4477d`](https://github.com/medusajs/medusa/commit/d30f4477d908e2665ab951d93d559e5db8c4211e), [`3376f4ccc`](https://github.com/medusajs/medusa/commit/3376f4ccc1acb0a8896c7f10c45a980aec8188b1), [`3aba6269e`](https://github.com/medusajs/medusa/commit/3aba6269ed5efb6353d193e71d241ae55a40e721), [`a0963f0ed`](https://github.com/medusajs/medusa/commit/a0963f0edf909f6cfea17bd7a0c7899707808057)]:
+  - @medusajs/admin-ui@2.1.5
+
 ## 7.1.4
 
 ### Patch Changes

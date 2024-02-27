@@ -13,7 +13,7 @@ Once the customer purchases a gift card, they should receive the code of the gif
 
 Typically, the code would be sent by email, however, you’re free to choose how you deliver the gift card code to the customer.
 
-This document shows you how to track when a gift card has been purchased so that you can send its code to the customer.
+This document shows you how to track when a gift card is purchased so that you can send its code to the customer.
 
 :::tip
 
@@ -31,121 +31,124 @@ It's assumed that you already have a Medusa backend installed and set up. If not
 
 ### Notification Provider
 
-To send an email or another type of notification method, you must have a notification provider installed or configured. You can either install an existing plugin or [create your own](../../../development/notification/create-notification-provider.md).
+To send an email or another type of notification method, you must have a notification provider installed or configured. You can either install an [existing plugin](../../../plugins/notifications/index.mdx) or [create your own](../../../references/notification/classes/notification.AbstractNotificationService.mdx).
 
 ---
 
-## Step 1: Create a Subscriber
+## Method 1: Using a Subscriber
 
-To subscribe to and handle an event, you must create a subscriber.
-
-:::info
-
-You can learn more about subscribers in the [Subscribers](../../../development/events/subscribers.mdx) documentation.
-
-:::
+To subscribe to and handle an event, you must create a [subscriber](../../../development/events/subscribers.mdx).
 
 Create the file `src/subscribers/gift-card.ts` with the following content:
 
-```ts title=src/subscribers/gift-card.ts
-type InjectedDependencies = {
-  // TODO add necessary dependencies
-}
-
-class GiftCardSubscriber {
-  constructor(container: InjectedDependencies) {
-    // TODO subscribe to event
-  }
-}
-
-export default GiftCardSubscriber
-```
-
-You’ll be adding in the next step the necessary dependencies to the subscriber.
-
-:::info
-
-You can learn more about [dependency injection](../../../development/fundamentals/dependency-injection.md) in this documentation.
-
-:::
-
----
-
-## Step 2: Subscribe to the Event
-
-In this step, you’ll subscribe to the event `gift_card.created` to send the customer a notification about their gift card.
-
-There are two ways to do this:
-
-### Method 1: Using the NotificationService
-
-If the notification provider you’re using already implements the logic to handle this event, you can subscribe to the event using the `NotificationService`:
-
-```ts title=src/subscribers/gift-card.ts
-import { NotificationService } from "@medusajs/medusa"
-
-type InjectedDependencies = {
-  notificationService: NotificationService
-}
-
-class GiftCardSubscriber {
-  constructor({ notificationService }: InjectedDependencies) {
-    notificationService.subscribe(
-      "gift_card.created", 
-      "<NOTIFICATION_PROVIDER_IDENTIFIER>"
-    )
-  }
-}
-
-export default GiftCardSubscriber
-```
-
-Where `<NOTIFICATION_PROVIDER_IDENTIFIER>` is the identifier for your notification provider. For example, if you’re using SendGrid, the identifier is `sendgrid`.
-
-:::info
-
-You can learn more about handling events with the Notification Service using [this documentation](../../../development/notification/create-notification-provider.md).
-
-:::
-
-### Method 2: Using the EventBusService
-
-If the notification provider you’re using isn’t configured to handle this event, or you want to implement some other custom logic, you can subscribe to the event using the `EventBusService`:
-
-```ts title=src/subscribers/gift-card.ts
+```ts title="src/subscribers/gift-card.ts"
 import { 
-  EventBusService,
+  type SubscriberConfig, 
+  type SubscriberArgs,
   GiftCardService,
 } from "@medusajs/medusa"
 
-type InjectedDependencies = {
-  eventBusService: EventBusService
-  giftCardService: GiftCardService
+export default async function handleGiftCardCreated({ 
+  data, eventName, container, pluginOptions, 
+}: SubscriberArgs<Record<string, string>>) {
+  // TODO: handle event
 }
 
-class GiftCardSubscriber {
-  giftCardService: GiftCardService
-
-  constructor({ 
-    eventBusService, 
-    giftCardService, 
-  }: InjectedDependencies) {
-    this.giftCardService = giftCardService
-    eventBusService.subscribe(
-      "gift_card.created", this.handleGiftCard)
-  }
-
-  handleGiftCard = async (data) => {
-    const giftCard = await this.giftCardService.retrieve(
-      data.id
-    )
-    // TODO send customer the gift card code
-  }
+export const config: SubscriberConfig = {
+  event: GiftCardService.Events.CREATED,
+  context: {
+    subscriberId: "gift-card-created-handler",
+  },
 }
-
-export default GiftCardSubscriber
 ```
 
-When using this method, you’ll have to handle the logic of sending the code to the customer inside the handler function, which in this case is `handleGiftCard`.
+In this file, you export a configuration object indicating that the subscriber is listening to the `GiftCardService.Events.CREATED` (or `gift_card.created`) event.
 
-The `handleGiftCard` event receives a `data` object as a parameter. This object holds the `id` property which is the ID of the gift card. You can retrieve the full gift card object using the [GiftCardService](../../../references/services/classes/GiftCardService.md)
+You also export a handler function `handleGiftCardCreated`. In the parameter it receives, the `data` object is the payload emitted when the event was triggered, which is an object containing the ID of the gift card in the `id` property.
+
+In this method, you should typically send an email to the customer. You can place any content in the email, such as the code of the gift card.
+
+### Example: Using SendGrid
+
+For example, you can implement this subscriber to send emails using [SendGrid](../../../plugins/notifications/sendgrid.mdx):
+
+```ts title="src/subscribers/gift-card.ts"
+import { 
+  type SubscriberConfig, 
+  type SubscriberArgs,
+  GiftCardService,
+} from "@medusajs/medusa"
+
+export default async function handleGiftCardCreated({ 
+  data, eventName, container, pluginOptions, 
+}: SubscriberArgs<Record<string, string>>) {
+  const sendGridService = container.resolve("sendgridService")
+  const giftCardService: GiftCardService = container.resolve(
+    "giftCardService"
+  )
+
+  const giftCard = await giftCardService.retrieve(data.id, {
+    relations: ["order"],
+  })
+
+  sendGridService.sendEmail({
+    templateId: "gift-card-created",
+    from: "hello@medusajs.com",
+    to: giftCard.order.email,
+    dynamic_template_data: {
+      // any data necessary for your template...
+      code: giftCard.code,
+    },
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: GiftCardService.Events.CREATED,
+  context: {
+    subscriberId: "gift-card-created-handler",
+  },
+}
+```
+
+Notice that you should replace the values in the object passed to the `sendEmail` method:
+
+- `templateId`: Should be the ID of your confirmation email template in SendGrid.
+- `from`: Should be the from email.
+- `to`: Should be the customer’s email.
+- `data`: Should be an object holding any data that should be passed to your SendGrid email template.
+
+---
+
+## Method 2: Using the NotificationService
+
+If the notification provider you’re using already implements the logic to handle this event, you can create a [Loader](../../../development/loaders/overview.mdx) to subscribe the Notification provider to the `gift_card.created` event.
+
+For example:
+
+```ts title="src/loaders/gift-card-event.ts"
+import { 
+  MedusaContainer, 
+  NotificationService,
+} from "@medusajs/medusa"
+
+export default async (
+  container: MedusaContainer
+): Promise<void> => {
+  const notificationService = container.resolve<
+    NotificationService
+  >("notificationService")
+
+  notificationService.subscribe(
+    "gift_card.created", 
+    "<NOTIFICATION_PROVIDER_IDENTIFIER>"
+  )
+}
+```
+
+Where `<NOTIFICATION_PROVIDER_IDENTIFIER>` is the identifier for your notification provider. For example, `sendgrid`.
+
+:::note
+
+You can learn more about handling events with the Notification Service using [this documentation](../../../references/notification/classes/notification.AbstractNotificationService.mdx).
+
+:::

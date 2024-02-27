@@ -4,7 +4,7 @@ post:
   description: >-
     Complete an Order Edit and reflect its changes on the original order. Any
     additional payment required must be authorized first using the Payment
-    Collection endpoints.
+    Collection API Routes.
   externalDocs:
     description: How to handle order edits in a storefront
     url: https://docs.medusajs.com/modules/orders/storefront/handle-order-edits
@@ -22,6 +22,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/store_order-edits_{id}_complete/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/store_order-edits_{id}_complete/post.tsx
     - lang: Shell
       label: cURL
       source:

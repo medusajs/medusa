@@ -35,6 +35,10 @@ class RedisCacheService implements ICacheService {
     data: Record<string, unknown>,
     ttl: number = this.TTL
   ): Promise<void> {
+    if (ttl === 0) {
+      return
+    }
+
     await this.redis.set(
       this.getCacheKey(key),
       JSON.stringify(data),

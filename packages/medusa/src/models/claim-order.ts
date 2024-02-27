@@ -23,26 +23,83 @@ import { ShippingMethod } from "./shipping-method"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 
+/**
+ * @enum
+ * 
+ * The claim's type.
+ */
 export enum ClaimType {
+  /**
+   * The claim refunds an amount to the customer.
+   */
   REFUND = "refund",
+  /**
+   * The claim replaces the returned item with a new one.
+   */
   REPLACE = "replace",
 }
 
+/**
+ * @enum
+ * 
+ * The claim's payment status
+ */
 export enum ClaimPaymentStatus {
+  /**
+   * The payment status isn't set, which is typically used when the claim's type is `replace`.
+   */
   NA = "na",
+  /**
+   * The payment isn't refunded.
+   */
   NOT_REFUNDED = "not_refunded",
+  /**
+   * The payment is refunded.
+   */
   REFUNDED = "refunded",
 }
 
+/**
+ * @enum
+ * 
+ * The claim's fulfillment status.
+ */
 export enum ClaimFulfillmentStatus {
+  /**
+   * The claim's replacement items are not fulfilled.
+   */
   NOT_FULFILLED = "not_fulfilled",
+  /**
+   * Some of the claim's replacement items, but not all, are fulfilled.
+   */
   PARTIALLY_FULFILLED = "partially_fulfilled",
+  /**
+   * The claim's replacement items are fulfilled.
+   */
   FULFILLED = "fulfilled",
+  /**
+   * Some of the claim's replacement items, but not all, are shipped.
+   */
   PARTIALLY_SHIPPED = "partially_shipped",
+  /**
+   * The claim's replacement items are shipped.
+   */
   SHIPPED = "shipped",
+  /**
+   * Some of the claim's items, but not all, are returned.
+   */
   PARTIALLY_RETURNED = "partially_returned",
+  /**
+   * The claim's items are returned.
+   */
   RETURNED = "returned",
+  /**
+   * The claim's fulfillments are canceled.
+   */
   CANCELED = "canceled",
+  /**
+   * The claim's fulfillment requires action.
+   */
   REQUIRES_ACTION = "requires_action",
 }
 
@@ -124,6 +181,9 @@ export class ClaimOrder extends SoftDeletableEntity {
   @Column({ nullable: true })
   idempotency_key: string
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "claim")

@@ -1,0 +1,6 @@
+{
+  "description": "The bar component of the command bar. This component is used to display the commands.",
+  "methods": [],
+  "displayName": "CommandBar.Bar",
+  "props": {}
+}

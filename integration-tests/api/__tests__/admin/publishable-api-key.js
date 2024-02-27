@@ -338,14 +338,14 @@ describe("Publishable API keys", () => {
       expect(response.status).toBe(200)
 
       expect(mappings).toEqual([
-        {
+        expect.objectContaining({
           sales_channel_id: salesChannel1.id,
           publishable_key_id: pubKeyId,
-        },
-        {
+        }),
+        expect.objectContaining({
           sales_channel_id: salesChannel2.id,
           publishable_key_id: pubKeyId,
-        },
+        }),
       ])
 
       expect(response.data.publishable_api_key).toMatchObject({
@@ -385,13 +385,11 @@ describe("Publishable API keys", () => {
       })
 
       await dbConnection.manager.query(
-        `INSERT INTO 
-            publishable_api_key_sales_channel 
-            (publishable_key_id, sales_channel_id)
-         VALUES
-             ('${pubKeyId}', '${salesChannel1.id}'),
-             ('${pubKeyId}', '${salesChannel2.id}'),
-             ('${pubKeyId}', '${salesChannel3.id}');`
+        `INSERT INTO publishable_api_key_sales_channel
+             (id, publishable_key_id, sales_channel_id)
+         VALUES ('pksc-1','${pubKeyId}', '${salesChannel1.id}'),
+                ('pksc-2','${pubKeyId}', '${salesChannel2.id}'),
+                ('pksc-3','${pubKeyId}', '${salesChannel3.id}');`
       )
     })
 
@@ -419,16 +417,16 @@ describe("Publishable API keys", () => {
       const mappings = await dbConnection.manager.query(
         `SELECT *
          FROM publishable_api_key_sales_channel
-         WHERE publishable_key_id = '${pubKeyId}'`
+         WHERE publishable_key_id = '${pubKeyId}';`
       )
 
       expect(response.status).toBe(200)
 
       expect(mappings).toEqual([
-        {
+        expect.objectContaining({
           sales_channel_id: salesChannel3.id,
           publishable_key_id: pubKeyId,
-        },
+        }),
       ])
 
       expect(response.data.publishable_api_key).toMatchObject({
@@ -468,12 +466,10 @@ describe("Publishable API keys", () => {
       })
 
       await dbConnection.manager.query(
-        `INSERT INTO
-             publishable_api_key_sales_channel
-             (publishable_key_id, sales_channel_id)
-         VALUES
-             ('${pubKeyId}', '${salesChannel1.id}'),
-             ('${pubKeyId}', '${salesChannel2.id}');`
+        `INSERT INTO publishable_api_key_sales_channel
+             (id, publishable_key_id, sales_channel_id)
+         VALUES ('pksc-1', '${pubKeyId}', '${salesChannel1.id}'),
+                ('pksc-2', '${pubKeyId}', '${salesChannel2.id}');`
       )
     })
 
@@ -854,6 +850,62 @@ describe("Publishable API keys", () => {
         })
 
       expect(response.status).toEqual(400)
+    })
+
+    it("should return 404 when the requested variant doesn't exist", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [{ id: salesChannel1.id }],
+        },
+        adminHeaders
+      )
+
+      const response = await api
+        .get(`/store/variants/does-not-exist`, {
+          headers: {
+            "x-medusa-access-token": "test_token",
+            "x-publishable-api-key": pubKeyId,
+          },
+        })
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(404)
+      expect(response.data.message).toEqual(
+        "Variant with id: does-not-exist was not found"
+      )
+    })
+
+    it("should return 404 when the requested product doesn't exist", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [{ id: salesChannel1.id }],
+        },
+        adminHeaders
+      )
+
+      const response = await api
+        .get(`/store/products/does-not-exist`, {
+          headers: {
+            "x-medusa-access-token": "test_token",
+            "x-publishable-api-key": pubKeyId,
+          },
+        })
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(404)
+      expect(response.data.message).toEqual(
+        "Product with id: does-not-exist was not found"
+      )
     })
 
     it("correctly returns a product if passed PK has no associated SCs", async () => {

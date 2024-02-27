@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The list of fulfillment options in a region.
+ */
 export interface AdminGetRegionsRegionFulfillmentOptionsRes {
   /**
    * Fulfillment providers details.

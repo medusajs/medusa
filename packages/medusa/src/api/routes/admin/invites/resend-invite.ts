@@ -25,7 +25,33 @@ import { EntityManager } from "typeorm"
  *       })
  *       .catch(() => {
  *         // an error occurred
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminResendInvite } from "medusa-react"
+ *
+ *       type Props = {
+ *         inviteId: string
+ *       }
+ *
+ *       const ResendInvite = ({ inviteId }: Props) => {
+ *         const resendInvite = useAdminResendInvite(inviteId)
+ *         // ...
+ *
+ *         const handleResend = () => {
+ *           resendInvite.mutate(void 0, {
+ *             onSuccess: () => {
+ *               // invite resent successfully
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ResendInvite
  *   - lang: Shell
  *     label: cURL
  *     source: |

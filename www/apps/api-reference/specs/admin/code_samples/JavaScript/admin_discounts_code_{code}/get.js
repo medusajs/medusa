@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.discounts.retrieveByCode(code)
 .then(({ discount }) => {
   console.log(discount.id);
-});
+})

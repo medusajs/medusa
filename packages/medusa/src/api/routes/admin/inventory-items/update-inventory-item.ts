@@ -35,7 +35,37 @@ import { IInventoryService } from "@medusajs/types"
  *       })
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateInventoryItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         inventoryItemId: string
+ *       }
+ *
+ *       const InventoryItem = ({ inventoryItemId }: Props) => {
+ *         const updateInventoryItem = useAdminUpdateInventoryItem(
+ *           inventoryItemId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (origin_country: string) => {
+ *           updateInventoryItem.mutate({
+ *             origin_country,
+ *           }, {
+ *             onSuccess: ({ inventory_item }) => {
+ *               console.log(inventory_item.origin_country)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default InventoryItem
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -94,6 +124,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostInventoryItemsInventoryItemReq
  * type: object
+ * description: "The attributes to update in an inventory item."
  * properties:
  *   hs_code:
  *     description: The Harmonized System code of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.
@@ -119,6 +150,15 @@ export default async (req: Request, res: Response) => {
  *   length:
  *     description: The length of the Inventory Item. May be used in shipping rate calculations.
  *     type: number
+ *   title:
+ *     description: The inventory item's title.
+ *     type: string
+ *   description:
+ *     description: The inventory item's description.
+ *     type: string
+ *   thumbnail:
+ *     description: The inventory item's thumbnail.
+ *     type: string
  *   requires_shipping:
  *     description: Whether the item requires shipping.
  *     type: boolean

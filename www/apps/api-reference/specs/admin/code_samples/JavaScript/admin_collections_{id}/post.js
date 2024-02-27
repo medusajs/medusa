@@ -6,4 +6,4 @@ medusa.admin.collections.update(collectionId, {
 })
 .then(({ collection }) => {
   console.log(collection.id);
-});
+})

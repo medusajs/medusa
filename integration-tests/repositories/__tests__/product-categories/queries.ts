@@ -1,7 +1,9 @@
+import { ProductCategoryRepository } from "@medusajs/medusa/dist/repositories/product-category"
 import path from "path"
 import { initDb, useDb } from "../../../environment-helpers/use-db"
 import { simpleProductCategoryFactory } from "../../../factories"
-import { ProductCategoryRepository } from "@medusajs/medusa/dist/repositories/product-category"
+
+jest.setTimeout(30000)
 
 describe("Product Categories", () => {
   let dbConnection

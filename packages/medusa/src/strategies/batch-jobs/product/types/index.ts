@@ -1,3 +1,4 @@
+import { RemoteQueryFunction } from "@medusajs/types"
 import { FlagRouter } from "@medusajs/utils"
 import { FileService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
@@ -5,14 +6,14 @@ import { IFileService } from "../../../../interfaces"
 import { CsvSchema, CsvSchemaColumn } from "../../../../interfaces/csv-parser"
 import { BatchJob, Product, ProductVariant } from "../../../../models"
 import {
-    BatchJobService,
-    ProductCategoryService,
-    ProductCollectionService,
-    ProductService,
-    ProductVariantService,
-    RegionService,
-    SalesChannelService,
-    ShippingProfileService,
+  BatchJobService,
+  ProductCategoryService,
+  ProductCollectionService,
+  ProductService,
+  ProductVariantService,
+  RegionService,
+  SalesChannelService,
+  ShippingProfileService,
 } from "../../../../services"
 import { Selector } from "../../../../types/common"
 
@@ -22,6 +23,7 @@ export type ProductExportInjectedDependencies = {
   productService: ProductService
   fileService: IFileService
   featureFlagRouter: FlagRouter
+  remoteQuery: RemoteQueryFunction
 }
 
 export type ProductExportBatchJobContext = {
@@ -72,7 +74,10 @@ export type ProductExportDescriptor =
       entityName: Extract<ProductExportColumnSchemaEntity, "product">
     }
   | {
-      accessor: (variant: ProductVariant) => string
+      accessor: (
+        variant: ProductVariant,
+        context?: { product?: Product }
+      ) => string
       entityName: Extract<ProductExportColumnSchemaEntity, "variant">
     }
 

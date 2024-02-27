@@ -32,7 +32,32 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ user }) => {
  *         console.log(user.id);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateUser } from "medusa-react"
+ *
+ *       const CreateUser = () => {
+ *         const createUser = useAdminCreateUser()
+ *         // ...
+ *
+ *         const handleCreateUser = () => {
+ *           createUser.mutate({
+ *             email: "user@example.com",
+ *             password: "supersecret",
+ *           }, {
+ *             onSuccess: ({ user }) => {
+ *               console.log(user.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateUser
  *   - lang: Shell
  *     label: cURL
  *     source: |

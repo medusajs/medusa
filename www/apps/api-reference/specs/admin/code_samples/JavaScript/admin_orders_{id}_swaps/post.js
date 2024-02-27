@@ -11,4 +11,4 @@ medusa.admin.orders.createSwap(orderId, {
 })
 .then(({ order }) => {
   console.log(order.id);
-});
+})

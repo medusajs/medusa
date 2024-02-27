@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { Customer } from "./Customer"
 
+/**
+ * The list of customers with pagination fields.
+ */
 export interface AdminCustomersListRes {
   /**
    * An array of customer details.

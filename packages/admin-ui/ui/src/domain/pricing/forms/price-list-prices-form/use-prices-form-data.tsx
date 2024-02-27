@@ -5,11 +5,17 @@ import * as React from "react"
 type UsePricesFormDataProps = {
   priceList?: PriceList
   productIds: string[]
+  enable?: {
+    products?: boolean
+  }
 }
 
 const usePricesFormData = ({
   priceList,
   productIds,
+  enable = {
+    products: true,
+  },
 }: UsePricesFormDataProps) => {
   const {
     products,
@@ -18,11 +24,11 @@ const usePricesFormData = ({
   } = useAdminProducts(
     {
       id: productIds,
-      limit: productIds?.length,
       price_list_id: priceList ? [priceList.id] : undefined,
     },
     {
       keepPreviousData: true,
+      enabled: !!productIds?.length && enable.products,
     }
   )
 
@@ -53,9 +59,11 @@ const usePricesFormData = ({
     }
   )
 
-  const isLoading = isLoadingProducts || isLoadingStore || isLoadingRegions
-  const isError = isErrorProducts || isStoreError || isErrorRegions
-  const isNotFound = !products || !regions || !currencies
+  const isLoading =
+    (enable.products && isLoadingProducts) || isLoadingStore || isLoadingRegions
+  const isError =
+    (enable.products && isErrorProducts) || isStoreError || isErrorRegions
+  const isNotFound = (enable.products && !products) || !regions || !currencies
 
   return {
     isError,

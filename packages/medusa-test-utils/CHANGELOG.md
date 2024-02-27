@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.1.41
+
+### Patch Changes
+
+- [#5985](https://github.com/medusajs/medusa/pull/5985) [`d16d10619`](https://github.com/medusajs/medusa/commit/d16d10619dfbd3966a4709753de3d8cc37c6f2eb) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa-test-utils, utils, link-modules, pricing, product): upgrade mikro-orm version
+
+- Updated dependencies [[`f86877586`](https://github.com/medusajs/medusa/commit/f86877586147ecedbf7f56a1c57f37ef0c33286c), [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8)]:
+  - medusa-core-utils@1.2.1
+
 ## 1.1.40
 
 ### Patch Changes

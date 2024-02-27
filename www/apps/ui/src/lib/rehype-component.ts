@@ -5,6 +5,7 @@ import { visit } from "unist-util-visit"
 
 import { ExampleRegistry } from "../registries/example-registry"
 import { UnistNode, UnistTree } from "../types/unist"
+import { Documentation } from "react-docgen"
 
 export function rehypeComponent() {
   return async (tree: UnistTree) => {
@@ -42,6 +43,33 @@ export function rehypeComponent() {
         } catch (error) {
           console.error(error)
         }
+      } else if (node.name === "ComponentReference") {
+        const mainComponent = getNodeAttributeByName(node, "mainComponent")
+          ?.value as string
+
+        if (!mainComponent) {
+          return null
+        }
+
+        const mainSpecsDir = path.join(process.cwd(), "src/specs")
+        const componentSpecsDir = path.join(mainSpecsDir, mainComponent)
+        const specs: Documentation[] = []
+
+        const specFiles = fs.readdirSync(componentSpecsDir)
+        specFiles.map((specFileName) => {
+          // read spec file
+          const specFile = fs.readFileSync(
+            path.join(componentSpecsDir, specFileName),
+            "utf-8"
+          )
+          specs.push(JSON.parse(specFile) as Documentation)
+        })
+
+        node.attributes?.push({
+          name: "specsSrc",
+          value: JSON.stringify(specs),
+          type: "mdxJsxAttribute",
+        })
       }
     })
   }

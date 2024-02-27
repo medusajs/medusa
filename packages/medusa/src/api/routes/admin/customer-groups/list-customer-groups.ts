@@ -1,9 +1,9 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 
+import { Type } from "class-transformer"
 import { CustomerGroupService } from "../../../../services"
 import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
-import { Type } from "class-transformer"
 
 /**
  * @oas [get] /admin/customer-groups
@@ -100,6 +100,7 @@ import { Type } from "class-transformer"
  *            format: date
  *   - (query) limit=10 {integer} The number of customer groups to return.
  *   - (query) expand {string} Comma-separated relations that should be expanded in the returned customer groups.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned customer groups.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetCustomerGroupsParams
@@ -113,7 +114,41 @@ import { Type } from "class-transformer"
  *       medusa.admin.customerGroups.list()
  *       .then(({ customer_groups, limit, offset, count }) => {
  *         console.log(customer_groups.length);
- *       });
+ *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCustomerGroups } from "medusa-react"
+ *
+ *       const CustomerGroups = () => {
+ *         const {
+ *           customer_groups,
+ *           isLoading,
+ *         } = useAdminCustomerGroups()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {customer_groups && !customer_groups.length && (
+ *               <span>No Customer Groups</span>
+ *             )}
+ *             {customer_groups && customer_groups.length > 0 && (
+ *               <ul>
+ *                 {customer_groups.map(
+ *                   (customerGroup) => (
+ *                     <li key={customerGroup.id}>
+ *                       {customerGroup.name}
+ *                     </li>
+ *                   )
+ *                 )}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default CustomerGroups
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -164,22 +199,44 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved customer groups.
+ */
 export class AdminGetCustomerGroupsParams extends FilterableCustomerGroupProps {
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit?: number = 10
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string
+
+  /**
+   * {@inheritDoc FindPaginationParams.fields}
+   */
+  @IsString()
+  @IsOptional()
+  fields?: string
 }

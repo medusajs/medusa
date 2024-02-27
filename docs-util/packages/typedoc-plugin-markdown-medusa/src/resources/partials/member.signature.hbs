@@ -1,4 +1,14 @@
-{{{signatureTitle accessor}}}
+{{{signatureTitle accessor parent}}}
+
+{{#if (getFormattingOption "expandMembers")}}
+
+{{#if (hasMoreThanOneSignature parent)}}
+
+{{incrementCurrentTitleLevel}}
+
+{{/if}}
+
+{{/if}}
 
 {{#if (sectionEnabled "member_signature_comment")}}
 
@@ -14,13 +24,21 @@
 
 {{/if}}
 
+{{#if (sectionEnabled "member_signature_example")}}
+
+{{{example this}}}
+
+{{/if}}
+
 {{#if (sectionEnabled "member_signature_typeParameters")}}
 
 {{#if typeParameters}}
 
+{{{titleLevel}}} Type Parameters
+
 {{#with typeParameters}}
 
-{{{typeParameter}}}
+{{{typeParameter sectionTitle=../name}}}
 
 {{/with}}
 
@@ -28,29 +46,15 @@
 
 {{/if}}
 
-{{#if (sectionEnabled "member_signature_example")}}
-
-{{{example this 4}}}
-
-{{/if}}
-
 {{#if (sectionEnabled "member_signature_parameters")}}
 
 {{#if parameters}}
 
-{{#if showSources}}
-
-{{{titleLevel 4}}} Parameters
-
-{{else}}
-
-{{{titleLevel 5}}} Parameters
-
-{{/if}}
+{{{titleLevel}}} Parameters
 
 {{#with parameters}}
 
-{{{parameter}}}
+{{{parameter sectionTitle=../name}}}
 
 {{/with}}
 
@@ -62,15 +66,7 @@
 
 {{#if type}}
 
-{{#if showSources}}
-
-{{{titleLevel 4}}} Returns
-
-{{else}}
-
-{{{titleLevel 5}}} Returns
-
-{{/if}}
+{{{titleLevel}}} Returns
 
 {{#if (sectionEnabled "member_signature_returns")}}
 
@@ -90,11 +86,15 @@
 
 {{#if declaration.signatures}}
 
+{{incrementCurrentTitleLevel}}
+
 {{#each declaration.signatures}}
 
-{{> member.signature showSources=false }}
+{{> member.signature-wrapper showSources=false parent=../declaration }}
 
 {{/each}}
+
+{{decrementCurrentTitleLevel}}
 
 {{/if}}
 
@@ -106,7 +106,7 @@
 
 {{#with declaration.children}}
 
-{{{typeDeclarationMembers}}}
+{{{typeDeclarationMembers sectionTitle=../../name}}}
 
 {{/with}}
 
@@ -126,7 +126,7 @@
 
 {{#if hasVisibleComponent}}
 
-{{{comments this false true 4 ..}}}
+{{{comments this false true ..}}}
 
 {{/if}}
 
@@ -138,7 +138,21 @@
 
 {{#if showSources}}
 
+{{incrementCurrentTitleLevel}}
+
 {{> member.sources}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (getFormattingOption "expandMembers")}}
+
+{{#if (hasMoreThanOneSignature parent)}}
+
+{{decrementCurrentTitleLevel}}
 
 {{/if}}
 

@@ -1,32 +1,113 @@
+/**
+ * @packageDocumentation
+ * 
+ * @customNamespace Providers.Session Cart
+ */
+
 import React, { useContext, useEffect } from "react"
 import { getVariantPrice } from "../helpers"
 import { useLocalStorage } from "../hooks/utils"
 import { ProductVariant, RegionInfo } from "../types"
 import { isArray, isEmpty, isObject } from "../utils"
 
-interface Item {
+/**
+ * A session cart's item.
+ */
+export interface Item {
+  /**
+   * The product variant represented by this item in the cart.
+   */
   variant: ProductVariant
+  /**
+   * The quantity added in the cart.
+   */
   quantity: number
+  /**
+   * The total amount of the item in the cart.
+   */
   readonly total?: number
 }
 
 export interface SessionCartState {
+  /**
+   * The region of the cart.
+   */
   region: RegionInfo
+  /**
+   * The items in the cart.
+   */
   items: Item[]
+  /**
+   * The total items in the cart.
+   */
   totalItems: number
+  /**
+   * The total amount of the cart.
+   */
   total: number
 }
 
-interface SessionCartContextState extends SessionCartState {
+export interface SessionCartContextState extends SessionCartState {
+  /**
+   * A state function used to set the region.
+   * 
+   * @param region - The new value of the region.
+   */
   setRegion: (region: RegionInfo) => void
+  /**
+   * This function adds an item to the session cart.
+   * 
+   * @param {Item} item - The item to add.
+   */
   addItem: (item: Item) => void
+  /**
+   * This function removes an item from the session cart.
+   * 
+   * @param {string} id - The ID of the item.
+   */
   removeItem: (id: string) => void
+  /**
+   * This function updates an item in the session cart.
+   * 
+   * @param {string} id - The ID of the item.
+   * @param {Partial<Item>} item - The item's data to update.
+   */
   updateItem: (id: string, item: Partial<Item>) => void
+  /**
+   * A state function used to set the items in the cart.
+   * 
+   * @param {Item[]} items - The items to set in the cart.
+   */
   setItems: (items: Item[]) => void
+  /**
+   * This function updates an item's quantity in the cart.
+   * 
+   * @param {string} id - The ID of the item.
+   * @param {number} quantity - The new quantity of the item.
+   */
   updateItemQuantity: (id: string, quantity: number) => void
+  /**
+   * This function increments the item's quantity in the cart.
+   * 
+   * @param {string} id - The ID of the item.
+   */
   incrementItemQuantity: (id: string) => void
+  /**
+   * This function decrements the item's quantity in the cart.
+   * 
+   * @param {string} id - The ID of the item.
+   */
   decrementItemQuantity: (id: string) => void
+  /**
+   * This function retrieves an item's details by its ID.
+   * 
+   * @param {string} id - The ID of the item.
+   * @returns {Item | undefined} The item in the cart, if found.
+   */
   getItem: (id: string) => Item | undefined
+  /**
+   * Removes all items in the cart.
+   */
   clearItems: () => void
 }
 
@@ -111,6 +192,9 @@ const reducer = (state: SessionCartState, action: Action) => {
   }
 }
 
+/**
+ * @ignore
+ */
 export const generateCartState = (state: SessionCartState, items: Item[]) => {
   const newItems = generateItems(state.region, items)
   return {
@@ -135,8 +219,14 @@ const calculateSessionCartTotal = (items: Item[]) => {
   )
 }
 
-interface SessionCartProviderProps {
+export interface SessionCartProviderProps {
+  /**
+   * @ignore
+   */
   children: React.ReactNode
+  /**
+   * An optional initial value to be used for the session cart.
+   */
   initialState?: SessionCartState
 }
 
@@ -147,6 +237,44 @@ const defaultInitialState: SessionCartState = {
   totalItems: 0,
 }
 
+/**
+ * Unlike the {@link Providers.Cart.CartProvider | CartProvider}, `SessionProvider` never interacts with the Medusa backend. It can be used to implement the user experience related to managing a cart’s items. 
+ * Its state variables are JavaScript objects living in the browser, but are in no way communicated with the backend.
+ * 
+ * You can use the `SessionProvider` as a lightweight client-side cart functionality. It’s not stored in any database or on the Medusa backend.
+ * 
+ * To use `SessionProvider`, you first have to insert it somewhere in your component tree below the {@link Providers.Medusa.MedusaProvider | MedusaProvider}. Then, in any of the child components, 
+ * you can use the {@link useSessionCart} hook to get access to client-side cart item functionalities.
+ * 
+ * @param {SessionCartProviderProps} param0 - Props of the provider.
+ * 
+ * @example
+ * ```tsx title="src/App.ts"
+ * import { SessionProvider, MedusaProvider } from "medusa-react"
+ * import Storefront from "./Storefront"
+ * import { QueryClient } from "@tanstack/react-query"
+ * import React from "react"
+ * 
+ * const queryClient = new QueryClient()
+ * 
+ * const App = () => {
+ *   return (
+ *     <MedusaProvider
+ *       queryClientProviderProps={{ client: queryClient }}
+ *       baseUrl="http://localhost:9000"
+ *     >
+ *       <SessionProvider>
+ *         <Storefront />
+ *       </SessionProvider>
+ *     </MedusaProvider>
+ *   )
+ * }
+ * 
+ * export default App
+ * ```
+ * 
+ * @customNamespace Providers.Session Cart
+ */
 export const SessionCartProvider = ({
   initialState = defaultInitialState,
   children,
@@ -278,6 +406,28 @@ export const SessionCartProvider = ({
   )
 }
 
+/**
+ * This hook exposes the context of {@link SessionCartProvider}.
+ * 
+ * @example
+ * The following example assumes that you've added `SessionCartProvider` previously in the React components tree:
+ * 
+ * ```tsx title="src/Products.ts"
+ * const Products = () => {
+ *   const { addItem } = useSessionCart()
+ *   // ...
+ * 
+ *   function addToCart(variant: ProductVariant) {
+ *     addItem({
+ *       variant: variant,
+ *       quantity: 1,
+ *     })
+ *   }
+ * }
+ * ```
+ * 
+ * @customNamespace Providers.Session Cart
+ */
 export const useSessionCart = () => {
   const context = useContext(SessionCartContext)
   if (!context) {

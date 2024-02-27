@@ -21,14 +21,13 @@ const pgGodCredentials = {
 
 class DatabaseFactory {
   constructor() {
-    this.dataSource_ = null
     this.masterDataSourceName = "master"
     this.templateDbName = "medusa-integration-template"
   }
 
   async createTemplateDb_({ cwd }) {
     const { configModule } = getConfigFile(cwd, `medusa-config`)
-    const dataSource = await this.getMasterDataSource()
+
     const migrationDir = path.resolve(
       path.join(
         __dirname,
@@ -80,8 +79,6 @@ class DatabaseFactory {
     await templateDbDataSource.runMigrations()
 
     await templateDbDataSource.destroy()
-
-    return dataSource
   }
 
   async getMasterDataSource() {
@@ -103,7 +100,7 @@ class DatabaseFactory {
   async createFromTemplate(dbName) {
     const dataSource = await this.getMasterDataSource()
 
-    await dataSource.query(`DROP DATABASE IF EXISTS "${dbName}";`)
+    await dropDatabase({ databaseName: dbName }, pgGodCredentials)
     await dataSource.query(
       `CREATE DATABASE "${dbName}" TEMPLATE "${this.templateDbName}";`
     )

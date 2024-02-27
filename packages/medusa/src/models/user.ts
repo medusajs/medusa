@@ -4,9 +4,23 @@ import { DbAwareColumn } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 
+/**
+ * @enum
+ * 
+ * The user's role. These roles don't change the user's capabilities or provide access-control features.
+ */
 export enum UserRoles {
+  /**
+   * The user is an admin.
+   */
   ADMIN = "admin",
+  /**
+   * The user is a team member.
+   */
   MEMBER = "member",
+  /**
+   * The user is a developer.
+   */
   DEVELOPER = "developer",
 }
 
@@ -30,6 +44,9 @@ export class User extends SoftDeletableEntity {
   @Column({ nullable: true })
   last_name: string
 
+  /**
+   * @apiIgnore
+   */
   @Column({ nullable: true, select: false })
   password_hash: string
 
@@ -39,6 +56,9 @@ export class User extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "usr")

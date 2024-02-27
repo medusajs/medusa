@@ -1,4 +1,4 @@
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
 import {
   BaseFulfillmentService,
@@ -131,7 +131,7 @@ export default async ({
 
     const context = { container, manager, logger }
 
-    await Promise.all([
+    await promiseAll([
       registerPaymentProvider(context),
       registerPaymentProcessor(context),
       registerNotificationProvider(context),

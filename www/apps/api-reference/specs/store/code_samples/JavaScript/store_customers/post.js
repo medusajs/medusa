@@ -8,4 +8,4 @@ medusa.customers.create({
 })
 .then(({ customer }) => {
   console.log(customer.id);
-});
+})

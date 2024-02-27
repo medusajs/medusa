@@ -4,6 +4,7 @@ import {
   OrchestratorBuilder,
   TransactionHandlerType,
   TransactionMetadata,
+  TransactionModelOptions,
   TransactionOrchestrator,
   TransactionStepHandler,
   TransactionStepsDefinition,
@@ -21,6 +22,7 @@ export interface WorkflowDefinition {
     string,
     { invoke: WorkflowStepHandler; compensate?: WorkflowStepHandler }
   >
+  options: TransactionModelOptions
   requiredModules?: Set<string>
   optionalModules?: Set<string>
 }
@@ -70,23 +72,45 @@ export class WorkflowManager {
 
   static register(
     workflowId: string,
-    flow: TransactionStepsDefinition | OrchestratorBuilder,
+    flow: TransactionStepsDefinition | OrchestratorBuilder | undefined,
     handlers: WorkflowHandler,
+    options: TransactionModelOptions = {},
     requiredModules?: Set<string>,
     optionalModules?: Set<string>
   ) {
-    if (WorkflowManager.workflows.has(workflowId)) {
-      throw new Error(`Workflow with id "${workflowId}" is already defined.`)
-    }
-
     const finalFlow = flow instanceof OrchestratorBuilder ? flow.build() : flow
+
+    if (WorkflowManager.workflows.has(workflowId)) {
+      const excludeStepUuid = (key, value) => {
+        return key === "uuid" ? undefined : value
+      }
+
+      const areStepsEqual = finalFlow
+        ? JSON.stringify(finalFlow, excludeStepUuid) ===
+          JSON.stringify(
+            WorkflowManager.workflows.get(workflowId)!.flow_,
+            excludeStepUuid
+          )
+        : true
+
+      if (!areStepsEqual) {
+        throw new Error(
+          `Workflow with id "${workflowId}" and step definition already exists.`
+        )
+      }
+    }
 
     WorkflowManager.workflows.set(workflowId, {
       id: workflowId,
-      flow_: finalFlow,
-      orchestrator: new TransactionOrchestrator(workflowId, finalFlow),
+      flow_: finalFlow!,
+      orchestrator: new TransactionOrchestrator(
+        workflowId,
+        finalFlow ?? {},
+        options
+      ),
       handler: WorkflowManager.buildHandlers(handlers),
       handlers_: handlers,
+      options,
       requiredModules,
       optionalModules,
     })
@@ -99,6 +123,7 @@ export class WorkflowManager {
       string,
       { invoke: WorkflowStepHandler; compensate?: WorkflowStepHandler }
     >,
+    options: TransactionModelOptions = {},
     requiredModules?: Set<string>,
     optionalModules?: Set<string>
   ) {
@@ -113,13 +138,19 @@ export class WorkflowManager {
     }
 
     const finalFlow = flow instanceof OrchestratorBuilder ? flow.build() : flow
+    const updatedOptions = { ...workflow.options, ...options }
 
     WorkflowManager.workflows.set(workflowId, {
       id: workflowId,
       flow_: finalFlow,
-      orchestrator: new TransactionOrchestrator(workflowId, finalFlow),
+      orchestrator: new TransactionOrchestrator(
+        workflowId,
+        finalFlow,
+        updatedOptions
+      ),
       handler: WorkflowManager.buildHandlers(workflow.handlers_),
       handlers_: workflow.handlers_,
+      options: updatedOptions,
       requiredModules,
       optionalModules,
     })

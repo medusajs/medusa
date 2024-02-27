@@ -15,6 +15,7 @@ properties:
     example: 16128234334802
   company:
     type: string
+    description: Company
   address_1:
     description: Address line 1
     type: string

@@ -14,7 +14,41 @@ const swapKey = {
 
 type SwapQueryKey = typeof swapKey
 
+/**
+ * This hook retrieves a Swap's details by the ID of its cart.
+ * 
+ * @example
+ * import React from "react"
+ * import { useCartSwap } from "medusa-react"
+ * 
+ * type Props = {
+ *   cartId: string
+ * }
+ * 
+ * const Swap = ({ cartId }: Props) => {
+ *   const { 
+ *     swap, 
+ *     isLoading, 
+ *   } = useCartSwap(cartId)
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {swap && <span>{swap.id}</span>}
+ *       
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Swap
+ * 
+ * @customNamespace Hooks.Store.Swaps
+ * @category Queries
+ */
 export const useCartSwap = (
+  /**
+   * The ID of the swap's cart.
+   */
   cartId: string,
   options?: UseQueryOptionsWrapper<
     Response<StoreSwapsRes>,

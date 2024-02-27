@@ -1,2 +1,2 @@
 curl '{backend_url}/store/customers/me' \
--H 'Cookie: connect.sid={sid}'
+-H 'Authorization: Bearer {access_token}'

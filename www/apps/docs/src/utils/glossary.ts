@@ -36,15 +36,15 @@ const glossary: GlossaryType[] = [
   {
     title: "Middleware",
     content:
-      "A function that can be executed before or after endpoint requests are handled.",
+      "A function that can be executed before or after API Route requests are handled.",
     matchTextRegex: /middleware/i,
-    referenceLink: "/development/endpoints/add-middleware",
+    referenceLink: "/development/api-routes/add-middleware",
   },
   {
-    title: "Endpoint",
+    title: "API Route",
     content: "REST API routes exposed to frontends or external systems.",
-    matchTextRegex: /endpoint/i,
-    referenceLink: "/development/endpoints/overview",
+    matchTextRegex: /api-routes/i,
+    referenceLink: "/development/api-routes/overview",
   },
   {
     title: "Subscriber",

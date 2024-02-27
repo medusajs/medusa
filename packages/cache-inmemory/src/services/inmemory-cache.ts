@@ -45,6 +45,10 @@ class InMemoryCacheService implements ICacheService {
    * @param ttl - expiration time in seconds
    */
   async set<T>(key: string, data: T, ttl: number = this.TTL): Promise<void> {
+    if (ttl === 0) {
+      return
+    }
+
     const record: CacheRecord<T> = { data, expire: ttl * 1000 + Date.now() }
 
     const oldRecord = this.store.get(key)
@@ -54,8 +58,8 @@ class InMemoryCacheService implements ICacheService {
       this.timoutRefs.delete(key)
     }
 
-    const ref = setTimeout(() => {
-      this.invalidate(key)
+    const ref = setTimeout(async () => {
+      await this.invalidate(key)
     }, ttl * 1000)
 
     ref.unref()
