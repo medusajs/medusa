@@ -1,3 +1,9 @@
+import { BigNumberRawValue } from "@medusajs/types"
+import {
+  BigNumber,
+  MikroOrmBigNumberProperty,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -6,9 +12,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-
-import { BigNumberRawValue } from "@medusajs/types"
-import { MikroOrmBigNumberProperty, generateEntityId } from "@medusajs/utils"
 import Payment from "./payment"
 
 @Entity({ tableName: "refund" })
@@ -17,7 +20,7 @@ export default class Refund {
   id: string
 
   @MikroOrmBigNumberProperty()
-  amount: number
+  amount: BigNumber | number
 
   @Property({ columnType: "jsonb" })
   raw_amount: BigNumberRawValue

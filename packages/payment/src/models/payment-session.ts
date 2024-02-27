@@ -16,7 +16,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-
 import Payment from "./payment"
 import PaymentCollection from "./payment-collection"
 

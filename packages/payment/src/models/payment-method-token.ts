@@ -1,3 +1,4 @@
+import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -5,8 +6,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-
-import { generateEntityId } from "@medusajs/utils"
 
 @Entity({ tableName: "payment_method_token" })
 export default class PaymentMethodToken {
