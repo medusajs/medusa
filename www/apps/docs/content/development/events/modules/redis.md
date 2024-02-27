@@ -80,7 +80,25 @@ Other available options include:
 
 ---
 
-## Step 4: Test Module
+## Step 4: Add redis to your project config
+
+In `medusa-config.js`, uncomment or add the `redis_url` key in the `projectConfig` object:
+
+```js title="medusa-config.js"
+module.exports = {
+  // ...
+  projectConfig: {
+    // ...
+    redis_url: EVENTS_REDIS_URL
+  },
+}
+```
+
+This option enables the use of Redis in our project.
+
+---
+
+## Step 5: Test Module
 
 To test the module, run the following command to start the Medusa backend:
 
