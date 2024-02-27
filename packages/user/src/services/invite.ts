@@ -5,6 +5,7 @@ import {
   InjectTransactionManager,
   MedusaError,
   ModulesSdkUtils,
+  arrayDifference,
 } from "@medusajs/utils"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
@@ -99,8 +100,10 @@ export default class InviteService<
     )
 
     if (count !== inviteIds.length) {
-      const invitesInDbSet = new Set(invites.map((invite) => invite.id))
-      const missing = inviteIds.filter((id) => !invitesInDbSet.has(id))
+      const missing = arrayDifference(
+        inviteIds,
+        invites.map((invite) => invite.id)
+      )
 
       if (missing.length > 0) {
         throw new MedusaError(
