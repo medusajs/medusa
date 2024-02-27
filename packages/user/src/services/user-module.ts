@@ -99,7 +99,7 @@ export default class UserModuleService<
           action: "token_generated",
           object: "invite",
         },
-        data: invite.id,
+        data: { id: invite.id },
       }))
     )
 
