@@ -43,16 +43,24 @@ export class Migration20240225134525 extends Migration {
           CONSTRAINT "capture_pkey" PRIMARY KEY ("id")
         );
 
-        CREATE INDEX IF NOT EXISTS "IDX_payment_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_payment_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
+
         CREATE INDEX IF NOT EXISTS "IDX_payment_payment_collection_id" ON "payment" ("payment_collection_id") WHERE "deleted_at" IS NULL;
+
+        CREATE INDEX IF NOT EXISTS "IDX_payment_method_token_deleted_at" ON "payment_method_token" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
+
         CREATE INDEX IF NOT EXISTS "IDX_payment_provider_id" ON "payment" ("provider_id") WHERE "deleted_at" IS NULL;
-        CREATE INDEX IF NOT EXISTS "IDX_capture_payment_id" ON "capture" ("payment_id") WHERE "deleted_at" IS NULL;
+        
         CREATE INDEX IF NOT EXISTS "IDX_payment_collection_region_id" ON "payment_collection" ("region_id") WHERE "deleted_at" IS NULL;
-        CREATE INDEX IF NOT EXISTS "IDX_payment_collection_deleted_at" ON "payment_collection" ("deleted_at") WHERE "deleted_at" IS NULL;
-        CREATE INDEX IF NOT EXISTS "IDX_refund_payment_id" ON "refund" ("payment_id");
-        CREATE INDEX IF NOT EXISTS "IDX_refund_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NULL;
-        CREATE INDEX IF NOT EXISTS "IDX_payment_session_payment_collection_id" ON "payment_session" ("payment_collection_id");
-        CREATE INDEX IF NOT EXISTS "IDX_payment_session_payment_collection_id" ON "payment_session" ("payment_collection_id");
+        CREATE INDEX IF NOT EXISTS "IDX_payment_collection_deleted_at" ON "payment_collection" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
+        
+        CREATE INDEX IF NOT EXISTS "IDX_refund_payment_id" ON "refund" ("payment_id") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_refund_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
+        
+        CREATE INDEX IF NOT EXISTS "IDX_capture_payment_id" ON "capture" ("payment_id") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_capture_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
+
+        CREATE INDEX IF NOT EXISTS "IDX_payment_session_payment_collection_id" ON "payment_session" ("payment_collection_id") WHERE "deleted_at" IS NULL;
       `)
     } else {
       this.addSql(`
@@ -158,19 +166,28 @@ export class Migration20240225134525 extends Migration {
           "updated_at"  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
           "deleted_at"  TIMESTAMPTZ NULL,
           "created_by"  TEXT NULL,
+          "metadata"    JSONB NULL,
           CONSTRAINT "capture_pkey" PRIMARY KEY ("id")
         );
 
-        CREATE INDEX IF NOT EXISTS "IDX_payment_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_payment_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
+
         CREATE INDEX IF NOT EXISTS "IDX_payment_payment_collection_id" ON "payment" ("payment_collection_id") WHERE "deleted_at" IS NULL;
+
+        CREATE INDEX IF NOT EXISTS "IDX_payment_method_token_deleted_at" ON "payment_method_token" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
+
         CREATE INDEX IF NOT EXISTS "IDX_payment_provider_id" ON "payment" ("provider_id") WHERE "deleted_at" IS NULL;
-        CREATE INDEX IF NOT EXISTS "IDX_capture_payment_id" ON "capture" ("payment_id") WHERE "deleted_at" IS NULL;
+        
         CREATE INDEX IF NOT EXISTS "IDX_payment_collection_region_id" ON "payment_collection" ("region_id") WHERE "deleted_at" IS NULL;
-        CREATE INDEX IF NOT EXISTS "IDX_payment_collection_deleted_at" ON "payment_collection" ("deleted_at") WHERE "deleted_at" IS NULL;
-        CREATE INDEX IF NOT EXISTS "IDX_refund_payment_id" ON "refund" ("payment_id");
-        CREATE INDEX IF NOT EXISTS "IDX_refund_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NULL;
-        CREATE INDEX IF NOT EXISTS "IDX_payment_session_payment_collection_id" ON "payment_session" ("payment_collection_id");
-        CREATE INDEX IF NOT EXISTS "IDX_payment_session_payment_collection_id" ON "payment_session" ("payment_collection_id");
+        CREATE INDEX IF NOT EXISTS "IDX_payment_collection_deleted_at" ON "payment_collection" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
+        
+        CREATE INDEX IF NOT EXISTS "IDX_refund_payment_id" ON "refund" ("payment_id") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_refund_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
+        
+        CREATE INDEX IF NOT EXISTS "IDX_capture_payment_id" ON "capture" ("payment_id") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_capture_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NOT NULL;
+
+        CREATE INDEX IF NOT EXISTS "IDX_payment_session_payment_collection_id" ON "payment_session" ("payment_collection_id") WHERE "deleted_at" IS NULL;
 
         ALTER TABLE IF EXISTS "payment_collection_payment_providers" 
           ADD CONSTRAINT "payment_collection_payment_providers_payment_coll_aa276_foreign" FOREIGN KEY ("payment_collection_id") REFERENCES "payment_collection" ("id") ON UPDATE CASCADE ON DELETE CASCADE;

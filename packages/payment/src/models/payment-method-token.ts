@@ -28,6 +28,28 @@ export default class PaymentMethodToken {
   @Property({ columnType: "text", nullable: true })
   description_detail: string | null = null
 
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
+
+  @Property({
+    columnType: "timestamptz",
+    nullable: true,
+    index: "IDX_payment_metod_token_deleted_at",
+  })
+  deleted_at: Date | null = null
+
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 

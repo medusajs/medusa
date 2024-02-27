@@ -44,6 +44,21 @@ export default class Capture {
   })
   created_at: Date
 
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
+
+  @Property({
+    columnType: "timestamptz",
+    nullable: true,
+    index: "IDX_capture_deleted_at",
+  })
+  deleted_at: Date | null = null
+
   @Property({ columnType: "text", nullable: true })
   created_by: string | null = null
 

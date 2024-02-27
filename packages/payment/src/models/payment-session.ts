@@ -71,6 +71,28 @@ export default class PaymentSession {
   })
   payment?: Payment | null
 
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
+
+  @Property({
+    columnType: "timestamptz",
+    nullable: true,
+    index: "IDX_payment_session_deleted_at",
+  })
+  deleted_at: Date | null = null
+
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "payses")

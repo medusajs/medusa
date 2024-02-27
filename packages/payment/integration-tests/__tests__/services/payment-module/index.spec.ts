@@ -463,6 +463,8 @@ moduleIntegrationTestRunner({
                 }),
                 payment_session: {
                   id: expect.any(String),
+                  updated_at: expect.any(Date),
+                  created_at: expect.any(Date),
                   currency_code: "usd",
                   amount: 100,
                   raw_amount: { value: "100", precision: 20 },
