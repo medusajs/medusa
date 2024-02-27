@@ -161,17 +161,17 @@ export default class Order {
   metadata: Record<string, unknown> | null = null
 
   @OneToMany(() => OrderDetail, (itemDetail) => itemDetail.order, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST],
   })
   items = new Collection<OrderDetail>(this)
 
   @OneToMany(() => ShippingMethod, (shippingMethod) => shippingMethod.order, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST],
   })
   shipping_methods = new Collection<ShippingMethod>(this)
 
   @OneToMany(() => Transaction, (transaction) => transaction.order, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST],
   })
   transactions = new Collection<Transaction>(this)
 

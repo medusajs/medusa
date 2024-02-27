@@ -23,7 +23,7 @@ export default class ShippingMethodTaxLine extends TaxLine {
   @ManyToOne({
     entity: () => ShippingMethod,
     fieldName: "shipping_method_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    cascade: [Cascade.REMOVE],
   })
   shipping_method: ShippingMethod
 

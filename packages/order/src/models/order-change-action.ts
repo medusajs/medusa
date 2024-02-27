@@ -42,7 +42,7 @@ export default class OrderChangeAction {
   @ManyToOne({
     entity: () => OrderChange,
     fieldName: "order_change_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    cascade: [Cascade.REMOVE],
   })
   order_change: OrderChange
 

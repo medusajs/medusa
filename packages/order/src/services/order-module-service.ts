@@ -442,6 +442,7 @@ export default class OrderModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<LineItem[]> {
     const orderDetailToCreate: CreateOrderDetailDTO[] = []
+
     const lineItems = await this.lineItemService_.create(data, sharedContext)
 
     const taxLineToCreate: CreateOrderLineItemTaxLineDTO[] = []
@@ -480,6 +481,7 @@ export default class OrderModuleService<
     }
 
     await this.lineItemTaxLineService_.create(taxLineToCreate, sharedContext)
+
     await this.lineItemAdjustmentService_.create(
       adjustmentToCreate,
       sharedContext

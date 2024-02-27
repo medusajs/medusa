@@ -23,7 +23,7 @@ export default class ShippingMethodAdjustment extends AdjustmentLine {
   @ManyToOne({
     entity: () => ShippingMethod,
     fieldName: "shipping_method_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    cascade: [Cascade.REMOVE],
   })
   shipping_method: ShippingMethod
 

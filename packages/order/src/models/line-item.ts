@@ -122,12 +122,12 @@ export default class LineItem {
   raw_unit_price: BigNumberRawValue
 
   @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST],
   })
   tax_lines = new Collection<LineItemTaxLine>(this)
 
   @OneToMany(() => LineItemAdjustment, (adjustment) => adjustment.item, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST],
   })
   adjustments = new Collection<LineItemAdjustment>(this)
 

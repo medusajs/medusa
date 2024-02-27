@@ -90,7 +90,7 @@ export default class ShippingMethod {
     () => ShippingMethodTaxLine,
     (taxLine) => taxLine.shipping_method,
     {
-      cascade: [Cascade.REMOVE],
+      cascade: [Cascade.PERSIST],
     }
   )
   tax_lines = new Collection<ShippingMethodTaxLine>(this)
@@ -99,7 +99,7 @@ export default class ShippingMethod {
     () => ShippingMethodAdjustment,
     (adjustment) => adjustment.shipping_method,
     {
-      cascade: [Cascade.REMOVE],
+      cascade: [Cascade.PERSIST],
     }
   )
   adjustments = new Collection<ShippingMethodAdjustment>(this)

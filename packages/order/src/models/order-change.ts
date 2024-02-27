@@ -52,7 +52,7 @@ export default class OrderChange {
   @ManyToOne({
     entity: () => Order,
     fieldName: "order_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    cascade: [Cascade.REMOVE],
   })
   order: Order
 
