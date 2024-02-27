@@ -33,7 +33,7 @@ export interface TaxRateDTO {
   /**
    * The ID of the user that created the Tax Rate.
    */
-  created_by: string
+  created_by: string | null
 }
 
 export interface FilterableTaxRateProps
@@ -138,7 +138,7 @@ export interface TaxCalculationContext {
 }
 
 interface TaxLineDTO {
-  rate_id: string
+  rate_id?: string
   rate: number | null
   code: string | null
   name: string

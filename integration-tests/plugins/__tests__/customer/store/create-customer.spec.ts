@@ -3,6 +3,7 @@ import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import adminSeeder from "../../../../helpers/admin-seeder"
+import { createAdminUser } from "../../../helpers/create-admin-user"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import jwt from "jsonwebtoken"
 import path from "path"

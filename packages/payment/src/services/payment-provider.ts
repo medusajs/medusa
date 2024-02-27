@@ -12,6 +12,8 @@ import {
   PaymentProviderError,
   PaymentProviderSessionResponse,
   PaymentSessionStatus,
+  ProviderWebhookPayload,
+  WebhookActionResult,
 } from "@medusajs/types"
 import {
   InjectManager,
@@ -57,7 +59,7 @@ export default class PaymentProviderService {
 
   retrieveProvider(providerId: string): IPaymentProvider {
     try {
-      return this.container_[`pp_${providerId}`] as IPaymentProvider
+      return this.container_[providerId] as IPaymentProvider
     } catch (e) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -171,6 +173,15 @@ export default class PaymentProviderService {
     }
 
     return res as Record<string, unknown>
+  }
+
+  async getWebhookActionAndData(
+    providerId: string,
+    data: ProviderWebhookPayload["payload"]
+  ): Promise<WebhookActionResult> {
+    const provider = this.retrieveProvider(providerId)
+
+    return await provider.getWebhookActionAndData(data)
   }
 
   private throwPaymentProviderError(errObj: PaymentProviderError) {
