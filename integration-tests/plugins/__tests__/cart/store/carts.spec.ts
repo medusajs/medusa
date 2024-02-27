@@ -396,21 +396,26 @@ describe("Store Carts API", () => {
       )
     })
 
-    it("should update a cart's region", async () => {
+    it("should update a cart's region, sales channel and customer data", async () => {
       const region = await regionModuleService.create({
         name: "US",
         currency_code: "usd",
       })
 
+      const salesChannel = await scModuleService.create({
+        name: "Webshop",
+      })
+
       const cart = await cartModuleService.create({
         currency_code: "eur",
-        email: "tony@stark.com",
       })
 
       const api = useApi() as any
 
-      const updated = await api.post(`/store/carts/${cart.id}`, {
+      let updated = await api.post(`/store/carts/${cart.id}`, {
         region_id: region.id,
+        email: "tony@stark.com",
+        sales_channel_id: salesChannel.id,
       })
 
       expect(updated.status).toEqual(200)
@@ -422,70 +427,16 @@ describe("Store Carts API", () => {
             id: region.id,
             currency_code: "usd",
           }),
-        })
-      )
-    })
-
-    it("should update the cart with the latest customer", async () => {
-      const api = useApi() as any
-      const cart = await cartModuleService.create({
-        currency_code: "eur",
-      })
-
-      let updated = await api.post(`/store/carts/${cart.id}`, {
-        email: "tony@stark.com",
-      })
-
-      expect(updated.status).toEqual(200)
-      expect(updated.data.cart).toEqual(
-        expect.objectContaining({
-          id: cart.id,
-          currency_code: "eur",
           email: "tony@stark.com",
           customer: expect.objectContaining({
             email: "tony@stark.com",
           }),
-        })
-      )
-
-      updated = await api.post(`/store/carts/${cart.id}`, {
-        email: null,
-      })
-
-      expect(updated.status).toEqual(200)
-      expect(updated.data.cart).toEqual(
-        expect.objectContaining({
-          id: cart.id,
-          currency_code: "eur",
-          email: null,
-          customer_id: null,
-        })
-      )
-    })
-
-    it("should update the cart with the latest sales channel", async () => {
-      const api = useApi() as any
-      const salesChannel = await scModuleService.create({
-        name: "Webshop",
-      })
-      const cart = await cartModuleService.create({
-        currency_code: "eur",
-      })
-
-      let updated = await api.post(`/store/carts/${cart.id}`, {
-        sales_channel_id: salesChannel.id,
-      })
-
-      expect(updated.status).toEqual(200)
-      expect(updated.data.cart).toEqual(
-        expect.objectContaining({
-          id: cart.id,
-          currency_code: "eur",
           sales_channel_id: salesChannel.id,
         })
       )
 
       updated = await api.post(`/store/carts/${cart.id}`, {
+        email: null,
         sales_channel_id: null,
       })
 
@@ -493,7 +444,13 @@ describe("Store Carts API", () => {
       expect(updated.data.cart).toEqual(
         expect.objectContaining({
           id: cart.id,
-          currency_code: "eur",
+          currency_code: "usd",
+          email: null,
+          customer_id: null,
+          region: expect.objectContaining({
+            id: region.id,
+            currency_code: "usd",
+          }),
           sales_channel_id: null,
         })
       )
