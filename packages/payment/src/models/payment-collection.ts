@@ -94,6 +94,9 @@ export default class PaymentCollection {
   })
   payments = new Collection<Payment>(this)
 
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
+
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "pay_col")

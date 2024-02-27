@@ -36,8 +36,25 @@ export default class Refund {
   })
   created_at: Date
 
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
+
+  @Property({
+    columnType: "timestamptz",
+    nullable: true,
+    index: "IDX_refund_deleted_at",
+  })
+  deleted_at: Date | null = null
+
   @Property({ columnType: "text", nullable: true })
   created_by: string | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
 
   @BeforeCreate()
   onCreate() {

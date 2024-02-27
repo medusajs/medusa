@@ -62,6 +62,9 @@ export default class Payment {
   @Property({ columnType: "jsonb", nullable: true })
   data: Record<string, unknown> | null = null
 
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
+
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
