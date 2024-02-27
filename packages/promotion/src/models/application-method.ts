@@ -37,7 +37,7 @@ type OptionalFields =
   | "allocation"
   | DAL.SoftDeletableEntityDateColumns
 
-@Entity({ tableName: "application_method" })
+@Entity({ tableName: "promo_application_method" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ApplicationMethod {
   [OptionalProps]?: OptionalFields

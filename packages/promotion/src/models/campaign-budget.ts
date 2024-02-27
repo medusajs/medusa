@@ -30,7 +30,7 @@ type OptionalFields =
   | "used"
   | DAL.SoftDeletableEntityDateColumns
 
-@Entity({ tableName: "campaign_budget" })
+@Entity({ tableName: "promotion_campaign_budget" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class CampaignBudget {
   [OptionalProps]?: OptionalFields
