@@ -37,20 +37,31 @@ module.exports = {
   },
   featureFlags: {
     medusa_v2: enableMedusaV2,
-    workflows: {
-      [Workflows.CreateCart]: true,
-    },
   },
   modules: {
     [Modules.AUTH]: {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/auth",
+      options: {
+        providers: [
+          {
+            name: "emailpass",
+            scopes: {
+              admin: {},
+              store: {},
+            },
+          },
+        ],
+      },
     },
     [Modules.USER]: {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/user",
+      options: {
+        jwt_secret: "test",
+      },
     },
     [Modules.STOCK_LOCATION]: {
       scope: "internal",
@@ -101,6 +112,11 @@ module.exports = {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/region",
+    },
+    [Modules.API_KEY]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/api-key",
     },
   },
 }

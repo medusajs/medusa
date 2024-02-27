@@ -4,6 +4,7 @@ import {
   generateEntityId,
 } from "@medusajs/utils"
 
+import { DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Cascade,
@@ -18,7 +19,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
 import FulfillmentSet from "./fullfilment-set"
 import GeoZone from "./geo-zone"
 import ShippingOption from "./shipping-option"
@@ -31,20 +31,16 @@ const deletedAtIndexStatement = createPsqlIndexStatementHelper({
   tableName: "service_zone",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-})
+}).expression
 
-const nameIndexName = "IDX_service_zone_name_unique"
-const nameIndexStatement = createPsqlIndexStatementHelper({
-  name: nameIndexName,
+const NameIndex = createPsqlIndexStatementHelper({
   tableName: "service_zone",
   columns: "name",
   unique: true,
   where: "deleted_at IS NULL",
 })
 
-const fulfillmentSetIdIndexName = "IDX_service_zone_fulfillment_set_id"
-const fulfillmentSetIdIndexStatement = createPsqlIndexStatementHelper({
-  name: fulfillmentSetIdIndexName,
+const FulfillmentSetIdIndex = createPsqlIndexStatementHelper({
   tableName: "service_zone",
   columns: "fulfillment_set_id",
   where: "deleted_at IS NULL",
@@ -59,20 +55,18 @@ export default class ServiceZone {
   id: string
 
   @Property({ columnType: "text" })
-  @Index({
-    name: nameIndexName,
-    expression: nameIndexStatement,
-  })
+  @NameIndex.MikroORMIndex()
   name: string
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @Property({ columnType: "text" })
-  @Index({
-    name: fulfillmentSetIdIndexName,
-    expression: fulfillmentSetIdIndexStatement,
+  @ManyToOne(() => FulfillmentSet, {
+    type: "text",
+    mapToPk: true,
+    fieldName: "fulfillment_set_id",
   })
+  @FulfillmentSetIdIndex.MikroORMIndex()
   fulfillment_set_id: string
 
   @ManyToOne(() => FulfillmentSet, { persist: false })

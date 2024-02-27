@@ -1,4 +1,5 @@
 import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
@@ -21,8 +22,8 @@ import {
 } from "./common"
 import {
   CreateAddressDTO,
-  CreateAdjustmentDTO,
   CreateCartDTO,
+  CreateLineItemAdjustmentDTO,
   CreateLineItemDTO,
   CreateLineItemForCartDTO,
   CreateLineItemTaxLineDTO,
@@ -184,14 +185,14 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<LineItemAdjustmentDTO[]>
 
   addLineItemAdjustments(
-    data: CreateAdjustmentDTO[]
+    data: CreateLineItemAdjustmentDTO[]
   ): Promise<LineItemAdjustmentDTO[]>
   addLineItemAdjustments(
-    data: CreateAdjustmentDTO
+    data: CreateLineItemAdjustmentDTO
   ): Promise<LineItemAdjustmentDTO[]>
   addLineItemAdjustments(
     cartId: string,
-    data: CreateAdjustmentDTO[]
+    data: CreateLineItemAdjustmentDTO[]
   ): Promise<LineItemAdjustmentDTO[]>
 
   setLineItemAdjustments(
@@ -329,4 +330,102 @@ export interface ICartModuleService extends IModuleService {
     selector: FilterableShippingMethodTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
+
+  softDelete<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restore<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteAddresses<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreAddresses<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteLineItems<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreLineItems<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteShippingMethods<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreShippingMethods<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteLineItemAdjustments<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreLineItemAdjustments<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteShippingMethodAdjustments<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreShippingMethodAdjustments<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteLineItemTaxLines<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreLineItemTaxLines<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteShippingMethodTaxLines<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreShippingMethodTaxLines<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
 }

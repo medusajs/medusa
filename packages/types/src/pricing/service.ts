@@ -49,6 +49,9 @@ import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 
+/**
+ * The main service interface for the pricing module.
+ */
 export interface IPricingModuleService extends IModuleService {
   /**
    * This method is used to calculate prices based on the provided filters and context.

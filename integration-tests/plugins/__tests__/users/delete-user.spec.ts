@@ -1,13 +1,13 @@
 import { initDb, useDb } from "../../../environment-helpers/use-db"
 
+import { AxiosInstance } from "axios"
 import { IUserModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { createAdminUser } from "../../helpers/create-admin-user"
 import { getContainer } from "../../../environment-helpers/use-container"
 import path from "path"
 import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../environment-helpers/use-api"
-import adminSeeder from "../../../helpers/admin-seeder"
-import { AxiosInstance } from "axios"
 
 jest.setTimeout(50000)
 
@@ -31,7 +31,7 @@ describe("DELETE /admin/users/:id", () => {
   })
 
   beforeEach(async () => {
-    await adminSeeder(dbConnection)
+    await createAdminUser(dbConnection, adminHeaders)
   })
 
   afterAll(async () => {

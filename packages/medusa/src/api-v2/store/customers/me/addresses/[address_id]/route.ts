@@ -1,14 +1,22 @@
 import {
-  updateCustomerAddressesWorkflow,
-  deleteCustomerAddressesWorkflow,
-} from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  AuthenticatedMedusaRequest,
+  MedusaRequest,
+  MedusaResponse,
+} from "../../../../../../types/routing"
 import { CustomerAddressDTO, ICustomerModuleService } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
+import {
+  deleteCustomerAddressesWorkflow,
+  updateCustomerAddressesWorkflow,
+} from "@medusajs/core-flows"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const id = req.auth_user!.app_metadata.customer_id
+import { MedusaError } from "@medusajs/utils"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const id = req.auth.actor_id
 
   const customerModuleService = req.scope.resolve<ICustomerModuleService>(
     ModuleRegistrationName.CUSTOMER
@@ -25,8 +33,11 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   res.status(200).json({ address })
 }
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  const id = req.auth_user!.app_metadata.customer_id
+export const POST = async (
+  req: AuthenticatedMedusaRequest<Partial<CustomerAddressDTO>>,
+  res: MedusaResponse
+) => {
+  const id = req.auth.actor_id!
   const service = req.scope.resolve<ICustomerModuleService>(
     ModuleRegistrationName.CUSTOMER
   )
@@ -37,7 +48,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const { result, errors } = await updateAddresses.run({
     input: {
       selector: { id: req.params.address_id, customer_id: req.params.id },
-      update: req.validatedBody as Partial<CustomerAddressDTO>,
+      update: req.validatedBody,
     },
     throwOnError: false,
   })
@@ -49,8 +60,11 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   res.status(200).json({ address: result[0] })
 }
 
-export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
-  const id = req.auth_user!.app_metadata.customer_id
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const id = req.auth.actor_id
 
   const service = req.scope.resolve<ICustomerModuleService>(
     ModuleRegistrationName.CUSTOMER

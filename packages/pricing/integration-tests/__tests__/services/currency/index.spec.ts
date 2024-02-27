@@ -1,18 +1,18 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 import { Currency } from "@models"
-import { CurrencyService } from "@services"
 
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { MikroOrmWrapper } from "../../../utils"
 import { createMedusaContainer } from "@medusajs/utils"
 import { asValue } from "awilix"
 import ContainerLoader from "../../../../src/loaders/container"
+import { ModulesSdkTypes } from "@medusajs/types"
 
 jest.setTimeout(30000)
 
 describe("Currency Service", () => {
-  let service: CurrencyService
+  let service: ModulesSdkTypes.InternalModuleService<any>
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
   let data!: Currency[]
@@ -58,12 +58,12 @@ describe("Currency Service", () => {
 
       expect(currenciesResult).toEqual([
         expect.objectContaining({
-          code: "USD",
-          name: "US Dollar",
-        }),
-        expect.objectContaining({
           code: "CAD",
           name: "Canadian Dollar",
+        }),
+        expect.objectContaining({
+          code: "USD",
+          name: "US Dollar",
         }),
       ])
     })
@@ -87,12 +87,12 @@ describe("Currency Service", () => {
       expect(count).toEqual(2)
       expect(currenciesResult).toEqual([
         expect.objectContaining({
-          code: "USD",
-          name: "US Dollar",
-        }),
-        expect.objectContaining({
           code: "CAD",
           name: "Canadian Dollar",
+        }),
+        expect.objectContaining({
+          code: "USD",
+          name: "US Dollar",
         }),
       ])
     })
@@ -120,8 +120,8 @@ describe("Currency Service", () => {
       expect(count).toEqual(2)
       expect(currenciesResult).toEqual([
         expect.objectContaining({
-          code: "CAD",
-          name: "Canadian Dollar",
+          code: "USD",
+          name: "US Dollar",
         }),
       ])
     })
@@ -140,7 +140,7 @@ describe("Currency Service", () => {
       expect(count).toEqual(2)
       expect(serialized).toEqual([
         {
-          code: "USD",
+          code: "CAD",
         },
       ])
     })

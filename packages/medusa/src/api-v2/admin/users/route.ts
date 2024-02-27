@@ -1,12 +1,19 @@
 import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../types/routing"
+import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
-import { createUsersWorkflow } from "@medusajs/core-flows"
-import { CreateUserDTO } from "@medusajs/types"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+import { CreateUserDTO } from "@medusajs/types"
+import { createUsersWorkflow } from "@medusajs/core-flows"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const query = remoteQueryObjectFromString({
@@ -32,12 +39,15 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   })
 }
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<CreateUserDTO>,
+  res: MedusaResponse
+) => {
   const workflow = createUsersWorkflow(req.scope)
 
   const input = {
     input: {
-      users: [req.validatedBody as CreateUserDTO],
+      users: [req.validatedBody],
     },
   }
 

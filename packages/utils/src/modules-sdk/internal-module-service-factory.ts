@@ -60,7 +60,25 @@ export function internalModuleServiceFactory<
     }
 
     static buildUniqueCompositeKeyValue(keys: string[], data: object) {
-      return keys.map((k) => data[k]).join("_")
+      return keys.map((k) => data[k]).join(":")
+    }
+
+    /**
+     * Only apply top level default ordering as the relation
+     * default ordering is already applied through the foreign key
+     * @param config
+     */
+    static applyDefaultOrdering(config: FindConfig<any>) {
+      if (config.order) {
+        return
+      }
+
+      config.order = {}
+
+      const primaryKeys = AbstractService_.retrievePrimaryKeys(model)
+      primaryKeys.forEach((primaryKey) => {
+        config.order![primaryKey] = "ASC"
+      })
     }
 
     @InjectManager(propertyRepositoryName)
@@ -129,6 +147,7 @@ export function internalModuleServiceFactory<
       config: FindConfig<any> = {},
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity[]> {
+      AbstractService_.applyDefaultOrdering(config)
       const queryOptions = buildQuery(filters, config)
 
       return await this[propertyRepositoryName].find(
@@ -143,6 +162,7 @@ export function internalModuleServiceFactory<
       config: FindConfig<any> = {},
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[TEntity[], number]> {
+      AbstractService_.applyDefaultOrdering(config)
       const queryOptions = buildQuery(filters, config)
 
       return await this[propertyRepositoryName].findAndCount(
@@ -267,7 +287,7 @@ export function internalModuleServiceFactory<
 
           ;[...keySelectorDataMap.keys()].filter((key) => {
             if (!compositeKeysValuesForFoundEntities.has(key)) {
-              const value = key.replace(/_/gi, " - ")
+              const value = key.replace(/:/gi, " - ")
               missingEntityValues.push(value)
             }
           })

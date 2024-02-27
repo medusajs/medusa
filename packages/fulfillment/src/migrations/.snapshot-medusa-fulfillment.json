@@ -739,15 +739,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "shipping_option_id": {
-          "name": "shipping_option_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
         "created_at": {
           "name": "created_at",
           "type": "timestamptz",
@@ -785,16 +776,6 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_shipping_option_type_shipping_option_id",
-          "columnNames": [
-            "shipping_option_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_type_shipping_option_id\" ON \"shipping_option_type\" (shipping_option_id) WHERE deleted_at IS NULL"
-        },
-        {
           "keyName": "IDX_shipping_option_type_deleted_at",
           "columnNames": [
             "deleted_at"
@@ -821,6 +802,24 @@
       "columns": {
         "id": {
           "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "type": {
+          "name": "type",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -873,6 +872,16 @@
       "name": "shipping_profile",
       "schema": "public",
       "indexes": [
+        {
+          "keyName": "IDX_shipping_profile_name_unique",
+          "columnNames": [
+            "name"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_shipping_profile_name_unique\" ON \"shipping_profile\" (name) WHERE deleted_at IS NULL"
+        },
         {
           "keyName": "IDX_shipping_profile_deleted_at",
           "columnNames": [
@@ -945,20 +954,11 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "service_provider_id": {
           "name": "service_provider_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "shipping_option_type_id": {
-          "name": "shipping_option_type_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -983,6 +983,15 @@
           "primary": false,
           "nullable": true,
           "mappedType": "json"
+        },
+        "shipping_option_type_id": {
+          "name": "shipping_option_type_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         },
         "created_at": {
           "name": "created_at",
@@ -1113,6 +1122,7 @@
             "id"
           ],
           "referencedTableName": "public.shipping_profile",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "shipping_option_service_provider_id_foreign": {
@@ -1125,6 +1135,7 @@
             "id"
           ],
           "referencedTableName": "public.service_provider",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "shipping_option_shipping_option_type_id_foreign": {
@@ -1137,6 +1148,7 @@
             "id"
           ],
           "referencedTableName": "public.shipping_option_type",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -1168,7 +1180,17 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "text"
+          "enumItems": [
+            "in",
+            "eq",
+            "ne",
+            "gt",
+            "gte",
+            "lt",
+            "lte",
+            "nin"
+          ],
+          "mappedType": "enum"
         },
         "value": {
           "name": "value",
@@ -1224,6 +1246,16 @@
       "name": "shipping_option_rule",
       "schema": "public",
       "indexes": [
+        {
+          "keyName": "IDX_shipping_option_rule_shipping_option_id",
+          "columnNames": [
+            "shipping_option_id"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_rule_shipping_option_id\" ON \"shipping_option_rule\" (shipping_option_id) WHERE deleted_at IS NULL"
+        },
         {
           "keyName": "IDX_shipping_option_rule_deleted_at",
           "columnNames": [
@@ -1760,7 +1792,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_fulfillment_id\" ON \"fulfillment_item\" (line_item_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_line_item_id\" ON \"fulfillment_item\" (line_item_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_fulfillment_item_inventory_item_id",
@@ -1770,7 +1802,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_fulfillment_id\" ON \"fulfillment_item\" (inventory_item_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_item_inventory_item_id\" ON \"fulfillment_item\" (inventory_item_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_fulfillment_item_fulfillment_id",
