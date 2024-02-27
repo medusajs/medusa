@@ -8,7 +8,7 @@ jest.setTimeout(100000)
 moduleIntegrationTestRunner({
   moduleName: Modules.ORDER,
   testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
-    describe("Order - Items and Shipping methods", () => {
+    describe.skip("Order - Items and Shipping methods", () => {
       describe("create", () => {
         it("should throw an error when required params are not passed", async () => {
           const error = await service

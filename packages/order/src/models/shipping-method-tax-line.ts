@@ -8,7 +8,6 @@ import {
   Entity,
   ManyToOne,
   OnInit,
-  Property,
 } from "@mikro-orm/core"
 import ShippingMethod from "./shipping-method"
 import TaxLine from "./tax-line"
@@ -24,10 +23,17 @@ export default class ShippingMethodTaxLine extends TaxLine {
     entity: () => ShippingMethod,
     fieldName: "shipping_method_id",
     cascade: [Cascade.REMOVE],
+    persist: false,
   })
   shipping_method: ShippingMethod
 
-  @Property({ columnType: "text" })
+  @ManyToOne({
+    entity: () => ShippingMethod,
+    fieldName: "shipping_method_id",
+    columnType: "text",
+    mapToPk: true,
+    cascade: [Cascade.REMOVE],
+  })
   @ShippingMethodIdIdIndex.MikroORMIndex()
   shipping_method_id: string
 

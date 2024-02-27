@@ -2,8 +2,8 @@ import {
   Context,
   DAL,
   FilterableLineItemTaxLineProps,
-  IOrderModuleService,
   InternalModuleDeclaration,
+  IOrderModuleService,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   OrderTypes,
@@ -12,11 +12,11 @@ import {
 import {
   InjectManager,
   InjectTransactionManager,
+  isObject,
+  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  isObject,
-  isString,
 } from "@medusajs/utils"
 import {
   Address,
@@ -37,7 +37,6 @@ import {
   CreateOrderLineItemAdjustmentDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemTaxLineDTO,
-  CreateOrderShippingMethodAdjustmentDTO,
   CreateOrderShippingMethodDTO,
   CreateOrderShippingMethodTaxLineDTO,
   UpdateOrderDetailDTO,
@@ -214,86 +213,16 @@ export default class OrderModuleService<
     data: OrderTypes.CreateOrderDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const lineItemsToCreate: CreateOrderLineItemDTO[] = []
-    const shippingMethodsToCreate: CreateOrderShippingMethodDTO[] = []
-
-    const createdOrders: Order[] = []
-    for (const { items, shipping_methods, ...order } of data) {
-      const created = await this.orderService_.create(order, sharedContext)
-
-      createdOrders.push(created)
-
-      if (items?.length) {
-        const orderItems = items.map((item) => {
-          return {
-            ...item,
-            order_id: created.id,
-          }
-        })
-
-        lineItemsToCreate.push(...orderItems)
-      }
-
-      if (shipping_methods?.length) {
-        const methods = shipping_methods.map((method) => {
-          return {
-            ...method,
-            order_id: created.id,
-          }
-        })
-
-        shippingMethodsToCreate.push(...methods)
-      }
-    }
-
-    if (lineItemsToCreate.length) {
-      await this.addLineItemsBulk_(lineItemsToCreate, sharedContext)
-    }
-
-    if (shippingMethodsToCreate.length) {
-      const shippingMethods = await this.addShippingMethodsBulk_(
-        shippingMethodsToCreate,
-        sharedContext
-      )
-
-      const taxLineToCreate: CreateOrderShippingMethodTaxLineDTO[] = []
-      const adjustmentToCreate: CreateOrderShippingMethodAdjustmentDTO[] = []
-
-      for (let i = 0; i < shippingMethods.length; i++) {
-        const method = shippingMethods[i]
-
-        if (method.tax_lines?.length) {
-          for (const taxLine of method.tax_lines) {
-            taxLineToCreate.push({
-              ...taxLine,
-              shipping_method_id: method.id,
-              shipping_method: undefined,
-            } as CreateOrderShippingMethodTaxLineDTO)
-          }
+    /*const data_ = data.map((order) => {
+      order.items = order.items!.map((item) => {
+        return {
+          ...item,
+          version: 1,
         }
-
-        if (method.adjustments?.length) {
-          for (const adj of method.adjustments) {
-            adjustmentToCreate.push({
-              ...adj,
-              shipping_method_id: method.id,
-              shipping_method: undefined,
-            } as CreateOrderShippingMethodAdjustmentDTO)
-          }
-        }
-      }
-
-      await this.shippingMethodTaxLineService_.create(
-        taxLineToCreate,
-        sharedContext
-      )
-      await this.shippingMethodAdjustmentService_.create(
-        adjustmentToCreate,
-        sharedContext
-      )
-    }
-
-    return createdOrders
+      })
+      return order
+    })*/
+    return await this.orderService_.create(data, sharedContext)
   }
 
   async update(

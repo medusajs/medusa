@@ -41,7 +41,13 @@ export default class ShippingMethod {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
+  @ManyToOne({
+    entity: () => Order,
+    columnType: "text",
+    fieldName: "order_id",
+    mapToPk: true,
+    cascade: [Cascade.REMOVE],
+  })
   @OrderIdIndex.MikroORMIndex()
   order_id: string
 
@@ -49,6 +55,7 @@ export default class ShippingMethod {
     entity: () => Order,
     fieldName: "order_id",
     cascade: [Cascade.REMOVE],
+    persist: false,
   })
   order: Order
 
@@ -122,9 +129,11 @@ export default class ShippingMethod {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordsm")
+    this.order_id ??= this.order.id
   }
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordsm")
+    this.order_id ??= this.order.id
   }
 }
