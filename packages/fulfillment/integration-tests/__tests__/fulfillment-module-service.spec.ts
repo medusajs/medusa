@@ -1,4 +1,6 @@
-import {Modules} from "@medusajs/modules-sdk"
+import { resolve } from "path"
+import { FulfillmentProviderServiceFixtures } from "../__fixtures__/providers"
+import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import {
   CreateFulfillmentSetDTO,
   CreateGeoZoneDTO,
@@ -12,9 +14,14 @@ import {
   UpdateGeoZoneDTO,
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
-import {GeoZoneType} from "@medusajs/utils"
-import {moduleIntegrationTestRunner, SuiteOptions} from "medusa-test-utils"
-import {generateCreateShippingOptionsData} from "../__fixtures__"
+import { GeoZoneType } from "@medusajs/utils"
+import {
+  initModules,
+  moduleIntegrationTestRunner,
+  SuiteOptions,
+} from "medusa-test-utils"
+import { generateCreateShippingOptionsData } from "../__fixtures__"
+import {ServiceProviderService} from "@services";
 
 jest.setTimeout(100000)
 
@@ -34,6 +41,58 @@ moduleIntegrationTestRunner({
     service,
   }: SuiteOptions<IFulfillmentModuleService>) => {
     describe("Fulfillment Module Service", () => {
+      it("should load and save all the providers on bootstrap", async () => {
+        const databaseConfig = {
+          schema: "public",
+          clientUrl: MikroOrmWrapper.clientUrl,
+        }
+
+        const providersConfig = {}
+        for (let i = 0; i < 10; i++) {
+          providersConfig[`provider-${i}`] = {}
+        }
+
+        const moduleOptions = {
+          databaseConfig,
+          modulesConfig: {
+            [Modules.FULFILLMENT]: {
+              definition: ModulesDefinition[Modules.FULFILLMENT],
+              options: {
+                databaseConfig,
+                providers: [
+                  {
+                    resolve: resolve(
+                      process.cwd() +
+                      "/integration-tests/__fixtures__/providers/default-provider"
+                    ),
+                    options: {
+                      config: providersConfig
+                    }
+                  }
+                ],
+              },
+            },
+          },
+        }
+
+        const { shutdown } = await initModules(moduleOptions)
+
+        const serviceProviders = await MikroOrmWrapper.forkManager().execute(
+          `SELECT * FROM service_provider`
+        )
+
+        expect(serviceProviders).toHaveLength(Object.keys(providersConfig).length)
+
+        for (const [name] of Object.entries(providersConfig)) {
+          const provider = serviceProviders.find((p) => {
+            return p.id === ServiceProviderService.getRegistrationName(FulfillmentProviderServiceFixtures, name)
+          })
+          expect(provider).toBeDefined()
+        }
+
+        await shutdown()
+      })
+
       describe("read", () => {
         describe("fulfillment set", () => {
           it("should list fulfillment sets with a filter", async function () {
@@ -974,11 +1033,12 @@ moduleIntegrationTestRunner({
               "sp_jdafwfleiwuonl"
             )
 
-            const createData: CreateShippingOptionDTO = generateCreateShippingOptionsData({
-              service_zone_id: serviceZone.id,
-              shipping_profile_id: shippingProfile.id,
-              service_provider_id: providerId,
-            })
+            const createData: CreateShippingOptionDTO =
+              generateCreateShippingOptionsData({
+                service_zone_id: serviceZone.id,
+                shipping_profile_id: shippingProfile.id,
+                service_provider_id: providerId,
+              })
 
             const createdShippingOption = await service.createShippingOptions(
               createData
@@ -1041,7 +1101,7 @@ moduleIntegrationTestRunner({
                 service_zone_id: serviceZone.id,
                 shipping_profile_id: shippingProfile.id,
                 service_provider_id: providerId,
-              })
+              }),
             ]
 
             const createdShippingOptions = await service.createShippingOptions(
@@ -1101,18 +1161,19 @@ moduleIntegrationTestRunner({
               "sp_jdafwfleiwuonl"
             )
 
-            const createData: CreateShippingOptionDTO = generateCreateShippingOptionsData({
-              service_zone_id: serviceZone.id,
-              shipping_profile_id: shippingProfile.id,
-              service_provider_id: providerId,
-              rules: [
-                {
-                  attribute: "test-attribute",
-                  operator: "invalid" as any,
-                  value: "test-value",
-                },
-              ],
-            })
+            const createData: CreateShippingOptionDTO =
+              generateCreateShippingOptionsData({
+                service_zone_id: serviceZone.id,
+                shipping_profile_id: shippingProfile.id,
+                service_provider_id: providerId,
+                rules: [
+                  {
+                    attribute: "test-attribute",
+                    operator: "invalid" as any,
+                    value: "test-value",
+                  },
+                ],
+              })
 
             const err = await service
               .createShippingOptions(createData)
@@ -2151,7 +2212,7 @@ moduleIntegrationTestRunner({
                 service_zone_id: serviceZone.id,
                 shipping_profile_id: shippingProfile.id,
                 service_provider_id: providerId,
-              })
+              }),
             ]
 
             const shippingOptions = await service.createShippingOptions(

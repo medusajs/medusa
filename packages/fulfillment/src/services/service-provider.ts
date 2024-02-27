@@ -1,4 +1,9 @@
-import { DAL, FulfillmentTypes } from "@medusajs/types"
+import {
+  Constructor,
+  DAL,
+  FulfillmentTypes,
+  IFulfillmentProvider,
+} from "@medusajs/types"
 import { ModulesSdkUtils, promiseAll } from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
 import { FulfillmentOptions } from "@medusajs/medusa/dist/types/fulfillment-provider"
@@ -19,6 +24,13 @@ export default class ServiceProviderService extends ModulesSdkUtils.internalModu
   constructor(container: InjectedDependencies) {
     super(container)
     this.serviceProviderRepository_ = container.serviceProviderRepository
+  }
+
+  static getRegistrationName(
+    providerClass: Constructor<IFulfillmentProvider>,
+    optionName?: string
+  ) {
+    return `fp_${(providerClass as any).identifier}_${optionName}`
   }
 
   async listFulfillmentOptions(

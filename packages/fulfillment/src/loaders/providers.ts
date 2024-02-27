@@ -7,7 +7,7 @@ import { ServiceProviderService } from "@services"
 
 const registrationFn = async (klass, container, pluginOptions) => {
   Object.entries(pluginOptions.config || []).map(([name, config]) => {
-    const key = `fp_${klass.PROVIDER}_${name}`
+    const key = ServiceProviderService.getRegistrationName(klass, name)
 
     container.register({
       [key]: asFunction((cradle) => new klass(cradle, config), {
@@ -28,6 +28,11 @@ export default async ({
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   ) & { providers: ModuleProvider[] }
 >): Promise<void> => {
+  container.registerAdd(
+    FulfillmentIdentifiersRegistrationName,
+    asValue(undefined)
+  )
+
   // Local providers
   // TODO
 
@@ -49,9 +54,9 @@ async function syncDatabaseProviders({
   providerIdentifiersRegistrationKey,
   providerServiceRegistrationKey,
 }) {
-  const providerIdentifiers: string[] = container.resolve(
-    providerIdentifiersRegistrationKey
-  )
+  const providerIdentifiers: string[] = (
+    container.resolve(providerIdentifiersRegistrationKey) ?? []
+  ).filter(Boolean)
 
   const providerService: ModulesSdkTypes.InternalModuleService<any> =
     container.resolve(providerServiceRegistrationKey)

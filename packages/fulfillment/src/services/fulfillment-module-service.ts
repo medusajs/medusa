@@ -35,7 +35,6 @@ import {
   ShippingProfile,
 } from "@models"
 import { isContextValid, validateRules } from "@utils"
-import { FulfillmentIdentifiersRegistrationName } from "@types"
 
 const generateMethodForModels = [
   ServiceZone,
