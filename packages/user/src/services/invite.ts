@@ -4,9 +4,10 @@ import {
   MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
+import jwt, { JwtPayload } from "jsonwebtoken"
+
 import { Invite } from "@models"
 import { InviteServiceTypes } from "@types"
-import jwt, { JwtPayload } from "jsonwebtoken"
 
 type InjectedDependencies = {
   inviteRepository: DAL.RepositoryService
@@ -91,7 +92,16 @@ export default class InviteService<
   ): Promise<TEntity> {
     const decoded = this.validateToken(token)
 
-    return await super.retrieve(decoded.payload.id, {}, context)
+    const invite = await super.retrieve(decoded.payload.id, {}, context)
+
+    if (invite.expires_at < new Date()) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The invite has expired"
+      )
+    }
+
+    return invite
   }
 
   private generateToken(data: any): string {
