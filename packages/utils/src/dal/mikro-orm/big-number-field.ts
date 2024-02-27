@@ -1,6 +1,6 @@
 import { BigNumberInput } from "@medusajs/types"
 import { Property } from "@mikro-orm/core"
-import { isPresent, isString, trimZeros } from "../../common"
+import { isPresent, trimZeros } from "../../common"
 import { BigNumber } from "../../totals/big-number"
 
 export function MikroOrmBigNumberProperty(
@@ -9,23 +9,15 @@ export function MikroOrmBigNumberProperty(
   } = {}
 ) {
   return function (target: any, columnName: string) {
-    const targetColumn = columnName + "_"
     const rawColumnName = options.rawColumnName ?? `raw_${columnName}`
 
     Object.defineProperty(target, columnName, {
       get() {
-        // It will be a string when mikro orm load it from the database, in that
-        // case it won't go through the setter of columnName but if rawColumnName has a value
-        // then we can use it to get the numeric value back
-        if (isString(this[targetColumn]) && this[rawColumnName]) {
-          return new BigNumber(this[rawColumnName]).numeric
-        }
-
-        return this[targetColumn]
+        return this.__helper.__data[columnName]
       },
       set(value: BigNumberInput) {
         if (options?.nullable && !isPresent(value)) {
-          this[targetColumn] = null
+          this.__helper.__data[columnName] = null
           this[rawColumnName] = null
 
           return
@@ -49,30 +41,22 @@ export function MikroOrmBigNumberProperty(
           bigNumber = new BigNumber(value)
         }
 
-        this[targetColumn] = bigNumber.numeric
+        this.__helper.__data[columnName] = bigNumber.numeric
 
         const raw = bigNumber.raw!
         raw.value = trimZeros(raw.value as string)
 
         this[rawColumnName] = raw
+
+        this.__helper.__touched = !this.__helper.hydrator.isRunning()
       },
     })
 
     Property({
       type: "number",
       columnType: "numeric",
-      fieldName: columnName,
-      serializer: () => {
-        return undefined
-      },
+      trackChanges: false,
       ...options,
-    })(target, targetColumn)
-
-    Property({
-      type: "number",
-      persist: false,
-      getter: true,
-      setter: true,
     })(target, columnName)
   }
 }

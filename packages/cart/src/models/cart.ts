@@ -26,6 +26,54 @@ type OptionalCartProps =
   | "billing_address"
   | DAL.SoftDeletableEntityDateColumns
 
+const RegionIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_cart_region_id",
+  tableName: "cart",
+  columns: "region_id",
+  where: "deleted_at IS NULL AND region_id IS NOT NULL",
+}).MikroORMIndex
+
+const CustomerIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_cart_customer_id",
+  tableName: "cart",
+  columns: "customer_id",
+  where: "deleted_at IS NULL AND customer_id IS NOT NULL",
+}).MikroORMIndex
+
+const SalesChannelIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_cart_sales_channel_id",
+  tableName: "cart",
+  columns: "sales_channel_id",
+  where: "deleted_at IS NULL AND sales_channel_id IS NOT NULL",
+}).MikroORMIndex
+
+const CurrencyCodeIndex = createPsqlIndexStatementHelper({
+  name: "IDX_cart_curency_code",
+  tableName: "cart",
+  columns: "currency_code",
+  where: "deleted_at IS NULL",
+}).MikroORMIndex
+
+const ShippingAddressIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_cart_shipping_address_id",
+  tableName: "cart",
+  columns: "shipping_address_id",
+  where: "deleted_at IS NULL AND shipping_address_id IS NOT NULL",
+}).MikroORMIndex
+
+const BillingAddressIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_cart_billing_address_id",
+  tableName: "cart",
+  columns: "billing_address_id",
+  where: "deleted_at IS NULL AND billing_address_id IS NOT NULL",
+}).MikroORMIndex
+
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "cart",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+}).MikroORMIndex
+
 @Entity({ tableName: "cart" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Cart {
@@ -34,77 +82,56 @@ export default class Cart {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @createPsqlIndexStatementHelper({
-    name: "IDX_cart_region_id",
-    tableName: "cart",
-    columns: "region_id",
-    where: "deleted_at IS NULL AND region_id IS NOT NULL",
-  }).MikroORMIndex()
+  @RegionIdIndex()
   @Property({ columnType: "text", nullable: true })
   region_id: string | null = null
 
-  @createPsqlIndexStatementHelper({
-    name: "IDX_cart_customer_id",
-    tableName: "cart",
-    columns: "customer_id",
-    where: "deleted_at IS NULL AND customer_id IS NOT NULL",
-  }).MikroORMIndex()
+  @CustomerIdIndex()
   @Property({ columnType: "text", nullable: true })
   customer_id: string | null = null
 
-  @createPsqlIndexStatementHelper({
-    name: "IDX_cart_sales_channel_id",
-    tableName: "cart",
-    columns: "sales_channel_id",
-    where: "deleted_at IS NULL AND sales_channel_id IS NOT NULL",
-  }).MikroORMIndex()
-  @Property({
-    columnType: "text",
-    nullable: true,
-    index: "IDX_cart_sales_channel_id",
-  })
+  @SalesChannelIdIndex()
+  @Property({ columnType: "text", nullable: true })
   sales_channel_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
   email: string | null = null
 
-  @Property({ columnType: "text", index: "IDX_cart_curency_code" })
+  @CurrencyCodeIndex()
+  @Property({ columnType: "text" })
   currency_code: string
 
-  @createPsqlIndexStatementHelper({
-    name: "IDX_cart_shipping_address_id",
-    tableName: "cart",
-    columns: "shipping_address_id",
-    where: "deleted_at IS NULL AND shipping_address_id IS NOT NULL",
-  }).MikroORMIndex()
-  @Property({ columnType: "text", nullable: true })
-  shipping_address_id?: string | null
-
+  @ShippingAddressIdIndex()
   @ManyToOne({
     entity: () => Address,
+    columnType: "text",
     fieldName: "shipping_address_id",
+    mapToPk: true,
     nullable: true,
-    cascade: [Cascade.PERSIST],
   })
-  shipping_address?: Address | null
+  shipping_address_id: string | null
 
-  @createPsqlIndexStatementHelper({
-    name: "IDX_cart_billing_address_id",
-    tableName: "cart",
-    columns: "billing_address_id",
-    where: "deleted_at IS NULL AND billing_address_id IS NOT NULL",
-  }).MikroORMIndex()
-  @Property({ columnType: "text", nullable: true })
-  billing_address_id?: string | null
+  @ManyToOne(() => Address, {
+    cascade: [Cascade.PERSIST],
+    nullable: true,
+  })
+  shipping_address: Address | null
 
+  @BillingAddressIdIndex()
   @ManyToOne({
     entity: () => Address,
+    columnType: "text",
     fieldName: "billing_address_id",
+    mapToPk: true,
     nullable: true,
-    index: "IDX_cart_billing_address_id",
-    cascade: [Cascade.PERSIST],
   })
-  billing_address?: Address | null
+  billing_address_id: string | null
+
+  @ManyToOne(() => Address, {
+    cascade: [Cascade.PERSIST],
+    nullable: true,
+  })
+  billing_address: Address | null
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
@@ -134,11 +161,7 @@ export default class Cart {
   })
   updated_at: Date
 
-  @createPsqlIndexStatementHelper({
-    tableName: "cart",
-    columns: "deleted_at",
-    where: "deleted_at IS NOT NULL",
-  }).MikroORMIndex()
+  @DeletedAtIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
