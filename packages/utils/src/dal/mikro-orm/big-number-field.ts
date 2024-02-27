@@ -9,16 +9,15 @@ export function MikroOrmBigNumberProperty(
   } = {}
 ) {
   return function (target: any, columnName: string) {
-    const targetColumn = columnName + "_"
     const rawColumnName = options.rawColumnName ?? `raw_${columnName}`
 
     Object.defineProperty(target, columnName, {
       get() {
-        return this[targetColumn]
+        return this.__helper.__data[columnName]
       },
       set(value: BigNumberInput) {
         if (options?.nullable && !isPresent(value)) {
-          this[targetColumn] = null
+          this.__helper.__data[columnName] = null
           this[rawColumnName] = null
 
           return
@@ -30,40 +29,34 @@ export function MikroOrmBigNumberProperty(
           bigNumber = value
         } else if (this[rawColumnName]) {
           const precision = this[rawColumnName].precision
+
           this[rawColumnName].value = trimZeros(
             new BigNumber(value, {
               precision,
             }).raw!.value as string
           )
+
           bigNumber = new BigNumber(this[rawColumnName])
         } else {
           bigNumber = new BigNumber(value)
         }
 
-        this[targetColumn] = bigNumber.numeric
+        this.__helper.__data[columnName] = bigNumber.numeric
 
         const raw = bigNumber.raw!
         raw.value = trimZeros(raw.value as string)
 
         this[rawColumnName] = raw
+
+        this.__helper.__touched = !this.__helper.hydrator.isRunning()
       },
     })
 
     Property({
       type: "number",
       columnType: "numeric",
-      fieldName: columnName,
-      serializer: () => {
-        return undefined
-      },
+      trackChanges: false,
       ...options,
-    })(target, targetColumn)
-
-    Property({
-      type: "number",
-      persist: false,
-      getter: true,
-      setter: true,
     })(target, columnName)
   }
 }

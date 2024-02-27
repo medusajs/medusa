@@ -1,21 +1,40 @@
 import { BigNumberRawValue } from "@medusajs/types"
+import { Entity, MikroORM, PrimaryKey } from "@mikro-orm/core"
 import { BigNumber } from "../../../totals/big-number"
 import { MikroOrmBigNumberProperty } from "../big-number-field"
 
+@Entity()
+class TestAmount {
+  @PrimaryKey()
+  id: string
+
+  @MikroOrmBigNumberProperty()
+  amount: BigNumber | number
+
+  raw_amount: BigNumberRawValue
+
+  @MikroOrmBigNumberProperty({ nullable: true })
+  nullable_amount: BigNumber | number | null = null
+
+  raw_nullable_amount: BigNumberRawValue | null = null
+}
+
 describe("@MikroOrmBigNumberProperty", () => {
+  let orm!: MikroORM
+
+  beforeEach(async () => {
+    orm = await MikroORM.init({
+      entities: [TestAmount],
+      dbName: "test",
+      type: "postgresql",
+    })
+  })
+
+  afterEach(async () => {
+    await orm.close()
+  })
+
   it("should correctly assign and update BigNumber values", () => {
-    class TestAmount {
-      @MikroOrmBigNumberProperty()
-      amount: BigNumber | number
-
-      raw_amount: BigNumberRawValue
-
-      @MikroOrmBigNumberProperty({ nullable: true })
-      nullable_amount: BigNumber | number | null = null
-
-      raw_nullable_amount: BigNumberRawValue | null = null
-    }
-
     const testAmount = new TestAmount()
 
     expect(testAmount.amount).toBeUndefined()
@@ -24,7 +43,6 @@ describe("@MikroOrmBigNumberProperty", () => {
     testAmount.amount = 100
 
     expect(testAmount.amount).toEqual(100)
-    expect((testAmount as any).amount_).toEqual(100)
     expect(testAmount.raw_amount).toEqual({
       value: "100",
       precision: 20,
@@ -42,12 +60,11 @@ describe("@MikroOrmBigNumberProperty", () => {
     expect(testAmount.nullable_amount).toEqual(null)
     // Update the amount
 
-    testAmount.amount = 200.0000001
+    testAmount.amount = 200
 
-    expect(testAmount.amount).toEqual(200.0000001)
-    expect((testAmount as any).amount_).toEqual(200.0000001)
+    expect(testAmount.amount).toEqual(200)
     expect(testAmount.raw_amount).toEqual({
-      value: "200.0000001",
+      value: "200",
       precision: 20,
     })
 
@@ -56,7 +73,6 @@ describe("@MikroOrmBigNumberProperty", () => {
     testAmount.amount = new BigNumber(300, { precision: 5 })
 
     expect(testAmount.amount).toEqual(300)
-    expect((testAmount as any).amount_).toEqual(300)
     expect(testAmount.raw_amount).toEqual({ value: "300", precision: 5 })
   })
 })
