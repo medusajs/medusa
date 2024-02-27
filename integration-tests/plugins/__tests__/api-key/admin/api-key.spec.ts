@@ -1,9 +1,8 @@
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
 import { ApiKeyType } from "@medusajs/utils"
-import { IApiKeyModuleService } from "@medusajs/types"
+import { IApiKeyModuleService, IRegionModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import adminSeeder from "../../../../helpers/admin-seeder"
 import { createAdminUser } from "../../../helpers/create-admin-user"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import path from "path"
@@ -22,6 +21,7 @@ describe("API Keys - Admin", () => {
   let appContainer
   let shutdownServer
   let service: IApiKeyModuleService
+  let regionService: IRegionModuleService
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
@@ -29,6 +29,7 @@ describe("API Keys - Admin", () => {
     shutdownServer = await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
     service = appContainer.resolve(ModuleRegistrationName.API_KEY)
+    regionService = appContainer.resolve(ModuleRegistrationName.REGION)
   })
 
   afterAll(async () => {
@@ -39,6 +40,9 @@ describe("API Keys - Admin", () => {
 
   beforeEach(async () => {
     await createAdminUser(dbConnection, adminHeaders)
+
+    // Used for testing cross-module authentication checks
+    await regionService.createDefaultCountriesAndCurrencies()
   })
 
   afterEach(async () => {
@@ -109,7 +113,7 @@ describe("API Keys - Admin", () => {
     expect(listedApiKeys.data.apiKeys).toHaveLength(0)
   })
 
-  it.skip("can use a secret api key for authentication", async () => {
+  it("can use a secret api key for authentication", async () => {
     const api = useApi() as any
     const created = await api.post(
       `/admin/api-keys`,
@@ -127,9 +131,58 @@ describe("API Keys - Admin", () => {
         currency_code: "usd",
         countries: ["us", "ca"],
       },
-      { headers: { Authorization: `Bearer ${created.token}` } }
+      { headers: { Authorization: `Bearer ${created.data.apiKey.token}` } }
     )
 
+    expect(createdRegion.status).toEqual(200)
+    expect(createdRegion.data.region.name).toEqual("Test Region")
+  })
+
+  it("falls back to other mode of authentication when an api key is not valid", async () => {
+    const api = useApi() as any
+    const created = await api.post(
+      `/admin/api-keys`,
+      {
+        title: "Test Secret Key",
+        type: ApiKeyType.SECRET,
+      },
+      adminHeaders
+    )
+
+    const revoked = await api.post(
+      `/admin/api-keys/${created.data.apiKey.id}/revoke`,
+      {},
+      adminHeaders
+    )
+
+    const err = await api
+      .post(
+        `/admin/regions`,
+        {
+          name: "Test Region",
+          currency_code: "usd",
+          countries: ["us", "ca"],
+        },
+        { headers: { Authorization: `Bearer ${created.data.apiKey.token}` } }
+      )
+      .catch((e) => e.message)
+
+    const createdRegion = await api.post(
+      `/admin/regions`,
+      {
+        name: "Test Region",
+        currency_code: "usd",
+        countries: ["us", "ca"],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${created.data.apiKey.token}`,
+          ...adminHeaders.headers,
+        },
+      }
+    )
+
+    expect(err).toEqual("Request failed with status code 401")
     expect(createdRegion.status).toEqual(200)
     expect(createdRegion.data.region.name).toEqual("Test Region")
   })
