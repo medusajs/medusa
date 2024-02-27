@@ -14,6 +14,7 @@ import {
   MedusaError,
   ModulesSdkUtils,
   isDefined,
+  isString,
   promiseAll,
 } from "@medusajs/utils"
 import { TaxRate, TaxRegion, TaxRateRule } from "@models"
@@ -162,7 +163,7 @@ export default class TaxModuleService<
     const serialized = await this.baseRepository_.serialize<
       TaxTypes.TaxRateDTO[]
     >(rates, { populate: true })
-    return typeof selector === "string" ? serialized[0] : serialized
+    return isString(selector) ? serialized[0] : serialized
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -172,7 +173,7 @@ export default class TaxModuleService<
     @MedusaContext() sharedContext: Context = {}
   ) {
     const selector =
-      Array.isArray(idOrSelector) || typeof idOrSelector === "string"
+      Array.isArray(idOrSelector) || isString(idOrSelector)
         ? { id: idOrSelector }
         : idOrSelector
 
