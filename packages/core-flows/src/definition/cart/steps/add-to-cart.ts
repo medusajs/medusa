@@ -26,6 +26,6 @@ export const addToCartStep = createStep(
       return
     }
 
-    await cartService.removeLineItems(createdLineItems.map((c) => c.id))
+    await cartService.deleteLineItems(createdLineItems.map((c) => c.id))
   }
 )
