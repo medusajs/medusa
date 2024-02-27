@@ -108,4 +108,29 @@ describe("API Keys - Admin", () => {
     expect(deleted.status).toEqual(200)
     expect(listedApiKeys.data.apiKeys).toHaveLength(0)
   })
+
+  it.skip("can use a secret api key for authentication", async () => {
+    const api = useApi() as any
+    const created = await api.post(
+      `/admin/api-keys`,
+      {
+        title: "Test Secret Key",
+        type: ApiKeyType.SECRET,
+      },
+      adminHeaders
+    )
+
+    const createdRegion = await api.post(
+      `/admin/regions`,
+      {
+        name: "Test Region",
+        currency_code: "usd",
+        countries: ["us", "ca"],
+      },
+      { headers: { Authorization: `Bearer ${created.token}` } }
+    )
+
+    expect(createdRegion.status).toEqual(200)
+    expect(createdRegion.data.region.name).toEqual("Test Region")
+  })
 })

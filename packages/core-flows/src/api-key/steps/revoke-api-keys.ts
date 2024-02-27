@@ -4,12 +4,11 @@ import {
   IApiKeyModuleService,
   RevokeApiKeyDTO,
 } from "@medusajs/types"
-import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type RevokeApiKeysStepInput = {
   selector: FilterableApiKeyProps
-  revoke: Omit<RevokeApiKeyDTO, "id">
+  revoke: RevokeApiKeyDTO
 }
 
 export const revokeApiKeysStepId = "revoke-api-keys"

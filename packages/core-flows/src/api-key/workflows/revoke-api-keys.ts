@@ -8,7 +8,7 @@ import { revokeApiKeysStep } from "../steps"
 
 type RevokeApiKeysStepInput = {
   selector: FilterableApiKeyProps
-  revoke: Omit<RevokeApiKeyDTO, "id">
+  revoke: RevokeApiKeyDTO
 }
 
 type WorkflowInput = RevokeApiKeysStepInput
