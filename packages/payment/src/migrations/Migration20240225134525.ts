@@ -4,7 +4,7 @@ import { Migration } from "@mikro-orm/migrations"
 export class Migration20240225134525 extends Migration {
   async up(): Promise<void> {
     const paymentCollectionExists = await this.execute(
-      `SELECT * FROM "information_schema.tables" where "table_name" = 'payment_collection' and "table_schema" = 'public'`
+      `SELECT * FROM information_schema.tables where table_name = 'payment_collection' and table_schema = 'public';`
     )
 
     if (paymentCollectionExists.length) {
@@ -30,7 +30,29 @@ export class Migration20240225134525 extends Migration {
         ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
 
         ALTER TABLE IF EXISTS "capture" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
+
         ALTER TABLE IF EXISTS "refund" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
+
+        CREATE TABLE IF NOT EXISTS "capture" (
+          "id"          TEXT NOT NULL,
+          "amount"      NUMERIC NOT NULL,
+          "raw_amount"  JSONB NOT NULL,
+          "payment_id"  TEXT NOT NULL,
+          "created_at"  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          "created_by"  TEXT NULL,
+          CONSTRAINT "capture_pkey" PRIMARY KEY ("id")
+        );
+
+        CREATE INDEX IF NOT EXISTS "IDX_payment_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_payment_payment_collection_id" ON "payment" ("payment_collection_id") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_payment_provider_id" ON "payment" ("provider_id") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_capture_payment_id" ON "capture" ("payment_id") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_payment_collection_region_id" ON "payment_collection" ("region_id") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_payment_collection_deleted_at" ON "payment_collection" ("deleted_at") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_refund_payment_id" ON "refund" ("payment_id");
+        CREATE INDEX IF NOT EXISTS "IDX_refund_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_payment_session_payment_collection_id" ON "payment_session" ("payment_collection_id");
+        CREATE INDEX IF NOT EXISTS "IDX_payment_session_payment_collection_id" ON "payment_session" ("payment_collection_id");
       `)
     } else {
       this.addSql(`
@@ -57,6 +79,9 @@ export class Migration20240225134525 extends Migration {
           "type_detail"        TEXT NULL,
           "description_detail" TEXT NULL,
           "metadata"           JSONB NULL,
+          "created_at"         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          "updated_at"         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          "deleted_at"         TIMESTAMPTZ NULL,
           CONSTRAINT "payment_method_token_pkey" PRIMARY KEY ("id")
         );
 
@@ -83,6 +108,9 @@ export class Migration20240225134525 extends Migration {
           "authorized_at"        TIMESTAMPTZ NULL,
           "payment_collection_id" TEXT NOT NULL,
           "metadata"             JSONB NULL,
+          "created_at"         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          "updated_at"         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          "deleted_at"         TIMESTAMPTZ NULL,
           CONSTRAINT "payment_session_pkey" PRIMARY KEY ("id")
         );
   
@@ -120,48 +148,48 @@ export class Migration20240225134525 extends Migration {
           "metadata"    JSONB NULL,
           CONSTRAINT "refund_pkey" PRIMARY KEY ("id")
         );
+
+        CREATE TABLE IF NOT EXISTS "capture" (
+          "id"          TEXT NOT NULL,
+          "amount"      NUMERIC NOT NULL,
+          "raw_amount"  JSONB NOT NULL,
+          "payment_id"  TEXT NOT NULL,
+          "created_at"  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          "updated_at"  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          "deleted_at"  TIMESTAMPTZ NULL,
+          "created_by"  TEXT NULL,
+          CONSTRAINT "capture_pkey" PRIMARY KEY ("id")
+        );
+
+        CREATE INDEX IF NOT EXISTS "IDX_payment_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_payment_payment_collection_id" ON "payment" ("payment_collection_id") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_payment_provider_id" ON "payment" ("provider_id") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_capture_payment_id" ON "capture" ("payment_id") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_payment_collection_region_id" ON "payment_collection" ("region_id") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_payment_collection_deleted_at" ON "payment_collection" ("deleted_at") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_refund_payment_id" ON "refund" ("payment_id");
+        CREATE INDEX IF NOT EXISTS "IDX_refund_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_payment_session_payment_collection_id" ON "payment_session" ("payment_collection_id");
+        CREATE INDEX IF NOT EXISTS "IDX_payment_session_payment_collection_id" ON "payment_session" ("payment_collection_id");
+
+        ALTER TABLE IF EXISTS "payment_collection_payment_providers" 
+          ADD CONSTRAINT "payment_collection_payment_providers_payment_coll_aa276_foreign" FOREIGN KEY ("payment_collection_id") REFERENCES "payment_collection" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
+        
+        ALTER TABLE IF EXISTS "payment_collection_payment_providers" 
+          ADD CONSTRAINT "payment_collection_payment_providers_payment_provider_id_foreign" FOREIGN KEY ("payment_provider_id") REFERENCES "payment_provider" ("id") ON UPDATE CASCADE ON DELETE CASCADE;      
+        
+        ALTER TABLE IF EXISTS "payment_session" 
+          ADD CONSTRAINT "payment_session_payment_collection_id_foreign" FOREIGN KEY ("payment_collection_id") REFERENCES "payment_collection" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
+        
+        ALTER TABLE IF EXISTS "payment" 
+          ADD CONSTRAINT "payment_payment_collection_id_foreign" FOREIGN KEY ("payment_collection_id") REFERENCES "payment_collection" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
+      
+        ALTER TABLE IF EXISTS "capture" 
+          ADD CONSTRAINT "capture_payment_id_foreign" FOREIGN KEY ("payment_id") REFERENCES "payment" ("id") ON UPDATE CASCADE ON DELETE CASCADE;  
+        
+        ALTER TABLE IF EXISTS "refund" 
+          ADD CONSTRAINT "refund_payment_id_foreign" FOREIGN KEY ("payment_id") REFERENCES "payment" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
       `)
     }
-
-    this.addSql(`
-      CREATE INDEX IF NOT EXISTS "IDX_payment_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NULL;
-      CREATE INDEX IF NOT EXISTS "IDX_payment_payment_collection_id" ON "payment" ("payment_collection_id") WHERE "deleted_at" IS NULL;
-      CREATE INDEX IF NOT EXISTS "IDX_payment_provider_id" ON "payment" ("provider_id") WHERE "deleted_at" IS NULL;
-      CREATE INDEX IF NOT EXISTS "IDX_capture_payment_id" ON "capture" ("payment_id") WHERE "deleted_at" IS NULL;
-      CREATE INDEX IF NOT EXISTS "IDX_payment_collection_region_id" ON "payment_collection" ("region_id") WHERE "deleted_at" IS NULL;
-      CREATE INDEX IF NOT EXISTS "IDX_payment_collection_deleted_at" ON "payment_collection" ("deleted_at") WHERE "deleted_at" IS NULL;
-      CREATE INDEX IF NOT EXISTS "IDX_refund_payment_id" ON "refund" ("payment_id");
-      CREATE INDEX IF NOT EXISTS "IDX_refund_deleted_at" ON "payment" ("deleted_at") WHERE "deleted_at" IS NULL;
-      CREATE INDEX IF NOT EXISTS "IDX_payment_session_payment_collection_id" ON "payment_session" ("payment_collection_id");
-      CREATE INDEX IF NOT EXISTS "IDX_payment_session_payment_collection_id" ON "payment_session" ("payment_collection_id");
-
-      CREATE TABLE IF NOT EXISTS "capture" (
-        "id"          TEXT NOT NULL,
-        "amount"      NUMERIC NOT NULL,
-        "raw_amount"  JSONB NOT NULL,
-        "payment_id"  TEXT NOT NULL,
-        "created_at"  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-        "created_by"  TEXT NULL,
-        CONSTRAINT "capture_pkey" PRIMARY KEY ("id")
-      );
-
-      ALTER TABLE IF EXISTS "payment_collection_payment_providers" 
-        ADD CONSTRAINT "payment_collection_payment_providers_payment_coll_aa276_foreign" FOREIGN KEY ("payment_collection_id") REFERENCES "payment_collection" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
-        
-      ALTER TABLE IF EXISTS "payment_collection_payment_providers" 
-        ADD CONSTRAINT "payment_collection_payment_providers_payment_provider_id_foreign" FOREIGN KEY ("payment_provider_id") REFERENCES "payment_provider" ("id") ON UPDATE CASCADE ON DELETE CASCADE;      
-      
-      ALTER TABLE IF EXISTS "payment_session" 
-        ADD CONSTRAINT "payment_session_payment_collection_id_foreign" FOREIGN KEY ("payment_collection_id") REFERENCES "payment_collection" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
-      
-      ALTER TABLE IF EXISTS "payment" 
-        ADD CONSTRAINT "payment_payment_collection_id_foreign" FOREIGN KEY ("payment_collection_id") REFERENCES "payment_collection" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
-    
-      ALTER TABLE IF EXISTS "capture" 
-        ADD CONSTRAINT "capture_payment_id_foreign" FOREIGN KEY ("payment_id") REFERENCES "payment" ("id") ON UPDATE CASCADE ON DELETE CASCADE;  
-      
-      ALTER TABLE IF EXISTS "refund" 
-        ADD CONSTRAINT "refund_payment_id_foreign" FOREIGN KEY ("payment_id") REFERENCES "payment" ("id") ON UPDATE CASCADE ON DELETE CASCADE;
-    `)
   }
 }
