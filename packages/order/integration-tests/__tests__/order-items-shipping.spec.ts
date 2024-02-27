@@ -536,7 +536,7 @@ moduleIntegrationTestRunner({
             .catch((e) => e)
 
           expect(error.message).toContain(
-            "Value for OrderDetail.quantity_ is required, 'undefined' found"
+            "Value for OrderDetail.quantity is required, 'undefined' found"
           )
         })
 
@@ -558,7 +558,7 @@ moduleIntegrationTestRunner({
             .catch((e) => e)
 
           expect(error.message).toContain(
-            "Value for OrderDetail.quantity_ is required, 'undefined' found"
+            "Value for OrderDetail.quantity is required, 'undefined' found"
           )
         })
       })
