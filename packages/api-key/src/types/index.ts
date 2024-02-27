@@ -1,4 +1,4 @@
-import { ApiKeyType } from "@medusajs/types"
+import { ApiKeyType, RevokeApiKeyDTO, UpdateApiKeyDTO } from "@medusajs/types"
 import { IEventBusModuleService, Logger } from "@medusajs/types"
 
 export type InitializeModuleInjectableDependencies = {
@@ -21,3 +21,6 @@ export type TokenDTO = {
   salt: string
   redacted: string
 }
+
+export type UpdateApiKeyInput = UpdateApiKeyDTO & { id: string }
+export type RevokeApiKeyInput = RevokeApiKeyDTO & { id: string }
