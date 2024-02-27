@@ -41,12 +41,12 @@ export interface CreateCartDTO {
 }
 
 export interface UpdateCartDataDTO {
-  region_id?: string | null
+  region_id?: string
   customer_id?: string | null
   sales_channel_id?: string | null
 
   email?: string | null
-  currency_code?: string | null
+  currency_code?: string
 
   shipping_address_id?: string | null
   billing_address_id?: string | null
@@ -58,7 +58,7 @@ export interface UpdateCartDataDTO {
 }
 
 export interface UpdateCartDTO extends UpdateCartDataDTO {
-  id?: string
+  id: string
 }
 
 /** CART END */
@@ -176,7 +176,7 @@ export interface UpdateLineItemWithSelectorDTO {
 
 export interface UpdateCartWithSelectorDTO {
   selector: Partial<CartDTO>
-  data: UpdateCartDTO
+  data: UpdateCartDataDTO
 }
 
 export interface UpdateLineItemDTO
