@@ -1,4 +1,5 @@
 import { updateCartPromotionsWorkflow } from "@medusajs/core-flows"
+import { PromotionActions } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 import { StorePostCartsCartPromotionsReq } from "../../validators"
 
@@ -10,6 +11,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     input: {
       promoCodes: payload.promo_codes,
       cartId: req.params.id,
+      action: PromotionActions.ADD,
     },
     throwOnError: false,
   })
@@ -29,7 +31,7 @@ export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
     input: {
       promoCodes: payload.promo_codes,
       cartId: req.params.id,
-      removePromotions: true,
+      action: PromotionActions.REMOVE,
     },
     throwOnError: false,
   })

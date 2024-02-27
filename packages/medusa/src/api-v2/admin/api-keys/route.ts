@@ -1,10 +1,17 @@
-import { createApiKeysWorkflow } from "@medusajs/core-flows"
-import { CreateApiKeyDTO } from "@medusajs/types"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
-import { defaultAdminApiKeyFields } from "./query-config"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../types/routing"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+import { CreateApiKeyDTO } from "@medusajs/types"
+import { createApiKeysWorkflow } from "@medusajs/core-flows"
+import { defaultAdminApiKeyFields } from "./query-config"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const remoteQuery = req.scope.resolve("remoteQuery")
 
   const queryObject = remoteQueryObjectFromString({
@@ -28,11 +35,14 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   })
 }
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<Omit<CreateApiKeyDTO, "created_by">>,
+  res: MedusaResponse
+) => {
   const input = [
     {
-      ...(req.validatedBody as Omit<CreateApiKeyDTO, "created_by">),
-      created_by: req.auth_user?.id,
+      ...req.validatedBody,
+      created_by: req.auth.actor_id,
     } as CreateApiKeyDTO,
   ]
 

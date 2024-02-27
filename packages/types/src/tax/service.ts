@@ -19,6 +19,7 @@ import {
   CreateTaxRateRuleDTO,
   CreateTaxRateDTO,
   CreateTaxRegionDTO,
+  UpdateTaxRateDTO,
 } from "./mutations"
 
 export interface ITaxModuleService extends IModuleService {
@@ -45,6 +46,22 @@ export interface ITaxModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<TaxRateDTO[]>
   create(data: CreateTaxRateDTO, sharedContext?: Context): Promise<TaxRateDTO>
+
+  update(
+    taxRateId: string,
+    data: UpdateTaxRateDTO,
+    sharedContext?: Context
+  ): Promise<TaxRateDTO>
+  update(
+    taxRateIds: string[],
+    data: UpdateTaxRateDTO,
+    sharedContext?: Context
+  ): Promise<TaxRateDTO[]>
+  update(
+    selector: FilterableTaxRateProps,
+    data: UpdateTaxRateDTO,
+    sharedContext?: Context
+  ): Promise<TaxRateDTO[]>
 
   delete(taxRateIds: string[], sharedContext?: Context): Promise<void>
   delete(taxRateId: string, sharedContext?: Context): Promise<void>
@@ -95,7 +112,7 @@ export interface ITaxModuleService extends IModuleService {
   ): Promise<TaxRateRuleDTO[]>
 
   getTaxLines(
-    item: (TaxableItemDTO | TaxableShippingDTO)[],
+    items: (TaxableItemDTO | TaxableShippingDTO)[],
     calculationContext: TaxCalculationContext,
     sharedContext?: Context
   ): Promise<(ItemTaxLineDTO | ShippingTaxLineDTO)[]>

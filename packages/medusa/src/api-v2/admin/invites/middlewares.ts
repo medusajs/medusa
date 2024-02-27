@@ -1,19 +1,35 @@
-import { transformBody, transformQuery } from "../../../api/middlewares"
+import * as QueryConfig from "./query-config"
+
 import {
   AdminCreateInviteRequest,
-  AdminGetInvitesParams,
   AdminGetInvitesInviteParams,
-  AdminPostInvitesInviteAcceptReq,
+  AdminGetInvitesParams,
   AdminPostInvitesInviteAcceptParams,
+  AdminPostInvitesInviteAcceptReq,
 } from "./validators"
-import * as QueryConfig from "./query-config"
+import { transformBody, transformQuery } from "../../../api/middlewares"
+
 import { MiddlewareRoute } from "../../../types/middlewares"
 import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "ALL",
-    matcher: "/admin/invites*",
+    matcher: "/admin/invites",
+    middlewares: [authenticate("admin", ["session", "bearer"])],
+  },
+  {
+    method: "POST",
+    matcher: "/admin/invites/accept",
+    middlewares: [
+      authenticate("admin", ["session", "bearer"], {
+        allowUnregistered: true,
+      }),
+    ],
+  },
+  {
+    method: ["GET", "DELETE"],
+    matcher: "/admin/invites/:id",
     middlewares: [authenticate("admin", ["session", "bearer"])],
   },
   {
