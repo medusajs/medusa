@@ -2,23 +2,6 @@ import { BigNumberRawValue } from "@medusajs/types"
 import { Entity, MikroORM, PrimaryKey } from "@mikro-orm/core"
 import { BigNumber } from "../../../totals/big-number"
 import { MikroOrmBigNumberProperty } from "../big-number-field"
-import { Entity, MikroORM, PrimaryKey } from "@mikro-orm/core"
-
-@Entity()
-class TestAmount {
-  @PrimaryKey()
-  id: string
-
-  @MikroOrmBigNumberProperty()
-  amount: BigNumber | number
-
-  raw_amount: BigNumberRawValue
-
-  @MikroOrmBigNumberProperty({ nullable: true })
-  nullable_amount: BigNumber | number | null = null
-
-  raw_nullable_amount: BigNumberRawValue | null = null
-}
 
 @Entity()
 class TestAmount {
