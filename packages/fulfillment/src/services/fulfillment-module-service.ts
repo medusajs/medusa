@@ -27,6 +27,7 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import {
   FulfillmentSet,
   GeoZone,
+  ServiceProvider,
   ServiceZone,
   ShippingOption,
   ShippingOptionRule,
@@ -34,6 +35,7 @@ import {
   ShippingProfile,
 } from "@models"
 import { isContextValid, validateRules } from "@utils"
+import { FulfillmentIdentifiersRegistrationName } from "@types"
 
 const generateMethodForModels = [
   ServiceZone,
@@ -53,6 +55,7 @@ type InjectedDependencies = {
   shippingOptionService: ModulesSdkTypes.InternalModuleService<any>
   shippingOptionRuleService: ModulesSdkTypes.InternalModuleService<any>
   shippingOptionTypeService: ModulesSdkTypes.InternalModuleService<any>
+  serviceProviderService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 export default class FulfillmentModuleService<
@@ -62,7 +65,8 @@ export default class FulfillmentModuleService<
     TShippingProfileEntity extends ShippingProfile = ShippingProfile,
     TShippingOptionEntity extends ShippingOption = ShippingOption,
     TShippingOptionRuleEntity extends ShippingOptionRule = ShippingOptionRule,
-    TSippingOptionTypeEntity extends ShippingOptionType = ShippingOptionType
+    TSippingOptionTypeEntity extends ShippingOptionType = ShippingOptionType,
+    TServiceProviderEntity extends ServiceProvider = ServiceProvider
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -87,6 +91,7 @@ export default class FulfillmentModuleService<
   protected readonly shippingOptionService_: ModulesSdkTypes.InternalModuleService<TShippingOptionEntity>
   protected readonly shippingOptionRuleService_: ModulesSdkTypes.InternalModuleService<TShippingOptionRuleEntity>
   protected readonly shippingOptionTypeService_: ModulesSdkTypes.InternalModuleService<TSippingOptionTypeEntity>
+  protected readonly serviceProviderService_: ModulesSdkTypes.InternalModuleService<TServiceProviderEntity>
 
   constructor(
     {
@@ -98,6 +103,7 @@ export default class FulfillmentModuleService<
       shippingOptionService,
       shippingOptionRuleService,
       shippingOptionTypeService,
+      serviceProviderService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -111,6 +117,7 @@ export default class FulfillmentModuleService<
     this.shippingOptionService_ = shippingOptionService
     this.shippingOptionRuleService_ = shippingOptionRuleService
     this.shippingOptionTypeService_ = shippingOptionTypeService
+    this.serviceProviderService_ = serviceProviderService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
