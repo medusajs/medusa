@@ -10,8 +10,14 @@ export const defaultStoreCartFields = [
   "items.title",
   "items.quantity",
   "items.unit_price",
+  "items.adjustments.id",
+  "items.adjustments.code",
+  "items.adjustments.amount",
   "customer.id",
   "customer.email",
+  "shipping_methods.adjustments.id",
+  "shipping_methods.adjustments.code",
+  "shipping_methods.adjustments.amount",
   "shipping_address.id",
   "shipping_address.first_name",
   "shipping_address.last_name",
@@ -40,20 +46,24 @@ export const defaultStoreCartFields = [
 
 export const defaultStoreCartRelations = [
   "items",
+  "items.adjustments",
   "region",
   "customer",
   "shipping_address",
   "billing_address",
   "shipping_methods",
+  "shipping_methods.adjustments",
 ]
 
 export const allowedRelations = [
   "items",
+  "items.adjustments",
   "region",
   "customer",
   "shipping_address",
   "billing_address",
   "shipping_methods",
+  "shipping_methods.adjustments",
   "sales_channel",
 ]
 

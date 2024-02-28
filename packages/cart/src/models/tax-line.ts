@@ -25,6 +25,9 @@ export default abstract class TaxLine {
   @Property({ columnType: "text", nullable: true })
   provider_id?: string | null
 
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
+
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
