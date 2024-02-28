@@ -253,8 +253,8 @@ export default class PromotionModuleService<
           sharedContext
         )
 
-    // Promotions we need to apply includes all the codes thats passed as an argument
-    // of this method, along with any automatic promotions that can be applied to the context
+    // Promotions we need to apply includes all the codes that are passed as an argument
+    // to this method, along with any automatic promotions that can be applied to the context
     const automaticPromotionCodes = automaticPromotions.map((p) => p.code!)
     const promotionCodesToApply = [
       ...promotionCodes,
