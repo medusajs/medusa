@@ -541,7 +541,7 @@ You don’t have to create a template for every type in the reference. You can s
 
 ### Order Shipment Created
 
-**Key in plugin options:** `order_shipped_template`
+**Key in plugin options:** `order_shipment_created_template`
 
 **Description:** Template to be sent to the customer when a shipment of their order has been created.
 
@@ -3943,22 +3943,28 @@ Where `<ORDER_PLACED_TEMPLATE_ID` is the ID of your template for order placed em
 
 Finally, in your `medusa-config.js` file, add the SendGrid plugin into the array of plugins:
 
-```js title="medusa-config.js"
+```ts title="medusa-config.js"
 const plugins = [
     // ...,
     {
-      resolve: `medusa-plugin-sendgrid`,
-      /** @type {import('medusa-plugin-sendgrid').PluginOptions} */
+      resolve: `medusa-plugin-sendgrid-typescript`,
+      /** @type {import('medusa-plugin-sendgrid-typescript').PluginOptions} */
       options: {
         api_key: process.env.SENDGRID_API_KEY,
         from: process.env.SENDGRID_FROM,
         templates: {
-          order_placed_template: process.env.SENDGRID_ORDER_PLACED_ID,
+          order_placed_template: {
+            id: process.env.SENDGRID_ORDER_PLACED_ID,
+            // You can add dynamic data to the template by using {variable_name}
+            subject: "Thank you for your order #{display_id}!",
+          },
         },
         localization: {
           "de-DE": { // locale key
-            order_placed_template:
-              process.env.SENDGRID_ORDER_PLACED_ID_LOCALIZED,
+            order_placed_template: {
+              subject: "Danke für Ihre Bestellung #{display_id}!",
+              id: process.env.SENDGRID_ORDER_PLACED_ID,
+            }
           },
         },
       },
