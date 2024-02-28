@@ -36,14 +36,14 @@ export function validateApplicationMethodAttributes(
   const targetType = data.target_type || applicationMethod?.target_type
   const type = data.type || applicationMethod?.type
   const applicationMethodType = data.type || applicationMethod?.type
-  const value = parseFloat(data.value! || applicationMethod?.value!)
+  const value = data.value || applicationMethod.value
   const maxQuantity = data.max_quantity || applicationMethod.max_quantity
   const allocation = data.allocation || applicationMethod.allocation
   const allTargetTypes: string[] = Object.values(ApplicationMethodTargetType)
 
   if (
     type === ApplicationMethodType.PERCENTAGE &&
-    (value <= 0 || value > 100)
+    (typeof value !== "number" || value <= 0 || value > 100)
   ) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,

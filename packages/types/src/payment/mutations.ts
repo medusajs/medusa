@@ -188,7 +188,7 @@ export interface CreatePaymentSessionDTO {
   /**
    * The provider's context.
    */
-  providerContext: PaymentProviderContext
+  providerContext: Omit<PaymentProviderContext, "resource_id">
 }
 
 /**
@@ -217,4 +217,22 @@ export interface CreatePaymentProviderDTO {
    * Whether the provider is enabled.
    */
   is_enabled?: boolean
+}
+
+/**
+ * Webhook
+ */
+export interface ProviderWebhookPayload {
+  provider: string
+  payload: {
+    /**
+     * Parsed webhook body
+     */
+    data: Record<string, unknown>
+    /**
+     * Raw request body
+     */
+    rawData: string | Buffer
+    headers: Record<string, unknown>
+  }
 }

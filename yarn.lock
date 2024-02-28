@@ -8550,6 +8550,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/payment-stripe@workspace:packages/payment-stripe":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/payment-stripe@workspace:packages/payment-stripe"
+  dependencies:
+    "@medusajs/medusa": ^1.19.1
+    "@medusajs/utils": ^1.11.3
+    "@types/stripe": ^8.0.417
+    awilix: ^8.0.1
+    body-parser: ^1.19.0
+    cross-env: ^5.2.1
+    express: ^4.17.1
+    jest: ^25.5.4
+    rimraf: ^5.0.1
+    stripe: latest
+    typescript: ^4.9.5
+  peerDependencies:
+    "@medusajs/medusa": ^1.12.0
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/payment@workspace:packages/payment":
   version: 0.0.0-use.local
   resolution: "@medusajs/payment@workspace:packages/payment"
@@ -8732,7 +8752,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/store@workspace:packages/store":
+"@medusajs/store@workspace:^, @medusajs/store@workspace:packages/store":
   version: 0.0.0-use.local
   resolution: "@medusajs/store@workspace:packages/store"
   dependencies:
@@ -8759,7 +8779,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/tax@workspace:packages/tax":
+"@medusajs/tax@workspace:^, @medusajs/tax@workspace:packages/tax":
   version: 0.0.0-use.local
   resolution: "@medusajs/tax@workspace:packages/tax"
   dependencies:
@@ -31699,6 +31719,8 @@ __metadata:
     "@medusajs/product": "workspace:^"
     "@medusajs/promotion": "workspace:^"
     "@medusajs/region": "workspace:^"
+    "@medusajs/store": "workspace:^"
+    "@medusajs/tax": "workspace:^"
     "@medusajs/types": "workspace:^"
     "@medusajs/user": "workspace:^"
     "@medusajs/utils": "workspace:^"
@@ -47767,6 +47789,16 @@ __metadata:
     "@types/node": ">=8.1.0"
     qs: ^6.10.3
   checksum: 7979f9d2b2f099d3bf0e5558dd4dc8f20fb20e8a34d93f38fc55fc1c0dc79296345898035f4075f497e255a9e7f6a0df3f9d8dbb0d1beb57fca595f70429af53
+  languageName: node
+  linkType: hard
+
+"stripe@npm:latest":
+  version: 14.16.0
+  resolution: "stripe@npm:14.16.0"
+  dependencies:
+    "@types/node": ">=8.1.0"
+    qs: ^6.11.0
+  checksum: bada06609592bae71094ba86fdf745d86945d6bb5b44482da0355235c01ca6f2c76f261fad31d9d367cee5cf6b8b5532fb66733d664d4bb497125809b61699bf
   languageName: node
   linkType: hard
 

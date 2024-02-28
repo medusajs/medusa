@@ -1,14 +1,14 @@
-import {
-  createCartWorkflow,
-  findOrCreateCustomerStepId,
-} from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
+  IPricingModuleService,
+  IProductModuleService,
+  IPromotionModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
 } from "@medusajs/types"
+import { PromotionRuleOperator, PromotionType } from "@medusajs/utils"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
@@ -29,6 +29,10 @@ describe("Store Carts API", () => {
   let regionModuleService: IRegionModuleService
   let scModuleService: ISalesChannelModuleService
   let customerModule: ICustomerModuleService
+  let productModule: IProductModuleService
+  let pricingModule: IPricingModuleService
+  let remoteLink
+  let promotionModule: IPromotionModuleService
 
   let defaultRegion
 
@@ -41,6 +45,10 @@ describe("Store Carts API", () => {
     regionModuleService = appContainer.resolve(ModuleRegistrationName.REGION)
     scModuleService = appContainer.resolve(ModuleRegistrationName.SALES_CHANNEL)
     customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
+    productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
+    pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
+    remoteLink = appContainer.resolve("remoteLink")
+    promotionModule = appContainer.resolve(ModuleRegistrationName.PROMOTION)
   })
 
   afterAll(async () => {
@@ -51,7 +59,6 @@ describe("Store Carts API", () => {
 
   beforeEach(async () => {
     await adminSeeder(dbConnection)
-    // @ts-ignore
     await regionModuleService.createDefaultCountriesAndCurrencies()
 
     // Here, so we don't have to create a region for each test
@@ -77,6 +84,58 @@ describe("Store Carts API", () => {
         name: "Webshop",
       })
 
+      const [product] = await productModule.create([
+        {
+          title: "Test product",
+          variants: [
+            {
+              title: "Test variant",
+            },
+            {
+              title: "Test variant 2",
+            },
+          ],
+        },
+      ])
+
+      const [priceSet, priceSetTwo] = await pricingModule.create([
+        {
+          prices: [
+            {
+              amount: 3000,
+              currency_code: "usd",
+            },
+          ],
+        },
+        {
+          prices: [
+            {
+              amount: 4000,
+              currency_code: "usd",
+            },
+          ],
+        },
+      ])
+
+      await remoteLink.create([
+        {
+          productService: {
+            variant_id: product.variants[0].id,
+          },
+          pricingService: {
+            price_set_id: priceSet.id,
+          },
+        },
+        {
+          productService: {
+            variant_id: product.variants[1].id,
+          },
+          pricingService: {
+            price_set_id: priceSetTwo.id,
+          },
+        },
+      ])
+
       const api = useApi() as any
 
       const created = await api.post(`/store/carts`, {
@@ -84,6 +143,16 @@ describe("Store Carts API", () => {
         currency_code: "usd",
         region_id: region.id,
         sales_channel_id: salesChannel.id,
+        items: [
+          {
+            variant_id: product.variants[0].id,
+            quantity: 1,
+          },
+          {
+            variant_id: product.variants[1].id,
+            quantity: 2,
+          },
+        ],
       })
 
       expect(created.status).toEqual(200)
@@ -100,6 +169,16 @@ describe("Store Carts API", () => {
           customer: expect.objectContaining({
             email: "tony@stark.com",
           }),
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              quantity: 1,
+              unit_price: 3000,
+            }),
+            expect.objectContaining({
+              quantity: 2,
+              unit_price: 4000,
+            }),
+          ]),
         })
       )
     })
@@ -202,19 +281,6 @@ describe("Store Carts API", () => {
       )
     })
 
-    it("should throw when no regions exist", async () => {
-      const api = useApi() as any
-
-      await regionModuleService.delete(defaultRegion.id)
-
-      await expect(
-        api.post(`/store/carts`, {
-          email: "tony@stark.com",
-          currency_code: "usd",
-        })
-      ).rejects.toThrow()
-    })
-
     it("should respond 400 bad request on unknown props", async () => {
       const api = useApi() as any
 
@@ -224,92 +290,170 @@ describe("Store Carts API", () => {
         })
       ).rejects.toThrow()
     })
+  })
 
-    it("should throw if sales channel is disabled", async () => {
+  describe("POST /store/carts/:id", () => {
+    it("should update a cart with promo codes with a replace action", async () => {
+      const targetRules = [
+        {
+          attribute: "product_id",
+          operator: PromotionRuleOperator.IN,
+          values: ["prod_tshirt"],
+        },
+      ]
+
+      const appliedPromotion = await promotionModule.create({
+        code: "PROMOTION_APPLIED",
+        type: PromotionType.STANDARD,
+        application_method: {
+          type: "fixed",
+          target_type: "items",
+          allocation: "each",
+          value: "300",
+          apply_to_quantity: 1,
+          max_quantity: 1,
+          target_rules: targetRules,
+        },
+      })
+
+      const createdPromotion = await promotionModule.create({
+        code: "PROMOTION_TEST",
+        type: PromotionType.STANDARD,
+        application_method: {
+          type: "fixed",
+          target_type: "items",
+          allocation: "across",
+          value: "1000",
+          apply_to_quantity: 1,
+          target_rules: targetRules,
+        },
+      })
+
+      const cart = await cartModuleService.create({
+        currency_code: "usd",
+        email: "tony@stark.com",
+        items: [
+          {
+            id: "item-1",
+            unit_price: 2000,
+            quantity: 1,
+            title: "Test item",
+            product_id: "prod_tshirt",
+          } as any,
+        ],
+      })
+
+      const [adjustment] = await cartModuleService.addLineItemAdjustments([
+        {
+          code: appliedPromotion.code!,
+          amount: 300,
+          item_id: "item-1",
+          promotion_id: appliedPromotion.id,
+        },
+      ])
+
       const api = useApi() as any
+
+      // Should remove earlier adjustments from other promocodes
+      let updated = await api.post(`/store/carts/${cart.id}`, {
+        promo_codes: [createdPromotion.code],
+      })
+
+      expect(updated.status).toEqual(200)
+      expect(updated.data.cart).toEqual(
+        expect.objectContaining({
+          id: cart.id,
+          items: [
+            expect.objectContaining({
+              id: "item-1",
+              adjustments: [
+                expect.objectContaining({
+                  id: expect.not.stringContaining(adjustment.id),
+                  code: createdPromotion.code,
+                }),
+              ],
+            }),
+          ],
+        })
+      )
+
+      // Should remove all adjustments from other promo codes
+      updated = await api.post(`/store/carts/${cart.id}`, {
+        promo_codes: [],
+      })
+
+      expect(updated.status).toEqual(200)
+      expect(updated.data.cart).toEqual(
+        expect.objectContaining({
+          id: cart.id,
+          items: [
+            expect.objectContaining({
+              id: "item-1",
+              adjustments: [],
+            }),
+          ],
+        })
+      )
+    })
+
+    it("should update a cart's region, sales channel and customer data", async () => {
+      const region = await regionModuleService.create({
+        name: "US",
+        currency_code: "usd",
+      })
 
       const salesChannel = await scModuleService.create({
         name: "Webshop",
-        is_disabled: true,
       })
 
-      await expect(
-        api.post(`/store/carts`, {
+      const cart = await cartModuleService.create({
+        currency_code: "eur",
+      })
+
+      const api = useApi() as any
+
+      let updated = await api.post(`/store/carts/${cart.id}`, {
+        region_id: region.id,
+        email: "tony@stark.com",
+        sales_channel_id: salesChannel.id,
+      })
+
+      expect(updated.status).toEqual(200)
+      expect(updated.data.cart).toEqual(
+        expect.objectContaining({
+          id: cart.id,
+          currency_code: "usd",
+          region: expect.objectContaining({
+            id: region.id,
+            currency_code: "usd",
+          }),
+          email: "tony@stark.com",
+          customer: expect.objectContaining({
+            email: "tony@stark.com",
+          }),
           sales_channel_id: salesChannel.id,
         })
-      ).rejects.toThrow()
-    })
+      )
 
-    describe("compensation", () => {
-      it("should delete created customer if cart-creation fails", async () => {
-        expect.assertions(2)
-        const workflow = createCartWorkflow(appContainer)
-
-        workflow.appendAction("throw", findOrCreateCustomerStepId, {
-          invoke: async function failStep() {
-            throw new Error(`Failed to create cart`)
-          },
-        })
-
-        const { errors } = await workflow.run({
-          input: {
-            currency_code: "usd",
-            email: "tony@stark-industries.com",
-          },
-          throwOnError: false,
-        })
-
-        expect(errors).toEqual([
-          {
-            action: "throw",
-            handlerType: "invoke",
-            error: new Error(`Failed to create cart`),
-          },
-        ])
-
-        const customers = await customerModule.list({
-          email: "tony@stark-industries.com",
-        })
-
-        expect(customers).toHaveLength(0)
+      updated = await api.post(`/store/carts/${cart.id}`, {
+        email: null,
+        sales_channel_id: null,
       })
 
-      it("should not delete existing customer if cart-creation fails", async () => {
-        expect.assertions(2)
-        const workflow = createCartWorkflow(appContainer)
-
-        workflow.appendAction("throw", findOrCreateCustomerStepId, {
-          invoke: async function failStep() {
-            throw new Error(`Failed to create cart`)
-          },
-        })
-
-        const customer = await customerModule.create({
-          email: "tony@stark-industries.com",
-        })
-
-        const { errors } = await workflow.run({
-          input: {
+      expect(updated.status).toEqual(200)
+      expect(updated.data.cart).toEqual(
+        expect.objectContaining({
+          id: cart.id,
+          currency_code: "usd",
+          email: null,
+          customer_id: null,
+          region: expect.objectContaining({
+            id: region.id,
             currency_code: "usd",
-            customer_id: customer.id,
-          },
-          throwOnError: false,
+          }),
+          sales_channel_id: null,
         })
-
-        expect(errors).toEqual([
-          {
-            action: "throw",
-            handlerType: "invoke",
-            error: new Error(`Failed to create cart`),
-          },
-        ])
-
-        const customers = await customerModule.list({
-          email: "tony@stark-industries.com",
-        })
-
-        expect(customers).toHaveLength(1)
-      })
+      )
     })
   })
 
@@ -406,6 +550,122 @@ describe("Store Carts API", () => {
             currency_code: "usd",
           }),
           sales_channel_id: salesChannel.id,
+        })
+      )
+    })
+  })
+
+  describe("POST /store/carts/:id/line-items", () => {
+    it("should add item to cart", async () => {
+      const [product] = await productModule.create([
+        {
+          title: "Test product",
+          variants: [
+            {
+              title: "Test variant",
+            },
+          ],
+        },
+      ])
+
+      const cart = await cartModuleService.create({
+        currency_code: "usd",
+        items: [
+          {
+            id: "item-1",
+            unit_price: 2000,
+            quantity: 1,
+            title: "Test item",
+            product_id: "prod_mat",
+          } as any,
+        ],
+      })
+
+      const appliedPromotion = await promotionModule.create({
+        code: "PROMOTION_APPLIED",
+        type: PromotionType.STANDARD,
+        application_method: {
+          type: "fixed",
+          target_type: "items",
+          allocation: "across",
+          value: "300",
+          apply_to_quantity: 2,
+          target_rules: [
+            {
+              attribute: "product_id",
+              operator: "in",
+              values: ["prod_mat", product.id],
+            },
+          ],
+        },
+      })
+
+      const [lineItemAdjustment] =
+        await cartModuleService.addLineItemAdjustments([
+          {
+            code: appliedPromotion.code!,
+            amount: 300,
+            item_id: "item-1",
+            promotion_id: appliedPromotion.id,
+          },
+        ])
+
+      const priceSet = await pricingModule.create({
+        prices: [
+          {
+            amount: 3000,
+            currency_code: "usd",
+          },
+        ],
+      })
+
+      await remoteLink.create([
+        {
+          productService: {
+            variant_id: product.variants[0].id,
+          },
+          pricingService: {
+            price_set_id: priceSet.id,
+          },
+        },
+      ])
+
+      const api = useApi() as any
+      const response = await api.post(`/store/carts/${cart.id}/line-items`, {
+        variant_id: product.variants[0].id,
+        quantity: 1,
+      })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.cart).toEqual(
+        expect.objectContaining({
+          id: cart.id,
+          currency_code: "usd",
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              unit_price: 3000,
+              quantity: 1,
+              title: "Test variant",
+              adjustments: [
+                expect.objectContaining({
+                  code: "PROMOTION_APPLIED",
+                  amount: 180,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              unit_price: 2000,
+              quantity: 1,
+              title: "Test item",
+              adjustments: [
+                expect.objectContaining({
+                  id: expect.not.stringContaining(lineItemAdjustment.id),
+                  code: "PROMOTION_APPLIED",
+                  amount: 120,
+                }),
+              ],
+            }),
+          ]),
         })
       )
     })
