@@ -38,7 +38,7 @@ describe("Regions - Admin", () => {
   beforeEach(async () => {
     await createAdminUser(dbConnection, adminHeaders)
 
-    await service.createDefaultCountriesAndCurrencies()
+    await service.createDefaultCountries()
   })
 
   afterEach(async () => {
