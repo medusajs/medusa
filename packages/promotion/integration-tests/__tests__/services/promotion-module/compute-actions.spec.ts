@@ -83,7 +83,7 @@ describe("Promotion Service: computeActions", () => {
             type: "fixed",
             target_type: "items",
             allocation: "each",
-            value: "200",
+            value: 200,
             max_quantity: 1,
           },
         },
@@ -126,7 +126,7 @@ describe("Promotion Service: computeActions", () => {
             type: "fixed",
             target_type: "items",
             allocation: "each",
-            value: "200",
+            value: 200,
             max_quantity: 1,
           },
         },
@@ -179,7 +179,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "each",
-              value: "200",
+              value: 200,
               max_quantity: 1,
               target_rules: [
                 {
@@ -256,7 +256,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "each",
-              value: "30",
+              value: 30,
               max_quantity: 2,
               target_rules: [
                 {
@@ -284,7 +284,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "each",
-              value: "50",
+              value: 50,
               max_quantity: 1,
               target_rules: [
                 {
@@ -376,7 +376,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "each",
-              value: "500",
+              value: 500,
               max_quantity: 2,
               target_rules: [
                 {
@@ -404,7 +404,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "each",
-              value: "50",
+              value: 50,
               max_quantity: 1,
               target_rules: [
                 {
@@ -487,7 +487,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "each",
-              value: "500",
+              value: 500,
               max_quantity: 5,
               target_rules: [
                 {
@@ -550,7 +550,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "each",
-              value: "500",
+              value: 500,
               max_quantity: 5,
               target_rules: [
                 {
@@ -612,7 +612,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "each",
-              value: "10",
+              value: 10,
               max_quantity: 1,
               target_rules: [
                 {
@@ -689,7 +689,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "each",
-              value: "30",
+              value: 30,
               max_quantity: 2,
               target_rules: [
                 {
@@ -717,7 +717,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "each",
-              value: "10",
+              value: 10,
               max_quantity: 1,
               target_rules: [
                 {
@@ -809,7 +809,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "each",
-              value: "100",
+              value: 100,
               max_quantity: 10,
               target_rules: [
                 {
@@ -837,7 +837,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "each",
-              value: "50",
+              value: 50,
               max_quantity: 10,
               target_rules: [
                 {
@@ -920,7 +920,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "each",
-              value: "100",
+              value: 100,
               max_quantity: 5,
               target_rules: [
                 {
@@ -978,7 +978,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "each",
-              value: "10",
+              value: 10,
               max_quantity: 5,
               target_rules: [
                 {
@@ -1042,7 +1042,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "across",
-              value: "400",
+              value: 400,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1119,7 +1119,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "across",
-              value: "400",
+              value: 400,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1195,7 +1195,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "across",
-              value: "30",
+              value: 30,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1222,7 +1222,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "across",
-              value: "50",
+              value: 50,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1313,7 +1313,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "across",
-              value: "1000",
+              value: 1000,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1340,7 +1340,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "across",
-              value: "50",
+              value: 50,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1422,7 +1422,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "across",
-              value: "1500",
+              value: 1500,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1479,7 +1479,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "items",
               allocation: "across",
-              value: "500",
+              value: 500,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1540,7 +1540,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "across",
-              value: "10",
+              value: 10,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1617,7 +1617,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "across",
-              value: "10",
+              value: 10,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1693,7 +1693,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "across",
-              value: "10",
+              value: 10,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1720,7 +1720,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "across",
-              value: "10",
+              value: 10,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1811,7 +1811,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "across",
-              value: "10",
+              value: 10,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1838,7 +1838,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "across",
-              value: "10",
+              value: 10,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1932,7 +1932,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "across",
-              value: "100",
+              value: 100,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -1989,7 +1989,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "items",
               allocation: "across",
-              value: "10",
+              value: 10,
               target_rules: [
                 {
                   attribute: "product_category.id",
@@ -2052,7 +2052,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "shipping_methods",
               allocation: "each",
-              value: "200",
+              value: 200,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2129,7 +2129,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "shipping_methods",
               allocation: "each",
-              value: "200",
+              value: 200,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2206,7 +2206,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "shipping_methods",
               allocation: "each",
-              value: "200",
+              value: 200,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2273,7 +2273,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "shipping_methods",
               allocation: "each",
-              value: "200",
+              value: 200,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2301,7 +2301,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "shipping_methods",
               allocation: "each",
-              value: "200",
+              value: 200,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2386,7 +2386,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "shipping_methods",
               allocation: "each",
-              value: "500",
+              value: 500,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2414,7 +2414,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "shipping_methods",
               allocation: "each",
-              value: "200",
+              value: 200,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2496,7 +2496,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "shipping_methods",
               allocation: "each",
-              value: "1200",
+              value: 1200,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2550,7 +2550,7 @@ describe("Promotion Service: computeActions", () => {
               type: "fixed",
               target_type: "shipping_methods",
               allocation: "each",
-              value: "1200",
+              value: 1200,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2608,7 +2608,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "each",
-              value: "10",
+              value: 10,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2685,7 +2685,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "each",
-              value: "10",
+              value: 10,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2762,7 +2762,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "each",
-              value: "10",
+              value: 10,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2829,7 +2829,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "each",
-              value: "10",
+              value: 10,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2857,7 +2857,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "each",
-              value: "10",
+              value: 10,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2948,7 +2948,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "each",
-              value: "10",
+              value: 10,
               max_quantity: 2,
               target_rules: [
                 {
@@ -2976,7 +2976,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "each",
-              value: "10",
+              value: 10,
               max_quantity: 2,
               target_rules: [
                 {
@@ -3070,7 +3070,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "each",
-              value: "100",
+              value: 100,
               max_quantity: 2,
               target_rules: [
                 {
@@ -3124,7 +3124,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "each",
-              value: "10",
+              value: 10,
               max_quantity: 2,
               target_rules: [
                 {
@@ -3184,7 +3184,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.FIXED,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "200",
+              value: 200,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -3260,7 +3260,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.FIXED,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "200",
+              value: 200,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -3335,7 +3335,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.FIXED,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "200",
+              value: 200,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -3362,7 +3362,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.FIXED,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "200",
+              value: 200,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -3452,7 +3452,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.FIXED,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "1000",
+              value: 1000,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -3479,7 +3479,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.FIXED,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "200",
+              value: 200,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -3560,7 +3560,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.FIXED,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "1200",
+              value: 1200,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -3613,7 +3613,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.FIXED,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "1200",
+              value: 1200,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -3670,7 +3670,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "10",
+              value: 10,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -3746,7 +3746,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "10",
+              value: 10,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -3821,7 +3821,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "10",
+              value: 10,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -3848,7 +3848,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "10",
+              value: 10,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -3938,7 +3938,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "100",
+              value: 100,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -3965,7 +3965,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "10",
+              value: 10,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -4046,7 +4046,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "100",
+              value: 100,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -4099,7 +4099,7 @@ describe("Promotion Service: computeActions", () => {
               type: ApplicationMethodType.PERCENTAGE,
               target_type: "shipping_methods",
               allocation: "across",
-              value: "10",
+              value: 10,
               target_rules: [
                 {
                   attribute: "shipping_option.id",
@@ -4156,7 +4156,7 @@ describe("Promotion Service: computeActions", () => {
           application_method: {
             type: "fixed",
             target_type: "order",
-            value: "200",
+            value: 200,
             max_quantity: 2,
           },
         },
@@ -4226,7 +4226,7 @@ describe("Promotion Service: computeActions", () => {
           application_method: {
             type: "fixed",
             target_type: "order",
-            value: "200",
+            value: 200,
             max_quantity: 2,
           },
         },
@@ -4295,7 +4295,7 @@ describe("Promotion Service: computeActions", () => {
           application_method: {
             type: "fixed",
             target_type: "order",
-            value: "30",
+            value: 30,
             max_quantity: 2,
           },
         },
@@ -4315,7 +4315,7 @@ describe("Promotion Service: computeActions", () => {
           application_method: {
             type: "fixed",
             target_type: "order",
-            value: "50",
+            value: 50,
             max_quantity: 1,
           },
         },
@@ -4399,7 +4399,7 @@ describe("Promotion Service: computeActions", () => {
           application_method: {
             type: "fixed",
             target_type: "order",
-            value: "500",
+            value: 500,
             max_quantity: 2,
           },
         },
@@ -4419,7 +4419,7 @@ describe("Promotion Service: computeActions", () => {
           application_method: {
             type: "fixed",
             target_type: "order",
-            value: "50",
+            value: 50,
             max_quantity: 1,
           },
         },
@@ -4501,7 +4501,7 @@ describe("Promotion Service: computeActions", () => {
             type: "fixed",
             target_type: "items",
             allocation: "each",
-            value: "200",
+            value: 200,
             max_quantity: 1,
             target_rules: [
               {
@@ -4596,7 +4596,7 @@ describe("Promotion Service: computeActions", () => {
             type: "fixed",
             target_type: "shipping_methods",
             allocation: "across",
-            value: "200",
+            value: 200,
             target_rules: [
               {
                 attribute: "shipping_option.id",

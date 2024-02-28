@@ -3,11 +3,14 @@ import {
   PaymentProviderError,
   PaymentProviderSessionResponse,
   PaymentSessionStatus,
+  ProviderWebhookPayload,
+  WebhookActionResult,
 } from "@medusajs/types"
-import { AbstractPaymentProvider } from "@medusajs/utils"
+import { AbstractPaymentProvider, PaymentActions } from "@medusajs/utils"
 
 export class SystemProviderService extends AbstractPaymentProvider {
   static identifier = "system"
+  static PROVIDER = "system"
 
   async getStatus(_): Promise<string> {
     return "authorized"
@@ -65,6 +68,12 @@ export class SystemProviderService extends AbstractPaymentProvider {
 
   async cancelPayment(_): Promise<Record<string, unknown>> {
     return {}
+  }
+
+  async getWebhookActionAndData(
+    data: ProviderWebhookPayload["payload"]
+  ): Promise<WebhookActionResult> {
+    return { action: PaymentActions.NOT_SUPPORTED }
   }
 }
 

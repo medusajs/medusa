@@ -2,12 +2,12 @@ import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
   DALUtils,
+  MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
-  BeforeUpdate,
   Cascade,
   Collection,
   Entity,
@@ -17,7 +17,7 @@ import {
   OneToMany,
   OptionalProps,
   PrimaryKey,
-  Property,
+  Property
 } from "@mikro-orm/core"
 import Cart from "./cart"
 import LineItemAdjustment from "./line-item-adjustment"
@@ -31,6 +31,33 @@ type OptionalLineItemProps =
   | "cart"
   | DAL.SoftDeletableEntityDateColumns
 
+const CartIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_line_item_cart_id",
+  tableName: "cart_line_item",
+  columns: "cart_id",
+  where: "deleted_at IS NULL",
+}).MikroORMIndex
+
+const VariantIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_line_item_variant_id",
+  tableName: "cart_line_item",
+  columns: "variant_id",
+  where: "deleted_at IS NULL AND variant_id IS NOT NULL",
+}).MikroORMIndex
+
+const ProductIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_line_item_product_id",
+  tableName: "cart_line_item",
+  columns: "product_id",
+  where: "deleted_at IS NULL AND product_id IS NOT NULL",
+}).MikroORMIndex
+
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "cart_line_item",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+}).MikroORMIndex
+
 @Entity({ tableName: "cart_line_item" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class LineItem {
@@ -39,19 +66,16 @@ export default class LineItem {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @createPsqlIndexStatementHelper({
-    name: "IDX_line_item_cart_id",
-    tableName: "cart_line_item",
-    columns: "cart_id",
-    where: "deleted_at IS NULL",
-  }).MikroORMIndex()
-  @Property({ columnType: "text" })
-  cart_id: string
-
+  @CartIdIndex()
   @ManyToOne({
     entity: () => Cart,
-    cascade: [Cascade.REMOVE, Cascade.PERSIST, "soft-remove"] as any,
+    columnType: "text",
+    fieldName: "cart_id",
+    mapToPk: true,
   })
+  cart_id: string
+
+  @ManyToOne({ entity: () => Cart, persist: false })
   cart: Cart
 
   @Property({ columnType: "text" })
@@ -66,21 +90,11 @@ export default class LineItem {
   @Property({ columnType: "integer" })
   quantity: number
 
-  @createPsqlIndexStatementHelper({
-    name: "IDX_line_item_variant_id",
-    tableName: "cart_line_item",
-    columns: "variant_id",
-    where: "deleted_at IS NULL AND variant_id IS NOT NULL",
-  }).MikroORMIndex()
+  @VariantIdIndex()
   @Property({ columnType: "text", nullable: true })
   variant_id: string | null = null
 
-  @createPsqlIndexStatementHelper({
-    name: "IDX_line_item_product_id",
-    tableName: "cart_line_item",
-    columns: "product_id",
-    where: "deleted_at IS NULL AND product_id IS NOT NULL",
-  }).MikroORMIndex()
+  @ProductIdIndex()
   @Property({ columnType: "text", nullable: true })
   product_id: string | null = null
 
@@ -123,13 +137,13 @@ export default class LineItem {
   @Property({ columnType: "boolean" })
   is_tax_inclusive = false
 
-  @Property({ columnType: "numeric", nullable: true })
+  @MikroOrmBigNumberProperty({ nullable: true })
   compare_at_unit_price?: BigNumber | number | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
   raw_compare_at_unit_price: BigNumberRawValue | null = null
 
-  @Property({ columnType: "numeric" })
+  @MikroOrmBigNumberProperty()
   unit_price: BigNumber | number
 
   @Property({ columnType: "jsonb" })
@@ -144,6 +158,9 @@ export default class LineItem {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
   adjustments = new Collection<LineItemAdjustment>(this)
+
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
 
   @Property({
     onCreate: () => new Date(),
@@ -160,39 +177,17 @@ export default class LineItem {
   })
   updated_at: Date
 
-  @createPsqlIndexStatementHelper({
-    tableName: "cart_line_item",
-    columns: "deleted_at",
-    where: "deleted_at IS NOT NULL",
-  }).MikroORMIndex()
+  @DeletedAtIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "cali")
-
-    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
-
-    this.unit_price = val.numeric
-    this.raw_unit_price = val.raw!
-  }
-
-  @BeforeUpdate()
-  onUpdate() {
-    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
-
-    this.unit_price = val.numeric
-    this.raw_unit_price = val.raw as BigNumberRawValue
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "cali")
-
-    const val = new BigNumber(this.raw_unit_price ?? this.unit_price)
-
-    this.unit_price = val.numeric
-    this.raw_unit_price = val.raw!
   }
 }

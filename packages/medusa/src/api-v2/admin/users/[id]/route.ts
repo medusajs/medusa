@@ -1,15 +1,18 @@
 import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
-import { deleteUsersWorkflow, updateUsersWorkflow } from "@medusajs/core-flows"
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
 import { IUserModuleService, UpdateUserDTO } from "@medusajs/types"
-import { ModuleRegistrationName } from "../../../../../../modules-sdk/dist"
+import { deleteUsersWorkflow, updateUsersWorkflow } from "@medusajs/core-flows"
+
 import { AdminUpdateUserRequest } from "../validators"
+import { ModuleRegistrationName } from "../../../../../../modules-sdk/dist"
 
 // Get user
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const { id } = req.params
 
   const moduleService: IUserModuleService = req.scope.resolve(
@@ -21,14 +24,17 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 
 // update user
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminUpdateUserRequest>,
+  res: MedusaResponse
+) => {
   const workflow = updateUsersWorkflow(req.scope)
 
   const input = {
     updates: [
       {
         id: req.params.id,
-        ...(req.validatedBody as AdminUpdateUserRequest),
+        ...req.validatedBody,
       } as UpdateUserDTO,
     ],
   }
@@ -41,7 +47,10 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 
 // delete user
-export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const { id } = req.params
   const workflow = deleteUsersWorkflow(req.scope)
 

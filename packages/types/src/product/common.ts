@@ -98,7 +98,7 @@ export interface ProductDTO {
    *
    * @expandable
    */
-  type: ProductTypeDTO[]
+  type: ProductTypeDTO
   /**
    * The associated product tags.
    *

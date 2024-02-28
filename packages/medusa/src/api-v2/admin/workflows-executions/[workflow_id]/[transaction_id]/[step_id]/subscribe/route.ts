@@ -1,11 +1,15 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
 import {
-  MedusaRequest,
+  AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../types/routing"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const workflowEngineService: IWorkflowEngineService = req.scope.resolve(
     ModuleRegistrationName.WORKFLOW_ENGINE
   )

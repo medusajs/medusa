@@ -1,15 +1,22 @@
 import {
-  updateCustomersWorkflow,
-  deleteCustomersWorkflow,
-} from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
 import {
   CustomerUpdatableFields,
   ICustomerModuleService,
 } from "@medusajs/types"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import {
+  deleteCustomersWorkflow,
+  updateCustomersWorkflow,
+} from "@medusajs/core-flows"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const customerModuleService = req.scope.resolve<ICustomerModuleService>(
     ModuleRegistrationName.CUSTOMER
   )
@@ -22,12 +29,15 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   res.status(200).json({ customer })
 }
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<CustomerUpdatableFields>,
+  res: MedusaResponse
+) => {
   const updateCustomers = updateCustomersWorkflow(req.scope)
   const { result, errors } = await updateCustomers.run({
     input: {
       selector: { id: req.params.id },
-      update: req.validatedBody as CustomerUpdatableFields,
+      update: req.validatedBody,
     },
     throwOnError: false,
   })
@@ -39,7 +49,10 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   res.status(200).json({ customer: result[0] })
 }
 
-export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const id = req.params.id
   const deleteCustomers = deleteCustomersWorkflow(req.scope)
 

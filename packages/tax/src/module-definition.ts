@@ -5,6 +5,7 @@ import * as Models from "@models"
 import * as ModuleModels from "@models"
 import * as ModuleServices from "@services"
 import { TaxModuleService } from "@services"
+import loadProviders from "./loaders/providers"
 
 const migrationScriptOptions = {
   moduleName: Modules.TAX,
@@ -33,7 +34,7 @@ const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
 })
 
 const service = TaxModuleService
-const loaders = [containerLoader, connectionLoader] as any
+const loaders = [containerLoader, connectionLoader, loadProviders] as any
 
 export const moduleDefinition: ModuleExports = {
   service,
