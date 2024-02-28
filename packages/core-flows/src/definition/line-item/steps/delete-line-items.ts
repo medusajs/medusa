@@ -10,7 +10,7 @@ export const deleteLineItemsStep = createStep(
       ModuleRegistrationName.CART
     )
 
-    await service.removeLineItems(ids)
+    await service.softDeleteLineItems(ids)
 
     return new StepResponse(void 0, ids)
   },
