@@ -1,14 +1,29 @@
-import { CreateGeoZoneDTO, UpdateGeoZoneDTO } from "./geo-zone"
+import {
+  CreateCityGeoZoneDTO,
+  CreateCountryGeoZoneDTO,
+  CreateProvinceGeoZoneDTO,
+  CreateZipGeoZoneDTO,
+} from "./geo-zone"
 
 export interface CreateServiceZoneDTO {
-  fulfillment_set_id: string
   name: string
-  geo_zones: (
-    | Omit<CreateGeoZoneDTO, "service_zone_id">
-    | Omit<UpdateGeoZoneDTO, "service_zone_id">
+  fulfillment_set_id: string
+  geo_zones?: (
+    | Omit<CreateCountryGeoZoneDTO, "service_zone_id">
+    | Omit<CreateProvinceGeoZoneDTO, "service_zone_id">
+    | Omit<CreateCityGeoZoneDTO, "service_zone_id">
+    | Omit<CreateZipGeoZoneDTO, "service_zone_id">
   )[]
 }
 
-export interface UpdateServiceZoneDTO extends Partial<CreateServiceZoneDTO> {
+export interface UpdateServiceZoneDTO {
   id: string
+  name?: string
+  geo_zones?: (
+    | Omit<CreateCountryGeoZoneDTO, "service_zone_id">
+    | Omit<CreateProvinceGeoZoneDTO, "service_zone_id">
+    | Omit<CreateCityGeoZoneDTO, "service_zone_id">
+    | Omit<CreateZipGeoZoneDTO, "service_zone_id">
+    | { id: string }
+  )[]
 }

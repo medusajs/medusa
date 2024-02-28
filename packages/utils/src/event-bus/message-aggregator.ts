@@ -1,8 +1,11 @@
 import {
+  EventBusTypes,
   IMessageAggregator,
   Message,
   MessageAggregatorFormat,
 } from "@medusajs/types"
+
+import { buildEventMessages } from "./build-event-messages"
 
 export class MessageAggregator implements IMessageAggregator {
   private messages: Message[]
@@ -21,6 +24,15 @@ export class MessageAggregator implements IMessageAggregator {
     } else {
       this.messages.push(msg)
     }
+  }
+
+  saveRawMessageData<T>(
+    messageData:
+      | EventBusTypes.MessageFormat<T>
+      | EventBusTypes.MessageFormat<T>[],
+    options?: Record<string, unknown>
+  ): void {
+    this.save(buildEventMessages(messageData, options))
   }
 
   getMessages(format?: MessageAggregatorFormat): {

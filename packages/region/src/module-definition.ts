@@ -1,5 +1,5 @@
 import { ModuleExports } from "@medusajs/types"
-import { RegionModuleService } from "@services"
+import { RegionModuleService } from "./services"
 
 import { Modules } from "@medusajs/modules-sdk"
 import { ModulesSdkUtils } from "@medusajs/utils"

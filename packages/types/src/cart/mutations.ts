@@ -1,4 +1,4 @@
-import { CartLineItemDTO } from "./common"
+import { CartDTO, CartLineItemDTO } from "./common"
 
 /** ADDRESS START */
 export interface UpsertAddressDTO {
@@ -33,29 +33,32 @@ export interface CreateCartDTO {
   currency_code: string
   shipping_address_id?: string
   billing_address_id?: string
-  shipping_address?: CreateAddressDTO | UpdateAddressDTO
-  billing_address?: CreateAddressDTO | UpdateAddressDTO
+  shipping_address?: CreateAddressDTO | string
+  billing_address?: CreateAddressDTO | string
   metadata?: Record<string, unknown>
 
   items?: CreateLineItemDTO[]
 }
 
-export interface UpdateCartDTO {
-  id: string
+export interface UpdateCartDataDTO {
   region_id?: string
-  customer_id?: string
-  sales_channel_id?: string
+  customer_id?: string | null
+  sales_channel_id?: string | null
 
-  email?: string
+  email?: string | null
   currency_code?: string
 
-  shipping_address_id?: string
-  billing_address_id?: string
+  shipping_address_id?: string | null
+  billing_address_id?: string | null
 
-  billing_address?: CreateAddressDTO | UpdateAddressDTO
-  shipping_address?: CreateAddressDTO | UpdateAddressDTO
+  billing_address?: CreateAddressDTO | UpdateAddressDTO | null
+  shipping_address?: CreateAddressDTO | UpdateAddressDTO | null
 
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
+}
+
+export interface UpdateCartDTO extends UpdateCartDataDTO {
+  id: string
 }
 
 /** CART END */
@@ -171,6 +174,11 @@ export interface UpdateLineItemWithSelectorDTO {
   data: Partial<UpdateLineItemDTO>
 }
 
+export interface UpdateCartWithSelectorDTO {
+  selector: Partial<CartDTO>
+  data: UpdateCartDataDTO
+}
+
 export interface UpdateLineItemDTO
   extends Omit<
     CreateLineItemDTO,
@@ -181,6 +189,7 @@ export interface UpdateLineItemDTO
   title?: string
   quantity?: number
   unit_price?: number
+  metadata?: Record<string, unknown> | null
 
   tax_lines?: UpdateTaxLineDTO[] | CreateTaxLineDTO[]
   adjustments?: UpdateAdjustmentDTO[] | CreateAdjustmentDTO[]

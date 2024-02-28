@@ -3,7 +3,12 @@ import { lowerCaseFirst } from "../../common"
 
 const defaultContext = { __type: "MedusaContext" }
 
-class Model {}
+class Model {
+  static __meta = {
+    primaryKeys: ["id"],
+  }
+}
+
 describe("Internal Module Service Factory", () => {
   const modelRepositoryName = `${lowerCaseFirst(Model.name)}Repository`
 
@@ -44,12 +49,12 @@ describe("Internal Module Service Factory", () => {
       instance = new internalModuleService(containerMock)
     })
 
-    test("should throw model id undefined error on retrieve if id is not defined", async () => {
+    it("should throw model id undefined error on retrieve if id is not defined", async () => {
       const err = await instance.retrieve().catch((e) => e)
       expect(err.message).toBe("model - id must be defined")
     })
 
-    test("should throw an error on retrieve if composite key values are not defined", async () => {
+    it("should throw an error on retrieve if composite key values are not defined", async () => {
       class CompositeModel {
         id: string
         name: string
@@ -66,14 +71,14 @@ describe("Internal Module Service Factory", () => {
       expect(err.message).toBe("compositeModel - id, name must be defined")
     })
 
-    test("should throw NOT_FOUND error on retrieve if entity not found", async () => {
+    it("should throw NOT_FOUND error on retrieve if entity not found", async () => {
       containerMock[modelRepositoryName].find.mockResolvedValueOnce([])
 
       const err = await instance.retrieve("1").catch((e) => e)
       expect(err.message).toBe("Model with id: 1 was not found")
     })
 
-    test("should retrieve entity successfully", async () => {
+    it("should retrieve entity successfully", async () => {
       const entity = { id: "1", name: "Item" }
       containerMock[modelRepositoryName].find.mockResolvedValueOnce([entity])
 
@@ -81,7 +86,7 @@ describe("Internal Module Service Factory", () => {
       expect(result).toEqual(entity)
     })
 
-    test("should retrieve entity successfully with composite key", async () => {
+    it("should retrieve entity successfully with composite key", async () => {
       class CompositeModel {
         id: string
         name: string
@@ -103,7 +108,7 @@ describe("Internal Module Service Factory", () => {
       expect(result).toEqual(entity)
     })
 
-    test("should list entities successfully", async () => {
+    it("should list entities successfully", async () => {
       const entities = [
         { id: "1", name: "Item" },
         { id: "2", name: "Item2" },
@@ -114,7 +119,35 @@ describe("Internal Module Service Factory", () => {
       expect(result).toEqual(entities)
     })
 
-    test("should list and count entities successfully", async () => {
+    it("should list entities and relation with default ordering successfully", async () => {
+      const entities = [
+        { id: "1", name: "Item" },
+        { id: "2", name: "Item2" },
+      ]
+      containerMock[modelRepositoryName].find.mockResolvedValueOnce(entities)
+
+      const result = await instance.list(
+        {},
+        {
+          relations: ["relation"],
+        }
+      )
+
+      expect(result).toEqual(entities)
+      expect(containerMock[modelRepositoryName].find).toHaveBeenCalledWith(
+        expect.objectContaining({
+          options: expect.objectContaining({
+            populate: ["relation"],
+            orderBy: {
+              id: "ASC",
+            },
+          }),
+        }),
+        expect.any(Object)
+      )
+    })
+
+    it("should list and count entities successfully", async () => {
       const entities = [
         { id: "1", name: "Item" },
         { id: "2", name: "Item2" },
@@ -129,7 +162,7 @@ describe("Internal Module Service Factory", () => {
       expect(result).toEqual([entities, count])
     })
 
-    test("should create entity successfully", async () => {
+    it("should create entity successfully", async () => {
       const entity = { id: "1", name: "Item" }
 
       containerMock[modelRepositoryName].find.mockReturnValue([entity])
@@ -142,7 +175,7 @@ describe("Internal Module Service Factory", () => {
       expect(result).toEqual(entity)
     })
 
-    test("should create entities successfully", async () => {
+    it("should create entities successfully", async () => {
       const entities = [
         { id: "1", name: "Item" },
         { id: "2", name: "Item2" },
@@ -156,7 +189,7 @@ describe("Internal Module Service Factory", () => {
       expect(result).toEqual(entities)
     })
 
-    test("should update entity successfully", async () => {
+    it("should update entity successfully", async () => {
       const updateData = { id: "1", name: "UpdatedItem" }
 
       containerMock[modelRepositoryName].find.mockResolvedValueOnce([
@@ -171,7 +204,7 @@ describe("Internal Module Service Factory", () => {
       expect(result).toEqual([updateData])
     })
 
-    test("should update entities successfully", async () => {
+    it("should update entities successfully", async () => {
       const updateData = { id: "1", name: "UpdatedItem" }
       const entitiesToUpdate = [{ id: "1", name: "Item" }]
 
@@ -189,7 +222,7 @@ describe("Internal Module Service Factory", () => {
       ])
     })
 
-    test("should delete entity successfully", async () => {
+    it("should delete entity successfully", async () => {
       await instance.delete("1")
       expect(containerMock[modelRepositoryName].delete).toHaveBeenCalledWith(
         {
@@ -203,7 +236,7 @@ describe("Internal Module Service Factory", () => {
       )
     })
 
-    test("should delete entities successfully", async () => {
+    it("should delete entities successfully", async () => {
       const entitiesToDelete = [{ id: "1", name: "Item" }]
       containerMock[modelRepositoryName].find.mockResolvedValueOnce(
         entitiesToDelete
@@ -222,14 +255,31 @@ describe("Internal Module Service Factory", () => {
       )
     })
 
-    test("should soft delete entity successfully", async () => {
+    it("should prevent from deleting all entities", async () => {
+      const entitiesToDelete = [{ id: "1", name: "Item" }]
+      containerMock[modelRepositoryName].find.mockResolvedValueOnce(
+        entitiesToDelete
+      )
+
+      await instance.delete([])
+      expect(containerMock[modelRepositoryName].delete).not.toHaveBeenCalled()
+    })
+
+    it("should soft delete entity successfully", async () => {
       await instance.softDelete("1")
       expect(
         containerMock[modelRepositoryName].softDelete
       ).toHaveBeenCalledWith("1", defaultContext)
     })
 
-    test("should restore entity successfully", async () => {
+    it("should prevent from soft deleting all data", async () => {
+      await instance.softDelete([])
+      expect(
+        containerMock[modelRepositoryName].softDelete
+      ).not.toHaveBeenCalled()
+    })
+
+    it("should restore entity successfully", async () => {
       await instance.restore("1")
       expect(containerMock[modelRepositoryName].restore).toHaveBeenCalledWith(
         "1",
