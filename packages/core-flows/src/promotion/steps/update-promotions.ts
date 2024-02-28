@@ -1,6 +1,9 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPromotionModuleService, UpdatePromotionDTO } from "@medusajs/types"
-import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
+import {
+  convertItemResponseToUpdateRequest,
+  getSelectsAndRelationsFromObjectArray,
+} from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updatePromotionsStepId = "update-promotions"
@@ -19,19 +22,27 @@ export const updatePromotionsStep = createStep(
 
     const updatedPromotions = await promotionModule.update(data)
 
-    return new StepResponse(updatedPromotions, dataBeforeUpdate)
+    return new StepResponse(updatedPromotions, {
+      dataBeforeUpdate,
+      selects,
+      relations,
+    })
   },
-  async (dataBeforeUpdate, { container }) => {
-    if (!dataBeforeUpdate) {
+  async (revertInput, { container }) => {
+    if (!revertInput) {
       return
     }
+
+    const { dataBeforeUpdate, selects, relations } = revertInput
 
     const promotionModule = container.resolve<IPromotionModuleService>(
       ModuleRegistrationName.PROMOTION
     )
 
-    // TODO: This still requires some sanitation of data and transformation of
-    // shapes for manytomany and oneToMany relations. Create a common util.
-    await promotionModule.update(dataBeforeUpdate)
+    await promotionModule.update(
+      dataBeforeUpdate.map((data) =>
+        convertItemResponseToUpdateRequest(data, selects, relations)
+      )
+    )
   }
 )
