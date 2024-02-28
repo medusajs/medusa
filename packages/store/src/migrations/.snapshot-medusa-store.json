@@ -22,6 +22,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "'Medusa Store'",
           "mappedType": "text"
         },
         "default_sales_channel_id": {
@@ -70,11 +71,42 @@
           "length": 6,
           "default": "now()",
           "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "store",
       "schema": "public",
       "indexes": [
+        {
+          "keyName": "IDX_store_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_store_deleted_at\" ON \"store\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
         {
           "keyName": "store_pkey",
           "columnNames": [
