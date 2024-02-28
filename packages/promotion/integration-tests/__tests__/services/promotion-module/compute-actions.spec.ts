@@ -3424,13 +3424,13 @@ describe("Promotion Service: computeActions", () => {
           {
             action: "addShippingMethodAdjustment",
             shipping_method_id: "shipping_method_express",
-            amount: 83.33333333333331,
+            amount: 166.66666666666666,
             code: "PROMOTION_TEST_2",
           },
           {
             action: "addShippingMethodAdjustment",
             shipping_method_id: "shipping_method_standard",
-            amount: 16.66666666666667,
+            amount: 33.333333333333336,
             code: "PROMOTION_TEST_2",
           },
         ])
