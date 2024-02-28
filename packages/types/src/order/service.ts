@@ -12,7 +12,7 @@ import {
   FilterableOrderShippingMethodTaxLineProps,
   OrderAddressDTO,
   OrderDTO,
-  OrderDetailDTO,
+  OrderItemDTO,
   OrderLineItemAdjustmentDTO,
   OrderLineItemDTO,
   OrderLineItemTaxLineDTO,
@@ -32,8 +32,8 @@ import {
   CreateOrderShippingMethodTaxLineDTO,
   UpdateOrderAddressDTO,
   UpdateOrderDTO,
-  UpdateOrderDetailDTO,
-  UpdateOrderDetailWithSelectorDTO,
+  UpdateOrderItemDTO,
+  UpdateOrderItemWithSelectorDTO,
   UpdateOrderLineItemDTO,
   UpdateOrderLineItemTaxLineDTO,
   UpdateOrderLineItemWithSelectorDTO,
@@ -151,25 +151,25 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
 
-  updateOrderDetail(
-    selector: Partial<OrderDetailDTO>,
-    data: UpdateOrderDetailDTO,
+  updateOrderItem(
+    selector: Partial<OrderItemDTO>,
+    data: UpdateOrderItemDTO,
     sharedContext?: Context
-  ): Promise<OrderDetailDTO[]>
-  updateOrderDetail(
+  ): Promise<OrderItemDTO[]>
+  updateOrderItem(
     orderDetailId: string,
-    data: Partial<UpdateOrderDetailDTO>,
+    data: Partial<UpdateOrderItemDTO>,
     sharedContext?: Context
-  ): Promise<OrderDetailDTO>
+  ): Promise<OrderItemDTO>
 
-  updateOrderDetail(
+  updateOrderItem(
     orderDetailIdOrDataOrSelector:
       | string
-      | UpdateOrderDetailWithSelectorDTO[]
-      | Partial<OrderDetailDTO>,
-    data?: UpdateOrderDetailDTO | Partial<UpdateOrderDetailDTO>,
+      | UpdateOrderItemWithSelectorDTO[]
+      | Partial<OrderItemDTO>,
+    data?: UpdateOrderItemDTO | Partial<UpdateOrderItemDTO>,
     sharedContext?: Context
-  ): Promise<OrderDetailDTO[] | OrderDetailDTO>
+  ): Promise<OrderItemDTO[] | OrderItemDTO>
 
   listShippingMethods(
     filters: FilterableOrderShippingMethodProps,

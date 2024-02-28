@@ -20,22 +20,22 @@ import Order from "./order"
 type OptionalLineItemProps = DAL.EntityDateColumns
 
 const OrderIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_detail",
+  tableName: "order_item",
   columns: ["order_id"],
 })
 
 const OrderVersionIndex = createPsqlIndexStatementHelper({
-  tableName: "order_detail",
+  tableName: "order_item",
   columns: ["version"],
 })
 
 const ItemIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_detail",
+  tableName: "order_item",
   columns: ["item_id"],
 })
 
-@Entity({ tableName: "order_detail" })
-export default class OrderDetail {
+@Entity({ tableName: "order_item" })
+export default class OrderItem {
   [OptionalProps]?: OptionalLineItemProps
 
   @PrimaryKey({ columnType: "text" })
@@ -135,14 +135,14 @@ export default class OrderDetail {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "orddetail")
+    this.id = generateEntityId(this.id, "orditem")
     this.order_id ??= this.order?.id
     this.item_id ??= this.item?.id
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "orddetail")
+    this.id = generateEntityId(this.id, "orditem")
     this.order_id ??= this.order?.id
     this.item_id ??= this.item?.id
   }

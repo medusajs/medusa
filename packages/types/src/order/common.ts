@@ -430,6 +430,11 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
   adjustments?: OrderLineItemAdjustmentDTO[]
 
   /**
+   * The details of the item
+   */
+  detail: OrderItemDTO
+
+  /**
    * The date when the order line item was created.
    */
   created_at: Date
@@ -440,7 +445,7 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
   updated_at: Date
 }
 
-export interface OrderDetailDTO {
+export interface OrderItemDTO {
   /**
    * The ID of the order detail.
    */
@@ -588,7 +593,7 @@ export interface OrderDTO {
    *
    * @expandable
    */
-  items?: OrderDetailDTO[]
+  items?: OrderLineItemDTO[]
   /**
    * The associated shipping methods
    *

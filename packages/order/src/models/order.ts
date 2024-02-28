@@ -19,7 +19,7 @@ import {
 } from "@mikro-orm/core"
 import { OrderSummary } from "../types/common"
 import Address from "./address"
-import OrderDetail from "./order-detail"
+import OrderItem from "./order-item"
 import ShippingMethod from "./shipping-method"
 import Transaction from "./transaction"
 
@@ -160,10 +160,10 @@ export default class Order {
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @OneToMany(() => OrderDetail, (itemDetail) => itemDetail.order, {
+  @OneToMany(() => OrderItem, (itemDetail) => itemDetail.order, {
     cascade: [Cascade.PERSIST],
   })
-  items = new Collection<OrderDetail>(this)
+  items = new Collection<OrderItem>(this)
 
   @OneToMany(() => ShippingMethod, (shippingMethod) => shippingMethod.order, {
     cascade: [Cascade.PERSIST],

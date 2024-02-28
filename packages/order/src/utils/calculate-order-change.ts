@@ -85,9 +85,7 @@ export class OrderChangeProcessing {
     }
 
     const summary = this.summary
-    for (let idx = 0; idx < this.actions.length; idx++) {
-      const action = this.actions[idx]
-
+    for (const action of this.actions) {
       if (!this.isEventActive(action)) {
         continue
       }

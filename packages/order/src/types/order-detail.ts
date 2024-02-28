@@ -1,6 +1,6 @@
 import { BigNumberInput } from "@medusajs/types"
 
-export interface PartialUpsertOrderDetailDTO {
+export interface PartialUpsertOrderItemDTO {
   order_id?: string
   version?: number
   item_id?: string
@@ -15,15 +15,15 @@ export interface PartialUpsertOrderDetailDTO {
   metadata?: Record<string, unknown>
 }
 
-export interface CreateOrderDetailDTO extends PartialUpsertOrderDetailDTO {
+export interface CreateOrderItemDTO extends PartialUpsertOrderItemDTO {
   order_id: string
   version: number
   item_id: string
   quantity: BigNumberInput
 }
 
-export interface UpdateOrderDetailDTO
-  extends PartialUpsertOrderDetailDTO,
-    Partial<CreateOrderDetailDTO> {
+export interface UpdateOrderItemDTO
+  extends PartialUpsertOrderItemDTO,
+    Partial<CreateOrderItemDTO> {
   id: string
 }

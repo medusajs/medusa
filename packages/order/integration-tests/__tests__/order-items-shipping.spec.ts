@@ -140,10 +140,8 @@ moduleIntegrationTestRunner({
               currency_code: "eur",
               items: expect.arrayContaining([
                 expect.objectContaining({
-                  item: expect.objectContaining({
-                    title: "test",
-                    unit_price: 100,
-                  }),
+                  title: "test",
+                  unit_price: 100,
                 }),
               ]),
             })
@@ -187,11 +185,11 @@ moduleIntegrationTestRunner({
                 currency_code: "eur",
                 items: expect.arrayContaining([
                   expect.objectContaining({
-                    item: expect.objectContaining({
-                      title: "test",
-                      unit_price: 100,
+                    title: "test",
+                    unit_price: 100,
+                    detail: expect.objectContaining({
+                      quantity: 1,
                     }),
-                    quantity: 1,
                   }),
                 ]),
               }),
@@ -199,11 +197,15 @@ moduleIntegrationTestRunner({
                 currency_code: "usd",
                 items: expect.arrayContaining([
                   expect.objectContaining({
-                    item: expect.objectContaining({
-                      title: "test-2",
-                      unit_price: 200,
-                    }),
+                    title: "test-2",
+                    unit_price: 200,
                     quantity: 2,
+                    raw_quantity: expect.objectContaining({
+                      value: "2",
+                    }),
+                    detail: expect.objectContaining({
+                      quantity: 2,
+                    }),
                   }),
                 ]),
               }),
@@ -399,10 +401,8 @@ moduleIntegrationTestRunner({
           expect(order.items[0]).toEqual(
             expect.objectContaining({
               quantity: 1,
-              item: expect.objectContaining({
-                title: "test",
-                unit_price: 100,
-              }),
+              title: "test",
+              unit_price: 100,
             })
           )
           expect(order.items?.length).toBe(1)
@@ -439,17 +439,13 @@ moduleIntegrationTestRunner({
           expect(order.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                item: expect.objectContaining({
-                  title: "test",
-                  unit_price: 100,
-                }),
+                title: "test",
+                unit_price: 100,
                 quantity: 1,
               }),
               expect.objectContaining({
-                item: expect.objectContaining({
-                  title: "test-2",
-                  unit_price: 200,
-                }),
+                title: "test-2",
+                unit_price: 200,
                 quantity: 2,
               }),
             ])
@@ -497,8 +493,8 @@ moduleIntegrationTestRunner({
 
           const usdItems = orders.filter((i) => i.id === usdOrder.id)[0].items
 
-          expect(eurOrder.items[0].item.id).toBe(eurItems[0].item.id)
-          expect(usdOrder.items[0].item.id).toBe(usdItems[0].item.id)
+          expect(eurOrder.items[0].id).toBe(eurItems[0].id)
+          expect(usdOrder.items[0].id).toBe(usdItems[0].id)
 
           expect(eurOrder.items?.length).toBe(1)
           expect(usdOrder.items?.length).toBe(1)
@@ -536,7 +532,7 @@ moduleIntegrationTestRunner({
             .catch((e) => e)
 
           expect(error.message).toContain(
-            "Value for OrderDetail.quantity is required, 'undefined' found"
+            "Value for OrderItem.quantity is required, 'undefined' found"
           )
         })
 
@@ -558,7 +554,7 @@ moduleIntegrationTestRunner({
             .catch((e) => e)
 
           expect(error.message).toContain(
-            "Value for OrderDetail.quantity is required, 'undefined' found"
+            "Value for OrderItem.quantity is required, 'undefined' found"
           )
         })
       })
@@ -676,17 +672,13 @@ moduleIntegrationTestRunner({
           expect(order.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                item: expect.objectContaining({
-                  title: "changed-test",
-                  unit_price: 100,
-                }),
+                title: "changed-test",
+                unit_price: 100,
                 quantity: 15,
               }),
               expect.objectContaining({
-                item: expect.objectContaining({
-                  title: "changed-other-test",
-                  unit_price: 200,
-                }),
+                title: "changed-other-test",
+                unit_price: 200,
                 quantity: 7,
               }),
             ])
@@ -953,22 +945,20 @@ moduleIntegrationTestRunner({
           expect(order.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                item_id: itemOne.id,
-                item: expect.objectContaining({
-                  adjustments: expect.arrayContaining([
-                    expect.objectContaining({
-                      item_id: itemOne.id,
-                      amount: 50,
-                      code: "50%",
-                    }),
-                  ]),
-                }),
+                id: itemOne.id,
+                adjustments: expect.arrayContaining([
+                  expect.objectContaining({
+                    item_id: itemOne.id,
+                    amount: 50,
+                    code: "50%",
+                  }),
+                ]),
               }),
             ])
           )
 
-          expect(order.items?.length).toBe(1)
-          expect(order.items?.[0].item.adjustments?.length).toBe(1)
+          expect(order.items.length).toBe(1)
+          expect(order.items[0].adjustments?.length).toBe(1)
         })
 
         it("should remove all line item adjustments for an order", async () => {
@@ -1016,16 +1006,14 @@ moduleIntegrationTestRunner({
           expect(order.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                item: expect.objectContaining({
-                  id: itemOne.id,
-                  adjustments: [],
-                }),
+                id: itemOne.id,
+                adjustments: [],
               }),
             ])
           )
 
           expect(order.items.length).toBe(1)
-          expect(order.items[0].item.adjustments.length).toBe(0)
+          expect(order.items[0].adjustments.length).toBe(0)
         })
 
         it("should update line item adjustments for an order", async () => {
@@ -1080,23 +1068,21 @@ moduleIntegrationTestRunner({
           expect(order.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                item: expect.objectContaining({
-                  id: itemOne.id,
-                  adjustments: [
-                    expect.objectContaining({
-                      id: adjustments[0].id,
-                      item_id: itemOne.id,
-                      amount: 50,
-                      code: "50%",
-                    }),
-                  ],
-                }),
+                id: itemOne.id,
+                adjustments: [
+                  expect.objectContaining({
+                    id: adjustments[0].id,
+                    item_id: itemOne.id,
+                    amount: 50,
+                    code: "50%",
+                  }),
+                ],
               }),
             ])
           )
 
           expect(order.items.length).toBe(1)
-          expect(order.items[0].item.adjustments.length).toBe(1)
+          expect(order.items[0].adjustments.length).toBe(1)
         })
       })
 
@@ -1241,15 +1227,13 @@ moduleIntegrationTestRunner({
             expect.arrayContaining([
               expect.objectContaining({
                 quantity: 1,
-                item: expect.objectContaining({
-                  adjustments: expect.arrayContaining([
-                    expect.objectContaining({
-                      item_id: itemOne.id,
-                      amount: 125,
-                      code: "FREE",
-                    }),
-                  ]),
-                }),
+                adjustments: expect.arrayContaining([
+                  expect.objectContaining({
+                    item_id: itemOne.id,
+                    amount: 125,
+                    code: "FREE",
+                  }),
+                ]),
               }),
             ])
           )
@@ -1258,15 +1242,13 @@ moduleIntegrationTestRunner({
             expect.arrayContaining([
               expect.objectContaining({
                 quantity: 2,
-                item: expect.objectContaining({
-                  adjustments: expect.arrayContaining([
-                    expect.objectContaining({
-                      item_id: itemTwo.id,
-                      amount: 150,
-                      code: "CODE-2",
-                    }),
-                  ]),
-                }),
+                adjustments: expect.arrayContaining([
+                  expect.objectContaining({
+                    item_id: itemTwo.id,
+                    amount: 150,
+                    code: "CODE-2",
+                  }),
+                ]),
               }),
             ])
           )
@@ -2006,22 +1988,20 @@ moduleIntegrationTestRunner({
           expect(order.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                item: expect.objectContaining({
-                  id: itemOne.id,
-                  tax_lines: expect.arrayContaining([
-                    expect.objectContaining({
-                      item_id: itemOne.id,
-                      rate: 25,
-                      code: "TX-2",
-                    }),
-                  ]),
-                }),
+                id: itemOne.id,
+                tax_lines: expect.arrayContaining([
+                  expect.objectContaining({
+                    item_id: itemOne.id,
+                    rate: 25,
+                    code: "TX-2",
+                  }),
+                ]),
               }),
             ])
           )
 
           expect(order.items.length).toBe(1)
-          expect(order.items[0].item.tax_lines.length).toBe(1)
+          expect(order.items[0].tax_lines.length).toBe(1)
         })
 
         it("should remove all line item tax lines for an order", async () => {
@@ -2066,16 +2046,14 @@ moduleIntegrationTestRunner({
           expect(order.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                item: expect.objectContaining({
-                  id: itemOne.id,
-                  tax_lines: [],
-                }),
+                id: itemOne.id,
+                tax_lines: [],
               }),
             ])
           )
 
           expect(order.items.length).toBe(1)
-          expect(order.items[0].item.tax_lines.length).toBe(0)
+          expect(order.items[0].tax_lines.length).toBe(0)
         })
 
         it("should update line item tax lines for an order", async () => {
@@ -2127,23 +2105,21 @@ moduleIntegrationTestRunner({
           expect(order.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                item: expect.objectContaining({
-                  id: itemOne.id,
-                  tax_lines: [
-                    expect.objectContaining({
-                      id: taxLines[0].id,
-                      item_id: itemOne.id,
-                      rate: 25,
-                      code: "TX",
-                    }),
-                  ],
-                }),
+                id: itemOne.id,
+                tax_lines: [
+                  expect.objectContaining({
+                    id: taxLines[0].id,
+                    item_id: itemOne.id,
+                    rate: 25,
+                    code: "TX",
+                  }),
+                ],
               }),
             ])
           )
 
           expect(order.items.length).toBe(1)
-          expect(order.items[0].item.tax_lines.length).toBe(1)
+          expect(order.items[0].tax_lines.length).toBe(1)
         })
 
         it("should remove, update, and create line item tax lines for an order", async () => {
@@ -2214,28 +2190,26 @@ moduleIntegrationTestRunner({
           expect(order.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                item: expect.objectContaining({
-                  id: itemOne.id,
-                  tax_lines: [
-                    expect.objectContaining({
-                      id: taxLine!.id,
-                      item_id: itemOne.id,
-                      rate: 40,
-                      code: "TX",
-                    }),
-                    expect.objectContaining({
-                      item_id: itemOne.id,
-                      rate: 25,
-                      code: "TX-2",
-                    }),
-                  ],
-                }),
+                id: itemOne.id,
+                tax_lines: [
+                  expect.objectContaining({
+                    id: taxLine!.id,
+                    item_id: itemOne.id,
+                    rate: 40,
+                    code: "TX",
+                  }),
+                  expect.objectContaining({
+                    item_id: itemOne.id,
+                    rate: 25,
+                    code: "TX-2",
+                  }),
+                ],
               }),
             ])
           )
 
           expect(order.items.length).toBe(1)
-          expect(order.items[0].item.tax_lines.length).toBe(2)
+          expect(order.items[0].tax_lines.length).toBe(2)
         })
       })
 
@@ -2376,15 +2350,13 @@ moduleIntegrationTestRunner({
             expect.arrayContaining([
               expect.objectContaining({
                 quantity: 1,
-                item: expect.objectContaining({
-                  tax_lines: expect.arrayContaining([
-                    expect.objectContaining({
-                      item_id: itemOne.id,
-                      rate: 20,
-                      code: "TX",
-                    }),
-                  ]),
-                }),
+                tax_lines: expect.arrayContaining([
+                  expect.objectContaining({
+                    item_id: itemOne.id,
+                    rate: 20,
+                    code: "TX",
+                  }),
+                ]),
               }),
             ])
           )
@@ -2393,15 +2365,13 @@ moduleIntegrationTestRunner({
             expect.arrayContaining([
               expect.objectContaining({
                 quantity: 2,
-                item: expect.objectContaining({
-                  tax_lines: expect.arrayContaining([
-                    expect.objectContaining({
-                      item_id: itemTwo.id,
-                      rate: 25,
-                      code: "TX-2",
-                    }),
-                  ]),
-                }),
+                tax_lines: expect.arrayContaining([
+                  expect.objectContaining({
+                    item_id: itemTwo.id,
+                    rate: 25,
+                    code: "TX-2",
+                  }),
+                ]),
               }),
             ])
           )
