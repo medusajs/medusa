@@ -1,14 +1,12 @@
 import {
   AuthenticatedMedusaRequest,
-  MedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
 
-import { CreateCartWorkflowInputDTO } from "@medusajs/types"
-import { StorePostCartReq } from "./validators"
 import { createCartWorkflow } from "@medusajs/core-flows"
-import { defaultStoreCartFields } from "../carts/query-config"
+import { CreateCartWorkflowInputDTO } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { defaultStoreCartFields } from "../carts/query-config"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<CreateCartWorkflowInputDTO>,
