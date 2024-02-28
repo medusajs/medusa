@@ -4,7 +4,7 @@ import { MedusaError } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
-  salesChannelId?: string
+  salesChannelId?: string | null
 }
 
 export const findSalesChannelStepId = "find-sales-channel"
@@ -14,6 +14,10 @@ export const findSalesChannelStep = createStep(
     const salesChannelService = container.resolve<ISalesChannelModuleService>(
       ModuleRegistrationName.SALES_CHANNEL
     )
+
+    if (data.salesChannelId === null) {
+      return new StepResponse(null)
+    }
 
     let salesChannel: SalesChannelDTO | undefined
     if (data.salesChannelId) {

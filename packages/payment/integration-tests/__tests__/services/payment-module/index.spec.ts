@@ -39,7 +39,7 @@ moduleIntegrationTestRunner({
           const paymentSession = await service.createPaymentSession(
             paymentCollection.id,
             {
-              provider_id: "system",
+              provider_id: "pp_system_default",
               providerContext: {
                 amount: 200,
                 currency_code: "USD",
@@ -48,7 +48,6 @@ moduleIntegrationTestRunner({
                 customer: {},
                 billing_address: {},
                 email: "test@test.test.com",
-                resource_id: "cart_test",
               },
             }
           )
@@ -86,7 +85,7 @@ moduleIntegrationTestRunner({
                   id: expect.any(String),
                   currency_code: "USD",
                   amount: 200,
-                  provider_id: "system",
+                  provider_id: "pp_system_default",
                   status: "authorized",
                   authorized_at: expect.any(Date),
                 }),
@@ -96,7 +95,7 @@ moduleIntegrationTestRunner({
                   id: expect.any(String),
                   amount: 200,
                   currency_code: "USD",
-                  provider_id: "system",
+                  provider_id: "pp_system_default",
                   captures: [
                     expect.objectContaining({
                       amount: 200,
@@ -142,6 +141,7 @@ moduleIntegrationTestRunner({
               ])
               .catch((e) => e)
 
+            // TODO: Change error thrown by Mikro for BigNumber fields
             expect(error.message).toContain(
               "Value for PaymentCollection.amount is required, 'undefined' found"
             )
@@ -335,7 +335,7 @@ moduleIntegrationTestRunner({
         describe("create", () => {
           it("should create a payment session successfully", async () => {
             await service.createPaymentSession("pay-col-id-1", {
-              provider_id: "system",
+              provider_id: "pp_system_default",
               providerContext: {
                 amount: 200,
                 currency_code: "usd",
@@ -365,7 +365,7 @@ moduleIntegrationTestRunner({
                     authorized_at: null,
                     currency_code: "usd",
                     amount: 200,
-                    provider_id: "system",
+                    provider_id: "pp_system_default",
                   }),
                 ]),
               })
@@ -376,7 +376,7 @@ moduleIntegrationTestRunner({
         describe("update", () => {
           it("should update a payment session successfully", async () => {
             let session = await service.createPaymentSession("pay-col-id-1", {
-              provider_id: "system",
+              provider_id: "pp_system_default",
               providerContext: {
                 amount: 200,
                 currency_code: "usd",
@@ -423,7 +423,7 @@ moduleIntegrationTestRunner({
             })
 
             const session = await service.createPaymentSession(collection.id, {
-              provider_id: "system",
+              provider_id: "pp_system_default",
               providerContext: {
                 amount: 100,
                 currency_code: "usd",
@@ -445,9 +445,8 @@ moduleIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 amount: 100,
-                authorized_amount: 100,
                 currency_code: "usd",
-                provider_id: "system",
+                provider_id: "pp_system_default",
 
                 refunds: [],
                 captures: [],
@@ -464,10 +463,12 @@ moduleIntegrationTestRunner({
                 }),
                 payment_session: {
                   id: expect.any(String),
+                  updated_at: expect.any(Date),
+                  created_at: expect.any(Date),
                   currency_code: "usd",
                   amount: 100,
                   raw_amount: { value: "100", precision: 20 },
-                  provider_id: "system",
+                  provider_id: "pp_system_default",
                   data: {},
                   status: "authorized",
                   authorized_at: expect.any(Date),
@@ -475,7 +476,6 @@ moduleIntegrationTestRunner({
                     id: expect.any(String),
                   }),
                   payment: expect.objectContaining({
-                    authorized_amount: 100,
                     cart_id: null,
                     order_id: null,
                     order_edit_id: null,
@@ -488,7 +488,7 @@ moduleIntegrationTestRunner({
                     captures: [],
                     amount: 100,
                     currency_code: "usd",
-                    provider_id: "system",
+                    provider_id: "pp_system_default",
                   }),
                 },
               })

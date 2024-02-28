@@ -18,6 +18,7 @@ import {
 import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { IsType } from "../utils/validators/is-type"
 import { ExactlyOne } from "./validators/exactly-one"
+import { DateComparisonOperator } from "./common"
 
 export type QuerySelector = {
   q?: string
@@ -46,6 +47,16 @@ export class FilterableDiscountProps {
   @IsOptional()
   @Type(() => AdminGetDiscountsDiscountRuleParams)
   rule?: AdminGetDiscountsDiscountRuleParams
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
 }
 
 /**
