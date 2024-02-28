@@ -122,6 +122,16 @@ module.exports = {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/payment",
+      [Modules.STORE]: {
+        scope: "internal",
+        resources: "shared",
+        resolve: "@medusajs/store",
+      },
+      [Modules.TAX]: {
+        scope: "internal",
+        resources: "shared",
+        resolve: "@medusajs/tax",
+      },
     },
   },
 }
