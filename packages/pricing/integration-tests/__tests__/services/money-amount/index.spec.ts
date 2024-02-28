@@ -1,9 +1,8 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { Currency, MoneyAmount } from "@models"
+import { MoneyAmount } from "@models"
 import { MoneyAmountService } from "@services"
 
-import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { MikroOrmWrapper } from "../../../utils"
 import { createMedusaContainer } from "@medusajs/utils"
@@ -17,7 +16,6 @@ describe("MoneyAmount Service", () => {
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
   let data!: MoneyAmount[]
-  let currencyData!: Currency[]
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
@@ -31,7 +29,6 @@ describe("MoneyAmount Service", () => {
     service = container.resolve("moneyAmountService")
 
     testManager = await MikroOrmWrapper.forkManager()
-    currencyData = await createCurrencies(testManager)
     data = await createMoneyAmounts(testManager)
   })
 
@@ -79,8 +76,7 @@ describe("MoneyAmount Service", () => {
           id: ["money-amount-USD"],
         },
         {
-          select: ["id", "min_quantity", "currency.code", "amount"],
-          relations: ["currency"],
+          select: ["id", "min_quantity", "currency_code", "amount"],
         }
       )
 
@@ -92,9 +88,6 @@ describe("MoneyAmount Service", () => {
           amount: 500,
           min_quantity: "1",
           currency_code: "USD",
-          currency: {
-            code: "USD",
-          },
         },
       ])
     })
@@ -105,8 +98,7 @@ describe("MoneyAmount Service", () => {
           currency_code: ["USD"],
         },
         {
-          select: ["id", "min_quantity", "currency.code", "amount"],
-          relations: ["currency"],
+          select: ["id", "min_quantity", "currency_code", "amount"],
         }
       )
 
@@ -118,9 +110,6 @@ describe("MoneyAmount Service", () => {
           min_quantity: "1",
           currency_code: "USD",
           amount: 500,
-          currency: {
-            code: "USD",
-          },
         },
       ])
     })
@@ -165,8 +154,7 @@ describe("MoneyAmount Service", () => {
           id: ["money-amount-USD"],
         },
         {
-          select: ["id", "min_quantity", "currency.code", "amount"],
-          relations: ["currency"],
+          select: ["id", "min_quantity", "currency_code", "amount"],
         }
       )
 
@@ -179,9 +167,6 @@ describe("MoneyAmount Service", () => {
           amount: 500,
           min_quantity: "1",
           currency_code: "USD",
-          currency: {
-            code: "USD",
-          },
         },
       ])
     })
@@ -316,7 +301,6 @@ describe("MoneyAmount Service", () => {
       const moneyAmount = await service.retrieve(id)
 
       expect(moneyAmount.currency_code).toEqual("EUR")
-      expect(moneyAmount.currency?.code).toEqual("EUR")
     })
 
     it("should throw an error when a id does not exist", async () => {
