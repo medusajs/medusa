@@ -7,6 +7,7 @@ import { adminInviteRoutesMiddlewares } from "./admin/invites/middlewares"
 import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
 import { adminRegionRoutesMiddlewares } from "./admin/regions/middlewares"
 import { adminStoreRoutesMiddlewares } from "./admin/stores/middlewares"
+import { adminTaxRateRoutesMiddlewares } from "./admin/tax-rates/middlewares"
 import { adminUserRoutesMiddlewares } from "./admin/users/middlewares"
 import { adminWorkflowsExecutionsMiddlewares } from "./admin/workflows-executions/middlewares"
 import { authRoutesMiddlewares } from "./auth/middlewares"
@@ -30,6 +31,7 @@ export const config: MiddlewaresConfig = {
     ...adminRegionRoutesMiddlewares,
     ...adminUserRoutesMiddlewares,
     ...adminInviteRoutesMiddlewares,
+    ...adminTaxRateRoutesMiddlewares,
     ...adminApiKeyRoutesMiddlewares,
     ...hooksRoutesMiddlewares,
     ...adminStoreRoutesMiddlewares,
