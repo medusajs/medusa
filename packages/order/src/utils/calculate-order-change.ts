@@ -79,7 +79,7 @@ export class OrderChangeProcessing {
     return status === undefined || status === EVENT_STATUS.PENDING
   }
 
-  public processActions(): void {
+  public processActions() {
     for (const action of this.actions) {
       this.processAction_(action)
     }
@@ -211,7 +211,7 @@ export class OrderChangeProcessing {
     return calculatedAmount
   }
 
-  private resolveReferences(self: InternalOrderChangeEvent): void {
+  private resolveReferences(self: InternalOrderChangeEvent) {
     const resolve = self.resolve
     const resolveType = OrderChangeProcessing.typeDefinition[self.action]
 
@@ -264,7 +264,7 @@ export class OrderChangeProcessing {
     })
   }
 
-  private resolveGroup(self: InternalOrderChangeEvent): void {
+  private resolveGroup(self: InternalOrderChangeEvent) {
     const resolve = self.resolve
 
     Object.keys(this.actionsProcessed).forEach((actionKey) => {
