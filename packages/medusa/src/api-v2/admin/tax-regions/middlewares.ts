@@ -1,32 +1,29 @@
 import * as QueryConfig from "./query-config"
 
-import {
-  AdminGetTaxRatesTaxRateParams,
-  AdminPostTaxRatesReq,
-} from "./validators"
+import { AdminGetTaxRegionsParams, AdminPostTaxRegionsReq } from "./validators"
 import { transformBody, transformQuery } from "../../../api/middlewares"
 
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
 
-export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
+export const adminTaxRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    method: "ALL",
-    matcher: "/admin/tax-rates*",
+    method: ["ALL"],
+    matcher: "/admin/tax-regions*",
     middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
   },
   {
     method: "POST",
-    matcher: "/admin/tax-rates",
-    middlewares: [transformBody(AdminPostTaxRatesReq)],
+    matcher: "/admin/tax-regions",
+    middlewares: [transformBody(AdminPostTaxRegionsReq)],
   },
   {
     method: "GET",
-    matcher: "/admin/tax-rates/:id",
+    matcher: "/admin/tax-regions",
     middlewares: [
       transformQuery(
-        AdminGetTaxRatesTaxRateParams,
-        QueryConfig.retrieveTransformQueryConfig
+        AdminGetTaxRegionsParams,
+        QueryConfig.listTransformQueryConfig
       ),
     ],
   },

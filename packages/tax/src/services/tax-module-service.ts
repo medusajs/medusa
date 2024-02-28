@@ -148,7 +148,7 @@ export default class TaxModuleService<
       await this.taxRateRuleService_.create(rulesToCreate, sharedContext)
     }
 
-    return await this.baseRepository_.serialize<TaxTypes.TaxRateDTO>(rates, {
+    return await this.baseRepository_.serialize<TaxTypes.TaxRateDTO[]>(rates, {
       populate: true,
     })
   }
