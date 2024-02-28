@@ -263,7 +263,32 @@
     "outbound": "Outbound",
     "priceType": "Price Type",
     "flatRate": "Flat Rate",
-    "calculated": "Calculated"
+    "calculated": "Calculated",
+    "shippingOption": {
+      "createShippingOption": "Create Shipping Option",
+      "createShippingOptionHint": "Create a new shipping option for the region.",
+      "editShippingOption": "Edit Shipping Option",
+      "fulfillmentMethod": "Fulfillment Method",
+      "type": {
+        "outbound": "Outbound",
+        "outboundHint": "Use this if you are creating a shipping option for sending products to the customer.",
+        "return": "Return",
+        "returnHint": "Use this if you are creating a shipping option for the customer to return products to you."
+      },
+      "priceType": {
+        "label": "Price Type",
+        "flatRate": "Flat rate",
+        "calculated": "Calculated"
+      },
+      "availability": {
+        "adminOnly": "Admin only",
+        "adminOnlyHint": "When enabled the shipping option will only be available in the admin dashboard, and not in the storefront."
+      },
+      "requirements": {
+        "label": "Requirements",
+        "hint": "Specify the requirements for the shipping option."
+      }
+    }
   },
   "locations": {
     "domain": "Locations",
@@ -366,6 +391,7 @@
     "countries": "Countries",
     "paymentProviders": "Payment Providers",
     "fulfillmentProviders": "Fulfillment Providers",
+    "fulfillmentProvider": "Fulfillment Provider",
     "providers": "Providers",
     "availability": "Availability",
     "inventory": "Inventory",
@@ -426,6 +452,7 @@
     "sku": "SKU",
     "managedInventory": "Managed inventory",
     "minSubtotal": "Min. Subtotal",
-    "maxSubtotal": "Max. Subtotal"
+    "maxSubtotal": "Max. Subtotal",
+    "shippingProfile": "Shipping Profile"
   }
 }

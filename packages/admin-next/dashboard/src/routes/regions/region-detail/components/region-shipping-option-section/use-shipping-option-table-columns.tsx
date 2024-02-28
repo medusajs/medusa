@@ -30,11 +30,7 @@ export const useShippingOptionColumns = () => {
         cell: (cell) => {
           const value = cell.getValue()
 
-          return (
-            <StatusCell color={value ? "blue" : "green"}>
-              {value ? t("regions.return") : t("regions.outbound")}
-            </StatusCell>
-          )
+          return value ? t("regions.return") : t("regions.outbound")
         },
       }),
       columnHelper.accessor("price_type", {
@@ -42,13 +38,9 @@ export const useShippingOptionColumns = () => {
         cell: ({ getValue }) => {
           const type = getValue()
 
-          return (
-            <StatusCell color={type === "flat_rate" ? "green" : "blue"}>
-              {type === "flat_rate"
-                ? t("regions.flatRate")
-                : t("regions.calculated")}
-            </StatusCell>
-          )
+          return type === "flat_rate"
+            ? t("regions.flatRate")
+            : t("regions.calculated")
         },
       }),
       columnHelper.accessor("price_incl_tax", {
@@ -68,7 +60,11 @@ export const useShippingOptionColumns = () => {
       }),
       columnHelper.display({
         id: "min_amount",
-        header: t("fields.minSubtotal"),
+        header: () => (
+          <div className="flex size-full items-center overflow-hidden">
+            <span className="truncate">{t("fields.minSubtotal")}</span>
+          </div>
+        ),
         cell: ({ row }) => {
           const minAmountReq = row.original.requirements?.find(
             (r) => r.type === "min_subtotal"
@@ -86,7 +82,11 @@ export const useShippingOptionColumns = () => {
       }),
       columnHelper.display({
         id: "max_amount",
-        header: t("fields.maxSubtotal"),
+        header: () => (
+          <div className="flex size-full items-center overflow-hidden">
+            <span className="truncate">{t("fields.maxSubtotal")}</span>
+          </div>
+        ),
         cell: ({ row }) => {
           const maxAmountReq = row.original.requirements?.find(
             (r) => r.type === "max_subtotal"

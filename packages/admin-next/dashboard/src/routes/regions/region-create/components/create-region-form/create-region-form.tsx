@@ -41,21 +41,6 @@ type CreateRegionFormProps = {
   fulfillmentProviders: FulfillmentProvider[]
 }
 
-const zodInputStringPipe = (zodPipe: zod.ZodTypeAny) =>
-  zod
-    .string()
-    .transform((value) => {
-      return value === "" ? null : value
-    })
-    .nullable()
-    .refine((value) => value === null || !isNaN(Number(value)), {
-      message: "Invalid number",
-    })
-    .transform((value) => {
-      return value === null ? 0 : Number(value)
-    })
-    .pipe(zodPipe)
-
 const CreateRegionSchema = zod.object({
   name: zod.string().min(1),
   currency_code: zod.string().min(2, "Select a currency"),
