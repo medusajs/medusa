@@ -64,7 +64,7 @@ export const RegionShippingOptionSection = ({
                 {
                   label: t("actions.create"),
                   icon: <PlusMini />,
-                  to: "shipping_options/create",
+                  to: "shipping-options/create",
                 },
               ],
             },

@@ -26,6 +26,7 @@ export const CountriesCell = ({ countries }: CountriesCellProps) => {
       <span>{displayValue}</span>
       {additionalCountries.length > 0 && (
         <Tooltip
+          collisionPadding={16}
           content={
             <ul>
               {additionalCountries.map((c) => (

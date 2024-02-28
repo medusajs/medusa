@@ -1,14 +1,20 @@
 import { PlusMini, Trash } from "@medusajs/icons"
 import { Region } from "@medusajs/medusa"
 import { Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
-import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import {
+  ColumnDef,
+  RowSelectionState,
+  createColumnHelper,
+} from "@tanstack/react-table"
 import { useAdminUpdateRegion } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { useCountries } from "../../../shared/hooks/use-countries"
+import { useCountryTableColumns } from "../../../shared/hooks/use-country-table-columns"
+import { useCountryTableQuery } from "../../../shared/hooks/use-country-table-query"
 
 type RegionCountrySectionProps = {
   region: Region
@@ -36,12 +42,12 @@ export const RegionCountrySection = ({ region }: RegionCountrySectionProps) => {
     pageSize: PAGE_SIZE,
     prefix: PREFIX,
   })
-  const { countries, count } = useAdminRegionCountries({
+  const { countries, count } = useCountries({
     countries: region.countries || [],
     ...searchParams,
   })
 
-  const columns = useCountryTableColumns()
+  const columns = useColumns()
 
   const { table } = useDataTable({
     data: countries || [],
@@ -113,7 +119,7 @@ export const RegionCountrySection = ({ region }: RegionCountrySectionProps) => {
         columns={columns}
         pageSize={PAGE_SIZE}
         count={count}
-        orderBy={["name", "iso_2"]}
+        orderBy={["name", "code"]}
         search
         pagination
         queryObject={raw}
@@ -185,8 +191,8 @@ const CountryActions = ({
 
 const columnHelper = createColumnHelper<Country>()
 
-const useCountryTableColumns = () => {
-  const { t } = useTranslation()
+const useColumns = () => {
+  const base = useCountryTableColumns()
 
   return useMemo(
     () => [
@@ -218,14 +224,7 @@ const useCountryTableColumns = () => {
           )
         },
       }),
-      columnHelper.accessor("display_name", {
-        header: t("fields.name"),
-        cell: ({ getValue }) => getValue(),
-      }),
-      columnHelper.accessor("iso_2", {
-        header: t("fields.code"),
-        cell: ({ getValue }) => <span className="uppercase">{getValue()}</span>,
-      }),
+      ...base,
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
@@ -235,90 +234,6 @@ const useCountryTableColumns = () => {
         },
       }),
     ],
-    [t]
-  )
-}
-
-const isCountryKey = (key: string): key is keyof Country => {
-  return ["name", "iso_2", "iso_3", "num_code"].includes(key)
-}
-
-const useAdminRegionCountries = ({
-  countries,
-  q,
-  order = "name",
-  limit,
-  offset = 0,
-}: {
-  countries: Country[]
-  limit: number
-  offset?: number
-  order?: string
-  q?: string
-}) => {
-  const data = countries.slice(offset, offset + limit)
-
-  if (order) {
-    const direction = order.startsWith("-") ? -1 : 1
-    const key = order.replace("-", "")
-
-    if (!isCountryKey(key)) {
-      throw new Error("Invalid order key")
-    }
-
-    data.sort((a, b) => {
-      if (a[key] === null && b[key] === null) {
-        return 0
-      }
-      if (a[key] === null) {
-        return direction
-      }
-      if (b[key] === null) {
-        return -direction
-      }
-      return a[key]! > b[key]! ? direction : -direction
-    })
-  }
-
-  if (q) {
-    const query = q.toLowerCase()
-    const results = countries.filter(
-      (c) =>
-        c.name.toLowerCase().includes(query) ||
-        c.iso_2.toLowerCase().includes(query)
-    )
-    return {
-      countries: results,
-      count: results.length,
-    }
-  }
-
-  return {
-    countries: data,
-    count: countries.length,
-  }
-}
-
-const useCountryTableQuery = ({
-  pageSize,
-  prefix,
-}: {
-  pageSize: number
-  prefix: string
-}) => {
-  const raw = useQueryParams(["order", "q", "offset"], prefix)
-
-  const { offset, order, q } = raw
-
-  const searchParams = {
-    limit: pageSize,
-    offset: offset ? parseInt(offset, 10) : 0,
-    order,
-    q,
-  }
-
-  return {
-    searchParams,
-    raw,
-  }
+    [base]
+  ) as ColumnDef<Country>[]
 }

@@ -127,7 +127,7 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
               )}
             >
               {hasValues && (
-                <div className="bg-ui-bg-base txt-compact-small-plus text-ui-fg-subtle focus-within:border-ui-fg-interactive flex h-[28px] items-center rounded-[4px] border py-[3px] pl-1.5 pr-1">
+                <div className="bg-ui-bg-base txt-compact-small-plus text-ui-fg-subtle focus-within:border-ui-fg-interactive relative flex h-[28px] items-center rounded-[4px] border py-[3px] pl-1.5 pr-1">
                   <span>{selectedValues.length}</span>
                   <button
                     type="button"
@@ -149,19 +149,15 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
                 )}
                 <PrimitiveCombobox
                   ref={comboboxRef}
-                  className="txt-compact-small text-ui-fg-base placeholder:text-ui-fg-subtle size-full cursor-pointer bg-transparent outline-none focus:cursor-text"
-                  placeholder={
-                    hidePlaceholder
-                      ? undefined
-                      : placeholder || t("general.select")
-                  }
+                  className="txt-compact-small text-ui-fg-base placeholder:text-ui-fg-subtle size-full cursor-pointer bg-transparent pr-7 outline-none focus:cursor-text"
+                  placeholder={hidePlaceholder ? undefined : placeholder}
                   {...inputProps}
                 />
               </div>
               <button
                 type="button"
                 tabIndex={-1}
-                className="text-ui-fg-muted size-fit outline-none"
+                className="text-ui-fg-muted pointer-events-none absolute right-2 size-fit outline-none"
               >
                 <TrianglesMini />
               </button>

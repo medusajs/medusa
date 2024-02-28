@@ -51,7 +51,8 @@
     "save": "Save",
     "continue": "Continue",
     "edit": "Edit",
-    "download": "Download"
+    "download": "Download",
+    "clearAll": "Clear all"
   },
   "errorBoundary": {
     "badRequestTitle": "Bad request",
@@ -249,6 +250,7 @@
     "createRegionHint": "Manage tax rates and providers for a set of countries.",
     "addCountries": "Add countries",
     "editRegion": "Edit Region",
+    "countriesHint": "Add the countries that should be included in this region.",
     "deleteRegionWarning": "You are about to delete the region {{name}}. This action cannot be undone.",
     "removeCountriesWarning_one": "You are about to remove {{count}} country from the region. This action cannot be undone.",
     "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
