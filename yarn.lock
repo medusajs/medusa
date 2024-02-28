@@ -8551,17 +8551,6 @@ __metadata:
     ts-jest: ^29.1.1
     typescript: ^5.1.6
     undici: ^6.4.0
-  dependenciesMeta:
-    "@fastify/compress":
-      optional: true
-    "@grpc/grpc-js":
-      optional: true
-    "@grpc/proto-loader":
-      optional: true
-    fastify:
-      optional: true
-    undici:
-      optional: true
   languageName: unknown
   linkType: soft
 
