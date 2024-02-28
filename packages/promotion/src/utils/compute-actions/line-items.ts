@@ -4,9 +4,9 @@ import {
 } from "@medusajs/types"
 import {
   ApplicationMethodAllocation,
-  ApplicationMethodTargetType,
   ComputedActions,
   MedusaError,
+  ApplicationMethodTargetType as TargetType,
   calculateAdjustmentAmountFromPromotion,
 } from "@medusajs/utils"
 import { areRulesValidForContext } from "../validations"
@@ -14,7 +14,7 @@ import { computeActionForBudgetExceeded } from "./usage"
 
 function validateContext(
   contextKey: string,
-  context: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType]
+  context: PromotionTypes.ComputeActionContext[TargetType]
 ) {
   if (!context) {
     throw new MedusaError(
@@ -26,7 +26,7 @@ function validateContext(
 
 export function getComputedActionsForItems(
   promotion: PromotionTypes.PromotionDTO,
-  items: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.ITEMS],
+  items: PromotionTypes.ComputeActionContext[TargetType.ITEMS],
   appliedPromotionsMap: Map<string, number>,
   allocationOverride?: ApplicationMethodAllocationValues
 ): PromotionTypes.ComputeActions[] {
@@ -42,7 +42,7 @@ export function getComputedActionsForItems(
 
 export function getComputedActionsForShippingMethods(
   promotion: PromotionTypes.PromotionDTO,
-  shippingMethods: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS],
+  shippingMethods: PromotionTypes.ComputeActionContext[TargetType.SHIPPING_METHODS],
   appliedPromotionsMap: Map<string, number>
 ): PromotionTypes.ComputeActions[] {
   validateContext("shipping_methods", shippingMethods)
@@ -57,7 +57,7 @@ export function getComputedActionsForOrder(
 ): PromotionTypes.ComputeActions[] {
   return getComputedActionsForItems(
     promotion,
-    itemApplicationContext[ApplicationMethodTargetType.ITEMS],
+    itemApplicationContext[TargetType.ITEMS],
     methodIdPromoValueMap,
     ApplicationMethodAllocation.ACROSS
   )
@@ -66,8 +66,8 @@ export function getComputedActionsForOrder(
 function applyPromotionToItems(
   promotion: PromotionTypes.PromotionDTO,
   items:
-    | PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.ITEMS]
-    | PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS],
+    | PromotionTypes.ComputeActionContext[TargetType.ITEMS]
+    | PromotionTypes.ComputeActionContext[TargetType.SHIPPING_METHODS],
   appliedPromotionsMap: Map<string, number>,
   allocationOverride?: ApplicationMethodAllocationValues
 ): PromotionTypes.ComputeActions[] {
@@ -75,13 +75,11 @@ function applyPromotionToItems(
   const allocation = applicationMethod?.allocation! || allocationOverride
   const computedActions: PromotionTypes.ComputeActions[] = []
   const applicableItems = getValidItemsForPromotion(items, promotion)
-  const isTargetShippingMethod =
-    applicationMethod?.target_type ===
-    ApplicationMethodTargetType.SHIPPING_METHODS
-  const isTargetLineItems =
-    applicationMethod?.target_type === ApplicationMethodTargetType.ITEMS
-  const isTargetOrder =
-    applicationMethod?.target_type === ApplicationMethodTargetType.ORDER
+  const target = applicationMethod?.target_type
+
+  const isTargetShippingMethod = target === TargetType.SHIPPING_METHODS
+  const isTargetLineItems = target === TargetType.ITEMS
+  const isTargetOrder = target === TargetType.ORDER
 
   let lineItemsTotal = 0
 
@@ -156,13 +154,12 @@ function applyPromotionToItems(
 
 function getValidItemsForPromotion(
   items:
-    | PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.ITEMS]
-    | PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS],
+    | PromotionTypes.ComputeActionContext[TargetType.ITEMS]
+    | PromotionTypes.ComputeActionContext[TargetType.SHIPPING_METHODS],
   promotion: PromotionTypes.PromotionDTO
 ) {
   const isTargetShippingMethod =
-    promotion.application_method?.target_type ===
-    ApplicationMethodTargetType.SHIPPING_METHODS
+    promotion.application_method?.target_type === TargetType.SHIPPING_METHODS
 
   return (
     items?.filter((item) => {
