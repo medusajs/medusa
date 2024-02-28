@@ -101,7 +101,7 @@ const ItemBreakdown = ({ order }: { order: Order }) => {
   }
 
   return (
-    <div className="shadow-ele">
+    <div>
       {order.items.map((item) => {
         const reservation = reservations
           ? reservations.find((r) => r.line_item_id === item.id)

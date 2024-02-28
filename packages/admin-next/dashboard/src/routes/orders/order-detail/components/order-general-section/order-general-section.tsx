@@ -81,24 +81,24 @@ const FulfillmentBadge = ({ order }: { order: Order }) => {
   const { t } = useTranslation()
 
   const [label, color] = {
-    not_fulfilled: [t("orders.fulfillmentStatus.notFulfilled"), "red"],
+    not_fulfilled: [t("orders.fulfillment.status.notFulfilled"), "red"],
     partially_fulfilled: [
-      t("orders.fulfillmentStatus.partiallyFulfilled"),
+      t("orders.fulfillment.status.partiallyFulfilled"),
       "orange",
     ],
-    fulfilled: [t("orders.fulfillmentStatus.fulfilled"), "green"],
+    fulfilled: [t("orders.fulfillment.status.fulfilled"), "green"],
     partially_shipped: [
-      t("orders.fulfillmentStatus.partiallyShipped"),
+      t("orders.fulfillment.status.partiallyShipped"),
       "orange",
     ],
-    shipped: [t("orders.fulfillmentStatus.shipped"), "green"],
+    shipped: [t("orders.fulfillment.status.shipped"), "green"],
     partially_returned: [
-      t("orders.fulfillmentStatus.partiallyReturned"),
+      t("orders.fulfillment.status.partiallyReturned"),
       "orange",
     ],
-    returned: [t("orders.fulfillmentStatus.returned"), "green"],
-    canceled: [t("orders.fulfillmentStatus.canceled"), "red"],
-    requires_action: [t("orders.fulfillmentStatus.requresAction"), "orange"],
+    returned: [t("orders.fulfillment.status.returned"), "green"],
+    canceled: [t("orders.fulfillment.status.canceled"), "red"],
+    requires_action: [t("orders.fulfillment.status.requresAction"), "orange"],
   }[order.fulfillment_status] as [string, "red" | "orange" | "green"]
 
   return <StatusBadge color={color}>{label}</StatusBadge>
@@ -108,13 +108,16 @@ const PaymentBadge = ({ order }: { order: Order }) => {
   const { t } = useTranslation()
 
   const [label, color] = {
-    not_paid: [t("orders.paymentStatus.notPaid"), "red"],
-    awaiting: [t("orders.paymentStatus.awaiting"), "orange"],
-    captured: [t("orders.paymentStatus.captured"), "green"],
-    refunded: [t("orders.paymentStatus.refunded"), "green"],
-    partially_refunded: [t("orders.paymentStatus.partiallyRefunded"), "orange"],
-    canceled: [t("orders.paymentStatus.canceled"), "red"],
-    requires_action: [t("orders.paymentStatus.requresAction"), "orange"],
+    not_paid: [t("orders.payment.status.notPaid"), "red"],
+    awaiting: [t("orders.payment.status.awaiting"), "orange"],
+    captured: [t("orders.payment.status.captured"), "green"],
+    refunded: [t("orders.payment.status.refunded"), "green"],
+    partially_refunded: [
+      t("orders.payment.status.partiallyRefunded"),
+      "orange",
+    ],
+    canceled: [t("orders.payment.status.canceled"), "red"],
+    requires_action: [t("orders.payment.status.requresAction"), "orange"],
   }[order.payment_status] as [string, "red" | "orange" | "green"]
 
   return <StatusBadge color={color}>{label}</StatusBadge>

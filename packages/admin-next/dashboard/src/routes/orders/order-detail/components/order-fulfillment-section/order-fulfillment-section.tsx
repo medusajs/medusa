@@ -1,3 +1,4 @@
+import { XCircle } from "@medusajs/icons"
 import {
   LineItem,
   Fulfillment as MedusaFulfillment,
@@ -10,9 +11,11 @@ import {
   StatusBadge,
   Text,
   Tooltip,
+  usePrompt,
 } from "@medusajs/ui"
 import { format } from "date-fns"
-import { useAdminStockLocation } from "medusa-react"
+import { useAdminCancelFulfillment, useAdminStockLocation } from "medusa-react"
+import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
@@ -32,7 +35,7 @@ export const OrderFulfillmentSection = ({
     <div className="flex flex-col gap-y-2">
       <UnfulfilledItemBreakdown order={order} />
       {fulfillments.map((f, index) => (
-        <Fulfillment key={f.id} index={index} fulfillment={f} />
+        <Fulfillment key={f.id} index={index} order={order} fulfillment={f} />
       ))}
     </div>
   )
@@ -94,6 +97,8 @@ const UnfulfilledItem = ({
 }
 
 const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
+
   const fulfillmentItems = order.fulfillments?.map((f) =>
     f.items.map((i) => ({ id: i.item_id, quantity: i.quantity }))
   )
@@ -113,9 +118,11 @@ const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">Unfulfilled items</Heading>
+        <Heading level="h2">{t("orders.fulfillment.unfulfilledItems")}</Heading>
         <div className="flex items-center gap-x-4">
-          <StatusBadge color="red">Awaiting Fulfillment</StatusBadge>
+          <StatusBadge color="red">
+            {t("orders.fulfillment.awaitingFullfillmentBadge")}
+          </StatusBadge>
           <ActionMenu groups={[]} />
         </div>
       </div>
@@ -134,11 +141,16 @@ const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
 
 const Fulfillment = ({
   fulfillment,
+  order,
   index,
 }: {
   fulfillment: MedusaFulfillment
+  order: Order
   index: number
 }) => {
+  const { t } = useTranslation()
+  const prompt = usePrompt()
+
   const showLocation = !!fulfillment.location_id
 
   const { stock_location, isError, error } = useAdminStockLocation(
@@ -162,6 +174,26 @@ const Fulfillment = ({
     statusTimestamp = fulfillment.shipped_at
   }
 
+  const { mutateAsync } = useAdminCancelFulfillment(order.id)
+
+  const handleCancel = async () => {
+    if (fulfillment.shipped_at) {
+      // TODO: When we have implemented Toasts we should show an error toast here
+      return
+    }
+
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("orders.fulfillment.cancelWarning"),
+      confirmText: t("actions.continue"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (res) {
+      await mutateAsync(fulfillment.id)
+    }
+  }
+
   if (isError) {
     throw error
   }
@@ -169,7 +201,11 @@ const Fulfillment = ({
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">Fulfillment #{index + 1}</Heading>
+        <Heading level="h2">
+          {t("orders.fulfillment.number", {
+            number: index + 1,
+          })}
+        </Heading>
         <div className="flex items-center gap-x-4">
           <Tooltip
             content={format(
@@ -179,7 +215,19 @@ const Fulfillment = ({
           >
             <StatusBadge color={statusColor}>{statusText}</StatusBadge>
           </Tooltip>
-          <ActionMenu groups={[]} />
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.cancel"),
+                    icon: <XCircle />,
+                    onClick: handleCancel,
+                  },
+                ],
+              },
+            ]}
+          />
         </div>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">

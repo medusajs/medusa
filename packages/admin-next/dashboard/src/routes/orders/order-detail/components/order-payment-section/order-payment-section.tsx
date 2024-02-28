@@ -1,4 +1,4 @@
-import { ArrowDownRightMini } from "@medusajs/icons"
+import { ArrowDownRightMini, XCircle } from "@medusajs/icons"
 import {
   Payment as MedusaPayment,
   Refund as MedusaRefund,
@@ -11,8 +11,10 @@ import {
   Heading,
   StatusBadge,
   Text,
+  Tooltip,
 } from "@medusajs/ui"
 import { format } from "date-fns"
+import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { getFormattedAmount } from "../../../../../lib/money-amount-helpers"
 
@@ -23,7 +25,7 @@ type OrderPaymentSectionProps = {
 export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
   return (
     <Container className="divide-y divide-dashed p-0">
-      <Header />
+      <Header order={order} />
       <PaymentBreakdown
         payments={order.payments}
         refunds={order.refunds}
@@ -34,10 +36,25 @@ export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
   )
 }
 
-const Header = () => {
+const Header = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
+
   return (
     <div className="flex items-center justify-between px-6 py-4">
-      <Heading level="h2">Payments</Heading>
+      <Heading level="h2">{t("orders.payment.title")}</Heading>
+      <ActionMenu
+        groups={[
+          {
+            actions: [
+              {
+                label: t("orders.payment.refund"),
+                icon: <ArrowDownRightMini />,
+                to: "#", // TODO: Go to general refund modal
+              },
+            ],
+          },
+        ]}
+      />
     </div>
   )
 }
@@ -49,50 +66,35 @@ const Refund = ({
   refund: MedusaRefund
   currencyCode: string
 }) => {
+  const { t } = useTranslation()
   const hasPayment = refund.payment_id !== null
-  const cleanId = refund.id.replace("ref_", "")
 
-  /**
-   * If the refund is associated with a payment, we render it as a
-   * subrow in the payment breakdown.
-   */
-  if (hasPayment) {
-    return (
-      <div className="bg-ui-bg-subtle px-6 py-4">
-        <div className="flex items-center gap-x-2">
-          <ArrowDownRightMini className="text-ui-fg-muted" />
-          <Text size="small" leading="compact">
-            Refund {cleanId} of {getFormattedAmount(refund.amount, "usd")}
-          </Text>
-        </div>
-      </div>
-    )
-  }
+  const BadgeComponent = refund.note ? (
+    <Tooltip content={refund.note}>
+      <Badge size="2xsmall" className="cursor-default capitalize">
+        {refund.reason}
+      </Badge>
+    </Tooltip>
+  ) : (
+    <Badge size="2xsmall" className="capitalize">
+      {refund.reason}
+    </Badge>
+  )
 
-  /**
-   * If the refund is not associated with a payment, we render it as a
-   * standalone row.
-   */
   return (
-    <div className="bg-ui-bg-subtle text-ui-fg-subtle grid grid-cols-4 gap-x-4 px-6 py-4">
+    <div className="bg-ui-bg-subtle text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_1fr_20px] gap-x-4 px-6 py-4">
       <div>
+        {hasPayment && <ArrowDownRightMini className="text-ui-fg-muted" />}
         <Text size="small" leading="compact" weight="plus">
-          {cleanId}
+          {t("orders.payment.refund")}
         </Text>
+      </div>
+      <div className="flex items-center justify-end">
         <Text size="small" leading="compact">
           {format(new Date(refund.created_at), "dd MMM, yyyy, HH:mm:ss")}
         </Text>
       </div>
-      <div className="flex items-center justify-end">
-        <Badge size="2xsmall" className="capitalize">
-          {refund.reason}
-        </Badge>
-      </div>
-      <div className="flex items-center justify-end">
-        <Text size="small" leading="compact">
-          {refund.reason}
-        </Text>
-      </div>
+      <div className="flex items-center justify-end">{BadgeComponent}</div>
       <div className="flex items-center justify-end">
         <Text size="small" leading="compact">
           - {getFormattedAmount(refund.amount, currencyCode)}
@@ -111,6 +113,8 @@ const Payment = ({
   refunds: MedusaRefund[]
   currencyCode: string
 }) => {
+  const { t } = useTranslation()
+
   const [status, color] = (
     payment.captured_at ? ["Captured", "green"] : ["Pending", "orange"]
   ) as [string, "green" | "orange"]
@@ -148,18 +152,32 @@ const Payment = ({
             {getFormattedAmount(payment.amount, payment.currency_code)}
           </Text>
         </div>
-        <ActionMenu groups={[]} />
+        <ActionMenu
+          groups={[
+            {
+              actions: [
+                {
+                  label: t("orders.payment.refund"),
+                  icon: <XCircle />,
+                  to: "#", // TODO: Go to specific payment refund modal
+                },
+              ],
+            },
+          ]}
+        />
       </div>
       {showCapture && (
         <div className="bg-ui-bg-subtle flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-x-2">
             <ArrowDownRightMini className="text-ui-fg-muted" />
             <Text size="small" leading="compact">
-              Payment {cleanId} is ready to be captured
+              {t("orders.payment.isReadyToBeCaptured", {
+                id: cleanId,
+              })}
             </Text>
           </div>
           <Button size="small" variant="secondary">
-            Capture
+            {t("orders.payment.capture")}
           </Button>
         </div>
       )}
@@ -234,6 +252,8 @@ const Total = ({
   payments: MedusaPayment[]
   currencyCode: string
 }) => {
+  const { t } = useTranslation()
+
   const paid = payments.reduce((acc, payment) => acc + payment.amount, 0)
   const refunded = payments.reduce(
     (acc, payment) => acc + (payment.amount_refunded || 0),
@@ -245,7 +265,7 @@ const Total = ({
   return (
     <div className="flex items-center justify-between px-6 py-4">
       <Text size="small" weight="plus" leading="compact">
-        Total paid by customer
+        {t("orders.payment.totalPaidByCustomer")}
       </Text>
       <Text size="small" weight="plus" leading="compact">
         {getFormattedAmount(total, currencyCode)}
