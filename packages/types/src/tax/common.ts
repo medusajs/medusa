@@ -36,6 +36,11 @@ export interface TaxRateDTO {
   created_by: string | null
 }
 
+export interface TaxProviderDTO {
+  id: string
+  is_enabled: boolean
+}
+
 export interface FilterableTaxRateProps
   extends BaseFilterable<FilterableTaxRateProps> {
   id?: string | string[]

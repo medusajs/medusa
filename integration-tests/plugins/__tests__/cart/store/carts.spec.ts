@@ -557,10 +557,6 @@ describe("Store Carts API", () => {
 
   describe("POST /store/carts/:id/line-items", () => {
     it("should add item to cart", async () => {
-      const cart = await cartModuleService.create({
-        currency_code: "usd",
-      })
-
       const [product] = await productModule.create([
         {
           title: "Test product",
@@ -571,6 +567,48 @@ describe("Store Carts API", () => {
           ],
         },
       ])
+
+      const cart = await cartModuleService.create({
+        currency_code: "usd",
+        items: [
+          {
+            id: "item-1",
+            unit_price: 2000,
+            quantity: 1,
+            title: "Test item",
+            product_id: "prod_mat",
+          } as any,
+        ],
+      })
+
+      const appliedPromotion = await promotionModule.create({
+        code: "PROMOTION_APPLIED",
+        type: PromotionType.STANDARD,
+        application_method: {
+          type: "fixed",
+          target_type: "items",
+          allocation: "across",
+          value: "300",
+          apply_to_quantity: 2,
+          target_rules: [
+            {
+              attribute: "product_id",
+              operator: "in",
+              values: ["prod_mat", product.id],
+            },
+          ],
+        },
+      })
+
+      const [lineItemAdjustment] =
+        await cartModuleService.addLineItemAdjustments([
+          {
+            code: appliedPromotion.code!,
+            amount: 300,
+            item_id: "item-1",
+            promotion_id: appliedPromotion.id,
+          },
+        ])
 
       const priceSet = await pricingModule.create({
         prices: [
@@ -608,6 +646,24 @@ describe("Store Carts API", () => {
               unit_price: 3000,
               quantity: 1,
               title: "Test variant",
+              adjustments: [
+                expect.objectContaining({
+                  code: "PROMOTION_APPLIED",
+                  amount: 180,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              unit_price: 2000,
+              quantity: 1,
+              title: "Test item",
+              adjustments: [
+                expect.objectContaining({
+                  id: expect.not.stringContaining(lineItemAdjustment.id),
+                  code: "PROMOTION_APPLIED",
+                  amount: 120,
+                }),
+              ],
             }),
           ]),
         })

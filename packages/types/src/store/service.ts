@@ -1,4 +1,5 @@
 import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import { FilterableStoreProps, StoreDTO } from "./common"
@@ -210,4 +211,42 @@ export interface IStoreModuleService extends IModuleService {
     config?: FindConfig<StoreDTO>,
     sharedContext?: Context
   ): Promise<[StoreDTO[], number]>
+
+  /**
+   * This method soft deletes stores by their IDs.
+   *
+   * @param {string[]} storeIds - The list of IDs of stores to soft delete.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config - An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<string, string[]>>} Resolves successfully when the stores are soft-deleted.
+   *
+   * @example
+   * {example-code}
+   */
+  softDelete<TReturnableLinkableKeys extends string = string>(
+    storeIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method restores soft deleted stores by their IDs.
+   *
+   * @param {string[]} storeIds - The list of IDs of stores to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config - Configurations determining which relations to restore along with each of the stores. You can pass to its `returnLinkableKeys`
+   * property any of the stores's relation attribute names, such as `currency`.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were restored, such as the ID of associated currency.
+   * The object's keys are the ID attribute names of the stores entity's relations, such as `currency_code`,
+   * and its value is an array of strings, each being the ID of the record associated with the store through this relation,
+   * such as the IDs of associated currency.
+   *
+   * @example
+   * {example-code}
+   */
+  restore<TReturnableLinkableKeys extends string = string>(
+    storeIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }

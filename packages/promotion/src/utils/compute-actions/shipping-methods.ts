@@ -60,7 +60,7 @@ export function applyPromotionToShippingMethods(
       }
 
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
-      let promotionValue = parseFloat(applicationMethod!.value!)
+      let promotionValue = applicationMethod?.value ?? 0
       const applicableTotal = method.subtotal - appliedPromoValue
 
       if (applicationMethod?.type === ApplicationMethodType.PERCENTAGE) {
@@ -111,7 +111,7 @@ export function applyPromotionToShippingMethods(
         continue
       }
 
-      const promotionValue = parseFloat(applicationMethod!.value!)
+      const promotionValue = applicationMethod?.value ?? 0
       const applicableTotal = method.subtotal
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
 
