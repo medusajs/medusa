@@ -8082,7 +8082,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/currency@workspace:packages/currency":
+"@medusajs/currency@workspace:^, @medusajs/currency@workspace:packages/currency":
   version: 0.0.0-use.local
   resolution: "@medusajs/currency@workspace:packages/currency"
   dependencies:
@@ -31765,6 +31765,7 @@ __metadata:
     "@medusajs/api-key": "workspace:^"
     "@medusajs/auth": "workspace:*"
     "@medusajs/cache-inmemory": "workspace:*"
+    "@medusajs/currency": "workspace:^"
     "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/inventory": "workspace:^"

@@ -1,6 +1,6 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { MoneyAmount } from "@models"
+import { Currency, MoneyAmount } from "@models"
 import { MoneyAmountService } from "@services"
 
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"

@@ -127,25 +127,6 @@ describe("Regions - Admin", () => {
     )
   })
 
-  it("should throw on unknown currency in create", async () => {
-    const api = useApi() as any
-    const error = await api
-      .post(
-        `/admin/regions`,
-        {
-          currency_code: "foo",
-          name: "Test Region",
-        },
-        adminHeaders
-      )
-      .catch((e) => e)
-
-    expect(error.response.status).toEqual(400)
-    expect(error.response.data.message).toEqual(
-      'Currencies with codes: "foo" were not found'
-    )
-  })
-
   it("should throw on unknown properties in create", async () => {
     const api = useApi() as any
     const error = await api

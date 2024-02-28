@@ -6,6 +6,7 @@ import * as Models from "@models"
 import * as ModuleModels from "@models"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import * as ModuleRepositories from "@repositories"
+import initialDataLoader from "./loaders/initial-data"
 
 const migrationScriptOptions = {
   moduleName: Modules.CURRENCY,
@@ -34,7 +35,7 @@ const connectionLoader = ModulesSdkUtils.mikroOrmConnectionLoaderFactory({
 })
 
 const service = CurrencyModuleService
-const loaders = [containerLoader, connectionLoader] as any
+const loaders = [containerLoader, connectionLoader, initialDataLoader] as any
 
 export const moduleDefinition: ModuleExports = {
   service,

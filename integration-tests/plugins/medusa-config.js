@@ -128,5 +128,10 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/tax",
     },
+    [Modules.CURRENCY]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/currency",
+    },
   },
 }
