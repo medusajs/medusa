@@ -24,13 +24,13 @@ describe("Taxes - Admin", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    try {
-      shutdownServer = await startBootstrapApp({ cwd, env })
-    } catch (error) {
-      console.log(error)
-    }
+    shutdownServer = await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
     service = appContainer.resolve(ModuleRegistrationName.TAX)
+  })
+
+  beforeEach(async () => {
+    await createAdminUser(dbConnection, adminHeaders)
   })
 
   afterAll(async () => {
@@ -45,7 +45,6 @@ describe("Taxes - Admin", () => {
   })
 
   it("can retrieve a tax rate", async () => {
-    await createAdminUser(dbConnection, adminHeaders)
     const region = await service.createTaxRegions({
       country_code: "us",
     })

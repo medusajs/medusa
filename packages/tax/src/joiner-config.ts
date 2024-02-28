@@ -49,7 +49,7 @@ export const joinerConfig: ModuleJoinerConfig = {
     {
       name: ["tax_provider", "tax_providers"],
       args: {
-        entity: TaxRateRule.name,
+        entity: TaxProvider.name,
         methodSuffix: "TaxProviders",
       },
     },
