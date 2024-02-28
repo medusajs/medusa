@@ -23,7 +23,7 @@ export const createTaxRegionsStep = createStep(
     }
 
     const service = container.resolve<ITaxModuleService>(
-      ModuleRegistrationName.REGION
+      ModuleRegistrationName.TAX
     )
 
     await service.delete(createdIds)

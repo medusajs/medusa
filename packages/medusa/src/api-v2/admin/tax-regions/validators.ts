@@ -1,9 +1,14 @@
 import { OperatorMap } from "@medusajs/types"
 import { Type } from "class-transformer"
-import { IsObject, IsOptional, IsString, ValidateNested } from "class-validator"
+import {
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { extendedFindParamsMixin, FindParams } from "../../../types/common"
 import { OperatorMapValidator } from "../../../types/validators/operator-map"
-import { IsType } from "../../../utils"
 
 export class AdminGetTaxRegionsTaxRegionParams extends FindParams {}
 
@@ -19,35 +24,35 @@ export class AdminGetTaxRegionsParams extends extendedFindParamsMixin({
   id?: string | string[]
 
   /**
-   * Filter by currency code
+   * Filter by country code.
    */
   @IsString({ each: true })
   @IsOptional()
   country_code?: string | string[]
 
   /**
-   * Filter by currency code
+   * Filter by province code
    */
   @IsString({ each: true })
   @IsOptional()
   province_code?: string | string[]
 
   /**
-   * Filter by currency code
+   * Filter by id of parent Tax Region.
    */
   @IsString({ each: true })
   @IsOptional()
   parent_id?: string | string[]
 
   /**
-   * Filter by currency code
+   * Filter by who created the Tax Region.
    */
   @IsString({ each: true })
   @IsOptional()
   created_by?: string | string[]
 
   /**
-   * Date filters to apply on the regions' `created_at` date.
+   * Date filters to apply on the Tax Regions' `created_at` date.
    */
   @IsOptional()
   @ValidateNested()
@@ -55,7 +60,7 @@ export class AdminGetTaxRegionsParams extends extendedFindParamsMixin({
   created_at?: OperatorMap<string>
 
   /**
-   * Date filters to apply on the regions' `updated_at` date.
+   * Date filters to apply on the Tax Regions' `updated_at` date.
    */
   @IsOptional()
   @ValidateNested()
@@ -63,7 +68,7 @@ export class AdminGetTaxRegionsParams extends extendedFindParamsMixin({
   updated_at?: OperatorMap<string>
 
   /**
-   * Date filters to apply on the regions' `deleted_at` date.
+   * Date filters to apply on the Tax Regions' `deleted_at` date.
    */
   @ValidateNested()
   @IsOptional()
@@ -84,11 +89,11 @@ export class AdminGetTaxRegionsParams extends extendedFindParamsMixin({
 
 class CreateDefaultTaxRate {
   @IsOptional()
-  @IsType([Number])
+  @IsNumber()
   rate?: number | null
 
   @IsOptional()
-  @IsType([String])
+  @IsString()
   code?: string | null
 
   @IsString()

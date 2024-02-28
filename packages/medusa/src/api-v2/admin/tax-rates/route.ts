@@ -47,7 +47,7 @@ export const GET = async (
   const variables = { id: req.params.id }
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "tax_rates",
+    entryPoint: "tax_rate",
     variables,
     fields: defaultAdminTaxRateFields,
   })
