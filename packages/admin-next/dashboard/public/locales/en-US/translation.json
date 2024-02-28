@@ -168,7 +168,7 @@
       "partiallyRefunded": "Partially Refunded",
       "refunded": "Refunded",
       "canceled": "Canceled",
-      "requresAction": "Requires Action"
+      "requiresAction": "Requires Action"
     },
     "fulfillmentStatusLabel": "Fulfillment Status",
     "fulfillmentStatus": {
@@ -180,7 +180,7 @@
       "partiallyReturned": "Partially Returned",
       "returned": "Returned",
       "canceled": "Canceled",
-      "requresAction": "Requires Action"
+      "requiresAction": "Requires Action"
     }
   },
   "draftOrders": {
@@ -188,7 +188,15 @@
   },
   "discounts": {
     "domain": "Discounts",
-    "deleteWarning": "You are about to delete the discount {{title}}. This action cannot be undone.",
+    "startDate": "Start date",
+    "validDuration": "Duration of the discount",
+    "redemptionsLimit": "Redemptions limit",
+    "endDate": "End date",
+    "percentageDiscount": "Percentage discount",
+    "freeShipping": "Free shipping",
+    "fixedDiscount": "Fixed discount",
+    "validRegions": "Valid regions",
+    "deleteWarning": "You are about to delete the discount {{code}}. This action cannot be undone.",
     "discountStatus": {
       "scheduled": "Scheduled",
       "expired": "Expired",
@@ -340,6 +348,7 @@
     "invalidCredentials": "Wrong email or password"
   },
   "fields": {
+    "amount": "Amount",
     "name": "Name",
     "lastName": "Last Name",
     "firstName": "First Name",
@@ -352,11 +361,13 @@
     "newPassword": "New Password",
     "repeatNewPassword": "Repeat New Password",
     "categories": "Categories",
+    "configurations": "Configurations",
     "category": "Category",
     "collection": "Collection",
     "discountable": "Discountable",
     "handle": "Handle",
     "subtitle": "Subtitle",
+    "limit": "Limit",
     "tags": "Tags",
     "type": "Type",
     "sales_channels": "Sales Channels",
