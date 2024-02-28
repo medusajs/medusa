@@ -17,8 +17,6 @@
   ],
   "dependencies": {
     "@ariakit/react": "^0.4.1",
-    "@headlessui/react": "^1.7.18",
-    "@headlessui/tailwindcss": "^0.2.0",
     "@hookform/resolvers": "3.3.2",
     "@medusajs/icons": "workspace:^",
     "@medusajs/ui": "workspace:^",
