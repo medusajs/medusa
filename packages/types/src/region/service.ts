@@ -358,13 +358,13 @@ export interface IRegionModuleService extends IModuleService {
   ): Promise<Record<string, string[]> | void>
 
   /**
-   * This method creates default countries and currencies.
+   * This method creates default countries.
    *
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when the default countries and currencies are created.
+   * @returns {Promise<void>} Resolves when the default countries are created.
    *
    * @example
    * {example-code}
    */
-  createDefaultCountriesAndCurrencies(sharedContext?: Context): Promise<void>
+  createDefaultCountries(sharedContext?: Context): Promise<void>
 }
