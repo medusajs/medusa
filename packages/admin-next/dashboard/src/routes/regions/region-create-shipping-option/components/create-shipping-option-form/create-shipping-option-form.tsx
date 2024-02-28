@@ -4,7 +4,6 @@ import {
   Region,
   ShippingOptionRequirement,
   ShippingProfile,
-  Store,
 } from "@medusajs/medusa"
 import {
   Button,
@@ -33,7 +32,6 @@ import { ShippingOptionPriceType } from "../../../shared/constants"
 
 type CreateShippingOptionProps = {
   region: Region
-  store: Store
   shippingProfiles: ShippingProfile[]
   fulfillmentOptions: FulfillmentOption[]
 }
@@ -50,6 +48,7 @@ const CreateShippingOptionSchema = zod
     admin_only: zod.boolean(),
     provider_id: zod.string().min(1),
     profile_id: zod.string().min(1),
+    includes_tax: zod.boolean(),
     price_type: zod.nativeEnum(ShippingOptionPriceType),
     amount: zod
       .union([zod.string(), zod.number()])
@@ -114,7 +113,6 @@ const CreateShippingOptionSchema = zod
 
 export const CreateShippingOptionForm = ({
   region,
-  store,
   fulfillmentOptions,
   shippingProfiles,
 }: CreateShippingOptionProps) => {
@@ -129,6 +127,7 @@ export const CreateShippingOptionForm = ({
       provider_id: "",
       profile_id: "",
       price_type: ShippingOptionPriceType.FLAT_RATE,
+      includes_tax: false,
       amount: "",
       min_subtotal: "",
       max_subtotal: "",
@@ -144,11 +143,11 @@ export const CreateShippingOptionForm = ({
 
   const isFlatRate = watchedPriceType === ShippingOptionPriceType.FLAT_RATE
 
-  const includesTax =
-    region.includes_tax ||
-    store.currencies.find((c) => c.code === region.currency_code)
-      ?.includes_tax ||
-    false
+  const includesTax = useWatch({
+    control: form.control,
+    name: "includes_tax",
+    defaultValue: false,
+  })
 
   const { mutateAsync, isLoading } = useAdminCreateShippingOption()
 
@@ -302,6 +301,33 @@ export const CreateShippingOptionForm = ({
                         </Form.Hint>
                       </div>
                       <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
+              <div className="bg-ui-border-base h-px w-full" />
+              <Form.Field
+                control={form.control}
+                name="includes_tax"
+                render={({ field: { value, onChange, ...field } }) => {
+                  return (
+                    <Form.Item>
+                      <div>
+                        <div className="flex items-start justify-between">
+                          <Form.Label>
+                            {t("fields.taxInclusivePricing")}
+                          </Form.Label>
+                          <Form.Control>
+                            <Switch
+                              {...field}
+                              checked={value}
+                              onCheckedChange={onChange}
+                            />
+                          </Form.Control>
+                        </div>
+                        <Form.Hint>{t("regions.taxInclusiveHint")}</Form.Hint>
+                        <Form.ErrorMessage />
+                      </div>
                     </Form.Item>
                   )
                 }}

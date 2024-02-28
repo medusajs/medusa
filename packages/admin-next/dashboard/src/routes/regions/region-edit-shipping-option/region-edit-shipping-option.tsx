@@ -1,9 +1,5 @@
 import { Heading } from "@medusajs/ui"
-import {
-  useAdminRegion,
-  useAdminShippingOption,
-  useAdminStore,
-} from "medusa-react"
+import { useAdminRegion, useAdminShippingOption } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../components/route-modal"
@@ -21,20 +17,13 @@ export const RegionEditShippingOption = () => {
   } = useAdminRegion(id!)
 
   const {
-    store,
-    isLoading: isLoadingStore,
-    isError: isStoreError,
-    error: storeError,
-  } = useAdminStore()
-
-  const {
     shipping_option,
     isLoading: isLoadingOption,
     isError: isOptionError,
     error: optionError,
   } = useAdminShippingOption(so_id!)
 
-  const isLoading = isLoadingRegion || isLoadingOption || isLoadingStore
+  const isLoading = isLoadingRegion || isLoadingOption
 
   if (isRegionError) {
     throw regionError
@@ -44,18 +33,13 @@ export const RegionEditShippingOption = () => {
     throw optionError
   }
 
-  if (isStoreError) {
-    throw storeError
-  }
-
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
         <Heading>{t("regions.shippingOption.editShippingOption")}</Heading>
       </RouteDrawer.Header>
-      {!isLoading && region && shipping_option && store && (
+      {!isLoading && region && shipping_option && (
         <EditShippingOptionForm
-          store={store}
           region={region}
           shippingOption={shipping_option}
         />

@@ -3,7 +3,6 @@ import {
   Region,
   ShippingOption,
   ShippingOptionRequirement,
-  Store,
 } from "@medusajs/medusa"
 import {
   Button,
@@ -33,7 +32,6 @@ import { ShippingOptionPriceType } from "../../../shared/constants"
 type EditShippingOptionFormProps = {
   region: Region
   shippingOption: ShippingOption
-  store: Store
 }
 
 const EditShippingOptionSchema = zod
@@ -41,6 +39,7 @@ const EditShippingOptionSchema = zod
     name: zod.string().min(1),
     admin_only: zod.boolean(),
     price_type: zod.nativeEnum(ShippingOptionPriceType),
+    includes_tax: zod.boolean(),
     amount: zod
       .union([zod.string(), zod.number()])
       .refine((value) => {
@@ -105,7 +104,6 @@ const EditShippingOptionSchema = zod
 export const EditShippingOptionForm = ({
   region,
   shippingOption,
-  store,
 }: EditShippingOptionFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -136,6 +134,7 @@ export const EditShippingOptionForm = ({
       max_subtotal: defaultMaxSubtotalAmount,
       min_subtotal: defaultMinSubtotalAmount,
       price_type: shippingOption.price_type,
+      includes_tax: shippingOption.includes_tax,
     },
     resolver: zodResolver(EditShippingOptionSchema),
   })
@@ -148,11 +147,10 @@ export const EditShippingOptionForm = ({
 
   const isFlatRate = watchedPriceType === ShippingOptionPriceType.FLAT_RATE
 
-  const includesTax =
-    region.includes_tax ||
-    store.currencies.find((c) => c.code === region.currency_code)
-      ?.includes_tax ||
-    false
+  const includesTax = useWatch({
+    control: form.control,
+    name: "includes_tax",
+  })
 
   const { mutateAsync, isLoading } = useAdminUpdateShippingOption(
     shippingOption.id
@@ -243,6 +241,32 @@ export const EditShippingOptionForm = ({
               )
             }}
           />
+          <div className="bg-ui-border-base h-px w-full" />
+          <Form.Field
+            control={form.control}
+            name="includes_tax"
+            render={({ field: { value, onChange, ...field } }) => {
+              return (
+                <Form.Item>
+                  <div>
+                    <div className="flex items-start justify-between">
+                      <Form.Label>{t("fields.taxInclusivePricing")}</Form.Label>
+                      <Form.Control>
+                        <Switch
+                          {...field}
+                          checked={value}
+                          onCheckedChange={onChange}
+                        />
+                      </Form.Control>
+                    </div>
+                    <Form.Hint>{t("regions.taxInclusiveHint")}</Form.Hint>
+                    <Form.ErrorMessage />
+                  </div>
+                </Form.Item>
+              )
+            }}
+          />
+          <div className="bg-ui-border-base h-px w-full" />
           <div className="flex flex-col gap-y-4">
             <Form.Field
               control={form.control}
