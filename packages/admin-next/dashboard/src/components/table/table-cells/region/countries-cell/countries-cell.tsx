@@ -1,5 +1,4 @@
 import { Country } from "@medusajs/medusa"
-import { Tooltip } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { PlaceholderCell } from "../../common/placeholder-cell"
 
@@ -19,29 +18,21 @@ export const CountriesCell = ({ countries }: CountriesCellProps) => {
     .map((c) => c.display_name)
     .join(", ")
 
-  const additionalCountries = countries.slice(2).map((c) => c.display_name)
+  const additionalCountries = countries
+    .slice(2)
+    .map((c) => c.display_name).length
+
+  const text = `${displayValue}${
+    additionalCountries > 0
+      ? ` ${t("general.plusCountMore", {
+          count: additionalCountries,
+        })}`
+      : ""
+  }`
 
   return (
-    <div className="flex size-full items-center gap-x-1">
-      <span>{displayValue}</span>
-      {additionalCountries.length > 0 && (
-        <Tooltip
-          collisionPadding={16}
-          content={
-            <ul>
-              {additionalCountries.map((c) => (
-                <li key={c}>{c}</li>
-              ))}
-            </ul>
-          }
-        >
-          <span>
-            {t("general.plusCountMore", {
-              count: additionalCountries.length,
-            })}
-          </span>
-        </Tooltip>
-      )}
+    <div className="flex size-full items-center overflow-hidden">
+      <span className="truncate">{text}</span>
     </div>
   )
 }

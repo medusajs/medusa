@@ -225,7 +225,7 @@ export const CreateShippingOptionForm = ({
             </Button>
           </div>
         </RouteFocusModal.Header>
-        <RouteFocusModal.Body>
+        <RouteFocusModal.Body className="overflow-hidden">
           <div
             className={clx(
               "flex h-full w-full flex-col items-center overflow-y-auto p-16"

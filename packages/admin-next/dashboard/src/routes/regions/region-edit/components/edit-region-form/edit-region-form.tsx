@@ -12,7 +12,10 @@ import * as zod from "zod"
 
 import { Combobox } from "../../../../../components/common/combobox"
 import { Form } from "../../../../../components/common/form"
-import { RouteDrawer } from "../../../../../components/route-modal"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 import { formatProvider } from "../../../../../lib/format-provider"
 
 type EditRegionFormProps = {
@@ -35,7 +38,8 @@ export const EditRegionForm = ({
   paymentProviders,
   fulfillmentProviders,
 }: EditRegionFormProps) => {
-  const { mutateAsync, isLoading } = useAdminUpdateRegion(region.id)
+  const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<zod.infer<typeof EditRegionSchema>>({
     defaultValues: {
@@ -46,15 +50,22 @@ export const EditRegionForm = ({
     },
   })
 
-  const { t } = useTranslation()
+  const { mutateAsync, isLoading } = useAdminUpdateRegion(region.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    await mutateAsync({
-      name: values.name,
-      currency_code: values.currency_code,
-      fulfillment_providers: values.fulfillment_providers,
-      payment_providers: values.payment_providers,
-    })
+    await mutateAsync(
+      {
+        name: values.name,
+        currency_code: values.currency_code,
+        fulfillment_providers: values.fulfillment_providers,
+        payment_providers: values.payment_providers,
+      },
+      {
+        onSuccess: () => {
+          handleSuccess()
+        },
+      }
+    )
   })
 
   return (

@@ -1,5 +1,4 @@
 import { FulfillmentProvider } from "@medusajs/medusa"
-import { Tooltip } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { PlaceholderCell } from "../../common/placeholder-cell"
@@ -22,28 +21,19 @@ export const FulfillmentProvidersCell = ({
     .map((p) => formatProvider(p.id))
     .join(", ")
 
-  const additionalProviders = fulfillmentProviders.slice(2).map((c) => c.id)
+  const additionalProviders = fulfillmentProviders.slice(2).length
+
+  const text = `${displayValue}${
+    additionalProviders > 0
+      ? ` ${t("general.plusCountMore", {
+          count: additionalProviders,
+        })}`
+      : ""
+  }`
 
   return (
-    <div className="flex size-full items-center gap-x-1">
-      <span>{displayValue}</span>
-      {additionalProviders.length > 0 && (
-        <Tooltip
-          content={
-            <ul>
-              {additionalProviders.map((c) => (
-                <li key={c}>{c}</li>
-              ))}
-            </ul>
-          }
-        >
-          <span>
-            {t("general.plusCountMore", {
-              count: additionalProviders.length,
-            })}
-          </span>
-        </Tooltip>
-      )}
+    <div className="flex size-full items-center overflow-hidden">
+      <span className="truncate">{text}</span>
     </div>
   )
 }
@@ -52,8 +42,8 @@ export const FulfillmentProvidersHeader = () => {
   const { t } = useTranslation()
 
   return (
-    <div className="flex size-full items-center">
-      <span>{t("fields.fulfillmentProviders")}</span>
+    <div className="flex size-full items-center overflow-hidden">
+      <span className="truncate">{t("fields.fulfillmentProviders")}</span>
     </div>
   )
 }
