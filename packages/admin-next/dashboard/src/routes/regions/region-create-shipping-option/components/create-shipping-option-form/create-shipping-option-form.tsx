@@ -4,6 +4,7 @@ import {
   Region,
   ShippingOptionRequirement,
   ShippingProfile,
+  Store,
 } from "@medusajs/medusa"
 import {
   Button,
@@ -21,6 +22,7 @@ import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
+import { IncludesTaxTooltip } from "../../../../../components/common/tax-badge/tax-badge"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -31,6 +33,7 @@ import { ShippingOptionPriceType } from "../../../shared/constants"
 
 type CreateShippingOptionProps = {
   region: Region
+  store: Store
   shippingProfiles: ShippingProfile[]
   fulfillmentOptions: FulfillmentOption[]
 }
@@ -111,6 +114,7 @@ const CreateShippingOptionSchema = zod
 
 export const CreateShippingOptionForm = ({
   region,
+  store,
   fulfillmentOptions,
   shippingProfiles,
 }: CreateShippingOptionProps) => {
@@ -139,6 +143,12 @@ export const CreateShippingOptionForm = ({
   })
 
   const isFlatRate = watchedPriceType === ShippingOptionPriceType.FLAT_RATE
+
+  const includesTax =
+    region.includes_tax ||
+    store.currencies.find((c) => c.code === region.currency_code)
+      ?.includes_tax ||
+    false
 
   const { mutateAsync, isLoading } = useAdminCreateShippingOption()
 
@@ -359,7 +369,13 @@ export const CreateShippingOptionForm = ({
                       render={({ field }) => {
                         return (
                           <Form.Item>
-                            <Form.Label>{t("fields.price")}</Form.Label>
+                            <Form.Label
+                              icon={
+                                <IncludesTaxTooltip includesTax={includesTax} />
+                              }
+                            >
+                              {t("fields.price")}
+                            </Form.Label>
                             <Form.Control>
                               <CurrencyInput
                                 code={region.currency_code}
@@ -458,7 +474,12 @@ export const CreateShippingOptionForm = ({
                     render={({ field }) => {
                       return (
                         <Form.Item>
-                          <Form.Label optional>
+                          <Form.Label
+                            icon={
+                              <IncludesTaxTooltip includesTax={includesTax} />
+                            }
+                            optional
+                          >
                             {t("fields.minSubtotal")}
                           </Form.Label>
                           <Form.Control>
@@ -480,7 +501,12 @@ export const CreateShippingOptionForm = ({
                     render={({ field }) => {
                       return (
                         <Form.Item>
-                          <Form.Label optional>
+                          <Form.Label
+                            icon={
+                              <IncludesTaxTooltip includesTax={includesTax} />
+                            }
+                            optional
+                          >
                             {t("fields.maxSubtotal")}
                           </Form.Label>
                           <Form.Control>

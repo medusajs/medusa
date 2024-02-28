@@ -40,7 +40,8 @@
     "noRecordsTitle": "No records",
     "noRecordsMessage": "There are no records to show",
     "unsavedChangesTitle": "Are you sure you want to leave this page?",
-    "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page."
+    "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page.",
+    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved."
   },
   "actions": {
     "create": "Create",

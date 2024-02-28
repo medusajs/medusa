@@ -3,6 +3,7 @@ import {
   Region,
   ShippingOption,
   ShippingOptionRequirement,
+  Store,
 } from "@medusajs/medusa"
 import {
   Button,
@@ -18,6 +19,7 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
+import { IncludesTaxTooltip } from "../../../../../components/common/tax-badge/tax-badge"
 import {
   RouteDrawer,
   useRouteModal,
@@ -31,6 +33,7 @@ import { ShippingOptionPriceType } from "../../../shared/constants"
 type EditShippingOptionFormProps = {
   region: Region
   shippingOption: ShippingOption
+  store: Store
 }
 
 const EditShippingOptionSchema = zod
@@ -102,6 +105,7 @@ const EditShippingOptionSchema = zod
 export const EditShippingOptionForm = ({
   region,
   shippingOption,
+  store,
 }: EditShippingOptionFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -143,6 +147,12 @@ export const EditShippingOptionForm = ({
   })
 
   const isFlatRate = watchedPriceType === ShippingOptionPriceType.FLAT_RATE
+
+  const includesTax =
+    region.includes_tax ||
+    store.currencies.find((c) => c.code === region.currency_code)
+      ?.includes_tax ||
+    false
 
   const { mutateAsync, isLoading } = useAdminUpdateShippingOption(
     shippingOption.id
@@ -290,7 +300,11 @@ export const EditShippingOptionForm = ({
                 render={({ field }) => {
                   return (
                     <Form.Item>
-                      <Form.Label>{t("fields.price")}</Form.Label>
+                      <Form.Label
+                        icon={<IncludesTaxTooltip includesTax={includesTax} />}
+                      >
+                        {t("fields.price")}
+                      </Form.Label>
                       <Form.Control>
                         <CurrencyInput
                           code={region.currency_code}
@@ -323,7 +337,10 @@ export const EditShippingOptionForm = ({
                 render={({ field }) => {
                   return (
                     <Form.Item>
-                      <Form.Label optional>
+                      <Form.Label
+                        icon={<IncludesTaxTooltip includesTax={includesTax} />}
+                        optional
+                      >
                         {t("fields.minSubtotal")}
                       </Form.Label>
                       <Form.Control>
@@ -345,7 +362,10 @@ export const EditShippingOptionForm = ({
                 render={({ field }) => {
                   return (
                     <Form.Item>
-                      <Form.Label optional>
+                      <Form.Label
+                        icon={<IncludesTaxTooltip includesTax={includesTax} />}
+                        optional
+                      >
                         {t("fields.maxSubtotal")}
                       </Form.Label>
                       <Form.Control>

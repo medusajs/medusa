@@ -2,6 +2,7 @@ import {
   useAdminRegion,
   useAdminRegionFulfillmentOptions,
   useAdminShippingProfiles,
+  useAdminStore,
 } from "medusa-react"
 import { useParams } from "react-router-dom"
 import { RouteFocusModal } from "../../../components/route-modal"
@@ -18,6 +19,13 @@ export const RegionCreateShippingOption = () => {
   } = useAdminRegion(id!)
 
   const {
+    store,
+    isLoading: isLoadingStore,
+    isError: isStoreError,
+    error: storeError,
+  } = useAdminStore()
+
+  const {
     shipping_profiles,
     isLoading: isLoadingProfiles,
     isError: isProfilesError,
@@ -31,7 +39,12 @@ export const RegionCreateShippingOption = () => {
     error: optionsError,
   } = useAdminRegionFulfillmentOptions(id!)
 
-  const isLoading = isLoadingProfiles || isLoadingOptions || isLoadingRegion
+  const isLoading =
+    isLoadingProfiles || isLoadingOptions || isLoadingRegion || isLoadingStore
+
+  if (isStoreError) {
+    throw storeError
+  }
 
   if (isRegionError) {
     throw regionError
@@ -47,13 +60,18 @@ export const RegionCreateShippingOption = () => {
 
   return (
     <RouteFocusModal>
-      {!isLoading && region && shipping_profiles && fulfillment_options && (
-        <CreateShippingOptionForm
-          region={region}
-          fulfillmentOptions={fulfillment_options}
-          shippingProfiles={shipping_profiles}
-        />
-      )}
+      {!isLoading &&
+        region &&
+        store &&
+        shipping_profiles &&
+        fulfillment_options && (
+          <CreateShippingOptionForm
+            region={region}
+            store={store}
+            fulfillmentOptions={fulfillment_options}
+            shippingProfiles={shipping_profiles}
+          />
+        )}
     </RouteFocusModal>
   )
 }
