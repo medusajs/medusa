@@ -75,9 +75,8 @@ export function applyPromotionToItems(
       )
       const totalItemValue =
         (method.subtotal / method.quantity) * quantityMultiplier
-      let promotionValue = parseFloat(applicationMethod!.value!)
+      let promotionValue = applicationMethod?.value ?? 0
       const applicableTotal = totalItemValue - appliedPromoValue
-
       if (applicationMethod?.type === ApplicationMethodType.PERCENTAGE) {
         promotionValue = (promotionValue / 100) * applicableTotal
       }
@@ -130,7 +129,7 @@ export function applyPromotionToItems(
       }
 
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
-      const promotionValue = parseFloat(applicationMethod!.value!)
+      const promotionValue = applicationMethod?.value ?? 0
       const applicableTotal =
         (method.subtotal / method.quantity) * method.quantity -
         appliedPromoValue
