@@ -1,25 +1,21 @@
-import { transformBody, transformQuery } from "../../../api/middlewares"
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import * as QueryConfig from "./query-config"
+
 import {
-  AdminGetApiKeysParams,
   AdminGetApiKeysApiKeyParams,
-  AdminPostApiKeysReq,
+  AdminGetApiKeysParams,
   AdminPostApiKeysApiKeyReq,
+  AdminPostApiKeysReq,
   AdminRevokeApiKeysApiKeyReq,
 } from "./validators"
+import { transformBody, transformQuery } from "../../../api/middlewares"
+
+import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/api-keys*",
-    // middlewares: [authenticate("admin", ["bearer", "session"])],
-    // TODO: Apply authentication middleware correctly once https://github.com/medusajs/medusa/pull/6447 is merged.
-    middlewares: [
-      (req, res, next) => {
-        req.auth_user = { id: "test" }
-        next()
-      },
-    ],
+    middlewares: [authenticate("admin", ["bearer", "session"])],
   },
   {
     method: ["GET"],

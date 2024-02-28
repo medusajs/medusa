@@ -1,11 +1,15 @@
 import {
   Context,
   DAL,
+  FilterableShippingOptionProps,
+  FilterQuery,
+  FindConfig,
   FulfillmentTypes,
   IFulfillmentModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
+  ShippingOptionDTO,
   UpdateFulfillmentSetDTO,
 } from "@medusajs/types"
 import {
@@ -29,7 +33,7 @@ import {
   ShippingOptionType,
   ShippingProfile,
 } from "@models"
-import { validateRules } from "@utils"
+import { isContextValid, validateRules } from "@utils"
 
 const generateMethodForModels = [
   ServiceZone,
@@ -111,6 +115,100 @@ export default class FulfillmentModuleService<
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  protected static normalizeShippingOptionsListParams(
+    filters: FilterableShippingOptionProps = {},
+    config: FindConfig<ShippingOptionDTO> = {}
+  ) {
+    let { fulfillment_set_id, fulfillment_set_type, context, ...where } =
+      filters
+
+    const normalizedConfig = { ...config }
+    normalizedConfig.relations = [
+      "rules",
+      "type",
+      "shipping_profile",
+      "service_provider",
+      ...(normalizedConfig.relations ?? []),
+    ]
+    // The assumption is that there won't be an infinite amount of shipping options. So if a context filtering needs to be applied we can retrieve them all.
+    normalizedConfig.take =
+      normalizedConfig.take ?? (context ? null : undefined)
+
+    let normalizedFilters = { ...where } as FilterQuery
+
+    if (fulfillment_set_id || fulfillment_set_type) {
+      const fulfillmentSetConstraints = {}
+
+      if (fulfillment_set_id) {
+        fulfillmentSetConstraints["id"] = fulfillment_set_id
+      }
+
+      if (fulfillment_set_type) {
+        fulfillmentSetConstraints["type"] = fulfillment_set_type
+      }
+
+      normalizedFilters = {
+        ...normalizedFilters,
+        service_zone: {
+          fulfillment_set: fulfillmentSetConstraints,
+        },
+      }
+
+      normalizedConfig.relations.push("service_zone.fulfillment_set")
+    }
+
+    normalizedConfig.relations = Array.from(new Set(normalizedConfig.relations))
+
+    return {
+      filters: normalizedFilters,
+      config: normalizedConfig,
+      context,
+    }
+  }
+
+  @InjectManager("baseRepository_")
+  // @ts-ignore
+  async listShippingOptions(
+    filters: FilterableShippingOptionProps = {},
+    config: FindConfig<ShippingOptionDTO> = {},
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.ShippingOptionDTO[]> {
+    const {
+      filters: normalizedFilters,
+      config: normalizedConfig,
+      context,
+    } = FulfillmentModuleService.normalizeShippingOptionsListParams(
+      filters,
+      config
+    )
+
+    let shippingOptions = await this.shippingOptionService_.list(
+      normalizedFilters,
+      normalizedConfig,
+      sharedContext
+    )
+
+    // Apply rules context filtering
+    if (context) {
+      shippingOptions = shippingOptions.filter((shippingOption) => {
+        if (!shippingOption.rules?.length) {
+          return true
+        }
+
+        return isContextValid(
+          context,
+          shippingOption.rules.map((r) => r)
+        )
+      })
+    }
+
+    return await this.baseRepository_.serialize<
+      FulfillmentTypes.ShippingOptionDTO[]
+    >(shippingOptions, {
+      populate: true,
+    })
   }
 
   create(

@@ -14,7 +14,7 @@ export interface ApplicationMethodDTO {
   type?: ApplicationMethodTypeValues
   target_type?: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
-  value?: string | null
+  value?: number
   max_quantity?: number | null
   buy_rules_min_quantity?: number | null
   apply_to_quantity?: number | null
@@ -27,7 +27,7 @@ export interface CreateApplicationMethodDTO {
   type: ApplicationMethodTypeValues
   target_type: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
-  value?: string | null
+  value?: number
   max_quantity?: number | null
   buy_rules_min_quantity?: number | null
   apply_to_quantity?: number | null
@@ -41,7 +41,7 @@ export interface UpdateApplicationMethodDTO {
   type?: ApplicationMethodTypeValues
   target_type?: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
-  value?: string | null
+  value?: number
   max_quantity?: number | null
   buy_rules_min_quantity?: number | null
   apply_to_quantity?: number | null

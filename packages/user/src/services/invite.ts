@@ -1,19 +1,23 @@
+import * as crypto from "crypto"
+
 import { Context, DAL } from "@medusajs/types"
 import {
   InjectTransactionManager,
   MedusaError,
   ModulesSdkUtils,
+  arrayDifference,
 } from "@medusajs/utils"
+import jwt, { JwtPayload } from "jsonwebtoken"
+
 import { Invite } from "@models"
 import { InviteServiceTypes } from "@types"
-import jwt, { JwtPayload } from "jsonwebtoken"
 
 type InjectedDependencies = {
   inviteRepository: DAL.RepositoryService
 }
 
-// 7 days
-const DEFAULT_VALID_INVITE_DURATION = 1000 * 60 * 60 * 24 * 7
+// 1 day
+const DEFAULT_VALID_INVITE_DURATION = 60 * 60 * 24
 
 export default class InviteService<
   TEntity extends Invite = Invite
@@ -85,13 +89,64 @@ export default class InviteService<
   }
 
   @InjectTransactionManager("inviteRepository_")
+  async refreshInviteTokens(
+    inviteIds: string[],
+    context: Context = {}
+  ): Promise<TEntity[]> {
+    const [invites, count] = await super.listAndCount(
+      { id: inviteIds },
+      {},
+      context
+    )
+
+    if (count !== inviteIds.length) {
+      const missing = arrayDifference(
+        inviteIds,
+        invites.map((invite) => invite.id)
+      )
+
+      if (missing.length > 0) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `The following invites do not exist: ${missing.join(", ")}`
+        )
+      }
+    }
+
+    const expiresIn: number =
+      parseInt(this.getOption("valid_duration")) ||
+      DEFAULT_VALID_INVITE_DURATION
+
+    const updates = invites.map((invite) => {
+      return {
+        id: invite.id,
+        expires_at: new Date().setMilliseconds(
+          new Date().getMilliseconds() + expiresIn
+        ),
+        token: this.generateToken({ id: invite.id }),
+      }
+    })
+
+    return await super.update(updates, context)
+  }
+
+  @InjectTransactionManager("inviteRepository_")
   async validateInviteToken(
     token: string,
     context?: Context
   ): Promise<TEntity> {
     const decoded = this.validateToken(token)
 
-    return await super.retrieve(decoded.payload.id, {}, context)
+    const invite = await super.retrieve(decoded.payload.id, {}, context)
+
+    if (invite.expires_at < new Date()) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The invite has expired"
+      )
+    }
+
+    return invite
   }
 
   private generateToken(data: any): string {
@@ -109,8 +164,10 @@ export default class InviteService<
 
     return jwt.sign(data, jwtSecret, {
       expiresIn,
+      jwtid: crypto.randomUUID(),
     })
   }
+
   private validateToken(data: any): JwtPayload {
     const jwtSecret = this.getOption("jwt_secret")
 

@@ -99,7 +99,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     })
   }
 
-  private stringifyWithSymbol(key, value) {
+  /*private stringifyWithSymbol(key, value) {
     if (key === "__type" && typeof value === "symbol") {
       return Symbol.keyFor(value)
     }
@@ -113,12 +113,12 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     }
 
     return value
-  }
+  }*/
 
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
     const data = await this.redisClient.get(key)
 
-    return data ? JSON.parse(data, this.jsonWithSymbol) : undefined
+    return data ? JSON.parse(data) : undefined
   }
 
   async list(): Promise<TransactionCheckpoint[]> {
@@ -129,7 +129,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     for (const key of keys) {
       const data = await this.redisClient.get(key)
       if (data) {
-        transactions.push(JSON.parse(data, this.jsonWithSymbol))
+        transactions.push(JSON.parse(data))
       }
     }
     return transactions
@@ -159,7 +159,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
       })
     }
 
-    const stringifiedData = JSON.stringify(data, this.stringifyWithSymbol)
+    const stringifiedData = JSON.stringify(data)
     const parsedData = JSON.parse(stringifiedData)
 
     if (!hasFinished) {

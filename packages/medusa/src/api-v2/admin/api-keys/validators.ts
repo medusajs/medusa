@@ -3,6 +3,7 @@ import { Type } from "class-transformer"
 import {
   IsArray,
   IsEnum,
+  IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
@@ -65,6 +66,10 @@ export class AdminPostApiKeysApiKeyReq {
   title: string
 }
 
-export class AdminRevokeApiKeysApiKeyReq {}
+export class AdminRevokeApiKeysApiKeyReq {
+  @IsOptional()
+  @IsNumber()
+  revoke_in?: number
+}
 
 export class AdminDeleteApiKeysApiKeyReq {}
