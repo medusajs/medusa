@@ -2,10 +2,10 @@ export const defaultAdminTaxRegionRelations = []
 export const allowedAdminTaxRegionRelations = []
 export const defaultAdminTaxRegionFields = [
   "id",
-  "name",
-  "code",
-  "rate",
-  "tax_region_id",
+  "country_code",
+  "province_code",
+  "parent_id",
+  "provider_id",
   "created_by",
   "created_at",
   "updated_at",

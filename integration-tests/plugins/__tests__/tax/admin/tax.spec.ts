@@ -107,8 +107,6 @@ describe("Taxes - Admin", () => {
         created_by: "admin_user",
         provider_id: null,
         metadata: null,
-        tax_rates: [],
-        children: [],
       },
     })
 
@@ -134,9 +132,10 @@ describe("Taxes - Admin", () => {
         is_default: false,
         metadata: null,
         tax_region_id: usRegionId,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
         deleted_at: null,
         created_by: "admin_user",
-        rules: [],
         is_combinable: false,
       },
     })
@@ -163,9 +162,7 @@ describe("Taxes - Admin", () => {
         deleted_at: null,
         created_by: "admin_user",
         metadata: null,
-        children: [],
         provider_id: null,
-        tax_rates: [],
       },
     })
 

@@ -25,7 +25,17 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ tax_rate: result[0] })
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const query = remoteQueryObjectFromString({
+    entryPoint: "tax_rate",
+    variables: { id: result[0].id },
+    fields: defaultAdminTaxRateFields,
+  })
+
+  const [taxRate] = await remoteQuery(query)
+
+  res.status(200).json({ tax_rate: taxRate })
 }
 
 export const GET = async (
