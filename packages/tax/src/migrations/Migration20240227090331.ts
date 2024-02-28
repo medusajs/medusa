@@ -1,3 +1,4 @@
+import { generatePostgresAlterColummnIfExistStatement } from "@medusajs/utils"
 import { Migration } from "@mikro-orm/migrations"
 
 export class Migration20240227090331 extends Migration {
@@ -6,6 +7,7 @@ export class Migration20240227090331 extends Migration {
     this.addSql(
       `ALTER TABLE IF EXISTS "tax_provider" ADD COLUMN IF NOT EXISTS "is_enabled" bool not null default true;`
     )
+
     this.addSql(
       `CREATE TABLE IF NOT EXISTS "tax_provider" ("id" text not null, "is_enabled" boolean not null default true, CONSTRAINT "tax_provider_pkey" PRIMARY KEY ("id"));`
     )
@@ -27,7 +29,11 @@ export class Migration20240227090331 extends Migration {
 
     // Old foreign key on region_id
     this.addSql(
-      `ALTER TABLE IF EXISTS "tax_rate" ALTER COLUMN "region_id" DROP NOT NULL;`
+      generatePostgresAlterColummnIfExistStatement(
+        "tax_rate",
+        ["region_id"],
+        "DROP NOT NULL"
+      )
     )
     this.addSql(
       `ALTER TABLE IF EXISTS "tax_rate" DROP CONSTRAINT IF EXISTS "FK_b95a1e03b051993d208366cb960";`
