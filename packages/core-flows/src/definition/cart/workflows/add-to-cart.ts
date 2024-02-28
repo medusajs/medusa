@@ -13,6 +13,7 @@ import {
   getVariantsStep,
   validateVariantsExistStep,
 } from "../steps"
+import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 
 // TODO: The AddToCartWorkflow are missing the following steps:
@@ -69,6 +70,8 @@ export const addToCartWorkflow = createWorkflow(
     )
 
     const items = addToCartStep({ items: lineItems })
+
+    refreshCartPromotionsStep({ id: input.cart.id })
 
     return items
   }
