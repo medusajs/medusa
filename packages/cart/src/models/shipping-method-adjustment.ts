@@ -5,7 +5,6 @@ import {
 } from "@medusajs/utils"
 import {
   BeforeCreate,
-  Cascade,
   Entity,
   Filter,
   ManyToOne,
@@ -15,38 +14,46 @@ import {
 import AdjustmentLine from "./adjustment-line"
 import ShippingMethod from "./shipping-method"
 
+const ShippingMethodIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_adjustment_shipping_method_id",
+  tableName: "cart_shipping_method_adjustment",
+  columns: "shipping_method_id",
+  where: "deleted_at IS NULL",
+}).MikroORMIndex
+
+const PromotionIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_shipping_method_adjustment_promotion_id",
+  tableName: "cart_shipping_method_adjustment",
+  columns: "promotion_id",
+  where: "deleted_at IS NULL AND promotion_id IS NOT NULL",
+}).MikroORMIndex
+
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "cart_shipping_method_adjustment",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+}).MikroORMIndex
+
 @Entity({ tableName: "cart_shipping_method_adjustment" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingMethodAdjustment extends AdjustmentLine {
-  @ManyToOne({
-    entity: () => ShippingMethod,
-    cascade: [Cascade.REMOVE, Cascade.PERSIST, "soft-remove"] as any,
-  })
+  @ManyToOne({ entity: () => ShippingMethod, persist: false })
   shipping_method: ShippingMethod
 
-  @createPsqlIndexStatementHelper({
-    name: "IDX_adjustment_shipping_method_id",
-    tableName: "cart_shipping_method_adjustment",
-    columns: "shipping_method_id",
-    where: "deleted_at IS NULL",
-  }).MikroORMIndex()
-  @Property({ columnType: "text" })
+  @ShippingMethodIdIndex()
+  @ManyToOne({
+    entity: () => ShippingMethod,
+    columnType: "text",
+    fieldName: "shipping_method_id",
+    mapToPk: true,
+  })
   shipping_method_id: string
 
-  @createPsqlIndexStatementHelper({
-    name: "IDX_shipping_method_adjustment_promotion_id",
-    tableName: "cart_shipping_method_adjustment",
-    columns: "promotion_id",
-    where: "deleted_at IS NULL and promotion_id IS NOT NULL",
-  }).MikroORMIndex()
+  @PromotionIdIndex()
   @Property({ columnType: "text", nullable: true })
   promotion_id: string | null = null
 
-  @createPsqlIndexStatementHelper({
-    tableName: "cart_shipping_method_adjustment",
-    columns: "deleted_at",
-    where: "deleted_at IS NOT NULL",
-  }).MikroORMIndex()
+  @DeletedAtIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

@@ -194,7 +194,14 @@
     "domain": "Draft Orders"
   },
   "discounts": {
-    "domain": "Discounts"
+    "domain": "Discounts",
+    "deleteWarning": "You are about to delete the discount {{title}}. This action cannot be undone.",
+    "discountStatus": {
+      "scheduled": "Scheduled",
+      "expired": "Expired",
+      "active": "Active",
+      "disabled": "Disabled"
+    }
   },
   "pricing": {
     "domain": "Pricing"
@@ -362,6 +369,11 @@
     "sales_channels": "Sales Channels",
     "status": "Status",
     "code": "Code",
+    "value": "Value",
+    "disabled": "Disabled",
+    "dynamic": "Dynamic",
+    "normal": "Normal",
+    "totalRedemptions": "Total Redemptions",
     "countries": "Countries",
     "paymentProviders": "Payment Providers",
     "fulfillmentProviders": "Fulfillment Providers",
@@ -399,6 +411,7 @@
     "items": "Items",
     "salesChannel": "Sales Channel",
     "region": "Region",
+    "discount": "Discount",
     "role": "Role",
     "sent": "Sent",
     "salesChannels": "Sales Channels",

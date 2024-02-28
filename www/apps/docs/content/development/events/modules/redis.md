@@ -76,7 +76,7 @@ Other available options include:
 
 - `queueName`: a string indicating the name of the BullMQ queue. By default, it’s `events-queue`.
 - `queueOptions`: an object containing options for the BullMQ queue. You can learn about available options in [BullMQ’s documentation](https://api.docs.bullmq.io/interfaces/QueueOptions.html). By default, it’s an empty object.
-- `redisOptions`: an object containing options for the Redis instance. You can learn about available options in [io-redis’s documentation](https://luin.github.io/ioredis/index.html#RedisOptions). By default, it’s an empty object.
+- `redisOptions`: an object containing options for the Redis instance. You can learn about available options in [io-redis’s documentation](https://redis.github.io/ioredis/index.html#RedisOptions). By default, it’s an empty object.
 
 ---
 
