@@ -13,9 +13,9 @@ import {
   UpdateReservationItemInput,
 } from "./common"
 
+import { Context } from "../shared-context"
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
-import { SharedContext } from "../shared-context"
 
 /**
  * The main service interface for the inventory module.
@@ -27,7 +27,7 @@ export interface IInventoryService extends IModuleService {
    * @param {FindConfig<InventoryItemDTO>} config -
    * The configurations determining how the inventory items are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a inventory item.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @return {Promise<[InventoryItemDTO[], number]>} The list of inventory items along with the total count.
    *
    * @example
@@ -94,7 +94,7 @@ export interface IInventoryService extends IModuleService {
   listInventoryItems(
     selector: FilterableInventoryItemProps,
     config?: FindConfig<InventoryItemDTO>,
-    context?: SharedContext
+    context?: Context
   ): Promise<[InventoryItemDTO[], number]>
 
   /**
@@ -103,7 +103,7 @@ export interface IInventoryService extends IModuleService {
    * @param {FindConfig<ReservationItemDTO>} config -
    * The configurations determining how the reservation items are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a reservation item.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @return {Promise<[ReservationItemDTO[], number]>} The list of reservation items along with the total count.
    *
    * @example
@@ -170,7 +170,7 @@ export interface IInventoryService extends IModuleService {
   listReservationItems(
     selector: FilterableReservationItemProps,
     config?: FindConfig<ReservationItemDTO>,
-    context?: SharedContext
+    context?: Context
   ): Promise<[ReservationItemDTO[], number]>
 
   /**
@@ -179,7 +179,7 @@ export interface IInventoryService extends IModuleService {
    * @param {FindConfig<InventoryLevelDTO>} config -
    * The configurations determining how the inventory levels are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a inventory level.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @return {Promise<[InventoryLevelDTO[], number]>} The list of inventory levels along with the total count.
    *
    * @example
@@ -246,7 +246,7 @@ export interface IInventoryService extends IModuleService {
   listInventoryLevels(
     selector: FilterableInventoryLevelProps,
     config?: FindConfig<InventoryLevelDTO>,
-    context?: SharedContext
+    context?: Context
   ): Promise<[InventoryLevelDTO[], number]>
 
   /**
@@ -256,7 +256,7 @@ export interface IInventoryService extends IModuleService {
    * @param {FindConfig<InventoryItemDTO>} config -
    * The configurations determining how the inventory item is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a inventory item.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<InventoryItemDTO>} The retrieved inventory item.
    *
    * @example
@@ -297,7 +297,7 @@ export interface IInventoryService extends IModuleService {
   retrieveInventoryItem(
     inventoryItemId: string,
     config?: FindConfig<InventoryItemDTO>,
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryItemDTO>
 
   /**
@@ -305,7 +305,7 @@ export interface IInventoryService extends IModuleService {
    *
    * @param {string} inventoryItemId - The ID of the inventory item.
    * @param {string} locationId - The ID of the location.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<InventoryLevelDTO>} The retrieved inventory level.
    *
    * @example
@@ -330,14 +330,14 @@ export interface IInventoryService extends IModuleService {
   retrieveInventoryLevel(
     inventoryItemId: string,
     locationId: string,
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryLevelDTO>
 
   /**
    * This method is used to retrieve a reservation item by its ID.
    *
    * @param {string} reservationId - The ID of the reservation item.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ReservationItemDTO>} The retrieved reservation item.
    *
    * @example
@@ -355,45 +355,14 @@ export interface IInventoryService extends IModuleService {
    */
   retrieveReservationItem(
     reservationId: string,
-    context?: SharedContext
-  ): Promise<ReservationItemDTO>
-
-  /**
-   * This method is used to create a reservation item.
-   *
-   * @param {CreateReservationItemInput} input - The details of the reservation item to create.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ReservationItemDTO>} The created reservation item's details.
-   *
-   * @example
-   * import {
-   *   initialize as initializeInventoryModule,
-   * } from "@medusajs/inventory"
-   *
-   * async function createReservationItem (item: {
-   *   inventory_item_id: string,
-   *   location_id: string,
-   *   quantity: number
-   * }) {
-   *   const inventoryModule = await initializeInventoryModule({})
-   *
-   *   const reservationItem = await inventoryModule.createReservationItems(
-   *     item
-   *   )
-   *
-   *   // do something with the reservation item or return them
-   * }
-   */
-  createReservationItem(
-    input: CreateReservationItemInput,
-    context?: SharedContext
+    context?: Context
   ): Promise<ReservationItemDTO>
 
   /**
    * This method is used to create reservation items.
    *
    * @param {CreateReservationItemInput[]} input - The details of the reservation items to create.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns { Promise<ReservationItemDTO[]>} The created reservation items' details.
    *
    * @example
@@ -417,44 +386,18 @@ export interface IInventoryService extends IModuleService {
    */
   createReservationItems(
     input: CreateReservationItemInput[],
-    context?: SharedContext
+    context?: Context
   ): Promise<ReservationItemDTO[]>
-
-  /**
-   * This method is used to create an inventory item.
-   *
-   * @param {CreateInventoryItemInput} input - The details of the inventory item to create.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<InventoryItemDTO>} The created inventory item's details.
-   *
-   * @example
-   * import {
-   *   initialize as initializeInventoryModule,
-   * } from "@medusajs/inventory"
-   *
-   * async function createInventoryItem (item: {
-   *   sku: string,
-   *   requires_shipping: boolean
-   * }) {
-   *   const inventoryModule = await initializeInventoryModule({})
-   *
-   *   const inventoryItem = await inventoryModule.createInventoryItem(
-   *     item
-   *   )
-   *
-   *   // do something with the inventory item or return it
-   * }
-   */
-  createInventoryItem(
-    input: CreateInventoryItemInput,
-    context?: SharedContext
-  ): Promise<InventoryItemDTO>
+  createReservationItems(
+    input: CreateReservationItemInput,
+    context?: Context
+  ): Promise<ReservationItemDTO>
 
   /**
    * This method is used to create inventory items.
    *
    * @param {CreateInventoryItemInput[]} input - The details of the inventory items to create.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<InventoryItemDTO[]>} The created inventory items' details.
    *
    * @example
@@ -477,45 +420,18 @@ export interface IInventoryService extends IModuleService {
    */
   createInventoryItems(
     input: CreateInventoryItemInput[],
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryItemDTO[]>
-
-  /**
-   * This method is used to create inventory level.
-   *
-   * @param {CreateInventoryLevelInput} data - The details of the inventory level to create.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<InventoryLevelDTO>} The created inventory level's details.
-   *
-   * @example
-   * import {
-   *   initialize as initializeInventoryModule,
-   * } from "@medusajs/inventory"
-   *
-   * async function createInventoryLevel (item: {
-   *   inventory_item_id: string
-   *   location_id: string
-   *   stocked_quantity: number
-   * }) {
-   *   const inventoryModule = await initializeInventoryModule({})
-   *
-   *   const inventoryLevel = await inventoryModule.createInventoryLevel(
-   *     item
-   *   )
-   *
-   *   // do something with the inventory level or return it
-   * }
-   */
-  createInventoryLevel(
-    data: CreateInventoryLevelInput,
-    context?: SharedContext
-  ): Promise<InventoryLevelDTO>
+  createInventoryItems(
+    input: CreateInventoryItemInput,
+    context?: Context
+  ): Promise<InventoryItemDTO>
 
   /**
    * This method is used to create inventory levels.
    *
    * @param {CreateInventoryLevelInput[]} data - The details of the inventory levels to create.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<InventoryLevelDTO[]>} The created inventory levels' details.
    *
    * @example
@@ -539,14 +455,18 @@ export interface IInventoryService extends IModuleService {
    */
   createInventoryLevels(
     data: CreateInventoryLevelInput[],
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryLevelDTO[]>
+  createInventoryLevels(
+    data: CreateInventoryLevelInput,
+    context?: Context
+  ): Promise<InventoryLevelDTO>
 
   /**
    * This method is used to update inventory levels. Each inventory level is identified by the IDs of its associated inventory item and location.
    *
    * @param {BulkUpdateInventoryLevelInput} updates - The attributes to update in each inventory level.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<InventoryLevelDTO[]>} The updated inventory levels' details.
    *
    * @example
@@ -570,8 +490,24 @@ export interface IInventoryService extends IModuleService {
    */
   updateInventoryLevels(
     updates: BulkUpdateInventoryLevelInput[],
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryLevelDTO[]>
+  updateInventoryLevels(
+    updates: BulkUpdateInventoryLevelInput,
+    context?: Context
+  ): Promise<InventoryLevelDTO>
+
+  //   update(selector, data, context)
+  // update(id, data, context)
+
+  upsertInventoryLevels(
+    updates: BulkUpdateInventoryLevelInput[],
+    context?: Context
+  ): Promise<InventoryLevelDTO[]>
+  upsertInventoryLevels(
+    updates: BulkUpdateInventoryLevelInput,
+    context?: Context
+  ): Promise<InventoryLevelDTO>
 
   /**
    * This method is used to update an inventory level. The inventory level is identified by the IDs of its associated inventory item and location.
@@ -579,7 +515,7 @@ export interface IInventoryService extends IModuleService {
    * @param {string} inventoryItemId - The ID of the inventory item.
    * @param {string} locationId - The ID of the location.
    * @param {UpdateInventoryLevelInput} update - The attributes to update in the location level.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<InventoryLevelDTO>} The updated inventory level's details.
    *
    * @example
@@ -609,7 +545,7 @@ export interface IInventoryService extends IModuleService {
     inventoryItemId: string,
     locationId: string,
     update: UpdateInventoryLevelInput,
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryLevelDTO>
 
   /**
@@ -617,7 +553,7 @@ export interface IInventoryService extends IModuleService {
    *
    * @param {string} inventoryItemId - The ID of the inventory item.
    * @param {Partial<CreateInventoryItemInput>} input - The attributes to update in the inventory item.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<InventoryItemDTO>} The updated inventory item's details.
    *
    * @example
@@ -644,7 +580,7 @@ export interface IInventoryService extends IModuleService {
   updateInventoryItem(
     inventoryItemId: string,
     input: Partial<CreateInventoryItemInput>,
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryItemDTO>
 
   /**
@@ -652,7 +588,7 @@ export interface IInventoryService extends IModuleService {
    *
    * @param {string} reservationItemId - The ID of the reservation item.
    * @param {UpdateReservationItemInput} input - The attributes to update in the reservation item.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ReservationItemDTO>} The updated reservation item.
    *
    * @example
@@ -679,14 +615,14 @@ export interface IInventoryService extends IModuleService {
   updateReservationItem(
     reservationItemId: string,
     input: UpdateReservationItemInput,
-    context?: SharedContext
+    context?: Context
   ): Promise<ReservationItemDTO>
 
   /**
    * This method is used to delete the reservation items associated with a line item or multiple line items.
    *
    * @param {string | string[]} lineItemId - The ID(s) of the line item(s).
-   * @param {SharedContext} context - A context used to share re9sources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share re9sources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the reservation items are successfully deleted.
    *
    * @example
@@ -706,14 +642,14 @@ export interface IInventoryService extends IModuleService {
    */
   deleteReservationItemsByLineItem(
     lineItemId: string | string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<void>
 
   /**
    * This method is used to delete a reservation item or multiple reservation items by their IDs.
    *
    * @param {string | string[]} reservationItemId - The ID(s) of the reservation item(s) to delete.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the reservation item(s) are successfully deleted.
    *
    * @example
@@ -733,7 +669,7 @@ export interface IInventoryService extends IModuleService {
    */
   deleteReservationItem(
     reservationItemId: string | string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<void>
 
   /**
@@ -741,7 +677,7 @@ export interface IInventoryService extends IModuleService {
    * {@link restoreInventoryItem} method.
    *
    * @param {string | string[]} inventoryItemId - The ID(s) of the inventory item(s) to delete.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the inventory item(s) are successfully deleted.
    *
    * @example
@@ -761,14 +697,14 @@ export interface IInventoryService extends IModuleService {
    */
   deleteInventoryItem(
     inventoryItemId: string | string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<void>
 
   /**
    * This method is used to restore an inventory item or multiple inventory items that were previously deleted using the {@link deleteInventoryItem} method.
    *
    * @param {string | string[]} inventoryItemId - The ID(s) of the inventory item(s) to restore.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the inventory item(s) are successfully restored.
    *
    * @example
@@ -788,14 +724,14 @@ export interface IInventoryService extends IModuleService {
    */
   restoreInventoryItem(
     inventoryItemId: string | string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<void>
 
   /**
    * This method deletes the inventory item level(s) for the ID(s) of associated location(s).
    *
    * @param {string | string[]} locationId - The ID(s) of the associated location(s).
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the inventory item level(s) are successfully restored.
    *
    * @example
@@ -815,14 +751,14 @@ export interface IInventoryService extends IModuleService {
    */
   deleteInventoryItemLevelByLocationId(
     locationId: string | string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<void>
 
   /**
    * This method deletes reservation item(s) by the ID(s) of associated location(s).
    *
    * @param {string | string[]} locationId - The ID(s) of the associated location(s).
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the reservation item(s) are successfully restored.
    *
    * @example
@@ -842,7 +778,7 @@ export interface IInventoryService extends IModuleService {
    */
   deleteReservationItemByLocationId(
     locationId: string | string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<void>
 
   /**
@@ -850,7 +786,7 @@ export interface IInventoryService extends IModuleService {
    *
    * @param {string} inventoryItemId - The ID of the associated inventory item.
    * @param {string} locationId - The ID of the associated location.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the inventory level(s) are successfully restored.
    *
    * @example
@@ -873,7 +809,7 @@ export interface IInventoryService extends IModuleService {
   deleteInventoryLevel(
     inventoryItemId: string,
     locationId: string,
-    context?: SharedContext
+    context?: Context
   ): Promise<void>
 
   /**
@@ -882,7 +818,7 @@ export interface IInventoryService extends IModuleService {
    * @param {string} inventoryItemId - The ID of the associated inventory item.
    * @param {string} locationId - The ID of the associated location.
    * @param {number} adjustment - A positive or negative number used to adjust the inventory level's stocked quantity.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<InventoryLevelDTO>} The inventory level's details.
    *
    * @example
@@ -910,7 +846,7 @@ export interface IInventoryService extends IModuleService {
     inventoryItemId: string,
     locationId: string,
     adjustment: number,
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryLevelDTO>
 
   /**
@@ -919,7 +855,7 @@ export interface IInventoryService extends IModuleService {
    * @param {string} inventoryItemId - The ID of the inventory item to check its availability.
    * @param {string[]} locationIds - The IDs of the locations to check the quantity availability in.
    * @param {number} quantity - The quantity to check if available for the inventory item in the specified locations.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<boolean>} Whether the specified quantity is available for the inventory item in the specified locations.
    *
    * @example
@@ -945,7 +881,7 @@ export interface IInventoryService extends IModuleService {
     inventoryItemId: string,
     locationIds: string[],
     quantity: number,
-    context?: SharedContext
+    context?: Context
   ): Promise<boolean>
 
   /**
@@ -953,7 +889,7 @@ export interface IInventoryService extends IModuleService {
    *
    * @param {string} inventoryItemId - The ID of the inventory item to retrieve its quantity.
    * @param {string[]} locationIds - The IDs of the locations to retrieve the available quantity from.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<number>} The available quantity of the inventory item in the specified locations.
    *
    * @example
@@ -978,7 +914,7 @@ export interface IInventoryService extends IModuleService {
   retrieveAvailableQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<number>
 
   /**
@@ -986,7 +922,7 @@ export interface IInventoryService extends IModuleService {
    *
    * @param {string} inventoryItemId - The ID of the inventory item to retrieve its stocked quantity.
    * @param {string[]} locationIds - The IDs of the locations to retrieve the stocked quantity from.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<number>} The stocked quantity of the inventory item in the specified locations.
    *
    * @example
@@ -1011,7 +947,7 @@ export interface IInventoryService extends IModuleService {
   retrieveStockedQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<number>
 
   /**
@@ -1019,7 +955,7 @@ export interface IInventoryService extends IModuleService {
    *
    * @param {string} inventoryItemId - The ID of the inventory item to retrieve its reserved quantity.
    * @param {string[]} locationIds - The IDs of the locations to retrieve the reserved quantity from.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<number>} The reserved quantity of the inventory item in the specified locations.
    *
    * @example
@@ -1044,6 +980,6 @@ export interface IInventoryService extends IModuleService {
   retrieveReservedQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<number>
 }

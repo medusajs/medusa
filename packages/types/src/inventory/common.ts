@@ -204,7 +204,7 @@ export type InventoryLevelDTO = {
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved reservation items.
  */
 export type FilterableReservationItemProps = {
@@ -214,7 +214,7 @@ export type FilterableReservationItemProps = {
   id?: string | string[]
   /**
    * @ignore
-   * 
+   *
    * @privateRemark
    * This property is not used.
    */
@@ -247,7 +247,7 @@ export type FilterableReservationItemProps = {
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved inventory items.
  */
 export type FilterableInventoryItemProps = {
@@ -283,7 +283,7 @@ export type FilterableInventoryItemProps = {
 
 /**
  * @interface
- * 
+ *
  * The details of the inventory item to be created.
  */
 export type CreateInventoryItemInput = {
@@ -345,9 +345,11 @@ export type CreateInventoryItemInput = {
   requires_shipping?: boolean
 }
 
+export type UpdateInventoryItemInput = Partial<CreateInventoryItemInput>
+
 /**
  * @interface
- * 
+ *
  * The details of the reservation item to be created.
  */
 export type CreateReservationItemInput = {
@@ -387,7 +389,7 @@ export type CreateReservationItemInput = {
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved inventory levels.
  */
 export type FilterableInventoryLevelProps = {
@@ -415,7 +417,7 @@ export type FilterableInventoryLevelProps = {
 
 /**
  * @interface
- * 
+ *
  * The details of the inventory level to be created.
  */
 export type CreateInventoryLevelInput = {
@@ -443,7 +445,7 @@ export type CreateInventoryLevelInput = {
 
 /**
  * @interface
- * 
+ *
  * The attributes to update in an inventory level.
  */
 export type UpdateInventoryLevelInput = {
@@ -459,7 +461,7 @@ export type UpdateInventoryLevelInput = {
 
 /**
  * @interface
- * 
+ *
  * The attributes to update in an inventory level. The inventory level is identified by the IDs of its associated inventory item and location.
  */
 export type BulkUpdateInventoryLevelInput = {
@@ -475,7 +477,7 @@ export type BulkUpdateInventoryLevelInput = {
 
 /**
  * @interface
- * 
+ *
  * The attributes to update in a reservation item.
  */
 export type UpdateReservationItemInput = {
