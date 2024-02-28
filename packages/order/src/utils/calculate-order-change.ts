@@ -133,10 +133,10 @@ export class OrderChangeProcessing {
     }, 0)
 
     summary.futureTemporaryDifference =
-      -summary.futureTemporarySum + summary.futureDifference
+      summary.futureDifference - summary.futureTemporarySum
 
     summary.temporaryDifference =
-      -summary.temporaryDifference + summary.differenceSum
+      summary.differenceSum - summary.temporaryDifference
 
     summary.pendingDifference =
       summary.currentOrderTotal - summary.transactionTotal
@@ -160,9 +160,9 @@ export class OrderChangeProcessing {
     let previousEvents: InternalOrderChangeEvent[] | undefined
     if (type.commitsAction) {
       previousEvents = (this.actionsProcessed[type.commitsAction] ?? []).filter(
-        (action) =>
-          action.reference_id === action.reference_id &&
-          action.status !== EVENT_STATUS.VOIDED
+        (ac_) =>
+          ac_.reference_id === action.reference_id &&
+          ac_.status !== EVENT_STATUS.VOIDED
       )
     }
 
@@ -235,9 +235,9 @@ export class OrderChangeProcessing {
             previousEvents = (
               this.actionsProcessed[type.commitsAction] ?? []
             ).filter(
-              (action) =>
-                action.reference_id === action.reference_id &&
-                action.status !== EVENT_STATUS.VOIDED
+              (ac_) =>
+                ac_.reference_id === action.reference_id &&
+                ac_.status !== EVENT_STATUS.VOIDED
             )
           }
 
@@ -286,9 +286,9 @@ export class OrderChangeProcessing {
             previousEvents = (
               this.actionsProcessed[type.commitsAction] ?? []
             ).filter(
-              (action) =>
-                action.reference_id === action.reference_id &&
-                action.status !== EVENT_STATUS.VOIDED
+              (ac_) =>
+                ac_.reference_id === action.reference_id &&
+                ac_.status !== EVENT_STATUS.VOIDED
             )
           }
 
