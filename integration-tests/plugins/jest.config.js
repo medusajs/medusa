@@ -13,8 +13,6 @@ module.exports = {
     `__tests__/fixtures`,
     `__testfixtures__`,
     `.cache`,
-    // TODO: Add back when inventory and stock-location modules have been migrated
-    "__tests__/inventory",
   ],
   transformIgnorePatterns: [`/dist`],
   transform: { "^.+\\.[jt]s$": `../../jest-transformer.js` },
