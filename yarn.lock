@@ -8779,7 +8779,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/tax@workspace:packages/tax":
+"@medusajs/tax@workspace:^, @medusajs/tax@workspace:packages/tax":
   version: 0.0.0-use.local
   resolution: "@medusajs/tax@workspace:packages/tax"
   dependencies:
@@ -31720,6 +31720,7 @@ __metadata:
     "@medusajs/promotion": "workspace:^"
     "@medusajs/region": "workspace:^"
     "@medusajs/store": "workspace:^"
+    "@medusajs/tax": "workspace:^"
     "@medusajs/types": "workspace:^"
     "@medusajs/user": "workspace:^"
     "@medusajs/utils": "workspace:^"

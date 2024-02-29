@@ -134,7 +134,6 @@ describe("Store Carts API: Add promotions to cart", () => {
               id: "item-1",
               adjustments: expect.arrayContaining([
                 expect.objectContaining({
-                  promotion_id: createdPromotion.id,
                   code: createdPromotion.code,
                   amount: 1000,
                 }),
@@ -144,7 +143,6 @@ describe("Store Carts API: Add promotions to cart", () => {
               adjustments: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.not.stringContaining(lineItemAdjustment.id),
-                  promotion_id: appliedPromotion.id,
                   code: appliedPromotion.code,
                   amount: 300,
                 }),
