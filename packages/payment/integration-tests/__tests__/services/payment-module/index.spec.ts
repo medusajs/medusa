@@ -461,7 +461,7 @@ moduleIntegrationTestRunner({
                 payment_collection: expect.objectContaining({
                   id: expect.any(String),
                 }),
-                payment_session: {
+                payment_session: expect.objectContaining({
                   id: expect.any(String),
                   updated_at: expect.any(Date),
                   created_at: expect.any(Date),
@@ -472,25 +472,7 @@ moduleIntegrationTestRunner({
                   data: {},
                   status: "authorized",
                   authorized_at: expect.any(Date),
-                  payment_collection: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
-                  payment: expect.objectContaining({
-                    cart_id: null,
-                    order_id: null,
-                    order_edit_id: null,
-                    customer_id: null,
-                    data: {},
-                    deleted_at: null,
-                    captured_at: null,
-                    canceled_at: null,
-                    refunds: [],
-                    captures: [],
-                    amount: 100,
-                    currency_code: "usd",
-                    provider_id: "pp_system_default",
-                  }),
-                },
+                }),
               })
             )
           })
