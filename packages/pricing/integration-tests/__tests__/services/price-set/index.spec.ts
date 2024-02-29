@@ -3,7 +3,6 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { MoneyAmount, PriceSet } from "@models"
 import { PriceSetService } from "@services"
 
-import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { MikroOrmWrapper } from "../../../utils"
@@ -62,8 +61,6 @@ describe("PriceSet Service", () => {
     await ContainerLoader({ container })
 
     service = container.resolve("priceSetService")
-
-    await createCurrencies(testManager)
 
     moneyAmountsData = await createMoneyAmounts(
       testManager,

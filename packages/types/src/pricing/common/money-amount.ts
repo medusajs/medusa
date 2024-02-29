@@ -1,6 +1,5 @@
-import { BaseFilterable } from "../../dal";
-import { CreateCurrencyDTO, CurrencyDTO } from "./currency";
-import { PriceSetMoneyAmountDTO } from "./price-set-money-amount";
+import { BaseFilterable } from "../../dal"
+import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
 
 /**
  * @interface
@@ -16,12 +15,6 @@ export interface MoneyAmountDTO {
    * The currency code of this money amount.
    */
   currency_code?: string
-  /**
-   * The money amount's currency.
-   *
-   * @expandable
-   */
-  currency?: CurrencyDTO
   /**
    * The price of this money amount.
    */
@@ -66,10 +59,6 @@ export interface CreateMoneyAmountDTO {
    * The currency code of this money amount.
    */
   currency_code: string
-  /**
-   * The currency of this money amount.
-   */
-  currency?: CreateCurrencyDTO
   /**
    * The amount of this money amount.
    */

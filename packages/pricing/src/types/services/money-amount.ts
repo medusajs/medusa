@@ -1,14 +1,8 @@
-import {
-  BaseFilterable,
-  CreateCurrencyDTO,
-  CurrencyDTO,
-  PriceSetMoneyAmountDTO,
-} from "@medusajs/types"
+import { BaseFilterable, PriceSetMoneyAmountDTO } from "@medusajs/types"
 
 export interface CreateMoneyAmountDTO {
   id?: string
   currency_code: string
-  currency?: CreateCurrencyDTO
   amount: number
   min_quantity?: number | null
   max_quantity?: number | null
@@ -25,7 +19,6 @@ export interface UpdateMoneyAmountDTO {
 export interface MoneyAmountDTO {
   id: string
   currency_code?: string
-  currency?: CurrencyDTO
   amount?: number
   min_quantity?: number
   max_quantity?: number

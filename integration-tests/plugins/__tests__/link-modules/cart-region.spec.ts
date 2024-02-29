@@ -35,7 +35,7 @@ describe("Link: Cart Region", () => {
 
   beforeEach(async () => {
     // @ts-ignore
-    await regionModule.createDefaultCountriesAndCurrencies()
+    await regionModule.createDefaultCountries()
   })
 
   afterEach(async () => {
