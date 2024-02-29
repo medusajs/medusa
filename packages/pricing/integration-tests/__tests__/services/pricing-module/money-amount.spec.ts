@@ -96,6 +96,7 @@ describe("PricingModule Service - MoneyAmount", () => {
       expect(serialized).toEqual([
         {
           id: "money-amount-USD",
+          amount: null,
           min_quantity: "1",
           currency_code: "USD",
         },
