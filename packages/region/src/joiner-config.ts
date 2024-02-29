@@ -1,11 +1,10 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { MapToConfig } from "@medusajs/utils"
-import { Country, Currency, Region } from "@models"
+import { Country, Region } from "@models"
 
 export const LinkableKeys = {
   region_id: Region.name,
-  currency_code: Country.name,
   country_id: Region.name,
 }
 
@@ -28,10 +27,6 @@ export const joinerConfig: ModuleJoinerConfig = {
     {
       name: ["region", "regions"],
       args: { entity: Region.name },
-    },
-    {
-      name: ["currency", "currencies"],
-      args: { entity: Currency.name },
     },
     {
       name: ["country", "countries"],

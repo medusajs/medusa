@@ -17,21 +17,23 @@ export class Migration20240225134525 extends Migration {
           
         ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "completed_at" TIMESTAMPTZ NULL;
         ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
+        ALTER TABLE IF EXISTS "payment_collection" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
         
         ALTER TABLE IF EXISTS "payment_provider" ADD COLUMN IF NOT EXISTS "is_enabled" BOOLEAN NOT NULL DEFAULT TRUE;
 
         ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "payment_collection_id" TEXT NOT NULL;
         ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "payment_authorized_at" TIMESTAMPTZ NULL;
         ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
+        ALTER TABLE IF EXISTS "payment_session" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
 
         ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
         ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "payment_collection_id" TEXT NOT NULL;
         ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "provider_id" TEXT NOT NULL;
         ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
-
-        ALTER TABLE IF EXISTS "capture" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
+        ALTER TABLE IF EXISTS "payment" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
 
         ALTER TABLE IF EXISTS "refund" ADD COLUMN IF NOT EXISTS "raw_amount" JSONB NOT NULL;
+        ALTER TABLE IF EXISTS "refund" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMPTZ NULL;
 
         CREATE TABLE IF NOT EXISTS "capture" (
           "id"          TEXT NOT NULL,
@@ -39,7 +41,10 @@ export class Migration20240225134525 extends Migration {
           "raw_amount"  JSONB NOT NULL,
           "payment_id"  TEXT NOT NULL,
           "created_at"  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          "updated_at"  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          "deleted_at"  TIMESTAMPTZ NULL,
           "created_by"  TEXT NULL,
+          "metadata"    JSONB NULL,
           CONSTRAINT "capture_pkey" PRIMARY KEY ("id")
         );
 
