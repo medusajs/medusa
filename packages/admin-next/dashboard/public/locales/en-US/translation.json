@@ -169,8 +169,12 @@
   },
   "orders": {
     "domain": "Orders",
-    "cancelOrderWarning": "You are about to cancel the order {{id}}. This action cannot be undone.",
+    "cancelWarning": "You are about to cancel the order {{id}}. This action cannot be undone.",
     "onDateFromSalesChannel": "{{date}} from {{salesChannel}}",
+    "summary": {
+      "allocateItems": "Allocate items",
+      "editItems": "Edit items"
+    },
     "payment": {
       "title": "Payments",
       "isReadyToBeCaptured": "Payment {{id}} is ready to be captured.",
@@ -206,7 +210,17 @@
         "returned": "Returned",
         "canceled": "Canceled",
         "requresAction": "Requires action"
-      }
+      },
+      "trackingLabel": "Tracking",
+      "shippingFromLabel": "Shipping from",
+      "itemsLabel": "Items"
+    },
+    "customer": {
+      "contactLabel": "Contact",
+      "editEmail": "Edit email",
+      "transferOwnership": "Transfer ownership",
+      "editBillingAddress": "Edit billing address",
+      "editShippingAddress": "Edit shipping address"
     }
   },
   "draftOrders": {
@@ -451,6 +465,9 @@
     "orders": "Orders",
     "account": "Account",
     "total": "Total",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax",
     "created": "Created",
     "key": "Key",
     "customer": "Customer",
@@ -491,6 +508,7 @@
     "id": "ID",
     "minSubtotal": "Min. Subtotal",
     "maxSubtotal": "Max. Subtotal",
-    "shippingProfile": "Shipping Profile"
+    "shippingProfile": "Shipping Profile",
+    "summary": "Summary"
   }
 }

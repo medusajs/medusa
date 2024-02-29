@@ -20,7 +20,7 @@ import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
-import { getFormattedAmount } from "../../../../../lib/money-amount-helpers"
+import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 
 type OrderFulfillmentSectionProps = {
   order: Order
@@ -78,7 +78,7 @@ const UnfulfilledItem = ({
       <div className="grid grid-cols-3 items-center gap-x-4">
         <div className="flex items-center justify-end">
           <Text size="small">
-            {getFormattedAmount(item.unit_price, currencyCode)}
+            {getLocaleAmount(item.unit_price, currencyCode)}
           </Text>
         </div>
         <div className="flex items-center justify-end">
@@ -88,7 +88,7 @@ const UnfulfilledItem = ({
         </div>
         <div className="flex items-center justify-end">
           <Text size="small">
-            {getFormattedAmount(item.subtotal || 0, currencyCode)}
+            {getLocaleAmount(item.subtotal || 0, currencyCode)}
           </Text>
         </div>
       </div>
@@ -232,7 +232,7 @@ const Fulfillment = ({
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          Items
+          {t("orders.fulfillment.itemsLabel")}
         </Text>
         <ul>
           {fulfillment.items.map((f_item) => (
@@ -247,7 +247,7 @@ const Fulfillment = ({
       {showLocation && (
         <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
           <Text size="small" leading="compact" weight="plus">
-            Shipping from
+            {t("orders.fulfillment.shippingFromLabel")}
           </Text>
           {stock_location ? (
             <Link
@@ -265,10 +265,11 @@ const Fulfillment = ({
       )}
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          Tracking
+          {t("orders.fulfillment.trackingLabel")}
         </Text>
         <div>
-          {fulfillment.tracking_links ? (
+          {fulfillment.tracking_links &&
+          fulfillment.tracking_links.length > 0 ? (
             <ul>
               {fulfillment.tracking_links.map((tlink) => {
                 const hasUrl = tlink.url && tlink.url.length > 0

@@ -1,5 +1,9 @@
 import { currencies } from "./currencies"
 
+const getDecimalDigits = (currency: string) => {
+  return currencies[currency.toUpperCase()]?.decimal_digits
+}
+
 /**
  * Converts an amount from the database format (cents) to the presentational format
  *
@@ -12,9 +16,9 @@ import { currencies } from "./currencies"
  * getPresentationalAmount(1000, "jpy") // 1000
  */
 export const getPresentationalAmount = (amount: number, currency: string) => {
-  const decimalDigits = currencies[currency.toUpperCase()].decimal_digits
+  const decimalDigits = getDecimalDigits(currency)
 
-  if (decimalDigits === 0) {
+  if (!decimalDigits) {
     throw new Error("Currency has no decimal digits")
   }
 
@@ -34,7 +38,7 @@ export const getPresentationalAmount = (amount: number, currency: string) => {
 export const getDbAmount = (amount: number, currency: string) => {
   const decimalDigits = currencies[currency.toUpperCase()].decimal_digits
 
-  if (decimalDigits === 0) {
+  if (!decimalDigits) {
     throw new Error("Currency has no decimal digits")
   }
 
@@ -51,7 +55,7 @@ export const getDbAmount = (amount: number, currency: string) => {
  * getFormattedAmount(1000, "usd") // '$10.00' if the browser's locale is en-US
  * getFormattedAmount(1000, "usd") // '10,00 $' if the browser's locale is fr-FR
  */
-export const getFormattedAmount = (amount: number, currencyCode: string) => {
+export const getLocaleAmount = (amount: number, currencyCode: string) => {
   const formatter = new Intl.NumberFormat(undefined, {
     style: "currency",
     currencyDisplay: "narrowSymbol",
@@ -62,8 +66,27 @@ export const getFormattedAmount = (amount: number, currencyCode: string) => {
 }
 
 export const getNativeSymbol = (currencyCode: string) => {
-  return new Intl.NumberFormat(undefined, {
+  const formatted = new Intl.NumberFormat(undefined, {
     style: "currency",
     currency: currencyCode,
-  }).resolvedOptions().currency
+    currencyDisplay: "narrowSymbol",
+  }).format(0)
+
+  return formatted.replace(/\d/g, "").replace(/[.,]/g, "").trim()
+}
+
+/**
+ * In some cases we to display the amount with the currency code and symbol,
+ * in the format of "symbol amount currencyCode". This breaks from the
+ * user's locale and is used in cases where we want to display the currency
+ * code and symbol explicitly, e.g. for totals.
+ */
+export const getStylizedAmount = (amount: number, currencyCode: string) => {
+  const symbol = getNativeSymbol(currencyCode)
+  const decimalDigits = getDecimalDigits(currencyCode)
+  const presentationAmount = getPresentationalAmount(amount, currencyCode)
+
+  const total = presentationAmount.toFixed(decimalDigits)
+
+  return `${symbol} ${total} ${currencyCode.toUpperCase()}`
 }

@@ -3,6 +3,7 @@ import { Avatar, Container, Copy, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
+import { ArrowPath, CurrencyDollar, Envelope, FlyingBox } from "@medusajs/icons"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 
 type OrderCustomerSectionProps = {
@@ -12,7 +13,7 @@ type OrderCustomerSectionProps = {
 export const OrderCustomerSection = ({ order }: OrderCustomerSectionProps) => {
   return (
     <Container className="divide-y p-0">
-      <Header />
+      <Header order={order} />
       <ID order={order} />
       <Contact order={order} />
       <Company order={order} />
@@ -21,13 +22,48 @@ export const OrderCustomerSection = ({ order }: OrderCustomerSectionProps) => {
   )
 }
 
-const Header = () => {
+const Header = ({ order }: { order: Order }) => {
   const { t } = useTranslation()
 
   return (
     <div className="flex items-center justify-between px-6 py-4">
       <Heading level="h2">{t("fields.customer")}</Heading>
-      <ActionMenu groups={[]} />
+      <ActionMenu
+        groups={[
+          {
+            actions: [
+              {
+                label: t("orders.customer.transferOwnership"),
+                to: `#`, // TODO: Open modal to transfer ownership
+                icon: <ArrowPath />,
+              },
+            ],
+          },
+          {
+            actions: [
+              {
+                label: t("orders.customer.editShippingAddress"),
+                to: `#`, // TODO: Open modal to edit shipping address
+                icon: <FlyingBox />,
+              },
+              {
+                label: t("orders.customer.editBillingAddress"),
+                to: `#`, // TODO: Open modal to edit billing address
+                icon: <CurrencyDollar />,
+              },
+            ],
+          },
+          {
+            actions: [
+              {
+                label: t("orders.customer.editEmail"),
+                to: `#`, // TODO: Open modal to edit email
+                icon: <Envelope />,
+              },
+            ],
+          },
+        ]}
+      />
     </div>
   )
 }
@@ -101,13 +137,15 @@ const Company = ({ order }: { order: Order }) => {
 }
 
 const Contact = ({ order }: { order: Order }) => {
+  const { t } = useTranslation()
+
   const phone = order.shipping_address.phone || order.billing_address.phone
   const email = order.email
 
   return (
     <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
       <Text size="small" leading="compact" weight="plus">
-        Contact
+        {t("orders.customer.contactLabel")}
       </Text>
       <div className="flex flex-col gap-y-2">
         <div className="grid grid-cols-2 items-start gap-x-2">

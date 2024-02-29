@@ -16,7 +16,10 @@ import {
 import { format } from "date-fns"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { getFormattedAmount } from "../../../../../lib/money-amount-helpers"
+import {
+  getLocaleAmount,
+  getStylizedAmount,
+} from "../../../../../lib/money-amount-helpers"
 
 type OrderPaymentSectionProps = {
   order: Order
@@ -69,16 +72,16 @@ const Refund = ({
   const { t } = useTranslation()
   const hasPayment = refund.payment_id !== null
 
-  const BadgeComponent = refund.note ? (
-    <Tooltip content={refund.note}>
-      <Badge size="2xsmall" className="cursor-default capitalize">
-        {refund.reason}
-      </Badge>
-    </Tooltip>
-  ) : (
-    <Badge size="2xsmall" className="capitalize">
+  const BadgeComponent = (
+    <Badge size="2xsmall" className="cursor-default select-none capitalize">
       {refund.reason}
     </Badge>
+  )
+
+  const Render = refund.note ? (
+    <Tooltip content={refund.note}>{BadgeComponent}</Tooltip>
+  ) : (
+    BadgeComponent
   )
 
   return (
@@ -94,10 +97,10 @@ const Refund = ({
           {format(new Date(refund.created_at), "dd MMM, yyyy, HH:mm:ss")}
         </Text>
       </div>
-      <div className="flex items-center justify-end">{BadgeComponent}</div>
+      <div className="flex items-center justify-end">{Render}</div>
       <div className="flex items-center justify-end">
         <Text size="small" leading="compact">
-          - {getFormattedAmount(refund.amount, currencyCode)}
+          - {getLocaleAmount(refund.amount, currencyCode)}
         </Text>
       </div>
     </div>
@@ -149,7 +152,7 @@ const Payment = ({
         </div>
         <div className="flex items-center justify-end">
           <Text size="small" leading="compact">
-            {getFormattedAmount(payment.amount, payment.currency_code)}
+            {getLocaleAmount(payment.amount, payment.currency_code)}
           </Text>
         </div>
         <ActionMenu
@@ -268,7 +271,7 @@ const Total = ({
         {t("orders.payment.totalPaidByCustomer")}
       </Text>
       <Text size="small" weight="plus" leading="compact">
-        {getFormattedAmount(total, currencyCode)}
+        {getStylizedAmount(total, currencyCode)}
       </Text>
     </div>
   )
