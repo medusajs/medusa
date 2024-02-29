@@ -14,6 +14,12 @@ export const LINKS = {
     Modules.PRICING,
     "price_set_id"
   ),
+  CartPaymentCollection: composeLinkName(
+    Modules.CART,
+    "cart_id",
+    Modules.PAYMENT,
+    "payment_collection_id"
+  ),
 
   // Internal services
   ProductShippingProfile: composeLinkName(

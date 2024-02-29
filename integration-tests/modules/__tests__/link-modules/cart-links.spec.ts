@@ -1,7 +1,8 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
+  IPaymentModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
 } from "@medusajs/types"
@@ -22,7 +23,8 @@ describe("Cart links", () => {
   let regionModule: IRegionModuleService
   let customerModule: ICustomerModuleService
   let scModuleService: ISalesChannelModuleService
-  let remoteQuery
+  let paymentModuleService: IPaymentModuleService
+  let remoteQuery, remoteLink
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
@@ -34,7 +36,9 @@ describe("Cart links", () => {
     customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
     scModuleService = appContainer.resolve(ModuleRegistrationName.SALES_CHANNEL)
     regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
+    paymentModuleService = appContainer.resolve(ModuleRegistrationName.PAYMENT)
     remoteQuery = appContainer.resolve("remoteQuery")
+    remoteLink = appContainer.resolve("remoteLink")
   })
 
   afterAll(async () => {
@@ -75,6 +79,24 @@ describe("Cart links", () => {
       customer_id: customer.id,
     })
 
+    const paymentCollection =
+      await paymentModuleService.createPaymentCollections({
+        currency_code: "usd",
+        region_id: region.id,
+        amount: 1000,
+      })
+
+    await remoteLink.create([
+      {
+        [Modules.CART]: {
+          cart_id: cart.id,
+        },
+        [Modules.PAYMENT]: {
+          payment_collection_id: paymentCollection.id,
+        },
+      },
+    ])
+
     const carts = await remoteQuery({
       cart: {
         fields: ["id"],
@@ -85,6 +107,9 @@ describe("Cart links", () => {
           fields: ["id"],
         },
         sales_channel: {
+          fields: ["id"],
+        },
+        payment_collection: {
           fields: ["id"],
         },
       },
@@ -117,6 +142,15 @@ describe("Cart links", () => {
       },
     })
 
+    const paymentCollections = await remoteQuery({
+      payment: {
+        fields: ["id"],
+        cart: {
+          fields: ["id"],
+        },
+      },
+    })
+
     expect(carts).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -124,6 +158,9 @@ describe("Cart links", () => {
           customer: expect.objectContaining({ id: customer.id }),
           sales_channel: expect.objectContaining({ id: salesChannel.id }),
           region: expect.objectContaining({ id: region.id }),
+          payment_collection: expect.objectContaining({
+            id: paymentCollection.id,
+          }),
         }),
       ])
     )
@@ -157,6 +194,15 @@ describe("Cart links", () => {
           carts: expect.arrayContaining([
             expect.objectContaining({ id: cart.id }),
           ]),
+        }),
+      ])
+    )
+
+    expect(paymentCollections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: paymentCollection.id,
+          cart: expect.objectContaining({ id: cart.id }),
         }),
       ])
     )

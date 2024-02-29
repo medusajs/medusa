@@ -19,18 +19,18 @@ import {
   EntityName,
   FilterQuery as MikroFilterQuery,
 } from "@mikro-orm/core/typings"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { isString } from "../../common"
 import {
-  buildQuery,
   InjectTransactionManager,
   MedusaContext,
+  buildQuery,
 } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
 } from "../utils"
 import { mikroOrmSerializer, mikroOrmUpdateDeletedAtRecursively } from "./utils"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class MikroOrmBase<T = any> {
   readonly manager_: any
@@ -303,9 +303,17 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       const findOptions_ = { ...options }
       findOptions_.options ??= {}
 
-      Object.assign(findOptions_.options, {
-        strategy: LoadStrategy.SELECT_IN,
-      })
+      if (!("strategy" in findOptions_.options)) {
+        if (findOptions_.options.limit != null || findOptions_.options.offset) {
+          Object.assign(findOptions_.options, {
+            strategy: LoadStrategy.SELECT_IN,
+          })
+        } else {
+          Object.assign(findOptions_.options, {
+            strategy: LoadStrategy.JOINED,
+          })
+        }
+      }
 
       return await manager.find(
         entity as EntityName<T>,
