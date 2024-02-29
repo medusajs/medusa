@@ -176,33 +176,6 @@ const migratePriceLists = async (container: AwilixContainer) => {
   }
 }
 
-const ensureCurrencies = async (container: AwilixContainer) => {
-  const currenciesService: CurrencyService =
-    container.resolve("currencyService")
-
-  const pricingModuleService: IPricingModuleService = container.resolve(
-    "pricingModuleService"
-  )
-
-  const [coreCurrencies, totalCurrencies] =
-    await currenciesService.listAndCount({}, {})
-
-  const moduleCurrencies = await pricingModuleService.listCurrencies(
-    {},
-    { take: 100000 }
-  )
-
-  const moduleCurrenciesSet = new Set(moduleCurrencies.map(({ code }) => code))
-
-  const currenciesToCreate = coreCurrencies
-    .filter(({ code }) => {
-      return !moduleCurrenciesSet.has(code)
-    })
-    .map(({ includes_tax, ...currency }) => currency)
-
-  await pricingModuleService.createCurrencies(currenciesToCreate)
-}
-
 const migrate = async function ({ directory }) {
   const app = express()
 
@@ -211,11 +184,6 @@ const migrate = async function ({ directory }) {
     expressApp: app,
     isTest: false,
   })
-
-  Logger.info("-----------------------------------------------")
-  Logger.info("------------- Creating currencies -------------")
-  Logger.info("-----------------------------------------------")
-  await ensureCurrencies(container)
 
   Logger.info("-----------------------------------------------")
   Logger.info("--------- Creating default rule types ---------")

@@ -7,7 +7,6 @@ type PriceSet {
 type MoneyAmount {
   id: String!
   currency_code: String
-  currency: Currency
   amount: Float
   min_quantity: Float
   max_quantity: Float
