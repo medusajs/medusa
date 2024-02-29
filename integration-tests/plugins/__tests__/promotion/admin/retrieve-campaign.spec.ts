@@ -1,13 +1,13 @@
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
-import { CampaignBudgetType } from "@medusajs/utils"
-import { IPromotionModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createAdminUser } from "../../../helpers/create-admin-user"
-import { getContainer } from "../../../../environment-helpers/use-container"
+import { IPromotionModuleService } from "@medusajs/types"
+import { CampaignBudgetType } from "@medusajs/utils"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
+import { getContainer } from "../../../../environment-helpers/use-container"
+import { createAdminUser } from "../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -102,6 +102,14 @@ describe("GET /admin/campaigns", () => {
         campaign: expect.any(Object),
         type: "spend",
         limit: 1000,
+        raw_limit: {
+          precision: 20,
+          value: "1000",
+        },
+        raw_used: {
+          precision: 20,
+          value: "0",
+        },
         used: 0,
         created_at: expect.any(String),
         updated_at: expect.any(String),
