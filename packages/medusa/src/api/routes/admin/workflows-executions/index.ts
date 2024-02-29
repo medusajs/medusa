@@ -81,3 +81,4 @@ export default (app) => {
 }
 
 export * from "./query-config"
+export * from "./validators"
