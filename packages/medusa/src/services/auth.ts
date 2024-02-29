@@ -110,7 +110,7 @@ class AuthService extends TransactionBaseService {
           }
         }
       } catch (error) {
-        this.logger_.log("error ->", error)
+        this.logger_.log("error", error)
         // ignore
       }
 

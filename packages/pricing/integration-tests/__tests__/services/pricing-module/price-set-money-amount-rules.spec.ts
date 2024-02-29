@@ -1,6 +1,5 @@
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
@@ -38,7 +37,6 @@ describe("PricingModule Service - PriceSetMoneyAmountRules", () => {
     repositoryManager = await MikroOrmWrapper.forkManager()
     testManager = await MikroOrmWrapper.forkManager()
 
-    await createCurrencies(testManager)
     await createMoneyAmounts(testManager)
     await createPriceSets(testManager)
     await createRuleTypes(testManager)

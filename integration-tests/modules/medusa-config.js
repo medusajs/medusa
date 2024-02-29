@@ -61,5 +61,6 @@ module.exports = {
     [Modules.API_KEY]: true,
     [Modules.STORE]: true,
     [Modules.TAX]: true,
+    [Modules.CURRENCY]: true,
   },
 }

@@ -42,7 +42,7 @@ describe("API Keys - Admin", () => {
     await createAdminUser(dbConnection, adminHeaders)
 
     // Used for testing cross-module authentication checks
-    await regionService.createDefaultCountriesAndCurrencies()
+    await regionService.createDefaultCountries()
   })
 
   afterEach(async () => {

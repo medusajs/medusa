@@ -26,12 +26,9 @@ describe("Region Module Service", () => {
     await shutdownFunc()
   })
 
-  it("should create countries and currencies on application start", async () => {
+  it("should create countries on application start", async () => {
     const countries = await service.listCountries()
-    const currencies = await service.listCurrencies()
-
     expect(countries.length).toBeGreaterThan(0)
-    expect(currencies.length).toBeGreaterThan(0)
   })
 
   it("should create countries added to default ones", async () => {
@@ -47,7 +44,7 @@ describe("Region Module Service", () => {
       numeric: "420",
     })
 
-    await service.createDefaultCountriesAndCurrencies()
+    await service.createDefaultCountries()
 
     const [, newCount] = await service.listAndCountCountries()
     expect(newCount).toEqual(initialCountries + 1)
@@ -69,7 +66,7 @@ describe("Region Module Service", () => {
     )
 
     const region = await service.retrieve(createdRegion.id, {
-      relations: ["currency", "countries"],
+      relations: ["countries"],
     })
 
     expect(region).toEqual(
@@ -77,10 +74,6 @@ describe("Region Module Service", () => {
         id: region.id,
         name: "Europe",
         currency_code: "eur",
-        currency: expect.objectContaining({
-          code: "eur",
-          name: "Euro",
-        }),
         countries: [],
       })
     )
@@ -94,7 +87,7 @@ describe("Region Module Service", () => {
     })
 
     const region = await service.retrieve(createdRegion.id, {
-      relations: ["countries", "currency"],
+      relations: ["countries"],
     })
 
     expect(region).toEqual(
@@ -102,10 +95,6 @@ describe("Region Module Service", () => {
         id: region.id,
         name: "North America",
         currency_code: "usd",
-        currency: expect.objectContaining({
-          code: "usd",
-          name: "US Dollar",
-        }),
         countries: [
           expect.objectContaining({
             display_name: "Canada",
@@ -182,7 +171,7 @@ describe("Region Module Service", () => {
     })
 
     const latestRegion = await service.retrieve(createdRegion.id, {
-      relations: ["currency", "countries"],
+      relations: ["countries"],
     })
 
     expect(latestRegion).toMatchObject({
@@ -243,7 +232,7 @@ describe("Region Module Service", () => {
     })
 
     const latestRegion = await service.retrieve(createdRegion.id, {
-      relations: ["currency", "countries"],
+      relations: ["countries"],
     })
 
     expect(latestRegion).toMatchObject({
@@ -268,7 +257,7 @@ describe("Region Module Service", () => {
     })
 
     const updatedRegion = await service.retrieve(createdRegion.id, {
-      relations: ["currency", "countries"],
+      relations: ["countries"],
     })
 
     expect(updatedRegion).toMatchObject({
@@ -294,7 +283,7 @@ describe("Region Module Service", () => {
     })
 
     const updatedRegion = await service.retrieve(createdRegion.id, {
-      relations: ["currency", "countries"],
+      relations: ["countries"],
     })
 
     expect(updatedRegion).toMatchObject({
@@ -304,23 +293,6 @@ describe("Region Module Service", () => {
     })
 
     expect(updatedRegion.countries).toHaveLength(0)
-  })
-
-  it("should fail updating the region currency to a non-existent one", async () => {
-    const createdRegion = await service.create({
-      name: "North America",
-      currency_code: "USD",
-      countries: ["us", "ca"],
-    })
-
-    await expect(
-      service.update(
-        { id: createdRegion.id },
-        {
-          currency_code: "DOGECOIN",
-        }
-      )
-    ).rejects.toThrowError('Currencies with codes: "dogecoin" were not found')
   })
 
   it("should fail updating the region countries to non-existent ones", async () => {
@@ -383,14 +355,5 @@ describe("Region Module Service", () => {
     ).rejects.toThrowError(
       'Countries with codes: "mx" are already assigned to a region'
     )
-  })
-
-  it("should fail when currency does not exist", async () => {
-    await expect(
-      service.create({
-        name: "Europe",
-        currency_code: "DOGECOIN",
-      })
-    ).rejects.toThrowError('Currencies with codes: "dogecoin" were not found')
   })
 })
