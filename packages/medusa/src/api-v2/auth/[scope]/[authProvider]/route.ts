@@ -33,8 +33,6 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     const { jwt_secret } = req.scope.resolve("configModule").projectConfig
     const token = jwt.sign(authUser, jwt_secret)
 
-    req.session.auth_user = authUser
-
     return res.status(200).json({ token })
   }
 

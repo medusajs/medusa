@@ -38,14 +38,14 @@ describe("POST /admin/users/me", () => {
     await db.teardown()
   })
 
-  it("create a user", async () => {
+  it("gets the current user", async () => {
     const api = useApi()! as AxiosInstance
 
     const response = await api.get(`/admin/users/me`, adminHeaders)
 
     expect(response.status).toEqual(200)
     expect(response.data).toEqual({
-      user: expect.objectContaining({ id: "test" }),
+      user: expect.objectContaining({ id: "admin_user" }),
     })
   })
 })

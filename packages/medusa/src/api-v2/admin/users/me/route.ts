@@ -12,8 +12,12 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const id = req.auth.auth_user_id
+  const id = req.auth.app_metadata.user_id
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+
+  if (!id) {
+    throw new MedusaError(MedusaError.Types.NOT_FOUND, `User ID not found`)
+  }
 
   const query = remoteQueryObjectFromString({
     entryPoint: "user",
