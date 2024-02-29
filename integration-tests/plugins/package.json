@@ -12,6 +12,7 @@
     "@medusajs/api-key": "workspace:^",
     "@medusajs/auth": "workspace:*",
     "@medusajs/cache-inmemory": "workspace:*",
+    "@medusajs/currency": "workspace:^",
     "@medusajs/customer": "workspace:^",
     "@medusajs/event-bus-local": "workspace:*",
     "@medusajs/inventory": "workspace:^",

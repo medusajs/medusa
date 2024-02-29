@@ -9,6 +9,16 @@ export interface CreateTaxRateDTO {
   metadata?: Record<string, unknown>
 }
 
+export interface UpsertTaxRateDTO {
+  id?: string
+  rate?: number | null
+  code?: string | null
+  name?: string
+  is_default?: boolean
+  created_by?: string | null
+  metadata?: Record<string, unknown> | null
+}
+
 export interface UpdateTaxRateDTO {
   rate?: number | null
   code?: string | null
