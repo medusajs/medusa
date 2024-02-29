@@ -10,13 +10,6 @@ export type UpdateCountryRegion = {
   region_id: string
 }
 
-export type CreateCurrencyDTO = {
-  code: string
-  symbol: string
-  name: string
-  symbol_native: string
-}
-
 export type CreateCountryDTO = {
   iso_2: string
   iso_3: string

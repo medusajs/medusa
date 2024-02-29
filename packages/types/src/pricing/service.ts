@@ -3,7 +3,6 @@ import {
   AddPricesDTO,
   AddRulesDTO,
   CalculatedPriceSet,
-  CreateCurrencyDTO,
   CreateMoneyAmountDTO,
   CreatePriceListDTO,
   CreatePriceListRuleDTO,
@@ -11,8 +10,6 @@ import {
   CreatePriceSetDTO,
   CreatePriceSetMoneyAmountRulesDTO,
   CreateRuleTypeDTO,
-  CurrencyDTO,
-  FilterableCurrencyProps,
   FilterableMoneyAmountProps,
   FilterablePriceListProps,
   FilterablePriceListRuleProps,
@@ -34,7 +31,6 @@ import {
   RemovePriceSetRulesDTO,
   RuleTypeDTO,
   SetPriceListRulesDTO,
-  UpdateCurrencyDTO,
   UpdateMoneyAmountDTO,
   UpdatePriceListDTO,
   UpdatePriceListRuleDTO,
@@ -935,7 +931,7 @@ export interface IPricingModuleService extends IModuleService {
    *   const moneyAmount = await pricingService.retrieveMoneyAmount(
    *     moneyAmountId,
    *     {
-   *       relations: ["currency"]
+   *       relations: ["price_set_money_amount"]
    *     }
    *   )
    *
@@ -996,7 +992,7 @@ export interface IPricingModuleService extends IModuleService {
    *       id: moneyAmountIds
    *     },
    *     {
-   *       relations: ["currency"]
+   *       relations: ["price_set_money_amount"]
    *     }
    *   )
    *
@@ -1019,7 +1015,7 @@ export interface IPricingModuleService extends IModuleService {
    *       id: moneyAmountIds
    *     },
    *     {
-   *       relations: ["currency"],
+   *       relations: ["price_set_money_amount"],
    *       skip,
    *       take
    *     }
@@ -1051,7 +1047,7 @@ export interface IPricingModuleService extends IModuleService {
    *       ]
    *     },
    *     {
-   *       relations: ["currency"],
+   *       relations: ["price_set_money_amount"],
    *       skip,
    *       take
    *     }
@@ -1114,7 +1110,7 @@ export interface IPricingModuleService extends IModuleService {
    *       id: moneyAmountIds
    *     },
    *     {
-   *       relations: ["currency"]
+   *       relations: ["price_set_money_amount"]
    *     }
    *   )
    *
@@ -1137,7 +1133,7 @@ export interface IPricingModuleService extends IModuleService {
    *       id: moneyAmountIds
    *     },
    *     {
-   *       relations: ["currency"],
+   *       relations: ["price_set_money_amount"],
    *       skip,
    *       take
    *     }
@@ -1169,7 +1165,7 @@ export interface IPricingModuleService extends IModuleService {
    *       ]
    *     },
    *     {
-   *       relations: ["currency"],
+   *       relations: ["price_set_money_amount"],
    *       skip,
    *       take
    *     }
@@ -1332,320 +1328,6 @@ export interface IPricingModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
-
-  /**
-   * This method retrieves a currency by its code and and optionally based on the provided configurations.
-   *
-   * @param {string} code - The code of the currency to retrieve.
-   * @param {FindConfig<CurrencyDTO>} config -
-   * The configurations determining how the currency is retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a currency.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<CurrencyDTO>} The retrieved currency.
-   *
-   * @example
-   * A simple example that retrieves a currency by its code:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializePricingModule,
-   * } from "@medusajs/pricing"
-   *
-   * async function retrieveCurrency (code: string) {
-   *   const pricingService = await initializePricingModule()
-   *
-   *   const currency = await pricingService.retrieveCurrency(
-   *     code
-   *   )
-   *
-   *   // do something with the currency or return it
-   * }
-   * ```
-   *
-   * To specify attributes that should be retrieved:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializePricingModule,
-   * } from "@medusajs/pricing"
-   *
-   * async function retrieveCurrency (code: string) {
-   *   const pricingService = await initializePricingModule()
-   *
-   *   const currency = await pricingService.retrieveCurrency(
-   *     code,
-   *     {
-   *       select: ["symbol_native"]
-   *     }
-   *   )
-   *
-   *   // do something with the currency or return it
-   * }
-   * ```
-   */
-  retrieveCurrency(
-    code: string,
-    config?: FindConfig<CurrencyDTO>,
-    sharedContext?: Context
-  ): Promise<CurrencyDTO>
-
-  /**
-   * This method is used to retrieve a paginated list of currencies based on optional filters and configuration.
-   *
-   * @param {FilterableCurrencyProps} filters - The filters to apply on the retrieved currencies.
-   * @param {FindConfig<CurrencyDTO>} config -
-   * The configurations determining how the currencies are retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a currency.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<CurrencyDTO[]>} The list of currencies.
-   *
-   * @example
-   *
-   * To retrieve a list of currencies using their codes:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializePricingModule,
-   * } from "@medusajs/pricing"
-   *
-   * async function retrieveCurrencies (codes: string[]) {
-   *   const pricingService = await initializePricingModule()
-   *
-   *   const currencies = await pricingService.listCurrencies(
-   *     {
-   *       code: codes
-   *     },
-   *   )
-   *
-   *   // do something with the currencies or return them
-   * }
-   * ```
-   *
-   * To specify attributes that should be retrieved within the money amounts:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializePricingModule,
-   * } from "@medusajs/pricing"
-   *
-   * async function retrieveCurrencies (codes: string[]) {
-   *   const pricingService = await initializePricingModule()
-   *
-   *   const currencies = await pricingService.listCurrencies(
-   *     {
-   *       code: codes
-   *     },
-   *     {
-   *       select: ["symbol_native"]
-   *     }
-   *   )
-   *
-   *   // do something with the currencies or return them
-   * }
-   * ```
-   *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializePricingModule,
-   * } from "@medusajs/pricing"
-   *
-   * async function retrieveCurrencies (codes: string[], skip: number, take: number) {
-   *   const pricingService = await initializePricingModule()
-   *
-   *   const currencies = await pricingService.listCurrencies(
-   *     {
-   *       code: codes
-   *     },
-   *     {
-   *       select: ["symbol_native"],
-   *       skip,
-   *       take
-   *     }
-   *   )
-   *
-   *   // do something with the currencies or return them
-   * }
-   * ```
-   */
-  listCurrencies(
-    filters?: FilterableCurrencyProps,
-    config?: FindConfig<CurrencyDTO>,
-    sharedContext?: Context
-  ): Promise<CurrencyDTO[]>
-
-  /**
-   * This method is used to retrieve a paginated list of currencies along with the total count of available currencies satisfying the provided filters.
-   *
-   * @param {FilterableCurrencyProps} filters - The filters to apply on the retrieved currencies.
-   * @param {FindConfig<CurrencyDTO>} config -
-   * The configurations determining how the currencies are retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a currency.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[CurrencyDTO[], number]>} The list of currencies along with the total count.
-   *
-   * @example
-   *
-   * To retrieve a list of currencies using their codes:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializePricingModule,
-   * } from "@medusajs/pricing"
-   *
-   * async function retrieveCurrencies (codes: string[]) {
-   *   const pricingService = await initializePricingModule()
-   *
-   *   const [currencies, count] = await pricingService.listAndCountCurrencies(
-   *     {
-   *       code: codes
-   *     },
-   *   )
-   *
-   *   // do something with the currencies or return them
-   * }
-   * ```
-   *
-   * To specify attributes that should be retrieved within the money amounts:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializePricingModule,
-   * } from "@medusajs/pricing"
-   *
-   * async function retrieveCurrencies (codes: string[]) {
-   *   const pricingService = await initializePricingModule()
-   *
-   *   const [currencies, count] = await pricingService.listAndCountCurrencies(
-   *     {
-   *       code: codes
-   *     },
-   *     {
-   *       select: ["symbol_native"]
-   *     }
-   *   )
-   *
-   *   // do something with the currencies or return them
-   * }
-   * ```
-   *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializePricingModule,
-   * } from "@medusajs/pricing"
-   *
-   * async function retrieveCurrencies (codes: string[], skip: number, take: number) {
-   *   const pricingService = await initializePricingModule()
-   *
-   *   const [currencies, count] = await pricingService.listAndCountCurrencies(
-   *     {
-   *       code: codes
-   *     },
-   *     {
-   *       select: ["symbol_native"],
-   *       skip,
-   *       take
-   *     }
-   *   )
-   *
-   *   // do something with the currencies or return them
-   * }
-   * ```
-   */
-  listAndCountCurrencies(
-    filters?: FilterableCurrencyProps,
-    config?: FindConfig<CurrencyDTO>,
-    sharedContext?: Context
-  ): Promise<[CurrencyDTO[], number]>
-
-  /**
-   * This method is used to create new currencies.
-   *
-   * @param {CreateCurrencyDTO[]} data - The currencies to create.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<CurrencyDTO[]>} The list of created currencies.
-   *
-   * @example
-   * import {
-   *   initialize as initializePricingModule,
-   * } from "@medusajs/pricing"
-   *
-   * async function createCurrencies () {
-   *   const pricingService = await initializePricingModule()
-   *
-   *   const currencies = await pricingService.createCurrencies([
-   *     {
-   *       code: "USD",
-   *       symbol: "$",
-   *       symbol_native: "$",
-   *       name: "US Dollar",
-   *     }
-   *   ])
-   *
-   *   // do something with the currencies or return them
-   * }
-   */
-  createCurrencies(
-    data: CreateCurrencyDTO[],
-    sharedContext?: Context
-  ): Promise<CurrencyDTO[]>
-
-  /**
-   * This method is used to update existing currencies with the provided data. In each currency object, the currency code must be provided to identify which currency to update.
-   *
-   * @param {UpdateCurrencyDTO[]} data - The currencies to update, each having the attributes that should be updated in a currency.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<CurrencyDTO[]>} The list of updated currencies.
-   *
-   * @example
-   * import {
-   *   initialize as initializePricingModule,
-   * } from "@medusajs/pricing"
-   *
-   * async function updateCurrencies () {
-   *   const pricingService = await initializePricingModule()
-   *
-   *   const currencies = await pricingService.updateCurrencies([
-   *     {
-   *       code: "USD",
-   *       symbol: "$",
-   *     }
-   *   ])
-   *
-   *   // do something with the currencies or return them
-   * }
-   */
-  updateCurrencies(
-    data: UpdateCurrencyDTO[],
-    sharedContext?: Context
-  ): Promise<CurrencyDTO[]>
-
-  /**
-   * This method is used to delete currencies based on their currency code.
-   *
-   * @param {string[]} currencyCodes - Currency codes of the currencies to delete.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves once the currencies are deleted.
-   *
-   * @example
-   * import {
-   *   initialize as initializePricingModule,
-   * } from "@medusajs/pricing"
-   *
-   * async function deleteCurrencies () {
-   *   const pricingService = await initializePricingModule()
-   *
-   *   await pricingService.deleteCurrencies(["USD"])
-   *
-   * }
-   */
-  deleteCurrencies(
-    currencyCodes: string[],
-    sharedContext?: Context
-  ): Promise<void>
 
   /**
    * This method is used to retrieve a rule type by its ID and and optionally based on the provided configurations.

@@ -1,5 +1,5 @@
 import { FindConfig } from "../common"
-import { SoftDeleteReturn } from "../dal"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
@@ -20,6 +20,7 @@ import {
   CreateTaxRateDTO,
   CreateTaxRegionDTO,
   UpdateTaxRateDTO,
+  UpsertTaxRateDTO,
 } from "./mutations"
 
 export interface ITaxModuleService extends IModuleService {
@@ -63,8 +64,20 @@ export interface ITaxModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<TaxRateDTO[]>
 
+  upsert(data: UpsertTaxRateDTO, sharedContext?: Context): Promise<TaxRateDTO>
+  upsert(
+    data: UpsertTaxRateDTO[],
+    sharedContext?: Context
+  ): Promise<TaxRateDTO[]>
+
   delete(taxRateIds: string[], sharedContext?: Context): Promise<void>
   delete(taxRateId: string, sharedContext?: Context): Promise<void>
+
+  restore<TReturnableLinkableKeys extends string = string>(
+    taxRateIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
   createTaxRegions(
     data: CreateTaxRegionDTO,
@@ -126,6 +139,12 @@ export interface ITaxModuleService extends IModuleService {
   softDeleteTaxRegions<TReturnableLinkableKeys extends string = string>(
     taxRegionIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreTaxRegions<TReturnableLinkableKeys extends string = string>(
+    taxRegionIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 

@@ -1,9 +1,8 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { Currency, MoneyAmount } from "@models"
+import { MoneyAmount } from "@models"
 import { initModules } from "medusa-test-utils"
-import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
@@ -20,7 +19,6 @@ describe("PricingModule Service - MoneyAmount", () => {
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
   let data!: MoneyAmount[]
-  let currencyData!: Currency[]
   let shutdownFunc: () => Promise<void>
 
   beforeAll(async () => {
@@ -42,7 +40,6 @@ describe("PricingModule Service - MoneyAmount", () => {
     repositoryManager = MikroOrmWrapper.forkManager()
     testManager = MikroOrmWrapper.forkManager()
 
-    currencyData = await createCurrencies(testManager)
     data = await createMoneyAmounts(testManager)
   })
 
@@ -90,8 +87,7 @@ describe("PricingModule Service - MoneyAmount", () => {
           id: ["money-amount-USD"],
         },
         {
-          select: ["id", "min_quantity", "currency.code"],
-          relations: ["currency"],
+          select: ["id", "min_quantity", "currency_code"],
         }
       )
 
@@ -152,8 +148,7 @@ describe("PricingModule Service - MoneyAmount", () => {
             id: ["money-amount-USD"],
           },
           {
-            select: ["id", "min_quantity", "currency.code", "amount"],
-            relations: ["currency"],
+            select: ["id", "min_quantity", "currency_code", "amount"],
           }
         )
 
@@ -166,9 +161,6 @@ describe("PricingModule Service - MoneyAmount", () => {
           amount: 500,
           min_quantity: "1",
           currency_code: "USD",
-          currency: {
-            code: "USD",
-          },
         },
       ])
     })
@@ -391,12 +383,9 @@ describe("PricingModule Service - MoneyAmount", () => {
         },
       ])
 
-      const moneyAmount = await service.retrieveMoneyAmount(id, {
-        relations: ["currency"],
-      })
+      const moneyAmount = await service.retrieveMoneyAmount(id, {})
 
       expect(moneyAmount.currency_code).toEqual("EUR")
-      expect(moneyAmount.currency?.code).toEqual("EUR")
     })
 
     it("should throw an error when a id does not exist", async () => {

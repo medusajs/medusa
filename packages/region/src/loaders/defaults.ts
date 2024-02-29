@@ -8,6 +8,6 @@ export default async ({ container }: LoaderOptions): Promise<void> => {
 
   // TODO: Remove when legacy modules have been migrated
   if (!!process.env.MEDUSA_FF_MEDUSA_V2) {
-    await service.createDefaultCountriesAndCurrencies()
+    await service.createDefaultCountries()
   }
 }
