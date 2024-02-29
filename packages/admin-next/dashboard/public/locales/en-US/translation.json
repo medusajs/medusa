@@ -197,6 +197,8 @@
     "fixedDiscount": "Fixed discount",
     "validRegions": "Valid regions",
     "deleteWarning": "You are about to delete the discount {{code}}. This action cannot be undone.",
+    "editDiscount": "Edit discounts",
+    "titleHint": "The code your customers will enter during checkout. This will appear on your customer’s invoice.\nUppercase letters and numbers only.",
     "discountStatus": {
       "scheduled": "Scheduled",
       "expired": "Expired",
@@ -370,6 +372,7 @@
     "limit": "Limit",
     "tags": "Tags",
     "type": "Type",
+    "percentage": "Percentage",
     "sales_channels": "Sales Channels",
     "status": "Status",
     "code": "Code",

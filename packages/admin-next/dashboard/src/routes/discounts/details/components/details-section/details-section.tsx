@@ -21,7 +21,7 @@ export const DetailsSection = ({ discount }: { discount: Discount }) => {
               actions: [
                 {
                   label: t("actions.edit"),
-                  to: "attributes",
+                  to: "edit",
                   icon: <PencilSquare />,
                 },
               ],

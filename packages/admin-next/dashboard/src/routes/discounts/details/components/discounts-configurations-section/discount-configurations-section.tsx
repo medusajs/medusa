@@ -36,7 +36,7 @@ export const DiscountConfigurationSection = ({
                 {
                   icon: <PencilSquare />,
                   label: t("actions.edit"),
-                  to: `/discounts/${discount.id}/edit`,
+                  to: `configurations`,
                 },
               ],
             },
@@ -48,7 +48,7 @@ export const DiscountConfigurationSection = ({
           {t("discounts.startDate")}
         </Text>
         <Text size="small" leading="compact" className="text-pretty">
-          {formatTime(discount.starts_at)}
+          {formatTime(discount.starts_at as unknown as string)}
         </Text>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
@@ -56,7 +56,7 @@ export const DiscountConfigurationSection = ({
           {t("discounts.endDate")}
         </Text>
         <Text size="small" leading="compact" className="text-pretty">
-          {formatTime(discount.ends_at)}
+          {formatTime(discount.ends_at as unknown as string)}
         </Text>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
