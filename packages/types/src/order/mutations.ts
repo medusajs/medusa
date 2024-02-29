@@ -40,6 +40,7 @@ export interface CreateOrderDTO {
   no_notification?: boolean
   items?: CreateOrderLineItemDTO[]
   shipping_methods?: CreateOrderShippingMethodDTO[]
+  transactions?: CreateOrderTransactionDTO[]
   metadata?: Record<string, unknown>
 }
 
@@ -234,17 +235,10 @@ export interface UpdateOrderShippingMethodAdjustmentDTO {
 
 export interface CreateOrderChangeDTO {
   order_id: string
-  status: string
   description?: string
   internal_note?: string
   requested_by?: string
   requested_at?: Date
-  confirmed_by?: string
-  confirmed_at?: Date
-  declined_by?: string
-  declined_reason?: string
-  declined_at?: Date
-  canceled_by?: string
   metadata?: Record<string, unknown>
 }
 

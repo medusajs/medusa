@@ -24,13 +24,3 @@ export type OrderSummary = {
   balance: BigNumber
   future_balance: BigNumber
 }
-
-export type ItemSummary = {
-  returnable_quantity: BigNumber
-  ordered_quantity: BigNumber
-  fulfilled_quantity: BigNumber
-  return_requested_quantity: BigNumber
-  return_received_quantity: BigNumber
-  return_dismissed_quantity: BigNumber
-  written_off_quantity: BigNumber
-}

@@ -46,10 +46,12 @@ import {
 } from "@types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { formatOrder } from "../utils/transform-order"
+import OrderChangeService from "./order-change-service"
+import OrderService from "./order-service"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  orderService: ModulesSdkTypes.InternalModuleService<any>
+  orderService: OrderService<any>
   addressService: ModulesSdkTypes.InternalModuleService<any>
   lineItemService: ModulesSdkTypes.InternalModuleService<any>
   shippingMethodAdjustmentService: ModulesSdkTypes.InternalModuleService<any>
@@ -58,7 +60,7 @@ type InjectedDependencies = {
   lineItemTaxLineService: ModulesSdkTypes.InternalModuleService<any>
   shippingMethodTaxLineService: ModulesSdkTypes.InternalModuleService<any>
   transactionService: ModulesSdkTypes.InternalModuleService<any>
-  orderChangeService: ModulesSdkTypes.InternalModuleService<any>
+  orderChangeService: OrderChangeService<any>
   orderChangeActionService: ModulesSdkTypes.InternalModuleService<any>
   orderItemService: ModulesSdkTypes.InternalModuleService<any>
 }
@@ -113,7 +115,7 @@ export default class OrderModuleService<
   implements IOrderModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected orderService_: ModulesSdkTypes.InternalModuleService<TOrder>
+  protected orderService_: OrderService<TOrder>
   protected addressService_: ModulesSdkTypes.InternalModuleService<TAddress>
   protected lineItemService_: ModulesSdkTypes.InternalModuleService<TLineItem>
   protected shippingMethodAdjustmentService_: ModulesSdkTypes.InternalModuleService<TShippingMethodAdjustment>
@@ -122,7 +124,7 @@ export default class OrderModuleService<
   protected lineItemTaxLineService_: ModulesSdkTypes.InternalModuleService<TLineItemTaxLine>
   protected shippingMethodTaxLineService_: ModulesSdkTypes.InternalModuleService<TShippingMethodTaxLine>
   protected transactionService_: ModulesSdkTypes.InternalModuleService<TTransaction>
-  protected orderChangeService_: ModulesSdkTypes.InternalModuleService<TOrderChange>
+  protected orderChangeService_: OrderChangeService<TOrderChange>
   protected orderChangeActionService_: ModulesSdkTypes.InternalModuleService<TOrderChangeAction>
   protected orderItemService_: ModulesSdkTypes.InternalModuleService<TOrderItem>
 
@@ -428,15 +430,19 @@ export default class OrderModuleService<
       const item = lineItems[i]
       const toCreate = data[i]
 
-      orderItemToCreate.push({
-        order_id: toCreate.order_id,
-        version: toCreate.version ?? 1,
-        item_id: item.id,
-        quantity: toCreate.quantity,
-      })
+      if (toCreate.order_id) {
+        orderItemToCreate.push({
+          order_id: toCreate.order_id,
+          version: toCreate.version ?? 1,
+          item_id: item.id,
+          quantity: toCreate.quantity,
+        })
+      }
     }
 
-    await this.orderItemService_.create(orderItemToCreate, sharedContext)
+    if (orderItemToCreate.length) {
+      await this.orderItemService_.create(orderItemToCreate, sharedContext)
+    }
 
     return lineItems
   }
@@ -1500,5 +1506,54 @@ export default class OrderModuleService<
     }
 
     await this.shippingMethodTaxLineService_.delete(ids, sharedContext)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async createOrderChange(
+    data: OrderTypes.CreateOrderChangeDTO | OrderTypes.CreateOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderChangeDTO> {
+    const dataArr = Array.isArray(data) ? data : [data]
+
+    const orderIds: string[] = []
+    const dataMap: Record<string, object> = {}
+    for (const change of dataArr) {
+      orderIds.push(change.order_id)
+      dataMap[change.order_id] = change
+    }
+
+    const orders = await this.list(
+      {
+        id: orderIds,
+      },
+      {
+        select: ["id", "version"],
+      }
+    )
+
+    if (orders.length !== orderIds.length) {
+      const foundOrders = orders.map((o) => o.id)
+      const missing = orderIds.filter((id) => !foundOrders.includes(id))
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Order could not be found: ${missing.join(", ")}`
+      )
+    }
+
+    const input = orders.map((order) => {
+      return {
+        ...dataMap[order.id],
+        version: order.version + 1,
+      } as any
+    })
+
+    const change = await this.orderChangeService_.create(input, sharedContext)
+
+    return await this.baseRepository_.serialize<OrderTypes.OrderChangeDTO>(
+      change,
+      {
+        populate: true,
+      }
+    )
   }
 }

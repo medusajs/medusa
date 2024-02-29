@@ -50,17 +50,23 @@ export default class OrderChangeAction {
   })
   order_change: OrderChange
 
-  @Property({ columnType: "text" })
-  reference: string
+  @Property({
+    columnType: "text",
+    nullable: true,
+  })
+  reference: string | null = null
+
+  @Property({
+    columnType: "text",
+    nullable: true,
+  })
+  reference_id: string | null = null
 
   @Property({ columnType: "text" })
-  reference_id: string
+  action: string
 
   @Property({ columnType: "jsonb" })
-  action: Record<string, unknown> = {}
-
-  @Property({ columnType: "jsonb", nullable: true })
-  metadata: Record<string, unknown> | null = null
+  details: Record<string, unknown> = {}
 
   @Property({
     columnType: "text",

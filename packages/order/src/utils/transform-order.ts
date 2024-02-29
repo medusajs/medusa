@@ -1,5 +1,5 @@
 import { OrderTypes } from "@medusajs/types"
-import { isDefined } from "@medusajs/utils"
+import { deduplicate, isDefined } from "@medusajs/utils"
 
 export function formatOrder(
   order
@@ -35,25 +35,23 @@ export function mapRepositoryToOrderModel(config) {
       return
     }
 
-    return [
-      ...new Set<string>(
-        obj[type].sort().map((rel) => {
-          if (rel == "items.quantity") {
-            if (type === "fields") {
-              obj.populate.push("items.item")
-            }
-            return "items.item.quantity"
-          } else if (rel.includes("items.detail")) {
-            return rel.replace("items.detail", "items")
-          } else if (rel == "items") {
-            return "items.item"
-          } else if (rel.includes("items.") && !rel.includes("items.item")) {
-            return rel.replace("items.", "items.item.")
+    return deduplicate(
+      obj[type].sort().map((rel) => {
+        if (rel == "items.quantity") {
+          if (type === "fields") {
+            obj.populate.push("items.item")
           }
-          return rel
-        })
-      ),
-    ]
+          return "items.item.quantity"
+        } else if (rel.includes("items.detail")) {
+          return rel.replace("items.detail", "items")
+        } else if (rel == "items") {
+          return "items.item"
+        } else if (rel.includes("items.") && !rel.includes("items.item")) {
+          return rel.replace("items.", "items.item.")
+        }
+        return rel
+      })
+    )
   }
 
   conf.options.fields = replace(config.options, "fields")
