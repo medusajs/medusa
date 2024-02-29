@@ -2,8 +2,17 @@ import {
   FilterableCustomerAddressProps,
   CustomerAddressDTO,
 } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
-import { updateCustomerAddressesStep } from "../steps"
+import {
+  WorkflowData,
+  createWorkflow,
+  parallelize,
+  transform,
+} from "@medusajs/workflows-sdk"
+import {
+  maybeUnsetDefaultBillingAddressesStep,
+  maybeUnsetDefaultShippingAddressesStep,
+  updateCustomerAddressesStep,
+} from "../steps"
 
 type WorkflowInput = {
   selector: FilterableCustomerAddressProps
@@ -14,6 +23,15 @@ export const updateCustomerAddressesWorkflowId = "update-customer-addresses"
 export const updateCustomerAddressesWorkflow = createWorkflow(
   updateCustomerAddressesWorkflowId,
   (input: WorkflowData<WorkflowInput>): WorkflowData<CustomerAddressDTO[]> => {
+    const unsetInput = transform(input, (data) => ({
+      update: data,
+    }))
+
+    parallelize(
+      maybeUnsetDefaultShippingAddressesStep(unsetInput),
+      maybeUnsetDefaultBillingAddressesStep(unsetInput)
+    )
+
     return updateCustomerAddressesStep(input)
   }
 )

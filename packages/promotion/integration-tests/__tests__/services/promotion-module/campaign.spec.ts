@@ -1,11 +1,11 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { initModules } from "medusa-test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { createPromotions } from "../../../__fixtures__/promotion"
 import { MikroOrmWrapper } from "../../../utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
-import { initModules } from "medusa-test-utils"
-import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
@@ -55,7 +55,7 @@ describe("Promotion Module Service: Campaigns", () => {
           campaign_identifier: "test-1",
           starts_at: expect.any(Date),
           ends_at: expect.any(Date),
-          budget: expect.any(String),
+          budget: expect.any(Object),
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
           deleted_at: null,
@@ -68,7 +68,7 @@ describe("Promotion Module Service: Campaigns", () => {
           campaign_identifier: "test-2",
           starts_at: expect.any(Date),
           ends_at: expect.any(Date),
-          budget: expect.any(String),
+          budget: expect.any(Object),
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
           deleted_at: null,
@@ -92,11 +92,11 @@ describe("Promotion Module Service: Campaigns", () => {
         {
           id: "campaign-id-1",
           name: "campaign 1",
-          budget: {
+          budget: expect.objectContaining({
             id: expect.any(String),
             campaign: expect.any(Object),
             limit: 1000,
-          },
+          }),
         },
       ])
     })
@@ -378,7 +378,7 @@ describe("Promotion Module Service: Campaigns", () => {
         error = e
       }
 
-      expect(error.message).toEqual('"campaignId" must be defined')
+      expect(error.message).toEqual("campaign - id must be defined")
     })
 
     it("should return campaign based on config select param", async () => {

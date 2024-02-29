@@ -5,7 +5,6 @@ export const ProductModule = {
     defaultPackage: false,
     label: "ProductModuleService",
     isRequired: false,
-    canOverride: true,
     isQueryable: true,
     dependencies: ["eventBusModuleService"],
     defaultModuleDeclaration: {

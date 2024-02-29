@@ -1,6 +1,5 @@
 import { Currency } from "@models"
-import { CurrencyService } from "@services"
-import { asClass, asValue, createContainer } from "awilix"
+import { asValue } from "awilix"
 
 ;(Currency as any).meta = {
   /**
@@ -10,10 +9,7 @@ import { asClass, asValue, createContainer } from "awilix"
 }
 
 export const nonExistingCurrencyCode = "non-existing-code"
-export const mockContainer = createContainer()
-
-mockContainer.register({
-  transaction: asValue(async (task) => await task()),
+export const currencyRepositoryMock = {
   currencyRepository: asValue({
     find: jest.fn().mockImplementation(async ({ where: { code } }) => {
       if (code === nonExistingCurrencyCode) {
@@ -25,5 +21,4 @@ mockContainer.register({
     findAndCount: jest.fn().mockResolvedValue([[], 0]),
     getFreshManager: jest.fn().mockResolvedValue({}),
   }),
-  currencyService: asClass(CurrencyService),
-})
+}

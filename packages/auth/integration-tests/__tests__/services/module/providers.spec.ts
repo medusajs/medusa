@@ -3,7 +3,6 @@ import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 import { IAuthModuleService } from "@medusajs/types"
 import { MikroOrmWrapper } from "../../../utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { createAuthProviders } from "../../../__fixtures__/auth-provider"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 import { initModules } from "medusa-test-utils"
 
@@ -42,50 +41,23 @@ describe("AuthModuleService - AuthProvider", () => {
     await shutdownFunc()
   })
 
-  describe("listAuthProviders", () => {
-    it("should list default AuthProviders registered by loaders", async () => {
-      const authProviders = await service.listAuthProviders()
-      const serialized = JSON.parse(JSON.stringify(authProviders))
-
-      expect(serialized).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            provider: "emailpass",
-            name: "Email/Password Authentication",
-          }),
-          expect.objectContaining({
-            provider: "google",
-            name: "Google Authentication",
-          }),
-        ])
-      )
-    })
-  })
-
   describe("authenticate", () => {
     it("authenticate validates that a provider is registered in container", async () => {
-      await createAuthProviders(testManager, [
-        {
-          provider: "notRegistered",
-          name: "test",
-        },
-      ])
-
-      const { success, error } = await service.authenticate("notRegistered", {} as any)
+      const { success, error } = await service.authenticate(
+        "notRegistered",
+        {} as any
+      )
 
       expect(success).toBe(false)
       expect(error).toEqual(
-        "AuthenticationProvider with for provider: notRegistered wasn't registered in the module. Have you configured your options correctly?"
+        "AuthenticationProvider: notRegistered wasn't registered in the module. Have you configured your options correctly?"
       )
     })
 
     it("fails to authenticate using a valid provider with an invalid scope", async () => {
-      const { success, error } = await service.authenticate(
-        "emailpass",
-        {
-          scope: "non-existing",
-        } as any
-      )
+      const { success, error } = await service.authenticate("emailpass", {
+        authScope: "non-existing",
+      } as any)
 
       expect(success).toBe(false)
       expect(error).toEqual(

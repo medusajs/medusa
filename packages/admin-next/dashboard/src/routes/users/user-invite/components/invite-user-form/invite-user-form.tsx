@@ -4,7 +4,6 @@ import { Invite } from "@medusajs/medusa"
 import {
   Button,
   Container,
-  FocusModal,
   Heading,
   Input,
   Select,
@@ -30,7 +29,7 @@ import {
   useAdminResendInvite,
   useAdminStore,
 } from "medusa-react"
-import { useEffect, useMemo } from "react"
+import { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -38,10 +37,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { Form } from "../../../../../components/common/form"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
-
-type InviteUserFormProps = {
-  subscribe: (state: boolean) => void
-}
+import { RouteFocusModal } from "../../../../../components/route-modal"
 
 enum UserRole {
   MEMBER = "member",
@@ -56,7 +52,9 @@ const InviteUserSchema = zod.object({
 
 const PAGE_SIZE = 10
 
-export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
+export const InviteUserForm = () => {
+  const { t } = useTranslation()
+
   const form = useForm<zod.infer<typeof InviteUserSchema>>({
     defaultValues: {
       user: "",
@@ -64,15 +62,6 @@ export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
     },
     resolver: zodResolver(InviteUserSchema),
   })
-  const { mutateAsync, isLoading: isMutating } = useAdminCreateInvite()
-
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
 
   const { invites, isLoading, isError, error } = useAdminInvites()
   const count = invites?.length ?? 0
@@ -89,7 +78,7 @@ export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
     getPaginationRowModel: getPaginationRowModel(),
   })
 
-  const { t } = useTranslation()
+  const { mutateAsync, isLoading: isMutating } = useAdminCreateInvite()
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
@@ -110,21 +99,13 @@ export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
   }
 
   return (
-    <Form {...form}>
+    <RouteFocusModal.Form form={form}>
       <form
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
-        <FocusModal.Header>
-          <div className="flex items-center justify-end gap-x-2">
-            <FocusModal.Close asChild>
-              <Button size="small" variant="secondary">
-                {t("general.close")}
-              </Button>
-            </FocusModal.Close>
-          </div>
-        </FocusModal.Header>
-        <FocusModal.Body className="flex flex-1 flex-col overflow-hidden">
+        <RouteFocusModal.Header />
+        <RouteFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
           <div className="flex flex-1 flex-col items-center overflow-y-auto">
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
               <div>
@@ -190,7 +171,7 @@ export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
               </div>
               <div className="flex flex-col gap-y-4">
                 <Heading level="h2">{t("users.pendingInvites")}</Heading>
-                <Container className="p-0 overflow-hidden">
+                <Container className="overflow-hidden p-0">
                   {!noRecords ? (
                     <div>
                       <Table>
@@ -199,7 +180,7 @@ export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
                             return (
                               <Table.Row
                                 key={headerGroup.id}
-                                className="[&_th]:w-1/3 [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap"
+                                className="[&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th]:w-1/3"
                               >
                                 {headerGroup.headers.map((header) => {
                                   return (
@@ -257,9 +238,9 @@ export const InviteUserForm = ({ subscribe }: InviteUserFormProps) => {
               </div>
             </div>
           </div>
-        </FocusModal.Body>
+        </RouteFocusModal.Body>
       </form>
-    </Form>
+    </RouteFocusModal.Form>
   )
 }
 
@@ -276,8 +257,8 @@ const InviteActions = ({ invite }: { invite: Invite }) => {
       description: t("users.revokeInviteWarning", {
         email: invite.user_email,
       }),
-      cancelText: t("general.cancel"),
-      confirmText: t("general.confirm"),
+      cancelText: t("actions.cancel"),
+      confirmText: t("actions.revoke"),
     })
 
     if (!res) {
@@ -328,7 +309,7 @@ const InviteActions = ({ invite }: { invite: Invite }) => {
           actions: [
             {
               icon: <XCircle />,
-              label: t("general.revoke"),
+              label: t("actions.revoke"),
               onClick: handleRevoke,
             },
           ],
@@ -403,8 +384,8 @@ const useColumns = () => {
                 <Trans
                   i18nKey={"users.validFromUntil"}
                   components={[
-                    <span className="font-medium" />,
-                    <span className="font-medium" />,
+                    <span key="from" className="font-medium" />,
+                    <span key="untill" className="font-medium" />,
                   ]}
                   values={{
                     from: format(

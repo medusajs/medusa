@@ -5,6 +5,7 @@ import {
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
+  ApplicationMethodType,
   ComputedActions,
   MedusaError,
 } from "@medusajs/utils"
@@ -48,6 +49,7 @@ export function getComputedActionsForItems(
   )
 }
 
+// TODO: calculations should eventually move to a totals util outside of the module
 export function applyPromotionToItems(
   promotion: PromotionTypes.PromotionDTO,
   items: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.ITEMS],
@@ -62,15 +64,23 @@ export function applyPromotionToItems(
     [allocation, allocationOverride].includes(ApplicationMethodAllocation.EACH)
   ) {
     for (const method of items!) {
-      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
+      if (!method.subtotal || !method.quantity) {
+        continue
+      }
+
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
       const quantityMultiplier = Math.min(
         method.quantity,
         applicationMethod?.max_quantity!
       )
-      const promotionValue =
-        parseFloat(applicationMethod!.value!) * quantityMultiplier
-      const applicableTotal =
-        method.unit_price * quantityMultiplier - appliedPromoValue
+      const totalItemValue =
+        (method.subtotal / method.quantity) * quantityMultiplier
+      let promotionValue = applicationMethod?.value ?? 0
+      const applicableTotal = totalItemValue - appliedPromoValue
+      if (applicationMethod?.type === ApplicationMethodType.PERCENTAGE) {
+        promotionValue = (promotionValue / 100) * applicableTotal
+      }
+
       const amount = Math.min(promotionValue, applicableTotal)
 
       if (amount <= 0) {
@@ -105,19 +115,37 @@ export function applyPromotionToItems(
     )
   ) {
     const totalApplicableValue = items!.reduce((acc, method) => {
-      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
-      return acc + method.unit_price * method.quantity - appliedPromoValue
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
+      const perItemCost = method.subtotal
+        ? method.subtotal / method.quantity
+        : 0
+
+      return acc + perItemCost * method.quantity - appliedPromoValue
     }, 0)
 
     for (const method of items!) {
-      const promotionValue = parseFloat(applicationMethod!.value!)
-      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
+      if (!method.subtotal || !method.quantity) {
+        continue
+      }
+
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
+      const promotionValue = applicationMethod?.value ?? 0
       const applicableTotal =
-        method.unit_price * method.quantity - appliedPromoValue
+        (method.subtotal / method.quantity) * method.quantity -
+        appliedPromoValue
+
+      if (applicableTotal <= 0) {
+        continue
+      }
 
       // TODO: should we worry about precision here?
-      const applicablePromotionValue =
+      let applicablePromotionValue =
         (applicableTotal / totalApplicableValue) * promotionValue
+
+      if (applicationMethod?.type === ApplicationMethodType.PERCENTAGE) {
+        applicablePromotionValue = (promotionValue / 100) * applicableTotal
+      }
+
       const amount = Math.min(applicablePromotionValue, applicableTotal)
 
       if (amount <= 0) {
@@ -134,6 +162,8 @@ export function applyPromotionToItems(
 
         continue
       }
+
+      methodIdPromoValueMap.set(method.id, appliedPromoValue + amount)
 
       computedActions.push({
         action: ComputedActions.ADD_ITEM_ADJUSTMENT,

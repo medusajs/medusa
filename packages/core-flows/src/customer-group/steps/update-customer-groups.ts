@@ -1,8 +1,8 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
+  CustomerGroupUpdatableFields,
   FilterableCustomerGroupProps,
   ICustomerModuleService,
-  CustomerGroupUpdatableFields,
 } from "@medusajs/types"
 import {
   getSelectsAndRelationsFromObjectArray,
@@ -31,7 +31,7 @@ export const updateCustomerGroupsStep = createStep(
       relations,
     })
 
-    const customers = await service.updateCustomerGroup(
+    const customers = await service.updateCustomerGroups(
       data.selector,
       data.update
     )
@@ -49,7 +49,7 @@ export const updateCustomerGroupsStep = createStep(
 
     await promiseAll(
       prevCustomerGroups.map((c) =>
-        service.updateCustomerGroup(c.id, {
+        service.updateCustomerGroups(c.id, {
           name: c.name,
         })
       )

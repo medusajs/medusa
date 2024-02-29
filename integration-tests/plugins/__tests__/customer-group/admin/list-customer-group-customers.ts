@@ -1,11 +1,15 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+
 import { ICustomerModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import adminSeeder from "../../../../helpers/admin-seeder"
+import { createAdminUser } from "../../../helpers/create-admin-user"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
-import { getContainer } from "../../../../environment-helpers/use-container"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import adminSeeder from "../../../../helpers/admin-seeder"
+
+jest.setTimeout(50000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 const adminHeaders = {
@@ -35,7 +39,7 @@ describe("GET /admin/customer-groups/:id/customers", () => {
   })
 
   beforeEach(async () => {
-    await adminSeeder(dbConnection)
+    await createAdminUser(dbConnection, adminHeaders)
   })
 
   afterEach(async () => {

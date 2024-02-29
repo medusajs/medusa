@@ -23,7 +23,7 @@ export class Migration20240124154000 extends Migration {
       'create index if not exists "IDX_customer_address_customer_id" on "customer_address" ("customer_id");'
     )
     this.addSql(
-      'create unique index "IDX_customer_address_unqiue_customer_billing" on "customer_address" ("customer_id") where "is_default_billing" = true;'
+      'create unique index "IDX_customer_address_unique_customer_billing" on "customer_address" ("customer_id") where "is_default_billing" = true;'
     )
     this.addSql(
       'create unique index "IDX_customer_address_unique_customer_shipping" on "customer_address" ("customer_id") where "is_default_shipping" = true;'

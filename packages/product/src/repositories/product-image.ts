@@ -14,6 +14,6 @@ export class ProductImageRepository extends DALUtils.mikroOrmBaseRepositoryFacto
   async upsert(urls: string[], context: Context = {}): Promise<Image[]> {
     const data = urls.map((url) => ({ url }))
 
-    return await super.upsert(data, context)
+    return (await super.upsert(data, context)) as Image[]
   }
 }

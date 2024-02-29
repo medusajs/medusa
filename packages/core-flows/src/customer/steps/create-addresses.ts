@@ -1,8 +1,8 @@
 import {
-  ICustomerModuleService,
   CreateCustomerAddressDTO,
+  ICustomerModuleService,
 } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export const createCustomerAddressesStepId = "create-customer-addresses"
@@ -29,6 +29,6 @@ export const createCustomerAddressesStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    await service.deleteAddress(ids)
+    await service.deleteAddresses(ids)
   }
 )

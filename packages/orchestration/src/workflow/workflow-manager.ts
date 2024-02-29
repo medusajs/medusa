@@ -81,7 +81,7 @@ export class WorkflowManager {
     const finalFlow = flow instanceof OrchestratorBuilder ? flow.build() : flow
 
     if (WorkflowManager.workflows.has(workflowId)) {
-      function excludeStepUuid(key, value) {
+      const excludeStepUuid = (key, value) => {
         return key === "uuid" ? undefined : value
       }
 

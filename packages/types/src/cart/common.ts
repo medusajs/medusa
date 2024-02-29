@@ -206,7 +206,7 @@ export interface CartShippingMethodDTO {
   /**
    * The price of the shipping method
    */
-  unit_price: number
+  amount: number
 
   /**
    * Whether the shipping method price is tax inclusive or not
@@ -261,7 +261,23 @@ export interface CartShippingMethodDTO {
   discount_tax_total: number
 }
 
-export interface CartLineItemDTO {
+export interface CartLineItemTotalsDTO {
+  original_total: number
+  original_subtotal: number
+  original_tax_total: number
+
+  item_total: number
+  item_subtotal: number
+  item_tax_total: number
+
+  total: number
+  subtotal: number
+  tax_total: number
+  discount_total: number
+  discount_tax_total: number
+}
+
+export interface CartLineItemDTO extends CartLineItemTotalsDTO {
   /**
    * The ID of the line item.
    */
@@ -384,20 +400,10 @@ export interface CartLineItemDTO {
    * When the line item was updated.
    */
   updated_at?: Date
-
-  original_total: number
-  original_subtotal: number
-  original_tax_total: number
-
-  item_total: number
-  item_subtotal: number
-  item_tax_total: number
-
-  total: number
-  subtotal: number
-  tax_total: number
-  discount_total: number
-  discount_tax_total: number
+  /**
+   * When the line item was deleted.
+   */
+  deleted_at?: Date
 }
 
 export interface CartDTO {
@@ -478,7 +484,11 @@ export interface CartDTO {
   subtotal: number
   tax_total: number
   discount_total: number
+  raw_discount_total: any
   discount_tax_total: number
+
+  gift_card_total: number
+  gift_card_tax_total: number
 
   shipping_total: number
   shipping_subtotal: number

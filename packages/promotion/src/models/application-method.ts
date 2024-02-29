@@ -2,9 +2,16 @@ import {
   ApplicationMethodAllocationValues,
   ApplicationMethodTargetTypeValues,
   ApplicationMethodTypeValues,
+  BigNumberRawValue,
   DAL,
 } from "@medusajs/types"
-import { DALUtils, PromotionUtils, generateEntityId } from "@medusajs/utils"
+import {
+  BigNumber,
+  DALUtils,
+  MikroOrmBigNumberProperty,
+  PromotionUtils,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
@@ -30,7 +37,7 @@ type OptionalFields =
   | "allocation"
   | DAL.SoftDeletableEntityDateColumns
 
-@Entity({ tableName: "application_method" })
+@Entity({ tableName: "promotion_application_method" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ApplicationMethod {
   [OptionalProps]?: OptionalFields
@@ -38,8 +45,11 @@ export default class ApplicationMethod {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({ columnType: "numeric", nullable: true, serializer: Number })
-  value?: string | null = null
+  @MikroOrmBigNumberProperty({ nullable: true })
+  value: BigNumber | number | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_value: BigNumberRawValue | null = null
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
   max_quantity?: number | null = null

@@ -5,7 +5,7 @@ import { initModules } from "medusa-test-utils"
 import { MikroOrmWrapper } from "../../../utils"
 import { getInitModuleConfig } from "../../../utils/get-init-module-config"
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 describe("Cart Module Service", () => {
   let service: ICartModuleService
@@ -258,6 +258,53 @@ describe("Cart Module Service", () => {
         })
       )
     })
+
+    it("should update a cart with selector successfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [updatedCart] = await service.update(
+        { id: createdCart.id },
+        {
+          email: "test@email.com",
+        }
+      )
+
+      const [cart] = await service.list({ id: [createdCart.id] })
+
+      expect(cart).toEqual(
+        expect.objectContaining({
+          id: createdCart.id,
+          currency_code: "eur",
+          email: updatedCart.email,
+        })
+      )
+    })
+
+    it("should update a cart with id successfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const updatedCart = await service.update(createdCart.id, {
+        email: "test@email.com",
+      })
+
+      const [cart] = await service.list({ id: [createdCart.id] })
+
+      expect(cart).toEqual(
+        expect.objectContaining({
+          id: createdCart.id,
+          currency_code: "eur",
+          email: updatedCart.email,
+        })
+      )
+    })
   })
 
   describe("delete", () => {
@@ -481,14 +528,14 @@ describe("Cart Module Service", () => {
       const error = await service
         .addLineItems(createdCart.id, [
           {
-            quantity: 1,
+            unit_price: 10,
             title: "test",
           },
         ] as any)
         .catch((e) => e)
 
       expect(error.message).toContain(
-        "Value for LineItem.unit_price is required, 'undefined' found"
+        "Value for LineItem.quantity is required, 'undefined' found"
       )
     })
 
@@ -503,14 +550,14 @@ describe("Cart Module Service", () => {
         .addLineItems([
           {
             cart_id: createdCart.id,
-            quantity: 1,
+            unit_price: 10,
             title: "test",
           },
         ] as any)
         .catch((e) => e)
 
       expect(error.message).toContain(
-        "Value for LineItem.unit_price is required, 'undefined' found"
+        "Value for LineItem.quantity is required, 'undefined' found"
       )
     })
   })
@@ -658,7 +705,7 @@ describe("Cart Module Service", () => {
 
       expect(item.title).toBe("test")
 
-      await service.removeLineItems([item.id])
+      await service.softDeleteLineItems([item.id])
 
       const cart = await service.retrieve(createdCart.id, {
         relations: ["items"],
@@ -687,7 +734,7 @@ describe("Cart Module Service", () => {
         },
       ])
 
-      await service.removeLineItems([item.id, item2.id])
+      await service.softDeleteLineItems([item.id, item2.id])
 
       const cart = await service.retrieve(createdCart.id, {
         relations: ["items"],
@@ -800,7 +847,7 @@ describe("Cart Module Service", () => {
 
       expect(method.id).not.toBe(null)
 
-      await service.removeShippingMethods(method.id)
+      await service.softDeleteShippingMethods([method.id])
 
       const cart = await service.retrieve(createdCart.id, {
         relations: ["shipping_methods"],
@@ -1240,43 +1287,7 @@ describe("Cart Module Service", () => {
 
       expect(adjustment.item_id).toBe(item.id)
 
-      await service.removeLineItemAdjustments(adjustment.id)
-
-      const adjustments = await service.listLineItemAdjustments({
-        item_id: item.id,
-      })
-
-      expect(adjustments?.length).toBe(0)
-    })
-
-    it("should remove a line item succesfully with selector", async () => {
-      const [createdCart] = await service.create([
-        {
-          currency_code: "eur",
-        },
-      ])
-
-      const [item] = await service.addLineItems(createdCart.id, [
-        {
-          quantity: 1,
-          unit_price: 100,
-          title: "test",
-        },
-      ])
-
-      const [adjustment] = await service.addLineItemAdjustments(
-        createdCart.id,
-        [
-          {
-            item_id: item.id,
-            amount: 50,
-          },
-        ]
-      )
-
-      expect(adjustment.item_id).toBe(item.id)
-
-      await service.removeLineItemAdjustments({ item_id: item.id })
+      await service.softDeleteLineItemAdjustments([adjustment.id])
 
       const adjustments = await service.listLineItemAdjustments({
         item_id: item.id,
@@ -1784,51 +1795,10 @@ describe("Cart Module Service", () => {
 
       expect(adjustment.shipping_method_id).toBe(method.id)
 
-      await service.removeShippingMethodAdjustments(adjustment.id)
+      await service.softDeleteShippingMethodAdjustments([adjustment.id])
 
       const adjustments = await service.listShippingMethodAdjustments({
         shipping_method_id: method.id,
-      })
-
-      expect(adjustments?.length).toBe(0)
-    })
-
-    it("should remove a shipping method succesfully with selector", async () => {
-      const [createdCart] = await service.create([
-        {
-          currency_code: "eur",
-        },
-      ])
-
-      const [shippingMethod] = await service.addShippingMethods(
-        createdCart.id,
-        [
-          {
-            amount: 100,
-            name: "test",
-          },
-        ]
-      )
-
-      const [adjustment] = await service.addShippingMethodAdjustments(
-        createdCart.id,
-        [
-          {
-            shipping_method_id: shippingMethod.id,
-            amount: 50,
-            code: "50%",
-          },
-        ]
-      )
-
-      expect(adjustment.shipping_method_id).toBe(shippingMethod.id)
-
-      await service.removeShippingMethodAdjustments({
-        shipping_method_id: shippingMethod.id,
-      })
-
-      const adjustments = await service.listShippingMethodAdjustments({
-        shipping_method_id: shippingMethod.id,
       })
 
       expect(adjustments?.length).toBe(0)
@@ -2353,41 +2323,7 @@ describe("Cart Module Service", () => {
 
       expect(taxLine.item_id).toBe(item.id)
 
-      await service.removeLineItemTaxLines(taxLine.id)
-
-      const taxLines = await service.listLineItemTaxLines({
-        item_id: item.id,
-      })
-
-      expect(taxLines?.length).toBe(0)
-    })
-
-    it("should remove line item tax lines succesfully with selector", async () => {
-      const [createdCart] = await service.create([
-        {
-          currency_code: "eur",
-        },
-      ])
-
-      const [item] = await service.addLineItems(createdCart.id, [
-        {
-          quantity: 1,
-          unit_price: 100,
-          title: "test",
-        },
-      ])
-
-      const [taxLine] = await service.addLineItemTaxLines(createdCart.id, [
-        {
-          item_id: item.id,
-          rate: 20,
-          code: "TX",
-        },
-      ])
-
-      expect(taxLine.item_id).toBe(item.id)
-
-      await service.removeLineItemTaxLines({ item_id: item.id })
+      await service.softDeleteLineItemTaxLines([taxLine.id])
 
       const taxLines = await service.listLineItemTaxLines({
         item_id: item.id,

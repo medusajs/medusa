@@ -1,0 +1,48 @@
+{
+  "description": "This component is based on the div element and supports all of its props",
+  "methods": [],
+  "displayName": "Alert",
+  "props": {
+    "variant": {
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"error\" | \"success\" | \"warning\" | \"info\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"error\""
+          },
+          {
+            "name": "literal",
+            "value": "\"success\""
+          },
+          {
+            "name": "literal",
+            "value": "\"warning\""
+          },
+          {
+            "name": "literal",
+            "value": "\"info\""
+          }
+        ]
+      },
+      "description": "The variant of the alert",
+      "defaultValue": {
+        "value": "\"info\"",
+        "computed": false
+      }
+    },
+    "dismissible": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether the alert is dismissible",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      }
+    }
+  }
+}

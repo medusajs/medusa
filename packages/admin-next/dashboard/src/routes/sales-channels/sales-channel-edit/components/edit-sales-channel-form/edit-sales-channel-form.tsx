@@ -1,18 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SalesChannel } from "@medusajs/medusa"
-import { Button, Drawer, Input, Switch, Textarea } from "@medusajs/ui"
+import { Button, Input, Switch, Textarea } from "@medusajs/ui"
 import { useAdminUpdateSalesChannel } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { useEffect } from "react"
 import { Form } from "../../../../../components/common/form"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "../../../../../components/route-modal"
 
 type EditSalesChannelFormProps = {
   salesChannel: SalesChannel
-  subscribe: (state: boolean) => void
-  onSuccess: () => void
 }
 
 const EditSalesChannelSchema = zod.object({
@@ -23,9 +24,10 @@ const EditSalesChannelSchema = zod.object({
 
 export const EditSalesChannelForm = ({
   salesChannel,
-  subscribe,
-  onSuccess,
 }: EditSalesChannelFormProps) => {
+  const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
+
   const form = useForm<zod.infer<typeof EditSalesChannelSchema>>({
     defaultValues: {
       name: salesChannel.name,
@@ -34,16 +36,6 @@ export const EditSalesChannelForm = ({
     },
     resolver: zodResolver(EditSalesChannelSchema),
   })
-
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
-
-  const { t } = useTranslation()
 
   const { mutateAsync, isLoading } = useAdminUpdateSalesChannel(salesChannel.id)
 
@@ -56,19 +48,19 @@ export const EditSalesChannelForm = ({
       },
       {
         onSuccess: () => {
-          onSuccess()
+          handleSuccess()
         },
       }
     )
   })
 
   return (
-    <Form {...form}>
+    <RouteDrawer.Form form={form}>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col overflow-hidden flex-1"
+        className="flex flex-1 flex-col overflow-hidden"
       >
-        <Drawer.Body className="flex flex-col gap-y-8 overflow-y-auto flex-1 max-w-full">
+        <RouteDrawer.Body className="flex max-w-full flex-1 flex-col gap-y-8 overflow-y-auto">
           <Form.Field
             control={form.control}
             name="name"
@@ -121,20 +113,20 @@ export const EditSalesChannelForm = ({
               )
             }}
           />
-        </Drawer.Body>
-        <Drawer.Footer>
+        </RouteDrawer.Body>
+        <RouteDrawer.Footer>
           <div className="flex items-center justify-end gap-x-2">
-            <Drawer.Close asChild>
+            <RouteDrawer.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
-            </Drawer.Close>
+            </RouteDrawer.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
-        </Drawer.Footer>
+        </RouteDrawer.Footer>
       </form>
-    </Form>
+    </RouteDrawer.Form>
   )
 }

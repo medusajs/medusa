@@ -37,15 +37,28 @@ module.exports = {
   },
   featureFlags: {
     medusa_v2: enableMedusaV2,
-    workflows: {
-      [Workflows.CreateCart]: true,
-    },
   },
   modules: {
     [Modules.AUTH]: {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/auth",
+      options: {
+        providers: [
+          {
+            name: "emailpass",
+            scopes: {
+              admin: {},
+              store: {},
+            },
+          },
+        ],
+      },
+    },
+    [Modules.USER]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/user",
       options: {
         jwt_secret: "test",
       },
@@ -93,6 +106,27 @@ module.exports = {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/cart",
+    },
+    [Modules.WORKFLOW_ENGINE]: true,
+    [Modules.REGION]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/region",
+    },
+    [Modules.API_KEY]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/api-key",
+    },
+    [Modules.STORE]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/store",
+    },
+    [Modules.TAX]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/tax",
     },
   },
 }

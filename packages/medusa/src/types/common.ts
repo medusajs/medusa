@@ -1,5 +1,13 @@
 import "reflect-metadata"
 
+import { Transform, Type } from "class-transformer"
+import {
+  IsDate,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import {
   FindManyOptions,
   FindOneOptions,
@@ -8,20 +16,12 @@ import {
   FindOptionsWhere,
   OrderByCondition,
 } from "typeorm"
-import {
-  IsDate,
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsString,
-} from "class-validator"
-import { Transform, Type } from "class-transformer"
 
-import { BaseEntity } from "../interfaces"
-import { ClassConstructor } from "./global"
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
+import { BaseEntity } from "../interfaces"
 import { transformDate } from "../utils/validators/date-transform"
+import { ClassConstructor } from "./global"
 
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
@@ -119,19 +119,19 @@ export type QueryConfig<TEntity extends BaseEntity> = {
  */
 export type RequestQueryFields = {
   /**
-   * {@inheritDoc FindParams.expand}
+   * Comma-separated relations that should be expanded in the returned data.
    */
   expand?: string
   /**
-   * {@inheritDoc FindParams.fields}
+   * Comma-separated fields that should be included in the returned data.
    */
   fields?: string
   /**
-   * {@inheritDoc FindPaginationParams.offset}
+   * The number of items to skip when retrieving a list.
    */
   offset?: number
   /**
-   * {@inheritDoc FindPaginationParams.limit}
+   * Limit the number of items returned in the list.
    */
   limit?: number
   /**
@@ -510,14 +510,14 @@ export class AddressCreatePayload {
  */
 export class FindParams {
   /**
-   * Comma-separated relations that should be expanded in the returned data.
+   * {@inheritDoc RequestQueryFields.expand}
    */
   @IsString()
   @IsOptional()
   expand?: string
 
   /**
-   * Comma-separated fields that should be included in the returned data.
+   * {@inheritDoc RequestQueryFields.fields}
    */
   @IsString()
   @IsOptional()
@@ -529,7 +529,7 @@ export class FindParams {
  */
 export class FindPaginationParams {
   /**
-   * The number of items to skip when retrieving a list.
+   * {@inheritDoc RequestQueryFields.offset}
    * @defaultValue 0
    */
   @IsNumber()
@@ -538,7 +538,7 @@ export class FindPaginationParams {
   offset?: number = 0
 
   /**
-   * Limit the number of items returned in the list.
+   * {@inheritDoc RequestQueryFields.limit}
    * @defaultValue 20
    */
   @IsNumber()

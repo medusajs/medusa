@@ -1,180 +1,101 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import type { Product } from "@medusajs/medusa"
-import {
-  Button,
-  Checkbox,
-  CommandBar,
-  Container,
-  Heading,
-  Table,
-  clx,
-} from "@medusajs/ui"
-import {
-  PaginationState,
-  RowSelectionState,
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
+import { Button, Container, Heading, usePrompt } from "@medusajs/ui"
+import { createColumnHelper } from "@tanstack/react-table"
 import { useAdminDeleteProduct, useAdminProducts } from "medusa-react"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { useLoaderData, useNavigate } from "react-router-dom"
-
-import {
-  ProductAvailabilityCell,
-  ProductCollectionCell,
-  ProductStatusCell,
-  ProductTitleCell,
-  ProductVariantCell,
-} from "../../../../../components/common/product-table-cells"
+import { Link, Outlet, useLoaderData } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
+import { DataTable } from "../../../../../components/table/data-table"
+import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
+import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
+import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
+import { useDataTable } from "../../../../../hooks/use-data-table"
 import { productsLoader } from "../../loader"
 
-const PAGE_SIZE = 50
+const PAGE_SIZE = 20
 
 export const ProductListTable = () => {
-  const navigate = useNavigate()
   const { t } = useTranslation()
-
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: PAGE_SIZE,
-  })
-
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof productsLoader>>
   >
 
-  const { products, count } = useAdminProducts(
+  const { searchParams, raw } = useProductTableQuery({ pageSize: PAGE_SIZE })
+  const { products, count, isLoading, isError, error } = useAdminProducts(
     {
-      limit: PAGE_SIZE,
-      offset: pageIndex * PAGE_SIZE,
+      ...searchParams,
     },
     {
       initialData,
+      keepPreviousData: true,
     }
   )
 
+  const filters = useProductTableFilters()
   const columns = useColumns()
 
-  const pagination = useMemo(
-    () => ({
-      pageIndex,
-      pageSize,
-    }),
-    [pageIndex, pageSize]
-  )
-
-  const table = useReactTable({
+  const { table } = useDataTable({
     data: (products ?? []) as Product[],
     columns,
-    pageCount: Math.ceil((count ?? 0) / PAGE_SIZE),
-    state: {
-      pagination,
-      rowSelection,
-    },
-    onPaginationChange: setPagination,
-    onRowSelectionChange: setRowSelection,
-    getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
+    count,
+    enablePagination: true,
+    pageSize: PAGE_SIZE,
+    getRowId: (row) => row.id,
   })
 
+  if (isError) {
+    throw error
+  }
+
   return (
-    <Container className="overflow-hidden p-0">
+    <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.domain")}</Heading>
-        <Button size="small" variant="secondary">
-          {t("general.create")}
+        <Button size="small" variant="secondary" asChild>
+          <Link to="create">{t("actions.create")}</Link>
         </Button>
       </div>
-      <div>
-        <Table>
-          <Table.Header>
-            {table.getHeaderGroups().map((headerGroup) => {
-              return (
-                <Table.Row
-                  key={headerGroup.id}
-                  className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap"
-                >
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <Table.HeaderCell key={header.id}>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                      </Table.HeaderCell>
-                    )
-                  })}
-                </Table.Row>
-              )
-            })}
-          </Table.Header>
-          <Table.Body className="border-b-0">
-            {table.getRowModel().rows.map((row) => (
-              <Table.Row
-                key={row.id}
-                className={clx(
-                  "transition-fg cursor-pointer [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
-                  {
-                    "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                      row.getIsSelected(),
-                  }
-                )}
-                onClick={() => navigate(`/products/${row.original.id}`)}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <Table.Cell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </Table.Cell>
-                ))}
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
-        <LocalizedTablePagination
-          canNextPage={table.getCanNextPage()}
-          canPreviousPage={table.getCanPreviousPage()}
-          nextPage={table.nextPage}
-          previousPage={table.previousPage}
-          count={count ?? 0}
-          pageIndex={pageIndex}
-          pageCount={table.getPageCount()}
-          pageSize={PAGE_SIZE}
-        />
-      </div>
-      <CommandBar open={!!Object.keys(rowSelection).length}>
-        <CommandBar.Bar>
-          <CommandBar.Value>
-            {t("general.countSelected", {
-              count: Object.keys(rowSelection).length,
-            })}
-          </CommandBar.Value>
-          <CommandBar.Seperator />
-          <CommandBar.Command
-            action={() => {
-              console.log("Delete")
-            }}
-            shortcut="d"
-            label={t("general.delete")}
-          />
-        </CommandBar.Bar>
-      </CommandBar>
+      <DataTable
+        table={table}
+        columns={columns}
+        count={count}
+        pageSize={PAGE_SIZE}
+        filters={filters}
+        search
+        pagination
+        isLoading={isLoading}
+        queryObject={raw}
+        navigateTo={(row) => `${row.original.id}`}
+        orderBy={["title", "created_at", "updated_at"]}
+      />
+      <Outlet />
     </Container>
   )
 }
 
-const ProductActions = ({ id }: { id: string }) => {
+const ProductActions = ({ product }: { product: Product }) => {
   const { t } = useTranslation()
-  const { mutateAsync } = useAdminDeleteProduct(id)
+  const prompt = usePrompt()
+  const { mutateAsync } = useAdminDeleteProduct(product.id)
 
   const handleDelete = async () => {
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("products.deleteWarning", {
+        title: product.title,
+      }),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
     await mutateAsync()
   }
 
@@ -185,8 +106,8 @@ const ProductActions = ({ id }: { id: string }) => {
           actions: [
             {
               icon: <PencilSquare />,
-              label: t("general.edit"),
-              to: `/products/${id}/edit`,
+              label: t("actions.edit"),
+              to: `/products/${product.id}/edit`,
             },
           ],
         },
@@ -194,7 +115,7 @@ const ProductActions = ({ id }: { id: string }) => {
           actions: [
             {
               icon: <Trash />,
-              label: t("general.delete"),
+              label: t("actions.delete"),
               onClick: handleDelete,
             },
           ],
@@ -207,84 +128,19 @@ const ProductActions = ({ id }: { id: string }) => {
 const columnHelper = createColumnHelper<Product>()
 
 const useColumns = () => {
-  const { t } = useTranslation()
+  const base = useProductTableColumns()
 
   const columns = useMemo(
     () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          return (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-        },
-      }),
-      columnHelper.accessor("title", {
-        header: t("fields.title"),
-        cell: ({ row }) => {
-          return <ProductTitleCell product={row.original} />
-        },
-      }),
-      columnHelper.accessor("collection", {
-        header: t("fields.collection"),
-        cell: (cell) => {
-          const collection = cell.getValue()
-
-          return <ProductCollectionCell collection={collection} />
-        },
-      }),
-      columnHelper.accessor("sales_channels", {
-        header: t("fields.availability"),
-        cell: (cell) => {
-          const salesChannels = cell.getValue()
-
-          return <ProductAvailabilityCell salesChannels={salesChannels ?? []} />
-        },
-      }),
-      columnHelper.accessor("variants", {
-        header: t("fields.inventory"),
-        cell: (cell) => {
-          const variants = cell.getValue()
-
-          return <ProductVariantCell variants={variants} />
-        },
-      }),
-      columnHelper.accessor("status", {
-        header: t("fields.status"),
-        cell: (cell) => {
-          const value = cell.getValue()
-
-          return <ProductStatusCell status={value} />
-        },
-      }),
+      ...base,
       columnHelper.display({
         id: "actions",
         cell: ({ row }) => {
-          return <ProductActions id={row.original.id} />
+          return <ProductActions product={row.original} />
         },
       }),
     ],
-    [t]
+    [base]
   )
 
   return columns

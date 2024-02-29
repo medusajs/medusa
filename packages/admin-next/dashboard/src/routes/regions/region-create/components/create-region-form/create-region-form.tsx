@@ -1,16 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, FocusModal, Heading, Input, Switch, Text } from "@medusajs/ui"
-import { useAdminCreateRegion } from "medusa-react"
-import { useEffect } from "react"
+import { Button, Heading, Input, Select, Switch, Text } from "@medusajs/ui"
+import { useAdminCreateRegion, useAdminStore } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
-
-type CreateRegionFormProps = {
-  subscribe: (state: boolean) => void
-}
+import { RouteFocusModal } from "../../../../../components/route-modal/route-focus-modal"
 
 const CreateRegionSchema = zod.object({
   name: zod.string().min(1),
@@ -23,7 +19,7 @@ const CreateRegionSchema = zod.object({
   tax_code: zod.string().optional(),
 })
 
-export const CreateRegionForm = ({ subscribe }: CreateRegionFormProps) => {
+export const CreateRegionForm = () => {
   const form = useForm<zod.infer<typeof CreateRegionSchema>>({
     defaultValues: {
       name: "",
@@ -33,22 +29,18 @@ export const CreateRegionForm = ({ subscribe }: CreateRegionFormProps) => {
       fulfillment_providers: [],
       payment_providers: [],
       tax_code: "",
+      tax_rate: 0,
     },
     resolver: zodResolver(CreateRegionSchema),
   })
-
-  const {
-    formState: { isDirty },
-  } = form
-
-  useEffect(() => {
-    subscribe(isDirty)
-  }, [isDirty])
 
   const { t } = useTranslation()
   const navigate = useNavigate()
 
   const { mutateAsync, isLoading } = useAdminCreateRegion()
+
+  const { store } = useAdminStore()
+  const storeCurrencies = store?.currencies ?? []
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
@@ -71,25 +63,25 @@ export const CreateRegionForm = ({ subscribe }: CreateRegionFormProps) => {
   })
 
   return (
-    <Form {...form}>
+    <RouteFocusModal.Form form={form}>
       <form
         className="flex h-full flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
-        <FocusModal.Header>
+        <RouteFocusModal.Header>
           <div className="flex items-center justify-end gap-x-2">
-            <FocusModal.Close asChild>
+            <RouteFocusModal.Close asChild>
               <Button size="small" variant="secondary">
-                {t("general.cancel")}
+                {t("actions.cancel")}
               </Button>
-            </FocusModal.Close>
+            </RouteFocusModal.Close>
             <Button size="small" type="submit" isLoading={isLoading}>
-              {t("general.save")}
+              {t("actions.save")}
             </Button>
           </div>
-        </FocusModal.Header>
-        <FocusModal.Body className="flex h-full w-full flex-col items-center overflow-y-auto py-16">
-          <div className="w-full max-w-[720px] flex flex-col gap-y-8">
+        </RouteFocusModal.Header>
+        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center overflow-y-auto py-16">
+          <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
               <Heading>{t("regions.createRegion")}</Heading>
               <Text size="small" className="text-ui-fg-subtle">
@@ -116,11 +108,27 @@ export const CreateRegionForm = ({ subscribe }: CreateRegionFormProps) => {
                 <Form.Field
                   control={form.control}
                   name="currency_code"
-                  render={({ field }) => {
+                  render={({ field: { onChange, ref, ...field } }) => {
                     return (
                       <Form.Item>
                         <Form.Label>{t("fields.currency")}</Form.Label>
-                        <Form.Control></Form.Control>
+                        <Form.Control>
+                          <Select {...field} onValueChange={onChange}>
+                            <Select.Trigger ref={ref}>
+                              <Select.Value />
+                            </Select.Trigger>
+                            <Select.Content>
+                              {storeCurrencies.map((currency) => (
+                                <Select.Item
+                                  value={currency.code}
+                                  key={currency.code}
+                                >
+                                  {currency.name}
+                                </Select.Item>
+                              ))}
+                            </Select.Content>
+                          </Select>
+                        </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>
                     )
@@ -198,8 +206,8 @@ export const CreateRegionForm = ({ subscribe }: CreateRegionFormProps) => {
               <div className="grid grid-cols-2 gap-4"></div>
             </div>
           </div>
-        </FocusModal.Body>
+        </RouteFocusModal.Body>
       </form>
-    </Form>
+    </RouteFocusModal.Form>
   )
 }

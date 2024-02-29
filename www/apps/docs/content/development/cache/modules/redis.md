@@ -74,7 +74,7 @@ You also pass the option `ttl`. This means time-to-live, and it indicates the nu
 
 Other available options include:
 
-- `redisOptions`: an object containing options for the Redis instance. You can learn about available options in [io-redis’s documentation](https://luin.github.io/ioredis/index.html#RedisOptions). By default, it’s an empty object.
+- `redisOptions`: an object containing options for the Redis instance. You can learn about available options in [io-redis’s documentation](https://redis.github.io/ioredis/classes/Redis.html#options). By default, it’s an empty object.
 - `namespace`: a string used to prefix event keys. By default, it's `medusa`.
 
 ---

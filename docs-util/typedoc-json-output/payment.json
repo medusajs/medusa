@@ -2369,11 +2369,21 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../packages/medusa-core-utils/dist/medusa-container.d.ts",
-											"qualifiedName": "MedusaContainer"
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
 										},
-										"name": "MedusaContainer",
-										"package": "medusa-core-utils"
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
 									}
 								},
 								{
@@ -2450,11 +2460,21 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../packages/medusa-core-utils/dist/medusa-container.d.ts",
-							"qualifiedName": "MedusaContainer"
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
 						},
-						"name": "MedusaContainer",
-						"package": "medusa-core-utils"
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
 					}
 				},
 				{
@@ -2494,55 +2514,6 @@
 						"name": "Record",
 						"package": "typescript"
 					}
-				},
-				{
-					"id": 62,
-					"name": "_isPaymentProcessor",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isStatic": true
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "boolean"
-					},
-					"defaultValue": "true"
-				},
-				{
-					"id": 63,
-					"name": "isPaymentProcessor",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {
-						"isStatic": true
-					},
-					"signatures": [
-						{
-							"id": 64,
-							"name": "isPaymentProcessor",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 65,
-									"name": "object",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								}
-							],
-							"type": {
-								"type": "intrinsic",
-								"name": "boolean"
-							}
-						}
-					]
 				},
 				{
 					"id": 66,
@@ -4187,14 +4158,12 @@
 					"children": [
 						71,
 						72,
-						62,
 						66
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						63,
 						75,
 						78,
 						85,
@@ -4522,22 +4491,6 @@
 		"61": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
 			"qualifiedName": "AbstractPaymentProcessor"
-		},
-		"62": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor._isPaymentProcessor"
-		},
-		"63": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.isPaymentProcessor"
-		},
-		"64": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.isPaymentProcessor"
-		},
-		"65": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "object"
 		},
 		"66": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",

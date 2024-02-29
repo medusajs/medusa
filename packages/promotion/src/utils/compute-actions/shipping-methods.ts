@@ -2,6 +2,7 @@ import { PromotionTypes } from "@medusajs/types"
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
+  ApplicationMethodType,
   ComputedActions,
   MedusaError,
 } from "@medusajs/utils"
@@ -54,9 +55,18 @@ export function applyPromotionToShippingMethods(
 
   if (allocation === ApplicationMethodAllocation.EACH) {
     for (const method of shippingMethods!) {
-      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
-      const promotionValue = parseFloat(applicationMethod!.value!)
-      const applicableTotal = method.unit_price - appliedPromoValue
+      if (!method.subtotal) {
+        continue
+      }
+
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
+      let promotionValue = applicationMethod?.value ?? 0
+      const applicableTotal = method.subtotal - appliedPromoValue
+
+      if (applicationMethod?.type === ApplicationMethodType.PERCENTAGE) {
+        promotionValue = (promotionValue / 100) * applicableTotal
+      }
+
       const amount = Math.min(promotionValue, applicableTotal)
 
       if (amount <= 0) {
@@ -87,9 +97,9 @@ export function applyPromotionToShippingMethods(
 
   if (allocation === ApplicationMethodAllocation.ACROSS) {
     const totalApplicableValue = shippingMethods!.reduce((acc, method) => {
-      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
 
-      return acc + method.unit_price - appliedPromoValue
+      return acc + (method.subtotal ?? 0) - appliedPromoValue
     }, 0)
 
     if (totalApplicableValue <= 0) {
@@ -97,14 +107,23 @@ export function applyPromotionToShippingMethods(
     }
 
     for (const method of shippingMethods!) {
-      const promotionValue = parseFloat(applicationMethod!.value!)
-      const applicableTotal = method.unit_price
-      const appliedPromoValue = methodIdPromoValueMap.get(method.id) || 0
+      if (!method.subtotal) {
+        continue
+      }
+
+      const promotionValue = applicationMethod?.value ?? 0
+      const applicableTotal = method.subtotal
+      const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
 
       // TODO: should we worry about precision here?
-      const applicablePromotionValue =
+      let applicablePromotionValue =
         (applicableTotal / totalApplicableValue) * promotionValue -
         appliedPromoValue
+
+      if (applicationMethod?.type === ApplicationMethodType.PERCENTAGE) {
+        applicablePromotionValue =
+          (promotionValue / 100) * (applicableTotal - appliedPromoValue)
+      }
 
       const amount = Math.min(applicablePromotionValue, applicableTotal)
 

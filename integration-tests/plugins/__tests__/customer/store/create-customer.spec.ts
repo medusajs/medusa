@@ -1,11 +1,14 @@
+import { IAuthModuleService, ICustomerModuleService } from "@medusajs/types"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ICustomerModuleService, IAuthModuleService } from "@medusajs/types"
+import adminSeeder from "../../../../helpers/admin-seeder"
+import { createAdminUser } from "../../../helpers/create-admin-user"
+import { getContainer } from "../../../../environment-helpers/use-container"
+import jwt from "jsonwebtoken"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
-import { getContainer } from "../../../../environment-helpers/use-container"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import adminSeeder from "../../../../helpers/admin-seeder"
 
 jest.setTimeout(50000)
 
@@ -46,11 +49,14 @@ describe("POST /store/customers", () => {
     const authService: IAuthModuleService = appContainer.resolve(
       ModuleRegistrationName.AUTH
     )
-    const authUser = await authService.createAuthUser({
+    const { jwt_secret } = appContainer.resolve("configModule").projectConfig
+    const authUser = await authService.create({
       entity_id: "store_user",
-      provider_id: "test",
+      provider: "emailpass",
+      scope: "store",
     })
-    const jwt = await authService.generateJwtToken(authUser.id, "store")
+
+    const token = jwt.sign(authUser, jwt_secret)
 
     const api = useApi() as any
     const response = await api.post(
@@ -60,7 +66,7 @@ describe("POST /store/customers", () => {
         last_name: "Doe",
         email: "john@me.com",
       },
-      { headers: { authorization: `Bearer ${jwt}` } }
+      { headers: { authorization: `Bearer ${token}` } }
     )
 
     expect(response.status).toEqual(200)
