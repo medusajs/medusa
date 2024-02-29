@@ -61,8 +61,17 @@ export function mapRepositoryToOrderModel(config) {
 
   if (conf.where?.items) {
     const original = { ...conf.where.items }
+    if (original.detail) {
+      delete conf.where.items.detail
+    }
+
     conf.where.items = {
       item: conf.where?.items,
+    }
+
+    if (original.quantity) {
+      conf.where.items.quantity = original.quantity
+      delete conf.where.items.item.quantity
     }
 
     if (original.detail) {
