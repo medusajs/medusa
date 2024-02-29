@@ -205,4 +205,94 @@ describe("Taxes - Admin", () => {
       ])
     )
   })
+
+  it("can create a tax rate and update it", async () => {
+    const api = useApi() as any
+    const regionRes = await api.post(
+      `/admin/tax-regions`,
+      {
+        country_code: "us",
+        default_tax_rate: { code: "default", rate: 2, name: "default rate" },
+      },
+      adminHeaders
+    )
+
+    const usRegionId = regionRes.data.tax_region.id
+
+    expect(regionRes.status).toEqual(200)
+    expect(regionRes.data).toEqual({
+      tax_region: {
+        id: expect.any(String),
+        country_code: "us",
+        parent_id: null,
+        province_code: null,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        deleted_at: null,
+        created_by: "admin_user",
+        provider_id: null,
+        metadata: null,
+      },
+    })
+
+    const rateRes = await api.post(
+      `/admin/tax-rates`,
+      {
+        tax_region_id: usRegionId,
+        code: "RATE2",
+        name: "another rate",
+        rate: 10,
+        rules: [{ reference: "product", reference_id: "prod_1234" }],
+      },
+      adminHeaders
+    )
+
+    expect(rateRes.status).toEqual(200)
+    expect(rateRes.data).toEqual({
+      tax_rate: {
+        id: expect.any(String),
+        code: "RATE2",
+        rate: 10,
+        name: "another rate",
+        is_default: false,
+        metadata: null,
+        tax_region_id: usRegionId,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        deleted_at: null,
+        created_by: "admin_user",
+        is_combinable: false,
+      },
+    })
+
+    const updateRes = await api.post(
+      `/admin/tax-rates/${rateRes.data.tax_rate.id}`,
+      {
+        code: "updatedcode",
+        rate: 12,
+        is_combinable: true,
+        name: "Another Name",
+        metadata: { you: "know it" },
+      },
+      adminHeaders
+    )
+
+    expect(updateRes.status).toEqual(200)
+    expect(updateRes.data).toEqual({
+      tax_rate: {
+        id: expect.any(String),
+        code: "updatedcode",
+        rate: 12,
+        name: "Another Name",
+        is_default: false,
+        metadata: { you: "know it" },
+        tax_region_id: usRegionId,
+        deleted_at: null,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        created_by: "admin_user",
+        is_combinable: true,
+      },
+    })
+  })
 })

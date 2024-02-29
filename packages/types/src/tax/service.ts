@@ -20,6 +20,7 @@ import {
   CreateTaxRateDTO,
   CreateTaxRegionDTO,
   UpdateTaxRateDTO,
+  UpsertTaxRateDTO,
 } from "./mutations"
 
 export interface ITaxModuleService extends IModuleService {
@@ -60,6 +61,12 @@ export interface ITaxModuleService extends IModuleService {
   update(
     selector: FilterableTaxRateProps,
     data: UpdateTaxRateDTO,
+    sharedContext?: Context
+  ): Promise<TaxRateDTO[]>
+
+  upsert(data: UpsertTaxRateDTO, sharedContext?: Context): Promise<TaxRateDTO>
+  upsert(
+    data: UpsertTaxRateDTO[],
     sharedContext?: Context
   ): Promise<TaxRateDTO[]>
 
