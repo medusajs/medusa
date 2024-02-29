@@ -6,6 +6,8 @@ export const defaultAdminTaxRateFields = [
   "code",
   "rate",
   "tax_region_id",
+  "is_default",
+  "is_combinable",
   "created_by",
   "created_at",
   "updated_at",
