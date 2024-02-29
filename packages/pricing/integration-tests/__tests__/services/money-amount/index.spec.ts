@@ -87,9 +87,7 @@ describe("MoneyAmount Service", () => {
           id: "money-amount-USD",
           amount: 500,
           min_quantity: "1",
-          currency: {
-            code: "USD",
-          },
+          currency_code: "USD",
         },
       ])
     })
