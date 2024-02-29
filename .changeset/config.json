@@ -10,6 +10,7 @@
   "ignore": [
     "integration-tests-api",
     "integration-tests-plugins",
+    "integration-tests-modules",
     "integration-tests-repositories",
     "@medusajs/dashboard",
     "@medusajs/admin-shared",
