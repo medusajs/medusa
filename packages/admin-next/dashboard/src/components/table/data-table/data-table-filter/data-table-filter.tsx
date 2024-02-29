@@ -6,6 +6,7 @@ import { useSearchParams } from "react-router-dom"
 import { DataTableFilterContext, useDataTableFilterContext } from "./context"
 import { DateFilter } from "./date-filter"
 import { SelectFilter } from "./select-filter"
+import { StringFilter } from "./string-filter"
 
 type Option = {
   label: string
@@ -24,6 +25,10 @@ export type Filter = {
     }
   | {
       type: "date"
+      options?: never
+    }
+  | {
+      type: "string"
       options?: never
     }
 )
@@ -60,7 +65,6 @@ export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
         const key = prefix ? `${prefix}_${filter.key}` : filter.key
         const value = params.get(key)
         if (value && !activeFilters.find((af) => af.key === filter.key)) {
-          console.log("adding filter", filter.key, "to active filters")
           if (filter.type === "select") {
             setActiveFilters((prev) => [
               ...prev,
@@ -109,28 +113,40 @@ export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
     >
       <div className="max-w-2/3 flex flex-wrap items-center gap-2">
         {activeFilters.map((filter) => {
-          if (filter.type === "select") {
-            return (
-              <SelectFilter
-                key={filter.key}
-                filter={filter}
-                prefix={prefix}
-                options={filter.options}
-                multiple={filter.multiple}
-                searchable={filter.searchable}
-                openOnMount={filter.openOnMount}
-              />
-            )
+          switch (filter.type) {
+            case "select":
+              return (
+                <SelectFilter
+                  key={filter.key}
+                  filter={filter}
+                  prefix={prefix}
+                  options={filter.options}
+                  multiple={filter.multiple}
+                  searchable={filter.searchable}
+                  openOnMount={filter.openOnMount}
+                />
+              )
+            case "date":
+              return (
+                <DateFilter
+                  key={filter.key}
+                  filter={filter}
+                  prefix={prefix}
+                  openOnMount={filter.openOnMount}
+                />
+              )
+            case "string":
+              return (
+                <StringFilter
+                  key={filter.key}
+                  filter={filter}
+                  prefix={prefix}
+                  openOnMount={filter.openOnMount}
+                />
+              )
+            default:
+              break
           }
-
-          return (
-            <DateFilter
-              key={filter.key}
-              filter={filter}
-              prefix={prefix}
-              openOnMount={filter.openOnMount}
-            />
-          )
         })}
         {availableFilters.length > 0 && (
           <Popover.Root modal open={open} onOpenChange={setOpen}>

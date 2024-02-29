@@ -61,6 +61,7 @@ export const SelectFilter = ({
 
   const handleClearSearch = () => {
     setSearch("")
+
     if (searchRef) {
       searchRef.focus()
     }
