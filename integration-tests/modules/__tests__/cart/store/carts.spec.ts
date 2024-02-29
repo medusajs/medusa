@@ -670,4 +670,35 @@ describe("Store Carts API", () => {
       )
     })
   })
+
+  describe("POST /store/carts/:id/payment-collections", () => {
+    it("should create a payment collection for the cart", async () => {
+      const region = await regionModuleService.create({
+        name: "US",
+        currency_code: "usd",
+      })
+
+      const cart = await cartModuleService.create({
+        currency_code: "usd",
+        region_id: region.id,
+      })
+
+      const api = useApi() as any
+      const response = await api.post(
+        `/store/carts/${cart.id}/payment-collections`
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.cart).toEqual(
+        expect.objectContaining({
+          id: cart.id,
+          currency_code: "usd",
+          payment_collection: expect.objectContaining({
+            id: expect.any(String),
+            amount: 0,
+          }),
+        })
+      )
+    })
+  })
 })

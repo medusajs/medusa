@@ -1,9 +1,11 @@
 import {
   addToCartWorkflow,
   createCartWorkflow,
+  createPaymentCollectionForCartWorkflow,
   deleteLineItemsStepId,
   deleteLineItemsWorkflow,
   findOrCreateCustomerStepId,
+  linkCartAndPaymentCollectionsStepId,
   updateLineItemInCartWorkflow,
   updateLineItemsStepId,
 } from "@medusajs/core-flows"
@@ -11,6 +13,7 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
+  IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
@@ -37,7 +40,8 @@ describe("Carts workflows", () => {
   let customerModule: ICustomerModuleService
   let productModule: IProductModuleService
   let pricingModule: IPricingModuleService
-  let remoteLink
+  let paymentModule: IPaymentModuleService
+  let remoteLink, remoteQuery
 
   let defaultRegion
 
@@ -52,7 +56,9 @@ describe("Carts workflows", () => {
     customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
     productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
     pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
+    paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
     remoteLink = appContainer.resolve("remoteLink")
+    remoteQuery = appContainer.resolve("remoteQuery")
   })
 
   afterAll(async () => {
@@ -666,6 +672,144 @@ describe("Carts workflows", () => {
         )
 
         expect(updatedItem).not.toBeUndefined()
+      })
+    })
+  })
+
+  describe("createPaymentCollectionForCart", () => {
+    it("should create a payment collection and link it to cart", async () => {
+      const region = await regionModuleService.create({
+        name: "US",
+        currency_code: "usd",
+      })
+
+      const cart = await cartModuleService.create({
+        currency_code: "usd",
+        region_id: region.id,
+        items: [
+          {
+            quantity: 1,
+            unit_price: 5000,
+            title: "Test item",
+          },
+        ],
+      })
+
+      await createPaymentCollectionForCartWorkflow(appContainer).run({
+        input: {
+          cart_id: cart.id,
+          region_id: region.id,
+          currency_code: "usd",
+          amount: 5000,
+        },
+        throwOnError: false,
+      })
+
+      const result = await remoteQuery(
+        {
+          cart: {
+            fields: ["id"],
+            payment_collection: {
+              fields: ["id", "amount", "currency_code"],
+            },
+          },
+        },
+        {
+          cart: {
+            id: cart.id,
+          },
+        }
+      )
+
+      expect(result).toEqual([
+        expect.objectContaining({
+          id: cart.id,
+          payment_collection: expect.objectContaining({
+            amount: 5000,
+            currency_code: "usd",
+          }),
+        }),
+      ])
+    })
+
+    describe("compensation", () => {
+      it("should dismiss cart <> payment collection link and delete created payment collection", async () => {
+        const workflow = createPaymentCollectionForCartWorkflow(appContainer)
+
+        workflow.appendAction("throw", linkCartAndPaymentCollectionsStepId, {
+          invoke: async function failStep() {
+            throw new Error(
+              `Failed to do something after linking cart and payment collection`
+            )
+          },
+        })
+
+        const region = await regionModuleService.create({
+          name: "US",
+          currency_code: "usd",
+        })
+
+        const cart = await cartModuleService.create({
+          currency_code: "usd",
+          region_id: region.id,
+          items: [
+            {
+              quantity: 1,
+              unit_price: 5000,
+              title: "Test item",
+            },
+          ],
+        })
+
+        const { errors } = await workflow.run({
+          input: {
+            cart_id: cart.id,
+            region_id: region.id,
+            currency_code: "usd",
+            amount: 5000,
+          },
+          throwOnError: false,
+        })
+
+        expect(errors).toEqual([
+          {
+            action: "throw",
+            handlerType: "invoke",
+            error: new Error(
+              `Failed to do something after linking cart and payment collection`
+            ),
+          },
+        ])
+
+        const carts = await remoteQuery(
+          {
+            cart: {
+              fields: ["id"],
+              payment_collection: {
+                fields: ["id", "amount", "currency_code"],
+              },
+            },
+          },
+          {
+            cart: {
+              id: cart.id,
+            },
+          }
+        )
+
+        const payCols = await remoteQuery({
+          payment_collection: {
+            fields: ["id"],
+          },
+        })
+
+        expect(carts).toEqual([
+          expect.objectContaining({
+            id: cart.id,
+            payment_collection: undefined,
+          }),
+        ])
+        expect(payCols.length).toEqual(0)
       })
     })
   })
