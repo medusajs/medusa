@@ -40,7 +40,6 @@ export default class Promotion {
   code: string
 
   @ManyToOne(() => Campaign, {
-    joinColumn: "campaign",
     fieldName: "campaign_id",
     nullable: true,
     cascade: ["soft-remove"] as any,

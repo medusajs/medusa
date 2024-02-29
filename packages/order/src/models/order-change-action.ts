@@ -22,26 +22,31 @@ const OrderChangeIdIndex = createPsqlIndexStatementHelper({
   columns: "order_change_id",
 })
 
-const ReferenceIdIndex = createPsqlIndexStatementHelper({
+const ReferenceIndex = createPsqlIndexStatementHelper({
   tableName: "order_change_action",
-  columns: "reference_id",
+  columns: ["reference", "reference_id"],
 })
 
 @Entity({ tableName: "order_change_action" })
+@ReferenceIndex.MikroORMIndex()
 export default class OrderChangeAction {
   [OptionalProps]?: OptionalLineItemProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
+  @ManyToOne({
+    entity: () => OrderChange,
+    columnType: "text",
+    fieldName: "order_change_id",
+    cascade: [Cascade.REMOVE],
+    mapToPk: true,
+  })
   @OrderChangeIdIndex.MikroORMIndex()
   order_change_id: string
 
-  @ManyToOne({
-    entity: () => OrderChange,
-    fieldName: "order_change_id",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+  @ManyToOne(() => OrderChange, {
+    persist: false,
   })
   order_change: OrderChange
 
@@ -49,7 +54,6 @@ export default class OrderChangeAction {
   reference: string
 
   @Property({ columnType: "text" })
-  @ReferenceIdIndex.MikroORMIndex()
   reference_id: string
 
   @Property({ columnType: "jsonb" })
@@ -82,10 +86,12 @@ export default class OrderChangeAction {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordchact")
+    this.order_change_id ??= this.order_change?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordchact")
+    this.order_change_id ??= this.order_change?.id
   }
 }
