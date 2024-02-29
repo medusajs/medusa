@@ -3,7 +3,7 @@ import { CreateApiKeyDTO, IApiKeyModuleService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type CreateApiKeysStepInput = {
-  apiKeysData: CreateApiKeyDTO[]
+  api_keys: CreateApiKeyDTO[]
 }
 
 export const createApiKeysStepId = "create-api-keys"
@@ -13,7 +13,7 @@ export const createApiKeysStep = createStep(
     const service = container.resolve<IApiKeyModuleService>(
       ModuleRegistrationName.API_KEY
     )
-    const created = await service.create(data.apiKeysData)
+    const created = await service.create(data.api_keys)
     return new StepResponse(
       created,
       created.map((apiKey) => apiKey.id)
