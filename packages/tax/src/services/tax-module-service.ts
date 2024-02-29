@@ -148,7 +148,7 @@ export default class TaxModuleService<
       await this.taxRateRuleService_.create(rulesToCreate, sharedContext)
     }
 
-    return await this.baseRepository_.serialize<TaxTypes.TaxRateDTO>(rates, {
+    return await this.baseRepository_.serialize<TaxTypes.TaxRateDTO[]>(rates, {
       populate: true,
     })
   }
@@ -194,6 +194,27 @@ export default class TaxModuleService<
         : idOrSelector
 
     return await this.taxRateService_.update({ selector, data }, sharedContext)
+  }
+
+  async upsert(
+    data: TaxTypes.UpsertTaxRateDTO[],
+    sharedContext?: Context
+  ): Promise<TaxTypes.TaxRateDTO[]>
+  async upsert(
+    data: TaxTypes.UpsertTaxRateDTO,
+    sharedContext?: Context
+  ): Promise<TaxTypes.TaxRateDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async upsert(
+    data: TaxTypes.UpsertTaxRateDTO | TaxTypes.UpsertTaxRateDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TaxTypes.TaxRateDTO | TaxTypes.TaxRateDTO[]> {
+    const result = await this.taxRateService_.upsert(data, sharedContext)
+    const serialized = await this.baseRepository_.serialize<
+      TaxTypes.TaxRateDTO[]
+    >(result, { populate: true })
+    return Array.isArray(data) ? serialized : serialized[0]
   }
 
   createTaxRegions(
