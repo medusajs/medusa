@@ -14,6 +14,7 @@ import {
   useAdminUser,
 } from "medusa-react"
 import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { UserLink } from "../../../../../components/common/user-link"
@@ -24,6 +25,7 @@ type ApiKeyGeneralSectionProps = {
 
 export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const prompt = usePrompt()
 
   const { mutateAsync: revokeAsync } = useAdminRevokePublishableApiKey(
@@ -47,7 +49,11 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
       return
     }
 
-    await deleteAsync()
+    await deleteAsync(undefined, {
+      onSuccess: () => {
+        navigate("..", { replace: true })
+      },
+    })
   }
 
   const handleRevoke = async () => {
