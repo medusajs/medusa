@@ -22,11 +22,11 @@ import {
   UpdatePaymentSessionDTO,
 } from "@medusajs/types"
 import {
-  PaymentActions,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  PaymentActions,
 } from "@medusajs/utils"
 import {
   Capture,
@@ -308,7 +308,7 @@ export default class PaymentModuleService<
     if (session.authorized_at) {
       const payment = await this.paymentService_.retrieve(
         { session_id: session.id },
-        {},
+        { relations: ["payment_collection"] },
         sharedContext
       )
       return await this.baseRepository_.serialize(payment, { populate: true })
@@ -356,7 +356,11 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    return await this.retrievePayment(payment.id, {}, sharedContext)
+    return await this.retrievePayment(
+      payment.id,
+      { relations: ["payment_collection"] },
+      sharedContext
+    )
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -477,7 +481,10 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    await this.paymentService_.update({ id: payment.id, data: paymentData })
+    await this.paymentService_.update(
+      { id: payment.id, data: paymentData },
+      sharedContext
+    )
 
     return await this.retrievePayment(
       payment.id,
@@ -536,9 +543,13 @@ export default class PaymentModuleService<
 
     switch (event.action) {
       case PaymentActions.SUCCESSFUL: {
-        const [payment] = await this.listPayments({
-          session_id: event.data.resource_id,
-        })
+        const [payment] = await this.listPayments(
+          {
+            session_id: event.data.resource_id,
+          },
+          {},
+          sharedContext
+        )
 
         await this.capturePayment(
           { payment_id: payment.id, amount: event.data.amount },

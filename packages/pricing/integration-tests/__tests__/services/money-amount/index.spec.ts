@@ -1,13 +1,13 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { Currency, MoneyAmount } from "@models"
+import { MoneyAmount } from "@models"
 import { MoneyAmountService } from "@services"
 
-import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
-import { MikroOrmWrapper } from "../../../utils"
 import { createMedusaContainer } from "@medusajs/utils"
 import { asValue } from "awilix"
 import ContainerLoader from "../../../../src/loaders/container"
+import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
+import { MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 

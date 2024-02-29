@@ -1,13 +1,12 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
+  MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
-  MikroOrmBigNumberProperty,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
-  Cascade,
   Entity,
   ManyToOne,
   OnInit,
@@ -15,45 +14,62 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { ItemSummary } from "../types/common"
 import LineItem from "./line-item"
 import Order from "./order"
 
 type OptionalLineItemProps = DAL.EntityDateColumns
 
-const OrderItemVersionIndex = createPsqlIndexStatementHelper({
-  tableName: "order_detail",
-  columns: ["order_id", "item_id", "version"],
-  unique: true,
+const OrderIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_item",
+  columns: ["order_id"],
 })
 
-@Entity({ tableName: "order_detail" })
-@OrderItemVersionIndex.MikroORMIndex()
-export default class OrderDetail {
+const OrderVersionIndex = createPsqlIndexStatementHelper({
+  tableName: "order_item",
+  columns: ["version"],
+})
+
+const ItemIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_item",
+  columns: ["item_id"],
+})
+
+@Entity({ tableName: "order_item" })
+export default class OrderItem {
   [OptionalProps]?: OptionalLineItemProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
+  @ManyToOne({
+    entity: () => Order,
+    mapToPk: true,
+    fieldName: "order_id",
+    columnType: "text",
+  })
+  @OrderIdIndex.MikroORMIndex()
   order_id: string
 
   @Property({ columnType: "integer" })
+  @OrderVersionIndex.MikroORMIndex()
   version: number
-  @ManyToOne({
-    entity: () => Order,
-    onDelete: "cascade",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+
+  @ManyToOne(() => Order, {
+    persist: false,
   })
   order: Order
 
-  @Property({ columnType: "text" })
-  item_id: string
-
   @ManyToOne({
     entity: () => LineItem,
-    onDelete: "cascade",
-    cascade: [Cascade.REMOVE, Cascade.PERSIST],
+    fieldName: "item_id",
+    mapToPk: true,
+    columnType: "text",
+  })
+  @ItemIdIndex.MikroORMIndex()
+  item_id: string
+
+  @ManyToOne(() => LineItem, {
+    persist: false,
   })
   item: LineItem
 
@@ -64,43 +80,43 @@ export default class OrderDetail {
   raw_quantity: BigNumberRawValue
 
   @MikroOrmBigNumberProperty()
-  fulfilled_quantity: BigNumber | number
+  fulfilled_quantity: BigNumber | number = 0
 
   @Property({ columnType: "jsonb" })
   raw_fulfilled_quantity: BigNumberRawValue
 
   @MikroOrmBigNumberProperty()
-  shipped_quantity: BigNumber | number
+  shipped_quantity: BigNumber | number = 0
 
   @Property({ columnType: "jsonb" })
   raw_shipped_quantity: BigNumberRawValue
 
   @MikroOrmBigNumberProperty()
-  return_requested_quantity: BigNumber | number
+  return_requested_quantity: BigNumber | number = 0
 
   @Property({ columnType: "jsonb" })
   raw_return_requested_quantity: BigNumberRawValue
 
   @MikroOrmBigNumberProperty()
-  return_received_quantity: BigNumber | number
+  return_received_quantity: BigNumber | number = 0
 
   @Property({ columnType: "jsonb" })
   raw_return_received_quantity: BigNumberRawValue
 
   @MikroOrmBigNumberProperty()
-  return_dismissed_quantity: BigNumber | number
+  return_dismissed_quantity: BigNumber | number = 0
 
   @Property({ columnType: "jsonb" })
   raw_return_dismissed_quantity: BigNumberRawValue
 
   @MikroOrmBigNumberProperty()
-  written_off_quantity: BigNumber | number
+  written_off_quantity: BigNumber | number = 0
 
   @Property({ columnType: "jsonb" })
   raw_written_off_quantity: BigNumberRawValue
 
-  @Property({ columnType: "jsonb" })
-  summary: ItemSummary | null = {} as ItemSummary
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
 
   @Property({
     onCreate: () => new Date(),
@@ -119,11 +135,15 @@ export default class OrderDetail {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "ordlisum")
+    this.id = generateEntityId(this.id, "orditem")
+    this.order_id ??= this.order?.id
+    this.item_id ??= this.item?.id
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "ordlisum")
+    this.id = generateEntityId(this.id, "orditem")
+    this.order_id ??= this.order?.id
+    this.item_id ??= this.item?.id
   }
 }
