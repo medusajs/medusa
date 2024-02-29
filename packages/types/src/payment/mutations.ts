@@ -186,9 +186,21 @@ export interface CreatePaymentSessionDTO {
    */
   provider_id: string
   /**
-   * The provider's context.
+   * The selected currency code.
    */
-  providerContext: Omit<PaymentProviderContext, "resource_id">
+  currency_code: string
+  /**
+   * The payment's amount.
+   */
+  amount: number
+  /**
+   * The value of the payment session's `data` field.
+   */
+  data: Record<string, unknown>
+  /**
+   * The payment session's context.
+   */
+  context: PaymentProviderContext
 }
 
 /**
@@ -200,9 +212,21 @@ export interface UpdatePaymentSessionDTO {
    */
   id: string
   /**
+   * The value of the payment session's `data` field.
+   */
+  data: Record<string, unknown>
+  /**
+   * The selected currency code.
+   */
+  currency_code: string
+  /**
+   * The payment's amount.
+   */
+  amount: number
+  /**
    * The payment session's context.
    */
-  providerContext: PaymentProviderContext
+  context?: PaymentProviderContext
 }
 
 /**

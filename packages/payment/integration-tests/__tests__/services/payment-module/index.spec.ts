@@ -31,7 +31,7 @@ moduleIntegrationTestRunner({
 
         it("complete payment flow successfully", async () => {
           let paymentCollection = await service.createPaymentCollections({
-            currency_code: "USD",
+            currency_code: "usd",
             amount: 200,
             region_id: "reg_123",
           })
@@ -40,11 +40,11 @@ moduleIntegrationTestRunner({
             paymentCollection.id,
             {
               provider_id: "pp_system_default",
-              providerContext: {
-                amount: 200,
-                currency_code: "USD",
-                payment_session_data: {},
-                context: {},
+              amount: 200,
+              currency_code: "usd",
+              data: {},
+              context: {
+                extra: {},
                 customer: {},
                 billing_address: {},
                 email: "test@test.test.com",
@@ -72,7 +72,7 @@ moduleIntegrationTestRunner({
           expect(paymentCollection).toEqual(
             expect.objectContaining({
               id: expect.any(String),
-              currency_code: "USD",
+              currency_code: "usd",
               amount: 200,
               // TODO
               // authorized_amount: 200,
@@ -83,7 +83,7 @@ moduleIntegrationTestRunner({
               payment_sessions: [
                 expect.objectContaining({
                   id: expect.any(String),
-                  currency_code: "USD",
+                  currency_code: "usd",
                   amount: 200,
                   provider_id: "pp_system_default",
                   status: "authorized",
@@ -94,7 +94,7 @@ moduleIntegrationTestRunner({
                 expect.objectContaining({
                   id: expect.any(String),
                   amount: 200,
-                  currency_code: "USD",
+                  currency_code: "usd",
                   provider_id: "pp_system_default",
                   captures: [
                     expect.objectContaining({
@@ -336,11 +336,11 @@ moduleIntegrationTestRunner({
           it("should create a payment session successfully", async () => {
             await service.createPaymentSession("pay-col-id-1", {
               provider_id: "pp_system_default",
-              providerContext: {
-                amount: 200,
-                currency_code: "usd",
-                payment_session_data: {},
-                context: {},
+              amount: 200,
+              currency_code: "usd",
+              data: {},
+              context: {
+                extra: {},
                 customer: {},
                 billing_address: {},
                 email: "test@test.test.com",
@@ -377,11 +377,11 @@ moduleIntegrationTestRunner({
           it("should update a payment session successfully", async () => {
             let session = await service.createPaymentSession("pay-col-id-1", {
               provider_id: "pp_system_default",
-              providerContext: {
-                amount: 200,
-                currency_code: "usd",
-                payment_session_data: {},
-                context: {},
+              amount: 200,
+              currency_code: "usd",
+              data: {},
+              context: {
+                extra: {},
                 customer: {},
                 billing_address: {},
                 email: "test@test.test.com",
@@ -391,15 +391,15 @@ moduleIntegrationTestRunner({
 
             session = await service.updatePaymentSession({
               id: session.id,
-              providerContext: {
-                amount: 200,
-                currency_code: "eur",
+              amount: 200,
+              currency_code: "eur",
+              data: {},
+              context: {
                 resource_id: "res_id",
-                context: {},
+                extra: {},
                 customer: {},
                 billing_address: {},
                 email: "new@test.tsst",
-                payment_session_data: {},
               },
             })
 
@@ -424,11 +424,11 @@ moduleIntegrationTestRunner({
 
             const session = await service.createPaymentSession(collection.id, {
               provider_id: "pp_system_default",
-              providerContext: {
-                amount: 100,
-                currency_code: "usd",
-                payment_session_data: {},
-                context: {},
+              amount: 100,
+              currency_code: "usd",
+              data: {},
+              context: {
+                extra: {},
                 resource_id: "test",
                 email: "test@test.com",
                 billing_address: {},

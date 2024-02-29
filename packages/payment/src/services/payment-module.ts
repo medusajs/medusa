@@ -22,11 +22,11 @@ import {
   UpdatePaymentSessionDTO,
 } from "@medusajs/types"
 import {
-  PaymentActions,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  PaymentActions,
 } from "@medusajs/utils"
 import {
   Capture,
@@ -35,8 +35,8 @@ import {
   PaymentSession,
   Refund,
 } from "@models"
-
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { paymentSessionWorkflow } from "../workflows"
 import PaymentProviderService from "./payment-provider"
 
 type InjectedDependencies = {
@@ -207,38 +207,33 @@ export default class PaymentModuleService<
     data: CreatePaymentSessionDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentSessionDTO> {
-    const created = await this.paymentSessionService_.create(
-      {
+    const { result, errors } = await paymentSessionWorkflow(
+      this.__container__ as any
+    ).run({
+      input: {
+        payment_collection_id: paymentCollectionId,
         provider_id: data.provider_id,
-        amount: data.providerContext.amount,
-        currency_code: data.providerContext.currency_code,
-        payment_collection: paymentCollectionId,
+        amount: data.amount,
+        currency_code: data.currency_code,
+        context: data.context,
+        data: data.data,
       },
+      context: sharedContext,
+    })
+
+    if (errors.length) {
+      throw errors[0].error
+    }
+
+    const paymentSession = await this.paymentSessionService_.retrieve(
+      result.id as string,
+      {},
       sharedContext
     )
 
-    try {
-      const sessionData = await this.paymentProviderService_.createSession(
-        data.provider_id,
-        {
-          ...data.providerContext,
-          resource_id: created.id,
-        }
-      )
-
-      await this.paymentSessionService_.update(
-        {
-          id: created.id,
-          data: sessionData,
-        },
-        sharedContext
-      )
-
-      return await this.baseRepository_.serialize(created, { populate: true })
-    } catch (e) {
-      await this.paymentSessionService_.delete([created.id], sharedContext)
-      throw e
-    }
+    return await this.baseRepository_.serialize(paymentSession, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -252,17 +247,12 @@ export default class PaymentModuleService<
       sharedContext
     )
 
-    const sessionData = await this.paymentProviderService_.updateSession(
-      session.provider_id,
-      data.providerContext
-    )
-
     const updated = await this.paymentSessionService_.update(
       {
         id: session.id,
-        amount: data.providerContext.amount,
-        currency_code: data.providerContext.currency_code,
-        data: sessionData,
+        amount: data.amount,
+        currency_code: data.currency_code,
+        data: data.data,
       },
       sharedContext
     )
