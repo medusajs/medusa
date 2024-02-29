@@ -1,12 +1,11 @@
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-
-import { IRegionModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createAdminUser } from "../../../helpers/create-admin-user"
-import { getContainer } from "../../../../environment-helpers/use-container"
+import { IRegionModuleService } from "@medusajs/types"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
+import { getContainer } from "../../../../environment-helpers/use-container"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+import { createAdminUser } from "../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 

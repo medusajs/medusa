@@ -9,30 +9,12 @@ process.env.POSTGRES_URL = DB_URL
 const enableMedusaV2 = process.env.MEDUSA_FF_MEDUSA_V2 == "true"
 
 module.exports = {
-  plugins: [
-    {
-      resolve: `medusa-fulfillment-webshipper`,
-      options: {
-        account: "test-account",
-        api_token: "something",
-        order_channel_id: "1",
-        webhook_secret: "1234",
-      },
-    },
-    {
-      resolve: `medusa-plugin-sendgrid`,
-      options: {
-        api_key: "SG.TEST",
-      },
-    },
-  ],
+  plugins: [],
   projectConfig: {
-    // redis_url: REDIS_URL,
     database_url: DB_URL,
     database_type: "postgres",
     jwt_secret: "test",
     cookie_secret: "test",
-    database_extra: { idle_in_transaction_session_timeout: 0 },
   },
   featureFlags: {
     medusa_v2: enableMedusaV2,
@@ -54,25 +36,30 @@ module.exports = {
         ],
       },
     },
-    [Modules.STOCK_LOCATION]: {
+    [Modules.USER]: {
       scope: "internal",
       resources: "shared",
-      resolve: "@medusajs/stock-location",
-    },
-    [Modules.INVENTORY]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/inventory",
+      resolve: "@medusajs/user",
+      options: {
+        jwt_secret: "test",
+      },
     },
     [Modules.CACHE]: {
       resolve: "@medusajs/cache-inmemory",
       options: { ttl: 0 }, // Cache disabled
     },
-    [Modules.PRODUCT]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/product",
-    },
+    [Modules.STOCK_LOCATION]: true,
+    [Modules.INVENTORY]: true,
+    [Modules.PRODUCT]: true,
+    [Modules.PRICING]: true,
+    [Modules.PROMOTION]: true,
+    [Modules.CUSTOMER]: true,
+    [Modules.SALES_CHANNEL]: true,
+    [Modules.CART]: true,
     [Modules.WORKFLOW_ENGINE]: true,
+    [Modules.REGION]: true,
+    [Modules.API_KEY]: true,
+    [Modules.STORE]: true,
+    [Modules.TAX]: true,
   },
 }
