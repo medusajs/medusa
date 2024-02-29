@@ -100,8 +100,9 @@ const Label = forwardRef<
   React.ComponentPropsWithoutRef<typeof LabelPrimitives.Root> & {
     optional?: boolean
     tooltip?: ReactNode
+    icon?: ReactNode
   }
->(({ className, optional = false, tooltip, ...props }, ref) => {
+>(({ className, optional = false, tooltip, icon, ...props }, ref) => {
   const { formItemId } = useFormField()
   const { t } = useTranslation()
 
@@ -120,6 +121,7 @@ const Label = forwardRef<
           <InformationCircleSolid className="text-ui-fg-muted" />
         </Tooltip>
       )}
+      {icon}
       {optional && (
         <Text size="small" leading="compact" className="text-ui-fg-muted">
           ({t("fields.optional")})

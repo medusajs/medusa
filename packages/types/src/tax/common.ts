@@ -78,6 +78,7 @@ export interface TaxRegionDTO {
   created_at: string | Date
   updated_at: string | Date
   created_by: string | null
+  deleted_at: string | Date | null
 }
 
 export interface FilterableTaxRegionProps
