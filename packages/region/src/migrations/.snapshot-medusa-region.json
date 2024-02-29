@@ -1,64 +1,7 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
-    {
-      "columns": {
-        "code": {
-          "name": "code",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "symbol": {
-          "name": "symbol",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "symbol_native": {
-          "name": "symbol_native",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        }
-      },
-      "name": "region_currency",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "region_currency_pkey",
-          "columnNames": [
-            "code"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
-    },
     {
       "columns": {
         "id": {
@@ -134,18 +77,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "currency_code"
-          ],
-          "composite": false,
-          "keyName": "IDX_region_currency_code",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "IDX_region_deleted_at",
           "primary": false,
@@ -153,30 +85,14 @@
         },
         {
           "keyName": "region_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
         }
       ],
       "checks": [],
-      "foreignKeys": {
-        "region_currency_code_foreign": {
-          "constraintName": "region_currency_code_foreign",
-          "columnNames": [
-            "currency_code"
-          ],
-          "localTableName": "public.region",
-          "referencedColumnNames": [
-            "code"
-          ],
-          "referencedTableName": "public.region_currency",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
+      "foreignKeys": {}
     },
     {
       "columns": {
@@ -249,9 +165,7 @@
       "indexes": [
         {
           "keyName": "region_country_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -261,13 +175,9 @@
       "foreignKeys": {
         "region_country_region_id_foreign": {
           "constraintName": "region_country_region_id_foreign",
-          "columnNames": [
-            "region_id"
-          ],
+          "columnNames": ["region_id"],
           "localTableName": "public.region_country",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.region",
           "deleteRule": "set null",
           "updateRule": "cascade"

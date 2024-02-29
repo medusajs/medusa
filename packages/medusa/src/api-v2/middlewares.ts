@@ -16,6 +16,8 @@ import { storeCartRoutesMiddlewares } from "./store/carts/middlewares"
 import { storeCustomerRoutesMiddlewares } from "./store/customers/middlewares"
 import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
 import { hooksRoutesMiddlewares } from "./hooks/middlewares"
+import { adminCurrencyRoutesMiddlewares } from "./admin/currencies/middlewares"
+import { storeCurrencyRoutesMiddlewares } from "./store/currencies/middlewares"
 
 export const config: MiddlewaresConfig = {
   routes: [
@@ -37,5 +39,7 @@ export const config: MiddlewaresConfig = {
     ...adminApiKeyRoutesMiddlewares,
     ...hooksRoutesMiddlewares,
     ...adminStoreRoutesMiddlewares,
+    ...adminCurrencyRoutesMiddlewares,
+    ...storeCurrencyRoutesMiddlewares,
   ],
 }

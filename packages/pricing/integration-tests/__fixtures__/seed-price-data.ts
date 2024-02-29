@@ -1,6 +1,5 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { createCurrencies, defaultCurrencyData } from "./currency"
 import { createMoneyAmounts, defaultMoneyAmountsData } from "./money-amount"
 import { createPriceRules, defaultPriceRuleData } from "./price-rule"
 import { createPriceSets, defaultPriceSetsData } from "./price-set"
@@ -21,14 +20,12 @@ export async function seedPriceData(
   {
     moneyAmountsData = defaultMoneyAmountsData,
     priceSetsData = defaultPriceSetsData,
-    currencyData = defaultCurrencyData,
     priceRuleData = defaultPriceRuleData,
     priceSetMoneyAmountsData = defaultPriceSetMoneyAmountsData,
     priceSetMoneyAmountRulesData = defaultPriceSetMoneyAmountRulesData,
     ruleTypesData = defaultRuleTypesData,
   } = {}
 ) {
-  await createCurrencies(testManager, currencyData)
   await createMoneyAmounts(testManager, moneyAmountsData)
   await createPriceSets(testManager, priceSetsData)
   await createPriceSetMoneyAmounts(testManager, priceSetMoneyAmountsData)

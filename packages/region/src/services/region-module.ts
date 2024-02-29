@@ -8,7 +8,6 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
   RegionCountryDTO,
-  RegionCurrencyDTO,
   RegionDTO,
   UpdateRegionDTO,
   UpsertRegionDTO,
@@ -27,9 +26,9 @@ import {
   getDuplicates,
 } from "@medusajs/utils"
 
-import { Country, Currency, Region } from "@models"
+import { Country, Region } from "@models"
 
-import { CreateCountryDTO, CreateCurrencyDTO, UpdateRegionInput } from "@types"
+import { CreateCountryDTO, UpdateRegionInput } from "@types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 const COUNTRIES_LIMIT = 1000
@@ -38,15 +37,13 @@ type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   regionService: ModulesSdkTypes.InternalModuleService<any>
   countryService: ModulesSdkTypes.InternalModuleService<any>
-  currencyService: ModulesSdkTypes.InternalModuleService<any>
 }
 
-const generateMethodForModels = [Country, Currency]
+const generateMethodForModels = [Country]
 
 export default class RegionModuleService<
     TRegion extends Region = Region,
-    TCountry extends Country = Country,
-    TCurrency extends Currency = Currency
+    TCountry extends Country = Country
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -55,9 +52,6 @@ export default class RegionModuleService<
       Country: {
         dto: RegionCountryDTO
       }
-      Currency: {
-        dto: RegionCurrencyDTO
-      }
     }
   >(Region, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IRegionModuleService
@@ -65,15 +59,9 @@ export default class RegionModuleService<
   protected baseRepository_: DAL.RepositoryService
   protected readonly regionService_: ModulesSdkTypes.InternalModuleService<TRegion>
   protected readonly countryService_: ModulesSdkTypes.InternalModuleService<TCountry>
-  protected readonly currencyService_: ModulesSdkTypes.InternalModuleService<TCurrency>
 
   constructor(
-    {
-      baseRepository,
-      regionService,
-      countryService,
-      currencyService,
-    }: InjectedDependencies,
+    { baseRepository, regionService, countryService }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     // @ts-ignore
@@ -81,7 +69,6 @@ export default class RegionModuleService<
     this.baseRepository_ = baseRepository
     this.regionService_ = regionService
     this.countryService_ = countryService
-    this.currencyService_ = currencyService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -118,10 +105,6 @@ export default class RegionModuleService<
     let normalizedInput = RegionModuleService.normalizeInput(data)
 
     const validations = [
-      this.validateCurrencies(
-        normalizedInput.map((r) => r.currency_code),
-        sharedContext
-      ),
       this.validateCountries(
         normalizedInput.map((r) => r.countries ?? []).flat(),
         sharedContext
@@ -129,7 +112,7 @@ export default class RegionModuleService<
     ] as const
 
     // Assign the full country object so the ORM updates the relationship
-    const [, dbCountries] = await promiseAll(validations)
+    const [dbCountries] = await promiseAll(validations)
     const dbCountriesMap = new Map(dbCountries.map((d) => [d.iso_2, d]))
     let normalizedDbRegions = normalizedInput.map((region) =>
       removeUndefined({
@@ -246,10 +229,6 @@ export default class RegionModuleService<
     }
 
     const validations = [
-      this.validateCurrencies(
-        normalizedInput.map((d) => d.currency_code),
-        sharedContext
-      ),
       this.validateCountries(
         normalizedInput.map((d) => d.countries ?? []).flat(),
         sharedContext
@@ -257,7 +236,7 @@ export default class RegionModuleService<
     ] as const
 
     // Assign the full country object so the ORM updates the relationship
-    const [, dbCountries] = await promiseAll(validations)
+    const [dbCountries] = await promiseAll(validations)
     const dbCountriesMap = new Map(dbCountries.map((d) => [d.iso_2, d]))
     let normalizedDbRegions = normalizedInput.map((region) =>
       removeUndefined({
@@ -278,41 +257,6 @@ export default class RegionModuleService<
         countries: region.countries?.map((country) => country.toLowerCase()),
       })
     )
-  }
-
-  private async validateCurrencies(
-    currencyCodes: (string | undefined)[] | undefined,
-    sharedContext: Context
-  ): Promise<void> {
-    const normalizedCurrencyCodes = currencyCodes
-      ?.filter((c) => c !== undefined)
-      .map((c) => c!.toLowerCase())
-
-    if (!normalizedCurrencyCodes?.length) {
-      return
-    }
-
-    const uniqueCurrencyCodes = Array.from(new Set(normalizedCurrencyCodes))
-    const dbCurrencies = await this.currencyService_.list(
-      { code: uniqueCurrencyCodes },
-      {},
-      sharedContext
-    )
-    const dbCurrencyCodes = dbCurrencies.map((c) => c.code.toLowerCase())
-
-    if (uniqueCurrencyCodes.length !== dbCurrencyCodes.length) {
-      const missingCurrencies = arrayDifference(
-        uniqueCurrencyCodes,
-        dbCurrencyCodes
-      )
-
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Currencies with codes: "${missingCurrencies.join(
-          ", "
-        )}" were not found`
-      )
-    }
   }
 
   private async validateCountries(
@@ -369,13 +313,10 @@ export default class RegionModuleService<
   }
 
   @InjectManager("baseRepository_")
-  public async createDefaultCountriesAndCurrencies(
+  public async createDefaultCountries(
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await promiseAll([
-      await this.maybeCreateCountries(sharedContext),
-      await this.maybeCreateCurrencies(sharedContext),
-    ])
+    await this.maybeCreateCountries(sharedContext)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -407,33 +348,6 @@ export default class RegionModuleService<
 
     if (countsToCreate.length) {
       await this.countryService_.create(countsToCreate, sharedContext)
-    }
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  private async maybeCreateCurrencies(
-    @MedusaContext() sharedContext: Context
-  ): Promise<void> {
-    const [currency] = await this.currencyService_.list(
-      {},
-      { select: ["code"], take: 1 },
-      sharedContext
-    )
-
-    let currsToCreate: CreateCurrencyDTO[] = []
-    if (!currency) {
-      currsToCreate = Object.entries(DefaultsUtils.defaultCurrencies).map(
-        ([code, currency]) => ({
-          code: code.toLowerCase(),
-          symbol: currency.symbol,
-          symbol_native: currency.symbol_native,
-          name: currency.name,
-        })
-      )
-    }
-
-    if (currsToCreate.length) {
-      await this.currencyService_.create(currsToCreate, sharedContext)
     }
   }
 }

@@ -15,6 +15,8 @@
     "next": "Next",
     "prev": "Prev",
     "is": "is",
+    "select": "Select",
+    "selected": "Selected",
     "extensions": "Extensions",
     "settings": "Settings",
     "general": "General",
@@ -38,7 +40,8 @@
     "noRecordsTitle": "No records",
     "noRecordsMessage": "There are no records to show",
     "unsavedChangesTitle": "Are you sure you want to leave this page?",
-    "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page."
+    "unsavedChangesDescription": "You have unsaved changes that will be lost if you leave this page.",
+    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved."
   },
   "actions": {
     "create": "Create",
@@ -50,6 +53,7 @@
     "continue": "Continue",
     "edit": "Edit",
     "download": "Download",
+    "clearAll": "Clear all",
     "apply": "Apply"
   },
   "filters": {
@@ -271,17 +275,47 @@
     "domain": "Regions",
     "createRegion": "Create Region",
     "createRegionHint": "Manage tax rates and providers for a set of countries.",
+    "addCountries": "Add countries",
     "editRegion": "Edit Region",
+    "countriesHint": "Add the countries that should be included in this region.",
     "deleteRegionWarning": "You are about to delete the region {{name}}. This action cannot be undone.",
+    "removeCountriesWarning_one": "You are about to remove {{count}} country from the region. This action cannot be undone.",
+    "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
+    "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
     "taxInclusiveHint": "When enabled all prices in the region will be tax inclusive.",
-    "providersHint": "The providers that are available in the region.",
+    "providersHint": " Add which fulfillment and payment providers should be available in this region.",
     "shippingOptions": "Shipping Options",
-    "returnShippingOptions": "Return Shipping Options",
+    "deleteShippingOptionWarning": "You are about to delete the shipping option {{name}}. This action cannot be undone.",
     "return": "Return",
     "outbound": "Outbound",
     "priceType": "Price Type",
     "flatRate": "Flat Rate",
-    "calculated": "Calculated"
+    "calculated": "Calculated",
+    "shippingOption": {
+      "createShippingOption": "Create Shipping Option",
+      "createShippingOptionHint": "Create a new shipping option for the region.",
+      "editShippingOption": "Edit Shipping Option",
+      "fulfillmentMethod": "Fulfillment Method",
+      "type": {
+        "outbound": "Outbound",
+        "outboundHint": "Use this if you are creating a shipping option for sending products to the customer.",
+        "return": "Return",
+        "returnHint": "Use this if you are creating a shipping option for the customer to return products to you."
+      },
+      "priceType": {
+        "label": "Price Type",
+        "flatRate": "Flat rate",
+        "calculated": "Calculated"
+      },
+      "availability": {
+        "adminOnly": "Admin only",
+        "adminOnlyHint": "When enabled the shipping option will only be available in the admin dashboard, and not in the storefront."
+      },
+      "requirements": {
+        "label": "Requirements",
+        "hint": "Specify the requirements for the shipping option."
+      }
+    }
   },
   "locations": {
     "domain": "Locations",
@@ -393,6 +427,7 @@
     "countries": "Countries",
     "paymentProviders": "Payment Providers",
     "fulfillmentProviders": "Fulfillment Providers",
+    "fulfillmentProvider": "Fulfillment Provider",
     "providers": "Providers",
     "availability": "Availability",
     "inventory": "Inventory",
@@ -457,6 +492,9 @@
     "inStock": "In stock",
     "location": "Location",
     "quantity": "Quantity",
-    "variant": "Variant"
+    "variant": "Variant",
+    "minSubtotal": "Min. Subtotal",
+    "maxSubtotal": "Max. Subtotal",
+    "shippingProfile": "Shipping Profile"
   }
 }

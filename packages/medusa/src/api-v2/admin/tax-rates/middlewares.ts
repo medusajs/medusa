@@ -3,6 +3,7 @@ import * as QueryConfig from "./query-config"
 import {
   AdminGetTaxRatesTaxRateParams,
   AdminPostTaxRatesReq,
+  AdminPostTaxRatesTaxRateReq,
 } from "./validators"
 import { transformBody, transformQuery } from "../../../api/middlewares"
 
@@ -19,6 +20,11 @@ export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
     method: "POST",
     matcher: "/admin/tax-rates",
     middlewares: [transformBody(AdminPostTaxRatesReq)],
+  },
+  {
+    method: "POST",
+    matcher: "/admin/tax-rates/:id",
+    middlewares: [transformBody(AdminPostTaxRatesTaxRateReq)],
   },
   {
     method: "GET",

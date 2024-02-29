@@ -181,6 +181,7 @@ export const DataTableRoot = <TData,>({
             <Table.Body className="border-b-0">
               {table.getRowModel().rows.map((row) => {
                 const to = navigateTo ? navigateTo(row) : undefined
+                const isRowDisabled = hasSelect && !row.getCanSelect()
                 return (
                   <Table.Row
                     key={row.id}
@@ -191,6 +192,7 @@ export const DataTableRoot = <TData,>({
                         "cursor-pointer": !!to,
                         "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
                           row.getIsSelected(),
+                        "bg-ui-bg-subtle hover:bg-ui-bg-subtle": isRowDisabled,
                       }
                     )}
                     onClick={to ? () => navigate(to) : undefined}
@@ -219,6 +221,8 @@ export const DataTableRoot = <TData,>({
                               isStickyCell && hasSelect && !isSelectCell,
                             "after:bg-ui-border-base":
                               showStickyBorder && isStickyCell && !isSelectCell,
+                            "bg-ui-bg-subtle hover:bg-ui-bg-subtle":
+                              isRowDisabled,
                           })}
                         >
                           {flexRender(

@@ -1,4 +1,3 @@
-// HEAD
 import { Type } from "class-transformer"
 import {
   IsBoolean,
@@ -47,6 +46,32 @@ export class AdminPostTaxRatesReq {
 
   @IsString()
   tax_region_id: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
+}
+
+export class AdminPostTaxRatesTaxRateReq {
+  @IsOptional()
+  @IsNumber()
+  rate?: number | null
+
+  @IsOptional()
+  @IsString()
+  code?: string | null
+
+  @IsString()
+  @IsOptional()
+  name?: string
+
+  @IsBoolean()
+  @IsOptional()
+  is_default?: boolean
+
+  @IsBoolean()
+  @IsOptional()
+  is_combinable?: boolean
 
   @IsObject()
   @IsOptional()
