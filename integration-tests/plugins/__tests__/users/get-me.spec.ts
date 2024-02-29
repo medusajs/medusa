@@ -1,14 +1,10 @@
 import { initDb, useDb } from "../../../environment-helpers/use-db"
 
 import { AxiosInstance } from "axios"
-import { IUserModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import adminSeeder from "../../../helpers/admin-seeder"
-import { createAdminUser } from "../../helpers/create-admin-user"
-import { getContainer } from "../../../environment-helpers/use-container"
 import path from "path"
 import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../environment-helpers/use-api"
+import { createAdminUser } from "../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -17,7 +13,7 @@ const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
-describe("POST /admin/users", () => {
+describe("POST /admin/users/me", () => {
   let dbConnection
   let shutdownServer
 

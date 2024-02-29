@@ -3,17 +3,21 @@ import {
   MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const userId = req.auth_user?.app_metadata.user_id
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const id = req.auth.auth_user_id
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const query = remoteQueryObjectFromString({
     entryPoint: "user",
-    variables: {
-      id: userId,
-    },
+    variables: { id },
     fields: req.retrieveConfig.select as string[],
   })
 
@@ -22,7 +26,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   if (!user) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Invite with id: ${userId} was not found`
+      `User with id: ${id} was not found`
     )
   }
 

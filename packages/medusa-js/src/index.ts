@@ -3,7 +3,6 @@ import KeyManager from "./key-manager"
 import Client, { type Config, type RequestOptions } from "./request"
 import {
   Admin,
-  AdminV2,
   AuthResource,
   CartsResource,
   CollectionsResource,
@@ -14,9 +13,9 @@ import {
   PaymentCollectionsResource,
   PaymentMethodsResource,
   ProductCategoriesResource,
+  ProductsResource,
   ProductTagsResource,
   ProductTypesResource,
-  ProductsResource,
   RegionsResource,
   ReturnReasonsResource,
   ReturnsResource,
@@ -27,7 +26,6 @@ import {
 class Medusa {
   public client: Client
   public admin: Admin
-  public adminV2: AdminV2
 
   public auth: AuthResource
   public carts: CartsResource
@@ -53,7 +51,6 @@ class Medusa {
     this.client = new Client(config)
 
     this.admin = new Admin(this.client)
-    this.adminV2 = new AdminV2(this.client)
 
     this.auth = new AuthResource(this.client)
     this.carts = new CartsResource(this.client)
@@ -90,5 +87,5 @@ class Medusa {
 export default Medusa
 export * from "./resources"
 export * from "./typings"
-export { Client, KeyManager, MedusaError }
 export type { Config, RequestOptions }
+export { MedusaError, KeyManager, Client }

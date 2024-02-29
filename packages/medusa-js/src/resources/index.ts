@@ -22,7 +22,6 @@ import ShippingOptionsResource from "./shipping-options"
 import SwapsResource from "./swaps"
 
 export * from "./admin"
-export * from "./admin-v2"
 export {
   AddressesResource,
   AuthResource,
@@ -38,12 +37,11 @@ export {
   PaymentMethodsResource,
   ProductCategoriesResource,
   ProductTagsResource,
-  ProductTypesResource,
-  ProductVariantsResource,
-  ProductsResource,
+  ProductTypesResource, ProductVariantsResource, ProductsResource,
   RegionsResource,
   ReturnReasonsResource,
   ReturnsResource,
   ShippingOptionsResource,
-  SwapsResource,
+  SwapsResource
 }
+

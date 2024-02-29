@@ -1,17 +1,13 @@
-import { AuthUserDTO } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ApiKeyDTO, AuthUserDTO, IApiKeyModuleService } from "@medusajs/types"
+import { stringEqualsOrRegexMatch } from "@medusajs/utils"
+import { NextFunction, RequestHandler } from "express"
+import jwt, { JwtPayload } from "jsonwebtoken"
 import {
   AuthenticatedMedusaRequest,
   MedusaRequest,
   MedusaResponse,
 } from "../types/routing"
-import { NextFunction, RequestHandler } from "express"
-import jwt, { JwtPayload } from "jsonwebtoken"
-import { MedusaRequest, MedusaResponse } from "../types/routing"
-
-import { stringEqualsOrRegexMatch } from "@medusajs/utils"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IApiKeyModuleService } from "@medusajs/types"
-import { ApiKeyDTO } from "@medusajs/types"
 
 const SESSION_AUTH = "session"
 const BEARER_AUTH = "bearer"
@@ -69,7 +65,7 @@ export const authenticate = (
     }
 
     const isMedusaScope = isAdminScope(authScope) || isStoreScope(authScope)
-    
+
     const isRegistered =
       !isMedusaScope ||
       (authUser?.app_metadata?.user_id &&
