@@ -1,7 +1,11 @@
 import {
   addToCartWorkflow,
   createCartWorkflow,
+  deleteLineItemsStepId,
+  deleteLineItemsWorkflow,
   findOrCreateCustomerStepId,
+  updateLineItemInCartWorkflow,
+  updateLineItemsStepId,
 } from "@medusajs/core-flows"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
@@ -407,6 +411,262 @@ describe("Carts workflows", () => {
           error: new Error(`Variants with IDs prva_foo do not exist`),
         },
       ])
+    })
+  })
+
+  describe("updateLineItemInCartWorkflow", () => {
+    it("should update item in cart", async () => {
+      const [product] = await productModule.create([
+        {
+          title: "Test product",
+          variants: [
+            {
+              title: "Test variant",
+            },
+          ],
+        },
+      ])
+
+      const priceSet = await pricingModule.create({
+        prices: [
+          {
+            amount: 3000,
+            currency_code: "usd",
+          },
+        ],
+      })
+
+      await remoteLink.create([
+        {
+          productService: {
+            variant_id: product.variants[0].id,
+          },
+          pricingService: {
+            price_set_id: priceSet.id,
+          },
+        },
+      ])
+
+      let cart = await cartModuleService.create({
+        currency_code: "usd",
+        items: [
+          {
+            variant_id: product.variants[0].id,
+            quantity: 1,
+            unit_price: 5000,
+            title: "Test item",
+          },
+        ],
+      })
+
+      cart = await cartModuleService.retrieve(cart.id, {
+        select: ["id", "region_id", "currency_code"],
+        relations: ["items", "items.variant_id", "items.metadata"],
+      })
+
+      const item = cart.items?.[0]!
+
+      await updateLineItemInCartWorkflow(appContainer).run({
+        input: {
+          cart,
+          item,
+          update: {
+            metadata: {
+              foo: "bar",
+            },
+            quantity: 2,
+          },
+        },
+        throwOnError: false,
+      })
+
+      const updatedItem = await cartModuleService.retrieveLineItem(item.id)
+
+      expect(updatedItem).toEqual(
+        expect.objectContaining({
+          id: item.id,
+          unit_price: 3000,
+          quantity: 2,
+          title: "Test item",
+        })
+      )
+    })
+
+    describe("compensation", () => {
+      it("should revert line item update to original state", async () => {
+        expect.assertions(2)
+        const workflow = updateLineItemInCartWorkflow(appContainer)
+
+        workflow.appendAction("throw", updateLineItemsStepId, {
+          invoke: async function failStep() {
+            throw new Error(`Failed to update something after line items`)
+          },
+        })
+
+        const [product] = await productModule.create([
+          {
+            title: "Test product",
+            variants: [
+              {
+                title: "Test variant",
+              },
+            ],
+          },
+        ])
+
+        let cart = await cartModuleService.create({
+          currency_code: "usd",
+          items: [
+            {
+              variant_id: product.variants[0].id,
+              quantity: 1,
+              unit_price: 3000,
+              title: "Test item",
+            },
+          ],
+        })
+
+        const priceSet = await pricingModule.create({
+          prices: [
+            {
+              amount: 5000,
+              currency_code: "usd",
+            },
+          ],
+        })
+
+        await remoteLink.create([
+          {
+            productService: {
+              variant_id: product.variants[0].id,
+            },
+            pricingService: {
+              price_set_id: priceSet.id,
+            },
+          },
+        ])
+
+        cart = await cartModuleService.retrieve(cart.id, {
+          select: ["id", "region_id", "currency_code"],
+          relations: ["items", "items.variant_id", "items.metadata"],
+        })
+
+        const item = cart.items?.[0]!
+
+        const { errors } = await workflow.run({
+          input: {
+            cart,
+            item,
+            update: {
+              metadata: {
+                foo: "bar",
+              },
+              title: "Test item updated",
+              quantity: 2,
+            },
+          },
+          throwOnError: false,
+        })
+
+        expect(errors).toEqual([
+          {
+            action: "throw",
+            handlerType: "invoke",
+            error: new Error(`Failed to update something after line items`),
+          },
+        ])
+
+        const updatedItem = await cartModuleService.retrieveLineItem(item.id)
+
+        expect(updatedItem).toEqual(
+          expect.objectContaining({
+            id: item.id,
+            unit_price: 3000,
+            quantity: 1,
+            title: "Test item",
+          })
+        )
+      })
+    })
+  })
+
+  describe("deleteLineItems", () => {
+    it("should delete items in cart", async () => {
+      const cart = await cartModuleService.create({
+        currency_code: "usd",
+        items: [
+          {
+            quantity: 1,
+            unit_price: 5000,
+            title: "Test item",
+          },
+        ],
+      })
+
+      const items = await cartModuleService.listLineItems({ cart_id: cart.id })
+
+      await deleteLineItemsWorkflow(appContainer).run({
+        input: {
+          ids: items.map((i) => i.id),
+        },
+        throwOnError: false,
+      })
+
+      const [deletedItem] = await cartModuleService.listLineItems({
+        id: items.map((i) => i.id),
+      })
+
+      expect(deletedItem).toBeUndefined()
+    })
+
+    describe("compensation", () => {
+      it("should restore line item if delete fails", async () => {
+        const workflow = deleteLineItemsWorkflow(appContainer)
+
+        workflow.appendAction("throw", deleteLineItemsStepId, {
+          invoke: async function failStep() {
+            throw new Error(`Failed to do something after deleting line items`)
+          },
+        })
+
+        const cart = await cartModuleService.create({
+          currency_code: "usd",
+          items: [
+            {
+              quantity: 1,
+              unit_price: 3000,
+              title: "Test item",
+            },
+          ],
+        })
+
+        const items = await cartModuleService.listLineItems({
+          cart_id: cart.id,
+        })
+
+        const { errors } = await workflow.run({
+          input: {
+            ids: items.map((i) => i.id),
+          },
+          throwOnError: false,
+        })
+
+        expect(errors).toEqual([
+          {
+            action: "throw",
+            handlerType: "invoke",
+            error: new Error(
+              `Failed to do something after deleting line items`
+            ),
+          },
+        ])
+
+        const updatedItem = await cartModuleService.retrieveLineItem(
+          items[0].id
+        )
+
+        expect(updatedItem).not.toBeUndefined()
+      })
     })
   })
 })

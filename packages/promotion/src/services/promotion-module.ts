@@ -247,7 +247,7 @@ export default class PromotionModuleService<
       ? []
       : await this.list(
           { is_automatic: true },
-          { select: ["code"] },
+          { select: ["code"], take: null },
           sharedContext
         )
 
@@ -303,6 +303,7 @@ export default class PromotionModuleService<
           "campaign",
           "campaign.budget",
         ],
+        take: null,
       }
     )
 
@@ -462,6 +463,7 @@ export default class PromotionModuleService<
           "campaign",
           "campaign.budget",
         ],
+        take: null,
       },
       sharedContext
     )
@@ -674,6 +676,7 @@ export default class PromotionModuleService<
           "campaign",
           "campaign.budget",
         ],
+        take: null,
       },
       sharedContext
     )
@@ -1046,6 +1049,7 @@ export default class PromotionModuleService<
       { id: createdCampaigns.map((p) => p!.id) },
       {
         relations: ["budget", "promotions"],
+        take: null,
       },
       sharedContext
     )
@@ -1075,7 +1079,7 @@ export default class PromotionModuleService<
       const promotionsToAdd = promotions
         ? await this.list(
             { id: promotions.map((p) => p.id) },
-            {},
+            { take: null },
             sharedContext
           )
         : []
@@ -1137,13 +1141,13 @@ export default class PromotionModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PromotionTypes.CampaignDTO | PromotionTypes.CampaignDTO[]> {
     const input = Array.isArray(data) ? data : [data]
-
     const updatedCampaigns = await this.updateCampaigns_(input, sharedContext)
 
     const campaigns = await this.listCampaigns(
       { id: updatedCampaigns.map((p) => p!.id) },
       {
         relations: ["budget", "promotions"],
+        take: null,
       },
       sharedContext
     )
@@ -1162,7 +1166,7 @@ export default class PromotionModuleService<
 
     const existingCampaigns = await this.listCampaigns(
       { id: campaignIds },
-      { relations: ["budget"] },
+      { relations: ["budget"], take: null },
       sharedContext
     )
 
@@ -1186,10 +1190,16 @@ export default class PromotionModuleService<
       }
     }
 
-    const updatedCampaigns = await this.campaignService_.update(campaignsData)
+    const updatedCampaigns = await this.campaignService_.update(
+      campaignsData,
+      sharedContext
+    )
 
     if (campaignBudgetsData.length) {
-      await this.campaignBudgetService_.update(campaignBudgetsData)
+      await this.campaignBudgetService_.update(
+        campaignBudgetsData,
+        sharedContext
+      )
     }
 
     return updatedCampaigns

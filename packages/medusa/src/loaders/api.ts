@@ -33,8 +33,6 @@ export default async ({
     next()
   })
 
-  app.use(bodyParser.json())
-
   if (featureFlagRouter?.isFeatureEnabled(FeatureFlagUtils.MedusaV2Flag.key)) {
     // TODO: Figure out why this is causing issues with test when placed inside ./api.ts
     // Adding this here temporarily
@@ -52,6 +50,7 @@ export default async ({
       throw Error("An error occurred while registering Medusa Core API Routes")
     }
   } else {
+    app.use(bodyParser.json())
     app.use("/", routes(container, configModule.projectConfig))
   }
 

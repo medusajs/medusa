@@ -4,9 +4,11 @@ import {
   ICustomerModuleService,
   IPricingModuleService,
   IProductModuleService,
+  IPromotionModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
 } from "@medusajs/types"
+import { PromotionRuleOperator, PromotionType } from "@medusajs/utils"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
@@ -30,6 +32,7 @@ describe("Store Carts API", () => {
   let productModule: IProductModuleService
   let pricingModule: IPricingModuleService
   let remoteLink
+  let promotionModule: IPromotionModuleService
 
   let defaultRegion
 
@@ -45,6 +48,7 @@ describe("Store Carts API", () => {
     productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
     pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
     remoteLink = appContainer.resolve("remoteLink")
+    promotionModule = appContainer.resolve(ModuleRegistrationName.PROMOTION)
   })
 
   afterAll(async () => {
@@ -288,6 +292,171 @@ describe("Store Carts API", () => {
     })
   })
 
+  describe("POST /store/carts/:id", () => {
+    it("should update a cart with promo codes with a replace action", async () => {
+      const targetRules = [
+        {
+          attribute: "product_id",
+          operator: PromotionRuleOperator.IN,
+          values: ["prod_tshirt"],
+        },
+      ]
+
+      const appliedPromotion = await promotionModule.create({
+        code: "PROMOTION_APPLIED",
+        type: PromotionType.STANDARD,
+        application_method: {
+          type: "fixed",
+          target_type: "items",
+          allocation: "each",
+          value: "300",
+          apply_to_quantity: 1,
+          max_quantity: 1,
+          target_rules: targetRules,
+        },
+      })
+
+      const createdPromotion = await promotionModule.create({
+        code: "PROMOTION_TEST",
+        type: PromotionType.STANDARD,
+        application_method: {
+          type: "fixed",
+          target_type: "items",
+          allocation: "across",
+          value: "1000",
+          apply_to_quantity: 1,
+          target_rules: targetRules,
+        },
+      })
+
+      const cart = await cartModuleService.create({
+        currency_code: "usd",
+        email: "tony@stark.com",
+        items: [
+          {
+            id: "item-1",
+            unit_price: 2000,
+            quantity: 1,
+            title: "Test item",
+            product_id: "prod_tshirt",
+          } as any,
+        ],
+      })
+
+      const [adjustment] = await cartModuleService.addLineItemAdjustments([
+        {
+          code: appliedPromotion.code!,
+          amount: 300,
+          item_id: "item-1",
+          promotion_id: appliedPromotion.id,
+        },
+      ])
+
+      const api = useApi() as any
+
+      // Should remove earlier adjustments from other promocodes
+      let updated = await api.post(`/store/carts/${cart.id}`, {
+        promo_codes: [createdPromotion.code],
+      })
+
+      expect(updated.status).toEqual(200)
+      expect(updated.data.cart).toEqual(
+        expect.objectContaining({
+          id: cart.id,
+          items: [
+            expect.objectContaining({
+              id: "item-1",
+              adjustments: [
+                expect.objectContaining({
+                  id: expect.not.stringContaining(adjustment.id),
+                  code: createdPromotion.code,
+                }),
+              ],
+            }),
+          ],
+        })
+      )
+
+      // Should remove all adjustments from other promo codes
+      updated = await api.post(`/store/carts/${cart.id}`, {
+        promo_codes: [],
+      })
+
+      expect(updated.status).toEqual(200)
+      expect(updated.data.cart).toEqual(
+        expect.objectContaining({
+          id: cart.id,
+          items: [
+            expect.objectContaining({
+              id: "item-1",
+              adjustments: [],
+            }),
+          ],
+        })
+      )
+    })
+
+    it("should update a cart's region, sales channel and customer data", async () => {
+      const region = await regionModuleService.create({
+        name: "US",
+        currency_code: "usd",
+      })
+
+      const salesChannel = await scModuleService.create({
+        name: "Webshop",
+      })
+
+      const cart = await cartModuleService.create({
+        currency_code: "eur",
+      })
+
+      const api = useApi() as any
+
+      let updated = await api.post(`/store/carts/${cart.id}`, {
+        region_id: region.id,
+        email: "tony@stark.com",
+        sales_channel_id: salesChannel.id,
+      })
+
+      expect(updated.status).toEqual(200)
+      expect(updated.data.cart).toEqual(
+        expect.objectContaining({
+          id: cart.id,
+          currency_code: "usd",
+          region: expect.objectContaining({
+            id: region.id,
+            currency_code: "usd",
+          }),
+          email: "tony@stark.com",
+          customer: expect.objectContaining({
+            email: "tony@stark.com",
+          }),
+          sales_channel_id: salesChannel.id,
+        })
+      )
+
+      updated = await api.post(`/store/carts/${cart.id}`, {
+        email: null,
+        sales_channel_id: null,
+      })
+
+      expect(updated.status).toEqual(200)
+      expect(updated.data.cart).toEqual(
+        expect.objectContaining({
+          id: cart.id,
+          currency_code: "usd",
+          email: null,
+          customer_id: null,
+          region: expect.objectContaining({
+            id: region.id,
+            currency_code: "usd",
+          }),
+          sales_channel_id: null,
+        })
+      )
+    })
+  })
+
   describe("GET /store/carts/:id", () => {
     it("should create and update a cart", async () => {
       const region = await regionModuleService.create({
@@ -388,10 +557,6 @@ describe("Store Carts API", () => {
 
   describe("POST /store/carts/:id/line-items", () => {
     it("should add item to cart", async () => {
-      const cart = await cartModuleService.create({
-        currency_code: "usd",
-      })
-
       const [product] = await productModule.create([
         {
           title: "Test product",
@@ -402,6 +567,48 @@ describe("Store Carts API", () => {
           ],
         },
       ])
+
+      const cart = await cartModuleService.create({
+        currency_code: "usd",
+        items: [
+          {
+            id: "item-1",
+            unit_price: 2000,
+            quantity: 1,
+            title: "Test item",
+            product_id: "prod_mat",
+          } as any,
+        ],
+      })
+
+      const appliedPromotion = await promotionModule.create({
+        code: "PROMOTION_APPLIED",
+        type: PromotionType.STANDARD,
+        application_method: {
+          type: "fixed",
+          target_type: "items",
+          allocation: "across",
+          value: "300",
+          apply_to_quantity: 2,
+          target_rules: [
+            {
+              attribute: "product_id",
+              operator: "in",
+              values: ["prod_mat", product.id],
+            },
+          ],
+        },
+      })
+
+      const [lineItemAdjustment] =
+        await cartModuleService.addLineItemAdjustments([
+          {
+            code: appliedPromotion.code!,
+            amount: 300,
+            item_id: "item-1",
+            promotion_id: appliedPromotion.id,
+          },
+        ])
 
       const priceSet = await pricingModule.create({
         prices: [
@@ -439,6 +646,24 @@ describe("Store Carts API", () => {
               unit_price: 3000,
               quantity: 1,
               title: "Test variant",
+              adjustments: [
+                expect.objectContaining({
+                  code: "PROMOTION_APPLIED",
+                  amount: 180,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              unit_price: 2000,
+              quantity: 1,
+              title: "Test item",
+              adjustments: [
+                expect.objectContaining({
+                  id: expect.not.stringContaining(lineItemAdjustment.id),
+                  code: "PROMOTION_APPLIED",
+                  amount: 120,
+                }),
+              ],
             }),
           ]),
         })

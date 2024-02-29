@@ -13,6 +13,11 @@ import { authenticate } from "../../../utils/authenticate-middleware"
 
 export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   {
+    method: ["ALL"],
+    matcher: "/admin/users*",
+    middlewares: [authenticate("admin", ["bearer", "session"])],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/users",
     middlewares: [

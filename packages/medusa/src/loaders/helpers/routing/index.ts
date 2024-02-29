@@ -22,7 +22,9 @@ import {
   RouteConfig,
   RouteDescriptor,
   RouteVerb,
+  ParserConfigArgs,
 } from "./types"
+import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
 const log = ({
   activityId,
@@ -150,9 +152,18 @@ function findMatch(
  * Returns an array of body parser middlewares that are applied on routes
  * out-of-the-box.
  */
-function getBodyParserMiddleware(sizeLimit?: string | number | undefined) {
+function getBodyParserMiddleware(args?: ParserConfigArgs) {
+  const sizeLimit = args?.sizeLimit
+  const preserveRawBody = args?.preserveRawBody
   return [
-    json({ limit: sizeLimit }),
+    json({
+      limit: sizeLimit,
+      verify: preserveRawBody
+        ? (req: MedusaRequest, res: MedusaResponse, buf: Buffer) => {
+            req.rawBody = buf
+          }
+        : undefined,
+    }),
     text({ limit: sizeLimit }),
     urlencoded({ limit: sizeLimit, extended: true }),
   ]
@@ -561,7 +572,7 @@ export class RoutesLoader {
 
       this.router[method.toLowerCase()](
         path,
-        ...getBodyParserMiddleware(sizeLimit)
+        ...getBodyParserMiddleware(mostSpecificConfig?.bodyParser)
       )
 
       return
