@@ -27,7 +27,9 @@ const EditDiscountSchema = zod.object({
   value: zod.number(),
 })
 
-export const EditDiscountForm = ({ discount }: EditDiscountFormProps) => {
+export const EditDiscountDetailsForm = ({
+  discount,
+}: EditDiscountFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 

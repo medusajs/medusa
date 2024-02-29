@@ -36,7 +36,7 @@ export const DiscountConfigurationSection = ({
                 {
                   icon: <PencilSquare />,
                   label: t("actions.edit"),
-                  to: `configurations`,
+                  to: `configuration`,
                 },
               ],
             },
