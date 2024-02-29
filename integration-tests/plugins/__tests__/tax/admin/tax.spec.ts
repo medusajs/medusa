@@ -295,4 +295,82 @@ describe("Taxes - Admin", () => {
       },
     })
   })
+
+  it("can create a tax rate and delete it", async () => {
+    const api = useApi() as any
+    const regionRes = await api.post(
+      `/admin/tax-regions`,
+      {
+        country_code: "us",
+        default_tax_rate: { code: "default", rate: 2, name: "default rate" },
+      },
+      adminHeaders
+    )
+
+    const usRegionId = regionRes.data.tax_region.id
+
+    const rateRes = await api.post(
+      `/admin/tax-rates`,
+      {
+        tax_region_id: usRegionId,
+        code: "RATE2",
+        name: "another rate",
+        rate: 10,
+        rules: [{ reference: "product", reference_id: "prod_1234" }],
+      },
+      adminHeaders
+    )
+
+    const deleteRes = await api.delete(
+      `/admin/tax-rates/${rateRes.data.tax_rate.id}`,
+      adminHeaders
+    )
+
+    expect(deleteRes.status).toEqual(200)
+    expect(deleteRes.data).toEqual({
+      id: rateRes.data.tax_rate.id,
+      object: "tax_rate",
+      deleted: true,
+    })
+
+    const rates = await service.list(
+      { id: rateRes.data.tax_rate.id },
+      { withDeleted: true }
+    )
+    expect(rates.length).toEqual(1)
+    expect(rates[0].deleted_at).not.toBeNull()
+  })
+
+  it("can create a tax region and delete it", async () => {
+    const api = useApi() as any
+    const regionRes = await api.post(
+      `/admin/tax-regions`,
+      {
+        country_code: "us",
+        default_tax_rate: { code: "default", rate: 2, name: "default rate" },
+      },
+      adminHeaders
+    )
+
+    const usRegionId = regionRes.data.tax_region.id
+
+    const deleteRes = await api.delete(
+      `/admin/tax-regions/${usRegionId}`,
+      adminHeaders
+    )
+
+    expect(deleteRes.status).toEqual(200)
+    expect(deleteRes.data).toEqual({
+      id: usRegionId,
+      object: "tax_region",
+      deleted: true,
+    })
+
+    const rates = await service.listTaxRegions(
+      { id: usRegionId },
+      { withDeleted: true }
+    )
+    expect(rates.length).toEqual(1)
+    expect(rates[0].deleted_at).not.toBeNull()
+  })
 })
