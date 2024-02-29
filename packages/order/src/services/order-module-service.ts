@@ -2,20 +2,22 @@ import {
   Context,
   DAL,
   FilterableLineItemTaxLineProps,
-  IOrderModuleService,
+  FindConfig,
   InternalModuleDeclaration,
+  IOrderModuleService,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   OrderTypes,
+  UpdateOrderItemWithSelectorDTO,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
+  isObject,
+  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  isObject,
-  isString,
 } from "@medusajs/utils"
 import {
   Address,
@@ -25,22 +27,25 @@ import {
   Order,
   OrderChange,
   OrderChangeAction,
-  OrderDetail,
+  OrderItem,
   ShippingMethod,
   ShippingMethodAdjustment,
   ShippingMethodTaxLine,
   Transaction,
 } from "@models"
 import {
+  CreateOrderItemDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemTaxLineDTO,
   CreateOrderShippingMethodDTO,
   CreateOrderShippingMethodTaxLineDTO,
+  UpdateOrderItemDTO,
   UpdateOrderLineItemDTO,
   UpdateOrderLineItemTaxLineDTO,
   UpdateOrderShippingMethodTaxLineDTO,
 } from "@types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { formatOrder } from "../utils/transform-order"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -55,7 +60,7 @@ type InjectedDependencies = {
   transactionService: ModulesSdkTypes.InternalModuleService<any>
   orderChangeService: ModulesSdkTypes.InternalModuleService<any>
   orderChangeActionService: ModulesSdkTypes.InternalModuleService<any>
-  orderDetailService: ModulesSdkTypes.InternalModuleService<any>
+  orderItemService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 const generateMethodForModels = [
@@ -69,7 +74,7 @@ const generateMethodForModels = [
   Transaction,
   OrderChange,
   OrderChangeAction,
-  OrderDetail,
+  OrderItem,
 ]
 
 export default class OrderModuleService<
@@ -84,7 +89,7 @@ export default class OrderModuleService<
     TTransaction extends Transaction = Transaction,
     TOrderChange extends OrderChange = OrderChange,
     TOrderChangeAction extends OrderChangeAction = OrderChangeAction,
-    TOrderDetail extends OrderDetail = OrderDetail
+    TOrderItem extends OrderItem = OrderItem
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -102,6 +107,7 @@ export default class OrderModuleService<
       Transaction: { dto: OrderTypes.OrderTransactionDTO }
       Change: { dto: OrderTypes.OrderChangeDTO }
       ChangeAction: { dto: OrderTypes.OrderChangeActionDTO }
+      OrderItem: { dto: OrderTypes.OrderItemDTO }
     }
   >(Order, generateMethodForModels, entityNameToLinkableKeysMap)
   implements IOrderModuleService
@@ -118,7 +124,7 @@ export default class OrderModuleService<
   protected transactionService_: ModulesSdkTypes.InternalModuleService<TTransaction>
   protected orderChangeService_: ModulesSdkTypes.InternalModuleService<TOrderChange>
   protected orderChangeActionService_: ModulesSdkTypes.InternalModuleService<TOrderChangeAction>
-  protected orderDetailService_: ModulesSdkTypes.InternalModuleService<TOrderDetail>
+  protected orderItemService_: ModulesSdkTypes.InternalModuleService<TOrderItem>
 
   constructor(
     {
@@ -134,7 +140,7 @@ export default class OrderModuleService<
       transactionService,
       orderChangeService,
       orderChangeActionService,
-      orderDetailService,
+      orderItemService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -153,11 +159,45 @@ export default class OrderModuleService<
     this.transactionService_ = transactionService
     this.orderChangeService_ = orderChangeService
     this.orderChangeActionService_ = orderChangeActionService
-    this.orderDetailService_ = orderDetailService
+    this.orderItemService_ = orderItemService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  async retrieve(
+    id: string,
+    config?: FindConfig<any> | undefined,
+    sharedContext?: Context | undefined
+  ): Promise<OrderTypes.OrderDTO> {
+    const order = await super.retrieve(id, config, sharedContext)
+
+    return formatOrder(order) as OrderTypes.OrderDTO
+  }
+
+  async list(
+    filters?: any,
+    config?: FindConfig<any> | undefined,
+    sharedContext?: Context | undefined
+  ): Promise<OrderTypes.OrderDTO[]> {
+    const orders = await super.list(filters, config, sharedContext)
+
+    return formatOrder(orders) as OrderTypes.OrderDTO[]
+  }
+
+  async listAndCount(
+    filters?: any,
+    config?: FindConfig<any> | undefined,
+    sharedContext?: Context | undefined
+  ): Promise<[OrderTypes.OrderDTO[], number]> {
+    const [orders, count] = await super.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [formatOrder(orders) as OrderTypes.OrderDTO[], count]
   }
 
   async create(
@@ -180,9 +220,20 @@ export default class OrderModuleService<
     const orders = await this.create_(input, sharedContext)
 
     const result = await this.list(
-      { id: orders.map((p) => p!.id) },
       {
-        relations: ["shipping_address", "billing_address"],
+        id: orders.map((p) => p!.id),
+      },
+      {
+        relations: [
+          "shipping_address",
+          "billing_address",
+          "items",
+          "items.tax_lines",
+          "items.adjustments",
+          "shipping_methods",
+          "shipping_methods.tax_lines",
+          "shipping_methods.adjustments",
+        ],
       },
       sharedContext
     )
@@ -198,9 +249,10 @@ export default class OrderModuleService<
     @MedusaContext() sharedContext: Context = {}
   ) {
     const lineItemsToCreate: CreateOrderLineItemDTO[] = []
+
     const createdOrders: Order[] = []
     for (const { items, ...order } of data) {
-      const [created] = await this.orderService_.create([order], sharedContext)
+      const created = await this.orderService_.create(order, sharedContext)
 
       createdOrders.push(created)
 
@@ -224,42 +276,75 @@ export default class OrderModuleService<
   }
 
   async update(
-    data: OrderTypes.UpdateOrderDTO[],
-    sharedContext?: Context
+    data: OrderTypes.UpdateOrderDTO[]
   ): Promise<OrderTypes.OrderDTO[]>
-
   async update(
+    orderId: string,
     data: OrderTypes.UpdateOrderDTO,
     sharedContext?: Context
   ): Promise<OrderTypes.OrderDTO>
+  async update(
+    selector: Partial<OrderTypes.OrderDTO>,
+    data: OrderTypes.UpdateOrderDTO,
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderDTO[]>
 
   @InjectManager("baseRepository_")
   async update(
-    data: OrderTypes.UpdateOrderDTO[] | OrderTypes.UpdateOrderDTO,
+    dataOrIdOrSelector:
+      | OrderTypes.UpdateOrderDTO[]
+      | string
+      | Partial<OrderTypes.OrderDTO>,
+    data?: OrderTypes.UpdateOrderDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<OrderTypes.OrderDTO[] | OrderTypes.OrderDTO> {
-    const input = Array.isArray(data) ? data : [data]
-    const orders = await this.update_(input, sharedContext)
+    const result = await this.update_(dataOrIdOrSelector, data, sharedContext)
 
-    const result = await this.list(
-      { id: orders.map((p) => p!.id) },
-      {
-        relations: ["shipping_address", "billing_address"],
-      },
-      sharedContext
-    )
+    const serializedResult = await this.baseRepository_.serialize<
+      OrderTypes.OrderDTO[]
+    >(result, {
+      populate: true,
+    })
 
-    return (Array.isArray(data) ? result : result[0]) as
-      | OrderTypes.OrderDTO
-      | OrderTypes.OrderDTO[]
+    return isString(dataOrIdOrSelector) ? serializedResult[0] : serializedResult
   }
 
   @InjectTransactionManager("baseRepository_")
   protected async update_(
-    data: OrderTypes.UpdateOrderDTO[],
+    dataOrIdOrSelector:
+      | OrderTypes.UpdateOrderDTO[]
+      | string
+      | Partial<OrderTypes.OrderDTO>,
+    data?: OrderTypes.UpdateOrderDTO,
     @MedusaContext() sharedContext: Context = {}
   ) {
-    return await this.orderService_.update(data, sharedContext)
+    let toUpdate: OrderTypes.UpdateOrderDTO[] = []
+    if (isString(dataOrIdOrSelector)) {
+      toUpdate = [
+        {
+          id: dataOrIdOrSelector,
+          ...data,
+        },
+      ]
+    } else if (Array.isArray(dataOrIdOrSelector)) {
+      toUpdate = dataOrIdOrSelector
+    } else {
+      const orders = await this.orderService_.list(
+        { ...dataOrIdOrSelector },
+        { select: ["id"] },
+        sharedContext
+      )
+
+      toUpdate = orders.map((order) => {
+        return {
+          ...data,
+          id: order.id,
+        }
+      })
+    }
+
+    const result = await this.orderService_.update(toUpdate, sharedContext)
+    return result
   }
 
   addLineItems(
@@ -315,7 +400,7 @@ export default class OrderModuleService<
   ): Promise<LineItem[]> {
     const order = await this.retrieve(
       orderId,
-      { select: ["id"] },
+      { select: ["id", "version"] },
       sharedContext
     )
 
@@ -323,6 +408,7 @@ export default class OrderModuleService<
       return {
         ...item,
         order_id: order.id,
+        version: order.version,
       }
     })
 
@@ -334,7 +420,25 @@ export default class OrderModuleService<
     data: CreateOrderLineItemDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<LineItem[]> {
-    return await this.lineItemService_.create(data, sharedContext)
+    const orderItemToCreate: CreateOrderItemDTO[] = []
+
+    const lineItems = await this.lineItemService_.create(data, sharedContext)
+
+    for (let i = 0; i < lineItems.length; i++) {
+      const item = lineItems[i]
+      const toCreate = data[i]
+
+      orderItemToCreate.push({
+        order_id: toCreate.order_id,
+        version: toCreate.version ?? 1,
+        item_id: item.id,
+        quantity: toCreate.quantity,
+      })
+    }
+
+    await this.orderItemService_.create(orderItemToCreate, sharedContext)
+
+    return lineItems
   }
 
   updateLineItems(
@@ -408,6 +512,18 @@ export default class OrderModuleService<
       sharedContext
     )
 
+    if ("quantity" in data) {
+      await this.updateOrderItemWithSelector_(
+        [
+          {
+            selector: { item_id: item.id },
+            data,
+          },
+        ],
+        sharedContext
+      )
+    }
+
     return item
   }
 
@@ -417,6 +533,7 @@ export default class OrderModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<LineItem[]> {
     let toUpdate: UpdateOrderLineItemDTO[] = []
+    const detailsToUpdate: UpdateOrderItemWithSelectorDTO[] = []
     for (const { selector, data } of updates) {
       const items = await this.listLineItems({ ...selector }, {}, sharedContext)
 
@@ -425,10 +542,116 @@ export default class OrderModuleService<
           ...data,
           id: item.id,
         })
+
+        if ("quantity" in data) {
+          detailsToUpdate.push({
+            selector: { item_id: item.id },
+            data,
+          })
+        }
       })
     }
 
+    if (detailsToUpdate.length) {
+      await this.updateOrderItemWithSelector_(detailsToUpdate, sharedContext)
+    }
+
     return await this.lineItemService_.update(toUpdate, sharedContext)
+  }
+
+  updateOrderItem(
+    selector: Partial<OrderTypes.OrderItemDTO>,
+    data: OrderTypes.UpdateOrderItemDTO,
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderItemDTO[]>
+  updateOrderItem(
+    orderItemId: string,
+    data: Partial<OrderTypes.UpdateOrderItemDTO>,
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderItemDTO>
+
+  @InjectManager("baseRepository_")
+  async updateOrderItem(
+    orderItemIdOrDataOrSelector:
+      | string
+      | OrderTypes.UpdateOrderItemWithSelectorDTO[]
+      | Partial<OrderTypes.OrderItemDTO>,
+    data?:
+      | OrderTypes.UpdateOrderItemDTO
+      | Partial<OrderTypes.UpdateOrderItemDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<OrderTypes.OrderItemDTO[] | OrderTypes.OrderItemDTO> {
+    let items: OrderItem[] = []
+    if (isString(orderItemIdOrDataOrSelector)) {
+      const item = await this.updateOrderItem_(
+        orderItemIdOrDataOrSelector,
+        data as Partial<OrderTypes.UpdateOrderItemDTO>,
+        sharedContext
+      )
+
+      return await this.baseRepository_.serialize<OrderTypes.OrderItemDTO>(
+        item,
+        {
+          populate: true,
+        }
+      )
+    }
+
+    const toUpdate = Array.isArray(orderItemIdOrDataOrSelector)
+      ? orderItemIdOrDataOrSelector
+      : [
+          {
+            selector: orderItemIdOrDataOrSelector,
+            data: data,
+          } as OrderTypes.UpdateOrderItemWithSelectorDTO,
+        ]
+
+    items = await this.updateOrderItemWithSelector_(toUpdate, sharedContext)
+
+    return await this.baseRepository_.serialize<OrderTypes.OrderItemDTO[]>(
+      items,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async updateOrderItem_(
+    orderItemId: string,
+    data: Partial<OrderTypes.UpdateOrderItemDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<OrderItem> {
+    const [detail] = await this.orderItemService_.update(
+      [{ id: orderItemId, ...data }],
+      sharedContext
+    )
+
+    return detail
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async updateOrderItemWithSelector_(
+    updates: OrderTypes.UpdateOrderItemWithSelectorDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<OrderItem[]> {
+    let toUpdate: UpdateOrderItemDTO[] = []
+    for (const { selector, data } of updates) {
+      const details = await this.listOrderItems(
+        { ...selector },
+        {},
+        sharedContext
+      )
+
+      details.forEach((detail) => {
+        toUpdate.push({
+          ...data,
+          id: detail.id,
+        })
+      })
+    }
+
+    return await this.orderItemService_.update(toUpdate, sharedContext)
   }
 
   async removeLineItems(
@@ -545,7 +768,7 @@ export default class OrderModuleService<
   ): Promise<OrderTypes.OrderShippingMethodDTO[]>
   async addShippingMethods(
     orderId: string,
-    methods: OrderTypes.CreateOrderShippingMethodForSingleOrderDTO[],
+    methods: OrderTypes.CreateOrderShippingMethodDTO[],
     sharedContext?: Context
   ): Promise<OrderTypes.OrderShippingMethodDTO[]>
 
@@ -555,9 +778,7 @@ export default class OrderModuleService<
       | string
       | OrderTypes.CreateOrderShippingMethodDTO[]
       | OrderTypes.CreateOrderShippingMethodDTO,
-    data?:
-      | OrderTypes.CreateOrderShippingMethodDTO[]
-      | OrderTypes.CreateOrderShippingMethodForSingleOrderDTO[],
+    data?: OrderTypes.CreateOrderShippingMethodDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     OrderTypes.OrderShippingMethodDTO[] | OrderTypes.OrderShippingMethodDTO
@@ -566,7 +787,7 @@ export default class OrderModuleService<
     if (isString(orderIdOrData)) {
       methods = await this.addShippingMethods_(
         orderIdOrData,
-        data as OrderTypes.CreateOrderShippingMethodForSingleOrderDTO[],
+        data!,
         sharedContext
       )
     } else {
@@ -587,7 +808,7 @@ export default class OrderModuleService<
   @InjectTransactionManager("baseRepository_")
   protected async addShippingMethods_(
     orderId: string,
-    data: OrderTypes.CreateOrderShippingMethodForSingleOrderDTO[],
+    data: OrderTypes.CreateOrderShippingMethodDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ShippingMethod[]> {
     const order = await this.retrieve(
@@ -600,6 +821,7 @@ export default class OrderModuleService<
       return {
         ...method,
         order_id: order.id,
+        version: order.version ?? 1,
       }
     })
 
@@ -682,7 +904,7 @@ export default class OrderModuleService<
     if (isString(orderIdOrData)) {
       const order = await this.retrieve(
         orderIdOrData,
-        { select: ["id"], relations: ["items"] },
+        { select: ["id"], relations: ["items.item"] },
         sharedContext
       )
 
@@ -730,15 +952,14 @@ export default class OrderModuleService<
   ): Promise<OrderTypes.OrderLineItemAdjustmentDTO[]> {
     const order = await this.retrieve(
       orderId,
-      { select: ["id"], relations: ["items.adjustments"] },
+      { select: ["id"], relations: ["items.item.adjustments"] },
       sharedContext
     )
 
-    const existingAdjustments = await this.listLineItemAdjustments(
-      { item: { order_id: order.id } },
-      { select: ["id"] },
-      sharedContext
-    )
+    const existingAdjustments = (order.items ?? [])
+      .map((item) => item.adjustments ?? [])
+      .flat()
+      .map((adjustment) => adjustment.id)
 
     const adjustmentsSet = new Set(
       adjustments
@@ -746,22 +967,17 @@ export default class OrderModuleService<
         .filter(Boolean)
     )
 
-    const toDelete: OrderTypes.OrderLineItemAdjustmentDTO[] = []
+    const toDelete: string[] = []
 
     // From the existing adjustments, find the ones that are not passed in adjustments
-    existingAdjustments.forEach(
-      (adj: OrderTypes.OrderLineItemAdjustmentDTO) => {
-        if (!adjustmentsSet.has(adj.id)) {
-          toDelete.push(adj)
-        }
+    existingAdjustments.forEach((adj) => {
+      if (!adjustmentsSet.has(adj)) {
+        toDelete.push(adj)
       }
-    )
+    })
 
     if (toDelete.length) {
-      await this.lineItemAdjustmentService_.delete(
-        toDelete.map((adj) => adj!.id),
-        sharedContext
-      )
+      await this.lineItemAdjustmentService_.delete(toDelete, sharedContext)
     }
 
     let result = await this.lineItemAdjustmentService_.upsert(
@@ -831,11 +1047,10 @@ export default class OrderModuleService<
       sharedContext
     )
 
-    const existingAdjustments = await this.listShippingMethodAdjustments(
-      { shipping_method: { order_id: order.id } },
-      { select: ["id"] },
-      sharedContext
-    )
+    const existingAdjustments = (order.shipping_methods ?? [])
+      .map((shippingMethod) => shippingMethod.adjustments ?? [])
+      .flat()
+      .map((adjustment) => adjustment.id)
 
     const adjustmentsSet = new Set(
       adjustments
@@ -845,20 +1060,18 @@ export default class OrderModuleService<
         .filter(Boolean)
     )
 
-    const toDelete: OrderTypes.OrderShippingMethodAdjustmentDTO[] = []
+    const toDelete: string[] = []
 
     // From the existing adjustments, find the ones that are not passed in adjustments
-    existingAdjustments.forEach(
-      (adj: OrderTypes.OrderShippingMethodAdjustmentDTO) => {
-        if (!adjustmentsSet.has(adj.id)) {
-          toDelete.push(adj)
-        }
+    existingAdjustments.forEach((adj) => {
+      if (!adjustmentsSet.has(adj)) {
+        toDelete.push(adj)
       }
-    )
+    })
 
     if (toDelete.length) {
       await this.shippingMethodAdjustmentService_.delete(
-        toDelete.map((adj) => adj!.id),
+        toDelete,
         sharedContext
       )
     }
@@ -1018,9 +1231,6 @@ export default class OrderModuleService<
   > {
     let addedTaxLines: LineItemTaxLine[]
     if (isString(orderIdOrData)) {
-      // existence check
-      await this.retrieve(orderIdOrData, { select: ["id"] }, sharedContext)
-
       const lines = Array.isArray(taxLines) ? taxLines : [taxLines]
 
       addedTaxLines = await this.lineItemTaxLineService_.create(
@@ -1062,15 +1272,14 @@ export default class OrderModuleService<
   ): Promise<OrderTypes.OrderLineItemTaxLineDTO[]> {
     const order = await this.retrieve(
       orderId,
-      { select: ["id"], relations: ["items.tax_lines"] },
+      { select: ["id"], relations: ["items.item.tax_lines"] },
       sharedContext
     )
 
-    const existingTaxLines = await this.listLineItemTaxLines(
-      { item: { order_id: order.id } },
-      { select: ["id"] },
-      sharedContext
-    )
+    const existingTaxLines = (order.items ?? [])
+      .map((item) => item.tax_lines ?? [])
+      .flat()
+      .map((taxLine) => taxLine.id)
 
     const taxLinesSet = new Set(
       taxLines
@@ -1080,20 +1289,15 @@ export default class OrderModuleService<
         .filter(Boolean)
     )
 
-    const toDelete: OrderTypes.OrderLineItemTaxLineDTO[] = []
-
-    // From the existing tax lines, find the ones that are not passed in taxLines
-    existingTaxLines.forEach((taxLine: OrderTypes.OrderLineItemTaxLineDTO) => {
-      if (!taxLinesSet.has(taxLine.id)) {
+    const toDelete: string[] = []
+    existingTaxLines.forEach((taxLine: string) => {
+      if (!taxLinesSet.has(taxLine)) {
         toDelete.push(taxLine)
       }
     })
 
     if (toDelete.length) {
-      await this.lineItemTaxLineService_.delete(
-        toDelete.map((taxLine) => taxLine!.id),
-        sharedContext
-      )
+      await this.lineItemTaxLineService_.delete(toDelete, sharedContext)
     }
 
     const result = await this.lineItemTaxLineService_.upsert(
@@ -1178,9 +1382,6 @@ export default class OrderModuleService<
   > {
     let addedTaxLines: ShippingMethodTaxLine[]
     if (isString(orderIdOrData)) {
-      // existence check
-      await this.retrieve(orderIdOrData, { select: ["id"] }, sharedContext)
-
       const lines = Array.isArray(taxLines) ? taxLines : [taxLines]
 
       addedTaxLines = await this.shippingMethodTaxLineService_.create(
@@ -1224,11 +1425,10 @@ export default class OrderModuleService<
       sharedContext
     )
 
-    const existingTaxLines = await this.listShippingMethodTaxLines(
-      { shipping_method: { order_id: order.id } },
-      { select: ["id"] },
-      sharedContext
-    )
+    const existingTaxLines = (order.shipping_methods ?? [])
+      .map((shippingMethod) => shippingMethod.tax_lines ?? [])
+      .flat()
+      .map((taxLine) => taxLine.id)
 
     const taxLinesSet = new Set(
       taxLines
@@ -1239,22 +1439,15 @@ export default class OrderModuleService<
         .filter(Boolean)
     )
 
-    const toDelete: OrderTypes.OrderShippingMethodTaxLineDTO[] = []
-
-    // From the existing tax lines, find the ones that are not passed in taxLines
-    existingTaxLines.forEach(
-      (taxLine: OrderTypes.OrderShippingMethodTaxLineDTO) => {
-        if (!taxLinesSet.has(taxLine.id)) {
-          toDelete.push(taxLine)
-        }
+    const toDelete: string[] = []
+    existingTaxLines.forEach((taxLine: string) => {
+      if (!taxLinesSet.has(taxLine)) {
+        toDelete.push(taxLine)
       }
-    )
+    })
 
     if (toDelete.length) {
-      await this.shippingMethodTaxLineService_.delete(
-        toDelete.map((taxLine) => taxLine!.id),
-        sharedContext
-      )
+      await this.shippingMethodTaxLineService_.delete(toDelete, sharedContext)
     }
 
     const result = await this.shippingMethodTaxLineService_.upsert(
