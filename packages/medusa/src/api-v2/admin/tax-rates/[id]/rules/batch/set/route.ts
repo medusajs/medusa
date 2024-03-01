@@ -11,14 +11,13 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostTaxRatesTaxRateRulesBatchSetReq>,
   res: MedusaResponse
 ) => {
-  const taxRateId = req.params.id
   const rateRules = req.validatedBody.rules.map((r) => ({
     ...r,
     created_by: req.auth.actor_id,
   }))
 
   const { errors } = await setTaxRateRulesWorkflow(req.scope).run({
-    input: { taxRateId, rules: rateRules },
+    input: { tax_rate_id: req.params.id, rules: rateRules },
     throwOnError: false,
   })
 
