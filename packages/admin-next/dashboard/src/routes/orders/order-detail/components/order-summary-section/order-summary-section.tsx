@@ -63,10 +63,12 @@ const Item = ({
   currencyCode: string
   reservation?: ReservationItemDTO | null
 }) => {
+  const { t } = useTranslation()
+
   return (
     <div
       key={item.id}
-      className="text-ui-fg-subtle grid grid-cols-3 items-start px-6 py-4"
+      className="text-ui-fg-subtle grid grid-cols-2 items-start gap-x-4 px-6 py-4"
     >
       <div className="flex items-start gap-x-4">
         <Thumbnail src={item.thumbnail} />
@@ -90,25 +92,34 @@ const Item = ({
           </Text>
         </div>
       </div>
-      <div className="flex items-center justify-end gap-x-4">
-        <Text size="small">
-          {getLocaleAmount(item.unit_price, currencyCode)}
-        </Text>
+      <div className="grid grid-cols-3 items-center gap-x-4">
+        <div className="flex items-center justify-end gap-x-4">
+          <Text size="small">
+            {getLocaleAmount(item.unit_price, currencyCode)}
+          </Text>
+        </div>
         <div className="flex items-center gap-x-2">
           <div className="w-fit min-w-[27px]">
             <Text>
               <span className="tabular-nums">{item.quantity}</span>x
             </Text>
           </div>
-          <StatusBadge color={reservation ? "green" : "orange"}>
-            {reservation ? "Allocated" : "Not allocated"}
-          </StatusBadge>
+          <div className="overflow-visible">
+            <StatusBadge
+              color={reservation ? "green" : "orange"}
+              className="text-nowrap"
+            >
+              {reservation
+                ? t("orders.reservations.allocatedLabel")
+                : t("orders.reservations.notAllocatedLabel")}
+            </StatusBadge>
+          </div>
         </div>
-      </div>
-      <div className="flex items-center justify-end">
-        <Text size="small">
-          {getLocaleAmount(item.subtotal || 0, currencyCode)}
-        </Text>
+        <div className="flex items-center justify-end">
+          <Text size="small">
+            {getLocaleAmount(item.subtotal || 0, currencyCode)}
+          </Text>
+        </div>
       </div>
     </div>
   )
@@ -150,19 +161,17 @@ const Cost = ({
 }: {
   label: string
   value: string | number
-  secondaryValue?: string
+  secondaryValue: string
 }) => (
   <div className="grid grid-cols-3 items-center">
     <Text size="small" leading="compact">
       {label}
     </Text>
-    {secondaryValue && (
-      <div className="text-right">
-        <Text size="small" leading="compact">
-          {secondaryValue}
-        </Text>
-      </div>
-    )}
+    <div className="text-right">
+      <Text size="small" leading="compact">
+        {secondaryValue}
+      </Text>
+    </div>
     <div className="text-right">
       <Text size="small" leading="compact">
         {value}

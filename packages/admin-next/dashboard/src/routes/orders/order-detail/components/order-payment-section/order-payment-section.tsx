@@ -85,7 +85,7 @@ const Refund = ({
   )
 
   return (
-    <div className="bg-ui-bg-subtle text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_1fr_20px] gap-x-4 px-6 py-4">
+    <div className="bg-ui-bg-subtle text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4">
       <div>
         {hasPayment && <ArrowDownRightMini className="text-ui-fg-muted" />}
         <Text size="small" leading="compact" weight="plus">
@@ -148,7 +148,9 @@ const Payment = ({
           </Text>
         </div>
         <div className="flex items-center justify-end">
-          <StatusBadge color={color}>{status}</StatusBadge>
+          <StatusBadge color={color} className="text-nowrap">
+            {status}
+          </StatusBadge>
         </div>
         <div className="flex items-center justify-end">
           <Text size="small" leading="compact">

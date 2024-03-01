@@ -120,7 +120,7 @@ const UnfulfilledItemBreakdown = ({ order }: { order: Order }) => {
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("orders.fulfillment.unfulfilledItems")}</Heading>
         <div className="flex items-center gap-x-4">
-          <StatusBadge color="red">
+          <StatusBadge color="red" className="text-nowrap">
             {t("orders.fulfillment.awaitingFullfillmentBadge")}
           </StatusBadge>
           <ActionMenu groups={[]} />
@@ -213,7 +213,9 @@ const Fulfillment = ({
               "dd MMM, yyyy, HH:mm:ss"
             )}
           >
-            <StatusBadge color={statusColor}>{statusText}</StatusBadge>
+            <StatusBadge color={statusColor} className="text-nowrap">
+              {statusText}
+            </StatusBadge>
           </Tooltip>
           <ActionMenu
             groups={[

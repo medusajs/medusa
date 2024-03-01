@@ -78,15 +78,18 @@ export const getNativeSymbol = (currencyCode: string) => {
 /**
  * In some cases we to display the amount with the currency code and symbol,
  * in the format of "symbol amount currencyCode". This breaks from the
- * user's locale and is used in cases where we want to display the currency
- * code and symbol explicitly, e.g. for totals.
+ * user's locale and is only used in cases where we want to display the
+ * currency code and symbol explicitly, e.g. for totals.
  */
 export const getStylizedAmount = (amount: number, currencyCode: string) => {
   const symbol = getNativeSymbol(currencyCode)
   const decimalDigits = getDecimalDigits(currencyCode)
   const presentationAmount = getPresentationalAmount(amount, currencyCode)
 
-  const total = presentationAmount.toFixed(decimalDigits)
+  const total = presentationAmount.toLocaleString(undefined, {
+    minimumFractionDigits: decimalDigits,
+    maximumFractionDigits: decimalDigits,
+  })
 
   return `${symbol} ${total} ${currencyCode.toUpperCase()}`
 }

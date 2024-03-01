@@ -101,7 +101,11 @@ const FulfillmentBadge = ({ order }: { order: Order }) => {
     requires_action: [t("orders.fulfillment.status.requresAction"), "orange"],
   }[order.fulfillment_status] as [string, "red" | "orange" | "green"]
 
-  return <StatusBadge color={color}>{label}</StatusBadge>
+  return (
+    <StatusBadge color={color} className="text-nowrap">
+      {label}
+    </StatusBadge>
+  )
 }
 
 const PaymentBadge = ({ order }: { order: Order }) => {
@@ -120,5 +124,9 @@ const PaymentBadge = ({ order }: { order: Order }) => {
     requires_action: [t("orders.payment.status.requresAction"), "orange"],
   }[order.payment_status] as [string, "red" | "orange" | "green"]
 
-  return <StatusBadge color={color}>{label}</StatusBadge>
+  return (
+    <StatusBadge color={color} className="text-nowrap">
+      {label}
+    </StatusBadge>
+  )
 }

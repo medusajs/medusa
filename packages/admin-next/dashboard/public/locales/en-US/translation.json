@@ -193,6 +193,10 @@
         "requresAction": "Requires action"
       }
     },
+    "reservations": {
+      "allocatedLabel": "Allocated",
+      "notAllocatedLabel": "Not allocated"
+    },
     "fulfillment": {
       "cancelWarning": "You are about to cancel a fulfillment. This action cannot be undone.",
       "unfulfilledItems": "Unfulfilled Items",

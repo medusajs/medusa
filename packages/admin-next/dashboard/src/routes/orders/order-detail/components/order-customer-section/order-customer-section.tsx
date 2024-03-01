@@ -149,31 +149,29 @@ const Contact = ({ order }: { order: Order }) => {
         {t("orders.customer.contactLabel")}
       </Text>
       <div className="flex flex-col gap-y-2">
-        <div className="grid grid-cols-2 items-start gap-x-2">
-          <div className="w-full">
-            <Text
-              size="small"
-              leading="compact"
-              className="whitespace-normal text-pretty"
-            >
-              {email}
-            </Text>
-          </div>
+        <div className="grid grid-cols-[1fr_20px] items-start gap-x-2">
+          <Text
+            size="small"
+            leading="compact"
+            className="text-pretty break-all"
+          >
+            {email}
+          </Text>
+
           <div className="flex justify-end">
             <Copy content={email} className="text-ui-fg-muted" />
           </div>
         </div>
         {phone && (
-          <div className="grid grid-cols-2 items-start gap-x-2">
-            <div className="w-full">
-              <Text
-                size="small"
-                leading="compact"
-                className="whitespace-normal text-pretty"
-              >
-                {phone}
-              </Text>
-            </div>
+          <div className="grid grid-cols-[1fr_20px] items-start gap-x-2">
+            <Text
+              size="small"
+              leading="compact"
+              className="text-pretty break-all"
+            >
+              {phone}
+            </Text>
+
             <div className="flex justify-end">
               <Copy content={email} className="text-ui-fg-muted" />
             </div>
@@ -270,7 +268,7 @@ const Address = ({
           <Text size="small" leading="compact">
             {getFormattedAddress({ address }).map((line, i) => {
               return (
-                <span key={i}>
+                <span key={i} className="break-words">
                   {line}
                   <br />
                 </span>
