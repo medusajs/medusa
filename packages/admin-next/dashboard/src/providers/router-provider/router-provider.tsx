@@ -657,6 +657,10 @@ const router = createBrowserRouter([
                 path: "",
                 lazy: () => import("../../routes/executions/execution-list"),
               },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/executions/execution-detail"),
+              },
             ],
           },
           ...settingsExtensions,
