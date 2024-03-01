@@ -8234,14 +8234,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/fulfillment-manual@workspace:packages/fulfillment-manual":
+"@medusajs/fulfillment-manual@workspace:*, @medusajs/fulfillment-manual@workspace:packages/fulfillment-manual":
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment-manual@workspace:packages/fulfillment-manual"
   dependencies:
-    "@medusajs/medusa": ^1.19.1
     "@medusajs/utils": ^1.11.3
-    "@types/stripe": ^8.0.417
-    awilix: ^8.0.1
     body-parser: ^1.19.0
     cross-env: ^5.2.1
     express: ^4.17.1
@@ -8255,6 +8252,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment@workspace:packages/fulfillment"
   dependencies:
+    "@medusajs/fulfillment-manual": "workspace:*"
     "@medusajs/modules-sdk": ^1.12.4
     "@medusajs/types": ^1.11.8
     "@medusajs/utils": ^1.11.1
