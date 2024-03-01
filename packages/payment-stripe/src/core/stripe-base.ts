@@ -144,9 +144,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
       intentRequest.customer = stripeCustomer.id
     }
 
-    let session_data
+    let sessionData
     try {
-      session_data = (await this.stripe_.paymentIntents.create(
+      sessionData = (await this.stripe_.paymentIntents.create(
         intentRequest
       )) as unknown as Record<string, unknown>
     } catch (e) {
@@ -157,7 +157,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     }
 
     return {
-      data: session_data,
+      data: sessionData,
       // TODO: REVISIT
       // update_requests: customer?.metadata?.stripe_id
       //   ? undefined

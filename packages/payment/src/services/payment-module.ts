@@ -37,7 +37,6 @@ import {
   Refund,
 } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { paymentSessionWorkflow } from "../workflows"
 import PaymentProviderService from "./payment-provider"
 
 type InjectedDependencies = {
@@ -205,13 +204,53 @@ export default class PaymentModuleService<
   @InjectManager("baseRepository_")
   async createPaymentSession(
     paymentCollectionId: string,
-    data: CreatePaymentSessionDTO,
+    input: CreatePaymentSessionDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentSessionDTO> {
-    const { result, errors } = await paymentSessionWorkflow(
-      this.__container__ as any
-    ).run({
-      input: {
+    let paymentSession: PaymentSession
+
+    try {
+      const providerSessionSession =
+        await this.paymentProviderService_.createSession(input.provider_id, {
+          context: input.context,
+          amount: input.amount,
+          currency_code: input.currency_code,
+        })
+
+      input.data = {
+        ...input.data,
+        ...providerSessionSession,
+      }
+
+      paymentSession = await this.createPaymentSession_(
+        paymentCollectionId,
+        input,
+        sharedContext
+      )
+    } catch (error) {
+      // In case the session is created at the provider, but fails to be created in Medusa,
+      // we catch the error and delete the session at the provider and rethrow.
+      await this.paymentProviderService_.deleteSession({
+        provider_id: input.provider_id,
+        data: input.data,
+      })
+
+      throw error
+    }
+
+    return await this.baseRepository_.serialize(paymentSession, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async createPaymentSession_(
+    paymentCollectionId: string,
+    data: CreatePaymentSessionDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentSession> {
+    const paymentSession = await this.paymentSessionService_.create(
+      {
         payment_collection_id: paymentCollectionId,
         provider_id: data.provider_id,
         amount: data.amount,
@@ -219,22 +258,10 @@ export default class PaymentModuleService<
         context: data.context,
         data: data.data,
       },
-      context: sharedContext,
-    })
-
-    if (errors.length) {
-      throw errors[0].error
-    }
-
-    const paymentSession = await this.paymentSessionService_.retrieve(
-      result.id as string,
-      {},
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(result, {
-      populate: true,
-    })
+    return paymentSession
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -289,8 +316,14 @@ export default class PaymentModuleService<
     const session = await this.paymentSessionService_.retrieve(
       id,
       {
-        select: ["id", "data", "provider_id", "amount", "currency_code"],
-        relations: ["payment_collection"],
+        select: [
+          "id",
+          "data",
+          "provider_id",
+          "amount",
+          "currency_code",
+          "payment_collection_id",
+        ],
       },
       sharedContext
     )
@@ -339,7 +372,7 @@ export default class PaymentModuleService<
         amount: session.amount,
         currency_code: session.currency_code,
         payment_session: session.id,
-        payment_collection: session.payment_collection!.id,
+        payment_collection_id: session.payment_collection_id,
         provider_id: session.provider_id,
         // customer_id: context.customer.id,
         data,

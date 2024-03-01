@@ -109,11 +109,19 @@ export default class Payment {
   captures = new Collection<Capture>(this)
 
   @ManyToOne({
+    entity: () => PaymentCollection,
+    persist: false,
+  })
+  payment_collection: PaymentCollection
+
+  @ManyToOne({
+    entity: () => PaymentCollection,
+    columnType: "text",
     index: "IDX_payment_payment_collection_id",
     fieldName: "payment_collection_id",
-    onDelete: "cascade",
+    mapToPk: true,
   })
-  payment_collection!: PaymentCollection
+  payment_collection_id: string
 
   @OneToOne({
     owner: true,

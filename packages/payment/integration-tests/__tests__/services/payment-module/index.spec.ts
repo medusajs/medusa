@@ -21,15 +21,7 @@ moduleIntegrationTestRunner({
   }: SuiteOptions<IPaymentModuleService>) => {
     describe("Payment Module Service", () => {
       describe("Payment Flow", () => {
-        beforeEach(async () => {
-          const repositoryManager = MikroOrmWrapper.forkManager()
-
-          await createPaymentCollections(repositoryManager)
-          await createPaymentSessions(repositoryManager)
-          await createPayments(repositoryManager)
-        })
-
-        it.only("complete payment flow successfully", async () => {
+        it("complete payment flow successfully", async () => {
           let paymentCollection = await service.createPaymentCollections({
             currency_code: "usd",
             amount: 200,
@@ -447,7 +439,6 @@ moduleIntegrationTestRunner({
                 amount: 100,
                 currency_code: "usd",
                 provider_id: "pp_system_default",
-
                 refunds: [],
                 captures: [],
                 data: {},
@@ -458,10 +449,8 @@ moduleIntegrationTestRunner({
                 deleted_at: null,
                 captured_at: null,
                 canceled_at: null,
-                payment_collection: expect.objectContaining({
-                  id: expect.any(String),
-                }),
-                payment_session: {
+                payment_collection_id: expect.any(String),
+                payment_session: expect.objectContaining({
                   id: expect.any(String),
                   updated_at: expect.any(Date),
                   created_at: expect.any(Date),
@@ -475,22 +464,8 @@ moduleIntegrationTestRunner({
                   payment_collection: expect.objectContaining({
                     id: expect.any(String),
                   }),
-                  payment: expect.objectContaining({
-                    cart_id: null,
-                    order_id: null,
-                    order_edit_id: null,
-                    customer_id: null,
-                    data: {},
-                    deleted_at: null,
-                    captured_at: null,
-                    canceled_at: null,
-                    refunds: [],
-                    captures: [],
-                    amount: 100,
-                    currency_code: "usd",
-                    provider_id: "pp_system_default",
-                  }),
-                },
+                  payment_collection_id: expect.any(String),
+                }),
               })
             )
           })
