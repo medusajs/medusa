@@ -47,11 +47,6 @@ describe("Cart links", () => {
     await shutdownServer()
   })
 
-  beforeEach(async () => {
-    // @ts-ignore
-    await regionModule.createDefaultCountries()
-  })
-
   afterEach(async () => {
     const db = useDb()
     await db.teardown()
