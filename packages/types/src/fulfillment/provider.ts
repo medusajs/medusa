@@ -41,11 +41,11 @@ export interface IFulfillmentProvider {
    * Create a fulfillment for the given data.
    */
   createFulfillment(
-    data: any,
-    items: any,
-    order: any,
-    fulfillment: any
-  ): Promise<any>
+    data: object,
+    items: object[],
+    order: object,
+    fulfillment: Record<string, unknown>
+  ): Promise<Record<string, unknown>>
   /**
    * @ignore
    *

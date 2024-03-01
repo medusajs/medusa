@@ -25,7 +25,7 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
 import {
   Fulfillment,
   FulfillmentSet,
@@ -37,7 +37,7 @@ import {
   ShippingOptionType,
   ShippingProfile,
 } from "@models"
-import { isContextValid, validateRules } from "@utils"
+import {isContextValid, validateRules} from "@utils"
 import ServiceProviderService from "./service-provider"
 
 const generateMethodForModels = [
@@ -612,8 +612,8 @@ export default class FulfillmentModuleService<
       fulfillmentThirdPartyData =
         await this.serviceProviderService_.createFulfillment(
           provider_id,
-          fulfillmentData,
-          items,
+          fulfillmentData || {},
+          items.map(i => i),
           order,
           fulfillmentRest
         )

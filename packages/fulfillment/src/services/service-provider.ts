@@ -79,11 +79,11 @@ export default class ServiceProviderService extends ModulesSdkUtils.internalModu
 
   async createFulfillment(
     providerId: string,
-    data: any,
-    items: any,
-    order: any,
-    fulfillment: any
-  ): Promise<any> {
+    data: object,
+    items: object[],
+    order: object,
+    fulfillment: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
     const provider = this.retrieveProviderRegistration(providerId)
     return await provider.createFulfillment(data, items, order, fulfillment)
   }

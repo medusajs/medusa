@@ -29,17 +29,7 @@ export class ManualFulfillmentService extends AbstractFulfillmentProviderService
     return true
   }
 
-  // TODO revisit this API
-
-  /*canCalculate() {
-    return false
-  }
-
-  calculatePrice() {
-    throw Error("Manual Fulfillment service cannot calculatePrice")
-  }*/
-
-  async createFulfillment(): Promise<any> {
+  async createFulfillment(): Promise<Record<string, unknown>> {
     // No data is being sent anywhere
     return {}
   }
