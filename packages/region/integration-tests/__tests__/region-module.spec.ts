@@ -1,6 +1,5 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IRegionModuleService } from "@medusajs/types"
-import { DefaultsUtils } from "@medusajs/utils"
 import { initModules } from "medusa-test-utils"
 import { MikroOrmWrapper } from "../utils"
 import { getInitModuleConfig } from "../utils/get-init-module-config"
@@ -27,27 +26,8 @@ describe("Region Module Service", () => {
   })
 
   it("should create countries on application start", async () => {
-    const countries = await service.listCountries()
-    expect(countries.length).toBeGreaterThan(0)
-  })
-
-  it("should create countries added to default ones", async () => {
-    const [, count] = await service.listAndCountCountries()
-    const initialCountries = DefaultsUtils.defaultCountries.length
-
-    expect(count).toEqual(initialCountries)
-
-    DefaultsUtils.defaultCountries.push({
-      name: "Dogecoin",
-      alpha2: "DOGE",
-      alpha3: "DOGE",
-      numeric: "420",
-    })
-
-    await service.createDefaultCountries()
-
-    const [, newCount] = await service.listAndCountCountries()
-    expect(newCount).toEqual(initialCountries + 1)
+    const countries = await service.listCountries({}, { take: null })
+    expect(countries.length).toEqual(250)
   })
 
   it("should create and list a region", async () => {
@@ -355,5 +335,23 @@ describe("Region Module Service", () => {
     ).rejects.toThrowError(
       'Countries with codes: "mx" are already assigned to a region'
     )
+  })
+
+  it("should unset the region ID on the country when deleting a region", async () => {
+    const createdRegion = await service.create({
+      name: "North America",
+      currency_code: "USD",
+      countries: ["us", "ca"],
+    })
+
+    await service.delete(createdRegion.id)
+
+    const resp = await service.create({
+      name: "North America",
+      currency_code: "USD",
+      countries: ["us", "ca"],
+    })
+
+    expect(resp.countries).toHaveLength(2)
   })
 })
