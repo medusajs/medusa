@@ -15,7 +15,7 @@ export const GET = async (
   const remoteQuery = req.scope.resolve("remoteQuery")
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "api-key",
+    entryPoint: "api_key",
     variables: {
       filters: req.filterableFields,
       order: req.listConfig.order,
@@ -47,7 +47,7 @@ export const POST = async (
   ]
 
   const { result, errors } = await createApiKeysWorkflow(req.scope).run({
-    input: { apiKeysData: input },
+    input: { api_keys: input },
     throwOnError: false,
   })
 
