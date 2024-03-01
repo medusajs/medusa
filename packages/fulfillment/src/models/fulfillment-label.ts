@@ -48,11 +48,16 @@ export default class FulfillmentLabel {
   @Property({ columnType: "text" })
   label_url: string
 
-  @Property({ columnType: "text" })
+  @ManyToOne(() => Fulfillment, {
+    columnType: "text",
+    mapToPk: true,
+    fieldName: "fulfillment_id",
+    onDelete: "cascade",
+  })
   @FulfillmentIdIndex.MikroORMIndex()
   fulfillment_id: string
 
-  @ManyToOne(() => Fulfillment)
+  @ManyToOne(() => Fulfillment, { persist: false })
   fulfillment: Fulfillment
 
   @Property({

@@ -25,6 +25,7 @@ import {
 
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import {
+  Fulfillment,
   FulfillmentSet,
   GeoZone,
   ServiceProvider,
@@ -43,6 +44,7 @@ const generateMethodForModels = [
   ShippingProfile,
   ShippingOptionRule,
   ShippingOptionType,
+  // Not adding Fulfillment to not auto generate the methods under the hood and only provide the methods we want to expose8
 ]
 
 type InjectedDependencies = {
@@ -55,6 +57,7 @@ type InjectedDependencies = {
   shippingOptionRuleService: ModulesSdkTypes.InternalModuleService<any>
   shippingOptionTypeService: ModulesSdkTypes.InternalModuleService<any>
   serviceProviderService: ModulesSdkTypes.InternalModuleService<any>
+  fulfillmentService: ModulesSdkTypes.InternalModuleService<any>
 }
 
 export default class FulfillmentModuleService<
@@ -65,7 +68,8 @@ export default class FulfillmentModuleService<
     TShippingOptionEntity extends ShippingOption = ShippingOption,
     TShippingOptionRuleEntity extends ShippingOptionRule = ShippingOptionRule,
     TSippingOptionTypeEntity extends ShippingOptionType = ShippingOptionType,
-    TServiceProviderEntity extends ServiceProvider = ServiceProvider
+    TServiceProviderEntity extends ServiceProvider = ServiceProvider,
+    TFulfillmentEntity extends Fulfillment = Fulfillment
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -91,6 +95,7 @@ export default class FulfillmentModuleService<
   protected readonly shippingOptionRuleService_: ModulesSdkTypes.InternalModuleService<TShippingOptionRuleEntity>
   protected readonly shippingOptionTypeService_: ModulesSdkTypes.InternalModuleService<TSippingOptionTypeEntity>
   protected readonly serviceProviderService_: ModulesSdkTypes.InternalModuleService<TServiceProviderEntity>
+  protected readonly fulfillmentService_: ModulesSdkTypes.InternalModuleService<TFulfillmentEntity>
 
   constructor(
     {
@@ -103,6 +108,7 @@ export default class FulfillmentModuleService<
       shippingOptionRuleService,
       shippingOptionTypeService,
       serviceProviderService,
+      fulfillmentService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -117,6 +123,7 @@ export default class FulfillmentModuleService<
     this.shippingOptionRuleService_ = shippingOptionRuleService
     this.shippingOptionTypeService_ = shippingOptionTypeService
     this.serviceProviderService_ = serviceProviderService
+    this.fulfillmentService_ = fulfillmentService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -213,6 +220,44 @@ export default class FulfillmentModuleService<
     return await this.baseRepository_.serialize<
       FulfillmentTypes.ShippingOptionDTO[]
     >(shippingOptions, {
+      populate: true,
+    })
+  }
+
+  @InjectManager("baseRepository_")
+  async retrieveFulfillment(
+    id: string,
+    config: FindConfig<FulfillmentTypes.FulfillmentDTO> = {},
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.FulfillmentDTO> {
+    const fulfillment = await this.fulfillmentService_.retrieve(
+      id,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
+      fulfillment,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  async listFulfillments(
+    filters: FulfillmentTypes.FilterableFulfillmentProps = {},
+    config: FindConfig<FulfillmentTypes.FulfillmentDTO> = {},
+    sharedContext?: Context
+  ): Promise<FulfillmentTypes.FulfillmentDTO[]> {
+    const fulfillments = await this.fulfillmentService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      FulfillmentTypes.FulfillmentDTO[]
+    >(fulfillments, {
       populate: true,
     })
   }

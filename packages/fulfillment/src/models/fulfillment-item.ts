@@ -1,10 +1,12 @@
 import {
+  BigNumber,
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
+  MikroOrmBigNumberProperty,
 } from "@medusajs/utils"
 
-import { DAL } from "@medusajs/types"
+import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BeforeCreate,
   Entity,
@@ -60,8 +62,11 @@ export default class FulfillmentItem {
   @Property({ columnType: "text" })
   barcode: string
 
-  @Property({ columnType: "numeric", serializer: Number })
-  quantity: number // TODO: probably allow big numbers here
+  @MikroOrmBigNumberProperty()
+  quantity: BigNumber | number
+
+  @Property({ columnType: "jsonb" })
+  raw_quantity: BigNumberRawValue
 
   @Property({ columnType: "text", nullable: true })
   @LineItemIdIndex.MikroORMIndex()
@@ -71,11 +76,16 @@ export default class FulfillmentItem {
   @InventoryItemIdIndex.MikroORMIndex()
   inventory_item_id: string | null = null
 
-  @Property({ columnType: "text" })
+  @ManyToOne(() => Fulfillment, {
+    columnType: "text",
+    mapToPk: true,
+    fieldName: "fulfillment_id",
+    onDelete: "cascade",
+  })
   @FulfillmentIdIndex.MikroORMIndex()
   fulfillment_id: string
 
-  @ManyToOne(() => Fulfillment)
+  @ManyToOne(() => Fulfillment, { persist: false })
   fulfillment: Fulfillment
 
   @Property({

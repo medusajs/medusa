@@ -7,6 +7,7 @@ import {
   FilterableShippingOptionRuleProps,
   FilterableShippingOptionTypeProps,
   FilterableShippingProfileProps,
+  FulfillmentDTO,
   FulfillmentSetDTO,
   GeoZoneDTO,
   ServiceZoneDTO,
@@ -31,6 +32,7 @@ import {
   UpdateShippingOptionRuleDTO,
 } from "./mutations"
 import { CreateShippingProfileDTO } from "./mutations/shipping-profile"
+import { CreateFulfillmentDTO } from "./mutations/fulfillment"
 
 export interface IFulfillmentModuleService extends IModuleService {
   /**
@@ -338,6 +340,18 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<ShippingOptionTypeDTO>
 
   /**
+   * Retrieve a fulfillment
+   * @param id
+   * @param config
+   * @param sharedContext
+   */
+  retrieveFulfillment(
+    id: string,
+    config?: FindConfig<FulfillmentDTO>,
+    sharedContext?: Context
+  ): Promise<FulfillmentDTO>
+
+  /**
    * List fulfillment sets
    * @param filters
    * @param config
@@ -420,6 +434,18 @@ export interface IFulfillmentModuleService extends IModuleService {
     config?: FindConfig<ShippingOptionTypeDTO>,
     sharedContext?: Context
   ): Promise<ShippingOptionTypeDTO[]>
+
+  /**
+   * List fulfillments
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listFulfillments(
+    filters?: FilterableFulfillmentSetProps,
+    config?: FindConfig<FulfillmentDTO>,
+    sharedContext?: Context
+  ): Promise<FulfillmentDTO[]>
 
   /**
    * List and count fulfillment sets
@@ -506,6 +532,18 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<[ShippingOptionTypeDTO[], number]>
 
   /**
+   * List and count fulfillments
+   * @param filters
+   * @param config
+   * @param sharedContext
+   */
+  listAndCountFulfillments(
+    filters?: FilterableFulfillmentSetProps,
+    config?: FindConfig<FulfillmentDTO>,
+    sharedContext?: Context
+  ): Promise<[FulfillmentDTO[], number]>
+
+  /**
    * Soft delete fulfillment sets
    * @param fulfillmentIds
    * @param config
@@ -565,6 +603,18 @@ export interface IFulfillmentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
+  /**
+   * Soft delete fulfillment
+   * @param fulfillmentId
+   * @param config
+   * @param sharedContext
+   */
+  softDeleteFulfillment<TReturnableLinkableKeys extends string = string>(
+    fulfillmentId: string,
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
   restore<TReturnableLinkableKeys extends string = string>(
     fulfillmentIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
@@ -572,4 +622,14 @@ export interface IFulfillmentModuleService extends IModuleService {
   ): Promise<Record<string, string[]> | void>
 
   // TODO define needed soft delete/delete/restore methods
+
+  /**
+   * Retrieve the available fulfillment options for the given data.
+   */
+  retrieveFulfillmentOptions(): Promise<Record<string, unknown>[]>
+
+  createFulfillment(
+    data: CreateFulfillmentDTO,
+    sharedContext?: Context
+  ): Promise<FulfillmentDTO>
 }

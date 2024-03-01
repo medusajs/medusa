@@ -19,7 +19,7 @@ export class AbstractFulfillmentProviderService
     throw Error("getFulfillmentOptions must be overridden by the child class")
   }
 
-  async validateFulfillmentData(optionData, data, cart): Promise<any> {
+  async validateFulfillmentData(optionData, data, context): Promise<any> {
     throw Error("validateFulfillmentData must be overridden by the child class")
   }
 

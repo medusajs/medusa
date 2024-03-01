@@ -21,7 +21,7 @@ export class ManualFulfillmentService extends AbstractFulfillmentProviderService
     ]
   }
 
-  async validateFulfillmentData(_, data, cart): Promise<any> {
+  async validateFulfillmentData(_, data, context): Promise<any> {
     return data
   }
 

@@ -88,7 +88,12 @@ export default class Fulfillment {
   @Property({ columnType: "jsonb", nullable: true })
   data: Record<string, unknown> | null = null
 
-  @Property({ columnType: "text" })
+  @ManyToOne(() => ServiceProvider, {
+    columnType: "text",
+    fieldName: "provider_id",
+    mapToPk: true,
+    nullable: true,
+  })
   @FulfillmentProviderIdIndex.MikroORMIndex()
   provider_id: string
 
