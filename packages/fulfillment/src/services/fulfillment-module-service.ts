@@ -1,9 +1,11 @@
 import {
   Context,
   DAL,
+  FilterableFulfillmentSetProps,
   FilterableShippingOptionProps,
   FilterQuery,
   FindConfig,
+  FulfillmentDTO,
   FulfillmentTypes,
   IFulfillmentModuleService,
   InternalModuleDeclaration,
@@ -36,6 +38,7 @@ import {
   ShippingProfile,
 } from "@models"
 import { isContextValid, validateRules } from "@utils"
+import ServiceProviderService from "./service-provider"
 
 const generateMethodForModels = [
   ServiceZone,
@@ -56,7 +59,7 @@ type InjectedDependencies = {
   shippingOptionService: ModulesSdkTypes.InternalModuleService<any>
   shippingOptionRuleService: ModulesSdkTypes.InternalModuleService<any>
   shippingOptionTypeService: ModulesSdkTypes.InternalModuleService<any>
-  serviceProviderService: ModulesSdkTypes.InternalModuleService<any>
+  serviceProviderService: ServiceProviderService
   fulfillmentService: ModulesSdkTypes.InternalModuleService<any>
 }
 
@@ -94,7 +97,7 @@ export default class FulfillmentModuleService<
   protected readonly shippingOptionService_: ModulesSdkTypes.InternalModuleService<TShippingOptionEntity>
   protected readonly shippingOptionRuleService_: ModulesSdkTypes.InternalModuleService<TShippingOptionRuleEntity>
   protected readonly shippingOptionTypeService_: ModulesSdkTypes.InternalModuleService<TSippingOptionTypeEntity>
-  protected readonly serviceProviderService_: ModulesSdkTypes.InternalModuleService<TServiceProviderEntity>
+  protected readonly serviceProviderService_: ServiceProviderService
   protected readonly fulfillmentService_: ModulesSdkTypes.InternalModuleService<TFulfillmentEntity>
 
   constructor(
@@ -186,7 +189,7 @@ export default class FulfillmentModuleService<
   async listShippingOptions(
     filters: FilterableShippingOptionProps = {},
     config: FindConfig<ShippingOptionDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.ShippingOptionDTO[]> {
     const {
       filters: normalizedFilters,
@@ -228,7 +231,7 @@ export default class FulfillmentModuleService<
   async retrieveFulfillment(
     id: string,
     config: FindConfig<FulfillmentTypes.FulfillmentDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.FulfillmentDTO> {
     const fulfillment = await this.fulfillmentService_.retrieve(
       id,
@@ -244,10 +247,17 @@ export default class FulfillmentModuleService<
     )
   }
 
+  async retrieveFulfillmentOptions(
+    providerId: string,
+  ): Promise<Record<string, any>[]> {
+    return await this.serviceProviderService_.getFulfillmentOptions(providerId)
+  }
+
+  @InjectManager("baseRepository_")
   async listFulfillments(
     filters: FulfillmentTypes.FilterableFulfillmentProps = {},
     config: FindConfig<FulfillmentTypes.FulfillmentDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.FulfillmentDTO[]> {
     const fulfillments = await this.fulfillmentService_.list(
       filters,
@@ -260,6 +270,29 @@ export default class FulfillmentModuleService<
     >(fulfillments, {
       populate: true,
     })
+  }
+
+  @InjectManager("baseRepository_")
+  async listAndCountFulfillments(
+    filters?: FilterableFulfillmentSetProps,
+    config?: FindConfig<FulfillmentDTO>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[FulfillmentDTO[], number]> {
+    const [fulfillments, count] = await this.fulfillmentService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [
+      await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO[]>(
+        fulfillments,
+        {
+          populate: true,
+        }
+      ),
+      count,
+    ]
   }
 
   create(
@@ -553,6 +586,63 @@ export default class FulfillmentModuleService<
     return Array.isArray(data)
       ? createdShippingOptionRules
       : createdShippingOptionRules[0]
+  }
+
+  @InjectManager("baseRepository_")
+  async createFulfillment(
+    data: FulfillmentTypes.CreateFulfillmentDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<FulfillmentTypes.FulfillmentDTO> {
+    const { order, ...fulfillmentDataToCreate } = data
+
+    const fulfillment = await this.createFulfillment_(
+      fulfillmentDataToCreate,
+      sharedContext
+    )
+
+    const {
+      items,
+      data: fulfillmentData,
+      provider_id,
+      ...fulfillmentRest
+    } = fulfillment
+
+    let fulfillmentThirdPartyData!: any
+    try {
+      fulfillmentThirdPartyData =
+        await this.serviceProviderService_.createFulfillment(
+          provider_id,
+          fulfillmentData,
+          items,
+          order,
+          fulfillmentRest
+        )
+      await this.fulfillmentService_.update({
+        id: fulfillment.id,
+        data: fulfillmentThirdPartyData ?? {},
+      })
+    } catch (error) {
+      await this.fulfillmentService_.delete(fulfillment.id, sharedContext)
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `An error occurred while creating the fulfillment: ${error.message}`
+      )
+    }
+
+    return await this.baseRepository_.serialize<FulfillmentTypes.FulfillmentDTO>(
+      fulfillment,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async createFulfillment_(
+    data: Omit<FulfillmentTypes.CreateFulfillmentDTO, "order">,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TFulfillmentEntity> {
+    return await this.fulfillmentService_.create(data, sharedContext)
   }
 
   update(
@@ -1123,6 +1213,34 @@ export default class FulfillmentModuleService<
     return Array.isArray(data)
       ? updatedShippingOptionRules
       : updatedShippingOptionRules[0]
+  }
+
+  @InjectManager("baseRepository_")
+  async deleteFulfillment(
+    id: string,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const fulfillment = await this.fulfillmentService_.retrieve(
+      id,
+      {},
+      sharedContext
+    )
+
+    if (fulfillment.provider_id) {
+      try {
+        await this.serviceProviderService_.cancelFulfillment(
+          fulfillment.provider_id,
+          fulfillment.data
+        )
+      } catch (error) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `An error occurred while canceling the fulfillment: ${error.message}`
+        )
+      }
+    }
+
+    await this.fulfillmentService_.delete(id, sharedContext)
   }
 
   protected static validateMissingShippingOptions_(

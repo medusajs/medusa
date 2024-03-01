@@ -1,5 +1,5 @@
 import { buildQuery } from "../../modules-sdk"
-import { EntityMetadata, FindOptions, wrap } from "@mikro-orm/core"
+import { EntityDTO, EntityMetadata, FindOptions, wrap } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 function detectCircularDependency(
@@ -148,11 +148,30 @@ export const mikroOrmSerializer = async <TOutput extends object>(
   options?: any
 ): Promise<TOutput> => {
   options ??= {}
+
+  const data_ = Array.isArray(data) ? data : [data]
+
+  const forSerialization: unknown[] = []
+  const notForSerialization: unknown[] = []
+
+  data_.forEach((object) => {
+    if (object.__meta) {
+      return forSerialization.push(object)
+    }
+
+    return notForSerialization.push(object)
+  })
+
   const { serialize } = await import("@mikro-orm/core")
-  const result = serialize(data, {
+  const result = serialize(forSerialization, {
     forceObject: true,
     populate: true,
     ...options,
-  })
+  }) as EntityDTO<unknown>[]
+
+  if (notForSerialization.length) {
+    return result.concat(notForSerialization) as unknown as Promise<TOutput>
+  }
+
   return result as unknown as Promise<TOutput>
 }

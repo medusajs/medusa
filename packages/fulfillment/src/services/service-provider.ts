@@ -78,17 +78,18 @@ export default class ServiceProviderService extends ModulesSdkUtils.internalModu
   }
 
   async createFulfillment(
+    providerId: string,
     data: any,
     items: any,
     order: any,
     fulfillment: any
   ): Promise<any> {
-    const provider = this.retrieveProviderRegistration(data.provider_id)
+    const provider = this.retrieveProviderRegistration(providerId)
     return await provider.createFulfillment(data, items, order, fulfillment)
   }
 
-  async cancelFulfillment(fulfillment: any): Promise<any> {
-    const provider = this.retrieveProviderRegistration(fulfillment.provider_id)
+  async cancelFulfillment(providerId: string, fulfillment: any): Promise<any> {
+    const provider = this.retrieveProviderRegistration(providerId)
     return await provider.cancelFulfillment(fulfillment)
   }
 }

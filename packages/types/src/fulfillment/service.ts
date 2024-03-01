@@ -603,30 +603,28 @@ export interface IFulfillmentModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
-  /**
-   * Soft delete fulfillment
-   * @param fulfillmentId
-   * @param config
-   * @param sharedContext
-   */
-  softDeleteFulfillment<TReturnableLinkableKeys extends string = string>(
-    fulfillmentId: string,
-    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
-    sharedContext?: Context
-  ): Promise<Record<string, string[]> | void>
-
   restore<TReturnableLinkableKeys extends string = string>(
     fulfillmentIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
+  /**
+   * delete fulfillment
+   * @param fulfillmentId
+   * @param sharedContext
+   */
+  deleteFulfillment(
+    fulfillmentId: string,
+    sharedContext?: Context
+  ): Promise<void>
+
   // TODO define needed soft delete/delete/restore methods
 
   /**
    * Retrieve the available fulfillment options for the given data.
    */
-  retrieveFulfillmentOptions(): Promise<Record<string, unknown>[]>
+  retrieveFulfillmentOptions(providerId: string): Promise<Record<string, unknown>[]>
 
   createFulfillment(
     data: CreateFulfillmentDTO,
