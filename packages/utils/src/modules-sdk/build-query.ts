@@ -50,6 +50,14 @@ export function buildQuery<T = any, TDto = any>(
     }
   }
 
+  if (config.filters) {
+    findOptions.filters ??= {}
+
+    for (const [key, value] of Object.entries(config.filters)) {
+      findOptions.filters[key] = value
+    }
+  }
+
   return { where, options: findOptions }
 }
 
