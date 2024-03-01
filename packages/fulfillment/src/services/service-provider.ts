@@ -4,11 +4,7 @@ import {
   FulfillmentTypes,
   IFulfillmentProvider,
 } from "@medusajs/types"
-import {
-  AbstractFulfillmentProviderService,
-  ModulesSdkUtils,
-  promiseAll,
-} from "@medusajs/utils"
+import { ModulesSdkUtils, promiseAll } from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
 import { ServiceProvider } from "@models"
 
@@ -16,6 +12,8 @@ type InjectedDependencies = {
   serviceProviderRepository: DAL.RepositoryService
   [key: `fp_${string}`]: FulfillmentTypes.IFulfillmentProvider
 }
+
+// TODO reword DTO's
 
 export default class ServiceProviderService extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
   ServiceProvider
@@ -53,7 +51,7 @@ export default class ServiceProviderService extends ModulesSdkUtils.internalModu
    * @param providerId - the provider id
    * @return the payment fulfillment provider
    */
-  retrieveProvider(providerId: string): AbstractFulfillmentProviderService {
+  retrieveProvider(providerId: string): FulfillmentTypes.IFulfillmentProvider {
     try {
       return super.__container__[`fp_${providerId}`]
     } catch (err) {
@@ -62,5 +60,37 @@ export default class ServiceProviderService extends ModulesSdkUtils.internalModu
         `Could not find a fulfillment provider with id: ${providerId}`
       )
     }
+  }
+
+  async getFulfillmentOptions(
+    providerId: string
+  ): Promise<Record<string, unknown>[]> {
+    const provider = this.retrieveProvider(providerId)
+    return await provider.getFulfillmentOptions()
+  }
+
+  async validateFulfillmentData(optionData: any, data: any, cart: any) {
+    const provider = this.retrieveProvider(optionData.provider_id)
+    return await provider.validateFulfillmentData(optionData, data, cart)
+  }
+
+  async validateOption(data: any) {
+    const provider = this.retrieveProvider(data.provider_id)
+    return await provider.validateOption(data)
+  }
+
+  async createFulfillment(
+    data: any,
+    items: any,
+    order: any,
+    fulfillment: any
+  ): Promise<any> {
+    const provider = this.retrieveProvider(data.provider_id)
+    return await provider.createFulfillment(data, items, order, fulfillment)
+  }
+
+  async cancelFulfillment(fulfillment: any): Promise<any> {
+    const provider = this.retrieveProvider(fulfillment.provider_id)
+    return await provider.cancelFulfillment(fulfillment)
   }
 }

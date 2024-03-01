@@ -15,15 +15,15 @@ export class AbstractFulfillmentProviderService
     return (this.constructor as any).identifier
   }
 
-  async getFulfillmentOptions(): Promise<Record<string, unknown>> {
+  async getFulfillmentOptions(): Promise<Record<string, unknown>[]> {
     throw Error("getFulfillmentOptions must be overridden by the child class")
   }
 
-  async validateFulfillmentData(optionData, data, cart) {
+  async validateFulfillmentData(optionData, data, cart): Promise<any> {
     throw Error("validateFulfillmentData must be overridden by the child class")
   }
 
-  async validateOption(data) {
+  async validateOption(data): Promise<boolean> {
     throw Error("validateOption must be overridden by the child class")
   }
 
@@ -35,11 +35,11 @@ export class AbstractFulfillmentProviderService
     throw Error("calculatePrice must be overridden by the child class")
   }
 
-  async createFulfillment(data, items, order, fulfillment) {
+  async createFulfillment(data, items, order, fulfillment): Promise<any> {
     throw Error("createFulfillment must be overridden by the child class")
   }
 
-  async cancelFulfillment(fulfillment) {
+  async cancelFulfillment(fulfillment): Promise<any> {
     throw Error("cancelFulfillment must be overridden by the child class")
   }
 
@@ -47,7 +47,11 @@ export class AbstractFulfillmentProviderService
     return []
   }
 
-  async createReturn(fromData) {
+  async createOrder(fromData): Promise<any> {
+    throw Error("createReturn must be overridden by the child class")
+  }
+
+  async createReturn(fromData): Promise<any> {
     throw Error("createReturn must be overridden by the child class")
   }
 

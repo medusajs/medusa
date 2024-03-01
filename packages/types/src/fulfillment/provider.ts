@@ -10,7 +10,7 @@ export interface IFulfillmentProvider {
    *
    * Return the available fulfillment options for the given data.
    */
-  getFulfillmentOptions(): Promise<any>
+  getFulfillmentOptions(): Promise<Record<string, unknown>[]>
   /**
    * @ignore
    *
@@ -22,7 +22,7 @@ export interface IFulfillmentProvider {
    *
    * Validate the given option.
    */
-  validateOption(data: any): Promise<any>
+  validateOption(data: any): Promise<boolean>
   /**
    * @ignore
    *
@@ -61,9 +61,21 @@ export interface IFulfillmentProvider {
   /**
    * @ignore
    *
+   * Create an order for the given data.
+   */
+  createOrder(fromData: any): Promise<any>
+  /**
+   * @ignore
+   *
    * Create a return for the given data.
    */
   createReturn(fromData: any): Promise<any>
+  /**
+   * @ignore
+   *
+   * Get the documents for the given return data.
+   */
+  retrieveDocuments(fulfillmentData, documentType): Promise<any>
   /**
    * @ignore
    *
