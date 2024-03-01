@@ -24,7 +24,7 @@ type OptionalFields =
   | "ends_at"
   | DAL.SoftDeletableEntityDateColumns
 
-@Entity({ tableName: "campaign" })
+@Entity({ tableName: "promotion_campaign" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Campaign {
   [OptionalProps]?: OptionalFields | OptionalRelations

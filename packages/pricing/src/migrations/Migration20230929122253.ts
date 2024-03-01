@@ -3,10 +3,6 @@ import { Migration } from "@mikro-orm/migrations"
 export class Migration20230929122253 extends Migration {
   async up(): Promise<void> {
     this.addSql(
-      'create table if not exists "currency" ("code" text not null, "symbol" text not null, "symbol_native" text not null, "name" text not null, constraint "currency_pkey" primary key ("code"));'
-    )
-
-    this.addSql(
       'create table if not exists "money_amount" ("id" text not null, "currency_code" text null, "amount" numeric null, "min_quantity" numeric null, "max_quantity" numeric null, constraint "money_amount_pkey" primary key ("id"));'
     )
     this.addSql(
@@ -65,10 +61,6 @@ export class Migration20230929122253 extends Migration {
     )
     this.addSql(
       'create index "IDX_price_rule_price_set_money_amount_id" on "price_rule" ("price_set_money_amount_id");'
-    )
-
-    this.addSql(
-      'alter table "money_amount" add constraint "money_amount_currency_code_foreign" foreign key ("currency_code") references "currency" ("code") on update cascade on delete set null;'
     )
 
     this.addSql(

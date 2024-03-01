@@ -24,10 +24,10 @@ import { ProductDTO, ProductTypes } from "@medusajs/types"
 import { createMedusaContainer, kebabCase } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductService } from "@services"
-import { createProductCategories } from "../../../__fixtures__/product-category"
-import { TestDatabase } from "../../../utils"
 import { asValue } from "awilix"
 import ContainerLoader from "../../../../src/loaders/container"
+import { createProductCategories } from "../../../__fixtures__/product-category"
+import { TestDatabase } from "../../../utils"
 
 jest.setTimeout(30000)
 
@@ -486,7 +486,6 @@ describe("Product Service", () => {
           {
             id: workingProduct.id,
             title: workingProduct.title,
-            collection_id: workingCollection.id,
             collection: {
               id: workingCollection.id,
               title: workingCollection.title,

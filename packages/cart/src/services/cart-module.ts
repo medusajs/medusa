@@ -2,7 +2,6 @@ import {
   CartTypes,
   Context,
   DAL,
-  FilterableLineItemTaxLineProps,
   ICartModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
@@ -419,40 +418,6 @@ export default class CartModuleService<
     return await this.lineItemService_.update(toUpdate, sharedContext)
   }
 
-  async removeLineItems(
-    itemIds: string[],
-    sharedContext?: Context
-  ): Promise<void>
-  async removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
-  async removeLineItems(
-    selector: Partial<CartTypes.CartLineItemDTO>,
-    sharedContext?: Context
-  ): Promise<void>
-
-  @InjectTransactionManager("baseRepository_")
-  async removeLineItems(
-    itemIdsOrSelector: string | string[] | Partial<CartTypes.CartLineItemDTO>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    let toDelete: string[]
-
-    if (isObject(itemIdsOrSelector)) {
-      const items = await this.listLineItems(
-        { ...itemIdsOrSelector } as Partial<CartTypes.CartLineItemDTO>,
-        {},
-        sharedContext
-      )
-
-      toDelete = items.map((item) => item.id)
-    } else {
-      toDelete = Array.isArray(itemIdsOrSelector)
-        ? itemIdsOrSelector
-        : [itemIdsOrSelector]
-    }
-
-    await this.lineItemService_.delete(toDelete, sharedContext)
-  }
-
   async createAddresses(
     data: CartTypes.CreateAddressDTO,
     sharedContext?: Context
@@ -599,46 +564,6 @@ export default class CartModuleService<
     )
   }
 
-  async removeShippingMethods(
-    methodIds: string[],
-    sharedContext?: Context
-  ): Promise<void>
-  async removeShippingMethods(
-    methodIds: string,
-    sharedContext?: Context
-  ): Promise<void>
-  async removeShippingMethods(
-    selector: Partial<CartTypes.CartShippingMethodDTO>,
-    sharedContext?: Context
-  ): Promise<void>
-
-  @InjectTransactionManager("baseRepository_")
-  async removeShippingMethods(
-    methodIdsOrSelector:
-      | string
-      | string[]
-      | Partial<CartTypes.CartShippingMethodDTO>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    let toDelete: string[]
-    if (isObject(methodIdsOrSelector)) {
-      const methods = await this.listShippingMethods(
-        {
-          ...(methodIdsOrSelector as Partial<CartTypes.CartShippingMethodDTO>),
-        },
-        {},
-        sharedContext
-      )
-
-      toDelete = methods.map((m) => m.id)
-    } else {
-      toDelete = Array.isArray(methodIdsOrSelector)
-        ? methodIdsOrSelector
-        : [methodIdsOrSelector]
-    }
-    await this.shippingMethodService_.delete(toDelete, sharedContext)
-  }
-
   async addLineItemAdjustments(
     adjustments: CartTypes.CreateLineItemAdjustmentDTO[]
   ): Promise<CartTypes.LineItemAdjustmentDTO[]>
@@ -736,7 +661,7 @@ export default class CartModuleService<
     })
 
     if (toDelete.length) {
-      await this.lineItemAdjustmentService_.delete(
+      await this.lineItemAdjustmentService_.softDelete(
         toDelete.map((adj) => adj!.id),
         sharedContext
       )
@@ -752,46 +677,6 @@ export default class CartModuleService<
     >(result, {
       populate: true,
     })
-  }
-
-  async removeLineItemAdjustments(
-    adjustmentIds: string[],
-    sharedContext?: Context
-  ): Promise<void>
-  async removeLineItemAdjustments(
-    adjustmentId: string,
-    sharedContext?: Context
-  ): Promise<void>
-  async removeLineItemAdjustments(
-    selector: Partial<CartTypes.LineItemAdjustmentDTO>,
-    sharedContext?: Context
-  ): Promise<void>
-
-  async removeLineItemAdjustments(
-    adjustmentIdsOrSelector:
-      | string
-      | string[]
-      | Partial<CartTypes.LineItemAdjustmentDTO>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    let ids: string[]
-    if (isObject(adjustmentIdsOrSelector)) {
-      const adjustments = await this.listLineItemAdjustments(
-        {
-          ...adjustmentIdsOrSelector,
-        } as Partial<CartTypes.LineItemAdjustmentDTO>,
-        { select: ["id"] },
-        sharedContext
-      )
-
-      ids = adjustments.map((adj) => adj.id)
-    } else {
-      ids = Array.isArray(adjustmentIdsOrSelector)
-        ? adjustmentIdsOrSelector
-        : [adjustmentIdsOrSelector]
-    }
-
-    await this.lineItemAdjustmentService_.delete(ids, sharedContext)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -833,7 +718,7 @@ export default class CartModuleService<
     )
 
     if (toDelete.length) {
-      await this.shippingMethodAdjustmentService_.delete(
+      await this.shippingMethodAdjustmentService_.softDelete(
         toDelete.map((adj) => adj!.id),
         sharedContext
       )
@@ -921,46 +806,6 @@ export default class CartModuleService<
     >(addedAdjustments, {
       populate: true,
     })
-  }
-
-  async removeShippingMethodAdjustments(
-    adjustmentIds: string[],
-    sharedContext?: Context
-  ): Promise<void>
-  async removeShippingMethodAdjustments(
-    adjustmentId: string,
-    sharedContext?: Context
-  ): Promise<void>
-  async removeShippingMethodAdjustments(
-    selector: Partial<CartTypes.ShippingMethodAdjustmentDTO>,
-    sharedContext?: Context
-  ): Promise<void>
-
-  async removeShippingMethodAdjustments(
-    adjustmentIdsOrSelector:
-      | string
-      | string[]
-      | Partial<CartTypes.ShippingMethodAdjustmentDTO>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    let ids: string[]
-    if (isObject(adjustmentIdsOrSelector)) {
-      const adjustments = await this.listShippingMethodAdjustments(
-        {
-          ...adjustmentIdsOrSelector,
-        } as Partial<CartTypes.ShippingMethodAdjustmentDTO>,
-        { select: ["id"] },
-        sharedContext
-      )
-
-      ids = adjustments.map((adj) => adj.id)
-    } else {
-      ids = Array.isArray(adjustmentIdsOrSelector)
-        ? adjustmentIdsOrSelector
-        : [adjustmentIdsOrSelector]
-    }
-
-    await this.shippingMethodAdjustmentService_.delete(ids, sharedContext)
   }
 
   addLineItemTaxLines(
@@ -1058,7 +903,7 @@ export default class CartModuleService<
     })
 
     if (toDelete.length) {
-      await this.lineItemTaxLineService_.delete(
+      await this.lineItemTaxLineService_.softDelete(
         toDelete.map((taxLine) => taxLine!.id),
         sharedContext
       )
@@ -1075,46 +920,6 @@ export default class CartModuleService<
         populate: true,
       }
     )
-  }
-
-  removeLineItemTaxLines(
-    taxLineIds: string[],
-    sharedContext?: Context
-  ): Promise<void>
-  removeLineItemTaxLines(
-    taxLineIds: string,
-    sharedContext?: Context
-  ): Promise<void>
-  removeLineItemTaxLines(
-    selector: FilterableLineItemTaxLineProps,
-    sharedContext?: Context
-  ): Promise<void>
-
-  async removeLineItemTaxLines(
-    taxLineIdsOrSelector:
-      | string
-      | string[]
-      | CartTypes.FilterableShippingMethodTaxLineProps,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    let ids: string[]
-    if (isObject(taxLineIdsOrSelector)) {
-      const taxLines = await this.listLineItemTaxLines(
-        {
-          ...(taxLineIdsOrSelector as CartTypes.FilterableLineItemTaxLineProps),
-        },
-        { select: ["id"] },
-        sharedContext
-      )
-
-      ids = taxLines.map((taxLine) => taxLine.id)
-    } else {
-      ids = Array.isArray(taxLineIdsOrSelector)
-        ? taxLineIdsOrSelector
-        : [taxLineIdsOrSelector]
-    }
-
-    await this.lineItemTaxLineService_.delete(ids, sharedContext)
   }
 
   addShippingMethodTaxLines(
@@ -1216,7 +1021,7 @@ export default class CartModuleService<
     })
 
     if (toDelete.length) {
-      await this.shippingMethodTaxLineService_.delete(
+      await this.shippingMethodTaxLineService_.softDelete(
         toDelete.map((taxLine) => taxLine!.id),
         sharedContext
       )
@@ -1232,45 +1037,5 @@ export default class CartModuleService<
     >(result, {
       populate: true,
     })
-  }
-
-  removeShippingMethodTaxLines(
-    taxLineIds: string[],
-    sharedContext?: Context
-  ): Promise<void>
-  removeShippingMethodTaxLines(
-    taxLineIds: string,
-    sharedContext?: Context
-  ): Promise<void>
-  removeShippingMethodTaxLines(
-    selector: Partial<CartTypes.ShippingMethodTaxLineDTO>,
-    sharedContext?: Context
-  ): Promise<void>
-
-  async removeShippingMethodTaxLines(
-    taxLineIdsOrSelector:
-      | string
-      | string[]
-      | CartTypes.FilterableShippingMethodTaxLineProps,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    let ids: string[]
-    if (isObject(taxLineIdsOrSelector)) {
-      const taxLines = await this.listShippingMethodTaxLines(
-        {
-          ...(taxLineIdsOrSelector as CartTypes.FilterableShippingMethodTaxLineProps),
-        },
-        { select: ["id"] },
-        sharedContext
-      )
-
-      ids = taxLines.map((taxLine) => taxLine.id)
-    } else {
-      ids = Array.isArray(taxLineIdsOrSelector)
-        ? taxLineIdsOrSelector
-        : [taxLineIdsOrSelector]
-    }
-
-    await this.shippingMethodTaxLineService_.delete(ids, sharedContext)
   }
 }

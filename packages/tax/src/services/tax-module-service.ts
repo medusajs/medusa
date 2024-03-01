@@ -14,11 +14,12 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  arrayDifference,
   isDefined,
   isString,
   promiseAll,
 } from "@medusajs/utils"
-import { TaxRate, TaxRegion, TaxRateRule } from "@models"
+import { TaxProvider, TaxRate, TaxRegion, TaxRateRule } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { TaxRegionDTO } from "@medusajs/types"
 
@@ -27,10 +28,11 @@ type InjectedDependencies = {
   taxRateService: ModulesSdkTypes.InternalModuleService<any>
   taxRegionService: ModulesSdkTypes.InternalModuleService<any>
   taxRateRuleService: ModulesSdkTypes.InternalModuleService<any>
+  taxProviderService: ModulesSdkTypes.InternalModuleService<any>
   [key: `tp_${string}`]: ITaxProvider
 }
 
-const generateForModels = [TaxRegion, TaxRateRule]
+const generateForModels = [TaxRegion, TaxRateRule, TaxProvider]
 
 type ItemWithRates = {
   rates: TaxRate[]
@@ -40,7 +42,8 @@ type ItemWithRates = {
 export default class TaxModuleService<
     TTaxRate extends TaxRate = TaxRate,
     TTaxRegion extends TaxRegion = TaxRegion,
-    TTaxRateRule extends TaxRateRule = TaxRateRule
+    TTaxRateRule extends TaxRateRule = TaxRateRule,
+    TTaxProvider extends TaxProvider = TaxProvider
   >
   extends ModulesSdkUtils.abstractModuleServiceFactory<
     InjectedDependencies,
@@ -48,6 +51,7 @@ export default class TaxModuleService<
     {
       TaxRegion: { dto: TaxTypes.TaxRegionDTO }
       TaxRateRule: { dto: TaxTypes.TaxRateRuleDTO }
+      TaxProvider: { dto: TaxTypes.TaxProviderDTO }
     }
   >(TaxRate, generateForModels, entityNameToLinkableKeysMap)
   implements ITaxModuleService
@@ -57,6 +61,7 @@ export default class TaxModuleService<
   protected taxRateService_: ModulesSdkTypes.InternalModuleService<TTaxRate>
   protected taxRegionService_: ModulesSdkTypes.InternalModuleService<TTaxRegion>
   protected taxRateRuleService_: ModulesSdkTypes.InternalModuleService<TTaxRateRule>
+  protected taxProviderService_: ModulesSdkTypes.InternalModuleService<TTaxProvider>
 
   constructor(
     {
@@ -64,6 +69,7 @@ export default class TaxModuleService<
       taxRateService,
       taxRegionService,
       taxRateRuleService,
+      taxProviderService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -75,6 +81,7 @@ export default class TaxModuleService<
     this.taxRateService_ = taxRateService
     this.taxRegionService_ = taxRegionService
     this.taxRateRuleService_ = taxRateRuleService
+    this.taxProviderService_ = taxProviderService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -141,7 +148,7 @@ export default class TaxModuleService<
       await this.taxRateRuleService_.create(rulesToCreate, sharedContext)
     }
 
-    return await this.baseRepository_.serialize<TaxTypes.TaxRateDTO>(rates, {
+    return await this.baseRepository_.serialize<TaxTypes.TaxRateDTO[]>(rates, {
       populate: true,
     })
   }
@@ -187,6 +194,27 @@ export default class TaxModuleService<
         : idOrSelector
 
     return await this.taxRateService_.update({ selector, data }, sharedContext)
+  }
+
+  async upsert(
+    data: TaxTypes.UpsertTaxRateDTO[],
+    sharedContext?: Context
+  ): Promise<TaxTypes.TaxRateDTO[]>
+  async upsert(
+    data: TaxTypes.UpsertTaxRateDTO,
+    sharedContext?: Context
+  ): Promise<TaxTypes.TaxRateDTO>
+
+  @InjectTransactionManager("baseRepository_")
+  async upsert(
+    data: TaxTypes.UpsertTaxRateDTO | TaxTypes.UpsertTaxRateDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TaxTypes.TaxRateDTO | TaxTypes.TaxRateDTO[]> {
+    const result = await this.taxRateService_.upsert(data, sharedContext)
+    const serialized = await this.baseRepository_.serialize<
+      TaxTypes.TaxRateDTO[]
+    >(result, { populate: true })
+    return Array.isArray(data) ? serialized : serialized[0]
   }
 
   createTaxRegions(
@@ -613,4 +641,27 @@ export default class TaxModuleService<
   private normalizeRegionCodes(code: string) {
     return code.toLowerCase()
   }
+
+  // @InjectTransactionManager("baseRepository_")
+  // async createProvidersOnLoad(@MedusaContext() sharedContext: Context = {}) {
+  //   const providersToLoad = this.container_["tax_providers"] as ITaxProvider[]
+
+  //   const ids = providersToLoad.map((p) => p.getIdentifier())
+
+  //   const existing = await this.taxProviderService_.update(
+  //     { selector: { id: { $in: ids } }, data: { is_enabled: true } },
+  //     sharedContext
+  //   )
+
+  //   const existingIds = existing.map((p) => p.id)
+  //   const diff = arrayDifference(ids, existingIds)
+  //   await this.taxProviderService_.create(
+  //     diff.map((id) => ({ id, is_enabled: true }))
+  //   )
+
+  //   await this.taxProviderService_.update({
+  //     selector: { id: { $nin: ids } },
+  //     data: { is_enabled: false },
+  //   })
+  // }
 }

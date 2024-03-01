@@ -4,13 +4,13 @@ import { validateEmail } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
-  customerId?: string
-  email?: string
+  customerId?: string | null
+  email?: string | null
 }
 
 interface StepOutput {
-  customer?: CustomerDTO
-  email?: string
+  customer?: CustomerDTO | null
+  email?: string | null
 }
 
 interface StepCompensateInput {
@@ -22,11 +22,27 @@ export const findOrCreateCustomerStepId = "find-or-create-customer"
 export const findOrCreateCustomerStep = createStep(
   findOrCreateCustomerStepId,
   async (data: StepInput, { container }) => {
+    if (
+      typeof data.customerId === undefined &&
+      typeof data.email === undefined
+    ) {
+      return new StepResponse(
+        {
+          customer: undefined,
+          email: undefined,
+        },
+        { customerWasCreated: false }
+      )
+    }
+
     const service = container.resolve<ICustomerModuleService>(
       ModuleRegistrationName.CUSTOMER
     )
 
-    const customerData: StepOutput = {}
+    const customerData: StepOutput = {
+      customer: null,
+      email: null,
+    }
     let customerWasCreated = false
 
     if (data.customerId) {

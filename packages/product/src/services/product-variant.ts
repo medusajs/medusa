@@ -1,9 +1,9 @@
 import { Context, DAL, ProductTypes } from "@medusajs/types"
 import {
   InjectTransactionManager,
-  isString,
   MedusaContext,
   ModulesSdkUtils,
+  isString,
 } from "@medusajs/utils"
 import { Product, ProductVariant } from "@models"
 
@@ -63,9 +63,7 @@ export default class ProductVariantService<
       })
     })
 
-    return await this.productVariantRepository_.create(data_, {
-      transactionManager: sharedContext.transactionManager,
-    })
+    return await super.create(data_, sharedContext)
   }
 
   @InjectTransactionManager("productVariantRepository_")

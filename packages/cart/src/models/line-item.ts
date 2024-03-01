@@ -31,6 +31,33 @@ type OptionalLineItemProps =
   | "cart"
   | DAL.SoftDeletableEntityDateColumns
 
+const CartIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_line_item_cart_id",
+  tableName: "cart_line_item",
+  columns: "cart_id",
+  where: "deleted_at IS NULL",
+}).MikroORMIndex
+
+const VariantIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_line_item_variant_id",
+  tableName: "cart_line_item",
+  columns: "variant_id",
+  where: "deleted_at IS NULL AND variant_id IS NOT NULL",
+}).MikroORMIndex
+
+const ProductIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_line_item_product_id",
+  tableName: "cart_line_item",
+  columns: "product_id",
+  where: "deleted_at IS NULL AND product_id IS NOT NULL",
+}).MikroORMIndex
+
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "cart_line_item",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+}).MikroORMIndex
+
 @Entity({ tableName: "cart_line_item" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class LineItem {
@@ -39,19 +66,16 @@ export default class LineItem {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @createPsqlIndexStatementHelper({
-    name: "IDX_line_item_cart_id",
-    tableName: "cart_line_item",
-    columns: "cart_id",
-    where: "deleted_at IS NULL",
-  }).MikroORMIndex()
-  @Property({ columnType: "text" })
-  cart_id: string
-
+  @CartIdIndex()
   @ManyToOne({
     entity: () => Cart,
-    cascade: [Cascade.REMOVE, Cascade.PERSIST, "soft-remove"] as any,
+    columnType: "text",
+    fieldName: "cart_id",
+    mapToPk: true,
   })
+  cart_id: string
+
+  @ManyToOne({ entity: () => Cart, persist: false })
   cart: Cart
 
   @Property({ columnType: "text" })
@@ -66,21 +90,11 @@ export default class LineItem {
   @Property({ columnType: "integer" })
   quantity: number
 
-  @createPsqlIndexStatementHelper({
-    name: "IDX_line_item_variant_id",
-    tableName: "cart_line_item",
-    columns: "variant_id",
-    where: "deleted_at IS NULL AND variant_id IS NOT NULL",
-  }).MikroORMIndex()
+  @VariantIdIndex()
   @Property({ columnType: "text", nullable: true })
   variant_id: string | null = null
 
-  @createPsqlIndexStatementHelper({
-    name: "IDX_line_item_product_id",
-    tableName: "cart_line_item",
-    columns: "product_id",
-    where: "deleted_at IS NULL AND product_id IS NOT NULL",
-  }).MikroORMIndex()
+  @ProductIdIndex()
   @Property({ columnType: "text", nullable: true })
   product_id: string | null = null
 
@@ -145,6 +159,9 @@ export default class LineItem {
   })
   adjustments = new Collection<LineItemAdjustment>(this)
 
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
+
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
@@ -160,11 +177,7 @@ export default class LineItem {
   })
   updated_at: Date
 
-  @createPsqlIndexStatementHelper({
-    tableName: "cart_line_item",
-    columns: "deleted_at",
-    where: "deleted_at IS NOT NULL",
-  }).MikroORMIndex()
+  @DeletedAtIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 
