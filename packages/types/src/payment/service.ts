@@ -4,6 +4,7 @@ import { Context } from "../shared-context"
 import {
   FilterablePaymentCollectionProps,
   FilterablePaymentProps,
+  FilterablePaymentSessionProps,
   PaymentCollectionDTO,
   PaymentDTO,
   PaymentSessionDTO,
@@ -386,6 +387,12 @@ export interface IPaymentModuleService extends IModuleService {
    * {example-code}
    */
   cancelPayment(paymentId: string, sharedContext?: Context): Promise<PaymentDTO>
+
+  listPaymentSessions(
+    filters?: FilterablePaymentSessionProps,
+    config?: FindConfig<PaymentSessionDTO>,
+    sharedContext?: Context
+  ): Promise<PaymentSessionDTO[]>
 
   /**
    * This method creates providers on load.

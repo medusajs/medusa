@@ -31,5 +31,16 @@ export const createPaymentSessionStep = createStep(
     )
 
     return new StepResponse(session, session.id)
+  },
+  async (createdSession, { container }) => {
+    if (!createdSession) {
+      return
+    }
+
+    const service = container.resolve<IPaymentModuleService>(
+      ModuleRegistrationName.PAYMENT
+    )
+
+    await service.deletePaymentSession(createdSession)
   }
 )

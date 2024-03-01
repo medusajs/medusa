@@ -49,7 +49,7 @@ type InjectedDependencies = {
   paymentProviderService: PaymentProviderService
 }
 
-const generateMethodForModels = [PaymentCollection, Payment]
+const generateMethodForModels = [PaymentCollection, Payment, PaymentSession]
 
 export default class PaymentModuleService<
     TPaymentCollection extends PaymentCollection = PaymentCollection,

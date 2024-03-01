@@ -169,6 +169,19 @@ export interface FilterablePaymentCollectionProps
   updated_at?: OperatorMap<string>
 }
 
+export interface FilterablePaymentSessionProps
+  extends BaseFilterable<PaymentSessionDTO> {
+  id?: string | string[]
+  currency_code?: string | string[]
+  amount?: number | OperatorMap<number>
+  provider_id?: string | string[]
+  payment_collection_id?: string | string[]
+  region_id?: string | string[] | OperatorMap<string>
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  deleted_at?: OperatorMap<string>
+}
+
 /* ********** PAYMENT ********** */
 export interface PaymentDTO {
   /**

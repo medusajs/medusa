@@ -71,6 +71,7 @@ export default class PaymentSession {
   @OneToOne({
     entity: () => Payment,
     nullable: true,
+    mappedBy: "payment_session",
   })
   payment?: Payment | null
 
