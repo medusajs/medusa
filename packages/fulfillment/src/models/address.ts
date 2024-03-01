@@ -6,7 +6,7 @@ import {
 import {
   BeforeCreate,
   Entity,
-  ManyToOne,
+  OneToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
@@ -35,7 +35,7 @@ export default class Address {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @ManyToOne(() => Fulfillment, {
+  @OneToOne(() => Fulfillment, {
     columnType: "text",
     mapToPk: true,
     fieldName: "fulfillment_id",
@@ -44,7 +44,7 @@ export default class Address {
   @FulfillmentIdIndex.MikroORMIndex()
   fulfillment_id: string
 
-  @ManyToOne(() => Fulfillment, { persist: false })
+  @OneToOne(() => Fulfillment, { persist: false })
   fulfillment: Fulfillment
 
   @Property({ columnType: "text", nullable: true })

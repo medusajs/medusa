@@ -21,7 +21,7 @@ import {
   SuiteOptions,
 } from "medusa-test-utils"
 import { generateCreateShippingOptionsData } from "../__fixtures__"
-import {ServiceProviderService} from "@services";
+import { ServiceProviderService } from "@services"
 
 jest.setTimeout(100000)
 
@@ -63,12 +63,12 @@ moduleIntegrationTestRunner({
                   {
                     resolve: resolve(
                       process.cwd() +
-                      "/integration-tests/__fixtures__/providers/default-provider"
+                        "/integration-tests/__fixtures__/providers/default-provider"
                     ),
                     options: {
-                      config: providersConfig
-                    }
-                  }
+                      config: providersConfig,
+                    },
+                  },
                 ],
               },
             },
@@ -81,11 +81,19 @@ moduleIntegrationTestRunner({
           `SELECT * FROM service_provider`
         )
 
-        expect(serviceProviders).toHaveLength(Object.keys(providersConfig).length)
+        expect(serviceProviders).toHaveLength(
+          Object.keys(providersConfig).length
+        )
 
         for (const [name] of Object.entries(providersConfig)) {
           const provider = serviceProviders.find((p) => {
-            return p.id === ServiceProviderService.getRegistrationName(FulfillmentProviderServiceFixtures, name)
+            return (
+              p.id ===
+              ServiceProviderService.getRegistrationName(
+                FulfillmentProviderServiceFixtures,
+                name
+              )
+            )
           })
           expect(provider).toBeDefined()
         }

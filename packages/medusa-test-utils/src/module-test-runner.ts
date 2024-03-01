@@ -70,6 +70,7 @@ export function moduleIntegrationTestRunner({
     injectedDependencies: {
       [ContainerRegistrationKeys.PG_CONNECTION]: connection,
       eventBusService: new MockEventBusService(),
+      [ContainerRegistrationKeys.LOGGER]: console,
       ...injectedDependencies,
     },
     modulesConfig: modulesConfig_,

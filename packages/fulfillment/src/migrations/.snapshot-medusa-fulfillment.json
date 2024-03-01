@@ -1260,6 +1260,15 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": [
+            "fulfillment_id"
+          ],
+          "composite": false,
+          "keyName": "fulfillment_address_fulfillment_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
           "keyName": "IDX_fulfillment_address_fulfillment_id",
           "columnNames": [
             "fulfillment_id"
@@ -1411,15 +1420,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "items_id": {
-          "name": "items_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
         "created_at": {
           "name": "created_at",
           "type": "timestamptz",
@@ -1456,6 +1456,15 @@
       "name": "fulfillment",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "delivery_address_id"
+          ],
+          "composite": false,
+          "keyName": "fulfillment_delivery_address_id_unique",
+          "primary": false,
+          "unique": true
+        },
         {
           "keyName": "IDX_fulfillment_location_id",
           "columnNames": [
@@ -1518,6 +1527,7 @@
             "id"
           ],
           "referencedTableName": "public.service_provider",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "fulfillment_shipping_option_id_foreign": {
@@ -1544,17 +1554,135 @@
           ],
           "referencedTableName": "public.fulfillment_address",
           "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
         },
-        "fulfillment_items_id_foreign": {
-          "constraintName": "fulfillment_items_id_foreign",
+        "tracking_number": {
+          "name": "tracking_number",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "tracking_url": {
+          "name": "tracking_url",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "label_url": {
+          "name": "label_url",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "fulfillment_id": {
+          "name": "fulfillment_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "fulfillment_label",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_fulfillment_label_fulfillment_id",
           "columnNames": [
-            "items_id"
+            "fulfillment_id"
           ],
-          "localTableName": "public.fulfillment",
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_label_fulfillment_id\" ON \"fulfillment_label\" (fulfillment_id) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_fulfillment_label_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_label_deleted_at\" ON \"fulfillment_label\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "fulfillment_label_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "fulfillment_label_fulfillment_id_foreign": {
+          "constraintName": "fulfillment_label_fulfillment_id_foreign",
+          "columnNames": [
+            "fulfillment_id"
+          ],
+          "localTableName": "public.fulfillment_label",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.fulfillment_item",
+          "referencedTableName": "public.fulfillment",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -1736,389 +1864,6 @@
             "fulfillment_id"
           ],
           "localTableName": "public.fulfillment_item",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.fulfillment",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "location_id": {
-          "name": "location_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "packed_at": {
-          "name": "packed_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "shipped_at": {
-          "name": "shipped_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "delivered_at": {
-          "name": "delivered_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "canceled_at": {
-          "name": "canceled_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "data": {
-          "name": "data",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "json"
-        },
-        "provider_id": {
-          "name": "provider_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "shipping_option_id": {
-          "name": "shipping_option_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "metadata": {
-          "name": "metadata",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "json"
-        },
-        "delivery_address_id": {
-          "name": "delivery_address_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "items_id": {
-          "name": "items_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "fulfillment",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_fulfillment_location_id",
-          "columnNames": [
-            "location_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_location_id\" ON \"fulfillment\" (location_id) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_fulfillment_provider_id",
-          "columnNames": [
-            "provider_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_provider_id\" ON \"fulfillment\" (provider_id) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_fulfillment_shipping_option_id",
-          "columnNames": [
-            "shipping_option_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_shipping_option_id\" ON \"fulfillment\" (shipping_option_id) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_fulfillment_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_deleted_at\" ON \"fulfillment\" (deleted_at) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "fulfillment_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "fulfillment_provider_id_foreign": {
-          "constraintName": "fulfillment_provider_id_foreign",
-          "columnNames": [
-            "provider_id"
-          ],
-          "localTableName": "public.fulfillment",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.service_provider",
-          "updateRule": "cascade"
-        },
-        "fulfillment_shipping_option_id_foreign": {
-          "constraintName": "fulfillment_shipping_option_id_foreign",
-          "columnNames": [
-            "shipping_option_id"
-          ],
-          "localTableName": "public.fulfillment",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.shipping_option",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "fulfillment_delivery_address_id_foreign": {
-          "constraintName": "fulfillment_delivery_address_id_foreign",
-          "columnNames": [
-            "delivery_address_id"
-          ],
-          "localTableName": "public.fulfillment",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.fulfillment_address",
-          "updateRule": "cascade"
-        },
-        "fulfillment_items_id_foreign": {
-          "constraintName": "fulfillment_items_id_foreign",
-          "columnNames": [
-            "items_id"
-          ],
-          "localTableName": "public.fulfillment",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.fulfillment_item",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "tracking_number": {
-          "name": "tracking_number",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "tracking_url": {
-          "name": "tracking_url",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "label_url": {
-          "name": "label_url",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "fulfillment_id": {
-          "name": "fulfillment_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "fulfillment_label",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "IDX_fulfillment_label_fulfillment_id",
-          "columnNames": [
-            "fulfillment_id"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_label_fulfillment_id\" ON \"fulfillment_label\" (fulfillment_id) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_fulfillment_label_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_fulfillment_label_deleted_at\" ON \"fulfillment_label\" (deleted_at) WHERE deleted_at IS NOT NULL"
-        },
-        {
-          "keyName": "fulfillment_label_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "fulfillment_label_fulfillment_id_foreign": {
-          "constraintName": "fulfillment_label_fulfillment_id_foreign",
-          "columnNames": [
-            "fulfillment_id"
-          ],
-          "localTableName": "public.fulfillment_label",
           "referencedColumnNames": [
             "id"
           ],

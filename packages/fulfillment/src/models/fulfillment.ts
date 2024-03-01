@@ -12,6 +12,7 @@ import {
   Filter,
   ManyToOne,
   OneToMany,
+  OneToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
@@ -97,24 +98,29 @@ export default class Fulfillment {
   @FulfillmentProviderIdIndex.MikroORMIndex()
   provider_id: string
 
-  @Property({ columnType: "text", nullable: true })
+  @ManyToOne(() => ShippingOption, {
+    columnType: "text",
+    fieldName: "shipping_option_id",
+    nullable: true,
+    mapToPk: true,
+  })
   @FulfillmentShippingOptionIdIndex.MikroORMIndex()
   shipping_option_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
-  @ManyToOne(() => ShippingOption, { nullable: true })
+  @ManyToOne(() => ShippingOption, { persist: false })
   shipping_option: ShippingOption | null
 
-  @ManyToOne(() => ServiceProvider)
+  @ManyToOne(() => ServiceProvider, { persist: false })
   provider: ServiceProvider
 
-  @ManyToOne(() => Address)
+  @OneToOne(() => Address)
   delivery_address: Address
 
-  @ManyToOne(() => FulfillmentItem)
-  items: FulfillmentItem
+  @OneToMany(() => FulfillmentItem, (item) => item.fulfillment)
+  items = new Collection<FulfillmentItem>(this)
 
   @OneToMany(() => FulfillmentLabel, (label) => label.fulfillment)
   labels = new Collection<FulfillmentLabel>(this)
